@@ -1,6 +1,6 @@
 {
     "pack": {
-        "description": "Railcraft",
-        "pack_format": 3
+        "description": "The default data for Railcraft",
+        "pack_format": 5
     }
 }

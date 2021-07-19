@@ -1,0 +1,10 @@
+{
+  "parent": "railcraft:block/force_track_emitter",
+  "textures": {
+    "front": "railcraft:block/force_track_emitter_facing",
+    "side": "railcraft:block/force_track_emitter_side",
+    "colored_front": "railcraft:block/force_track_emitter_facing_colored",
+    "colored_side": "railcraft:block/force_track_emitter_side_colored",
+    "particle": "railcraft:block/force_track_emitter_side"
+  }
+}

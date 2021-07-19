@@ -2,8 +2,8 @@
   "__comment": "Designed by CovertJaguar with Cubik Studio - https://cubik.studio",
   "parent": "block/block",
   "textures": {
-    "particle": "railcraft:blocks/signal_box_cap",
-    "cap": "railcraft:blocks/signal_box_cap"
+    "particle": "railcraft:block/signal_box_cap",
+    "cap": "railcraft:block/signal_box_cap"
   },
   "elements": [
     {

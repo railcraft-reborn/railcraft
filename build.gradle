@@ -1,427 +1,114 @@
-import groovy.xml.MarkupBuilder
-import net.minecraftforge.gradle.tasks.SignJar
-
 buildscript {
     repositories {
-        jcenter()
+        maven {
+            name 'forge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+        maven {
+            name 'sponge'
+            url 'https://repo.spongepowered.org/repository/maven-public/'
+        }
         mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'idea'
-apply from: 'api-railcraft/gradle.properties', to: project.ext
+version = '0.0.1-alpha'
+group = 'mods.railcraft'
+archivesBaseName = 'railcraft'
 
-sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
-group = "com.headlamp-games" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "railcraft"
-
-allprojects {
-    version = project.version
-}
-
-if (file("passwords.properties").exists()) {
-    apply from: 'passwords.properties', to: project.ext
-    println "Loading secure configs..."
-}
-
-ext {
-    dirApi = "./api-railcraft"
-    dirRelease = "./release"
-    dirLang = "./lang"
-    // apiForestry = "./api/forestry"
-    // apiThaumcraft = "./api/thaumcraft"
-    // apiBuildcraft = "./api/buildcraft"
-
-    dirDest = './build/distributions'
-}
-
-println ''
-println '*************************************************************'
-println 'Project Version: ' + project.version
-println '*************************************************************'
-println ''
-
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    version = project.version_minecraft + "-" + project.version_forge
-    runDir = "run"
+    mappings channel: 'official', version: "${minecraft_version}"
 
-    mappings = project.version_mcp.replace("-", "_")
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    replace '@VERSION@', project.version
-    makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-}
+    runs {
+        client {
+            workingDirectory project.file('run/client')
 
-def actualRunDir = project.file(minecraft.runDir)
-// Change the 4G in -Xmx4G to your desired max RAM and 4G in -Xms4G to your desired initial RAM
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            
+            args '--mixin', 'railcraft.mixins.json'
 
-def optimizedVmArgs = [
-        "-Xms4G",
-        "-Xmx4G",
-        "-XX:+UseG1GC",
-        "-XX:+ParallelRefProcEnabled",
-        "-XX:MaxGCPauseMillis=200",
-        "-XX:+UnlockExperimentalVMOptions",
-        "-XX:+DisableExplicitGC",
-        "-XX:+AlwaysPreTouch",
-        "-XX:G1NewSizePercent=30",
-        "-XX:G1MaxNewSizePercent=40",
-        "-XX:G1HeapRegionSize=8M",
-        "-XX:G1ReservePercent=20",
-        "-XX:G1HeapWastePercent=5",
-        "-XX:G1MixedGCCountTarget=4",
-        "-XX:InitiatingHeapOccupancyPercent=15",
-        "-XX:G1MixedGCLiveThresholdPercent=90",
-        "-XX:G1RSetUpdatingPauseTimePercent=5",
-        "-XX:SurvivorRatio=32",
-        "-XX:+PerfDisableSharedMem",
-        "-XX:MaxTenuringThreshold=1"
-]
-def assertionVmArgs = ['-ea:mods.railcraft...', '-ea:net.minecraft...', '-ea:net.minecraftforge...']
-def log4jVmArgs = ['-Dlog4j.configurationFile=' + new File(actualRunDir, 'log4j2.xml').toString()]
-def railcraftDebugArgs = ['-Drailcraft.log.categories=registry,models']
-def combinedVmArgs = [assertionVmArgs, optimizedVmArgs, log4jVmArgs, railcraftDebugArgs].flatten()
-def extraEnvs = new LinkedHashMap() //['LOG4J_CONFIGURATION_FILE': "log4j2.xml"]
-
-minecraft {
-    clientJvmArgs = combinedVmArgs
-    serverJvmArgs = combinedVmArgs
-}
-
-idea {
-    module {
-        //some extra dirs that should be excluded by IDEA
-        excludeDirs += file('run/')
-        excludeDirs += file('logs/')
-
-//        inheritOutputDirs = false
-    }
-}
-
-sourceSets {
-    api {
-        java {
-            srcDirs += [
-                    project.dirApi + "/src/api/java"
-            ]
+            mods {
+                railcraft {
+                    source sourceSets.main
+                }
+            }
         }
-    }
-    main {
-        java {
-            srcDirs += [
-                    project.dirRelease + "/src/main/java"
-            ]
+
+        server {
+            workingDirectory project.file('run/server')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mixin', 'railcraft.mixins.json'
+
+            mods {
+                railcraft {
+                    source sourceSets.main
+                }
+            }
         }
-        resources {
-            exclude '**/Thumbs.db'
-            srcDirs += [
-                    project.dirRelease + "/src/main/resources",
-                    project.dirLang + "/src/main/resources"
-            ]
+
+        data {
+            workingDirectory project.file('run/data')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                railcraft {
+                    source sourceSets.main
+                }
+            }
         }
     }
 }
 
-println ""
-println "Source Sets:"
-println "-- api:"
-sourceSets.api.java.srcDirs.each {
-    println "---- " + it
-}
-println "-- main:"
-sourceSets.main.java.srcDirs.each {
-    println "---- " + it
-}
-println "-- resourses:"
-sourceSets.main.resources.srcDirs.each {
-    println "---- " + it
-}
-println ""
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    mavenCentral()
     maven {
-        name = "buildcraft"
-        url = "https://mod-buildcraft.com/maven/"
+        name 'sponge'
+        url 'https://repo.spongepowered.org/repository/maven-public/'
     }
-    maven {
-        name = "ic2"
-        url = "http://maven.ic2.player.to/"
-    }
-    maven {
-        name = "jei"
-        url = "http://dvs1.progwml6.com/files/maven/"
-    }
-}
-
-configurations {
-    api
-    compileOnly.extendsFrom api
 }
 
 dependencies {
-    // forestry
-    compileOnly "net.sengir.forestry:forestry_${project.version_minecraft}:${project.version_forestry}:api"
-    runtimeOnly "net.sengir.forestry:forestry_${project.version_minecraft}:${project.version_forestry}"
-    // IC2
-    api "net.industrial-craft:industrialcraft-2:${project.version_industrialcraft}:api"
-    runtimeOnly "net.industrial-craft:industrialcraft-2:${project.version_industrialcraft}"
-    // BuildCraft
-    compileOnly "com.mod-buildcraft:buildcraft-api:${project.version_buildcraft}"
-    // JEI
-    deobfProvided "mezz.jei:jei_${project.version_minecraft}:${project.version_jei}"
-    // annotations
-    apiCompileOnly "org.jetbrains:annotations:16.0.2"
-    compileOnly "org.jetbrains:annotations:16.0.2"
-    // libs folder in case
-    implementation fileTree(dir: 'lib', include: '*.jar')
-    // Tests
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    minecraft group: 'net.minecraftforge', name:'forge', version: "${minecraft_version}-${forge_version}"
+    implementation group: 'org.spongepowered', name: 'mixin', version: "${mixin_version}"
+    annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
+    testAnnotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
 }
 
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "version_minecraft", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-
-        // replace version and version_minecraft
-        expand 'version': project.version, 'version_minecraft': project.minecraft.version
-    }
-
-    // copy everything else, that is not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-        exclude '**/*.md'
-        exclude '**/Thumbs.db'
-    }
-}
-
-runClient {
-    // in git bash, do (replace stuff in the <>) ./gradlew runClient -PmcUsername=<your minecraft login email> -PmcPassword=<your minecraft password>
-    if (project.hasProperty('mcUsername') && project.hasProperty('mcPassword')) {
-        args "--username=${project.mcUsername}"
-        args "--password=${project.mcPassword}"
-    }
-}
-
-runServer {
-    doFirst {
-        new File(workingDir, "eula.txt").text = "eula=true"
-    }
-    args "nogui" // no server gui, we have console
-}
-
-test {
-    useJUnitPlatform()
-
-    // listen to events in the test execution lifecycle
-    beforeTest { descriptor ->
-        logger.lifecycle("Running: $descriptor")
-    }
-
-    // Fail the 'test' task on the first test failure
-    failFast = true
-}
-
-task copyLog4jConfig(type: Copy) {
-    from('extras') {
-        include 'log4j2.xml'
-    }
-    into actualRunDir
-}
-
-tasks.withType(JavaExec) {
-    dependsOn copyLog4jConfig
-    environment extraEnvs
-    outputs.upToDateWhen { false }
-    workingDir actualRunDir
-}
-
-genIntellijRuns {
-    dependsOn copyLog4jConfig
-    doLast {
-        def runConfigurationsDir = new File(".idea/runConfigurations")
-        runConfigurationsDir.mkdirs()
-
-        tasks.withType(JavaExec).each { task ->
-            def taskName = task.name
-            def mainClass = task.main
-            def props = combinedVmArgs.join(' ') // task.jvmArgs.join(' ') has too much trash
-            def args = task.args.join(' ')
-
-            def writer = new FileWriter(new File(runConfigurationsDir, "${taskName}.xml"))
-            def xml = new MarkupBuilder(writer)
-
-            xml.component(name: "ProjectRunConfigurationManager") {
-                configuration(default: 'false', name: taskName, type: "Application", factoryName: "Application", singleton: "true") {
-                    option(name: 'MAIN_CLASS_NAME', value: mainClass)
-                    option(name: 'VM_PARAMETERS', value: props)
-                    option(name: 'PROGRAM_PARAMETERS', value: args)
-                    option(name: 'WORKING_DIRECTORY', value: task.workingDir)
-                    envs() {
-                        extraEnvs.entrySet().each { envVar ->
-                            env(name: envVar.key, value: envVar.value)
-                        }
-                    }
-                    module(name: 'railcraft_main')
-                    // copy log4j config before running
-                    method(v: '2') {
-                        option(name: 'Make', enabled: 'true')
-                        option(name: 'Gradle.BeforeRunTask', enabled: 'true', tasks: 'copyLog4jConfig', externalProjectPath: '$PROJECT_DIR$')
-                    }
-                }
-            }
-        }
-    }
-}
-
-compileJava {
-    options.compilerArgs += [
-            '-Xlint:-processing',
-            '-proc:none'
-    ]
-//    options.deprecation = true
-    options.encoding = 'utf8'
-}
-
-tasks.withType(Jar) {
-    from sourceSets.api.output
-    from {
-        configurations.api.collect {
-            it.isDirectory() ? it : zipTree(it).matching {
-                include '**/ic2/api/energy/**'
-                include '**/ic2/api/info/**'
-                include '**/ic2/api/item/**'
-                include '**/ic2/api/recipe/**'
-                exclude '**/ic2/**/package-info.java'
-                exclude '**/ic2/**/package-info.class'
-            }
-        }
-    }
-
-    exclude '**/Thumbs.db'
-
-    into('mods/railcraft/api') {
-        from project.dirApi + "/LICENSE.md"
-    }
-//    into('forestry/api') {
-//        from project.apiForestry + "/LICENSE.txt"
-//    }
-//    into('thaumcraft/api') {
-//        from "./src/api/java/thaumcraft/api/LICENSE.txt"
-//    }
-//    into('buildcraft/api') {
-//        from "./src/api/java/buildcraft/api/LICENSE.API"
-//    }
-
-    destinationDir = file(dirDest)
-    includeEmptyDirs = false
-
+jar {
     manifest {
-        attributes(
-                'FMLAT': 'railcraft_at.cfg'
-        )
+        attributes([
+        	"Implementation-Title": project.name,
+        	"Implementation-Version": project.version,
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": 'railcraft.mixins.json'
+        ])
     }
 }
 
-task devJar(type: Jar, dependsOn: 'classes') {
-    from sourceSets.main.output
-
-    extension = 'jar'
-    classifier = 'dev'
+mixin {
+	add sourceSets.main, "railcraft.refmap.json"
 }
 
-class JarSigner extends SignJar {
-    JarSigner() {
-        onlyIf {
-            project.hasProperty('signingPassword')
-        }
-
-        exclude '**/api/**'
-
-        // These properties are intended to be loaded from a "passwords.properties" file
-        if (project.hasProperty('signingAlias')) {
-            alias = project.signingAlias
-        }
-        if (project.hasProperty('signingPassword')) {
-            storePass = project.signingPassword
-            keyPass = project.signingPassword
-        }
-        if (project.hasProperty('signingKeystore')) {
-            keyStore = project.signingKeystore
-        } else {
-            keyStore = System.getProperty("user.home") + '/.keystore'
-        }
-    }
-}
-
-task signMainJar(type: JarSigner, dependsOn: 'jar') {
-    inputFile = jar.getArchivePath()
-    outputFile = jar.getArchivePath()
-}
-
-task signDevJar(type: JarSigner, dependsOn: 'devJar') {
-    inputFile = devJar.getArchivePath()
-    outputFile = devJar.getArchivePath()
-}
-
-task apiSourceJar(type: Jar) {
-    from sourceSets.api.java
-    include '**/mods/railcraft/api/**/*.java'
-    from project.dirApi + "/LICENSE.md"
-    include '**/LICENSE.md'
-    destinationDir = file(dirDest)
-    classifier = 'api-sources'
-    extension = 'jar'
-}
-
-task apiJar(type: Jar) {
-    from sourceSets.api.output
-    include '**/mods/railcraft/api/**'
-    from project.dirApi + "/LICENSE.md"
-    include '**/LICENSE.md'
-    destinationDir = file(dirDest)
-    classifier = 'api'
-    extension = 'jar'
-}
-
-build.dependsOn signMainJar, signDevJar, apiSourceJar, apiJar
-uploadArchives.shouldRunAfter build
-
-if (project.hasProperty("ftpUsername"))
-    uploadArchives {
-        repositories {
-            ivy {
-                url "sftp://ftp.railcraft.info:22/home2/railcraf/public_html/ivy"
-                credentials {
-                    username project.ftpUsername
-                    password project.ftpPassword
-                }
-                layout 'gradle'
-            }
-        }
-    }
-
-artifacts {
-    archives apiSourceJar
-    archives apiJar
-    archives devJar
-    archives jar
-}
+jar.finalizedBy('reobfJar') 

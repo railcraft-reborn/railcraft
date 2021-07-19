@@ -1,41 +1,34 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "railcraft:force_track_emitter"
-  },
   "variants": {
-    "inventory": [{"transform": "forge:default-block"}],
-    "powered": {
-      "true": {
-        "textures": {
-          "front": "railcraft:blocks/force_track_emitter_facing",
-          "side": "railcraft:blocks/force_track_emitter_side",
-          "colored_front": "railcraft:blocks/force_track_emitter_facing_colored",
-          "colored_side": "railcraft:blocks/force_track_emitter_side_colored",
-          "particle": "railcraft:blocks/force_track_emitter_side"
-        }
-      },
-      "false": {
-        "textures": {
-          "front": "railcraft:blocks/force_track_emitter_facing_unpowered",
-          "side": "railcraft:blocks/force_track_emitter_side_unpowered",
-          "colored_front": "railcraft:blocks/force_track_emitter_facing_unpowered_colored",
-          "colored_side": "railcraft:blocks/force_track_emitter_side_unpowered_colored",
-          "particle": "railcraft:blocks/force_track_emitter_side_unpowered"
-        }
-      }
+    "powered=true,facing=north": {
+      "model": "railcraft:block/force_track_emitter_powered"
     },
-    "facing": {
-      "north": {},
-      "south": {
-        "y": 180
-      },
-      "west": {
-        "y": 270
-      },
-      "east": {
-        "y": 90
-      }
+    "powered=false,facing=north": {
+      "model": "railcraft:block/force_track_emitter_unpowered"
+    },
+    "powered=true,facing=east": {
+      "model": "railcraft:block/force_track_emitter_powered",
+      "y": 90
+    },
+    "powered=false,facing=east": {
+      "model": "railcraft:block/force_track_emitter_unpowered",
+      "y": 90
+    },
+    "powered=true,facing=south": {
+      "model": "railcraft:block/force_track_emitter_powered",
+      "y": 180
+    },
+    "powered=false,facing=south": {
+      "model": "railcraft:block/force_track_emitter_unpowered",
+      "y": 180
+    },
+    "powered=true,facing=west": {
+      "model": "railcraft:block/force_track_emitter_powered",
+      "y": 270
+    },
+    "powered=false,facing=west": {
+      "model": "railcraft:block/force_track_emitter_unpowered",
+      "y": 270
     }
   }
 }

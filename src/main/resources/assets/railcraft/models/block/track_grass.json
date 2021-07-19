@@ -1,0 +1,6 @@
+{
+    "parent": "railcraft:block/tinted_cross_1",
+    "textures": {
+        "cross": "minecraft:block/tallgrass"
+    }
+}

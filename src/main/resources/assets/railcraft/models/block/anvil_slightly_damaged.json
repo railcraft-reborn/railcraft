@@ -1,8 +1,0 @@
-{
-  "parent": "block/anvil",
-  "textures": {
-    "particle": "railcraft:blocks/anvil_base",
-    "body": "railcraft:blocks/anvil_base",
-    "top": "railcraft:blocks/anvil_top_damaged_1"
-  }
-}

@@ -1,0 +1,34 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"particle": "railcraft:block/signal",
+		"texture": "railcraft:block/signal"
+	},
+	"elements": [
+		{
+			"from": [13, 7, 7],
+			"to": [16, 10, 9],
+			"faces": {
+				"north": {"uv": [0, 0, 3, 3], "texture": "#texture"},
+				"east": {"uv": [0, 0, 3, 3], "texture": "#texture"},
+				"south": {"uv": [0, 0, 3, 3], "texture": "#texture"},
+				"west": {"uv": [0, 0, 3, 3], "texture": "#texture"},
+				"up": {"uv": [0, 0, 3, 3], "texture": "#texture"},
+				"down": {"uv": [0, 0, 3, 3], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [13, 12, 7],
+			"to": [16, 15, 9],
+			"faces": {
+				"north": {"uv": [0, 0, 3, 3], "texture": "#texture"},
+				"east": {"uv": [0, 0, 3, 3], "texture": "#texture"},
+				"south": {"uv": [0, 0, 3, 3], "texture": "#texture"},
+				"west": {"uv": [0, 0, 3, 3], "texture": "#texture"},
+				"up": {"uv": [0, 0, 3, 3], "texture": "#texture"},
+				"down": {"uv": [0, 0, 3, 3], "texture": "#texture"}
+			}
+		}
+	]
+}

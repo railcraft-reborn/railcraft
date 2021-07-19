@@ -1,0 +1,16 @@
+{
+    "required": true,
+    "package": "mods.railcraft.mixin",
+    "compatibilityLevel": "JAVA_8",
+    "refmap": "railcraft.refmap.json",
+    "mixins": [
+        "AbstractMinecartEntityMixin",
+        "EntityMixin"
+    ],
+    "client": [
+
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

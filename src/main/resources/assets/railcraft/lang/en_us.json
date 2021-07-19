@@ -1,0 +1,47 @@
+{
+    "block.railcraft.reinforced_flex_track": "Reinforced Flex Track",
+    "block.railcraft.abandoned_flex_track": "Abandoned Flex Track",
+    "block.railcraft.electric_flex_track": "Electric Flex Track",
+    "block.railcraft.high_speed_flex_track": "High Speed Flex Track",
+    "block.railcraft.high_speed_electric_flex_track": "High Speed Electric Flex Track",
+    "block.railcraftt.elevator_track": "Elevator Track",
+
+    "entity.railcraft.creative_locomotive": "Creative Locomotive",
+    "entity.railcraft.steam_locomotive":"Steam Locomotive",
+    "entity.railcraft.electric_locomotive":"Electric Locomotive",
+
+    "item.railcraft.creative_locomotive": "Creative Locomotive",
+    "item.railcraft.steam_locomotive":"Steam Locomotive",
+    "item.railcraft.electric_locomotive":"Electric Locomotive",
+
+    "subtitle.railcraft.locomotive.steam.whistle":"Steam Locomotive Whistle",
+    "subtitle.railcraft.locomotive.electric.whistle":"Electric Locomotive Whistle",
+    "subtitle.railcraft.machine.steam_burst":"Machine Steam Burst",
+    "subtitle.railcraft.machine.steam_hiss":"Machine Steam Hiss",
+    "subtitle.railcraft.machine.zap":"Machine Zap",
+
+    "gui.locomotive.tips.slot.ticket":"Insert Ticket",
+    "message.link.broken":"Link Broken",
+    "message.link.created":"Link Created",
+    "message.link.failed":"Link Failed",
+    "message.link.started":"Link Started",
+    "gui.railcraft.filter":"Filter",
+    "item.railcraft.tool.crowbar.tips":"§oRight click while sneaking to link carts",
+    "item.railcraft.firestone.empty":"Its energies controlled,\n it could be useful\n if you could recharge it...",
+    "item.railcraft.firestone.charged":"Filled with energy,\n you need only exert\n your will on it to\n release blistering heat...",
+    "gui.railcraft.routing.ticket.tips.issuer":"Issuer:",
+    "gui.railcraft.routing.ticket.tips.dest":"Destination:",
+    "gui.railcraft.routing.ticket.tips.blank":"Blank Ticket",
+
+    "gui.railcraft.locomotive.steam.tips.button.mode.idle":"Locomotive reduces fuel\n usage, but retains its heat.\n If the train is held by a track,\n it behaves as if Idle.",
+    "gui.railcraft.locomotive.steam.tips.button.mode.running":"Makes the locomotive move.",
+    "gui.railcraft.locomotive.steam.tips.button.mode.shutdown":"Shuts off the Locomotive.\n Halts all movement and\n begins the cool-down process.\n This can take some time.",
+
+    "gui.railcraft.locomotive.tips.button.locked":"This cart is locked to\n %s.\n It will only accept Tickets\n issued by them or an operator.",
+    "gui.railcraft.locomotive.tips.button.unlocked":"Click to lock locomotive.\n Once locked, it will\n only accept Tickets\n issued by you or an operator.",
+    "gui.railcraft.locomotive.tips.button.private":"This cart is private to\n %s.\n It can only be controlled\n by them or an operator.",
+
+    "gui.railcraft.locomotive.mode.shutdown":"Shutdown",
+    "gui.railcraft.locomotive.mode.running":"Running",
+    "gui.railcraft.locomotive.mode.idle":"Idle"
+}

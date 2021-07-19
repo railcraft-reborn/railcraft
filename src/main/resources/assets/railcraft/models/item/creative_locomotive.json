@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "railcraft:item/electric_locomotive_layer0",
+    "layer1": "railcraft:item/electric_locomotive_layer1"
+  }
+}

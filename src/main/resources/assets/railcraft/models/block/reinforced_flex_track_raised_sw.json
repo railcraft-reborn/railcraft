@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:block/rail_raised_sw",
+    "textures": {
+        "rail": "railcraft:block/reinforced_flex_track_flat"
+    }
+}

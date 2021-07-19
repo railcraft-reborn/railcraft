@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/switch_track_actuator_flag_neutral",
+  "textures": {
+    "texture": "railcraft:block/switch_track_actuator_flag_red"
+  }
+}

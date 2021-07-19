@@ -1,0 +1,21 @@
+license = "MIT"
+loaderVersion = "[27,)"
+modLoader = "javafml"
+
+[[mods]]
+authors = "CovertJaguar, Sm0keySa1m0n"
+credits = "Created by CovertJaguar"
+description = '''
+    Redefine your rails
+    '''
+displayName = "Railcraft"
+displayURL = "railcraft.info"
+modId = "railcraft"
+version = "${file.jarVersion}"
+
+[[dependencies.railcraft]]
+mandatory = true
+modId = "forge"
+ordering = "NONE"
+side = "BOTH"
+versionRange = "[36.1.0,)"

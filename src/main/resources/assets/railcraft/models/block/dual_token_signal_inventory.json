@@ -1,0 +1,7 @@
+{
+    "parent": "railcraft:block/dual_signal_inventory",
+    "textures": {
+        "top_lamp": "railcraft:entity/signal/green_aspect",
+        "bottom_lamp": "railcraft:entity/signal/yellow_aspect"
+    }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "railcraft:item/signal_block_surveyor"
+  }
+}
