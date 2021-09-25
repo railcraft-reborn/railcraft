@@ -1,6 +1,5 @@
-#
-# https://help.github.com/articles/dealing-with-line-endings/
-#
-# These are explicitly windows files and should use crlf
-*.bat           text eol=crlf
-
+# Disable autocrlf on generated files, they always generate with LF
+# Add any extra files or paths here to make git stop saying they
+# are changed when only line endings change.
+src/generated/**/.cache/cache text eol=lf
+src/generated/**/*.json text eol=lf

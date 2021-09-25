@@ -1,83 +1,84 @@
 buildscript {
-    repositories {
-        maven {
-            name 'forge'
-            url = 'https://maven.minecraftforge.net/'
-        }
-        maven {
-            name 'sponge'
-            url 'https://repo.spongepowered.org/repository/maven-public/'
-        }
-        mavenCentral()
+  repositories {
+    maven { url = 'https://files.minecraftforge.net/maven' }
+    maven {
+      name = 'sponge'
+      url = 'https://repo.spongepowered.org/repository/maven-public/'
     }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-    }
+    mavenCentral()
+  }
+  dependencies {
+    classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+    classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+  }
 }
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.0.1-alpha'
+// does in fact follow the semantic versioning. (GAMEVER)-(MODMAJOR.MODMINOR.MODPATCH)
+version = "${project.minecraft_version}-${project.version}"
 group = 'mods.railcraft'
 archivesBaseName = 'railcraft'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+println('')
+println('*************************************************************')
+println('Project Version: ' + version)
+println('Java: ' + System.getProperty('java.version'))
+println('JVM: ' + System.getProperty('java.vm.version'))
+println('*************************************************************')
+println('')
+
 minecraft {
-    mappings channel: 'official', version: "${minecraft_version}"
+  mappings channel: 'official', version: "${project.minecraft_version}"
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+  accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    runs {
-        client {
-            workingDirectory project.file('run/client')
+  runs {
+    client {
+      workingDirectory project.file('run/client')
+      property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+      property 'forge.logging.console.level', 'debug'
 
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            
-            args '--mixin', 'railcraft.mixins.json'
+      args '--mixin', 'railcraft.mixins.json'
 
-            mods {
-                railcraft {
-                    source sourceSets.main
-                }
-            }
+      mods {
+        railcraft {
+          source sourceSets.main
         }
-
-        server {
-            workingDirectory project.file('run/server')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mixin', 'railcraft.mixins.json'
-
-            mods {
-                railcraft {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run/data')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                railcraft {
-                    source sourceSets.main
-                }
-            }
-        }
+      }
     }
+
+    server {
+      workingDirectory project.file('run/server')
+      property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+      property 'forge.logging.console.level', 'debug'
+      args '--mixin', 'railcraft.mixins.json'
+
+      mods {
+        railcraft {
+          source sourceSets.main
+        }
+      }
+    }
+
+    data {
+      workingDirectory project.file('run/data')
+      property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+      property 'forge.logging.console.level', 'debug'
+      args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+      mods {
+        railcraft {
+          source sourceSets.main
+        }
+      }
+    }
+  }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -90,25 +91,29 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name:'forge', version: "${minecraft_version}-${forge_version}"
-    implementation group: 'org.spongepowered', name: 'mixin', version: "${mixin_version}"
-    annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
-    testAnnotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    implementation group: 'org.spongepowered', name: 'mixin', version: "${project.mixin_version}"
+    annotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
+    testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
 }
 
 jar {
-    manifest {
-        attributes([
-        	"Implementation-Title": project.name,
-        	"Implementation-Version": project.version,
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": 'railcraft.mixins.json'
-        ])
-    }
+  manifest {
+    attributes([
+      "Specification-Title": project.name,
+      "Specification-Vendor": "VENDOR",
+      "Specification-Version": "1", // We are version 1 of ourselves
+      "Implementation-Title": project.name,
+      "Implementation-Version": version,
+      "Implementation-Vendor" :"VENDOR",
+      "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+      "MixinConfigs": 'railcraft.mixins.json'
+    ])
+  }
 }
 
 mixin {
 	add sourceSets.main, "railcraft.refmap.json"
 }
 
-jar.finalizedBy('reobfJar') 
+jar.finalizedBy('reobfJar')
