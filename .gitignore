@@ -1,8 +1,30 @@
-.gradle
-.settings
+# eclipse
 bin
-build
-run
+*.launch
+.settings
+.metadata
 .classpath
 .project
-*.launch
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle/
+gradle/
+!gradle/wrapper
+
+# other
+eclipse
+run
+
+# Files from Forge MDK
+forge*changelog.txt
+
+# VScode
+.vscode
