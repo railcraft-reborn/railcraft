@@ -1,15 +1,20 @@
 buildscript {
-    repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        mavenCentral()
+  repositories {
+    maven { url = 'https://files.minecraftforge.net/maven' }\
+    maven {
+      name = 'sponge'
+      url = 'https://repo.spongepowered.org/repository/maven-public/'
     }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
-    }
+    mavenCentral()
+  }
+  dependencies {
+    classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+    classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+  }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-// apply plugin: 'org.spongepowered.mixin' // Tested, not needed but leaving it here for reference
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
@@ -29,100 +34,86 @@ println('*************************************************************')
 println('')
 
 minecraft {
-    mappings channel: 'official', version: "${project.minecraft_version}"
-    // TODO: check if we need to transform stuff.
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+  mappings channel: 'official', version: "${project.minecraft_version}"
 
-    runs {
-        client {
-            workingDirectory project.file('run/client')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
+  accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-            // args '--mixin', 'railcraft.mixins.json'
+  runs {
+    client {
+      workingDirectory project.file('run/client')
+      property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+      property 'forge.logging.console.level', 'debug'
 
-            mods {
-                railcraft {
-                    source sourceSets.main
-                }
-            }
+      args '--mixin', 'railcraft.mixins.json'
+
+      mods {
+        railcraft {
+          source sourceSets.main
         }
-
-        server {
-            workingDirectory project.file('run/server')
-
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-
-            // args '--mixin', 'railcraft.mixins.json'
-
-            mods {
-                railcraft {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run/data')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            mods {
-                railcraft {
-                    source sourceSets.main
-                }
-            }
-        }
+      }
     }
+
+    server {
+      workingDirectory project.file('run/server')
+      property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+      property 'forge.logging.console.level', 'debug'
+      args '--mixin', 'railcraft.mixins.json'
+
+      mods {
+        railcraft {
+          source sourceSets.main
+        }
+      }
+    }
+
+    data {
+      workingDirectory project.file('run/data')
+      property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+      property 'forge.logging.console.level', 'debug'
+      args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+      mods {
+        railcraft {
+          source sourceSets.main
+        }
+      }
+    }
+  }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-// repositories {
-//     maven {
-//         name 'sponge'
-//         url 'https://repo.spongepowered.org/repository/maven-public/'
-//     }
-// }
+repositories {
+    maven {
+        name 'sponge'
+        url 'https://repo.spongepowered.org/repository/maven-public/'
+    }
+}
 
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
-    // implementation group: 'org.spongepowered', name: 'mixin', version: "${mixin_version}"
-    // annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
-    // testAnnotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
+    implementation group: 'org.spongepowered', name: 'mixin', version: "${project.mixin_version}"
+    annotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
+    testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
 }
 
 jar {
-    manifest {
-        attributes([
-            "Specification-Title": "railcraft",
-            "Specification-Vendor": "VENDOR",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": "railcraft",
-            "Implementation-Version": version,
-            "Implementation-Vendor" :"VENDOR",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": 'railcraft.mixins.json'
-        ])
-    }
+  manifest {
+    attributes([
+      "Specification-Title": project.name,
+      "Specification-Vendor": "VENDOR",
+      "Specification-Version": "1", // We are version 1 of ourselves
+      "Implementation-Title": project.name,
+      "Implementation-Version": version,
+      "Implementation-Vendor" :"VENDOR",
+      "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+      "MixinConfigs": 'railcraft.mixins.json'
+    ])
+  }
 }
 
-// mixin {
-// 	add sourceSets.main, "railcraft.refmap.json"
-// }
+mixin {
+	add sourceSets.main, "railcraft.refmap.json"
+}
 
 jar.finalizedBy('reobfJar')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
-    }
-}
