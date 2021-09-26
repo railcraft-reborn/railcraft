@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.Property;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.tileentity.TileEntity;
@@ -21,15 +22,16 @@ import net.minecraft.world.World;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public final class ForceTrackBlock extends TrackBlock {
+  public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE_STRAIGHT;
 
   public ForceTrackBlock(Properties properties) {
     super(TrackTypes.HIGH_SPEED, properties);
-    this.registerDefaultState(this.stateDefinition.any().setValue(BlockStateProperties.RAIL_SHAPE_STRAIGHT, RailShape.NORTH_SOUTH));
+    this.registerDefaultState(this.stateDefinition.any().setValue(SHAPE, RailShape.NORTH_SOUTH));
   }
 
   @Override
   public Property<RailShape> getShapeProperty() {
-    return BlockStateProperties.RAIL_SHAPE_STRAIGHT; // let's not reinvent the wheel.
+    return SHAPE; // let's not reinvent the wheel.
   }
 
   @Override
