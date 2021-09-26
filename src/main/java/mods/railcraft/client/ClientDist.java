@@ -7,6 +7,7 @@ import mods.railcraft.api.signals.SignalAspect;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
+import mods.railcraft.client.particle.ParticleSteam;
 import mods.railcraft.client.particle.RailcraftParticles;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
@@ -30,6 +31,7 @@ import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.inventory.container.PlayerContainer;
@@ -55,6 +57,7 @@ public class ClientDist implements IRailcraftDist {
 
   public static final ClientConfig clientConfig;
   public static final ForgeConfigSpec clientConfigSpec;
+  private static final ParticleManager particleEngine = Minecraft.getInstance().particleEngine;
 
   static {
     final Pair<ClientConfig, ForgeConfigSpec> clientConfigPair =
@@ -212,6 +215,6 @@ public class ClientDist implements IRailcraftDist {
 
   @SubscribeEvent
   public void particleRegistration(ParticleFactoryRegisterEvent event) {
-    RailcraftParticles.register();
+    particleEngine.register(RailcraftParticles.STEAM.get(), ParticleSteam.Factory::new);
   }
 }
