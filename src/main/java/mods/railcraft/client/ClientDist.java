@@ -215,6 +215,6 @@ public class ClientDist implements IRailcraftDist {
 
   @SubscribeEvent
   public void particleRegistration(ParticleFactoryRegisterEvent event) {
-    particleEngine.register(RailcraftParticles.STEAM.get(), ParticleSteam.Factory::new);
+    // particleEngine.register(RailcraftParticles.STEAM.get(), ParticleSteam.Factory::new);
   }
 }
