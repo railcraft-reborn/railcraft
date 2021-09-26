@@ -266,7 +266,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> DIAMOND_CROWBAR =
     ITEMS.register("diamond_crowbar",
-      () -> new CrowbarItem(2.5F, -2.4F, ItemTier.IRON,
+      () -> new CrowbarItem(2.5F, -2.4F, ItemTier.DIAMOND,
         new Item.Properties().tab(TAB_RAILCRAFT)));
 
   public static final RegistryObject<Item> SEASONS_CROWBAR =

@@ -89,8 +89,8 @@ public enum SpeedController {
         BlockPos pos) {
       RailShape dir = TrackTools.getTrackDirection(world, pos, cart);
       if (TrackShapeHelper.isTurn(dir) || TrackShapeHelper.isAscending(dir))
-        return 0.4d;
-      return 0.44d; // 0.4f vanilla, this gets 10% more so 1.1*(ourspeed)
+        return 0.4D;
+      return 0.44D; // 0.4f vanilla, this gets 10% more so 1.1*(ourspeed)
     }
   },
 
@@ -116,6 +116,6 @@ public enum SpeedController {
    * @return The max speed of the current rail.
    */
   public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
-    return 0.4d;
+    return 0.4D;
   }
 }

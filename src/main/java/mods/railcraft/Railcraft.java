@@ -91,6 +91,7 @@ public class Railcraft {
     RailcraftMenuTypes.MENU_TYPES.register(modEventBus);
     RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);
     RailcraftEnchantments.ENCHANTMENTS.register(modEventBus);
+    RailcraftParticles.PARTICLE.register(modEventBus);
   }
 
   public LinkageHandler getLinkageHandler() {
@@ -138,6 +139,6 @@ public class Railcraft {
 
   @SubscribeEvent
   public void particleRegistration(ParticleFactoryRegisterEvent event) {
-    RailcraftParticles.register(FMLJavaModLoadingContext.get().getModEventBus());
+    RailcraftParticles.register();
   }
 }

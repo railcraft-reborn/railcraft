@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -16,11 +15,10 @@ import net.minecraftforge.registries.ForgeRegistries;
  */
 public class RailcraftParticles {
   private static final ParticleManager PARTICLE_ENGINE = Minecraft.getInstance().particleEngine;
-  private static final DeferredRegister<ParticleType<?>> PARTICLE =
+  public static final DeferredRegister<ParticleType<?>> PARTICLE =
     DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Railcraft.ID);
 
-  public static final void register(IEventBus bus) {
-    PARTICLE.register(bus);
+  public static final void register() {
     PARTICLE_ENGINE.register(STEAM.get(), ParticleSteam.Factory::new);
   }
 

@@ -164,7 +164,7 @@ public class TrackBlock extends AbstractRailBlock implements IBlockTrack {
     return TrackSupportTools.isSupportedDirectly(world, pos);
   }
 
-  @Override // this is about to be depricated, we need to do our own "canSurvive"
+  @Override
   public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
     if (TrackToolsAPI.isRailBlockAt(world, pos.above())
       || TrackToolsAPI.isRailBlockAt(world, pos.below()))

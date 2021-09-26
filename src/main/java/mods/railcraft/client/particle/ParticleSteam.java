@@ -7,10 +7,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.api.distmarker.Dist;
 
-@OnlyIn(Dist.CLIENT)
 public class ParticleSteam extends SmokeParticle {
 
   public ParticleSteam(ClientWorld world, double x, double y, double z, double dx, double dy,
