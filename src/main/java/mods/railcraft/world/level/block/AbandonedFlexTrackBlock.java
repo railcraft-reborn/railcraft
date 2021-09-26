@@ -25,8 +25,8 @@ public class AbandonedFlexTrackBlock extends TrackBlock {
   public AbandonedFlexTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
     this.registerDefaultState(this.stateDefinition.any()
-        .setValue(GRASS, false)
-        .setValue(RailBlock.SHAPE, RailShape.NORTH_SOUTH));
+      .setValue(GRASS, false)
+      .setValue(RailBlock.SHAPE, RailShape.NORTH_SOUTH));
   }
 
   @Override

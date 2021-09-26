@@ -13,6 +13,7 @@ public abstract class ParticleBaseSmokeShrinking extends ParticleBaseSmoke {
   @Override
   public float getQuadSize(float partialTicks) {
     return this.quadSize * MathHelper.clamp(
-        ((float) this.age + partialTicks) / (float) this.lifetime * 32.0F, 0.0F, 1.0F);
+        (this.age + partialTicks) / this.lifetime * 32.0F, 0.0F, 1.0F);
   }
 }
+

@@ -5,6 +5,7 @@ import mods.railcraft.api.events.CartLinkEvent;
 import mods.railcraft.api.signals.SignalTools;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
+import mods.railcraft.client.particle.RailcraftParticles;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.PacketBuilder;
@@ -25,6 +26,7 @@ import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -80,9 +82,9 @@ public class Railcraft {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     RailcraftEntityTypes.ENTITY_TYPES.register(modEventBus);
+    RailcraftBlocks.BLOCKS.register(modEventBus);
     RailcraftItems.ITEMS.register(modEventBus);
     RailcraftBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
-    RailcraftBlocks.BLOCKS.register(modEventBus);
     TrackTypes.TRACK_TYPES.register(modEventBus);
     TrackKits.TRACK_KITS.register(modEventBus);
     RailcraftFluids.FLUIDS.register(modEventBus);
@@ -132,5 +134,10 @@ public class Railcraft {
     Hand hand = event.getHand();
     event.setCanceled(this.minecartHandler.handleInteract(cart, player));
     event.setCanceled(this.crowbarHandler.handleInteract(cart, player, hand));
+  }
+
+  @SubscribeEvent
+  public void particleRegistration(ParticleFactoryRegisterEvent event) {
+    RailcraftParticles.register(FMLJavaModLoadingContext.get().getModEventBus());
   }
 }

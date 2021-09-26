@@ -4,6 +4,9 @@ import java.util.Random;
 import mods.railcraft.client.ClientEffects;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -41,40 +44,48 @@ public class MagicOreBlock extends Block {
     }
   }
 
+  @OnlyIn(Dist.CLIENT) // anything particle related is clientside only.
   private void spawnBurningFaceParticles(World worldIn, BlockPos pos) {
     Random random = worldIn.getRandom();
     double pixel = 0.0625D;
 
     BlockState state = worldIn.getBlockState(pos);
 
-    for (Direction facing : Direction.values()) {
-      if (!Block.shouldRenderFace(state, worldIn, pos, facing))
-        continue;
+  for (Direction facing : Direction.values()) {
+    if (!Block.shouldRenderFace(state, worldIn, pos, facing))
+          continue;
 
       double px = pos.getX();
       double py = pos.getY();
       double pz = pos.getZ();
+      double positiveAxis = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) ? 1.0 : 0.0;
 
       if (facing.getAxis() == Direction.Axis.X)
-        px += pixel * facing.getStepX()
-            + (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1.0 : 0.0);
+        px += pixel * facing.getStepX() + positiveAxis;
       else
         px += random.nextFloat();
 
       if (facing.getAxis() == Direction.Axis.Y)
-        py += pixel * facing.getStepY()
-            + (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1.0 : 0.0);
+        py += pixel * facing.getStepY() + positiveAxis;
       else
         py += random.nextFloat();
 
       if (facing.getAxis() == Direction.Axis.Z)
-        pz += pixel * facing.getStepZ()
-            + (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1.0 : 0.0);
+        pz += pixel * facing.getStepZ() + positiveAxis;
       else
         pz += random.nextFloat();
 
-      // worldIn.spawnParticle(EnumParticleTypes.FLAME, px, py, pz, 0.0D, 0.0D, 0.0D);
-      // worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, px, py, pz, 0.0D, 0.0D, 0.0D);
+      ParticleManager particleEngine = Minecraft.getInstance().particleEngine;
+      // flame particle
+      particleEngine.add(
+        particleEngine.createParticle(
+          ParticleTypes.FLAME, px, py, pz, 0.0D, 0.0D, 0.0D
+        ));
+      // smoke_normal particle
+      particleEngine.add(
+        particleEngine.createParticle(
+          ParticleTypes.SMOKE, px, py, pz, 0.0D, 0.0D, 0.0D
+        ));
     }
   }
 }
