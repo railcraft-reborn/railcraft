@@ -5,6 +5,7 @@ import mods.railcraft.api.events.CartLinkEvent;
 import mods.railcraft.api.signals.SignalTools;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
+import mods.railcraft.client.particle.RailcraftParticles;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.PacketBuilder;
@@ -80,15 +81,16 @@ public class Railcraft {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     RailcraftEntityTypes.ENTITY_TYPES.register(modEventBus);
+    RailcraftBlocks.BLOCKS.register(modEventBus);
     RailcraftItems.ITEMS.register(modEventBus);
     RailcraftBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
-    RailcraftBlocks.BLOCKS.register(modEventBus);
     TrackTypes.TRACK_TYPES.register(modEventBus);
     TrackKits.TRACK_KITS.register(modEventBus);
     RailcraftFluids.FLUIDS.register(modEventBus);
     RailcraftMenuTypes.MENU_TYPES.register(modEventBus);
     RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);
     RailcraftEnchantments.ENCHANTMENTS.register(modEventBus);
+    RailcraftParticles.PARTICLE.register(modEventBus);
   }
 
   public LinkageHandler getLinkageHandler() {

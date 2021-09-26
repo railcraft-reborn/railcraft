@@ -22,11 +22,11 @@ import net.minecraft.world.World;
  */
 public enum SpeedController {
 
-  IRON,
+  IRON, // 0.4 vanilla
   ABANDONED {
     @Override
     public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
-      return 0.499D;
+      return 0.36D; // vanilla is 0.4f, this track is ""broken"" so you only get 90% of the vanilla speed
     }
 
     private boolean isDerailing(
@@ -65,6 +65,7 @@ public enum SpeedController {
       return null;
     }
   },
+
   HIGH_SPEED {
     @Override
     public void onMinecartPass(World world, AbstractMinecartEntity cart, BlockPos pos,
@@ -81,19 +82,18 @@ public enum SpeedController {
       return HighSpeedTools.speedForNextTrack(world, pos, 0, cart);
     }
   },
-  REINFORCED {
-    public static final float MAX_SPEED = 0.499f;
-    public static final float CORNER_SPEED = 0.4f;
 
+  REINFORCED {
     @Override
     public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart,
         BlockPos pos) {
       RailShape dir = TrackTools.getTrackDirection(world, pos, cart);
       if (TrackShapeHelper.isTurn(dir) || TrackShapeHelper.isAscending(dir))
-        return CORNER_SPEED;
-      return MAX_SPEED;
+        return 0.4D;
+      return 0.44D; // 0.4f vanilla, this gets 10% more so 1.1*(ourspeed)
     }
   },
+
   STRAP_IRON {
     @Override
     public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
@@ -108,7 +108,13 @@ public enum SpeedController {
       BlockPos pos, BlockState state, @Nullable AbstractMinecartEntity cart) {
     return null;
   }
-
+  /**
+   * Returns the max speed of the rail at the specified position.
+   * @param world The world.
+   * @param cart The cart on the rail, may be null.
+   * @param pos Block's position in world
+   * @return The max speed of the current rail.
+   */
   public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
     return 0.4D;
   }

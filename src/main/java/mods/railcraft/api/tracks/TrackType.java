@@ -130,8 +130,19 @@ public class TrackType extends ForgeRegistryEntry<TrackType>
     }
   }
 
+  /**
+   * Event handler for tracks
+   * @see mods.railcraft.world.level.block.track.TrackTypes.Handler TrackTypes Handler
+   */
   public static class EventHandler {
 
+    /**
+     * Invokes after a minecart has passed over us
+     * @param worldIn The world.
+     * @param cart The minecart entity that passed us.
+     * @param pos Our position in the world
+     * @param trackKit Track kit installed on us, if any.
+     */
     public void onMinecartPass(World worldIn, AbstractMinecartEntity cart, BlockPos pos,
         @Nullable TrackKit trackKit) {}
 
@@ -140,10 +151,26 @@ public class TrackType extends ForgeRegistryEntry<TrackType>
       return null;
     }
 
+    /**
+     * Event handler for when a mob collides with us over (this) rail
+     * @see mods.railcraft.world.level.block.track.behaivor.CollisionHandler CollisionHandler
+     * @param world The world.
+     * @param pos Block's position in world
+     * @param state The state of the track
+     * @param entity Entity colliding with us
+     */
     public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {}
 
+    /**
+     * Returns the max speed of the rail at the specified position.
+     * @see mods.railcraft.world.level.block.track.behaivor.SpeedController SpeedController
+     * @param world The world.
+     * @param cart The cart on the rail, may be null.
+     * @param pos Block's position in world
+     * @return The max speed of the current rail.
+     */
     public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
-      return 0.4D;
+      return 0.4d;
     }
   }
 }

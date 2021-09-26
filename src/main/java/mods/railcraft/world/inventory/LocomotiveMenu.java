@@ -31,7 +31,7 @@ public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
     SlotRailcraft slotTicket = new SlotStackFilter(ItemTicket.FILTER, locomotive,
         locomotive.getContainerSize() - 2, 116, guiHeight - 111).setStackLimit(1);
     slotTicket.setTooltip(
-        Collections.singletonList(new TranslationTextComponent("gui.locomotive.tips.slot.ticket")));
+        Collections.singletonList(new TranslationTextComponent("gui.railcraft.locomotive.tips.slot.ticket")));
     this.addSlot(slotTicket);
     // TODO: make some way to clear this?
     this.addSlot(

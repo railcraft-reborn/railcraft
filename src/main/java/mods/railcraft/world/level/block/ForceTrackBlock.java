@@ -1,17 +1,14 @@
 package mods.railcraft.world.level.block;
 
-import java.util.Collections;
-import java.util.List;
 import mods.railcraft.world.level.block.entity.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.state.EnumProperty;
 import net.minecraft.state.Property;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -25,17 +22,16 @@ import net.minecraft.world.World;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public final class ForceTrackBlock extends TrackBlock {
-
-  public static final EnumProperty<RailShape> SHAPE =
-      EnumProperty.create("shape", RailShape.class, RailShape.NORTH_SOUTH, RailShape.EAST_WEST);
+  public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE_STRAIGHT;
 
   public ForceTrackBlock(Properties properties) {
     super(TrackTypes.HIGH_SPEED, properties);
+    this.registerDefaultState(this.stateDefinition.any().setValue(SHAPE, RailShape.NORTH_SOUTH));
   }
 
   @Override
   public Property<RailShape> getShapeProperty() {
-    return SHAPE;
+    return SHAPE; // let's not reinvent the wheel.
   }
 
   @Override
@@ -52,11 +48,6 @@ public final class ForceTrackBlock extends TrackBlock {
   @Override
   public boolean isFlexibleRail(BlockState state, IBlockReader world, BlockPos pos) {
     return false;
-  }
-
-  @Override
-  public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-    return Collections.emptyList();
   }
 
   @Override
