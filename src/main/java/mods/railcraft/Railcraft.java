@@ -26,7 +26,6 @@ import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -135,10 +134,5 @@ public class Railcraft {
     Hand hand = event.getHand();
     event.setCanceled(this.minecartHandler.handleInteract(cart, player));
     event.setCanceled(this.crowbarHandler.handleInteract(cart, player, hand));
-  }
-
-  @SubscribeEvent
-  public void particleRegistration(ParticleFactoryRegisterEvent event) {
-    RailcraftParticles.register();
   }
 }

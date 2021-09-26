@@ -7,6 +7,7 @@ import mods.railcraft.api.signals.SignalAspect;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
+import mods.railcraft.client.particle.RailcraftParticles;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
 import mods.railcraft.client.renderer.blockentity.DualSignalRenderer;
@@ -36,6 +37,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -206,5 +208,10 @@ public class ClientDist implements IRailcraftDist {
       default:
         break;
     }
+  }
+
+  @SubscribeEvent
+  public void particleRegistration(ParticleFactoryRegisterEvent event) {
+    RailcraftParticles.register();
   }
 }
