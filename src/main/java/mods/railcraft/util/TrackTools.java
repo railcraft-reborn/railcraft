@@ -7,13 +7,9 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import mods.railcraft.api.items.ITrackItem;
-import mods.railcraft.api.tracks.IBlockTrack;
-import mods.railcraft.api.tracks.ITrackKitInstance;
-import mods.railcraft.api.tracks.TrackKit;
+import mods.railcraft.api.tracks.TrackTypeProvider;
 import mods.railcraft.api.tracks.TrackToolsAPI;
 import mods.railcraft.api.tracks.TrackType;
-import mods.railcraft.world.level.block.OutfittedTrackBlock;
-import mods.railcraft.world.level.block.entity.OutfittedTrackBlockEntity;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
@@ -25,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.Property;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.BlockPos;
@@ -110,49 +105,10 @@ public final class TrackTools {
   }
 
   public static TrackType getTrackTypeAt(IBlockReader world, BlockPos pos, BlockState state) {
-    if (state.getBlock() instanceof IBlockTrack) {
-      return ((IBlockTrack) state.getBlock()).getTrackType();
+    if (state.getBlock() instanceof TrackTypeProvider) {
+      return ((TrackTypeProvider) state.getBlock()).getTrackType();
     }
     return TrackTypes.IRON.get();
-  }
-
-  public static @Nullable TrackKit getTrackKitAt(IBlockReader world, BlockPos pos) {
-    BlockState state = world.getBlockState(pos);
-    if (state.getBlock() instanceof OutfittedTrackBlock) {
-      return ((OutfittedTrackBlock) state.getBlock()).getTrackKit();
-    }
-    return null;
-  }
-
-  public static <T extends ITrackKitInstance> boolean isTrackInstanceAt(IBlockReader world,
-      BlockPos pos, Class<T> instanceClass) {
-    TileEntity tile = world.getBlockEntity(pos);
-    if (tile instanceof OutfittedTrackBlockEntity) {
-      ITrackKitInstance trackInstance = ((OutfittedTrackBlockEntity) tile).getTrackKitInstance();
-      return instanceClass.isAssignableFrom(trackInstance.getClass());
-    }
-    return false;
-  }
-
-  public static @Nullable <T extends ITrackKitInstance> T getTrackInstance(IBlockReader world,
-      BlockPos pos, Class<T> instanceClass) {
-    TileEntity tile = world.getBlockEntity(pos);
-    if (tile instanceof OutfittedTrackBlockEntity) {
-      ITrackKitInstance trackInstance = ((OutfittedTrackBlockEntity) tile).getTrackKitInstance();
-      if (instanceClass.isAssignableFrom(trackInstance.getClass()))
-        return instanceClass.cast(trackInstance);
-    }
-    return null;
-  }
-
-  public static @Nullable <T extends ITrackKitInstance> T getTrackInstance(
-      @Nullable TileEntity tile, Class<T> instanceClass) {
-    if (tile instanceof OutfittedTrackBlockEntity) {
-      ITrackKitInstance trackInstance = ((OutfittedTrackBlockEntity) tile).getTrackKitInstance();
-      if (instanceClass.isAssignableFrom(trackInstance.getClass()))
-        return instanceClass.cast(trackInstance);
-    }
-    return null;
   }
 
   // public static boolean isTrackAt(IBlockReader world, BlockPos pos, TrackKits track, Block block)

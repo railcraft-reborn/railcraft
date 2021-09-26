@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 public class ItemFirestone extends Item {
 
   public static final Predicate<ItemStack> SPAWNS_FIRE = stack -> {
-    if (InvTools.isEmpty(stack))
+    if (stack.isEmpty())
       return false;
     if (RailcraftItems.RAW_FIRESTONE.get() == stack.getItem())
       return true;
@@ -35,7 +35,7 @@ public class ItemFirestone extends Item {
       return true;
     return InvTools.isStackEqualToBlock(stack, RailcraftBlocks.FIRESTONE.get());
   };
-  
+
   public ItemFirestone(Properties properties) {
     super(properties);
   }
@@ -88,17 +88,18 @@ public class ItemFirestone extends Item {
     return entity;
   }
 
-  public static boolean trySpawnFire(World world, BlockPos pos, @Nullable ItemStack stack,
-      @Nullable PlayerEntity holder) {
-    if (InvTools.isEmpty(stack) || !SPAWNS_FIRE.test(stack))
+  public static boolean trySpawnFire(World world, BlockPos pos, ItemStack stack,
+      PlayerEntity holder) {
+    if (stack.isEmpty() || !SPAWNS_FIRE.test(stack))
       return false;
     boolean spawnedFire = false;
-    for (int i = 0; i < InvTools.sizeOf(stack); i++) {
+    for (int i = 0; i < stack.getCount(); i++) {
       spawnedFire |= spawnFire(world, pos, holder);
     }
     if (spawnedFire && stack.isDamageableItem()
         && stack.getDamageValue() < stack.getMaxDamage() - 1)
-      InvTools.damageItem(stack, 1);
+      stack.hurtAndBreak(1, holder, __ -> {
+      });
     return spawnedFire;
   }
 

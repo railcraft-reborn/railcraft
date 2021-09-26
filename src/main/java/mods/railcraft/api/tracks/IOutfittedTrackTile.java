@@ -17,9 +17,7 @@ import com.mojang.authlib.GameProfile;
  */
 public interface IOutfittedTrackTile {
 
-  default TrackType getTrackType() {
-    return this.getTrackKitInstance().getTrackType();
-  }
+  TrackType getTrackType();
 
   ITrackKitInstance getTrackKitInstance();
 

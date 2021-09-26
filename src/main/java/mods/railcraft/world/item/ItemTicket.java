@@ -80,11 +80,11 @@ public class ItemTicket extends Item {
   }
 
   public static ItemStack copyTicket(ItemStack source) {
-    if (InvTools.isEmpty(source))
+    if (source.isEmpty())
       return ItemStack.EMPTY;
     if (source.getItem() instanceof ItemTicket) {
       ItemStack ticket = RailcraftItems.TICKET.get().getDefaultInstance();
-      if (InvTools.isEmpty(ticket))
+      if (ticket.isEmpty())
         return ItemStack.EMPTY;
       CompoundNBT nbt = source.getTag();
       if (nbt != null)
@@ -96,7 +96,7 @@ public class ItemTicket extends Item {
 
   public static boolean setTicketData(ItemStack ticket, String dest, String title,
       @Nullable GameProfile owner) {
-    if (InvTools.isEmpty(ticket) || !(ticket.getItem() instanceof ItemTicket))
+    if (ticket.isEmpty() || !(ticket.getItem() instanceof ItemTicket))
       return false;
     if (dest.length() > LINE_LENGTH)
       return false;
@@ -110,7 +110,7 @@ public class ItemTicket extends Item {
   }
 
   public static String getDestination(ItemStack ticket) {
-    if (InvTools.isEmpty(ticket) || !(ticket.getItem() instanceof ItemTicket))
+    if (ticket.isEmpty() || !(ticket.getItem() instanceof ItemTicket))
       return "";
     CompoundNBT nbt = ticket.getTag();
     if (nbt == null)
@@ -124,7 +124,7 @@ public class ItemTicket extends Item {
   }
 
   public static GameProfile getOwner(ItemStack ticket) {
-    if (InvTools.isEmpty(ticket) || !(ticket.getItem() instanceof ItemTicket))
+    if (ticket.isEmpty() || !(ticket.getItem() instanceof ItemTicket))
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
     CompoundNBT nbt = ticket.getTag();
     if (nbt == null)

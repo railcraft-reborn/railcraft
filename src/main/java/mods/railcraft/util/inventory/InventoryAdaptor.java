@@ -91,7 +91,7 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
 
   @Override
   public boolean canFit(ItemStack stack) {
-    return InvTools.isEmpty(addStack(stack, true));
+    return addStack(stack, true).isEmpty();
   }
 
   /**
@@ -103,14 +103,14 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
    */
   @Override
   public ItemStack addStack(ItemStack stack, boolean simulate) {
-    if (InvTools.isEmpty(stack))
-      return InvTools.emptyStack();
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
     stack = stack.copy();
     List<IInvSlot> filledSlots = new ArrayList<>();
     List<IInvSlot> emptySlots = new ArrayList<>();
     for (IInvSlot slot : InventoryIterator.get(this)) {
       if (slot.canPutStackInSlot(stack)) {
-        if (InvTools.isEmpty(slot.getStack()))
+        if (slot.getStack().isEmpty())
           emptySlots.add(slot);
         else
           filledSlots.add(slot);
@@ -121,8 +121,8 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
     injected = InvTools.tryPut(filledSlots, stack, injected, simulate);
     injected = InvTools.tryPut(emptySlots, stack, injected, simulate);
     InvTools.decSize(stack, injected);
-    if (InvTools.isEmpty(stack))
-      return InvTools.emptyStack();
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
     return stack;
   }
 
@@ -133,11 +133,11 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
   public ItemStack removeStack(int maxAmount, Predicate<ItemStack> filter, boolean simulate) {
     for (IInvSlot slot : InventoryIterator.get(this)) {
       ItemStack stack = slot.getStack();
-      if (!InvTools.isEmpty(stack) && slot.canTakeStackFromSlot() && filter.test(stack)) {
+      if (!stack.isEmpty() && slot.canTakeStackFromSlot() && filter.test(stack)) {
         return slot.removeFromSlot(maxAmount, simulate);
       }
     }
-    return InvTools.emptyStack();
+    return ItemStack.EMPTY;
   }
 
   @Override
@@ -149,10 +149,10 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
       if (amountNeeded <= 0)
         break;
       ItemStack stack = slot.getStack();
-      if (!InvTools.isEmpty(stack) && slot.canTakeStackFromSlot() && filter.test(stack)) {
+      if (!stack.isEmpty() && slot.canTakeStackFromSlot() && filter.test(stack)) {
         ItemStack output = slot.removeFromSlot(amountNeeded, simulate);
-        if (!InvTools.isEmpty(output)) {
-          amountNeeded -= InvTools.sizeOf(output);
+        if (!output.isEmpty()) {
+          amountNeeded -= output.getCount();
           outputList.add(output);
         }
       }
@@ -167,11 +167,11 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
         ItemStack stack = slot.getStack();
         stack = InvTools.copyOne(stack);
         stack = dest.addStack(stack);
-        if (InvTools.isEmpty(stack))
+        if (stack.isEmpty())
           return slot.decreaseStack();
       }
     }
-    return InvTools.emptyStack();
+    return ItemStack.EMPTY;
   }
 
   @Override

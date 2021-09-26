@@ -94,7 +94,7 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
       fuelInventory.moveOneItemTo(invWaterOutput, StackFilters.FUEL.negate());
       ItemStack stack =
           CartToolsAPI.transferHelper().pullStack(this, StackFilters.roomIn(extraFuelInventory));
-      if (!InvTools.isEmpty(stack))
+      if (!stack.isEmpty())
         extraFuelInventory.addStack(stack);
       if (isSafeToFill() && waterTank.getFluidAmount() < waterTank.getCapacity() / 2) {
         FluidStack pulled =

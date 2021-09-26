@@ -2,12 +2,10 @@ package mods.railcraft.world.level.block.track.behaivor;
 
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.tracks.TrackKit;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.world.level.block.track.outfitted.kit.TrackKits;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.state.properties.RailShape;
@@ -72,25 +70,22 @@ public final class HighSpeedTools {
     cart.setDeltaMovement(motionX, motion.y(), motionZ);
   }
 
-  public static void performHighSpeedChecks(World world, BlockPos pos, AbstractMinecartEntity cart,
-      @Nullable TrackKit trackKit) {
+  public static void performHighSpeedChecks(World world, BlockPos pos,
+      AbstractMinecartEntity cart) {
     boolean highSpeed = isTravellingHighSpeed(cart);
     Vector3d currentMotion = cart.getDeltaMovement();
     if (highSpeed) {
       checkSafetyAndExplode(world, pos, cart);
-    } else if (trackKit == TrackKits.BOOSTER.get()
-        || trackKit == TrackKits.HIGH_SPEED_TRANSITION.get()) {
-      if (isTrackSafeForHighSpeed(world, pos, cart)) {
-        if (Math.abs(currentMotion.x()) > SPEED_CUTOFF) {
-          double motionX = Math.copySign(SPEED_CUTOFF, currentMotion.x());
-          cart.setDeltaMovement(motionX, currentMotion.y(), currentMotion.z());
-          setTravellingHighSpeed(cart, true);
-        }
-        if (Math.abs(currentMotion.z()) > SPEED_CUTOFF) {
-          double motionZ = Math.copySign(SPEED_CUTOFF, currentMotion.z());
-          cart.setDeltaMovement(currentMotion.x(), currentMotion.y(), motionZ);
-          setTravellingHighSpeed(cart, true);
-        }
+    } else if (isTrackSafeForHighSpeed(world, pos, cart)) {
+      if (Math.abs(currentMotion.x()) > SPEED_CUTOFF) {
+        double motionX = Math.copySign(SPEED_CUTOFF, currentMotion.x());
+        cart.setDeltaMovement(motionX, currentMotion.y(), currentMotion.z());
+        setTravellingHighSpeed(cart, true);
+      }
+      if (Math.abs(currentMotion.z()) > SPEED_CUTOFF) {
+        double motionZ = Math.copySign(SPEED_CUTOFF, currentMotion.z());
+        cart.setDeltaMovement(currentMotion.x(), currentMotion.y(), motionZ);
+        setTravellingHighSpeed(cart, true);
       }
     } else {
       limitSpeed(cart);
@@ -101,9 +96,9 @@ public final class HighSpeedTools {
     return TrackTools.getTrackTypeAt(world, pos).isHighSpeed();
   }
 
-  public static double speedForNextTrack(World world, BlockPos pos, int dist,
+  public static float speedForNextTrack(World world, BlockPos pos, int dist,
       @Nullable AbstractMinecartEntity cart) {
-    double maxSpeed = Railcraft.serverConfig.highSpeedTrackMaxSpeed.get();
+    float maxSpeed = Railcraft.serverConfig.highSpeedTrackMaxSpeed.get().floatValue();
     if (dist < LOOK_AHEAD_DIST)
       for (Direction side : Direction.Plane.HORIZONTAL) {
         BlockPos nextPos = pos.relative(side);

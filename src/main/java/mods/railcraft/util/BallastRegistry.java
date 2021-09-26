@@ -28,7 +28,7 @@ public abstract class BallastRegistry {
   }
 
   public static boolean isItemBallast(ItemStack stack) {
-    if (InvTools.isEmpty(stack))
+    if (stack.isEmpty())
       return false;
     BlockState state = InvTools.getBlockStateFromStack(stack);
     return state != null && ballastRegistry.contains(state);

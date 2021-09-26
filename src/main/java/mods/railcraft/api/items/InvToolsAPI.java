@@ -8,7 +8,6 @@
 package mods.railcraft.api.items;
 
 import java.util.Optional;
-import javax.annotation.Nullable;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -23,16 +22,8 @@ public final class InvToolsAPI {
 
   private InvToolsAPI() {}
 
-  public static boolean isEmpty(@Nullable ItemStack stack) {
-    return stack == null || stack.isEmpty();
-  }
-
-  public static ItemStack emptyStack() {
-    return ItemStack.EMPTY;
-  }
-
   public static Optional<CompoundNBT> getRailcraftData(ItemStack stack, boolean create) {
-    if (isEmpty(stack))
+    if (stack.isEmpty())
       return Optional.empty();
     return Optional.ofNullable(create ? stack.getOrCreateTagElement(RailcraftConstantsAPI.MOD_ID)
         : stack.getTagElement(RailcraftConstantsAPI.MOD_ID));
@@ -45,7 +36,7 @@ public final class InvToolsAPI {
   }
 
   public static void setRailcraftDataSubtag(ItemStack stack, String tag, INBT data) {
-    if (isEmpty(stack)) {
+    if (stack.isEmpty()) {
       return;
     }
     getRailcraftData(stack, true).ifPresent(nbt -> nbt.put(tag, data));

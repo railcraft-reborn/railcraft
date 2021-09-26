@@ -10,7 +10,6 @@ import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.items.ActivationBlockingItem;
 import mods.railcraft.util.Annotations;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.util.inventory.InvTools;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -142,7 +141,7 @@ public final class PlayerPlugin {
     if (player.isShiftKeyDown() || hand == Hand.OFF_HAND)
       return true;
     ItemStack heldItem = player.getItemInHand(hand);
-    if (!InvTools.isEmpty(heldItem)) {
+    if (!heldItem.isEmpty()) {
       return TrackTools.isRail(heldItem)
           || Annotations.isAnnotatedDeepSearch(ActivationBlockingItem.class, heldItem.getItem());
     }

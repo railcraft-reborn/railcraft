@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "railcraft:reinforced_flex_track",
+    "railcraft:abandoned_flex_track",
+    "railcraft:electric_flex_track",
+    "railcraft:high_speed_flex_track",
+    "railcraft:high_speed_electric_flex_track",
+    "railcraft:strap_iron_flex_track",
+    "railcraft:turnout_track",
+    "railcraft:wye_track"
+  ]
+}

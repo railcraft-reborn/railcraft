@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
 import mods.railcraft.api.core.CollectionToolsAPI;
-import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.HostEffects;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -93,8 +92,7 @@ public class RitualBlockEntity extends RailcraftTickableBlockEntity {
   private boolean coolLava(BlockPos pos) {
     FluidState fluid = this.level.getBlockState(pos).getFluidState();
     if (Fluids.LAVA == fluid.getType()) {
-      boolean placed =
-          WorldPlugin.setBlockState(this.level, pos, Blocks.OBSIDIAN.defaultBlockState());
+      boolean placed = this.level.setBlockAndUpdate(pos, Blocks.OBSIDIAN.defaultBlockState());
       if (placed) {
         Vector3d startPosition =
             new Vector3d(pos.getX(), pos.getY(), pos.getZ()).add(0.5, 0.5, 0.5);

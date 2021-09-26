@@ -11,7 +11,6 @@ import mods.railcraft.carts.IRailcraftCart;
 import mods.railcraft.carts.LinkageManager;
 import mods.railcraft.carts.Train;
 import mods.railcraft.plugins.SeasonPlugin;
-import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.entity.IDirectionalCart;
 import mods.railcraft.world.entity.TrackRemoverMinecartEntity;
 import mods.railcraft.world.entity.TunnelBoreEntity;
@@ -44,7 +43,7 @@ public class CrowbarHandler {
     if (stack.getItem() instanceof IToolCrowbar)
       cancel = true;
 
-    if (!InvTools.isEmpty(stack) && stack.getItem() instanceof IToolCrowbar) {
+    if (!stack.isEmpty() && stack.getItem() instanceof IToolCrowbar) {
       player.swing(hand);
       cancel = true;
     } else

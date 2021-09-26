@@ -99,16 +99,12 @@ public class WorldPlugin {
     return world.getBlockState(pos).getMaterial() == material;
   }
 
-  public static boolean setBlockState(World world, BlockPos pos, BlockState blockState) {
-    return world.setBlockAndUpdate(pos, blockState);
-  }
-
   public static boolean setBlockState(World world, BlockPos pos, BlockState blockState,
       @Nullable PlayerEntity actor) {
     if (actor == null)
       actor = RailcraftFakePlayer.get((ServerWorld) world, pos);
     BlockSnapshot snapshot = BlockSnapshot.create(world.dimension(), world, pos);
-    boolean result = setBlockState(world, pos, blockState);
+    boolean result = world.setBlockAndUpdate(pos, blockState);
     if (ForgeEventFactory.onBlockPlace(actor, snapshot, Direction.UP)) {
       snapshot.restore(true, false);
       return false;

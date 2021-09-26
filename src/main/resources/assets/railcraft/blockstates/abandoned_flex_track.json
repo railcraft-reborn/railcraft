@@ -1,110 +1,125 @@
 {
-  "variants": {
-    "grass=true,shape=north_south": [
-      {
-        "submodel": "railcraft:block/track_grass",
-        "model": "railcraft:block/abandoned_flex_track_0"
+  "multipart": [
+    {
+      "when": {
+        "grass": "true"
       },
-      {
-        "submodel": "railcraft:block/track_grass",
-        "model": "railcraft:block/abandoned_flex_track_1"
+      "apply": {
+        "model": "minecraft:block/grass"
       }
-    ],
-    "grass=false,shape=north_south": [
-      {
-        "model": "railcraft:block/abandoned_flex_track_0"
+    },
+    {
+      "when": {
+        "shape": "north_south"
       },
-      {
-        "model": "railcraft:block/abandoned_flex_track_1"
-      }
-    ],
-    "grass=true,shape=east_west": [
-      {
-        "submodel": "railcraft:block/track_grass",
-        "model": "railcraft:block/abandoned_flex_track_0",
-        "y": 90
+      "apply": [
+        {
+          "model": "railcraft:block/abandoned_flex_track_0"
+        },
+        {
+          "model": "railcraft:block/abandoned_flex_track_1"
+        }
+      ]
+    },
+    {
+      "when": {
+        "shape": "east_west"
       },
-      {
-        "submodel": "railcraft:block/track_grass",
-        "model": "railcraft:block/abandoned_flex_track_1",
-        "y": 90
-      }
-    ],
-    "grass=false,shape=east_west": [
-      {
-        "model": "railcraft:block/abandoned_flex_track_0",
-        "y": 90
+      "apply": [
+        {
+          "model": "railcraft:block/abandoned_flex_track_0",
+          "y": 90
+        },
+        {
+          "model": "railcraft:block/abandoned_flex_track_1",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "shape": "ascending_east"
       },
-      {
-        "model": "railcraft:block/abandoned_flex_track_1",
-        "y": 90
-      }
-    ],
-    "grass=true,shape=ascending_east": {
-      "submodel": "railcraft:block/track_grass",
-      "model": "railcraft:block/abandoned_flex_track_raised_ne",
-      "y": 90
+      "apply": [
+        {
+          "model": "railcraft:block/abandoned_flex_track_raised_ne",
+          "y": 90
+        }
+      ]
     },
-    "grass=false,shape=ascending_east": {
-      "model": "railcraft:block/abandoned_flex_track_raised_ne",
-      "y": 90
+    {
+      "when": {
+        "shape": "ascending_west"
+      },
+      "apply": [
+        {
+          "model": "railcraft:block/abandoned_flex_track_raised_sw",
+          "y": 90
+        }
+      ]
     },
-    "grass=true,shape=ascending_west": {
-      "submodel": "railcraft:block/track_grass",
-      "model": "railcraft:block/abandoned_flex_track_raised_sw",
-      "y": 90
+    {
+      "when": {
+        "shape": "ascending_north"
+      },
+      "apply": [
+        {
+          "model": "railcraft:block/abandoned_flex_track_raised_ne"
+        }
+      ]
     },
-    "grass=false,shape=ascending_west": {
-      "model": "railcraft:block/abandoned_flex_track_raised_sw",
-      "y": 90
+    {
+      "when": {
+        "shape": "ascending_south"
+      },
+      "apply": [
+        {
+          "model": "railcraft:block/abandoned_flex_track_raised_sw"
+        }
+      ]
     },
-    "grass=true,shape=ascending_north": {
-      "submodel": "railcraft:block/track_grass",
-      "model": "railcraft:block/abandoned_flex_track_raised_ne"
+    {
+      "when": {
+        "shape": "south_east"
+      },
+      "apply": [
+        {
+          "model": "railcraft:block/abandoned_flex_track_curved"
+        }
+      ]
     },
-    "grass=false,shape=ascending_north": {
-      "model": "railcraft:block/abandoned_flex_track_raised_ne"
+    {
+      "when": {
+        "shape": "south_west"
+      },
+      "apply": [
+        {
+          "model": "railcraft:block/abandoned_flex_track_curved",
+          "y": 90
+        }
+      ]
     },
-    "grass=true,shape=ascending_south": {
-      "submodel": "railcraft:block/track_grass",
-      "model": "railcraft:block/abandoned_flex_track_raised_sw"
+    {
+      "when": {
+        "shape": "north_west"
+      },
+      "apply": [
+        {
+          "model": "railcraft:block/abandoned_flex_track_curved",
+          "y": 180
+        }
+      ]
     },
-    "grass=false,shape=ascending_south": {
-      "model": "railcraft:block/abandoned_flex_track_raised_sw"
-    },
-    "grass=true,shape=south_east": {
-      "submodel": "railcraft:block/track_grass",
-      "model": "railcraft:block/abandoned_flex_track_curved"
-    },
-    "grass=false,shape=south_east": {
-      "model": "railcraft:block/abandoned_flex_track_curved"
-    },
-    "grass=true,shape=south_west": {
-      "submodel": "railcraft:block/track_grass",
-      "model": "railcraft:block/abandoned_flex_track_curved",
-      "y": 90
-    },
-    "grass=false,shape=south_west": {
-      "model": "railcraft:block/abandoned_flex_track_curved",
-      "y": 90
-    },
-    "grass=true,shape=north_west": {
-      "submodel": "railcraft:block/track_grass",
-      "model": "railcraft:block/abandoned_flex_track_curved",
-      "y": 180
-    },
-    "grass=false,shape=north_west": {
-      "model": "railcraft:block/abandoned_flex_track_curved",
-      "y": 180
-    },
-    "grass=true,shape=north_east": {
-      "submodel": "railcraft:block/track_grass",
-      "model": "railcraft:block/abandoned_flex_track_curved",
-      "y": 270
-    },
-    "grass=false,shape=north_east": {
-      "model": "railcraft:block/abandoned_flex_track_curved",
-      "y": 270
+    {
+      "when": {
+        "shape": "north_east"
+      },
+      "apply": [
+        {
+          "model": "railcraft:block/abandoned_flex_track_curved",
+          "y": 270
+        }
+      ]
     }
-  }
+  ]
 }

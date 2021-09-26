@@ -5,7 +5,7 @@ import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.world.item.ItemFirestone;
 import mods.railcraft.world.item.ItemFirestoneCracked;
-import mods.railcraft.world.level.block.BlockRitual;
+import mods.railcraft.world.level.block.RitualBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
 import net.minecraft.block.BlockState;
@@ -75,7 +75,7 @@ public class FirestoneItemEntity extends ItemEntity {
             && WorldPlugin.getBlockMaterial(this.level, surface.below()) == Material.LAVA) {
           boolean cracked = getItem().getItem() instanceof ItemFirestoneCracked;
           if (WorldPlugin.setBlockState(this.level, surface,
-              firestoneBlock.setValue(BlockRitual.CRACKED, cracked),
+              firestoneBlock.setValue(RitualBlock.CRACKED, cracked),
               PlayerPlugin.getItemThrower(this))) {
             TileEntity tile = this.level.getBlockEntity(surface);
             if (tile instanceof RitualBlockEntity) {

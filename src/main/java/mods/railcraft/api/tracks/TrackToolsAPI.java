@@ -38,18 +38,7 @@ public final class TrackToolsAPI {
    * enabled. Avoid relying on the return values of these functions unless you've checked that the
    * block in the world is indeed an instance of IBlockTrackOutfitted.
    */
-  public static IBlockTrackOutfitted blockTrackOutfitted = new IBlockTrackOutfitted() {
-
-    @Override
-    public TrackKit getTrackKit() {
-      return TrackRegistry.TRACK_KIT.getFallback();
-    }
-
-    @Override
-    public TrackType getTrackType() {
-      return TrackRegistry.TRACK_TYPE.getFallback();
-    }
-  };
+  public static IBlockTrackOutfitted blockTrackOutfitted;
 
   /**
    * Check if the block at the location is a Track.
@@ -156,24 +145,18 @@ public final class TrackToolsAPI {
             || AbstractRailBlock.isRail(world, pos.below()));
   }
 
-  public static @Nullable TrackKit getTrackKit(World world, BlockPos pos) {
-    TileEntity te = world.getBlockEntity(pos);
-    if (te instanceof IOutfittedTrackTile) {
-      return ((IOutfittedTrackTile) te).getTrackKitInstance().getTrackKit();
-    }
-    return null;
-  }
-
-  public static TrackKit getTrackKitSafe(World world, BlockPos pos) {
-    TrackKit ret = getTrackKit(world, pos);
-    return ret == null ? TrackRegistry.getMissingTrackKit() : ret;
+  @Nullable
+  public static TrackKit getTrackKit(World world, BlockPos pos) {
+    TileEntity blockEntity = world.getBlockEntity(pos);
+    return blockEntity instanceof IOutfittedTrackTile
+        ? ((IOutfittedTrackTile) blockEntity).getTrackKitInstance().getTrackKit()
+        : null;
   }
 
   public static TrackType getTrackType(ItemStack stack) {
-    if (stack.getItem() instanceof IItemTrack) {
-      return ((IItemTrack) stack.getItem()).getTrackType(stack);
-    }
-    return TrackRegistry.TRACK_TYPE.get(stack);
+    return stack.getItem() instanceof TrackTypeLike
+        ? ((TrackTypeLike) stack.getItem()).getTrackType(stack)
+        : null;
   }
 
   private TrackToolsAPI() {}

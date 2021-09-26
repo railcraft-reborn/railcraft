@@ -70,9 +70,9 @@ public class RailcraftDamageSource extends DamageSource {
               .getRecipeFor(IRecipeType.SMELTING, new Inventory(drop), level)
               .map(FurnaceRecipe::getResultItem)
               .orElse(ItemStack.EMPTY);
-          if (!InvTools.isEmpty(cooked) && MiscTools.RANDOM.nextDouble() < 0.5) {
+          if (!cooked.isEmpty() && MiscTools.RANDOM.nextDouble() < 0.5) {
             cooked = cooked.copy();
-            InvTools.setSize(cooked, InvTools.sizeOf(drop));
+            InvTools.setSize(cooked, drop.getCount());
             entityItem.setItem(cooked);
           }
         }

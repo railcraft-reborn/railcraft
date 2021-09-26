@@ -3,7 +3,6 @@ package mods.railcraft.world.entity;
 import javax.annotation.Nullable;
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.items.IPrototypedItem;
-import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.InventoryAdvanced;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -14,7 +13,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
-public abstract class AbstractFilteredMinecartEntity extends AbstractRailcraftMinecartEntity implements IMinecart {
+public abstract class AbstractFilteredMinecartEntity extends AbstractRailcraftMinecartEntity
+    implements IMinecart {
 
   private static final DataParameter<ItemStack> FILTER =
       EntityDataManager.defineId(AbstractFilteredMinecartEntity.class, DataSerializers.ITEM_STACK);
@@ -24,7 +24,8 @@ public abstract class AbstractFilteredMinecartEntity extends AbstractRailcraftMi
     super(type, world);
   }
 
-  protected AbstractFilteredMinecartEntity(EntityType<?> type, double x, double y, double z, World world) {
+  protected AbstractFilteredMinecartEntity(EntityType<?> type, double x, double y, double z,
+      World world) {
     super(type, x, y, z, world);
   }
 
@@ -37,11 +38,11 @@ public abstract class AbstractFilteredMinecartEntity extends AbstractRailcraftMi
   public static ItemStack getFilterFromCartItem(ItemStack cart) {
     if (cart.getItem() instanceof IPrototypedItem)
       return ((IPrototypedItem) cart.getItem()).getPrototype(cart);
-    return InvTools.emptyStack();
+    return ItemStack.EMPTY;
   }
 
   public static ItemStack addFilterToCartItem(ItemStack cart, @Nullable ItemStack filter) {
-    if (!InvTools.isEmpty(filter) && cart.getItem() instanceof IPrototypedItem) {
+    if (!filter.isEmpty() && cart.getItem() instanceof IPrototypedItem) {
       ((IPrototypedItem) cart.getItem()).setPrototype(cart, filter);
     }
     return cart;
@@ -49,8 +50,8 @@ public abstract class AbstractFilteredMinecartEntity extends AbstractRailcraftMi
 
   public ItemStack getFilteredCartItem(@Nullable ItemStack filter) {
     ItemStack stack = getItem().getDefaultInstance();
-    if (InvTools.isEmpty(stack))
-      return InvTools.emptyStack();
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
     return addFilterToCartItem(stack, filter);
   }
 
@@ -64,7 +65,7 @@ public abstract class AbstractFilteredMinecartEntity extends AbstractRailcraftMi
   @Override
   public ItemStack createCartItem(AbstractMinecartEntity cart) {
     ItemStack stack = getFilteredCartItem(getFilterItem());
-    if (!InvTools.isEmpty(stack) && hasCustomName())
+    if (!stack.isEmpty() && hasCustomName())
       stack.setHoverName(getName());
     return stack;
   }

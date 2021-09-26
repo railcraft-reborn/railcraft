@@ -10,7 +10,6 @@ import mods.railcraft.gui.buttons.MultiButtonController;
 import mods.railcraft.gui.buttons.StandardButtonTextureSets;
 import mods.railcraft.plugins.DataManagerPlugin;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.util.inventory.InvTools;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -180,7 +179,7 @@ public abstract class AbstractMaintenanceMinecartEntity extends AbstractRailcraf
   protected boolean placeNewTrack(BlockPos pos, int slotStock,
       RailShape trackShape) {
     ItemStack trackStock = getItem(slotStock);
-    if (!InvTools.isEmpty(trackStock))
+    if (!trackStock.isEmpty())
       if (TrackToolsAPI.placeRailAt(trackStock, (ServerWorld) this.level, pos)) {
         this.removeItem(slotStock, 1);
         blink();

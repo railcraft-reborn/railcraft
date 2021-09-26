@@ -84,25 +84,25 @@ public class StandardInventoryIterator extends InventoryIterator<IExtInvSlot> {
         return inv.removeItem(slot, amount);
       }
       ItemStack stack = getStack();
-      return InvTools.copy(stack, Math.min(amount, InvTools.sizeOf(stack)));
+      return InvTools.copy(stack, Math.min(amount, stack.getCount()));
     }
 
     @Override
     public ItemStack addToSlot(ItemStack stack, boolean simulate) {
-      int available = InvTools.sizeOf(stack);
+      int available = stack.getCount();
       if (available <= 0)
         return stack.copy();
       int max = Math.min(stack.getMaxStackSize(), inv.getMaxStackSize());
       int wanted = 0;
 
       ItemStack stackInSlot = getStack();
-      if (InvTools.isEmpty(stackInSlot)) {
+      if (stackInSlot.isEmpty()) {
         wanted = Math.min(available, max);
         if (wanted > 0 && !simulate) {
           setStack(InvTools.copy(stack, wanted));
         }
       } else if (InvTools.isItemEqual(stack, stackInSlot)) {
-        wanted = Math.min(available, max - InvTools.sizeOf(stackInSlot));
+        wanted = Math.min(available, max - stackInSlot.getCount());
         if (wanted > 0 && !simulate) {
           setStack(InvTools.incSize(stackInSlot, wanted));
         }

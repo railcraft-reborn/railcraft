@@ -13,7 +13,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import mods.railcraft.NBTPlugin;
 import mods.railcraft.Railcraft;
 import mods.railcraft.plugins.SeasonPlugin;
-import mods.railcraft.util.inventory.InvTools;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,14 +37,14 @@ public interface IRailcraftCart {
 
   default ItemStack createCartItem(AbstractMinecartEntity cart) {
     ItemStack stack = getItem().getDefaultInstance();
-    if (!InvTools.isEmpty(stack) && cart.hasCustomName())
+    if (!stack.isEmpty() && cart.hasCustomName())
       stack.setHoverName(cart.getCustomName());
     return stack;
   }
 
   default ItemStack[] getComponents(AbstractMinecartEntity cart) {
     ItemStack contents = getContents();
-    if (!InvTools.isEmpty(contents))
+    if (!contents.isEmpty())
       return new ItemStack[] {new ItemStack(Items.MINECART), contents};
     return new ItemStack[] {createCartItem(cart)};
   }
@@ -66,7 +65,7 @@ public interface IRailcraftCart {
         && !ArrayUtils.isEmpty(drops))
       drops[0].setHoverName(cart.getCustomName());
     for (ItemStack item : drops) {
-      if (!InvTools.isEmpty(item))
+      if (!item.isEmpty())
         cart.spawnAtLocation(item, 0.0F);
     }
   }

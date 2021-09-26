@@ -125,7 +125,7 @@ public abstract class RailcraftMenu extends Container {
 
   protected ItemStack slotClickPhantom(SlotRailcraft slot, int mouseButton, ClickType clickType,
       PlayerEntity player) {
-    ItemStack stack = InvTools.emptyStack();
+    ItemStack stack = ItemStack.EMPTY;
 
     if (mouseButton == 2) {
       if (slot.canAdjustPhantom())
@@ -136,13 +136,13 @@ public abstract class RailcraftMenu extends Container {
       ItemStack stackSlot = slot.getItem();
       ItemStack stackHeld = playerInv.getCarried();
 
-      if (!InvTools.isEmpty(stackSlot))
+      if (!stackSlot.isEmpty())
         stack = stackSlot.copy();
 
-      if (InvTools.isEmpty(stackSlot)) {
-        if (!InvTools.isEmpty(stackHeld) && slot.mayPlace(stackHeld))
+      if (stackSlot.isEmpty()) {
+        if (!stackHeld.isEmpty() && slot.mayPlace(stackHeld))
           fillPhantomSlot(slot, stackHeld, mouseButton);
-      } else if (InvTools.isEmpty(stackHeld)) {
+      } else if (stackHeld.isEmpty()) {
         adjustPhantomSlot(slot, mouseButton, clickType);
         slot.onTake(player, playerInv.getCarried());
       } else if (slot.mayPlace(stackHeld))
@@ -158,29 +158,29 @@ public abstract class RailcraftMenu extends Container {
     if (!slot.canAdjustPhantom())
       return;
     ItemStack stackSlot = slot.getItem();
-    if (InvTools.isEmpty(stackSlot))
+    if (stackSlot.isEmpty())
       return;
     int stackSize;
     if (clickType == ClickType.QUICK_MOVE)
       stackSize =
-          mouseButton == 0 ? (InvTools.sizeOf(stackSlot) + 1) / 2 : InvTools.sizeOf(stackSlot) * 2;
+          mouseButton == 0 ? (stackSlot.getCount() + 1) / 2 : stackSlot.getCount() * 2;
     else
       stackSize =
-          mouseButton == 0 ? InvTools.sizeOf(stackSlot) - 1 : InvTools.sizeOf(stackSlot) + 1;
+          mouseButton == 0 ? stackSlot.getCount() - 1 : stackSlot.getCount() + 1;
 
     if (stackSize > slot.getMaxStackSize())
       stackSize = slot.getMaxStackSize();
 
     InvTools.setSize(stackSlot, stackSize);
 
-    if (InvTools.isEmpty(stackSlot))
-      slot.set(InvTools.emptyStack());
+    if (stackSlot.isEmpty())
+      slot.set(ItemStack.EMPTY);
   }
 
   protected void fillPhantomSlot(SlotRailcraft slot, ItemStack stackHeld, int mouseButton) {
     if (!slot.canAdjustPhantom())
       return;
-    int stackSize = mouseButton == 0 ? InvTools.sizeOf(stackHeld) : 1;
+    int stackSize = mouseButton == 0 ? stackHeld.getCount() : 1;
     if (stackSize > slot.getMaxStackSize())
       stackSize = slot.getMaxStackSize();
     ItemStack phantomStack = stackHeld.copy();
@@ -192,34 +192,34 @@ public abstract class RailcraftMenu extends Container {
   protected boolean shiftItemStack(ItemStack stackToShift, int start, int end) {
     boolean changed = false;
     if (stackToShift.isStackable())
-      for (int slotIndex = start; !InvTools.isEmpty(stackToShift) && slotIndex < end; slotIndex++) {
+      for (int slotIndex = start; !stackToShift.isEmpty() && slotIndex < end; slotIndex++) {
         Slot slot = this.slots.get(slotIndex);
         ItemStack stackInSlot = slot.getItem();
-        if (!InvTools.isEmpty(stackInSlot) && InvTools.isItemEqual(stackInSlot, stackToShift)) {
-          int resultingStackSize = InvTools.sizeOf(stackInSlot) + InvTools.sizeOf(stackToShift);
+        if (!stackInSlot.isEmpty() && InvTools.isItemEqual(stackInSlot, stackToShift)) {
+          int resultingStackSize = stackInSlot.getCount() + stackToShift.getCount();
           int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
           if (resultingStackSize <= max) {
             InvTools.setSize(stackToShift, 0);
             InvTools.setSize(stackInSlot, resultingStackSize);
             slot.setChanged();
             changed = true;
-          } else if (InvTools.sizeOf(stackInSlot) < max) {
-            InvTools.decSize(stackToShift, max - InvTools.sizeOf(stackInSlot));
+          } else if (stackInSlot.getCount() < max) {
+            InvTools.decSize(stackToShift, max - stackInSlot.getCount());
             InvTools.setSize(stackInSlot, max);
             slot.setChanged();
             changed = true;
           }
         }
       }
-    if (!InvTools.isEmpty(stackToShift))
-      for (int slotIndex = start; !InvTools.isEmpty(stackToShift) && slotIndex < end; slotIndex++) {
+    if (!stackToShift.isEmpty())
+      for (int slotIndex = start; !stackToShift.isEmpty() && slotIndex < end; slotIndex++) {
         Slot slot = this.slots.get(slotIndex);
         ItemStack stackInSlot = slot.getItem();
-        if (InvTools.isEmpty(stackInSlot)) {
+        if (stackInSlot.isEmpty()) {
           int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
           stackInSlot = stackToShift.copy();
-          InvTools.setSize(stackInSlot, Math.min(InvTools.sizeOf(stackToShift), max));
-          InvTools.decSize(stackToShift, InvTools.sizeOf(stackInSlot));
+          InvTools.setSize(stackInSlot, Math.min(stackToShift.getCount(), max));
+          InvTools.decSize(stackToShift, stackInSlot.getCount());
           slot.set(stackInSlot);
           slot.setChanged();
           changed = true;
@@ -253,28 +253,27 @@ public abstract class RailcraftMenu extends Container {
     int numSlots = this.slots.size();
     if (slot != null && slot.hasItem()) {
       ItemStack stackInSlot = slot.getItem();
-      assert !InvTools.isEmpty(stackInSlot);
+      assert !stackInSlot.isEmpty();
       originalStack = stackInSlot.copy();
       if (!(slotIndex >= numSlots - 9 * 4 && tryShiftItem(stackInSlot, numSlots))) {
         if (slotIndex >= numSlots - 9 * 4 && slotIndex < numSlots - 9) {
           if (!shiftItemStack(stackInSlot, numSlots - 9, numSlots))
-            return InvTools.emptyStack();
+            return ItemStack.EMPTY;
         } else if (slotIndex >= numSlots - 9) {
           if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots - 9))
-            return InvTools.emptyStack();
+            return ItemStack.EMPTY;
         } else if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots))
-          return InvTools.emptyStack();
+          return ItemStack.EMPTY;
       }
       slot.onQuickCraft(stackInSlot, originalStack);
-      if (InvTools.isEmpty(stackInSlot))
-        slot.set(InvTools.emptyStack());
+      if (stackInSlot.isEmpty())
+        slot.set(ItemStack.EMPTY);
       else
         slot.setChanged();
-      if (InvTools.sizeOf(stackInSlot) == InvTools.sizeOf(originalStack))
-        return InvTools.emptyStack();
+      if (stackInSlot.getCount() == originalStack.getCount())
+        return ItemStack.EMPTY;
       slot.onTake(player, stackInSlot);
     }
     return originalStack;
   }
-
 }

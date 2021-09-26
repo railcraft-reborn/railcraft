@@ -8,8 +8,8 @@ import com.google.common.collect.Sets;
 import mods.railcraft.api.items.IToolCrowbar;
 import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
-import mods.railcraft.world.level.block.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.RailcraftToolTypes;
+import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
@@ -90,7 +90,7 @@ public class CrowbarItem extends ToolItem implements IToolCrowbar {
     if (!world.isClientSide()) {
       BlockState newBlockState = blockState.rotate(world, pos, Rotation.CLOCKWISE_90);
       if (newBlockState != blockState) {
-        WorldPlugin.setBlockState(world, pos, newBlockState);
+        world.setBlockAndUpdate(pos, newBlockState);
         player.swing(hand);
         stack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
         return ActionResultType.SUCCESS;

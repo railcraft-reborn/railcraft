@@ -25,7 +25,7 @@ public class FuelPlugin {
    * @return The fuel value
    */
   public static int getBurnTime(ItemStack stack) {
-    if (InvTools.isEmpty(stack))
+    if (stack.isEmpty())
       return 0;
 
     if (InvTools.isItemEqualSemiStrict(stack, lastFuel))

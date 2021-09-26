@@ -16,7 +16,6 @@ import mods.railcraft.plugins.PlayerPlugin;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
@@ -63,9 +62,10 @@ public final class CartTools {
    * @return the cart placed or null if failed
    * @see IMinecartItem , ItemMinecart
    */
-  public static @Nullable AbstractMinecartEntity placeCart(GameProfile owner, ItemStack cart,
+  @Nullable
+  public static AbstractMinecartEntity placeCart(GameProfile owner, ItemStack cart,
       ServerWorld world, BlockPos pos) {
-    if (InvTools.isEmpty(cart))
+    if (cart.isEmpty())
       return null;
     cart = cart.copy();
 

@@ -12,7 +12,7 @@ package mods.railcraft.api.tracks;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface IBlockTrackOutfitted extends IBlockTrack {
+public interface IBlockTrackOutfitted extends TrackTypeProvider {
 
   TrackKit getTrackKit();
 }

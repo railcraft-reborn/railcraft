@@ -118,7 +118,7 @@ public enum StackFilters implements Predicate<ItemStack> {
    * Matches against the provided class/interface.
    */
   public static Predicate<ItemStack> of(final Class<?> itemClass) {
-    return stack -> !InvTools.isEmpty(stack)
+    return stack -> !stack.isEmpty()
         && itemClass.isAssignableFrom(stack.getItem().getClass());
   }
 
@@ -126,14 +126,14 @@ public enum StackFilters implements Predicate<ItemStack> {
    * Matches against the provided Item.
    */
   public static Predicate<ItemStack> of(final Item item) {
-    return stack -> !InvTools.isEmpty(stack) && stack.getItem() == item;
+    return stack -> !stack.isEmpty() && stack.getItem() == item;
   }
 
   /**
    * Matches against the provided Item.
    */
   public static Predicate<ItemStack> of(final Block block) {
-    return stack -> !InvTools.isEmpty(stack) && stack.getItem() == block.asItem();
+    return stack -> !stack.isEmpty() && stack.getItem() == block.asItem();
   }
 
   /**
@@ -175,7 +175,7 @@ public enum StackFilters implements Predicate<ItemStack> {
    * If no ItemStacks are provided to match against, it returns true.
    */
   public static Predicate<ItemStack> anyOf(final Collection<ItemStack> stacks) {
-    return stack -> stacks.isEmpty() || stacks.stream().allMatch(InvTools::isEmpty)
+    return stack -> stacks.isEmpty() || stacks.stream().allMatch(ItemStack::isEmpty)
         || InvTools.isItemEqual(stack, stacks);
   }
 
@@ -201,24 +201,24 @@ public enum StackFilters implements Predicate<ItemStack> {
    */
   public static Predicate<ItemStack> noneOf(final Collection<ItemStack> stacks) {
     return stack -> {
-      if (InvTools.isEmpty(stack))
+      if (stack.isEmpty())
         return false;
       return stacks.stream()
-          .filter(InvTools::nonEmpty)
+          .filter(toTest -> !toTest.isEmpty())
           .noneMatch(filter -> InvTools.isItemEqual(stack, filter));
     };
   }
 
   public static Predicate<ItemStack> ofSize(final int size) {
-    return stack -> InvTools.sizeOf(stack) == size;
+    return stack -> stack.getCount() == size;
   }
 
   public static Predicate<ItemStack> singleton() {
-    return stack -> InvTools.sizeOf(stack) == 1;
+    return stack -> stack.getCount() == 1;
   }
 
   public static Predicate<ItemStack> nonEmpty() {
-    return InvTools::nonEmpty;
+    return stack -> !stack.isEmpty();
   }
 
   /**
@@ -240,7 +240,7 @@ public enum StackFilters implements Predicate<ItemStack> {
    */
   public static Predicate<ItemStack> isCart(@Nullable final MinecartEntity cart) {
     return stack -> {
-      if (InvTools.isEmpty(stack))
+      if (stack.isEmpty())
         return false;
       if (cart == null)
         return false;
@@ -251,7 +251,7 @@ public enum StackFilters implements Predicate<ItemStack> {
         return ((IMinecart) cart).doesCartMatchFilter(stack);
       }
       ItemStack cartItem = cart.getCartItem();
-      return !InvTools.isEmpty(stack) && cartItem.sameItem(stack);
+      return !stack.isEmpty() && cartItem.sameItem(stack);
     };
   }
 
@@ -261,6 +261,6 @@ public enum StackFilters implements Predicate<ItemStack> {
 
   @Override
   public boolean test(ItemStack stack) {
-    return !InvTools.isEmpty(stack) && testType(stack);
+    return !stack.isEmpty() && testType(stack);
   }
 }
