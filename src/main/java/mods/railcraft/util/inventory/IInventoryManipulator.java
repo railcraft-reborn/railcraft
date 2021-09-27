@@ -67,7 +67,7 @@ public interface IInventoryManipulator {
    * @return true if room for stack
    */
   default boolean willAccept(ItemStack stack) {
-    if (InvTools.isEmpty(stack))
+    if (stack.isEmpty())
       return false;
     ItemStack newStack = InvTools.copyOne(stack);
     return streamSlots().anyMatch(slot -> slot.canPutStackInSlot(newStack));
@@ -90,7 +90,7 @@ public interface IInventoryManipulator {
    * @return true if room for stack
    */
   default boolean canFit(ItemStack stack) {
-    return InvTools.isEmpty(addStack(stack, true));
+    return addStack(stack, true).isEmpty();
   }
 
   /**
@@ -183,7 +183,7 @@ public interface IInventoryManipulator {
    * @return the number of items in the inventory
    */
   default int countItems(Predicate<ItemStack> filter) {
-    return streamStacks().filter(filter).mapToInt(InvTools::sizeOf).sum();
+    return streamStacks().filter(filter).mapToInt(ItemStack::getCount).sum();
   }
 
   /**

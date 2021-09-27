@@ -34,7 +34,7 @@ public interface IExtInvSlot extends IInvSlot {
 
   default void validate(World world, BlockPos pos, Predicate<ItemStack> filter) {
     ItemStack stack = getStack();
-    if (InvTools.nonEmpty(stack) && !filter.test(stack)) {
+    if (!stack.isEmpty() && !filter.test(stack)) {
       clear();
       InvTools.dropItem(stack, world, pos);
     }

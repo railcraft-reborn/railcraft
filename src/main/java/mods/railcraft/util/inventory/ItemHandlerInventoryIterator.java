@@ -62,7 +62,7 @@ public class ItemHandlerInventoryIterator {
 
       @Override
       public boolean canTakeStackFromSlot() {
-        return !InvTools.isEmpty(removeFromSlot(1, true));
+        return !removeFromSlot(1, true).isEmpty();
       }
 
       @Override

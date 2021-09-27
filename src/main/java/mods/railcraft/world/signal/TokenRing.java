@@ -13,7 +13,7 @@ import mods.railcraft.api.signals.SignalAspect;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MathTools;
-import mods.railcraft.world.level.block.entity.TokenSignalBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.tileentity.TileEntity;

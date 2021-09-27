@@ -71,8 +71,7 @@ public class ItemFirestoneRefined extends ItemFirestone {
     } else
       newStack = stack.copy();
     InvTools.setSize(newStack, 1);
-    newStack = InvTools.damageItem(newStack, 1);
-    return newStack;
+    return newStack.hurt(1, random, null) ? ItemStack.EMPTY : newStack;
   }
 
   @Override
@@ -102,7 +101,7 @@ public class ItemFirestoneRefined extends ItemFirestone {
         if (blockState.getBlock() != Blocks.STONE) {
           List<ItemStack> drops =
               blockState.getDrops(new LootContext.Builder((ServerWorld) world));
-          if (drops.size() == 1 && !InvTools.isEmpty(drops.get(0))
+          if (drops.size() == 1 && !drops.get(0).isEmpty()
               && drops.get(0).getItem() instanceof BlockItem) {
             ItemStack cooked = world.getRecipeManager()
                 .getRecipeFor(IRecipeType.SMELTING, new Inventory(drops.get(0)), world)
@@ -111,7 +110,7 @@ public class ItemFirestoneRefined extends ItemFirestone {
             if (cooked.getItem() instanceof BlockItem) {
               BlockState newState = InvTools.getBlockStateFromStack(cooked, world, pos);
               if (newState != null) {
-                WorldPlugin.setBlockState(world, pos, newState);
+                world.setBlockAndUpdate(pos, newState);
                 player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F,
                     random.nextFloat() * 0.4F + 0.8F);
                 stack.hurt(1, random, (ServerPlayerEntity) player);
@@ -126,7 +125,7 @@ public class ItemFirestoneRefined extends ItemFirestone {
 
       if (player.mayUseItemAt(pos, side, stack) && WorldPlugin.isAir(world, pos)) {
         player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F, random.nextFloat() * 0.4F + 0.8F);
-        WorldPlugin.setBlockState(world, pos, Blocks.FIRE.defaultBlockState());
+        world.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
         stack.hurt(1, random, (ServerPlayerEntity) player);
         return ActionResultType.SUCCESS;
       }
@@ -140,12 +139,10 @@ public class ItemFirestoneRefined extends ItemFirestone {
       LivingEntity target, Hand hand) {
     if (playerIn instanceof ServerPlayerEntity && !target.fireImmune()) {
       target.setSecondsOnFire(5);
-      stack.hurt(1, random, (ServerPlayerEntity) playerIn);
-      playerIn.playSound(SoundEvents.FIRECHARGE_USE, 1.0F,
-          random.nextFloat() * 0.4F + 0.8F);
+      stack.hurtAndBreak(1, playerIn, __ -> playerIn.broadcastBreakEvent(hand));
+      playerIn.playSound(SoundEvents.FIRECHARGE_USE, 1.0F, random.nextFloat() * 0.4F + 0.8F);
       playerIn.swing(hand);
-      WorldPlugin.setBlockState(playerIn.level, playerIn.blockPosition(),
-          Blocks.FIRE.defaultBlockState());
+      playerIn.level.setBlockAndUpdate(playerIn.blockPosition(), Blocks.FIRE.defaultBlockState());
       return ActionResultType.SUCCESS;
     }
     return ActionResultType.CONSUME;

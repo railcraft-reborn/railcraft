@@ -8,8 +8,6 @@
 package mods.railcraft.api.tracks;
 
 import javax.annotation.Nullable;
-import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.items.IToolCrowbar;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
@@ -39,28 +37,30 @@ import net.minecraft.world.World;
  */
 public abstract class TrackKitInstance implements ITrackKitInstance {
 
-  private TileEntity tileEntity = new DummyTileEntity();
+  @Nullable
+  private TileEntity blockEntity;
 
+  @SuppressWarnings("deprecation")
   protected static RailShape getRailDirectionRaw(BlockState state, IBlockReader world, BlockPos pos,
       @Nullable AbstractMinecartEntity cart) {
-    return state.getBlock() instanceof AbstractRailBlock
-        ? ((AbstractRailBlock) state.getBlock()).getRailDirection(state, world, pos, cart)
+    return AbstractRailBlock.isRail(state)
+        ? state.getValue(((AbstractRailBlock) state.getBlock()).getShapeProperty())
         : RailShape.NORTH_SOUTH;
   }
 
   private AbstractRailBlock getBlock() {
-    return (AbstractRailBlock) getTile().getBlockState().getBlock();
+    return (AbstractRailBlock) getBlockEntity().getBlockState().getBlock();
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends TileEntity & IOutfittedTrackTile> T getTile() {
-    return (T) tileEntity;
+  public <T extends TileEntity & IOutfittedTrackTile> T getBlockEntity() {
+    return (T) this.blockEntity;
   }
 
   @Override
   public <T extends TileEntity & IOutfittedTrackTile> void setTile(T tileEntity) {
-    this.tileEntity = tileEntity;
+    this.blockEntity = tileEntity;
   }
 
   @Override
@@ -75,12 +75,12 @@ public abstract class TrackKitInstance implements ITrackKitInstance {
   }
 
   @Override
-  public ActionResultType use(PlayerEntity player, Hand hand) {
+  public ActionResultType use(BlockState blockState, PlayerEntity player, Hand hand) {
     ItemStack heldItem = player.getItemInHand(hand);
     if (heldItem.getItem() instanceof IToolCrowbar) {
       IToolCrowbar crowbar = (IToolCrowbar) heldItem.getItem();
       if (crowbar.canWhack(player, hand, heldItem, getPos())
-          && onCrowbarWhack(player, hand, heldItem)) {
+          && this.onCrowbarWhack(blockState, player, hand, heldItem)) {
         crowbar.onWhack(player, hand, heldItem, getPos());
         return ActionResultType.SUCCESS;
       }
@@ -88,10 +88,11 @@ public abstract class TrackKitInstance implements ITrackKitInstance {
     return ActionResultType.CONSUME;
   }
 
-  public boolean onCrowbarWhack(PlayerEntity player, Hand hand, @Nullable ItemStack heldItem) {
+  public boolean onCrowbarWhack(BlockState blockState, PlayerEntity player, Hand hand,
+      @Nullable ItemStack heldItem) {
     if (this instanceof ITrackKitReversible) {
       ITrackKitReversible track = (ITrackKitReversible) this;
-      track.setReversed(!track.isReversed());
+      track.setReversed(blockState, !track.isReversed(blockState));
       markBlockNeedsUpdate();
       return true;
     }
@@ -102,8 +103,8 @@ public abstract class TrackKitInstance implements ITrackKitInstance {
   public void setPlacedBy(BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
     if (placer != null && this instanceof ITrackKitReversible) {
       Direction facing = placer.getDirection();
-      ((ITrackKitReversible) this)
-          .setReversed(facing == Direction.SOUTH || facing == Direction.WEST);
+      ((ITrackKitReversible) this).setReversed(state,
+          facing == Direction.SOUTH || facing == Direction.WEST);
     }
     switchTrack(state, true);
     testPower(state);
@@ -112,14 +113,14 @@ public abstract class TrackKitInstance implements ITrackKitInstance {
 
   @Override
   public void sendUpdateToClient() {
-    getTile().sendUpdateToClient();
+    getBlockEntity().sendUpdateToClient();
   }
 
   public void markBlockNeedsUpdate() {
     World world = theWorld();
     if (world != null) {
-      BlockState state = world.getBlockState(getTile().getBlockPos());
-      world.sendBlockUpdated(getTile().getBlockPos(), state, state, 3);
+      BlockState state = world.getBlockState(getBlockEntity().getBlockPos());
+      world.sendBlockUpdated(getBlockEntity().getBlockPos(), state, state, 3);
     }
   }
 
@@ -131,7 +132,7 @@ public abstract class TrackKitInstance implements ITrackKitInstance {
   @SuppressWarnings("deprecation")
   private void switchTrack(BlockState state, boolean flag) {
     World world = theWorldAsserted();
-    BlockPos pos = getTile().getBlockPos();
+    BlockPos pos = getBlockEntity().getBlockPos();
     AbstractRailBlock blockTrack = getBlock();
     new RailState(world, pos, state).place(world.hasNeighborSignal(pos), flag,
         state.getValue(blockTrack.getShapeProperty()));
@@ -260,32 +261,5 @@ public abstract class TrackKitInstance implements ITrackKitInstance {
       }
     }
     return false;
-  }
-
-  private class DummyTileEntity extends TileEntity implements IOutfittedTrackTile {
-
-    public DummyTileEntity() {
-      super(null);
-    }
-
-    @Override
-    public TrackType getTrackType() {
-      return TrackRegistry.TRACK_TYPE.getFallback();
-    }
-
-    @Override
-    public ITrackKitInstance getTrackKitInstance() {
-      return new TrackKitMissing(false);
-    }
-
-    @Override
-    public void sendUpdateToClient() {
-      throw new RuntimeException();
-    }
-
-    @Override
-    public GameProfile getOwner() {
-      return RailcraftFakePlayer.RAILCRAFT_USER_PROFILE;
-    }
   }
 }

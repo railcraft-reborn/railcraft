@@ -2,8 +2,8 @@ package mods.railcraft.client.renderer.blockentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mods.railcraft.api.signals.SignalAspect;
-import mods.railcraft.world.level.block.AbstractSignalBlock;
-import mods.railcraft.world.level.block.entity.AbstractSignalBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
+import mods.railcraft.world.level.block.signal.AbstractSignalBlock;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;

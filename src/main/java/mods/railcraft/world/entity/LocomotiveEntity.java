@@ -205,7 +205,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     }
     ItemStack stack = player.getItemInHand(hand);
     if (!level.isClientSide()) {
-      if (!InvTools.isEmpty(stack) && stack.getItem() == RailcraftItems.WHISTLE_TUNER.get()) {
+      if (!stack.isEmpty() && stack.getItem() == RailcraftItems.WHISTLE_TUNER.get()) {
         if (whistleDelay <= 0) {
           whistlePitch = getNewWhistlePitch();
           whistle();
@@ -427,7 +427,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
       if (setDestination(stack))
         invTicket.setItem(0, InvTools.depleteItem(stack));
     } else
-      invTicket.setItem(0, InvTools.emptyStack());
+      invTicket.setItem(0, ItemStack.EMPTY);
   }
 
   @Override
@@ -526,7 +526,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     if (entity instanceof PlayerEntity) {
       ItemStack pants = entity.getItemBySlot(EquipmentSlotType.LEGS);
       if (RailcraftItems.OVERALLS.get() == pants.getItem()) {
-        entity.setItemSlot(EquipmentSlotType.LEGS, InvTools.damageItem(pants, 5));
+        pants.hurtAndBreak(5, entity, __ -> entity.broadcastBreakEvent(EquipmentSlotType.LEGS));
         return 4;
       }
     }
@@ -585,13 +585,13 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   @Override
   public void killAndDrop(AbstractMinecartEntity cart) {
-    getTicketInventory().setItem(1, InvTools.emptyStack());
+    getTicketInventory().setItem(1, ItemStack.EMPTY);
     super.killAndDrop(cart);
   }
 
   @Override
   public void remove() {
-    getTicketInventory().setItem(1, InvTools.emptyStack());
+    getTicketInventory().setItem(1, ItemStack.EMPTY);
     super.remove();
   }
 

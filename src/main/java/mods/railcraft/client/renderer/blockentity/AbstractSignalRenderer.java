@@ -16,7 +16,7 @@ import mods.railcraft.api.signals.SignalAspect;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.CuboidModelRenderer.FaceDisplay;
-import mods.railcraft.world.level.block.entity.AbstractSignalBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.LightTexture;

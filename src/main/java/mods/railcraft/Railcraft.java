@@ -5,10 +5,11 @@ import mods.railcraft.api.events.CartLinkEvent;
 import mods.railcraft.api.signals.SignalTools;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
-import mods.railcraft.client.particle.RailcraftParticles;
+import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.PacketBuilder;
+import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.server.ServerDist;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.world.entity.LinkageHandler;
@@ -21,7 +22,7 @@ import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import mods.railcraft.world.level.block.track.outfitted.kit.TrackKits;
+import mods.railcraft.world.level.block.track.kit.TrackKits;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,6 +34,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Railcraft.ID)
@@ -80,6 +82,8 @@ public class Railcraft {
 
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+    modEventBus.addListener(this::handleGatherData);
+
     RailcraftEntityTypes.ENTITY_TYPES.register(modEventBus);
     RailcraftBlocks.BLOCKS.register(modEventBus);
     RailcraftItems.ITEMS.register(modEventBus);
@@ -90,7 +94,7 @@ public class Railcraft {
     RailcraftMenuTypes.MENU_TYPES.register(modEventBus);
     RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);
     RailcraftEnchantments.ENCHANTMENTS.register(modEventBus);
-    RailcraftParticles.PARTICLE.register(modEventBus);
+    RailcraftParticles.PARTICLE_TYPES.register(modEventBus);
   }
 
   public LinkageHandler getLinkageHandler() {
@@ -116,13 +120,18 @@ public class Railcraft {
     return instance;
   }
 
+  private void handleGatherData(GatherDataEvent event) {
+    event.getGenerator().addProvider(
+        new RailcraftBlockTagsProvider(event.getGenerator(), event.getExistingFileHelper()));
+  }
+
   @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public void onLinking(CartLinkEvent.Link event) {
+  public void handleCartLink(CartLinkEvent.Link event) {
     Train.repairTrain(event.getCartOne(), event.getCartTwo());
   }
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public void onUnlinking(CartLinkEvent.Unlink event) {
+  public void handleCartUnlink(CartLinkEvent.Unlink event) {
     Train.killTrain(event.getCartOne());
     Train.killTrain(event.getCartTwo());
   }

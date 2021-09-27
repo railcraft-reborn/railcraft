@@ -74,7 +74,7 @@ public class CartItem extends MinecartItem implements IMinecartItem {
   public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> info,
       ITooltipFlag flag) {
     ItemStack filter = AbstractFilteredMinecartEntity.getFilterFromCartItem(stack);
-    if (!InvTools.isEmpty(filter)) {
+    if (!filter.isEmpty()) {
       info.add(new TranslationTextComponent("gui.railcraft.filter").append(": ")
           .append(filter.getDisplayName()).withStyle(TextFormatting.BLUE));
     }

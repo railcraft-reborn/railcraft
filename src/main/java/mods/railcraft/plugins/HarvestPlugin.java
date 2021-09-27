@@ -58,6 +58,6 @@ public final class HarvestPlugin {
   // public static ItemStack getSilkTouchDrop(BlockState state) {
   // // Block#getSilkTouchDrop
   // return Code.findMethod(Block.class, "func_180643_i", ItemStack.class, BlockState.class)
-  // .invoke(state.getBlock(), state).orElse(InvTools.emptyStack());
+  // .invoke(state.getBlock(), state).orElse(ItemStack.EMPTY);
   // }
 }

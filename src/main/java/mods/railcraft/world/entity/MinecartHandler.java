@@ -18,8 +18,8 @@ import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.Vec2D;
 import mods.railcraft.util.inventory.InvTools;
-import mods.railcraft.world.level.block.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -48,18 +48,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class MinecartHandler implements IMinecartCollisionHandler {
 
-  // --Commented out by Inspection (3/13/2016 2:18 PM):protected static float DRAG_FACTOR_GROUND =
-  // 0.5f;
-  // --Commented out by Inspection (3/13/2016 2:18 PM):protected static float DRAG_FACTOR_AIR =
-  // 0.99999f;
   private static final float OPTIMAL_DISTANCE = 1.28f;
-  // protected static float OPTIMAL_DISTANCE_PLAYER = 1.8f;
   private static final float COEF_SPRING = 0.2f;
   private static final float COEF_SPRING_PLAYER = 0.5f;
   private static final float COEF_RESTITUTION = 0.2f;
   private static final float COEF_DAMPING = 0.4f;
-  // --Commented out by Inspection (3/13/2016 2:18 PM):protected static float ENTITY_REDUCTION =
-  // 0.25f;
   private static final float CART_LENGTH = 1.22f;
   private static final float CART_WIDTH = 0.98f;
   private static final float COLLISION_EXPANSION = 0.2f;
@@ -81,7 +74,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       return;
 
     ItemStack itemStack = event.getItemStack();
-    if (!InvTools.isEmpty(itemStack)) {
+    if (!itemStack.isEmpty()) {
       Item item = itemStack.getItem();
       if (CartTools.vanillaCartItemMap.containsKey(item)) {
         event.setUseItem(Event.Result.DENY);

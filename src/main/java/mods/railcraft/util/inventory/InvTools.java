@@ -8,11 +8,9 @@ import java.util.stream.IntStream;
 import javax.annotation.Nullable;
 import mods.railcraft.api.items.IFilterItem;
 import mods.railcraft.api.items.InvToolsAPI;
-import mods.railcraft.util.MiscTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItem;
@@ -33,83 +31,65 @@ public abstract class InvTools {
 
   public static final String TAG_SLOT = "Slot";
 
-  public static boolean isEmpty(@Nullable ItemStack stack) {
-    return InvToolsAPI.isEmpty(stack);
-  }
-
-  public static boolean nonEmpty(@Nullable ItemStack stack) {
-    return !InvToolsAPI.isEmpty(stack);
-  }
-
-  public static void requiresNotEmpty(@Nullable ItemStack stack) {
-    if (isEmpty(stack))
-      throw new NullPointerException();
-  }
-
-  public static ItemStack emptyStack() {
-    return InvToolsAPI.emptyStack();
-  }
-
-  public static int sizeOf(ItemStack stack) {
-    if (isEmpty(stack))
-      return 0;
-    return stack.getCount();
+  public static void requiresNotEmpty(ItemStack stack) {
+    if (stack.isEmpty())
+      throw new IllegalStateException("Item cannot be empty.");
   }
 
   public static ItemStack setSize(ItemStack stack, int size) {
-    if (isEmpty(stack))
-      return emptyStack();
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
     stack.setCount(size);
     return stack;
   }
 
   public static ItemStack incSize(@Nullable ItemStack stack, int size) {
-    if (isEmpty(stack))
-      return emptyStack();
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
     stack.grow(size);
     return stack;
   }
 
   public static ItemStack decSize(@Nullable ItemStack stack, int size) {
-    if (isEmpty(stack))
-      return emptyStack();
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
     stack.shrink(size);
     return stack;
   }
 
   public static ItemStack inc(@Nullable ItemStack stack) {
-    if (isEmpty(stack))
-      return emptyStack();
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
     stack.grow(1);
     return stack;
   }
 
   public static ItemStack dec(@Nullable ItemStack stack) {
-    if (isEmpty(stack))
-      return emptyStack();
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
     stack.shrink(1);
     return stack;
   }
 
   public static String toString(@Nullable ItemStack stack) {
-    if (isEmpty(stack))
+    if (stack.isEmpty())
       return "ItemStack.EMPTY";
     return stack.toString();
   }
 
   public static ItemStack makeSafe(@Nullable ItemStack stack) {
-    if (isEmpty(stack))
-      return emptyStack();
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
     return stack;
   }
 
   public static ItemStack copy(@Nullable ItemStack stack) {
-    return isEmpty(stack) ? emptyStack() : stack.copy();
+    return stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
   }
 
   public static ItemStack copy(@Nullable ItemStack stack, int newSize) {
     ItemStack ret = copy(stack);
-    if (!isEmpty(ret))
+    if (!ret.isEmpty())
       ret.setCount(Math.min(newSize, ret.getMaxStackSize()));
     return ret;
   }
@@ -169,24 +149,12 @@ public abstract class InvTools {
   }
 
   public static ItemStack depleteItem(ItemStack stack) {
-    if (sizeOf(stack) == 1)
+    if (stack.getCount() == 1)
       return stack.getItem().getContainerItem(stack);
     else {
       stack.split(1);
       return stack;
     }
-  }
-
-  public static ItemStack damageItem(ItemStack stack, int damage) {
-    return damageItem(stack, damage, null);
-  }
-
-  public static ItemStack damageItem(ItemStack stack, int damage,
-      @Nullable ServerPlayerEntity owner) {
-    return stack.hurt(damage, owner == null ? MiscTools.RANDOM : owner.getRandom(),
-        owner)
-            ? emptyStack()
-            : stack;
   }
 
   public static void dropItem(@Nullable ItemStack stack, World world, BlockPos pos) {
@@ -195,15 +163,15 @@ public abstract class InvTools {
   }
 
   static int tryPut(List<IInvSlot> slots, ItemStack stack, int injected, boolean simulate) {
-    if (injected >= sizeOf(stack))
+    if (injected >= stack.getCount())
       return injected;
     for (IInvSlot slot : slots) {
-      int amountToInsert = sizeOf(stack) - injected;
+      int amountToInsert = stack.getCount() - injected;
       ItemStack remainder = slot.addToSlot(copy(stack, amountToInsert), simulate);
-      if (isEmpty(remainder))
-        return sizeOf(stack);
-      injected += amountToInsert - sizeOf(remainder);
-      if (injected >= sizeOf(stack))
+      if (remainder.isEmpty())
+        return stack.getCount();
+      injected += amountToInsert - remainder.getCount();
+      if (injected >= stack.getCount())
         return injected;
     }
     return injected;
@@ -214,7 +182,7 @@ public abstract class InvTools {
     int amountNeeded = amount;
     for (InventoryAdaptor inv : comp.iterable()) {
       List<ItemStack> stacks = inv.extractItems(amountNeeded, filter, simulate);
-      amountNeeded -= stacks.stream().mapToInt(InvTools::sizeOf).sum();
+      amountNeeded -= stacks.stream().mapToInt(ItemStack::getCount).sum();
       if (amountNeeded <= 0)
         return true;
     }
@@ -222,11 +190,11 @@ public abstract class InvTools {
   }
 
   public static boolean isItem(ItemStack stack, @Nullable Item item) {
-    return !isEmpty(stack) && item != null && stack.getItem() == item;
+    return !stack.isEmpty() && item != null && stack.getItem() == item;
   }
 
   public static boolean matchesFilter(ItemStack filter, ItemStack stack) {
-    if (isEmpty(stack) || isEmpty(filter))
+    if (stack.isEmpty() || filter.isEmpty())
       return false;
     if (filter.getItem() instanceof IFilterItem) {
       return ((IFilterItem) filter.getItem()).matches(filter, stack);
@@ -248,13 +216,13 @@ public abstract class InvTools {
    * @return True if equal
    */
   public static boolean isItemEqualStrict(@Nullable ItemStack a, @Nullable ItemStack b) {
-    if (isEmpty(a) && isEmpty(b))
+    if (a.isEmpty() && b.isEmpty())
       return true;
-    if (isEmpty(a) || isEmpty(b))
+    if (a.isEmpty() || b.isEmpty())
       return false;
     if (a.getItem() != b.getItem())
       return false;
-    if (sizeOf(a) != sizeOf(b))
+    if (a.getCount() != b.getCount())
       return false;
     if (a.getDamageValue() != b.getDamageValue())
       return false;
@@ -312,19 +280,19 @@ public abstract class InvTools {
 
   public static boolean isItemGreaterOrEqualThan(@Nullable ItemStack stackA,
       @Nullable ItemStack stackB) {
-    return ItemStack.isSame(stackA, stackB) && sizeOf(stackA) >= sizeOf(stackB);
+    return ItemStack.isSame(stackA, stackB) && stackA.getCount() >= stackB.getCount();
   }
 
   public static boolean isItemLessThanOrEqualTo(@Nullable ItemStack stackA,
       @Nullable ItemStack stackB) {
-    return ItemStack.isSame(stackA, stackB) && sizeOf(stackA) <= sizeOf(stackB);
+    return ItemStack.isSame(stackA, stackB) && stackA.getCount() <= stackB.getCount();
   }
 
   public static void writeInvToNBT(IInventory inv, String tag, CompoundNBT data) {
     ListNBT list = new ListNBT();
     for (byte slot = 0; slot < inv.getContainerSize(); slot++) {
       ItemStack stack = inv.getItem(slot);
-      if (!isEmpty(stack)) {
+      if (!stack.isEmpty()) {
         CompoundNBT itemTag = new CompoundNBT();
         itemTag.putByte(TAG_SLOT, slot);
         writeItemToNBT(stack, itemTag);
@@ -347,27 +315,27 @@ public abstract class InvTools {
   }
 
   public static void writeItemToNBT(ItemStack stack, CompoundNBT data) {
-    if (isEmpty(stack))
+    if (stack.isEmpty())
       return;
-    if (sizeOf(stack) > 127)
+    if (stack.getCount() > 127)
       setSize(stack, 127);
     stack.save(data);
   }
 
   public static boolean isStackEqualToBlock(ItemStack stack, @Nullable Block block) {
-    return !(isEmpty(stack) || block == null) && stack.getItem() instanceof BlockItem
+    return !(stack.isEmpty() || block == null) && stack.getItem() instanceof BlockItem
         && ((BlockItem) stack.getItem()).getBlock() == block;
   }
 
   public static Block getBlockFromStack(ItemStack stack) {
-    if (isEmpty(stack))
+    if (stack.isEmpty())
       return Blocks.AIR;
     Item item = stack.getItem();
     return item instanceof BlockItem ? ((BlockItem) item).getBlock() : Blocks.AIR;
   }
 
   public static BlockState getBlockStateFromStack(ItemStack stack) {
-    if (isEmpty(stack))
+    if (stack.isEmpty())
       return Blocks.AIR.defaultBlockState();
     // noinspection deprecation
     return getBlockFromStack(stack).defaultBlockState();
@@ -375,7 +343,7 @@ public abstract class InvTools {
 
   public static @Nullable BlockState getBlockStateFromStack(ItemStack stack, World world,
       BlockPos pos) {
-    if (isEmpty(stack))
+    if (stack.isEmpty())
       return null;
     Item item = stack.getItem();
     if (item instanceof BlockItem) {

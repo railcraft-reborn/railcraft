@@ -13,7 +13,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
-import mods.railcraft.world.level.block.SignalBoxBlock;
+import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.BlockModel;

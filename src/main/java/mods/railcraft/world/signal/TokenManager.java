@@ -8,10 +8,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import mods.railcraft.NBTPlugin;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -65,7 +65,7 @@ public class TokenManager {
           List<INBT> signalList = entry.getList("signals", Constants.NBT.TAG_COMPOUND);
           Set<BlockPos> signalPositions = signalList.stream()
               .map(CompoundNBT.class::cast)
-              .map(signal -> NBTPlugin.readBlockPos(signal, "pos"))
+              .map(NBTUtil::readBlockPos)
               .filter(Objects::nonNull)
               .collect(Collectors.toSet());
           tokenRing.loadSignals(signalPositions);
@@ -88,9 +88,7 @@ public class TokenManager {
         tokenData.putUUID("uuid", tokenRing.getUUID());
         ListNBT signalList = new ListNBT();
         for (BlockPos pos : tokenRing.getSignals()) {
-          CompoundNBT signal = new CompoundNBT();
-          NBTPlugin.writeBlockPos(signal, "pos", pos);
-          signalList.add(signal);
+          signalList.add(NBTUtil.writeBlockPos(pos));
         }
         tokenData.put("signals", signalList);
         ListNBT cartList = new ListNBT();

@@ -62,8 +62,9 @@ public interface IInventoryComposite
   @Override
   default ItemStack moveOneItemTo(IInventoryComposite dest, Predicate<ItemStack> filter) {
     return stream().map(src -> src.moveOneItemTo(dest, filter))
-        .filter(InvTools::nonEmpty)
-        .findFirst().orElseGet(InvTools::emptyStack);
+        .filter(StackFilters.nonEmpty())
+        .findFirst()
+        .orElse(ItemStack.EMPTY);
   }
 
   @Override
@@ -73,7 +74,7 @@ public interface IInventoryComposite
     List<ItemStack> stacks = new ArrayList<>();
     for (InventoryAdaptor inv : iterable()) {
       List<ItemStack> tempStacks = inv.extractItems(amountNeeded, filter, simulate);
-      amountNeeded -= tempStacks.stream().mapToInt(InvTools::sizeOf).sum();
+      amountNeeded -= tempStacks.stream().mapToInt(ItemStack::getCount).sum();
       stacks.addAll(tempStacks);
       if (amountNeeded <= 0)
         return stacks;
@@ -113,8 +114,9 @@ public interface IInventoryComposite
   @Override
   default ItemStack removeStack(int maxAmount, Predicate<ItemStack> filter, boolean simulate) {
     return stream().map(inv -> inv.removeStack(maxAmount, filter, simulate))
-        .filter(InvTools::nonEmpty)
-        .findFirst().orElseGet(InvTools::emptyStack);
+        .filter(StackFilters.nonEmpty())
+        .findFirst()
+        .orElse(ItemStack.EMPTY);
   }
 
   /**
@@ -129,8 +131,8 @@ public interface IInventoryComposite
   default ItemStack addStack(ItemStack stack, boolean simulate) {
     for (InventoryAdaptor inv : iterable()) {
       stack = inv.addStack(stack, simulate);
-      if (InvTools.isEmpty(stack))
-        return InvTools.emptyStack();
+      if (stack.isEmpty())
+        return ItemStack.EMPTY;
     }
     return stack;
   }

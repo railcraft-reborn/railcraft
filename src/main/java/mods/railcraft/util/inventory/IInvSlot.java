@@ -18,12 +18,12 @@ public interface IInvSlot {
   boolean canTakeStackFromSlot();
 
   default boolean hasStack() {
-    return !InvTools.isEmpty(getStack());
+    return !getStack().isEmpty();
   }
 
   default boolean containsItem(Item item) {
     ItemStack stack = getStack();
-    return !InvTools.isEmpty(stack) && stack.getItem() == item;
+    return !stack.isEmpty() && stack.getItem() == item;
   }
 
   default boolean matches(Predicate<ItemStack> filter) {

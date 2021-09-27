@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.track.behaivor;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.CartToolsAPI;
-import mods.railcraft.api.tracks.TrackKit;
+import mods.railcraft.api.tracks.TrackType;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.Train;
 import mods.railcraft.util.MiscTools;
@@ -20,13 +20,14 @@ import net.minecraft.world.World;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public enum SpeedController {
+public enum SpeedController implements TrackType.EventHandler {
 
   IRON, // 0.4 vanilla
   ABANDONED {
     @Override
-    public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
-      return 0.36D; // vanilla is 0.4f, this track is ""broken"" so you only get 90% of the vanilla speed
+    public float getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
+      return 0.36F; // vanilla is 0.4f, this track is ""broken"" so you only get 90% of the vanilla
+                    // speed
     }
 
     private boolean isDerailing(
@@ -38,8 +39,9 @@ public enum SpeedController {
     }
 
     @Override
+    @Nullable
     // FIXME: Client and Server sync is not maintained here. Could result in strange behavior.
-    public @Nullable RailShape getRailDirectionOverride(IBlockReader world,
+    public RailShape getRailShapeOverride(IBlockReader level,
         BlockPos pos, BlockState state, @Nullable AbstractMinecartEntity cart) {
       if (cart != null && !cart.level.isClientSide()) {
         RailShape shape = TrackTools.getTrackDirectionRaw(state);
@@ -65,57 +67,37 @@ public enum SpeedController {
       return null;
     }
   },
-
   HIGH_SPEED {
+
     @Override
-    public void onMinecartPass(World world, AbstractMinecartEntity cart, BlockPos pos,
-        @Nullable TrackKit trackKit) {
-      HighSpeedTools.performHighSpeedChecks(world, pos, cart, trackKit);
+    public void minecartPass(World level, AbstractMinecartEntity cart, BlockPos pos) {
+      HighSpeedTools.performHighSpeedChecks(level, pos, cart);
     }
 
     @Override
-    public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart,
+    public float getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart,
         BlockPos pos) {
-      RailShape dir = TrackTools.getTrackDirection(world, pos, cart);
-      if (dir.isAscending())
-        return HighSpeedTools.SPEED_SLOPE;
-      return HighSpeedTools.speedForNextTrack(world, pos, 0, cart);
+      return TrackTools.getTrackDirection(level, pos, cart).isAscending()
+          ? HighSpeedTools.SPEED_SLOPE
+          : HighSpeedTools.speedForNextTrack(level, pos, 0, cart);
     }
   },
-
   REINFORCED {
+
     @Override
-    public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart,
+    public float getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart,
         BlockPos pos) {
-      RailShape dir = TrackTools.getTrackDirection(world, pos, cart);
-      if (TrackShapeHelper.isTurn(dir) || TrackShapeHelper.isAscending(dir))
-        return 0.4D;
-      return 0.44D; // 0.4f vanilla, this gets 10% more so 1.1*(ourspeed)
+      final RailShape shape = TrackTools.getTrackDirection(level, pos, cart);
+      // 0.4f vanilla, this gets 10% more so 1.1*(ourspeed)
+      return TrackShapeHelper.isTurn(shape) || TrackShapeHelper.isAscending(shape) ? 0.4F : 0.44F;
     }
   },
 
   STRAP_IRON {
+
     @Override
-    public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
-      return Railcraft.serverConfig.strapIronTrackMaxSpeed.get();
+    public float getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
+      return Railcraft.serverConfig.strapIronTrackMaxSpeed.get().floatValue();
     }
   };
-
-  public void onMinecartPass(World world, AbstractMinecartEntity cart, BlockPos pos,
-      @Nullable TrackKit trackKit) {}
-
-  public @Nullable RailShape getRailDirectionOverride(IBlockReader world,
-      BlockPos pos, BlockState state, @Nullable AbstractMinecartEntity cart) {
-    return null;
-  }
-  /**
-   * Returns the max speed of the rail at the specified position.
-   * @param world The world.
-   * @param cart The cart on the rail, may be null.
-   * @param pos Block's position in world
-   * @return The max speed of the current rail.
-   */
-  public double getMaxSpeed(World world, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
-    return 0.4D;
-  }
 }

@@ -3,7 +3,6 @@ package mods.railcraft.world.level.material.fluid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
@@ -33,8 +32,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -44,13 +41,13 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public final class FluidTools {
+
   public static final int BUCKET_FILL_TIME = 8;
   public static final int NETWORK_UPDATE_INTERVAL = 128;
   public static final int BUCKET_VOLUME = 1000;
@@ -58,31 +55,11 @@ public final class FluidTools {
 
   private FluidTools() {}
 
-
-  public static @Nullable FluidStack copy(@Nullable FluidStack fluidStack) {
-    return fluidStack == null ? null : fluidStack.copy();
-  }
-
-  public static boolean matches(@Nullable FluidStack left, @Nullable FluidStack right) {
-    // FluidStack#equals calls isFluidEqual
-    return Objects.equals(left, right);
-    // return left == null ? right == null : left.isFluidEqual(right);
-  }
-
   public static ITextComponent toString(@Nullable FluidStack fluidStack) {
     if (fluidStack == null)
       return new StringTextComponent("null");
     return new StringTextComponent(fluidStack.getAmount() + "x")
         .append(fluidStack.getDisplayName());
-  }
-
-  public static LazyOptional<IFluidHandler> getFluidHandler(ICapabilityProvider object) {
-    return getFluidHandler(null, object);
-  }
-
-  public static LazyOptional<IFluidHandler> getFluidHandler(@Nullable Direction side,
-      ICapabilityProvider object) {
-    return object.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
   }
 
   public static boolean interactWithFluidHandler(PlayerEntity player, Hand hand,
@@ -145,7 +122,7 @@ public final class FluidTools {
   public static ProcessState processContainer(IInventory inv, StandardTank tank, ProcessType type,
       ProcessState state) {
     ItemStack container = inv.getItem(1);
-    if (InvTools.isEmpty(container) || FluidUtil.getFluidHandler(container) == null) {
+    if (container.isEmpty() || !FluidUtil.getFluidHandler(container).isPresent()) {
       sendToProcessing(inv);
       return ProcessState.RESET;
     }
@@ -175,138 +152,10 @@ public final class FluidTools {
     return state;
   }
 
-  /**
-   * Process containers in input/output slot like the in the tank cart.
-   *
-   * @param tank Fluid tank
-   * @param inv The inventory that contains input/output slots
-   * @param inputSlot The input slot number
-   * @param outputSlot The output slot number
-   * @return {@code true} if changes have been done to the tank
-   * @deprecated The two slot functions are deprecated in favor of the three slot function in order
-   *             to support partial containers. All usage should be migrated.
-   */
-  @Deprecated
-  public static boolean processContainers(StandardTank tank, IInventory inv, int inputSlot,
-      int outputSlot) {
-    return processContainers(tank, inv, inputSlot, outputSlot, tank.getFluidType(), true, true);
-  }
-
-  @Deprecated
-  public static boolean processContainers(StandardTank tank, IInventory inv, int inputSlot,
-      int outputSlot, @Nullable Fluid fluidToFill, boolean processFilled, boolean processEmpty) {
-    TankManager tankManger = new TankManager();
-    tankManger.add(tank);
-    return processContainers(tankManger, inv, inputSlot, outputSlot, fluidToFill, processFilled,
-        processEmpty);
-  }
-
-  @Deprecated
-  public static boolean processContainers(TankManager tank, IInventory inv, int inputSlot,
-      int outputSlot, @Nullable Fluid fluidToFill) {
-    return processContainers(tank, inv, inputSlot, outputSlot, fluidToFill, true, true);
-  }
-
-  @Deprecated
-  public static boolean processContainers(IFluidHandler fluidHandler, IInventory inv, int inputSlot,
-      int outputSlot, @Nullable Fluid fluidToFill, boolean processFilled, boolean processEmpty) {
-    ItemStack input = inv.getItem(inputSlot);
-
-    if (InvTools.isEmpty(input))
-      return false;
-
-    if (processFilled && drainContainers(fluidHandler, inv, inputSlot, outputSlot))
-      return true;
-
-    if (processEmpty && fluidToFill != null)
-      return fillContainers(fluidHandler, inv, inputSlot, outputSlot, fluidToFill);
-    return false;
-  }
-
-  @Deprecated
-  public static boolean fillContainers(IFluidHandler source, IInventory inv, int inputSlot,
-      int outputSlot, @Nullable Fluid fluidToFill) {
-    ItemStack input = inv.getItem(inputSlot);
-    // need an empty container
-    if (InvTools.isEmpty(input))
-      return false;
-    ItemStack output = inv.getItem(outputSlot);
-    FluidActionResult container =
-        FluidUtil.tryFillContainer(input, source, BUCKET_VOLUME, null, false);
-    // check failure
-    if (!container.isSuccess())
-      return false;
-    // check filled fluid type
-    if (fluidToFill != null && !InvTools.isEmpty(container.getResult())) {
-      if (FluidUtil.getFluidContained(container.getResult())
-          .filter(fluidStack -> fluidStack.getFluid() == fluidToFill).isPresent())
-        return false;
-    }
-    // check place for container
-    if (!InvTools.canMerge(output, container.getResult()))
-      return false;
-    // do actual things here
-    container = FluidUtil.tryFillContainer(input, source, BUCKET_VOLUME, null, true);
-    storeContainer(inv, inputSlot, outputSlot, container.getResult());
-    return true;
-  }
-
-  @Deprecated
-  public static boolean drainContainers(IFluidHandler dest, IInventory inv, int inputSlot,
-      int outputSlot) {
-    ItemStack input = inv.getItem(inputSlot);
-    // need a valid container
-    if (InvTools.isEmpty(input))
-      return false;
-    ItemStack output = inv.getItem(outputSlot);
-    FluidActionResult container =
-        FluidUtil.tryEmptyContainer(input, dest, BUCKET_VOLUME, null, false);
-    // check failure
-    if (!container.isSuccess())
-      return false;
-    // check place for container
-    if (!InvTools.canMerge(output, container.getResult()))
-      return false;
-    // do actual things here
-    container = FluidUtil.tryEmptyContainer(input, dest, BUCKET_VOLUME, null, true);
-    storeContainer(inv, inputSlot, outputSlot, container.getResult());
-    return true;
-  }
-
-  /**
-   * We can assume that if null is passed for the container that the container was consumed by the
-   * process and we should just remove the input container.
-   */
-  @Deprecated
-  private static void storeContainer(IInventory inv, int inputSlot, int outputSlot,
-      @Nullable ItemStack container) {
-    if (InvTools.isEmpty(container)) {
-      inv.removeItem(inputSlot, 1);
-      return;
-    }
-    ItemStack output = inv.getItem(outputSlot);
-    if (InvTools.isEmpty(output))
-      inv.setItem(outputSlot, container);
-    else
-      InvTools.inc(output);
-    inv.removeItem(inputSlot, 1);
-  }
-
   public static void initWaterBottle(boolean nerf) {
     WaterBottleEventHandler.INSTANCE.amount = nerf ? 333 : 1000;
     MinecraftForge.EVENT_BUS.register(WaterBottleEventHandler.INSTANCE);
   }
-
-  private static @Nullable FluidStack drainForgeFluid(BlockState state, World world, BlockPos pos,
-      FluidAction doDrain) {
-    if (state.getBlock() instanceof IFluidBlock) {
-      IFluidBlock fluidBlock = (IFluidBlock) state.getBlock();
-      if (fluidBlock.canDrain(world, pos))
-        return fluidBlock.drain(world, pos, doDrain);
-    }
-    return null;
-  }
-
 
   public static boolean isFullFluidBlock(World world, BlockPos pos) {
     return isFullFluidBlock(world.getBlockState(pos), world, pos);
@@ -332,6 +181,7 @@ public final class FluidTools {
       double py = (double) pos.getY() - 1.05D;
       double pz = (double) ((float) pos.getZ() + rand.nextFloat());
 
+      // TODO implement this particle
       // Particle fx =
       // new ParticleDrip(world, new Vec3d(px, py, pz), particleRed, particleGreen, particleBlue);
       // FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
@@ -349,7 +199,8 @@ public final class FluidTools {
         continue;
       if (!filter.test(tile))
         continue;
-      FluidTools.getFluidHandler(side.getOpposite(), tile).ifPresent(targets::add);
+      tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite())
+          .ifPresent(targets::add);
     }
     return targets;
   }
@@ -383,45 +234,45 @@ public final class FluidTools {
     }
 
     @Override
-    protected void setFluid(@Nullable FluidStack fluid) {
-      if (fluid == null) {
-        container = new ItemStack(Items.GLASS_BOTTLE);
+    protected void setFluid(FluidStack fluid) {
+      if (fluid.isEmpty()) {
+        this.container = new ItemStack(Items.GLASS_BOTTLE);
       }
     }
 
     @Override
-    public @Nullable FluidStack drain(FluidStack resource, FluidAction doDrain) {
-      if (InvTools.sizeOf(container) != 1 || resource == null
+    public FluidStack drain(FluidStack resource, FluidAction doDrain) {
+      if (this.container.getCount() != 1 || resource.isEmpty()
           || resource.getAmount() < WaterBottleEventHandler.INSTANCE.amount) {
-        return null;
+        return FluidStack.EMPTY;
       }
 
       FluidStack fluidStack = getFluid();
-      if (fluidStack != null && fluidStack.isFluidEqual(resource)) {
+      if (!fluidStack.isEmpty() && fluidStack.isFluidEqual(resource)) {
         if (doDrain.execute()) {
-          setFluid((FluidStack) null);
+          this.setFluid(FluidStack.EMPTY);
         }
         return fluidStack;
       }
 
-      return null;
+      return FluidStack.EMPTY;
     }
 
     @Override
-    public @Nullable FluidStack drain(int maxDrain, FluidAction doDrain) {
-      if (container.getCount() != 1 || maxDrain < WaterBottleEventHandler.INSTANCE.amount) {
-        return null;
+    public FluidStack drain(int maxDrain, FluidAction doDrain) {
+      if (this.container.getCount() != 1 || maxDrain < WaterBottleEventHandler.INSTANCE.amount) {
+        return FluidStack.EMPTY;
       }
 
       FluidStack fluidStack = getFluid();
-      if (fluidStack != null) {
+      if (!fluidStack.isEmpty()) {
         if (doDrain.execute()) {
-          setFluid((FluidStack) null);
+          this.setFluid(FluidStack.EMPTY);
         }
         return fluidStack;
       }
 
-      return null;
+      return FluidStack.EMPTY;
     }
 
     @Override

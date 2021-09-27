@@ -55,7 +55,7 @@ public abstract class AbstractMaintenancePatternMinecartEntity extends AbstractM
 
     if (!stackStock.isEmpty() && !InvTools.isItemEqual(stackReplace, stackStock)) {
       CartToolsAPI.transferHelper().offerOrDropItem(this, stackStock);
-      setItem(slotStock, InvTools.emptyStack());
+      setItem(slotStock, ItemStack.EMPTY);
       stackStock = ItemStack.EMPTY;
     }
 

@@ -225,7 +225,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
   }
 
   public boolean canHeadHarvestBlock(ItemStack head, BlockState targetState) {
-    if (InvTools.isEmpty(head))
+    if (head.isEmpty())
       return false;
 
     if (head.getItem() instanceof IBoreHead) {
@@ -494,7 +494,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
         entities.forEach(e -> e.hurt(RailcraftDamageSource.BORE, 2));
 
         ItemStack head = getItem(0);
-        if (!InvTools.isEmpty(head)) {
+        if (!head.isEmpty()) {
           head.hurt(entities.size(), this.random, CartTools.getFakePlayer(this));
         }
       }
@@ -665,7 +665,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
   protected void stockBallast() {
     ItemStack stack =
         CartToolsAPI.transferHelper().pullStack(this, StackFilters.roomIn(invBallast));
-    if (!InvTools.isEmpty(stack))
+    if (!stack.isEmpty())
       invBallast.addStack(stack);
   }
 
@@ -673,7 +673,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
     if (!Block.canSupportRigidBlock(this.level, targetPos))
       for (IExtInvSlot slot : InventoryIterator.get(invBallast)) {
         ItemStack stack = slot.getStack();
-        if (!InvTools.isEmpty(stack) && BallastRegistry.isItemBallast(stack)) {
+        if (!stack.isEmpty() && BallastRegistry.isItemBallast(stack)) {
           BlockPos.Mutable searchPos = targetPos.mutable();
           for (int i = 0; i < MAX_FILL_DEPTH; i++) {
             searchPos.move(Direction.DOWN);
@@ -682,7 +682,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
               BlockState state = InvTools.getBlockStateFromStack(stack, this.level, targetPos);
               if (state != null) {
                 slot.decreaseStack();
-                WorldPlugin.setBlockState(this.level, targetPos, state);
+                this.level.setBlockAndUpdate(targetPos, state);
                 return true;
               }
             } else {
@@ -705,7 +705,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
   protected void stockTracks() {
     ItemStack stack = CartToolsAPI.transferHelper().pullStack(this, StackFilters.roomIn(invRails));
-    if (!InvTools.isEmpty(stack))
+    if (!stack.isEmpty())
       invRails.addStack(stack);
   }
 
@@ -720,7 +720,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
         && Block.canSupportRigidBlock(this.level, targetPos.below()))
       for (IInvSlot slot : InventoryIterator.get(invRails)) {
         ItemStack stack = slot.getStack();
-        if (!InvTools.isEmpty(stack)) {
+        if (!stack.isEmpty()) {
           boolean placed = TrackToolsAPI.placeRailAt(
               stack, (ServerWorld) this.level, targetPos, shape);
           if (placed) {
@@ -809,7 +809,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
       return true;
 
     ItemStack head = getItem(0);
-    if (InvTools.isEmpty(head))
+    if (head.isEmpty())
       return false;
 
     if (!canMineBlock(targetPos, targetState))
@@ -835,13 +835,13 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
             if (StackFilters.FUEL.test(stack))
               stack = invFuel.addStack(stack);
 
-            if (!InvTools.isEmpty(stack) && InvTools.isStackEqualToBlock(stack, Blocks.GRAVEL))
+            if (!stack.isEmpty() && InvTools.isStackEqualToBlock(stack, Blocks.GRAVEL))
               stack = invBallast.addStack(stack);
 
-            if (!InvTools.isEmpty(stack))
+            if (!stack.isEmpty())
               stack = CartToolsAPI.transferHelper().pushStack(this, stack);
 
-            if (!InvTools.isEmpty(stack)) {
+            if (!stack.isEmpty()) {
               Block.popResource(this.level, this.blockPosition(), stack);
             }
           });
@@ -867,7 +867,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
     hardness *= HARDNESS_MULTIPLIER;
 
     ItemStack boreSlot = getItem(0);
-    if (!InvTools.isEmpty(boreSlot) && boreSlot.getItem() instanceof IBoreHead) {
+    if (!boreSlot.isEmpty() && boreSlot.getItem() instanceof IBoreHead) {
       IBoreHead head = (IBoreHead) boreSlot.getItem();
       double dig = head.getDigModifier();
       hardness /= dig;
@@ -997,7 +997,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
   protected void stockFuel() {
     ItemStack stack = CartToolsAPI.transferHelper().pullStack(this, StackFilters.roomIn(invFuel));
-    if (!InvTools.isEmpty(stack))
+    if (!stack.isEmpty())
       invFuel.addStack(stack);
   }
 
@@ -1005,7 +1005,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
     int burn = 0;
     for (int slot = 0; slot < invFuel.getContainerSize(); slot++) {
       ItemStack stack = invFuel.getItem(slot);
-      if (!InvTools.isEmpty(stack)) {
+      if (!stack.isEmpty()) {
         burn = FuelPlugin.getBurnTime(stack);
         if (burn > 0) {
           if (stack.getItem().hasContainerItem(stack))
@@ -1036,7 +1036,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
   protected void forceUpdateBoreHead() {
     ItemStack boreStack = getItem(0);
-    if (!InvTools.isEmpty(boreStack))
+    if (!boreStack.isEmpty())
       boreStack = boreStack.copy();
     entityData.set(BORE_HEAD, boreStack);
   }

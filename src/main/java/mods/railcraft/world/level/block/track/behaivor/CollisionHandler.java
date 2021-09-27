@@ -17,11 +17,11 @@ public enum CollisionHandler {
   NULL,
   ELECTRIC {
     @Override
-    public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
+    public void entityInside(World level, BlockPos pos, BlockState blockState, Entity entity) {
       if (entity instanceof LivingEntity)
-        Charge.distribution.network(world).access(pos).zap(entity, Charge.DamageOrigin.TRACK, 2F);
+        Charge.distribution.network(level).access(pos).zap(entity, Charge.DamageOrigin.TRACK, 2F);
     }
   };
 
-  public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {}
+  public void entityInside(World level, BlockPos pos, BlockState blockState, Entity entity) {}
 }

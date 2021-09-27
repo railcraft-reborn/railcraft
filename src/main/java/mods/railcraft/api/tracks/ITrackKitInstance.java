@@ -48,23 +48,15 @@ import net.minecraft.world.World;
 @ParametersAreNonnullByDefault
 public interface ITrackKitInstance extends INetworkedObject {
 
-  <T extends TileEntity & IOutfittedTrackTile> T getTile();
+  <T extends TileEntity & IOutfittedTrackTile> T getBlockEntity();
 
   <T extends TileEntity & IOutfittedTrackTile> void setTile(T tileEntity);
 
   TrackKit getTrackKit();
 
-  /**
-   * Return the render state. Ranges from 0 to 15. Used by the TrackKit blockstate JSON to determine
-   * which model/texture to display.
-   */
-  default int getRenderState() {
-    return 0;
-  }
-
   default List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
     List<ItemStack> drops = new ArrayList<>();
-    drops.add(getTrackKit().getTrackKitItem());
+    drops.add(this.getTrackKit().createItemStack());
     return drops;
   }
 
@@ -92,7 +84,7 @@ public interface ITrackKitInstance extends INetworkedObject {
 
   default void tick() {}
 
-  ActionResultType use(PlayerEntity player, Hand hand);
+  ActionResultType use(BlockState blockState, PlayerEntity player, Hand hand);
 
   default void onBlockRemoved() {}
 
@@ -101,12 +93,12 @@ public interface ITrackKitInstance extends INetworkedObject {
   void neighborChanged(BlockState state, @Nullable Block neighborBlock);
 
   default BlockPos getPos() {
-    return getTile().getBlockPos();
+    return getBlockEntity().getBlockPos();
   }
 
   @Override
   default @Nullable World theWorld() {
-    return getTile().getLevel();
+    return getBlockEntity().getLevel();
   }
 
   /**
@@ -130,13 +122,13 @@ public interface ITrackKitInstance extends INetworkedObject {
    * Returns the track type of this track.
    */
   default TrackType getTrackType() {
-    return getTile().getTrackType();
+    return getBlockEntity().getTrackType();
   }
 
   /**
    * Requests for saving the data of the track kit.
    */
   default void markDirty() {
-    getTile().setChanged();
+    getBlockEntity().setChanged();
   }
 }

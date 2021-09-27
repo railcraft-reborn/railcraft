@@ -33,9 +33,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraft.world.GrassColors;
+import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -73,6 +75,7 @@ public class ClientDist implements IRailcraftDist {
     modEventBus.addListener(this::handleBlockColors);
     modEventBus.addListener(this::handleTextureStitch);
     modEventBus.addListener(this::handleModelRegistry);
+    modEventBus.addListener(this::handleParticleRegistration);
 
     MinecraftForge.EVENT_BUS.register(this);
 
@@ -97,6 +100,10 @@ public class ClientDist implements IRailcraftDist {
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.TURNOUT_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.WYE_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.FORCE_TRACK_EMITTER.get(),
         RenderType.cutout());
@@ -160,6 +167,12 @@ public class ClientDist implements IRailcraftDist {
             .map(ForceTrackEmitterBlockEntity::getColor)
             .orElse(ForceTrackEmitterBlock.DEFAULT_COLOR)
             .getColorValue(), RailcraftBlocks.FORCE_TRACK_EMITTER.get());
+
+    event.getBlockColors().register(
+        (state, level, pos, tintIndex) -> level != null && pos != null
+            ? BiomeColors.getAverageGrassColor(level, pos)
+            : GrassColors.get(0.5D, 1.0D),
+        RailcraftBlocks.ABANDONED_FLEX_TRACK.get());
   }
 
   private void handleItemColors(ColorHandlerEvent.Item event) {
@@ -193,6 +206,11 @@ public class ClientDist implements IRailcraftDist {
     }
   }
 
+  private void handleParticleRegistration(ParticleFactoryRegisterEvent event) {
+    // final ParticleManager particleEngine = this.minecraft.particleEngine;
+    // particleEngine.register(RailcraftParticles.STEAM.get(), ParticleSteam.Factory::new);
+  }
+
   // ================================================================================
   // Client Forge Events
   // ================================================================================
@@ -205,9 +223,4 @@ public class ClientDist implements IRailcraftDist {
         SignalAspect.tickBlinkState();
     }
   }
-
-  // @SubscribeEvent // this isn't invoking correctly...
-  // public void particleRegistration(ParticleFactoryRegisterEvent event) {
-  //   particleEngine.register(RailcraftParticles.STEAM.get(), ParticleSteam.SteamParticleFactory::new);
-  // }
 }

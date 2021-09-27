@@ -82,7 +82,7 @@ public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlo
     if (player.isShiftKeyDown())
       return ActionResultType.FAIL;
     ItemStack heldItem = player.getItemInHand(hand);
-    if (InvTools.isEmpty(heldItem) || hand == Hand.OFF_HAND)
+    if (heldItem.isEmpty() || hand == Hand.OFF_HAND)
       return ActionResultType.FAIL;
     Optional<? extends ForceTrackEmitterBlockEntity> tile =
         WorldPlugin.getTileEntity(worldIn, pos, ForceTrackEmitterBlockEntity.class);
@@ -108,7 +108,8 @@ public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlo
   @Override
   public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world,
       BlockPos pos, PlayerEntity player) {
-    return getItem(WorldPlugin.getTileEntity(world, pos, ForceTrackEmitterBlockEntity.class).orElse(null));
+    return getItem(
+        WorldPlugin.getTileEntity(world, pos, ForceTrackEmitterBlockEntity.class).orElse(null));
   }
 
   @Override

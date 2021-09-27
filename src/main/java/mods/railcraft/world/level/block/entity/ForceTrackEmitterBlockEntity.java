@@ -7,9 +7,10 @@ import mods.railcraft.plugins.PowerPlugin;
 import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.HostEffects;
 import mods.railcraft.world.item.IMagnifiable;
-import mods.railcraft.world.level.block.ForceTrackBlock;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
+import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -123,7 +124,7 @@ public class ForceTrackEmitterBlockEntity extends RailcraftTickableBlockEntity
       spawnParticles(toPlace);
       BlockState place =
           trackForce.defaultBlockState().setValue(ForceTrackBlock.SHAPE, direction);
-      WorldPlugin.setBlockState(this.level, toPlace, place);
+      this.level.setBlockAndUpdate(toPlace, place);
       TileEntity tile = this.level.getBlockEntity(toPlace);
       if (tile instanceof ForceTrackBlockEntity) {
         ForceTrackBlockEntity track = (ForceTrackBlockEntity) tile;
