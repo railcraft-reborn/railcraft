@@ -1,6 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.function.Supplier;
+import mods.railcraft.tags.RailcraftTags;
 import net.minecraft.block.Blocks;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
@@ -11,8 +12,10 @@ import net.minecraft.util.SoundEvents;
 
 public enum RailcraftArmorMaterial implements IArmorMaterial {
 
-  OVERALLS("overalls", 5, new int[] {1, 2, 3, 1}, 15,
-      SoundEvents.ARMOR_EQUIP_LEATHER, 0F, 0F, () -> Ingredient.of(Blocks.BLUE_WOOL));
+  OVERALLS("railcraft:overalls", 5, new int[] {1, 2, 3, 1}, 15, SoundEvents.ARMOR_EQUIP_LEATHER,
+      0.0F, 0.0F, () -> Ingredient.of(Blocks.BLUE_WOOL)),
+  GOGGLES("railcraft:goggles", 20, new int[] {1, 2, 3, 1}, 15, SoundEvents.ARMOR_EQUIP_LEATHER,
+      0.0F, 0.0F, () -> Ingredient.of(RailcraftTags.Items.STEEL_INGOT));
 
   private static final int[] HEALTH_PER_SLOT = new int[] {13, 15, 16, 11};
   private final String name;

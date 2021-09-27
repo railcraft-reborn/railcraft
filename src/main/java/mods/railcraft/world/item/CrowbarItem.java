@@ -69,6 +69,7 @@ public class CrowbarItem extends ToolItem implements Crowbar {
     return bannedRotations.stream().anyMatch(banned -> banned.isAssignableFrom(cls));
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public ActionResultType onItemUseFirst(ItemStack itemStack, ItemUseContext context) {
     PlayerEntity player = context.getPlayer();
@@ -78,7 +79,7 @@ public class CrowbarItem extends ToolItem implements Crowbar {
     BlockPos pos = context.getClickedPos();
     BlockState blockState = world.getBlockState(pos);
 
-    if (WorldPlugin.isAir(world, pos, blockState))
+    if (blockState.isAir(world, pos))
       return ActionResultType.PASS;
 
     if (player.isShiftKeyDown() != isShiftRotation(blockState.getBlock().getClass()))

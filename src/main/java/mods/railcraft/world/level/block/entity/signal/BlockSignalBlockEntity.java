@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import mods.railcraft.api.signals.BlockSignal;
 import mods.railcraft.api.signals.IBlockSignal;
-import mods.railcraft.api.signals.IControllerProvider;
+import mods.railcraft.api.signals.SignalControllerProvider;
 import mods.railcraft.api.signals.SignalAspect;
 import mods.railcraft.api.signals.SignalTools;
 import mods.railcraft.api.signals.SimpleBlockSignal;
@@ -16,7 +16,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntityType;
 
 public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
-    implements IControllerProvider, IBlockSignal {
+    implements SignalControllerProvider, IBlockSignal {
 
   private static final Logger logger = LogManager.getLogger();
 
@@ -49,7 +49,7 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
     }
 
     if (prevAspect != controller.getAspect()) {
-      sendUpdateToClient();
+      syncToClient();
     }
     if (SignalTools.printSignalDebug && prevAspect != SignalAspect.BLINK_RED
         && controller.getAspect() == SignalAspect.BLINK_RED) {
@@ -78,17 +78,17 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
-    controller.writePacketData(data);
-    signalBlock.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
+    controller.writeSyncData(data);
+    signalBlock.writeSyncData(data);
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
-    controller.readPacketData(data);
-    signalBlock.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
+    controller.readSyncData(data);
+    signalBlock.readSyncData(data);
   }
 
   @Override

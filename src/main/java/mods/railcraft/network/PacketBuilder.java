@@ -3,7 +3,7 @@ package mods.railcraft.network;
 import java.util.Collection;
 import javax.annotation.Nullable;
 import io.netty.buffer.Unpooled;
-import mods.railcraft.api.core.INetworkedObject;
+import mods.railcraft.api.core.Syncable;
 import mods.railcraft.api.signals.ISignalPacketBuilder;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.network.play.RequestPeersUpdateMessage;
@@ -126,7 +126,7 @@ public final class PacketBuilder implements ISignalPacketBuilder {
   // PacketDispatcher.sendToDimension(pkt, cart.world.provider.getDimension());
   // }
 
-  public <T extends Entity & INetworkedObject> void sendEntitySync(T entity) {
+  public <T extends Entity & Syncable> void sendEntitySync(T entity) {
     SyncEntityMessage pkt = new SyncEntityMessage(entity);
     PacketDispatcher.sendToDimension(pkt, entity.level.dimension());
   }

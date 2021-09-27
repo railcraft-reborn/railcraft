@@ -6,10 +6,22 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.signals;
 
+import java.util.UUID;
+import net.minecraft.util.math.BlockPos;
+
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface IControllerProvider {
+public interface TokenSignal extends ISignal {
 
-  SignalController getController();
+  TokenRing getTokenRing();
+
+  BlockPos getTokenRingCentroid();
+
+  UUID getTokenRingId();
+
+  @Override
+  default INetwork getNetwork() {
+    return this.getTokenRing();
+  }
 }

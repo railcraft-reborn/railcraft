@@ -18,7 +18,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import com.google.common.collect.MapMaker;
 import mods.railcraft.api.core.CollectionToolsAPI;
-import mods.railcraft.api.core.INetworkedObject;
+import mods.railcraft.api.core.Syncable;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -30,7 +30,7 @@ import net.minecraft.world.World;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObject {
+public abstract class AbstractNetwork implements IMutableNetwork, Syncable {
 
   protected static final Random rand = new Random();
   private static final boolean IS_BUKKIT;
@@ -243,8 +243,8 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
     return safePeers;
   }
 
-  public TileEntity getTile() {
-    return blockEntity;
+  public TileEntity getBlockEntity() {
+    return this.blockEntity;
   }
 
   @Override
@@ -301,12 +301,12 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
+  public void writeSyncData(PacketBuffer data) {
     data.writeUtf(name != null ? name : "");
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
+  public void readSyncData(PacketBuffer data) {
     this.name = data.readUtf(0x7FFF);
     if (name.isEmpty()) {
       this.name = null;
@@ -314,13 +314,8 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
   }
 
   @Override
-  public void sendUpdateToClient() {
-    ((INetworkedObject) getTile()).sendUpdateToClient();
-  }
-
-  @Override
-  public @Nullable World theWorld() {
-    return getTile().getLevel();
+  public void syncToClient() {
+    ((Syncable) this.getBlockEntity()).syncToClient();
   }
 
   @Override

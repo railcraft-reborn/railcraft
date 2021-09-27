@@ -1,20 +1,18 @@
 package mods.railcraft.world.level.block.entity.signal;
 
 import javax.annotation.Nullable;
-import mods.railcraft.api.signals.IControllerProvider;
 import mods.railcraft.api.signals.SignalAspect;
+import mods.railcraft.api.signals.SignalControllerProvider;
 import mods.railcraft.api.signals.SimpleSignalController;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 
 public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements IControllerProvider {
+    implements SignalControllerProvider {
 
   private final SimpleSignalController controller = new SimpleSignalController("nothing", this);
   public SignalAspect defaultAspect = SignalAspect.GREEN;
@@ -51,12 +49,12 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
     else
       this.controller.setAspect(SignalAspect.BLINK_RED);
     if (prevAspect != this.controller.getAspect())
-      sendUpdateToClient();
+      syncToClient();
   }
 
   @Override
-  public void neighborChanged(BlockState state, Block neighborBlock, BlockPos pos) {
-    super.neighborChanged(state, neighborBlock, pos);
+  public void neighborChanged() {
+    super.neighborChanged();
     if (this.level.isClientSide())
       return;
     this.updateRedstoneState();
@@ -66,7 +64,7 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
     boolean redstoneSignal = this.level.hasNeighborSignal(this.getBlockPos());
     if (redstoneSignal != this.redstoneSignal) {
       this.redstoneSignal = redstoneSignal;
-      this.sendUpdateToClient();
+      this.syncToClient();
     }
   }
 
@@ -109,23 +107,23 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
 
     data.writeVarInt(this.defaultAspect.getId());
     data.writeVarInt(this.poweredAspect.getId());
 
-    this.controller.writePacketData(data);
+    this.controller.writeSyncData(data);
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
 
-    this.defaultAspect = SignalAspect.byId(data.readVarInt());
-    this.poweredAspect = SignalAspect.byId(data.readVarInt());
+    this.defaultAspect = SignalAspect.getById(data.readVarInt());
+    this.poweredAspect = SignalAspect.getById(data.readVarInt());
 
-    this.controller.readPacketData(data);
+    this.controller.readSyncData(data);
   }
 
   @Override

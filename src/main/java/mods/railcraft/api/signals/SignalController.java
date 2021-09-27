@@ -43,7 +43,7 @@ public abstract class SignalController extends AbstractNetwork {
   @Override
   protected void peersChanged() {
     SignalTools.packetBuilder.sendPeerUpdate(NetworkType.CONTROLLER, this.getBlockPos(),
-        this.getPeers(), this.getTile().getLevel().dimension());
+        this.getPeers(), this.getBlockEntity().getLevel().dimension());
   }
 
   @Override
@@ -88,7 +88,7 @@ public abstract class SignalController extends AbstractNetwork {
       for (BlockPos coord : getPeers()) {
         SignalReceiver receiver = getReceiverAt(coord);
         if (receiver != null) {
-          SignalTools.effectManager.tuningEffect(getTile(), receiver.getTile());
+          SignalTools.effectManager.tuningEffect(getBlockEntity(), receiver.getBlockEntity());
         }
       }
     }

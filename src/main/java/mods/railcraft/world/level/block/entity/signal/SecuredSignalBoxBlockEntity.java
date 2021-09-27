@@ -37,7 +37,6 @@ public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlock
     return !isSecure() || PlayerPlugin.isOwnerOrOp(getOwner(), player);
   }
 
-
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
@@ -52,14 +51,14 @@ public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlock
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
     data.writeByte(lockController.getCurrentState());
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
     lockController.setCurrentState(data.readByte());
   }
 }

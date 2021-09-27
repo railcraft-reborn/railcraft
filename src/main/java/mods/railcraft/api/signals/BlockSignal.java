@@ -191,7 +191,7 @@ public abstract class BlockSignal extends AbstractNetwork {
   @Override
   protected void peersChanged() {
     SignalTools.packetBuilder.sendPeerUpdate(NetworkType.BLOCK_SIGNAL, this.getBlockPos(),
-        this.getPeers(), this.getTile().getLevel().dimension());
+        this.getPeers(), this.getBlockEntity().getLevel().dimension());
   }
 
   @Override
@@ -230,14 +230,14 @@ public abstract class BlockSignal extends AbstractNetwork {
     BlockSignal otherSignal = otherTile.getBlockSignal();
     if (otherSignal == this) {
       printDebugPair("Signal Block creation was aborted, cannot pair with self.",
-          otherSignal.getTile());
+          otherSignal.getBlockEntity());
       return false;
     }
-    printDebugPair("Signal Block creation being attempted.", otherSignal.getTile());
+    printDebugPair("Signal Block creation being attempted.", otherSignal.getBlockEntity());
     Status myTrackStatus = trackLocator.getTrackStatus();
     Status otherTrackStatus = otherSignal.getTrackLocator().getTrackStatus();
     if (myTrackStatus == Status.INVALID || otherTrackStatus == Status.INVALID) {
-      printDebugPair("Signal Block creation failed, could not find Track.", otherSignal.getTile());
+      printDebugPair("Signal Block creation failed, could not find Track.", otherSignal.getBlockEntity());
       return false;
     }
     BlockPos myTrack = trackLocator.getTrackLocation();
@@ -247,7 +247,7 @@ public abstract class BlockSignal extends AbstractNetwork {
     TrackScanner.ScanResult scan =
         TrackScanner.scanStraightTrackSection(blockEntity.getLevel(), myTrack, otherTrack);
     if (!scan.areConnected) {
-      printDebugPair("Signal Block creation failed, could not find Path.", otherSignal.getTile());
+      printDebugPair("Signal Block creation failed, could not find Path.", otherSignal.getBlockEntity());
       return false;
     }
     addPairing(otherSignal.getBlockPos());
@@ -255,7 +255,7 @@ public abstract class BlockSignal extends AbstractNetwork {
     endLinking();
     otherSignal.endLinking();
     trackScans.put(otherTrack, scan);
-    printDebugPair("Signal Block created successfully.", otherSignal.getTile());
+    printDebugPair("Signal Block created successfully.", otherSignal.getBlockEntity());
     return true;
   }
 

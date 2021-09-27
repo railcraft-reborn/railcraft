@@ -76,9 +76,20 @@
     "gui.railcraft.locomotive.mode.shutdown":"Shutdown",
     "gui.railcraft.locomotive.mode.running":"Running",
     "gui.railcraft.locomotive.mode.idle":"Idle",
+    
 
     "__DESC.g.r.m": "======= Translation defs about anything, unsorted. =======",
 
     "fluid.railcraft.steam": "Steam",
-    "itemGroup.railcraft": "Railcraft"
+    "itemGroup.railcraft": "Railcraft",
+    "item.railcraft.goggles": "Trackman's Goggles",
+    "gui.railcraft.goggles.aura.worldspike": "Worldspike",
+    "gui.railcraft.goggles.aura.none": "None",
+    "gui.railcraft.goggles.aura.shunting": "Shunting",
+    "gui.railcraft.goggles.aura.signalling": "Signalling",
+    "gui.railcraft.goggles.aura.surveying": "Surveying",
+    "gui.railcraft.goggles.aura.tracking": "Tracking",
+    "gui.railcraft.goggles.aura.tuning": "Tuning",
+    "gui.railcraft.goggles.mode": "Current Aura: %s",
+    "gui.railcraft.goggles.tips": "Use from hotbar to change Auras"
 }

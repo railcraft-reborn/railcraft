@@ -73,7 +73,6 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
   public static final class Builder {
 
     private final Supplier<? extends AbstractRailBlock> baseBlock;
-
     private boolean highSpeed;
     private boolean electric;
     private int maxSupportDistance;
@@ -104,8 +103,8 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
     }
 
     public TrackType build() {
-      return new TrackType(this.baseBlock, this.highSpeed, this.electric, this.maxSupportDistance,
-          this.eventHandler);
+      return new TrackType(this.baseBlock, this.highSpeed,
+          this.electric, this.maxSupportDistance, this.eventHandler);
     }
   }
 

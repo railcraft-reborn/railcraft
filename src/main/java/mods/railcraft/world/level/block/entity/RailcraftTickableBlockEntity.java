@@ -32,7 +32,7 @@ public abstract class RailcraftTickableBlockEntity extends RailcraftBlockEntity
   }
 
   @Override
-  public void sendUpdateToClient() {
+  public void syncToClient() {
     this.dirty = true;
   }
 

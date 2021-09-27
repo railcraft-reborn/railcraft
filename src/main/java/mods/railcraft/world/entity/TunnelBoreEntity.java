@@ -375,6 +375,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
     this.setBoundingBox(new AxisAlignedBB(minX, y, minZ, maxX, y + height, maxZ));
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public void tick() {
     clock++;
@@ -449,7 +450,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
               TrackTools.setTrackDirection(this.level, targetPos, dir);
               setDelay(STANDARD_DELAY);
             }
-          } else if (WorldPlugin.isAir(this.level, targetPos, existingState)
+          } else if (existingState.isAir(this.level, targetPos)
               || replaceableBlocks.contains(existingState.getBlock())) {
             placeRail = true;
             setDelay(STANDARD_DELAY);
@@ -669,6 +670,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
       invBallast.addStack(stack);
   }
 
+  @SuppressWarnings("deprecation")
   protected boolean placeBallast(BlockPos targetPos) {
     if (!Block.canSupportRigidBlock(this.level, targetPos))
       for (IExtInvSlot slot : InventoryIterator.get(invBallast)) {
@@ -687,7 +689,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
               }
             } else {
               BlockState state = this.level.getBlockState(searchPos);
-              if (!WorldPlugin.isAir(this.level, searchPos, state)
+              if (!state.isAir(this.level, searchPos)
                   && !state.getMaterial().isLiquid()) {
                 // Break other blocks first
                 WorldPlugin.playerRemoveBlock(this.level, searchPos.immutable(),
@@ -709,6 +711,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
       invRails.addStack(stack);
   }
 
+  @SuppressWarnings("deprecation")
   protected boolean placeTrack(BlockPos targetPos, BlockState oldState,
       RailShape shape) {
     PlayerEntity owner = CartTools.getFakePlayer(this);
@@ -716,7 +719,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
     if (replaceableBlocks.contains(oldState.getBlock()))
       WorldPlugin.destroyBlock(this.level, targetPos, owner, true);
 
-    if (WorldPlugin.isAir(this.level, targetPos, oldState)
+    if (oldState.isAir(this.level, targetPos)
         && Block.canSupportRigidBlock(this.level, targetPos.below()))
       for (IInvSlot slot : InventoryIterator.get(invRails)) {
         ItemStack stack = slot.getStack();
@@ -795,8 +798,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
   /**
    * @return true if the target block is clear
    */
+  @SuppressWarnings("deprecation")
   protected boolean mineBlock(BlockPos targetPos, RailShape preferredShape) {
-    if (WorldPlugin.isAir(this.level, targetPos))
+    if (this.level.getBlockState(targetPos).isAir(this.level, targetPos))
       return true;
 
     BlockState targetState = this.level.getBlockState(targetPos);
@@ -880,8 +884,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
     return hardness;
   }
 
+  @SuppressWarnings("deprecation")
   protected float getBlockHardness(BlockPos pos, RailShape dir) {
-    if (WorldPlugin.isAir(this.level, pos))
+    if (this.level.getBlockState(pos).isAir(this.level, pos))
       return 0;
 
     BlockState blockState = this.level.getBlockState(pos);

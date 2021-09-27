@@ -2,8 +2,6 @@ package mods.railcraft.world.level.block.track;
 
 import javax.annotation.Nullable;
 import mods.railcraft.carts.CartConstants;
-import mods.railcraft.plugins.PowerPlugin;
-import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
 import net.minecraft.block.AbstractRailBlock;
@@ -19,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -43,7 +42,7 @@ public class ElevatorTrackBlock extends Block {
   public static final byte ELEVATOR_TIMER = 20;
 
   public static final DirectionProperty FACING = HorizontalBlock.FACING;
-  public static final BooleanProperty POWERED = BooleanProperty.create("powered");
+  public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   protected static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
   protected static final VoxelShape WEST_AABB = Block.box(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
   protected static final VoxelShape SOUTH_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 3.0D);
@@ -166,69 +165,66 @@ public class ElevatorTrackBlock extends Block {
   }
 
   @Override
-  public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer,
+  public void setPlacedBy(World level, BlockPos pos, BlockState blockState, LivingEntity placer,
       ItemStack stack) {
-    boolean powered = getPowered(state);
-    if (powered != this.determinePowered(world, pos, state))
-      world.setBlockAndUpdate(pos, state.setValue(POWERED, !powered));
+    boolean powered = getPowered(blockState);
+    if (powered != this.determinePowered(level, pos, blockState))
+      level.setBlockAndUpdate(pos, blockState.setValue(POWERED, !powered));
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block neighborBlock,
+  public void neighborChanged(BlockState blockState, World level, BlockPos pos, Block neighborBlock,
       BlockPos neighborPos, boolean something) {
-    super.neighborChanged(state, worldIn, pos, neighborBlock, neighborPos, something);
-    boolean powered = getPowered(state);
-    if (powered != this.determinePowered(worldIn, pos, state))
-      worldIn.setBlockAndUpdate(pos, state.setValue(POWERED, !powered));
+    super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, something);
+    boolean powered = getPowered(blockState);
+    if (powered != this.determinePowered(level, pos, blockState))
+      level.setBlockAndUpdate(pos, blockState.setValue(POWERED, !powered));
   }
 
   @Override
-  public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+  public void entityInside(BlockState blockState, World level, BlockPos pos, Entity entityIn) {
     entityIn.fallDistance = 0;
-    if (worldIn.isClientSide() || !(entityIn instanceof AbstractMinecartEntity))
+    if (level.isClientSide() || !(entityIn instanceof AbstractMinecartEntity))
       return;
-    minecartInteraction(worldIn, (AbstractMinecartEntity) entityIn, pos);
+    minecartInteraction(level, (AbstractMinecartEntity) entityIn, pos);
   }
 
-  ////////////////////////////////////////////////////////////////////////////
-  // PROTECTED //
-  ////////////////////////////////////////////////////////////////////////////
-  protected boolean determinePowered(World world, BlockPos pos, BlockState state) {
+  protected boolean determinePowered(World level, BlockPos pos, BlockState state) {
     BlockPos posUp = pos.above();
-    BlockState stateUp = world.getBlockState(posUp);
-    return PowerPlugin.isBlockBeingPowered(world, pos)
-        || stateUp.getBlock() == this && determinePowered(world, posUp, stateUp);
+    BlockState stateUp = level.getBlockState(posUp);
+    return level.hasNeighborSignal(pos)
+        || stateUp.getBlock() == this && this.determinePowered(level, posUp, stateUp);
   }
 
   /**
    * Updates the state of a single minecart that is within the block's area of effect according to
    * the state of the block.
    *
-   * @param world the world in which the block resides
+   * @param level the world in which the block resides
    * @param cart the minecart for which the state will be updated. It is assumed that the minecart
    *        is within the area of effect of the block
    */
-  protected void minecartInteraction(World world, AbstractMinecartEntity cart, BlockPos pos) {
+  protected void minecartInteraction(World level, AbstractMinecartEntity cart, BlockPos pos) {
     cart.getPersistentData().putByte(CartConstants.TAG_ELEVATOR, ELEVATOR_TIMER);
     cart.setNoGravity(true);
-    BlockState state = world.getBlockState(pos);
+    BlockState state = level.getBlockState(pos);
     keepMinecartConnected(pos, state, cart);
     boolean hasPath;
     boolean up = getPowered(state);
     if (up) {
-      hasPath = moveUp(world, state, cart, pos);
+      hasPath = moveUp(level, state, cart, pos);
     } else {
-      hasPath = moveDown(world, state, cart, pos);
+      hasPath = moveDown(level, state, cart, pos);
     }
     if (!hasPath) {
-      pushMinecartOntoRail(world, pos, state, cart, up);
+      pushMinecartOntoRail(level, pos, state, cart, up);
     }
   }
 
-  private boolean moveUp(World world, BlockState state, AbstractMinecartEntity cart, BlockPos pos) {
+  private boolean moveUp(World level, BlockState state, AbstractMinecartEntity cart, BlockPos pos) {
     BlockPos posUp = pos.above();
-    boolean hasPath = WorldPlugin.isBlockAt(world, posUp, this) && getPowered(world, posUp);
+    boolean hasPath = level.getBlockState(posUp).is(this) && getPowered(level, posUp);
     if (hasPath) {
       if (isPathEmpty(state, cart, posUp, true)) {
         Vector3d motion = cart.getDeltaMovement();
@@ -241,10 +237,10 @@ public class ElevatorTrackBlock extends Block {
     return false;
   }
 
-  private boolean moveDown(World world, BlockState state, AbstractMinecartEntity cart,
+  private boolean moveDown(World level, BlockState state, AbstractMinecartEntity cart,
       BlockPos pos) {
     BlockPos posDown = pos.below();
-    boolean hasPath = WorldPlugin.isBlockAt(world, posDown, this) && !getPowered(world, posDown);
+    boolean hasPath = level.getBlockState(posDown).is(this) && !getPowered(level, posDown);
     if (hasPath) {
       if (isPathEmpty(state, cart, posDown, false)) {
         Vector3d motion = cart.getDeltaMovement();
@@ -298,7 +294,7 @@ public class ElevatorTrackBlock extends Block {
 
   private boolean isPathEmpty(BlockState state, AbstractMinecartEntity cart, BlockPos pos,
       boolean up) {
-    if (WorldPlugin.getBlockMaterial(cart.level, pos).isSolid())
+    if (cart.level.getBlockState(pos).getMaterial().isSolid())
       return false;
     Direction.Axis axis = state.getValue(FACING).getAxis();
     AABBFactory factory = AABBFactory.start().createBoxForTileAt(pos).expandAxis(axis, 1.0);

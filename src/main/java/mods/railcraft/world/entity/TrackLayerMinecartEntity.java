@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity;
 
-import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.item.RailcraftItems;
@@ -89,14 +88,15 @@ public class TrackLayerMinecartEntity extends AbstractMaintenancePatternMinecart
     return isValidReplacementBlock(pos) && Block.canSupportRigidBlock(this.level, pos);
   }
 
+  @SuppressWarnings("deprecation")
   private boolean isValidReplacementBlock(BlockPos pos) {
     BlockState state = this.level.getBlockState(pos);
     Block block = state.getBlock();
-    return (WorldPlugin.isAir(this.level, pos, state) ||
+    return (state.isAir(this.level, pos) ||
         block instanceof IPlantable ||
-        block instanceof IForgeShearable);
-    // EntityTunnelBore.replaceableBlocks.contains(block)) ||
-    // block.canBeReplaced(this.level, pos);
+        block instanceof IForgeShearable ||
+        TunnelBoreEntity.replaceableTags.stream().anyMatch(state::is) ||
+        TunnelBoreEntity.replaceableBlocks.contains(block));
   }
 
   @Override

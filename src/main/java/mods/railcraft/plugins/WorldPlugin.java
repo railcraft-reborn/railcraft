@@ -6,10 +6,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -69,34 +67,9 @@ public class WorldPlugin {
       consumer.accept(tileClass.cast(tileEntity));
   }
 
-  public static Material getBlockMaterial(IBlockReader world, BlockPos pos) {
-    return world.getBlockState(pos).getMaterial();
-  }
-
   @SuppressWarnings("deprecation")
   public static boolean isAreaLoaded(World world, BlockPos pos1, BlockPos pos2) {
     return world.hasChunksAt(pos1, pos2);
-  }
-
-  public static boolean isAir(IBlockReader world, BlockPos pos) {
-    return isAir(world, pos, world.getBlockState(pos));
-  }
-
-  public static boolean isAir(IBlockReader world, BlockPos pos, BlockState state) {
-    return state.getBlock().isAir(state, world, pos);
-  }
-
-  public static boolean isBlockAt(IBlockReader world, BlockPos pos, @Nullable Block block) {
-    return block != null && block == world.getBlockState(pos).getBlock();
-  }
-
-  public static boolean isBlockAt(IBlockReader world, BlockPos pos,
-      Class<? extends Block> blockClass) {
-    return blockClass.isInstance(world.getBlockState(pos).getBlock());
-  }
-
-  public static boolean isMaterialAt(IBlockReader world, BlockPos pos, Material material) {
-    return world.getBlockState(pos).getMaterial() == material;
   }
 
   public static boolean setBlockState(World world, BlockPos pos, BlockState blockState,
@@ -186,37 +159,17 @@ public class WorldPlugin {
     }
   }
 
-  public static void notifyBlockOfStateChange(World world, BlockPos pos, Block block) {
-    if (world != null && block != null)
-      world.updateNeighborsAt(pos, block);
+  public static void sendBlockUpdated(World world, BlockPos pos) {
+    sendBlockUpdated(world, pos, world.getBlockState(pos));
   }
 
-  public static void notifyBlocksOfNeighborChange(World world, BlockPos pos, Block block) {
-    if (world != null && block != null)
-      world.updateNeighborsAt(pos, block);
+  public static void sendBlockUpdated(World world, BlockPos pos, BlockState state) {
+    sendBlockUpdated(world, pos, state, state);
   }
 
-  public static void notifyBlocksOfNeighborChangeOnSide(World world, BlockPos pos, Block block,
-      Direction side) {
-    world.updateNeighborsAt(pos.relative(side), block);
-  }
-
-  public static void markBlockForUpdate(World world, BlockPos pos) {
-    markBlockForUpdate(world, pos, world.getBlockState(pos));
-  }
-
-  public static void markBlockForUpdate(World world, BlockPos pos, BlockState state) {
-    markBlockForUpdate(world, pos, state, state);
-  }
-
-  public static void markBlockForUpdate(World world, BlockPos pos, BlockState oldState,
+  public static void sendBlockUpdated(World world, BlockPos pos, BlockState oldState,
       BlockState newState) {
-    world.sendBlockUpdated(pos, oldState, newState, 3);
-  }
-
-  public static void addBlockEvent(World world, BlockPos pos, Block block, int key, int value) {
-    if (world != null && block != null)
-      world.blockEvent(pos, block, key, value);
+    world.sendBlockUpdated(pos, oldState, newState, Constants.BlockFlags.DEFAULT);
   }
 
   public static @Nullable BlockPos findBlock(World world, BlockPos pos, int distance,

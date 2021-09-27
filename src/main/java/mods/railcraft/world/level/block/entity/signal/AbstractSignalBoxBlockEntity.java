@@ -20,6 +20,10 @@ public abstract class AbstractSignalBoxBlockEntity extends RailcraftTickableBloc
 
   public void neighboringSignalBoxChanged(AbstractSignalBoxBlockEntity neighbor, Direction side) {}
 
+  public void neighborChanged() {
+    this.resetAdjacentCacheTimers();
+  }
+
   public final void updateNeighborBoxes() {
     for (Direction direction : Direction.Plane.HORIZONTAL) {
       TileEntity blockEntity = this.adjacentCache.getTileOnSide(direction);

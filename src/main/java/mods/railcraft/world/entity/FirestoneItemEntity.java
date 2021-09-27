@@ -61,18 +61,19 @@ public class FirestoneItemEntity extends ItemEntity {
     }
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   protected void lavaHurt() {
-    if (!refined || !this.isAlive() || this.level.isClientSide())
+    if (!this.refined || !this.isAlive() || this.level.isClientSide())
       return;
     BlockState firestoneBlock = RailcraftBlocks.RITUAL.get().defaultBlockState();
     BlockPos surface = this.blockPosition();
-    if (WorldPlugin.getBlockMaterial(this.level, surface) == Material.LAVA
-        || WorldPlugin.getBlockMaterial(this.level, surface.above()) == Material.LAVA)
+    if (this.level.getBlockState(surface).getMaterial() == Material.LAVA
+        || this.level.getBlockState(surface.above()).getMaterial() == Material.LAVA)
       for (int i = 0; i < 10; i++) {
         surface = surface.above();
-        if (WorldPlugin.isAir(this.level, surface)
-            && WorldPlugin.getBlockMaterial(this.level, surface.below()) == Material.LAVA) {
+        if (this.level.getBlockState(surface).isAir(this.level, surface)
+            && this.level.getBlockState(surface.below()).getMaterial() == Material.LAVA) {
           boolean cracked = getItem().getItem() instanceof ItemFirestoneCracked;
           if (WorldPlugin.setBlockState(this.level, surface,
               firestoneBlock.setValue(RitualBlock.CRACKED, cracked),
@@ -93,7 +94,7 @@ public class FirestoneItemEntity extends ItemEntity {
   }
 
   public boolean isRefined() {
-    return refined;
+    return this.refined;
   }
 
   public void setRefined(boolean refined) {
@@ -103,12 +104,12 @@ public class FirestoneItemEntity extends ItemEntity {
   @Override
   public void addAdditionalSaveData(CompoundNBT compound) {
     super.addAdditionalSaveData(compound);
-    compound.putBoolean("refined", refined);
+    compound.putBoolean("refined", this.refined);
   }
 
   @Override
   public void readAdditionalSaveData(CompoundNBT compound) {
-    refined = compound.getBoolean("refined");
+    this.refined = compound.getBoolean("refined");
     super.readAdditionalSaveData(compound);
   }
 }

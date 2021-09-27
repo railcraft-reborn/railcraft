@@ -3,7 +3,6 @@ package mods.railcraft.world.item;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nullable;
-import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
@@ -87,6 +86,7 @@ public class ItemFirestoneRefined extends ItemFirestone {
         : "item.railcraft.firestone.charged"));
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public ActionResultType useOn(ItemUseContext context) {
     PlayerEntity player = context.getPlayer();
@@ -123,7 +123,7 @@ public class ItemFirestoneRefined extends ItemFirestone {
 
       pos = pos.relative(side);
 
-      if (player.mayUseItemAt(pos, side, stack) && WorldPlugin.isAir(world, pos)) {
+      if (player.mayUseItemAt(pos, side, stack) && world.getBlockState(pos).isAir(world, pos)) {
         player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F, random.nextFloat() * 0.4F + 0.8F);
         world.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
         stack.hurt(1, random, (ServerPlayerEntity) player);

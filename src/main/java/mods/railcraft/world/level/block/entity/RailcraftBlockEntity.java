@@ -7,35 +7,33 @@ import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
-import mods.railcraft.api.core.INetworkedObject;
+import mods.railcraft.api.core.Ownable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
-import mods.railcraft.api.signals.ITile;
+import mods.railcraft.api.core.Syncable;
 import mods.railcraft.network.PacketBuilder;
 import mods.railcraft.plugins.PlayerPlugin;
 import mods.railcraft.util.AdjacentBlockEntityCache;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
-public abstract class RailcraftBlockEntity extends TileEntity implements INetworkedObject, ITile {
+public abstract class RailcraftBlockEntity extends TileEntity
+    implements Syncable, Ownable {
 
   protected final AdjacentBlockEntityCache adjacentCache = new AdjacentBlockEntityCache(this);
 
   private GameProfile owner = RailcraftFakePlayer.UNKNOWN_USER_PROFILE;
-  private @Nullable UUID uuid;
+
+  @Nullable
+  private UUID id;
 
   @Nullable
   private ITextComponent customName;
@@ -44,16 +42,10 @@ public abstract class RailcraftBlockEntity extends TileEntity implements INetwor
     super(type);
   }
 
-  public static boolean isUsableByPlayerHelper(TileEntity tile, PlayerEntity player) {
-    return !tile.isRemoved() && tile.getLevel().getBlockEntity(tile.getBlockPos()) == tile
-        && player.distanceToSqr(tile.getBlockPos().getX(), tile.getBlockPos().getY(),
-            tile.getBlockPos().getZ()) <= 64;
-  }
-
-  public UUID getUUID() {
-    if (uuid == null)
-      uuid = UUID.randomUUID();
-    return uuid;
+  public UUID getId() {
+    if (this.id == null)
+      this.id = UUID.randomUUID();
+    return this.id;
   }
 
   public AdjacentBlockEntityCache getAdjacentCache() {
@@ -62,7 +54,7 @@ public abstract class RailcraftBlockEntity extends TileEntity implements INetwor
 
   @Override
   public final SUpdateTileEntityPacket getUpdatePacket() {
-    return new SUpdateTileEntityPacket(getBlockPos(), 0, getUpdateTag());
+    return new SUpdateTileEntityPacket(this.getBlockPos(), 0, this.getUpdateTag());
   }
 
   @Override
@@ -70,7 +62,7 @@ public abstract class RailcraftBlockEntity extends TileEntity implements INetwor
     CompoundNBT nbt = super.getUpdateTag();
     PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
 
-    writePacketData(packetBuffer);
+    this.writeSyncData(packetBuffer);
     byte[] syncData = new byte[packetBuffer.readableBytes()];
     packetBuffer.readBytes(syncData);
     nbt.putByteArray("sync", syncData);
@@ -81,39 +73,20 @@ public abstract class RailcraftBlockEntity extends TileEntity implements INetwor
   @Override
   public final void handleUpdateTag(BlockState blockState, CompoundNBT nbt) {
     byte[] bytes = nbt.getByteArray("sync");
-    readPacketData(new PacketBuffer(Unpooled.wrappedBuffer(bytes)));
+    this.readSyncData(new PacketBuffer(Unpooled.wrappedBuffer(bytes)));
   }
 
   @Override
   public final void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-    handleUpdateTag(this.getBlockState(), pkt.getTag());
+    this.handleUpdateTag(this.getBlockState(), pkt.getTag());
   }
 
   @Override
-  public void markBlockForUpdate() {
-    if (this.hasLevel()) {
-      BlockState state = getBlockState();
-      if (state.getBlock().hasTileEntity(state))
-        this.level.sendBlockUpdated(this.getBlockPos(), state, state, Constants.BlockFlags.DEFAULT);
-    }
-  }
-
-  @Override
-  public void sendUpdateToClient() {
+  public void syncToClient() {
     PacketBuilder.instance().sendTileEntityPacket(this);
   }
 
-  @OverridingMethodsMustInvokeSuper
-  @Override
-  public void setPlacedBy(BlockState state, @Nullable LivingEntity placer,
-      ItemStack stack) {
-    if (placer instanceof PlayerEntity)
-      owner = ((PlayerEntity) placer).getGameProfile();
-    notifyBlocksOfNeighborChange();
-  }
-
-  @Override
-  public void neighborChanged(BlockState state, Block neighborBlock, BlockPos neighborPos) {
+  public void resetAdjacentCacheTimers() {
     this.adjacentCache.resetTimers();
   }
 
@@ -130,22 +103,22 @@ public abstract class RailcraftBlockEntity extends TileEntity implements INetwor
   }
 
   public final void clearOwner() {
-    setOwner(RailcraftFakePlayer.UNKNOWN_USER_PROFILE);
+    this.setOwner(RailcraftFakePlayer.UNKNOWN_USER_PROFILE);
   }
 
   protected final void setOwner(GameProfile profile) {
-    owner = profile;
+    this.owner = profile;
     // sendUpdateToClient(); Sending this when a te is initialized will cause client net handler
     // errors because the tile is not yet on client
   }
 
   @Override
   public final GameProfile getOwner() {
-    return owner;
+    return this.owner;
   }
 
   public final boolean isOwner(GameProfile player) {
-    return PlayerPlugin.isSamePlayer(owner, player);
+    return PlayerPlugin.isSamePlayer(this.owner, player);
   }
 
   public List<String> getDebugOutput() {
@@ -154,8 +127,8 @@ public abstract class RailcraftBlockEntity extends TileEntity implements INetwor
     debug.add("Object: " + this);
     if (!this.level.getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO))
       debug.add(String.format("Coordinates: d=%d, %s", this.getLevel().dimension(), getBlockPos()));
-    debug.add("Owner: " + owner.getName());
-    debug.addAll(adjacentCache.getDebugOutput());
+    debug.add("Owner: " + this.owner.getName());
+    debug.addAll(this.adjacentCache.getDebugOutput());
     return debug;
   }
 
@@ -163,9 +136,9 @@ public abstract class RailcraftBlockEntity extends TileEntity implements INetwor
   @OverridingMethodsMustInvokeSuper
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    PlayerPlugin.writeOwnerToNBT(data, owner);
-    if (this.uuid != null)
-      data.putUUID("id", this.uuid);
+    PlayerPlugin.writeOwnerToNBT(data, this.owner);
+    if (this.id != null)
+      data.putUUID("id", this.id);
     if (this.customName != null)
       data.putString("customName", ITextComponent.Serializer.toJson(this.customName));
     return data;
@@ -175,23 +148,28 @@ public abstract class RailcraftBlockEntity extends TileEntity implements INetwor
   @OverridingMethodsMustInvokeSuper
   public void load(BlockState blockState, CompoundNBT data) {
     super.load(blockState, data);
-    owner = PlayerPlugin.readOwnerFromNBT(data);
+    this.owner = PlayerPlugin.readOwnerFromNBT(data);
     if (data.hasUUID("id"))
-      uuid = data.getUUID("id");
+      this.id = data.getUUID("id");
     if (data.contains("customName", Constants.NBT.TAG_STRING))
-      customName = ITextComponent.Serializer.fromJson(data.getString("customName"));
+      this.customName = ITextComponent.Serializer.fromJson(data.getString("customName"));
+  }
+
+  public void updateNeighbors() {
+    if (this.hasLevel())
+      this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
   }
 
   public final int getX() {
-    return getBlockPos().getX();
+    return this.getBlockPos().getX();
   }
 
   public final int getY() {
-    return getBlockPos().getY();
+    return this.getBlockPos().getY();
   }
 
   public final int getZ() {
-    return getBlockPos().getZ();
+    return this.getBlockPos().getZ();
   }
 
   @Override
@@ -205,7 +183,7 @@ public abstract class RailcraftBlockEntity extends TileEntity implements INetwor
 
   @Override
   public ITextComponent getName() {
-    return hasCustomName() ? customName : this.getBlockState().getBlock().getName();
+    return this.hasCustomName() ? this.customName : this.getBlockState().getBlock().getName();
   }
 
   @Override
@@ -213,8 +191,9 @@ public abstract class RailcraftBlockEntity extends TileEntity implements INetwor
     return this.getName();
   }
 
-  @Override
-  public final World theWorld() {
-    return this.level;
+  public static boolean isUsableByPlayerHelper(TileEntity tile, PlayerEntity player) {
+    return !tile.isRemoved() && tile.getLevel().getBlockEntity(tile.getBlockPos()) == tile
+        && player.distanceToSqr(tile.getBlockPos().getX(), tile.getBlockPos().getY(),
+            tile.getBlockPos().getZ()) <= 64;
   }
 }

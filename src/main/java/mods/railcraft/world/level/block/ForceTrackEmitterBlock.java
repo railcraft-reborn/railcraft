@@ -28,6 +28,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -44,7 +45,7 @@ import net.minecraft.world.server.ServerWorld;
 public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlock {
 
   public static final DyeColor DEFAULT_COLOR = DyeColor.LIGHT_BLUE;
-  public static final BooleanProperty POWERED = BooleanProperty.create("powered");
+  public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final DirectionProperty FACING =
       DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
   private static final Map<Charge, ChargeSpec> CHARGE_SPECS =
@@ -163,15 +164,15 @@ public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlo
       BlockPos changedPos, boolean something) {
     super.neighborChanged(state, world, pos, block, changedPos, something);
     WorldPlugin.getTileEntity(world, pos, ForceTrackEmitterBlockEntity.class)
-        .ifPresent(ForceTrackEmitterBlockEntity::checkRedstone);
+        .ifPresent(ForceTrackEmitterBlockEntity::checkSignal);
   }
 
   @Override
   public void setPlacedBy(World world, BlockPos pos, BlockState state,
-      @Nullable LivingEntity livingEntity, ItemStack stack) {
-    super.setPlacedBy(world, pos, state, livingEntity, stack);
+      @Nullable LivingEntity livingEntity, ItemStack itemStack) {
+    super.setPlacedBy(world, pos, state, livingEntity, itemStack);
     WorldPlugin.getTileEntity(world, pos, ForceTrackEmitterBlockEntity.class)
-        .ifPresent(entity -> entity.setPlacedBy(state, livingEntity, stack));
+        .ifPresent(entity -> entity.placed(itemStack));
   }
 
   @SuppressWarnings("deprecation")

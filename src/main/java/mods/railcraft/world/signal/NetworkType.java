@@ -3,7 +3,7 @@ package mods.railcraft.world.signal;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import mods.railcraft.api.signals.IBlockSignal;
-import mods.railcraft.api.signals.IControllerProvider;
+import mods.railcraft.api.signals.SignalControllerProvider;
 import mods.railcraft.api.signals.IMutableNetwork;
 import mods.railcraft.api.signals.IReceiverProvider;
 import mods.railcraft.plugins.WorldPlugin;
@@ -14,8 +14,8 @@ public enum NetworkType {
 
   BLOCK_SIGNAL((level, pos) -> WorldPlugin.getTileEntity(level, pos, IBlockSignal.class)
       .map(IBlockSignal::getBlockSignal)),
-  CONTROLLER((level, pos) -> WorldPlugin.getTileEntity(level, pos, IControllerProvider.class)
-      .map(IControllerProvider::getController)),
+  CONTROLLER((level, pos) -> WorldPlugin.getTileEntity(level, pos, SignalControllerProvider.class)
+      .map(SignalControllerProvider::getController)),
   RECIEVER((level, pos) -> WorldPlugin.getTileEntity(level, pos, IReceiverProvider.class)
       .map(IReceiverProvider::getReceiver));
 

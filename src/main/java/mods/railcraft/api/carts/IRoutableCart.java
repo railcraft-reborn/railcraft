@@ -7,13 +7,13 @@
 
 package mods.railcraft.api.carts;
 
-import mods.railcraft.api.core.IOwnable;
+import mods.railcraft.api.core.Ownable;
 import net.minecraft.item.ItemStack;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public interface IRoutableCart extends IOwnable {
+public interface IRoutableCart extends Ownable {
 
     String getDestination();
 

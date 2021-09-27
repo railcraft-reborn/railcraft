@@ -7,14 +7,14 @@
 
 package mods.railcraft.api.signals;
 
-import mods.railcraft.api.core.IOwnable;
+import mods.railcraft.api.core.Ownable;
 
 /**
  * Created by CovertJaguar on 7/26/2017 for Railcraft.
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface ISignal extends IOwnable {
+public interface ISignal extends Ownable {
 
   INetwork getNetwork();
 

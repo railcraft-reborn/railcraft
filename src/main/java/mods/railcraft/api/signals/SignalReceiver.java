@@ -25,7 +25,7 @@ public abstract class SignalReceiver extends AbstractNetwork {
   public @Nullable SignalController getControllerAt(BlockPos coord) {
     TileEntity con = getPairAt(coord);
     if (con != null) {
-      return ((IControllerProvider) con).getController();
+      return ((SignalControllerProvider) con).getController();
     }
     return null;
   }
@@ -43,7 +43,7 @@ public abstract class SignalReceiver extends AbstractNetwork {
   @Override
   protected void peersChanged() {
     SignalTools.packetBuilder.sendPeerUpdate(NetworkType.RECIEVER, this.getBlockPos(),
-        this.getPeers(), this.getTile().getLevel().dimension());
+        this.getPeers(), this.getBlockEntity().getLevel().dimension());
   }
 
   @Override
@@ -58,21 +58,21 @@ public abstract class SignalReceiver extends AbstractNetwork {
 
   @Override
   public boolean isValidPair(BlockPos otherCoord, TileEntity otherTile) {
-    if (otherTile instanceof IControllerProvider) {
-      SignalController controller = ((IControllerProvider) otherTile).getController();
+    if (otherTile instanceof SignalControllerProvider) {
+      SignalController controller = ((SignalControllerProvider) otherTile).getController();
       return controller.isPeer(getBlockPos());
     }
     return false;
   }
 
   public void onControllerAspectChange(SignalController con, SignalAspect aspect) {
-    ((IReceiverProvider) blockEntity).onControllerAspectChange(con, aspect);
+    ((IReceiverProvider) this.blockEntity).onControllerAspectChange(con, aspect);
   }
 
   @Override
   public boolean add(TileEntity other) {
-    if (blockEntity instanceof IControllerProvider) {
-      registerController(((IControllerProvider) other).getController());
+    if (this.blockEntity instanceof SignalControllerProvider) {
+      registerController(((SignalControllerProvider) other).getController());
       return true;
     }
     return false;

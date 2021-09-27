@@ -48,12 +48,12 @@ public enum ForceTrackEmitterState {
         ForceTrackEmitterBlockEntity emitter) {
       if (emitter.isOutOfPower())
         return HALTED;
-      if (emitter.getNumTracks() >= MAX_TRACKS)
+      if (emitter.getTrackCount() >= MAX_TRACKS)
         return EXTENDED;
       if (emitter.clock(TICKS_PER_ACTION)) {
         Direction facing = emitter.getBlockState().getValue(ForceTrackEmitterBlock.FACING);
         BlockPos toPlace =
-            emitter.getBlockPos().above().relative(facing, emitter.getNumTracks() + 1);
+            emitter.getBlockPos().above().relative(facing, emitter.getTrackCount() + 1);
         if (emitter.getLevel().isLoaded(toPlace)) {
           BlockState blockState = emitter.getLevel().getBlockState(toPlace);
           RailShape direction = TrackTools.getAxisAlignedDirection(facing);
@@ -73,7 +73,7 @@ public enum ForceTrackEmitterState {
     @Override
     ForceTrackEmitterState whenNoCharge(
         ForceTrackEmitterBlockEntity emitter) {
-      if (emitter.getNumTracks() > 0) {
+      if (emitter.getTrackCount() > 0) {
         if (emitter.clock(TICKS_PER_ACTION)) {
           emitter.removeFirstTrack();
         }

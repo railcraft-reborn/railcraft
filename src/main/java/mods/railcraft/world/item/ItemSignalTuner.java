@@ -2,7 +2,7 @@ package mods.railcraft.world.item;
 
 import java.util.Objects;
 import mods.railcraft.api.core.WorldCoordinate;
-import mods.railcraft.api.signals.IControllerProvider;
+import mods.railcraft.api.signals.SignalControllerProvider;
 import mods.railcraft.api.signals.IReceiverProvider;
 import mods.railcraft.api.signals.SignalController;
 import mods.railcraft.api.signals.SignalReceiver;
@@ -42,8 +42,8 @@ public class ItemSignalTuner extends ItemPairingTool {
           SignalReceiver receiver = ((IReceiverProvider) recTile).getReceiver();
           if (!Objects.equals(pos, previousTarget.getPos())) {
             TileEntity conTile = worldIn.getBlockEntity(previousTarget.getPos());
-            if (conTile instanceof IControllerProvider) {
-              SignalController controller = ((IControllerProvider) conTile).getController();
+            if (conTile instanceof SignalControllerProvider) {
+              SignalController controller = ((SignalControllerProvider) conTile).getController();
               if (recTile != conTile) {
                 controller.add(recTile);
                 controller.endLinking();
@@ -67,9 +67,9 @@ public class ItemSignalTuner extends ItemPairingTool {
             }
           }
         }
-      } else if (recTile instanceof IControllerProvider) {
+      } else if (recTile instanceof SignalControllerProvider) {
         if (!worldIn.isClientSide()) {
-          SignalController controller = ((IControllerProvider) recTile).getController();
+          SignalController controller = ((SignalControllerProvider) recTile).getController();
           if (previousTarget == null || !Objects.equals(pos, previousTarget.getPos())) {
             playerIn.sendMessage(
                 new TranslationTextComponent(this.getDescriptionId() + ".start",
