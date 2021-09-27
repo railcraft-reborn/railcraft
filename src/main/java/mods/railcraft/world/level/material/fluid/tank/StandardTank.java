@@ -46,19 +46,76 @@ public class StandardTank extends FluidTank {
     return this.disableFill ? 0 : super.fill(resource, action);
   }
 
+
+  @Override
+  public FluidStack drain(FluidStack resource, FluidAction action) {
+    return this.disableDrain ? FluidStack.EMPTY : super.drain(resource, action);
+  }
+
   @Override
   public FluidStack drain(int maxDrain, FluidAction action) {
     return this.disableDrain ? FluidStack.EMPTY : super.drain(maxDrain, action);
   }
 
+  /**
+   * Internal fill function which IGNORES disablefill made by us.
+   * @param resource FluidStack representing the Fluid and maximum amount of fluid to be
+   * @param action If SIMULATE, fill will only be simulated.
+   * @return Amount of resource that was (or would have been, if simulated) filled.
+   * @see net.minecraftforge.fluids.capability.templates.FluidTank#fill() Forge FluidTank
+   */
+  public int internalFill(FluidStack resource, FluidAction action) {
+    return super.fill(resource, action);
+  }
+
+  /**
+   * Internal fill function which IGNORES disablefill made by us.
+   * @param maxDrain FluidStack representing the Fluid and maximum amount of fluid to be drained.
+   * @param action If SIMULATE, fill will only be simulated.
+   * @return FluidStack representing the Fluid and amount that was (or would have been, if simulated) drained.
+   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain() Forge FluidTank
+   */
+  public FluidStack internalDrain(FluidStack resource, FluidAction action) {
+    return super.drain(resource, action);
+  }
+
+  /**
+   * Internal fill function which IGNORES disablefill made by us.
+   * @param maxDrain Maximum amount of fluid to drain.
+   * @param action If SIMULATE, fill will only be simulated.
+   * @return FluidStack representing the Fluid and amount that was (or would have been, if simulated) drained.
+   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain() Forge FluidTank
+   */
+  public FluidStack internalDrain(int maxDrain, FluidAction action) {
+    return super.drain(maxDrain, action);
+  }
+
+  /**
+   * Disables draning of our tank. Blocks drain() from draining.
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#drain() Drain Function
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalDrain() Bypassed Drain Function
+   */
   public StandardTank disableDrain() {
     this.disableDrain = true;
     return this;
   }
 
+  /**
+   * Disables filling of our tank.
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#fill() Fill Function
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalFill() Bypassed Fill Function
+   */
   public StandardTank disableFill() {
     this.disableFill = true;
     return this;
+  }
+
+  /**
+   * Sets the tank's visibility.
+   * @param hidden
+   */
+  public void setHidden(boolean hidden) {
+    this.hidden = hidden;
   }
 
   public StandardTank setUpdateCallback(@Nullable Consumer<StandardTank> callback) {
@@ -90,6 +147,7 @@ public class StandardTank extends FluidTank {
   }
 
   public @Nullable Fluid getFluidType() {
+    // Change this condition so that it does not always evaluate to "true" [+2 locations]sonarlint(java:S2583) todo fix
     return getFluid() != null ? getFluid().getFluid() : null;
   }
 
@@ -137,9 +195,5 @@ public class StandardTank extends FluidTank {
 
   public boolean isHidden() {
     return hidden;
-  }
-
-  public void setHidden(boolean hidden) {
-    this.hidden = hidden;
   }
 }

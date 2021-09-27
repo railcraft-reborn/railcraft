@@ -16,7 +16,7 @@ public final class SteamConstants {
   public static final float FUEL_PRESSURE_INEFFICIENCY = 4f;
   public static final int STEAM_PER_UNIT_WATER = 160;
   public static final int STEAM_PER_10RF = 5;
-  public static final boolean BOILERS_EXPLODE = true;
+  public static final boolean BOILERS_EXPLODE = true; // TODO: config this
 
   private SteamConstants() {}
 }

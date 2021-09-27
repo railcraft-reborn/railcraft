@@ -17,6 +17,9 @@ public interface IBoilerContainer extends ITemperature, INeedsFuel {
   void steamExplosion(FluidStack resource);
 
   default @Nullable FluidStack onFillWater(@Nullable FluidStack resource) {
+    if (resource == null) {
+      return null;
+    }
     if (!resource.isEmpty()) {
       SteamBoiler boiler = getBoiler();
       if (boiler != null && boiler.isSuperHeated()) {

@@ -20,9 +20,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.PortalParticle;
 import net.minecraft.client.settings.ParticleStatus;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleType;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -42,8 +46,6 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
 
   private final Minecraft mc = Minecraft.getInstance();
   private final Random rand = new Random();
-
-  public static void init() {} // classloading
 
   private ClientEffects() {
     SignalTools.effectManager = this;
@@ -71,7 +73,7 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
       double pX = start.x + (destination.x - start.x) * travel + (rand.nextDouble() - 0.5D) * 2.0D;
       double pY = start.y + (destination.y - start.y) * travel + (rand.nextDouble() - 0.5D) * 2.0D;
       double pZ = start.z + (destination.z - start.z) * travel + (rand.nextDouble() - 0.5D) * 2.0D;
-      // world.spawnParticle(PORTAL, pX, pY, pZ, vX, vY, vZ);
+      spawnParticle(ParticleTypes.PORTAL, pX, pY, pZ, vX, vY, vZ);
     }
   }
 
@@ -79,19 +81,20 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
     if (thinParticles(true))
       return;
 
-    World world = this.mc.level;
-    if (world == null)
-      return;
+    // World world = this.mc.level;
+    // if (world == null)
+    //   return;
 
-    BlockPos pos = data.readBlockPos();
-    int color = data.readInt();
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
+    // BlockPos pos = data.readBlockPos();
+    // int color = data.readInt();
+    // int x = pos.getX();
+    // int y = pos.getY();
+    // int z = pos.getZ();
     // double vx = RANDOM.nextGaussian() * 0.1;
     // double vy = RANDOM.nextDouble() * 0.01;
     // double vz = RANDOM.nextGaussian() * 0.1;
-    Vector3d vel = new Vector3d(0, 0, 0);
+    // Vector3d vel = new Vector3d(0, 0, 0);
+
     // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.1, y, z + 0.1), vel, color));
     // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.9, y, z + 0.1), vel, color));
     // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.1, y, z + 0.9), vel, color));
@@ -200,39 +203,42 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
     // }
   }
 
-  public void snowEffect(World world, Object source, double yOffset) {
-    // if (thinParticles(true))
-    // return;
-    // IEffectSource es = EffectManager.getEffectSource(source);
-    // double vx = rand.nextGaussian() * 0.1;
-    // double vy = rand.nextDouble() * 0.01;
-    // double vz = rand.nextGaussian() * 0.1;
-    // Vector3d start = es.getPosF().add(0.0, yOffset, 0.0);
-    // world.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, start.x, start.y, start.z, vx, vy, vz);
+  public void snowEffect(Object source, double yOffset) {
+    if (thinParticles(true))
+      return;
+    IEffectSource es = EffectManager.getEffectSource(source);
+    double vx = rand.nextGaussian() * 0.1;
+    double vy = rand.nextDouble() * 0.01;
+    double vz = rand.nextGaussian() * 0.1;
+    Vector3d start = es.getPosF().add(0.0, yOffset, 0.0);
+    spawnParticle(ParticleTypes.ITEM_SNOWBALL, start.x, start.y, start.z, vx, vy, vz);
   }
 
-  public void steamEffect(World world, Object source, double yOffset) {
-    // if (thinParticles(true))
-    // return;
-    // IEffectSource es = EffectManager.getEffectSource(source);
-    // double vx = rand.nextGaussian() * 0.1;
-    // double vy = rand.nextDouble() * 0.01;
-    // double vz = rand.nextGaussian() * 0.1;
-    // spawnParticle(
-    // new ParticleSteam(world, es.getPosF().add(0.0, yOffset, 0.0), new Vector3d(vx, vy, vz)));
+  /**
+   * Effect when the train is using steam
+   */
+  public void steamEffect(double x, double y, double z) {
+    if (thinParticles(true))
+      return;
+    double vx = 0; //rand.nextGaussian() * 0.01;
+    double vy = 0.02; //rand.nextGaussian() * 0.01;
+    double vz = 0; //rand.nextGaussian() * 0.01;
+
+    spawnParticle(ParticleTypes.SMOKE, x, y, z, vx, vy, vz); //TODO: Replace with steam
   }
 
-  public void steamJetEffect(ClientWorld world, Object source, Vector3d vel) {
-    // if (thinParticles(true))
-    // return;
-    // IEffectSource es = EffectManager.getEffectSource(source);
-    // vel =
-    // vel.add(rand.nextGaussian() * 0.02, rand.nextGaussian() * 0.02, rand.nextGaussian() * 0.02);
-    // ParticleSteam fx = new ParticleSteam(
-    // world, es.getPosF().x(), es.getPosF().y(), es.getPosF().z(), vel.x(),
-    // vel.y(), vel.z(), 1.5F);
-    // fx.setParticleGravity(0F);
-    // spawnParticle(fx);
+  public void steamJetEffect(Object source, Vector3d vel) {
+    if (thinParticles(true))
+      return;
+    IEffectSource es = EffectManager.getEffectSource(source);
+    vel =
+    vel.add(rand.nextGaussian() * 0.02, rand.nextGaussian() * 0.02, rand.nextGaussian() * 0.02);
+    spawnParticle(
+      ParticleTypes.LARGE_SMOKE,
+      es.getPosF().x(),
+      es.getPosF().y(),
+      es.getPosF().z(),
+      vel.x(), vel.y(), vel.z());
   }
 
   public void chimneyEffect(ClientWorld world, double x, double y, double z, int color) {
@@ -241,13 +247,20 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
 //    spawnParticle(new ParticleChimney(world, x, y, z, color));
   }
 
-  public void locomotiveEffect(ClientWorld world, double x, double y, double z) {
-//    if (thinParticles(false))
-//      return;
-//    if (SeasonPlugin.HALLOWEEN && rand.nextInt(4) == 0) {
-//      spawnParticle(new ParticlePumpkin(world, x, y, z));
-//    } else
-//      spawnParticle(new ParticleLocomotive(world, x, y, z));
+  /**
+   * Effect when the boiler is burning stuff to make steam.
+   * @param x
+   * @param y
+   * @param z
+   */
+  public void locomotiveEffect(double x, double y, double z) {
+    if (thinParticles(false))
+      return;
+    if (SeasonPlugin.HALLOWEEN && rand.nextInt(4) == 0) {
+      //  spawnParticle(new ParticlePumpkin(world, x, y, z));
+      return;
+    }
+    spawnParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0, 0.02, 0);
   }
 
   @Override
@@ -366,7 +379,7 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
     return particleSetting == ParticleStatus.ALL;
   }
 
-  protected void spawnParticle(Particle particle) {
-    mc.particleEngine.add(particle);
+  protected void spawnParticle(IParticleData particle, double pX, double pY, double pZ, double vX, double vY, double vZ) {
+    mc.particleEngine.add(mc.particleEngine.createParticle(particle, pX, pY, pZ, vX, vY, vZ));
   }
 }

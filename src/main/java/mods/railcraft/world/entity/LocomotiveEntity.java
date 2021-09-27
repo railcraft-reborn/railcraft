@@ -373,7 +373,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
       if (SeasonPlugin.isPolarExpress(this)
           && (!MathTools.nearZero(this.getDeltaMovement().x())
               || !MathTools.nearZero(this.getDeltaMovement().z())))
-        ClientEffects.INSTANCE.snowEffect(this.level, this, getBoundingBox().minY - this.getY());
+        ClientEffects.INSTANCE.snowEffect(this, getBoundingBox().minY - this.getY());
       return;
     }
 
