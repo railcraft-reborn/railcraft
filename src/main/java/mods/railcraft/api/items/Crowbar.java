@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 @ActivationBlockingItem
-public interface IToolCrowbar {
+public interface Crowbar {
 
   /**
    * Controls non-rotational interactions with blocks. Crowbar specific stuff.

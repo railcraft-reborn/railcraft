@@ -1,6 +1,6 @@
 package mods.railcraft.world.item.enchantment;
 
-import mods.railcraft.api.items.IToolCrowbar;
+import mods.railcraft.api.items.Crowbar;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 
@@ -30,6 +30,6 @@ public class SmackEnchantment extends RailcraftToolEnchantment {
 
   @Override
   public boolean canApplyAtEnchantingTable(ItemStack stack) {
-    return stack.getItem() instanceof IToolCrowbar;
+    return stack.getItem() instanceof Crowbar;
   }
 }

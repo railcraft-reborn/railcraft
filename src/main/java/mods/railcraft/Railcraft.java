@@ -22,7 +22,6 @@ import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import mods.railcraft.world.level.block.track.kit.TrackKits;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -89,7 +88,6 @@ public class Railcraft {
     RailcraftItems.ITEMS.register(modEventBus);
     RailcraftBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
     TrackTypes.TRACK_TYPES.register(modEventBus);
-    TrackKits.TRACK_KITS.register(modEventBus);
     RailcraftFluids.FLUIDS.register(modEventBus);
     RailcraftMenuTypes.MENU_TYPES.register(modEventBus);
     RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);

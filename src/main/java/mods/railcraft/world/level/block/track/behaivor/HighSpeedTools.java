@@ -96,9 +96,9 @@ public final class HighSpeedTools {
     return TrackTools.getTrackTypeAt(world, pos).isHighSpeed();
   }
 
-  public static float speedForNextTrack(World world, BlockPos pos, int dist,
+  public static double speedForNextTrack(World world, BlockPos pos, int dist,
       @Nullable AbstractMinecartEntity cart) {
-    float maxSpeed = Railcraft.serverConfig.highSpeedTrackMaxSpeed.get().floatValue();
+    double maxSpeed = Railcraft.serverConfig.highSpeedTrackMaxSpeed.get();
     if (dist < LOOK_AHEAD_DIST)
       for (Direction side : Direction.Plane.HORIZONTAL) {
         BlockPos nextPos = pos.relative(side);

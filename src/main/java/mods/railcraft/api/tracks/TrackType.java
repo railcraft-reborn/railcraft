@@ -7,21 +7,17 @@
 
 package mods.railcraft.api.tracks;
 
-import java.util.Map;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
@@ -32,17 +28,14 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 public class TrackType extends ForgeRegistryEntry<TrackType> {
 
   private final Supplier<? extends AbstractRailBlock> baseBlock;
-  private final Map<ResourceLocation, Supplier<? extends AbstractRailBlock>> outfittedBlocks;
   private final boolean highSpeed;
   private final boolean electric;
   private final int maxSupportDistance;
   private final EventHandler eventHandler;
 
   public TrackType(Supplier<? extends AbstractRailBlock> baseBlock,
-      Map<ResourceLocation, Supplier<? extends AbstractRailBlock>> outfittedBlocks,
       boolean highSpeed, boolean electric, int maxSupportDistance, EventHandler eventHandler) {
     this.baseBlock = baseBlock;
-    this.outfittedBlocks = outfittedBlocks;
     this.highSpeed = highSpeed;
     this.electric = electric;
     this.maxSupportDistance = maxSupportDistance;
@@ -51,21 +44,6 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
 
   public AbstractRailBlock getBaseBlock() {
     return this.baseBlock.get();
-  }
-
-  @Nullable
-  public AbstractRailBlock getOutfittedBlock(TrackKit trackKit) {
-    return this.getOutfittedBlock(trackKit.getRegistryName());
-  }
-
-  @Nullable
-  public AbstractRailBlock getOutfittedBlock(RegistryObject<? extends TrackKit> trackKit) {
-    return this.getOutfittedBlock(trackKit.getId());
-  }
-
-  @Nullable
-  public AbstractRailBlock getOutfittedBlock(ResourceLocation trackKitId) {
-    return this.outfittedBlocks.get(trackKitId).get();
   }
 
   public boolean isHighSpeed() {
@@ -95,8 +73,7 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
   public static final class Builder {
 
     private final Supplier<? extends AbstractRailBlock> baseBlock;
-    private final ImmutableMap.Builder<ResourceLocation, Supplier<? extends AbstractRailBlock>> outfittedBlocks =
-        ImmutableMap.builder();
+
     private boolean highSpeed;
     private boolean electric;
     private int maxSupportDistance;
@@ -104,17 +81,6 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
 
     public Builder(Supplier<? extends AbstractRailBlock> baseBlock) {
       this.baseBlock = baseBlock;
-    }
-
-    public Builder addOutfittedBlock(RegistryObject<? extends TrackKit> trackKit,
-        Supplier<? extends AbstractRailBlock> block) {
-      return this.addOutfittedBlock(trackKit.getId(), block);
-    }
-
-    public Builder addOutfittedBlock(ResourceLocation trackKitId,
-        Supplier<? extends AbstractRailBlock> block) {
-      this.outfittedBlocks.put(trackKitId, block);
-      return this;
     }
 
     public Builder setHighSpeed(boolean highSpeed) {
@@ -138,15 +104,13 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
     }
 
     public TrackType build() {
-      return new TrackType(this.baseBlock, this.outfittedBlocks.build(), this.highSpeed,
-          this.electric, this.maxSupportDistance, this.eventHandler);
+      return new TrackType(this.baseBlock, this.highSpeed, this.electric, this.maxSupportDistance,
+          this.eventHandler);
     }
   }
 
   /**
    * Event handler for tracks
-   * 
-   * @see mods.railcraft.world.level.block.track.TrackTypes.Handler TrackTypes Handler
    */
   public interface EventHandler {
 
@@ -185,8 +149,8 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
      * @param pos Block's position in world
      * @return The max speed of the current rail.
      */
-    default float getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
-      return 0.4F;
+    default double getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
+      return 0.4D;
     }
   }
 }

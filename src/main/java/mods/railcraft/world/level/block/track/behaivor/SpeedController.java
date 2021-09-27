@@ -25,8 +25,8 @@ public enum SpeedController implements TrackType.EventHandler {
   IRON, // 0.4 vanilla
   ABANDONED {
     @Override
-    public float getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
-      return 0.36F; // vanilla is 0.4f, this track is ""broken"" so you only get 90% of the vanilla
+    public double getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
+      return 0.36D; // vanilla is 0.4f, this track is ""broken"" so you only get 90% of the vanilla
                     // speed
     }
 
@@ -75,7 +75,7 @@ public enum SpeedController implements TrackType.EventHandler {
     }
 
     @Override
-    public float getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart,
+    public double getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart,
         BlockPos pos) {
       return TrackTools.getTrackDirection(level, pos, cart).isAscending()
           ? HighSpeedTools.SPEED_SLOPE
@@ -85,7 +85,7 @@ public enum SpeedController implements TrackType.EventHandler {
   REINFORCED {
 
     @Override
-    public float getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart,
+    public double getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart,
         BlockPos pos) {
       final RailShape shape = TrackTools.getTrackDirection(level, pos, cart);
       // 0.4f vanilla, this gets 10% more so 1.1*(ourspeed)
@@ -96,8 +96,8 @@ public enum SpeedController implements TrackType.EventHandler {
   STRAP_IRON {
 
     @Override
-    public float getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
-      return Railcraft.serverConfig.strapIronTrackMaxSpeed.get().floatValue();
+    public double getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
+      return Railcraft.serverConfig.strapIronTrackMaxSpeed.get();
     }
   };
 }

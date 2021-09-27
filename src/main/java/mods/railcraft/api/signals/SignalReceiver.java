@@ -66,12 +66,12 @@ public abstract class SignalReceiver extends AbstractNetwork {
   }
 
   public void onControllerAspectChange(SignalController con, SignalAspect aspect) {
-    ((IReceiverProvider) tile).onControllerAspectChange(con, aspect);
+    ((IReceiverProvider) blockEntity).onControllerAspectChange(con, aspect);
   }
 
   @Override
   public boolean add(TileEntity other) {
-    if (tile instanceof IControllerProvider) {
+    if (blockEntity instanceof IControllerProvider) {
       registerController(((IControllerProvider) other).getController());
       return true;
     }

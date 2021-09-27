@@ -17,7 +17,7 @@ public class SwitchTrackLeverBlock extends SwitchTrackActuatorBlock {
   @Override
   public ActionResultType use(BlockState blockState, World level, BlockPos blockPos,
       PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
-    this.setSwitched(blockState, level, blockPos, !blockState.getValue(SWITCHED));
+    setSwitched(blockState, level, blockPos, !blockState.getValue(SWITCHED));
     return ActionResultType.sidedSuccess(level.isClientSide());
   }
 }

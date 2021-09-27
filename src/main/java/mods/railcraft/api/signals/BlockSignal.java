@@ -48,9 +48,9 @@ public abstract class BlockSignal extends AbstractNetwork {
   // private UUID uuid = UUID.randomUUID();
   private boolean changedAspect;
 
-  protected BlockSignal(String locTag, TileEntity tile, int numPairs) {
-    super(locTag, tile, numPairs);
-    this.trackLocator = new TrackLocator(tile);
+  protected BlockSignal(String locTag, TileEntity blockEntity, int numPairs) {
+    super(locTag, blockEntity, numPairs);
+    this.trackLocator = new TrackLocator(blockEntity.getLevel(), blockEntity.getBlockPos());
   }
 
   private @Nullable BlockSignal getSignalAt(BlockPos coord) {
@@ -78,9 +78,9 @@ public abstract class BlockSignal extends AbstractNetwork {
   private void printDebugPair(String msg, @Nullable TileEntity ot) {
     if (SignalTools.printSignalDebug)
       if (ot == null)
-        log(DEBUG_LEVEL, msg + " source:[{0}] target:[null]", tile.getBlockPos());
+        log(DEBUG_LEVEL, msg + " source:[{0}] target:[null]", blockEntity.getBlockPos());
       else
-        log(DEBUG_LEVEL, msg + " source:[{0}] target:[{1}] target class:{2}", tile.getBlockPos(),
+        log(DEBUG_LEVEL, msg + " source:[{0}] target:[{1}] target class:{2}", blockEntity.getBlockPos(),
             ot.getBlockPos(), ot.getClass());
 
   }
@@ -88,9 +88,9 @@ public abstract class BlockSignal extends AbstractNetwork {
   private void printDebugPair(String msg, @Nullable BlockPos coord) {
     if (SignalTools.printSignalDebug)
       if (coord == null)
-        log(DEBUG_LEVEL, msg + " source:[{0}] target:[null]", tile.getBlockPos());
+        log(DEBUG_LEVEL, msg + " source:[{0}] target:[null]", blockEntity.getBlockPos());
       else
-        log(DEBUG_LEVEL, msg + " source:[{0}] target:[{1}]", tile.getBlockPos(), coord);
+        log(DEBUG_LEVEL, msg + " source:[{0}] target:[{1}]", blockEntity.getBlockPos(), coord);
   }
 
   @Override
@@ -118,7 +118,7 @@ public abstract class BlockSignal extends AbstractNetwork {
     // boolean isConsistent = test.containsAll(getPairs());
     // printDebug("Signal Block saved NBT. [{0}, {1}, {2}] [verified: {3}] [changedAspect: {4}]
     // [data: {5}]", tile.xCoord, tile.yCoord, tile.zCoord, isConsistent, changedAspect, test);
-    printDebug("Signal Block saved NBT. [{0}] [changedAspect: {1}] [data: {1}]", tile.getBlockPos(),
+    printDebug("Signal Block saved NBT. [{0}] [changedAspect: {1}] [data: {1}]", blockEntity.getBlockPos(),
         changedAspect, peers);
     // savedData.put(uuid, new LinkedList<WorldCoordinate>(pairings));
     // }
@@ -147,7 +147,7 @@ public abstract class BlockSignal extends AbstractNetwork {
     // isConsistent = "false";
     // }
 
-    printDebug("Signal Block loaded NBT. [{0}] [data: {1}]", tile.getBlockPos(), peers);
+    printDebug("Signal Block loaded NBT. [{0}] [data: {1}]", blockEntity.getBlockPos(), peers);
     // }
   }
 
@@ -157,10 +157,10 @@ public abstract class BlockSignal extends AbstractNetwork {
     if (SignalTools.printSignalDebug) {
       // logTrace(DEBUG_LEVEL, 10, "Signal Block code Path");
 
-      Block block = tile.getLevel().getBlockState(other).getBlock();
+      Block block = blockEntity.getLevel().getBlockState(other).getBlock();
       log(DEBUG_LEVEL, "Signal Block target block [{0}, {1}, {2}] = {3}, {4}", other,
           block.getClass(), block.getRegistryName().toString());
-      TileEntity t = tile.getLevel().getBlockEntity(other);
+      TileEntity t = blockEntity.getLevel().getBlockEntity(other);
       if (t != null)
         log(DEBUG_LEVEL, "Signal Block target tile [{0}] = {1}", t.getBlockPos(), t.getClass());
       else
@@ -210,7 +210,7 @@ public abstract class BlockSignal extends AbstractNetwork {
 
   public void cleanPeers() {
     if (!invalidPeers.isEmpty())
-      printDebug("Signal Block pairs cleaned: source:[{0}] targets: {1}", tile.getBlockPos(),
+      printDebug("Signal Block pairs cleaned: source:[{0}] targets: {1}", blockEntity.getBlockPos(),
           invalidPeers);
     super.cleanPeers();
   }
@@ -245,7 +245,7 @@ public abstract class BlockSignal extends AbstractNetwork {
     assert myTrack != null;
     assert otherTrack != null;
     TrackScanner.ScanResult scan =
-        TrackScanner.scanStraightTrackSection(tile.getLevel(), myTrack, otherTrack);
+        TrackScanner.scanStraightTrackSection(blockEntity.getLevel(), myTrack, otherTrack);
     if (!scan.areConnected) {
       printDebugPair("Signal Block creation failed, could not find Path.", otherSignal.getTile());
       return false;
@@ -301,7 +301,7 @@ public abstract class BlockSignal extends AbstractNetwork {
     int xOffset = otherTrack.getX() > myTrack.getX() ? -3 : 3;
     int zOffset = otherTrack.getZ() > myTrack.getZ() ? -3 : 3;
 
-    List<AbstractMinecartEntity> carts = CartToolsAPI.getMinecartsIn(tile.getLevel(),
+    List<AbstractMinecartEntity> carts = CartToolsAPI.getMinecartsIn(blockEntity.getLevel(),
         new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2));
     // System.out.printf("%d, %d, %d, %d, %d, %d\n", i1, j1, k1, i2, j2, k2);
     // System.out.println("carts = " + carts.size());
@@ -335,7 +335,7 @@ public abstract class BlockSignal extends AbstractNetwork {
     if (scan == null) {
       BlockPos myTrack = trackLocator.getTrackLocation();
       if (myTrack != null) {
-        scan = TrackScanner.scanStraightTrackSection(tile.getLevel(), myTrack, otherTrack);
+        scan = TrackScanner.scanStraightTrackSection(blockEntity.getLevel(), myTrack, otherTrack);
         trackScans.put(otherTrack, scan);
       }
     }
@@ -380,7 +380,7 @@ public abstract class BlockSignal extends AbstractNetwork {
     if (myTrack == null)
       return new TrackValidationStatus(true, "INVALID_MY_TRACK_NULL");
     TrackScanner.ScanResult scan =
-        TrackScanner.scanStraightTrackSection(tile.getLevel(), myTrack, otherTrack);
+        TrackScanner.scanStraightTrackSection(blockEntity.getLevel(), myTrack, otherTrack);
     trackScans.put(otherTrack, scan);
     if (scan.verdict == TrackScanner.ScanResult.Verdict.VALID)
       return new TrackValidationStatus(true, "VALID");
@@ -406,7 +406,7 @@ public abstract class BlockSignal extends AbstractNetwork {
       updateSignalAspect();
       if (getSignalAspect() == SignalAspect.BLINK_RED && prev != SignalAspect.BLINK_RED)
         printDebug("Signal Block changed aspect to BLINK_RED: source:[{0}] pairs: {1}",
-            tile.getBlockPos(), peers);
+            blockEntity.getBlockPos(), peers);
     }
     if (update % VALIDATION_CHECK_INTERVAL == 0) {
       Status trackStatus = trackLocator.getTrackStatus();
@@ -414,7 +414,7 @@ public abstract class BlockSignal extends AbstractNetwork {
         case INVALID:
           clearSignalBlockPairing(null,
               "Signal Block dropped because no track was found near Signal. [{0}]",
-              tile.getBlockPos());
+              blockEntity.getBlockPos());
           break;
         case VALID:
           for (BlockPos otherCoord : waitingForRetest) {
@@ -422,7 +422,7 @@ public abstract class BlockSignal extends AbstractNetwork {
             if (!status.isValid)
               clearSignalBlockPairing(otherCoord,
                   "Signal Block dropped because track between Signals was invalid. source:[{0}] target:[{1}, {2}, {3}] reason:{4}",
-                  tile.getBlockPos(), otherCoord, status.message);
+                  blockEntity.getBlockPos(), otherCoord, status.message);
           }
           waitingForRetest.clear();
           for (BlockPos otherCoord : this.getPeers()) {

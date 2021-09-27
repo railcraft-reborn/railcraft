@@ -9,9 +9,6 @@ package mods.railcraft.api.items;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
-import mods.railcraft.api.tracks.TrackKit;
-import mods.railcraft.api.tracks.TrackToolsAPI;
 import mods.railcraft.api.tracks.TrackType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -54,31 +51,4 @@ public interface ISpikeMaulTarget {
    */
   boolean setToTarget(World world, BlockPos pos, BlockState state, PlayerEntity player,
       RailShape shape, TrackType trackType);
-
-  class TrackKitTarget implements ISpikeMaulTarget {
-    private final Supplier<TrackKit> trackKit;
-
-    public TrackKitTarget(Supplier<TrackKit> trackKit) {
-      this.trackKit = trackKit;
-    }
-
-    @Override
-    public boolean matches(World world, BlockPos pos, BlockState state) {
-      return TrackToolsAPI.getTrackKit(world, pos) == trackKit.get();
-    }
-
-    @Override
-    public boolean setToTarget(World world,
-        BlockPos pos,
-        BlockState state,
-        PlayerEntity player,
-        RailShape shape,
-        TrackType trackType) {
-
-      // TODO this
-      return false;
-      // return TrackToolsAPI.blockTrackOutfitted.place(world, pos, player, shape, trackType,
-      // trackKit.get());
-    }
-  }
 }

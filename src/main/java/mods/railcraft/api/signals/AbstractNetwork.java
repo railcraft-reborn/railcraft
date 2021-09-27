@@ -47,7 +47,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
 
   private static final int SAFE_TIME = 32;
   private static final int PAIR_CHECK_INTERVAL = 16;
-  public final TileEntity tile;
+  public final TileEntity blockEntity;
   public final String locTag;
   public final int maxPeers;
   protected final Deque<BlockPos> peers = CollectionToolsAPI.blockPosDeque(LinkedList::new);
@@ -64,8 +64,8 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
   private boolean needsInit = true;
   private @Nullable String name;
 
-  protected AbstractNetwork(String locTag, TileEntity tile, int maxPairings) {
-    this.tile = tile;
+  protected AbstractNetwork(String locTag, TileEntity blockEntity, int maxPairings) {
+    this.blockEntity = blockEntity;
     this.maxPeers = maxPairings;
     this.locTag = locTag;
   }
@@ -130,7 +130,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
       peersToTestNext.retainAll(peers);
       for (BlockPos coord : peersToTestNext) {
 
-        World world = tile.getLevel();
+        World world = blockEntity.getLevel();
         if (!world.isLoaded(coord))
           continue;
 
@@ -189,7 +189,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
       return null;
     }
 
-    World world = tile.getLevel();
+    World world = blockEntity.getLevel();
     if (!world.isLoaded(coord))
       return null;
 
@@ -218,7 +218,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
 
   public BlockPos getBlockPos() {
     if (blockPos == null)
-      blockPos = tile.getBlockPos().immutable();
+      blockPos = blockEntity.getBlockPos().immutable();
     return blockPos;
   }
 
@@ -244,7 +244,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
   }
 
   public TileEntity getTile() {
-    return tile;
+    return blockEntity;
   }
 
   @Override
@@ -336,7 +336,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
   @Override
   public void clear() {
     peers.clear();
-    if (!tile.getLevel().isClientSide())
+    if (!blockEntity.getLevel().isClientSide())
       this.peersChanged();
   }
 }

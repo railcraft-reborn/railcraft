@@ -1,13 +1,10 @@
 package mods.railcraft.world.level.block.entity;
 
-import mods.railcraft.api.tracks.IOutfittedTrackTile;
-import mods.railcraft.api.tracks.ITrackKitInstance;
-import mods.railcraft.api.tracks.ITrackKitLockdown;
+import mods.railcraft.api.tracks.LockdownTrack;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.properties.RailShape;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 
@@ -18,19 +15,18 @@ public enum ForceTrackEmitterState {
    */
   EXTENDED(true) {
     @Override
-    ForceTrackEmitterState afterUseCharge(ForceTrackEmitterBlockEntity emitter) {
+    ForceTrackEmitterState afterUseCharge(
+        ForceTrackEmitterBlockEntity emitter) {
       return emitter.clock(TICKS_PER_REFRESH) ? EXTENDING : this;
     }
 
     @Override
     void onTransition(ForceTrackEmitterBlockEntity emitter) {
-      // TODO: just emit redstone?
-      TileEntity tile = emitter.adjacentCache.getTileOnSide(Direction.UP);
-      if (tile instanceof IOutfittedTrackTile) {
-        IOutfittedTrackTile trackTile = (IOutfittedTrackTile) tile;
-        ITrackKitInstance track = trackTile.getTrackKitInstance();
-        if (track instanceof ITrackKitLockdown)
-          ((ITrackKitLockdown) track).releaseCart();
+      BlockPos pos = emitter.getBlockPos().above();
+      BlockState blockState = emitter.getLevel().getBlockState(pos);
+      if (blockState.getBlock() instanceof LockdownTrack) {
+        LockdownTrack lockdownTrack = (LockdownTrack) blockState.getBlock();
+        lockdownTrack.releaseCart(blockState, emitter.getLevel(), pos);
       }
     }
   },
@@ -48,7 +44,8 @@ public enum ForceTrackEmitterState {
    */
   EXTENDING(true) {
     @Override
-    ForceTrackEmitterState afterUseCharge(ForceTrackEmitterBlockEntity emitter) {
+    ForceTrackEmitterState afterUseCharge(
+        ForceTrackEmitterBlockEntity emitter) {
       if (emitter.isOutOfPower())
         return HALTED;
       if (emitter.getNumTracks() >= MAX_TRACKS)
@@ -56,9 +53,7 @@ public enum ForceTrackEmitterState {
       if (emitter.clock(TICKS_PER_ACTION)) {
         Direction facing = emitter.getBlockState().getValue(ForceTrackEmitterBlock.FACING);
         BlockPos toPlace =
-            emitter.getBlockPos().above().relative(
-                facing,
-                emitter.getNumTracks() + 1);
+            emitter.getBlockPos().above().relative(facing, emitter.getNumTracks() + 1);
         if (emitter.getLevel().isLoaded(toPlace)) {
           BlockState blockState = emitter.getLevel().getBlockState(toPlace);
           RailShape direction = TrackTools.getAxisAlignedDirection(facing);
@@ -76,7 +71,8 @@ public enum ForceTrackEmitterState {
    */
   RETRACTING(false) {
     @Override
-    ForceTrackEmitterState whenNoCharge(ForceTrackEmitterBlockEntity emitter) {
+    ForceTrackEmitterState whenNoCharge(
+        ForceTrackEmitterBlockEntity emitter) {
       if (emitter.getNumTracks() > 0) {
         if (emitter.clock(TICKS_PER_ACTION)) {
           emitter.removeFirstTrack();

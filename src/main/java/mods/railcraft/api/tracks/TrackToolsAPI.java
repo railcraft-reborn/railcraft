@@ -19,11 +19,9 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.Property;
 import net.minecraft.state.properties.RailShape;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -33,19 +31,6 @@ import net.minecraft.world.server.ServerWorld;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public final class TrackToolsAPI {
-  /**
-   * This variable is replaced with an instance of BlockTrackOutfitted at runtime, assuming it is
-   * enabled. Avoid relying on the return values of these functions unless you've checked that the
-   * block in the world is indeed an instance of IBlockTrackOutfitted.
-   */
-  public static IBlockTrackOutfitted blockTrackOutfitted;
-
-  /**
-   * Check if the block at the location is a Track.
-   */
-  public static boolean isRailBlockAt(IBlockReader world, BlockPos pos) {
-    return world.getBlockState(pos).getBlock() instanceof AbstractRailBlock;
-  }
 
   public static BlockState setShape(AbstractRailBlock block, @Nullable RailShape trackShape) {
     @SuppressWarnings("deprecation")
@@ -124,11 +109,12 @@ public final class TrackToolsAPI {
     if (AbstractRailBlock.isRail(cart.level, pos.below()))
       pos = pos.below();
 
-    TileEntity tile = cart.level.getBlockEntity(pos);
-    if (tile instanceof IOutfittedTrackTile) {
-      ITrackKitInstance track = ((IOutfittedTrackTile) tile).getTrackKitInstance();
-      return track instanceof ITrackKitLockdown
-          && ((ITrackKitLockdown) track).isCartLockedDown(cart);
+    BlockState blockState = cart.level.getBlockState(pos);
+    if (blockState.getBlock() instanceof LockdownTrack) {
+      LockdownTrack lockdownTrack = (LockdownTrack) blockState.getBlock();
+      if (lockdownTrack.isCartLockedDown(blockState, cart.level, pos, cart)) {
+        return true;
+      }
     }
     return false;
   }
@@ -143,14 +129,6 @@ public final class TrackToolsAPI {
     return AbstractRailBlock.isRail(world, pos)
         || (AbstractRailBlock.isRail(world, pos.above())
             || AbstractRailBlock.isRail(world, pos.below()));
-  }
-
-  @Nullable
-  public static TrackKit getTrackKit(World world, BlockPos pos) {
-    TileEntity blockEntity = world.getBlockEntity(pos);
-    return blockEntity instanceof IOutfittedTrackTile
-        ? ((IOutfittedTrackTile) blockEntity).getTrackKitInstance().getTrackKit()
-        : null;
   }
 
   public static TrackType getTrackType(ItemStack stack) {

@@ -7,6 +7,7 @@
 
 package mods.railcraft.api.tracks;
 
+import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -66,13 +67,13 @@ public final class TrackScanner {
       for (int xx = min; xx <= max; xx++) {
         // if (world.blockExists(xx, yy, z1))
         BlockPos p = new BlockPos(xx, yy, z1);
-        if (TrackToolsAPI.isRailBlockAt(world, p)) {
+        if (AbstractRailBlock.isRail(world, p)) {
           // NOOP
-        } else if (TrackToolsAPI.isRailBlockAt(world, p.below())) {
+        } else if (AbstractRailBlock.isRail(world, p.below())) {
           yy--;
           if (yy < minY)
             minY = yy;
-        } else if (TrackToolsAPI.isRailBlockAt(world, p.above())) {
+        } else if (AbstractRailBlock.isRail(world, p.above())) {
           yy++;
           if (yy > maxY)
             maxY = yy;
@@ -97,13 +98,13 @@ public final class TrackScanner {
       for (int zz = min; zz <= max; zz++) {
         // if (world.blockExists(x1, yy, zz))
         BlockPos p = new BlockPos(x1, yy, zz);
-        if (TrackToolsAPI.isRailBlockAt(world, p)) {
+        if (AbstractRailBlock.isRail(world, p)) {
           // NOOP
-        } else if (TrackToolsAPI.isRailBlockAt(world, p.below())) {
+        } else if (AbstractRailBlock.isRail(world, p.below())) {
           yy--;
           if (yy < minY)
             minY = yy;
-        } else if (TrackToolsAPI.isRailBlockAt(world, p.above())) {
+        } else if (AbstractRailBlock.isRail(world, p.above())) {
           yy++;
           if (yy > maxY)
             maxY = yy;
@@ -119,6 +120,7 @@ public final class TrackScanner {
   private TrackScanner() {}
 
   public static final class ScanResult {
+
     public final Verdict verdict;
     public final boolean areConnected;
     public final int minY, maxY;

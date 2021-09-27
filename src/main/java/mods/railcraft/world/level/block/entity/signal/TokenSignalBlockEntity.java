@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity.signal;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import javax.annotation.Nullable;
 import mods.railcraft.api.signals.IControllerProvider;
 import mods.railcraft.api.signals.ITokenSignal;
 import mods.railcraft.api.signals.SignalAspect;
@@ -19,6 +20,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 /**
@@ -33,8 +35,9 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
       new SimpleSignalController("nothing", this);
   private UUID tokenRingUUID = UUID.randomUUID();
   private BlockPos centroid;
-  private final TrackLocator trackLocator = new TrackLocator(this);
   private final TimerBag<UUID> cartTimers = new TimerBag<>(8);
+  @Nullable
+  private TrackLocator trackLocator;
 
   public TokenSignalBlockEntity() {
     this(RailcraftBlockEntityTypes.TOKEN_SIGNAL.get());
@@ -45,10 +48,16 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
+  public void setLevelAndPosition(World level, BlockPos blockPos) {
+    super.setLevelAndPosition(level, blockPos);
+    this.trackLocator = new TrackLocator(level, blockPos);
+  }
+
+  @Override
   public void tick() {
     super.tick();
     if (this.level.isClientSide()) {
-      controller.tickClient();
+      this.controller.tickClient();
       return;
     }
 

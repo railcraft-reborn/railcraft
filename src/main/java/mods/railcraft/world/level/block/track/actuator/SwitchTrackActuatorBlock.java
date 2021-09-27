@@ -175,15 +175,4 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
       level.setBlockAndUpdate(blockPos, newState);
     }
   }
-
-  private static boolean isEastOrWest(ArrowDirection arrowDirection) {
-    switch (arrowDirection) {
-      case EAST:
-      case WEST:
-      case EAST_WEST:
-        return true;
-      default:
-        return false;
-    }
-  }
 }

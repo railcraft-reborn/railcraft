@@ -5,7 +5,7 @@ import com.google.common.collect.MapMaker;
 import mods.railcraft.Railcraft;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
-import mods.railcraft.api.items.IToolCrowbar;
+import mods.railcraft.api.items.Crowbar;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.carts.IRailcraftCart;
 import mods.railcraft.carts.LinkageManager;
@@ -40,10 +40,10 @@ public class CrowbarHandler {
     boolean cancel = false;
 
     ItemStack stack = player.getItemInHand(hand);
-    if (stack.getItem() instanceof IToolCrowbar)
+    if (stack.getItem() instanceof Crowbar)
       cancel = true;
 
-    if (!stack.isEmpty() && stack.getItem() instanceof IToolCrowbar) {
+    if (!stack.isEmpty() && stack.getItem() instanceof Crowbar) {
       player.swing(hand);
       cancel = true;
     } else
@@ -52,7 +52,7 @@ public class CrowbarHandler {
     if (player.level.isClientSide())
       return cancel;
 
-    IToolCrowbar crowbar = (IToolCrowbar) stack.getItem();
+    Crowbar crowbar = (Crowbar) stack.getItem();
 
     if (stack.getItem() instanceof SeasonCrowbarItem && cart instanceof IRailcraftCart
         && Railcraft.commonConfig.enableSeasons.get()) {
@@ -73,7 +73,7 @@ public class CrowbarHandler {
   }
 
   private void linkCart(PlayerEntity player, Hand hand, ItemStack stack,
-      AbstractMinecartEntity cart, IToolCrowbar crowbar) {
+      AbstractMinecartEntity cart, Crowbar crowbar) {
     boolean used = false;
     boolean linkable = cart instanceof ILinkableCart;
     if (!linkable || ((ILinkableCart) cart).isLinkable()) {
@@ -107,7 +107,7 @@ public class CrowbarHandler {
 
   private void boostCart(PlayerEntity player, Hand hand, ItemStack stack,
       AbstractMinecartEntity cart,
-      IToolCrowbar crowbar) {
+      Crowbar crowbar) {
     player.causeFoodExhaustion(.25F);
 
     if (player.getVehicle() != null) {

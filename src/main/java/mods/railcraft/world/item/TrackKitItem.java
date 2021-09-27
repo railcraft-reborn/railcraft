@@ -1,8 +1,9 @@
 package mods.railcraft.world.item;
 
+import java.util.Map;
 import java.util.function.Supplier;
+import com.google.common.collect.ImmutableMap;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
-import mods.railcraft.api.tracks.TrackKit;
 import mods.railcraft.api.tracks.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
@@ -19,19 +20,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.RegistryObject;
 
 public class TrackKitItem extends Item {
 
-  private final Supplier<? extends TrackKit> trackKit;
+  private final Map<ResourceLocation, Supplier<? extends AbstractRailBlock>> outfittedBlocks;
+  private final boolean allowedOnSlopes;
 
-  public TrackKitItem(Supplier<? extends TrackKit> trackKit, Properties properties) {
+  public TrackKitItem(Properties properties) {
     super(properties);
-    this.trackKit = trackKit;
+    this.outfittedBlocks = properties.outfittedBlocks.build();
+    this.allowedOnSlopes = properties.allowedOnSlopes;
   }
 
   @Override
@@ -60,8 +65,9 @@ public class TrackKitItem extends Item {
     if (trackType != null) {
       RailShape shape = TrackTools.getTrackDirectionRaw(level, blockPos);
       if (TrackShapeHelper.isStraight(shape)) {
-        if (!shape.isAscending() || trackKit.get().isAllowedOnSlopes()) {
-          AbstractRailBlock outfittedBlock = trackType.getOutfittedBlock(this.trackKit.get());
+        if (!shape.isAscending() || this.allowedOnSlopes) {
+          AbstractRailBlock outfittedBlock =
+              this.outfittedBlocks.getOrDefault(trackType.getRegistryName(), () -> null).get();
           if (outfittedBlock == null) {
             player.sendMessage(
                 new TranslationTextComponent("gui.railcraft.track_kit.item.invalid.track_type"),
@@ -98,5 +104,29 @@ public class TrackKitItem extends Item {
           Util.NIL_UUID);
     }
     return ActionResultType.PASS;
+  }
+
+  public static class Properties extends Item.Properties {
+
+    private final ImmutableMap.Builder<ResourceLocation, Supplier<? extends AbstractRailBlock>> outfittedBlocks =
+        ImmutableMap.builder();
+    private boolean allowedOnSlopes;
+
+    public Properties addOutfittedBlock(
+        RegistryObject<? extends TrackType> trackType,
+        Supplier<? extends AbstractRailBlock> block) {
+      return this.addOutfittedBlock(trackType.getId(), block);
+    }
+
+    public Properties addOutfittedBlock(ResourceLocation trackTypeId,
+        Supplier<? extends AbstractRailBlock> block) {
+      this.outfittedBlocks.put(trackTypeId, block);
+      return this;
+    }
+
+    public Properties setAllowedOnSlopes(boolean allowedOnSlopes) {
+      this.allowedOnSlopes = allowedOnSlopes;
+      return this;
+    }
   }
 }

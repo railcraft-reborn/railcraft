@@ -1,16 +1,19 @@
-package mods.railcraft.world.level.block.track.kit;
+package mods.railcraft.world.level.block.track.outfitted;
 
-import mods.railcraft.api.tracks.TrackKit;
+import java.util.function.Supplier;
 import mods.railcraft.api.tracks.TrackType;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.world.entity.LocomotiveEntity;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.state.properties.RailShape;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.World;
 
-public class BoosterTrackKit extends PoweredTrackKit {
+public class BoosterTrackBlock extends AbstractPoweredTrackBlock {
 
   private static final int POWER_PROPAGATION = 8;
   private static final double BOOST_FACTOR = 0.04;
@@ -22,33 +25,33 @@ public class BoosterTrackKit extends PoweredTrackKit {
   private static final double STALL_THRESHOLD = 0.03;
   private static final double BOOST_THRESHOLD = 0.01;
 
-  @Override
-  public TrackKit getTrackKit() {
-    return TrackKits.BOOSTER.get();
+  public BoosterTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
+    super(trackType, properties);
   }
 
   @Override
-  public void onMinecartPass(AbstractMinecartEntity cart) {
-    TrackType trackType = getBlockEntity().getTrackType();
+  public void onMinecartPass(BlockState blockState, World level, BlockPos pos,
+      AbstractMinecartEntity cart) {
+    TrackType trackType = this.getTrackType();
     if (TrackTypes.REINFORCED.get() == trackType)
-      onMinecartPassStandard(cart, BOOST_FACTOR_REINFORCED);
+      this.onMinecartPassStandard(blockState, level, pos, cart, BOOST_FACTOR_REINFORCED);
     else if (trackType.isHighSpeed())
-      onMinecartPassHighSpeed(cart);
+      this.onMinecartPassHighSpeed(blockState, level, pos, cart);
     else
-      onMinecartPassStandard(cart, BOOST_FACTOR);
-
+      this.onMinecartPassStandard(blockState, level, pos, cart, BOOST_FACTOR);
   }
 
-  private void onMinecartPassStandard(AbstractMinecartEntity cart, double boostFactor) {
-    RailShape dir = getRailDirectionRaw();
+  private void onMinecartPassStandard(BlockState blockState, World level, BlockPos pos,
+      AbstractMinecartEntity cart, double boostFactor) {
+    RailShape dir = getRailShapeRaw(blockState);
     Vector3d motion = cart.getDeltaMovement();
     double speed = Math.sqrt(motion.x() * motion.x() + motion.z() * motion.z());
-    if (isPowered()) {
+    if (this.isPowered(blockState, level, pos)) {
       if (speed > BOOST_THRESHOLD) {
         cart.setDeltaMovement(
             motion.add((motion.x() / speed) * boostFactor, 0, (motion.z() / speed) * boostFactor));
       } else {
-        CartTools.startBoost(cart, getPos(), dir, START_BOOST);
+        CartTools.startBoost(cart, pos, dir, START_BOOST);
       }
     } else {
       if (speed < STALL_THRESHOLD) {
@@ -59,17 +62,18 @@ public class BoosterTrackKit extends PoweredTrackKit {
     }
   }
 
-  private void onMinecartPassHighSpeed(AbstractMinecartEntity cart) {
+  private void onMinecartPassHighSpeed(BlockState blockState, World level, BlockPos pos,
+      AbstractMinecartEntity cart) {
     Vector3d motion = cart.getDeltaMovement();
-    if (isPowered()) {
+    if (this.isPowered(blockState, level, pos)) {
       double speed = Math.sqrt(motion.x() * motion.x() + motion.z() * motion.z());
-      RailShape dir = getRailDirectionRaw();
+      RailShape dir = getRailShapeRaw(blockState);
       if (speed > BOOST_THRESHOLD) {
         cart.setDeltaMovement(
             motion.add((motion.x() / speed) * BOOST_FACTOR_HS, 0,
                 (motion.z() / speed) * BOOST_FACTOR_HS));
       } else {
-        CartTools.startBoost(cart, getPos(), dir, START_BOOST);
+        CartTools.startBoost(cart, pos, dir, START_BOOST);
       }
     } else {
       boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(cart);
@@ -91,7 +95,7 @@ public class BoosterTrackKit extends PoweredTrackKit {
   }
 
   @Override
-  public int getPowerPropagation() {
+  public int getPowerPropagation(BlockState blockState, World level, BlockPos pos) {
     return POWER_PROPAGATION;
   }
 }
