@@ -61,15 +61,15 @@ public class DualSignalReceiver extends SignalReceiver {
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
     data.writeByte(aspects.get(DualLamp.TOP).ordinal());
     data.writeByte(aspects.get(DualLamp.BOTTOM).ordinal());
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
     setAspect(DualLamp.TOP, SignalAspect.values()[data.readByte()]);
     setAspect(DualLamp.BOTTOM, SignalAspect.values()[data.readByte()]);
   }

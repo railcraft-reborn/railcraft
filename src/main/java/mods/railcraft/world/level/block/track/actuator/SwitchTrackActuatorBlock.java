@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.track.actuator;
 
 import mods.railcraft.api.tracks.ArrowDirection;
 import mods.railcraft.plugins.PowerPlugin;
-import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.block.Block;
@@ -142,9 +141,9 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
           SoundCategory.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
 
     Direction.Plane.HORIZONTAL.forEach(direction -> {
-      BlockPos pos = blockPos.relative(direction);
-      if (WorldPlugin.isBlockAt(level, pos, ComparatorBlock.class)) {
-        WorldPlugin.notifyBlockOfStateChange(level, pos, blockState.getBlock());
+      BlockPos neighborPos = blockPos.relative(direction);
+      if (level.getBlockState(neighborPos).getBlock() instanceof ComparatorBlock) {
+        level.updateNeighborsAt(neighborPos, blockState.getBlock());
       }
     });
   }
@@ -173,17 +172,6 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
     }
     if (changed) {
       level.setBlockAndUpdate(blockPos, newState);
-    }
-  }
-
-  private static boolean isEastOrWest(ArrowDirection arrowDirection) {
-    switch (arrowDirection) {
-      case EAST:
-      case WEST:
-      case EAST_WEST:
-        return true;
-      default:
-        return false;
     }
   }
 }

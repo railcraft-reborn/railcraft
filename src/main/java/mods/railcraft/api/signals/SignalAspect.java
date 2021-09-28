@@ -146,7 +146,7 @@ public enum SignalAspect {
    */
   public static SignalAspect readFromNBT(CompoundNBT nbt, String tag) {
     if (nbt.contains(tag, Constants.NBT.TAG_INT))
-      return byId(nbt.getInt(tag));
+      return getById(nbt.getInt(tag));
     return RED;
   }
 
@@ -194,7 +194,7 @@ public enum SignalAspect {
     return second;
   }
 
-  public static SignalAspect byId(int id) {
+  public static SignalAspect getById(int id) {
     if (id < 0 || id >= BY_ID.length)
       return SignalAspect.RED;
     return BY_ID[id];

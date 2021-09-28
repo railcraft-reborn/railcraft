@@ -8,8 +8,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import mods.railcraft.api.core.CollectionToolsAPI;
-import mods.railcraft.api.signals.ITokenRing;
 import mods.railcraft.api.signals.SignalAspect;
+import mods.railcraft.api.signals.TokenRing;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MathTools;
@@ -25,24 +25,24 @@ import net.minecraft.world.World;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class TokenRing implements ITokenRing {
+public class TokenRingImpl implements TokenRing {
 
   private static final int MAX_DISTANCE = 256 * 256;
-  private final UUID uuid;
+  private final UUID id;
   private final Set<BlockPos> signals = CollectionToolsAPI.blockPosSet(HashSet::new);
   private final Set<UUID> trackedCarts = new HashSet<>();
   private BlockPos centroid = BlockPos.ZERO;
-  private final TokenManager.TokenWorldManager manager;
+  private final TokenManager manager;
   private boolean linking;
 
-  public TokenRing(TokenManager.TokenWorldManager manager, UUID uuid) {
+  public TokenRingImpl(TokenManager manager, UUID id) {
     this.manager = manager;
-    this.uuid = uuid;
+    this.id = id;
   }
 
-  public TokenRing(TokenManager.TokenWorldManager manager, UUID uuid, BlockPos origin) {
-    this(manager, uuid);
-    addSignal(origin);
+  public TokenRingImpl(TokenManager manager, UUID id, BlockPos origin) {
+    this(manager, id);
+    this.addSignal(origin);
   }
 
   @Override
@@ -59,16 +59,16 @@ public class TokenRing implements ITokenRing {
   public boolean add(TileEntity other) {
     if (other instanceof TokenSignalBlockEntity) {
       BlockPos otherPos = other.getBlockPos();
-      if (signals.stream().anyMatch(pos -> pos.distSqr(otherPos) > MAX_DISTANCE)) {
+      if (this.signals.stream().anyMatch(pos -> pos.distSqr(otherPos) > MAX_DISTANCE)) {
         return false;
       }
       TokenSignalBlockEntity tokenTile = (TokenSignalBlockEntity) other;
-      TokenRing otherRing = ((TokenSignalBlockEntity) other).getTokenRing();
+      TokenRingImpl otherRing = ((TokenSignalBlockEntity) other).getTokenRing();
       otherRing.removeSignal(other.getBlockPos());
       otherRing.endLinking();
       // TokenRing tokenRing = otherRing.signals.size() > signals.size() ? otherRing : this;
-      TokenRing tokenRing = this;
-      tokenTile.setTokenRingUUID(tokenRing.uuid);
+      TokenRingImpl tokenRing = this;
+      tokenTile.setTokenRingId(tokenRing.id);
       tokenRing.addSignal(tokenTile.getBlockPos());
       return true;
     }
@@ -76,22 +76,23 @@ public class TokenRing implements ITokenRing {
   }
 
   public void tick(World world) {
-    if (!signals.isEmpty()) {
-      BlockPos origin = signals.stream().findAny().orElse(BlockPos.ZERO);
+    if (!this.signals.isEmpty()) {
+      BlockPos origin = this.signals.stream().findAny().orElse(BlockPos.ZERO);
       AABBFactory aabbFactory = AABBFactory.start().createBoxForTileAt(origin);
-      for (BlockPos pos : signals) {
+      for (BlockPos pos : this.signals) {
         aabbFactory.expandToCoordinate(pos);
       }
       aabbFactory.grow(16).clampToWorld();
-      List<AbstractMinecartEntity> carts =
-          EntitySearcher.findMinecarts().around(aabbFactory.build()).in(world);
-      trackedCarts.retainAll(carts.stream().map(Entity::getUUID).collect(Collectors.toSet()));
+      List<AbstractMinecartEntity> carts = EntitySearcher.findMinecarts()
+          .around(aabbFactory.build())
+          .in(world);
+      this.trackedCarts.retainAll(carts.stream().map(Entity::getUUID).collect(Collectors.toSet()));
     }
   }
 
   public boolean isOrphaned(World world) {
-    return signals.stream().noneMatch(
-        blockPos -> !world.isLoaded(blockPos) || isTokenSignal(world, blockPos));
+    return this.signals.stream().noneMatch(
+        blockPos -> !world.isLoaded(blockPos) || this.isTokenSignal(world, blockPos));
   }
 
   private boolean isTokenSignal(World world, BlockPos pos) {
@@ -101,68 +102,68 @@ public class TokenRing implements ITokenRing {
 
   void loadSignals(Collection<BlockPos> signals) {
     this.signals.addAll(signals);
-    centroid = MathTools.centroid(signals);
+    this.centroid = MathTools.centroid(signals);
   }
 
   void loadCarts(Collection<UUID> carts) {
-    trackedCarts.addAll(carts);
+    this.trackedCarts.addAll(carts);
   }
 
   public boolean addSignal(BlockPos pos) {
-    boolean changed = signals.add(pos);
+    boolean changed = this.signals.add(pos);
     if (changed)
-      signalsChanged();
+      this.signalsChanged();
     return changed;
   }
 
   public boolean removeSignal(BlockPos pos) {
-    boolean changed = signals.remove(pos);
+    boolean changed = this.signals.remove(pos);
     if (changed)
-      signalsChanged();
+      this.signalsChanged();
     return changed;
   }
 
   private void signalsChanged() {
-    manager.setDirty();
-    centroid = MathTools.centroid(signals);
+    this.manager.setDirty();
+    this.centroid = MathTools.centroid(this.signals);
   }
 
   public void markCart(AbstractMinecartEntity cart) {
     UUID cartID = cart.getUUID();
-    if (trackedCarts.remove(cartID)) {
-      manager.setDirty();
+    if (this.trackedCarts.remove(cartID)) {
+      this.manager.setDirty();
       return;
     }
-    if (trackedCarts.add(cartID))
-      manager.setDirty();
-  }
-
-  public Set<BlockPos> getSignals() {
-    return Collections.unmodifiableSet(signals);
+    if (this.trackedCarts.add(cartID))
+      this.manager.setDirty();
   }
 
   @Override
   public Collection<BlockPos> getPeers() {
-    return this.getSignals();
+    return Collections.unmodifiableSet(this.signals);
   }
 
+  @Override
   public Set<UUID> getTrackedCarts() {
-    return Collections.unmodifiableSet(trackedCarts);
+    return Collections.unmodifiableSet(this.trackedCarts);
   }
 
+  @Override
   public SignalAspect getAspect() {
-    if (linking)
+    if (this.linking)
       return SignalAspect.BLINK_YELLOW;
-    if (signals.size() <= 1)
+    if (this.signals.size() <= 1)
       return SignalAspect.BLINK_RED;
-    return trackedCarts.isEmpty() ? SignalAspect.GREEN : SignalAspect.RED;
+    return this.trackedCarts.isEmpty() ? SignalAspect.GREEN : SignalAspect.RED;
   }
 
-  public UUID getUUID() {
-    return uuid;
+  @Override
+  public UUID getId() {
+    return this.id;
   }
 
-  public BlockPos centroid() {
-    return centroid;
+  @Override
+  public BlockPos getCentroid() {
+    return this.centroid;
   }
 }

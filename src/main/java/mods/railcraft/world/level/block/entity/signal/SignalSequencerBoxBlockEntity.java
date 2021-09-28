@@ -21,24 +21,24 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
   private static final int MAX_ITERATIONS = 64;
   private Direction sideOutput = Direction.NORTH;
-  private boolean powerState;
-  private boolean neighborState;
+  private boolean signal;
+  private boolean neighborSignal;
 
   public SignalSequencerBoxBlockEntity() {
     super(RailcraftBlockEntityTypes.SIGNAL_SEQUENCER_BOX.get());
   }
 
   @Override
-  public void neighborChanged(BlockState state, Block neighborBlock, BlockPos pos) {
-    super.neighborChanged(state, neighborBlock, pos);
+  public void neighborChanged() {
+    super.neighborChanged();
     if (this.level.isClientSide())
       return;
-    boolean p = PowerPlugin.isBlockBeingPoweredByRepeater(this.level, this.getBlockPos());
-    if (!this.powerState && p) {
-      this.powerState = true;
-      incrementSequencer(true, new HashSet<>(), 0);
+    boolean signal = PowerPlugin.hasRepeaterSignal(this.level, this.getBlockPos());
+    if (!this.signal && signal) {
+      this.signal = true;
+      this.incrementSequencer(true, new HashSet<>(), 0);
     } else {
-      this.powerState = p;
+      this.signal = signal;
     }
   }
 
@@ -50,12 +50,12 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
       return;
     if (neighbor instanceof SignalCapacitorBoxBlockEntity)
       return;
-    boolean p = neighbor.isEmittingRedstone(side);
-    if (!neighborState && p) {
-      neighborState = true;
-      incrementSequencer(true, new HashSet<>(), 0);
+    boolean signal = neighbor.isEmittingRedstone(side);
+    if (!this.neighborSignal && signal) {
+      this.neighborSignal = true;
+      this.incrementSequencer(true, new HashSet<>(), 0);
     } else
-      neighborState = p;
+      this.neighborSignal = signal;
   }
 
   private void incrementSequencer(boolean firstPass, Set<TileEntity> visitedFirstPass,
@@ -104,58 +104,61 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
     return false;
   }
 
-  private void updateNeighbors() {
-    sendUpdateToClient();
-    notifyBlocksOfNeighborChange();
-    updateNeighborBoxes();
+  @Override
+  public void updateNeighbors() {
+    super.updateNeighbors();
+    this.syncToClient();
+    this.updateNeighborBoxes();
   }
 
   @Override
-  public int getSignal(Direction side) {
-    TileEntity tile = this.adjacentCache.getTileOnSide(side.getOpposite());
-    if (tile instanceof AbstractSignalBoxBlockEntity)
-      return PowerPlugin.NO_POWER;
-    return sideOutput.getOpposite() == side ? PowerPlugin.FULL_POWER : PowerPlugin.NO_POWER;
+  public int getSignal(Direction direction) {
+    TileEntity blockEntity = this.adjacentCache.getTileOnSide(direction.getOpposite());
+    return blockEntity instanceof AbstractSignalBoxBlockEntity
+        ? PowerPlugin.NO_POWER
+        : this.sideOutput.getOpposite() == direction
+            ? PowerPlugin.FULL_POWER
+            : PowerPlugin.NO_POWER;
   }
 
   @Override
   public boolean isEmittingRedstone(Direction side) {
-    return sideOutput == side;
+    return this.sideOutput == side;
   }
 
   @Override
   public SignalAspect getBoxSignalAspect(@Nullable Direction side) {
-    return sideOutput == side ? SignalAspect.GREEN : SignalAspect.RED;
+    return this.sideOutput == side ? SignalAspect.GREEN : SignalAspect.RED;
   }
 
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    data.putInt("sideOutput", sideOutput.get3DDataValue());
-    data.putBoolean("powerState", powerState);
-    data.putBoolean("neighborState", neighborState);
+    data.putInt("sideOutput", this.sideOutput.get3DDataValue());
+    data.putBoolean("powerState", this.signal);
+    data.putBoolean("neighborState", this.neighborSignal);
     return data;
   }
 
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-    sideOutput = Direction.from3DDataValue(data.getInt("sideOutput"));
-    powerState = data.getBoolean("powerState");
-    neighborState = data.getBoolean("neighborState");
+    this.sideOutput = Direction.from3DDataValue(data.getInt("sideOutput"));
+    this.signal = data.getBoolean("powerState");
+    this.neighborSignal = data.getBoolean("neighborState");
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
-    data.writeVarInt(sideOutput.get3DDataValue());
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
+    data.writeVarInt(this.sideOutput.get3DDataValue());
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
-    sideOutput = Direction.from3DDataValue(data.readVarInt());
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
+    this.sideOutput = Direction.from3DDataValue(data.readVarInt());
   }
 
   @Override

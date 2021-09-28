@@ -69,7 +69,7 @@ public class SignalBoxBlock extends FourWayBlock {
   public void neighborChanged(BlockState state, World level, BlockPos pos,
       Block neighborBlock, BlockPos neighborPos, boolean p_220069_6_) {
     WorldPlugin.getTileEntity(level, pos, AbstractSignalBoxBlockEntity.class)
-        .ifPresent(entity -> entity.neighborChanged(state, neighborBlock, neighborPos));
+        .ifPresent(entity -> entity.neighborChanged());
   }
 
   @SuppressWarnings("deprecation")

@@ -7,9 +7,8 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import mods.railcraft.api.items.ITrackItem;
-import mods.railcraft.api.tracks.TrackTypeProvider;
-import mods.railcraft.api.tracks.TrackToolsAPI;
 import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.tracks.TrackTypeProvider;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
@@ -170,27 +169,27 @@ public final class TrackTools {
         .forEach(p -> _traverseConnectedTracks(world, p, action, visited));
   }
 
-  public static Set<BlockPos> getConnectedTracks(IWorldReader world, BlockPos pos) {
-    Set<BlockPos> connectedTracks;
-    RailShape shape =
-        TrackToolsAPI.isRailBlockAt(world, pos) ? getTrackDirectionRaw(world, pos)
-            : RailShape.NORTH_SOUTH;
-    connectedTracks = Direction.Plane.HORIZONTAL.stream()
-        .map(side -> getTrackConnectedTrackAt(world, pos.relative(side), shape))
+  public static Set<BlockPos> getConnectedTracks(IWorldReader level, BlockPos pos) {
+    final RailShape shape = AbstractRailBlock.isRail(level.getBlockState(pos))
+        ? getTrackDirectionRaw(level, pos)
+        : RailShape.NORTH_SOUTH;
+    return Direction.Plane.HORIZONTAL.stream()
+        .map(side -> getTrackConnectedTrackAt(level, pos.relative(side), shape))
         .filter(Objects::nonNull)
         .collect(Collectors.toSet());
-    return connectedTracks;
   }
 
-  public static @Nullable BlockPos getTrackConnectedTrackAt(IWorldReader world, BlockPos pos,
+  @Nullable
+  public static BlockPos getTrackConnectedTrackAt(IWorldReader level, BlockPos pos,
       RailShape shape) {
-    if (TrackToolsAPI.isRailBlockAt(world, pos))
+    if (AbstractRailBlock.isRail(level.getBlockState(pos)))
       return pos;
     BlockPos up = pos.above();
-    if (shape.isAscending() && TrackToolsAPI.isRailBlockAt(world, up))
+    if (shape.isAscending() && AbstractRailBlock.isRail(level.getBlockState(up)))
       return up;
     BlockPos down = pos.below();
-    if (TrackToolsAPI.isRailBlockAt(world, down) && getTrackDirectionRaw(world, down).isAscending())
+    if (AbstractRailBlock.isRail(level.getBlockState(down))
+        && getTrackDirectionRaw(level, down).isAscending())
       return down;
     return null;
   }

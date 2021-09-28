@@ -22,17 +22,20 @@ import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import mods.railcraft.world.level.block.track.kit.TrackKits;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
+import mods.railcraft.world.signal.TokenManager;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -89,7 +92,6 @@ public class Railcraft {
     RailcraftItems.ITEMS.register(modEventBus);
     RailcraftBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
     TrackTypes.TRACK_TYPES.register(modEventBus);
-    TrackKits.TRACK_KITS.register(modEventBus);
     RailcraftFluids.FLUIDS.register(modEventBus);
     RailcraftMenuTypes.MENU_TYPES.register(modEventBus);
     RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);
@@ -123,6 +125,12 @@ public class Railcraft {
   private void handleGatherData(GatherDataEvent event) {
     event.getGenerator().addProvider(
         new RailcraftBlockTagsProvider(event.getGenerator(), event.getExistingFileHelper()));
+  }
+
+  @SubscribeEvent
+  public void tick(TickEvent.WorldTickEvent event) {
+    if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END)
+      TokenManager.get((ServerWorld) event.world).tick(event.world);
   }
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)

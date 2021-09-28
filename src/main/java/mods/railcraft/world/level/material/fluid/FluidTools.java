@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.AdjacentBlockEntityCache;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
@@ -173,10 +172,10 @@ public final class FluidTools {
     return state.getFluidState().getType();
   }
 
-  public static void drip(World world, BlockPos pos, BlockState state, Random rand,
+  public static void drip(World level, BlockPos pos, BlockState state, Random rand,
       float particleRed, float particleGreen, float particleBlue) {
-    if (rand.nextInt(10) == 0 && Block.canSupportRigidBlock(world, pos.below())
-        && !WorldPlugin.getBlockMaterial(world, pos.below(2)).blocksMotion()) {
+    if (rand.nextInt(10) == 0 && Block.canSupportRigidBlock(level, pos.below())
+        && !level.getBlockState(pos.below(2)).getMaterial().blocksMotion()) {
       double px = (double) ((float) pos.getX() + rand.nextFloat());
       double py = (double) pos.getY() - 1.05D;
       double pz = (double) ((float) pos.getZ() + rand.nextFloat());

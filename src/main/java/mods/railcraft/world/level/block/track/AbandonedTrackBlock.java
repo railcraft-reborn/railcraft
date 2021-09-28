@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.track;
 
 import java.util.function.Supplier;
 import mods.railcraft.api.tracks.TrackType;
-import mods.railcraft.plugins.WorldPlugin;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -37,8 +36,8 @@ public class AbandonedTrackBlock extends TrackBlock {
   @Override
   public BlockState getStateForPlacement(BlockItemUseContext context) {
     boolean grass = Direction.Plane.HORIZONTAL.stream()
-        .anyMatch(s -> WorldPlugin.isBlockAt(context.getLevel(),
-            context.getClickedPos().relative(s), Blocks.TALL_GRASS));
+        .anyMatch(s -> context.getLevel().getBlockState(context.getClickedPos().relative(s))
+            .is(Blocks.TALL_GRASS));
     return super.getStateForPlacement(context).setValue(GRASS, grass);
   }
 }

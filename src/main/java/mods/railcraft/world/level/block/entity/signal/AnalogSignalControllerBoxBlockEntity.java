@@ -4,23 +4,20 @@ import java.util.BitSet;
 import java.util.EnumMap;
 import java.util.Map;
 import javax.annotation.Nullable;
-import mods.railcraft.api.signals.IControllerProvider;
 import mods.railcraft.api.signals.SignalAspect;
+import mods.railcraft.api.signals.SignalControllerProvider;
 import mods.railcraft.api.signals.SimpleSignalController;
-import mods.railcraft.plugins.PowerPlugin;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
 public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements IControllerProvider {
+    implements SignalControllerProvider {
 
   private final SimpleSignalController controller =
       new SimpleSignalController("something", this);
@@ -31,55 +28,54 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   public AnalogSignalControllerBoxBlockEntity() {
     super(RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get());
     for (SignalAspect aspect : SignalAspect.values()) {
-      aspects.put(aspect, new BitSet());
+      this.aspects.put(aspect, new BitSet());
     }
   }
 
   @Override
   public void tick() {
     super.tick();
-
     if (this.level.isClientSide()) {
-      controller.tickClient();
+      this.controller.tickClient();
       return;
     }
-    controller.tickServer();
-    SignalAspect prevAspect = controller.getAspect();
-    if (controller.isLinking())
-      controller.setAspect(SignalAspect.BLINK_YELLOW);
+    this.controller.tickServer();
+    SignalAspect prevAspect = this.controller.getAspect();
+    if (this.controller.isLinking())
+      this.controller.setAspect(SignalAspect.BLINK_YELLOW);
     else if (controller.isPaired())
-      controller.setAspect(determineAspect());
+      this.controller.setAspect(determineAspect());
     else
-      controller.setAspect(SignalAspect.BLINK_RED);
+      this.controller.setAspect(SignalAspect.BLINK_RED);
     if (prevAspect != controller.getAspect())
-      sendUpdateToClient();
+      syncToClient();
   }
 
   @Override
-  public void neighborChanged(BlockState state, Block neighborBlock, BlockPos pos) {
-    super.neighborChanged(state, neighborBlock, pos);
+  public void neighborChanged() {
+    super.neighborChanged();
     if (this.level.isClientSide())
       return;
-    int s = getPowerLevel();
-    if (s != strongestSignal) {
-      strongestSignal = s;
-      sendUpdateToClient();
+    int signal = this.getSignal();
+    if (signal != this.strongestSignal) {
+      this.strongestSignal = signal;
+      this.syncToClient();
     }
   }
 
-  private int getPowerLevel() {
-    int p = 0, tmp;
-    for (Direction side : Direction.values()) {
-      if (side == Direction.UP)
+  private int getSignal() {
+    int signal = 0, tmp;
+    for (Direction direction : Direction.values()) {
+      if (direction == Direction.UP)
         continue;
-      if (adjacentCache.getTileOnSide(side) instanceof AbstractSignalBoxBlockEntity)
+      if (this.adjacentCache.getTileOnSide(direction) instanceof AbstractSignalBoxBlockEntity)
         continue;
-      if ((tmp = PowerPlugin.getSignal(this.level, getBlockPos(), side)) > p)
-        p = tmp;
-      if ((tmp = PowerPlugin.getSignal(this.level, getBlockPos().below(), side)) > p)
-        p = tmp;
+      if ((tmp = this.level.getSignal(this.getBlockPos(), direction)) > signal)
+        signal = tmp;
+      if ((tmp = this.level.getSignal(this.getBlockPos().below(), direction)) > signal)
+        signal = tmp;
     }
-    return p;
+    return signal;
   }
 
   private SignalAspect determineAspect() {
@@ -113,22 +109,22 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-    strongestSignal = data.getInt("strongestSignal");
+    this.strongestSignal = data.getInt("strongestSignal");
 
     this.aspects.clear();
     ListNBT aspectsNbt = data.getList("aspects", Constants.NBT.TAG_COMPOUND);
     for (INBT nbt : aspectsNbt) {
       CompoundNBT compoundNbt = (CompoundNBT) nbt;
-      this.aspects.put(SignalAspect.byId(compoundNbt.getInt("id")),
+      this.aspects.put(SignalAspect.getById(compoundNbt.getInt("id")),
           BitSet.valueOf(compoundNbt.getByteArray("bytes")));
     }
 
-    controller.readFromNBT(data);
+    this.controller.readFromNBT(data);
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
 
     for (Map.Entry<SignalAspect, BitSet> entry : aspects.entrySet()) {
       byte[] bytes = entry.getValue().toByteArray();
@@ -136,12 +132,12 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
       data.writeBytes(bytes);
     }
 
-    controller.writePacketData(data);
+    controller.writeSyncData(data);
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
 
     this.aspects.clear();
     for (SignalAspect aspect : SignalAspect.values()) {
@@ -149,7 +145,7 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
       this.aspects.put(aspect, bitSet);
     }
 
-    controller.readPacketData(data);
+    controller.readSyncData(data);
   }
 
   @Override

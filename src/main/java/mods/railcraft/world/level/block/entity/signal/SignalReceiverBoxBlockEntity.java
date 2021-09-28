@@ -34,19 +34,20 @@ public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
     receiver.tickServer();
     if (this.clock(FORCED_UPDATE)) {
       updateNeighbors();
-      sendUpdateToClient();
+      syncToClient();
     }
   }
 
   @Override
   public void onControllerAspectChange(SignalController con, SignalAspect aspect) {
-    updateNeighbors();
-    sendUpdateToClient();
+    this.updateNeighbors();
+    this.syncToClient();
   }
 
-  private void updateNeighbors() {
-    notifyBlocksOfNeighborChange();
-    updateNeighborBoxes();
+  @Override
+  public void updateNeighbors() {
+    super.updateNeighbors();
+    this.updateNeighborBoxes();
   }
 
   @Override
@@ -63,15 +64,15 @@ public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
-    receiver.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
+    receiver.writeSyncData(data);
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
-    receiver.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
+    receiver.readSyncData(data);
   }
 
   @Override

@@ -31,7 +31,7 @@ public class DistantSignalBlockEntity extends AbstractSignalBlockEntity implemen
 
   @Override
   public void onControllerAspectChange(SignalController con, SignalAspect aspect) {
-    sendUpdateToClient();
+    syncToClient();
   }
 
 
@@ -50,15 +50,15 @@ public class DistantSignalBlockEntity extends AbstractSignalBlockEntity implemen
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
-    receiver.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
+    receiver.writeSyncData(data);
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
-    receiver.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
+    receiver.readSyncData(data);
   }
 
   @Override

@@ -29,7 +29,7 @@ public class SimpleSignalReceiver extends SignalReceiver {
       setAspect(SignalAspect.BLINK_RED);
     }
     if (prevAspect != getAspect()) {
-      sendUpdateToClient();
+      syncToClient();
     }
   }
 
@@ -58,19 +58,19 @@ public class SimpleSignalReceiver extends SignalReceiver {
   @Override
   protected void loadNBT(CompoundNBT data) {
     super.loadNBT(data);
-    aspect = SignalAspect.byId(data.getInt("aspect"));
+    aspect = SignalAspect.getById(data.getInt("aspect"));
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
     data.writeVarInt(aspect.getId());
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
-    aspect = SignalAspect.byId(data.readVarInt());
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
+    aspect = SignalAspect.getById(data.readVarInt());
   }
 
   @Override

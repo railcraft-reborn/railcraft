@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.util.Constants;
 
 /**
@@ -24,51 +25,55 @@ public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
   private DyeColor color = ForceTrackEmitterBlock.DEFAULT_COLOR;
 
   public ForceTrackBlockEntity() {
-    super(RailcraftBlockEntityTypes.FORCE_TRACK.get());
+    this(RailcraftBlockEntityTypes.FORCE_TRACK.get());
   }
 
-  DyeColor getColor() {
-    return color;
+  public ForceTrackBlockEntity(TileEntityType<?> type) {
+    super(type);
+  }
+
+  public DyeColor getColor() {
+    return this.color;
   }
 
   public void notifyEmitterForBreak() {
-    if (emitter != null) {
-      emitter.clearTracks(index);
+    if (this.emitter != null) {
+      this.emitter.clearTracks(this.index);
     }
   }
 
   public void notifyEmitterForTrackChange() {
-    if (emitter != null) {
-      emitter.notifyTrackChange();
+    if (this.emitter != null) {
+      this.emitter.notifyTrackChange();
     }
   }
 
   public void setEmitter(@Nullable ForceTrackEmitterBlockEntity emitter) {
     this.emitter = emitter;
     if (emitter != null) {
-      setOwner(emitter.getOwner());
+      this.setOwner(emitter.getOwner());
       this.color = emitter.getColor();
-      this.index = emitter.getNumberOfTracks();
+      this.index = emitter.getTrackCount();
     }
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
-    data.writeEnum(color);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
+    data.writeEnum(this.color);
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
-    color = data.readEnum(DyeColor.class);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
+    this.color = data.readEnum(DyeColor.class);
   }
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
     data.putInt("color", this.color.getId());
-    data.putInt("index", index);
+    data.putInt("index", this.index);
     return data;
   }
 
@@ -80,6 +85,6 @@ public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
     } else {
       this.color = ForceTrackEmitterBlock.DEFAULT_COLOR;
     }
-    index = data.getInt("index");
+    this.index = data.getInt("index");
   }
 }

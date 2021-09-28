@@ -3,7 +3,6 @@ package mods.railcraft.world.entity;
 import java.util.HashSet;
 import java.util.Set;
 import mods.railcraft.api.core.CollectionToolsAPI;
-import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -58,7 +57,7 @@ public class TrackRemoverMinecartEntity extends AbstractMaintenanceMinecartEntit
       this.tracksRemoved.add(track);
     else if (!AbstractRailBlock.isRail(this.level, track))
       this.tracksRemoved.add(track);
-    else if (WorldPlugin.isBlockAt(this.level, track, RailcraftBlocks.FORCE_TRACK.get()))
+    else if (this.level.getBlockState(track).is(RailcraftBlocks.FORCE_TRACK.get()))
       this.tracksRemoved.add(track);
     else if (EntitySearcher.findMinecarts().around(track).outTo(0.2f).in(this.level).isEmpty()) {
       this.removeOldTrack(track, this.level.getBlockState(track));

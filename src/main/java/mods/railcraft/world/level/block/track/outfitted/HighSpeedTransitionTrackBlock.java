@@ -1,45 +1,60 @@
-package mods.railcraft.world.level.block.track.kit;
+package mods.railcraft.world.level.block.track.outfitted;
 
-import mods.railcraft.api.tracks.ITrackKitReversible;
-import mods.railcraft.api.tracks.TrackKit;
+import java.util.function.Supplier;
+import mods.railcraft.api.tracks.TrackType;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.entity.LocomotiveEntity;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.RailShape;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.World;
 
-public class SpeedTransitionTrackKit extends PoweredTrackKit implements ITrackKitReversible {
+public class HighSpeedTransitionTrackBlock extends AbstractPoweredTrackBlock {
 
   private static final double BOOST_AMOUNT = 0.04;
   private static final double SLOW_FACTOR = 0.65;
   private static final double BOOST_THRESHOLD = 0.01;
   private static final double START_BOOST = 0.02;
-  private boolean reversed;
 
-  @Override
-  public TrackKit getTrackKit() {
-    return TrackKits.HIGH_SPEED_TRANSITION.get();
+  public static final BooleanProperty REVERSED = BooleanProperty.create("reversed");
+
+  public HighSpeedTransitionTrackBlock(Supplier<? extends TrackType> trackType,
+      Properties properties) {
+    super(trackType, properties);
+    this.registerDefaultState(this.stateDefinition.any()
+        .setValue(POWERED, false)
+        .setValue(REVERSED, false));
   }
 
   @Override
-  public int getPowerPropagation() {
+  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    super.createBlockStateDefinition(builder);
+    builder.add(REVERSED);
+  }
+
+  @Override
+  public int getPowerPropagation(BlockState blockState, World level, BlockPos pos) {
     return 16;
   }
 
   @Override
-  public void onMinecartPass(AbstractMinecartEntity cart) {
-    if (isPowered()) {
+  public void onMinecartPass(BlockState blockState, World level, BlockPos pos,
+      AbstractMinecartEntity cart) {
+    final boolean reversed = blockState.getValue(REVERSED);
+    final RailShape railShape = getRailShapeRaw(blockState);
+    if (blockState.getValue(POWERED)) {
       Vector3d motion = cart.getDeltaMovement();
       double speed = Math.sqrt(motion.x() * motion.x() + motion.z() * motion.z());
       if (speed > BOOST_THRESHOLD) {
-        RailShape trackShape = getRailDirectionRaw();
         boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(cart);
-        if (TrackShapeHelper.isNorthSouth(trackShape)) {
+        if (TrackShapeHelper.isNorthSouth(railShape)) {
           if (reversed ^ motion.z() < 0) {
             boostCartSpeed(cart, speed);
           } else {
@@ -53,26 +68,25 @@ public class SpeedTransitionTrackKit extends PoweredTrackKit implements ITrackKi
           }
         }
       } else {
-        CartTools.startBoost(cart, getPos(), getRailDirectionRaw(), START_BOOST);
+        CartTools.startBoost(cart, pos, railShape, START_BOOST);
       }
     }
   }
 
-  private void boostCartSpeed(AbstractMinecartEntity cart, double currentSpeed) {
+  private static void boostCartSpeed(AbstractMinecartEntity cart, double currentSpeed) {
     Vector3d motion = cart.getDeltaMovement();
     cart.setDeltaMovement(motion.add((motion.x() / currentSpeed) * BOOST_AMOUNT, 0.0D,
         (motion.z() / currentSpeed) * BOOST_AMOUNT));
   }
 
-  private void slowCartSpeed(AbstractMinecartEntity cart) {
+  private static void slowCartSpeed(AbstractMinecartEntity cart) {
     if (cart instanceof LocomotiveEntity) {
       ((LocomotiveEntity) cart).forceIdle(20);
     }
-
     cart.setDeltaMovement(cart.getDeltaMovement().multiply(SLOW_FACTOR, 1.0D, SLOW_FACTOR));
   }
 
-  private void slowOrNormalCartSpeed(AbstractMinecartEntity cart, boolean highSpeed) {
+  private static void slowOrNormalCartSpeed(AbstractMinecartEntity cart, boolean highSpeed) {
     if (highSpeed) {
       slowCartSpeed(cart);
     } else {
@@ -80,7 +94,7 @@ public class SpeedTransitionTrackKit extends PoweredTrackKit implements ITrackKi
     }
   }
 
-  private void normalCartSpeed(AbstractMinecartEntity cart) {
+  private static void normalCartSpeed(AbstractMinecartEntity cart) {
     Vector3d motion = cart.getDeltaMovement();
     if (Math.abs(motion.x()) > 0.01) {
       cart.setDeltaMovement(Math.copySign(0.3f, motion.x()), motion.y(), motion.z());
@@ -88,40 +102,5 @@ public class SpeedTransitionTrackKit extends PoweredTrackKit implements ITrackKi
     if (Math.abs(motion.z()) > 0.01) {
       cart.setDeltaMovement(motion.x(), motion.y(), Math.copySign(0.3f, motion.z()));
     }
-  }
-
-  @Override
-  public void writeToNBT(CompoundNBT nbttagcompound) {
-    super.writeToNBT(nbttagcompound);
-    nbttagcompound.putBoolean("reversed", reversed);
-  }
-
-  @Override
-  public void readFromNBT(CompoundNBT nbttagcompound) {
-    super.readFromNBT(nbttagcompound);
-    reversed = nbttagcompound.getBoolean("reversed");
-  }
-
-  @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
-    data.writeBoolean(reversed);
-  }
-
-  @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
-    reversed = data.readBoolean();
-    markBlockNeedsUpdate();
-  }
-
-  @Override
-  public boolean isReversed(BlockState blockState) {
-    return this.reversed;
-  }
-
-  @Override
-  public void setReversed(BlockState blockState, boolean reversed) {
-    this.reversed = reversed;
   }
 }

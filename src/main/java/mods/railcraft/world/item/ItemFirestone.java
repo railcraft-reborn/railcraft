@@ -8,6 +8,7 @@ import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -119,13 +120,15 @@ public class ItemFirestone extends Item {
         && WorldPlugin.setBlockState(world, firePos, Blocks.FIRE.defaultBlockState(), holder);
   }
 
+  @SuppressWarnings("deprecation")
   private static boolean canBurn(World world, BlockPos pos) {
-    if (!WorldPlugin.isAir(world, pos))
+    if (world.getBlockState(pos).isAir(world, pos))
       return false;
     for (Direction side : Direction.values()) {
       BlockPos offset = pos.relative(side);
-      if (!WorldPlugin.isAir(world, offset)
-          && WorldPlugin.getBlockMaterial(world, offset) != Material.FIRE) {
+      BlockState offsetBlockState = world.getBlockState(offset);
+      if (!offsetBlockState.isAir(world, offset)
+          && offsetBlockState.getMaterial() != Material.FIRE) {
         return true;
       }
     }

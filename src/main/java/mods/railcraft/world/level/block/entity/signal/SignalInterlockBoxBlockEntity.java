@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 import javax.annotation.Nullable;
-import mods.railcraft.api.signals.IControllerProvider;
+import mods.railcraft.api.signals.SignalControllerProvider;
 import mods.railcraft.api.signals.IReceiverProvider;
 import mods.railcraft.api.signals.SignalAspect;
 import mods.railcraft.api.signals.SignalController;
@@ -24,7 +24,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 
 public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements IControllerProvider, IReceiverProvider, IAspectProvider {
+    implements SignalControllerProvider, IReceiverProvider, IAspectProvider {
 
   private static final Direction[] SIDES = {NORTH, WEST, SOUTH, EAST};
   private final SimpleSignalController controller =
@@ -68,7 +68,7 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
       controller.setAspect(SignalAspect.BLINK_RED);
 
     if (prevAspect != controller.getAspect())
-      sendUpdateToClient();
+      syncToClient();
   }
 
   private void mergeInterlocks() {
@@ -128,17 +128,17 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
-    controller.writePacketData(data);
-    receiver.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
+    controller.writeSyncData(data);
+    receiver.writeSyncData(data);
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
-    controller.readPacketData(data);
-    receiver.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
+    controller.readSyncData(data);
+    receiver.readSyncData(data);
   }
 
   @Override

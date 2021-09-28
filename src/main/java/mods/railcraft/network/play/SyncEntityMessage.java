@@ -2,7 +2,7 @@ package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
 import io.netty.buffer.Unpooled;
-import mods.railcraft.api.core.INetworkedObject;
+import mods.railcraft.api.core.Syncable;
 import mods.railcraft.network.NetworkUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
@@ -13,9 +13,9 @@ public class SyncEntityMessage {
   private int entityId;
   private PacketBuffer data;
 
-  public <T extends Entity & INetworkedObject> SyncEntityMessage(T entity) {
+  public <T extends Entity & Syncable> SyncEntityMessage(T entity) {
     this(entity.getId(), new PacketBuffer(Unpooled.buffer()));
-    entity.writePacketData(data);
+    entity.writeSyncData(data);
   }
 
   private SyncEntityMessage(int entityId, PacketBuffer data) {
@@ -34,6 +34,6 @@ public class SyncEntityMessage {
   }
 
   public void handle(Supplier<NetworkEvent.Context> ctx) {
-    NetworkUtil.getEntity(ctx.get(), this.entityId, INetworkedObject.class).readPacketData(data);
+    NetworkUtil.getEntity(ctx.get(), this.entityId, Syncable.class).readSyncData(data);
   }
 }

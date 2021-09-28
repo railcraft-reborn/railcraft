@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
-import mods.railcraft.api.items.IToolCrowbar;
+import mods.railcraft.api.items.Crowbar;
 import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftToolTypes;
@@ -36,7 +36,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class CrowbarItem extends ToolItem implements IToolCrowbar {
+public class CrowbarItem extends ToolItem implements Crowbar {
 
   private static final int BOOST_DAMAGE = 1;
   private final Set<Class<? extends Block>> shiftRotations = new HashSet<>();
@@ -69,6 +69,7 @@ public class CrowbarItem extends ToolItem implements IToolCrowbar {
     return bannedRotations.stream().anyMatch(banned -> banned.isAssignableFrom(cls));
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public ActionResultType onItemUseFirst(ItemStack itemStack, ItemUseContext context) {
     PlayerEntity player = context.getPlayer();
@@ -78,7 +79,7 @@ public class CrowbarItem extends ToolItem implements IToolCrowbar {
     BlockPos pos = context.getClickedPos();
     BlockState blockState = world.getBlockState(pos);
 
-    if (WorldPlugin.isAir(world, pos, blockState))
+    if (blockState.isAir(world, pos))
       return ActionResultType.PASS;
 
     if (player.isShiftKeyDown() != isShiftRotation(blockState.getBlock().getClass()))

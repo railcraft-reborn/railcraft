@@ -50,14 +50,14 @@ public abstract class ActionSignalBoxBlockEntity extends SecuredSignalBoxBlockEn
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
     writeActionInfo(data);
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
     powerOnAspects = BitSet.valueOf(data.readByteArray(data.readVarInt()));
   }
 

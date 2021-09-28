@@ -21,19 +21,23 @@ public class RailcraftTags {
     // Metals
     // ======================================================
 
-    public static final Tags.IOptionalNamedTag<Item> STEEL = tag("steel");
-    public static final Tags.IOptionalNamedTag<Item> COPPER = tag("copper");
-    public static final Tags.IOptionalNamedTag<Item> TIN = tag("tin");
-    public static final Tags.IOptionalNamedTag<Item> LEAD = tag("lead");
-    public static final Tags.IOptionalNamedTag<Item> SILVER = tag("silver");
-    public static final Tags.IOptionalNamedTag<Item> BRONZE = tag("bronze");
-    public static final Tags.IOptionalNamedTag<Item> NICKEL = tag("nickel");
-    public static final Tags.IOptionalNamedTag<Item> INVAR = tag("invar");
-    public static final Tags.IOptionalNamedTag<Item> ZINC = tag("zinc");
-    public static final Tags.IOptionalNamedTag<Item> BRASS = tag("brass");
+    public static final Tags.IOptionalNamedTag<Item> STEEL_INGOT = forgeTag("ingots/steel");
+    public static final Tags.IOptionalNamedTag<Item> COPPER_INGOT = forgeTag("copper");
+    public static final Tags.IOptionalNamedTag<Item> TIN_INGOT = forgeTag("tin");
+    public static final Tags.IOptionalNamedTag<Item> LEAD_INGOT = forgeTag("lead");
+    public static final Tags.IOptionalNamedTag<Item> SILVER_INGOT = forgeTag("silver");
+    public static final Tags.IOptionalNamedTag<Item> BRONZE_INGOT = forgeTag("bronze");
+    public static final Tags.IOptionalNamedTag<Item> NICKEL_INGOT = forgeTag("nickel");
+    public static final Tags.IOptionalNamedTag<Item> INVAR_INGOT = forgeTag("invar");
+    public static final Tags.IOptionalNamedTag<Item> ZINC_INGOT = forgeTag("zinc");
+    public static final Tags.IOptionalNamedTag<Item> BRASS_INGOT = forgeTag("brass");
 
     private static IOptionalNamedTag<Item> tag(String name) {
       return ItemTags.createOptional(new ResourceLocation(Railcraft.ID, name));
+    }
+
+    private static IOptionalNamedTag<Item> forgeTag(String name) {
+      return ItemTags.createOptional(new ResourceLocation("forge", name));
     }
   }
 

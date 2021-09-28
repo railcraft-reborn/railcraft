@@ -7,11 +7,14 @@ import mods.railcraft.api.signals.ILinkEffectRenderer;
 import mods.railcraft.api.signals.SignalTools;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.util.MiscTools;
+import mods.railcraft.world.item.ItemGoggles;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.ParticleStatus;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.IParticleData;
@@ -25,13 +28,14 @@ import net.minecraft.world.World;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRenderer {
+public enum ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRenderer {
+
+  INSTANCE;
 
   public static final short TELEPORT_PARTICLES = 64;
   public static final short TRACKING_DISTANCE = 32 * 32;
-  public static final ClientEffects INSTANCE = new ClientEffects();
 
-  private final Minecraft mc = Minecraft.getInstance();
+  private final Minecraft minecraft = Minecraft.getInstance();
   private final Random rand = new Random();
 
   private ClientEffects() {
@@ -40,7 +44,7 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
   }
 
   public void readTeleport(PacketBuffer data) {
-    World world = this.mc.level;
+    World world = this.minecraft.level;
     if (world == null)
       return;
 
@@ -90,17 +94,14 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
 
   @Override
   public boolean isTuningAuraActive() {
-    return false;
-    // return isGoggleAuraActive(GoggleAura.TUNING) || isGoggleAuraActive(GoggleAura.SIGNALLING);
+    return this.isGoggleAuraActive(ItemGoggles.Aura.TUNING)
+        || this.isGoggleAuraActive(ItemGoggles.Aura.SIGNALLING);
   }
 
-  // public boolean isGoggleAuraActive(GoggleAura aura) {
-  // if (RailcraftItems.GOGGLES.isLoaded()) {
-  // ItemStack goggles = ItemGoggles.getGoggles(mc.player);
-  // return ItemGoggles.getCurrentAura(goggles) == aura;
-  // }
-  // return AuraKeyHandler.isAuraEnabled(aura);
-  // }
+  public boolean isGoggleAuraActive(ItemGoggles.Aura aura) {
+    ItemStack itemStack = this.minecraft.player.getItemBySlot(EquipmentSlotType.HEAD);
+    return itemStack.getItem() instanceof ItemGoggles && ItemGoggles.getAura(itemStack) == aura;
+  }
 
   private double getRandomParticleOffset() {
     return 0.5 + rand.nextGaussian() * 0.1;
@@ -157,7 +158,7 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
   public void readFireSpark(PacketBuffer data) {
     Vector3d start = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
     Vector3d destination = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
-    fireSparkEffect(mc.level, start, destination);
+    fireSparkEffect(minecraft.level, start, destination);
   }
 
   public void chunkLoaderEffect(World world, Object source, Set<ChunkPos> chunks) {
@@ -300,7 +301,7 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
 
   public void readZapDeath(PacketBuffer data) {
     Vector3d pos = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
-    zapEffectDeath(mc.level, pos);
+    zapEffectDeath(minecraft.level, pos);
   }
 
   @Override
@@ -363,7 +364,7 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
     Vector3d velocity = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
     BlockState state = Block.stateById(data.readVarInt());
     boolean blockDust = data.readBoolean();
-    blockParticle(mc.level, block, pos, velocity, state, blockDust);
+    blockParticle(minecraft.level, block, pos, velocity, state, blockDust);
   }
 
   /**
@@ -372,7 +373,7 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
    * @return true when you should not render it
    */
   private boolean thinParticles(boolean canDisable) {
-    ParticleStatus particleSetting = mc.options.particles;
+    ParticleStatus particleSetting = minecraft.options.particles;
     if (!canDisable) {
       // let's actualy care about the user's particle options.
       // 50% that it wont render.
@@ -387,6 +388,6 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
   }
 
   protected void spawnParticle(IParticleData particle, double pX, double pY, double pZ, double vX, double vY, double vZ) {
-    mc.particleEngine.add(mc.particleEngine.createParticle(particle, pX, pY, pZ, vX, vY, vZ));
+    minecraft.particleEngine.add(minecraft.particleEngine.createParticle(particle, pX, pY, pZ, vX, vY, vZ));
   }
 }

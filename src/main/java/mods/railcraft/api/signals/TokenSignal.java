@@ -4,17 +4,24 @@
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
  -----------------------------------------------------------------------------*/
+package mods.railcraft.api.signals;
 
-package mods.railcraft.api.tracks;
+import java.util.UUID;
+import net.minecraft.util.math.BlockPos;
 
 /**
- * Tracks that can interface with Comparators should implement this interface.
- *
- * For example a detector track.
- *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface ITrackKitComparator extends ITrackKitInstance {
+public interface TokenSignal extends ISignal {
 
-  int getComparatorInputOverride();
+  TokenRing getTokenRing();
+
+  BlockPos getTokenRingCentroid();
+
+  UUID getTokenRingId();
+
+  @Override
+  default INetwork getNetwork() {
+    return this.getTokenRing();
+  }
 }

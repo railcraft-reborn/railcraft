@@ -299,4 +299,8 @@ public class RailcraftItems {
   public static final RegistryObject<Item> HIGH_SPEED_TRANSITION_TRACK_KIT =
       ITEMS.register("high_speed_transition_track_kit",
           () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> GOGGLES =
+      ITEMS.register("goggles",
+          () -> new Item(new Item.Properties().tab(TAB)));
 }

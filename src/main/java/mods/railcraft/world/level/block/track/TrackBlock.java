@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.IChargeBlock;
-import mods.railcraft.api.tracks.TrackToolsAPI;
 import mods.railcraft.api.tracks.TrackType;
 import mods.railcraft.api.tracks.TrackTypeProvider;
 import mods.railcraft.util.TrackTools;
@@ -193,7 +192,7 @@ public class TrackBlock extends AbstractRailBlock implements TrackTypeProvider, 
   @Override
   public float getRailMaxSpeed(BlockState state, World world, BlockPos pos,
       AbstractMinecartEntity cart) {
-    return this.getTrackType().getEventHandler().getMaxSpeed(world, cart, pos);
+    return (float) this.getTrackType().getEventHandler().getMaxSpeed(world, cart, pos);
   }
 
   @Override
@@ -202,10 +201,10 @@ public class TrackBlock extends AbstractRailBlock implements TrackTypeProvider, 
   }
 
   @Override
-  public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
-    return !TrackToolsAPI.isRailBlockAt(world, pos.above())
-        && !TrackToolsAPI.isRailBlockAt(world, pos.below())
-        && TrackSupportTools.isSupported(world, pos, this.getTrackType().getMaxSupportDistance());
+  public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
+    return !AbstractRailBlock.isRail(level.getBlockState(pos.above()))
+        && !AbstractRailBlock.isRail(level.getBlockState(pos.below()))
+        && TrackSupportTools.isSupported(level, pos, this.getTrackType().getMaxSupportDistance());
   }
 
   @Override

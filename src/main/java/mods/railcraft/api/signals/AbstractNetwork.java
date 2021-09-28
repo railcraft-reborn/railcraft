@@ -18,7 +18,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import com.google.common.collect.MapMaker;
 import mods.railcraft.api.core.CollectionToolsAPI;
-import mods.railcraft.api.core.INetworkedObject;
+import mods.railcraft.api.core.Syncable;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -30,7 +30,7 @@ import net.minecraft.world.World;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObject {
+public abstract class AbstractNetwork implements IMutableNetwork, Syncable {
 
   protected static final Random rand = new Random();
   private static final boolean IS_BUKKIT;
@@ -47,7 +47,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
 
   private static final int SAFE_TIME = 32;
   private static final int PAIR_CHECK_INTERVAL = 16;
-  public final TileEntity tile;
+  public final TileEntity blockEntity;
   public final String locTag;
   public final int maxPeers;
   protected final Deque<BlockPos> peers = CollectionToolsAPI.blockPosDeque(LinkedList::new);
@@ -64,8 +64,8 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
   private boolean needsInit = true;
   private @Nullable String name;
 
-  protected AbstractNetwork(String locTag, TileEntity tile, int maxPairings) {
-    this.tile = tile;
+  protected AbstractNetwork(String locTag, TileEntity blockEntity, int maxPairings) {
+    this.blockEntity = blockEntity;
     this.maxPeers = maxPairings;
     this.locTag = locTag;
   }
@@ -130,7 +130,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
       peersToTestNext.retainAll(peers);
       for (BlockPos coord : peersToTestNext) {
 
-        World world = tile.getLevel();
+        World world = blockEntity.getLevel();
         if (!world.isLoaded(coord))
           continue;
 
@@ -189,7 +189,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
       return null;
     }
 
-    World world = tile.getLevel();
+    World world = blockEntity.getLevel();
     if (!world.isLoaded(coord))
       return null;
 
@@ -218,7 +218,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
 
   public BlockPos getBlockPos() {
     if (blockPos == null)
-      blockPos = tile.getBlockPos().immutable();
+      blockPos = blockEntity.getBlockPos().immutable();
     return blockPos;
   }
 
@@ -243,8 +243,8 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
     return safePeers;
   }
 
-  public TileEntity getTile() {
-    return tile;
+  public TileEntity getBlockEntity() {
+    return this.blockEntity;
   }
 
   @Override
@@ -301,12 +301,12 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
+  public void writeSyncData(PacketBuffer data) {
     data.writeUtf(name != null ? name : "");
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
+  public void readSyncData(PacketBuffer data) {
     this.name = data.readUtf(0x7FFF);
     if (name.isEmpty()) {
       this.name = null;
@@ -314,13 +314,8 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
   }
 
   @Override
-  public void sendUpdateToClient() {
-    ((INetworkedObject) getTile()).sendUpdateToClient();
-  }
-
-  @Override
-  public @Nullable World theWorld() {
-    return getTile().getLevel();
+  public void syncToClient() {
+    ((Syncable) this.getBlockEntity()).syncToClient();
   }
 
   @Override
@@ -336,7 +331,7 @@ public abstract class AbstractNetwork implements IMutableNetwork, INetworkedObje
   @Override
   public void clear() {
     peers.clear();
-    if (!tile.getLevel().isClientSide())
+    if (!blockEntity.getLevel().isClientSide())
       this.peersChanged();
   }
 }

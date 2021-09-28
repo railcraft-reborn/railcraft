@@ -42,12 +42,12 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
       controller.setAspect(blockSignal.getSignalAspect());
     if (prevAspect != controller.getAspect()) {
       updateNeighboringSignalBoxes();
-      sendUpdateToClient();
+      syncToClient();
     }
   }
 
   private void updateNeighboringSignalBoxes() {
-    notifyBlocksOfNeighborChange();
+    updateNeighbors();
     for (Direction side : Direction.Plane.HORIZONTAL) {
       TileEntity tile = this.adjacentCache.getTileOnSide(side);
       if (tile instanceof AbstractSignalBoxBlockEntity) {
@@ -89,17 +89,17 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
-    controller.writePacketData(data);
-    blockSignal.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
+    controller.writeSyncData(data);
+    blockSignal.writeSyncData(data);
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
-    controller.readPacketData(data);
-    blockSignal.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
+    controller.readSyncData(data);
+    blockSignal.readSyncData(data);
   }
 
   @Override

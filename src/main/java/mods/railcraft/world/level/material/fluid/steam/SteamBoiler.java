@@ -191,7 +191,7 @@ public class SteamBoiler {
       if (this.burning)
         this.setBurnTime(this.getBurnTime() - fuelNeeded);
       if (this.tile != null && this.burning != wasBurning)
-        this.tile.sendUpdateToClient();
+        this.tile.syncToClient();
       this.convertSteam(numTanks);
     }
     if (this.burning)

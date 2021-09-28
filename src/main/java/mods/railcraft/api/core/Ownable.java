@@ -17,7 +17,8 @@ import net.minecraft.util.INameable;
  *
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public interface IOwnable extends INameable {
+public interface Ownable extends INameable {
+
   /**
    * Returns the GameProfile of the owner of the object.
    */

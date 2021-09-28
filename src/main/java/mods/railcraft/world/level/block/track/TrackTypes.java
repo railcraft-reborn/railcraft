@@ -6,7 +6,6 @@ import mods.railcraft.api.tracks.TrackType;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.behaivor.CollisionHandler;
 import mods.railcraft.world.level.block.track.behaivor.SpeedController;
-import mods.railcraft.world.level.block.track.kit.TrackKits;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -76,8 +75,6 @@ public class TrackTypes {
   public static final RegistryObject<TrackType> IRON =
       TRACK_TYPES.register("iron",
           () -> new TrackType.Builder(() -> (AbstractRailBlock) Blocks.RAIL)
-              .addOutfittedBlock(TrackKits.TURNOUT, RailcraftBlocks.TURNOUT_TRACK)
-              .addOutfittedBlock(TrackKits.WYE, RailcraftBlocks.WYE_TRACK)
               .setEventHandler(SpeedController.IRON)
               .build());
 
@@ -109,7 +106,7 @@ public class TrackTypes {
     }
 
     @Override
-    public float getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
+    public double getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
       return this.speedController.getMaxSpeed(level, cart, pos);
     }
   }

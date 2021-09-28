@@ -51,7 +51,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
                                                                                           // behavior
         SignalAspect tmpAspect = SignalAspect.GREEN;
         boolean hasInput = false;
-        if (PowerPlugin.isBlockBeingPoweredByRepeater(this.level, getBlockPos()))
+        if (PowerPlugin.hasRepeaterSignal(this.level, getBlockPos()))
           hasInput = true;
         for (Direction side : Direction.Plane.HORIZONTAL) { // get most restrictive aspect from
           // adjacent (active) boxes
@@ -89,17 +89,16 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     return true;
   }
 
-  @Override
   public void neighborChanged(BlockState state, Block neighborBlock, BlockPos neighborPos) {
-    super.neighborChanged(state, neighborBlock, neighborPos);
+    this.resetAdjacentCacheTimers();
     if (this.level.isClientSide())
       return;
-    boolean p = PowerPlugin.isBlockBeingPoweredByRepeater(this.level, getBlockPos());
-    if (ticksPowered <= 0 && p) {
-      ticksPowered = ticksToPower;
-      if (Objects.equals(stateModeController.getButtonState(), StateMode.RISING_EDGE))
-        aspect = SignalAspect.GREEN;
-      updateNeighbors();
+    boolean powered = PowerPlugin.hasRepeaterSignal(this.level, getBlockPos());
+    if (this.ticksPowered <= 0 && powered) {
+      this.ticksPowered = this.ticksToPower;
+      if (Objects.equals(this.stateModeController.getButtonState(), StateMode.RISING_EDGE))
+        this.aspect = SignalAspect.GREEN;
+      this.updateNeighbors();
     }
   }
 
@@ -113,10 +112,11 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     }
   }
 
-  private void updateNeighbors() {
-    sendUpdateToClient();
-    notifyBlocksOfNeighborChange();
-    updateNeighborBoxes();
+  @Override
+  public void updateNeighbors() {
+    super.updateNeighbors();
+    this.syncToClient();
+    this.updateNeighborBoxes();
   }
 
   @Override
@@ -144,7 +144,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
     ticksPowered = data.getShort("ticksPowered");
     ticksToPower = data.getShort("ticksToPower");
-    aspect = SignalAspect.byId(data.getInt("aspect"));
+    aspect = SignalAspect.getById(data.getInt("aspect"));
     if (data.contains("mode"))
       stateModeController.readFromNBT(data, "mode");
     else // set old boxes to immediate mode to retain old behavior
@@ -153,8 +153,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void writePacketData(PacketBuffer data) {
-    super.writePacketData(data);
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
 
     data.writeBoolean(ticksPowered > 0);
     data.writeShort(ticksToPower);
@@ -163,8 +163,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void readPacketData(PacketBuffer data) {
-    super.readPacketData(data);
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
 
     ticksPowered = (short) (data.readBoolean() ? 1 : 0);
     ticksToPower = data.readShort();

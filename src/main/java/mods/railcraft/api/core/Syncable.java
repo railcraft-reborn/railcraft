@@ -4,12 +4,16 @@
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
  -----------------------------------------------------------------------------*/
-package mods.railcraft.api.signals;
 
-/**
- * @author CovertJaguar <http://www.railcraft.info>
- */
-public interface IControllerProvider {
+package mods.railcraft.api.core;
 
-  SignalController getController();
+import net.minecraft.network.PacketBuffer;
+
+public interface Syncable {
+
+  default void readSyncData(PacketBuffer data) {}
+
+  default void writeSyncData(PacketBuffer data) {}
+
+  void syncToClient();
 }

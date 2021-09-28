@@ -10,7 +10,6 @@ import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.carts.LinkageManager;
 import mods.railcraft.carts.Train;
-import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MathTools;
 import mods.railcraft.util.MiscTools;
@@ -119,7 +118,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         other.startRiding(cart);
     }
 
-    if (isLiving && WorldPlugin.isBlockAt(cart.level, cart.blockPosition(),
+    if (isLiving && cart.level.getBlockState(cart.blockPosition()).is(
         RailcraftBlocks.ELEVATOR_TRACK.get()))
       return;
 
@@ -348,7 +347,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
 
     if (cart.getCollisionHandler() != this
         && other instanceof LivingEntity
-        && WorldPlugin.isBlockAt(cart.level, cart.blockPosition(),
+        && cart.level.getBlockState(cart.blockPosition()).is(
             RailcraftBlocks.ELEVATOR_TRACK.get())
         && other.getBoundingBox().minY < cart.getBoundingBox().maxY) {
       other.move(MoverType.SELF, new Vector3d(0,
