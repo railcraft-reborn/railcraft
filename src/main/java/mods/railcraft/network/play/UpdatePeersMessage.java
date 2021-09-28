@@ -47,7 +47,7 @@ public class UpdatePeersMessage {
         .flatMap(level -> this.type.getNetwork(level, this.blockPos))
         .ifPresent(network -> {
           network.clear();
-          this.peers.forEach((BlockPos bPos) -> network.add(bPos));
+          this.peers.forEach(network::add);
         }));
     return true;
   }
