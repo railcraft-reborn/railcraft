@@ -1,12 +1,14 @@
 package mods.railcraft.client;
 
 import org.apache.commons.lang3.tuple.Pair;
+
 import mods.railcraft.IRailcraftDist;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.signals.SignalAspect;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
+import mods.railcraft.client.particle.ParticleSteam;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
 import mods.railcraft.client.renderer.blockentity.DualSignalRenderer;
@@ -18,6 +20,7 @@ import mods.railcraft.client.renderer.blockentity.SignalRenderer;
 import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
 import mods.railcraft.client.renderer.model.TextureReplacementModel;
+import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
@@ -29,6 +32,7 @@ import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.inventory.container.PlayerContainer;
@@ -43,6 +47,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -207,8 +212,8 @@ public class ClientDist implements IRailcraftDist {
   }
 
   private void handleParticleRegistration(ParticleFactoryRegisterEvent event) {
-    // final ParticleManager particleEngine = this.minecraft.particleEngine;
-    // particleEngine.register(RailcraftParticles.STEAM.get(), ParticleSteam.Factory::new);
+    final ParticleManager particleEngine = this.minecraft.particleEngine;
+    particleEngine.register(RailcraftParticles.STEAM.get(), ParticleSteam.SteamParticleFactory::new);
   }
 
   // ================================================================================

@@ -5,17 +5,16 @@ import java.util.Set;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.signals.ILinkEffectRenderer;
 import mods.railcraft.api.signals.SignalTools;
+import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.util.MiscTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.PortalParticle;
 import net.minecraft.client.settings.ParticleStatus;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -194,39 +193,46 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
   public void snowEffect(Object source, double yOffset) {
     if (thinParticles(true))
       return;
-    IEffectSource es = EffectManager.getEffectSource(source);
     double vx = rand.nextGaussian() * 0.1;
     double vy = rand.nextDouble() * 0.01;
     double vz = rand.nextGaussian() * 0.1;
-    Vector3d start = es.getPosF().add(0.0, yOffset, 0.0);
-    spawnParticle(ParticleTypes.ITEM_SNOWBALL, start.x, start.y, start.z, vx, vy, vz);
+    spawnParticle(ParticleTypes.ITEM_SNOWBALL, 0.0, yOffset, 0.0, vx, vy, vz);
   }
 
   /**
-   * Effect when the train is using steam
+   * Creates a steam effect on the wheel-side of the trains. Yvel is between 0.02 to 0.03
+   * @param x X Coordinate.
+   * @param y Y Coordinate.
+   * @param z Z Coordinate.
+   * @param vx Velocity in the X coordinate
+   * @param vy Velocity in the Y coordinate
    */
-  public void steamEffect(double x, double y, double z) {
+  public void steamEffect(double x, double y, double z, double vx, double vz) {
     if (thinParticles(true))
       return;
-    double vx = 0; //rand.nextGaussian() * 0.01;
-    double vy = 0.02; //rand.nextGaussian() * 0.01;
-    double vz = 0; //rand.nextGaussian() * 0.01;
-
-    spawnParticle(ParticleTypes.SMOKE, x, y, z, vx, vy, vz); //TODO: Replace with steam
+    BasicParticleType steam = new BasicParticleType(false){
+      @Override
+      public BasicParticleType getType() {
+        return RailcraftParticles.STEAM.get();
+      }
+    };
+    // vel Y 0.02-0.03
+    spawnParticle(steam, x, y, z, vx, 0.02 + (rand.nextDouble() * 0.01), vz);
   }
 
-  public void steamJetEffect(Object source, Vector3d vel) {
+  /**
+   * Same as <code>steamEffect</code>, but moves the particle faster (as we're venting the pressure tank)
+   * @param x X Coordinate.
+   * @param y Y Coordinate.
+   * @param z Z Coordinate.
+   * @param vx Velocity in the X coordinate
+   * @param vy Velocity in the Y coordinate
+   * @see mods.railcraft.client.ClientEffects#steamEffect() steamEffect
+   */
+  public void steamJetEffect(double x, double y, double z, double vx, double vz) {
     if (thinParticles(true))
       return;
-    IEffectSource es = EffectManager.getEffectSource(source);
-    vel =
-    vel.add(rand.nextGaussian() * 0.02, rand.nextGaussian() * 0.02, rand.nextGaussian() * 0.02);
-    spawnParticle(
-      ParticleTypes.LARGE_SMOKE,
-      es.getPosF().x(),
-      es.getPosF().y(),
-      es.getPosF().z(),
-      vel.x(), vel.y(), vel.z());
+    this.steamEffect(x, y, z, vx * 1.5, vz * 1.5);
   }
 
   public void chimneyEffect(ClientWorld world, double x, double y, double z, int color) {
@@ -237,6 +243,7 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
 
   /**
    * Effect when the boiler is burning stuff to make steam.
+   * Spawns on the train's smokestack
    * @param x
    * @param y
    * @param z
@@ -244,11 +251,11 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
   public void locomotiveEffect(double x, double y, double z) {
     if (thinParticles(false))
       return;
-    if (SeasonPlugin.HALLOWEEN && rand.nextInt(4) == 0) {
-      //  spawnParticle(new ParticlePumpkin(world, x, y, z));
-      return;
-    }
-    spawnParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0, 0.02, 0);
+    // if (SeasonPlugin.HALLOWEEN && rand.nextInt(4) == 0) {
+    //   //  spawnParticle(new ParticlePumpkin(world, x, y, z));
+    //   return;
+    // }
+    spawnParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0, 0.02, 0); // smog obviously.
   }
 
   @Override
@@ -359,13 +366,24 @@ public class ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRend
     blockParticle(mc.level, block, pos, velocity, state, blockDust);
   }
 
+  /**
+   * Checks if you should NOT spawn a particle
+   * @param canDisable Can you disable it based on the user's particle setting?
+   * @return true when you should not render it
+   */
   private boolean thinParticles(boolean canDisable) {
     ParticleStatus particleSetting = mc.options.particles;
-    if (!canDisable && particleSetting == ParticleStatus.ALL)
-      particleSetting = ParticleStatus.DECREASED;
-    if (particleSetting == ParticleStatus.DECREASED && MiscTools.RANDOM.nextInt(3) == 0)
+    if (!canDisable) {
+      // let's actualy care about the user's particle options.
+      // 50% that it wont render.
+      if ((particleSetting == ParticleStatus.MINIMAL) && (rand.nextGaussian() > 0.5)) {
+        return true;
+      }
+      return false;
+    }
+    if (particleSetting == ParticleStatus.DECREASED && (MiscTools.RANDOM.nextInt(3) == 0))
       particleSetting = ParticleStatus.ALL;
-    return particleSetting == ParticleStatus.ALL;
+    return particleSetting != ParticleStatus.ALL;
   }
 
   protected void spawnParticle(IParticleData particle, double pX, double pY, double pZ, double vX, double vY, double vZ) {

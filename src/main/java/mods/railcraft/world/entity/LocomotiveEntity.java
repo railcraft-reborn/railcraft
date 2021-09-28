@@ -188,7 +188,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   @Override
   public ItemStack createCartItem(AbstractMinecartEntity cart) {
-    ItemStack item = this.getCartItem();
+    ItemStack item = this.getCartItem(); // THIS CAN CAUSE A STACKOVERFLOW!
     if (isSecure() && CartToolsAPI.doesCartHaveOwner(this))
       LocomotiveItem.setOwnerData(item, CartToolsAPI.getCartOwner(this));
     LocomotiveItem.setItemWhistleData(item, whistlePitch);
@@ -219,15 +219,30 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     return ActionResultType.CONSUME;
   }
 
+  /**
+   * Indicates if this object is locked
+   * @return true if it's secured.
+   */
   @Override
   public boolean isSecure() {
     return getSecurityState() == LocoLockButtonState.LOCKED || isPrivate();
   }
 
+  /**
+   * Indicates if this object is set to private
+   * @return true if it's private.
+   */
   public boolean isPrivate() {
     return getSecurityState() == LocoLockButtonState.PRIVATE;
   }
 
+  /**
+   * Can the user use this locomotive?
+   * @param user The user.
+   * @return true if they can.
+   * @see mods.railcraft.world.entity.LocomotiveEntity#isSecure isSecure
+   * @see mods.railcraft.world.entity.LocomotiveEntity#isPrivate isPrivate
+   */
   public boolean canControl(GameProfile user) {
     return !isPrivate() || PlayerPlugin.isOwnerOrOp(getOwner(), user);
   }

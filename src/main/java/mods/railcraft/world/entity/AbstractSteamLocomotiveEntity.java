@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity;
 
 import javax.annotation.Nullable;
+
 import mods.railcraft.NBTPlugin;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.IFluidCart;
@@ -56,7 +57,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   private final SteamBoiler boiler;
   protected final StandardTank waterTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 6) {
     @Override
-    public int fill(@Nullable FluidStack resource, FluidAction doFill) {
+    public int fill(FluidStack resource, FluidAction doFill) {
       return super.fill(onFillWater(resource), doFill);
     }
   }.setFilterFluid(() -> Fluids.WATER);
@@ -85,7 +86,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     this.getTankManager().add(waterTank);
     this.getTankManager().add(tankSteam);
 
-    boiler = new SteamBoiler(waterTank, tankSteam)
+    this.boiler = new SteamBoiler(waterTank, tankSteam)
       .setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get())
       .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
   }
@@ -98,7 +99,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     this.getTankManager().add(waterTank);
     this.getTankManager().add(tankSteam);
 
-    boiler = new SteamBoiler(waterTank, tankSteam)
+    this.boiler = new SteamBoiler(waterTank, tankSteam)
       .setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get())
       .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
   }
@@ -154,27 +155,35 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
           ventSteam();
       }
 
-      if (update % FluidTools.BUCKET_FILL_TIME == 0)
+      if ((update % FluidTools.BUCKET_FILL_TIME) == 0)
         processState = FluidTools.processContainer(invWaterContainers, waterTank,
             ProcessType.DRAIN_ONLY, processState);
       return;
     }
+    // future information: renderYaw FACES at -x when at 0deg
+    double rads = Math.toRadians(renderYaw);
     if (isSmoking()) {
-      double rads = renderYaw * Math.PI / 180D;
       float offset = 0.4f;
       ClientEffects.INSTANCE.locomotiveEffect(
-          this.getX() - Math.cos(rads) * offset, this.getY() + 1.5f,
+          this.getX() - Math.cos(rads) * offset, this.getY() + 1.5,
           this.getZ() - Math.sin(rads) * offset);
     }
-    // steam spawns ON the engine itself, spreading left or right like
-    // as steam engines are on the sides of the train
+    // steam spawns ON the engine itself, spreading left or right
+    // as the pistons are on the train's sides
     if (isSteaming()){
-      double rads = renderYaw * Math.PI / 180D;
-      float offset = 0.8f;
+      float offset = 0.5f;
+      double ninetyDeg = Math.toRadians(90) + Math.toRadians(random.nextInt(10)); // 10* bias
+      double steamAngularSpeed = 0.01;
+      double yCoordinate = this.getY() + 0.15;
+      // right
       ClientEffects.INSTANCE.steamEffect(
-        this.getX() - Math.cos(rads) * offset, this.getY() + 1.8f,
-        this.getZ() - Math.sin(rads) * offset);
-      }
+        this.getX() - Math.cos(rads + ninetyDeg) * offset, yCoordinate, this.getZ() - Math.sin(rads + ninetyDeg) * offset,
+        steamAngularSpeed * Math.cos(rads - ninetyDeg), steamAngularSpeed * Math.sin(rads - ninetyDeg));
+      //left
+      ClientEffects.INSTANCE.steamEffect(
+        this.getX() - Math.cos(rads + -ninetyDeg) * offset, yCoordinate, this.getZ() - Math.sin(rads + -ninetyDeg) * offset,
+        steamAngularSpeed * Math.cos(rads + ninetyDeg), steamAngularSpeed * Math.sin(rads + ninetyDeg));
+    }
   }
 
 
