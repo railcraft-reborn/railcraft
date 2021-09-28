@@ -3,7 +3,6 @@ package mods.railcraft.util;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
 
 /**
  * Created by CovertJaguar on 12/5/2018 for Railcraft.
@@ -36,7 +35,7 @@ public class Optionals {
    * If the Optional cannot be cast to the given class, it will return null resulting in the map
    * returning an empty Optional.
    */
-  public static <T, U> Function<T, @Nullable U> toType(Class<U> clazz) {
+  public static <T, U> Function<T, U> toType(Class<U> clazz) {
     return t -> clazz.isInstance(t) ? clazz.cast(t) : null;
   }
 

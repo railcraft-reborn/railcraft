@@ -8,6 +8,7 @@ import mods.railcraft.api.signals.SignalAspect;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
+import mods.railcraft.client.particle.ParticlePumpkin;
 import mods.railcraft.client.particle.ParticleSpark;
 import mods.railcraft.client.particle.ParticleSteam;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
@@ -216,6 +217,7 @@ public class ClientDist implements IRailcraftDist {
     final ParticleManager particleEngine = this.minecraft.particleEngine;
     particleEngine.register(RailcraftParticles.STEAM.get(), ParticleSteam.SteamParticleFactory::new);
     particleEngine.register(RailcraftParticles.SPARK.get(), ParticleSpark.SparkParticleFactory::new);
+    particleEngine.register(RailcraftParticles.PUMPKIN.get(), ParticlePumpkin.PumpkinParticleFactory::new);
   }
 
   // ================================================================================

@@ -6,6 +6,7 @@ import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.signals.ILinkEffectRenderer;
 import mods.railcraft.api.signals.SignalTools;
 import mods.railcraft.particle.RailcraftParticles;
+import mods.railcraft.plugins.SeasonPlugin;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.world.item.ItemGoggles;
 import net.minecraft.block.Block;
@@ -250,10 +251,16 @@ public enum ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRende
   public void locomotiveEffect(double x, double y, double z) {
     if (thinParticles(false))
       return;
-    // if (SeasonPlugin.HALLOWEEN && rand.nextInt(4) == 0) {
-    //   //  spawnParticle(new ParticlePumpkin(world, x, y, z));
-    //   return;
-    // }
+    if (SeasonPlugin.HALLOWEEN && rand.nextInt(4) == 0) { // 20%?
+      BasicParticleType spook = new BasicParticleType(false){
+        @Override
+        public BasicParticleType getType() {
+          return RailcraftParticles.PUMPKIN.get();
+        }
+      };
+      spawnParticle(spook, x, y, z, 0, 0.02, 0);
+      return;
+    }
     spawnParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0, 0.02, 0); // smog obviously.
   }
 

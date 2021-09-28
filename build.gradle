@@ -21,8 +21,15 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-// does in fact follow the semantic versioning. (GAMEVER)-(MODMAJOR.MODMINOR.MODPATCH)
-version = "${minecraft_version}-${mod_version}"
+def isCI = System.getenv("GITHUB_ACTIONS")
+def nightly = System.getenv("GITHUB_NIGHTLY")
+
+def tag = nightly ? "NIGHTLY" : "CI"
+def suffix = "-${tag}-${System.getenv("GITHUB_RUN_ID")}.${System.getenv("GITHUB_RUN_NUMBER")}"
+def blank = "" // ugh
+
+// does in fact follow the semantic versioning. (GAMEVER)-(MODMAJOR.MODMINOR.MODPATCH)-CIMETA-RUNID.RUNINT
+version = "${minecraft_version}-${mod_version}${isCI ? suffix : blank}"
 group = 'mods.railcraft'
 archivesBaseName = 'railcraft'
 

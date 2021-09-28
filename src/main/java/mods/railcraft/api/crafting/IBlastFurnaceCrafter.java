@@ -45,7 +45,7 @@ public interface IBlastFurnaceCrafter {
    * You can remove fuels from this list, but do not add them, it will throw an
    * UnsupportedOperationException.
    */
-  default List<@Nonnull ISimpleRecipe> getFuels() {
+  default List<ISimpleRecipe> getFuels() {
     return Collections.emptyList();
   }
 
@@ -53,7 +53,7 @@ public interface IBlastFurnaceCrafter {
    * You can remove recipes from this list, but do not add them, it will throw an
    * UnsupportedOperationException.
    */
-  default List<@Nonnull IRecipe> getRecipes() {
+  default List<IRecipe> getRecipes() {
     return Collections.emptyList();
   }
 
