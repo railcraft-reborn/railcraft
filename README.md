@@ -1,6 +1,6 @@
 # Railcraft - A Minecraft Mod
 
-[![Deploy Nightly](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/nightly.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/nightly.yml)
+[![Deploy Nightly](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/nightly.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/releases/tag/nightly)
 [![CI Suite](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/ci_suite.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/ci_suite.yml)
 
 Here you will find the source and issue tracker for the **Official Railcraft Project**.
