@@ -25,7 +25,8 @@ public class ServerConfig {
   public final ForgeConfigSpec.DoubleValue steamLocomotiveEfficiency;
 
   public ServerConfig(ForgeConfigSpec.Builder builder) {
-    builder.push("highSpeedTrack");
+    builder.comment("Configurations about high speed tracks.")
+      .push("highSpeedTrack");
     {
       this.highSpeedTrackMaxSpeed = builder
           .comment(
@@ -40,7 +41,8 @@ public class ServerConfig {
           "minecraft:parrot",
           "minecraft:rabbit",
           "minecraft:spider",
-          "minecraft:vex");
+          "minecraft:vex",
+          "minecraft:bee");
       this.highSpeedTrackIgnoredEntities = builder
           .comment(
               "add entity names to exclude them from explosions caused by high speed collisions")

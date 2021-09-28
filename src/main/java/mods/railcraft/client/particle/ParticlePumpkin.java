@@ -1,6 +1,12 @@
 package mods.railcraft.client.particle;
 
+import java.util.Random;
+
+import net.minecraft.client.particle.IAnimatedSprite;
+import net.minecraft.client.particle.IParticleFactory;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -8,23 +14,35 @@ import net.minecraft.util.math.MathHelper;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class ParticlePumpkin extends ParticleBaseSmoke {
-
-  public ParticlePumpkin(ClientWorld par1World, double x, double y, double z) {
-    this(par1World, x, y, z, 0, 0, 0, 2.5F);
-  }
+public class ParticlePumpkin extends ParticleSteam {
+  private static final Random rand = new Random();
 
   public ParticlePumpkin(ClientWorld world, double x, double y, double z, double dx, double dy,
-      double dz,
-      float scale) {
-    super(world, x, y, z, dx, dy, dz, scale);
+    double dz) {
+    super(world, x, y, z, dx, dy, dz);
     this.gravity = -0.01F;
-    this.lifetime = (int) (16.0D / (Math.random() * 0.8D + 0.2D));
+    this.lifetime = (int) (16.0D / (rand.nextGaussian() * 0.8D + 0.2D));
   }
 
   @Override
   public float getQuadSize(float partialTicks) {
     return this.quadSize * (float) Math.sin(MathHelper.clamp(
-        ((float) this.age + partialTicks) / (float) this.lifetime, 0.0F, 1.0F) * Math.PI);
+        (this.age + partialTicks) / this.lifetime, 0.0F, 1.0F) * Math.PI);
+  }
+
+  public static class PumpkinParticleFactory implements IParticleFactory<BasicParticleType> {
+    private final IAnimatedSprite spriteSet;
+
+    public PumpkinParticleFactory(IAnimatedSprite spriteSet) {
+      this.spriteSet = spriteSet;
+    }
+
+    @Override
+    public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn,
+        double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+      ParticlePumpkin steam = new ParticlePumpkin(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+      steam.pickSprite(this.spriteSet);
+      return steam;
+    }
   }
 }

@@ -10,7 +10,9 @@ public class CommonConfig {
   public final ForgeConfigSpec.IntValue harvest;
 
   public CommonConfig(ForgeConfigSpec.Builder builder) {
-    enableSeasons = builder.define("enableSeasons", true);
+    enableSeasons = builder
+        .comment("Enable season-based item & train effects?")
+        .define("enableSeasons", true);
     christmas = builder
         .comment("Controls whether Christmas mode is (0) enabled, (1) forced, or (2) disabled")
         .defineInRange("christmas", 0, 0, 2);

@@ -18,7 +18,7 @@ import net.minecraft.particles.BasicParticleType;
 public class ParticleSteam extends SpriteTexturedParticle {
   private static final Random rand = new Random();
 
-  private ParticleSteam(ClientWorld world, double x, double y, double z, double dx, double dy,
+  public ParticleSteam(ClientWorld world, double x, double y, double z, double dx, double dy,
       double dz) {
     super(world, x, y, z, dx, dy, dz);
 
