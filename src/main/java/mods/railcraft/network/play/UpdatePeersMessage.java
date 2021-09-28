@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Supplier;
+import mods.railcraft.api.signals.IMutableNetwork;
 import mods.railcraft.world.signal.NetworkType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
@@ -44,7 +45,7 @@ public class UpdatePeersMessage {
   public boolean handle(Supplier<NetworkEvent.Context> ctx) {
     ctx.get().enqueueWork(() -> LogicalSidedProvider.CLIENTWORLD
         .<Optional<World>>get(ctx.get().getDirection().getReceptionSide())
-        .flatMap(level -> this.type.getNetwork(level, this.blockPos))
+        .<IMutableNetwork>flatMap(level -> this.type.getNetwork(level, this.blockPos))
         .ifPresent(network -> {
           network.clear();
           this.peers.forEach((BlockPos bPos) -> network.add(bPos));
