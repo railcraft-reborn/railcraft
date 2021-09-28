@@ -16,14 +16,14 @@ import net.minecraft.particles.BasicParticleType;
  * @see net.minecraft.client.particle.CampfireParticle Campfire for Reference
  */
 public class ParticleSteam extends SpriteTexturedParticle {
-  private final Random rand = new Random();
+  private static final Random rand = new Random();
 
   private ParticleSteam(ClientWorld world, double x, double y, double z, double dx, double dy,
       double dz) {
     super(world, x, y, z, dx, dy, dz);
 
     this.scale(1.7F);
-    this.setSize(0.15F, 0.15F); //AABB bounding cube
+    this.setSize(0.25F, 0.25F); //AABB bounding cube
     // 0.6 min (0.6-1.0), steam isn't as dark as smog
     this.rCol = this.gCol = this.bCol = (0.6f + rand.nextFloat() * 0.4f);
     // 20 ticks (1sec) 40 tics (max)
@@ -69,7 +69,8 @@ public class ParticleSteam extends SpriteTexturedParticle {
     }
 
     @Override
-    public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+    public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn,
+        double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
       ParticleSteam steam = new ParticleSteam(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
       steam.pickSprite(this.spriteSet);
       return steam;

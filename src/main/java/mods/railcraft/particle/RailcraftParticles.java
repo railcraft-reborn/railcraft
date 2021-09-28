@@ -19,4 +19,7 @@ public class RailcraftParticles {
 
   public static final RegistryObject<BasicParticleType> STEAM =
     PARTICLE_TYPES.register("steam", () -> new BasicParticleType(false));
+
+  public static final RegistryObject<BasicParticleType> SPARK =
+    PARTICLE_TYPES.register("spark", () -> new BasicParticleType(false));
 }
