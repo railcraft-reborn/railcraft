@@ -1,0 +1,14 @@
+name: 'Check for merge conflicts'
+on:
+  push:
+    branches:
+      - mc-1.16.5
+jobs:
+  triage:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: mschilde/auto-label-merge-conflicts@2e8fcc76c6430272ec8bb64fb74ec1592156aa6a
+        with:
+          CONFLICT_LABEL_NAME: 'needs rebase'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WAIT_MS: 10000
