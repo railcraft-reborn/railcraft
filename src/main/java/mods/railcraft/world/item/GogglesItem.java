@@ -24,9 +24,9 @@ import net.minecraftforge.common.util.Constants;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class ItemGoggles extends ArmorItem {
+public class GogglesItem extends ArmorItem {
 
-  public ItemGoggles(Properties properties) {
+  public GogglesItem(Properties properties) {
     super(RailcraftArmorMaterial.GOGGLES, EquipmentSlotType.HEAD, properties);
   }
 
@@ -49,7 +49,7 @@ public class ItemGoggles extends ArmorItem {
   }
 
   public static Aura getAura(ItemStack itemStack) {
-    if (itemStack.getItem() instanceof ItemGoggles) {
+    if (itemStack.getItem() instanceof GogglesItem) {
       Optional.ofNullable(itemStack.getTag())
           .filter(tag -> tag.contains("aura", Constants.NBT.TAG_STRING))
           .map(tag -> tag.getString("aura"))
@@ -60,7 +60,7 @@ public class ItemGoggles extends ArmorItem {
   }
 
   public static void incrementAura(ItemStack itemStack) {
-    if (itemStack.getItem() instanceof ItemGoggles) {
+    if (itemStack.getItem() instanceof GogglesItem) {
       Aura aura = Optional.of(itemStack.getOrCreateTag())
           .filter(tag -> tag.contains("aura", Constants.NBT.TAG_STRING))
           .map(tag -> tag.getString("aura"))

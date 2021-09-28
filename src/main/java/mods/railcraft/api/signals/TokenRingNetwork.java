@@ -9,6 +9,7 @@ package mods.railcraft.api.signals;
 
 import java.util.Set;
 import java.util.UUID;
+import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
 import net.minecraft.util.math.BlockPos;
 
 /**
@@ -16,11 +17,9 @@ import net.minecraft.util.math.BlockPos;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface TokenRing extends INetwork {
+public interface TokenRingNetwork extends Network<TokenSignalBlockEntity> {
 
   Set<UUID> getTrackedCarts();
-
-  SignalAspect getAspect();
 
   UUID getId();
 

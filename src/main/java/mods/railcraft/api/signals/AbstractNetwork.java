@@ -17,22 +17,27 @@ import java.util.Random;
 import java.util.Set;
 import javax.annotation.Nullable;
 import com.google.common.collect.MapMaker;
-import mods.railcraft.api.core.CollectionToolsAPI;
 import mods.railcraft.api.core.Syncable;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.INBTSerializable;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public abstract class AbstractNetwork implements IMutableNetwork, Syncable {
+public abstract class AbstractNetwork<T extends BlockEntityLike>
+    implements ClientNetwork<T>, Syncable, INBTSerializable<CompoundNBT> {
 
-  protected static final Random rand = new Random();
+  protected static final Random random = new Random();
   private static final boolean IS_BUKKIT;
 
   static {
@@ -47,62 +52,83 @@ public abstract class AbstractNetwork implements IMutableNetwork, Syncable {
 
   private static final int SAFE_TIME = 32;
   private static final int PAIR_CHECK_INTERVAL = 16;
-  public final TileEntity blockEntity;
-  public final String locTag;
-  public final int maxPeers;
-  protected final Deque<BlockPos> peers = CollectionToolsAPI.blockPosDeque(LinkedList::new);
-  protected final Set<BlockPos> invalidPeers = CollectionToolsAPI.blockPosSet(HashSet::new);
+
+  private final Class<T> peerType;
+  private final TileEntity blockEntity;
+  private final int maxPeers;
+  private final Runnable sync;
+
+  protected final Deque<BlockPos> peers = new LinkedList<>();
+  private boolean peersChanged;
+
   private final Collection<BlockPos> safePeers = Collections.unmodifiableCollection(peers);
-  private final Set<BlockPos> peersToTest = CollectionToolsAPI.blockPosSet(HashSet::new);
-  private final Set<BlockPos> peersToTestNext = CollectionToolsAPI.blockPosSet(HashSet::new);
-  private final Map<BlockPos, TileEntity> tileCache =
-      CollectionToolsAPI.blockPosMap(new MapMaker().weakValues().makeMap());
-  private BlockPos blockPos;
+  private final Set<BlockPos> peersToTest = new HashSet<>();
+  private final Set<BlockPos> peersToTestNext = new HashSet<>();
+
+  private final Map<BlockPos, T> peerCache = new MapMaker().weakValues().makeMap();
+
   private boolean linking;
-  private int update = rand.nextInt();
+
+  private int update = random.nextInt();
+
   private int ticksExisted;
   private boolean needsInit = true;
-  private @Nullable String name;
 
-  protected AbstractNetwork(String locTag, TileEntity blockEntity, int maxPairings) {
+  @Nullable
+  private ITextComponent name;
+
+  public AbstractNetwork(Class<T> peerType, TileEntity blockEntity, int maxPairings,
+      Runnable sync) {
+    this.peerType = peerType;
     this.blockEntity = blockEntity;
     this.maxPeers = maxPairings;
-    this.locTag = locTag;
+    this.sync = sync;
   }
 
-  public @Nullable String getName() {
-    return name;
+  public TileEntity getBlockEntity() {
+    return this.blockEntity;
   }
 
-  public void setName(@Nullable String name) {
+  public World getLevel() {
+    return this.blockEntity.getLevel();
+  }
+
+  public BlockPos getBlockPos() {
+    return this.blockEntity.getBlockPos();
+  }
+
+  public int getMaxPeers() {
+    return this.maxPeers;
+  }
+
+  @Nullable
+  public ITextComponent getName() {
+    return this.name;
+  }
+
+  public void setName(@Nullable ITextComponent name) {
     if (name == null || this.name == null || !Objects.equals(this.name, name)) {
       this.name = name;
-      informPairsOfNameChange();
+      this.nameChanged();
     }
   }
 
-  public void informPairsOfNameChange() {}
-
-  public void onPairNameChange(BlockPos coords, @Nullable String name) {}
+  protected void nameChanged() {}
 
   protected boolean isLoaded() {
     return ticksExisted >= SAFE_TIME;
   }
 
   protected void addPairing(BlockPos other) {
-    peers.remove(other);
+    this.removePeer(other);
     peers.add(other);
-    while (peers.size() > getMaxPairings()) {
+    while (peers.size() > getMaxPeers()) {
       peers.remove();
     }
     this.peersChanged();
   }
 
   protected abstract void peersChanged();
-
-  public void clearPairing(BlockPos other) {
-    invalidPeers.add(other);
-  }
 
   @Override
   public void endLinking() {
@@ -126,212 +152,164 @@ public abstract class AbstractNetwork implements IMutableNetwork, Syncable {
   }
 
   protected void validatePairings() {
-    if (!peersToTestNext.isEmpty()) {
-      peersToTestNext.retainAll(peers);
-      for (BlockPos coord : peersToTestNext) {
+    if (!this.peersToTestNext.isEmpty()) {
+      this.peersToTestNext.retainAll(this.peers);
+      for (BlockPos coord : this.peersToTestNext) {
 
-        World world = blockEntity.getLevel();
-        if (!world.isLoaded(coord))
+        if (!this.getLevel().isLoaded(coord))
           continue;
 
-        BlockState blockState = world.getBlockState(coord);
+        BlockState blockState = this.getLevel().getBlockState(coord);
         if (!blockState.getBlock().hasTileEntity(blockState)) {
-          clearPairing(coord);
+          this.removePeer(coord);
           continue;
         }
 
-        TileEntity target = world.getBlockEntity(coord);
-        if (target != null && !isValidPair(coord, target))
-          clearPairing(coord);
+        TileEntity target = this.getLevel().getBlockEntity(coord);
+        if (!this.peerType.isInstance(target)
+            || !this.isValidPeer(coord, this.peerType.cast(target))) {
+          this.removePeer(coord);
+        }
       }
-      peersToTestNext.clear();
+      this.peersToTestNext.clear();
     }
-    cleanPeers();
-    for (BlockPos coord : peers) {
-      getPairAt(coord);
-    }
-    peersToTestNext.addAll(peersToTest);
-    peersToTest.clear();
-  }
 
-  public void cleanPeers() {
-    if (invalidPeers.isEmpty())
-      return;
-    boolean changed = peers.removeAll(invalidPeers);
-    invalidPeers.clear();
-    if (changed)
+    if (this.peersChanged) {
+      this.peersChanged = false;
       this.peersChanged();
+    }
+
+    for (BlockPos coord : this.peers) {
+      this.getPeerAt(coord);
+    }
+
+    this.peersToTestNext.addAll(this.peersToTest);
+    this.peersToTest.clear();
   }
 
-  protected @Nullable TileEntity getPairAt(BlockPos coord) {
-    if (!peers.contains(coord))
+  @Nullable
+  protected T getPeerAt(BlockPos blockPos) {
+    if (!this.peers.contains(blockPos))
       return null;
 
     boolean useCache;
     try {
-      useCache = !IS_BUKKIT && SignalTools.isInSameChunk(getBlockPos(), coord);
+      useCache = !IS_BUKKIT && SignalTools.isInSameChunk(getBlockPos(), blockPos);
     } catch (Throwable er) {
       useCache = false;
     }
 
     if (useCache) {
-      TileEntity cacheTarget = tileCache.get(coord);
+      T cacheTarget = this.peerCache.get(blockPos);
       if (cacheTarget != null) {
-        if (cacheTarget.isRemoved() || !Objects.equals(cacheTarget.getBlockPos(), coord))
-          tileCache.remove(coord);
-        else if (isValidPair(coord, cacheTarget))
+        if (!Objects.equals(cacheTarget.asBlockEntity().getBlockPos(), blockPos)
+            || cacheTarget.asBlockEntity().isRemoved())
+          this.peerCache.remove(blockPos);
+        else if (this.isValidPeer(blockPos, cacheTarget))
           return cacheTarget;
       }
     }
 
-    if (coord.getY() <= 0) {
-      clearPairing(coord);
+    if (blockPos.getY() <= 0) {
+      this.removePeer(blockPos);
       return null;
     }
 
-    World world = blockEntity.getLevel();
-    if (!world.isLoaded(coord))
+    if (!this.getLevel().isLoaded(blockPos))
       return null;
 
-    BlockState blockState = world.getBlockState(coord);
+    BlockState blockState = this.getLevel().getBlockState(blockPos);
     if (!blockState.getBlock().hasTileEntity(blockState)) {
-      peersToTest.add(coord);
+      peersToTest.add(blockPos);
       return null;
     }
 
-    TileEntity target = world.getBlockEntity(coord);
-    if (target != null && !isValidPair(coord, target)) {
-      peersToTest.add(coord);
+    TileEntity blockEntity = this.getLevel().getBlockEntity(blockPos);
+    T peer = this.peerType.cast(blockEntity);
+    if (!this.peerType.isInstance(blockEntity)
+        || !this.isValidPeer(blockPos, peer)) {
+      this.peersToTest.add(blockPos);
       return null;
     }
 
-    if (useCache && target != null) {
-      tileCache.put(coord, target);
+    if (useCache && blockEntity != null) {
+      this.peerCache.put(blockPos, peer);
     }
 
-    return target;
+    return peer;
   }
 
-  public boolean isValidPair(BlockPos otherCoord, TileEntity otherTile) {
+  public boolean isValidPeer(BlockPos peerPos, T peer) {
     return false;
   }
 
-  public BlockPos getBlockPos() {
-    if (blockPos == null)
-      blockPos = blockEntity.getBlockPos().immutable();
-    return blockPos;
-  }
-
-  public String getLocalizationTag() {
-    return locTag;
-  }
-
-  public int getMaxPairings() {
-    return maxPeers;
-  }
-
-  public int getNumPairs() {
-    return peers.size();
-  }
-
-  public boolean isPaired() {
-    return !peers.isEmpty();
+  @Override
+  public void removePeer(BlockPos pos) {
+    this.peers.remove(pos);
   }
 
   @Override
   public Collection<BlockPos> getPeers() {
-    return safePeers;
-  }
-
-  public TileEntity getBlockEntity() {
-    return this.blockEntity;
+    return this.safePeers;
   }
 
   @Override
   public void startLinking() {
-    linking = true;
+    this.linking = true;
   }
 
   public boolean isLinking() {
-    return linking;
+    return this.linking;
   }
 
-  public boolean isPeer(BlockPos other) {
-    return peers.contains(other);
-  }
-
-  protected abstract String getTagName();
-
-  public final void writeToNBT(CompoundNBT data) {
+  @Override
+  public CompoundNBT serializeNBT() {
     CompoundNBT tag = new CompoundNBT();
-    saveNBT(tag);
-    data.put(getTagName(), tag);
-  }
-
-  protected void saveNBT(CompoundNBT data) {
-    ListNBT list = new ListNBT();
-    for (BlockPos c : peers) {
-      CompoundNBT tag = new CompoundNBT();
-      SignalTools.writeToNBT(tag, "coords", c);
-      list.add(tag);
+    ListNBT peersTag = new ListNBT();
+    for (BlockPos peer : this.peers) {
+      peersTag.add(NBTUtil.writeBlockPos(peer));
     }
-    data.put("pairings", list);
-    if (name != null) {
-      data.putString("name", name);
+    tag.put("peers", peersTag);
+    if (this.name != null) {
+      tag.putString("name", ITextComponent.Serializer.toJson(this.name));
     }
-  }
-
-  public final void readFromNBT(CompoundNBT data) {
-    CompoundNBT tag = data.getCompound(getTagName());
-    loadNBT(tag);
-  }
-
-  protected void loadNBT(CompoundNBT data) {
-    ListNBT list = data.getList("pairings", 10);
-    for (byte entry = 0; entry < list.size(); entry++) {
-      CompoundNBT tag = list.getCompound(entry);
-      BlockPos p = SignalTools.readFromNBT(tag, "coords");
-      if (p != null)
-        peers.add(p);
-    }
-    this.name = data.getString("name");
-    if (name.isEmpty()) {
-      this.name = null;
-    }
+    return tag;
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
-    data.writeUtf(name != null ? name : "");
-  }
-
-  @Override
-  public void readSyncData(PacketBuffer data) {
-    this.name = data.readUtf(0x7FFF);
-    if (name.isEmpty()) {
-      this.name = null;
+  public void deserializeNBT(CompoundNBT data) {
+    ListNBT peersTag = data.getList("peers", 10);
+    for (INBT peerTag : peersTag) {
+      this.peers.add(NBTUtil.readBlockPos((CompoundNBT) peerTag));
     }
+    this.name = data.contains("name", Constants.NBT.TAG_STRING)
+        ? ITextComponent.Serializer.fromJson(data.getString("name"))
+        : null;
   }
 
   @Override
   public void syncToClient() {
-    ((Syncable) this.getBlockEntity()).syncToClient();
+    this.sync.run();
   }
 
   @Override
-  public void add(BlockPos pos) {
-    peers.add(pos);
+  public void writeSyncData(PacketBuffer data) {
+    if (this.name == null) {
+      data.writeBoolean(true);
+    } else {
+      data.writeBoolean(false);
+      data.writeComponent(this.name);
+    }
   }
 
   @Override
-  public void remove(BlockPos pos) {
-    peers.remove(pos);
+  public void readSyncData(PacketBuffer data) {
+    this.name = data.readBoolean() ? null : data.readComponent();
   }
 
   @Override
-  public void clear() {
-    peers.clear();
-    if (!blockEntity.getLevel().isClientSide())
-      this.peersChanged();
+  public void setClientPeers(Collection<BlockPos> peers) {
+    this.peers.clear();
+    this.peers.addAll(peers);
   }
 }

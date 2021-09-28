@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import net.minecraft.util.Direction;
 
-public interface IRedstoneEmitter {
+public interface SignalEmitter {
 
   int getSignal(Direction direction);
 }

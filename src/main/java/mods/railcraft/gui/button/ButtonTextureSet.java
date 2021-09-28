@@ -1,10 +1,10 @@
-package mods.railcraft.gui.buttons;
+package mods.railcraft.gui.button;
 
 /**
  *
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public interface IButtonTextureSet {
+public interface ButtonTextureSet {
 
   int getX();
 

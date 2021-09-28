@@ -6,7 +6,7 @@ import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.inventory.LocomotiveMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
-import mods.railcraft.world.item.ItemTicket;
+import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -106,7 +106,7 @@ public class CreativeLocomotiveEntity extends LocomotiveEntity implements ISided
   public boolean canPlaceItem(int slot, ItemStack stack) {
     switch (slot) {
       case SLOT_TICKET:
-        return ItemTicket.FILTER.test(stack);
+        return TicketItem.FILTER.test(stack);
       default:
         return false;
     }

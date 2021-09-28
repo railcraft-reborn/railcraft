@@ -1,10 +1,10 @@
 package mods.railcraft.world.level.block.entity.signal;
 
 import javax.annotation.Nullable;
-import mods.railcraft.api.signals.IReceiverProvider;
+import mods.railcraft.api.signals.SignalReceiver;
 import mods.railcraft.api.signals.SignalAspect;
-import mods.railcraft.api.signals.SignalController;
-import mods.railcraft.api.signals.SimpleSignalReceiver;
+import mods.railcraft.api.signals.SignalControllerNetwork;
+import mods.railcraft.api.signals.SimpleSignalReceiverNetwork;
 import mods.railcraft.plugins.PowerPlugin;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.BlockState;
@@ -14,11 +14,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 
 public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
-    implements IReceiverProvider, IAspectProvider, IRedstoneEmitter {
+    implements SignalReceiver, IAspectProvider, SignalEmitter {
 
   private static final int FORCED_UPDATE = 512;
-  private final SimpleSignalReceiver receiver =
-      new SimpleSignalReceiver("something", this);
+  private final SimpleSignalReceiverNetwork receiver =
+      new SimpleSignalReceiverNetwork(this, this::syncToClient);
 
   public SignalReceiverBoxBlockEntity() {
     super(RailcraftBlockEntityTypes.SIGNAL_RECEIVER_BOX.get());
@@ -39,7 +39,7 @@ public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public void onControllerAspectChange(SignalController con, SignalAspect aspect) {
+  public void onControllerAspectChange(SignalControllerNetwork con, SignalAspect aspect) {
     this.updateNeighbors();
     this.syncToClient();
   }
@@ -53,14 +53,14 @@ public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    receiver.writeToNBT(data);
+    data.put("network", receiver.serializeNBT());
     return data;
   }
 
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-    receiver.readFromNBT(data);
+    receiver.deserializeNBT(data.getCompound("network"));
   }
 
   @Override
@@ -100,7 +100,7 @@ public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public SimpleSignalReceiver getReceiver() {
+  public SimpleSignalReceiverNetwork getSignalReceiverNetwork() {
     return receiver;
   }
 

@@ -9,7 +9,7 @@ import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
-import mods.railcraft.world.item.ItemTicket;
+import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
@@ -142,7 +142,7 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
   public boolean canPlaceItem(int slot, @Nullable ItemStack stack) {
     switch (slot) {
       case SLOT_TICKET:
-        return ItemTicket.FILTER.test(stack);
+        return TicketItem.FILTER.test(stack);
       default:
         return false;
     }

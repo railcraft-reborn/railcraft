@@ -17,7 +17,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 
 public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements IRedstoneEmitter {
+    implements SignalEmitter {
 
   private static final int MAX_ITERATIONS = 64;
   private Direction sideOutput = Direction.NORTH;

@@ -7,25 +7,24 @@
 
 package mods.railcraft.api.signals;
 
-import mods.railcraft.api.core.CollectionToolsAPI;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class BlockSignalRelay extends BlockSignal {
+public class BlockSignalRelay extends BlockSignalNetwork {
 
-  private final Map<BlockPos, SignalAspect> aspects =
-      CollectionToolsAPI.blockPosMap(new HashMap<>());
+  private final Map<BlockPos, SignalAspect> aspects = new HashMap<>();
 
-  public BlockSignalRelay(String locTag, TileEntity tile) {
-    super(locTag, tile, 2);
+  public BlockSignalRelay(TileEntity blockEntity, Runnable sync) {
+    super(blockEntity, 2, sync);
   }
 
   @Override
@@ -41,7 +40,7 @@ public class BlockSignalRelay extends BlockSignal {
     if (isWaitingForRetest() || isLinking()) {
       return SignalAspect.BLINK_YELLOW;
     }
-    if (!isPaired()) {
+    if (!hasPeers()) {
       return SignalAspect.BLINK_RED;
     }
     SignalAspect aspect = SignalAspect.GREEN;
@@ -52,7 +51,7 @@ public class BlockSignalRelay extends BlockSignal {
   }
 
   @Override
-  protected SignalAspect getSignalAspectForPair(BlockPos otherCoord) {
+  protected SignalAspect getSignalAspectForPeer(BlockPos otherCoord) {
     SignalAspect aspect = SignalAspect.GREEN;
     for (Map.Entry<BlockPos, SignalAspect> entry : aspects.entrySet()) {
       if (entry.getKey().equals(otherCoord)) {
@@ -64,29 +63,31 @@ public class BlockSignalRelay extends BlockSignal {
   }
 
   @Override
-  protected void saveNBT(CompoundNBT data) {
-    super.saveNBT(data);
-    ListNBT tagList = data.getList("aspects", 10);
-    for (int i = 0; i < tagList.size(); i++) {
-      CompoundNBT nbt = tagList.getCompound(i);
-      BlockPos coord = SignalTools.readFromNBT(nbt, "coord");
-      SignalAspect aspect = SignalAspect.readFromNBT(nbt, "aspect");
-      aspects.put(coord, aspect);
+  public CompoundNBT serializeNBT() {
+    CompoundNBT tag = super.serializeNBT();
+    ListNBT aspectsTag = new ListNBT();
+    for (Map.Entry<BlockPos, SignalAspect> entry : this.aspects.entrySet()) {
+      CompoundNBT entryTag = new CompoundNBT();
+      if (entry.getKey() != null && entry.getValue() != null) {
+        entryTag.put("pos", NBTUtil.writeBlockPos(entry.getKey()));
+        entryTag.putString("aspect", entry.getValue().getName());
+        aspectsTag.add(entryTag);
+      }
     }
+    tag.put("aspects", aspectsTag);
+    return tag;
   }
 
   @Override
-  protected void loadNBT(CompoundNBT data) {
-    super.loadNBT(data);
-    ListNBT tagList = new ListNBT();
-    for (Map.Entry<BlockPos, SignalAspect> entry : aspects.entrySet()) {
-      CompoundNBT nbt = new CompoundNBT();
-      if (entry.getKey() != null && entry.getValue() != null) {
-        SignalTools.writeToNBT(nbt, "coord", entry.getKey());
-        entry.getValue().writeToNBT(nbt, "aspect");
-        tagList.add(nbt);
-      }
+  public void deserializeNBT(CompoundNBT tag) {
+    super.deserializeNBT(tag);
+    ListNBT aspectsTag = tag.getList("aspects", Constants.NBT.TAG_COMPOUND);
+    for (int i = 0; i < aspectsTag.size(); i++) {
+      CompoundNBT entryTag = aspectsTag.getCompound(i);
+      BlockPos pos = NBTUtil.readBlockPos(entryTag.getCompound("pos"));
+      SignalAspect aspect = SignalAspect.getByName(entryTag.getString("aspect"))
+          .orElse(SignalAspect.OFF);
+      this.aspects.put(pos, aspect);
     }
-    data.put("aspects", tagList);
   }
 }

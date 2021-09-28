@@ -6,7 +6,6 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.signals;
 
-import java.util.EnumMap;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -15,70 +14,84 @@ import net.minecraft.util.math.BlockPos;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class DualSignalReceiver extends SignalReceiver {
+public class DualSignalReceiver extends SignalReceiverNetwork {
 
-  private EnumMap<DualLamp, SignalAspect> aspects = new EnumMap<>(DualLamp.class);
+  private SignalAspect topAspect = SignalAspect.BLINK_RED;
+  private SignalAspect bottomAspect = SignalAspect.BLINK_RED;
 
-  public DualSignalReceiver(String locTag, TileEntity tile) {
-    super(locTag, tile, 2);
-  }
-
-  {
-    for (DualLamp lamp : DualLamp.values()) {
-      aspects.put(lamp, SignalAspect.BLINK_RED);
-    }
+  public DualSignalReceiver(TileEntity tile, Runnable sync) {
+    super(tile, 2, sync);
   }
 
   @Override
-  public void onControllerAspectChange(SignalController con, SignalAspect aspect) {
-    BlockPos coord = peers.peekFirst();
-    if (coord == null) {
+  public void onControllerAspectChange(SignalControllerNetwork controller, SignalAspect aspect) {
+    BlockPos blockPos = this.peers.peekFirst();
+    if (blockPos == null) {
       return;
     }
-    if (coord.equals(con.getBlockPos())) {
-      if (setAspect(DualLamp.TOP, aspect)) {
-        super.onControllerAspectChange(con, aspect);
+    if (blockPos.equals(controller.getBlockPos())) {
+      if (this.topAspect != aspect) {
+        this.topAspect = aspect;
+        this.syncToClient();
       }
     } else {
-      if (setAspect(DualLamp.BOTTOM, aspect)) {
-        super.onControllerAspectChange(con, aspect);
+      if (this.bottomAspect != aspect) {
+        this.bottomAspect = aspect;
+        this.syncToClient();
       }
     }
   }
 
   @Override
-  protected void saveNBT(CompoundNBT data) {
-    super.saveNBT(data);
-    data.putByte("topAspect", (byte) aspects.get(DualLamp.TOP).ordinal());
-    data.putByte("bottomAspect", (byte) aspects.get(DualLamp.BOTTOM).ordinal());
+  public CompoundNBT serializeNBT() {
+    CompoundNBT tag = super.serializeNBT();
+    tag.putString("topAspect", this.topAspect.getName());
+    tag.putString("bottomAspect", this.bottomAspect.getName());
+    return tag;
   }
 
   @Override
-  protected void loadNBT(CompoundNBT data) {
-    super.loadNBT(data);
-    setAspect(DualLamp.TOP, SignalAspect.values()[data.getByte("topAspect")]);
-    setAspect(DualLamp.BOTTOM, SignalAspect.values()[data.getByte("bottomAspect")]);
+  public void deserializeNBT(CompoundNBT data) {
+    super.deserializeNBT(data);
+    this.topAspect = SignalAspect.getByName(data.getString("topAspect")).get();
+    this.bottomAspect = SignalAspect.getByName(data.getString("bottomAspect")).get();
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    data.writeByte(aspects.get(DualLamp.TOP).ordinal());
-    data.writeByte(aspects.get(DualLamp.BOTTOM).ordinal());
+    data.writeEnum(this.topAspect);
+    data.writeEnum(this.bottomAspect);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    setAspect(DualLamp.TOP, SignalAspect.values()[data.readByte()]);
-    setAspect(DualLamp.BOTTOM, SignalAspect.values()[data.readByte()]);
+    this.topAspect = data.readEnum(SignalAspect.class);
+    this.bottomAspect = data.readEnum(SignalAspect.class);
   }
 
-  public SignalAspect getAspect(DualLamp lamp) {
-    return aspects.get(lamp);
+  public SignalAspect getTopAspect() {
+    return this.topAspect;
   }
 
-  public boolean setAspect(DualLamp lamp, SignalAspect aspect) {
-    return aspects.put(lamp, aspect) != aspect;
+  public boolean setTopAspect(SignalAspect topAspect) {
+    if (this.topAspect != topAspect) {
+      this.topAspect = topAspect;
+      return true;
+    }
+    return false;
+  }
+
+  public SignalAspect getBottomAspect() {
+    return this.bottomAspect;
+  }
+
+  public boolean setBottomAspect(SignalAspect bottomAspect) {
+    if (this.bottomAspect != bottomAspect) {
+      this.bottomAspect = bottomAspect;
+      return true;
+    }
+    return false;
   }
 }

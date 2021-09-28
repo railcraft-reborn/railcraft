@@ -8,7 +8,7 @@ import mods.railcraft.api.signals.SignalTools;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.plugins.SeasonPlugin;
 import mods.railcraft.sounds.RailcraftSoundEvents;
-import mods.railcraft.world.item.ItemGoggles;
+import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -87,13 +87,13 @@ public enum ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRende
 
   @Override
   public boolean isTuningAuraActive() {
-    return this.isGoggleAuraActive(ItemGoggles.Aura.TUNING)
-        || this.isGoggleAuraActive(ItemGoggles.Aura.SIGNALLING);
+    return this.isGoggleAuraActive(GogglesItem.Aura.TUNING)
+        || this.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING);
   }
 
-  public boolean isGoggleAuraActive(ItemGoggles.Aura aura) {
+  public boolean isGoggleAuraActive(GogglesItem.Aura aura) {
     ItemStack itemStack = this.minecraft.player.getItemBySlot(EquipmentSlotType.HEAD);
-    return itemStack.getItem() instanceof ItemGoggles && ItemGoggles.getAura(itemStack) == aura;
+    return itemStack.getItem() instanceof GogglesItem && GogglesItem.getAura(itemStack) == aura;
   }
 
   private double getRandomParticleOffset() {

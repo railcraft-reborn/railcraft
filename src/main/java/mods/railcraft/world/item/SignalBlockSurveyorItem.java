@@ -2,8 +2,8 @@ package mods.railcraft.world.item;
 
 import java.util.Objects;
 import mods.railcraft.api.core.WorldCoordinate;
-import mods.railcraft.api.signals.INetwork;
-import mods.railcraft.api.signals.ISignal;
+import mods.railcraft.api.signals.BlockSignal;
+import mods.railcraft.api.signals.BlockSignalNetwork;
 import mods.railcraft.api.signals.TrackLocator;
 import mods.railcraft.world.signal.NetworkType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,9 +17,9 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class ItemSignalBlockSurveyor extends ItemPairingTool {
+public class SignalBlockSurveyorItem extends PairingToolItem {
 
-  public ItemSignalBlockSurveyor(Properties properties) {
+  public SignalBlockSurveyorItem(Properties properties) {
     super(properties);
   }
 
@@ -37,10 +37,10 @@ public class ItemSignalBlockSurveyor extends ItemPairingTool {
     }
     TileEntity tile = level.getBlockEntity(pos);
     if (tile != null)
-      if (tile instanceof ISignal) {
+      if (tile instanceof BlockSignal) {
         if (!level.isClientSide()) {
-          ISignal signalTile = (ISignal) tile;
-          INetwork signalBlock = signalTile.getNetwork();
+          BlockSignal signalTile = (BlockSignal) tile;
+          BlockSignalNetwork blockSignalNetwork = signalTile.getSignalNetwork();
           WorldCoordinate signalPos = getPairData(stack);
           TrackLocator.Status trackStatus = signalTile.getTrackLocator().getTrackStatus();
           if (trackStatus == TrackLocator.Status.INVALID)
@@ -50,11 +50,11 @@ public class ItemSignalBlockSurveyor extends ItemPairingTool {
             playerIn.sendMessage(new TranslationTextComponent("gui.railcraft.surveyor.begin"),
                 Util.NIL_UUID);
             setPairData(stack, tile);
-            signalBlock.startLinking();
+            blockSignalNetwork.startLinking();
           } else if (!Objects.equals(pos, signalPos.getPos())) {
             tile = level.getBlockEntity(signalPos.getPos());
-            if (tile instanceof ISignal) {
-              if (signalBlock.add(tile)) {
+            if (tile instanceof BlockSignal) {
+              if (blockSignalNetwork.addPeer((BlockSignal) tile)) {
                 playerIn.sendMessage(new TranslationTextComponent("gui.railcraft.surveyor.success"),
                     Util.NIL_UUID);
                 clearPairData(stack);
@@ -64,7 +64,7 @@ public class ItemSignalBlockSurveyor extends ItemPairingTool {
             } else if (level.isLoaded(signalPos.getPos())) {
               playerIn.sendMessage(new TranslationTextComponent("gui.railcraft.surveyor.lost"),
                   Util.NIL_UUID);
-              signalBlock.endLinking();
+              blockSignalNetwork.endLinking();
               clearPairData(stack);
             } else
               playerIn.sendMessage(new TranslationTextComponent("gui.railcraft.surveyor.unloaded"),
@@ -72,7 +72,7 @@ public class ItemSignalBlockSurveyor extends ItemPairingTool {
           } else {
             playerIn.sendMessage(new TranslationTextComponent("gui.railcraft.surveyor.abandon"),
                 Util.NIL_UUID);
-            signalBlock.endLinking();
+            blockSignalNetwork.endLinking();
             clearPairData(stack);
           }
         }

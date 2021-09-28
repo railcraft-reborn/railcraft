@@ -1,18 +1,20 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import mods.railcraft.api.signals.DualLamp;
-import mods.railcraft.api.signals.IReceiverProvider;
 import mods.railcraft.api.signals.SignalAspect;
-import mods.railcraft.api.signals.SignalController;
-import mods.railcraft.api.signals.SimpleSignalReceiver;
+import mods.railcraft.api.signals.SignalControllerNetwork;
+import mods.railcraft.api.signals.SignalReceiver;
+import mods.railcraft.api.signals.SimpleSignalReceiverNetwork;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.text.ITextComponent;
 
-public class DualSignalBlockEntity extends BlockSignalBlockEntity implements IReceiverProvider, IDualSignal {
+public class DualSignalBlockEntity extends BlockSignalBlockEntity
+    implements SignalReceiver, DualSignal {
 
-  private final SimpleSignalReceiver receiver = new SimpleSignalReceiver("nothing", this);
+  private final SimpleSignalReceiverNetwork signalReceiverNetwork =
+      new SimpleSignalReceiverNetwork(this, this::syncToClient);
 
   public DualSignalBlockEntity() {
     super(RailcraftBlockEntityTypes.DUAL_SIGNAL.get());
@@ -20,59 +22,67 @@ public class DualSignalBlockEntity extends BlockSignalBlockEntity implements IRe
 
   @Override
   public int getLightValue() {
-    return Math.max(getSignalAspect().getBlockLight(),
-        getSignalAspect(DualLamp.BOTTOM).getBlockLight());
+    return Math.max(this.getTopAspect().getBlockLight(),
+        this.getBottomAspect().getBlockLight());
   }
 
   @Override
   public void tick() {
     super.tick();
     if (this.level.isClientSide()) {
-      receiver.tickClient();
+      this.signalReceiverNetwork.tickClient();
       return;
     }
-    receiver.tickServer();
+    this.signalReceiverNetwork.tickServer();
   }
 
   @Override
-  public void onControllerAspectChange(SignalController con, SignalAspect aspect) {
-    syncToClient();
+  public void onControllerAspectChange(SignalControllerNetwork con, SignalAspect aspect) {
+    this.syncToClient();
   }
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    receiver.writeToNBT(data);
+    data.put("signalReceiverNetwork", this.signalReceiverNetwork.serializeNBT());
     return data;
   }
 
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-    receiver.readFromNBT(data);
+    this.signalReceiverNetwork.deserializeNBT(data.getCompound("signalReceiverNetwork"));
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    receiver.writeSyncData(data);
+    this.signalReceiverNetwork.writeSyncData(data);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    receiver.readSyncData(data);
+    this.signalReceiverNetwork.readSyncData(data);
   }
 
   @Override
-  public SimpleSignalReceiver getReceiver() {
-    return receiver;
+  public SimpleSignalReceiverNetwork getSignalReceiverNetwork() {
+    return this.signalReceiverNetwork;
   }
 
   @Override
-  public SignalAspect getSignalAspect(DualLamp lamp) {
-    if (lamp == DualLamp.BOTTOM)
-      return receiver.getAspect();
-    return getSignalAspect();
+  public ITextComponent getPrimaryNetworkName() {
+    return this.signalReceiverNetwork.getName();
+  }
+
+  @Override
+  public SignalAspect getTopAspect() {
+    return this.getSignalAspect();
+  }
+
+  @Override
+  public SignalAspect getBottomAspect() {
+    return this.signalReceiverNetwork.getAspect();
   }
 }

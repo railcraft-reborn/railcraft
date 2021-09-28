@@ -46,11 +46,7 @@ public class UpdatePeersMessage {
     ctx.get().enqueueWork(() -> LogicalSidedProvider.CLIENTWORLD
         .<Optional<World>>get(ctx.get().getDirection().getReceptionSide())
         .flatMap(level -> this.type.getNetwork(level, this.blockPos))
-        .map(IMutableNetwork.class::cast)
-        .ifPresent(network -> {
-          network.clear();
-          this.peers.forEach(network::add);
-        }));
+        .ifPresent(network -> network.setClientPeers(this.peers)));
     return true;
   }
 }

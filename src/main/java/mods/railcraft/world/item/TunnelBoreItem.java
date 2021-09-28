@@ -23,9 +23,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class ItemTunnelBore extends CartItem {
+public class TunnelBoreItem extends CartItem {
 
-  public ItemTunnelBore(Supplier<? extends EntityType<?>> cart, Properties properties) {
+  public TunnelBoreItem(Supplier<? extends EntityType<?>> cart, Properties properties) {
     super(cart, properties);
   }
 

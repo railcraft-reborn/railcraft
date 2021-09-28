@@ -14,38 +14,39 @@ import net.minecraft.util.math.BlockPos;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class SimpleBlockSignal extends BlockSignal {
+public class SimpleBlockSignal extends BlockSignalNetwork {
 
-    private SignalAspect aspect = SignalAspect.BLINK_RED;
+  private SignalAspect aspect = SignalAspect.BLINK_RED;
 
-    public SimpleBlockSignal(String locTag, TileEntity tile) {
-        super(locTag, tile, 1);
-    }
+  public SimpleBlockSignal(TileEntity tile, Runnable sync) {
+    super(tile, 1, sync);
+  }
 
-    @Override
-    public void updateSignalAspect() {
-        aspect = determineAspect(peers.peek());
-    }
+  @Override
+  public void updateSignalAspect() {
+    aspect = determineAspect(peers.peek());
+  }
 
-    @Override
-    public SignalAspect getSignalAspect() {
-        return aspect;
-    }
+  @Override
+  public SignalAspect getSignalAspect() {
+    return aspect;
+  }
 
-    @Override
-    protected SignalAspect getSignalAspectForPair(BlockPos otherCoord) {
-        return SignalAspect.GREEN;
-    }
+  @Override
+  protected SignalAspect getSignalAspectForPeer(BlockPos otherCoord) {
+    return SignalAspect.GREEN;
+  }
 
-    @Override
-    protected void saveNBT(CompoundNBT data) {
-        super.saveNBT(data);
-        aspect.writeToNBT(data, "aspect");
-    }
+  @Override
+  public CompoundNBT serializeNBT() {
+    CompoundNBT tag = super.serializeNBT();
+    tag.putString("aspect", this.aspect.getName());
+    return tag;
+  }
 
-    @Override
-    protected void loadNBT(CompoundNBT data) {
-        super.loadNBT(data);
-        aspect = SignalAspect.readFromNBT(data, "aspect");
-    }
+  @Override
+  public void deserializeNBT(CompoundNBT tag) {
+    super.deserializeNBT(tag);
+    this.aspect = SignalAspect.getByName(tag.getString("aspect")).get();
+  }
 }

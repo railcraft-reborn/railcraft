@@ -5,7 +5,7 @@ import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.filters.StackFilters;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
-import mods.railcraft.world.item.ItemTicket;
+import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -157,7 +157,7 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
           return false;
         return FluidItemHelper.containsFluid(stack, Fluids.WATER);
       case TICKET_SLOT:
-        return ItemTicket.FILTER.test(stack);
+        return TicketItem.FILTER.test(stack);
       default:
         return false;
     }

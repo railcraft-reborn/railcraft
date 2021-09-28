@@ -13,7 +13,6 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
@@ -27,12 +26,12 @@ public class TokenManager extends WorldSavedData {
 
   public static final String DATA_TAG = "railcraft.tokens";
 
-  private final Map<UUID, TokenRingImpl> tokenRings = new HashMap<>();
+  private final Map<UUID, SimpleTokenRingNetwork> tokenRings = new HashMap<>();
   private int clock;
 
   public TokenManager() {
-      super(DATA_TAG);
-    }
+    super(DATA_TAG);
+  }
 
   @Override
   public void load(CompoundNBT data) {
@@ -40,7 +39,7 @@ public class TokenManager extends WorldSavedData {
     for (INBT nbt : tokenRingList) {
       CompoundNBT entry = (CompoundNBT) nbt;
       UUID id = entry.getUUID("id");
-      TokenRingImpl tokenRing = new TokenRingImpl(this, id);
+      SimpleTokenRingNetwork tokenRing = new SimpleTokenRingNetwork(this, id);
       this.tokenRings.put(id, tokenRing);
       List<INBT> signalList = entry.getList("signals", Constants.NBT.TAG_COMPOUND);
       Set<BlockPos> signalPositions = signalList.stream()
@@ -62,7 +61,7 @@ public class TokenManager extends WorldSavedData {
   @Override
   public CompoundNBT save(CompoundNBT data) {
     ListNBT tokenRingList = new ListNBT();
-    for (TokenRingImpl tokenRing : tokenRings.values()) {
+    for (SimpleTokenRingNetwork tokenRing : tokenRings.values()) {
       CompoundNBT tokenData = new CompoundNBT();
       tokenData.putUUID("id", tokenRing.getId());
       ListNBT signalList = new ListNBT();
@@ -83,7 +82,7 @@ public class TokenManager extends WorldSavedData {
     return data;
   }
 
-  public void tick(World level) {
+  public void tick(ServerWorld level) {
     this.clock++;
     if (this.clock >= 32) {
       this.clock = 0;
@@ -93,14 +92,14 @@ public class TokenManager extends WorldSavedData {
     }
   }
 
-  public TokenRingImpl getTokenRing(UUID id, BlockPos origin) {
-    return this.tokenRings.computeIfAbsent(id, __ -> new TokenRingImpl(this, id, origin));
+  public SimpleTokenRingNetwork getTokenRingNetwork(UUID id, BlockPos origin) {
+    return this.tokenRings.computeIfAbsent(id, __ -> new SimpleTokenRingNetwork(this, id, origin));
   }
 
-  public Collection<TokenRingImpl> getTokenRings() {
+  public Collection<SimpleTokenRingNetwork> getTokenRings() {
     return this.tokenRings.values();
   }
-  
+
   public static TokenManager get(ServerWorld level) {
     return level.getDataStorage().computeIfAbsent(TokenManager::new, DATA_TAG);
   }

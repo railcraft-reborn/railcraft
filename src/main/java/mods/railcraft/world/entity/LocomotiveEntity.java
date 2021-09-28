@@ -2,17 +2,15 @@ package mods.railcraft.world.entity;
 
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.NBTPlugin;
 import mods.railcraft.Railcraft;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.CartToolsAPI;
@@ -26,10 +24,10 @@ import mods.railcraft.carts.LinkageManager.LinkType;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.event.MinecartInteractEvent;
-import mods.railcraft.gui.buttons.ButtonTextureSet;
-import mods.railcraft.gui.buttons.IButtonTextureSet;
-import mods.railcraft.gui.buttons.IMultiButtonState;
-import mods.railcraft.gui.buttons.MultiButtonController;
+import mods.railcraft.gui.button.ButtonState;
+import mods.railcraft.gui.button.SimpleButtonTextureSet;
+import mods.railcraft.gui.button.ButtonTextureSet;
+import mods.railcraft.gui.button.MultiButtonController;
 import mods.railcraft.plugins.DataManagerPlugin;
 import mods.railcraft.plugins.PlayerPlugin;
 import mods.railcraft.plugins.SeasonPlugin;
@@ -40,10 +38,10 @@ import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.collections.Streams;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
-import mods.railcraft.world.entity.LocomotiveEntity.LocoLockButtonState;
-import mods.railcraft.world.item.ItemTicket;
+import mods.railcraft.world.entity.LocomotiveEntity.LockButtonState;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -68,7 +66,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -80,7 +77,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
-    implements IDirectionalCart, ILinkableCart, IMinecart, ISecureObject<LocoLockButtonState>,
+    implements IDirectionalCart, ILinkableCart, IMinecart, ISecureObject<LockButtonState>,
     IPaintedCart, IRoutableCart, IEntityAdditionalSpawnData {
 
   private static final DataParameter<Boolean> HAS_FUEL =
@@ -108,8 +105,8 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   private static final int WHISTLE_DELAY = 160;
   private static final int WHISTLE_CHANCE = 4;
 
-  private final MultiButtonController<LocoLockButtonState> lockController =
-      MultiButtonController.create(0, LocoLockButtonState.VALUES);
+  private final MultiButtonController<LockButtonState> lockController =
+      MultiButtonController.create(0, LockButtonState.values());
   protected float renderYaw;
   private int fuel;
   private int update = MiscTools.RANDOM.nextInt();
@@ -164,16 +161,16 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     if (nbt.contains("owner")) {
       GameProfile ownerProfile = PlayerPlugin.readOwnerFromNBT(nbt);
       CartToolsAPI.setCartOwner(this, ownerProfile);
-      setSecurityState(LocoLockButtonState.LOCKED);
+      setLockState(LockButtonState.LOCKED);
     }
-    if (nbt.contains("security"))
-      setSecurityState(LocoLockButtonState.VALUES[nbt.getByte("security")]);
+    if (nbt.contains("lock", Constants.NBT.TAG_STRING))
+      this.setLockState(LockButtonState.getByName(nbt.getString("lock")).get());
     if (nbt.contains("emblem"))
-      setEmblem(nbt.getString("emblem"));
+      this.setEmblem(nbt.getString("emblem"));
   }
 
   @Override
-  public MultiButtonController<LocoLockButtonState> getLockController() {
+  public MultiButtonController<LockButtonState> getLockController() {
     return lockController;
   }
 
@@ -225,7 +222,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
    */
   @Override
   public boolean isSecure() {
-    return getSecurityState() == LocoLockButtonState.LOCKED || isPrivate();
+    return this.getLockState() == LockButtonState.LOCKED || this.isPrivate();
   }
 
   /**
@@ -233,7 +230,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
    * @return true if it's private.
    */
   public boolean isPrivate() {
-    return getSecurityState() == LocoLockButtonState.PRIVATE;
+    return this.getLockState() == LockButtonState.PRIVATE;
   }
 
   /**
@@ -244,15 +241,15 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
    * @see mods.railcraft.world.entity.LocomotiveEntity#isPrivate isPrivate
    */
   public boolean canControl(GameProfile user) {
-    return !isPrivate() || PlayerPlugin.isOwnerOrOp(getOwner(), user);
+    return !this.isPrivate() || PlayerPlugin.isOwnerOrOp(this.getOwner(), user);
   }
 
-  public LocoLockButtonState getSecurityState() {
-    return lockController.getButtonState();
+  public LockButtonState getLockState() {
+    return this.lockController.getCurrentState();
   }
 
-  public void setSecurityState(LocoLockButtonState state) {
-    lockController.setCurrentState(state);
+  public void setLockState(LockButtonState state) {
+    this.lockController.setCurrentState(state);
   }
 
   public String getEmblem() {
@@ -279,14 +276,14 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public Mode getMode() {
-    return DataManagerPlugin.readEnum(this.getEntityData(), LOCOMOTIVE_MODE, Mode.VALUES);
+    return DataManagerPlugin.getEnum(this.getEntityData(), LOCOMOTIVE_MODE, Mode.values());
   }
 
   public void setMode(Mode mode) {
     if (!allowedModes.contains(mode))
       mode = Mode.SHUTDOWN;
     if (getMode() != mode)
-      DataManagerPlugin.writeEnum(this.getEntityData(), LOCOMOTIVE_MODE, mode);
+      DataManagerPlugin.setEnum(this.getEntityData(), LOCOMOTIVE_MODE, mode);
   }
 
   public EnumSet<Mode> getAllowedModes() {
@@ -298,12 +295,12 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public Speed getSpeed() {
-    return DataManagerPlugin.readEnum(this.getEntityData(), LOCOMOTIVE_SPEED, Speed.VALUES);
+    return DataManagerPlugin.getEnum(this.getEntityData(), LOCOMOTIVE_SPEED, Speed.values());
   }
 
   public void setSpeed(Speed speed) {
     if (getSpeed() != speed)
-      DataManagerPlugin.writeEnum(this.getEntityData(), LOCOMOTIVE_SPEED, speed);
+      DataManagerPlugin.setEnum(this.getEntityData(), LOCOMOTIVE_SPEED, speed);
   }
 
   public Speed getMaxReverseSpeed() {
@@ -421,13 +418,13 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   @Override
   public boolean setDestination(ItemStack ticket) {
-    if (ticket.getItem() instanceof ItemTicket) {
-      if (isSecure() && !ItemTicket.matchesOwnerOrOp(ticket, CartToolsAPI.getCartOwner(this)))
+    if (ticket.getItem() instanceof TicketItem) {
+      if (isSecure() && !TicketItem.matchesOwnerOrOp(ticket, CartToolsAPI.getCartOwner(this)))
         return false;
-      String dest = ItemTicket.getDestination(ticket);
+      String dest = TicketItem.getDestination(ticket);
       if (!dest.equals(getDestination())) {
         setDestString(dest);
-        getTicketInventory().setItem(1, ItemTicket.copyTicket(ticket));
+        getTicketInventory().setItem(1, TicketItem.copyTicket(ticket));
         return true;
       }
     }
@@ -439,7 +436,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   private void processTicket() {
     IInventory invTicket = getTicketInventory();
     ItemStack stack = invTicket.getItem(0);
-    if (stack.getItem() instanceof ItemTicket) {
+    if (stack.getItem() instanceof TicketItem) {
       if (setDestination(stack))
         invTicket.setItem(0, InvTools.depleteItem(stack));
     } else
@@ -632,19 +629,19 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
     data.putString("dest", StringUtils.defaultIfBlank(getDestination(), ""));
 
-    data.putByte("locoMode", (byte) getMode().ordinal());
-    data.putByte("locoSpeed", (byte) getSpeed().ordinal());
+    data.putString("mode", this.getMode().getSerializedName());
+    data.putString("speed", this.getSpeed().getSerializedName());
 
-    data.putInt("primaryColor", getPrimaryColor());
-    data.putInt("secondaryColor", getSecondaryColor());
+    data.putInt("primaryColor", this.getPrimaryColor());
+    data.putInt("secondaryColor", this.getSecondaryColor());
 
-    data.putFloat("whistlePitch", whistlePitch);
+    data.putFloat("whistlePitch", this.whistlePitch);
 
     data.putInt("fuel", fuel);
 
     data.putBoolean("reverse", this.getEntityData().get(REVERSE));
 
-    lockController.writeToNBT(data, "lock");
+    data.put("lock", this.lockController.serializeNBT());
   }
 
   @Override
@@ -653,28 +650,28 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
     this.flipped = data.getBoolean("flipped");
 
-    setEmblem(data.getString("emblem"));
+    this.setEmblem(data.getString("emblem"));
 
-    setDestString(data.getString("dest"));
+    this.setDestString(data.getString("dest"));
 
-    setMode(Mode.VALUES[data.getByte("locoMode")]);
-    setSpeed(NBTPlugin.readEnumOrdinal(data, "locoSpeed", Speed.VALUES, Speed.NORMAL));
+    this.setMode(Mode.getByName(data.getString("mode")).get());
+    this.setSpeed(Speed.getByName(data.getString("speed")).orElse(Speed.NORMAL));
 
-    setPrimaryColor(data.contains("primaryColor", Constants.NBT.TAG_INT)
+    this.setPrimaryColor(data.contains("primaryColor", Constants.NBT.TAG_INT)
         ? data.getInt("primaryColor")
         : DyeColor.BLACK.getColorValue());
-    setSecondaryColor(data.contains("secondaryColor", Constants.NBT.TAG_INT)
+    this.setSecondaryColor(data.contains("secondaryColor", Constants.NBT.TAG_INT)
         ? data.getInt("secondaryColor")
         : DyeColor.RED.getColorValue());
 
-    whistlePitch = data.getFloat("whistlePitch");
+    this.whistlePitch = data.getFloat("whistlePitch");
 
-    fuel = data.getInt("fuel");
+    this.fuel = data.getInt("fuel");
 
     if (data.contains("reverse", Constants.NBT.TAG_BYTE))
       this.getEntityData().set(REVERSE, data.getBoolean("reverse"));
 
-    lockController.readFromNBT(data, "lock");
+    this.lockController.deserializeNBT(data.getCompound("lock"));
   }
 
   @Override
@@ -791,7 +788,8 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
     SHUTDOWN("shutdown"), IDLE("idle"), RUNNING("running");
 
-    public static final Mode[] VALUES = values();
+    private static final Map<String, Mode> byName = Arrays.stream(values())
+        .collect(Collectors.toMap(Mode::getSerializedName, Function.identity()));
 
     private final String name;
 
@@ -803,6 +801,10 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     public String getSerializedName() {
       return this.name;
     }
+
+    public static Optional<Mode> getByName(String name) {
+      return Optional.ofNullable(byName.get(name));
+    }
   }
 
   public enum Speed implements IStringSerializable {
@@ -812,9 +814,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     NORMAL("normal", 3, 1, -1),
     MAX("max", 4, 0, -1);
 
-    public static final Speed[] VALUES = values();
-
-    private static final Map<String, Speed> BY_NAME = Arrays.stream(values())
+    private static final Map<String, Speed> byName = Arrays.stream(values())
         .collect(Collectors.toMap(Speed::getSerializedName, Function.identity()));
 
     private final String name;
@@ -829,16 +829,8 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
       this.shiftDown = shiftDown;
     }
 
-    public static Speed fromName(String name) {
-      return BY_NAME.get(name);
-    }
-
-    public static Speed fromLevel(int level) {
-      return VALUES[level - 1];
-    }
-
     public int getLevel() {
-      return level;
+      return this.level;
     }
 
     @Override
@@ -847,24 +839,36 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     }
 
     public Speed shiftUp() {
-      return Speed.VALUES[ordinal() + shiftUp];
+      return values()[this.ordinal() + shiftUp];
     }
 
     public Speed shiftDown() {
-      return Speed.VALUES[ordinal() + shiftDown];
+      return values()[this.ordinal() + shiftDown];
+    }
+
+    public static Optional<Speed> getByName(String name) {
+      return Optional.ofNullable(byName.get(name));
+    }
+
+    public static Speed fromLevel(int level) {
+      return values()[level - 1];
     }
   }
 
-  public enum LocoLockButtonState implements IMultiButtonState {
+  public enum LockButtonState implements ButtonState {
 
-    UNLOCKED(new ButtonTextureSet(224, 0, 16, 16)),
-    LOCKED(new ButtonTextureSet(240, 0, 16, 16)),
-    PRIVATE(new ButtonTextureSet(240, 48, 16, 16));
+    UNLOCKED("unlocked", new SimpleButtonTextureSet(224, 0, 16, 16)),
+    LOCKED("locked", new SimpleButtonTextureSet(240, 0, 16, 16)),
+    PRIVATE("private", new SimpleButtonTextureSet(240, 48, 16, 16));
 
-    public static final LocoLockButtonState[] VALUES = values();
-    private final IButtonTextureSet texture;
+    private static final Map<String, LockButtonState> byName = Arrays.stream(values())
+        .collect(Collectors.toMap(LockButtonState::getSerializedName, Function.identity()));
 
-    LocoLockButtonState(IButtonTextureSet texture) {
+    private final String name;
+    private final ButtonTextureSet texture;
+
+    private LockButtonState(String name, ButtonTextureSet texture) {
+      this.name = name;
       this.texture = texture;
     }
 
@@ -874,13 +878,17 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     }
 
     @Override
-    public IButtonTextureSet getTextureSet() {
-      return texture;
+    public ButtonTextureSet getTextureSet() {
+      return this.texture;
     }
 
     @Override
-    public @Nullable List<? extends ITextProperties> getTooltip() {
-      return null;
+    public String getSerializedName() {
+      return this.name;
+    }
+
+    public static Optional<LockButtonState> getByName(String name) {
+      return Optional.ofNullable(byName.get(name));
     }
   }
 

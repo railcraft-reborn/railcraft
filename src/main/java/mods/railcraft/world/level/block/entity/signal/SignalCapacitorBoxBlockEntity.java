@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nullable;
 import mods.railcraft.api.signals.SignalAspect;
-import mods.railcraft.gui.buttons.IButtonTextureSet;
-import mods.railcraft.gui.buttons.IMultiButtonState;
-import mods.railcraft.gui.buttons.MultiButtonController;
-import mods.railcraft.gui.buttons.StandardButtonTextureSets;
+import mods.railcraft.gui.button.ButtonState;
+import mods.railcraft.gui.button.ButtonTextureSet;
+import mods.railcraft.gui.button.MultiButtonController;
+import mods.railcraft.gui.button.StandardButtonTextureSets;
 import mods.railcraft.plugins.PowerPlugin;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.Block;
@@ -22,7 +22,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements IRedstoneEmitter {
+    implements SignalEmitter {
 
   private short ticksPowered;
   public short ticksToPower = 200;
@@ -47,8 +47,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
     if (ticksPowered > 0) {
       ticksPowered--;
-      if (Objects.equals(stateModeController.getButtonState(), StateMode.FALLING_EDGE)) { // new
-                                                                                          // behavior
+      if (Objects.equals(stateModeController.getCurrentState(), StateMode.FALLING_EDGE)) { // new
+                                                                                           // behavior
         SignalAspect tmpAspect = SignalAspect.GREEN;
         boolean hasInput = false;
         if (PowerPlugin.hasRepeaterSignal(this.level, getBlockPos()))
@@ -96,7 +96,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     boolean powered = PowerPlugin.hasRepeaterSignal(this.level, getBlockPos());
     if (this.ticksPowered <= 0 && powered) {
       this.ticksPowered = this.ticksToPower;
-      if (Objects.equals(this.stateModeController.getButtonState(), StateMode.RISING_EDGE))
+      if (Objects.equals(this.stateModeController.getCurrentState(), StateMode.RISING_EDGE))
         this.aspect = SignalAspect.GREEN;
       this.updateNeighbors();
     }
@@ -106,7 +106,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
   public void neighboringSignalBoxChanged(AbstractSignalBoxBlockEntity neighbor, Direction side) {
     if (neighbor.isEmittingRedstone(side)) {
       ticksPowered = ticksToPower;
-      if (Objects.equals(stateModeController.getButtonState(), StateMode.RISING_EDGE))
+      if (Objects.equals(stateModeController.getCurrentState(), StateMode.RISING_EDGE))
         aspect = neighbor.getBoxSignalAspect(side);
       updateNeighbors();
     }
@@ -130,26 +130,20 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-
-    data.putShort("ticksPowered", ticksPowered);
-    data.putShort("ticksToPower", ticksToPower);
-    data.putInt("aspect", aspect.getId());
-    stateModeController.writeToNBT(data, "mode");
+    data.putShort("ticksPowered", this.ticksPowered);
+    data.putShort("ticksToPower", this.ticksToPower);
+    data.putString("aspect", this.aspect.getName());
+    data.put("mode", this.stateModeController.serializeNBT());
     return data;
   }
 
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-
-    ticksPowered = data.getShort("ticksPowered");
-    ticksToPower = data.getShort("ticksToPower");
-    aspect = SignalAspect.getById(data.getInt("aspect"));
-    if (data.contains("mode"))
-      stateModeController.readFromNBT(data, "mode");
-    else // set old boxes to immediate mode to retain old behavior
-      stateModeController.setCurrentState(StateMode.RISING_EDGE.ordinal());
-
+    this.ticksPowered = data.getShort("ticksPowered");
+    this.ticksToPower = data.getShort("ticksToPower");
+    this.aspect = SignalAspect.getByName(data.getString("aspect")).get();
+    this.stateModeController.deserializeNBT(data.getCompound("mode"));
   }
 
   @Override
@@ -159,7 +153,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     data.writeBoolean(ticksPowered > 0);
     data.writeShort(ticksToPower);
     data.writeByte(aspect.ordinal());
-    data.writeByte(stateModeController.getCurrentState());
+    data.writeByte(stateModeController.getCurrentStateIndex());
   }
 
   @Override
@@ -177,32 +171,39 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     return ticksPowered > 0 ? aspect : SignalAspect.RED;
   }
 
-  public enum StateMode implements IMultiButtonState {
+  public enum StateMode implements ButtonState {
 
     RISING_EDGE("rising"),
     FALLING_EDGE("falling");
 
-    private final String label;
-    private final List<? extends ITextComponent> tip;
+    private final String name;
+    private final ITextComponent label;
+    private final List<? extends ITextComponent> tooltip;
 
-    private StateMode(String label) {
-      this.label = "gui.railcraft.box.capacitor." + label + ".name";
-      this.tip = Collections.singletonList(new TranslationTextComponent(label + ".tips"));
+    private StateMode(String name) {
+      this.name = name;
+      this.label = new TranslationTextComponent("gui.railcraft.box.capacitor." + name + ".name");
+      this.tooltip = Collections.singletonList(new TranslationTextComponent(name + ".tips"));
     }
 
     @Override
     public ITextComponent getLabel() {
-      return new TranslationTextComponent(label);
+      return this.label;
     }
 
     @Override
-    public IButtonTextureSet getTextureSet() {
+    public ButtonTextureSet getTextureSet() {
       return StandardButtonTextureSets.SMALL_BUTTON;
     }
 
     @Override
     public List<? extends ITextComponent> getTooltip() {
-      return tip;
+      return this.tooltip;
+    }
+
+    @Override
+    public String getSerializedName() {
+      return this.name;
     }
   }
 }

@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block;
 
 import java.util.List;
 import mods.railcraft.util.AABBFactory;
-import mods.railcraft.world.item.ItemFirestoneRefined;
+import mods.railcraft.world.item.RefinedFirestoneItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
 import net.minecraft.block.Block;
@@ -61,7 +61,7 @@ public class RitualBlock extends ContainerBlock {
   @Override
   public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world,
       BlockPos pos, PlayerEntity player) {
-    return ItemFirestoneRefined.getItemCharged();
+    return RefinedFirestoneItem.getItemCharged();
   }
 
   @SuppressWarnings("deprecation")
@@ -81,7 +81,7 @@ public class RitualBlock extends ContainerBlock {
         drops.add(drop);
       }
     } else {
-      drops.add(ItemFirestoneRefined.getItemEmpty());
+      drops.add(RefinedFirestoneItem.getItemEmpty());
     }
     return drops;
   }

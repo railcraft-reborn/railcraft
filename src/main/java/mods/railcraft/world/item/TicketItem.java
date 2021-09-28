@@ -21,13 +21,13 @@ import net.minecraftforge.common.util.Constants;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class ItemTicket extends Item {
+public class TicketItem extends Item {
 
   public static final Predicate<ItemStack> FILTER =
-      stack -> stack != null && stack.getItem() instanceof ItemTicket;
+      stack -> stack != null && stack.getItem() instanceof TicketItem;
   public static final int LINE_LENGTH = 32;
 
-  public ItemTicket(Properties properties) {
+  public TicketItem(Properties properties) {
     super(properties);
   }
 
@@ -82,7 +82,7 @@ public class ItemTicket extends Item {
   public static ItemStack copyTicket(ItemStack source) {
     if (source.isEmpty())
       return ItemStack.EMPTY;
-    if (source.getItem() instanceof ItemTicket) {
+    if (source.getItem() instanceof TicketItem) {
       ItemStack ticket = RailcraftItems.TICKET.get().getDefaultInstance();
       if (ticket.isEmpty())
         return ItemStack.EMPTY;
@@ -96,7 +96,7 @@ public class ItemTicket extends Item {
 
   public static boolean setTicketData(ItemStack ticket, String dest, String title,
       @Nullable GameProfile owner) {
-    if (ticket.isEmpty() || !(ticket.getItem() instanceof ItemTicket))
+    if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
       return false;
     if (dest.length() > LINE_LENGTH)
       return false;
@@ -110,7 +110,7 @@ public class ItemTicket extends Item {
   }
 
   public static String getDestination(ItemStack ticket) {
-    if (ticket.isEmpty() || !(ticket.getItem() instanceof ItemTicket))
+    if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
       return "";
     CompoundNBT nbt = ticket.getTag();
     if (nbt == null)
@@ -119,12 +119,12 @@ public class ItemTicket extends Item {
   }
 
   public static boolean matchesOwnerOrOp(ItemStack ticket, GameProfile player) {
-    return ticket.getItem() instanceof ItemTicket
+    return ticket.getItem() instanceof TicketItem
         && PlayerPlugin.isOwnerOrOp(getOwner(ticket), player);
   }
 
   public static GameProfile getOwner(ItemStack ticket) {
-    if (ticket.isEmpty() || !(ticket.getItem() instanceof ItemTicket))
+    if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
     CompoundNBT nbt = ticket.getTag();
     if (nbt == null)

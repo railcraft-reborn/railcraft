@@ -33,14 +33,14 @@ import net.minecraft.world.server.ServerWorld;
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public class ItemFirestoneRefined extends ItemFirestone {
+public class RefinedFirestoneItem extends FirestoneItem {
 
   public static final int CHARGES = 5000;
   public static final int HEAT = 250;
 
   protected int heat = HEAT;
 
-  public ItemFirestoneRefined(Properties properties) {
+  public RefinedFirestoneItem(Properties properties) {
     super(properties);
   }
 
@@ -64,7 +64,7 @@ public class ItemFirestoneRefined extends ItemFirestone {
     ItemStack newStack;
     double damageLevel = (double) stack.getDamageValue() / (double) stack.getMaxDamage();
     if (MiscTools.RANDOM.nextDouble() < damageLevel * 0.0001) {
-      newStack = ItemFirestoneCracked.getItemEmpty();
+      newStack = CrackedFirestoneItem.getItemEmpty();
       if (stack.hasCustomHoverName())
         newStack.setHoverName(stack.getHoverName());
     } else

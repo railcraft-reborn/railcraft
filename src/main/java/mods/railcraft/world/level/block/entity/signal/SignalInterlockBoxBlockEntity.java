@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 import javax.annotation.Nullable;
-import mods.railcraft.api.signals.SignalControllerProvider;
-import mods.railcraft.api.signals.IReceiverProvider;
 import mods.railcraft.api.signals.SignalAspect;
 import mods.railcraft.api.signals.SignalController;
-import mods.railcraft.api.signals.SimpleSignalController;
-import mods.railcraft.api.signals.SimpleSignalReceiver;
+import mods.railcraft.api.signals.SignalControllerNetwork;
+import mods.railcraft.api.signals.SignalReceiver;
+import mods.railcraft.api.signals.SimpleSignalControllerNetwork;
+import mods.railcraft.api.signals.SimpleSignalReceiverNetwork;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -24,13 +24,13 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 
 public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements SignalControllerProvider, IReceiverProvider, IAspectProvider {
+    implements SignalController, SignalReceiver, IAspectProvider {
 
   private static final Direction[] SIDES = {NORTH, WEST, SOUTH, EAST};
-  private final SimpleSignalController controller =
-      new SimpleSignalController("nothing", this);
-  private final SimpleSignalReceiver receiver =
-      new SimpleSignalReceiver("nothing", this);
+  private final SimpleSignalControllerNetwork controllerNetwork =
+      new SimpleSignalControllerNetwork(this, this::syncToClient);
+  private final SimpleSignalReceiverNetwork receiver =
+      new SimpleSignalReceiverNetwork(this, this::syncToClient);
   private Interlock interlock = new Interlock(this);
   private SignalAspect overrideAspect = SignalAspect.RED;
 
@@ -39,18 +39,18 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void onControllerAspectChange(SignalController con, SignalAspect aspect) {}
+  public void onControllerAspectChange(SignalControllerNetwork con, SignalAspect aspect) {}
 
   @Override
   public void tick() {
     super.tick();
     if (this.level.isClientSide()) {
-      controller.tickClient();
+      controllerNetwork.tickClient();
       receiver.tickClient();
       return;
     }
 
-    controller.tickServer();
+    controllerNetwork.tickServer();
     receiver.tickServer();
 
     overrideAspect = getOverrideAspect();
@@ -59,15 +59,15 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
     interlock.tick(this);
 
-    SignalAspect prevAspect = controller.getAspect();
-    if (receiver.isLinking() || controller.isLinking())
-      controller.setAspect(SignalAspect.BLINK_YELLOW);
-    else if (controller.isPaired() && receiver.isPaired())
-      controller.setAspect(determineAspect());
+    SignalAspect prevAspect = controllerNetwork.getAspect();
+    if (receiver.isLinking() || controllerNetwork.isLinking())
+      controllerNetwork.setAspect(SignalAspect.BLINK_YELLOW);
+    else if (controllerNetwork.hasPeers() && receiver.hasPeers())
+      controllerNetwork.setAspect(determineAspect());
     else
-      controller.setAspect(SignalAspect.BLINK_RED);
+      controllerNetwork.setAspect(SignalAspect.BLINK_RED);
 
-    if (prevAspect != controller.getAspect())
+    if (prevAspect != controllerNetwork.getAspect())
       syncToClient();
   }
 
@@ -106,16 +106,15 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
   @Override
   public SignalAspect getBoxSignalAspect(@Nullable Direction side) {
-    return controller.getAspect();
+    return controllerNetwork.getAspect();
   }
 
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-
-    controller.writeToNBT(data);
-    receiver.writeToNBT(data);
+    data.put("controllerNetwork", this.controllerNetwork.serializeNBT());
+    data.put("receiverNetwork", this.receiver.serializeNBT());
     return data;
   }
 
@@ -123,21 +122,21 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
 
-    controller.readFromNBT(data);
-    receiver.readFromNBT(data);
+    controllerNetwork.deserializeNBT(data.getCompound("controllerNetwork"));
+    receiver.deserializeNBT(data.getCompound("receiverNetwork"));
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    controller.writeSyncData(data);
+    controllerNetwork.writeSyncData(data);
     receiver.writeSyncData(data);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    controller.readSyncData(data);
+    controllerNetwork.readSyncData(data);
     receiver.readSyncData(data);
   }
 
@@ -158,12 +157,12 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public SignalController getController() {
-    return controller;
+  public SignalControllerNetwork getSignalControllerNetwork() {
+    return controllerNetwork;
   }
 
   @Override
-  public SimpleSignalReceiver getReceiver() {
+  public SimpleSignalReceiverNetwork getSignalReceiverNetwork() {
     return receiver;
   }
 
@@ -181,7 +180,7 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
     debug.add("Active: " + interlock.active);
     debug.add("Delay: " + interlock.delay);
     debug.add("In Aspect: " + receiver.getAspect().name());
-    debug.add("Out Aspect: " + controller.getAspect().name());
+    debug.add("Out Aspect: " + controllerNetwork.getAspect().name());
     debug.add("Override Aspect: " + overrideAspect.name());
     return debug;
   }

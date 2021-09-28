@@ -5,7 +5,6 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
-import mods.railcraft.api.core.CollectionToolsAPI;
 import mods.railcraft.util.HostEffects;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -38,9 +37,9 @@ public class RitualBlockEntity extends RailcraftTickableBlockEntity {
     delay[7] = 16384;
   });
 
-  private final Deque<BlockPos> queue = CollectionToolsAPI.blockPosDeque(ArrayDeque::new);
-  private final Deque<BlockPos> lavaFound = CollectionToolsAPI.blockPosDeque(ArrayDeque::new);
-  private final Set<BlockPos> visitedBlocks = CollectionToolsAPI.blockPosSet(HashSet::new);
+  private final Deque<BlockPos> queue = new ArrayDeque<>();
+  private final Deque<BlockPos> lavaFound = new ArrayDeque<>();
+  private final Set<BlockPos> visitedBlocks = new HashSet<>();
   public int charge;
   public long rotationYaw, preRotationYaw;
   public float yOffset = -2, preYOffset = -2;

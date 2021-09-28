@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public class ItemFirestone extends Item {
+public class FirestoneItem extends Item {
 
   public static final Predicate<ItemStack> SPAWNS_FIRE = stack -> {
     if (stack.isEmpty())
@@ -37,7 +37,7 @@ public class ItemFirestone extends Item {
     return InvTools.isStackEqualToBlock(stack, RailcraftBlocks.FIRESTONE.get());
   };
 
-  public ItemFirestone(Properties properties) {
+  public FirestoneItem(Properties properties) {
     super(properties);
   }
 

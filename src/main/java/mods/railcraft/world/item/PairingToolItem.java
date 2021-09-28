@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 import mods.railcraft.api.core.WorldCoordinate;
 import mods.railcraft.api.items.ActivationBlockingItem;
 import mods.railcraft.api.items.InvToolsAPI;
-import mods.railcraft.api.signals.IMutableNetwork;
+import mods.railcraft.api.signals.ClientNetwork;
 import mods.railcraft.world.signal.NetworkType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -21,16 +21,17 @@ import net.minecraft.world.server.ServerWorld;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 @ActivationBlockingItem
-public class ItemPairingTool extends Item {
+public class PairingToolItem extends Item {
 
   public static final String PAIR_DATA_TAG = "pairData";
   public static final String COORD_TAG = "coord";
 
-  public ItemPairingTool(Properties properties) {
+  public PairingToolItem(Properties properties) {
     super(properties);
   }
 
-  public @Nullable WorldCoordinate getPairData(ItemStack stack) {
+  @Nullable
+  public WorldCoordinate getPairData(ItemStack stack) {
     return InvToolsAPI.getRailcraftDataSubtag(stack, PAIR_DATA_TAG)
         .map(nbt -> WorldCoordinate.readFromNBT(nbt, COORD_TAG))
         .orElse(null);
@@ -56,7 +57,7 @@ public class ItemPairingTool extends Item {
         return true;
       } else if (player.isShiftKeyDown()) {
         networkType.getNetwork(worldIn.getServer().getLevel(signalPos.getDim()), signalPos.getPos())
-            .ifPresent(IMutableNetwork::endLinking);
+            .ifPresent(ClientNetwork::endLinking);
         abandonPairing(stack, player);
         return true;
       }

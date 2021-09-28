@@ -82,12 +82,12 @@ public class DataManagerPlugin {
         new DataSerializerEntry(dataSerializer).setRegistryName(dataSerializer.getResourceName()));
   }
 
-  public static <T extends Enum<T>> void writeEnum(EntityDataManager dataManager,
+  public static <T extends Enum<T>> void setEnum(EntityDataManager dataManager,
       DataParameter<Byte> parameter, Enum<T> value) {
     dataManager.set(parameter, (byte) value.ordinal());
   }
 
-  public static <T extends Enum<T>> T readEnum(EntityDataManager dataManager,
+  public static <T extends Enum<T>> T getEnum(EntityDataManager dataManager,
       DataParameter<Byte> parameter, T[] values) {
     return values[dataManager.get(parameter)];
   }

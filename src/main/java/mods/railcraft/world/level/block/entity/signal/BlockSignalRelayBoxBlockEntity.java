@@ -2,10 +2,10 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import javax.annotation.Nullable;
 import mods.railcraft.api.signals.BlockSignal;
+import mods.railcraft.api.signals.BlockSignalNetwork;
 import mods.railcraft.api.signals.BlockSignalRelay;
-import mods.railcraft.api.signals.IBlockSignal;
 import mods.railcraft.api.signals.SignalAspect;
-import mods.railcraft.api.signals.SimpleSignalController;
+import mods.railcraft.api.signals.SimpleSignalControllerNetwork;
 import mods.railcraft.plugins.PowerPlugin;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.BlockState;
@@ -15,11 +15,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 
 public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
-    implements IBlockSignal, IAspectProvider, IRedstoneEmitter {
+    implements BlockSignal, IAspectProvider, SignalEmitter {
 
-  private final SimpleSignalController controller =
-      new SimpleSignalController("nothing", this);
-  private final BlockSignal blockSignal = new BlockSignalRelay("nothing", this);
+  private final SimpleSignalControllerNetwork signalControllerNetwork =
+      new SimpleSignalControllerNetwork(this, this::syncToClient);
+  private final BlockSignalNetwork signalNetwork = new BlockSignalRelay(this, this::syncToClient);
 
   public BlockSignalRelayBoxBlockEntity() {
     super(RailcraftBlockEntityTypes.SIGNAL_RELAY_BOX.get());
@@ -29,25 +29,25 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   public void tick() {
     super.tick();
     if (this.level.isClientSide()) {
-      controller.tickClient();
-      blockSignal.tickClient();
+      this.signalControllerNetwork.tickClient();
+      this.signalNetwork.tickClient();
       return;
     }
-    controller.tickServer();
-    blockSignal.tickServer();
-    SignalAspect prevAspect = controller.getAspect();
-    if (controller.isLinking())
-      controller.setAspect(SignalAspect.BLINK_YELLOW);
+    this.signalControllerNetwork.tickServer();
+    this.signalNetwork.tickServer();
+    SignalAspect prevAspect = this.signalControllerNetwork.getAspect();
+    if (this.signalControllerNetwork.isLinking())
+      this.signalControllerNetwork.setAspect(SignalAspect.BLINK_YELLOW);
     else
-      controller.setAspect(blockSignal.getSignalAspect());
-    if (prevAspect != controller.getAspect()) {
-      updateNeighboringSignalBoxes();
-      syncToClient();
+      this.signalControllerNetwork.setAspect(signalNetwork.getSignalAspect());
+    if (prevAspect != this.signalControllerNetwork.getAspect()) {
+      this.updateNeighboringSignalBoxes();
+      this.syncToClient();
     }
   }
 
   private void updateNeighboringSignalBoxes() {
-    updateNeighbors();
+    this.updateNeighbors();
     for (Direction side : Direction.Plane.HORIZONTAL) {
       TileEntity tile = this.adjacentCache.getTileOnSide(side);
       if (tile instanceof AbstractSignalBoxBlockEntity) {
@@ -74,37 +74,35 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-
-    blockSignal.writeToNBT(data);
-    controller.writeToNBT(data);
+    data.put("signalNetwork", this.signalNetwork.serializeNBT());
+    data.put("signalControllerNetwork", this.signalControllerNetwork.serializeNBT());
     return data;
   }
 
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-
-    blockSignal.readFromNBT(data);
-    controller.readFromNBT(data);
+    this.signalNetwork.deserializeNBT(data.getCompound("signalNetwork"));
+    this.signalControllerNetwork.deserializeNBT(data.getCompound("signalControllerNetwork"));
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    controller.writeSyncData(data);
-    blockSignal.writeSyncData(data);
+    this.signalControllerNetwork.writeSyncData(data);
+    this.signalNetwork.writeSyncData(data);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    controller.readSyncData(data);
-    blockSignal.readSyncData(data);
+    this.signalControllerNetwork.readSyncData(data);
+    this.signalNetwork.readSyncData(data);
   }
 
   @Override
-  public BlockSignal getBlockSignal() {
-    return this.blockSignal;
+  public BlockSignalNetwork getSignalNetwork() {
+    return this.signalNetwork;
   }
 
   @Override
@@ -115,7 +113,7 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
 
   @Override
   public SignalAspect getBoxSignalAspect(@Nullable Direction side) {
-    return controller.getAspect();
+    return this.signalControllerNetwork.getAspect();
   }
 
   @Override
@@ -125,7 +123,6 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
 
   @Override
   public SignalAspect getTriggerAspect() {
-    return getBoxSignalAspect(null);
+    return this.getBoxSignalAspect(null);
   }
-
 }

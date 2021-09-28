@@ -2,8 +2,8 @@ package mods.railcraft.client.gui.widget.button;
 
 import java.util.List;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import mods.railcraft.gui.buttons.IMultiButtonState;
-import mods.railcraft.gui.buttons.MultiButtonController;
+import mods.railcraft.gui.button.ButtonState;
+import mods.railcraft.gui.button.MultiButtonController;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextProperties;
@@ -13,7 +13,7 @@ import net.minecraftforge.fml.client.gui.GuiUtils;
 /**
  * @author CovertJaguar <http://railcraft.info/wiki/info:license>
  */
-public final class GuiMultiButton<T extends IMultiButtonState> extends RailcraftButton {
+public final class GuiMultiButton<T extends ButtonState> extends RailcraftButton {
 
   private final MultiButtonController<T> control;
   public boolean canChange = true;
@@ -29,7 +29,7 @@ public final class GuiMultiButton<T extends IMultiButtonState> extends Railcraft
     if (canChange && this.active) {
       super.onPress();
       control.incrementState();
-      this.setMessage(control.getButtonState().getLabel());
+      this.setMessage(control.getCurrentState().getLabel());
     }
   }
 
@@ -48,7 +48,7 @@ public final class GuiMultiButton<T extends IMultiButtonState> extends Railcraft
 
   @Override
   public void renderToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
-    List<? extends ITextProperties> tip = control.getButtonState().getTooltip();
+    List<? extends ITextProperties> tip = control.getCurrentState().getTooltip();
     if (tip == null) {
       super.renderToolTip(matrixStack, mouseX, mouseY);
       return;

@@ -2,7 +2,7 @@ package mods.railcraft.world.level.material.fluid.steam;
 
 import mods.railcraft.plugins.FuelPlugin;
 import mods.railcraft.util.inventory.InvTools;
-import mods.railcraft.world.item.ItemFirestoneRefined;
+import mods.railcraft.world.item.RefinedFirestoneItem;
 import mods.railcraft.world.level.material.fluid.IFuelProvider;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -24,7 +24,7 @@ public class SolidFuelProvider implements IFuelProvider {
 
   @Override
   public float getHeatStep() {
-    if (this.lastItem instanceof ItemFirestoneRefined)
+    if (this.lastItem instanceof RefinedFirestoneItem)
       return SteamConstants.HEAT_STEP * 30;
     return SteamConstants.HEAT_STEP;
   }

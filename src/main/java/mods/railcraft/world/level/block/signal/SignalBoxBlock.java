@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.ISecureObject;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.IRedstoneEmitter;
+import mods.railcraft.world.level.block.entity.signal.SignalEmitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FourWayBlock;
@@ -76,7 +76,7 @@ public class SignalBoxBlock extends FourWayBlock {
   @Override
   public int getSignal(BlockState state, IBlockReader reader, BlockPos pos,
       Direction direction) {
-    return WorldPlugin.getTileEntity(reader, pos, IRedstoneEmitter.class)
+    return WorldPlugin.getTileEntity(reader, pos, SignalEmitter.class)
         .map(entity -> entity.getSignal(direction))
         .orElseGet(() -> super.getSignal(state, reader, pos, direction));
   }

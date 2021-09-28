@@ -13,19 +13,19 @@ import net.minecraft.tileentity.TileEntity;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class SimpleSignalReceiver extends SignalReceiver {
+public class SimpleSignalReceiverNetwork extends SignalReceiverNetwork {
 
   private SignalAspect aspect = SignalAspect.BLINK_RED;
 
-  public SimpleSignalReceiver(String locTag, TileEntity tile) {
-    super(locTag, tile, 1);
+  public SimpleSignalReceiverNetwork(TileEntity blockEntity, Runnable sync) {
+    super(blockEntity, 1, sync);
   }
 
   @Override
   public void tickServer() {
     super.tickServer();
     SignalAspect prevAspect = getAspect();
-    if (!isPaired()) {
+    if (!hasPeers()) {
       setAspect(SignalAspect.BLINK_RED);
     }
     if (prevAspect != getAspect()) {
@@ -42,7 +42,7 @@ public class SimpleSignalReceiver extends SignalReceiver {
   }
 
   @Override
-  public void onControllerAspectChange(SignalController con, SignalAspect aspect) {
+  public void onControllerAspectChange(SignalControllerNetwork con, SignalAspect aspect) {
     if (this.aspect != aspect) {
       this.aspect = aspect;
       super.onControllerAspectChange(con, aspect);
@@ -50,27 +50,28 @@ public class SimpleSignalReceiver extends SignalReceiver {
   }
 
   @Override
-  protected void saveNBT(CompoundNBT data) {
-    super.saveNBT(data);
-    data.putInt("aspect", aspect.getId());
+  public CompoundNBT serializeNBT() {
+    CompoundNBT tag = super.serializeNBT();
+    tag.putString("aspect", this.aspect.getName());
+    return tag;
   }
 
   @Override
-  protected void loadNBT(CompoundNBT data) {
-    super.loadNBT(data);
-    aspect = SignalAspect.getById(data.getInt("aspect"));
+  public void deserializeNBT(CompoundNBT tag) {
+    super.deserializeNBT(tag);
+    this.aspect = SignalAspect.getByName(tag.getString("aspect")).get();
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    data.writeVarInt(aspect.getId());
+    data.writeEnum(this.aspect);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    aspect = SignalAspect.getById(data.readVarInt());
+    this.aspect = data.readEnum(SignalAspect.class);
   }
 
   @Override

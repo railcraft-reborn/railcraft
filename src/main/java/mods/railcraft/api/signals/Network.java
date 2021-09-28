@@ -8,7 +8,6 @@
 package mods.railcraft.api.signals;
 
 import java.util.Collection;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
 /**
@@ -20,13 +19,27 @@ import net.minecraft.util.math.BlockPos;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface INetwork {
+public interface Network<T extends BlockEntityLike> {
 
   void startLinking();
 
   void endLinking();
 
-  boolean add(TileEntity other);
+  boolean addPeer(T peer);
+
+  void removePeer(BlockPos peerPos);
 
   Collection<BlockPos> getPeers();
+
+  default int getPeerCount() {
+    return this.getPeers().size();
+  }
+
+  default boolean hasPeers() {
+    return this.getPeerCount() > 0;
+  }
+
+  default boolean isPeer(BlockPos blockPos) {
+    return this.getPeers().contains(blockPos);
+  }
 }

@@ -30,7 +30,7 @@ public class TrackLocator {
   }
 
   @Nullable
-  public BlockPos getTrackLocation() {
+  public BlockPos getTrackPos() {
     if (this.trackLocation == null)
       this.locateTrack();
     return this.trackLocation;

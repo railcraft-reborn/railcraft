@@ -4,7 +4,7 @@ import java.util.Collections;
 import javax.annotation.Nullable;
 import mods.railcraft.world.entity.CreativeLocomotiveEntity;
 import mods.railcraft.world.entity.LocomotiveEntity;
-import mods.railcraft.world.item.ItemTicket;
+import mods.railcraft.world.item.TicketItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -28,7 +28,7 @@ public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
       T locomotive, int guiHeight) {
     super(type, id, playerInv);
     this.locomotive = locomotive;
-    SlotRailcraft slotTicket = new SlotStackFilter(ItemTicket.FILTER, locomotive,
+    SlotRailcraft slotTicket = new SlotStackFilter(TicketItem.FILTER, locomotive,
         locomotive.getContainerSize() - 2, 116, guiHeight - 111).setStackLimit(1);
     slotTicket.setTooltip(
         Collections.singletonList(new TranslationTextComponent("gui.railcraft.locomotive.tips.slot.ticket")));

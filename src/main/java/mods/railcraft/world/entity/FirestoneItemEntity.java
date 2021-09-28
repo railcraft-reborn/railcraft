@@ -3,8 +3,8 @@ package mods.railcraft.world.entity;
 import mods.railcraft.plugins.PlayerPlugin;
 import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.MiscTools;
-import mods.railcraft.world.item.ItemFirestone;
-import mods.railcraft.world.item.ItemFirestoneCracked;
+import mods.railcraft.world.item.FirestoneItem;
+import mods.railcraft.world.item.CrackedFirestoneItem;
 import mods.railcraft.world.level.block.RitualBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
@@ -56,7 +56,7 @@ public class FirestoneItemEntity extends ItemEntity {
       if (clock % 4 != 0)
         return;
       ItemStack stack = getItem();
-      ItemFirestone.trySpawnFire(this.level, this.blockPosition(), stack,
+      FirestoneItem.trySpawnFire(this.level, this.blockPosition(), stack,
           PlayerPlugin.getItemThrower(this));
     }
   }
@@ -74,7 +74,7 @@ public class FirestoneItemEntity extends ItemEntity {
         surface = surface.above();
         if (this.level.getBlockState(surface).isAir(this.level, surface)
             && this.level.getBlockState(surface.below()).getMaterial() == Material.LAVA) {
-          boolean cracked = getItem().getItem() instanceof ItemFirestoneCracked;
+          boolean cracked = getItem().getItem() instanceof CrackedFirestoneItem;
           if (WorldPlugin.setBlockState(this.level, surface,
               firestoneBlock.setValue(RitualBlock.CRACKED, cracked),
               PlayerPlugin.getItemThrower(this))) {

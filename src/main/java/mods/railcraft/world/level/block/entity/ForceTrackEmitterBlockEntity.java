@@ -4,7 +4,7 @@ import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.util.HostEffects;
-import mods.railcraft.world.item.IMagnifiable;
+import mods.railcraft.world.item.Magnifiable;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
@@ -27,7 +27,7 @@ import net.minecraftforge.common.util.Constants;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public class ForceTrackEmitterBlockEntity extends RailcraftTickableBlockEntity
-    implements Ownable, IMagnifiable {
+    implements Ownable, Magnifiable {
 
   private static final double BASE_DRAW = 22;
   private static final double CHARGE_PER_TRACK = 2;

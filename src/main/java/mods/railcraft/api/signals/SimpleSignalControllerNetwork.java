@@ -14,23 +14,23 @@ import net.minecraft.util.math.BlockPos;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class SimpleSignalController extends SignalController {
+public class SimpleSignalControllerNetwork extends SignalControllerNetwork {
 
   private SignalAspect aspect = SignalAspect.BLINK_RED;
-  private boolean needsInit = true;
+  private boolean loaded;
 
-  public SimpleSignalController(String locTag, TileEntity tile) {
-    super(locTag, tile, 1);
+  public SimpleSignalControllerNetwork(TileEntity blockEntity, Runnable sync) {
+    super(blockEntity, 1, sync);
   }
 
   public SignalAspect getAspect() {
-    return aspect;
+    return this.aspect;
   }
 
   public void setAspect(SignalAspect aspect) {
     if (this.aspect != aspect) {
       this.aspect = aspect;
-      updateReceiver();
+      syncReceivers();
     }
   }
 
@@ -42,43 +42,44 @@ public class SimpleSignalController extends SignalController {
   @Override
   public void tickServer() {
     super.tickServer();
-    if (needsInit) {
-      needsInit = false;
-      updateReceiver();
+    if (!this.loaded) {
+      this.loaded = true;
+      this.syncReceivers();
     }
   }
 
-  private void updateReceiver() {
-    for (BlockPos recv : getPeers()) {
-      SignalReceiver receiver = getReceiverAt(recv);
+  private void syncReceivers() {
+    for (BlockPos peerPos : this.getPeers()) {
+      SignalReceiver receiver = this.getPeerAt(peerPos);
       if (receiver != null) {
-        receiver.onControllerAspectChange(this, aspect);
+        receiver.getSignalReceiverNetwork().syncToClient();
       }
     }
   }
 
   @Override
-  protected void saveNBT(CompoundNBT data) {
-    super.saveNBT(data);
-    data.putInt("aspect", aspect.getId());
+  public CompoundNBT serializeNBT() {
+    CompoundNBT tag = super.serializeNBT();
+    tag.putString("aspect", this.aspect.getName());
+    return tag;
   }
 
   @Override
-  protected void loadNBT(CompoundNBT data) {
-    super.loadNBT(data);
-    aspect = SignalAspect.getById(data.getInt("aspect"));
+  public void deserializeNBT(CompoundNBT tag) {
+    super.deserializeNBT(tag);
+    this.aspect = SignalAspect.getByName(tag.getString("aspect")).get();
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    data.writeVarInt(aspect.getId());
+    data.writeEnum(this.aspect);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    aspect = SignalAspect.getById(data.readVarInt());
+    this.aspect = data.readEnum(SignalAspect.class);
   }
 
   @Override

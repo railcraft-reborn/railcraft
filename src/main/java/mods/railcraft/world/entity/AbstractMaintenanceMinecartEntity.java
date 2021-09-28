@@ -1,13 +1,12 @@
 package mods.railcraft.world.entity;
 
 import java.util.List;
-import javax.annotation.Nullable;
 import mods.railcraft.api.carts.CartToolsAPI;
 import mods.railcraft.api.tracks.TrackToolsAPI;
-import mods.railcraft.gui.buttons.IButtonTextureSet;
-import mods.railcraft.gui.buttons.IMultiButtonState;
-import mods.railcraft.gui.buttons.MultiButtonController;
-import mods.railcraft.gui.buttons.StandardButtonTextureSets;
+import mods.railcraft.gui.button.ButtonState;
+import mods.railcraft.gui.button.ButtonTextureSet;
+import mods.railcraft.gui.button.MultiButtonController;
+import mods.railcraft.gui.button.StandardButtonTextureSets;
 import mods.railcraft.plugins.DataManagerPlugin;
 import mods.railcraft.util.TrackTools;
 import net.minecraft.block.BlockState;
@@ -24,7 +23,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -72,42 +70,43 @@ public abstract class AbstractMaintenanceMinecartEntity extends AbstractRailcraf
     return modeController;
   }
 
-  public enum CartModeButtonState implements IMultiButtonState {
+  public enum CartModeButtonState implements ButtonState {
 
-    SERVICE("gui.railcraft.cart.maintenance.mode.service"),
-    TRANSPORT("gui.railcraft.cart.maintenance.mode.transport");
+    SERVICE("service"),
+    TRANSPORT("transport");
 
     public static final CartModeButtonState[] VALUES = values();
-    private final String translationKey;
+    private final String name;
+    private final ITextComponent label;
 
-    private CartModeButtonState(String translationKey) {
-      this.translationKey = translationKey;
+    private CartModeButtonState(String name) {
+      this.name = name;
+      this.label = new TranslationTextComponent("gui.railcraft.cart.maintenance.mode." + name);
     }
 
     @Override
     public ITextComponent getLabel() {
-      return new TranslationTextComponent(this.translationKey);
+      return this.label;
     }
 
     @Override
-    public IButtonTextureSet getTextureSet() {
+    public ButtonTextureSet getTextureSet() {
       return StandardButtonTextureSets.SMALL_BUTTON;
     }
 
     @Override
-    @Nullable
-    public List<? extends ITextProperties> getTooltip() {
-      return null;
+    public String getSerializedName() {
+      return this.name;
     }
   }
 
   public CartMode getMode() {
-    return DataManagerPlugin.readEnum(this.entityData, CART_MODE, CartMode.VALUES);
+    return DataManagerPlugin.getEnum(this.entityData, CART_MODE, CartMode.VALUES);
   }
 
   public void setMode(CartMode mode) {
     if (getMode() != mode)
-      DataManagerPlugin.writeEnum(this.entityData, CART_MODE, mode);
+      DataManagerPlugin.setEnum(this.entityData, CART_MODE, mode);
   }
 
   public CartMode getOtherMode() {

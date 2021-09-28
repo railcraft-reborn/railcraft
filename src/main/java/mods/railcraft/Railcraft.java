@@ -129,8 +129,10 @@ public class Railcraft {
 
   @SubscribeEvent
   public void tick(TickEvent.WorldTickEvent event) {
-    if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END)
-      TokenManager.get((ServerWorld) event.world).tick(event.world);
+    if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
+      ServerWorld level = (ServerWorld) event.world;
+      TokenManager.get(level).tick(level);
+    }
   }
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)

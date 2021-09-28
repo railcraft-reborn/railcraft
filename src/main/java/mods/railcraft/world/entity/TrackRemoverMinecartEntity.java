@@ -2,7 +2,6 @@ package mods.railcraft.world.entity;
 
 import java.util.HashSet;
 import java.util.Set;
-import mods.railcraft.api.core.CollectionToolsAPI;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -18,8 +17,8 @@ import net.minecraft.world.World;
 
 public class TrackRemoverMinecartEntity extends AbstractMaintenanceMinecartEntity {
 
-  private final Set<BlockPos> tracksBehind = CollectionToolsAPI.blockPosSet(HashSet::new);
-  private final Set<BlockPos> tracksRemoved = CollectionToolsAPI.blockPosSet(HashSet::new);
+  private final Set<BlockPos> tracksBehind = new HashSet<>();
+  private final Set<BlockPos> tracksRemoved = new HashSet<>();
 
   public TrackRemoverMinecartEntity(EntityType<?> type, World world) {
     super(type, world);

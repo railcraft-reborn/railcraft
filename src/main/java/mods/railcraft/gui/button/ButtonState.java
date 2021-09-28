@@ -1,21 +1,22 @@
-package mods.railcraft.gui.buttons;
+package mods.railcraft.gui.button;
 
 import java.util.List;
 import javax.annotation.Nullable;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.ITextProperties;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface IMultiButtonState {
+public interface ButtonState extends IStringSerializable {
 
   ITextComponent getLabel();
 
-  String name();
-
-  IButtonTextureSet getTextureSet();
+  ButtonTextureSet getTextureSet();
 
   @Nullable
-  List<? extends ITextProperties> getTooltip();
+  default List<? extends ITextProperties> getTooltip() {
+    return null;
+  }
 }

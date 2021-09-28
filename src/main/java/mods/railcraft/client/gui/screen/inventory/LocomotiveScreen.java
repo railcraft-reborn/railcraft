@@ -103,7 +103,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     this.reverseButton.active = this.menu.getLocomotive().isReverse();
 
     // Speed buttons
-    for (Speed speed : Speed.VALUES) {
+    for (Speed speed : Speed.values()) {
       String label =
           IntStream.range(0, speed.getLevel()).mapToObj(i -> ">").collect(Collectors.joining());
       Button button = new RailcraftButton(0, h + this.getYSize() - 112,
@@ -144,7 +144,8 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       return;
     NetworkChannel.PLAY.getSimpleChannel().sendToServer(
         new SetLocomotiveAttributesMessage(this.menu.getLocomotive().getId(),
-            this.mode, this.speed, this.menu.getLocomotive().getLockController().getCurrentState(),
+            this.mode, this.speed,
+            this.menu.getLocomotive().getLockController().getCurrentStateIndex(),
             this.reverse));
   }
 

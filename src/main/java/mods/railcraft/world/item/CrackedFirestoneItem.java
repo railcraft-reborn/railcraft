@@ -7,11 +7,11 @@ import net.minecraft.item.ItemStack;
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public class ItemFirestoneCracked extends ItemFirestoneRefined {
+public class CrackedFirestoneItem extends RefinedFirestoneItem {
 
   public static int HEAT = 100;
 
-  public ItemFirestoneCracked(Properties properties) {
+  public CrackedFirestoneItem(Properties properties) {
     super(properties);
     heat = HEAT;
   }

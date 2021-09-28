@@ -10,6 +10,7 @@ import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.core.Syncable;
+import mods.railcraft.api.signals.BlockEntityLike;
 import mods.railcraft.network.PacketBuilder;
 import mods.railcraft.plugins.PlayerPlugin;
 import mods.railcraft.util.AdjacentBlockEntityCache;
@@ -26,7 +27,7 @@ import net.minecraft.world.GameRules;
 import net.minecraftforge.common.util.Constants;
 
 public abstract class RailcraftBlockEntity extends TileEntity
-    implements Syncable, Ownable {
+    implements Syncable, Ownable, BlockEntityLike {
 
   protected final AdjacentBlockEntityCache adjacentCache = new AdjacentBlockEntityCache(this);
 
@@ -189,6 +190,11 @@ public abstract class RailcraftBlockEntity extends TileEntity
   @Override
   public ITextComponent getDisplayName() {
     return this.getName();
+  }
+
+  @Override
+  public final TileEntity asBlockEntity() {
+    return this;
   }
 
   public static boolean isUsableByPlayerHelper(TileEntity tile, PlayerEntity player) {

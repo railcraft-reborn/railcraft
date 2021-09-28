@@ -14,9 +14,9 @@ import mods.railcraft.api.core.Ownable;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface ISignal extends Ownable {
+public interface Signal extends Ownable {
 
-  INetwork getNetwork();
+  Network<?> getSignalNetwork();
 
   TrackLocator getTrackLocator();
 }

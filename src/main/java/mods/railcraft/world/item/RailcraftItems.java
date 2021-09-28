@@ -37,14 +37,14 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> SIGNAL_TUNER =
       ITEMS.register("signal_tuner",
-          () -> new ItemSignalTuner(
+          () -> new SignalTunerItem(
               new Item.Properties()
                   .stacksTo(1)
                   .tab(TAB)));
 
   public static final RegistryObject<Item> SIGNAL_BLOCK_SURVEYOR =
       ITEMS.register("signal_block_surveyor",
-          () -> new ItemSignalBlockSurveyor(new Item.Properties()
+          () -> new SignalBlockSurveyorItem(new Item.Properties()
               .stacksTo(1)
               .tab(TAB)));
 
@@ -140,7 +140,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> TUNNEL_BORE =
       ITEMS.register("tunnel_bore",
-          () -> new ItemTunnelBore(
+          () -> new TunnelBoreItem(
               RailcraftEntityTypes.TUNNEL_BORE,
               new Item.Properties()
                   .stacksTo(1)
@@ -187,24 +187,24 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> CRACKED_FIRESTONE =
       ITEMS.register("cracked_firestone",
-          () -> new ItemFirestoneCracked(new Item.Properties()
+          () -> new CrackedFirestoneItem(new Item.Properties()
               .stacksTo(1)
-              .durability(ItemFirestoneRefined.CHARGES)
+              .durability(RefinedFirestoneItem.CHARGES)
               .tab(TAB)));
 
   public static final RegistryObject<Item> RAW_FIRESTONE =
-      ITEMS.register("raw_firestone", () -> new ItemFirestone(
+      ITEMS.register("raw_firestone", () -> new FirestoneItem(
           new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> CUT_FIRESTONE =
-      ITEMS.register("cut_firestone", () -> new ItemFirestone(
+      ITEMS.register("cut_firestone", () -> new FirestoneItem(
           new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> REFINED_FIRESTONE =
       ITEMS.register("refined_firestone",
-          () -> new ItemFirestoneRefined(new Item.Properties()
+          () -> new RefinedFirestoneItem(new Item.Properties()
               .stacksTo(1)
-              .durability(ItemFirestoneRefined.CHARGES)
+              .durability(RefinedFirestoneItem.CHARGES)
               .tab(TAB)));
 
   public static final RegistryObject<BlockItem> FIRESTONE_ORE =
