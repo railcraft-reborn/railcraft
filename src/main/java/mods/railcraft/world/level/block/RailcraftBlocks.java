@@ -194,7 +194,7 @@ public class RailcraftBlocks {
       BLOCKS.register("abandoned_flex_track",
           () -> new AbandonedTrackBlock(TrackTypes.ABANDONED,
               AbstractBlock.Properties.of(Material.DECORATION)
-                  .noOcclusion()
+                  .noCollission()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
 
   public static final RegistryObject<TrackBlock> ELECTRIC_FLEX_TRACK =
@@ -247,14 +247,14 @@ public class RailcraftBlocks {
       BLOCKS.register("turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.IRON,
               AbstractBlock.Properties.of(Material.DECORATION)
-                  .noOcclusion()
+                  .noCollission()
                   .strength(TrackConstants.HARDNESS, 80F)));
 
   public static final RegistryObject<AbstractRailBlock> WYE_TRACK =
       BLOCKS.register("wye_track",
           () -> new WyeTrackBlock(TrackTypes.IRON,
               AbstractBlock.Properties.of(Material.DECORATION)
-                  .noOcclusion()
+                  .noCollission()
                   .strength(TrackConstants.HARDNESS, 80F)));
 
   public static final RegistryObject<Block> FIRESTONE =

@@ -8,6 +8,7 @@ import mods.railcraft.gui.widget.IGauge;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.material.fluid.IFuelProvider;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
+import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
@@ -22,8 +23,9 @@ public class SteamBoiler {
 
   private final IGauge temperatureGauge = new TemperatureGauge();
 
-  private final IFluidTank waterTank;
-  private final IFluidTank steamTank;
+  private final StandardTank waterTank;
+  private final StandardTank steamTank;
+
   private float burnTime;
   private float currentItemBurnTime;
   protected boolean burning;
@@ -38,7 +40,7 @@ public class SteamBoiler {
   private RailcraftBlockEntity tile;
   private IFuelProvider fuelProvider;
 
-  public SteamBoiler(IFluidTank waterTank, IFluidTank tankSteam) {
+  public SteamBoiler(StandardTank waterTank, StandardTank tankSteam) {
     this.waterTank = waterTank;
     this.steamTank = tankSteam;
   }
@@ -216,8 +218,8 @@ public class SteamBoiler {
     FluidStack steam = new FluidStack(RailcraftFluids.STEAM.get(),
         SteamConstants.STEAM_PER_UNIT_WATER * waterCost);
 
-    this.waterTank.drain(waterCost, FluidAction.EXECUTE);
-    this.steamTank.fill(steam, FluidAction.EXECUTE);
+    this.waterTank.internalDrain(waterCost, FluidAction.EXECUTE);
+    this.steamTank.internalFill(steam, FluidAction.EXECUTE);
 
     return steam.getAmount();
   }

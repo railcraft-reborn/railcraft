@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity;
 
 import javax.annotation.Nullable;
+
 import mods.railcraft.NBTPlugin;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.IFluidCart;
@@ -16,7 +17,6 @@ import mods.railcraft.world.level.material.fluid.steam.SteamBoiler;
 import mods.railcraft.world.level.material.fluid.steam.SteamConstants;
 import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,57 +43,65 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     implements IFluidCart, IBoilerContainer {
 
   public static final int SLOT_WATER_INPUT = 0;
-
   public static final int SLOT_WATER_PROCESSING = 1;
   public static final int SLOT_WATER_OUTPUT = 2;
+
   private static final DataParameter<Boolean> SMOKE =
       EntityDataManager.defineId(AbstractSteamLocomotiveEntity.class, DataSerializers.BOOLEAN);
   private static final DataParameter<Boolean> STEAM =
       EntityDataManager.defineId(AbstractSteamLocomotiveEntity.class, DataSerializers.BOOLEAN);
+
   private static final byte TICKS_PER_BOILER_CYCLE = 2;
   private static final int FUEL_PER_REQUEST = 3;
+
   private final SteamBoiler boiler;
   protected final StandardTank waterTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 6) {
     @Override
-    public int fill(@Nullable FluidStack resource, FluidAction doFill) {
+    public int fill(FluidStack resource, FluidAction doFill) {
       return super.fill(onFillWater(resource), doFill);
     }
   }.setFilterFluid(() -> Fluids.WATER);
 
   protected final StandardTank tankSteam = new FilteredTank(FluidTools.BUCKET_VOLUME * 16)
-      .setFilterFluid(RailcraftFluids.STEAM)
-      .disableDrain();
-
-  protected final InventoryMapper invWaterInput;
-
+    .setFilterFluid(RailcraftFluids.STEAM)
+    .disableDrain()
+    .disableFill();
+  // FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt)
+  protected final InventoryMapper invWaterInput =
+    InventoryMapper.make(this, SLOT_WATER_INPUT, 1)
+      .withStackSizeLimit(4);
   protected final InventoryMapper invWaterOutput = InventoryMapper.make(this, SLOT_WATER_OUTPUT, 1);
-  protected final InventoryMapper invWaterContainers =
-      InventoryMapper.make(this, SLOT_WATER_INPUT, 3);
+  protected final InventoryMapper invWaterContainers = InventoryMapper.make(this, SLOT_WATER_INPUT, 3);
+
   private final LazyOptional<TankManager> tankManager = LazyOptional.of(TankManager::new);
+
   private int update = this.random.nextInt();
+
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
   public AbstractSteamLocomotiveEntity(EntityType<?> type, World world) {
     super(type, world);
-  }
-
-  public AbstractSteamLocomotiveEntity(EntityType<?> type, double x, double y, double z,
-      World world) {
-    super(type, x, y, z, world);
-  }
-
-  {
     setMaxReverseSpeed(Speed.SLOWEST);
 
     this.getTankManager().add(waterTank);
     this.getTankManager().add(tankSteam);
 
-    invWaterInput = InventoryMapper.make(this, SLOT_WATER_INPUT, 1);
-    invWaterInput.withStackSizeLimit(4);
+    this.boiler = new SteamBoiler(waterTank, tankSteam)
+      .setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get())
+      .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
+  }
 
-    boiler = new SteamBoiler(waterTank, tankSteam);
-    boiler.setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get());
-    boiler.setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
+  public AbstractSteamLocomotiveEntity(EntityType<?> type, double x, double y, double z,
+      World world) {
+    super(type, x, y, z, world);
+    setMaxReverseSpeed(Speed.SLOWEST);
+
+    this.getTankManager().add(waterTank);
+    this.getTankManager().add(tankSteam);
+
+    this.boiler = new SteamBoiler(waterTank, tankSteam)
+      .setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get())
+      .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
   }
 
   @Override
@@ -143,25 +151,38 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
 
         setSmoking(boiler.isBurning());
 
-        if (!boiler.isBurning())
+        if (!boiler.isBurning()) // Todo: make venting a toggleable thing (why autodump while train has no coal??)
           ventSteam();
       }
 
-      if (update % FluidTools.BUCKET_FILL_TIME == 0)
+      if ((update % FluidTools.BUCKET_FILL_TIME) == 0)
         processState = FluidTools.processContainer(invWaterContainers, waterTank,
             ProcessType.DRAIN_ONLY, processState);
-
-    } else {
-      if (isSmoking()) {
-        double rads = renderYaw * Math.PI / 180D;
-        float offset = 0.4f;
-        ClientEffects.INSTANCE.locomotiveEffect((ClientWorld) this.level,
-            this.getX() - Math.cos(rads) * offset, this.getY() + 1.5f,
-            this.getZ() - Math.sin(rads) * offset);
-      }
-      if (isSteaming())
-        ClientEffects.INSTANCE.steamEffect(this.level, this,
-            getBoundingBox().minY - this.getY() - 0.3);
+      return;
+    }
+    // future information: renderYaw FACES at -x when at 0deg
+    double rads = Math.toRadians(renderYaw);
+    if (isSmoking()) {
+      float offset = 0.4f;
+      ClientEffects.INSTANCE.locomotiveEffect(
+          this.getX() - Math.cos(rads) * offset, this.getY() + 1.5,
+          this.getZ() - Math.sin(rads) * offset);
+    }
+    // steam spawns ON the engine itself, spreading left or right
+    // as the pistons are on the train's sides
+    if (isSteaming()){
+      float offset = 0.5f;
+      double ninetyDeg = Math.toRadians(90) + Math.toRadians(random.nextInt(10)); // 10* bias
+      double steamAngularSpeed = 0.01;
+      double yCoordinate = this.getY() + 0.15;
+      // right
+      ClientEffects.INSTANCE.steamEffect(
+        this.getX() - Math.cos(rads + ninetyDeg) * offset, yCoordinate, this.getZ() - Math.sin(rads + ninetyDeg) * offset,
+        steamAngularSpeed * Math.cos(rads - ninetyDeg), steamAngularSpeed * Math.sin(rads - ninetyDeg));
+      //left
+      ClientEffects.INSTANCE.steamEffect(
+        this.getX() - Math.cos(rads + -ninetyDeg) * offset, yCoordinate, this.getZ() - Math.sin(rads + -ninetyDeg) * offset,
+        steamAngularSpeed * Math.cos(rads + ninetyDeg), steamAngularSpeed * Math.sin(rads + ninetyDeg));
     }
   }
 
@@ -183,7 +204,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   }
 
   private void ventSteam() {
-    tankSteam.drain(4, FluidAction.EXECUTE);
+    tankSteam.internalDrain(4, FluidAction.EXECUTE);
   }
 
   @Override
@@ -200,12 +221,14 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   @Override
   public int getMoreGoJuice() {
     FluidStack steam = tankSteam.getFluid();
-    if (steam != null && steam.getAmount() >= tankSteam.getCapacity() / 2) {
-      tankSteam.drain(SteamConstants.STEAM_PER_UNIT_WATER, FluidAction.EXECUTE);
+    if (steam == FluidStack.EMPTY) {
+      return 0;
+    }
+    if (steam.getAmount() >= tankSteam.getCapacity() / 2) {
+      tankSteam.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, FluidAction.EXECUTE);
       return FUEL_PER_REQUEST;
     }
     return 0;
-    // return 100;
   }
 
   @Override

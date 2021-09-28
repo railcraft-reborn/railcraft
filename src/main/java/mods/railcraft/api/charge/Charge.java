@@ -13,6 +13,7 @@ import com.google.common.annotations.Beta;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -292,7 +293,7 @@ public enum Charge {
      * @throws IllegalArgumentException If source is of an unexpected type.
      */
     @OnlyIn(Dist.CLIENT)
-    default void zapEffectPoint(World world, Object source) {}
+    default void zapEffectPoint(World world, Vector3d source) {}
 
     /**
      * Spawns a lot of sparks from a point source.
@@ -301,7 +302,7 @@ public enum Charge {
      * @throws IllegalArgumentException If source is of an unexpected type.
      */
     @OnlyIn(Dist.CLIENT)
-    default void zapEffectDeath(World world, Object source) {}
+    default void zapEffectDeath(World world, Vector3d source) {}
 
     /**
      * Spawns a spark from the surface of each rendered side of a block.
