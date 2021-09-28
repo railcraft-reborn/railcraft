@@ -188,13 +188,13 @@ public abstract class BlockSignalNetwork extends AbstractNetwork<BlockSignal> {
 
   @Override
   protected void peersChanged() {
-    SignalTools.packetBuilder.sendPeerUpdate(NetworkType.BLOCK_SIGNAL, this.getBlockPos(),
+    SignalTools.packetBuilder.syncNetworkPeers(NetworkType.BLOCK_SIGNAL, this.getBlockPos(),
         this.getPeers(), this.getBlockEntity().getLevel().dimension());
   }
 
   @Override
   protected void requestPeers() {
-    SignalTools.packetBuilder.sendPeerUpdateRequest(NetworkType.BLOCK_SIGNAL, this.getBlockPos());
+    SignalTools.packetBuilder.requestNetworkPeersSync(NetworkType.BLOCK_SIGNAL, this.getBlockPos());
   }
 
   @Override

@@ -21,7 +21,7 @@ public abstract class SignalTools {
 
   @OnlyIn(Dist.CLIENT)
   public static ILinkEffectRenderer effectManager;
-  public static ISignalPacketBuilder packetBuilder;
+  public static SignalPacketBuilder packetBuilder;
 
   public static boolean isInSameChunk(BlockPos a, BlockPos b) {
     return a.getX() >> 4 == b.getX() >> 4 && a.getZ() >> 4 == b.getZ() >> 4;

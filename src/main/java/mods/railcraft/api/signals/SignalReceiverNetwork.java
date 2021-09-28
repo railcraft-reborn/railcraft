@@ -23,13 +23,13 @@ public abstract class SignalReceiverNetwork extends AbstractNetwork<SignalContro
 
   @Override
   protected void peersChanged() {
-    SignalTools.packetBuilder.sendPeerUpdate(NetworkType.SIGNAL_RECIEVER, this.getBlockPos(),
+    SignalTools.packetBuilder.syncNetworkPeers(NetworkType.SIGNAL_RECIEVER, this.getBlockPos(),
         this.getPeers(), this.getBlockEntity().getLevel().dimension());
   }
 
   @Override
   protected void requestPeers() {
-    SignalTools.packetBuilder.sendPeerUpdateRequest(NetworkType.SIGNAL_RECIEVER,
+    SignalTools.packetBuilder.requestNetworkPeersSync(NetworkType.SIGNAL_RECIEVER,
         this.getBlockPos());
   }
 

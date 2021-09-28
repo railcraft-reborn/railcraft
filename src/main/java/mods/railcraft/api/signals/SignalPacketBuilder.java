@@ -15,10 +15,10 @@ import net.minecraft.world.World;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface ISignalPacketBuilder {
+public interface SignalPacketBuilder {
 
-  void sendPeerUpdate(NetworkType type, BlockPos pos, Collection<BlockPos> peers,
+  void syncNetworkPeers(NetworkType type, BlockPos pos, Collection<BlockPos> peers,
       RegistryKey<World> dimension);
 
-  void sendPeerUpdateRequest(NetworkType type, BlockPos pos);
+  void requestNetworkPeersSync(NetworkType type, BlockPos pos);
 }
