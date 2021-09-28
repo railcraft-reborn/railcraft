@@ -9,6 +9,6 @@ jobs:
     steps:
       - uses: mschilde/auto-label-merge-conflicts@2e8fcc76c6430272ec8bb64fb74ec1592156aa6a
         with:
-          CONFLICT_LABEL_NAME: 'Merge Conflict'
+          CONFLICT_LABEL_NAME: 'needs rebase'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WAIT_MS: 10000
