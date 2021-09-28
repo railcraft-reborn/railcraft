@@ -30,6 +30,7 @@ jobs:
         env:
           GRADLE_OPTS: -Dorg.gradle.daemon=false
         run: |
+          ./gradlew hideOfficialWarningUntilChanged
           ./gradlew build
           ./gradlew test
       - name: Cleanup Gradle Cache
@@ -62,9 +63,11 @@ jobs:
       - name: Compile
         env:
           GRADLE_OPTS: -Dorg.gradle.daemon=false
-        run: ./gradlew build
+        run: |
+          ./gradlew hideOfficialWarningUntilChanged
+          ./gradlew build
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Package
+          name: Railcraft JAR
           path: build/libs

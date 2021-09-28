@@ -45,10 +45,11 @@ public class UpdatePeersMessage {
   public boolean handle(Supplier<NetworkEvent.Context> ctx) {
     ctx.get().enqueueWork(() -> LogicalSidedProvider.CLIENTWORLD
         .<Optional<World>>get(ctx.get().getDirection().getReceptionSide())
-        .<IMutableNetwork>flatMap(level -> this.type.getNetwork(level, this.blockPos))
+        .flatMap(level -> this.type.getNetwork(level, this.blockPos))
+        .map(IMutableNetwork.class::cast)
         .ifPresent(network -> {
           network.clear();
-          this.peers.forEach((BlockPos bPos) -> network.add(bPos));
+          this.peers.forEach(network::add);
         }));
     return true;
   }
