@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.material.fluid.tank;
 
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 import net.minecraft.fluid.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -19,7 +18,7 @@ public class FilteredTank extends StandardTank {
     return this;
   }
 
-  public FilteredTank setFilterFluidStack(Supplier<@Nullable FluidStack> filter) {
+  public FilteredTank setFilterFluidStack(Supplier<FluidStack> filter) {
     this.filter = filter;
     return this;
   }
