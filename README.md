@@ -2,7 +2,6 @@
 
 Here you will find the source and issue tracker for the **Official Railcraft Project**.
 
-
 ## What is Railcraft?
 
 Railcraft is a mod written for the hit game [Minecraft](https://minecraft.net/). It is built on top of the [Minecraft Forge](https://github.com/MinecraftForge) API.
@@ -18,13 +17,11 @@ In the words of **CovertJaguar**:
 
 ## Official Links
 
-* The Blog, Forums, and main download page: http://www.railcraft.info
-* The Wiki: http://railcraft.info/wiki
-* IRC: #railcraft on Esper.net - [WebChat](http://webchat.esper.net/?nick=RailcraftGithub...&channels=railcraft&prompt=1)
+* The Blog, Forums, and main download page: <https://www.railcraft.info>
+* The Wiki: <https://railcraft.info/wiki>
+* IRC: #railcraft on Esper.net - [WebChat](https://webchat.esper.net/?nick=RailcraftGithub...&channels=railcraft&prompt=1)
 * Discord: [Invite](https://discord.gg/VyaUt2r) - Linked with #railcraft on IRC
-* Patreon Page: http://www.patreon.com/CovertJaguar
-
-<a href="http://www.patreon.com/CovertJaguar"> ![Patreon](http://www.railcraft.info/wp-content/uploads/2014/05/Patreon.png)</a>
+* Patreon Page: [![Patreon](https://www.railcraft.info/wp-content/uploads/2014/05/Patreon.png)](http://www.patreon.com/CovertJaguar)
 
 ## Issues
 
@@ -48,46 +45,42 @@ Also, as a bonus. If you submit a Pull Request that ends up being merged you are
 
 The Railcraft Project follows standard Forge conventions for setting up and building a project, with a couple additional details (details to come).
 
-You can create a gradle.properties file in the project root with the following properties:
-```
-mcUsername=Steve
-mcPassword=ILoveNotch
-```
-
 Initial Setup from the Command Line:
-```
-gradlew setupDecompWorkspace
-```
+
+* For Eclipse, run `gradlew genEclipseRuns`
+* For IntelliJ, run `gradlew genIntellijRuns`
+* For VSCode, run `gradlew genVSCodeRuns`
+
 
 The [API](https://github.com/CovertJaguar/Railcraft-API) and [Localization](https://github.com/CovertJaguar/Railcraft-Localization) files reside in their own repositories and are pulled automatically into the main repo as git submodules. You will however need to run the following commands:
-```
+
+```sh
 git submodule init
 git submodule update
 ```
 
-For more information on setting up an Intellij modding environement see cpw's video:
-https://youtu.be/G2aPT36kf60
-
 To build, run:
-```
+
+```sh
 gradlew build
 ```
 
-More information [here](https://github.com/Railcraft/Railcraft/wiki/Running-instructions-for-Minecraft-1.12.2).
+More information [here](https://mcforge.readthedocs.io/en/1.16.x/gettingstarted).
 
 ## License
 
 Railcraft is licensed under a custom usage license tailored specifically for the project. It can be read [here](https://github.com/CovertJaguar/Railcraft/blob/master/LICENSE.md).
 
- * Key things to keep in mind:
-  * You may **NOT** create works using the Railcraft code (source or binary) without CovertJaguar's explicit permission except in the cases listed in this license.
-  * You may **NOT** create derivative Jars from Railcraft source to distribute to other users.
-  * You **MAY** use snippets of Railcraft Code posted on the Official Github in your own projects, but only if your project consists of less than 25% of Railcraft derived code. You must give credit to the Railcraft Project for the code used, including a link to the Github Project. Put this in your class file headers that contain Railcraft code, in your readme, and on the main download page.
-  * You may **NOT** use Railcraft Art Assets in other projects **unless** the project is intended to operate alongside Railcraft. Examples are Addons, Resource Packs and InterMod Integration.
-  * You **MAY** fork and edit the Github Project for the purpose of contributing to the Official Railcraft Project. You may **NOT** distribute any Jar created from a fork for any reason.
-  * All contributions to the Official Railcraft Project must be covered by a Contributor Licensing Agreement signed by the contributor.
+* Key things to keep in mind:
+* You may **NOT** create works using the Railcraft code (source or binary) without CovertJaguar's explicit permission except in the cases listed in this license.
+* You may **NOT** create derivative Jars from Railcraft source to distribute to other users.
+* You **MAY** use snippets of Railcraft Code posted on the Official Github in your own projects, but only if your project consists of less than 25% of Railcraft derived code. You must give credit to the Railcraft Project for the code used, including a link to the Github Project. Put this in your class file headers that contain Railcraft code, in your readme, and on the main download page.
+* You may **NOT** use Railcraft Art Assets in other projects **unless** the project is intended to operate alongside Railcraft. Examples are Addons, Resource Packs and InterMod Integration.
+* You **MAY** fork and edit the Github Project for the purpose of contributing to the Official Railcraft Project. You may **NOT** distribute any Jar created from a fork for any reason.
+* All contributions to the Official Railcraft Project must be covered by a Contributor Licensing Agreement signed by the contributor.
 
-# Wisdom
+## Wisdom
+
 “Surely there is a mine for silver, And a place where gold is refined. Iron is taken from the earth, And copper is smelted from ore.
 
 Man puts an end to darkness, And searches every recess for ore in the darkness and the shadow of creepers. He breaks open a shaft away from villages; In places forgotten by feet they dig far away from villagers; They jump to and fro.
