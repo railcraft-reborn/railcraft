@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
+ * The boiler itself. Used to simulate turning water into steam.
  * @author CovertJaguar <http://www.railcraft.info/>
  */
 public class SteamBoiler {
@@ -167,7 +168,9 @@ public class SteamBoiler {
   public float getFuelPerCycle(int numTanks) {
     float fuel = SteamConstants.FUEL_PER_BOILER_CYCLE;
     fuel -= numTanks * SteamConstants.FUEL_PER_BOILER_CYCLE * 0.0125F;
-    fuel += SteamConstants.FUEL_HEAT_INEFFICIENCY * getTemperaturePercent();
+    // linear unefficiency for temp
+    fuel += (SteamConstants.FUEL_HEAT_INEFFICIENCY * getTemperaturePercent());
+    // simulated pressure unefficiency, linear.
     fuel += SteamConstants.FUEL_PRESSURE_INEFFICIENCY
         * (this.getMaxTemperature() / SteamConstants.MAX_HEAT_HIGH);
     fuel *= numTanks;
@@ -232,8 +235,8 @@ public class SteamBoiler {
   }
 
   public void readFromNBT(CompoundNBT data) {
-    this.setTemperature(data.getFloat("temperature"));
-    this.setMaxTemperature(data.getFloat("maxTemperature"));
+    setTemperature(data.getFloat("temperature"));
+    setMaxTemperature(data.getFloat("maxTemperature"));
     setBurnTime(data.getFloat("burnTime"));
     setCurrentItemBurnTime(data.getFloat("currentItemBurnTime"));
   }

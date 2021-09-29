@@ -49,13 +49,17 @@
     "item.railcraft.cut_firestone": "Cut Firestone",
     "item.railcraft.refined_firestone": "Refined Firestone",
     "item.railcraft.firestone.empty":"Its energies controlled, it could be useful §oif you could recharge it§r...",
-    "item.railcraft.firestone.charged":"Filled with energy, you only need to exert your will on it to release it's §cblistering heat§r...",
+    "item.railcraft.firestone.charged":"Filled with energy, you only need to exert your will onto it to release it's §cblistering heat§r...",
 
     "__DESC.g.r.r": "======= Translation defs about tickets =======",
 
     "gui.railcraft.routing.ticket.tips.issuer":"Issuer:",
     "gui.railcraft.routing.ticket.tips.dest":"Destination:",
     "gui.railcraft.routing.ticket.tips.blank":"Blank Ticket",
+
+    "__DESC.g.r.g": "======= Translation defs about goggles =======",
+
+    "item.railcraft.goggles": "Trackman's Goggles",
 
     "__DESC.g.r.l": "======= Translation defs about train GUI/tooltip =======",
 
@@ -76,13 +80,7 @@
     "gui.railcraft.locomotive.mode.shutdown":"Shutdown",
     "gui.railcraft.locomotive.mode.running":"Running",
     "gui.railcraft.locomotive.mode.idle":"Idle",
-    
 
-    "__DESC.g.r.m": "======= Translation defs about anything, unsorted. =======",
-
-    "fluid.railcraft.steam": "Steam",
-    "itemGroup.railcraft": "Railcraft",
-    "item.railcraft.goggles": "Trackman's Goggles",
     "gui.railcraft.goggles.aura.worldspike": "Worldspike",
     "gui.railcraft.goggles.aura.none": "None",
     "gui.railcraft.goggles.aura.shunting": "Shunting",
@@ -91,5 +89,10 @@
     "gui.railcraft.goggles.aura.tracking": "Tracking",
     "gui.railcraft.goggles.aura.tuning": "Tuning",
     "gui.railcraft.goggles.mode": "Current Aura: %s",
-    "gui.railcraft.goggles.tips": "Use from hotbar to change Auras"
+    "gui.railcraft.goggles.tips": "Use from hotbar to change Auras",
+
+    "__DESC.g.r.m": "======= Translation defs about anything, unsorted. =======",
+
+    "fluid.railcraft.steam": "Steam",
+    "itemGroup.railcraft": "Railcraft"
 }

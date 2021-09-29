@@ -303,4 +303,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> GOGGLES =
       ITEMS.register("goggles",
           () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<BlockItem> ROLLING_TABLE_MANUAL =
+      ITEMS.register("rolling_table_manual",
+          () -> new BlockItem(RailcraftBlocks.ROLLING_TABLE.get(),
+              new Item.Properties().tab(TAB)));
 }

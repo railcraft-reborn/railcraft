@@ -25,19 +25,19 @@ public class GasFluid extends Fluid {
   }
 
   @Override
-  protected boolean canBeReplacedWith(FluidState p_215665_1_, IBlockReader p_215665_2_,
-      BlockPos p_215665_3_, Fluid p_215665_4_, Direction p_215665_5_) {
+  protected boolean canBeReplacedWith(FluidState fluidState, IBlockReader reader,
+      BlockPos blockPos, Fluid fluid, Direction direction) {
     return false;
   }
 
   @Override
-  protected Vector3d getFlow(IBlockReader p_215663_1_, BlockPos p_215663_2_,
-      FluidState p_215663_3_) {
+  protected Vector3d getFlow(IBlockReader reader, BlockPos blockPos,
+      FluidState fluidState) {
     return Vector3d.ZERO;
   }
 
   @Override
-  public int getTickDelay(IWorldReader p_205569_1_) {
+  public int getTickDelay(IWorldReader worldReader) {
     return 0;
   }
 
@@ -47,32 +47,32 @@ public class GasFluid extends Fluid {
   }
 
   @Override
-  public float getHeight(FluidState p_215662_1_, IBlockReader p_215662_2_, BlockPos p_215662_3_) {
+  public float getHeight(FluidState fluidState, IBlockReader blockReader, BlockPos blockPos) {
     return 0;
   }
 
   @Override
-  public float getOwnHeight(FluidState p_223407_1_) {
+  public float getOwnHeight(FluidState fluidState) {
     return 0;
   }
 
   @Override
-  protected BlockState createLegacyBlock(FluidState p_204527_1_) {
+  protected BlockState createLegacyBlock(FluidState fluidState) {
     return Blocks.AIR.defaultBlockState();
   }
 
   @Override
-  public boolean isSource(FluidState p_207193_1_) {
+  public boolean isSource(FluidState fluidState) {
     return true;
   }
 
   @Override
-  public int getAmount(FluidState p_207192_1_) {
+  public int getAmount(FluidState fluidState) {
     return 0;
   }
 
   @Override
-  public VoxelShape getShape(FluidState p_215664_1_, IBlockReader p_215664_2_,
+  public VoxelShape getShape(FluidState fluidState, IBlockReader blockReader,
       BlockPos blockPos) {
     return VoxelShapes.empty();
   }
@@ -80,10 +80,12 @@ public class GasFluid extends Fluid {
   @Override
   protected FluidAttributes createAttributes() {
     return FluidAttributes
-        .builder(new ResourceLocation(Railcraft.ID, "block/steam_still.png"),
-            new ResourceLocation(Railcraft.ID, "block/steam_still.png"))
-        .color(0x808080)
+        .builder(
+            new ResourceLocation(Railcraft.ID, "block/steam_still"),
+            new ResourceLocation(Railcraft.ID, "block/steam_still"))
+        .color(0xFFF5F5F5) // color is now ARGB
         .gaseous()
+        .temperature(423) // in kelvin, 150c
         .build(this);
   }
 }

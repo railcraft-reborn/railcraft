@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "up": "railcraft:block/rolling_machine_manual_top",
+    "down": "railcraft:block/rolling_machine_manual_bottom",
+    "north": "railcraft:block/rolling_machine_manual_side",
+    "south": "railcraft:block/rolling_machine_manual_side",
+    "east": "railcraft:block/rolling_machine_manual_side",
+    "west": "railcraft:block/rolling_machine_manual_side",
+    "particle": "railcraft:block/rolling_machine_manual_side"
+  }
+}

@@ -21,7 +21,7 @@ public final class Crafters {
   static ICokeOvenCrafter cokeOven = new ICokeOvenCrafter() {};
   private static IBlastFurnaceCrafter blastFurnace = new IBlastFurnaceCrafter() {};
   static IRockCrusherCrafter rockCrusher = new IRockCrusherCrafter() {};
-  static IRollingMachineCrafter<?> rollingMachine = new IRollingMachineCrafter<IInventory>() {};
+  // static IRollingMachineCrafter<?> rollingMachine = new IRollingMachineCrafter<IInventory>() {};
 
   private static void validateStage() {
     RailcraftCore.validateStage(RailcraftCore.InitStage.PRE_INIT, RailcraftCore.InitStage.INIT,
@@ -79,10 +79,10 @@ public final class Crafters {
    *
    * @return The rolling machine crafting manager
    */
-  public static IRollingMachineCrafter<?> rollingMachine() {
-    validateStage();
-    return rollingMachine;
-  }
+  // public static IRollingMachineCrafter<?> rollingMachine() {
+  //   validateStage();
+  //   return rollingMachine;
+  // }
 
   private Crafters() {}
 }

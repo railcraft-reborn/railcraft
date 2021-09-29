@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.material.fluid.steam;
 
 import javax.annotation.Nullable;
-import mods.railcraft.api.fuel.INeedsFuel;
+
 import net.minecraftforge.fluids.FluidStack;
 
 /**
@@ -9,16 +9,20 @@ import net.minecraftforge.fluids.FluidStack;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface IBoilerContainer extends ITemperature, INeedsFuel {
+public interface IBoilerContainer {
 
   @Nullable
   SteamBoiler getBoiler();
 
   void steamExplosion(FluidStack resource);
 
-  default @Nullable FluidStack onFillWater(@Nullable FluidStack resource) {
-    if (resource == null) {
-      return null;
+  boolean needsFuel();
+
+  float getTemperature();
+
+  default FluidStack onFillWater(FluidStack resource) {
+    if (FluidStack.EMPTY.equals(resource)) {
+      return FluidStack.EMPTY;
     }
     if (!resource.isEmpty()) {
       SteamBoiler boiler = getBoiler();
@@ -26,7 +30,7 @@ public interface IBoilerContainer extends ITemperature, INeedsFuel {
         FluidStack water = boiler.getWaterTank().getFluid();
         if (water.isEmpty()) {
           steamExplosion(resource);
-          return null;
+          return FluidStack.EMPTY;
         }
       }
     }

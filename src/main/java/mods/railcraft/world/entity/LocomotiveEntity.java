@@ -654,7 +654,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
     this.setDestString(data.getString("dest"));
 
-    this.setMode(Mode.getByName(data.getString("mode")).get());
+    this.setMode(Mode.getByName(data.getString("mode")).orElse(Mode.IDLE));
     this.setSpeed(Speed.getByName(data.getString("speed")).orElse(Speed.NORMAL));
 
     this.setPrimaryColor(data.contains("primaryColor", Constants.NBT.TAG_INT)

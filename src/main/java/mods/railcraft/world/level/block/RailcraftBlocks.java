@@ -270,4 +270,9 @@ public class RailcraftBlocks {
           () -> new RitualBlock(AbstractBlock.Properties.of(Material.STONE)
               .lightLevel(state -> 1)
               .noOcclusion()));
+
+  public static final RegistryObject<Block> ROLLING_TABLE =
+      BLOCKS.register("rolling_table_manual",
+          () -> new RollingTable(AbstractBlock.Properties.of(Material.WOOD)
+              .sound(SoundType.WOOD)));
 }

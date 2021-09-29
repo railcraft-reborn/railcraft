@@ -15,6 +15,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 /**
+ * Our fancy type of tank. Use this preferably over forge's default one
+ * @see net.minecraftforge.fluids.capability.templates.FluidTank Forge FluidTank
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public class StandardTank extends FluidTank {
@@ -146,9 +148,12 @@ public class StandardTank extends FluidTank {
     return getCapacity() - getFluidAmount();
   }
 
-  public @Nullable Fluid getFluidType() {
-    // Change this condition so that it does not always evaluate to "true" [+2 locations]sonarlint(java:S2583) todo fix
-    return getFluid() != null ? getFluid().getFluid() : null;
+  /**
+   * Get the fluid type we currently have
+   * @return Fluid type or <code>Fluids.EMPTY</code> if empty
+   */
+  public Fluid getFluidType() {
+    return getFluid().getFluid();
   }
 
   @Override
