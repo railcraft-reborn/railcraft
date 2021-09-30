@@ -7,6 +7,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.api.signals.SignalAspect;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
+import mods.railcraft.client.gui.screen.inventory.RollingTableScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.particle.ParticlePumpkin;
 import mods.railcraft.client.particle.ParticleSpark;
@@ -22,6 +23,7 @@ import mods.railcraft.client.renderer.blockentity.SignalRenderer;
 import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
 import mods.railcraft.client.renderer.model.TextureReplacementModel;
+import mods.railcraft.crafting.RailcraftContainers;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -153,6 +155,8 @@ public class ClientDist implements IRailcraftDist {
     ScreenManager.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
         ElectricLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
+
+    ScreenManager.register(RailcraftContainers.ROLLING.get(), RollingTableScreen::new);
 
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
         ElectricLocomotiveRenderer::new);

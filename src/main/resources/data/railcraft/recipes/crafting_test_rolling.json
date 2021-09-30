@@ -1,0 +1,14 @@
+{
+  "type":"railcraft:rolling",
+  "pattern":["###","   ","  #"],
+  "key":{
+    "#":{
+      "item":"minecraft:stone",
+      "data":0
+    }
+  },
+  "result":{
+    "item":"railcraft:rolling_table_manual",
+    "count":7
+  }
+}

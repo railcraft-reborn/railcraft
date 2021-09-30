@@ -93,6 +93,8 @@
 
     "__DESC.g.r.m": "======= Translation defs about anything, unsorted. =======",
 
+    "block.railcraft.rolling_table_manual": "Rolling Table",
+    "gui.railcraft.rolling_table": "Rolling Table",
     "fluid.railcraft.steam": "Steam",
     "itemGroup.railcraft": "Railcraft"
 }

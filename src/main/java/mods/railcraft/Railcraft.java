@@ -5,6 +5,7 @@ import mods.railcraft.api.events.CartLinkEvent;
 import mods.railcraft.api.signals.SignalTools;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
+import mods.railcraft.crafting.RailcraftContainers;
 import mods.railcraft.crafting.RailcraftRecipies;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.event.MinecartInteractEvent;
@@ -99,6 +100,7 @@ public class Railcraft {
     RailcraftEnchantments.ENCHANTMENTS.register(modEventBus);
     RailcraftParticles.PARTICLE_TYPES.register(modEventBus);
     RailcraftRecipies.RECIPE_SERIALIZERS.register(modEventBus);
+    RailcraftContainers.CONTAINERS.register(modEventBus);
   }
 
   public LinkageHandler getLinkageHandler() {

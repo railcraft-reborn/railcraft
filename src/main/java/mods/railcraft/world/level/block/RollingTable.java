@@ -1,11 +1,11 @@
 package mods.railcraft.world.level.block;
 
+import mods.railcraft.crafting.RollingTableContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -17,7 +17,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class RollingTable extends Block {
-  private static final ITextComponent CONTAINER_TITLE = new TranslationTextComponent("container.fixme");
+  private static final ITextComponent CONTAINER_TITLE = new TranslationTextComponent("gui.railcraft.rolling_table");
 
   public RollingTable(Properties properties) {
     super(properties);
@@ -38,7 +38,7 @@ public class RollingTable extends Block {
   @Override
   public INamedContainerProvider getMenuProvider(BlockState blockState, World world, BlockPos pos) {
       return new SimpleNamedContainerProvider((containerProvider, textComponent, unused) -> {
-        return new WorkbenchContainer(containerProvider, textComponent, IWorldPosCallable.create(world, pos));
+        return new RollingTableContainer(containerProvider, textComponent, IWorldPosCallable.create(world, pos));
       }, CONTAINER_TITLE);
   }
 
