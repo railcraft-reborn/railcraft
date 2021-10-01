@@ -8,7 +8,6 @@
 package mods.railcraft.api.crafting;
 
 import mods.railcraft.api.core.RailcraftCore;
-import net.minecraft.inventory.IInventory;
 
 /**
  * These variables are defined during the pre-init phase. Do not attempt to access them during
@@ -21,7 +20,6 @@ public final class Crafters {
   static ICokeOvenCrafter cokeOven = new ICokeOvenCrafter() {};
   private static IBlastFurnaceCrafter blastFurnace = new IBlastFurnaceCrafter() {};
   static IRockCrusherCrafter rockCrusher = new IRockCrusherCrafter() {};
-  // static IRollingMachineCrafter<?> rollingMachine = new IRollingMachineCrafter<IInventory>() {};
 
   private static void validateStage() {
     RailcraftCore.validateStage(RailcraftCore.InitStage.PRE_INIT, RailcraftCore.InitStage.INIT,
@@ -69,20 +67,6 @@ public final class Crafters {
     validateStage();
     return rockCrusher;
   }
-
-  /**
-   * Returns the rolling machine crafting manager.
-   *
-   * <p>
-   * If railcraft is not available, a dummy one is returned.
-   * </p>
-   *
-   * @return The rolling machine crafting manager
-   */
-  // public static IRollingMachineCrafter<?> rollingMachine() {
-  //   validateStage();
-  //   return rollingMachine;
-  // }
 
   private Crafters() {}
 }
