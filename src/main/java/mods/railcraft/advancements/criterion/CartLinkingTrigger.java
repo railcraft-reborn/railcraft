@@ -3,9 +3,9 @@ package mods.railcraft.advancements.criterion;
 import java.util.ArrayList;
 import java.util.Collection;
 import com.google.gson.JsonObject;
-import mods.railcraft.api.carts.CartToolsAPI;
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.api.events.CartLinkEvent;
+import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.plugins.PlayerPlugin;
 import mods.railcraft.util.JsonTools;
 import net.minecraft.advancements.ICriterionInstance;
@@ -45,9 +45,9 @@ final class CartLinkingTrigger extends BaseTrigger<CartLinkingTrigger.Instance> 
     AbstractMinecartEntity two = event.getCartTwo();
 
     ServerPlayerEntity ownerOne =
-        (ServerPlayerEntity) PlayerPlugin.getPlayer(one.level, CartToolsAPI.getCartOwner(one));
+        (ServerPlayerEntity) PlayerPlugin.getPlayer(one.level, CartUtil.getCartOwner(one));
     ServerPlayerEntity ownerTwo =
-        (ServerPlayerEntity) PlayerPlugin.getPlayer(two.level, CartToolsAPI.getCartOwner(two));
+        (ServerPlayerEntity) PlayerPlugin.getPlayer(two.level, CartUtil.getCartOwner(two));
 
     Collection<Listener<Instance>> doneOne = new ArrayList<>();
     Collection<Listener<Instance>> doneTwo = new ArrayList<>();

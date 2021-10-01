@@ -29,6 +29,16 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.TURNOUT_TRACK.get(),
             RailcraftBlocks.WYE_TRACK.get());
     this.tag(BlockTags.CLIMBABLE).add(RailcraftBlocks.ELEVATOR_TRACK.get());
+    this.tag(RailcraftTags.Blocks.ASPECT_EMITTER)
+        .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
+            RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
+            RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get(),
+            RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
+    this.tag(RailcraftTags.Blocks.ASPECT_RECEIVER)
+        .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
+            RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(),
+            RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
+            RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
   }
 
   @Override

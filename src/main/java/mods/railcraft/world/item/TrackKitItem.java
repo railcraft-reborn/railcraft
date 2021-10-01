@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 import com.google.common.collect.ImmutableMap;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.TrackBlock;

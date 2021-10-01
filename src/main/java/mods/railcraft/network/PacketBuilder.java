@@ -1,31 +1,23 @@
 package mods.railcraft.network;
 
-import java.util.Collection;
 import javax.annotation.Nullable;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.Syncable;
-import mods.railcraft.api.signals.SignalPacketBuilder;
 import mods.railcraft.gui.widget.Widget;
-import mods.railcraft.network.play.RequestNetworkPeersSyncMessage;
 import mods.railcraft.network.play.SetMenuStringMessage;
 import mods.railcraft.network.play.SyncEntityMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
-import mods.railcraft.network.play.SyncNetworkPeersMessage;
-import mods.railcraft.world.signal.NetworkType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public final class PacketBuilder implements SignalPacketBuilder {
+public final class PacketBuilder {
 
   private static PacketBuilder instance;
 
@@ -53,18 +45,6 @@ public final class PacketBuilder implements SignalPacketBuilder {
         PacketDispatcher.sendToPlayer(packet, player);
     }
   }
-
-  @Override
-  public void syncNetworkPeers(NetworkType type, BlockPos pos, Collection<BlockPos> peers,
-      RegistryKey<World> dimension) {
-    PacketDispatcher.sendToDimension(new SyncNetworkPeersMessage(pos, type, peers), dimension);
-  }
-
-  @Override
-  public void requestNetworkPeersSync(NetworkType type, BlockPos pos) {
-    PacketDispatcher.sendToServer(new RequestNetworkPeersSyncMessage(pos, type));
-  }
-
 
   // public void sendGuiReturnPacket(IGuiReturnHandler handler, byte[] extraData) {
   // PacketGuiReturn pkt = new PacketGuiReturn(handler, extraData);

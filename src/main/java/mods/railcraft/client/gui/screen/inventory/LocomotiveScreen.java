@@ -62,13 +62,13 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     this.imageHeight = LocomotiveMenu.DEFAULT_HEIGHT;
 
     this.lockedTooltip = Collections.singletonList(
-        new TranslationTextComponent("gui.railcraft.locomotive.tips.button.locked",
+        new TranslationTextComponent("screen.locomotive.lock.locked",
             menu.getLocomotive().getClientOwnerName()));
     this.unlockedTooltip = Collections.singletonList(
-        new TranslationTextComponent("gui.railcraft.locomotive.tips.button.unlocked",
+        new TranslationTextComponent("screen.locomotive.lock.unlocked",
             menu.getLocomotive().getClientOwnerName()));
     this.privateTooltip = Collections.singletonList(
-        new TranslationTextComponent("gui.railcraft.locomotive.tips.button.private",
+        new TranslationTextComponent("screen.locomotive.lock.private",
             menu.getLocomotive().getClientOwnerName()));
   }
 
@@ -84,11 +84,11 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     for (Mode mode : menu.getLocomotive().getAllowedModes()) {
       Button button = new RailcraftButton(0, h + this.getYSize() - 129, 55, 16,
           new TranslationTextComponent(
-              "gui.railcraft.locomotive.mode." + mode.getSerializedName()),
+              "screen.locomotive.mode." + mode.getSerializedName()),
           b -> this.setMode(mode),
           (btn, matrixStack, mouseX, mouseY) -> this.renderWrappedToolTip(
               matrixStack, Collections.singletonList(new TranslationTextComponent(
-                  "gui.railcraft.locomotive." + typeTag + ".tips.button.mode."
+                  "screen.locomotive." + typeTag + ".tips.button.mode."
                       + mode.getSerializedName())),
               mouseX, mouseY, this.font),
           ButtonTexture.SMALL_BUTTON);

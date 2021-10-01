@@ -3,8 +3,7 @@ package mods.railcraft.world.level.block.entity.signal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.Nullable;
-import mods.railcraft.api.signals.SignalAspect;
+import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
@@ -26,7 +25,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
   private short ticksPowered;
   public short ticksToPower = 200;
-  private SignalAspect aspect = SignalAspect.OFF;
+  private SignalAspect signalAspect = SignalAspect.OFF;
   private final MultiButtonController<StateMode> stateModeController =
       MultiButtonController.create(StateMode.RISING_EDGE.ordinal(), StateMode.values());
 
@@ -40,75 +39,61 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
   @Override
   public void tick() {
-    super.tick();
-
     if (this.level.isClientSide())
       return;
 
-    if (ticksPowered > 0) {
-      ticksPowered--;
-      if (Objects.equals(stateModeController.getCurrentState(), StateMode.FALLING_EDGE)) { // new
-                                                                                           // behavior
-        SignalAspect tmpAspect = SignalAspect.GREEN;
-        boolean hasInput = false;
-        if (PowerPlugin.hasRepeaterSignal(this.level, getBlockPos()))
-          hasInput = true;
-        for (Direction side : Direction.Plane.HORIZONTAL) { // get most restrictive aspect from
-          // adjacent (active) boxes
-          TileEntity tile = adjacentCache.getTileOnSide(side);
-          if (tile instanceof AbstractSignalBoxBlockEntity) {
-            AbstractSignalBoxBlockEntity box = (AbstractSignalBoxBlockEntity) tile;
-            if (box.isEmittingRedstone(side.getOpposite())) {
-              hasInput = true;
-              tmpAspect = SignalAspect.mostRestrictive(tmpAspect,
-                  box.getBoxSignalAspect(side.getOpposite()));
+    if (this.ticksPowered-- > 0) {
+      if (this.stateModeController.getCurrentState() == StateMode.FALLING_EDGE) {
+        SignalAspect signalAspect = SignalAspect.GREEN;
+        boolean powered = PowerPlugin.hasRepeaterSignal(this.level, getBlockPos());
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+          TileEntity blockEntity =
+              this.level.getBlockEntity(this.getBlockPos().relative(direction));
+          if (blockEntity instanceof AbstractSignalBoxBlockEntity) {
+            AbstractSignalBoxBlockEntity box = (AbstractSignalBoxBlockEntity) blockEntity;
+            if (box.getRedstoneSignal(direction.getOpposite()) > 0) {
+              powered = true;
+              signalAspect = SignalAspect.mostRestrictive(signalAspect,
+                  box.getSignalAspect(direction.getOpposite()));
             }
           }
         }
-        if (hasInput) {
-          ticksPowered = ticksToPower; // undo any previous decrements
-          if (!Objects.equals(aspect, tmpAspect)) {
-            aspect = tmpAspect; // change to the most restrictive aspect found above.
-            updateNeighbors();
+        if (powered) {
+          this.ticksPowered = this.ticksToPower;
+          if (this.signalAspect != signalAspect) {
+            this.signalAspect = signalAspect; // change to the most restrictive aspect found above.
+            this.updateNeighbors();
           }
         }
       }
-      // in all cases:
-      if (ticksPowered <= 0)
-        updateNeighbors();
+
+      if (this.ticksPowered <= 0) {
+        this.updateNeighbors();
+      }
     }
   }
 
-  @Override
-  public boolean canReceiveAspect() {
-    return true;
-  }
-
-  @Override
-  public boolean canTransferAspect() {
-    return true;
-  }
-
   public void neighborChanged(BlockState state, Block neighborBlock, BlockPos neighborPos) {
-    this.resetAdjacentCacheTimers();
     if (this.level.isClientSide())
       return;
     boolean powered = PowerPlugin.hasRepeaterSignal(this.level, getBlockPos());
     if (this.ticksPowered <= 0 && powered) {
       this.ticksPowered = this.ticksToPower;
       if (Objects.equals(this.stateModeController.getCurrentState(), StateMode.RISING_EDGE))
-        this.aspect = SignalAspect.GREEN;
+        this.signalAspect = SignalAspect.GREEN;
       this.updateNeighbors();
     }
   }
 
   @Override
-  public void neighboringSignalBoxChanged(AbstractSignalBoxBlockEntity neighbor, Direction side) {
-    if (neighbor.isEmittingRedstone(side)) {
-      ticksPowered = ticksToPower;
-      if (Objects.equals(stateModeController.getCurrentState(), StateMode.RISING_EDGE))
-        aspect = neighbor.getBoxSignalAspect(side);
-      updateNeighbors();
+  public void neighboringSignalBoxChanged(AbstractSignalBoxBlockEntity neighbor,
+      Direction direction) {
+    if (neighbor.getRedstoneSignal(direction) > 0) {
+      this.ticksPowered = this.ticksToPower;
+      if (this.stateModeController.getCurrentState() == StateMode.RISING_EDGE) {
+        this.signalAspect = neighbor.getSignalAspect(direction);
+      }
+      this.updateNeighbors();
     }
   }
 
@@ -120,11 +105,12 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public int getSignal(Direction side) {
-    TileEntity tile = adjacentCache.getTileOnSide(side.getOpposite());
-    if (tile instanceof AbstractSignalBoxBlockEntity)
-      return PowerPlugin.NO_POWER;
-    return ticksPowered > 0 ? PowerPlugin.FULL_POWER : PowerPlugin.NO_POWER;
+  public int getRedstoneSignal(Direction direction) {
+    TileEntity blockEntity =
+        this.level.getBlockEntity(this.getBlockPos().relative(direction.getOpposite()));
+    return blockEntity instanceof AbstractSignalBoxBlockEntity || this.ticksPowered <= 0
+        ? PowerPlugin.NO_POWER
+        : PowerPlugin.FULL_POWER;
   }
 
   @Override
@@ -132,7 +118,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     super.save(data);
     data.putShort("ticksPowered", this.ticksPowered);
     data.putShort("ticksToPower", this.ticksToPower);
-    data.putString("aspect", this.aspect.getName());
+    data.putString("signalAspect", this.signalAspect.getSerializedName());
     data.put("mode", this.stateModeController.serializeNBT());
     return data;
   }
@@ -142,33 +128,31 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     super.load(state, data);
     this.ticksPowered = data.getShort("ticksPowered");
     this.ticksToPower = data.getShort("ticksToPower");
-    this.aspect = SignalAspect.getByName(data.getString("aspect")).get();
+    this.signalAspect = SignalAspect.getByName(data.getString("signalAspect")).get();
     this.stateModeController.deserializeNBT(data.getCompound("mode"));
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-
-    data.writeBoolean(ticksPowered > 0);
-    data.writeShort(ticksToPower);
-    data.writeByte(aspect.ordinal());
-    data.writeByte(stateModeController.getCurrentStateIndex());
+    data.writeBoolean(this.ticksPowered > 0);
+    data.writeShort(this.ticksToPower);
+    data.writeEnum(this.signalAspect);
+    data.writeByte(this.stateModeController.getCurrentStateIndex());
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-
-    ticksPowered = (short) (data.readBoolean() ? 1 : 0);
-    ticksToPower = data.readShort();
-    aspect = SignalAspect.values()[data.readByte()];
-    stateModeController.setCurrentState(data.readByte());
+    this.ticksPowered = (short) (data.readBoolean() ? 1 : 0);
+    this.ticksToPower = data.readShort();
+    this.signalAspect = data.readEnum(SignalAspect.class);
+    this.stateModeController.setCurrentState(data.readByte());
   }
 
   @Override
-  public SignalAspect getBoxSignalAspect(@Nullable Direction side) {
-    return ticksPowered > 0 ? aspect : SignalAspect.RED;
+  public SignalAspect getSignalAspect(Direction direction) {
+    return this.ticksPowered > 0 ? this.signalAspect : SignalAspect.RED;
   }
 
   public enum StateMode implements ButtonState {

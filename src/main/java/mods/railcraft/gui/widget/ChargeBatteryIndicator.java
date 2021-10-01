@@ -2,7 +2,7 @@ package mods.railcraft.gui.widget;
 
 import java.util.ArrayList;
 import java.util.List;
-import mods.railcraft.api.charge.IBattery;
+import mods.railcraft.api.charge.Battery;
 import mods.railcraft.util.HumanReadableNumberFormatter;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
@@ -10,14 +10,14 @@ import net.minecraft.util.text.StringTextComponent;
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public class ChargeBatteryIndicator implements IGauge {
+public class ChargeBatteryIndicator implements Gauge {
 
   private float charge;
-  private final IBattery battery;
+  private final Battery battery;
 
   private final List<ITextProperties> tooltip = new ArrayList<>();
 
-  public ChargeBatteryIndicator(IBattery battery) {
+  public ChargeBatteryIndicator(Battery battery) {
     this.battery = battery;
   }
 

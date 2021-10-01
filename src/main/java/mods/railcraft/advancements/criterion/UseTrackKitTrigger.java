@@ -2,7 +2,7 @@ package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.plugins.WorldPlugin;
+import mods.railcraft.plugins.LevelUtil;
 import mods.railcraft.util.JsonTools;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.criterion.ItemPredicate;
@@ -52,7 +52,7 @@ final class UseTrackKitTrigger extends BaseTrigger<UseTrackKitTrigger.Instance> 
     boolean matches(ServerWorld world, BlockPos blockPos, ItemStack stack) {
       return item.matches(stack)
           && this.location.matches(world, blockPos.getX(), blockPos.getY(), blockPos.getZ())
-          && WorldPlugin.getTileEntity(world, blockPos)
+          && LevelUtil.getBlockEntity(world, blockPos)
               .map(te -> te.save(new CompoundNBT()))
               .map(blockEntityNbt::matches)
               .orElse(false);

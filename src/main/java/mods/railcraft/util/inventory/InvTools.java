@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import javax.annotation.Nullable;
-import mods.railcraft.api.items.IFilterItem;
-import mods.railcraft.api.items.InvToolsAPI;
+import mods.railcraft.api.item.Filter;
+import mods.railcraft.api.item.InvToolsAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -196,8 +196,8 @@ public abstract class InvTools {
   public static boolean matchesFilter(ItemStack filter, ItemStack stack) {
     if (stack.isEmpty() || filter.isEmpty())
       return false;
-    if (filter.getItem() instanceof IFilterItem) {
-      return ((IFilterItem) filter.getItem()).matches(filter, stack);
+    if (filter.getItem() instanceof Filter) {
+      return ((Filter) filter.getItem()).matches(filter, stack);
     }
     return isItemEqual(stack, filter);
   }

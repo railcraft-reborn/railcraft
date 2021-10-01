@@ -1,32 +1,29 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import mods.railcraft.api.signals.BlockSignal;
-import mods.railcraft.api.signals.BlockSignalNetwork;
-import mods.railcraft.api.signals.SignalAspect;
-import mods.railcraft.api.signals.SignalController;
-import mods.railcraft.api.signals.SignalTools;
-import mods.railcraft.api.signals.SimpleBlockSignal;
-import mods.railcraft.api.signals.SimpleSignalControllerNetwork;
+import mods.railcraft.api.signal.BlockSignal;
+import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.api.signal.SignalControllerProvider;
+import mods.railcraft.api.signal.SimpleBlockSignalNetwork;
+import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.text.ITextComponent;
 
 public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
-    implements SignalController, BlockSignal {
+    implements SignalControllerProvider, BlockSignal, ITickableTileEntity {
 
-  private static final Logger logger = LogManager.getLogger();
-
-  private final SimpleSignalControllerNetwork signalControllerNetwork =
-      new SimpleSignalControllerNetwork(this, this::syncToClient);
-  private final BlockSignalNetwork signalNetwork = new SimpleBlockSignal(this, this::syncToClient);
+  private final SimpleSignalController signalController =
+      new SimpleSignalController(1, this::syncToClient, this, false,
+          __ -> this.level.getLightEngine().checkBlock(this.getBlockPos()));
+  private final SimpleBlockSignalNetwork blockSignal =
+      new SimpleBlockSignalNetwork(1, this::syncToClient, this.signalController::setSignalAspect,
+          this);
 
   public BlockSignalBlockEntity() {
-    this(RailcraftBlockEntityTypes.SIGNAL.get());
+    this(RailcraftBlockEntityTypes.BLOCK_SIGNAL.get());
   }
 
   public BlockSignalBlockEntity(TileEntityType<?> type) {
@@ -34,77 +31,71 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
+  public void setRemoved() {
+    super.setRemoved();
+    this.signalController.removed();
+    this.blockSignal.removed();
+  }
+
+  @Override
   public void tick() {
     super.tick();
     if (this.level.isClientSide()) {
-      this.signalControllerNetwork.tickClient();
-      this.signalNetwork.tickClient();
+      this.signalController.spawnTuningAuraParticles();
       return;
     }
-    this.signalControllerNetwork.tickServer();
-    this.signalNetwork.tickServer();
-    SignalAspect lastAspect = this.signalControllerNetwork.getAspect();
-    if (this.signalControllerNetwork.isLinking()) {
-      this.signalControllerNetwork.setAspect(SignalAspect.BLINK_YELLOW);
-    } else {
-      this.signalControllerNetwork.setAspect(this.signalNetwork.getSignalAspect());
-    }
+    this.blockSignal.tickServer();
+  }
 
-    if (lastAspect != this.signalControllerNetwork.getAspect()) {
-      this.syncToClient();
-    }
-    if (SignalTools.printSignalDebug && lastAspect != SignalAspect.BLINK_RED
-        && this.signalControllerNetwork.getAspect() == SignalAspect.BLINK_RED) {
-      logger.info("Signal block changed aspect to BLINK_RED: source:[{}]", this.getBlockPos());
+  @Override
+  public void load() {
+    if (!this.level.isClientSide()) {
+      this.signalController.refresh();
+      this.blockSignal.refresh();
     }
   }
 
   @Override
-  public SignalAspect getSignalAspect() {
-    return this.signalControllerNetwork.getAspect();
+  public SignalAspect getPrimarySignalAspect() {
+    return this.signalController.getSignalAspect();
   }
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    data.put("signalNetwork", this.signalNetwork.serializeNBT());
-    data.put("signalControllerNetwork", this.signalControllerNetwork.serializeNBT());
+    data.put("blockSignal", this.blockSignal.serializeNBT());
+    data.put("signalController", this.signalController.serializeNBT());
     return data;
   }
 
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-    this.signalNetwork.deserializeNBT(data.getCompound("signalNetwork"));
-    this.signalControllerNetwork.deserializeNBT(data.getCompound("signalControllerNetwork"));
+    this.blockSignal.deserializeNBT(data.getCompound("blockSignal"));
+    this.signalController.deserializeNBT(data.getCompound("signalController"));
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    this.signalControllerNetwork.writeSyncData(data);
-    this.signalNetwork.writeSyncData(data);
+    this.blockSignal.writeSyncData(data);
+    this.signalController.writeSyncData(data);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    this.signalControllerNetwork.readSyncData(data);
-    this.signalNetwork.readSyncData(data);
+    this.blockSignal.readSyncData(data);
+    this.signalController.readSyncData(data);
   }
 
   @Override
-  public SimpleSignalControllerNetwork getSignalControllerNetwork() {
-    return this.signalControllerNetwork;
+  public SimpleSignalController getSignalController() {
+    return this.signalController;
   }
 
   @Override
-  public BlockSignalNetwork getSignalNetwork() {
-    return this.signalNetwork;
-  }
-
-  @Override
-  public ITextComponent getPrimaryNetworkName() {
-    return this.signalNetwork.getName();
+  public SimpleBlockSignalNetwork getSignalNetwork() {
+    return this.blockSignal;
   }
 }

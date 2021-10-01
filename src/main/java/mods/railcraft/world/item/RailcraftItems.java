@@ -72,10 +72,10 @@ public class RailcraftItems {
               RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> SIGNAL_RELAY_BOX =
-      ITEMS.register("signal_relay_box",
+  public static final RegistryObject<Item> BLOCK_SIGNAL_RELAY_BOX =
+      ITEMS.register("block_signal_relay_box",
           () -> new BlockItem(
-              RailcraftBlocks.SIGNAL_RELAY_BOX.get(),
+              RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get(),
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> SIGNAL_RECEIVER_BOX =
@@ -90,10 +90,10 @@ public class RailcraftItems {
               RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> DUAL_SIGNAL =
-      ITEMS.register("dual_signal",
+  public static final RegistryObject<Item> DUAL_BLOCK_SIGNAL =
+      ITEMS.register("dual_block_signal",
           () -> new BlockItem(
-              RailcraftBlocks.DUAL_SIGNAL.get(),
+              RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> DUAL_DISTANT_SIGNAL =
@@ -108,8 +108,8 @@ public class RailcraftItems {
               RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> SIGNAL =
-      ITEMS.register("signal",
+  public static final RegistryObject<Item> BLOCK_SIGNAL =
+      ITEMS.register("block_signal",
           () -> new BlockItem(
               RailcraftBlocks.SIGNAL.get(),
               new Item.Properties().tab(TAB)));
@@ -302,7 +302,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> GOGGLES =
       ITEMS.register("goggles",
-          () -> new Item(new Item.Properties().tab(TAB)));
+          () -> new GogglesItem(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<BlockItem> ROLLING_TABLE_MANUAL =
       ITEMS.register("rolling_table_manual",

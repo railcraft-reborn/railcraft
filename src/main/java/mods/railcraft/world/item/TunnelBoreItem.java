@@ -3,7 +3,7 @@ package mods.railcraft.world.item;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.carts.CartToolsAPI;
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
@@ -59,7 +59,7 @@ public class TunnelBoreItem extends CartItem {
 
           AbstractMinecartEntity bore = new TunnelBoreEntity(
               world, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, playerFacing);
-          CartToolsAPI.setCartOwner(bore, player);
+          CartUtil.setCartOwner(bore, player);
           world.addFreshEntity(bore);
         }
       }

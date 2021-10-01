@@ -45,31 +45,27 @@ public class GogglesItem extends ArmorItem {
   public void appendHoverText(ItemStack itemStack, @Nullable World level,
       List<ITextComponent> lines, ITooltipFlag adv) {
     lines.add(getAura(itemStack).getDescriptionText());
-    lines.add(new TranslationTextComponent("gui.railcraft.goggles.tips"));
+    lines.add(new TranslationTextComponent("goggles.description"));
   }
 
   public static Aura getAura(ItemStack itemStack) {
-    if (itemStack.getItem() instanceof GogglesItem) {
-      Optional.ofNullable(itemStack.getTag())
-          .filter(tag -> tag.contains("aura", Constants.NBT.TAG_STRING))
-          .map(tag -> tag.getString("aura"))
-          .flatMap(Aura::getByName)
-          .orElse(Aura.NONE);
-    }
-    return Aura.NONE;
+    return Optional.ofNullable(itemStack.getTag())
+        .filter(tag -> tag.contains("aura", Constants.NBT.TAG_STRING))
+        .map(tag -> tag.getString("aura"))
+        .flatMap(Aura::getByName)
+        .orElse(Aura.NONE);
   }
 
   public static void incrementAura(ItemStack itemStack) {
-    if (itemStack.getItem() instanceof GogglesItem) {
-      Aura aura = Optional.of(itemStack.getOrCreateTag())
-          .filter(tag -> tag.contains("aura", Constants.NBT.TAG_STRING))
-          .map(tag -> tag.getString("aura"))
-          .flatMap(Aura::getByName)
-          .orElse(Aura.NONE)
-          .getNext();
-      if (aura == Aura.TRACKING)
-        aura.getNext();
-    }
+    Aura aura = Optional.of(itemStack.getOrCreateTag())
+        .filter(tag -> tag.contains("aura", Constants.NBT.TAG_STRING))
+        .map(tag -> tag.getString("aura"))
+        .flatMap(Aura::getByName)
+        .orElse(Aura.NONE)
+        .getNext();
+    if (aura == Aura.TRACKING)
+      aura.getNext();
+    itemStack.getOrCreateTag().putString("aura", aura.getSerializedName());
   }
 
   public enum Aura implements IStringSerializable {
@@ -90,7 +86,7 @@ public class GogglesItem extends ArmorItem {
 
     private Aura(String name) {
       this.name = name;
-      this.displayName = new TranslationTextComponent("gui.railcraft.goggles.aura." + name);
+      this.displayName = new TranslationTextComponent("goggles.aura." + name);
     }
 
     public ITextComponent getDisplayName() {
@@ -107,12 +103,12 @@ public class GogglesItem extends ArmorItem {
     }
 
     public ITextComponent getDescriptionText() {
-      return new TranslationTextComponent("gui.railcraft.goggles.mode",
+      return new TranslationTextComponent("goggles.aura",
           this.displayName.copy().withStyle(TextFormatting.DARK_PURPLE));
     }
 
     public Aura getNext() {
-      return values()[this.ordinal() % values().length];
+      return values()[this.ordinal() + 1 % values().length];
     }
 
     public static Optional<Aura> getByName(String name) {

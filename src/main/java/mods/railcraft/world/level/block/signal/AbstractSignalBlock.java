@@ -1,8 +1,7 @@
 package mods.railcraft.world.level.block.signal;
 
 import java.util.function.Supplier;
-import mods.railcraft.api.core.IPostConnection;
-import mods.railcraft.plugins.WorldPlugin;
+import mods.railcraft.plugins.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -30,8 +29,7 @@ import net.minecraft.world.IWorld;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public abstract class AbstractSignalBlock extends SixWayBlock
-    implements IPostConnection, IWaterLoggable {
+public abstract class AbstractSignalBlock extends SixWayBlock implements IWaterLoggable {
 
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -75,7 +73,7 @@ public abstract class AbstractSignalBlock extends SixWayBlock
 
   @Override
   public int getLightValue(BlockState state, IBlockReader reader, BlockPos pos) {
-    return WorldPlugin.getTileEntity(reader, pos, AbstractSignalBlockEntity.class)
+    return LevelUtil.getBlockEntity(reader, pos, AbstractSignalBlockEntity.class)
         .map(AbstractSignalBlockEntity::getLightValue)
         .orElseGet(() -> super.getLightValue(state, reader, pos));
   }
@@ -138,10 +136,10 @@ public abstract class AbstractSignalBlock extends SixWayBlock
         state.getValue(FACING)));
   }
 
-  public final boolean attachsTo(BlockState state, boolean p_220112_2_, Direction direction,
+  public final boolean attachsTo(BlockState state, boolean faceStudry, Direction direction,
       Direction facing) {
     Block block = state.getBlock();
-    return !isExceptionForConnection(block) && p_220112_2_
+    return !isExceptionForConnection(block) && faceStudry
         || (block instanceof AbstractSignalBlock
             && direction.getOpposite() != state.getValue(FACING) && facing != direction)
         || ((state.is(BlockTags.FENCES) || state.is(BlockTags.WALLS))
@@ -161,11 +159,5 @@ public abstract class AbstractSignalBlock extends SixWayBlock
   @Override
   public TileEntity createTileEntity(BlockState state, IBlockReader reader) {
     return this.blockEntityFactory.get();
-  }
-
-  @Override
-  public ConnectStyle connectsToPost(IBlockReader world, BlockPos pos, BlockState state,
-      Direction face) {
-    return ConnectStyle.TWO_THIN;
   }
 }

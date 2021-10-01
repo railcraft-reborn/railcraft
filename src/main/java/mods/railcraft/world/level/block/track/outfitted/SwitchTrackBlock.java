@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.entity.track.SwitchTrackBlockEntity;
 import net.minecraft.block.AbstractRailBlock;

@@ -4,5 +4,5 @@ import net.minecraft.util.Direction;
 
 public interface SignalEmitter {
 
-  int getSignal(Direction direction);
+  int getRedstoneSignal(Direction direction);
 }

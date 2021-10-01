@@ -11,9 +11,9 @@ import net.minecraft.network.PacketBuffer;
 
 public interface Syncable {
 
-  default void readSyncData(PacketBuffer data) {}
-
   default void writeSyncData(PacketBuffer data) {}
+
+  default void readSyncData(PacketBuffer data) {}
 
   void syncToClient();
 }

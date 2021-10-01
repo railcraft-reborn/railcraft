@@ -1,8 +1,6 @@
 package mods.railcraft.world.entity;
 
 import javax.annotation.Nullable;
-
-import mods.railcraft.NBTPlugin;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.client.ClientEffects;
@@ -62,16 +60,17 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     }
   }.setFilterFluid(() -> Fluids.WATER);
 
-  protected final StandardTank tankSteam = new FilteredTank(FluidTools.BUCKET_VOLUME * 16)
-    .setFilterFluid(RailcraftFluids.STEAM)
-    .disableDrain()
-    .disableFill();
+  protected final StandardTank steamTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 16)
+      .setFilterFluid(RailcraftFluids.STEAM)
+      .disableDrain()
+      .disableFill();
   // FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt)
   protected final InventoryMapper invWaterInput =
-    InventoryMapper.make(this, SLOT_WATER_INPUT, 1)
-      .withStackSizeLimit(4);
+      InventoryMapper.make(this, SLOT_WATER_INPUT, 1)
+          .withStackSizeLimit(4);
   protected final InventoryMapper invWaterOutput = InventoryMapper.make(this, SLOT_WATER_OUTPUT, 1);
-  protected final InventoryMapper invWaterContainers = InventoryMapper.make(this, SLOT_WATER_INPUT, 3);
+  protected final InventoryMapper invWaterContainers =
+      InventoryMapper.make(this, SLOT_WATER_INPUT, 3);
 
   private final LazyOptional<TankManager> tankManager = LazyOptional.of(TankManager::new);
 
@@ -83,12 +82,12 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     super(type, world);
     setMaxReverseSpeed(Speed.SLOWEST);
 
-    this.getTankManager().add(waterTank);
-    this.getTankManager().add(tankSteam);
+    this.getTankManager().add(this.waterTank);
+    this.getTankManager().add(this.steamTank);
 
-    this.boiler = new SteamBoiler(waterTank, tankSteam)
-      .setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get())
-      .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
+    this.boiler = new SteamBoiler(this.waterTank, this.steamTank)
+        .setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get())
+        .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
   }
 
   public AbstractSteamLocomotiveEntity(EntityType<?> type, double x, double y, double z,
@@ -96,12 +95,12 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     super(type, x, y, z, world);
     setMaxReverseSpeed(Speed.SLOWEST);
 
-    this.getTankManager().add(waterTank);
-    this.getTankManager().add(tankSteam);
+    this.getTankManager().add(this.waterTank);
+    this.getTankManager().add(this.steamTank);
 
-    this.boiler = new SteamBoiler(waterTank, tankSteam)
-      .setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get())
-      .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
+    this.boiler = new SteamBoiler(this.waterTank, this.steamTank)
+        .setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get())
+        .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
   }
 
   @Override
@@ -118,21 +117,19 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
 
   @Override
   public ActionResultType interact(PlayerEntity player, Hand hand) {
-    if (FluidTools.interactWithFluidHandler(player, hand, getTankManager())) {
-      return ActionResultType.SUCCESS;
-    }
-    return super.interact(player, hand);
+    return FluidTools.interactWithFluidHandler(player, hand, getTankManager())
+        ? ActionResultType.SUCCESS
+        : super.interact(player, hand);
   }
 
   public TankManager getTankManager() {
-    return tankManager.orElseThrow(() -> new IllegalStateException("Expected tank manager"));
+    return this.tankManager.orElseThrow(() -> new IllegalStateException("Expected tank manager"));
   }
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-      return this.tankManager.cast();
-    return super.getCapability(capability, facing);
+    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? this.tankManager.cast()
+        : super.getCapability(capability, facing);
   }
 
   @Override
@@ -140,29 +137,31 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     super.tick();
 
     if (!this.level.isClientSide()) {
-      update++;
+      this.update++;
 
-      if (waterTank.isEmpty())
-        setMode(Mode.SHUTDOWN);
-      setSteaming(tankSteam.getFluidAmount() > 0);
+      if (this.waterTank.isEmpty())
+        this.setMode(Mode.SHUTDOWN);
+      this.setSteaming(this.steamTank.getFluidAmount() > 0);
 
-      if (tankSteam.getRemainingSpace() >= SteamConstants.STEAM_PER_UNIT_WATER || isShutdown()) {
-        boiler.tick(1);
+      if (this.steamTank.getRemainingSpace() >= SteamConstants.STEAM_PER_UNIT_WATER
+          || this.isShutdown()) {
+        this.boiler.tick(1);
 
-        setSmoking(boiler.isBurning());
+        this.setSmoking(this.boiler.isBurning());
 
-        if (!boiler.isBurning()) // Todo: make venting a toggleable thing (why autodump while train has no coal??)
-          ventSteam();
+        // TODO: make venting a toggleable thing (why autodump while train has no coal??)
+        if (!this.boiler.isBurning())
+          this.ventSteam();
       }
 
-      if ((update % FluidTools.BUCKET_FILL_TIME) == 0)
-        processState = FluidTools.processContainer(invWaterContainers, waterTank,
-            ProcessType.DRAIN_ONLY, processState);
+      if ((this.update % FluidTools.BUCKET_FILL_TIME) == 0)
+        this.processState = FluidTools.processContainer(this.invWaterContainers, this.waterTank,
+            ProcessType.DRAIN_ONLY, this.processState);
       return;
     }
     // future information: renderYaw FACES at -x when at 0deg
     double rads = Math.toRadians(renderYaw);
-    if (isSmoking()) {
+    if (this.isSmoking()) {
       float offset = 0.4f;
       ClientEffects.INSTANCE.locomotiveEffect(
           this.getX() - Math.cos(rads) * offset, this.getY() + 1.5,
@@ -170,22 +169,25 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     }
     // steam spawns ON the engine itself, spreading left or right
     // as the pistons are on the train's sides
-    if (isSteaming()){
+    if (this.isSteaming()) {
       float offset = 0.5f;
       double ninetyDeg = Math.toRadians(90) + Math.toRadians(random.nextInt(10)); // 10* bias
       double steamAngularSpeed = 0.01;
       double yCoordinate = this.getY() + 0.15;
       // right
       ClientEffects.INSTANCE.steamEffect(
-        this.getX() - Math.cos(rads + ninetyDeg) * offset, yCoordinate, this.getZ() - Math.sin(rads + ninetyDeg) * offset,
-        steamAngularSpeed * Math.cos(rads - ninetyDeg), steamAngularSpeed * Math.sin(rads - ninetyDeg));
-      //left
+          this.getX() - Math.cos(rads + ninetyDeg) * offset, yCoordinate,
+          this.getZ() - Math.sin(rads + ninetyDeg) * offset,
+          steamAngularSpeed * Math.cos(rads - ninetyDeg),
+          steamAngularSpeed * Math.sin(rads - ninetyDeg));
+      // left
       ClientEffects.INSTANCE.steamEffect(
-        this.getX() - Math.cos(rads + -ninetyDeg) * offset, yCoordinate, this.getZ() - Math.sin(rads + -ninetyDeg) * offset,
-        steamAngularSpeed * Math.cos(rads + ninetyDeg), steamAngularSpeed * Math.sin(rads + ninetyDeg));
+          this.getX() - Math.cos(rads + -ninetyDeg) * offset, yCoordinate,
+          this.getZ() - Math.sin(rads + -ninetyDeg) * offset,
+          steamAngularSpeed * Math.cos(rads + ninetyDeg),
+          steamAngularSpeed * Math.sin(rads + ninetyDeg));
     }
   }
-
 
   public boolean isSmoking() {
     return this.entityData.get(SMOKE);
@@ -204,7 +206,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   }
 
   private void ventSteam() {
-    tankSteam.internalDrain(4, FluidAction.EXECUTE);
+    this.steamTank.internalDrain(4, FluidAction.EXECUTE);
   }
 
   @Override
@@ -220,12 +222,12 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
 
   @Override
   public int getMoreGoJuice() {
-    FluidStack steam = tankSteam.getFluid();
+    FluidStack steam = steamTank.getFluid();
     if (steam == FluidStack.EMPTY) {
       return 0;
     }
-    if (steam.getAmount() >= tankSteam.getCapacity() / 2) {
-      tankSteam.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, FluidAction.EXECUTE);
+    if (steam.getAmount() >= steamTank.getCapacity() / 2) {
+      steamTank.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, FluidAction.EXECUTE);
       return FUEL_PER_REQUEST;
     }
     return 0;
@@ -234,22 +236,22 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   @Override
   public void addAdditionalSaveData(CompoundNBT data) {
     super.addAdditionalSaveData(data);
-    getTankManager().writeTanksToNBT(data);
-    boiler.writeToNBT(data);
-    NBTPlugin.writeEnumOrdinal(data, "processState", processState);
+    this.getTankManager().writeTanksToNBT(data);
+    data.put("boiler", this.boiler.serializeNBT());
+    data.putString("processState", this.processState.getSerializedName());
   }
 
   @Override
   public void readAdditionalSaveData(CompoundNBT data) {
     super.readAdditionalSaveData(data);
-    getTankManager().readTanksFromNBT(data);
-    boiler.readFromNBT(data);
-    processState = NBTPlugin.readEnumOrdinal(data, "processState", FluidTools.ProcessState.values(),
-        FluidTools.ProcessState.RESET);
+    this.getTankManager().readTanksFromNBT(data);
+    this.boiler.deserializeNBT(data.getCompound("boiler"));
+    this.processState = FluidTools.ProcessState.getByName(data.getString("processState"))
+        .orElse(FluidTools.ProcessState.RESET);
   }
 
   public boolean isSafeToFill() {
-    return !boiler.isSuperHeated() || !waterTank.isEmpty();
+    return !this.boiler.isSuperHeated() || !this.waterTank.isEmpty();
   }
 
   @Override
@@ -272,7 +274,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
 
   @Override
   public void steamExplosion(FluidStack resource) {
-    explode();
+    this.explode();
   }
 }
 

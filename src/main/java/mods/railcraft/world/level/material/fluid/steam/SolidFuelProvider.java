@@ -3,7 +3,7 @@ package mods.railcraft.world.level.material.fluid.steam;
 import mods.railcraft.plugins.FuelPlugin;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.item.RefinedFirestoneItem;
-import mods.railcraft.world.level.material.fluid.IFuelProvider;
+import mods.railcraft.world.level.material.fluid.FuelProvider;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public class SolidFuelProvider implements IFuelProvider {
+public class SolidFuelProvider implements FuelProvider {
 
   private final IInventory inv;
   private final int slot;

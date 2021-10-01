@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.entity.cart;
 
 import javax.annotation.Nullable;
 import mods.railcraft.client.emblem.EmblemToolsClient;
-import mods.railcraft.plugins.SeasonPlugin;
+import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.LocomotiveEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.item.DyeColor;
@@ -20,13 +20,13 @@ public abstract class LocomotiveRenderer<T extends LocomotiveEntity>
   }
 
   protected int getPrimaryColor(T loco) {
-    return SeasonPlugin.isGhostTrain(loco)
+    return Seasons.isGhostTrain(loco)
         ? DyeColor.LIGHT_GRAY.getColorValue()
         : loco.getPrimaryColor();
   }
 
   protected int getSecondaryColor(T loco) {
-    return SeasonPlugin.isGhostTrain(loco)
+    return Seasons.isGhostTrain(loco)
         ? DyeColor.LIGHT_GRAY.getColorValue()
         : loco.getSecondaryColor();
   }

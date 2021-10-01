@@ -7,13 +7,12 @@ import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
+import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.core.Syncable;
-import mods.railcraft.api.signals.BlockEntityLike;
 import mods.railcraft.network.PacketBuilder;
 import mods.railcraft.plugins.PlayerPlugin;
-import mods.railcraft.util.AdjacentBlockEntityCache;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -28,8 +27,6 @@ import net.minecraftforge.common.util.Constants;
 
 public abstract class RailcraftBlockEntity extends TileEntity
     implements Syncable, Ownable, BlockEntityLike {
-
-  protected final AdjacentBlockEntityCache adjacentCache = new AdjacentBlockEntityCache(this);
 
   private GameProfile owner = RailcraftFakePlayer.UNKNOWN_USER_PROFILE;
 
@@ -49,10 +46,6 @@ public abstract class RailcraftBlockEntity extends TileEntity
     return this.id;
   }
 
-  public AdjacentBlockEntityCache getAdjacentCache() {
-    return this.adjacentCache;
-  }
-
   @Override
   public final SUpdateTileEntityPacket getUpdatePacket() {
     return new SUpdateTileEntityPacket(this.getBlockPos(), 0, this.getUpdateTag());
@@ -62,7 +55,6 @@ public abstract class RailcraftBlockEntity extends TileEntity
   public final CompoundNBT getUpdateTag() {
     CompoundNBT nbt = super.getUpdateTag();
     PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
-
     this.writeSyncData(packetBuffer);
     byte[] syncData = new byte[packetBuffer.readableBytes()];
     packetBuffer.readBytes(syncData);
@@ -85,22 +77,6 @@ public abstract class RailcraftBlockEntity extends TileEntity
   @Override
   public void syncToClient() {
     PacketBuilder.instance().sendTileEntityPacket(this);
-  }
-
-  public void resetAdjacentCacheTimers() {
-    this.adjacentCache.resetTimers();
-  }
-
-  @Override
-  public void setRemoved() {
-    this.adjacentCache.purge();
-    super.setRemoved();
-  }
-
-  @Override
-  public void clearRemoved() {
-    this.adjacentCache.purge();
-    super.clearRemoved();
   }
 
   public final void clearOwner() {
@@ -129,7 +105,6 @@ public abstract class RailcraftBlockEntity extends TileEntity
     if (!this.level.getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO))
       debug.add(String.format("Coordinates: d=%d, %s", this.getLevel().dimension(), getBlockPos()));
     debug.add("Owner: " + this.owner.getName());
-    debug.addAll(this.adjacentCache.getDebugOutput());
     return debug;
   }
 

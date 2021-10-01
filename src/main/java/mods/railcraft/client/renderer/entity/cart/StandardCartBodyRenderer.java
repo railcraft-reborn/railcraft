@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.model.RailcraftMinecartModel;
-import mods.railcraft.plugins.SeasonPlugin;
+import mods.railcraft.season.Seasons;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
@@ -45,7 +45,7 @@ public abstract class StandardCartBodyRenderer<T extends AbstractMinecartEntity>
       core.renderToBuffer(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, red,
           green, blue, alpha);
 
-      if (SeasonPlugin.isPolarExpress(cart)) {
+      if (Seasons.isPolarExpress(cart)) {
         EntityModel<T> snow = this.getSnowModel(cart);
         IVertexBuilder snowVertexBuilder =
             renderTypeBuffer.getBuffer(snow.renderType(SNOW_TEXTURE));

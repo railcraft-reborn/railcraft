@@ -3,8 +3,8 @@ package mods.railcraft.advancements.criterion;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.api.tracks.TrackToolsAPI;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.util.TrackTools;
@@ -35,7 +35,7 @@ final class TrackItemPredicate extends ItemPredicate {
 
   @Override
   public boolean matches(ItemStack stack) {
-    TrackType type = TrackToolsAPI.getTrackType(stack);
+    TrackType type = TrackUtil.getTrackType(stack);
     if (!Conditions.check(highSpeed, type.isHighSpeed())) {
       return false;
     }

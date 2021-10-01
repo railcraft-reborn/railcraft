@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.carts.CartToolsAPI;
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
@@ -65,10 +65,10 @@ public final class CartPredicate {
       return false;
     }
     if (checksOwner != null && !Objects.equals(player.getGameProfile().getId(),
-        CartToolsAPI.getCartOwner(cart).getId())) {
+        CartUtil.getCartOwner(cart).getId())) {
       return false;
     }
-    if (!speed.matchesSqr(CartToolsAPI.getCartSpeedUncappedSquared(cart))) {
+    if (!speed.matchesSqr(CartUtil.getCartSpeedUncappedSquared(cart))) {
       return false;
     }
     return parent.matches(player, cart);

@@ -6,7 +6,7 @@ import java.util.function.Function;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.signals.SignalAspect;
+import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.CuboidModelRenderer.FaceDisplay;
@@ -99,7 +99,7 @@ public abstract class AbstractSignalBoxRenderer
       if (SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction)) {
         this.model.disable(direction);
       } else {
-        SignalAspect aspect = blockEntity.getBoxSignalAspect(direction).getDisplayAspect();
+        SignalAspect aspect = blockEntity.getSignalAspect(direction).getDisplayAspect();
         final int skyLight = LightTexture.sky(packedLight);
         final int facePackedLight = LightTexture.pack(aspect.getLampLight(), skyLight);
         this.model.set(direction, new CuboidModel.Face()

@@ -2,7 +2,7 @@ package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.plugins.WorldPlugin;
+import mods.railcraft.plugins.LevelUtil;
 import mods.railcraft.util.JsonTools;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.criterion.ItemPredicate;
@@ -49,7 +49,7 @@ final class SpikeMaulUseTrigger extends BaseTrigger<SpikeMaulUseTrigger.Instance
     }
 
     boolean matches(ItemStack item, ServerWorld world, BlockPos pos) {
-      return WorldPlugin.getTileEntity(world, pos)
+      return LevelUtil.getBlockEntity(world, pos)
           .map(te -> te.save(new CompoundNBT()))
           .map(nbt::matches)
           .orElse(false)

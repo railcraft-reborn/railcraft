@@ -16,13 +16,13 @@ import java.util.stream.Stream;
  * The LinkageManager contains all the functions needed to link and interact
  * with linked carts.
  * <p/>
- * To obtain an instance of this interface, call {@link CartToolsAPI#linkageManager()}.
+ * To obtain an instance of this interface, call {@link CartUtil#linkageManager()}.
  * <p/>
  * Each cart can up to two links. They are called Link A and Link B. Some carts
  * will have only Link A, for example the Tunnel Bore.
  *
  * @author CovertJaguar <http://www.railcraft.info>
- * @see CartToolsAPI , ILinkableCart
+ * @see CartUtil , ILinkableCart
  */
 public interface ILinkageManager {
 

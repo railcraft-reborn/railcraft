@@ -1,10 +1,15 @@
 package mods.railcraft.world.level.material.fluid;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.AdjacentBlockEntityCache;
@@ -25,6 +30,7 @@ import net.minecraft.potion.Potions;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -75,10 +81,29 @@ public final class FluidTools {
     DRAIN_THEN_FILL
   }
 
-  public enum ProcessState {
-    FILLING,
-    DRAINING,
-    RESET
+  public enum ProcessState implements IStringSerializable {
+
+    FILLING("filling"),
+    DRAINING("draining"),
+    RESET("reset");
+
+    private static final Map<String, ProcessState> byName = Arrays.stream(values())
+        .collect(Collectors.toMap(ProcessState::getSerializedName, Function.identity()));
+
+    private final String name;
+
+    private ProcessState(String name) {
+      this.name = name;
+    }
+
+    @Override
+    public String getSerializedName() {
+      return this.name;
+    }
+
+    public static Optional<ProcessState> getByName(String name) {
+      return Optional.ofNullable(byName.get(name));
+    }
   }
 
   private static void sendToProcessing(IInventory inv) {

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -13,11 +14,12 @@ import org.apache.commons.lang3.StringUtils;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Railcraft;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
-import mods.railcraft.api.carts.CartToolsAPI;
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.carts.IPaintedCart;
 import mods.railcraft.api.carts.IRoutableCart;
+import mods.railcraft.api.core.Secure;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.carts.LinkageManager;
 import mods.railcraft.carts.LinkageManager.LinkType;
@@ -25,13 +27,12 @@ import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.gui.button.SimpleButtonTextureSet;
 import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
+import mods.railcraft.gui.button.SimpleButtonTextureSet;
 import mods.railcraft.plugins.DataManagerPlugin;
 import mods.railcraft.plugins.PlayerPlugin;
-import mods.railcraft.plugins.SeasonPlugin;
-import mods.railcraft.util.ISecureObject;
+import mods.railcraft.season.Seasons;
 import mods.railcraft.util.MathTools;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.RCEntitySelectors;
@@ -77,7 +78,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
-    implements IDirectionalCart, ILinkableCart, IMinecart, ISecureObject<LockButtonState>,
+    implements IDirectionalCart, ILinkableCart, IMinecart, Secure<LockButtonState>,
     IPaintedCart, IRoutableCart, IEntityAdditionalSpawnData {
 
   private static final DataParameter<Boolean> HAS_FUEL =
@@ -113,7 +114,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   private int whistleDelay;
   private int tempIdle;
   private float whistlePitch = getNewWhistlePitch();
-  private EnumSet<Mode> allowedModes = EnumSet.allOf(Mode.class);
+  private Set<Mode> allowedModes = EnumSet.allOf(Mode.class);
   private Speed maxReverseSpeed = Speed.NORMAL;
 
   private String clientOwnerName;
@@ -160,7 +161,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
       whistlePitch = nbt.getFloat("whistlePitch");
     if (nbt.contains("owner")) {
       GameProfile ownerProfile = PlayerPlugin.readOwnerFromNBT(nbt);
-      CartToolsAPI.setCartOwner(this, ownerProfile);
+      CartUtil.setCartOwner(this, ownerProfile);
       setLockState(LockButtonState.LOCKED);
     }
     if (nbt.contains("lock", Constants.NBT.TAG_STRING))
@@ -176,7 +177,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   @Override
   public GameProfile getOwner() {
-    return CartToolsAPI.getCartOwner(this);
+    return CartUtil.getCartOwner(this);
   }
 
   private float getNewWhistlePitch() {
@@ -186,8 +187,8 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   @Override
   public ItemStack createCartItem(AbstractMinecartEntity cart) {
     ItemStack item = this.getCartItem(); // THIS CAN CAUSE A STACKOVERFLOW!
-    if (isSecure() && CartToolsAPI.doesCartHaveOwner(this))
-      LocomotiveItem.setOwnerData(item, CartToolsAPI.getCartOwner(this));
+    if (isSecure() && CartUtil.doesCartHaveOwner(this))
+      LocomotiveItem.setOwnerData(item, CartUtil.getCartOwner(this));
     LocomotiveItem.setItemWhistleData(item, whistlePitch);
     LocomotiveItem.setEmblem(item, getEmblem());
     if (hasCustomName())
@@ -218,6 +219,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   /**
    * Indicates if this object is locked
+   * 
    * @return true if it's secured.
    */
   @Override
@@ -227,6 +229,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   /**
    * Indicates if this object is set to private
+   * 
    * @return true if it's private.
    */
   public boolean isPrivate() {
@@ -235,6 +238,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   /**
    * Can the user use this locomotive?
+   * 
    * @param user The user.
    * @return true if they can.
    * @see mods.railcraft.world.entity.LocomotiveEntity#isSecure isSecure
@@ -286,11 +290,11 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
       DataManagerPlugin.setEnum(this.getEntityData(), LOCOMOTIVE_MODE, mode);
   }
 
-  public EnumSet<Mode> getAllowedModes() {
-    return allowedModes;
+  public Set<Mode> getAllowedModes() {
+    return this.allowedModes;
   }
 
-  protected final void setAllowedModes(EnumSet<Mode> allowedModes) {
+  protected final void setAllowedModes(Set<Mode> allowedModes) {
     this.allowedModes = allowedModes;
   }
 
@@ -382,11 +386,11 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     update++;
 
     if (level.isClientSide()) {
-      if (SeasonPlugin.isPolarExpress(this)
+      if (Seasons.isPolarExpress(this)
           && (!MathTools.nearZero(this.getDeltaMovement().x())
               || !MathTools.nearZero(this.getDeltaMovement().z())))
         ClientEffects.INSTANCE.snowEffect(
-          this.getX(), getBoundingBox().minY - this.getY(), this.getZ());
+            this.getX(), getBoundingBox().minY - this.getY(), this.getZ());
       return;
     }
 
@@ -419,7 +423,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   @Override
   public boolean setDestination(ItemStack ticket) {
     if (ticket.getItem() instanceof TicketItem) {
-      if (isSecure() && !TicketItem.matchesOwnerOrOp(ticket, CartToolsAPI.getCartOwner(this)))
+      if (isSecure() && !TicketItem.matchesOwnerOrOp(ticket, CartUtil.getCartOwner(this)))
         return false;
       String dest = TicketItem.getDestination(ticket);
       if (!dest.equals(getDestination())) {

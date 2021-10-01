@@ -3,7 +3,7 @@ package mods.railcraft.advancements.criterion;
 import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.plugins.SeasonPlugin.Season;
+import mods.railcraft.season.Season;
 import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonTools;
 import net.minecraft.advancements.ICriterionInstance;
@@ -25,7 +25,7 @@ final class SetSeasonTrigger extends BaseTrigger<SetSeasonTrigger.Instance> {
   @Override
   public Instance createInstance(JsonObject json, ConditionArrayParser parser) {
     Season season = JsonTools.whenPresent(json, "season",
-        (element) -> Season.valueOf(element.getAsString()), null);
+        (element) -> Season.getByName(element.getAsString()).orElse(null), null);
     CartPredicate cartPredicate =
         JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
     return new Instance(season, cartPredicate);
@@ -33,7 +33,8 @@ final class SetSeasonTrigger extends BaseTrigger<SetSeasonTrigger.Instance> {
 
   static final class Instance implements ICriterionInstance {
 
-    final @Nullable Season season;
+    @Nullable
+    final Season season;
     final CartPredicate cartPredicate;
 
     Instance(@Nullable Season season, CartPredicate predicate) {
@@ -42,7 +43,7 @@ final class SetSeasonTrigger extends BaseTrigger<SetSeasonTrigger.Instance> {
     }
 
     boolean test(ServerPlayerEntity player, AbstractMinecartEntity cart, Season target) {
-      return Conditions.check(season, target) && cartPredicate.test(player, cart);
+      return Conditions.check(this.season, target) && this.cartPredicate.test(player, cart);
     }
 
     @Override
@@ -53,7 +54,7 @@ final class SetSeasonTrigger extends BaseTrigger<SetSeasonTrigger.Instance> {
     @Override
     public JsonObject serializeToJson(ConditionArraySerializer p_230240_1_) {
       JsonObject json = new JsonObject();
-      json.addProperty("season", this.season.toString());
+      json.addProperty("season", this.season.getSerializedName());
       json.add("cart", this.cartPredicate.serializeToJson());
       return json;
     }

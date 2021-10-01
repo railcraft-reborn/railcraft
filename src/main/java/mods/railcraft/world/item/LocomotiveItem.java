@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import org.apache.logging.log4j.util.Strings;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.api.items.IFilterItem;
+import mods.railcraft.api.item.Filter;
 import mods.railcraft.client.emblem.Emblem;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.plugins.PlayerPlugin;
@@ -24,7 +24,7 @@ import net.minecraftforge.common.util.Constants;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class LocomotiveItem extends CartItem implements IFilterItem {
+public class LocomotiveItem extends CartItem implements Filter {
 
   private final DyeColor defaultPrimary;
   private final DyeColor defaultSecondary;

@@ -1,6 +1,6 @@
 package mods.railcraft.world.entity;
 
-import mods.railcraft.api.carts.CartToolsAPI;
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.InventoryAdvanced;
 import mods.railcraft.util.inventory.filters.StackFilters;
@@ -54,7 +54,7 @@ public abstract class AbstractMaintenancePatternMinecartEntity extends AbstractM
     ItemStack stackStock = getItem(slotStock);
 
     if (!stackStock.isEmpty() && !InvTools.isItemEqual(stackReplace, stackStock)) {
-      CartToolsAPI.transferHelper().offerOrDropItem(this, stackStock);
+      CartUtil.transferHelper().offerOrDropItem(this, stackStock);
       setItem(slotStock, ItemStack.EMPTY);
       stackStock = ItemStack.EMPTY;
     }
@@ -64,7 +64,7 @@ public abstract class AbstractMaintenancePatternMinecartEntity extends AbstractM
 
     if (!InvTools.isStackFull(stackStock) && stackStock.getCount() < getMaxStackSize())
       setItem(slotStock,
-          InvTools.copy(stackReplace, stackStock.getCount() + CartToolsAPI.transferHelper()
+          InvTools.copy(stackReplace, stackStock.getCount() + CartUtil.transferHelper()
               .pullStack(this, StackFilters.of(stackReplace)).getCount()));
   }
 

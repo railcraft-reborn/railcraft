@@ -1,8 +1,8 @@
 package mods.railcraft.world.entity;
 
 import java.util.List;
-import mods.railcraft.api.carts.CartToolsAPI;
-import mods.railcraft.api.tracks.TrackToolsAPI;
+import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
@@ -179,7 +179,7 @@ public abstract class AbstractMaintenanceMinecartEntity extends AbstractRailcraf
       RailShape trackShape) {
     ItemStack trackStock = getItem(slotStock);
     if (!trackStock.isEmpty())
-      if (TrackToolsAPI.placeRailAt(trackStock, (ServerWorld) this.level, pos)) {
+      if (TrackUtil.placeRailAt(trackStock, (ServerWorld) this.level, pos)) {
         this.removeItem(slotStock, 1);
         blink();
         return true;
@@ -192,7 +192,7 @@ public abstract class AbstractMaintenanceMinecartEntity extends AbstractRailcraf
         .withParameter(LootParameters.ORIGIN, Vector3d.atCenterOf(pos)));
 
     for (ItemStack stack : drops) {
-      CartToolsAPI.transferHelper().offerOrDropItem(this, stack);
+      CartUtil.transferHelper().offerOrDropItem(this, stack);
     }
     RailShape trackShape = TrackTools.getTrackDirectionRaw(state);
     this.level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());

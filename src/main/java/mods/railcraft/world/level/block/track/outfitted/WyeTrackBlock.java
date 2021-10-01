@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.entity.track.SwitchTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
 import net.minecraft.block.BlockState;

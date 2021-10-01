@@ -1,5 +1,27 @@
 {
-    "__DESC.b.r.t": "======= Translation defs about railcraft tracks =======",
+    "__DESC.sound_subtitles": "======= Sound Subtitles =======",
+
+    "subtitle.railcraft.locomotive.steam.whistle":"Steam Locomotive Whistle",
+    "subtitle.railcraft.locomotive.electric.whistle":"Electric Locomotive Whistle",
+    "subtitle.railcraft.machine.steam_burst":"Machine Steam Burst",
+    "subtitle.railcraft.machine.steam_hiss":"Machine Steam Hiss",
+    "subtitle.railcraft.machine.zap":"Machine Zap",
+
+    "__DESC.entities": "======= Entities =======",
+
+    "entity.railcraft.creative_locomotive": "Creative Locomotive",
+    "entity.railcraft.steam_locomotive":"Steam Locomotive",
+    "entity.railcraft.electric_locomotive":"Electric Locomotive",
+
+    "__DESC.messages": "======= Messages =======",
+
+    "message.link.broken":"Link Broken",
+    "message.link.created":"Link Created",
+    "message.link.failed":"Link Failed",
+    "message.link.started":"Link Started",
+   
+
+    "__DESC.blocks": "======= Blocks =======",
 
     "block.railcraft.reinforced_flex_track": "Reinforced Flex Track",
     "block.railcraft.abandoned_flex_track": "Abandoned Flex Track",
@@ -8,41 +30,18 @@
     "block.railcraft.high_speed_electric_flex_track": "High Speed Electric Flex Track",
     "block.railcraft.elevator_track": "Elevator Track",
     "block.railcraft.strap_iron_flex_track": "Strap Iron Flex Track",
+    "block.railcraft.block_signal": "Block Signal",
+    "block.railcraft.distant_signal": "Distant Signal",
+    "block.railcraft.token_signal": "Token Signal",
+    "block.railcraft.dual_block_signal": "Dual-Head Block Signal",
+    "block.railcraft.dual_distant_signal": "Dual-Head Distant Signal",
+    "block.railcraft.dual_token_signal": "Dual-Head Token Signal", 
+    "block.railcraft.signal_controller_box": "Signal Controller Box", 
+    "block.railcraft.signal_receiver_box": "Signal Receiver Box", 
+    "block.railcraft.block_signal_relay_box": "Block Signal Relay Box",
+    "block.railcraft.rolling_table_manual": "Rolling Table",
 
-    "__DESC.b.r.l": "======= Translation defs about railcraft locomotives =======",
-
-    "entity.railcraft.creative_locomotive": "Creative Locomotive",
-    "entity.railcraft.steam_locomotive":"Steam Locomotive",
-    "entity.railcraft.electric_locomotive":"Electric Locomotive",
-
-    "item.railcraft.creative_locomotive": "Creative Locomotive",
-    "item.railcraft.steam_locomotive":"Steam Locomotive",
-    "item.railcraft.electric_locomotive":"Electric Locomotive",
-
-    "subtitle.railcraft.locomotive.steam.whistle":"Steam Locomotive Whistle",
-    "subtitle.railcraft.locomotive.electric.whistle":"Electric Locomotive Whistle",
-    "subtitle.railcraft.machine.steam_burst":"Machine Steam Burst",
-    "subtitle.railcraft.machine.steam_hiss":"Machine Steam Hiss",
-    "subtitle.railcraft.machine.zap":"Machine Zap",
-
-    "__DESC.b.r.c": "======= Translation defs about railcraft crowbars =======",
-
-    "item.railcraft.iron_crowbar": "Iron Crowbar",
-    "item.railcraft.steel_crowbar":"Steel Crowbar",
-    "item.railcraft.diamond_crowbar":"Diamond Crowbar",
-    "item.railcraft.seasons_crowbar":"Festive Crowbar",
-
-    "message.link.broken":"Link Broken",
-    "message.link.created":"Link Created",
-    "message.link.failed":"Link Failed",
-    "message.link.started":"Link Started",
-    "gui.railcraft.filter":"Filter",
-
-    "item.railcraft.tool.crowbar.tips":"§oRight click while sneaking to link carts§r",
-
-    "__DESC.b.r.s": "======= Translation defs about railcraft signals =======",
-
-    "__DESC.b.r.fs": "======= Translation defs about firestone =======",
+    "__DESC.items": "======= Items =======",
 
     "item.railcraft.cracked_firestone": "Cracked Firestone",
     "item.railcraft.raw_firestone": "Raw Firestone",
@@ -50,18 +49,20 @@
     "item.railcraft.refined_firestone": "Refined Firestone",
     "item.railcraft.firestone.empty":"Its energies controlled, it could be useful §oif you could recharge it§r...",
     "item.railcraft.firestone.charged":"Filled with energy, you only need to exert your will onto it to release it's §cblistering heat§r...",
+    "item.railcraft.creative_locomotive": "Creative Locomotive",
+    "item.railcraft.steam_locomotive":"Steam Locomotive",
+    "item.railcraft.electric_locomotive":"Electric Locomotive",
+    "item.railcraft.iron_crowbar": "Iron Crowbar",
+    "item.railcraft.steel_crowbar":"Steel Crowbar",
+    "item.railcraft.diamond_crowbar":"Diamond Crowbar",
+    "item.railcraft.seasons_crowbar":"Festive Crowbar",
+    "item.railcraft.goggles": "Trackman's Goggles",
 
-    "__DESC.g.r.r": "======= Translation defs about tickets =======",
+    "__DESC.misc": "======= Misc GUI/tooltip =======",
 
     "gui.railcraft.routing.ticket.tips.issuer":"Issuer:",
     "gui.railcraft.routing.ticket.tips.dest":"Destination:",
     "gui.railcraft.routing.ticket.tips.blank":"Blank Ticket",
-
-    "__DESC.g.r.g": "======= Translation defs about goggles =======",
-
-    "item.railcraft.goggles": "Trackman's Goggles",
-
-    "__DESC.g.r.l": "======= Translation defs about train GUI/tooltip =======",
 
     "gui.railcraft.locomotive.tips.slot.ticket":"Insert Ticket",
 
@@ -73,28 +74,42 @@
     "gui.railcraft.locomotive.steam.tips.button.mode.running":"Makes the locomotive move.",
     "gui.railcraft.locomotive.steam.tips.button.mode.shutdown":"Shuts off the Locomotive.\n Halts all movement and begins the cool-down process.\n This can take some time.",
 
-    "gui.railcraft.locomotive.tips.button.locked":"This cart is locked to %s.\n It will only accept Tickets issued by them or an operator.",
-    "gui.railcraft.locomotive.tips.button.unlocked":"Click to lock locomotive.\n Once locked, it will only accept Tickets issued by you or an operator.",
-    "gui.railcraft.locomotive.tips.button.private":"This cart is private to %s.\n It can only be controlled by them or an operator.",
+    "screen.locomotive.lock.locked":"This cart is locked to %s.\n It will only accept Tickets issued by them or an operator.",
+    "screen.locomotive.lock.unlocked":"Click to lock locomotive.\n Once locked, it will only accept Tickets issued by you or an operator.",
+    "screen.locomotive.lock.private":"This cart is private to %s.\n It can only be controlled by them or an operator.",
 
-    "gui.railcraft.locomotive.mode.shutdown":"Shutdown",
-    "gui.railcraft.locomotive.mode.running":"Running",
-    "gui.railcraft.locomotive.mode.idle":"Idle",
+    "screen.locomotive.mode.shutdown":"Shutdown",
+    "screen.locomotive.mode.running":"Running",
+    "screen.locomotive.mode.idle":"Idle",
 
-    "gui.railcraft.goggles.aura.worldspike": "Worldspike",
-    "gui.railcraft.goggles.aura.none": "None",
-    "gui.railcraft.goggles.aura.shunting": "Shunting",
-    "gui.railcraft.goggles.aura.signalling": "Signalling",
-    "gui.railcraft.goggles.aura.surveying": "Surveying",
-    "gui.railcraft.goggles.aura.tracking": "Tracking",
-    "gui.railcraft.goggles.aura.tuning": "Tuning",
-    "gui.railcraft.goggles.mode": "Current Aura: %s",
-    "gui.railcraft.goggles.tips": "Use from hotbar to change Auras",
+    "goggles.aura.worldspike": "Worldspike",
+    "goggles.aura.none": "None",
+    "goggles.aura.shunting": "Shunting",
+    "goggles.aura.signalling": "Signalling",
+    "goggles.aura.surveying": "Surveying",
+    "goggles.aura.tracking": "Tracking",
+    "goggles.aura.tuning": "Tuning",
+    "goggles.aura": "Current aura: %s",
+    "goggles.description": "Right-click to change aura.",
 
-    "__DESC.g.r.m": "======= Translation defs about anything, unsorted. =======",
+    "signal_surveyor.invalid_track": "§cNo track found near %s.",
+    "signal_surveyor.begin": "§dBeginning survey.",
+    "signal_surveyor.success": "§aSuccessfully paired signals.",
+    "signal_surveyor.invalid_pair": "§cPairing invalid.",
+    "signal_surveyor.lost": "§cFirst signal no longer exists.",
+    "signal_surveyor.unloaded": "§cFirst signal's chunk has been unloaded.",
+    "signal_surveyor.abandoned": "§dSurvey abandoned.",
+    "signal_surveyor.invalid_block": "§cNot a valid signal.",
 
-    "block.railcraft.rolling_table_manual": "Rolling Table",
+    "signal_tuner.begin": "§dStarted pairing %s §dwith a receiver.",
+    "signal_tuner.abandoned": "§dStopped pairing.",
+    "signal_tuner.unloaded": "§cSignal controller's chunk has been unloaded.",
+    "signal_tuner.lost": "§cSignal controller no longer exists.",
+    "signal_tuner.success": "§aSuccessfully paired signal receiver.",
+
+    "crowbar.description":"§oRight click while sneaking to link carts§r",
+
     "gui.railcraft.rolling_table": "Rolling Table",
-    "fluid.railcraft.steam": "Steam",
-    "itemGroup.railcraft": "Railcraft"
+    
+    "gui.railcraft.filter":"Filter"
 }

@@ -1,7 +1,7 @@
 package mods.railcraft.advancements.criterion;
 
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.plugins.SeasonPlugin;
+import mods.railcraft.season.Season;
 import mods.railcraft.world.entity.LocomotiveEntity;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.criterion.ItemPredicate;
@@ -61,8 +61,7 @@ public final class RailcraftAdvancementTriggers {
     surprise.trigger(owner, instance -> instance.test(owner, cart));
   }
 
-  public void onSeasonSet(ServerPlayerEntity player, AbstractMinecartEntity cart,
-      SeasonPlugin.Season season) {
+  public void onSeasonSet(ServerPlayerEntity player, AbstractMinecartEntity cart, Season season) {
     setSeason.trigger(player, instance -> instance.test(player, cart, season));
   }
 

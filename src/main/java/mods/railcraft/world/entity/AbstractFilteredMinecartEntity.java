@@ -2,7 +2,7 @@ package mods.railcraft.world.entity;
 
 import javax.annotation.Nullable;
 import mods.railcraft.api.carts.IMinecart;
-import mods.railcraft.api.items.IPrototypedItem;
+import mods.railcraft.api.item.Prototyped;
 import mods.railcraft.util.inventory.InventoryAdvanced;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -36,14 +36,14 @@ public abstract class AbstractFilteredMinecartEntity extends AbstractRailcraftMi
   }
 
   public static ItemStack getFilterFromCartItem(ItemStack cart) {
-    if (cart.getItem() instanceof IPrototypedItem)
-      return ((IPrototypedItem) cart.getItem()).getPrototype(cart);
+    if (cart.getItem() instanceof Prototyped)
+      return ((Prototyped) cart.getItem()).getPrototype(cart);
     return ItemStack.EMPTY;
   }
 
   public static ItemStack addFilterToCartItem(ItemStack cart, @Nullable ItemStack filter) {
-    if (!filter.isEmpty() && cart.getItem() instanceof IPrototypedItem) {
-      ((IPrototypedItem) cart.getItem()).setPrototype(cart, filter);
+    if (!filter.isEmpty() && cart.getItem() instanceof Prototyped) {
+      ((Prototyped) cart.getItem()).setPrototype(cart, filter);
     }
     return cart;
   }

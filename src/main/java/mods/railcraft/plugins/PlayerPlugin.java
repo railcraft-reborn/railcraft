@@ -7,7 +7,7 @@ import org.apache.logging.log4j.util.Strings;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
-import mods.railcraft.api.items.ActivationBlockingItem;
+import mods.railcraft.api.item.ActivationBlockingItem;
 import mods.railcraft.util.Annotations;
 import mods.railcraft.util.TrackTools;
 import net.minecraft.entity.item.ItemEntity;

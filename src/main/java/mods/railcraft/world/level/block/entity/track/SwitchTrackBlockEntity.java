@@ -8,12 +8,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
-import mods.railcraft.NBTPlugin;
-import mods.railcraft.api.tracks.ArrowDirection;
+import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.carts.Train;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.block.BlockState;
@@ -225,9 +225,9 @@ public abstract class SwitchTrackBlockEntity extends TileEntity implements ITick
     super.save(data);
     data.putByte("sprung", this.sprung);
     data.putByte("locked", this.locked);
-    data.put("springingCarts", NBTPlugin.createUUIDArray(this.springingCarts));
-    data.put("lockingCarts", NBTPlugin.createUUIDArray(this.lockingCarts));
-    data.put("decidingCarts", NBTPlugin.createUUIDArray(this.decidingCarts));
+    data.put("springingCarts", RailcraftNBTUtil.createUUIDArray(this.springingCarts));
+    data.put("lockingCarts", RailcraftNBTUtil.createUUIDArray(this.lockingCarts));
+    data.put("decidingCarts", RailcraftNBTUtil.createUUIDArray(this.decidingCarts));
     if (this.currentCart != null) {
       data.putUUID("currentCart", this.currentCart);
     }
@@ -240,11 +240,11 @@ public abstract class SwitchTrackBlockEntity extends TileEntity implements ITick
     this.sprung = data.getByte("sprung");
     this.locked = data.getByte("locked");
     this.springingCarts = Sets.newHashSet(
-        NBTPlugin.loadUUIDArray(data.getList("springingCarts", NBTPlugin.UUID_TAG_TYPE)));
+        RailcraftNBTUtil.loadUUIDArray(data.getList("springingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
     this.lockingCarts = Sets.newHashSet(
-        NBTPlugin.loadUUIDArray(data.getList("lockingCarts", NBTPlugin.UUID_TAG_TYPE)));
+        RailcraftNBTUtil.loadUUIDArray(data.getList("lockingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
     this.decidingCarts = Sets.newHashSet(
-        NBTPlugin.loadUUIDArray(data.getList("decidingCarts", NBTPlugin.UUID_TAG_TYPE)));
+        RailcraftNBTUtil.loadUUIDArray(data.getList("decidingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
     this.currentCart = data.hasUUID("currentCart") ? data.getUUID("currentCart") : null;
   }
 

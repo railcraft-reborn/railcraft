@@ -1,6 +1,6 @@
 package mods.railcraft.network;
 
-import mods.railcraft.api.core.WorldCoordinate;
+import mods.railcraft.api.core.DimensionPos;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.RegistryKey;
@@ -34,7 +34,7 @@ public final class PacketDispatcher {
     NetworkChannel.PLAY.getSimpleChannel().send(PacketDistributor.ALL.noArg(), packet);
   }
 
-  public static TargetPoint targetPoint(WorldCoordinate point, double range) {
+  public static TargetPoint targetPoint(DimensionPos point, double range) {
     return targetPoint(point.getDim(), point.getPos(), range);
   }
 

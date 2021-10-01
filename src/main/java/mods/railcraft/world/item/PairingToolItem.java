@@ -1,19 +1,14 @@
 package mods.railcraft.world.item;
 
 import javax.annotation.Nullable;
-import mods.railcraft.api.core.WorldCoordinate;
-import mods.railcraft.api.items.ActivationBlockingItem;
-import mods.railcraft.api.items.InvToolsAPI;
-import mods.railcraft.api.signals.ClientNetwork;
-import mods.railcraft.world.signal.NetworkType;
+import mods.railcraft.api.core.DimensionPos;
+import mods.railcraft.api.item.ActivationBlockingItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.Constants;
 
 /**
  * Created by CovertJaguar on 6/7/2016 for Railcraft.
@@ -23,51 +18,42 @@ import net.minecraft.world.server.ServerWorld;
 @ActivationBlockingItem
 public class PairingToolItem extends Item {
 
-  public static final String PAIR_DATA_TAG = "pairData";
-  public static final String COORD_TAG = "coord";
-
   public PairingToolItem(Properties properties) {
     super(properties);
   }
 
   @Nullable
-  public WorldCoordinate getPairData(ItemStack stack) {
-    return InvToolsAPI.getRailcraftDataSubtag(stack, PAIR_DATA_TAG)
-        .map(nbt -> WorldCoordinate.readFromNBT(nbt, COORD_TAG))
-        .orElse(null);
+  public DimensionPos getPeerPos(ItemStack itemStack) {
+    CompoundNBT tag = itemStack.getTag();
+    return tag != null && tag.contains("peerPos", Constants.NBT.TAG_COMPOUND)
+        ? DimensionPos.readTag(tag.getCompound("peerPos"))
+        : null;
   }
 
-  public void setPairData(ItemStack stack, TileEntity tile) {
-    CompoundNBT pairData = new CompoundNBT();
-    WorldCoordinate pos = WorldCoordinate.from(tile);
-    pos.writeToNBT(pairData, COORD_TAG);
-    InvToolsAPI.setRailcraftDataSubtag(stack, PAIR_DATA_TAG, pairData);
+  public void setPeerPos(ItemStack itemStack, DimensionPos peerPos) {
+    itemStack.getOrCreateTag().put("peerPos", peerPos.writeTag());
   }
 
-  public void clearPairData(ItemStack stack) {
-    InvToolsAPI.clearRailcraftDataSubtag(stack, PAIR_DATA_TAG);
+  public void clearPeerPos(ItemStack itemStack) {
+    CompoundNBT tag = itemStack.getTag();
+    if (tag != null) {
+      tag.remove("peerPos");
+    }
   }
 
-  public <T> boolean actionCleanPairing(ItemStack stack, PlayerEntity player, ServerWorld worldIn,
-      NetworkType networkType) {
-    WorldCoordinate signalPos = getPairData(stack);
+  public <T> boolean checkAbandonPairing(ItemStack itemStack, PlayerEntity player,
+      ServerWorld level, Runnable stopLinking) {
+    DimensionPos signalPos = this.getPeerPos(itemStack);
     if (signalPos != null) {
-      if (signalPos.getDim() != worldIn.dimension()) {
-        abandonPairing(stack, player);
+      if (signalPos.getDim().compareTo(level.dimension()) != 0) {
+        this.clearPeerPos(itemStack);
         return true;
       } else if (player.isShiftKeyDown()) {
-        networkType.getNetwork(worldIn.getServer().getLevel(signalPos.getDim()), signalPos.getPos())
-            .ifPresent(ClientNetwork::endLinking);
-        abandonPairing(stack, player);
+        stopLinking.run();
+        this.clearPeerPos(itemStack);
         return true;
       }
     }
     return false;
-  }
-
-  private void abandonPairing(ItemStack stack, PlayerEntity playerIn) {
-    playerIn.sendMessage(
-        new TranslationTextComponent(this.getDescriptionId() + ".abandon"), Util.NIL_UUID);
-    this.clearPairData(stack);
   }
 }

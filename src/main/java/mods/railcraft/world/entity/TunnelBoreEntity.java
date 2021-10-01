@@ -8,18 +8,18 @@ import java.util.function.BiFunction;
 import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.carts.CartToolsAPI;
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.IBoreHead;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.core.RailcraftFakePlayer;
-import mods.railcraft.api.tracks.TrackToolsAPI;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.carts.LinkageManager;
 import mods.railcraft.carts.Train;
 import mods.railcraft.plugins.FuelPlugin;
 import mods.railcraft.plugins.HarvestPlugin;
-import mods.railcraft.plugins.WorldPlugin;
+import mods.railcraft.plugins.LevelUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.BallastRegistry;
@@ -665,7 +665,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
   protected void stockBallast() {
     ItemStack stack =
-        CartToolsAPI.transferHelper().pullStack(this, StackFilters.roomIn(invBallast));
+        CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(invBallast));
     if (!stack.isEmpty())
       invBallast.addStack(stack);
   }
@@ -692,7 +692,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
               if (!state.isAir(this.level, searchPos)
                   && !state.getMaterial().isLiquid()) {
                 // Break other blocks first
-                WorldPlugin.playerRemoveBlock(this.level, searchPos.immutable(),
+                LevelUtil.playerRemoveBlock(this.level, searchPos.immutable(),
                     CartTools.getFakePlayer(this),
                     this.level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
                         && !Railcraft.serverConfig.boreDestorysBlocks.get());
@@ -706,7 +706,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
   }
 
   protected void stockTracks() {
-    ItemStack stack = CartToolsAPI.transferHelper().pullStack(this, StackFilters.roomIn(invRails));
+    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(invRails));
     if (!stack.isEmpty())
       invRails.addStack(stack);
   }
@@ -717,14 +717,14 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
     PlayerEntity owner = CartTools.getFakePlayer(this);
 
     if (replaceableBlocks.contains(oldState.getBlock()))
-      WorldPlugin.destroyBlock(this.level, targetPos, owner, true);
+      LevelUtil.destroyBlock(this.level, targetPos, owner, true);
 
     if (oldState.isAir(this.level, targetPos)
         && Block.canSupportRigidBlock(this.level, targetPos.below()))
       for (IInvSlot slot : InventoryIterator.get(invRails)) {
         ItemStack stack = slot.getStack();
         if (!stack.isEmpty()) {
-          boolean placed = TrackToolsAPI.placeRailAt(
+          boolean placed = TrackUtil.placeRailAt(
               stack, (ServerWorld) this.level, targetPos, shape);
           if (placed) {
             slot.decreaseStack();
@@ -843,7 +843,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
               stack = invBallast.addStack(stack);
 
             if (!stack.isEmpty())
-              stack = CartToolsAPI.transferHelper().pushStack(this, stack);
+              stack = CartUtil.transferHelper().pushStack(this, stack);
 
             if (!stack.isEmpty()) {
               Block.popResource(this.level, this.blockPosition(), stack);
@@ -851,7 +851,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
           });
     }
 
-    WorldPlugin.setBlockToAir(this.level, targetPos);
+    LevelUtil.setAir(this.level, targetPos);
 
     if (head.hurt(1, this.random, fakePlayer))
       this.setItem(0, ItemStack.EMPTY);
@@ -1001,7 +1001,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
   }
 
   protected void stockFuel() {
-    ItemStack stack = CartToolsAPI.transferHelper().pullStack(this, StackFilters.roomIn(invFuel));
+    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(invFuel));
     if (!stack.isEmpty())
       invFuel.addStack(stack);
   }

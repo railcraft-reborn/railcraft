@@ -1,9 +1,13 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import java.util.BitSet;
-import mods.railcraft.api.signals.SignalAspect;
+import java.util.EnumSet;
+import java.util.Set;
+import mods.railcraft.api.signal.SignalAspect;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.util.Constants;
@@ -11,59 +15,59 @@ import net.minecraftforge.common.util.Constants;
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public abstract class ActionSignalBoxBlockEntity extends SecuredSignalBoxBlockEntity implements IAspectResponder {
+public abstract class ActionSignalBoxBlockEntity extends SecuredSignalBoxBlockEntity {
 
-  private BitSet powerOnAspects = new BitSet(SignalAspect.values().length);
+  private final Set<SignalAspect> actionAspects = EnumSet.of(SignalAspect.GREEN);
 
   public ActionSignalBoxBlockEntity(TileEntityType<?> type) {
     super(type);
-    setActionState(SignalAspect.GREEN, true);
   }
 
-  @Override
-  public boolean doesActionOnAspect(SignalAspect aspect) {
-    return powerOnAspects.get(aspect.ordinal());
+  protected final boolean isActionAspect(SignalAspect aspect) {
+    return this.actionAspects.contains(aspect);
   }
 
-  protected final void setActionState(SignalAspect aspect, boolean trigger) {
-    powerOnAspects.set(aspect.ordinal(), trigger);
+  protected final void addActionAspect(SignalAspect aspect) {
+    this.actionAspects.add(aspect);
   }
 
-  @Override
-  public void doActionOnAspect(SignalAspect aspect, boolean trigger) {
-    setActionState(aspect, trigger);
+  protected final void removeActionAspect(SignalAspect aspect) {
+    this.actionAspects.remove(aspect);
   }
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    data.putByteArray("powerOnAspects", powerOnAspects.toByteArray());
+    ListNBT actionAspectsTag = new ListNBT();
+    this.actionAspects
+        .forEach(aspect -> actionAspectsTag.add(StringNBT.valueOf(aspect.getSerializedName())));
+    data.put("actionAspects", actionAspectsTag);
     return data;
   }
 
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-    if (data.contains("powerOnAspects", Constants.NBT.TAG_BYTE_ARRAY)) {
-      powerOnAspects = BitSet.valueOf(data.getByteArray("powerOnAspects"));
+    ListNBT actionAspectsTag = data.getList("actionAspects", Constants.NBT.TAG_STRING);
+    for (INBT aspectTag : actionAspectsTag) {
+      SignalAspect.getByName(aspectTag.getAsString()).ifPresent(this.actionAspects::add);
     }
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    writeActionInfo(data);
+    data.writeVarInt(this.actionAspects.size());
+    this.actionAspects.forEach(data::writeEnum);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    powerOnAspects = BitSet.valueOf(data.readByteArray(data.readVarInt()));
-  }
-
-  private void writeActionInfo(PacketBuffer data) {
-    byte[] bytes = powerOnAspects.toByteArray();
-    data.writeVarInt(bytes.length);
-    data.writeByteArray(bytes);
+    this.actionAspects.clear();
+    int size = data.readVarInt();
+    for (int i = 0; i < size; i++) {
+      this.actionAspects.add(data.readEnum(SignalAspect.class));
+    }
   }
 }

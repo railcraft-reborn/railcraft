@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block.entity;
 
-import mods.railcraft.network.PacketBuilder;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
@@ -14,7 +13,8 @@ public abstract class RailcraftTickableBlockEntity extends RailcraftBlockEntity
 
   private int maxInternal;
   private int clock = 0;
-  private boolean dirty;
+
+  private boolean loaded;
 
   public RailcraftTickableBlockEntity(TileEntityType<?> type) {
     super(type);
@@ -22,19 +22,16 @@ public abstract class RailcraftTickableBlockEntity extends RailcraftBlockEntity
 
   @Override
   public void tick() {
+    if (!this.loaded) {
+      this.loaded = true;
+      this.load();
+    }
     if (this.clock++ >= this.maxInternal) {
       this.clock = 0;
     }
-    if (this.dirty) {
-      this.dirty = false;
-      PacketBuilder.instance().sendTileEntityPacket(this);
-    }
   }
 
-  @Override
-  public void syncToClient() {
-    this.dirty = true;
-  }
+  protected void load() {}
 
   protected boolean clock(int interval) {
     if (interval > this.maxInternal) {

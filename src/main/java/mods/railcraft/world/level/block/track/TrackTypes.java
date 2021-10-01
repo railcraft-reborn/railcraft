@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.track;
 
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.behaivor.CollisionHandler;
 import mods.railcraft.world.level.block.track.behaivor.SpeedController;

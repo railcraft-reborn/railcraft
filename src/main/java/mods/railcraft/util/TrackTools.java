@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import mods.railcraft.api.items.ITrackItem;
-import mods.railcraft.api.tracks.TrackType;
-import mods.railcraft.api.tracks.TrackTypeProvider;
+import mods.railcraft.api.item.TrackPlacer;
+import mods.railcraft.api.track.TrackType;
+import mods.railcraft.api.track.TypedTrack;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
@@ -48,7 +48,7 @@ public final class TrackTools {
   }
 
   public static boolean isRail(Item item) {
-    return item instanceof ITrackItem
+    return item instanceof TrackPlacer
         || (item instanceof BlockItem && isRail(((BlockItem) item).getBlock()));
   }
 
@@ -104,8 +104,8 @@ public final class TrackTools {
   }
 
   public static TrackType getTrackTypeAt(IBlockReader world, BlockPos pos, BlockState state) {
-    if (state.getBlock() instanceof TrackTypeProvider) {
-      return ((TrackTypeProvider) state.getBlock()).getTrackType();
+    if (state.getBlock() instanceof TypedTrack) {
+      return ((TypedTrack) state.getBlock()).getTrackType();
     }
     return TrackTypes.IRON.get();
   }
