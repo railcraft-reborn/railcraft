@@ -215,7 +215,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
 
   @Override
   public float getTemperature() {
-    return (float) this.boiler.getTemperature();
+    return this.boiler.getTemperature();
   }
 
   @Override

@@ -42,6 +42,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+// TODO: https://nekoyue.github.io/ForgeJavaDocs-NG/javadoc/1.16.5/net/minecraftforge/energy/EnergyStorage.html
 public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlock {
 
   public static final DyeColor DEFAULT_COLOR = DyeColor.LIGHT_BLUE;

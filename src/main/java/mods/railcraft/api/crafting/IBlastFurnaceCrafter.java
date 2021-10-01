@@ -10,7 +10,6 @@ package mods.railcraft.api.crafting;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 
 public interface IBlastFurnaceCrafter {
