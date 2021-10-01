@@ -34,7 +34,7 @@ public class RollingTableScreen extends ContainerScreen<RollingTableContainer>{
     this.blit(matrixStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
     // prog bar
     float prog = this.ourContainer.rollingProgress();
-    this.blit(matrixStack, x + 89, y + 35, 176, 0, Math.round(24.00F * prog), 17); // 24*0.1, basicaly 10% of 24. Rounded for safety!
+    this.blit(matrixStack, x + 89, y + 47, 176, 0, Math.round(24.00F * prog), 12); // 24*0.1, basicaly 10% of 24. Rounded for safety!
   }
 
 }

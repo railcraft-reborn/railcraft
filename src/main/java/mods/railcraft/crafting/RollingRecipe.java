@@ -25,6 +25,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
+/**
+ * Rolling recipe class
+ * @author LetterN (https://github.com/LetterN)
+ */
 public class RollingRecipe implements IRecipe<CraftingInventory> {
 
   private final ResourceLocation id;
@@ -41,7 +45,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
 
   /**
    * Get how long the user should wait before this gets crafted.
-   * @return
+   * @return tick cost, in int.
    */
   public int getTickCost() {
     return this.tickCost;
@@ -69,14 +73,14 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
     return false;
   }
 
-  private boolean matches(CraftingInventory inventory, int x, int y, boolean something) {
+  private boolean matches(CraftingInventory inventory, int x, int y, boolean inverse) {
     for(int i = 0; i < inventory.getWidth(); ++i) {
       for(int j = 0; j < inventory.getHeight(); ++j) {
         int k = i - x;
         int l = j - y;
         Ingredient ingredient = Ingredient.EMPTY;
         if (k >= 0 && l >= 0 && k < 3 && l < 3) {
-          if (something) {
+          if (inverse) {
             ingredient = this.recipeItems.get(3 - k - 1 + l * 3);
           } else {
             ingredient = this.recipeItems.get(k + l * 3);
