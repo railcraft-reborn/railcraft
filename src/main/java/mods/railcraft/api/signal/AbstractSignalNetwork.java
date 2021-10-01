@@ -105,7 +105,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
 
   @Override
   public void refresh() {
-    this.peers.removeIf(peerPos -> this.getPeer(peerPos).filter(this::refreshPeer).isEmpty());
+    this.peers.removeIf(peerPos -> !this.getPeer(peerPos).filter(this::refreshPeer).isPresent());
   }
 
   protected boolean refreshPeer(T peer) {

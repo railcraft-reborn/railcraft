@@ -99,7 +99,7 @@ public class SimpleTokenRing implements TokenRing {
   }
 
   public boolean isOrphaned(ServerWorld level) {
-    return this.peers.stream().map(this::getPeer).allMatch(Optional::isEmpty);
+    return !this.peers.stream().map(this::getPeer).allMatch(Optional::isPresent);
   }
 
   void loadSignals(Collection<BlockPos> signals) {

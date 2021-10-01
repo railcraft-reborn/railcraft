@@ -41,7 +41,9 @@ public interface SignalNetwork<T> {
   Collection<BlockPos> getPeers();
 
   default Stream<T> stream() {
-    return this.getPeers().stream().map(this::getPeer).flatMap(Optional::stream);
+    return this.getPeers().stream()
+        .map(this::getPeer)
+        .flatMap(optional -> optional.isPresent() ? Stream.of(optional.get()) : Stream.empty());
   }
 
   default int getPeerCount() {
