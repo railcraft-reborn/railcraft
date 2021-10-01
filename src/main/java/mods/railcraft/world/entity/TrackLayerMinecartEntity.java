@@ -28,7 +28,7 @@ public class TrackLayerMinecartEntity extends AbstractMaintenancePatternMinecart
   }
 
   public TrackLayerMinecartEntity(double x, double y, double z, World world) {
-    super(RailcraftEntityTypes.MOW_TRACK_LAYER.get(), x, y, z, world);
+    super(RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, world);
   }
 
   @Override
@@ -38,7 +38,7 @@ public class TrackLayerMinecartEntity extends AbstractMaintenancePatternMinecart
 
   @Override
   public Item getItem() {
-    return RailcraftItems.MOW_TRACK_LAYER.get();
+    return RailcraftItems.TRACK_LAYER.get();
   }
 
   @Override

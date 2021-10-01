@@ -4,12 +4,12 @@ import mods.railcraft.Railcraft;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.ResourceLocation;
 
-public class BlockSignalRelayBoxRenderer extends AbstractSignalBoxRenderer {
+public class SignalInterlockBoxRenderer extends AbstractSignalBoxRenderer {
 
   public static final ResourceLocation TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "entity/signal_box/block_signal_relay_box");
+      new ResourceLocation(Railcraft.ID, "entity/signal_box/signal_interlock_box");
 
-  public BlockSignalRelayBoxRenderer(TileEntityRendererDispatcher dispatcher) {
+  public SignalInterlockBoxRenderer(TileEntityRendererDispatcher dispatcher) {
     super(dispatcher);
   }
 

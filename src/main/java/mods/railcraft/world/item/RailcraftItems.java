@@ -126,16 +126,16 @@ public class RailcraftItems {
               RailcraftBlocks.TOKEN_SIGNAL.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> MOW_TRACK_REMOVER =
-      ITEMS.register("mow_track_remover",
+  public static final RegistryObject<Item> TRACK_REMOVER =
+      ITEMS.register("track_remover",
           () -> new CartItem(
-              RailcraftEntityTypes.MOW_TRACK_REMOVER,
+              RailcraftEntityTypes.TRACK_REMOVER,
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> MOW_TRACK_LAYER =
-      ITEMS.register("mow_track_layer",
+  public static final RegistryObject<Item> TRACK_LAYER =
+      ITEMS.register("track_layer",
           () -> new CartItem(
-              RailcraftEntityTypes.MOW_TRACK_LAYER,
+              RailcraftEntityTypes.TRACK_LAYER,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TUNNEL_BORE =
@@ -206,11 +206,6 @@ public class RailcraftItems {
               .stacksTo(1)
               .durability(RefinedFirestoneItem.CHARGES)
               .tab(TAB)));
-
-  public static final RegistryObject<BlockItem> FIRESTONE_ORE =
-      ITEMS.register("firestone",
-          () -> new BlockItem(RailcraftBlocks.FIRESTONE.get(),
-              new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<BlockItem> FORCE_TRACK_EMITTER =
       ITEMS.register("force_track_emitter",
@@ -304,8 +299,8 @@ public class RailcraftItems {
       ITEMS.register("goggles",
           () -> new GogglesItem(new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<BlockItem> ROLLING_TABLE_MANUAL =
-      ITEMS.register("rolling_table_manual",
-          () -> new BlockItem(RailcraftBlocks.ROLLING_TABLE.get(),
+  public static final RegistryObject<BlockItem> MANUAL_ROLLING_MACHINE =
+      ITEMS.register("manual_rolling_machine",
+          () -> new BlockItem(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
               new Item.Properties().tab(TAB)));
 }

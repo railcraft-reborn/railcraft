@@ -13,12 +13,15 @@ import mods.railcraft.client.particle.ParticleSpark;
 import mods.railcraft.client.particle.ParticleSteam;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
+import mods.railcraft.client.renderer.blockentity.AnalogSignalControllerBoxRenderer;
+import mods.railcraft.client.renderer.blockentity.BlockSignalRelayBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.DualSignalRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalCapacitorBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalControllerBoxRenderer;
+import mods.railcraft.client.renderer.blockentity.SignalInterlockBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalReceiverBoxRenderer;
-import mods.railcraft.client.renderer.blockentity.BlockSignalRelayBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalRenderer;
+import mods.railcraft.client.renderer.blockentity.SignalSequencerBoxRenderer;
 import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
 import mods.railcraft.client.renderer.model.TextureReplacementModel;
@@ -145,7 +148,13 @@ public class ClientDist implements RailcraftDist {
         SignalReceiverBoxRenderer::new);
     ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_RELAY_BOX.get(),
         BlockSignalRelayBoxRenderer::new);
-
+    ClientRegistry.bindTileEntityRenderer(
+        RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
+        AnalogSignalControllerBoxRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_SEQUENCER_BOX.get(),
+        SignalSequencerBoxRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get(),
+        SignalInterlockBoxRenderer::new);
     ScreenManager.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
         CreativeLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),

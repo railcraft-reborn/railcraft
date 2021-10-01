@@ -9,6 +9,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
+import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.client.util.CuboidModelRenderer.FaceDisplay;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
@@ -60,6 +61,13 @@ public abstract class AbstractSignalBoxRenderer
       MatrixStack poseStack, IRenderTypeBuffer renderTypeBuffer, int packedLight,
       int packedOverlay) {
 
+    SignalAuraRenderer.tryRenderSignalAura(blockEntity, poseStack, renderTypeBuffer);
+
+    if (blockEntity.hasCustomName()) {
+      RenderUtil.renderBlockHoverText(blockEntity.getBlockPos(),
+          blockEntity.getCustomName(), poseStack, renderTypeBuffer, packedLight);
+    }
+
     Function<ResourceLocation, TextureAtlasSprite> spriteGetter =
         Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS);
 
@@ -92,8 +100,8 @@ public abstract class AbstractSignalBoxRenderer
 
     IVertexBuilder vertexBuilder =
         renderTypeBuffer.getBuffer(RenderType.entityCutout(PlayerContainer.BLOCK_ATLAS));
-    CuboidModelRenderer.render(this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH,
-        false);
+    CuboidModelRenderer.render(
+        this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH, false);
 
     for (Direction direction : Direction.Plane.HORIZONTAL) {
       if (SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction)) {
@@ -110,7 +118,7 @@ public abstract class AbstractSignalBoxRenderer
       }
     }
 
-    CuboidModelRenderer.render(this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH,
-        false);
+    CuboidModelRenderer.render(
+        this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH, false);
   }
 }

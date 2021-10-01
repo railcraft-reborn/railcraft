@@ -90,11 +90,9 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
   }
 
   private <T, T2> boolean tryLinking(Signal<T> signal1, Signal<T2> signal2) {
-    if (signal1.getSignalType().isInstance(signal2)
-        && signal2.getSignalType().isInstance(signal1)) {
-      return signal1.getSignalNetwork().addPeer(signal1.getSignalType().cast(signal2))
-          && signal2.getSignalNetwork().addPeer(signal2.getSignalType().cast(signal1));
-    }
-    return false;
+    return signal1.getSignalType().isInstance(signal2)
+        && signal2.getSignalType().isInstance(signal1)
+        && signal1.getSignalNetwork().addPeer(signal1.getSignalType().cast(signal2))
+        && signal2.getSignalNetwork().addPeer(signal2.getSignalType().cast(signal1));
   }
 }

@@ -38,8 +38,13 @@
     "block.railcraft.dual_token_signal": "Dual-Head Token Signal", 
     "block.railcraft.signal_controller_box": "Signal Controller Box", 
     "block.railcraft.signal_receiver_box": "Signal Receiver Box", 
+    "block.railcraft.signal_capacitor_box": "Signal Controller Box", 
+    "block.railcraft.analog_signal_controller_box": "Analog Signal Controller Box", 
+    "block.railcraft.signal_interlock_box": "Signal Interlock Box",
+    "block.railcraft.signal_sequencer_box": "Signal Sequencer Box", 
     "block.railcraft.block_signal_relay_box": "Block Signal Relay Box",
-    "block.railcraft.rolling_table_manual": "Rolling Table",
+    "block.railcraft.manual_rolling_table": "Manual Rolling Machine",
+    "block.railcraft.force_track_emitter": "Force Track Emitter",
 
     "__DESC.items": "======= Items =======",
 
@@ -57,6 +62,15 @@
     "item.railcraft.diamond_crowbar":"Diamond Crowbar",
     "item.railcraft.seasons_crowbar":"Festive Crowbar",
     "item.railcraft.goggles": "Trackman's Goggles",
+    "item.railcraft.signal_block_surveyor": "Signal Block Surveyor",
+    "item.railcraft.signal_tuner": "Signal Tuner",
+    "item.railcraft.overalls": "Overalls",
+    "item.railcraft.ticket": "Ticket",
+    "item.railcraft.gold_ticket": "Gold Ticket",
+    "item.railcraft.whistle_tuner": "Whistle Tuner",
+    "item.railcraft.tunnel_bore": "Tunnel Bore",
+    "item.railcraft.track_layer": "Track Layer",
+    "item.railcraft.track_remover": "Track Remover",
 
     "__DESC.misc": "======= Misc GUI/tooltip =======",
 
@@ -111,5 +125,7 @@
 
     "gui.railcraft.rolling_table": "Rolling Table",
     
-    "gui.railcraft.filter":"Filter"
+    "gui.railcraft.filter": "Filter",
+
+    "itemGroup.railcraft": "Railcraft"
 }

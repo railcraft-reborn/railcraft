@@ -34,6 +34,7 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
 
   @Override
   public void tick() {
+    super.tick();
     if (this.level.isClientSide()) {
       this.signalController.spawnTuningAuraParticles();
       return;

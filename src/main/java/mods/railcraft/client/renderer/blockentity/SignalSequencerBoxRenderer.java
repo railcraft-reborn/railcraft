@@ -4,12 +4,12 @@ import mods.railcraft.Railcraft;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.ResourceLocation;
 
-public class BlockSignalRelayBoxRenderer extends AbstractSignalBoxRenderer {
+public class SignalSequencerBoxRenderer extends AbstractSignalBoxRenderer {
 
   public static final ResourceLocation TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "entity/signal_box/block_signal_relay_box");
+      new ResourceLocation(Railcraft.ID, "entity/signal_box/analog_signal_controller_box");
 
-  public BlockSignalRelayBoxRenderer(TileEntityRendererDispatcher dispatcher) {
+  public SignalSequencerBoxRenderer(TileEntityRendererDispatcher dispatcher) {
     super(dispatcher);
   }
 

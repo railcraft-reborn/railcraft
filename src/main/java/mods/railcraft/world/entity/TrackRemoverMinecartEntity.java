@@ -25,7 +25,7 @@ public class TrackRemoverMinecartEntity extends AbstractMaintenanceMinecartEntit
   }
 
   public TrackRemoverMinecartEntity(double x, double y, double z, World world) {
-    super(RailcraftEntityTypes.MOW_TRACK_REMOVER.get(), x, y, z, world);
+    super(RailcraftEntityTypes.TRACK_REMOVER.get(), x, y, z, world);
   }
 
   @Override
@@ -77,6 +77,6 @@ public class TrackRemoverMinecartEntity extends AbstractMaintenanceMinecartEntit
 
   @Override
   public Item getItem() {
-    return RailcraftItems.MOW_TRACK_REMOVER.get();
+    return RailcraftItems.TRACK_REMOVER.get();
   }
 }
