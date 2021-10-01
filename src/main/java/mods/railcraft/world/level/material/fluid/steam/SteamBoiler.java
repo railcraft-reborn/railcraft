@@ -235,10 +235,10 @@ public class SteamBoiler {
   }
 
   public void readFromNBT(CompoundNBT data) {
-    setTemperature(data.getFloat("temperature"));
-    setMaxTemperature(data.getFloat("maxTemperature"));
-    setBurnTime(data.getFloat("burnTime"));
-    setCurrentItemBurnTime(data.getFloat("currentItemBurnTime"));
+    this.setTemperature(data.getFloat("temperature"));
+    this.setMaxTemperature(data.getFloat("maxTemperature"));
+    this.setBurnTime(data.getFloat("burnTime"));
+    this.setCurrentItemBurnTime(data.getFloat("currentItemBurnTime"));
   }
 
   public IGauge getTemperatureGauge() {
