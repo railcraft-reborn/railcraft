@@ -19,7 +19,6 @@
     "message.link.created":"Link Created",
     "message.link.failed":"Link Failed",
     "message.link.started":"Link Started",
-   
 
     "__DESC.blocks": "======= Blocks =======",
 
@@ -35,15 +34,15 @@
     "block.railcraft.token_signal": "Token Signal",
     "block.railcraft.dual_block_signal": "Dual-Head Block Signal",
     "block.railcraft.dual_distant_signal": "Dual-Head Distant Signal",
-    "block.railcraft.dual_token_signal": "Dual-Head Token Signal", 
-    "block.railcraft.signal_controller_box": "Signal Controller Box", 
-    "block.railcraft.signal_receiver_box": "Signal Receiver Box", 
-    "block.railcraft.signal_capacitor_box": "Signal Controller Box", 
-    "block.railcraft.analog_signal_controller_box": "Analog Signal Controller Box", 
+    "block.railcraft.dual_token_signal": "Dual-Head Token Signal",
+    "block.railcraft.signal_controller_box": "Signal Controller Box",
+    "block.railcraft.signal_receiver_box": "Signal Receiver Box",
+    "block.railcraft.signal_capacitor_box": "Signal Controller Box",
+    "block.railcraft.analog_signal_controller_box": "Analog Signal Controller Box",
     "block.railcraft.signal_interlock_box": "Signal Interlock Box",
-    "block.railcraft.signal_sequencer_box": "Signal Sequencer Box", 
+    "block.railcraft.signal_sequencer_box": "Signal Sequencer Box",
     "block.railcraft.block_signal_relay_box": "Block Signal Relay Box",
-    "block.railcraft.manual_rolling_table": "Manual Rolling Machine",
+    "block.railcraft.manual_rolling_machine": "Manual Rolling Machine",
     "block.railcraft.force_track_emitter": "Force Track Emitter",
 
     "__DESC.items": "======= Items =======",
@@ -71,6 +70,8 @@
     "item.railcraft.tunnel_bore": "Tunnel Bore",
     "item.railcraft.track_layer": "Track Layer",
     "item.railcraft.track_remover": "Track Remover",
+
+    "item.railcraft.steel_ingot": "Steel Ingot",
 
     "__DESC.misc": "======= Misc GUI/tooltip =======",
 
@@ -124,8 +125,10 @@
     "crowbar.description":"§oRight click while sneaking to link carts§r",
 
     "gui.railcraft.rolling_table": "Rolling Table",
-    
+
     "gui.railcraft.filter": "Filter",
 
-    "itemGroup.railcraft": "Railcraft"
+    "itemGroup.railcraft": "Railcraft",
+
+    "fluid.railcraft.steam": "Steam"
 }

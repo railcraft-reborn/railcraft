@@ -5,6 +5,7 @@ import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.crafting.RailcraftRecipies;
+import mods.railcraft.data.ForgeItemTagsProvider;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.network.NetworkChannel;
@@ -23,6 +24,7 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
@@ -121,8 +123,12 @@ public class Railcraft {
   }
 
   private void handleGatherData(GatherDataEvent event) {
-    event.getGenerator().addProvider(
-        new RailcraftBlockTagsProvider(event.getGenerator(), event.getExistingFileHelper()));
+    DataGenerator dataGen = event.getGenerator();
+    RailcraftBlockTagsProvider blockTags = new RailcraftBlockTagsProvider(dataGen, event.getExistingFileHelper());
+    dataGen.addProvider(blockTags);
+    dataGen.addProvider(
+      new ForgeItemTagsProvider(dataGen, blockTags, event.getExistingFileHelper())
+    );
   }
 
   @SubscribeEvent

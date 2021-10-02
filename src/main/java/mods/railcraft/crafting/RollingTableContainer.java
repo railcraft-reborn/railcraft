@@ -113,31 +113,26 @@ public class RollingTableContainer extends Container {
     }
   }
 
-  // todo: make this static again,
-  private void slotChangedCraftingGrid(int slotID, World world, PlayerEntity user, CraftingInventory craftItemHold, CraftResultInventory resultInventory) {
-    if (!world.isClientSide) {
-      ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)user;
+  @Override
+  public void slotsChanged(IInventory inventory) {
+    if (!this.level.isClientSide) {
+      ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)this.player;
       ItemStack itemstack = ItemStack.EMPTY;
-      Optional<RollingRecipe> optional = world.getServer().getRecipeManager().getRecipeFor(RailcraftRecipies.ROLLING_RECIPIE, craftItemHold, world);
+      Optional<RollingRecipe> optional = this.level.getServer().getRecipeManager().getRecipeFor(RailcraftRecipies.ROLLING_RECIPIE, this.craftSlots, this.level);
 
       this.setData(0, 10000); // nuke the clock
       this.setData(2, 0);
       if (optional.isPresent()) {
         RollingRecipe icraftingrecipe = optional.get();
-        if (resultInventory.setRecipeUsed(world, serverplayerentity, icraftingrecipe)) {
-          itemstack = icraftingrecipe.assemble(craftItemHold);
+        if (this.resultSlotClickyBox.setRecipeUsed(this.level, serverplayerentity, icraftingrecipe)) {
+          itemstack = icraftingrecipe.assemble(this.craftSlots);
           this.setData(0, icraftingrecipe.getTickCost());
         }
       }
-      resultSlotClickyBox.setItem(0, itemstack);
-      serverplayerentity.connection.send(new SSetSlotPacket(slotID, 1, itemstack));
+      this.resultSlotClickyBox.setItem(0, itemstack);
+      serverplayerentity.connection.send(new SSetSlotPacket(this.containerId, 1, itemstack));
       cachedFinishItem = itemstack;
     }
-  }
-
-  @Override
-  public void slotsChanged(IInventory inventory) {
-    slotChangedCraftingGrid(this.containerId, this.level, this.player, this.craftSlots, this.resultSlots);
   }
 
   @Override

@@ -303,4 +303,29 @@ public class RailcraftItems {
       ITEMS.register("manual_rolling_machine",
           () -> new BlockItem(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
               new Item.Properties().tab(TAB)));
+
+  /* ===== CRAFTING MATERIALS ===== */
+  public static final RegistryObject<Item> STEEL_INGOT =
+    ITEMS.register("steel_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> COPPER_INGOT =
+    ITEMS.register("copper_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> TIN_INGOT =
+    ITEMS.register("tin_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ZINC_INGOT =
+    ITEMS.register("zinc_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRASS_INGOT =
+    ITEMS.register("brass_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRONZE_INGOT =
+    ITEMS.register("bronze_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
 }
