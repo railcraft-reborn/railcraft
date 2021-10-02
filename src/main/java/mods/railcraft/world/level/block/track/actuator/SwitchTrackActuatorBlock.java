@@ -1,8 +1,8 @@
 package mods.railcraft.world.level.block.track.actuator;
 
 import mods.railcraft.api.track.ArrowDirection;
-import mods.railcraft.plugins.PowerPlugin;
 import mods.railcraft.util.AABBFactory;
+import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -118,7 +118,7 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
 
   @Override
   public int getAnalogOutputSignal(BlockState state, World level, BlockPos pos) {
-    return isSwitched(state) ? PowerPlugin.FULL_POWER : PowerPlugin.NO_POWER;
+    return isSwitched(state) ? PowerUtil.FULL_POWER : PowerUtil.NO_POWER;
   }
 
   @Override

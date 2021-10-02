@@ -1,4 +1,4 @@
-package mods.railcraft.plugins;
+package mods.railcraft.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -7,9 +7,9 @@ import net.minecraftforge.common.ToolType;
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public final class HarvestPlugin {
+public final class HarvestUtil {
 
-  private HarvestPlugin() {}
+  private HarvestUtil() {}
 
   // public static void setToolClass(Item item, String toolClass, int level) {
   // item.setHarvestLevel(toolClass, level);

@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.plugins.PlayerPlugin;
+import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.inventory.InvTools;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -57,7 +57,7 @@ public class TicketItem extends Item {
       GameProfile owner = getOwner(stack);
       if (owner.getId() != null) {
         list.add(new TranslationTextComponent("gui.railcraft.routing.ticket.tips.issuer"));
-        list.add(PlayerPlugin.getUsername(world, owner).copy().withStyle(TextFormatting.GRAY));
+        list.add(PlayerUtil.getUsername(world, owner).copy().withStyle(TextFormatting.GRAY));
       }
 
       String dest = getDestination(stack);
@@ -105,7 +105,7 @@ public class TicketItem extends Item {
     CompoundNBT data = InvTools.getItemData(ticket);
     data.putString("dest", dest);
     data.putString("title", title);
-    PlayerPlugin.writeOwnerToNBT(data, owner);
+    PlayerUtil.writeOwnerToNBT(data, owner);
     return true;
   }
 
@@ -120,7 +120,7 @@ public class TicketItem extends Item {
 
   public static boolean matchesOwnerOrOp(ItemStack ticket, GameProfile player) {
     return ticket.getItem() instanceof TicketItem
-        && PlayerPlugin.isOwnerOrOp(getOwner(ticket), player);
+        && PlayerUtil.isOwnerOrOp(getOwner(ticket), player);
   }
 
   public static GameProfile getOwner(ItemStack ticket) {
@@ -129,6 +129,6 @@ public class TicketItem extends Item {
     CompoundNBT nbt = ticket.getTag();
     if (nbt == null)
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
-    return PlayerPlugin.readOwnerFromNBT(nbt);
+    return PlayerUtil.readOwnerFromNBT(nbt);
   }
 }

@@ -1,8 +1,8 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.crafting.RollingTableContainer;
 import mods.railcraft.world.entity.CreativeLocomotiveEntity;
+import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.IContainerFactory;
@@ -29,8 +29,7 @@ public class RailcraftMenuTypes {
           () -> new ContainerType<>(
               (IContainerFactory<SteamLocomotiveMenu>) SteamLocomotiveMenu::create));
 
-  public static final RegistryObject<ContainerType<RollingTableContainer>> ROLLING_TABLE =
-    MENU_TYPES.register("rolling",
-      () -> new ContainerType<RollingTableContainer>(RollingTableContainer::new));
-
+  public static final RegistryObject<ContainerType<ManualRollingMachineMenu>> MANUAL_ROLLING_MACHINE =
+      MENU_TYPES.register("manual_rolling_machine",
+          () -> new ContainerType<ManualRollingMachineMenu>(ManualRollingMachineMenu::new));
 }

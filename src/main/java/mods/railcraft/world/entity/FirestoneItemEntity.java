@@ -1,8 +1,8 @@
 package mods.railcraft.world.entity;
 
-import mods.railcraft.plugins.PlayerPlugin;
-import mods.railcraft.plugins.LevelUtil;
+import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.MiscTools;
+import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.world.item.FirestoneItem;
 import mods.railcraft.world.item.CrackedFirestoneItem;
 import mods.railcraft.world.level.block.RitualBlock;
@@ -57,7 +57,7 @@ public class FirestoneItemEntity extends ItemEntity {
         return;
       ItemStack stack = getItem();
       FirestoneItem.trySpawnFire(this.level, this.blockPosition(), stack,
-          PlayerPlugin.getItemThrower(this));
+          PlayerUtil.getItemThrower(this));
     }
   }
 
@@ -77,7 +77,7 @@ public class FirestoneItemEntity extends ItemEntity {
           boolean cracked = getItem().getItem() instanceof CrackedFirestoneItem;
           if (LevelUtil.setBlockState(this.level, surface,
               firestoneBlock.setValue(RitualBlock.CRACKED, cracked),
-              PlayerPlugin.getItemThrower(this))) {
+              PlayerUtil.getItemThrower(this))) {
             TileEntity tile = this.level.getBlockEntity(surface);
             if (tile instanceof RitualBlockEntity) {
               RitualBlockEntity fireTile = (RitualBlockEntity) tile;

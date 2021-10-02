@@ -2,8 +2,8 @@ package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.plugins.LevelUtil;
 import mods.railcraft.util.JsonTools;
+import mods.railcraft.util.LevelUtil;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.LocationPredicate;

@@ -1,8 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.function.Consumer;
-
-import mods.railcraft.crafting.RollingTableContainer;
+import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -14,8 +13,11 @@ import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class RollingTableEntity extends LockableTileEntity implements ITickableTileEntity {
-  private static final ITextComponent CONTAINER_TITLE = new TranslationTextComponent("gui.railcraft.rolling_table");
+public class ManualRollingMachineBlockEntity extends LockableTileEntity
+    implements ITickableTileEntity {
+
+  private static final ITextComponent MENU_TITLE =
+      new TranslationTextComponent("gui.railcraft.manual_rolling_machine");
 
   private int recipieRequiredTime = 12222222;
   private int currentTick = 0;
@@ -26,46 +28,47 @@ public class RollingTableEntity extends LockableTileEntity implements ITickableT
   // 3. shouldFire - 1 == true
   protected final IIntArray data = new IIntArray() {
     public int get(int key) {
-      switch(key) {
+      switch (key) {
         case 0:
-          return RollingTableEntity.this.recipieRequiredTime;
+          return ManualRollingMachineBlockEntity.this.recipieRequiredTime;
         case 1:
-          return RollingTableEntity.this.currentTick;
+          return ManualRollingMachineBlockEntity.this.currentTick;
         case 2:
-          return RollingTableEntity.this.shouldFire ? 1 : 0;
+          return ManualRollingMachineBlockEntity.this.shouldFire ? 1 : 0;
         default:
           return 0;
       }
     }
 
     public void set(int key, int value) {
-      switch(key) {
+      switch (key) {
         case 0:
-          RollingTableEntity.this.recipieRequiredTime = value;
+          ManualRollingMachineBlockEntity.this.recipieRequiredTime = value;
           break;
         case 1:
           break;
         case 2:
-          if(value != 1) {
-            RollingTableEntity.this.resetProgress();
+          if (value != 1) {
+            ManualRollingMachineBlockEntity.this.resetProgress();
             break;
           }
-          RollingTableEntity.this.shouldFire = true;
+          ManualRollingMachineBlockEntity.this.shouldFire = true;
           break;
         default:
           break;
-        }
+      }
     }
+
     public int getCount() {
       return 3;
     }
   };
 
-  public RollingTableEntity() {
-    super(RailcraftBlockEntityTypes.ROLLING_TABLE_MANUAL.get());
+  public ManualRollingMachineBlockEntity() {
+    super(RailcraftBlockEntityTypes.MANUAL_ROLLING_MACHINE.get());
   }
 
-  public RollingTableEntity(TileEntityType<?> type) {
+  public ManualRollingMachineBlockEntity(TileEntityType<?> type) {
     super(type);
   }
 
@@ -76,7 +79,7 @@ public class RollingTableEntity extends LockableTileEntity implements ITickableT
   public boolean updateRollingStatus() {
     if (this.rollingProgress() == 1F) {
       this.shouldFire = false;
-      if(callback != null) {
+      if (callback != null) {
         callback.accept(null);
       }
       return true;
@@ -90,10 +93,13 @@ public class RollingTableEntity extends LockableTileEntity implements ITickableT
 
   /**
    * Progress of the current recipie, in "float percent" ie: 10% == 0.1, 50% = 0.5%
-   * @return The progress, used by {@link mods.railcraft.client.gui.screen.inventory.RollingTableScreen RollingTableScreen}
+   * 
+   * @return The progress, used by
+   *         {@link mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen
+   *         RollingTableScreen}
    */
   public float rollingProgress() {
-    return Math.max(Math.min((float)currentTick / (float)recipieRequiredTime, 1F), 0.0F);
+    return Math.max(Math.min((float) currentTick / (float) recipieRequiredTime, 1F), 0.0F);
   }
 
   public void resetProgress() {
@@ -119,6 +125,7 @@ public class RollingTableEntity extends LockableTileEntity implements ITickableT
   public boolean isEmpty() {
     return true;
   }
+
   // todo: implement this painful proc at rollingtable powered variant
   @Override
   public ItemStack getItem(int slotID) {
@@ -152,11 +159,11 @@ public class RollingTableEntity extends LockableTileEntity implements ITickableT
 
   @Override
   protected ITextComponent getDefaultName() {
-    return CONTAINER_TITLE;
+    return MENU_TITLE;
   }
 
   @Override
   protected Container createMenu(int containerProvider, PlayerInventory playerInventory) {
-    return new RollingTableContainer(containerProvider, playerInventory, this.data, this);
+    return new ManualRollingMachineMenu(containerProvider, playerInventory, this.data, this);
   }
 }

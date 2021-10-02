@@ -7,7 +7,7 @@ import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
 import mods.railcraft.gui.button.StandardButtonTextureSets;
-import mods.railcraft.plugins.DataManagerPlugin;
+import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.util.TrackTools;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -101,12 +101,12 @@ public abstract class AbstractMaintenanceMinecartEntity extends AbstractRailcraf
   }
 
   public CartMode getMode() {
-    return DataManagerPlugin.getEnum(this.entityData, CART_MODE, CartMode.VALUES);
+    return RailcraftDataSerializers.getEnum(this.entityData, CART_MODE, CartMode.VALUES);
   }
 
   public void setMode(CartMode mode) {
     if (getMode() != mode)
-      DataManagerPlugin.setEnum(this.entityData, CART_MODE, mode);
+      RailcraftDataSerializers.setEnum(this.entityData, CART_MODE, mode);
   }
 
   public CartMode getOtherMode() {

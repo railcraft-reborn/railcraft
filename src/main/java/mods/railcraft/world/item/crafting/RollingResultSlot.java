@@ -1,4 +1,4 @@
-package mods.railcraft.crafting;
+package mods.railcraft.world.item.crafting;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
@@ -14,7 +14,8 @@ public class RollingResultSlot extends Slot {
   private final CraftingInventory craftSlots;
   private final PlayerEntity player;
 
-  public RollingResultSlot(PlayerEntity user, CraftingInventory craftingInventory, IInventory outputInventory, int slotID, int x, int y) {
+  public RollingResultSlot(PlayerEntity user, CraftingInventory craftingInventory,
+      IInventory outputInventory, int slotID, int x, int y) {
     super(outputInventory, slotID, x, y);
     this.player = user;
     this.craftSlots = craftingInventory;
@@ -33,12 +34,13 @@ public class RollingResultSlot extends Slot {
   @Override
   protected void checkTakeAchievements(ItemStack itemStack) {
     // if (this.removeCount > 0) {
-    //   itemStack.onCraftedBy(this.player.level, this.player, this.removeCount);
-    //   net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerCraftingEvent(this.player, itemStack, this.craftSlots);
+    // itemStack.onCraftedBy(this.player.level, this.player, this.removeCount);
+    // net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerCraftingEvent(this.player, itemStack,
+    // this.craftSlots);
     // }
 
     // if (this.container instanceof IRecipeHolder) {
-    //   ((IRecipeHolder)this.container).awardUsedRecipes(this.player);
+    // ((IRecipeHolder)this.container).awardUsedRecipes(this.player);
     // }
     // TODO: achievments
   }
@@ -51,8 +53,9 @@ public class RollingResultSlot extends Slot {
 
   public void takeCraftingItems(PlayerEntity playerEntity) {
     NonNullList<ItemStack> recipieRemaningItems =
-      playerEntity.level.getRecipeManager().getRemainingItemsFor(RailcraftRecipies.ROLLING_RECIPIE, this.craftSlots, playerEntity.level);
-    for(int i = 0; i < recipieRemaningItems.size(); ++i) {
+        playerEntity.level.getRecipeManager().getRemainingItemsFor(RailcraftRecipeTypes.ROLLING,
+            this.craftSlots, playerEntity.level);
+    for (int i = 0; i < recipieRemaningItems.size(); ++i) {
       ItemStack itemstack = this.craftSlots.getItem(i);
       ItemStack itemstack1 = recipieRemaningItems.get(i);
       if (!itemstack.isEmpty()) {
@@ -63,7 +66,8 @@ public class RollingResultSlot extends Slot {
       if (!itemstack1.isEmpty()) {
         if (itemstack.isEmpty()) {
           this.craftSlots.setItem(i, itemstack1);
-        } else if (ItemStack.isSame(itemstack, itemstack1) && ItemStack.tagMatches(itemstack, itemstack1)) {
+        } else if (ItemStack.isSame(itemstack, itemstack1)
+            && ItemStack.tagMatches(itemstack, itemstack1)) {
           itemstack1.grow(itemstack.getCount());
           this.craftSlots.setItem(i, itemstack1);
         } else if (!this.player.inventory.add(itemstack1)) {

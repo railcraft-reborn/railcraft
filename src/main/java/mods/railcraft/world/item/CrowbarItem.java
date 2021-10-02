@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
 import mods.railcraft.api.item.Crowbar;
-import mods.railcraft.plugins.LevelUtil;
+import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftToolTypes;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;

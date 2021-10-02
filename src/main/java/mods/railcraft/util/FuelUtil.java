@@ -1,4 +1,4 @@
-package mods.railcraft.plugins;
+package mods.railcraft.util;
 
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
@@ -12,7 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class FuelPlugin {
+public class FuelUtil {
 
   private static ItemStack lastFuel;
   private static int lastFuelValue;

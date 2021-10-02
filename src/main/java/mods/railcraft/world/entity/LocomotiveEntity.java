@@ -30,11 +30,11 @@ import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
 import mods.railcraft.gui.button.SimpleButtonTextureSet;
-import mods.railcraft.plugins.DataManagerPlugin;
-import mods.railcraft.plugins.PlayerPlugin;
+import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.util.MathTools;
 import mods.railcraft.util.MiscTools;
+import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.collections.Streams;
 import mods.railcraft.util.inventory.InvTools;
@@ -160,7 +160,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     if (nbt.contains("whistlePitch"))
       whistlePitch = nbt.getFloat("whistlePitch");
     if (nbt.contains("owner")) {
-      GameProfile ownerProfile = PlayerPlugin.readOwnerFromNBT(nbt);
+      GameProfile ownerProfile = PlayerUtil.readOwnerFromNBT(nbt);
       CartUtil.setCartOwner(this, ownerProfile);
       setLockState(LockButtonState.LOCKED);
     }
@@ -211,7 +211,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
         }
         return ActionResultType.CONSUME;
       }
-      if (!isPrivate() || PlayerPlugin.isOwnerOrOp(getOwner(), player.getGameProfile()))
+      if (!isPrivate() || PlayerUtil.isOwnerOrOp(getOwner(), player.getGameProfile()))
         super.interact(player, hand); // open gui
     }
     return ActionResultType.CONSUME;
@@ -245,7 +245,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
    * @see mods.railcraft.world.entity.LocomotiveEntity#isPrivate isPrivate
    */
   public boolean canControl(GameProfile user) {
-    return !this.isPrivate() || PlayerPlugin.isOwnerOrOp(this.getOwner(), user);
+    return !this.isPrivate() || PlayerUtil.isOwnerOrOp(this.getOwner(), user);
   }
 
   public LockButtonState getLockState() {
@@ -280,14 +280,14 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public Mode getMode() {
-    return DataManagerPlugin.getEnum(this.getEntityData(), LOCOMOTIVE_MODE, Mode.values());
+    return RailcraftDataSerializers.getEnum(this.getEntityData(), LOCOMOTIVE_MODE, Mode.values());
   }
 
   public void setMode(Mode mode) {
     if (!allowedModes.contains(mode))
       mode = Mode.SHUTDOWN;
     if (getMode() != mode)
-      DataManagerPlugin.setEnum(this.getEntityData(), LOCOMOTIVE_MODE, mode);
+      RailcraftDataSerializers.setEnum(this.getEntityData(), LOCOMOTIVE_MODE, mode);
   }
 
   public Set<Mode> getAllowedModes() {
@@ -299,12 +299,12 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public Speed getSpeed() {
-    return DataManagerPlugin.getEnum(this.getEntityData(), LOCOMOTIVE_SPEED, Speed.values());
+    return RailcraftDataSerializers.getEnum(this.getEntityData(), LOCOMOTIVE_SPEED, Speed.values());
   }
 
   public void setSpeed(Speed speed) {
     if (getSpeed() != speed)
-      DataManagerPlugin.setEnum(this.getEntityData(), LOCOMOTIVE_SPEED, speed);
+      RailcraftDataSerializers.setEnum(this.getEntityData(), LOCOMOTIVE_SPEED, speed);
   }
 
   public Speed getMaxReverseSpeed() {

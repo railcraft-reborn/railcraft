@@ -7,9 +7,9 @@ import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.item.MinecartPlacer;
-import mods.railcraft.plugins.FuelPlugin;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.BallastRegistry;
+import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.inventory.IInventoryComposite;
 import mods.railcraft.util.inventory.InvTools;
@@ -35,7 +35,7 @@ public enum StackFilters implements Predicate<ItemStack> {
   FUEL {
     @Override
     protected boolean testType(ItemStack stack) {
-      return FuelPlugin.getBurnTime(stack) > 0;
+      return FuelUtil.getBurnTime(stack) > 0;
     }
 
   },

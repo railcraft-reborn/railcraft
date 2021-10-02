@@ -12,9 +12,9 @@ import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.item.MinecartPlacer;
-import mods.railcraft.plugins.PlayerPlugin;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MiscTools;
+import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.block.AbstractRailBlock;
@@ -162,7 +162,7 @@ public final class CartTools {
     GameProfile owner = CartUtil.getCartOwner(cart);
     PlayerEntity player = null;
     if (!RailcraftConstantsAPI.UNKNOWN_PLAYER.equals(owner.getName()))
-      player = PlayerPlugin.getPlayer(cart.level, owner);
+      player = PlayerUtil.getPlayer(cart.level, owner);
     if (player == null)
       player = getFakePlayer(cart);
     return player;

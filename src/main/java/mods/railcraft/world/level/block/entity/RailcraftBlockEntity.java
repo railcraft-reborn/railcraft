@@ -12,7 +12,7 @@ import mods.railcraft.api.core.Ownable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.core.Syncable;
 import mods.railcraft.network.PacketBuilder;
-import mods.railcraft.plugins.PlayerPlugin;
+import mods.railcraft.util.PlayerUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -95,7 +95,7 @@ public abstract class RailcraftBlockEntity extends TileEntity
   }
 
   public final boolean isOwner(GameProfile player) {
-    return PlayerPlugin.isSamePlayer(this.owner, player);
+    return PlayerUtil.isSamePlayer(this.owner, player);
   }
 
   public List<String> getDebugOutput() {
@@ -112,7 +112,7 @@ public abstract class RailcraftBlockEntity extends TileEntity
   @OverridingMethodsMustInvokeSuper
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    PlayerPlugin.writeOwnerToNBT(data, this.owner);
+    PlayerUtil.writeOwnerToNBT(data, this.owner);
     if (this.id != null)
       data.putUUID("id", this.id);
     if (this.customName != null)
@@ -124,7 +124,7 @@ public abstract class RailcraftBlockEntity extends TileEntity
   @OverridingMethodsMustInvokeSuper
   public void load(BlockState blockState, CompoundNBT data) {
     super.load(blockState, data);
-    this.owner = PlayerPlugin.readOwnerFromNBT(data);
+    this.owner = PlayerUtil.readOwnerFromNBT(data);
     if (data.hasUUID("id"))
       this.id = data.getUUID("id");
     if (data.contains("customName", Constants.NBT.TAG_STRING))
