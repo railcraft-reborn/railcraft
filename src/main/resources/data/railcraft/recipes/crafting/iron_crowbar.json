@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    " DI",
+    "DID",
+    "ID "]
+  ,
+  "key": {
+    "I":{
+      "tag": "forge:ingots/iron"
+    },
+    "D" : {
+      "tag": "forge:dyes/red"
+    }
+  },
+  "result": {
+    "item": "railcraft:iron_crowbar",
+    "count": 1
+  }
+}

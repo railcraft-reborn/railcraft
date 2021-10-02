@@ -53,7 +53,8 @@ public class TrackBlock extends AbstractRailBlock implements TrackTypeProvider, 
   public TrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(false, properties.strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
         .sound(SoundType.METAL)
-        .harvestTool(RailcraftToolTypes.CROWBAR));
+        .harvestTool(RailcraftToolTypes.CROWBAR)
+        .harvestLevel(0));
     this.trackType = trackType;
     this.registerDefaultState(
         this.stateDefinition.any().setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH));
@@ -234,7 +235,7 @@ public class TrackBlock extends AbstractRailBlock implements TrackTypeProvider, 
   /**
    * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable,
    * returns the passed blockstate.
-   * 
+   *
    * @see net.minecraft.block.RailBlock#rotate() Railblock's rotate
    */
   @Override
@@ -316,7 +317,7 @@ public class TrackBlock extends AbstractRailBlock implements TrackTypeProvider, 
   /**
    * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns
    * the passed blockstate.
-   * 
+   *
    * @see net.minecraft.block.RailBlock#mirror() Railblock's rotate
    */
   @Override

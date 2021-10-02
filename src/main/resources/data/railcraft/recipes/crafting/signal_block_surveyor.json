@@ -1,0 +1,26 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    " C ",
+    "BGB",
+    " R "]
+  ,
+  "key": {
+    "C": {
+      "item": "minecraft:compass"
+    },
+    "B": {
+      "item": "minecraft:stone_button"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "railcraft:signal_block_surveyor",
+    "count": 1
+  }
+}
