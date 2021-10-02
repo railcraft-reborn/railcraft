@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.plugins.PowerPlugin;
 import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -32,7 +32,7 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   public void neighborChanged() {
     if (this.level.isClientSide())
       return;
-    boolean signal = PowerPlugin.hasRepeaterSignal(this.level, this.getBlockPos());
+    boolean signal = PowerUtil.hasRepeaterSignal(this.level, this.getBlockPos());
     if (!this.signal && signal) {
       this.signal = true;
       this.incrementSequencer(true, new HashSet<>(), 0);
@@ -116,10 +116,10 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   public int getRedstoneSignal(Direction direction) {
     return this.level.getBlockState(this.getBlockPos().relative(direction))
         .is(RailcraftTags.Blocks.SIGNAL_BOX)
-            ? PowerPlugin.NO_POWER
+            ? PowerUtil.NO_POWER
             : this.outputDirection.getOpposite() == direction
-                ? PowerPlugin.FULL_POWER
-                : PowerPlugin.NO_POWER;
+                ? PowerUtil.FULL_POWER
+                : PowerUtil.NO_POWER;
   }
 
   @Override

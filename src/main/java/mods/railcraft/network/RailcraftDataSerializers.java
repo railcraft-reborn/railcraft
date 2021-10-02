@@ -1,4 +1,4 @@
-package mods.railcraft.plugins;
+package mods.railcraft.network;
 
 import java.util.Arrays;
 import mods.railcraft.Railcraft;
@@ -7,37 +7,20 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.DataSerializerEntry;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 
 /**
  * Created by CovertJaguar on 6/12/2016 for Railcraft.
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class DataManagerPlugin {
+public class RailcraftDataSerializers {
 
-  public abstract static class DataSerializerIO<T> implements IDataSerializer<T> {
-
-    private final String name;
-
-    protected DataSerializerIO(String name) {
-      this.name = name;
-    }
-
-    public ResourceLocation getResourceName() {
-      return new ResourceLocation(Railcraft.ID, name);
-    }
-
-    @Override
-    public T copy(T value) {
-      return value;
-    }
-  }
-
-  public static final DataSerializerIO<FluidStack> FLUID_STACK =
-      new DataSerializerIO<FluidStack>("fluid.stack") {
+  public static final IDataSerializer<FluidStack> FLUID_STACK =
+      new IDataSerializer<FluidStack>() {
         @Override
         public final void write(PacketBuffer buf, FluidStack value) {
           buf.writeFluidStack(value);
@@ -54,8 +37,8 @@ public class DataManagerPlugin {
         }
       };
 
-  public static final DataSerializerIO<byte[]> BYTE_ARRAY =
-      new DataSerializerIO<byte[]>("byte.array") {
+  public static final IDataSerializer<byte[]> BYTE_ARRAY =
+      new IDataSerializer<byte[]>() {
         @Override
         public void write(PacketBuffer packetBuffer, byte[] bytes) {
           packetBuffer.writeByteArray(bytes);
@@ -72,14 +55,17 @@ public class DataManagerPlugin {
         }
       };
 
-  public static void register() {
-    register(FLUID_STACK);
-    register(BYTE_ARRAY);
+  // We can't use deferred register because we need access to the type parameters of the
+  // IDataSerializers
+  public static void register(RegistryEvent.Register<DataSerializerEntry> event) {
+    register(event.getRegistry(), FLUID_STACK, "fluid_stack");
+    register(event.getRegistry(), BYTE_ARRAY, "byte_array");
   }
 
-  private static void register(DataSerializerIO<?> dataSerializer) {
-    ForgeRegistries.DATA_SERIALIZERS.register(
-        new DataSerializerEntry(dataSerializer).setRegistryName(dataSerializer.getResourceName()));
+  private static void register(IForgeRegistry<DataSerializerEntry> registry,
+      IDataSerializer<?> serializer, String name) {
+    registry.register(new DataSerializerEntry(serializer)
+        .setRegistryName(new ResourceLocation(Railcraft.ID, name)));
   }
 
   public static <T extends Enum<T>> void setEnum(EntityDataManager dataManager,

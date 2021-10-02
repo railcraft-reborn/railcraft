@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block;
 
-import mods.railcraft.world.level.block.entity.RollingTableEntity;
+import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,15 +13,15 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class RollingTable extends Block {
+public class ManualRollingMachineBlock extends Block {
 
-  public RollingTable(Properties properties) {
+  public ManualRollingMachineBlock(Properties properties) {
     super(properties);
   }
 
   @Override
-  public TileEntity createTileEntity(BlockState state, IBlockReader world){
-    return new RollingTableEntity();
+  public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    return new ManualRollingMachineBlockEntity();
   }
 
   @Override
@@ -29,10 +29,10 @@ public class RollingTable extends Block {
     return true;
   }
 
-  protected void openContainer(World world, BlockPos blockPos, PlayerEntity playerEntity) {
-    TileEntity tileentity = world.getBlockEntity(blockPos);
-    if (tileentity instanceof RollingTableEntity) {
-      playerEntity.openMenu((INamedContainerProvider)tileentity);
+  protected void openContainer(World world, BlockPos blockPos, PlayerEntity player) {
+    TileEntity blockEntity = world.getBlockEntity(blockPos);
+    if (blockEntity instanceof ManualRollingMachineBlockEntity) {
+      player.openMenu((INamedContainerProvider) blockEntity);
       // playerEntity.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
       // TODO: interaction stats
     }
@@ -40,11 +40,11 @@ public class RollingTable extends Block {
 
   @Override
   public ActionResultType use(BlockState blockState, World world,
-    BlockPos pos, PlayerEntity user, Hand userHand, BlockRayTraceResult blockRayResult) {
-    if (world.isClientSide) {
+      BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    if (world.isClientSide()) {
       return ActionResultType.SUCCESS;
     } else {
-      this.openContainer(world, pos, user);
+      this.openContainer(world, pos, player);
       return ActionResultType.CONSUME;
     }
   }

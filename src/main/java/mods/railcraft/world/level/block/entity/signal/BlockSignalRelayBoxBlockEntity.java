@@ -6,7 +6,7 @@ import mods.railcraft.api.signal.SignalController;
 import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.SimpleBlockSignalNetwork;
 import mods.railcraft.api.signal.SimpleSignalController;
-import mods.railcraft.plugins.PowerPlugin;
+import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -58,8 +58,8 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   @Override
   public int getRedstoneSignal(Direction side) {
     return this.isActionAspect(this.blockSignal.getSignalAspect())
-        ? PowerPlugin.FULL_POWER
-        : PowerPlugin.NO_POWER;
+        ? PowerUtil.FULL_POWER
+        : PowerUtil.NO_POWER;
   }
 
   @Override

@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.material.fluid.steam;
 
-import mods.railcraft.plugins.FuelPlugin;
+import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.item.RefinedFirestoneItem;
 import mods.railcraft.world.level.material.fluid.FuelProvider;
@@ -32,7 +32,7 @@ public class SolidFuelProvider implements FuelProvider {
   @Override
   public float consumeFuel() {
     ItemStack fuel = this.inv.getItem(this.slot);
-    int burn = FuelPlugin.getBurnTime(fuel);
+    int burn = FuelUtil.getBurnTime(fuel);
     if (burn > 0) {
       this.lastItem = fuel.getItem();
       this.inv.setItem(this.slot, InvTools.depleteItem(fuel));

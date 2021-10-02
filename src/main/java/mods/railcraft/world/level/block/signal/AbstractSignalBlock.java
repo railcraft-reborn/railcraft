@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.signal;
 
 import java.util.function.Supplier;
-import mods.railcraft.plugins.LevelUtil;
+import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

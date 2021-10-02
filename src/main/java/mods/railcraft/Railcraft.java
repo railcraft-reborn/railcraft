@@ -4,10 +4,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
-import mods.railcraft.crafting.RailcraftRecipies;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.network.NetworkChannel;
+import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.server.ServerDist;
 import mods.railcraft.sounds.RailcraftSoundEvents;
@@ -17,6 +17,7 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -38,6 +39,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DataSerializerEntry;
 
 @Mod(Railcraft.ID)
 public class Railcraft {
@@ -83,6 +85,7 @@ public class Railcraft {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     modEventBus.addListener(this::handleGatherData);
+    modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
 
     RailcraftEntityTypes.ENTITY_TYPES.register(modEventBus);
     RailcraftBlocks.BLOCKS.register(modEventBus);
@@ -94,7 +97,7 @@ public class Railcraft {
     RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);
     RailcraftEnchantments.ENCHANTMENTS.register(modEventBus);
     RailcraftParticles.PARTICLE_TYPES.register(modEventBus);
-    RailcraftRecipies.RECIPE_SERIALIZERS.register(modEventBus);
+    RailcraftRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
   }
 
   public LinkageHandler getLinkageHandler() {

@@ -43,7 +43,7 @@
     "block.railcraft.signal_interlock_box": "Signal Interlock Box",
     "block.railcraft.signal_sequencer_box": "Signal Sequencer Box", 
     "block.railcraft.block_signal_relay_box": "Block Signal Relay Box",
-    "block.railcraft.manual_rolling_table": "Manual Rolling Machine",
+    "block.railcraft.manual_rolling_machine": "Manual Rolling Machine",
     "block.railcraft.force_track_emitter": "Force Track Emitter",
 
     "__DESC.items": "======= Items =======",
@@ -123,7 +123,7 @@
 
     "crowbar.description":"§oRight click while sneaking to link carts§r",
 
-    "gui.railcraft.rolling_table": "Rolling Table",
+    "container.manual_rolling_machine": "Manual Rolling Machine",
     
     "gui.railcraft.filter": "Filter",
 

@@ -3,7 +3,7 @@ package mods.railcraft.world.item;
 import java.util.Random;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
-import mods.railcraft.plugins.LevelUtil;
+import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;

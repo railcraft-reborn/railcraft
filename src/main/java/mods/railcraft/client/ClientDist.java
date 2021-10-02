@@ -6,7 +6,7 @@ import mods.railcraft.RailcraftDist;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
-import mods.railcraft.client.gui.screen.inventory.RollingTableScreen;
+import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.particle.ParticlePumpkin;
 import mods.railcraft.client.particle.ParticleSpark;
@@ -161,7 +161,7 @@ public class ClientDist implements RailcraftDist {
         ElectricLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
 
-    ScreenManager.register(RailcraftMenuTypes.ROLLING_TABLE.get(), RollingTableScreen::new);
+    ScreenManager.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(), ManualRollingMachineScreen::new);
 
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
         ElectricLocomotiveRenderer::new);

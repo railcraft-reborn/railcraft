@@ -17,13 +17,13 @@ import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.carts.LinkageManager;
 import mods.railcraft.carts.Train;
-import mods.railcraft.plugins.FuelPlugin;
-import mods.railcraft.plugins.HarvestPlugin;
-import mods.railcraft.plugins.LevelUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.BallastRegistry;
 import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.util.FuelUtil;
+import mods.railcraft.util.HarvestUtil;
+import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.TrackTools;
@@ -254,7 +254,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
       return toolClasses.stream()
           .anyMatch(tool -> item.getHarvestLevel(head, tool, fakePlayer,
-              targetState) >= HarvestPlugin.getHarvestLevel(targetState, tool));
+              targetState) >= HarvestUtil.getHarvestLevel(targetState, tool));
     }
 
     return false;
@@ -1011,7 +1011,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
     for (int slot = 0; slot < invFuel.getContainerSize(); slot++) {
       ItemStack stack = invFuel.getItem(slot);
       if (!stack.isEmpty()) {
-        burn = FuelPlugin.getBurnTime(stack);
+        burn = FuelUtil.getBurnTime(stack);
         if (burn > 0) {
           if (stack.getItem().hasContainerItem(stack))
             invFuel.setItem(slot, stack.getItem().getContainerItem(stack));

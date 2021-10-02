@@ -1,4 +1,4 @@
-package mods.railcraft.plugins;
+package mods.railcraft.util;
 
 import java.util.UUID;
 import javax.annotation.Nullable;
@@ -8,8 +8,6 @@ import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.item.ActivationBlockingItem;
-import mods.railcraft.util.Annotations;
-import mods.railcraft.util.TrackTools;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -30,7 +28,7 @@ import net.minecraftforge.fml.LogicalSidedProvider;
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public final class PlayerPlugin {
+public final class PlayerUtil {
 
   public static void writeOwnerToNBT(CompoundNBT nbt, GameProfile owner) {
     if (owner.getName() != null)
@@ -72,7 +70,7 @@ public final class PlayerPlugin {
   public static PlayerEntity getOwnerEntity(GameProfile owner, ServerWorld world, BlockPos pos) {
     PlayerEntity player = null;
     if (!RailcraftConstantsAPI.UNKNOWN_PLAYER.equals(owner.getName()))
-      player = PlayerPlugin.getPlayer(world, owner);
+      player = PlayerUtil.getPlayer(world, owner);
     if (player == null)
       player = RailcraftFakePlayer.get(world, pos);
     return player;

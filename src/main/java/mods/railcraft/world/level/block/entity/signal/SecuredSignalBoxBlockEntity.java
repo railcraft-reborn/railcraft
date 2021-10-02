@@ -6,7 +6,7 @@ import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
 import mods.railcraft.gui.button.SimpleButtonTextureSet;
-import mods.railcraft.plugins.PlayerPlugin;
+import mods.railcraft.util.PlayerUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -38,7 +38,7 @@ public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlock
   }
 
   protected boolean canAccess(GameProfile player) {
-    return !this.isSecure() || PlayerPlugin.isOwnerOrOp(getOwner(), player);
+    return !this.isSecure() || PlayerUtil.isOwnerOrOp(getOwner(), player);
   }
 
   @Override

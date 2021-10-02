@@ -1,4 +1,4 @@
-package mods.railcraft.plugins;
+package mods.railcraft.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public final class PowerPlugin {
+public final class PowerUtil {
 
   public static final int NO_POWER = 0;
   public static final int FULL_POWER = 15;

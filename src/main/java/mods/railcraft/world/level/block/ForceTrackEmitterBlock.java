@@ -8,7 +8,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.IChargeBlock;
-import mods.railcraft.plugins.LevelUtil;
+import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.Optionals;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;

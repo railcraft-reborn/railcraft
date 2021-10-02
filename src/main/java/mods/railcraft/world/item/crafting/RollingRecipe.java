@@ -1,4 +1,4 @@
-package mods.railcraft.crafting;
+package mods.railcraft.world.item.crafting;
 
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +27,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
  * Rolling recipe class
+ * 
  * @author LetterN (https://github.com/LetterN)
  */
 public class RollingRecipe implements IRecipe<CraftingInventory> {
@@ -36,7 +37,8 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
   private final ItemStack result;
   private final int tickCost;
 
-  public RollingRecipe(ResourceLocation resourceLocation, int tickCost, NonNullList<Ingredient> ingredients, ItemStack resultItemStack) {
+  public RollingRecipe(ResourceLocation resourceLocation, int tickCost,
+      NonNullList<Ingredient> ingredients, ItemStack resultItemStack) {
     this.id = resourceLocation;
     this.recipeItems = ingredients;
     this.result = resultItemStack;
@@ -45,6 +47,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
 
   /**
    * Get how long the user should wait before this gets crafted.
+   * 
    * @return tick cost, in int.
    */
   public int getTickCost() {
@@ -58,24 +61,24 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
 
   @Override
   public boolean matches(CraftingInventory inventory, World world) {
-    for(int i = 0; i <= inventory.getWidth() - 3; ++i) {
-      for(int j = 0; j <= inventory.getHeight() - 3; ++j) {
-          if (this.matches(inventory, i, j, true)) {
-            return true;
-          }
-
-          if (this.matches(inventory, i, j, false)) {
-            return true;
-          }
+    for (int i = 0; i <= inventory.getWidth() - 3; ++i) {
+      for (int j = 0; j <= inventory.getHeight() - 3; ++j) {
+        if (this.matches(inventory, i, j, true)) {
+          return true;
         }
+
+        if (this.matches(inventory, i, j, false)) {
+          return true;
+        }
+      }
     }
 
     return false;
   }
 
   private boolean matches(CraftingInventory inventory, int x, int y, boolean inverse) {
-    for(int i = 0; i < inventory.getWidth(); ++i) {
-      for(int j = 0; j < inventory.getHeight(); ++j) {
+    for (int i = 0; i < inventory.getWidth(); ++i) {
+      for (int j = 0; j < inventory.getHeight(); ++j) {
         int k = i - x;
         int l = j - y;
         Ingredient ingredient = Ingredient.EMPTY;
@@ -118,24 +121,25 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
 
   @Override
   public IRecipeSerializer<?> getSerializer() {
-    return RailcraftRecipies.ROLLING.get();
+    return RailcraftRecipeSerializers.ROLLING.get();
   }
 
   @Override
   public IRecipeType<?> getType() {
-    return RailcraftRecipies.ROLLING_RECIPIE;
+    return RailcraftRecipeTypes.ROLLING;
   }
 
   public static class RollingRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>>
-    implements IRecipeSerializer<RollingRecipe> {
+      implements IRecipeSerializer<RollingRecipe> {
 
     @Override
     public RollingRecipe fromJson(ResourceLocation resourceLoc, JsonObject jsonObject) {
       Map<String, Ingredient> map = keyFromJson(JSONUtils.getAsJsonObject(jsonObject, "key"));
       String[] astring = shrink(patternFromJson(JSONUtils.getAsJsonArray(jsonObject, "pattern")));
 
-      int tickCost = JSONUtils.getAsInt(jsonObject, "tickCost", 100); //5 seconds
-      NonNullList<Ingredient> ingredients = dissolvePattern(astring, map, astring[0].length(), astring.length);
+      int tickCost = JSONUtils.getAsInt(jsonObject, "tickCost", 100); // 5 seconds
+      NonNullList<Ingredient> ingredients =
+          dissolvePattern(astring, map, astring[0].length(), astring.length);
       ItemStack resultItemStack = itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
       // 3x3 recipies only, attempting to register 4x4's will not work and we will never honor it.
       return new RollingRecipe(resourceLoc, tickCost, ingredients, resultItemStack);
@@ -143,10 +147,10 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
 
     @Override
     public RollingRecipe fromNetwork(ResourceLocation resourceLoc, PacketBuffer packetBuffer) {
-      NonNullList<Ingredient> ingredients= NonNullList.withSize(9, Ingredient.EMPTY);
+      NonNullList<Ingredient> ingredients = NonNullList.withSize(9, Ingredient.EMPTY);
       int tickCost = packetBuffer.readVarInt();
 
-      for(int k = 0; k < ingredients.size(); ++k) {
+      for (int k = 0; k < ingredients.size(); ++k) {
         ingredients.set(k, Ingredient.fromNetwork(packetBuffer));
       }
 
@@ -158,7 +162,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
     public void toNetwork(PacketBuffer packetBuffer, RollingRecipe recipe) {
       packetBuffer.writeVarInt(recipe.tickCost);
       // format: [tickcost(int), ingredient, result]
-      for(Ingredient ingredient : recipe.recipeItems) {
+      for (Ingredient ingredient : recipe.recipeItems) {
         ingredient.toNetwork(packetBuffer);
       }
 
@@ -172,7 +176,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
       } else if (astring.length == 0) {
         throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
       } else {
-        for(int i = 0; i < astring.length; ++i) {
+        for (int i = 0; i < astring.length; ++i) {
           String s = JSONUtils.convertToString(jsondat.get(i), "pattern[" + i + "]");
           if (s.length() > 3) {
             throw new JsonSyntaxException("Invalid pattern: too many columns, 3 is maximum");
@@ -194,9 +198,10 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
     private static Map<String, Ingredient> keyFromJson(JsonObject jsondat) {
       Map<String, Ingredient> map = Maps.newHashMap();
 
-      for(Entry<String, JsonElement> entry : jsondat.entrySet()) {
+      for (Entry<String, JsonElement> entry : jsondat.entrySet()) {
         if (entry.getKey().length() != 1) {
-          throw new JsonSyntaxException("Invalid key entry: '" + entry.getKey() + "' is an invalid symbol (must be 1 character only).");
+          throw new JsonSyntaxException("Invalid key entry: '" + entry.getKey()
+              + "' is an invalid symbol (must be 1 character only).");
         }
         if (" ".equals(entry.getKey())) {
           throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
@@ -218,17 +223,19 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
       }
     }
 
-    private static NonNullList<Ingredient> dissolvePattern(String[] patternArray, Map<String, Ingredient> ingreidentKeyMap, int x, int y) {
+    private static NonNullList<Ingredient> dissolvePattern(String[] patternArray,
+        Map<String, Ingredient> ingreidentKeyMap, int x, int y) {
       NonNullList<Ingredient> nonnulllist = NonNullList.withSize(x * y, Ingredient.EMPTY);
       Set<String> set = Sets.newHashSet(ingreidentKeyMap.keySet());
       set.remove(" ");
 
-      for(int i = 0; i < patternArray.length; ++i) {
-        for(int j = 0; j < patternArray[i].length(); ++j) {
+      for (int i = 0; i < patternArray.length; ++i) {
+        for (int j = 0; j < patternArray[i].length(); ++j) {
           String s = patternArray[i].substring(j, j + 1);
           Ingredient ingredient = ingreidentKeyMap.get(s);
           if (ingredient == null) {
-            throw new JsonSyntaxException("Pattern references symbol '" + s + "' but it's not defined in the key");
+            throw new JsonSyntaxException(
+                "Pattern references symbol '" + s + "' but it's not defined in the key");
           }
           set.remove(s);
           nonnulllist.set(j + x * i, ingredient);
@@ -248,7 +255,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
       int k = 0;
       int l = 0;
 
-      for(int i1 = 0; i1 < patternArray.length; ++i1) {
+      for (int i1 = 0; i1 < patternArray.length; ++i1) {
         String s = patternArray[i1];
         i = Math.min(i, Math.max(s.indexOf(' '), 0));
         int j1 = Math.max(s.lastIndexOf(' '), 0);
@@ -268,7 +275,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
         return new String[0];
       } else {
         String[] astring = new String[patternArray.length - l - k];
-        for(int k1 = 0; k1 < astring.length; ++k1) {
+        for (int k1 = 0; k1 < astring.length; ++k1) {
           astring[k1] = patternArray[k1 + k].substring(i, j + 1);
         }
         return astring;

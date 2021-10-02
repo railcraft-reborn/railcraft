@@ -273,7 +273,7 @@ public class RailcraftBlocks {
               .noOcclusion()));
 
   public static final RegistryObject<Block> MANUAL_ROLLING_MACHINE =
-      BLOCKS.register("rolling_table_manual",
-          () -> new RollingTable(AbstractBlock.Properties.of(Material.WOOD)
+      BLOCKS.register("manual_rolling_machine",
+          () -> new ManualRollingMachineBlock(AbstractBlock.Properties.of(Material.WOOD)
               .sound(SoundType.WOOD)));
 }

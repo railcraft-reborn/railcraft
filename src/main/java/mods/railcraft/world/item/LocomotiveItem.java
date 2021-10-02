@@ -9,7 +9,7 @@ import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.client.emblem.Emblem;
 import mods.railcraft.client.emblem.EmblemToolsClient;
-import mods.railcraft.plugins.PlayerPlugin;
+import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.inventory.InvTools;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityType;
@@ -127,14 +127,14 @@ public class LocomotiveItem extends CartItem implements Filter {
 
   public static void setOwnerData(ItemStack stack, GameProfile owner) {
     CompoundNBT nbt = InvTools.getItemData(stack);
-    PlayerPlugin.writeOwnerToNBT(nbt, owner);
+    PlayerUtil.writeOwnerToNBT(nbt, owner);
   }
 
   public static GameProfile getOwner(ItemStack stack) {
     CompoundNBT nbt = stack.getTag();
     if (nbt == null)
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
-    return PlayerPlugin.readOwnerFromNBT(nbt);
+    return PlayerUtil.readOwnerFromNBT(nbt);
   }
 
   public static void setEmblem(ItemStack stack, String emblemIdentifier) {

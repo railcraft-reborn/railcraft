@@ -8,7 +8,7 @@ import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
 import mods.railcraft.gui.button.StandardButtonTextureSets;
-import mods.railcraft.plugins.PowerPlugin;
+import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -45,7 +45,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     if (this.ticksPowered-- > 0) {
       if (this.stateModeController.getCurrentState() == StateMode.FALLING_EDGE) {
         SignalAspect signalAspect = SignalAspect.GREEN;
-        boolean powered = PowerPlugin.hasRepeaterSignal(this.level, getBlockPos());
+        boolean powered = PowerUtil.hasRepeaterSignal(this.level, getBlockPos());
         for (Direction direction : Direction.Plane.HORIZONTAL) {
           TileEntity blockEntity =
               this.level.getBlockEntity(this.getBlockPos().relative(direction));
@@ -76,7 +76,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
   public void neighborChanged(BlockState state, Block neighborBlock, BlockPos neighborPos) {
     if (this.level.isClientSide())
       return;
-    boolean powered = PowerPlugin.hasRepeaterSignal(this.level, getBlockPos());
+    boolean powered = PowerUtil.hasRepeaterSignal(this.level, getBlockPos());
     if (this.ticksPowered <= 0 && powered) {
       this.ticksPowered = this.ticksToPower;
       if (Objects.equals(this.stateModeController.getCurrentState(), StateMode.RISING_EDGE))
@@ -109,8 +109,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     TileEntity blockEntity =
         this.level.getBlockEntity(this.getBlockPos().relative(direction.getOpposite()));
     return blockEntity instanceof AbstractSignalBoxBlockEntity || this.ticksPowered <= 0
-        ? PowerPlugin.NO_POWER
-        : PowerPlugin.FULL_POWER;
+        ? PowerUtil.NO_POWER
+        : PowerUtil.FULL_POWER;
   }
 
   @Override

@@ -137,9 +137,9 @@ public class RailcraftBlockEntityTypes {
               .of(RitualBlockEntity::new, RailcraftBlocks.RITUAL.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<?>> ROLLING_TABLE_MANUAL =
-      BLOCK_ENTITY_TYPES.register("rolling_table_manual",
+  public static final RegistryObject<TileEntityType<?>> MANUAL_ROLLING_MACHINE =
+      BLOCK_ENTITY_TYPES.register("manual_rolling_machine",
           () -> TileEntityType.Builder
-            .of(RollingTableEntity::new, RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
-            .build(null));
+              .of(ManualRollingMachineBlockEntity::new, RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
+              .build(null));
 }
