@@ -12,7 +12,7 @@ package mods.railcraft.client.renderer.entity.cart;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import mods.railcraft.Railcraft;
-import mods.railcraft.plugins.SeasonPlugin;
+import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.LocomotiveEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -94,7 +94,7 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
           c1 * dim, c2 * dim, c3 * dim, alpha);
     }
 
-    if (SeasonPlugin.isPolarExpress(cart)) {
+    if (Seasons.isPolarExpress(cart)) {
       this.model.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
       IVertexBuilder vertexBuilder =
           renderTypeBuffer.getBuffer(this.model.renderType(this.textures[3]));

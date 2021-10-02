@@ -25,7 +25,7 @@ import net.minecraft.world.World;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public abstract class CartBase extends MinecartEntity implements IRailcraftCart, IItemCart {
+public abstract class CartBase extends MinecartEntity implements RailcraftCart, IItemCart {
 
   protected CartBase(EntityType<?> entityType, World world) {
     super(entityType, world);

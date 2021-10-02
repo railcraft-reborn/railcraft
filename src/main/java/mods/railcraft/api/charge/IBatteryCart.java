@@ -21,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface IBatteryCart extends IBattery {
+public interface IBatteryCart extends Battery {
 
   /**
    * The type of the cart battery.

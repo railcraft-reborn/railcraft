@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
-import mods.railcraft.api.items.Crowbar;
-import mods.railcraft.plugins.WorldPlugin;
+import mods.railcraft.api.item.Crowbar;
+import mods.railcraft.plugins.LevelUtil;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftToolTypes;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
@@ -186,13 +186,13 @@ public class CrowbarItem extends ToolItem implements Crowbar {
   @Override
   public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> info,
       ITooltipFlag adv) {
-    info.add(new TranslationTextComponent("item.railcraft.tool.crowbar.tips"));
+    info.add(new TranslationTextComponent("crowbar.description"));
   }
 
   private void removeExtraBlocks(World world, int level, BlockPos pos, BlockState state,
       PlayerEntity player) {
     if (level > 0) {
-      WorldPlugin.playerRemoveBlock(world, pos, player);
+      LevelUtil.playerRemoveBlock(world, pos, player);
       checkBlocks(world, level, pos, player);
     }
   }

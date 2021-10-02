@@ -6,7 +6,7 @@ import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DistantSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DualDistantSignalBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.DualSignalBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.DualBlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DualTokenSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
@@ -14,6 +14,7 @@ import mods.railcraft.world.level.block.entity.signal.SignalInterlockBoxBlockEnt
 import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalSequencerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
+import mods.railcraft.world.level.block.signal.SelfAttachableSignalBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalBlock;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
@@ -64,7 +65,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<SignalBoxBlock> SIGNAL_SEQUENCER_BOX =
       BLOCKS.register("signal_sequencer_box",
-          () -> new SignalBoxBlock(SignalSequencerBoxBlockEntity::new,
+          () -> new SelfAttachableSignalBoxBlock(SignalSequencerBoxBlockEntity::new,
               Properties.of(Material.DECORATION)
                   .harvestTool(RailcraftToolTypes.CROWBAR)
                   .harvestLevel(0)
@@ -84,7 +85,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<SignalBoxBlock> SIGNAL_INTERLOCK_BOX =
       BLOCKS.register("signal_interlock_box",
-          () -> new SignalBoxBlock(SignalInterlockBoxBlockEntity::new,
+          () -> new SelfAttachableSignalBoxBlock(SignalInterlockBoxBlockEntity::new,
               Properties.of(Material.DECORATION)
                   .harvestTool(RailcraftToolTypes.CROWBAR)
                   .harvestLevel(0)
@@ -92,8 +93,8 @@ public class RailcraftBlocks {
                   .sound(SoundType.METAL)
                   .noOcclusion()));
 
-  public static final RegistryObject<SignalBoxBlock> SIGNAL_RELAY_BOX =
-      BLOCKS.register("signal_relay_box",
+  public static final RegistryObject<SignalBoxBlock> BLOCK_SIGNAL_RELAY_BOX =
+      BLOCKS.register("block_signal_relay_box",
           () -> new SignalBoxBlock(BlockSignalRelayBoxBlockEntity::new,
               Properties.of(Material.DECORATION)
                   .harvestTool(RailcraftToolTypes.CROWBAR)
@@ -122,9 +123,9 @@ public class RailcraftBlocks {
                   .sound(SoundType.METAL)
                   .noOcclusion()));
 
-  public static final RegistryObject<SignalBlock> DUAL_SIGNAL =
-      BLOCKS.register("dual_signal",
-          () -> new SignalBlock(DualSignalBlockEntity::new,
+  public static final RegistryObject<SignalBlock> DUAL_BLOCK_SIGNAL =
+      BLOCKS.register("dual_block_signal",
+          () -> new SignalBlock(DualBlockSignalBlockEntity::new,
               Properties.of(Material.DECORATION)
                   .harvestTool(RailcraftToolTypes.CROWBAR)
                   .harvestLevel(0)
@@ -150,7 +151,7 @@ public class RailcraftBlocks {
                   .noOcclusion()));
 
   public static final RegistryObject<SignalBlock> SIGNAL =
-      BLOCKS.register("signal",
+      BLOCKS.register("block_signal",
           () -> new SignalBlock(BlockSignalBlockEntity::new,
               Properties.of(Material.DECORATION)
                   .harvestTool(RailcraftToolTypes.CROWBAR)
@@ -271,7 +272,7 @@ public class RailcraftBlocks {
               .lightLevel(state -> 1)
               .noOcclusion()));
 
-  public static final RegistryObject<Block> ROLLING_TABLE =
+  public static final RegistryObject<Block> MANUAL_ROLLING_MACHINE =
       BLOCKS.register("rolling_table_manual",
           () -> new RollingTable(AbstractBlock.Properties.of(Material.WOOD)
               .sound(SoundType.WOOD)));

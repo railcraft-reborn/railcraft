@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.items.IMinecartItem;
+import mods.railcraft.api.item.MinecartPlacer;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.entity.AbstractFilteredMinecartEntity;
@@ -27,7 +27,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class CartItem extends MinecartItem implements IMinecartItem {
+public class CartItem extends MinecartItem implements MinecartPlacer {
 
   private final Supplier<? extends EntityType<?>> type;
 

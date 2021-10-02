@@ -8,10 +8,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.carts.CartToolsAPI;
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
-import mods.railcraft.api.items.IMinecartItem;
+import mods.railcraft.api.item.MinecartPlacer;
 import mods.railcraft.plugins.PlayerPlugin;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MiscTools;
@@ -60,7 +60,7 @@ public final class CartTools {
    * @param cart An ItemStack containing a cart item, will not be changed by the function
    * @param world The World object
    * @return the cart placed or null if failed
-   * @see IMinecartItem , ItemMinecart
+   * @see MinecartPlacer , ItemMinecart
    */
   @Nullable
   public static AbstractMinecartEntity placeCart(GameProfile owner, ItemStack cart,
@@ -73,7 +73,7 @@ public final class CartTools {
     if (vanillaType != null)
       return placeCart(vanillaType, owner, cart, world, pos);
 
-    return CartToolsAPI.placeCart(owner, cart, world, pos);
+    return CartUtil.placeCart(owner, cart, world, pos);
   }
 
   public static @Nullable AbstractMinecartEntity placeCart(EntityType<?> cartType,
@@ -90,11 +90,11 @@ public final class CartTools {
         if (entity instanceof AbstractMinecartEntity) {
           AbstractMinecartEntity cart = (AbstractMinecartEntity) entity;
           initCartPos(cart, pos.getX() + 0.5, pos.getY() + 0.0625D + h, pos.getZ() + 0.5);
-          if (entity instanceof IRailcraftCart)
-            ((IRailcraftCart) entity).initEntityFromItem(cartStack);
+          if (entity instanceof RailcraftCart)
+            ((RailcraftCart) entity).initEntityFromItem(cartStack);
           if (cartStack.hasCustomHoverName())
             cart.setCustomName(cartStack.getHoverName());
-          CartToolsAPI.setCartOwner(cart, owner);
+          CartUtil.setCartOwner(cart, owner);
           world.addFreshEntity(cart);
           return cart;
         }
@@ -159,7 +159,7 @@ public final class CartTools {
   }
 
   public static PlayerEntity getCartOwnerEntity(AbstractMinecartEntity cart) {
-    GameProfile owner = CartToolsAPI.getCartOwner(cart);
+    GameProfile owner = CartUtil.getCartOwner(cart);
     PlayerEntity player = null;
     if (!RailcraftConstantsAPI.UNKNOWN_PLAYER.equals(owner.getName()))
       player = PlayerPlugin.getPlayer(cart.level, owner);
@@ -204,15 +204,15 @@ public final class CartTools {
     }
     debug.add("Object: " + cartInfo);
     debug.add("UUID: " + cart.getUUID());
-    debug.add("Owner: " + CartToolsAPI.getCartOwner(cart).getName());
+    debug.add("Owner: " + CartUtil.getCartOwner(cart).getName());
     LinkageManager lm = LinkageManager.INSTANCE;
     debug.add("LinkA: " + lm.getLinkA(cart));
     debug.add("LinkB: " + lm.getLinkB(cart));
     debug.add(
-        "Train: " + Train.get(cart).map(Train::getUUID).map(UUID::toString).orElse("NA on Client"));
+        "Train: " + Train.get(cart).map(Train::getId).map(UUID::toString).orElse("NA on Client"));
     Train.get(cart).ifPresent(train -> {
       debug.add("Train Carts:");
-      for (UUID uuid : train.getUUIDs()) {
+      for (UUID uuid : train.getCarts()) {
         debug.add("  " + uuid);
       }
     });

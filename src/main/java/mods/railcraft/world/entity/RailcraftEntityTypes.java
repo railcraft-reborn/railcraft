@@ -14,16 +14,16 @@ public class RailcraftEntityTypes {
   public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
       DeferredRegister.create(ForgeRegistries.ENTITIES, Railcraft.ID);
 
-  public static final RegistryObject<EntityType<?>> MOW_TRACK_REMOVER =
-      ENTITY_TYPES.register("mow_track_remover",
-          () -> create("mow_track_remover",
+  public static final RegistryObject<EntityType<?>> TRACK_REMOVER =
+      ENTITY_TYPES.register("track_remover",
+          () -> create("track_remover",
               EntityType.Builder.of(TrackRemoverMinecartEntity::new, EntityClassification.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)));
 
-  public static final RegistryObject<EntityType<?>> MOW_TRACK_LAYER =
-      ENTITY_TYPES.register("mow_track_layer",
-          () -> create("mow_track_layer",
+  public static final RegistryObject<EntityType<?>> TRACK_LAYER =
+      ENTITY_TYPES.register("track_layer",
+          () -> create("track_layer",
               EntityType.Builder.of(TrackLayerMinecartEntity::new, EntityClassification.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)));

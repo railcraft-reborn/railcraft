@@ -1,128 +1,108 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import javax.annotation.Nullable;
-import mods.railcraft.api.signals.BlockSignal;
-import mods.railcraft.api.signals.BlockSignalNetwork;
-import mods.railcraft.api.signals.BlockSignalRelay;
-import mods.railcraft.api.signals.SignalAspect;
-import mods.railcraft.api.signals.SimpleSignalControllerNetwork;
+import mods.railcraft.api.signal.BlockSignal;
+import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.api.signal.SignalController;
+import mods.railcraft.api.signal.SignalControllerProvider;
+import mods.railcraft.api.signal.SimpleBlockSignalNetwork;
+import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.plugins.PowerPlugin;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 
 public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
-    implements BlockSignal, IAspectProvider, SignalEmitter {
+    implements BlockSignal, SignalControllerProvider {
 
-  private final SimpleSignalControllerNetwork signalControllerNetwork =
-      new SimpleSignalControllerNetwork(this, this::syncToClient);
-  private final BlockSignalNetwork signalNetwork = new BlockSignalRelay(this, this::syncToClient);
+  private final SimpleSignalController signalController =
+      new SimpleSignalController(1, this::syncToClient, this, false);
+  private final SimpleBlockSignalNetwork blockSignal =
+      new SimpleBlockSignalNetwork(2, this::syncToClient, this::signalAspectChanged, this);
 
   public BlockSignalRelayBoxBlockEntity() {
     super(RailcraftBlockEntityTypes.SIGNAL_RELAY_BOX.get());
   }
 
   @Override
+  public void setRemoved() {
+    super.setRemoved();
+    this.signalController.removed();
+    this.blockSignal.removed();
+  }
+
+  @Override
   public void tick() {
     super.tick();
     if (this.level.isClientSide()) {
-      this.signalControllerNetwork.tickClient();
-      this.signalNetwork.tickClient();
+      this.signalController.spawnTuningAuraParticles();
       return;
     }
-    this.signalControllerNetwork.tickServer();
-    this.signalNetwork.tickServer();
-    SignalAspect prevAspect = this.signalControllerNetwork.getAspect();
-    if (this.signalControllerNetwork.isLinking())
-      this.signalControllerNetwork.setAspect(SignalAspect.BLINK_YELLOW);
-    else
-      this.signalControllerNetwork.setAspect(signalNetwork.getSignalAspect());
-    if (prevAspect != this.signalControllerNetwork.getAspect()) {
-      this.updateNeighboringSignalBoxes();
-      this.syncToClient();
-    }
-  }
-
-  private void updateNeighboringSignalBoxes() {
-    this.updateNeighbors();
-    for (Direction side : Direction.Plane.HORIZONTAL) {
-      TileEntity tile = this.adjacentCache.getTileOnSide(side);
-      if (tile instanceof AbstractSignalBoxBlockEntity) {
-        AbstractSignalBoxBlockEntity box = (AbstractSignalBoxBlockEntity) tile;
-        box.neighboringSignalBoxChanged(this, side);
-      }
-    }
+    this.blockSignal.tickServer();
   }
 
   @Override
-  public int getSignal(Direction side) {
-    if (this.adjacentCache
-        .getTileOnSide(side.getOpposite()) instanceof AbstractSignalBoxBlockEntity) {
-      return PowerPlugin.NO_POWER;
+  public void load() {
+    if (!this.level.isClientSide()) {
+      this.signalController.refresh();
+      this.blockSignal.refresh();
     }
-    return this.isEmittingRedstone(side) ? PowerPlugin.FULL_POWER : PowerPlugin.NO_POWER;
+  }
+
+  private void signalAspectChanged(SignalAspect signalAspect) {
+    this.signalController.setSignalAspect(signalAspect);
+    this.updateNeighborBoxes();
   }
 
   @Override
-  public boolean isEmittingRedstone(Direction side) {
-    return doesActionOnAspect(getBoxSignalAspect(side));
+  public int getRedstoneSignal(Direction side) {
+    return this.isActionAspect(this.blockSignal.getSignalAspect())
+        ? PowerPlugin.FULL_POWER
+        : PowerPlugin.NO_POWER;
   }
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    data.put("signalNetwork", this.signalNetwork.serializeNBT());
-    data.put("signalControllerNetwork", this.signalControllerNetwork.serializeNBT());
+    data.put("blockSignal", this.blockSignal.serializeNBT());
+    data.put("signalController", this.signalController.serializeNBT());
     return data;
   }
 
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-    this.signalNetwork.deserializeNBT(data.getCompound("signalNetwork"));
-    this.signalControllerNetwork.deserializeNBT(data.getCompound("signalControllerNetwork"));
+    this.blockSignal.deserializeNBT(data.getCompound("blockSignal"));
+    this.signalController.deserializeNBT(data.getCompound("signalController"));
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    this.signalControllerNetwork.writeSyncData(data);
-    this.signalNetwork.writeSyncData(data);
+    this.blockSignal.writeSyncData(data);
+    this.signalController.writeSyncData(data);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    this.signalControllerNetwork.readSyncData(data);
-    this.signalNetwork.readSyncData(data);
+    this.blockSignal.readSyncData(data);
+    this.signalController.readSyncData(data);
   }
 
   @Override
-  public BlockSignalNetwork getSignalNetwork() {
-    return this.signalNetwork;
+  public SimpleBlockSignalNetwork getSignalNetwork() {
+    return this.blockSignal;
   }
 
   @Override
-  public void doActionOnAspect(SignalAspect aspect, boolean trigger) {
-    super.doActionOnAspect(aspect, trigger);
-    updateNeighboringSignalBoxes();
+  public SignalAspect getSignalAspect(Direction direction) {
+    return this.signalController.getSignalAspect();
   }
 
   @Override
-  public SignalAspect getBoxSignalAspect(@Nullable Direction side) {
-    return this.signalControllerNetwork.getAspect();
-  }
-
-  @Override
-  public boolean canTransferAspect() {
-    return true;
-  }
-
-  @Override
-  public SignalAspect getTriggerAspect() {
-    return this.getBoxSignalAspect(null);
+  public SignalController getSignalController() {
+    return this.signalController;
   }
 }

@@ -6,9 +6,10 @@ import java.util.function.Function;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.signals.SignalAspect;
+import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
+import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.client.util.CuboidModelRenderer.FaceDisplay;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
@@ -60,6 +61,13 @@ public abstract class AbstractSignalBoxRenderer
       MatrixStack poseStack, IRenderTypeBuffer renderTypeBuffer, int packedLight,
       int packedOverlay) {
 
+    SignalAuraRenderer.tryRenderSignalAura(blockEntity, poseStack, renderTypeBuffer);
+
+    if (blockEntity.hasCustomName()) {
+      RenderUtil.renderBlockHoverText(blockEntity.getBlockPos(),
+          blockEntity.getCustomName(), poseStack, renderTypeBuffer, packedLight);
+    }
+
     Function<ResourceLocation, TextureAtlasSprite> spriteGetter =
         Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS);
 
@@ -92,14 +100,14 @@ public abstract class AbstractSignalBoxRenderer
 
     IVertexBuilder vertexBuilder =
         renderTypeBuffer.getBuffer(RenderType.entityCutout(PlayerContainer.BLOCK_ATLAS));
-    CuboidModelRenderer.render(this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH,
-        false);
+    CuboidModelRenderer.render(
+        this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH, false);
 
     for (Direction direction : Direction.Plane.HORIZONTAL) {
       if (SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction)) {
         this.model.disable(direction);
       } else {
-        SignalAspect aspect = blockEntity.getBoxSignalAspect(direction).getDisplayAspect();
+        SignalAspect aspect = blockEntity.getSignalAspect(direction).getDisplayAspect();
         final int skyLight = LightTexture.sky(packedLight);
         final int facePackedLight = LightTexture.pack(aspect.getLampLight(), skyLight);
         this.model.set(direction, new CuboidModel.Face()
@@ -110,7 +118,7 @@ public abstract class AbstractSignalBoxRenderer
       }
     }
 
-    CuboidModelRenderer.render(this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH,
-        false);
+    CuboidModelRenderer.render(
+        this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH, false);
   }
 }

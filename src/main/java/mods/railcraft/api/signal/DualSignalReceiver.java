@@ -1,0 +1,92 @@
+package mods.railcraft.api.signal;
+
+import java.util.function.Consumer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
+
+public class DualSignalReceiver extends SingleSignalReceiver {
+
+  private static final Logger logger = LogManager.getLogger();
+
+  private final SignalClient secondarySignalClient;
+
+  public DualSignalReceiver(TileEntity blockEntity,
+      Runnable syncListener, Consumer<SignalAspect> primarySignalAspectListener,
+      Consumer<SignalAspect> secondarySignalAspectListener) {
+    super(blockEntity, syncListener, primarySignalAspectListener);
+    this.secondarySignalClient = new SignalClient(secondarySignalAspectListener);
+  }
+
+  public SignalAspect getSecondarySignalAspect() {
+    return this.secondarySignalClient.getSignalAspect();
+  }
+
+  @Override
+  public void linked(SignalController signalController) {
+    if (this.primarySignalClient.getSignalController() == null) {
+      super.linked(signalController);
+      return;
+    } else if (this.secondarySignalClient.getSignalController() == null) {
+      this.secondarySignalClient.linked(signalController);
+      return;
+    }
+    this.primarySignalClient.unlinked();
+    this.secondarySignalClient.unlinked();
+    super.linked(signalController);
+  }
+
+  @Override
+  public void unlinked(SignalController signalController) {
+    if (this.primarySignalClient.getSignalControllerBlockPos()
+        .equals(signalController.getBlockPos())) {
+      this.primarySignalClient.unlinked();
+    } else if (this.secondarySignalClient.getSignalControllerBlockPos()
+        .equals(signalController.getBlockPos())) {
+      this.secondarySignalClient.unlinked();
+    } else {
+      logger.warn(
+          "Signal controller @ [{}] tried to unlink with signal receiver @ [{}] without initially being linked",
+          signalController.getBlockPos(), this.blockEntity.getBlockPos());
+    }
+  }
+
+  @Override
+  public void refresh() {
+    super.refresh();
+    this.secondarySignalClient.refresh();
+  }
+
+  @Override
+  public void removed() {
+    super.removed();
+    this.secondarySignalClient.unlink();
+  }
+
+  @Override
+  public CompoundNBT serializeNBT() {
+    CompoundNBT tag = super.serializeNBT();
+    tag.put("secondarySignalClient", this.secondarySignalClient.serializeNBT());
+    return tag;
+  }
+
+  @Override
+  public void deserializeNBT(CompoundNBT tag) {
+    super.deserializeNBT(tag);
+    this.secondarySignalClient.deserializeNBT(tag.getCompound("secondarySignalClient"));
+  }
+
+  @Override
+  public void writeSyncData(PacketBuffer data) {
+    super.writeSyncData(data);
+    data.writeEnum(this.secondarySignalClient.getSignalAspect());
+  }
+
+  @Override
+  public void readSyncData(PacketBuffer data) {
+    super.readSyncData(data);
+    this.secondarySignalClient.setSignalAspect(data.readEnum(SignalAspect.class));
+  }
+}

@@ -10,17 +10,17 @@ import net.minecraft.network.PacketBuffer;
  */
 public class GaugeWidget extends Widget {
 
-  private final IGauge gauge;
+  private final Gauge gauge;
   private final boolean vertical;
   private final Map<ServerPlayerEntity, Float> previousValues = new HashMap<>();
   private boolean first = true;
   private float measurement;
 
-  public GaugeWidget(IGauge gauge, int x, int y, int u, int v, int w, int h) {
+  public GaugeWidget(Gauge gauge, int x, int y, int u, int v, int w, int h) {
     this(gauge, x, y, u, v, w, h, true);
   }
 
-  public GaugeWidget(IGauge gauge, int x, int y, int u, int v, int w, int h,
+  public GaugeWidget(Gauge gauge, int x, int y, int u, int v, int w, int h,
       boolean vertical) {
     super(x, y, u, v, w, h);
     this.gauge = gauge;
@@ -38,7 +38,7 @@ public class GaugeWidget extends Widget {
     return this.measurement;
   }
 
-  public IGauge getGauge() {
+  public Gauge getGauge() {
     return this.gauge;
   }
 

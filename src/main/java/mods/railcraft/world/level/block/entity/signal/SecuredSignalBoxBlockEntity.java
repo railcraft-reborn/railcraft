@@ -1,12 +1,12 @@
 package mods.railcraft.world.level.block.entity.signal;
 
 import com.mojang.authlib.GameProfile;
+import mods.railcraft.api.core.Secure;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
 import mods.railcraft.gui.button.SimpleButtonTextureSet;
 import mods.railcraft.plugins.PlayerPlugin;
-import mods.railcraft.util.ISecureObject;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -18,7 +18,7 @@ import net.minecraft.util.text.StringTextComponent;
  * @author CovertJaguar <http://www.railcraft.info/>
  */
 public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements ISecureObject<SecuredSignalBoxBlockEntity.LockButtonState> {
+    implements Secure<SecuredSignalBoxBlockEntity.LockButtonState> {
 
   private final MultiButtonController<LockButtonState> lockController =
       MultiButtonController.create(0, LockButtonState.values());

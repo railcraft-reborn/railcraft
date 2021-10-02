@@ -4,14 +4,15 @@ import java.util.Collections;
 import java.util.List;
 import com.google.common.primitives.Floats;
 import mods.railcraft.Railcraft;
-import mods.railcraft.gui.widget.IGauge;
+import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
-import mods.railcraft.world.level.material.fluid.IFuelProvider;
+import mods.railcraft.world.level.material.fluid.FuelProvider;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
@@ -20,9 +21,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
  * The boiler itself. Used to simulate turning water into steam.
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public class SteamBoiler {
+public class SteamBoiler implements INBTSerializable<CompoundNBT> {
 
-  private final IGauge temperatureGauge = new TemperatureGauge();
+  private final Gauge temperatureGauge = new TemperatureGauge();
 
   private final StandardTank waterTank;
   private final StandardTank steamTank;
@@ -39,7 +40,7 @@ public class SteamBoiler {
   private double efficiencyModifier = 1;
   private int ticksPerCycle = 16;
   private RailcraftBlockEntity tile;
-  private IFuelProvider fuelProvider;
+  private FuelProvider fuelProvider;
 
   public SteamBoiler(StandardTank waterTank, StandardTank tankSteam) {
     this.waterTank = waterTank;
@@ -54,7 +55,7 @@ public class SteamBoiler {
     return this.steamTank;
   }
 
-  public SteamBoiler setFuelProvider(IFuelProvider fuelProvider) {
+  public SteamBoiler setFuelProvider(FuelProvider fuelProvider) {
     this.fuelProvider = fuelProvider;
     return this;
   }
@@ -227,21 +228,25 @@ public class SteamBoiler {
     return steam.getAmount();
   }
 
-  public void writeToNBT(CompoundNBT data) {
-    data.putFloat("temperature", this.temperature);
-    data.putFloat("maxTemperature", this.maxTemperature);
-    data.putFloat("burnTime", this.burnTime);
-    data.putFloat("currentItemBurnTime", this.currentItemBurnTime);
+  @Override
+  public CompoundNBT serializeNBT() {
+    CompoundNBT tag = new CompoundNBT();
+    tag.putFloat("temperature", this.temperature);
+    tag.putFloat("maxTemperature", this.maxTemperature);
+    tag.putFloat("burnTime", this.burnTime);
+    tag.putFloat("currentItemBurnTime", this.currentItemBurnTime);
+    return tag;
   }
 
-  public void readFromNBT(CompoundNBT data) {
-    this.setTemperature(data.getFloat("temperature"));
-    this.setMaxTemperature(data.getFloat("maxTemperature"));
-    this.setBurnTime(data.getFloat("burnTime"));
-    this.setCurrentItemBurnTime(data.getFloat("currentItemBurnTime"));
+  @Override
+  public void deserializeNBT(CompoundNBT tag) {
+    this.setTemperature(tag.getFloat("temperature"));
+    this.setMaxTemperature(tag.getFloat("maxTemperature"));
+    this.setBurnTime(tag.getFloat("burnTime"));
+    this.setCurrentItemBurnTime(tag.getFloat("currentItemBurnTime"));
   }
 
-  public IGauge getTemperatureGauge() {
+  public Gauge getTemperatureGauge() {
     return this.temperatureGauge;
   }
 
@@ -263,7 +268,7 @@ public class SteamBoiler {
     return burnTime;
   }
 
-  private class TemperatureGauge implements IGauge {
+  private class TemperatureGauge implements Gauge {
 
     private List<? extends ITextProperties> tooltip;
 

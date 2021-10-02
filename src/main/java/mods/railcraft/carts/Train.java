@@ -1,7 +1,9 @@
 package mods.railcraft.carts;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,6 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -19,7 +22,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.MapMaker;
-import mods.railcraft.NBTPlugin;
 import mods.railcraft.api.charge.CapabilitiesCharge;
 import mods.railcraft.api.charge.IBatteryCart;
 import mods.railcraft.util.collections.Streams;
@@ -29,13 +31,11 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
@@ -49,53 +49,36 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
 
   private static final Logger logger = LogManager.getLogger();
 
-  private final UUID uuid;
-  private final LinkedList<UUID> carts = new LinkedList<>();
-  private final List<UUID> safeCarts = Collections.unmodifiableList(carts);
+  private static final Map<ServerWorld, Manager> managers = new MapMaker().weakKeys().makeMap();
+
+  private final UUID id;
+  private final Deque<UUID> carts = new LinkedList<>();
+  private final Collection<UUID> safeCarts = Collections.unmodifiableCollection(this.carts);
   private final Set<UUID> locks = new HashSet<>();
-  private @Nullable World world;
+  @Nullable
+  private World level;
   private State state;
   private boolean dirty = true;
-  private boolean isDead;
+  private boolean dead;
 
-  Train(AbstractMinecartEntity cart) {
+  private Train(AbstractMinecartEntity cart) {
     this(UUID.randomUUID(),
         State.NORMAL,
         Collections.singleton(cart.getUUID()),
         Collections.emptySet());
-    this.world = cart.level;
+    this.level = cart.level;
     rebuild(cart);
   }
 
-  Train(UUID id, State state, Collection<UUID> carts, Set<UUID> locks) {
-    this.uuid = id;
+  private Train(UUID id, State state, Collection<UUID> carts, Set<UUID> locks) {
+    this.id = id;
     this.state = state;
     this.carts.addAll(carts);
     this.locks.addAll(locks);
   }
 
-  public static void printDebug(String msg, Object... args) {
-    logger.debug(msg, args);
-  }
-
-  private static Optional<Manager> getManager(@Nullable World world) {
-    return Manager.forWorld(world);
-  }
-
-  public static Object getTicker() {
-    return new Object() {
-
-      int counter = 0;
-
-      @SubscribeEvent
-      public void tick(TickEvent.WorldTickEvent event) {
-        if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
-          counter++;
-          if (counter % 32 == 0)
-            getManager(event.world).ifPresent(Manager::tick);
-        }
-      }
-    };
+  public static Manager getManager(ServerWorld level) {
+    return managers.computeIfAbsent(level, Manager::new);
   }
 
   /**
@@ -106,23 +89,22 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
    * This function is NOT thread safe and will throw an error if called outside the server thread.
    */
   public static Optional<Train> get(@Nullable AbstractMinecartEntity cart) {
-    if (cart == null)
+    if (cart == null || cart.level.isClientSide())
       return Optional.empty();
-    return getManager(cart.level).map(manager -> {
-      Train train = manager.get(getTrainUUID(cart));
-      if (train == null) {
-        train = new Train(cart);
-        manager.put(train.uuid, train);
-        printDebug("Creating new train object: {}", train);
-      } else {
-        train.world = cart.level;
-        if (train.isDead || !train.contains(cart) || train.isInvalid()) {
-          train.kill();
-          return null;
-        }
+    Manager manager = getManager((ServerWorld) cart.level);
+    Train train = manager.get(getTrainUUID(cart));
+    if (train == null) {
+      train = new Train(cart);
+      manager.put(train.id, train);
+      logger.debug("Creating new train object: {}", train);
+    } else {
+      train.level = cart.level;
+      if (train.dead || !train.contains(cart) || train.isInvalid()) {
+        train.kill();
+        return Optional.empty();
       }
-      return train;
-    });
+    }
+    return Optional.of(train);
   }
 
   /**
@@ -132,17 +114,13 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
    *
    * This function is thread safe.
    */
-  public static Optional<Train> getExisting(@Nullable AbstractMinecartEntity cart) {
-    if (cart == null)
-      return Optional.empty();
-    Optional<Train> train = getManager(cart.level).map(manager -> manager.get(getTrainUUID(cart)));
-    train.ifPresent(t -> t.world = cart.level);
-    return train;
+  public static Optional<Train> getExisting(AbstractMinecartEntity cart) {
+    return Optional.ofNullable(getManager((ServerWorld) cart.level).get(getTrainUUID(cart)));
   }
 
   @Override
   public String toString() {
-    return String.format("Train{id=%s,n=%d}", uuid, size());
+    return String.format("Train{id=%s,n=%d}", id, size());
   }
 
   /**
@@ -153,7 +131,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return get(cart).map(Train::stream).orElseGet(() -> Stream.of(cart));
   }
 
-  public static @Nullable UUID getTrainUUID(AbstractMinecartEntity cart) {
+  @Nullable
+  public static UUID getTrainUUID(AbstractMinecartEntity cart) {
     CompoundNBT nbt = cart.getPersistentData();
     return nbt.hasUUID(TRAIN_NBT) ? nbt.getUUID(TRAIN_NBT) : null;
   }
@@ -201,50 +180,50 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   public void addTrainTag(AbstractMinecartEntity cart) {
-    UUID trainId = getUUID();
+    UUID trainId = this.getId();
     cart.getPersistentData().put(TRAIN_NBT, NBTUtil.createUUID(trainId));
   }
 
-  private @Nullable AbstractMinecartEntity getCart(UUID cartID) {
-    Objects.requireNonNull(world);
-    return CartTools.getCartFromUUID(world, cartID);
+  @Nullable
+  private AbstractMinecartEntity getCart(UUID cartID) {
+    Objects.requireNonNull(this.level);
+    return CartTools.getCartFromUUID(this.level, cartID);
   }
 
   private void rebuild(AbstractMinecartEntity first) {
-    clear();
-    rebuild(null, first);
-    markDirty();
+    this.clear();
+    this.rebuild(null, first);
+    this.markDirty();
   }
 
   private void rebuild(@Nullable AbstractMinecartEntity prev, AbstractMinecartEntity next) {
-    if (prev == null || carts.getFirst() == prev.getUUID())
-      carts.addFirst(next.getUUID());
+    if (prev == null || this.carts.getFirst() == prev.getUUID())
+      this.carts.addFirst(next.getUUID());
     else if (carts.getLast() == prev.getUUID())
-      carts.addLast(next.getUUID());
+      this.carts.addLast(next.getUUID());
     else
       throw new IllegalStateException("Passed a non-null prev value on an empty train!");
 
     getExisting(next).filter(t -> t != this).ifPresent(Train::kill);
-    addTrainTag(next);
+    this.addTrainTag(next);
 
-    LinkageManager lm = LinkageManager.INSTANCE;
-    AbstractMinecartEntity linkA = lm.getLinkedCartA(next);
-    AbstractMinecartEntity linkB = lm.getLinkedCartB(next);
+    AbstractMinecartEntity linkA = LinkageManager.INSTANCE.getLinkedCartA(next);
+    AbstractMinecartEntity linkB = LinkageManager.INSTANCE.getLinkedCartB(next);
 
-    if (linkA != null && linkA != prev && !contains(linkA))
-      rebuild(next, linkA);
+    if (linkA != null && linkA != prev && !this.contains(linkA))
+      this.rebuild(next, linkA);
 
-    if (linkB != null && linkB != prev && !contains(linkB))
-      rebuild(next, linkB);
+    if (linkB != null && linkB != prev && !this.contains(linkB))
+      this.rebuild(next, linkB);
   }
 
   private boolean isInvalid() {
-    return isEmpty() || carts.stream().anyMatch(this::isCartInvalid);
+    return this.isEmpty() || this.carts.stream().anyMatch(this::isCartInvalid);
   }
 
   private boolean isCartInvalid(UUID cartID) {
     AbstractMinecartEntity cart = getCart(cartID);
-    return cart != null && !uuid.equals(getTrainUUID(cart));
+    return cart != null && !this.id.equals(getTrainUUID(cart));
   }
 
   /**
@@ -259,36 +238,36 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   public void kill() {
-    isDead = true;
+    this.dead = true;
   }
 
   private void clear() {
-    forEach(Train::removeTrainTag);
-    carts.clear();
-    markDirty();
+    this.forEach(Train::removeTrainTag);
+    this.carts.clear();
+    this.markDirty();
   }
 
-  public UUID getUUID() {
-    return uuid;
+  public UUID getId() {
+    return this.id;
   }
 
   public boolean contains(@Nullable AbstractMinecartEntity cart) {
-    return cart != null && carts.contains(cart.getUUID());
+    return cart != null && this.carts.contains(cart.getUUID());
   }
 
   public boolean contains(@Nullable UUID cart) {
-    return cart != null && carts.contains(cart);
+    return cart != null && this.carts.contains(cart);
   }
 
   public boolean isTrainEnd(@Nullable AbstractMinecartEntity cart) {
-    return cart != null && getEnds().contains(cart.getUUID());
+    return cart != null && this.getEnds().contains(cart.getUUID());
   }
 
   public Collection<UUID> getEnds() {
     Set<UUID> ends = new HashSet<>();
-    if (!carts.isEmpty()) {
-      ends.add(carts.getFirst());
-      ends.add(carts.getLast());
+    if (!this.carts.isEmpty()) {
+      ends.add(this.carts.getFirst());
+      ends.add(this.carts.getLast());
     }
     return ends;
   }
@@ -323,8 +302,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return stream(cartClass).collect(Collectors.toList());
   }
 
-  public List<UUID> getUUIDs() {
-    return safeCarts;
+  public Collection<UUID> getCarts() {
+    return this.safeCarts;
   }
 
   public Optional<IItemHandlerModifiable> getItemHandler() {
@@ -358,8 +337,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   private float softMaxSpeed(AbstractMinecartEntity cart) {
-    if (cart instanceof IWeightedCart)
-      return ((IWeightedCart) cart).softMaxSpeed();
+    if (cart instanceof WeightedCart)
+      return ((WeightedCart) cart).softMaxSpeed();
     return cart.getCapability(CapabilitiesCharge.CART_BATTERY)
         .filter(bat -> bat.getType() != IBatteryCart.Type.USER)
         .map(bat -> 0.03F).orElse(cart.getMaxCartSpeedOnRail());
@@ -400,11 +379,29 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     }
   }
 
-  public enum State {
+  public enum State implements IStringSerializable {
 
-    STOPPED,
-    IDLE,
-    NORMAL
+    STOPPED("stopped"),
+    IDLE("idle"),
+    NORMAL("normal");
+
+    private static final Map<String, State> byName = Arrays.stream(values())
+        .collect(Collectors.toMap(State::getSerializedName, Function.identity()));
+
+    private final String name;
+
+    private State(String name) {
+      this.name = name;
+    }
+
+    @Override
+    public String getSerializedName() {
+      return this.name;
+    }
+
+    public static Optional<State> getByName(String name) {
+      return Optional.ofNullable(byName.get(name));
+    }
   }
 
   @Override
@@ -416,33 +413,36 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
       return false;
     }
     Train other = (Train) obj;
-    return uuid.equals(other.uuid);
+    return id.equals(other.id);
   }
 
   @Override
   public int hashCode() {
-    return uuid.hashCode();
+    return id.hashCode();
   }
 
-  static @Nullable Train readFromNBT(CompoundNBT tag) {
+  @Nullable
+  static Train readFromNBT(CompoundNBT tag) {
     if (!tag.hasUUID("id")) {
       return null;
     }
     UUID id = tag.getUUID("id");
-    State state = NBTPlugin.readEnumOrdinal(tag, "state", State.values(), State.NORMAL);
+    State state = State.getByName(tag.getString("state")).orElse(State.NORMAL);
     List<UUID> carts = tag.getList("carts", Constants.NBT.TAG_INT_ARRAY).stream()
-        .map(NBTUtil::loadUUID).collect(Collectors.toList());
+        .map(NBTUtil::loadUUID)
+        .collect(Collectors.toList());
     Set<UUID> locks = tag.getList("locks", Constants.NBT.TAG_INT_ARRAY).stream()
-        .map(NBTUtil::loadUUID).collect(Collectors.toSet());
+        .map(NBTUtil::loadUUID)
+        .collect(Collectors.toSet());
     return new Train(id, state, carts, locks);
   }
 
   void writeToNBT(CompoundNBT tag) {
-    tag.putUUID("id", uuid);
-    NBTPlugin.writeEnumOrdinal(tag, "state", state);
+    tag.putUUID("id", this.id);
+    tag.putString("state", this.state.getSerializedName());
     ListNBT listTag = new ListNBT();
-    for (UUID uuid : carts) {
-      listTag.add(NBTUtil.createUUID(uuid));
+    for (UUID id : this.carts) {
+      listTag.add(NBTUtil.createUUID(id));
     }
     tag.put("carts", listTag);
 
@@ -467,48 +467,36 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
 
   public static final class Manager extends ForwardingMap<UUID, Train> {
 
-    private static final Map<ServerWorld, Manager> instances = new MapMaker().weakKeys().makeMap();
 
-    final World world;
+    final World level;
     final SaveData data;
 
-    private Manager(ServerWorld world) {
-      this.world = world;
-      this.data = makeData(world);
-    }
-
-    private static Optional<Manager> forWorld(@Nullable World world) {
-      if (world == null || world.isClientSide())
-        return Optional.empty();
-      return Optional.of(instances.computeIfAbsent((ServerWorld) world, Manager::new));
-    }
-
-    private static SaveData makeData(ServerWorld world) {
-      return world.getDataStorage().computeIfAbsent(SaveData::new, SaveData.ID);
+    private Manager(ServerWorld level) {
+      this.level = level;
+      this.data = level.getDataStorage().computeIfAbsent(SaveData::new, SaveData.ID);
     }
 
     public static void clearTrains() {
-      instances.values().forEach(ForwardingMap::clear);
+      managers.values().forEach(ForwardingMap::clear);
     }
 
     @Override
     protected Map<UUID, Train> delegate() {
-      return data.trains;
+      return this.data.trains;
     }
 
     public void tick() {
       Iterator<Train> it = values().iterator();
       while (it.hasNext()) {
         Train train = it.next();
-        train.world = world;
-        if (train.isDead || train.isInvalid()) {
+        train.level = level;
+        if (train.dead || train.isInvalid()) {
           train.clear();
           it.remove();
           data.setDirty();
         }
       }
     }
-
   }
 
   public static final class SaveData extends WorldSavedData {
@@ -559,7 +547,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
       for (INBT each : nbt.getList("trains", Constants.NBT.TAG_COMPOUND)) {
         Train train = Train.readFromNBT((CompoundNBT) each);
         if (train != null)
-          trains.put(train.getUUID(), train);
+          trains.put(train.getId(), train);
       }
       logger.debug("Loaded {} trains", trains.size());
     }

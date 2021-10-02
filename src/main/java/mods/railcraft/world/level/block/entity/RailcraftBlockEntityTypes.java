@@ -7,7 +7,7 @@ import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DistantSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DualDistantSignalBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.DualSignalBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.DualBlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DualTokenSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
@@ -56,7 +56,7 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<TileEntityType<BlockSignalRelayBoxBlockEntity>> SIGNAL_RELAY_BOX =
       BLOCK_ENTITY_TYPES.register("signal_relay_box",
           () -> TileEntityType.Builder
-              .of(BlockSignalRelayBoxBlockEntity::new, RailcraftBlocks.SIGNAL_RELAY_BOX.get())
+              .of(BlockSignalRelayBoxBlockEntity::new, RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get())
               .build(null));
 
   public static final RegistryObject<TileEntityType<SignalReceiverBoxBlockEntity>> SIGNAL_RECEIVER_BOX =
@@ -71,10 +71,10 @@ public class RailcraftBlockEntityTypes {
               .of(SignalControllerBoxBlockEntity::new, RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<DualSignalBlockEntity>> DUAL_SIGNAL =
+  public static final RegistryObject<TileEntityType<DualBlockSignalBlockEntity>> DUAL_SIGNAL =
       BLOCK_ENTITY_TYPES.register("dual_signal",
           () -> TileEntityType.Builder
-              .of(DualSignalBlockEntity::new, RailcraftBlocks.DUAL_SIGNAL.get())
+              .of(DualBlockSignalBlockEntity::new, RailcraftBlocks.DUAL_BLOCK_SIGNAL.get())
               .build(null));
 
   public static final RegistryObject<TileEntityType<DualDistantSignalBlockEntity>> DUAL_DISTANT_SIGNAL =
@@ -89,8 +89,8 @@ public class RailcraftBlockEntityTypes {
               .of(DualTokenSignalBlockEntity::new, RailcraftBlocks.DUAL_TOKEN_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<BlockSignalBlockEntity>> SIGNAL =
-      BLOCK_ENTITY_TYPES.register("signal",
+  public static final RegistryObject<TileEntityType<BlockSignalBlockEntity>> BLOCK_SIGNAL =
+      BLOCK_ENTITY_TYPES.register("block_signal",
           () -> TileEntityType.Builder
               .of(BlockSignalBlockEntity::new, RailcraftBlocks.SIGNAL.get())
               .build(null));
@@ -140,6 +140,6 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<TileEntityType<?>> ROLLING_TABLE_MANUAL =
       BLOCK_ENTITY_TYPES.register("rolling_table_manual",
           () -> TileEntityType.Builder
-            .of(RollingTableEntity::new, RailcraftBlocks.ROLLING_TABLE.get())
+            .of(RollingTableEntity::new, RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
             .build(null));
 }

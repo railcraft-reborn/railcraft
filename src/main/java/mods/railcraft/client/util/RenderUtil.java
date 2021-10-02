@@ -4,6 +4,9 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 
@@ -28,6 +31,20 @@ public class RenderUtil {
 
   public static float getAlpha(int color) {
     return (color >> 24 & 0xFF) / 255.0F;
+  }
+
+  public static void renderBlockHoverText(BlockPos blockPos, ITextComponent text,
+      MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight) {
+    if (minecraft.hitResult != null
+        && minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK
+        && ((BlockRayTraceResult) minecraft.hitResult).getBlockPos().equals(blockPos)) {
+      matrixStack.pushPose();
+      {
+        matrixStack.translate(0.5D, 1.5D, 0.5D);
+        renderWorldText(minecraft.font, text, matrixStack, renderTypeBuffer, packedLight);
+      }
+      matrixStack.popPose();
+    }
   }
 
   public static void renderWorldText(FontRenderer font, ITextComponent text,

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import javax.annotation.Nullable;
-import mods.railcraft.plugins.WorldPlugin;
+import mods.railcraft.plugins.LevelUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -39,7 +39,7 @@ public final class AdjacentBlockEntityCache {
   }
 
   private @Nullable TileEntity searchSide(Direction side) {
-    return WorldPlugin.getBlockTileWeak(this.blockEntity.getLevel(),
+    return LevelUtil.getBlockEntityWeak(this.blockEntity.getLevel(),
         this.blockEntity.getBlockPos().relative(side));
   }
 

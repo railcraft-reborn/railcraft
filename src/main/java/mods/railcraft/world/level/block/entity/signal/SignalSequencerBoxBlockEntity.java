@@ -3,8 +3,9 @@ package mods.railcraft.world.level.block.entity.signal;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
-import mods.railcraft.api.signals.SignalAspect;
+import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.plugins.PowerPlugin;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,13 +15,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 
 public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
     implements SignalEmitter {
 
   private static final int MAX_ITERATIONS = 64;
-  private Direction sideOutput = Direction.NORTH;
+  private Direction outputDirection = Direction.NORTH;
   private boolean signal;
   private boolean neighborSignal;
 
@@ -30,7 +30,6 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
   @Override
   public void neighborChanged() {
-    super.neighborChanged();
     if (this.level.isClientSide())
       return;
     boolean signal = PowerPlugin.hasRepeaterSignal(this.level, this.getBlockPos());
@@ -50,7 +49,7 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
       return;
     if (neighbor instanceof SignalCapacitorBoxBlockEntity)
       return;
-    boolean signal = neighbor.isEmittingRedstone(side);
+    boolean signal = neighbor.getRedstoneSignal(side) > 0;
     if (!this.neighborSignal && signal) {
       this.neighborSignal = true;
       this.incrementSequencer(true, new HashSet<>(), 0);
@@ -62,44 +61,46 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
       int numberOfIterations) {
     if (firstPass) {
       visitedFirstPass.add(this);
-      TileEntity tile = this.adjacentCache.getTileOnSide(this.sideOutput);
-      if (tile instanceof SignalSequencerBoxBlockEntity && !visitedFirstPass.contains(tile)) {
-        SignalSequencerBoxBlockEntity box = (SignalSequencerBoxBlockEntity) tile;
-        box.incrementSequencer(true, visitedFirstPass, numberOfIterations);
+      TileEntity blockEntity =
+          this.level.getBlockEntity(this.getBlockPos().relative(this.outputDirection));
+      if (blockEntity instanceof SignalSequencerBoxBlockEntity
+          && !visitedFirstPass.contains(blockEntity)) {
+        SignalSequencerBoxBlockEntity signalBox = (SignalSequencerBoxBlockEntity) blockEntity;
+        signalBox.incrementSequencer(true, visitedFirstPass, numberOfIterations);
         return;
       }
     }
 
-    Direction newSide = this.sideOutput.getClockWise();
-    while (newSide != sideOutput && !canOutputToSide(newSide)) {
-      newSide = newSide.getClockWise();
+    Direction outputDirection = this.outputDirection.getClockWise();
+    while (outputDirection != this.outputDirection && !this.canOutputToSide(outputDirection)) {
+      outputDirection = outputDirection.getClockWise();
     }
-    sideOutput = newSide;
-    updateNeighbors();
+    this.outputDirection = outputDirection;
+    this.updateNeighbors();
 
     if (numberOfIterations >= MAX_ITERATIONS)
       return;
 
-    TileEntity tile = this.adjacentCache.getTileOnSide(sideOutput);
-    if (tile instanceof SignalSequencerBoxBlockEntity) {
-      SignalSequencerBoxBlockEntity box = (SignalSequencerBoxBlockEntity) tile;
-      box.incrementSequencer(false, visitedFirstPass, numberOfIterations + 1);
+    TileEntity blockEntity =
+        this.level.getBlockEntity(this.getBlockPos().relative(this.outputDirection));
+    if (blockEntity instanceof SignalSequencerBoxBlockEntity) {
+      SignalSequencerBoxBlockEntity signalBox = (SignalSequencerBoxBlockEntity) blockEntity;
+      signalBox.incrementSequencer(false, visitedFirstPass, numberOfIterations + 1);
     }
   }
 
-  private boolean canOutputToSide(Direction side) {
-    TileEntity tile = this.adjacentCache.getTileOnSide(side);
-    if (tile instanceof SignalSequencerBoxBlockEntity)
+  private boolean canOutputToSide(Direction direction) {
+    BlockState blockState = this.level.getBlockState(this.getBlockPos().relative(direction));
+    if (blockState.is(this.getBlockState().getBlock())
+        || blockState.is(RailcraftTags.Blocks.ASPECT_RECEIVER))
       return true;
-    if (tile instanceof AbstractSignalBoxBlockEntity)
-      return ((AbstractSignalBoxBlockEntity) tile).canReceiveAspect();
-    BlockState state = this.level.getBlockState(this.getBlockPos().relative(side));
-    Block block = state.getBlock();
-    if (block == Blocks.REDSTONE_WIRE)
+    Block block = blockState.getBlock();
+    if (block == Blocks.REDSTONE_WIRE) {
       return true;
+    }
     if (block == Blocks.REPEATER) {
-      Direction inputSide = state.getValue(HorizontalBlock.FACING);
-      return side.getOpposite() == inputSide;
+      Direction facing = blockState.getValue(HorizontalBlock.FACING);
+      return direction.getOpposite() == facing;
     }
     return false;
   }
@@ -112,30 +113,24 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public int getSignal(Direction direction) {
-    TileEntity blockEntity = this.adjacentCache.getTileOnSide(direction.getOpposite());
-    return blockEntity instanceof AbstractSignalBoxBlockEntity
-        ? PowerPlugin.NO_POWER
-        : this.sideOutput.getOpposite() == direction
-            ? PowerPlugin.FULL_POWER
-            : PowerPlugin.NO_POWER;
+  public int getRedstoneSignal(Direction direction) {
+    return this.level.getBlockState(this.getBlockPos().relative(direction))
+        .is(RailcraftTags.Blocks.SIGNAL_BOX)
+            ? PowerPlugin.NO_POWER
+            : this.outputDirection.getOpposite() == direction
+                ? PowerPlugin.FULL_POWER
+                : PowerPlugin.NO_POWER;
   }
 
   @Override
-  public boolean isEmittingRedstone(Direction side) {
-    return this.sideOutput == side;
+  public SignalAspect getSignalAspect(@Nullable Direction side) {
+    return this.outputDirection == side ? SignalAspect.GREEN : SignalAspect.RED;
   }
-
-  @Override
-  public SignalAspect getBoxSignalAspect(@Nullable Direction side) {
-    return this.sideOutput == side ? SignalAspect.GREEN : SignalAspect.RED;
-  }
-
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    data.putInt("sideOutput", this.sideOutput.get3DDataValue());
+    data.putInt("sideOutput", this.outputDirection.get3DDataValue());
     data.putBoolean("powerState", this.signal);
     data.putBoolean("neighborState", this.neighborSignal);
     return data;
@@ -144,7 +139,7 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-    this.sideOutput = Direction.from3DDataValue(data.getInt("sideOutput"));
+    this.outputDirection = Direction.from3DDataValue(data.getInt("sideOutput"));
     this.signal = data.getBoolean("powerState");
     this.neighborSignal = data.getBoolean("neighborState");
   }
@@ -152,28 +147,12 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    data.writeVarInt(this.sideOutput.get3DDataValue());
+    data.writeVarInt(this.outputDirection.get3DDataValue());
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    this.sideOutput = Direction.from3DDataValue(data.readVarInt());
-  }
-
-  @Override
-  public boolean attachesTo(BlockState state, BlockPos pos, Direction side) {
-    return this.adjacentCache.getTileOnSide(side) instanceof SignalSequencerBoxBlockEntity
-        || super.attachesTo(state, pos, side);
-  }
-
-  @Override
-  public boolean canTransferAspect() {
-    return true;
-  }
-
-  @Override
-  public boolean canReceiveAspect() {
-    return true;
+    this.outputDirection = Direction.from3DDataValue(data.readVarInt());
   }
 }

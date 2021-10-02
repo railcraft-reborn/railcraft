@@ -3,7 +3,7 @@ package mods.railcraft.world.item;
 import java.util.Random;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
-import mods.railcraft.plugins.WorldPlugin;
+import mods.railcraft.plugins.LevelUtil;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
@@ -117,7 +117,7 @@ public class FirestoneItem extends Item {
 
     BlockPos firePos = new BlockPos(x, y, z);
     return canBurn(world, firePos)
-        && WorldPlugin.setBlockState(world, firePos, Blocks.FIRE.defaultBlockState(), holder);
+        && LevelUtil.setBlockState(world, firePos, Blocks.FIRE.defaultBlockState(), holder);
   }
 
   @SuppressWarnings("deprecation")

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "railcraft:signal_capacitor_box",
+    "railcraft:signal_controller_box",
+    "railcraft:signal_interlock_box",
+    "railcraft:signal_sequencer_box"
+  ]
+}

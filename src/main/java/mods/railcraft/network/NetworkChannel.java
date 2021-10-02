@@ -3,12 +3,10 @@ package mods.railcraft.network;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.network.play.PacketEffect;
-import mods.railcraft.network.play.RequestNetworkPeersSyncMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
 import mods.railcraft.network.play.SetMenuStringMessage;
 import mods.railcraft.network.play.SyncEntityMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
-import mods.railcraft.network.play.SyncNetworkPeersMessage;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -48,18 +46,6 @@ public enum NetworkChannel {
           .encoder(SetLocomotiveAttributesMessage::encode)
           .decoder(SetLocomotiveAttributesMessage::decode)
           .consumer(SetLocomotiveAttributesMessage::handle)
-          .add();
-      simpleChannel
-          .messageBuilder(SyncNetworkPeersMessage.class, 0x05, NetworkDirection.PLAY_TO_CLIENT)
-          .encoder(SyncNetworkPeersMessage::encode)
-          .decoder(SyncNetworkPeersMessage::decode)
-          .consumer(SyncNetworkPeersMessage::handle)
-          .add();
-      simpleChannel
-          .messageBuilder(RequestNetworkPeersSyncMessage.class, 0x06, NetworkDirection.PLAY_TO_SERVER)
-          .encoder(RequestNetworkPeersSyncMessage::encode)
-          .decoder(RequestNetworkPeersSyncMessage::decode)
-          .consumer(RequestNetworkPeersSyncMessage::handle)
           .add();
     }
   };

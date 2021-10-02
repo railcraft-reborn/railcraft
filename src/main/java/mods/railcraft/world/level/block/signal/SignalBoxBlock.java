@@ -1,10 +1,10 @@
 package mods.railcraft.world.level.block.signal;
 
 import java.util.function.Supplier;
-import mods.railcraft.plugins.WorldPlugin;
-import mods.railcraft.util.ISecureObject;
+import mods.railcraft.api.core.Secure;
+import mods.railcraft.plugins.LevelUtil;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.SignalEmitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FourWayBlock;
@@ -68,17 +68,21 @@ public class SignalBoxBlock extends FourWayBlock {
   @Override
   public void neighborChanged(BlockState state, World level, BlockPos pos,
       Block neighborBlock, BlockPos neighborPos, boolean p_220069_6_) {
-    WorldPlugin.getTileEntity(level, pos, AbstractSignalBoxBlockEntity.class)
-        .ifPresent(entity -> entity.neighborChanged());
+    LevelUtil.getBlockEntity(level, pos, AbstractSignalBoxBlockEntity.class)
+        .ifPresent(AbstractSignalBoxBlockEntity::neighborChanged);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public int getSignal(BlockState state, IBlockReader reader, BlockPos pos,
+  public boolean isSignalSource(BlockState blockState) {
+    return true;
+  }
+
+  @Override
+  public int getSignal(BlockState state, IBlockReader level, BlockPos pos,
       Direction direction) {
-    return WorldPlugin.getTileEntity(reader, pos, SignalEmitter.class)
-        .map(entity -> entity.getSignal(direction))
-        .orElseGet(() -> super.getSignal(state, reader, pos, direction));
+    return LevelUtil.getBlockEntity(level, pos, AbstractSignalBoxBlockEntity.class)
+        .map(blockEntity -> blockEntity.getRedstoneSignal(direction))
+        .orElse(0);
   }
 
   @Override
@@ -98,21 +102,37 @@ public class SignalBoxBlock extends FourWayBlock {
 
   @SuppressWarnings("deprecation")
   @Override
-  public BlockState updateShape(BlockState state, Direction direction,
+  public BlockState updateShape(BlockState blockState, Direction direction,
       BlockState otherState, IWorld world, BlockPos pos, BlockPos otherPos) {
-    if (state.getValue(WATERLOGGED)) {
+    if (blockState.getValue(WATERLOGGED)) {
       world.getLiquidTicks().scheduleTick(pos, Fluids.WATER,
           Fluids.WATER.getTickDelay(world));
     }
-
     return direction.getAxis().isHorizontal()
-        ? state.setValue(PROPERTY_BY_DIRECTION.get(direction),
-            WorldPlugin.getTileEntity(world, pos, AbstractSignalBoxBlockEntity.class)
-                .map(entity -> entity.attachesTo(otherState, otherPos, direction))
-                .orElse(false))
+        ? blockState.setValue(PROPERTY_BY_DIRECTION.get(direction),
+            attachesTo(blockState, otherState))
         : direction == Direction.UP
-            ? state.setValue(CAP, !otherState.isAir(world, otherPos))
-            : state;
+            ? blockState.setValue(CAP, !otherState.isAir(world, otherPos))
+            : blockState;
+  }
+
+  public boolean attachesTo(BlockState blockState, BlockState otherBlockState) {
+    if (!isAspectEmitter(blockState) && !isAspectReceiver(blockState)) {
+      return false;
+    }
+    if (isAspectReceiver(blockState) && isAspectEmitter(otherBlockState)
+        || isAspectEmitter(blockState) && isAspectReceiver(otherBlockState)) {
+      return true;
+    }
+    return false;
+  }
+
+  public static boolean isAspectEmitter(BlockState blockState) {
+    return blockState.is(RailcraftTags.Blocks.ASPECT_EMITTER);
+  }
+
+  public static boolean isAspectReceiver(BlockState blockState) {
+    return blockState.is(RailcraftTags.Blocks.ASPECT_RECEIVER);
   }
 
   @Override
@@ -129,11 +149,9 @@ public class SignalBoxBlock extends FourWayBlock {
   @Override
   public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader worldIn,
       BlockPos pos) {
-    if (WorldPlugin.getTileEntity(worldIn, pos, ISecureObject.class)
-        .map(ISecureObject::isSecure)
-        .orElse(false)) {
-      return 0.0F;
-    }
-    return super.getDestroyProgress(state, player, worldIn, pos);
+    return LevelUtil.getBlockEntity(worldIn, pos, Secure.class)
+        .filter(Secure::isSecure)
+        .map(__ -> 0.0F)
+        .orElseGet(() -> super.getDestroyProgress(state, player, worldIn, pos));
   }
 }

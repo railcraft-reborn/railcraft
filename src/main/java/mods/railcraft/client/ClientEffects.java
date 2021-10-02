@@ -3,10 +3,10 @@ package mods.railcraft.client;
 import java.util.Random;
 import java.util.Set;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.signals.ILinkEffectRenderer;
-import mods.railcraft.api.signals.SignalTools;
+import mods.railcraft.api.signal.TuningAuraHelper;
+import mods.railcraft.api.signal.SignalTools;
 import mods.railcraft.particle.RailcraftParticles;
-import mods.railcraft.plugins.SeasonPlugin;
+import mods.railcraft.season.Seasons;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.block.Block;
@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public enum ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRenderer {
+public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer {
 
   INSTANCE;
 
@@ -101,7 +101,7 @@ public enum ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRende
   }
 
   @Override
-  public void tuningEffect(TileEntity start, TileEntity dest) {
+  public void spawnTuningAuraParticles(TileEntity start, TileEntity dest) {
     // if (thinParticles(false))
     // return;
     // if (rand.nextInt(2) == 0) {
@@ -251,7 +251,7 @@ public enum ClientEffects implements ILinkEffectRenderer, Charge.IZapEffectRende
   public void locomotiveEffect(double x, double y, double z) {
     if (thinParticles(false))
       return;
-    if (SeasonPlugin.HALLOWEEN && rand.nextInt(4) == 0) { // 20%?
+    if (Seasons.HALLOWEEN && rand.nextInt(4) == 0) { // 20%?
       BasicParticleType spook = new BasicParticleType(false){
         @Override
         public BasicParticleType getType() {

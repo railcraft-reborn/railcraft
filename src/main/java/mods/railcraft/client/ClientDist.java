@@ -1,10 +1,9 @@
 package mods.railcraft.client;
 
 import org.apache.commons.lang3.tuple.Pair;
-
-import mods.railcraft.IRailcraftDist;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.signals.SignalAspect;
+import mods.railcraft.RailcraftDist;
+import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.RollingTableScreen;
@@ -14,24 +13,25 @@ import mods.railcraft.client.particle.ParticleSpark;
 import mods.railcraft.client.particle.ParticleSteam;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
+import mods.railcraft.client.renderer.blockentity.AnalogSignalControllerBoxRenderer;
+import mods.railcraft.client.renderer.blockentity.BlockSignalRelayBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.DualSignalRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalCapacitorBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalControllerBoxRenderer;
+import mods.railcraft.client.renderer.blockentity.SignalInterlockBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalReceiverBoxRenderer;
-import mods.railcraft.client.renderer.blockentity.SignalRelayBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalRenderer;
+import mods.railcraft.client.renderer.blockentity.SignalSequencerBoxRenderer;
 import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
 import mods.railcraft.client.renderer.model.TextureReplacementModel;
 import mods.railcraft.particle.RailcraftParticles;
-import mods.railcraft.plugins.WorldPlugin;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -60,7 +60,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-public class ClientDist implements IRailcraftDist {
+public class ClientDist implements RailcraftDist {
 
   public static final ClientConfig clientConfig;
   public static final ForgeConfigSpec clientConfigSpec;
@@ -121,14 +121,14 @@ public class ClientDist implements IRailcraftDist {
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.TOKEN_SIGNAL.get(),
         RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.DUAL_SIGNAL.get(),
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
         RenderType.cutout());
 
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL.get(),
+    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.BLOCK_SIGNAL.get(),
         SignalRenderer::new);
     ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.DISTANT_SIGNAL.get(),
         SignalRenderer::new);
@@ -147,8 +147,14 @@ public class ClientDist implements IRailcraftDist {
     ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_RECEIVER_BOX.get(),
         SignalReceiverBoxRenderer::new);
     ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_RELAY_BOX.get(),
-        SignalRelayBoxRenderer::new);
-
+        BlockSignalRelayBoxRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(
+        RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
+        AnalogSignalControllerBoxRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_SEQUENCER_BOX.get(),
+        SignalSequencerBoxRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get(),
+        SignalInterlockBoxRenderer::new);
     ScreenManager.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
         CreativeLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
@@ -172,10 +178,7 @@ public class ClientDist implements IRailcraftDist {
 
   private void handleBlockColors(ColorHandlerEvent.Block event) {
     event.getBlockColors()
-        .register((state, worldIn, pos, tintIndex) -> WorldPlugin
-            .getTileEntity(worldIn, pos, ForceTrackEmitterBlockEntity.class)
-            .map(ForceTrackEmitterBlockEntity::getColor)
-            .orElse(ForceTrackEmitterBlock.DEFAULT_COLOR)
+        .register((state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR)
             .getColorValue(), RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
     event.getBlockColors().register(
@@ -209,7 +212,7 @@ public class ClientDist implements IRailcraftDist {
       event.addSprite(SignalControllerBoxRenderer.TEXTURE_LOCATION);
       event.addSprite(SignalCapacitorBoxRenderer.TEXTURE_LOCATION);
       event.addSprite(SignalReceiverBoxRenderer.TEXTURE_LOCATION);
-      event.addSprite(SignalRelayBoxRenderer.TEXTURE_LOCATION);
+      event.addSprite(BlockSignalRelayBoxRenderer.TEXTURE_LOCATION);
       event.addSprite(AbstractSignalBoxRenderer.BOTTOM_TEXTURE_LOCATION);
       event.addSprite(AbstractSignalBoxRenderer.CONNECTED_SIDE_TEXTURE_LOCATION);
       event.addSprite(AbstractSignalBoxRenderer.SIDE_TEXTURE_LOCATION);
@@ -218,9 +221,12 @@ public class ClientDist implements IRailcraftDist {
 
   private void handleParticleRegistration(ParticleFactoryRegisterEvent event) {
     final ParticleManager particleEngine = this.minecraft.particleEngine;
-    particleEngine.register(RailcraftParticles.STEAM.get(), ParticleSteam.SteamParticleFactory::new);
-    particleEngine.register(RailcraftParticles.SPARK.get(), ParticleSpark.SparkParticleFactory::new);
-    particleEngine.register(RailcraftParticles.PUMPKIN.get(), ParticlePumpkin.PumpkinParticleFactory::new);
+    particleEngine.register(RailcraftParticles.STEAM.get(),
+        ParticleSteam.SteamParticleFactory::new);
+    particleEngine.register(RailcraftParticles.SPARK.get(),
+        ParticleSpark.SparkParticleFactory::new);
+    particleEngine.register(RailcraftParticles.PUMPKIN.get(),
+        ParticlePumpkin.PumpkinParticleFactory::new);
   }
 
   // ================================================================================
@@ -230,9 +236,9 @@ public class ClientDist implements IRailcraftDist {
   @SubscribeEvent
   public void handleClientTick(TickEvent.ClientTickEvent event) {
     if (event.phase == Phase.START
-      && (this.minecraft.level != null && !this.minecraft.isPaused())) {
-        // switch this to a switch if we have more args to go about
-        SignalAspect.tickBlinkState();
+        && (this.minecraft.level != null && !this.minecraft.isPaused())) {
+      // switch this to a switch if we have more args to go about
+      SignalAspect.tickBlinkState();
     }
   }
 }

@@ -16,8 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * The heart of the Charge system is here.
@@ -130,7 +128,7 @@ public enum Charge {
    *
    * @throws mods.railcraft.api.core.ClientAccessException if you call it from the client thread.
    */
-  public INetwork network(IWorld world) {
+  public Charge.Network network(IWorld world) {
     return manager.network(world);
   }
 
@@ -153,8 +151,8 @@ public enum Charge {
     /**
      * The network is the primary means of interfacing with charge.
      */
-    default INetwork network(IWorld world) {
-      return new INetwork() {};
+    default Network network(IWorld world) {
+      return new Network() {};
     }
   }
 
@@ -163,7 +161,7 @@ public enum Charge {
    *
    * @author CovertJaguar <http://www.railcraft.info>
    */
-  public interface INetwork {
+  public interface Network {
 
     /**
      * Queues the node to be added to the network.
@@ -282,7 +280,6 @@ public enum Charge {
      *        {@code rand.nextInt(chance) == 0} Most blocks use 50, tracks use 75. Lower numbers
      *        means more frequent sparks.
      */
-    @OnlyIn(Dist.CLIENT)
     default void throwSparks(BlockState state, World world, BlockPos pos, Random rand,
         int chance) {}
 
@@ -292,7 +289,6 @@ public enum Charge {
      * @param source Can be a TileEntity, Entity, BlockPos, or Vector3d
      * @throws IllegalArgumentException If source is of an unexpected type.
      */
-    @OnlyIn(Dist.CLIENT)
     default void zapEffectPoint(World world, Vector3d source) {}
 
     /**
@@ -301,13 +297,11 @@ public enum Charge {
      * @param source Can be a TileEntity, Entity, BlockPos, or Vector3d
      * @throws IllegalArgumentException If source is of an unexpected type.
      */
-    @OnlyIn(Dist.CLIENT)
     default void zapEffectDeath(World world, Vector3d source) {}
 
     /**
      * Spawns a spark from the surface of each rendered side of a block.
      */
-    @OnlyIn(Dist.CLIENT)
     default void zapEffectSurface(BlockState stateIn, World worldIn, BlockPos pos) {}
   }
 

@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.blockentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import mods.railcraft.api.signals.SignalAspect;
+import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import mods.railcraft.world.level.block.signal.AbstractSignalBlock;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -19,14 +19,14 @@ public class SignalRenderer extends AbstractSignalRenderer<AbstractSignalBlockEn
       IRenderTypeBuffer renderTypeBuffer, int packedLight, int packedOverlay) {
     super.render(tile, partialTicks, matrixStack, renderTypeBuffer, packedLight, packedOverlay);
     Direction direction = tile.getBlockState().getValue(AbstractSignalBlock.FACING);
-    SignalAspect aspect = tile.getSignalAspect().getDisplayAspect();
+    SignalAspect signalAspect = tile.getPrimarySignalAspect().getDisplayAspect();
     matrixStack.pushPose();
     {
       double zOffset = -0.175D;
       matrixStack.translate(zOffset * direction.getStepX(), 0.19D,
           zOffset * direction.getStepZ());
       this.renderSignalAspect(
-          matrixStack, renderTypeBuffer, packedLight, packedOverlay, aspect, direction);
+          matrixStack, renderTypeBuffer, packedLight, packedOverlay, signalAspect, direction);
     }
     matrixStack.popPose();
   }

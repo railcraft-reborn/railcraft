@@ -3,9 +3,9 @@ package mods.railcraft.world.entity;
 import java.util.List;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.carts.CartToolsAPI;
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.ILinkageManager;
-import mods.railcraft.api.tracks.TrackToolsAPI;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.carts.LinkageManager;
@@ -168,10 +168,10 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     if (other instanceof AbstractMinecartEntity) {
       AbstractMinecartEntity otherCart = (AbstractMinecartEntity) other;
       if (!cart.isPoweredCart() || otherCart.isPoweredCart())
-        if (!TrackToolsAPI.isCartLockedDown(cart))
+        if (!TrackUtil.isCartLockedDown(cart))
           cart.setDeltaMovement(cart.getDeltaMovement().add(forceX, 0, forceZ));
       if (!otherCart.isPoweredCart() || cart.isPoweredCart())
-        if (!TrackToolsAPI.isCartLockedDown(otherCart))
+        if (!TrackUtil.isCartLockedDown(otherCart))
           other.setDeltaMovement(other.getDeltaMovement().add(-forceX, 0, -forceZ));
     } else {
       // if(isPlayer) {
@@ -195,7 +195,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       // System.out.printf("dampX=%f, dampZ=%f%n", dampX, dampZ);
       if (!isPlayer)
         other.setDeltaMovement(other.getDeltaMovement().add(-forceX, 0.0D, -forceZ));
-      if (!TrackToolsAPI.isCartLockedDown(cart))
+      if (!TrackUtil.isCartLockedDown(cart))
         cart.setDeltaMovement(cart.getDeltaMovement().add(forceX, 0, forceZ));
     }
   }
@@ -399,8 +399,8 @@ public class MinecartHandler implements IMinecartCollisionHandler {
   }
 
   public boolean handleInteract(AbstractMinecartEntity cart, PlayerEntity player) {
-    if (!CartToolsAPI.doesCartHaveOwner(cart))
-      CartToolsAPI.setCartOwner(cart, player);
+    if (!CartUtil.doesCartHaveOwner(cart))
+      CartUtil.setCartOwner(cart, player);
 
     if (!(cart instanceof TunnelBoreEntity) && player.distanceToSqr(cart) > MAX_INTERACT_DIST_SQ) {
       return true;

@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.track.TrackType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.util.math.BlockPos;

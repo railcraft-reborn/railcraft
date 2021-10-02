@@ -1,6 +1,6 @@
 package mods.railcraft.world.entity;
 
-import mods.railcraft.api.carts.CartToolsAPI;
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.filters.StackFilters;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
@@ -93,12 +93,12 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
       extraFuelInventory.moveOneItemTo(fuelInventory);
       fuelInventory.moveOneItemTo(invWaterOutput, StackFilters.FUEL.negate());
       ItemStack stack =
-          CartToolsAPI.transferHelper().pullStack(this, StackFilters.roomIn(extraFuelInventory));
+          CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(extraFuelInventory));
       if (!stack.isEmpty())
         extraFuelInventory.addStack(stack);
       if (isSafeToFill() && waterTank.getFluidAmount() < waterTank.getCapacity() / 2) {
         FluidStack pulled =
-            CartToolsAPI.transferHelper().pullFluid(this, new FluidStack(Fluids.WATER, 1));
+            CartUtil.transferHelper().pullFluid(this, new FluidStack(Fluids.WATER, 1));
         if (pulled != null) {
           waterTank.fill(pulled, FluidAction.EXECUTE);
         }

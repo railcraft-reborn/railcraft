@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.ILinkageManager;
-import mods.railcraft.api.events.CartLinkEvent;
+import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.util.MathTools;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraftforge.common.MinecraftForge;

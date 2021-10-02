@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
  *
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public class CartBattery extends Battery implements IBatteryCart {
+public class CartBattery extends SimpleBattery implements IBatteryCart {
 
   static final int DRAW_INTERVAL = 8;
   protected static final Random rand = new Random();

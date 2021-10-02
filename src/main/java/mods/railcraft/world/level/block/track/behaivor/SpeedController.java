@@ -2,8 +2,8 @@ package mods.railcraft.world.level.block.track.behaivor;
 
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.carts.CartToolsAPI;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.track.TrackType;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.Train;
 import mods.railcraft.util.MiscTools;
@@ -32,7 +32,7 @@ public enum SpeedController implements TrackType.EventHandler {
 
     private boolean isDerailing(
         AbstractMinecartEntity cart) {
-      if (CartToolsAPI.getCartSpeedUncapped(cart) > 0.35F && MiscTools.RANDOM.nextInt(500) == 250)
+      if (CartUtil.getCartSpeedUncapped(cart) > 0.35F && MiscTools.RANDOM.nextInt(500) == 250)
         return true;
       return Train.streamCarts(cart)
           .anyMatch(Railcraft.getInstance().getMinecartHandler()::isDerailed);

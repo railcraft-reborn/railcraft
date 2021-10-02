@@ -2,7 +2,7 @@ package mods.railcraft.world.entity;
 
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.ILinkageManager;
-import mods.railcraft.api.tracks.TrackToolsAPI;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.LinkageManager;
 import mods.railcraft.carts.Train;
@@ -52,7 +52,7 @@ public final class LinkageHandler {
       return false;
     if (cart1 instanceof ILinkableCart && !((ILinkableCart) cart1).canBeAdjusted(cart2))
       return false;
-    return !TrackToolsAPI.isCartLockedDown(cart1);
+    return !TrackUtil.isCartLockedDown(cart1);
   }
 
   /**

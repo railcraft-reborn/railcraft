@@ -3,10 +3,10 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.Arrays;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-import mods.railcraft.api.items.Crowbar;
-import mods.railcraft.api.tracks.ReversibleTrack;
-import mods.railcraft.api.tracks.TrackToolsAPI;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.item.Crowbar;
+import mods.railcraft.api.track.ReversibleTrack;
+import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import net.minecraft.block.Block;
@@ -70,7 +70,7 @@ public class OutfittedTrackBlock extends TrackBlock {
   @Override
   public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player,
       boolean willHarvest, FluidState fluid) {
-    BlockState newState = TrackToolsAPI.setShape(this.getTrackType().getBaseBlock(),
+    BlockState newState = TrackUtil.setShape(this.getTrackType().getBaseBlock(),
         TrackTools.getTrackDirectionRaw(state));
     boolean result = world.setBlockAndUpdate(pos, newState);
     // Below is ugly workaround for fluids!

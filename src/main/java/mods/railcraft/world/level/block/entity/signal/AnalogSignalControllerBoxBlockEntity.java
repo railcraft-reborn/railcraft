@@ -3,72 +3,77 @@ package mods.railcraft.world.level.block.entity.signal;
 import java.util.BitSet;
 import java.util.EnumMap;
 import java.util.Map;
-import javax.annotation.Nullable;
-import mods.railcraft.api.signals.SignalAspect;
-import mods.railcraft.api.signals.SignalController;
-import mods.railcraft.api.signals.SimpleSignalControllerNetwork;
+import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.api.signal.SignalControllerProvider;
+import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.Constants;
 
 public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements SignalController {
+    implements SignalControllerProvider, ITickableTileEntity {
 
-  private final SimpleSignalControllerNetwork signalControllerNetwork =
-      new SimpleSignalControllerNetwork(this, this::syncToClient);
-  private int strongestSignal;
+  private final SimpleSignalController signalController =
+      new SimpleSignalController(1, this::syncToClient, this, true);
 
-  public EnumMap<SignalAspect, BitSet> aspects = new EnumMap<>(SignalAspect.class);
+  private int inputSignal;
+  private SignalAspect calculatedSignalAspect;
+
+  public Map<SignalAspect, BitSet> aspectTriggerSignals = new EnumMap<>(SignalAspect.class);
+
+  private boolean loaded;
 
   public AnalogSignalControllerBoxBlockEntity() {
     super(RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get());
-    for (SignalAspect aspect : SignalAspect.values()) {
-      this.aspects.put(aspect, new BitSet());
-    }
+  }
+
+  @Override
+  public void setRemoved() {
+    super.setRemoved();
+    this.signalController.removed();
   }
 
   @Override
   public void tick() {
-    super.tick();
     if (this.level.isClientSide()) {
-      this.signalControllerNetwork.tickClient();
+      this.signalController.spawnTuningAuraParticles();
       return;
     }
-    signalControllerNetwork.tickServer();
-    SignalAspect prevAspect = signalControllerNetwork.getAspect();
-    if (signalControllerNetwork.isLinking())
-      signalControllerNetwork.setAspect(SignalAspect.BLINK_YELLOW);
-    else if (signalControllerNetwork.hasPeers())
-      signalControllerNetwork.setAspect(determineAspect());
-    else
-      this.signalControllerNetwork.setAspect(SignalAspect.BLINK_RED);
-    if (prevAspect != signalControllerNetwork.getAspect())
-      syncToClient();
+    if (!this.loaded) {
+      this.loaded = true;
+      this.signalController.refresh();
+    }
   }
 
   @Override
   public void neighborChanged() {
-    super.neighborChanged();
-    if (this.level.isClientSide())
-      return;
-    int signal = this.getSignal();
-    if (signal != this.strongestSignal) {
-      this.strongestSignal = signal;
-      this.syncToClient();
+    int inputSignal = this.calculateInputSignal();
+    if (inputSignal != this.inputSignal) {
+      this.inputSignal = inputSignal;
+      this.calculatedSignalAspect = SignalAspect.OFF;
+      for (Map.Entry<SignalAspect, BitSet> entry : this.aspectTriggerSignals.entrySet()) {
+        SignalAspect current = entry.getKey();
+        if (entry.getValue().get(this.inputSignal))
+          this.calculatedSignalAspect = (this.calculatedSignalAspect == SignalAspect.OFF) ? current
+              : SignalAspect.mostRestrictive(this.calculatedSignalAspect, current);
+      }
+      this.signalController.setSignalAspect(this.calculatedSignalAspect);
     }
   }
 
-  private int getSignal() {
+  private int calculateInputSignal() {
     int signal = 0, tmp;
     for (Direction direction : Direction.values()) {
       if (direction == Direction.UP)
         continue;
-      if (this.adjacentCache.getTileOnSide(direction) instanceof AbstractSignalBoxBlockEntity)
+      if (this.level.getBlockEntity(
+          this.getBlockPos().relative(direction)) instanceof AbstractSignalBoxBlockEntity)
         continue;
       if ((tmp = this.level.getSignal(this.getBlockPos(), direction)) > signal)
         signal = tmp;
@@ -78,82 +83,77 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
     return signal;
   }
 
-  private SignalAspect determineAspect() {
-    SignalAspect aspect = SignalAspect.OFF;
-    for (Map.Entry<SignalAspect, BitSet> entry : aspects.entrySet()) {
-      SignalAspect current = entry.getKey();
-      if (entry.getValue().get(strongestSignal))
-        aspect =
-            (aspect == SignalAspect.OFF) ? current : SignalAspect.mostRestrictive(aspect, current);
+  @Override
+  public SignalAspect getSignalAspect(Direction direction) {
+    if (this.signalController.isLinking()) {
+      return SignalAspect.BLINK_YELLOW;
+    } else if (!this.signalController.hasPeers()) {
+      return SignalAspect.BLINK_RED;
+    } else {
+      return this.calculatedSignalAspect;
     }
-    return aspect;
+  }
+
+  @Override
+  public SimpleSignalController getSignalController() {
+    return this.signalController;
   }
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    data.putInt("strongestSignal", strongestSignal);
+    data.putInt("inputSignal", this.inputSignal);
 
-    ListNBT aspectsNbt = new ListNBT();
-    for (Map.Entry<SignalAspect, BitSet> entry : aspects.entrySet()) {
+    ListNBT aspectsTag = new ListNBT();
+    for (Map.Entry<SignalAspect, BitSet> entry : this.aspectTriggerSignals.entrySet()) {
       CompoundNBT nbt = new CompoundNBT();
-      nbt.putString("name", entry.getKey().getName());
-      nbt.putByteArray("bytes", entry.getValue().toByteArray());
+      nbt.putString("name", entry.getKey().getSerializedName());
+      nbt.putByteArray("signals", entry.getValue().toByteArray());
     }
-    data.put("aspects", aspectsNbt);
-    data.put("signalControllerNetwork", this.signalControllerNetwork.serializeNBT());
+    data.put("aspects", aspectsTag);
+
+    data.put("signalController", this.signalController.serializeNBT());
     return data;
   }
 
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-    this.strongestSignal = data.getInt("strongestSignal");
+    this.inputSignal = data.getInt("inputSignal");
 
-    this.aspects.clear();
+    this.aspectTriggerSignals.clear();
     ListNBT aspectsNbt = data.getList("aspects", Constants.NBT.TAG_COMPOUND);
     for (INBT nbt : aspectsNbt) {
       CompoundNBT compoundNbt = (CompoundNBT) nbt;
-      this.aspects.put(SignalAspect.getByName(compoundNbt.getString("name")).get(),
-          BitSet.valueOf(compoundNbt.getByteArray("bytes")));
+      this.aspectTriggerSignals.put(SignalAspect.getByName(compoundNbt.getString("name")).get(),
+          BitSet.valueOf(compoundNbt.getByteArray("signals")));
     }
 
-    this.signalControllerNetwork.deserializeNBT(data.getCompound("signalControllerNetwork"));
+    this.signalController.deserializeNBT(data.getCompound("signalController"));
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-
-    for (Map.Entry<SignalAspect, BitSet> entry : this.aspects.entrySet()) {
-      byte[] bytes = entry.getValue().toByteArray();
-      data.writeVarInt(bytes.length);
-      data.writeBytes(bytes);
+    this.signalController.writeSyncData(data);
+    data.writeVarInt(this.aspectTriggerSignals.size());
+    for (Map.Entry<SignalAspect, BitSet> entry : this.aspectTriggerSignals.entrySet()) {
+      data.writeEnum(entry.getKey());
+      byte[] signals = entry.getValue().toByteArray();
+      data.writeVarInt(signals.length);
+      data.writeBytes(signals);
     }
-
-    this.signalControllerNetwork.writeSyncData(data);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-
-    this.aspects.clear();
-    for (SignalAspect aspect : SignalAspect.values()) {
-      BitSet bitSet = BitSet.valueOf(data.readByteArray(data.readVarInt()));
-      this.aspects.put(aspect, bitSet);
+    this.signalController.readSyncData(data);
+    this.aspectTriggerSignals.clear();
+    int size = data.readVarInt();
+    for (int i = 0; i < size; i++) {
+      this.aspectTriggerSignals.put(data.readEnum(SignalAspect.class),
+          BitSet.valueOf(data.readByteArray(data.readVarInt())));
     }
-
-    this.signalControllerNetwork.readSyncData(data);
-  }
-
-  @Override
-  public SignalAspect getBoxSignalAspect(@Nullable Direction side) {
-    return this.signalControllerNetwork.getAspect();
-  }
-
-  @Override
-  public SimpleSignalControllerNetwork getSignalControllerNetwork() {
-    return this.signalControllerNetwork;
   }
 }

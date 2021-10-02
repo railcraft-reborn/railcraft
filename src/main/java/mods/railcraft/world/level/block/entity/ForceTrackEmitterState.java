@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
-import mods.railcraft.api.tracks.LockdownTrack;
+import mods.railcraft.api.track.LockdownTrack;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import net.minecraft.block.BlockState;

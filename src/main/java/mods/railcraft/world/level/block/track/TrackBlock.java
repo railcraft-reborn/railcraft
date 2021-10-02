@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.IChargeBlock;
-import mods.railcraft.api.tracks.TrackType;
-import mods.railcraft.api.tracks.TrackTypeProvider;
+import mods.railcraft.api.track.TrackType;
+import mods.railcraft.api.track.TypedTrack;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.RailcraftToolTypes;
 import mods.railcraft.world.level.block.track.behaivor.TrackSupportTools;
@@ -43,7 +43,7 @@ import net.minecraft.world.World;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class TrackBlock extends AbstractRailBlock implements TrackTypeProvider, IChargeBlock {
+public class TrackBlock extends AbstractRailBlock implements TypedTrack, IChargeBlock {
 
   private static final Map<Charge, ChargeSpec> CHARGE_SPECS =
       ChargeSpec.make(Charge.distribution, ConnectType.TRACK, 0.01);

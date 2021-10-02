@@ -72,10 +72,10 @@ public class RailcraftItems {
               RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> SIGNAL_RELAY_BOX =
-      ITEMS.register("signal_relay_box",
+  public static final RegistryObject<Item> BLOCK_SIGNAL_RELAY_BOX =
+      ITEMS.register("block_signal_relay_box",
           () -> new BlockItem(
-              RailcraftBlocks.SIGNAL_RELAY_BOX.get(),
+              RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get(),
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> SIGNAL_RECEIVER_BOX =
@@ -90,10 +90,10 @@ public class RailcraftItems {
               RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> DUAL_SIGNAL =
-      ITEMS.register("dual_signal",
+  public static final RegistryObject<Item> DUAL_BLOCK_SIGNAL =
+      ITEMS.register("dual_block_signal",
           () -> new BlockItem(
-              RailcraftBlocks.DUAL_SIGNAL.get(),
+              RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> DUAL_DISTANT_SIGNAL =
@@ -108,8 +108,8 @@ public class RailcraftItems {
               RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> SIGNAL =
-      ITEMS.register("signal",
+  public static final RegistryObject<Item> BLOCK_SIGNAL =
+      ITEMS.register("block_signal",
           () -> new BlockItem(
               RailcraftBlocks.SIGNAL.get(),
               new Item.Properties().tab(TAB)));
@@ -126,16 +126,16 @@ public class RailcraftItems {
               RailcraftBlocks.TOKEN_SIGNAL.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> MOW_TRACK_REMOVER =
-      ITEMS.register("mow_track_remover",
+  public static final RegistryObject<Item> TRACK_REMOVER =
+      ITEMS.register("track_remover",
           () -> new CartItem(
-              RailcraftEntityTypes.MOW_TRACK_REMOVER,
+              RailcraftEntityTypes.TRACK_REMOVER,
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> MOW_TRACK_LAYER =
-      ITEMS.register("mow_track_layer",
+  public static final RegistryObject<Item> TRACK_LAYER =
+      ITEMS.register("track_layer",
           () -> new CartItem(
-              RailcraftEntityTypes.MOW_TRACK_LAYER,
+              RailcraftEntityTypes.TRACK_LAYER,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TUNNEL_BORE =
@@ -206,11 +206,6 @@ public class RailcraftItems {
               .stacksTo(1)
               .durability(RefinedFirestoneItem.CHARGES)
               .tab(TAB)));
-
-  public static final RegistryObject<BlockItem> FIRESTONE_ORE =
-      ITEMS.register("firestone",
-          () -> new BlockItem(RailcraftBlocks.FIRESTONE.get(),
-              new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<BlockItem> FORCE_TRACK_EMITTER =
       ITEMS.register("force_track_emitter",
@@ -302,10 +297,10 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> GOGGLES =
       ITEMS.register("goggles",
-          () -> new Item(new Item.Properties().tab(TAB)));
+          () -> new GogglesItem(new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<BlockItem> ROLLING_TABLE_MANUAL =
-      ITEMS.register("rolling_table_manual",
-          () -> new BlockItem(RailcraftBlocks.ROLLING_TABLE.get(),
+  public static final RegistryObject<BlockItem> MANUAL_ROLLING_MACHINE =
+      ITEMS.register("manual_rolling_machine",
+          () -> new BlockItem(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
               new Item.Properties().tab(TAB)));
 }

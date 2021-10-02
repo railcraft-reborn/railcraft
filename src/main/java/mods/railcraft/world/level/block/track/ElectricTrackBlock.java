@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.function.Supplier;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.IChargeBlock;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.track.TrackType;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;

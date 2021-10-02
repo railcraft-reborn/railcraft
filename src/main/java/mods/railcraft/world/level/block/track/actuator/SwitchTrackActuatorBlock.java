@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.track.actuator;
 
-import mods.railcraft.api.tracks.ArrowDirection;
+import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.plugins.PowerPlugin;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;

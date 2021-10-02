@@ -40,7 +40,8 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
   public static final float MAX_CHARGE = 5000.0F;
   private static final int SLOT_TICKET = 0;
   private static final int[] SLOTS = InvTools.buildSlotArray(0, 1);
-  private final IInventory invTicket = new InventoryMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
+  private final IInventory ticketInventory =
+      new InventoryMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
   private final LazyOptional<IBatteryCart> cartBattery =
       LazyOptional.of(() -> new CartBattery(IBatteryCart.Type.USER, MAX_CHARGE));
 
@@ -53,7 +54,7 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
   }
 
   {
-    setAllowedModes(EnumSet.of(Mode.RUNNING, Mode.SHUTDOWN));
+    this.setAllowedModes(EnumSet.of(Mode.RUNNING, Mode.SHUTDOWN));
   }
 
   @Override
@@ -78,7 +79,7 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
 
   @Override
   public int getMoreGoJuice() {
-    return cartBattery
+    return this.cartBattery
         .filter(cart -> cart.getCharge() > CHARGE_USE_PER_REQUEST)
         .map(cart -> {
           cart.removeCharge(CHARGE_USE_PER_REQUEST);
@@ -94,7 +95,7 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
 
   @Override
   public float getOptimalDistance(AbstractMinecartEntity cart) {
-    return 0.92f;
+    return 0.92F;
   }
 
   @Override
@@ -102,7 +103,7 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
     super.tick();
     if (this.level.isClientSide())
       return;
-    cartBattery.ifPresent(cart -> cart.tick(this));
+    this.cartBattery.ifPresent(cart -> cart.tick(this));
   }
 
   @Override
@@ -110,12 +111,12 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
     super.moveAlongTrack(pos, state);
     if (this.level.isClientSide())
       return;
-    cartBattery.ifPresent(cart -> cart.tickOnTrack(this, pos));
+    this.cartBattery.ifPresent(cart -> cart.tickOnTrack(this, pos));
   }
 
   @Override
   protected IInventory getTicketInventory() {
-    return invTicket;
+    return this.ticketInventory;
   }
 
   @Override
@@ -130,7 +131,7 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
 
   @Override
   public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
-    return canPlaceItem(slot, stack);
+    return this.canPlaceItem(slot, stack);
   }
 
   @Override
@@ -156,20 +157,20 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
     if (capability == CapabilitiesCharge.CART_BATTERY)
-      return cartBattery.cast();
+      return this.cartBattery.cast();
     return super.getCapability(capability, facing);
   }
 
   @Override
   public void addAdditionalSaveData(CompoundNBT data) {
     super.addAdditionalSaveData(data);
-    cartBattery.ifPresent(cart -> cart.writeToNBT(data));
+    this.cartBattery.ifPresent(cart -> data.put("battery", cart.serializeNBT()));
   }
 
   @Override
   public void readAdditionalSaveData(CompoundNBT data) {
     super.readAdditionalSaveData(data);
-    cartBattery.ifPresent(cart -> cart.readFromNBT(data));
+    this.cartBattery.ifPresent(cart -> cart.deserializeNBT(data.getCompound("battery")));
   }
 
   @Override

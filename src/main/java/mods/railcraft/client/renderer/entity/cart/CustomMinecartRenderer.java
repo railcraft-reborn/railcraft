@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mods.railcraft.api.carts.IAlternateCartTexture;
 import mods.railcraft.api.carts.IRoutableCart;
-import mods.railcraft.plugins.SeasonPlugin;
+import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.IDirectionalCart;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -81,8 +81,8 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecartEntity>
     }
     matrixStack.translate(0.0D, 0.375D, 0.0D);
 
-    if (cart.hasCustomName() && !SeasonPlugin.GHOST_TRAIN.equals(cart.getCustomName().getContents())
-        && !SeasonPlugin.POLAR_EXPRESS.equals(cart.getCustomName().getContents())) {
+    if (cart.hasCustomName() && !Seasons.GHOST_TRAIN.equals(cart.getCustomName().getContents())
+        && !Seasons.POLAR_EXPRESS.equals(cart.getCustomName().getContents())) {
       this.renderNameTag(cart, cart.getCustomName(), matrixStack, renderTypeBuffer, packedLight);
     }
 

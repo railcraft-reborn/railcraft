@@ -5,12 +5,12 @@ import com.google.common.collect.MapMaker;
 import mods.railcraft.Railcraft;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
-import mods.railcraft.api.items.Crowbar;
+import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.carts.CartTools;
-import mods.railcraft.carts.IRailcraftCart;
 import mods.railcraft.carts.LinkageManager;
+import mods.railcraft.carts.RailcraftCart;
 import mods.railcraft.carts.Train;
-import mods.railcraft.plugins.SeasonPlugin;
+import mods.railcraft.season.Season;
 import mods.railcraft.world.entity.IDirectionalCart;
 import mods.railcraft.world.entity.TrackRemoverMinecartEntity;
 import mods.railcraft.world.entity.TunnelBoreEntity;
@@ -54,11 +54,11 @@ public class CrowbarHandler {
 
     Crowbar crowbar = (Crowbar) stack.getItem();
 
-    if (stack.getItem() instanceof SeasonCrowbarItem && cart instanceof IRailcraftCart
+    if (stack.getItem() instanceof SeasonCrowbarItem && cart instanceof RailcraftCart
         && Railcraft.commonConfig.enableSeasons.get()) {
       cancel = true;
-      SeasonPlugin.Season season = SeasonCrowbarItem.getCurrentSeason(stack);
-      ((IRailcraftCart) cart).setSeason(season);
+      Season season = SeasonCrowbarItem.getCurrentSeason(stack);
+      ((RailcraftCart) cart).setSeason(season);
       RailcraftAdvancementTriggers.getInstance().onSeasonSet((ServerPlayerEntity) player, cart,
           season);
     } else if (crowbar.canLink(player, hand, stack, cart)) {

@@ -1,15 +1,13 @@
 package mods.railcraft;
 
 import org.apache.commons.lang3.tuple.Pair;
-import mods.railcraft.api.events.CartLinkEvent;
-import mods.railcraft.api.signals.SignalTools;
+import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.crafting.RailcraftRecipies;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.PacketBuilder;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.server.ServerDist;
 import mods.railcraft.sounds.RailcraftSoundEvents;
@@ -24,7 +22,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
-import mods.railcraft.world.signal.TokenManager;
+import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
@@ -66,7 +64,7 @@ public class Railcraft {
 
   private static Railcraft instance;
 
-  private final IRailcraftDist dist;
+  private final RailcraftDist dist;
 
   private final MinecartHandler minecartHandler = new MinecartHandler();
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
@@ -81,8 +79,6 @@ public class Railcraft {
     this.dist = DistExecutor.safeRunForDist(() -> ClientDist::new, () -> ServerDist::new);
 
     NetworkChannel.registerAll();
-
-    SignalTools.packetBuilder = PacketBuilder.instance();
 
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -109,7 +105,7 @@ public class Railcraft {
     return this.minecartHandler;
   }
 
-  public IRailcraftDist getDist() {
+  public RailcraftDist getDist() {
     return this.dist;
   }
 
@@ -133,7 +129,9 @@ public class Railcraft {
   public void tick(TickEvent.WorldTickEvent event) {
     if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
       ServerWorld level = (ServerWorld) event.world;
-      TokenManager.get(level).tick(level);
+      TokenRingManager.get(level).tick(level);
+      if (level.getServer().getTickCount() % 32 == 0)
+        Train.getManager(level).tick();
     }
   }
 

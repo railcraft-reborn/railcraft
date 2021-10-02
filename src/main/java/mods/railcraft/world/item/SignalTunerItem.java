@@ -1,11 +1,10 @@
 package mods.railcraft.world.item;
 
 import java.util.Objects;
-import mods.railcraft.api.core.WorldCoordinate;
-import mods.railcraft.api.signals.SignalController;
-import mods.railcraft.api.signals.SignalControllerNetwork;
-import mods.railcraft.api.signals.SignalReceiver;
-import mods.railcraft.world.signal.NetworkType;
+import mods.railcraft.api.core.DimensionPos;
+import mods.railcraft.api.signal.SignalController;
+import mods.railcraft.api.signal.SignalControllerProvider;
+import mods.railcraft.api.signal.SignalReceiverProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -33,60 +32,67 @@ public class SignalTunerItem extends PairingToolItem {
     BlockState blockState = level.getBlockState(pos);
 
     if (!level.isClientSide()) {
-      if (this.actionCleanPairing(itemStack, player, (ServerWorld) level,
-          NetworkType.SIGNAL_CONTROLLER)) {
+      if (this.checkAbandonPairing(itemStack, player, (ServerWorld) level,
+          () -> {
+            TileEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof SignalControllerProvider) {
+              ((SignalControllerProvider) blockEntity).getSignalController().stopLinking();
+            }
+          })) {
+        player.sendMessage(new TranslationTextComponent("signal_tuner.abandoned"), Util.NIL_UUID);
         return ActionResultType.SUCCESS;
       }
 
       TileEntity blockEntity = level.getBlockEntity(pos);
       if (blockEntity != null) {
-        WorldCoordinate previousTarget = this.getPairData(itemStack);
-        if (blockEntity instanceof SignalReceiver && previousTarget != null) {
+        DimensionPos previousTarget = this.getPeerPos(itemStack);
+        if (blockEntity instanceof SignalReceiverProvider && previousTarget != null) {
           if (!Objects.equals(pos, previousTarget.getPos())) {
-            BlockState controllerBlockState = level.getBlockState(previousTarget.getPos());
-            TileEntity controllerBlockEntity = level.getBlockEntity(previousTarget.getPos());
-            if (controllerBlockEntity instanceof SignalController) {
-              SignalControllerNetwork controller =
-                  ((SignalController) controllerBlockEntity).getSignalControllerNetwork();
-              if (blockEntity != controllerBlockEntity) {
-                controller.addPeer((SignalReceiver) blockEntity);
-                controller.endLinking();
+            SignalReceiverProvider signalReceiver = (SignalReceiverProvider) blockEntity;
+            TileEntity previousBlockEntity = level.getBlockEntity(previousTarget.getPos());
+            if (previousBlockEntity instanceof SignalControllerProvider) {
+              SignalControllerProvider signalController =
+                  (SignalControllerProvider) previousBlockEntity;
+              if (blockEntity != previousBlockEntity) {
+                signalController.getSignalController().addPeer(signalReceiver);
+                signalController.getSignalController().stopLinking();
                 player.sendMessage(
-                    new TranslationTextComponent(this.getDescriptionId() + ".success",
-                        controllerBlockState.getBlock().getName(), blockState.getBlock().getName()),
+                    new TranslationTextComponent("signal_tuner.success",
+                        previousBlockEntity.getBlockState().getBlock().getName(),
+                        blockState.getBlock().getName()),
                     Util.NIL_UUID);
-                clearPairData(itemStack);
+                this.clearPeerPos(itemStack);
                 return ActionResultType.SUCCESS;
               }
             } else if (level.isLoaded(previousTarget.getPos())) {
               player.sendMessage(
-                  new TranslationTextComponent(this.getDescriptionId() + ".abandon.gone"),
+                  new TranslationTextComponent("signal_tuner.lost"),
                   Util.NIL_UUID);
-              clearPairData(itemStack);
+              this.clearPeerPos(itemStack);
             } else {
               player.sendMessage(
-                  new TranslationTextComponent(this.getDescriptionId() + ".abandon.chunk"),
+                  new TranslationTextComponent("signal_tuner.unloaded"),
                   Util.NIL_UUID);
-              clearPairData(itemStack);
+              this.clearPeerPos(itemStack);
             }
           }
-        } else if (blockEntity instanceof SignalController) {
-          SignalControllerNetwork controller =
-              ((SignalController) blockEntity).getSignalControllerNetwork();
+        } else if (blockEntity instanceof SignalControllerProvider) {
+          SignalController controller =
+              ((SignalControllerProvider) blockEntity).getSignalController();
           if (previousTarget == null || !Objects.equals(pos, previousTarget.getPos())) {
             player.sendMessage(
-                new TranslationTextComponent(this.getDescriptionId() + ".start",
+                new TranslationTextComponent("signal_tuner.begin",
                     blockState.getBlock().getName()),
                 Util.NIL_UUID);
-            setPairData(itemStack, blockEntity);
+            this.setPeerPos(itemStack, DimensionPos.from(blockEntity));
             controller.startLinking();
           } else {
             player.sendMessage(
-                new TranslationTextComponent(this.getDescriptionId() + ".stop",
+                new TranslationTextComponent("signal_tuner.abandoned",
                     blockState.getBlock().getName()),
                 Util.NIL_UUID);
-            controller.endLinking();
-            clearPairData(itemStack);
+            controller.stopLinking();
+            this.clearPeerPos(itemStack);
           }
         } else
           return ActionResultType.PASS;

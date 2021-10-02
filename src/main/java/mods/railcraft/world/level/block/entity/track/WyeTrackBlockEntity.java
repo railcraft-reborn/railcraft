@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.track;
 
 import java.util.List;
 import java.util.UUID;
-import mods.railcraft.api.tracks.ArrowDirection;
+import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackBlock;

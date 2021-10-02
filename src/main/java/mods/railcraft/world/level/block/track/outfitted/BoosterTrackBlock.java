@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.track.TrackType;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.world.entity.LocomotiveEntity;
 import mods.railcraft.world.level.block.track.TrackTypes;

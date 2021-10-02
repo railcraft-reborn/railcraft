@@ -1,7 +1,7 @@
 package mods.railcraft.server;
 
-import mods.railcraft.IRailcraftDist;
+import mods.railcraft.RailcraftDist;
 
-public class ServerDist implements IRailcraftDist {
+public class ServerDist implements RailcraftDist {
 
 }

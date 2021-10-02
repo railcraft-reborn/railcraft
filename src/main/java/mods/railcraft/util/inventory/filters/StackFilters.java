@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.IMinecart;
-import mods.railcraft.api.items.IMinecartItem;
+import mods.railcraft.api.item.MinecartPlacer;
 import mods.railcraft.plugins.FuelPlugin;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.BallastRegistry;
@@ -50,7 +50,7 @@ public enum StackFilters implements Predicate<ItemStack> {
     @Override
     protected boolean testType(
         ItemStack stack) {
-      return stack.getItem() instanceof MinecartItem || stack.getItem() instanceof IMinecartItem;
+      return stack.getItem() instanceof MinecartItem || stack.getItem() instanceof MinecartPlacer;
     }
 
   },

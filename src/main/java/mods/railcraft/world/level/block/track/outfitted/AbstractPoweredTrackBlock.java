@@ -1,8 +1,8 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
-import mods.railcraft.api.tracks.PoweredTrackBlock;
-import mods.railcraft.api.tracks.TrackType;
+import mods.railcraft.api.track.PoweredTrack;
+import mods.railcraft.api.track.TrackType;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class AbstractPoweredTrackBlock extends OutfittedTrackBlock
-    implements PoweredTrackBlock {
+    implements PoweredTrack {
 
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -129,8 +129,8 @@ public abstract class AbstractPoweredTrackBlock extends OutfittedTrackBlock
       int dist, int maxDist, RailShape prevOrientation) {
     BlockState nextBlockState = world.getBlockState(nextPos);
     if (AbstractRailBlock.isRail(nextBlockState)
-        && nextBlockState.getBlock() instanceof PoweredTrackBlock) {
-      PoweredTrackBlock nextBlock = (PoweredTrackBlock) nextBlockState.getBlock();
+        && nextBlockState.getBlock() instanceof PoweredTrack) {
+      PoweredTrack nextBlock = (PoweredTrack) nextBlockState.getBlock();
       RailShape nextOrientation = ((AbstractRailBlock) nextBlockState.getBlock())
           .getRailDirection(nextBlockState, world, nextPos, null);
       if (!(this.canPropagatePowerTo(nextBlockState)))

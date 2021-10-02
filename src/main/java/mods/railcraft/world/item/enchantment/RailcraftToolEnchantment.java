@@ -1,6 +1,6 @@
 package mods.railcraft.world.item.enchantment;
 
-import mods.railcraft.api.items.Crowbar;
+import mods.railcraft.api.item.Crowbar;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.inventory.EquipmentSlotType;
