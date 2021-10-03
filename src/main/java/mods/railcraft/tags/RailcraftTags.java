@@ -46,8 +46,6 @@ public class RailcraftTags {
     public static final Tags.IOptionalNamedTag<Block> MAGIC_ORE = tag("magic_ore");
     public static final Tags.IOptionalNamedTag<Block> SWITCH_TRACK_ACTUATOR =
         tag("switch_track_actuator");
-    public static final Tags.IOptionalNamedTag<Block> SIGNAL_BOX =
-        tag("signal_box");
     public static final Tags.IOptionalNamedTag<Block> SIGNAL_INTERLOCK_BOX =
         tag("signal_interlock_box");
     public static final Tags.IOptionalNamedTag<Block> ASPECT_RECEIVER =

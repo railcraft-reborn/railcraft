@@ -39,26 +39,11 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   public void load() {
     if (!this.level.isClientSide()) {
-      if (this.interlockController == null) {
-        for (Direction direction : Direction.values()) {
-          TileEntity blockEntity =
-              this.level.getBlockEntity(this.getBlockPos().relative(direction));
-          if (blockEntity instanceof SignalInterlockBoxBlockEntity) {
-            SignalInterlockBoxBlockEntity signalBox = (SignalInterlockBoxBlockEntity) blockEntity;
-            if (signalBox.interlockController != null) {
-              this.interlockController = signalBox.interlockController;
-              break;
-            }
-          }
-        }
-        if (this.interlockController == null) {
-          this.interlockController = new InterlockController();
-        }
-        this.interlockController.add(this);
-      }
+      this.findOrCreateInterlockController();
       this.signalReceiver.refresh();
       this.signalController.refresh();
     }
+    super.load();
   }
 
   @Override
@@ -83,6 +68,7 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   public void neighborSignalBoxChanged(AbstractSignalBoxBlockEntity neighborSignalBox,
       Direction neighborDirection, boolean removed) {
+    this.findOrCreateInterlockController();
     this.neighborSignalAspect = SignalAspect.GREEN;
     for (Direction direction : Direction.values()) {
       TileEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
@@ -95,14 +81,52 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
     }
   }
 
+  private void findOrCreateInterlockController() {
+    if (this.level.isClientSide()) {
+      return;
+    }
+
+    InterlockController lastInterlockController = this.interlockController;
+    this.interlockController = null;
+
+    for (Direction direction : Direction.values()) {
+      TileEntity blockEntity =
+          this.level.getBlockEntity(this.getBlockPos().relative(direction));
+      if (blockEntity instanceof SignalInterlockBoxBlockEntity) {
+        SignalInterlockBoxBlockEntity signalBox = (SignalInterlockBoxBlockEntity) blockEntity;
+        if (signalBox.interlockController != null) {
+          this.interlockController = signalBox.interlockController;
+          break;
+        }
+      }
+    }
+
+    if (this.interlockController == null) {
+      this.interlockController = new InterlockController();
+    }
+
+    if (this.interlockController != lastInterlockController) {
+      this.interlockController.add(this);
+      this.refreshSignalAspect();
+    }
+  }
+
+  private void refreshSignalAspect() {
+    this.signalAspectChanged(this.getRequestedSignalAspect());
+  }
+
   private void signalAspectChanged(SignalAspect signalAspect) {
     if (this.interlockController != null) {
-      if (signalAspect.ordinal() <= SignalAspect.YELLOW.ordinal()) {
+      if (isLockableSignalAspect(signalAspect)) {
         this.interlockController.requestLock(this);
       } else {
         this.interlockController.discardLock(this);
       }
     }
+  }
+
+  private SignalAspect getRequestedSignalAspect() {
+    return this.signalReceiver.getPrimarySignalAspect();
   }
 
   @Override
@@ -149,6 +173,10 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
     return this.signalReceiver;
   }
 
+  private static boolean isLockableSignalAspect(SignalAspect signalAspect) {
+    return signalAspect.ordinal() <= SignalAspect.YELLOW.ordinal();
+  }
+
   private static class InterlockController {
 
     private final Set<SignalInterlockBoxBlockEntity> peers = new HashSet<>();
@@ -170,19 +198,28 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
       if (this.isActive(signalBox)) {
         this.next();
       } else {
+        this.updateSignalAspect(signalBox);
         this.lockRequests.remove(signalBox);
       }
     }
 
     private void requestLock(SignalInterlockBoxBlockEntity signalBox) {
-      this.lockRequests.add(signalBox);
-      if (this.activeSignalBox == null) {
-        this.next();
+      if (this.activeSignalBox != signalBox) {
+        this.lockRequests.add(signalBox);
+        if (this.activeSignalBox == null) {
+          this.next();
+        } else {
+          System.out.println("test");
+          this.updateSignalAspect(signalBox);
+        }
       }
     }
 
     private void next() {
-      this.activeSignalBox = this.lockRequests.poll();
+      do {
+        this.activeSignalBox = this.lockRequests.poll();
+      } while (this.activeSignalBox != null
+          && !isLockableSignalAspect(this.activeSignalBox.getRequestedSignalAspect()));
       this.peers.forEach(this::updateSignalAspect);
     }
 

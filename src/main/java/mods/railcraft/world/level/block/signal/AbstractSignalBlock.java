@@ -139,11 +139,22 @@ public abstract class AbstractSignalBlock extends SixWayBlock implements IWaterL
   public final boolean attachsTo(BlockState state, boolean faceStudry, Direction direction,
       Direction facing) {
     Block block = state.getBlock();
-    return !isExceptionForConnection(block) && faceStudry
-        || (block instanceof AbstractSignalBlock
-            && direction.getOpposite() != state.getValue(FACING) && facing != direction)
-        || ((state.is(BlockTags.FENCES) || state.is(BlockTags.WALLS))
-            && direction.getAxis().getPlane() != Direction.Plane.HORIZONTAL);
+    if (isExceptionForConnection(block)
+        || (!faceStudry && !(block instanceof AbstractSignalBlock))
+        || facing == direction) {
+      return false;
+    }
+
+    if (block instanceof AbstractSignalBlock) {
+      return direction.getAxis().isVertical()
+          || direction.getOpposite() != state.getValue(FACING);
+    }
+
+    if (state.is(BlockTags.FENCES) || state.is(BlockTags.WALLS)) {
+      return direction.getAxis().getPlane() != Direction.Plane.HORIZONTAL;
+    }
+
+    return true;
   }
 
   @Override

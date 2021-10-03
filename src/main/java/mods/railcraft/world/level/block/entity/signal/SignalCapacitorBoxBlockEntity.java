@@ -10,18 +10,15 @@ import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.gui.button.MultiButtonController;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements SignalEmitter {
+public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity {
 
   private short ticksPowered;
   private short ticksToPower = 200;
@@ -47,8 +44,9 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
   @Override
   public void tick() {
-    if (this.level.isClientSide())
+    if (this.level.isClientSide()) {
       return;
+    }
 
     if (this.ticksPowered-- > 0) {
       if (this.modeButtonController.getCurrentState() == Mode.FALLING_EDGE) {
@@ -81,10 +79,12 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     }
   }
 
-  public void neighborChanged(BlockState state, Block neighborBlock, BlockPos neighborPos) {
-    if (this.level.isClientSide())
+  @Override
+  public void neighborChanged() {
+    if (this.level.isClientSide()) {
       return;
-    boolean powered = PowerUtil.hasRepeaterSignal(this.level, getBlockPos());
+    }
+    boolean powered = PowerUtil.hasRepeaterSignal(this.level, this.getBlockPos());
     if (this.ticksPowered <= 0 && powered) {
       this.ticksPowered = this.ticksToPower;
       if (Objects.equals(this.modeButtonController.getCurrentState(), Mode.RISING_EDGE))

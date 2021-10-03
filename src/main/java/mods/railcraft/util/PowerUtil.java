@@ -16,7 +16,7 @@ public final class PowerUtil {
 
   public static boolean hasRepeaterSignal(World world, BlockPos pos, Direction from) {
     Block block = world.getBlockState(pos.relative(from)).getBlock();
-    return block == Blocks.REPEATER && world.hasSignal(pos, from);
+    return block == Blocks.REPEATER && world.hasSignal(pos.relative(from), from);
   }
 
   public static boolean hasRepeaterSignal(World world, BlockPos pos) {

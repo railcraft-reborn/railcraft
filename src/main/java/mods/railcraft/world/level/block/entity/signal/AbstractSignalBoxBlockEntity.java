@@ -13,6 +13,11 @@ public abstract class AbstractSignalBoxBlockEntity extends RailcraftTickableBloc
     super(type);
   }
 
+  @Override
+  public void load() {
+    this.updateNeighborSignalBoxes(false);
+  }
+
   public void neighborChanged() {}
 
   public abstract SignalAspect getSignalAspect(Direction direction);
