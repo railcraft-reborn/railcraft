@@ -3,8 +3,11 @@ package mods.railcraft.network;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.network.play.PacketEffect;
+import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
 import mods.railcraft.network.play.SetMenuStringMessage;
+import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
+import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SyncEntityMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import net.minecraft.util.ResourceLocation;
@@ -46,6 +49,27 @@ public enum NetworkChannel {
           .encoder(SetLocomotiveAttributesMessage::encode)
           .decoder(SetLocomotiveAttributesMessage::decode)
           .consumer(SetLocomotiveAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetSignalControllerBoxAttributesMessage.class, 0x05,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetSignalControllerBoxAttributesMessage::encode)
+          .decoder(SetSignalControllerBoxAttributesMessage::decode)
+          .consumer(SetSignalControllerBoxAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetAnalogSignalControllerBoxAttributesMessage.class, 0x06,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetAnalogSignalControllerBoxAttributesMessage::encode)
+          .decoder(SetAnalogSignalControllerBoxAttributesMessage::decode)
+          .consumer(SetAnalogSignalControllerBoxAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetSignalCapacitorBoxAttributesMessage.class, 0x07,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetSignalCapacitorBoxAttributesMessage::encode)
+          .decoder(SetSignalCapacitorBoxAttributesMessage::decode)
+          .consumer(SetSignalCapacitorBoxAttributesMessage::handle)
           .add();
     }
   };

@@ -3,7 +3,7 @@ package mods.railcraft.client.gui.widget.button;
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public interface ITexturePosition {
+public interface TexturePosition {
 
   int getX();
 

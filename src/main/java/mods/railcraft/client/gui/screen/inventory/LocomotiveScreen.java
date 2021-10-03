@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
-import mods.railcraft.client.gui.widget.button.GuiMultiButton;
+import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
@@ -43,7 +43,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       new EnumMap<>(LocomotiveEntity.Speed.class);
   private Button reverseButton;
 
-  private GuiMultiButton<?> lockButton;
+  private MultiButton<?> lockButton;
   private List<? extends ITextProperties> lockedTooltip;
   private List<? extends ITextProperties> unlockedTooltip;
   private List<? extends ITextProperties> privateTooltip;
@@ -98,7 +98,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
     // Reverse button
     this.addButton(this.reverseButton =
-        new RailcraftButton(0, h + this.getYSize() - 112, 12, 16, new StringTextComponent("R"),
+        new RailcraftButton(w + 4, h + this.getYSize() - 112, 12, 16, new StringTextComponent("R"),
             b -> this.setReverse(!this.reverse), ButtonTexture.SMALL_BUTTON));
     this.reverseButton.active = this.menu.getLocomotive().isReverse();
 
@@ -112,13 +112,13 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       button.active = this.menu.getLocomotive().getSpeed() == speed;
       this.speedButtons.put(speed, button);
     }
-    GuiUtil.newButtonRow(this::addButton, w + 8, 3, this.speedButtons.values());
+    GuiUtil.newButtonRow(this::addButton, w + 21, 5, this.speedButtons.values());
 
     // Lock button
     this.addButton(this.lockButton =
-        new GuiMultiButton<>(w + 152, h + this.getYSize() - 111, 16, 16,
-            menu.getLocomotive().getLockController(), b -> this.sendAttributes(),
-            this::renderLockTooltip, ButtonTexture.LOCKED_BUTTON));
+        new MultiButton<>(w + 152, h + this.getYSize() - 111, 16, 16,
+            this.menu.getLocomotive().getLockController(), __ -> this.sendAttributes(),
+            this::renderLockTooltip));
     this.lockButton.active = true;
 
     this.updateButtons();

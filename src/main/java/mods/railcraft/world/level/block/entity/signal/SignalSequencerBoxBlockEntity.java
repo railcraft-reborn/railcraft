@@ -42,7 +42,8 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void neighboringSignalBoxChanged(AbstractSignalBoxBlockEntity neighbor, Direction side) {
+  public void neighborSignalBoxChanged(AbstractSignalBoxBlockEntity neighbor, Direction side,
+      boolean removed) {
     if (this.level.isClientSide())
       return;
     if (neighbor instanceof SignalSequencerBoxBlockEntity)
@@ -109,7 +110,7 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   public void updateNeighbors() {
     super.updateNeighbors();
     this.syncToClient();
-    this.updateNeighborBoxes();
+    this.updateNeighborSignalBoxes(false);
   }
 
   @Override

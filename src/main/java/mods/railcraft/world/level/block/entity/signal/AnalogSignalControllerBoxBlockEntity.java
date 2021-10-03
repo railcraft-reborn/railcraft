@@ -25,12 +25,23 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   private int inputSignal;
   private SignalAspect calculatedSignalAspect;
 
-  public Map<SignalAspect, BitSet> aspectTriggerSignals = new EnumMap<>(SignalAspect.class);
-
-  private boolean loaded;
+  private final Map<SignalAspect, BitSet> signalAspectTriggerSignals =
+      new EnumMap<>(SignalAspect.class);
 
   public AnalogSignalControllerBoxBlockEntity() {
     super(RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get());
+    for (SignalAspect signalAspect : SignalAspect.values()) {
+      this.signalAspectTriggerSignals.put(signalAspect, new BitSet());
+    }
+  }
+
+  public Map<SignalAspect, BitSet> getSignalAspectTriggerSignals() {
+    return this.signalAspectTriggerSignals;
+  }
+
+  public void setSignalAspectTriggerSignals(Map<SignalAspect, BitSet> signalAspectTriggerSignals) {
+    this.signalAspectTriggerSignals.putAll(signalAspectTriggerSignals);
+    this.updateSignalAspect();
   }
 
   @Override
@@ -40,14 +51,19 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   }
 
   @Override
+  public void load() {
+    if (!this.level.isClientSide()) {
+      this.updateSignalAspect();
+      this.signalController.refresh();
+    }
+  }
+
+  @Override
   public void tick() {
+    super.tick();
     if (this.level.isClientSide()) {
       this.signalController.spawnTuningAuraParticles();
       return;
-    }
-    if (!this.loaded) {
-      this.loaded = true;
-      this.signalController.refresh();
     }
   }
 
@@ -56,15 +72,19 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
     int inputSignal = this.calculateInputSignal();
     if (inputSignal != this.inputSignal) {
       this.inputSignal = inputSignal;
-      this.calculatedSignalAspect = SignalAspect.OFF;
-      for (Map.Entry<SignalAspect, BitSet> entry : this.aspectTriggerSignals.entrySet()) {
-        SignalAspect current = entry.getKey();
-        if (entry.getValue().get(this.inputSignal))
-          this.calculatedSignalAspect = (this.calculatedSignalAspect == SignalAspect.OFF) ? current
-              : SignalAspect.mostRestrictive(this.calculatedSignalAspect, current);
-      }
-      this.signalController.setSignalAspect(this.calculatedSignalAspect);
+      this.updateSignalAspect();
     }
+  }
+
+  private void updateSignalAspect() {
+    this.calculatedSignalAspect = SignalAspect.OFF;
+    for (Map.Entry<SignalAspect, BitSet> entry : this.signalAspectTriggerSignals.entrySet()) {
+      SignalAspect current = entry.getKey();
+      if (entry.getValue().get(this.inputSignal))
+        this.calculatedSignalAspect = (this.calculatedSignalAspect == SignalAspect.OFF) ? current
+            : SignalAspect.mostRestrictive(this.calculatedSignalAspect, current);
+    }
+    this.signalController.setSignalAspect(this.calculatedSignalAspect);
   }
 
   private int calculateInputSignal() {
@@ -75,9 +95,10 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
       if (this.level.getBlockEntity(
           this.getBlockPos().relative(direction)) instanceof AbstractSignalBoxBlockEntity)
         continue;
-      if ((tmp = this.level.getSignal(this.getBlockPos(), direction)) > signal)
+      if ((tmp = this.level.getSignal(this.getBlockPos().relative(direction), direction)) > signal)
         signal = tmp;
-      if ((tmp = this.level.getSignal(this.getBlockPos().below(), direction)) > signal)
+      if ((tmp =
+          this.level.getSignal(this.getBlockPos().relative(direction).below(), direction)) > signal)
         signal = tmp;
     }
     return signal;
@@ -85,13 +106,7 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
 
   @Override
   public SignalAspect getSignalAspect(Direction direction) {
-    if (this.signalController.isLinking()) {
-      return SignalAspect.BLINK_YELLOW;
-    } else if (!this.signalController.hasPeers()) {
-      return SignalAspect.BLINK_RED;
-    } else {
-      return this.calculatedSignalAspect;
-    }
+    return this.signalController.getSignalAspect();
   }
 
   @Override
@@ -105,12 +120,12 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
     data.putInt("inputSignal", this.inputSignal);
 
     ListNBT aspectsTag = new ListNBT();
-    for (Map.Entry<SignalAspect, BitSet> entry : this.aspectTriggerSignals.entrySet()) {
+    for (Map.Entry<SignalAspect, BitSet> entry : this.signalAspectTriggerSignals.entrySet()) {
       CompoundNBT nbt = new CompoundNBT();
       nbt.putString("name", entry.getKey().getSerializedName());
       nbt.putByteArray("signals", entry.getValue().toByteArray());
     }
-    data.put("aspects", aspectsTag);
+    data.put("signalAspectTriggerSignals", aspectsTag);
 
     data.put("signalController", this.signalController.serializeNBT());
     return data;
@@ -121,11 +136,11 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
     super.load(state, data);
     this.inputSignal = data.getInt("inputSignal");
 
-    this.aspectTriggerSignals.clear();
-    ListNBT aspectsNbt = data.getList("aspects", Constants.NBT.TAG_COMPOUND);
-    for (INBT nbt : aspectsNbt) {
+    ListNBT aspectsTag = data.getList("signalAspectTriggerSignals", Constants.NBT.TAG_COMPOUND);
+    for (INBT nbt : aspectsTag) {
       CompoundNBT compoundNbt = (CompoundNBT) nbt;
-      this.aspectTriggerSignals.put(SignalAspect.getByName(compoundNbt.getString("name")).get(),
+      this.signalAspectTriggerSignals.put(
+          SignalAspect.getByName(compoundNbt.getString("name")).get(),
           BitSet.valueOf(compoundNbt.getByteArray("signals")));
     }
 
@@ -136,12 +151,10 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
     this.signalController.writeSyncData(data);
-    data.writeVarInt(this.aspectTriggerSignals.size());
-    for (Map.Entry<SignalAspect, BitSet> entry : this.aspectTriggerSignals.entrySet()) {
+    data.writeVarInt(this.signalAspectTriggerSignals.size());
+    for (Map.Entry<SignalAspect, BitSet> entry : this.signalAspectTriggerSignals.entrySet()) {
       data.writeEnum(entry.getKey());
-      byte[] signals = entry.getValue().toByteArray();
-      data.writeVarInt(signals.length);
-      data.writeBytes(signals);
+      data.writeByteArray(entry.getValue().toByteArray());
     }
   }
 
@@ -149,11 +162,11 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
     this.signalController.readSyncData(data);
-    this.aspectTriggerSignals.clear();
+    this.signalAspectTriggerSignals.clear();
     int size = data.readVarInt();
     for (int i = 0; i < size; i++) {
-      this.aspectTriggerSignals.put(data.readEnum(SignalAspect.class),
-          BitSet.valueOf(data.readByteArray(data.readVarInt())));
+      this.signalAspectTriggerSignals.put(data.readEnum(SignalAspect.class),
+          BitSet.valueOf(data.readByteArray(2048)));
     }
   }
 }

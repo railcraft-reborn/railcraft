@@ -17,7 +17,7 @@ public class ManualRollingMachineBlockEntity extends LockableTileEntity
     implements ITickableTileEntity {
 
   private static final ITextComponent MENU_TITLE =
-      new TranslationTextComponent("gui.railcraft.manual_rolling_machine");
+      new TranslationTextComponent("container.manual_rolling_machine");
 
   private int recipieRequiredTime = 12222222;
   private int currentTick = 0;

@@ -1,5 +1,7 @@
 package mods.railcraft.world.level.block.entity.signal;
 
+import java.util.EnumSet;
+import java.util.Set;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.SimpleSignalController;
@@ -24,11 +26,29 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
     super(RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get());
   }
 
+  public SignalAspect getDefaultAspect() {
+    return this.defaultAspect;
+  }
+
+  public void setDefaultAspect(SignalAspect defaultAspect) {
+    this.defaultAspect = defaultAspect;
+    this.updateSignalAspect();
+  }
+
+  public SignalAspect getPoweredAspect() {
+    return this.poweredAspect;
+  }
+
+  public void setPoweredAspect(SignalAspect poweredAspect) {
+    this.poweredAspect = poweredAspect;
+    this.updateSignalAspect();
+  }
+
   @Override
   public void load() {
     if (!this.level.isClientSide()) {
       this.signalController.refresh();
-      this.neighborChanged();
+      this.updateSignalAspect();
     }
   }
 
@@ -47,21 +67,43 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
+  public void neighborSignalBoxChanged(AbstractSignalBoxBlockEntity neighborSignalBox,
+      Direction neighborDirection, boolean removed) {
+    this.updateSignalAspect();
+  }
+
+  @Override
   public void neighborChanged() {
-    SignalAspect signalAspect = this.defaultAspect;
+    this.updateSignalAspect();
+  }
+
+  private void updateSignalAspect() {
+    Set<Direction> signalDirections = EnumSet.allOf(Direction.class);
+    signalDirections.remove(Direction.UP);
+
+    SignalAspect neighborAspect = SignalAspect.GREEN;
     for (Direction direction : Direction.Plane.HORIZONTAL) {
       TileEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
       if (blockEntity instanceof AbstractSignalBoxBlockEntity) {
         AbstractSignalBoxBlockEntity signalBox = (AbstractSignalBoxBlockEntity) blockEntity;
         if (SignalBoxBlock.isAspectEmitter(signalBox.getBlockState())) {
-          signalAspect = SignalAspect.mostRestrictive(signalAspect,
+          neighborAspect = SignalAspect.mostRestrictive(neighborAspect,
               signalBox.getSignalAspect(direction.getOpposite()));
         }
-      } else if (this.level.getSignal(this.getBlockPos(), direction) > 0) {
-        signalAspect = SignalAspect.mostRestrictive(signalAspect, this.poweredAspect);
+        signalDirections.remove(direction);
       }
     }
-    this.signalController.setSignalAspect(signalAspect);
+
+    SignalAspect signalAspect = this.defaultAspect;
+    for (Direction direction : signalDirections) {
+      if (this.level.getSignal(this.getBlockPos().relative(direction), direction) > 0) {
+        signalAspect = this.poweredAspect;
+        break;
+      }
+    }
+
+    this.signalController.setSignalAspect(
+        SignalAspect.mostRestrictive(neighborAspect, signalAspect));
   }
 
   @Override

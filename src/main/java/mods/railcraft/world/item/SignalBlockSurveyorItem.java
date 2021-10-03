@@ -23,7 +23,7 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
   }
 
   @Override
-  public ActionResultType useOn(ItemUseContext context) {
+  public ActionResultType onItemUseFirst(ItemStack itemStack, ItemUseContext context) {
     PlayerEntity player = context.getPlayer();
     ItemStack stack = context.getItemInHand();
     World level = context.getLevel();

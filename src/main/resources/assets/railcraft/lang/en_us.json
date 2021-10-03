@@ -38,7 +38,7 @@
     "block.railcraft.dual_token_signal": "Dual-Head Token Signal", 
     "block.railcraft.signal_controller_box": "Signal Controller Box", 
     "block.railcraft.signal_receiver_box": "Signal Receiver Box", 
-    "block.railcraft.signal_capacitor_box": "Signal Controller Box", 
+    "block.railcraft.signal_capacitor_box": "Signal Capacitor Box", 
     "block.railcraft.analog_signal_controller_box": "Analog Signal Controller Box", 
     "block.railcraft.signal_interlock_box": "Signal Interlock Box",
     "block.railcraft.signal_sequencer_box": "Signal Sequencer Box", 
@@ -96,6 +96,11 @@
     "screen.locomotive.mode.running":"Running",
     "screen.locomotive.mode.idle":"Idle",
 
+    "screen.signal_controller_box.default_aspect": "Default aspect:",
+    "screen.signal_controller_box.powered_aspect": "Powered aspect:",
+
+    "screen.signal_capacitor_box.duration":"Duration: %s",
+
     "goggles.aura.worldspike": "Worldspike",
     "goggles.aura.none": "None",
     "goggles.aura.shunting": "Shunting",
@@ -127,5 +132,19 @@
     
     "gui.railcraft.filter": "Filter",
 
-    "itemGroup.railcraft": "Railcraft"
+    "itemGroup.railcraft": "Railcraft",
+
+    "signal_aspect.green": "Green",
+    "signal_aspect.blink_yellow": "Blink Yellow",
+    "signal_aspect.yellow": "Yellow",
+    "signal_aspect.blink_red": "Blink Red",
+    "signal_aspect.red": "Red",
+    "signal_aspect.off": "Off",
+
+    "signal_capacitor_box.mode.rising_edge": "Rising Edge",
+    "signal_capacitor_box.mode.rising_edge.description": "Start timer as soon as the input signal is received.",
+    "signal_capacitor_box.mode.falling_edge": "Falling Edge",
+    "signal_capacitor_box.mode.falling_edge.description": "Start timer when the last input signal turns off.",
+
+    "fluid.railcraft.steam": "Steam"
 }

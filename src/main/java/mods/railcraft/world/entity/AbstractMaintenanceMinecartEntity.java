@@ -3,10 +3,10 @@ package mods.railcraft.world.entity;
 import java.util.List;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.client.gui.widget.button.ButtonTexture;
+import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
-import mods.railcraft.gui.button.StandardButtonTextureSets;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.util.TrackTools;
 import net.minecraft.block.BlockState;
@@ -90,8 +90,8 @@ public abstract class AbstractMaintenanceMinecartEntity extends AbstractRailcraf
     }
 
     @Override
-    public ButtonTextureSet getTextureSet() {
-      return StandardButtonTextureSets.SMALL_BUTTON;
+    public TexturePosition getTexturePosition() {
+      return ButtonTexture.SMALL_BUTTON;
     }
 
     @Override
