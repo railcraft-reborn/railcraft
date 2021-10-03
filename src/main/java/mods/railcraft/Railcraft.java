@@ -6,6 +6,7 @@ import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.ForgeItemTagsProvider;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
+import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
@@ -132,6 +133,7 @@ public class Railcraft {
     dataGen.addProvider(
       new ForgeItemTagsProvider(dataGen, blockTags, event.getExistingFileHelper())
     );
+    dataGen.addProvider(new RailcraftLootTableProvider(dataGen));
   }
 
   @SubscribeEvent

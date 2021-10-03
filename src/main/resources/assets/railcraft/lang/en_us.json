@@ -72,6 +72,11 @@
     "item.railcraft.track_remover": "Track Remover",
 
     "item.railcraft.steel_ingot": "Steel Ingot",
+    "item.railcraft.copper_ingot": "Copper Ingot",
+    "item.railcraft.tin_ingot": "Tin Ingot",
+    "item.railcraft.zinc_ingot": "Zinc Ingot",
+    "item.railcraft.brass_ingot": "Brass Ingot",
+    "item.railcraft.bronze_ingot": "Bronze Ingot",
 
     "__DESC.misc": "======= Misc GUI/tooltip =======",
 

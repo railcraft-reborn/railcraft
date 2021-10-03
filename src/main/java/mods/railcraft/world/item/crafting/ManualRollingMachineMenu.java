@@ -126,7 +126,7 @@ public class ManualRollingMachineMenu extends Container {
     if (!this.level.isClientSide) {
       ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)this.player;
       ItemStack itemstack = ItemStack.EMPTY;
-      Optional<RollingRecipe> optional = this.level.getServer().getRecipeManager().getRecipeFor(RailcraftRecipies.ROLLING_RECIPIE, this.craftSlots, this.level);
+      Optional<RollingRecipe> optional = this.level.getServer().getRecipeManager().getRecipeFor(RailcraftRecipeTypes.ROLLING, this.craftSlots, this.level);
 
       this.setData(0, 10000); // nuke the clock
       this.setData(2, 0);
