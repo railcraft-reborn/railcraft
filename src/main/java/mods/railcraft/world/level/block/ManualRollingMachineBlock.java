@@ -33,7 +33,7 @@ public class ManualRollingMachineBlock extends Block {
     TileEntity blockEntity = world.getBlockEntity(blockPos);
     if (blockEntity instanceof ManualRollingMachineBlockEntity) {
       player.openMenu((INamedContainerProvider) blockEntity);
-      // playerEntity.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
+      // player.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
       // TODO: interaction stats
     }
   }

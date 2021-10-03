@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "railcraft:copper_ingot"
+    ]
+  },
+  "criteria": {
+    "has_required_compression_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:nuggets/copper"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "railcraft:copper_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_required_compression_material",
+      "has_the_recipe"
+    ]
+  ]
+}

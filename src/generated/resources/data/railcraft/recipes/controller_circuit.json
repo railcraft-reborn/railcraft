@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " RW",
+    "BGS",
+    "WSL"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:red_wool"
+    },
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "S": {
+      "tag": "forge:dusts/redstone"
+    },
+    "G": {
+      "tag": "forge:ingots/gold"
+    },
+    "L": {
+      "tag": "forge:gems/lapis"
+    },
+    "B": {
+      "tag": "forge:slimeballs"
+    }
+  },
+  "result": {
+    "item": "railcraft:controller_circuit"
+  }
+}

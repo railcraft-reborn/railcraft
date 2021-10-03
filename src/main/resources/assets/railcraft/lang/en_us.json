@@ -16,8 +16,8 @@
     "__DESC.messages": "======= Messages =======",
 
     "message.link.broken":"Link Broken",
-    "message.link.created":"Link Created",
-    "message.link.failed":"Link Failed",
+    "message.link.created":"§aLink Created§r",
+    "message.link.failed":"§cLink Failed§r",
     "message.link.started":"Link Started",
 
     "__DESC.blocks": "======= Blocks =======",
@@ -78,6 +78,17 @@
     "item.railcraft.brass_ingot": "Brass Ingot",
     "item.railcraft.bronze_ingot": "Bronze Ingot",
 
+    "item.railcraft.steel_nugget": "Steel Nugget",
+    "item.railcraft.copper_nugget": "Copper Nugget",
+    "item.railcraft.tin_nugget": "Tin Nugget",
+    "item.railcraft.zinc_nugget": "Zinc Nugget",
+    "item.railcraft.brass_nugget": "Brass Nugget",
+    "item.railcraft.bronze_nugget": "Bronze Nugget",
+
+    "item.railcraft.controller_circuit": "Controller Circuit",
+    "item.railcraft.receiver_circuit": "Receiver Circuit",
+    "item.railcraft.signal_circuit": "Signal Circuit",
+
     "__DESC.misc": "======= Misc GUI/tooltip =======",
 
     "gui.railcraft.routing.ticket.tips.issuer":"Issuer:",
@@ -113,19 +124,19 @@
     "goggles.description": "Right-click to change aura.",
 
     "signal_surveyor.invalid_track": "§cNo track found near %s.",
-    "signal_surveyor.begin": "§dBeginning survey.",
-    "signal_surveyor.success": "§aSuccessfully paired signals.",
-    "signal_surveyor.invalid_pair": "§cPairing invalid.",
-    "signal_surveyor.lost": "§cFirst signal no longer exists.",
-    "signal_surveyor.unloaded": "§cFirst signal's chunk has been unloaded.",
-    "signal_surveyor.abandoned": "§dSurvey abandoned.",
-    "signal_surveyor.invalid_block": "§cNot a valid signal.",
+    "signal_surveyor.begin": "§dBeginning survey.§r",
+    "signal_surveyor.success": "§aSuccessfully paired signals.§r",
+    "signal_surveyor.invalid_pair": "§cPairing invalid.§r",
+    "signal_surveyor.lost": "§cFirst signal no longer exists.§r",
+    "signal_surveyor.unloaded": "§cFirst signal's chunk has been unloaded.§r",
+    "signal_surveyor.abandoned": "§dSurvey abandoned.§r",
+    "signal_surveyor.invalid_block": "§cNot a valid signal.§r",
 
-    "signal_tuner.begin": "§dStarted pairing %s §dwith a receiver.",
-    "signal_tuner.abandoned": "§dStopped pairing.",
-    "signal_tuner.unloaded": "§cSignal controller's chunk has been unloaded.",
-    "signal_tuner.lost": "§cSignal controller no longer exists.",
-    "signal_tuner.success": "§aSuccessfully paired signal receiver.",
+    "signal_tuner.begin": "§dStarted pairing %s §dwith a receiver.§r",
+    "signal_tuner.abandoned": "§dStopped pairing.§r",
+    "signal_tuner.unloaded": "§cSignal controller's chunk has been unloaded.§r",
+    "signal_tuner.lost": "§cSignal controller no longer exists.§r",
+    "signal_tuner.success": "§aSuccessfully paired signal receiver.§r",
 
     "crowbar.description":"§oRight click while sneaking to link carts§r",
 

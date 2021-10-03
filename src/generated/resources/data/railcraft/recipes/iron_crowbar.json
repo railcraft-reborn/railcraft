@@ -1,20 +1,19 @@
 {
-  "type": "crafting_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     " DI",
     "DID",
-    "ID "]
-  ,
+    "ID "
+  ],
   "key": {
-    "I":{
+    "I": {
       "tag": "forge:ingots/iron"
     },
-    "D" : {
+    "D": {
       "tag": "forge:dyes/red"
     }
   },
   "result": {
-    "item": "railcraft:iron_crowbar",
-    "count": 1
+    "item": "railcraft:iron_crowbar"
   }
 }

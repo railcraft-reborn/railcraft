@@ -28,6 +28,19 @@ public class ForgeItemTagsProvider extends ItemTagsProvider {
       .add(RailcraftItems.BRASS_INGOT.get());
     this.tag(RailcraftTags.Items.BRONZE_INGOT)
       .add(RailcraftItems.BRONZE_INGOT.get());
+
+    this.tag(RailcraftTags.Items.STEEL_NUGGET)
+      .add(RailcraftItems.STEEL_NUGGET.get());
+    this.tag(RailcraftTags.Items.COPPER_NUGGET)
+      .add(RailcraftItems.COPPER_NUGGET.get());
+    this.tag(RailcraftTags.Items.TIN_NUGGET)
+      .add(RailcraftItems.TIN_NUGGET.get());
+    this.tag(RailcraftTags.Items.ZINC_NUGGET)
+      .add(RailcraftItems.ZINC_NUGGET.get());
+    this.tag(RailcraftTags.Items.BRASS_NUGGET)
+      .add(RailcraftItems.BRASS_NUGGET.get());
+    this.tag(RailcraftTags.Items.BRONZE_NUGGET)
+      .add(RailcraftItems.BRONZE_NUGGET.get());
   }
 
   @Override

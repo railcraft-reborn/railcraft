@@ -328,4 +328,67 @@ public class RailcraftItems {
   public static final RegistryObject<Item> BRONZE_INGOT =
     ITEMS.register("bronze_ingot",
       () -> new Item(new Item.Properties().tab(TAB)));
+
+  // NUGGET
+  public static final RegistryObject<Item> STEEL_NUGGET =
+    ITEMS.register("steel_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> COPPER_NUGGET =
+    ITEMS.register("copper_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> TIN_NUGGET =
+    ITEMS.register("tin_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ZINC_NUGGET =
+    ITEMS.register("zinc_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRASS_NUGGET =
+    ITEMS.register("brass_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRONZE_NUGGET =
+    ITEMS.register("bronze_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  // BLOCK
+  // public static final RegistryObject<BlockItem> STEEL_BLOCK =
+  //   ITEMS.register("steel_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  // public static final RegistryObject<BlockItem> COPPER_BLOCK =
+  //   ITEMS.register("copper_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  // public static final RegistryObject<BlockItem> TIN_BLOCK =
+  //   ITEMS.register("tin_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  // public static final RegistryObject<BlockItem> ZINC_BLOCK =
+  //   ITEMS.register("zinc_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  // public static final RegistryObject<BlockItem> BRASS_BLOCK =
+  //   ITEMS.register("brass_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  // public static final RegistryObject<BlockItem> BRONZE_BLOCK =
+  //   ITEMS.register("bronze_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  //circuits
+  public static final RegistryObject<Item> CONTROLLER_CIRCUIT =
+    ITEMS.register("controller_circuit",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> RECEIVER_CIRCUIT =
+    ITEMS.register("receiver_circuit",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SIGNAL_CIRCUIT =
+    ITEMS.register("signal_circuit",
+      () -> new Item(new Item.Properties().tab(TAB)));
 }

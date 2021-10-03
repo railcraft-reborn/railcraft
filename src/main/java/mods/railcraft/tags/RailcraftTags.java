@@ -32,6 +32,30 @@ public class RailcraftTags {
     public static final Tags.IOptionalNamedTag<Item> ZINC_INGOT = forgeTag("ingots/zinc");
     public static final Tags.IOptionalNamedTag<Item> BRASS_INGOT = forgeTag("ingots/brass");
 
+    // nuggets
+    public static final Tags.IOptionalNamedTag<Item> STEEL_NUGGET = forgeTag("nuggets/steel");
+    public static final Tags.IOptionalNamedTag<Item> COPPER_NUGGET = forgeTag("nuggets/copper");
+    public static final Tags.IOptionalNamedTag<Item> TIN_NUGGET = forgeTag("nuggets/tin");
+    public static final Tags.IOptionalNamedTag<Item> LEAD_NUGGET = forgeTag("nuggets/lead");
+    public static final Tags.IOptionalNamedTag<Item> SILVER_NUGGET = forgeTag("nuggets/silver");
+    public static final Tags.IOptionalNamedTag<Item> BRONZE_NUGGET = forgeTag("nuggets/bronze");
+    public static final Tags.IOptionalNamedTag<Item> NICKEL_NUGGET = forgeTag("nuggets/nickel");
+    public static final Tags.IOptionalNamedTag<Item> INVAR_NUGGET = forgeTag("nuggets/invar");
+    public static final Tags.IOptionalNamedTag<Item> ZINC_NUGGET = forgeTag("nuggets/zinc");
+    public static final Tags.IOptionalNamedTag<Item> BRASS_NUGGET = forgeTag("nuggets/brass");
+
+    // blocks
+    public static final Tags.IOptionalNamedTag<Item> STEEL_BLOCK = forgeTag("blocks/steel");
+    public static final Tags.IOptionalNamedTag<Item> COPPER_BLOCK = forgeTag("blocks/copper");
+    public static final Tags.IOptionalNamedTag<Item> TIN_BLOCK = forgeTag("blocks/tin");
+    public static final Tags.IOptionalNamedTag<Item> LEAD_BLOCK = forgeTag("blocks/lead");
+    public static final Tags.IOptionalNamedTag<Item> SILVER_BLOCK = forgeTag("blocks/silver");
+    public static final Tags.IOptionalNamedTag<Item> BRONZE_BLOCK = forgeTag("blocks/bronze");
+    public static final Tags.IOptionalNamedTag<Item> NICKEL_BLOCK = forgeTag("blocks/nickel");
+    public static final Tags.IOptionalNamedTag<Item> INVAR_BLOCK = forgeTag("blocks/invar");
+    public static final Tags.IOptionalNamedTag<Item> ZINC_BLOCK = forgeTag("blocks/zinc");
+    public static final Tags.IOptionalNamedTag<Item> BRASS_BLOCK = forgeTag("blocks/brass");
+
     private static IOptionalNamedTag<Item> tag(String name) {
       return ItemTags.createOptional(new ResourceLocation(Railcraft.ID, name));
     }

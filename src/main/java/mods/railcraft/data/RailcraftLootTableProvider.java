@@ -40,6 +40,6 @@ public class RailcraftLootTableProvider extends LootTableProvider {
 
   @Override
   public String getName() {
-    return "Railcraft Loot Table";
+    return "Railcraft Loot Tables";
   }
 }
