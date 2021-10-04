@@ -15,6 +15,7 @@ import mods.railcraft.world.level.block.entity.signal.SignalInterlockBoxBlockEnt
 import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalSequencerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
+import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.signal.SelfAttachableSignalBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalBlock;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
@@ -286,4 +287,94 @@ public class RailcraftBlocks {
       BLOCKS.register("manual_rolling_machine",
           () -> new ManualRollingMachineBlock(AbstractBlock.Properties.of(Material.WOOD)
               .sound(SoundType.WOOD)));
+
+  public static final RegistryObject<Block> WOOD_POST =
+      BLOCKS.register("wood_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.WOOD)
+              .sound(SoundType.WOOD)));
+
+  public static final RegistryObject<Block> STONE_POST =
+      BLOCKS.register("stone_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.STONE)
+              .sound(SoundType.STONE)));
+
+  public static final RegistryObject<Block> BLACK_METAL_POST =
+      BLOCKS.register("black_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> RED_METAL_POST =
+      BLOCKS.register("red_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> GREEN_METAL_POST =
+      BLOCKS.register("green_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> BROWN_METAL_POST =
+      BLOCKS.register("brown_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> BLUE_METAL_POST =
+      BLOCKS.register("blue_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> PURPLE_METAL_POST =
+      BLOCKS.register("purple_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> CYAN_METAL_POST =
+      BLOCKS.register("cyan_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> LIGHT_GRAY_METAL_POST =
+      BLOCKS.register("light_gray_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> GRAY_METAL_POST =
+      BLOCKS.register("gray_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> PINK_METAL_POST =
+      BLOCKS.register("pink_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> LIME_METAL_POST =
+      BLOCKS.register("lime_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> YELLOW_METAL_POST =
+      BLOCKS.register("yellow_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> LIGHT_BLUE_METAL_POST =
+      BLOCKS.register("light_blue_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> MAGENTA_METAL_POST =
+      BLOCKS.register("magenta_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> ORANGE_METAL_POST =
+      BLOCKS.register("orange_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> WHITE_METAL_POST =
+      BLOCKS.register("white_metal_post",
+          () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)));
 }

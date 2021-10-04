@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
+import mods.railcraft.data.RailcraftBlockStateProvider;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.network.NetworkChannel;
@@ -126,6 +127,7 @@ public class Railcraft {
   private void handleGatherData(GatherDataEvent event) {
     event.getGenerator().addProvider(
         new RailcraftBlockTagsProvider(event.getGenerator(), event.getExistingFileHelper()));
+    event.getGenerator().addProvider(new RailcraftBlockStateProvider(event.getGenerator()));
   }
 
   @SubscribeEvent

@@ -32,6 +32,7 @@ public class TunnelBorePartEntity extends PartEntity<TunnelBoreEntity> {
     this.partName = partName;
     this.forwardOffset = forwardOffset;
     this.sideOffset = sideOffset;
+    this.updatePosition();
   }
 
   @Override
@@ -42,9 +43,13 @@ public class TunnelBorePartEntity extends PartEntity<TunnelBoreEntity> {
   @Override
   public void tick() {
     super.tick();
-    double x = getParent().getOffsetX(getParent().getX(), forwardOffset, sideOffset);
-    double z = getParent().getOffsetZ(getParent().getZ(), forwardOffset, sideOffset);
-    moveTo(x, getParent().getY() + 0.3F, z, 0.0F, 0.0F);
+    this.updatePosition();
+  }
+
+  private void updatePosition() {
+    double x = this.getParent().getOffsetX(getParent().getX(), this.forwardOffset, this.sideOffset);
+    double z = this.getParent().getOffsetZ(getParent().getZ(), this.forwardOffset, this.sideOffset);
+    this.moveTo(x, this.getParent().getY() + 0.3F, z, 0.0F, 0.0F);
   }
 
   @Override
