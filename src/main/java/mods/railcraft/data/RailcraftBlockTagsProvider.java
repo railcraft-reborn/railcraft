@@ -43,6 +43,6 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
   @Override
   public String getName() {
-    return "Railcraft Block Tagss";
+    return "Railcraft Block Tags";
   }
 }

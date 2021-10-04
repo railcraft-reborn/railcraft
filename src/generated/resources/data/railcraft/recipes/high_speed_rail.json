@@ -1,0 +1,21 @@
+{
+  "type": "railcraft:rolling",
+  "pattern": [
+    "SOS",
+    "SOS",
+    "SOS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:ingots/steel"
+    },
+    "O": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "railcraft:high_speed_rail",
+    "count": 8
+  },
+  "tickCost": 100
+}

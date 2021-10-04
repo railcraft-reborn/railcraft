@@ -1,23 +1,22 @@
 {
-  "type": "crafting_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     " T ",
     "BCB",
-    "   "]
-  ,
+    "   "
+  ],
   "key": {
     "T": {
       "item": "minecraft:redstone_torch"
     },
+    "C": {
+      "item": "railcraft:receiver_circuit"
+    },
     "B": {
       "item": "minecraft:stone_button"
-    },
-    "C": {
-      "item": "minecraft:glass_pane"
     }
   },
   "result": {
-    "item": "railcraft:signal_tuner",
-    "count": 1
+    "item": "railcraft:signal_tuner"
   }
 }

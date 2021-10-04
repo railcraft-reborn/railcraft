@@ -391,4 +391,30 @@ public class RailcraftItems {
   public static final RegistryObject<Item> SIGNAL_CIRCUIT =
     ITEMS.register("signal_circuit",
       () -> new Item(new Item.Properties().tab(TAB)));
+
+  //rails
+  public static final RegistryObject<Item> WOODEN_RAIL =
+    ITEMS.register("wooden_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STANDARD_RAIL =
+    ITEMS.register("standard_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ADVANCED_RAIL =
+    ITEMS.register("advanced_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> REINFORCED_RAIL =
+    ITEMS.register("reinforced_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_RAIL =
+    ITEMS.register("high_speed_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ELECTRIC_RAIL =
+    ITEMS.register("electric_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
 }

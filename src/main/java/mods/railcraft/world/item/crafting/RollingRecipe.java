@@ -27,7 +27,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
  * Rolling recipe class
- * 
+ *
  * @author LetterN (https://github.com/LetterN)
  */
 public class RollingRecipe implements IRecipe<CraftingInventory> {
@@ -47,7 +47,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
 
   /**
    * Get how long the user should wait before this gets crafted.
-   * 
+   *
    * @return tick cost, in int.
    */
   public int getTickCost() {
@@ -138,8 +138,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
       String[] astring = shrink(patternFromJson(JSONUtils.getAsJsonArray(jsonObject, "pattern")));
 
       int tickCost = JSONUtils.getAsInt(jsonObject, "tickCost", 100); // 5 seconds
-      NonNullList<Ingredient> ingredients =
-          dissolvePattern(astring, map, astring[0].length(), astring.length);
+      NonNullList<Ingredient> ingredients = dissolvePattern(astring, map, 3, 3); // I SAID, STRICT 3X3
       ItemStack resultItemStack = itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
       // 3x3 recipies only, attempting to register 4x4's will not work and we will never honor it.
       return new RollingRecipe(resourceLoc, tickCost, ingredients, resultItemStack);
@@ -257,8 +256,8 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
 
       for (int i1 = 0; i1 < patternArray.length; ++i1) {
         String s = patternArray[i1];
-        i = Math.min(i, Math.max(s.indexOf(' '), 0));
-        int j1 = Math.max(s.lastIndexOf(' '), 0);
+        i = Math.min(i, firstNonSpace(s));
+        int j1 = lastNonSpace(s);
         j = Math.max(j, j1);
         if (j1 < 0) {
           if (k == i1) {
@@ -282,5 +281,16 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
       }
     }
 
+    private static final int firstNonSpace(String in) {
+      int i;
+      for(i = 0; i < in.length() && in.charAt(i) == ' '; ++i);
+      return i;
+    }
+
+    private static final int lastNonSpace(String in) {
+      int i;
+      for(i = in.length() - 1; i >= 0 && in.charAt(i) == ' '; --i);
+      return i;
+    }
   }
 }

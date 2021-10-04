@@ -1,0 +1,24 @@
+{
+  "type": "railcraft:rolling",
+  "pattern": [
+    "IRG",
+    "IRG",
+    "IRG"
+  ],
+  "key": {
+    "I": {
+      "item": "railcraft:standard_rail"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "G": {
+      "tag": "forge:ingots/gold"
+    }
+  },
+  "result": {
+    "item": "railcraft:advanced_rail",
+    "count": 8
+  },
+  "tickCost": 100
+}

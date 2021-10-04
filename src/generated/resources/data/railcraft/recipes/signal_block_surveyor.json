@@ -1,26 +1,25 @@
 {
-  "type": "crafting_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     " C ",
     "BGB",
-    " R "]
-  ,
+    " R "
+  ],
   "key": {
     "C": {
       "item": "minecraft:compass"
     },
+    "G": {
+      "tag": "forge:glass_panes"
+    },
     "B": {
       "item": "minecraft:stone_button"
     },
-    "G": {
-      "item": "minecraft:glass_pane"
-    },
     "R": {
-      "item": "minecraft:redstone"
+      "tag": "forge:dusts/redstone"
     }
   },
   "result": {
-    "item": "railcraft:signal_block_surveyor",
-    "count": 1
+    "item": "railcraft:signal_block_surveyor"
   }
 }

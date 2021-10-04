@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    }
+  ],
+  "result": {
+    "item": "railcraft:standard_rail"
+  }
+}
