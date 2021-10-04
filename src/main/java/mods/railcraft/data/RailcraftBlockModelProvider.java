@@ -57,22 +57,21 @@ public class RailcraftBlockModelProvider {
 
   private void createPost(Block block) {
     ModelTextures textures = ModelTextures.defaultTexture(block);
-    ResourceLocation columnModel = RailcraftModels.POST_COLUMN.create(block,
+    ResourceLocation columnModel = Models.POST_COLUMN.create(block,
         textures, RailcraftBlockModelProvider.this.modelOutput);
-    ResourceLocation doubleConnectionModel = RailcraftModels.POST_DOUBLE_CONNECTION.create(block,
+    ResourceLocation doubleConnectionModel = Models.POST_DOUBLE_CONNECTION.create(block,
         textures, RailcraftBlockModelProvider.this.modelOutput);
     // ResourceLocation platformModel = RailcraftModels.POST_PLATFORM.create(block,
     // textures, RailcraftBlockModelProvider.this.modelOutput);
-    ResourceLocation shortColumnModel = RailcraftModels.POST_SHORT_COLUMN.create(block,
+    ResourceLocation shortColumnModel = Models.POST_SHORT_COLUMN.create(block,
         textures, RailcraftBlockModelProvider.this.modelOutput);
-    ResourceLocation singleConnectionModel = RailcraftModels.POST_SINGLE_CONNECTION.create(block,
+    ResourceLocation singleConnectionModel = Models.POST_SINGLE_CONNECTION.create(block,
         textures, RailcraftBlockModelProvider.this.modelOutput);
-    ResourceLocation inventoryModel = RailcraftModels.POST_INVENTORY.create(block,
+    ResourceLocation inventoryModel = Models.POST_INVENTORY.create(block,
         textures, RailcraftBlockModelProvider.this.modelOutput);
     this.delegateItemModel(block, inventoryModel);
     this.blockStateOutput.accept(
         FinishedMultiPartBlockState.multiPart(block)
-            .with(BlockModelDefinition.variant().with(BlockModelFields.MODEL, columnModel))
             .with(
                 IMultiPartPredicateBuilder.condition()
                     .term(PostBlock.COLUMN, Column.SHORT),

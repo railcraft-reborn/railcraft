@@ -6,7 +6,7 @@ import net.minecraft.data.ModelsUtil;
 import net.minecraft.data.StockTextureAliases;
 import net.minecraft.util.ResourceLocation;
 
-public class RailcraftModels {
+public class Models {
 
   public static final ModelsUtil POST_COLUMN =
       create("post_column", "_column", StockTextureAliases.TEXTURE);

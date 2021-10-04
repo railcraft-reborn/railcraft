@@ -16,6 +16,7 @@ import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEnti
 import mods.railcraft.world.level.block.entity.signal.SignalSequencerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
 import mods.railcraft.world.level.block.post.PostBlock;
+import mods.railcraft.world.level.block.signal.DualSignalBlock;
 import mods.railcraft.world.level.block.signal.SelfAttachableSignalBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalBlock;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
@@ -134,27 +135,27 @@ public class RailcraftBlocks {
                   .sound(SoundType.METAL)
                   .noOcclusion()));
 
-  public static final RegistryObject<SignalBlock> DUAL_BLOCK_SIGNAL =
+  public static final RegistryObject<DualSignalBlock> DUAL_BLOCK_SIGNAL =
       BLOCKS.register("dual_block_signal",
-          () -> new SignalBlock(DualBlockSignalBlockEntity::new,
+          () -> new DualSignalBlock(DualBlockSignalBlockEntity::new,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .harvestTool(RailcraftToolTypes.CROWBAR)
                   .harvestLevel(0)
                   .strength(8.0F, 50.0F)
                   .noOcclusion()));
 
-  public static final RegistryObject<SignalBlock> DUAL_DISTANT_SIGNAL =
+  public static final RegistryObject<DualSignalBlock> DUAL_DISTANT_SIGNAL =
       BLOCKS.register("dual_distant_signal",
-          () -> new SignalBlock(DualDistantSignalBlockEntity::new,
+          () -> new DualSignalBlock(DualDistantSignalBlockEntity::new,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .harvestTool(RailcraftToolTypes.CROWBAR)
                   .harvestLevel(0)
                   .strength(8.0F, 50.0F)
                   .noOcclusion()));
 
-  public static final RegistryObject<SignalBlock> DUAL_TOKEN_SIGNAL =
+  public static final RegistryObject<DualSignalBlock> DUAL_TOKEN_SIGNAL =
       BLOCKS.register("dual_token_signal",
-          () -> new SignalBlock(DualTokenSignalBlockEntity::new,
+          () -> new DualSignalBlock(DualTokenSignalBlockEntity::new,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .harvestTool(RailcraftToolTypes.CROWBAR)
                   .harvestLevel(0)

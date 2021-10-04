@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "railcraft:black_metal_post",
+    "railcraft:red_metal_post",
+    "railcraft:green_metal_post",
+    "railcraft:brown_metal_post",
+    "railcraft:blue_metal_post",
+    "railcraft:purple_metal_post",
+    "railcraft:cyan_metal_post",
+    "railcraft:light_gray_metal_post",
+    "railcraft:gray_metal_post",
+    "railcraft:pink_metal_post",
+    "railcraft:lime_metal_post",
+    "railcraft:yellow_metal_post",
+    "railcraft:light_blue_metal_post",
+    "railcraft:magenta_metal_post",
+    "railcraft:orange_metal_post",
+    "railcraft:white_metal_post"
+  ]
+}

@@ -1,11 +1,6 @@
 {
   "multipart": [
     {
-      "apply": {
-        "model": "railcraft:block/pink_metal_post_column"
-      }
-    },
-    {
       "when": {
         "column": "short"
       },

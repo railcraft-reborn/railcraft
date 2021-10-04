@@ -1,37 +1,57 @@
 package mods.railcraft.world.level.block.signal;
 
 import java.util.function.Supplier;
-import mods.railcraft.util.AABBFactory;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 
 /**
- * Created by CovertJaguar on 7/5/2017 for Railcraft.
+ * 
+ * @author Sm0keySa1m0n
  *
- * @author CovertJaguar <http://www.railcraft.info>
  */
 public class SignalBlock extends AbstractSignalBlock {
 
-  public static final VoxelShape SHAPE =
-      VoxelShapes.create(AABBFactory.start()
-          .box()
-          .expandHorizontally(-BLOCK_BOUNDS)
-          .raiseFloor(0.35)
-          .build());
+  public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
+
+  public static final VoxelShape SHAPE = box(3.0D, 6.0D, 3.0D, 13.0D, 16.0D, 13.0D);
 
   public SignalBlock(Supplier<? extends AbstractSignalBlockEntity> blockEntityFactory,
       Properties properties) {
-    super(blockEntityFactory, properties);
+    super(SHAPE, blockEntityFactory, properties);
+    this.registerDefaultState(this.stateDefinition.any()
+        .setValue(NORTH, false)
+        .setValue(EAST, false)
+        .setValue(SOUTH, false)
+        .setValue(WEST, false)
+        .setValue(DOWN, false)
+        .setValue(FACING, Direction.NORTH)
+        .setValue(WATERLOGGED, false));
   }
 
   @Override
-  public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos,
-      ISelectionContext context) {
-    return SHAPE;
+  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    super.createBlockStateDefinition(builder);
+    builder.add(DOWN);
+  }
+
+  @Override
+  public BlockState getStateForPlacement(BlockItemUseContext context) {
+    IBlockReader level = context.getLevel();
+    BlockPos pos = context.getClickedPos();
+    Direction facing = context.getHorizontalDirection().getOpposite();
+    BlockPos downPos = pos.below();
+    BlockState downState = level.getBlockState(downPos);
+    return super.getStateForPlacement(context)
+        .setValue(DOWN, this.connectsTo(downState,
+            downState.isFaceSturdy(level, downPos, Direction.UP), Direction.DOWN, facing));
   }
 }

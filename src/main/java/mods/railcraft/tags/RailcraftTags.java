@@ -52,6 +52,7 @@ public class RailcraftTags {
         tag("aspect_receiver");
     public static final Tags.IOptionalNamedTag<Block> ASPECT_EMITTER =
         tag("aspect_emitter");
+    public static final Tags.IOptionalNamedTag<Block> POST = tag("post");
 
     private static IOptionalNamedTag<Block> tag(String name) {
       return BlockTags.createOptional(new ResourceLocation(Railcraft.ID, name));

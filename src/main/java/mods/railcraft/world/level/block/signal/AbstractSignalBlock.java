@@ -1,6 +1,11 @@
 package mods.railcraft.world.level.block.signal;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.function.Supplier;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import net.minecraft.block.Block;
@@ -10,7 +15,6 @@ import net.minecraft.block.SixWayBlock;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -20,55 +24,115 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
 /**
- * Created by CovertJaguar on 9/8/2016 for Railcraft.
+ * 
+ * @author Sm0keySa1m0n
  *
- * @author CovertJaguar <http://www.railcraft.info>
  */
-public abstract class AbstractSignalBlock extends SixWayBlock implements IWaterLoggable {
+public abstract class AbstractSignalBlock extends Block implements IWaterLoggable {
 
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+  public static final BooleanProperty NORTH = SixWayBlock.NORTH;
+  public static final BooleanProperty EAST = SixWayBlock.EAST;
+  public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
+  public static final BooleanProperty WEST = SixWayBlock.WEST;
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-  public static final float BLOCK_BOUNDS = 0.15F;
+  public static final Map<Direction, BooleanProperty> propertyByDirection =
+      Util.make(new EnumMap<>(Direction.class), (map) -> {
+        map.put(Direction.NORTH, NORTH);
+        map.put(Direction.EAST, EAST);
+        map.put(Direction.SOUTH, SOUTH);
+        map.put(Direction.WEST, WEST);
+      });
 
   private final Supplier<? extends AbstractSignalBlockEntity> blockEntityFactory;
+  private final VoxelShape[] shapes;
+  private final Object2IntMap<BlockState> stateToIndex = new Object2IntOpenHashMap<>();
 
-  protected AbstractSignalBlock(Supplier<? extends AbstractSignalBlockEntity> blockEntityFactory,
+  protected AbstractSignalBlock(VoxelShape shape,
+      Supplier<? extends AbstractSignalBlockEntity> blockEntityFactory,
       Properties properties) {
-    super(BLOCK_BOUNDS, properties);
+    super(properties);
     this.blockEntityFactory = blockEntityFactory;
+    this.shapes = this.makeShapes(shape, 2.0F, 0.0F, 16.0F);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(NORTH, false)
         .setValue(EAST, false)
         .setValue(SOUTH, false)
         .setValue(WEST, false)
-        .setValue(UP, false)
-        .setValue(DOWN, false)
         .setValue(FACING, Direction.NORTH)
         .setValue(WATERLOGGED, false));
   }
 
+  protected VoxelShape[] makeShapes(VoxelShape mainShape, float connectionWidth,
+      float connectionMinY, float connectionMaxY) {
+    float connectionMinX = 8.0F - connectionWidth;
+    float connectionMaxX = 8.0F + connectionWidth;
+    VoxelShape voxelshape1 = Block.box(connectionMinX, connectionMinY, 0.0D, connectionMaxX,
+        connectionMaxY, connectionMaxX);
+    VoxelShape voxelshape2 = Block.box(connectionMinX, connectionMinY, connectionMinX,
+        connectionMaxX, connectionMaxY, 16.0D);
+    VoxelShape voxelshape3 = Block.box(0.0D, connectionMinY, connectionMinX, connectionMaxX,
+        connectionMaxY, connectionMaxX);
+    VoxelShape voxelshape4 = Block.box(connectionMinX, connectionMinY, connectionMinX, 16.0D,
+        connectionMaxY, connectionMaxX);
+    VoxelShape voxelshape5 = VoxelShapes.or(voxelshape1, voxelshape4);
+    VoxelShape voxelshape6 = VoxelShapes.or(voxelshape2, voxelshape3);
+    VoxelShape[] shapes = new VoxelShape[] {VoxelShapes.empty(), voxelshape2, voxelshape3,
+        voxelshape6, voxelshape1, VoxelShapes.or(voxelshape2, voxelshape1),
+        VoxelShapes.or(voxelshape3, voxelshape1), VoxelShapes.or(voxelshape6, voxelshape1),
+        voxelshape4, VoxelShapes.or(voxelshape2, voxelshape4),
+        VoxelShapes.or(voxelshape3, voxelshape4), VoxelShapes.or(voxelshape6, voxelshape4),
+        voxelshape5, VoxelShapes.or(voxelshape2, voxelshape5),
+        VoxelShapes.or(voxelshape3, voxelshape5), VoxelShapes.or(voxelshape6, voxelshape5)};
+
+    for (int i = 0; i < 16; ++i) {
+      shapes[i] = VoxelShapes.or(mainShape, shapes[i]);
+    }
+
+    return shapes;
+  }
+
   @Override
   protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-    builder.add(NORTH, EAST, WEST, SOUTH, UP, DOWN, FACING, WATERLOGGED);
+    builder.add(NORTH, EAST, WEST, SOUTH, FACING, WATERLOGGED);
   }
 
   @Override
-  public boolean propagatesSkylightDown(BlockState state, IBlockReader reader,
-      BlockPos pos) {
-    return !state.getValue(WATERLOGGED);
+  public VoxelShape getShape(BlockState blockState, IBlockReader level, BlockPos blockPos,
+      ISelectionContext context) {
+    return this.shapes[this.getShapeIndex(blockState)];
   }
 
-  @SuppressWarnings("deprecation")
+  private static int indexFor(Direction direction) {
+    return 1 << direction.get2DDataValue();
+  }
+
+  protected int getShapeIndex(BlockState blockState) {
+    return this.stateToIndex.computeIntIfAbsent(blockState, __ -> {
+      int i = 0;
+      for (Map.Entry<Direction, BooleanProperty> entry : propertyByDirection.entrySet()) {
+        if (blockState.getValue(entry.getValue())) {
+          i |= indexFor(entry.getKey());
+        }
+      }
+      return i;
+    });
+  }
+
   @Override
-  public FluidState getFluidState(BlockState state) {
-    return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false)
-        : super.getFluidState(state);
+  public boolean propagatesSkylightDown(BlockState blockState, IBlockReader level,
+      BlockPos blockPos) {
+    return !blockState.getValue(WATERLOGGED);
   }
 
   @Override
@@ -99,27 +163,19 @@ public abstract class AbstractSignalBlock extends SixWayBlock implements IWaterL
     BlockPos southPos = pos.south();
     BlockPos westPos = pos.west();
     BlockPos eastPos = pos.east();
-    BlockPos upPos = pos.above();
-    BlockPos downPos = pos.below();
     BlockState northState = level.getBlockState(northPos);
     BlockState southState = level.getBlockState(southPos);
     BlockState westState = level.getBlockState(westPos);
     BlockState eastState = level.getBlockState(eastPos);
-    BlockState upState = level.getBlockState(upPos);
-    BlockState downState = level.getBlockState(downPos);
     return this.defaultBlockState()
-        .setValue(NORTH, this.attachsTo(northState,
+        .setValue(NORTH, this.connectsTo(northState,
             northState.isFaceSturdy(level, northPos, Direction.SOUTH), Direction.NORTH, facing))
-        .setValue(SOUTH, this.attachsTo(southState,
+        .setValue(SOUTH, this.connectsTo(southState,
             southState.isFaceSturdy(level, southPos, Direction.NORTH), Direction.SOUTH, facing))
-        .setValue(WEST, this.attachsTo(westState,
+        .setValue(WEST, this.connectsTo(westState,
             westState.isFaceSturdy(level, westPos, Direction.EAST), Direction.WEST, facing))
-        .setValue(EAST, this.attachsTo(eastState,
+        .setValue(EAST, this.connectsTo(eastState,
             eastState.isFaceSturdy(level, eastPos, Direction.WEST), Direction.EAST, facing))
-        .setValue(UP, this.attachsTo(upState,
-            upState.isFaceSturdy(level, upPos, Direction.DOWN), Direction.UP, facing))
-        .setValue(DOWN, this.attachsTo(downState,
-            downState.isFaceSturdy(level, downPos, Direction.UP), Direction.DOWN, facing))
         .setValue(FACING, context.getHorizontalDirection().getOpposite())
         .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
   }
@@ -131,23 +187,29 @@ public abstract class AbstractSignalBlock extends SixWayBlock implements IWaterL
       world.getLiquidTicks().scheduleTick(pos, Fluids.WATER,
           Fluids.WATER.getTickDelay(world));
     }
-    return state.setValue(PROPERTY_BY_DIRECTION.get(direction), this.attachsTo(newState,
+    return state.setValue(propertyByDirection.get(direction), this.connectsTo(newState,
         newState.isFaceSturdy(world, newPos, direction.getOpposite()), direction,
         state.getValue(FACING)));
   }
 
-  public final boolean attachsTo(BlockState state, boolean faceStudry, Direction direction,
+  public boolean connectsTo(BlockState state, boolean faceStudry, Direction direction,
       Direction facing) {
     Block block = state.getBlock();
-    if (isExceptionForConnection(block)
-        || (!faceStudry && !(block instanceof AbstractSignalBlock))
-        || facing == direction) {
+
+    if (facing == direction) {
       return false;
     }
 
     if (block instanceof AbstractSignalBlock) {
-      return direction.getAxis().isVertical()
-          || direction.getOpposite() != state.getValue(FACING);
+      return connectsToDirection(state, direction);
+    }
+
+    if (block.is(RailcraftTags.Blocks.POST)) {
+      return true;
+    }
+
+    if (isExceptionForConnection(block) || !faceStudry) {
+      return false;
     }
 
     if (state.is(BlockTags.FENCES) || state.is(BlockTags.WALLS)) {
@@ -158,11 +220,6 @@ public abstract class AbstractSignalBlock extends SixWayBlock implements IWaterL
   }
 
   @Override
-  public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
-    return false;
-  }
-
-  @Override
   public boolean hasTileEntity(BlockState state) {
     return true;
   }
@@ -170,5 +227,10 @@ public abstract class AbstractSignalBlock extends SixWayBlock implements IWaterL
   @Override
   public TileEntity createTileEntity(BlockState state, IBlockReader reader) {
     return this.blockEntityFactory.get();
+  }
+
+  public static boolean connectsToDirection(BlockState blockState, Direction direction) {
+    return direction.getAxis().isVertical()
+        || direction.getOpposite() != blockState.getValue(FACING);
   }
 }
