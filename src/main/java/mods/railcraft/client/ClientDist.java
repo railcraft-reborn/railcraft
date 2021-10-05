@@ -4,6 +4,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftDist;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
+import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
+import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
@@ -33,6 +36,9 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.ParticleManager;
@@ -161,7 +167,8 @@ public class ClientDist implements RailcraftDist {
         ElectricLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
 
-    ScreenManager.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(), ManualRollingMachineScreen::new);
+    ScreenManager.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
+        ManualRollingMachineScreen::new);
 
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
         ElectricLocomotiveRenderer::new);
@@ -240,5 +247,22 @@ public class ClientDist implements RailcraftDist {
       // switch this to a switch if we have more args to go about
       SignalAspect.tickBlinkState();
     }
+  }
+
+  // ================================================================================
+  // Bouncer Methods (required to avoid loading client only classes on wrong dist)
+  // ================================================================================
+
+  public static void openSignalControllerBoxScreen(SignalControllerBoxBlockEntity signalBox) {
+    Minecraft.getInstance().setScreen(new SignalControllerBoxScreen(signalBox));
+  }
+
+  public static void openAnalogSignalControllerBoxScreen(
+      AnalogSignalControllerBoxBlockEntity signalBox) {
+    Minecraft.getInstance().setScreen(new AnalogSignalControllerBoxScreen(signalBox));
+  }
+
+  public static void openSignalCapacitorBoxScreen(SignalCapacitorBoxBlockEntity signalBox) {
+    Minecraft.getInstance().setScreen(new SignalCapacitorBoxScreen(signalBox));
   }
 }

@@ -1,14 +1,14 @@
-package mods.railcraft.gui.button;
+package mods.railcraft.client.gui.widget.button;
 
 /**
  *
  * @author CovertJaguar <http://www.railcraft.info/>
  */
-public class SimpleButtonTextureSet implements ButtonTextureSet {
+public class SimpleTexturePosition implements TexturePosition {
 
   private final int x, y, height, width;
 
-  public SimpleButtonTextureSet(int x, int y, int height, int width) {
+  public SimpleTexturePosition(int x, int y, int height, int width) {
     this.x = x;
     this.y = y;
     this.height = height;
@@ -17,21 +17,21 @@ public class SimpleButtonTextureSet implements ButtonTextureSet {
 
   @Override
   public int getX() {
-    return x;
+    return this.x;
   }
 
   @Override
   public int getY() {
-    return y;
+    return this.y;
   }
 
   @Override
   public int getHeight() {
-    return height;
+    return this.height;
   }
 
   @Override
   public int getWidth() {
-    return width;
+    return this.width;
   }
 }

@@ -15,18 +15,22 @@ public class RailcraftButton extends Button {
   private static final ResourceLocation WIDGETS_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/gui/widgets.png");
 
-  private final ITexturePosition texture;
+  private TexturePosition texturePosition;
 
   public RailcraftButton(int x, int y, int width, int height,
-      ITextComponent text, IPressable actionListener, ITexturePosition texture) {
+      ITextComponent text, IPressable actionListener, TexturePosition texturePosition) {
     super(x, y, width, height, text, actionListener);
-    this.texture = texture;
+    this.texturePosition = texturePosition;
   }
 
   public RailcraftButton(int x, int y, int width, int height, ITextComponent text,
-      IPressable actionListener, ITooltip tooltip, ITexturePosition texture) {
+      IPressable actionListener, ITooltip tooltip, TexturePosition texturePosition) {
     super(x, y, width, height, text, actionListener, tooltip);
-    this.texture = texture;
+    this.texturePosition = texturePosition;
+  }
+
+  public void setTexturePosition(TexturePosition texturePosition) {
+    this.texturePosition = texturePosition;
   }
 
   @SuppressWarnings("deprecation")
@@ -42,14 +46,14 @@ public class RailcraftButton extends Button {
     RenderSystem.defaultBlendFunc();
     RenderSystem.enableDepthTest();
 
-    int xOffset = texture.getX();
-    int yOffset = texture.getY();
-    int h = texture.getHeight();
-    int w = texture.getWidth();
+    int xOffset = this.texturePosition.getX();
+    int yOffset = this.texturePosition.getY();
+    int h = this.texturePosition.getHeight();
+    int w = this.texturePosition.getWidth();
 
-    this.blit(matrixStack, x, y, xOffset, yOffset + i * h, width / 2, h);
-    this.blit(
-        matrixStack, x + width / 2, y, xOffset + w - width / 2, yOffset + i * h, width / 2, h);
+    this.blit(matrixStack, this.x, this.y, xOffset, yOffset + i * h, this.width / 2, h);
+    this.blit(matrixStack, this.x + this.width / 2, this.y, xOffset + w - this.width / 2,
+        yOffset + i * h, this.width / 2, h);
     this.renderBg(matrixStack, minecraft, mouseX, mouseY);
     int j = getFGColor();
     drawCenteredString(matrixStack, fontrenderer, this.getMessage(), this.x + this.width / 2,

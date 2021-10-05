@@ -43,21 +43,13 @@ public class MultiButtonController<T extends ButtonState>
   }
 
   public int incrementState() {
-    int newState = this.currentStateIndex + 1;
-    if (newState >= this.validStates.length) {
-      newState = 0;
-    }
-    this.currentStateIndex = newState;
-    return this.currentStateIndex;
+    return this.currentStateIndex = (this.currentStateIndex + 1) % this.validStates.length;
   }
 
   public int decrementState() {
-    int newState = this.currentStateIndex - 1;
-    if (newState < 0) {
-      newState = this.validStates.length - 1;
-    }
-    this.currentStateIndex = newState;
-    return this.currentStateIndex;
+    return this.currentStateIndex = this.currentStateIndex == 0
+        ? this.validStates.length - 1
+        : this.currentStateIndex - 1;
   }
 
   public void setCurrentState(int state) {

@@ -4,46 +4,52 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.client.gui.widget.button.ButtonTexture;
+import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
-import mods.railcraft.gui.button.StandardButtonTextureSets;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements SignalEmitter {
+public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity {
 
   private short ticksPowered;
-  public short ticksToPower = 200;
+  private short ticksToPower = 200;
   private SignalAspect signalAspect = SignalAspect.OFF;
-  private final MultiButtonController<StateMode> stateModeController =
-      MultiButtonController.create(StateMode.RISING_EDGE.ordinal(), StateMode.values());
+  private final MultiButtonController<Mode> modeButtonController =
+      MultiButtonController.create(Mode.RISING_EDGE.ordinal(), Mode.values());
 
   public SignalCapacitorBoxBlockEntity() {
     super(RailcraftBlockEntityTypes.SIGNAL_CAPACITOR_BOX.get());
   }
 
-  public MultiButtonController<StateMode> getStateModeController() {
-    return stateModeController;
+  public short getTicksToPower() {
+    return this.ticksToPower;
+  }
+
+  public void setTicksToPower(short ticksToPower) {
+    this.ticksToPower = ticksToPower;
+  }
+
+  public MultiButtonController<Mode> getModeButtonController() {
+    return this.modeButtonController;
   }
 
   @Override
   public void tick() {
-    if (this.level.isClientSide())
+    if (this.level.isClientSide()) {
       return;
+    }
 
     if (this.ticksPowered-- > 0) {
-      if (this.stateModeController.getCurrentState() == StateMode.FALLING_EDGE) {
+      if (this.modeButtonController.getCurrentState() == Mode.FALLING_EDGE) {
         SignalAspect signalAspect = SignalAspect.GREEN;
         boolean powered = PowerUtil.hasRepeaterSignal(this.level, getBlockPos());
         for (Direction direction : Direction.Plane.HORIZONTAL) {
@@ -73,24 +79,26 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     }
   }
 
-  public void neighborChanged(BlockState state, Block neighborBlock, BlockPos neighborPos) {
-    if (this.level.isClientSide())
+  @Override
+  public void neighborChanged() {
+    if (this.level.isClientSide()) {
       return;
-    boolean powered = PowerUtil.hasRepeaterSignal(this.level, getBlockPos());
+    }
+    boolean powered = PowerUtil.hasRepeaterSignal(this.level, this.getBlockPos());
     if (this.ticksPowered <= 0 && powered) {
       this.ticksPowered = this.ticksToPower;
-      if (Objects.equals(this.stateModeController.getCurrentState(), StateMode.RISING_EDGE))
+      if (Objects.equals(this.modeButtonController.getCurrentState(), Mode.RISING_EDGE))
         this.signalAspect = SignalAspect.GREEN;
       this.updateNeighbors();
     }
   }
 
   @Override
-  public void neighboringSignalBoxChanged(AbstractSignalBoxBlockEntity neighbor,
-      Direction direction) {
+  public void neighborSignalBoxChanged(AbstractSignalBoxBlockEntity neighbor,
+      Direction direction, boolean removed) {
     if (neighbor.getRedstoneSignal(direction) > 0) {
       this.ticksPowered = this.ticksToPower;
-      if (this.stateModeController.getCurrentState() == StateMode.RISING_EDGE) {
+      if (this.modeButtonController.getCurrentState() == Mode.RISING_EDGE) {
         this.signalAspect = neighbor.getSignalAspect(direction);
       }
       this.updateNeighbors();
@@ -101,7 +109,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
   public void updateNeighbors() {
     super.updateNeighbors();
     this.syncToClient();
-    this.updateNeighborBoxes();
+    this.updateNeighborSignalBoxes(false);
   }
 
   @Override
@@ -119,7 +127,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     data.putShort("ticksPowered", this.ticksPowered);
     data.putShort("ticksToPower", this.ticksToPower);
     data.putString("signalAspect", this.signalAspect.getSerializedName());
-    data.put("mode", this.stateModeController.serializeNBT());
+    data.put("modeButtonController", this.modeButtonController.serializeNBT());
     return data;
   }
 
@@ -129,7 +137,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     this.ticksPowered = data.getShort("ticksPowered");
     this.ticksToPower = data.getShort("ticksToPower");
     this.signalAspect = SignalAspect.getByName(data.getString("signalAspect")).get();
-    this.stateModeController.deserializeNBT(data.getCompound("mode"));
+    this.modeButtonController.deserializeNBT(data.getCompound("modeButtonController"));
   }
 
   @Override
@@ -138,7 +146,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     data.writeBoolean(this.ticksPowered > 0);
     data.writeShort(this.ticksToPower);
     data.writeEnum(this.signalAspect);
-    data.writeByte(this.stateModeController.getCurrentStateIndex());
+    data.writeEnum(this.modeButtonController.getCurrentState());
   }
 
   @Override
@@ -147,7 +155,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     this.ticksPowered = (short) (data.readBoolean() ? 1 : 0);
     this.ticksToPower = data.readShort();
     this.signalAspect = data.readEnum(SignalAspect.class);
-    this.stateModeController.setCurrentState(data.readByte());
+    this.modeButtonController.setCurrentState(data.readEnum(Mode.class));
   }
 
   @Override
@@ -155,19 +163,20 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     return this.ticksPowered > 0 ? this.signalAspect : SignalAspect.RED;
   }
 
-  public enum StateMode implements ButtonState {
+  public enum Mode implements ButtonState {
 
-    RISING_EDGE("rising"),
-    FALLING_EDGE("falling");
+    RISING_EDGE("rising_edge"),
+    FALLING_EDGE("falling_edge");
 
     private final String name;
     private final ITextComponent label;
     private final List<? extends ITextComponent> tooltip;
 
-    private StateMode(String name) {
+    private Mode(String name) {
       this.name = name;
-      this.label = new TranslationTextComponent("gui.railcraft.box.capacitor." + name + ".name");
-      this.tooltip = Collections.singletonList(new TranslationTextComponent(name + ".tips"));
+      this.label = new TranslationTextComponent("signal_capacitor_box.mode." + name);
+      this.tooltip = Collections.singletonList(
+          new TranslationTextComponent("signal_capacitor_box.mode." + name + ".description"));
     }
 
     @Override
@@ -176,8 +185,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity
     }
 
     @Override
-    public ButtonTextureSet getTextureSet() {
-      return StandardButtonTextureSets.SMALL_BUTTON;
+    public TexturePosition getTexturePosition() {
+      return ButtonTexture.SMALL_BUTTON;
     }
 
     @Override

@@ -136,6 +136,7 @@ public class Railcraft {
     );
     dataGen.addProvider(new RailcraftLootTableProvider(dataGen));
     dataGen.addProvider(new RailcraftRecipiesProvider(dataGen));
+    dataGen.addProvider(new RailcraftBlockStateProvider(dataGen));
   }
 
   @SubscribeEvent

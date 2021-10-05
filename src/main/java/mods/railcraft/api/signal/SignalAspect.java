@@ -68,7 +68,7 @@ public enum SignalAspect implements IStringSerializable {
   private SignalAspect(String name, int blockLight) {
     this.name = name;
     this.blockLight = blockLight;
-    this.displayName = new TranslationTextComponent("gui.railcraft.aspect." + name);
+    this.displayName = new TranslationTextComponent("signal_aspect." + name);
   }
 
   /**
@@ -128,6 +128,15 @@ public enum SignalAspect implements IStringSerializable {
     if (this == BLINK_RED)
       return RED;
     return this;
+  }
+
+  public SignalAspect getNext() {
+    return values()[(this.ordinal() + 1) % values().length];
+  }
+
+  public SignalAspect getPrevious() {
+    return values()[this.ordinal() == 0 ? values().length - 1
+        : this.ordinal() - 1];
   }
 
   /**

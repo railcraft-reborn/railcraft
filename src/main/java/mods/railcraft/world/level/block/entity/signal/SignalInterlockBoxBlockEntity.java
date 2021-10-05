@@ -1,8 +1,9 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import java.util.Comparator;
-import java.util.NavigableSet;
-import java.util.TreeSet;
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
 import javax.annotation.Nullable;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalControllerProvider;
@@ -25,11 +26,11 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
       new SimpleSignalController(1, this::syncToClient, this, true);
 
   private final SingleSignalReceiver signalReceiver = new SingleSignalReceiver(this,
-      this::syncToClient, null);
+      this::syncToClient, this::signalAspectChanged);
 
-  private Interlock interlock = new Interlock(this);
+  private InterlockController interlockController;
 
-  private SignalAspect neighborAspect = SignalAspect.RED;
+  private SignalAspect neighborSignalAspect;
 
   public SignalInterlockBoxBlockEntity() {
     super(RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get());
@@ -38,9 +39,11 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   public void load() {
     if (!this.level.isClientSide()) {
-      this.signalController.refresh();
+      this.findOrCreateInterlockController();
       this.signalReceiver.refresh();
+      this.signalController.refresh();
     }
+    super.load();
   }
 
   @Override
@@ -48,6 +51,9 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
     super.setRemoved();
     this.signalController.removed();
     this.signalReceiver.removed();
+    if (this.interlockController != null) {
+      this.interlockController.remove(this);
+    }
   }
 
   @Override
@@ -57,47 +63,70 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
       this.signalController.spawnTuningAuraParticles();
       return;
     }
-
-    this.neighborAspect = this.getNeighborAspect();
-    this.mergeInterlocks();
-    this.interlock.tick();
-    this.signalController.setSignalAspect(this.determineInterlockAspect());
   }
 
-  private void mergeInterlocks() {
-    for (Direction direction : Direction.Plane.HORIZONTAL) {
-      TileEntity tile = this.level.getBlockEntity(this.getBlockPos().relative(direction));
-      if (tile instanceof SignalInterlockBoxBlockEntity) {
-        SignalInterlockBoxBlockEntity box = (SignalInterlockBoxBlockEntity) tile;
-        if (box.interlock != interlock) {
-          box.interlock.transfer(interlock);
-          return;
-        }
-      }
-    }
-  }
-
-  private SignalAspect getNeighborAspect() {
-    SignalAspect newAspect = SignalAspect.GREEN;
+  @Override
+  public void neighborSignalBoxChanged(AbstractSignalBoxBlockEntity neighborSignalBox,
+      Direction neighborDirection, boolean removed) {
+    this.findOrCreateInterlockController();
+    this.neighborSignalAspect = SignalAspect.GREEN;
     for (Direction direction : Direction.values()) {
       TileEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
       if (blockEntity instanceof AbstractSignalBoxBlockEntity) {
         AbstractSignalBoxBlockEntity signalBox = (AbstractSignalBoxBlockEntity) blockEntity;
         if (SignalBoxBlock.isAspectEmitter(signalBox.getBlockState()))
-          newAspect = SignalAspect.mostRestrictive(newAspect,
+          this.neighborSignalAspect = SignalAspect.mostRestrictive(this.neighborSignalAspect,
               signalBox.getSignalAspect(direction.getOpposite()));
       }
     }
-    return newAspect;
   }
 
-  private SignalAspect determineInterlockAspect() {
-    if (this.signalReceiver.getPrimarySignalAspect().ordinal() <= SignalAspect.YELLOW.ordinal()) {
-      this.interlock.requestLock();
-    } else {
-      this.interlock.discardLock();
+  private void findOrCreateInterlockController() {
+    if (this.level.isClientSide()) {
+      return;
     }
-    return this.interlock.getAspect(this.signalReceiver.getPrimarySignalAspect());
+
+    InterlockController lastInterlockController = this.interlockController;
+    this.interlockController = null;
+
+    for (Direction direction : Direction.values()) {
+      TileEntity blockEntity =
+          this.level.getBlockEntity(this.getBlockPos().relative(direction));
+      if (blockEntity instanceof SignalInterlockBoxBlockEntity) {
+        SignalInterlockBoxBlockEntity signalBox = (SignalInterlockBoxBlockEntity) blockEntity;
+        if (signalBox.interlockController != null) {
+          this.interlockController = signalBox.interlockController;
+          break;
+        }
+      }
+    }
+
+    if (this.interlockController == null) {
+      this.interlockController = new InterlockController();
+    }
+
+    if (this.interlockController != lastInterlockController) {
+      this.interlockController.add(this);
+      this.refreshSignalAspect();
+    }
+  }
+
+  private void refreshSignalAspect() {
+    this.signalAspectChanged(this.getRequestedSignalAspect());
+  }
+
+  private void signalAspectChanged(SignalAspect signalAspect) {
+    if (this.interlockController != null) {
+      if (isLockableSignalAspect(signalAspect)) {
+        this.interlockController.requestLock(this);
+      } else {
+        this.interlockController.discardLock(this);
+      }
+    }
+  }
+
+  private SignalAspect getRequestedSignalAspect() {
+    return this.signalReceiver.getPrimarySignalAspect();
   }
 
   @Override
@@ -144,86 +173,70 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
     return this.signalReceiver;
   }
 
-  private static class TileComparator implements Comparator<SignalInterlockBoxBlockEntity> {
-
-    public static final TileComparator INSTANCE = new TileComparator();
-
-    @Override
-    public int compare(SignalInterlockBoxBlockEntity o1, SignalInterlockBoxBlockEntity o2) {
-      if (o1.getX() != o2.getX())
-        return o1.getX() - o2.getX();
-      if (o1.getZ() != o2.getZ())
-        return o1.getZ() - o2.getZ();
-      if (o1.getY() != o2.getY())
-        return o1.getY() - o2.getY();
-      return 0;
-    }
+  private static boolean isLockableSignalAspect(SignalAspect signalAspect) {
+    return signalAspect.ordinal() <= SignalAspect.YELLOW.ordinal();
   }
 
-  private class Interlock {
+  private static class InterlockController {
 
-    private static final int DELAY = 20 * 10;
-    private final NavigableSet<SignalInterlockBoxBlockEntity> peers =
-        new TreeSet<>(TileComparator.INSTANCE);
-    private final NavigableSet<SignalInterlockBoxBlockEntity> lockRequests =
-        new TreeSet<>(TileComparator.INSTANCE);
+    private final Set<SignalInterlockBoxBlockEntity> peers = new HashSet<>();
+    private final Queue<SignalInterlockBoxBlockEntity> lockRequests = new ArrayDeque<>();
     @Nullable
-    private SignalInterlockBoxBlockEntity active;
-    private int delay;
+    private SignalInterlockBoxBlockEntity activeSignalBox;
 
-    public Interlock(SignalInterlockBoxBlockEntity blockEntity) {
-      this.peers.add(blockEntity);
+    private void add(SignalInterlockBoxBlockEntity signalBox) {
+      this.peers.add(signalBox);
+      this.updateSignalAspect(signalBox);
     }
 
-    private void transfer(Interlock interlock) {
-      this.peers.addAll(interlock.peers);
-      for (SignalInterlockBoxBlockEntity box : this.peers) {
-        box.interlock = this;
+    private void remove(SignalInterlockBoxBlockEntity signalBox) {
+      this.peers.remove(signalBox);
+      this.discardLock(signalBox);
+    }
+
+    private void discardLock(SignalInterlockBoxBlockEntity signalBox) {
+      if (this.isActive(signalBox)) {
+        this.next();
+      } else {
+        this.updateSignalAspect(signalBox);
+        this.lockRequests.remove(signalBox);
       }
     }
 
-    private void tick() {
-      this.peers.removeIf(TileEntity::isRemoved);
-      if (this.delay < DELAY) {
-        this.delay++;
+    private void requestLock(SignalInterlockBoxBlockEntity signalBox) {
+      if (this.activeSignalBox != signalBox) {
+        this.lockRequests.add(signalBox);
+        if (this.activeSignalBox == null) {
+          this.next();
+        } else {
+          System.out.println("test");
+          this.updateSignalAspect(signalBox);
+        }
+      }
+    }
+
+    private void next() {
+      do {
+        this.activeSignalBox = this.lockRequests.poll();
+      } while (this.activeSignalBox != null
+          && !isLockableSignalAspect(this.activeSignalBox.getRequestedSignalAspect()));
+      this.peers.forEach(this::updateSignalAspect);
+    }
+
+    private void updateSignalAspect(SignalInterlockBoxBlockEntity signalBox) {
+      if (this.isActive(signalBox)) {
+        SignalAspect signalAspect = signalBox.signalReceiver.getPrimarySignalAspect();
+        for (SignalInterlockBoxBlockEntity box : this.peers) {
+          signalAspect = SignalAspect.mostRestrictive(signalAspect, box.neighborSignalAspect);
+        }
+        signalBox.signalController.setSignalAspect(signalAspect);
         return;
       }
-      if (this.active != null && this.active.isRemoved())
-        this.active = null;
-      if (this.active == null && !this.lockRequests.isEmpty()
-          && this.peers.first() == this.getHost()) {
-        this.active = this.lockRequests.last();
-        this.lockRequests.clear();
-      }
+      signalBox.signalController.setSignalAspect(SignalAspect.RED);
     }
 
-    private void discardLock() {
-      if (this.isHostActive()) {
-        this.active = null;
-      }
-    }
-
-    private void requestLock() {
-      this.lockRequests.add(this.getHost());
-    }
-
-    private SignalAspect getAspect(SignalAspect requestedAspect) {
-      if (this.isHostActive()) {
-        SignalAspect overrideAspect = SignalAspect.GREEN;
-        for (SignalInterlockBoxBlockEntity box : this.peers) {
-          overrideAspect = SignalAspect.mostRestrictive(overrideAspect, box.neighborAspect);
-        }
-        return SignalAspect.mostRestrictive(overrideAspect, requestedAspect);
-      }
-      return SignalAspect.RED;
-    }
-
-    private boolean isHostActive() {
-      return this.getHost() == this.active;
-    }
-
-    private SignalInterlockBoxBlockEntity getHost() {
-      return SignalInterlockBoxBlockEntity.this;
+    private boolean isActive(SignalInterlockBoxBlockEntity signalBox) {
+      return signalBox == this.activeSignalBox;
     }
   }
 }

@@ -24,8 +24,7 @@ public class SignalTunerItem extends PairingToolItem {
   }
 
   @Override
-  public ActionResultType useOn(ItemUseContext context) {
-    ItemStack itemStack = context.getItemInHand();
+  public ActionResultType onItemUseFirst(ItemStack itemStack, ItemUseContext context) {
     PlayerEntity player = context.getPlayer();
     World level = context.getLevel();
     BlockPos pos = context.getClickedPos();

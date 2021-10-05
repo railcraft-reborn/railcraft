@@ -304,6 +304,86 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
               new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> BLACK_METAL_POST =
+      ITEMS.register("black_metal_post",
+          () -> new BlockItem(RailcraftBlocks.BLACK_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> RED_METAL_POST =
+      ITEMS.register("red_metal_post",
+          () -> new BlockItem(RailcraftBlocks.RED_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> GREEN_METAL_POST =
+      ITEMS.register("green_metal_post",
+          () -> new BlockItem(RailcraftBlocks.GREEN_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BROWN_METAL_POST =
+      ITEMS.register("brown_metal_post",
+          () -> new BlockItem(RailcraftBlocks.BROWN_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BLUE_METAL_POST =
+      ITEMS.register("blue_metal_post",
+          () -> new BlockItem(RailcraftBlocks.BLUE_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> PURPLE_METAL_POST =
+      ITEMS.register("purple_metal_post",
+          () -> new BlockItem(RailcraftBlocks.PURPLE_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> CYAN_METAL_POST =
+      ITEMS.register("cyan_metal_post",
+          () -> new BlockItem(RailcraftBlocks.CYAN_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> LIGHT_GRAY_METAL_POST =
+      ITEMS.register("light_gray_metal_post",
+          () -> new BlockItem(RailcraftBlocks.LIGHT_GRAY_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> GRAY_METAL_POST =
+      ITEMS.register("gray_metal_post",
+          () -> new BlockItem(RailcraftBlocks.GRAY_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> PINK_METAL_POST =
+      ITEMS.register("pink_metal_post",
+          () -> new BlockItem(RailcraftBlocks.PINK_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> LIME_METAL_POST =
+      ITEMS.register("lime_metal_post",
+          () -> new BlockItem(RailcraftBlocks.LIME_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> YELLOW_METAL_POST =
+      ITEMS.register("yellow_metal_post",
+          () -> new BlockItem(RailcraftBlocks.YELLOW_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> LIGHT_BLUE_METAL_POST =
+      ITEMS.register("light_blue_metal_post",
+          () -> new BlockItem(RailcraftBlocks.LIGHT_BLUE_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> MAGENTA_METAL_POST =
+      ITEMS.register("magenta_metal_post",
+          () -> new BlockItem(RailcraftBlocks.MAGENTA_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ORANGE_METAL_POST =
+      ITEMS.register("orange_metal_post",
+          () -> new BlockItem(RailcraftBlocks.ORANGE_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> WHITE_METAL_POST =
+      ITEMS.register("white_metal_post",
+          () -> new BlockItem(RailcraftBlocks.WHITE_METAL_POST.get(),
+              new Item.Properties().tab(TAB)));
+
   /* ===== CRAFTING MATERIALS ===== */
   public static final RegistryObject<Item> STEEL_INGOT =
     ITEMS.register("steel_ingot",

@@ -13,19 +13,30 @@ public abstract class AbstractSignalBoxBlockEntity extends RailcraftTickableBloc
     super(type);
   }
 
+  @Override
+  public void load() {
+    this.updateNeighborSignalBoxes(false);
+  }
+
   public void neighborChanged() {}
 
   public abstract SignalAspect getSignalAspect(Direction direction);
 
-  public void neighboringSignalBoxChanged(AbstractSignalBoxBlockEntity signalBox,
-      Direction direction) {}
+  @Override
+  public void setRemoved() {
+    super.setRemoved();
+    this.updateNeighborSignalBoxes(true);
+  }
 
-  public final void updateNeighborBoxes() {
+  protected void neighborSignalBoxChanged(AbstractSignalBoxBlockEntity neighborSignalBox,
+      Direction neighborDirection, boolean removed) {}
+
+  public final void updateNeighborSignalBoxes(boolean removed) {
     for (Direction direction : Direction.Plane.HORIZONTAL) {
       TileEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
       if (blockEntity instanceof AbstractSignalBoxBlockEntity) {
         AbstractSignalBoxBlockEntity box = (AbstractSignalBoxBlockEntity) blockEntity;
-        box.neighboringSignalBoxChanged(this, direction);
+        box.neighborSignalBoxChanged(this, direction, removed);
       }
     }
   }

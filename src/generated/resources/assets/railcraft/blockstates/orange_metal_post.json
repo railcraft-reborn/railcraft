@@ -1,0 +1,98 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "column": "short"
+      },
+      "apply": {
+        "model": "railcraft:block/orange_metal_post_short_column"
+      }
+    },
+    {
+      "when": {
+        "column": "normal"
+      },
+      "apply": {
+        "model": "railcraft:block/orange_metal_post_column"
+      }
+    },
+    {
+      "when": {
+        "north": "single"
+      },
+      "apply": {
+        "model": "railcraft:block/orange_metal_post_single_connection",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "double"
+      },
+      "apply": {
+        "model": "railcraft:block/orange_metal_post_double_connection",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "single"
+      },
+      "apply": {
+        "model": "railcraft:block/orange_metal_post_single_connection",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "double"
+      },
+      "apply": {
+        "model": "railcraft:block/orange_metal_post_double_connection",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "single"
+      },
+      "apply": {
+        "model": "railcraft:block/orange_metal_post_single_connection",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "double"
+      },
+      "apply": {
+        "model": "railcraft:block/orange_metal_post_double_connection",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "single"
+      },
+      "apply": {
+        "model": "railcraft:block/orange_metal_post_single_connection",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "double"
+      },
+      "apply": {
+        "model": "railcraft:block/orange_metal_post_double_connection",
+        "y": 270,
+        "uvlock": true
+      }
+    }
+  ]
+}

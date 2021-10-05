@@ -44,7 +44,7 @@ public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
   @Override
   public void updateNeighbors() {
     super.updateNeighbors();
-    this.updateNeighborBoxes();
+    this.updateNeighborSignalBoxes(false);
   }
 
   @Override

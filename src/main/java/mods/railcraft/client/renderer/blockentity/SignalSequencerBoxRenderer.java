@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 public class SignalSequencerBoxRenderer extends AbstractSignalBoxRenderer {
 
   public static final ResourceLocation TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "entity/signal_box/analog_signal_controller_box");
+      new ResourceLocation(Railcraft.ID, "entity/signal_box/signal_sequencer_box");
 
   public SignalSequencerBoxRenderer(TileEntityRendererDispatcher dispatcher) {
     super(dispatcher);

@@ -25,11 +25,11 @@ import mods.railcraft.carts.LinkageManager;
 import mods.railcraft.carts.LinkageManager.LinkType;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientEffects;
+import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
+import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
-import mods.railcraft.gui.button.SimpleButtonTextureSet;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.util.MathTools;
@@ -861,17 +861,17 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   public enum LockButtonState implements ButtonState {
 
-    UNLOCKED("unlocked", new SimpleButtonTextureSet(224, 0, 16, 16)),
-    LOCKED("locked", new SimpleButtonTextureSet(240, 0, 16, 16)),
-    PRIVATE("private", new SimpleButtonTextureSet(240, 48, 16, 16));
+    UNLOCKED("unlocked", new SimpleTexturePosition(224, 0, 16, 16)),
+    LOCKED("locked", new SimpleTexturePosition(240, 0, 16, 16)),
+    PRIVATE("private", new SimpleTexturePosition(240, 48, 16, 16));
 
     private static final Map<String, LockButtonState> byName = Arrays.stream(values())
         .collect(Collectors.toMap(LockButtonState::getSerializedName, Function.identity()));
 
     private final String name;
-    private final ButtonTextureSet texture;
+    private final TexturePosition texture;
 
-    private LockButtonState(String name, ButtonTextureSet texture) {
+    private LockButtonState(String name, TexturePosition texture) {
       this.name = name;
       this.texture = texture;
     }
@@ -882,7 +882,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     }
 
     @Override
-    public ButtonTextureSet getTextureSet() {
+    public TexturePosition getTexturePosition() {
       return this.texture;
     }
 

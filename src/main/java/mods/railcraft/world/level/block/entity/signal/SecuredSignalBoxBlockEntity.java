@@ -2,10 +2,10 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.Secure;
+import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
+import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.gui.button.ButtonTextureSet;
 import mods.railcraft.gui.button.MultiButtonController;
-import mods.railcraft.gui.button.SimpleButtonTextureSet;
 import mods.railcraft.util.PlayerUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -18,23 +18,23 @@ import net.minecraft.util.text.StringTextComponent;
  * @author CovertJaguar <http://www.railcraft.info/>
  */
 public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements Secure<SecuredSignalBoxBlockEntity.LockButtonState> {
+    implements Secure<SecuredSignalBoxBlockEntity.Lock> {
 
-  private final MultiButtonController<LockButtonState> lockController =
-      MultiButtonController.create(0, LockButtonState.values());
+  private final MultiButtonController<Lock> lockController =
+      MultiButtonController.create(0, Lock.values());
 
   public SecuredSignalBoxBlockEntity(TileEntityType<?> type) {
     super(type);
   }
 
   @Override
-  public MultiButtonController<LockButtonState> getLockController() {
+  public MultiButtonController<Lock> getLockController() {
     return this.lockController;
   }
 
   @Override
   public boolean isSecure() {
-    return this.lockController.getCurrentState() == LockButtonState.LOCKED;
+    return this.lockController.getCurrentState() == Lock.LOCKED;
   }
 
   protected boolean canAccess(GameProfile player) {
@@ -66,15 +66,15 @@ public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlock
     this.lockController.setCurrentState(data.readByte());
   }
 
-  public enum LockButtonState implements ButtonState {
+  public enum Lock implements ButtonState {
 
-    UNLOCKED("unlocked", new SimpleButtonTextureSet(224, 0, 16, 16)),
-    LOCKED("locked", new SimpleButtonTextureSet(240, 0, 16, 16));
+    UNLOCKED("unlocked", new SimpleTexturePosition(224, 0, 16, 16)),
+    LOCKED("locked", new SimpleTexturePosition(240, 0, 16, 16));
 
     private final String name;
-    private final ButtonTextureSet texture;
+    private final TexturePosition texture;
 
-    private LockButtonState(String name, ButtonTextureSet texture) {
+    private Lock(String name, TexturePosition texture) {
       this.name = name;
       this.texture = texture;
     }
@@ -85,7 +85,7 @@ public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlock
     }
 
     @Override
-    public ButtonTextureSet getTextureSet() {
+    public TexturePosition getTexturePosition() {
       return this.texture;
     }
 
