@@ -92,7 +92,7 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<TileEntityType<BlockSignalBlockEntity>> BLOCK_SIGNAL =
       BLOCK_ENTITY_TYPES.register("block_signal",
           () -> TileEntityType.Builder
-              .of(BlockSignalBlockEntity::new, RailcraftBlocks.SIGNAL.get())
+              .of(BlockSignalBlockEntity::new, RailcraftBlocks.BLOCK_SIGNAL.get())
               .build(null));
 
   public static final RegistryObject<TileEntityType<DistantSignalBlockEntity>> DISTANT_SIGNAL =

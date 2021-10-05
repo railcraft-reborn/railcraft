@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/post_inventory",
+  "textures": {
+    "texture": "railcraft:block/red_post"
+  }
+}

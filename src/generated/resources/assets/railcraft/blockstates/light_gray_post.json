@@ -1,0 +1,114 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "column": "platform"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_platform"
+      }
+    },
+    {
+      "when": {
+        "column": "top"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_top_column"
+      }
+    },
+    {
+      "when": {
+        "column": "small"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_small_column"
+      }
+    },
+    {
+      "when": {
+        "column": "full"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_full_column"
+      }
+    },
+    {
+      "when": {
+        "north": "single"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_single_connection",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "double"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_double_connection",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "single"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_single_connection",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "double"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_double_connection",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "single"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_single_connection",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "double"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_double_connection",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "single"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_single_connection",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "double"
+      },
+      "apply": {
+        "model": "railcraft:block/light_gray_post_double_connection",
+        "y": 270,
+        "uvlock": true
+      }
+    }
+  ]
+}

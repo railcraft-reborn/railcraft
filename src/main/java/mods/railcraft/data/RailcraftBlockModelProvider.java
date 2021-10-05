@@ -32,22 +32,22 @@ public class RailcraftBlockModelProvider {
   }
 
   public void run() {
-    this.createPost(RailcraftBlocks.BLACK_METAL_POST.get());
-    this.createPost(RailcraftBlocks.RED_METAL_POST.get());
-    this.createPost(RailcraftBlocks.GREEN_METAL_POST.get());
-    this.createPost(RailcraftBlocks.BROWN_METAL_POST.get());
-    this.createPost(RailcraftBlocks.BLUE_METAL_POST.get());
-    this.createPost(RailcraftBlocks.PURPLE_METAL_POST.get());
-    this.createPost(RailcraftBlocks.CYAN_METAL_POST.get());
-    this.createPost(RailcraftBlocks.LIGHT_GRAY_METAL_POST.get());
-    this.createPost(RailcraftBlocks.GRAY_METAL_POST.get());
-    this.createPost(RailcraftBlocks.PINK_METAL_POST.get());
-    this.createPost(RailcraftBlocks.LIME_METAL_POST.get());
-    this.createPost(RailcraftBlocks.YELLOW_METAL_POST.get());
-    this.createPost(RailcraftBlocks.LIGHT_BLUE_METAL_POST.get());
-    this.createPost(RailcraftBlocks.MAGENTA_METAL_POST.get());
-    this.createPost(RailcraftBlocks.ORANGE_METAL_POST.get());
-    this.createPost(RailcraftBlocks.WHITE_METAL_POST.get());
+    this.createPost(RailcraftBlocks.BLACK_POST.get());
+    this.createPost(RailcraftBlocks.RED_POST.get());
+    this.createPost(RailcraftBlocks.GREEN_POST.get());
+    this.createPost(RailcraftBlocks.BROWN_POST.get());
+    this.createPost(RailcraftBlocks.BLUE_POST.get());
+    this.createPost(RailcraftBlocks.PURPLE_POST.get());
+    this.createPost(RailcraftBlocks.CYAN_POST.get());
+    this.createPost(RailcraftBlocks.LIGHT_GRAY_POST.get());
+    this.createPost(RailcraftBlocks.GRAY_POST.get());
+    this.createPost(RailcraftBlocks.PINK_POST.get());
+    this.createPost(RailcraftBlocks.LIME_POST.get());
+    this.createPost(RailcraftBlocks.YELLOW_POST.get());
+    this.createPost(RailcraftBlocks.LIGHT_BLUE_POST.get());
+    this.createPost(RailcraftBlocks.MAGENTA_POST.get());
+    this.createPost(RailcraftBlocks.ORANGE_POST.get());
+    this.createPost(RailcraftBlocks.WHITE_POST.get());
   }
 
   private void delegateItemModel(Block block, ResourceLocation modelLocation) {
@@ -57,13 +57,15 @@ public class RailcraftBlockModelProvider {
 
   private void createPost(Block block) {
     ModelTextures textures = ModelTextures.defaultTexture(block);
-    ResourceLocation columnModel = Models.POST_COLUMN.create(block,
+    ResourceLocation fullColumnModel = Models.POST_COLUMN.create(block,
         textures, RailcraftBlockModelProvider.this.modelOutput);
     ResourceLocation doubleConnectionModel = Models.POST_DOUBLE_CONNECTION.create(block,
         textures, RailcraftBlockModelProvider.this.modelOutput);
-    // ResourceLocation platformModel = RailcraftModels.POST_PLATFORM.create(block,
-    // textures, RailcraftBlockModelProvider.this.modelOutput);
-    ResourceLocation shortColumnModel = Models.POST_SHORT_COLUMN.create(block,
+    ResourceLocation topColumnModel = Models.POST_TOP_COLUMN.create(block,
+        textures, RailcraftBlockModelProvider.this.modelOutput);
+    ResourceLocation middleColumnModel = Models.POST_SMALL_COLUMN.create(block,
+        textures, RailcraftBlockModelProvider.this.modelOutput);
+    ResourceLocation platformModel = Models.POST_PLATFORM.create(block,
         textures, RailcraftBlockModelProvider.this.modelOutput);
     ResourceLocation singleConnectionModel = Models.POST_SINGLE_CONNECTION.create(block,
         textures, RailcraftBlockModelProvider.this.modelOutput);
@@ -74,14 +76,24 @@ public class RailcraftBlockModelProvider {
         FinishedMultiPartBlockState.multiPart(block)
             .with(
                 IMultiPartPredicateBuilder.condition()
-                    .term(PostBlock.COLUMN, Column.SHORT),
+                    .term(PostBlock.COLUMN, Column.PLATFORM),
                 BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, shortColumnModel))
+                    .with(BlockModelFields.MODEL, platformModel))
             .with(
                 IMultiPartPredicateBuilder.condition()
-                    .term(PostBlock.COLUMN, Column.NORMAL),
+                    .term(PostBlock.COLUMN, Column.TOP),
                 BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, columnModel))
+                    .with(BlockModelFields.MODEL, topColumnModel))
+            .with(
+                IMultiPartPredicateBuilder.condition()
+                    .term(PostBlock.COLUMN, Column.SMALL),
+                BlockModelDefinition.variant()
+                    .with(BlockModelFields.MODEL, middleColumnModel))
+            .with(
+                IMultiPartPredicateBuilder.condition()
+                    .term(PostBlock.COLUMN, Column.FULL),
+                BlockModelDefinition.variant()
+                    .with(BlockModelFields.MODEL, fullColumnModel))
             .with(
                 IMultiPartPredicateBuilder.condition()
                     .term(PostBlock.NORTH, Connection.SINGLE),

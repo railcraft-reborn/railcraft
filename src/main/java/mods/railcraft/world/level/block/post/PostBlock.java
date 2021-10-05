@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.post;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -24,6 +25,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -34,34 +36,40 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class PostBlock extends Block implements IWaterLoggable {
 
-  public static final VoxelShape SHAPE =
-      box(8.0D - 2.0D, 0.0D, 8.0D - 2.0D, 8.0D + 2.0D, 16.0D, 8.0D + 2.0D);
-  public static final Map<Direction, VoxelShape> SIDE_SHAPES =
-      VoxelShapeUtil.createHorizontalShapes(
-          8.0D - 2.0D, 0.0D, 8.0D - 2.0D, 8.0D + 2.0D, 16.0D, 8.0D + 2.0D);
-  public static final VoxelShape COLLISION_SHAPE =
-      box(8.0D - 2.0D, 0.0D, 8.0D - 2.0D, 8.0D + 2.0D, 24.0D, 8.0D - 2.0D);
-  public static final Map<Direction, VoxelShape> COLLISION_SIDE_SHAPES =
-      VoxelShapeUtil.createHorizontalShapes(
-          8.0D - 2.0D, 0.0D, 8.0D - 2.0D, 8.0D + 2.0D, 24.0D, 8.0D + 2.0D);
-  public static final Map<Direction, VoxelShape> OCCLUSION_SIDE_SHAPES =
-      VoxelShapeUtil.createHorizontalShapes(
-          8.0D - 1.0D, 6.0D, 8.0D - 1.0D, 8.0D + 1.0D, 15.0D, 8.0D + 1.0D);
+  public static final VoxelShape TOP_COLUMN_SHAPE =
+      box(6.0D, 6.0D, 6.0D, 10.0D, 16.0D, 10.0D);
+  public static final VoxelShape MIDDLE_COLUMN_SHAPE =
+      box(6.0D, 9.0D, 6.0D, 10.0D, 13.0D, 10.0D);
+  public static final VoxelShape FULL_COLUMN_SHAPE =
+      box(6.0D, 0.0D, 6.0D, 10.0D, 16.0D, 10.0D);
+  public static final VoxelShape PLATFORM_SHAPE =
+      VoxelShapes.or(
+          box(6.0D, 0.0D, 6.0D, 10.0D, 16.0D, 10.0D),
+          box(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D));
 
-  public static final EnumProperty<Column> COLUMN = EnumProperty.create("column", Column.class);
+  public static final Map<Direction, VoxelShape> HORIZONTAL_CONNECTION_SHAPES =
+      Collections.unmodifiableMap(
+          VoxelShapeUtil.createHorizontalShapes(7.0D, 7.0D, 7.0D, 9.0D, 15.0D, 9.0D));
+
+  public static final EnumProperty<Column> COLUMN =
+      EnumProperty.create("column", Column.class);
   public static final EnumProperty<Connection> NORTH =
       EnumProperty.create("north", Connection.class);
   public static final EnumProperty<Connection> SOUTH =
       EnumProperty.create("south", Connection.class);
-  public static final EnumProperty<Connection> EAST = EnumProperty.create("east", Connection.class);
-  public static final EnumProperty<Connection> WEST = EnumProperty.create("west", Connection.class);
+  public static final EnumProperty<Connection> EAST =
+      EnumProperty.create("east", Connection.class);
+  public static final EnumProperty<Connection> WEST =
+      EnumProperty.create("west", Connection.class);
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
   public static final Map<Direction, EnumProperty<Connection>> propertyByDirection =
       Util.make(new EnumMap<>(Direction.class), (map) -> {
         map.put(Direction.NORTH, NORTH);
@@ -70,25 +78,31 @@ public class PostBlock extends Block implements IWaterLoggable {
         map.put(Direction.WEST, WEST);
       });
 
-  private final VoxelShape[] collisionShapeByIndex;
-  private final VoxelShape[] shapeByIndex;
-  private final VoxelShape[] occlusionByIndex;
+  private final Map<Column, VoxelShape[]> shapes =
+      Util.make(new EnumMap<>(Column.class), map -> {
+        map.put(Column.FULL,
+            VoxelShapeUtil.makeShapes(FULL_COLUMN_SHAPE, HORIZONTAL_CONNECTION_SHAPES));
+        map.put(Column.TOP,
+            VoxelShapeUtil.makeShapes(TOP_COLUMN_SHAPE, HORIZONTAL_CONNECTION_SHAPES));
+        map.put(Column.SMALL,
+            VoxelShapeUtil.makeShapes(MIDDLE_COLUMN_SHAPE, HORIZONTAL_CONNECTION_SHAPES));
+        map.put(Column.PLATFORM,
+            VoxelShapeUtil.makeShapes(PLATFORM_SHAPE, HORIZONTAL_CONNECTION_SHAPES));
+      });
+
   private final Object2IntMap<BlockState> stateToIndex = new Object2IntOpenHashMap<>();
 
   public PostBlock(Properties properties) {
     super(properties);
     properties.strength(3, 15);
 
-    this.collisionShapeByIndex = VoxelShapeUtil.makeShapes(COLLISION_SHAPE, COLLISION_SIDE_SHAPES);
-    this.shapeByIndex = VoxelShapeUtil.makeShapes(SHAPE, SIDE_SHAPES);
-    this.occlusionByIndex = VoxelShapeUtil.makeShapes(SHAPE, OCCLUSION_SIDE_SHAPES);
 
     for (BlockState blockstate : this.stateDefinition.getPossibleStates()) {
       this.getShapeIndex(blockstate);
     }
 
     this.registerDefaultState(this.stateDefinition.any()
-        .setValue(COLUMN, Column.NORMAL)
+        .setValue(COLUMN, Column.FULL)
         .setValue(NORTH, Connection.NONE)
         .setValue(SOUTH, Connection.NONE)
         .setValue(EAST, Connection.NONE)
@@ -104,25 +118,14 @@ public class PostBlock extends Block implements IWaterLoggable {
   @Override
   public VoxelShape getShape(BlockState blockState, IBlockReader level, BlockPos blockPos,
       ISelectionContext context) {
-    return this.shapeByIndex[this.getShapeIndex(blockState)];
+    return this.shapes.get(blockState.getValue(COLUMN))[this.getShapeIndex(blockState)];
   }
 
   @Override
-  public VoxelShape getCollisionShape(BlockState blockState, IBlockReader level, BlockPos blockPos,
-      ISelectionContext context) {
-    return this.collisionShapeByIndex[this.getShapeIndex(blockState)];
-  }
-
-  @Override
-  public VoxelShape getOcclusionShape(BlockState blockState, IBlockReader level,
+  public VoxelShape getBlockSupportShape(BlockState blockState, IBlockReader level,
       BlockPos blockPos) {
-    return this.occlusionByIndex[this.getShapeIndex(blockState)];
-  }
-
-  @Override
-  public VoxelShape getVisualShape(BlockState blockState, IBlockReader level,
-      BlockPos blockPos, ISelectionContext context) {
-    return this.getShape(blockState, level, blockPos, context);
+    // Allow anything to be placed on us.
+    return VoxelShapes.block();
   }
 
   public final int getShapeIndex(BlockState blockState) {
@@ -136,6 +139,17 @@ public class PostBlock extends Block implements IWaterLoggable {
         i |= VoxelShapeUtil.indexFor(entry.getKey());
       }
     }
+
+    switch (blockState.getValue(COLUMN)) {
+      case FULL:
+        i |= VoxelShapeUtil.indexFor(Direction.DOWN);
+      case TOP:
+        i |= VoxelShapeUtil.indexFor(Direction.UP);
+        break;
+      default:
+        break;
+    }
+
     return i;
   }
 
@@ -196,8 +210,8 @@ public class PostBlock extends Block implements IWaterLoggable {
   public Connection getConnection(BlockState blockState, boolean sturdy, Direction direction) {
     Block block = blockState.getBlock();
 
-    if (block instanceof AbstractSignalBlock) {
-      return AbstractSignalBlock.connectsToDirection(blockState, direction)
+    if (blockState.is(RailcraftTags.Blocks.SIGNAL)) {
+      return AbstractSignalBlock.connectsToDirection(blockState, direction.getOpposite())
           ? Connection.DOUBLE
           : Connection.NONE;
     }
@@ -209,16 +223,28 @@ public class PostBlock extends Block implements IWaterLoggable {
     return Connection.NONE;
   }
 
+  @SuppressWarnings("deprecation")
   public Column getColumn(IBlockReader level, BlockPos blockPos) {
     BlockPos abovePos = blockPos.above();
     BlockState aboveState = level.getBlockState(abovePos);
     BlockPos belowPos = blockPos.below();
     BlockState belowState = level.getBlockState(belowPos);
-    return aboveState.is(RailcraftTags.Blocks.POST)
-        || belowState.is(RailcraftTags.Blocks.POST)
-        || belowState.isFaceSturdy(level, belowPos, Direction.UP)
-            ? Column.NORMAL
-            : Column.SHORT;
+
+    if (aboveState.is(BlockTags.RAILS)) {
+      return Column.PLATFORM;
+    }
+
+    if (belowState.is(RailcraftTags.Blocks.POST)
+        || belowState.is(RailcraftTags.Blocks.SIGNAL)
+        || belowState.isFaceSturdy(level, belowPos, Direction.UP)) {
+      return Column.FULL;
+    }
+
+    if (!aboveState.isAir(level, abovePos)) {
+      return Column.TOP;
+    }
+
+    return Column.SMALL;
   }
 
   public boolean isPlatform(BlockState state) {

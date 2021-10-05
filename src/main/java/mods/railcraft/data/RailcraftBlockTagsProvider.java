@@ -40,14 +40,18 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
             RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
     this.tag(RailcraftTags.Blocks.POST)
-        .add(RailcraftBlocks.BLACK_METAL_POST.get(), RailcraftBlocks.RED_METAL_POST.get(),
-            RailcraftBlocks.GREEN_METAL_POST.get(), RailcraftBlocks.BROWN_METAL_POST.get(),
-            RailcraftBlocks.BLUE_METAL_POST.get(), RailcraftBlocks.PURPLE_METAL_POST.get(),
-            RailcraftBlocks.CYAN_METAL_POST.get(), RailcraftBlocks.LIGHT_GRAY_METAL_POST.get(),
-            RailcraftBlocks.GRAY_METAL_POST.get(), RailcraftBlocks.PINK_METAL_POST.get(),
-            RailcraftBlocks.LIME_METAL_POST.get(), RailcraftBlocks.YELLOW_METAL_POST.get(),
-            RailcraftBlocks.LIGHT_BLUE_METAL_POST.get(), RailcraftBlocks.MAGENTA_METAL_POST.get(),
-            RailcraftBlocks.ORANGE_METAL_POST.get(), RailcraftBlocks.WHITE_METAL_POST.get());
+        .add(RailcraftBlocks.BLACK_POST.get(), RailcraftBlocks.RED_POST.get(),
+            RailcraftBlocks.GREEN_POST.get(), RailcraftBlocks.BROWN_POST.get(),
+            RailcraftBlocks.BLUE_POST.get(), RailcraftBlocks.PURPLE_POST.get(),
+            RailcraftBlocks.CYAN_POST.get(), RailcraftBlocks.LIGHT_GRAY_POST.get(),
+            RailcraftBlocks.GRAY_POST.get(), RailcraftBlocks.PINK_POST.get(),
+            RailcraftBlocks.LIME_POST.get(), RailcraftBlocks.YELLOW_POST.get(),
+            RailcraftBlocks.LIGHT_BLUE_POST.get(), RailcraftBlocks.MAGENTA_POST.get(),
+            RailcraftBlocks.ORANGE_POST.get(), RailcraftBlocks.WHITE_POST.get());
+    this.tag(RailcraftTags.Blocks.SIGNAL)
+        .add(RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),
+            RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
+            RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
   }
 
   @Override

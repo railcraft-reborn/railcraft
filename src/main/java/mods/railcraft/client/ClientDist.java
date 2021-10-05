@@ -13,6 +13,7 @@ import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.particle.ParticlePumpkin;
 import mods.railcraft.client.particle.ParticleSpark;
 import mods.railcraft.client.particle.ParticleSteam;
+import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
 import mods.railcraft.client.renderer.blockentity.AnalogSignalControllerBoxRenderer;
@@ -47,9 +48,11 @@ import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.biome.BiomeColors;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
@@ -65,6 +68,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class ClientDist implements RailcraftDist {
 
   private final Minecraft minecraft;
+  private final ShuntingAuraRenderer shuntingAuraRenderer;
 
   public ClientDist() {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -78,6 +82,11 @@ public class ClientDist implements RailcraftDist {
     MinecraftForge.EVENT_BUS.register(this);
 
     this.minecraft = Minecraft.getInstance();
+    this.shuntingAuraRenderer = new ShuntingAuraRenderer();
+  }
+
+  public ShuntingAuraRenderer getShuntingAuraRenderer() {
+    return this.shuntingAuraRenderer;
   }
 
   // ================================================================================
@@ -105,7 +114,7 @@ public class ClientDist implements RailcraftDist {
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.FORCE_TRACK_EMITTER.get(),
         RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.SIGNAL.get(),
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.BLOCK_SIGNAL.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.DISTANT_SIGNAL.get(),
         RenderType.cutout());
@@ -228,9 +237,18 @@ public class ClientDist implements RailcraftDist {
   public void handleClientTick(TickEvent.ClientTickEvent event) {
     if (event.phase == Phase.START
         && (this.minecraft.level != null && !this.minecraft.isPaused())) {
-      // switch this to a switch if we have more args to go about
       SignalAspect.tickBlinkState();
     }
+  }
+
+  @SubscribeEvent
+  public void handleRenderWorldLast(RenderWorldLastEvent event) {
+    this.shuntingAuraRenderer.render(event.getPartialTicks(), event.getMatrixStack());
+  }
+
+  @SubscribeEvent
+  public void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggedOutEvent event) {
+    this.shuntingAuraRenderer.clearCarts();
   }
 
   // ================================================================================

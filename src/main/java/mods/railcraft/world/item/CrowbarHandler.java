@@ -1,11 +1,7 @@
 package mods.railcraft.world.item;
 
-import com.google.common.collect.MapMaker;
-
-import io.netty.handler.codec.marshalling.ThreadLocalUnmarshallerProvider;
-
 import java.util.Map;
-
+import com.google.common.collect.MapMaker;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
@@ -61,12 +57,12 @@ public class CrowbarHandler {
 
     Crowbar crowbar = (Crowbar) stack.getItem();
 
-    if ((stack.getItem() instanceof SeasonCrowbarItem) && (cart instanceof RailcraftCart)
+    if ((stack.getItem() instanceof SeasonsCrowbarItem) && (cart instanceof RailcraftCart)
         && RailcraftConfig.common.enableSeasons.get()) {
-      Season season = SeasonCrowbarItem.getCurrentSeason(stack);
+      Season season = SeasonsCrowbarItem.getSeason(stack);
       ((RailcraftCart) cart).setSeason(season);
       RailcraftAdvancementTriggers.getInstance()
-        .onSeasonSet((ServerPlayerEntity) player, cart, season);
+          .onSeasonSet((ServerPlayerEntity) player, cart, season);
       return true;
     }
     if (crowbar.canLink(player, hand, stack, cart)) {
@@ -92,21 +88,20 @@ public class CrowbarHandler {
         if (lm.areLinked(cart, last, false)) {
           lm.breakLink(cart, last);
           used = true;
-          player.displayClientMessage(new TranslationTextComponent("message.link.broken"), false);
+          player.displayClientMessage(new TranslationTextComponent("crowbar.link_broken"), true);
           LinkageManager.printDebug("Reason For Broken Link: User removed link.");
         } else {
           used = lm.createLink(last, cart);
           if (used) {
-            player.displayClientMessage(
-                new TranslationTextComponent("message.link.created"), false);
+            player.displayClientMessage(new TranslationTextComponent("crowbar.link_created"), true);
           }
         }
         if (!used) {
-          player.displayClientMessage(new TranslationTextComponent("message.link.failed"), false);
+          player.displayClientMessage(new TranslationTextComponent("crowbar.link_failed"), true);
         }
       } else {
         linkMap.put(player, cart);
-        player.displayClientMessage(new TranslationTextComponent("message.link.started"), false);
+        player.displayClientMessage(new TranslationTextComponent("crowbar.link_started"), true);
       }
     }
     if (used) {

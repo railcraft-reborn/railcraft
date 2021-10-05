@@ -47,7 +47,7 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
   public void render(T blockEntity, float partialTicks, MatrixStack matrixStack,
       IRenderTypeBuffer renderTypeBuffer, int packedLight, int packedOverlay) {
 
-    SignalAuraRenderer.tryRenderSignalAura(blockEntity, matrixStack, renderTypeBuffer);
+    SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, matrixStack, renderTypeBuffer);
 
     if (blockEntity.hasCustomName()) {
       RenderUtil.renderBlockHoverText(blockEntity.getBlockPos(),

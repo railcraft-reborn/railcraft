@@ -1,6 +1,0 @@
-{
-  "parent": "railcraft:block/post_short_column",
-  "textures": {
-    "texture": "railcraft:block/blue_metal_post"
-  }
-}

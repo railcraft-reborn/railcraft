@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/post_double_connection",
+  "textures": {
+    "texture": "railcraft:block/gray_post"
+  }
+}

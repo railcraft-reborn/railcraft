@@ -3,7 +3,6 @@ package mods.railcraft.world.level.block.signal;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
-import com.google.common.collect.Maps;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.tags.RailcraftTags;
@@ -39,10 +38,6 @@ import net.minecraft.world.IWorld;
  *
  */
 public abstract class AbstractSignalBlock extends Block implements IWaterLoggable {
-
-  public static final Map<Direction, VoxelShape> HORIZONTAL_CONNECTION_SHAPES =
-      Maps.immutableEnumMap(VoxelShapeUtil.createHorizontalShapes(
-          8.0D - 2.0D, 7.0D, 8.0D - 2.0D, 8.0D + 2.0D, 16.0D, 8.0D + 2.0D));
 
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final BooleanProperty NORTH = SixWayBlock.NORTH;
@@ -177,7 +172,7 @@ public abstract class AbstractSignalBlock extends Block implements IWaterLoggabl
       return false;
     }
 
-    if (block instanceof AbstractSignalBlock) {
+    if (state.is(RailcraftTags.Blocks.SIGNAL)) {
       return connectsToDirection(state, direction);
     }
 

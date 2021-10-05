@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/post_platform",
+  "textures": {
+    "texture": "railcraft:block/cyan_post"
+  }
+}

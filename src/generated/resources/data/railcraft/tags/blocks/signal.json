@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "railcraft:block_signal",
+    "railcraft:distant_signal",
+    "railcraft:token_signal",
+    "railcraft:dual_block_signal",
+    "railcraft:dual_distant_signal",
+    "railcraft:dual_token_signal"
+  ]
+}

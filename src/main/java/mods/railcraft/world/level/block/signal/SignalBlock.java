@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 import mods.railcraft.util.VoxelShapeUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
+import mods.railcraft.world.level.block.post.PostBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
@@ -45,7 +46,7 @@ public class SignalBlock extends AbstractSignalBlock {
 
   private static Map<Direction, VoxelShape> createConnectionShapes() {
     Map<Direction, VoxelShape> connectionShapes = new EnumMap<>(Direction.class);
-    connectionShapes.putAll(HORIZONTAL_CONNECTION_SHAPES);
+    connectionShapes.putAll(PostBlock.HORIZONTAL_CONNECTION_SHAPES);
     connectionShapes.put(Direction.DOWN, POST_SHAPE);
     return connectionShapes;
   }

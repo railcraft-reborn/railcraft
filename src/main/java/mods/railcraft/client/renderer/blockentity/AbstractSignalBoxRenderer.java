@@ -61,7 +61,7 @@ public abstract class AbstractSignalBoxRenderer
       MatrixStack poseStack, IRenderTypeBuffer renderTypeBuffer, int packedLight,
       int packedOverlay) {
 
-    SignalAuraRenderer.tryRenderSignalAura(blockEntity, poseStack, renderTypeBuffer);
+    SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, poseStack, renderTypeBuffer);
 
     if (blockEntity.hasCustomName()) {
       RenderUtil.renderBlockHoverText(blockEntity.getBlockPos(),

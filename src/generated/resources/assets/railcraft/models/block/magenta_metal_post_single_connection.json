@@ -1,6 +1,0 @@
-{
-  "parent": "railcraft:block/post_single_connection",
-  "textures": {
-    "texture": "railcraft:block/magenta_metal_post"
-  }
-}
