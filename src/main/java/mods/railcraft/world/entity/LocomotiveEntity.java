@@ -1,5 +1,7 @@
 package mods.railcraft.world.entity;
 
+import com.mojang.authlib.GameProfile;
+
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Map;
@@ -10,8 +12,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import org.apache.commons.lang3.StringUtils;
-import com.mojang.authlib.GameProfile;
+
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.CartUtil;
@@ -74,8 +75,10 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar (http://www.railcraft.info)
  */
 public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     implements IDirectionalCart, ILinkableCart, IMinecart, Secure<LockButtonState>,
@@ -151,23 +154,27 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   @Override
   public void initEntityFromItem(ItemStack item) {
     CompoundNBT nbt = item.getTag();
-    if (nbt == null)
+    if (nbt == null) {
       return;
+    }
 
     setPrimaryColor(LocomotiveItem.getPrimaryColor(item).getColorValue());
     setSecondaryColor(LocomotiveItem.getSecondaryColor(item).getColorValue());
 
-    if (nbt.contains("whistlePitch"))
+    if (nbt.contains("whistlePitch")) {
       whistlePitch = nbt.getFloat("whistlePitch");
+    }
     if (nbt.contains("owner")) {
       GameProfile ownerProfile = PlayerUtil.readOwnerFromNBT(nbt);
       CartUtil.setCartOwner(this, ownerProfile);
       setLockState(LockButtonState.LOCKED);
     }
-    if (nbt.contains("lock", Constants.NBT.TAG_STRING))
+    if (nbt.contains("lock", Constants.NBT.TAG_STRING)) {
       this.setLockState(LockButtonState.getByName(nbt.getString("lock")).get());
-    if (nbt.contains("emblem"))
+    }
+    if (nbt.contains("emblem")) {
       this.setEmblem(nbt.getString("emblem"));
+    }
   }
 
   @Override
@@ -187,12 +194,14 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   @Override
   public ItemStack createCartItem(AbstractMinecartEntity cart) {
     ItemStack item = this.getCartItem(); // THIS CAN CAUSE A STACKOVERFLOW!
-    if (isSecure() && CartUtil.doesCartHaveOwner(this))
+    if (isSecure() && CartUtil.doesCartHaveOwner(this)) {
       LocomotiveItem.setOwnerData(item, CartUtil.getCartOwner(this));
+    }
     LocomotiveItem.setItemWhistleData(item, whistlePitch);
     LocomotiveItem.setEmblem(item, getEmblem());
-    if (hasCustomName())
+    if (hasCustomName()) {
       item.setHoverName(this.getCustomName());
+    }
     return item;
   }
 
@@ -211,14 +220,15 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
         }
         return ActionResultType.CONSUME;
       }
-      if (!isPrivate() || PlayerUtil.isOwnerOrOp(getOwner(), player.getGameProfile()))
+      if (!isPrivate() || PlayerUtil.isOwnerOrOp(getOwner(), player.getGameProfile())) {
         super.interact(player, hand); // open gui
+      }
     }
     return ActionResultType.CONSUME;
   }
 
   /**
-   * Indicates if this object is locked
+   * Indicates if this object is locked.
    *
    * @return true if it's secured.
    */
@@ -228,7 +238,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   /**
-   * Indicates if this object is set to private
+   * Indicates if this object is set to private.
    *
    * @return true if it's private.
    */
@@ -237,7 +247,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   /**
-   * Can the user use this locomotive?
+   * Can the user use this locomotive?.
    *
    * @param user The user.
    * @return true if they can.
@@ -261,8 +271,9 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public void setEmblem(String emblem) {
-    if (!getEmblem().equals(emblem))
+    if (!getEmblem().equals(emblem)) {
       this.getEntityData().set(EMBLEM, emblem);
+    }
   }
 
   public ItemStack getDestItem() {
@@ -275,8 +286,9 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public void setDestString(String dest) {
-    if (!StringUtils.equals(getDestination(), dest))
+    if (!StringUtils.equals(getDestination(), dest)) {
       this.getEntityData().set(DEST, dest);
+    }
   }
 
   public Mode getMode() {
@@ -284,10 +296,12 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public void setMode(Mode mode) {
-    if (!allowedModes.contains(mode))
+    if (!allowedModes.contains(mode)) {
       mode = Mode.SHUTDOWN;
-    if (getMode() != mode)
+    }
+    if (getMode() != mode) {
       RailcraftDataSerializers.setEnum(this.getEntityData(), LOCOMOTIVE_MODE, mode);
+    }
   }
 
   public Set<Mode> getAllowedModes() {
@@ -303,8 +317,9 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public void setSpeed(Speed speed) {
-    if (getSpeed() != speed)
+    if (getSpeed() != speed) {
       RailcraftDataSerializers.setEnum(this.getEntityData(), LOCOMOTIVE_SPEED, speed);
+    }
   }
 
   public Speed getMaxReverseSpeed() {
@@ -347,9 +362,13 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     return fuel > 0 && getMode() == Mode.RUNNING && !(isIdle() || isShutdown());
   }
 
+  /**
+   * Is the train idle? Returns true if it is.
+   */
   public boolean isIdle() {
-    return !isShutdown() && (tempIdle > 0 || getMode() == Mode.IDLE
-        || Train.get(this).map(Train::isIdle).orElse(false));
+    return !isShutdown()
+        && (tempIdle > 0 || getMode() == Mode.IDLE
+            || Train.get(this).map(Train::isIdle).orElse(false));
   }
 
   public boolean isShutdown() {
@@ -388,19 +407,22 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     if (level.isClientSide()) {
       if (Seasons.isPolarExpress(this)
           && (!MathTools.nearZero(this.getDeltaMovement().x())
-              || !MathTools.nearZero(this.getDeltaMovement().z())))
+              || !MathTools.nearZero(this.getDeltaMovement().z()))) {
         ClientEffects.INSTANCE.snowEffect(
             this.getX(), getBoundingBox().minY - this.getY(), this.getZ());
+      }
       return;
     }
 
     // {
-    // boolean reverse = ObfuscationReflectionHelper.getPrivateValue(AbstractMinecartEntity.class,
+    // boolean reverse =
+    // ObfuscationReflectionHelper.getPrivateValue(AbstractMinecartEntity.class,
     // this,
     // IS_REVERSED_INDEX);
     // if (reverse != preReverse || prevRotationYaw != rotationYaw) {
     // preReverse = reverse;
-    // Game.log(Level.INFO, "tick={0}, reverse={1}, yaw={2}", world.getTotalWorldTime(), reverse,
+    // Game.log(Level.INFO, "tick={0}, reverse={1}, yaw={2}",
+    // world.getTotalWorldTime(), reverse,
     // rotationYaw);
     // }
     // }
@@ -410,21 +432,25 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
     // if (getEntityData().getBoolean("HighSpeed"))
     // System.out.println(CartToolsAPI.getCartSpeedUncapped(this));
-    if (whistleDelay > 0)
+    if (whistleDelay > 0) {
       whistleDelay--;
+    }
 
-    if (tempIdle > 0)
+    if (tempIdle > 0) {
       tempIdle--;
+    }
 
-    if (update % WHISTLE_INTERVAL == 0 && isRunning() && this.random.nextInt(WHISTLE_CHANCE) == 0)
+    if (update % WHISTLE_INTERVAL == 0 && isRunning() && this.random.nextInt(WHISTLE_CHANCE) == 0) {
       whistle();
+    }
   }
 
   @Override
   public boolean setDestination(ItemStack ticket) {
     if (ticket.getItem() instanceof TicketItem) {
-      if (isSecure() && !TicketItem.matchesOwnerOrOp(ticket, CartUtil.getCartOwner(this)))
+      if (isSecure() && !TicketItem.matchesOwnerOrOp(ticket, CartUtil.getCartOwner(this))) {
         return false;
+      }
       String dest = TicketItem.getDestination(ticket);
       if (!dest.equals(getDestination())) {
         setDestString(dest);
@@ -441,10 +467,12 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     IInventory invTicket = getTicketInventory();
     ItemStack stack = invTicket.getItem(0);
     if (stack.getItem() instanceof TicketItem) {
-      if (setDestination(stack))
+      if (setDestination(stack)) {
         invTicket.setItem(0, InvTools.depleteItem(stack));
-    } else
+      }
+    } else {
       invTicket.setItem(0, ItemStack.EMPTY);
+    }
   }
 
   @Override
@@ -457,14 +485,16 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
     Speed speed = getSpeed();
     if (isRunning()) {
-      double force = RailcraftConfig.SERVER.locomotiveHorsepower.get() * 0.01F;
-      if (isReverse())
+      double force = RailcraftConfig.server.locomotiveHorsepower.get() * 0.01F;
+      if (isReverse()) {
         force = -force;
+      }
       switch (speed) {
         case MAX:
           boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(this);
-          if (highSpeed)
+          if (highSpeed) {
             force *= HS_FORCE_BONUS;
+          }
           break;
         default:
           break;
@@ -492,8 +522,10 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
       Vector3d motion = this.getDeltaMovement();
 
-      this.setDeltaMovement(Math.copySign(Math.min(Math.abs(motion.x()), limit), motion.x()),
-          motion.y(), Math.copySign(Math.min(Math.abs(motion.z()), limit), motion.z()));
+      this.setDeltaMovement(
+          Math.copySign(Math.min(Math.abs(motion.x()), limit), motion.x()),
+          motion.y(),
+          Math.copySign(Math.min(Math.abs(motion.z()), limit), motion.z()));
     }
   }
 
@@ -510,8 +542,9 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
         default:
           return 8;
       }
-    } else if (isIdle())
+    } else if (isIdle()) {
       return getIdleFuelUse();
+    }
     return 0;
   }
 
@@ -522,13 +555,15 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   protected void updateFuel() {
     if (update % FUEL_USE_INTERVAL == 0 && fuel > 0) {
       fuel -= getFuelUse();
-      if (fuel < 0)
+      if (fuel < 0) {
         fuel = 0;
+      }
     }
     while (fuel <= FUEL_USE_INTERVAL && !isShutdown()) {
       int newFuel = getMoreGoJuice();
-      if (newFuel <= 0)
+      if (newFuel <= 0) {
         break;
+      }
       fuel += newFuel;
     }
     setHasFuel(fuel > 0);
@@ -543,7 +578,8 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     if (entity instanceof PlayerEntity) {
       ItemStack pants = entity.getItemBySlot(EquipmentSlotType.LEGS);
       if (RailcraftItems.OVERALLS.get() == pants.getItem()) {
-        pants.hurtAndBreak(5, entity, __ -> entity.broadcastBreakEvent(EquipmentSlotType.LEGS));
+        pants.hurtAndBreak(5, entity,
+            unusedThing -> entity.broadcastBreakEvent(EquipmentSlotType.LEGS));
         return 4;
       }
     }
@@ -553,31 +589,35 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   @Override
   public void push(Entity entity) {
     if (!this.level.isClientSide()) {
-      if (!entity.isAlive())
+      if (!entity.isAlive()) {
         return;
+      }
       if (Train.streamCarts(this).noneMatch(t -> t.hasPassenger(entity))
           && (cartVelocityIsGreaterThan(0.2f) || HighSpeedTools.isTravellingHighSpeed(this))
           && RCEntitySelectors.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
-        if (RailcraftConfig.SERVER.locomotiveDamageMobs.get())
+        if (RailcraftConfig.server.locomotiveDamageMobs.get()) {
           living.hurt(RailcraftDamageSource.TRAIN, getDamageToRoadKill(living));
+        }
         if (living.getHealth() > 0) {
           float yaw = (this.yRot - 90) * (float) Math.PI / 180.0F;
           this.setDeltaMovement(
-              this.getDeltaMovement().add(-MathHelper.sin(yaw) * KNOCKBACK * 0.5F, 0.2D,
-                  MathHelper.cos(yaw) * KNOCKBACK * 0.5F));
+                this.getDeltaMovement().add(-MathHelper.sin(yaw) * KNOCKBACK * 0.5F, 0.2D,
+              MathHelper.cos(yaw) * KNOCKBACK * 0.5F));
         } else {
-          if (living instanceof ServerPlayerEntity)
+          if (living instanceof ServerPlayerEntity) {
             RailcraftAdvancementTriggers.getInstance()
-                .onKilledByLocomotive((ServerPlayerEntity) living, this);
+              .onKilledByLocomotive((ServerPlayerEntity) living, this);
+          }
         }
         return;
       }
       if (collidedWithOtherLocomotive(entity)) {
         LocomotiveEntity otherLoco = (LocomotiveEntity) entity;
         explode();
-        if (otherLoco.isAlive())
+        if (otherLoco.isAlive()) {
           otherLoco.explode();
+        }
         return;
       }
     }
@@ -585,13 +625,16 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   private boolean collidedWithOtherLocomotive(Entity entity) {
-    if (!(entity instanceof LocomotiveEntity))
+    if (!(entity instanceof LocomotiveEntity)) {
       return false;
+    }
     LocomotiveEntity otherLoco = (LocomotiveEntity) entity;
-    if (getUUID().equals(entity.getUUID()))
+    if (getUUID().equals(entity.getUUID())) {
       return false;
-    if (Train.areInSameTrain(this, otherLoco))
+    }
+    if (Train.areInSameTrain(this, otherLoco)) {
       return false;
+    }
 
     Vector3d motion = this.getDeltaMovement();
     Vector3d otherMotion = entity.getDeltaMovement();
@@ -662,18 +705,17 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     this.setSpeed(Speed.getByName(data.getString("speed")).orElse(Speed.NORMAL));
 
     this.setPrimaryColor(data.contains("primaryColor", Constants.NBT.TAG_INT)
-        ? data.getInt("primaryColor")
-        : DyeColor.BLACK.getColorValue());
+        ? data.getInt("primaryColor") : DyeColor.BLACK.getColorValue());
     this.setSecondaryColor(data.contains("secondaryColor", Constants.NBT.TAG_INT)
-        ? data.getInt("secondaryColor")
-        : DyeColor.RED.getColorValue());
+        ? data.getInt("secondaryColor") : DyeColor.RED.getColorValue());
 
     this.whistlePitch = data.getFloat("whistlePitch");
 
     this.fuel = data.getInt("fuel");
 
-    if (data.contains("reverse", Constants.NBT.TAG_BYTE))
+    if (data.contains("reverse", Constants.NBT.TAG_BYTE)) {
       this.getEntityData().set(REVERSE, data.getBoolean("reverse"));
+    }
 
     this.lockController.deserializeNBT(data.getCompound("lock"));
   }
@@ -691,14 +733,14 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   @Override
   public void readSpawnData(PacketBuffer data) {
-    if (data.readBoolean())
+    if (data.readBoolean()) {
       setCustomName(data.readComponent());
+    }
     this.clientOwnerName = data.readUtf();
   }
 
   public static void applyAction(GameProfile gameProfile, AbstractMinecartEntity cart,
-      boolean single,
-      Consumer<LocomotiveEntity> action) {
+      boolean single, Consumer<LocomotiveEntity> action) {
     Stream<LocomotiveEntity> locos = Train.streamCarts(cart)
         .flatMap(Streams.ofType(LocomotiveEntity.class))
         .filter(loco -> loco.canControl(gameProfile));
@@ -731,8 +773,9 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   @Override
   public boolean canLink(AbstractMinecartEntity cart) {
-    if (isExemptFromLinkLimits(cart))
+    if (isExemptFromLinkLimits(cart)) {
       return true;
+    }
 
     LinkageManager lm = LinkageManager.INSTANCE;
 
@@ -761,8 +804,9 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   @Override
   public void onLinkCreated(AbstractMinecartEntity cart) {
     // Moved from linkage manager - this should not be there
-    if (getSpeed().compareTo(Speed.SLOWEST) > 0)
+    if (getSpeed().compareTo(Speed.SLOWEST) > 0) {
       setSpeed(Speed.SLOWEST);
+    }
   }
 
   @Override

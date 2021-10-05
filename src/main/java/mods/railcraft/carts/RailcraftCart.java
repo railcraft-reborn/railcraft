@@ -9,7 +9,6 @@
 
 package mods.railcraft.carts;
 
-import org.apache.commons.lang3.ArrayUtils;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.season.Season;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -20,6 +19,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.world.GameRules;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info/>
@@ -36,36 +37,42 @@ public interface RailcraftCart {
 
   default ItemStack createCartItem(AbstractMinecartEntity cart) {
     ItemStack stack = getItem().getDefaultInstance();
-    if (!stack.isEmpty() && cart.hasCustomName())
+    if (!stack.isEmpty() && cart.hasCustomName()) {
       stack.setHoverName(cart.getCustomName());
+    }
     return stack;
   }
 
   default ItemStack[] getComponents(AbstractMinecartEntity cart) {
     ItemStack contents = getContents();
-    if (!contents.isEmpty())
-      return new ItemStack[] {new ItemStack(Items.MINECART), contents};
-    return new ItemStack[] {createCartItem(cart)};
+    if (!contents.isEmpty()) {
+      return new ItemStack[] { new ItemStack(Items.MINECART), contents };
+    }
+    return new ItemStack[] { createCartItem(cart) };
   }
 
   default ItemStack[] getItemsDropped(AbstractMinecartEntity cart) {
-    if (RailcraftConfig.SERVER.cartsBreakOnDrop.get())
+    if (RailcraftConfig.server.cartsBreakOnDrop.get()) {
       return getComponents(cart);
-    else
-      return new ItemStack[] {createCartItem(cart)};
+    } else {
+      return new ItemStack[] { createCartItem(cart) };
+    }
   }
 
   default void killAndDrop(AbstractMinecartEntity cart) {
     cart.remove();
-    if (!cart.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+    if (!cart.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
       return;
+    }
     ItemStack[] drops = getItemsDropped(cart);
-    if (!RailcraftConfig.SERVER.cartsBreakOnDrop.get() && cart.hasCustomName()
-        && !ArrayUtils.isEmpty(drops))
+    if (!RailcraftConfig.server.cartsBreakOnDrop.get()
+        && cart.hasCustomName() && !ArrayUtils.isEmpty(drops)) {
       drops[0].setHoverName(cart.getCustomName());
+    }
     for (ItemStack item : drops) {
-      if (!item.isEmpty())
+      if (!item.isEmpty()) {
         cart.spawnAtLocation(item, 0.0F);
+      }
     }
   }
 

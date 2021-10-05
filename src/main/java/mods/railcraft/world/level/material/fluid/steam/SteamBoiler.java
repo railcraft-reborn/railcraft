@@ -1,8 +1,10 @@
 package mods.railcraft.world.level.material.fluid.steam;
 
+import com.google.common.primitives.Floats;
+
 import java.util.Collections;
 import java.util.List;
-import com.google.common.primitives.Floats;
+
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
@@ -19,7 +21,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
  * The boiler itself. Used to simulate turning water into steam.
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar (https://www.railcraft.info/)
  */
 public class SteamBoiler implements INBTSerializable<CompoundNBT> {
 
@@ -109,8 +111,9 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
 
   public void increaseHeat(int numTanks) {
     float max = this.getMaxTemperature();
-    if (this.temperature == max)
+    if (this.temperature == max) {
       return;
+    }
     float step = this.getHeatStep();
     float delta = step + (((max - temperature) / max) * step * 3);
     delta /= numTanks;
@@ -118,8 +121,9 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
   }
 
   public void reduceHeat(int numTanks) {
-    if (this.temperature == SteamConstants.COLD_TEMP)
+    if (this.temperature == SteamConstants.COLD_TEMP) {
       return;
+    }
     float step = SteamConstants.HEAT_STEP;
     float delta = step + ((this.temperature / this.getMaxTemperature()) * step * 3);
     delta /= numTanks;
@@ -147,8 +151,9 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
   }
 
   public int getBurnProgressScaled(int i) {
-    if (this.isCold())
+    if (this.isCold()) {
       return 0;
+    }
     int scale = (int) ((this.getBurnTime() / this.getCurrentItemBurnTime()) * i);
     scale = Math.max(0, scale);
     scale = Math.min(i, scale);
@@ -156,11 +161,13 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
   }
 
   private boolean addFuel() {
-    if (this.fuelProvider == null)
+    if (this.fuelProvider == null) {
       return false;
+    }
     float fuel = this.fuelProvider.consumeFuel();
-    if (fuel <= 0)
+    if (fuel <= 0) {
       return false;
+    }
     this.setBurnTime(this.getBurnTime() + fuel);
     this.setCurrentItemBurnTime(this.getBurnTime());
     return true;
@@ -176,7 +183,7 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
         * (this.getMaxTemperature() / SteamConstants.MAX_HEAT_HIGH);
     fuel *= numTanks;
     fuel *= this.efficiencyModifier;
-    fuel *= RailcraftConfig.SERVER.fuelPerSteamMultiplier.get();
+    fuel *= RailcraftConfig.server.fuelPerSteamMultiplier.get();
     return fuel;
   }
 
@@ -187,35 +194,42 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
       float fuelNeeded = this.getFuelPerCycle(numTanks);
       while (this.getBurnTime() < fuelNeeded) {
         boolean addedFuel = addFuel();
-        if (!addedFuel)
+        if (!addedFuel) {
           break;
+        }
       }
       boolean wasBurning = this.burning;
       this.burning = this.getBurnTime() >= fuelNeeded;
-      if (this.burning)
+      if (this.burning) {
         this.setBurnTime(this.getBurnTime() - fuelNeeded);
-      if (this.tile != null && this.burning != wasBurning)
+      }
+      if (this.tile != null && this.burning != wasBurning) {
         this.tile.syncToClient();
+      }
       this.convertSteam(numTanks);
     }
-    if (this.burning)
+    if (this.burning) {
       this.increaseHeat(numTanks);
-    else
+    } else {
       this.reduceHeat(numTanks);
+    }
   }
 
   public int convertSteam(int numTanks) {
-    if (this.isCold())
+    if (this.isCold()) {
       return 0;
+    }
     this.partialConversions += numTanks * getTemperaturePercent();
     int waterCost = (int) this.partialConversions;
-    if (waterCost <= 0)
+    if (waterCost <= 0) {
       return 0;
+    }
     this.partialConversions -= waterCost;
 
     FluidStack water = this.waterTank.drain(waterCost, FluidAction.SIMULATE);
-    if (water.isEmpty())
+    if (water.isEmpty()) {
       return 0;
+    }
 
     waterCost = Math.min(waterCost, water.getAmount());
 
@@ -275,7 +289,7 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
     @Override
     public void refresh() {
       this.tooltip = Collections.singletonList(
-          new StringTextComponent(String.format("%.0f\u00B0C", SteamBoiler.this.getTemperature())));
+          new StringTextComponent(String.format("%.0f°", SteamBoiler.this.getTemperature())));
     }
 
     @Override

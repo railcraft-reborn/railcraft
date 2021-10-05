@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 /**
  * A collection of helper methods for creating {@code Predicate<ItemStack>} objects.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar (http://www.railcraft.info)
  */
 public enum StackFilters implements Predicate<ItemStack> {
 
@@ -94,8 +94,8 @@ public enum StackFilters implements Predicate<ItemStack> {
     @Override
     protected boolean testType(
         ItemStack stack) {
-      return (RailcraftConfig.SERVER.chestAllowFluids.get() || !FluidItemHelper.isContainer(stack))
-          && !RailcraftConfig.SERVER.cargoBlacklist.get()
+      return (RailcraftConfig.server.chestAllowFluids.get() || !FluidItemHelper.isContainer(stack))
+          && !RailcraftConfig.server.cargoBlacklist.get()
               .contains(stack.getItem().getRegistryName().toString());
     }
 
@@ -163,7 +163,7 @@ public enum StackFilters implements Predicate<ItemStack> {
   /**
    * Matches against the provided ItemStacks.
    *
-   * If no ItemStacks are provided to match against, it returns true.
+   * <p>If no ItemStacks are provided to match against, it returns true.
    */
   public static Predicate<ItemStack> anyOf(final ItemStack... stacks) {
     return anyOf(Arrays.asList(stacks));
@@ -172,7 +172,7 @@ public enum StackFilters implements Predicate<ItemStack> {
   /**
    * Matches against the provided ItemStacks.
    *
-   * If no ItemStacks are provided to match against, it returns true.
+   * <p>If no ItemStacks are provided to match against, it returns true.
    */
   public static Predicate<ItemStack> anyOf(final Collection<ItemStack> stacks) {
     return stack -> stacks.isEmpty() || stacks.stream().allMatch(ItemStack::isEmpty)
@@ -186,8 +186,8 @@ public enum StackFilters implements Predicate<ItemStack> {
   /**
    * Matches only if the given ItemStack does not match any of the provided ItemStacks.
    *
-   * Returns false if the ItemStack being matched is null and true if the stacks to match against is
-   * empty/nulled.
+   * <p>Returns false if the ItemStack being matched is null and true if the stacks to match
+   * against is empty/nulled.
    */
   public static Predicate<ItemStack> noneOf(final ItemStack... stacks) {
     return noneOf(Arrays.asList(stacks));
@@ -196,15 +196,15 @@ public enum StackFilters implements Predicate<ItemStack> {
   /**
    * Matches only if the given ItemStack does not match any of the provided ItemStacks.
    *
-   * Returns false if the ItemStack being matched is null and true if the stacks to match against is
-   * empty/nulled.
+   * <p>Returns false if the ItemStack being matched is null and true if the stacks to match
+   * against is empty/nulled.
    */
   public static Predicate<ItemStack> noneOf(final Collection<ItemStack> stacks) {
     return stack -> {
-      if (stack.isEmpty())
+      if (stack.isEmpty()) {
         return false;
-      return stacks.stream()
-          .filter(toTest -> !toTest.isEmpty())
+      }
+      return stacks.stream().filter(toTest -> !toTest.isEmpty())
           .noneMatch(filter -> InvTools.isItemEqual(stack, filter));
     };
   }
@@ -229,7 +229,7 @@ public enum StackFilters implements Predicate<ItemStack> {
   }
 
   /**
-   * Matches if the Inventory has room and accepts the given ItemStack
+   * Matches if the Inventory has room and accepts the given ItemStack.
    */
   public static Predicate<ItemStack> roomIn(final IInventoryComposite inv) {
     return inv::canFit;
@@ -240,14 +240,17 @@ public enum StackFilters implements Predicate<ItemStack> {
    */
   public static Predicate<ItemStack> isCart(@Nullable final MinecartEntity cart) {
     return stack -> {
-      if (stack.isEmpty())
+      if (stack.isEmpty()) {
         return false;
-      if (cart == null)
+      }
+      if (cart == null) {
         return false;
+      }
       if (cart instanceof IMinecart) {
-        if (stack.hasCustomHoverName())
+        if (stack.hasCustomHoverName()) {
           return ((IMinecart) cart).doesCartMatchFilter(stack)
               && stack.getDisplayName().equals(cart.getCartItem().getDisplayName());
+        }
         return ((IMinecart) cart).doesCartMatchFilter(stack);
       }
       ItemStack cartItem = cart.getCartItem();

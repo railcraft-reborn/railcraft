@@ -1,12 +1,15 @@
 package mods.railcraft.world.entity;
 
+import com.google.common.collect.Sets;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
+
 import javax.annotation.Nullable;
-import com.google.common.collect.Sets;
+
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.IBoreHead;
@@ -225,46 +228,46 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
   }
 
   public boolean canHeadHarvestBlock(ItemStack head, BlockState targetState) {
-    if (head.isEmpty())
+    if (head.isEmpty()) {
       return false;
+    }
 
     if (head.getItem() instanceof IBoreHead) {
 
       /*
        * boolean mappingExists = false;
        *
-       * int blockHarvestLevel = HarvestPlugin.getHarvestLevel(targetState, "pickaxe"); if
-       * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >= blockHarvestLevel) return
-       * true; mappingExists = true; }
+       * int blockHarvestLevel = HarvestPlugin.getHarvestLevel(targetState,
+       * "pickaxe"); if (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >=
+       * blockHarvestLevel) return true; mappingExists = true; }
        *
        * blockHarvestLevel = HarvestPlugin.getHarvestLevel(targetState, "axe"); if
-       * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >= blockHarvestLevel) return
-       * true; mappingExists = true; }
+       * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >=
+       * blockHarvestLevel) return true; mappingExists = true; }
        *
        * blockHarvestLevel = HarvestPlugin.getHarvestLevel(targetState, "shovel"); if
-       * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >= blockHarvestLevel) return
-       * true; mappingExists = true; }
+       * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >=
+       * blockHarvestLevel) return true; mappingExists = true; }
        *
        * if (mappingExists) return false;
        */
       Item item = head.getItem();
       Set<ToolType> toolClasses = item.getToolTypes(head);
-      PlayerEntity fakePlayer =
-          RailcraftFakePlayer.get((ServerWorld) this.level, this.getX(), this.getY(), this.getZ());
+      PlayerEntity fakePlayer = RailcraftFakePlayer.get(
+          (ServerWorld) this.level, this.getX(), this.getY(), this.getZ());
 
-      return toolClasses.stream()
-          .anyMatch(tool -> item.getHarvestLevel(head, tool, fakePlayer,
-              targetState) >= HarvestUtil.getHarvestLevel(targetState, tool));
+      return toolClasses.stream().anyMatch(tool -> item.getHarvestLevel(head, tool, fakePlayer,
+          targetState) >= HarvestUtil.getHarvestLevel(targetState, tool));
     }
 
     return false;
   }
 
   private boolean isMineableBlock(BlockState blockState) {
-    return RailcraftConfig.SERVER.boreMinesAllBlocks.get() ||
-        mineableBlocks.contains(blockState.getBlock()) ||
-        mineableStates.contains(blockState) ||
-        mineableTags.stream().anyMatch(tag -> tag.contains(blockState.getBlock()));
+    return RailcraftConfig.server.boreMinesAllBlocks.get()
+        || mineableBlocks.contains(blockState.getBlock())
+        || mineableStates.contains(blockState)
+        || mineableTags.stream().anyMatch(tag -> tag.contains(blockState.getBlock()));
   }
 
   @Override
@@ -287,30 +290,32 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
   @Override
   public boolean hurt(DamageSource source, float damage) {
-    if (!this.level.isClientSide() && this.isAlive())
-      if (isInvulnerableTo(source))
+    if (!this.level.isClientSide() && this.isAlive()) {
+      if (isInvulnerableTo(source)) {
         return false;
-      else {
+      } else {
         setHurtDir(-getHurtDir());
         setHurtTime(10);
         markHurt();
         setDamage(getDamage() + damage * 10);
-        boolean flag = source.getEntity() instanceof PlayerEntity
+        boolean flag = (source.getEntity() instanceof PlayerEntity)
             && ((PlayerEntity) source.getEntity()).isCreative();
 
         if (flag || getDamage() > 120) {
           ejectPassengers();
 
-          if (flag && !hasCustomName())
+          if (flag && !hasCustomName()) {
             this.remove();
-          else
+          } else {
             this.destroy(source);
+          }
         }
 
         return true;
       }
-    else
+    } else {
       return true;
+    }
   }
 
   private void setYaw() {
@@ -409,8 +414,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
         // System.out.println("Yaw = " + MathHelper.floor_double(this.yRot));
 
         RailShape dir = RailShape.NORTH_SOUTH;
-        if (getFacing() == Direction.WEST || getFacing() == Direction.EAST)
+        if (getFacing() == Direction.WEST || getFacing() == Direction.EAST) {
           dir = RailShape.EAST_WEST;
+        }
 
         if (getDelay() == 0) {
           float offset = 1.5f;
@@ -418,9 +424,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
           if (placeBallast) {
             boolean placed = placeBallast(targetPos);
-            if (placed)
+            if (placed) {
               setDelay(STANDARD_DELAY);
-            else {
+            } else {
               setDelay(FAIL_DELAY);
               setActive(false);
             }
@@ -438,9 +444,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
           if (placeRail) {
             boolean placed = placeTrack(targetPos, existingState, dir);
-            if (placed)
+            if (placed) {
               setDelay(STANDARD_DELAY);
-            else {
+            } else {
               setDelay(FAIL_DELAY);
               setActive(false);
             }
@@ -466,9 +472,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
           if (boreLayer) {
             boolean bored = boreLayer(targetPos, dir);
-            if (bored)
+            if (bored) {
               setDelay(LAYER_DELAY);
-            else {
+            } else {
               setDelay(FAIL_DELAY);
               setActive(false);
             }
@@ -478,8 +484,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
             setActive(false);
           } else {
             setDelay((int) Math.ceil(getLayerHardness(targetPos, dir)));
-            if (getDelay() != 0)
+            if (getDelay() != 0) {
               boreLayer = true;
+            }
           }
         }
       }
@@ -487,11 +494,12 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
       if (isMinecartPowered()) {
         Vector3d headPos = getPositionAhead(3.3);
         double size = 0.8;
-        AxisAlignedBB entitySearchBox = AABBFactory.start().setBoundsToPoint(headPos)
-            .expandHorizontally(size).raiseCeiling(2).build();
-        List<LivingEntity> entities = EntitySearcher.findLiving()
-            .and(RCEntitySelectors.KILLABLE).around(entitySearchBox)
-            .in(this.level);
+        AxisAlignedBB entitySearchBox = AABBFactory.start()
+            .setBoundsToPoint(headPos)
+            .expandHorizontally(size)
+            .raiseCeiling(2).build();
+        List<LivingEntity> entities = EntitySearcher.findLiving().and(RCEntitySelectors.KILLABLE)
+            .around(entitySearchBox).in(this.level);
         entities.forEach(e -> e.hurt(RailcraftDamageSource.BORE, 2));
 
         ItemStack head = getItem(0);
@@ -502,8 +510,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
       setMoving(hasFuel() && getDelay() == 0);
 
-      if (getDelay() > 0)
+      if (getDelay() > 0) {
         setDelay(getDelay() - 1);
+      }
     }
 
     Vector3d motion = this.getDeltaMovement();
@@ -517,8 +526,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
     emitParticles();
 
-    if (isMinecartPowered())
+    if (isMinecartPowered()) {
       boreRotationAngle += 5;
+    }
   }
 
   @Override
@@ -528,11 +538,13 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
   private void updateFuel() {
     if (!this.level.isClientSide()) {
-      if (isMinecartPowered())
+      if (isMinecartPowered()) {
         spendFuel();
+      }
       stockFuel();
-      if (outOfFuel())
+      if (outOfFuel()) {
         addFuel();
+      }
       setMinecartPowered(hasFuel() && isActive());
     }
   }
@@ -541,15 +553,17 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
     double x = this.getX();
     double z = this.getZ();
 
-    if (getFacing() == Direction.EAST)
+    if (getFacing() == Direction.EAST) {
       x += offset;
-    else if (getFacing() == Direction.WEST)
+    } else if (getFacing() == Direction.WEST) {
       x -= offset;
+    }
 
-    if (getFacing() == Direction.NORTH)
+    if (getFacing() == Direction.NORTH) {
       z -= offset;
-    else if (getFacing() == Direction.SOUTH)
+    } else if (getFacing() == Direction.SOUTH) {
       z += offset;
+    }
 
     return new Vector3d(x, this.getY(), z);
   }
@@ -647,32 +661,34 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
       }
 
       if (this.random.nextInt(4) == 0) {
-        this.level.addParticle(ParticleTypes.LARGE_SMOKE, smokeX1, this.getY() + smokeYOffset,
-            smokeZ1, 0.0D, 0.0D, 0.0D);
+        this.level.addParticle(ParticleTypes.LARGE_SMOKE,
+            smokeX1, this.getY() + smokeYOffset, smokeZ1,
+            0.0D, 0.0D, 0.0D);
         this.level.addParticle(ParticleTypes.FLAME, flameX1,
-            this.getY() + flameYOffset + (this.random.nextGaussian() * randomFactor), flameZ1, 0.0D,
-            0.0D, 0.0D);
+            this.getY() + flameYOffset + (this.random.nextGaussian() * randomFactor), flameZ1,
+            0.0D, 0.0D, 0.0D);
       }
       if (this.random.nextInt(4) == 0) {
-        this.level.addParticle(ParticleTypes.LARGE_SMOKE, smokeX2, this.getY() + smokeYOffset,
-            smokeZ2, 0.0D, 0.0D, 0.0D);
+        this.level.addParticle(ParticleTypes.LARGE_SMOKE,
+            smokeX2, this.getY() + smokeYOffset, smokeZ2,
+            0.0D, 0.0D, 0.0D);
         this.level.addParticle(ParticleTypes.FLAME, flameX2,
-            this.getY() + flameYOffset + (this.random.nextGaussian() * randomFactor), flameZ2, 0.0D,
-            0.0D, 0.0D);
+            this.getY() + flameYOffset + (this.random.nextGaussian() * randomFactor), flameZ2,
+            0.0D, 0.0D, 0.0D);
       }
     }
   }
 
   protected void stockBallast() {
-    ItemStack stack =
-        CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(invBallast));
-    if (!stack.isEmpty())
+    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(invBallast));
+    if (!stack.isEmpty()) {
       invBallast.addStack(stack);
+    }
   }
 
   @SuppressWarnings("deprecation")
   protected boolean placeBallast(BlockPos targetPos) {
-    if (!Block.canSupportRigidBlock(this.level, targetPos))
+    if (!Block.canSupportRigidBlock(this.level, targetPos)) {
       for (IExtInvSlot slot : InventoryIterator.get(invBallast)) {
         ItemStack stack = slot.getStack();
         if (!stack.isEmpty() && BallastRegistry.isItemBallast(stack)) {
@@ -689,49 +705,50 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
               }
             } else {
               BlockState state = this.level.getBlockState(searchPos);
-              if (!state.isAir(this.level, searchPos)
-                  && !state.getMaterial().isLiquid()) {
+              if (!state.isAir(this.level, searchPos) && !state.getMaterial().isLiquid()) {
                 // Break other blocks first
                 LevelUtil.playerRemoveBlock(this.level, searchPos.immutable(),
                     CartTools.getFakePlayer(this),
                     this.level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
-                        && !RailcraftConfig.SERVER.boreDestorysBlocks.get());
+                        && !RailcraftConfig.server.boreDestorysBlocks.get());
               }
             }
           }
           return false;
         }
       }
+    }
     return false;
   }
 
   protected void stockTracks() {
     ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(invRails));
-    if (!stack.isEmpty())
+    if (!stack.isEmpty()) {
       invRails.addStack(stack);
+    }
   }
 
   @SuppressWarnings("deprecation")
-  protected boolean placeTrack(BlockPos targetPos, BlockState oldState,
-      RailShape shape) {
+  protected boolean placeTrack(BlockPos targetPos, BlockState oldState, RailShape shape) {
     PlayerEntity owner = CartTools.getFakePlayer(this);
 
-    if (replaceableBlocks.contains(oldState.getBlock()))
+    if (replaceableBlocks.contains(oldState.getBlock())) {
       LevelUtil.destroyBlock(this.level, targetPos, owner, true);
+    }
 
     if (oldState.isAir(this.level, targetPos)
-        && Block.canSupportRigidBlock(this.level, targetPos.below()))
+        && Block.canSupportRigidBlock(this.level, targetPos.below())) {
       for (IInvSlot slot : InventoryIterator.get(invRails)) {
         ItemStack stack = slot.getStack();
         if (!stack.isEmpty()) {
-          boolean placed = TrackUtil.placeRailAt(
-              stack, (ServerWorld) this.level, targetPos, shape);
+          boolean placed = TrackUtil.placeRailAt(stack, (ServerWorld) this.level, targetPos, shape);
           if (placed) {
             slot.decreaseStack();
           }
           return placed;
         }
       }
+    }
     return false;
   }
 
@@ -752,16 +769,16 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
     for (BlockPos blockPos : BlockPos.betweenClosed(xStart, y, zStart, xEnd, y + 3, zEnd)) {
       Fluid fluid = this.level.getFluidState(blockPos).getType();
-      if (fluid == Fluids.LAVA || fluid == Fluids.FLOWING_LAVA)
+      if (fluid == Fluids.LAVA || fluid == Fluids.FLOWING_LAVA) {
         return true;
+      }
     }
 
     return false;
   }
 
-  private <T> T layerAction(BlockPos targetPos, RailShape trackShape,
-      T initialValue, BiFunction<BlockPos, RailShape, T> action,
-      BiFunction<T, T, T> sum) {
+  private <T> T layerAction(BlockPos targetPos, RailShape trackShape, T initialValue,
+      BiFunction<BlockPos, RailShape, T> action, BiFunction<T, T, T> sum) {
     T returnValue = initialValue;
 
     int x = targetPos.getX();
@@ -771,20 +788,22 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
       returnValue = sum.apply(returnValue, action.apply(new BlockPos(x, jj, z), trackShape));
     }
 
-    if (trackShape == RailShape.NORTH_SOUTH)
+    if (trackShape == RailShape.NORTH_SOUTH) {
       x--;
-    else
+    } else {
       z--;
+    }
     for (int jj = y; jj < y + 3; jj++) {
       returnValue = sum.apply(returnValue, action.apply(new BlockPos(x, jj, z), trackShape));
     }
 
     x = targetPos.getX();
     z = targetPos.getZ();
-    if (trackShape == RailShape.NORTH_SOUTH)
+    if (trackShape == RailShape.NORTH_SOUTH) {
       x++;
-    else
+    } else {
       z++;
+    }
     for (int jj = y; jj < y + 3; jj++) {
       returnValue = sum.apply(returnValue, action.apply(new BlockPos(x, jj, z), trackShape));
     }
@@ -796,28 +815,33 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
   }
 
   /**
+   * Mines the block forward, returns true if it's clear. Now 1.17 compliant!
    * @return true if the target block is clear
    */
-  @SuppressWarnings("deprecation")
   protected boolean mineBlock(BlockPos targetPos, RailShape preferredShape) {
-    if (this.level.getBlockState(targetPos).isAir(this.level, targetPos))
-      return true;
-
     BlockState targetState = this.level.getBlockState(targetPos);
+    if (targetState.getBlock().isAir(targetState, this.level, targetPos)) {
+      return true;
+    }
+
     if (AbstractRailBlock.isRail(targetState)) {
       RailShape targetShape =
           TrackTools.getTrackDirection(this.level, targetPos, targetState, this);
-      if (preferredShape == targetShape)
+      if (preferredShape == targetShape) {
         return true;
-    } else if (targetState.getBlock() == Blocks.TORCH)
+      }
+    } else if (targetState.getBlock() == Blocks.TORCH) {
       return true;
+    }
 
     ItemStack head = getItem(0);
-    if (head.isEmpty())
+    if (head.isEmpty()) {
       return false;
+    }
 
-    if (!canMineBlock(targetPos, targetState))
+    if (!canMineBlock(targetPos, targetState)) {
       return false;
+    }
 
     ServerPlayerEntity fakePlayer = CartTools.getFakePlayerWith(this, head);
 
@@ -826,24 +850,29 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
         new BlockEvent.BreakEvent(this.level, targetPos, targetState, fakePlayer);
     MinecraftForge.EVENT_BUS.post(breakEvent);
 
-    if (breakEvent.isCanceled())
+    if (breakEvent.isCanceled()) {
       return false;
+    }
 
-    if (!RailcraftConfig.SERVER.boreDestorysBlocks.get()
+    if (!RailcraftConfig.server.boreDestorysBlocks.get()
         && this.level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
-      targetState.getDrops(new LootContext.Builder((ServerWorld) this.level)
-          .withParameter(LootParameters.TOOL, head)
-          .withParameter(LootParameters.KILLER_ENTITY, this)
-          .withParameter(LootParameters.ORIGIN, this.position()))
+      targetState
+          .getDrops(new LootContext.Builder((ServerWorld) this.level)
+              .withParameter(LootParameters.TOOL, head)
+              .withParameter(LootParameters.KILLER_ENTITY, this)
+              .withParameter(LootParameters.ORIGIN, this.position()))
           .forEach(stack -> {
-            if (StackFilters.FUEL.test(stack))
+            if (StackFilters.FUEL.test(stack)) {
               stack = invFuel.addStack(stack);
+            }
 
-            if (!stack.isEmpty() && InvTools.isStackEqualToBlock(stack, Blocks.GRAVEL))
+            if (!stack.isEmpty() && InvTools.isStackEqualToBlock(stack, Blocks.GRAVEL)) {
               stack = invBallast.addStack(stack);
+            }
 
-            if (!stack.isEmpty())
+            if (!stack.isEmpty()) {
               stack = CartUtil.transferHelper().pushStack(this, stack);
+            }
 
             if (!stack.isEmpty()) {
               Block.popResource(this.level, this.blockPosition(), stack);
@@ -853,16 +882,18 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
     LevelUtil.setAir(this.level, targetPos);
 
-    if (head.hurt(1, this.random, fakePlayer))
+    if (head.hurt(1, this.random, fakePlayer)) {
       this.setItem(0, ItemStack.EMPTY);
+    }
 
     return true;
   }
 
   private boolean canMineBlock(BlockPos targetPos, BlockState existingState) {
     ItemStack head = getItem(0);
-    if (existingState.getDestroySpeed(this.level, targetPos) < 0)
+    if (existingState.getDestroySpeed(this.level, targetPos) < 0) {
       return false;
+    }
     return isMineableBlock(existingState) && canHeadHarvestBlock(head, existingState);
   }
 
@@ -879,36 +910,41 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
       hardness /= (e * e * 0.2d + 1);
     }
 
-    hardness /= RailcraftConfig.SERVER.boreMininigSpeedMultiplier.get();
+    hardness /= RailcraftConfig.server.boreMininigSpeedMultiplier.get();
 
     return hardness;
   }
 
   @SuppressWarnings("deprecation")
   protected float getBlockHardness(BlockPos pos, RailShape dir) {
-    if (this.level.getBlockState(pos).isAir(this.level, pos))
+    if (this.level.getBlockState(pos).isAir(this.level, pos)) {
       return 0;
+    }
 
     BlockState blockState = this.level.getBlockState(pos);
     if (AbstractRailBlock.isRail(blockState)) {
-      RailShape trackMeta =
-          TrackTools.getTrackDirection(this.level, pos, blockState, this);
-      if (dir == trackMeta)
+      RailShape trackMeta = TrackTools.getTrackDirection(this.level, pos, blockState, this);
+      if (dir == trackMeta) {
         return 0;
+      }
     }
 
-    if (blockState.getBlock() == Blocks.TORCH)
+    if (blockState.getBlock() == Blocks.TORCH) {
       return 0;
+    }
 
-    if (blockState.getBlock() == Blocks.OBSIDIAN)
+    if (blockState.getBlock() == Blocks.OBSIDIAN) {
       return 15;
+    }
 
-    if (!canMineBlock(pos, blockState))
+    if (!canMineBlock(pos, blockState)) {
       return 0.1f;
+    }
 
     float hardness = blockState.getDestroySpeed(this.level, pos);
-    if (hardness <= 0)
+    if (hardness <= 0) {
       hardness = 0.1f;
+    }
     return hardness;
   }
 
@@ -1002,8 +1038,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
   protected void stockFuel() {
     ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(invFuel));
-    if (!stack.isEmpty())
+    if (!stack.isEmpty()) {
       invFuel.addStack(stack);
+    }
   }
 
   protected void addFuel() {
@@ -1013,10 +1050,11 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
       if (!stack.isEmpty()) {
         burn = FuelUtil.getBurnTime(stack);
         if (burn > 0) {
-          if (stack.getItem().hasContainerItem(stack))
+          if (stack.getItem().hasContainerItem(stack)) {
             invFuel.setItem(slot, stack.getItem().getContainerItem(stack));
-          else
+          } else {
             invFuel.removeItem(slot, 1);
+          }
           break;
         }
       }
@@ -1029,8 +1067,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
   public int getBurnProgressScaled(int i) {
     int burn = getBurnTime();
-    if (burn == 0)
+    if (burn == 0) {
       return 0;
+    }
 
     return getFuel() * i / burn;
   }
@@ -1041,22 +1080,25 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
   protected void forceUpdateBoreHead() {
     ItemStack boreStack = getItem(0);
-    if (!boreStack.isEmpty())
+    if (!boreStack.isEmpty()) {
       boreStack = boreStack.copy();
+    }
     entityData.set(BORE_HEAD, boreStack);
   }
 
   public @Nullable IBoreHead getBoreHead() {
     ItemStack boreStack = entityData.get(BORE_HEAD);
-    if (boreStack.getItem() instanceof IBoreHead)
+    if (boreStack.getItem() instanceof IBoreHead) {
       return (IBoreHead) boreStack.getItem();
+    }
     return null;
   }
 
   @Override
   protected void applyNaturalSlowdown() {
-    this.setDeltaMovement(this.getDeltaMovement().multiply(CartConstants.STANDARD_DRAG, 0.0D,
-        CartConstants.STANDARD_DRAG));
+    this.setDeltaMovement(
+        this.getDeltaMovement()
+            .multiply(CartConstants.STANDARD_DRAG, 0.0D, CartConstants.STANDARD_DRAG));
   }
 
   @Override
@@ -1066,8 +1108,9 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
   @Override
   public void setChanged() {
-    if (!isActive())
+    if (!isActive()) {
       setDelay(STANDARD_DELAY);
+    }
   }
 
   public final Direction getFacing() {
@@ -1135,7 +1178,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
   }
 
   @Override
-  protected Container createMenu(int p_213968_1_, PlayerInventory p_213968_2_) {
+  protected Container createMenu(int containerProvider, PlayerInventory playerInventory) {
     return null;
   }
 }

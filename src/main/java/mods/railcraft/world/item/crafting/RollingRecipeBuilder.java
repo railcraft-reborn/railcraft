@@ -1,17 +1,17 @@
 package mods.railcraft.world.item.crafting;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.Item;
@@ -23,6 +23,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class RollingRecipeBuilder {
+
   private final Item result;
   private final int count;
   private final int delay;
@@ -43,7 +44,8 @@ public class RollingRecipeBuilder {
     return rolled(resultItem, resultCount, 100);
   }
 
-  public static RollingRecipeBuilder rolled(IItemProvider resultItem, int resultCount, int recipieDelay) {
+  public static RollingRecipeBuilder rolled(IItemProvider resultItem,
+      int resultCount, int recipieDelay) {
     return new RollingRecipeBuilder(resultItem, resultCount, recipieDelay);
   }
 
@@ -59,7 +61,8 @@ public class RollingRecipeBuilder {
     if (this.key.containsKey(key)) {
       throw new IllegalArgumentException("Symbol '" + key + "' is already defined!");
     } else if (key == ' ') {
-      throw new IllegalArgumentException("Symbol ' ' (whitespace) is reserved and cannot be defined");
+      throw new IllegalArgumentException(
+        "Symbol ' ' (whitespace) is reserved and cannot be defined");
     } else {
       this.key.put(key, itemValue);
       return this;
@@ -82,14 +85,17 @@ public class RollingRecipeBuilder {
   public void save(Consumer<IFinishedRecipe> finishedRecipie, String key) {
     ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
     if ((new ResourceLocation(key)).equals(resourcelocation)) {
-      throw new IllegalStateException("Shaped Recipe " + key + " should remove its 'save' argument");
+      throw new IllegalStateException("Shaped Recipe "
+        + key + " should remove its 'save' argument");
     } else {
       this.save(finishedRecipie, new ResourceLocation(key));
     }
   }
 
   public void save(Consumer<IFinishedRecipe> finishedRecipie, ResourceLocation resourceLocation) {
-    finishedRecipie.accept(new RollingRecipeBuilder.Result(resourceLocation, this.result, this.count, this.delay, this.rows, this.key));
+    finishedRecipie.accept(
+        new RollingRecipeBuilder.Result(resourceLocation, this.result, this.count,
+          this.delay, this.rows, this.key));
   }
   public class Result implements IFinishedRecipe {
     private final ResourceLocation id;
@@ -100,7 +106,7 @@ public class RollingRecipeBuilder {
     private final Map<Character, Ingredient> key;
 
     public Result(ResourceLocation resourceLocation, Item resultItem, int resultCount,
-      int recipieDelay, List<String> recipiePattern, Map<Character, Ingredient> ingredientMap) {
+        int recipieDelay, List<String> recipiePattern, Map<Character, Ingredient> ingredientMap) {
       this.id = resourceLocation;
       this.resultItem = resultItem;
       this.count = resultCount;
@@ -112,14 +118,14 @@ public class RollingRecipeBuilder {
     public void serializeRecipeData(JsonObject jsonOut) {
       JsonArray jsonarray = new JsonArray();
 
-      for(String s : this.pattern) {
+      for (String s : this.pattern) {
         jsonarray.add(s);
       }
 
       jsonOut.add("pattern", jsonarray);
       JsonObject jsonobject = new JsonObject();
 
-      for(Entry<Character, Ingredient> entry : this.key.entrySet()) {
+      for (Entry<Character, Ingredient> entry : this.key.entrySet()) {
         jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
       }
 

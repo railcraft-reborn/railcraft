@@ -1,21 +1,50 @@
 package mods.railcraft;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.common.collect.Lists;
 
-import org.apache.commons.lang3.tuple.Pair;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.Builder;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.common.ForgeConfigSpec.Builder;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 public class RailcraftConfig {
+
+  public static final ForgeConfigSpec clientSpec;
+  public static final Client client;
+  public static final ForgeConfigSpec commonSpec;
+  public static final Common common;
+  public static final ForgeConfigSpec serverSpec;
+  public static final Server server;
+
+  static {
+    final Pair<Client, ForgeConfigSpec> specPair =
+        new ForgeConfigSpec.Builder().configure(Client::new);
+    clientSpec = specPair.getRight();
+    client = specPair.getLeft();
+  }
+
+  static {
+    final Pair<Common, ForgeConfigSpec> specPair =
+        new ForgeConfigSpec.Builder().configure(Common::new);
+    commonSpec = specPair.getRight();
+    common = specPair.getLeft();
+  }
+
+  static {
+    final Pair<Server, ForgeConfigSpec> specPair =
+        new ForgeConfigSpec.Builder().configure(Server::new);
+    serverSpec = specPair.getRight();
+    server = specPair.getLeft();
+  }
+
   public static class Server {
     public final DoubleValue highSpeedTrackMaxSpeed;
     public final ConfigValue<List<? extends String>> highSpeedTrackIgnoredEntities;
@@ -41,24 +70,26 @@ public class RailcraftConfig {
         .push("highSpeedTrack");
 
       this.highSpeedTrackMaxSpeed = builder
-        .comment("Change to limit max speed on high speed rails, useful if your computer can't keep up with chunk loading\niron tracks operate at 0.4 blocks per tick")
+        .comment("Change to limit max speed on high speed rails, useful if your computer can't"
+            + "keep up with chunk loading\niron tracks operate at 0.4 blocks per tick")
         // .translation("forge.configgui.fullBoundingBoxLadders")
         .defineInRange("maxSpeed", 1.0D, 0.6D, 1.2D);
 
       final List<String> defaultEntities = Lists.newArrayList(
-        "minecraft:bat", "minecraft:blaze", "minecraft:cave_spider",
-        "minecraft:chicken", "minecraft:parrot", "minecraft:rabbit",
-        "minecraft:spider", "minecraft:vex", "minecraft:bee");
+          "minecraft:bat", "minecraft:blaze", "minecraft:cave_spider",
+          "minecraft:chicken", "minecraft:parrot", "minecraft:rabbit",
+          "minecraft:spider", "minecraft:vex", "minecraft:bee");
 
       this.highSpeedTrackIgnoredEntities = builder
         .comment("Add entity names to exclude them from explosions caused by high speed collisions")
         .defineList("ignoredEntities", defaultEntities,
-        obj -> ResourceLocation.isValidResourceLocation(obj.toString()));
+          obj -> ResourceLocation.isValidResourceLocation(obj.toString()));
 
       builder.pop();
 
       this.strapIronTrackMaxSpeed = builder
-        .comment("Change to limit max speed on strap iron rails. Vanilla iron rails goes as fast as 0.4D/tick")
+        .comment("Change to limit max speed on strap iron rails."
+          + "Vanilla iron rails goes as fast as 0.4D/tick")
         .defineInRange("maxSpeed", 0.12D, 0.1D, 0.3D);
 
       this.chestAllowFluids = builder
@@ -68,7 +99,7 @@ public class RailcraftConfig {
       this.cargoBlacklist = builder
         .comment("Lits of items that the cargo loader will ignore")
         .defineList("cargoBlacklist", ArrayList::new,
-        obj -> ResourceLocation.isValidResourceLocation(obj.toString()));
+          obj -> ResourceLocation.isValidResourceLocation(obj.toString()));
 
       this.locomotiveDamageMobs = builder
         .comment(
@@ -81,9 +112,9 @@ public class RailcraftConfig {
         .defineInRange("horsepower", 15.0D, 15.0D, 45.0D);
 
       this.solidCarts = builder
-        .comment("Change to false to return minecarts to vanilla player vs cart collision behavior\n"
-        + "In vanilla minecarts are ghost-like can be walked through\n"
-        + "but making carts solid also makes them harder to push by hand\n")
+        .comment("Change to false to return minecarts to vanilla player vs cart"
+          + "collision behavior\n In vanilla minecarts are ghost-like can be walked through\n"
+          + "but making carts solid also makes them harder to push by hand\n")
         .define("solidCarts", true);
 
       this.cartsCollideWithItems = builder
@@ -95,11 +126,13 @@ public class RailcraftConfig {
         .defineInRange("boreMininigSpeedMultiplier", 1.0D, 0.1D, 50.0D);
 
       this.boreDestorysBlocks = builder
-        .comment("Change to true to cause the Bore to destroy the blocks it mines instead of dropping them")
+        .comment("Change to true to cause the Bore to destroy the blocks it"
+          + "mines instead of dropping them")
         .define("boreDestorysBlocks", false);
 
       this.boreMinesAllBlocks = builder
-        .comment("Change to false to enable mining checks, use true setting with caution, especially on servers")
+        .comment("Change to false to enable mining checks, use true setting"
+          + "with caution, especially on servers")
         .define("boreMinesAllBlocks", true);
 
       this.cartsBreakOnDrop = builder
@@ -165,34 +198,13 @@ public class RailcraftConfig {
         .define("enablePolarExpress", true);
 
       this.locomotiveLightLevel = builder
-        .comment("Change '14' to a number ranging from '0' to '15' to represent the dynamic lighting of the locomotive when Dynamic Lights mod is present.\nIf it is '0' then locomotive lightning will be disabled.")
+        .comment("Change '14' to a number ranging from '0' to '15' to represent the dynamic"
+            + "lighting of the locomotive when Dynamic Lights mod is present.\nIf it is '0'"
+            + "then locomotive lightning will be disabled.")
         .defineInRange("locomotiveLightLevel", 14, 0, 15);
 
       builder.pop();
     }
   }
 
-  public static final ForgeConfigSpec clientSpec;
-  public static final Client CLIENT;
-  static {
-      final Pair<Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Client::new);
-      clientSpec = specPair.getRight();
-      CLIENT = specPair.getLeft();
-  }
-
-  public static final ForgeConfigSpec commonSpec;
-  public static final Common COMMON;
-  static {
-      final Pair<Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Common::new);
-      commonSpec = specPair.getRight();
-      COMMON = specPair.getLeft();
-  }
-
-  public static final ForgeConfigSpec serverSpec;
-  public static final Server SERVER;
-  static {
-      final Pair<Server, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Server::new);
-      serverSpec = specPair.getRight();
-      SERVER = specPair.getLeft();
-  }
 }

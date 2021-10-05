@@ -35,7 +35,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar (http://www.railcraft.info)
  */
 public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     implements IFluidCart, IBoilerContainer {
@@ -86,7 +86,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     this.getTankManager().add(this.steamTank);
 
     this.boiler = new SteamBoiler(this.waterTank, this.steamTank)
-        .setEfficiencyModifier(RailcraftConfig.SERVER.fuelPerSteamMultiplier.get())
+        .setEfficiencyModifier(RailcraftConfig.server.fuelPerSteamMultiplier.get())
         .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
   }
 
@@ -99,7 +99,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     this.getTankManager().add(this.steamTank);
 
     this.boiler = new SteamBoiler(this.waterTank, this.steamTank)
-        .setEfficiencyModifier(RailcraftConfig.SERVER.fuelPerSteamMultiplier.get())
+        .setEfficiencyModifier(RailcraftConfig.server.fuelPerSteamMultiplier.get())
         .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
   }
 
@@ -139,8 +139,9 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     if (!this.level.isClientSide()) {
       this.update++;
 
-      if (this.waterTank.isEmpty())
+      if (this.waterTank.isEmpty()) {
         this.setMode(Mode.SHUTDOWN);
+      }
       this.setSteaming(this.steamTank.getFluidAmount() > 0);
 
       if (this.steamTank.getRemainingSpace() >= SteamConstants.STEAM_PER_UNIT_WATER
@@ -149,14 +150,17 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
 
         this.setSmoking(this.boiler.isBurning());
 
-        // TODO: make venting a toggleable thing (why autodump while train has no coal??)
-        if (!this.boiler.isBurning())
+        // TODO: make venting a toggleable thing (why autodump while train has no
+        // coal??)
+        if (!this.boiler.isBurning()) {
           this.ventSteam();
+        }
       }
 
-      if ((this.update % FluidTools.BUCKET_FILL_TIME) == 0)
-        this.processState = FluidTools.processContainer(this.invWaterContainers, this.waterTank,
-            ProcessType.DRAIN_ONLY, this.processState);
+      if ((this.update % FluidTools.BUCKET_FILL_TIME) == 0) {
+        this.processState = FluidTools.processContainer(this.invWaterContainers,
+            this.waterTank, ProcessType.DRAIN_ONLY, this.processState);
+      }
       return;
     }
     // future information: renderYaw FACES at -x when at 0deg
@@ -173,16 +177,16 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
       float offset = 0.5f;
       double ninetyDeg = Math.toRadians(90) + Math.toRadians(random.nextInt(10)); // 10* bias
       double steamAngularSpeed = 0.01;
-      double yCoordinate = this.getY() + 0.15;
+      double ycoord = this.getY() + 0.15;
       // right
       ClientEffects.INSTANCE.steamEffect(
-          this.getX() - Math.cos(rads + ninetyDeg) * offset, yCoordinate,
+          this.getX() - Math.cos(rads + ninetyDeg) * offset, ycoord,
           this.getZ() - Math.sin(rads + ninetyDeg) * offset,
           steamAngularSpeed * Math.cos(rads - ninetyDeg),
           steamAngularSpeed * Math.sin(rads - ninetyDeg));
       // left
       ClientEffects.INSTANCE.steamEffect(
-          this.getX() - Math.cos(rads + -ninetyDeg) * offset, yCoordinate,
+          this.getX() - Math.cos(rads + -ninetyDeg) * offset, ycoord,
           this.getZ() - Math.sin(rads + -ninetyDeg) * offset,
           steamAngularSpeed * Math.cos(rads + ninetyDeg),
           steamAngularSpeed * Math.sin(rads + ninetyDeg));
