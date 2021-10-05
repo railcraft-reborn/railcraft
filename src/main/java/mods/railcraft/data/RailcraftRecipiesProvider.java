@@ -171,7 +171,7 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
 
     this.railsFromMaterials(finishedRecipie, RailcraftItems.STRAP_IRON_FLEX_TRACK.get(),
       RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    this.railsFromMaterials(finishedRecipie,Items.RAIL,
+    this.railsFromMaterials(finishedRecipie, Items.RAIL,
       RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
     this.railsFromMaterials(finishedRecipie, RailcraftItems.REINFORCED_FLEX_TRACK.get(),
       RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
@@ -196,6 +196,16 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
     this.decompress(finishedRecipie, RailcraftItems.ZINC_NUGGET.get(), RailcraftTags.Items.ZINC_INGOT);
     this.decompress(finishedRecipie, RailcraftItems.BRASS_NUGGET.get(), RailcraftTags.Items.BRASS_INGOT);
     this.decompress(finishedRecipie, RailcraftItems.BRONZE_NUGGET.get(), RailcraftTags.Items.BRONZE_INGOT);
+
+    // delete vanilla rail recipie
+    ShapedRecipeBuilder.shaped(Items.AIR)
+      .define('I', Tags.Items.INGOTS_IRON)
+      .define('S', Items.STICK)
+      .pattern("S S")
+      .pattern("SIS")
+      .pattern("S S")
+      .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+      .save(finishedRecipie, "norails");
   }
 
   private final void crowbarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, ITag<Item> materialTag) {

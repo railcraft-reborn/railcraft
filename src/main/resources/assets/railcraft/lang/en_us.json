@@ -89,6 +89,21 @@
     "item.railcraft.receiver_circuit": "Receiver Circuit",
     "item.railcraft.signal_circuit": "Signal Circuit",
 
+    "item.railcraft.wooden_tie": "Wooden Tie",
+    "item.railcraft.stone_tie": "Stone Tie",
+    "item.railcraft.wooden_railbed": "Wooden Railbed",
+    "item.railcraft.stone_railbed": "Stone Railbed",
+    "item.railcraft.rebar": "Rebar",
+
+    "item.railcraft.wooden_rail": "Wooden Rail",
+    "item.railcraft.standard_rail": "Standard Rail",
+    "item.railcraft.advanced_rail": "Advanced Rail",
+    "item.railcraft.reinforced_rail": "Reinforced Rail",
+    "item.railcraft.high_speed_rail": "High Speed Rail",
+    "item.railcraft.electric_rail": "Electric Rail",
+
+    "item.railcraft.creosote_bucket": "Creosote Bucket",
+
     "__DESC.misc": "======= Misc GUI/tooltip =======",
 
     "gui.railcraft.routing.ticket.tips.issuer":"Issuer:",
@@ -147,9 +162,6 @@
 
     "container.manual_rolling_machine": "Manual Rolling Machine",
 
-    "gui.railcraft.filter": "Filter",
-
-    "itemGroup.railcraft": "Railcraft",
 
     "signal_aspect.green": "Green",
     "signal_aspect.blink_yellow": "Blink Yellow",
@@ -163,5 +175,10 @@
     "signal_capacitor_box.mode.falling_edge": "Falling Edge",
     "signal_capacitor_box.mode.falling_edge.description": "Start timer when the last input signal turns off.",
 
-    "fluid.railcraft.steam": "Steam"
+    "gui.railcraft.filter": "Filter",
+
+    "itemGroup.railcraft": "Railcraft",
+
+    "fluid.railcraft.steam": "Steam",
+    "fluid.railcraft.creosote": "Creosote"
 }

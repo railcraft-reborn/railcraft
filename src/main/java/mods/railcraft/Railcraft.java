@@ -5,6 +5,7 @@ import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.ForgeItemTagsProvider;
+import mods.railcraft.data.RailcraftBlockStateProvider;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.RailcraftRecipiesProvider;
