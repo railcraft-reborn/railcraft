@@ -14,7 +14,7 @@ import com.mojang.authlib.GameProfile;
  * change the ticket on the fly. Be warned, security is the responsibility of
  * the addon.
  *
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public interface RoutingTrack {
 

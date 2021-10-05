@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
  * inventory. Used primarily to map a side of an ISidedInventory, but it is also helpful for complex
  * inventories such as the Tunnel Bore.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class InventoryMapper extends InvWrapperBase {
 

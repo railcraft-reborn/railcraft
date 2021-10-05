@@ -15,7 +15,7 @@ import net.minecraftforge.common.util.INBTSerializable;
  *
  * Created by CovertJaguar on 5/13/2017 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface Battery extends INBTSerializable<CompoundNBT> {
 

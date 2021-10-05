@@ -20,7 +20,7 @@ import net.minecraftforge.common.util.Constants;
 /**
  * Created by CovertJaguar on 7/26/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class TokenRingManager extends WorldSavedData {
 

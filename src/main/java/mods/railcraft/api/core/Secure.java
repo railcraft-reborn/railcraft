@@ -4,7 +4,7 @@ import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.gui.button.MultiButtonController;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public interface Secure<T extends ButtonState> extends Ownable {
 

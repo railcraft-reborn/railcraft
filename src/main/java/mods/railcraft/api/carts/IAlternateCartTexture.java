@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
  *
  * <p>This texture is the texture of the cart body.</p>
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface IAlternateCartTexture {
 

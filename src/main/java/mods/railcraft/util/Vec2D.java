@@ -11,7 +11,7 @@ import net.minecraft.util.math.vector.Vector3i;
  * For historical purposes, I borrowed this class from NovaStar, a simple 2D space shooter project I
  * wrote in college.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class Vec2D {
 

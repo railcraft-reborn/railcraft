@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public class SolidFuelProvider implements FuelProvider {
 

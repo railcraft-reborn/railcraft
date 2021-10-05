@@ -18,7 +18,7 @@ import net.minecraft.nbt.CompoundNBT;
  *
  * Created by CovertJaguar on 6/7/2017 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface Prototyped {
 

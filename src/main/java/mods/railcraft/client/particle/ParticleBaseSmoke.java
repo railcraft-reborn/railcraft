@@ -4,7 +4,7 @@ import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.world.ClientWorld;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public abstract class ParticleBaseSmoke extends DimmableParticle {
 

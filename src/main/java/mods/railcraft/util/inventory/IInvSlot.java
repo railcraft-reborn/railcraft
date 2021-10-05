@@ -9,7 +9,7 @@ import java.util.function.Predicate;
  * This Interface represents an abstract inventory slot. It provides a unified interface for
  * interfacing with Inventories.
  *
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public interface IInvSlot {
 

@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.track;
 /**
  * Created by CovertJaguar on 8/6/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class TrackConstants {
 

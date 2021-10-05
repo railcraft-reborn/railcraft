@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntityType;
 /**
  * Created by CovertJaguar on 7/13/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public abstract class RailcraftTickableBlockEntity extends RailcraftBlockEntity
     implements ITickableTileEntity {

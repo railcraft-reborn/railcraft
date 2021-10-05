@@ -2,7 +2,7 @@ package mods.railcraft.client.model;
 
 /**
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class SimpleCubeModel extends SimpleTexturedModel {
 

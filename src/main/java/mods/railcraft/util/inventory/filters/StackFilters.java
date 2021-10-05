@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 /**
  * A collection of helper methods for creating {@code Predicate<ItemStack>} objects.
  *
- * @author CovertJaguar (http://www.railcraft.info)
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public enum StackFilters implements Predicate<ItemStack> {
 

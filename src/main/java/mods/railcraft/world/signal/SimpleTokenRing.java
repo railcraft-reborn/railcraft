@@ -26,7 +26,7 @@ import net.minecraft.world.server.ServerWorld;
  * <br>
  * <b> This network is only available on the server! </b>
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class SimpleTokenRing implements TokenRing {
 

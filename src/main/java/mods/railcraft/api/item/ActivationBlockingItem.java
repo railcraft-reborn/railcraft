@@ -9,7 +9,7 @@ package mods.railcraft.api.item;
 import java.lang.annotation.*;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

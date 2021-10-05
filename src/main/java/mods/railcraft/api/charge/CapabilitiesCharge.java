@@ -15,7 +15,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
  *
  * Created by CovertJaguar on 10/4/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class CapabilitiesCharge {
 

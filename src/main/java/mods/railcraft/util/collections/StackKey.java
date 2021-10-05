@@ -1,10 +1,10 @@
 /*------------------------------------------------------------------------------
  Copyright (c) CovertJaguar, 2011-2019
- http://railcraft.info
+ https://railcraft.info
  This code is the property of CovertJaguar
  and may only be used with explicit written
  permission unless otherwise specified on the
- license page at http://railcraft.info/wiki/info:license.
+ license page at https://railcraft.info/wiki/info:license.
  -----------------------------------------------------------------------------*/
 
 package mods.railcraft.util.collections;
@@ -16,7 +16,7 @@ import net.minecraft.nbt.CompoundNBT;
 /**
  * Created by CovertJaguar on 10/28/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class StackKey {
 

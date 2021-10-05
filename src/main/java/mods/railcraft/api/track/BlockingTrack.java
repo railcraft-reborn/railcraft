@@ -10,7 +10,7 @@ package mods.railcraft.api.track;
 /**
  * Use for Gate Tracks
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface BlockingTrack {
 

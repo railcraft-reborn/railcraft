@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.Constants;
 /**
  * Created by CovertJaguar on 6/7/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 @ActivationBlockingItem
 public class PairingToolItem extends Item {

@@ -21,7 +21,7 @@ import net.minecraft.world.World;
  * This immutable class represents a point in the Minecraft world, while taking into account the
  * possibility of coordinates in different dimensions.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class DimensionPos {
 

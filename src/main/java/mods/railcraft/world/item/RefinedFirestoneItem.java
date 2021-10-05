@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public class RefinedFirestoneItem extends FirestoneItem {
 

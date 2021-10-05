@@ -3,7 +3,7 @@ package mods.railcraft.client.model;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class SimpleTexturedModel extends SimpleModel {
 

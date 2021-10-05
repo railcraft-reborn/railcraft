@@ -10,7 +10,7 @@ import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.Ownable;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface BlockSignal
     extends Signal<BlockSignal>, BlockEntityLike, Ownable {

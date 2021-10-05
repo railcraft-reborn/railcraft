@@ -15,7 +15,7 @@ import net.minecraft.util.INameable;
  * Among other uses, when used on a Tile Entity, the Magnifying Glass can be used to inspect the
  * owner.
  *
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public interface Ownable extends INameable {
   /**

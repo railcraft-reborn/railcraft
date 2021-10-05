@@ -35,7 +35,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
- * @author CovertJaguar (http://www.railcraft.info)
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     implements IFluidCart, IBoilerContainer {

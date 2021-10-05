@@ -9,7 +9,7 @@ package mods.railcraft.api.carts;
 
 /**
  *
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public interface IPaintedCart {
 

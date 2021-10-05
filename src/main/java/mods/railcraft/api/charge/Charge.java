@@ -90,7 +90,7 @@ import net.minecraft.world.World;
  *
  * Created by CovertJaguar on 10/19/2018 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public enum Charge {
   /**
@@ -159,7 +159,7 @@ public enum Charge {
   /**
    * Created by CovertJaguar on 10/19/2018 for Railcraft.
    *
-   * @author CovertJaguar <http://www.railcraft.info>
+   * @author CovertJaguar <https://www.railcraft.info>
    */
   public interface Network {
 
@@ -193,7 +193,7 @@ public enum Charge {
   /**
    * Created by CovertJaguar on 11/2/2018 for Railcraft.
    *
-   * @author CovertJaguar <http://www.railcraft.info>
+   * @author CovertJaguar <https://www.railcraft.info>
    */
   public interface IAccess {
     /**

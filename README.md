@@ -16,7 +16,7 @@ The mod was created and is still currently maintained by the user going by the n
 ## Why are you posting the Source Code?
 
 In the words of **CovertJaguar**:
-> As a new modder, I originally feared losing control of my code, my brainchild. However, since that time, I have had the privelege of being Project Lead on two other major Minecraft Mod projects that provided access to the source: [Buildcraft](https://github.com/BuildCraft/BuildCraft) and [Forestry](https://github.com/ForestryMC/ForestryMC). I've generally found this to be a positive experience resulting in many bug fixes and increased intermod compatibility.  While I still have some concerns, I have come to feel that the benefits of providing others access to my source code outweigh the negatives and unknowns. To that end, despite my misgivings, I made Source Access a [Patreon Milestone Goal](http://www.patreon.com/CovertJaguar). I had no idea whether I'd ever meet that Goal, but I decided to let the community decide, and decide they did, overwhelmingly so! My Patrons are awesome. So, as promised, I am posting the Source Code.
+> As a new modder, I originally feared losing control of my code, my brainchild. However, since that time, I have had the privelege of being Project Lead on two other major Minecraft Mod projects that provided access to the source: [Buildcraft](https://github.com/BuildCraft/BuildCraft) and [Forestry](https://github.com/ForestryMC/ForestryMC). I've generally found this to be a positive experience resulting in many bug fixes and increased intermod compatibility.  While I still have some concerns, I have come to feel that the benefits of providing others access to my source code outweigh the negatives and unknowns. To that end, despite my misgivings, I made Source Access a [Patreon Milestone Goal](https://www.patreon.com/CovertJaguar). I had no idea whether I'd ever meet that Goal, but I decided to let the community decide, and decide they did, overwhelmingly so! My Patrons are awesome. So, as promised, I am posting the Source Code.
 
 ## Official Links
 
@@ -24,13 +24,13 @@ In the words of **CovertJaguar**:
 * The Wiki: <https://railcraft.info/wiki>
 * IRC: #railcraft on Esper.net - [WebChat](https://webchat.esper.net/?nick=RailcraftGithub...&channels=railcraft&prompt=1)
 * Discord: [Invite](https://discord.gg/VyaUt2r) - Linked with #railcraft on IRC
-* Patreon Page: [![Patreon](https://www.railcraft.info/wp-content/uploads/2014/05/Patreon.png)](http://www.patreon.com/CovertJaguar)
+* Patreon Page: [![Patreon](https://www.railcraft.info/wp-content/uploads/2014/05/Patreon.png)](https://www.patreon.com/CovertJaguar)
 
 ## Issues
 
 Post only confirmed bugs [here](https://github.com/CovertJaguar/Railcraft/issues). Do not post crash logs, you can post pastebin links to FML logs, but no crash logs.
 
-You must have read and performed the proper support procedure outlined [here](http://railcraft.info/wiki/info:support) before posting.
+You must have read and performed the proper support procedure outlined [here](https://railcraft.info/wiki/info:support) before posting.
 
 More information about issue Labels can be found [here](https://github.com/CovertJaguar/Railcraft/wiki/Issue-Labels).
 

@@ -12,7 +12,7 @@ import net.minecraft.particles.BasicParticleType;
 /**
  * Created by CovertJaguar on 7/31/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class ParticleSpark extends DimmableParticle {
   private static final Random rand = new Random();

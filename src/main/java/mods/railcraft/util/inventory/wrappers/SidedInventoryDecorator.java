@@ -8,7 +8,7 @@ import net.minecraft.util.Direction;
  * Wrapper class used to bake the side variable into the object itself instead of passing it around
  * to all the inventory tools.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class SidedInventoryDecorator extends InvWrapperBase implements ISidedInventory {
 

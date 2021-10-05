@@ -1,5 +1,5 @@
 {
-  "__comment": "Designed by CovertJaguar with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+  "__comment": "Designed by CovertJaguar with BDcraft Cubik PRO 0.96 Beta - https://bdcraft.net",
   "parent": "block/block",
   "textures": {
     "particle": "#texture"

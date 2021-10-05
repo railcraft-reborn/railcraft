@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by CovertJaguar on 5/26/2017 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface Filter {
 

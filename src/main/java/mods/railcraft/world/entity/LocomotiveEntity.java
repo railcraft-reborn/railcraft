@@ -78,7 +78,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * @author CovertJaguar (http://www.railcraft.info)
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     implements IDirectionalCart, ILinkableCart, IMinecart, Secure<LockButtonState>,

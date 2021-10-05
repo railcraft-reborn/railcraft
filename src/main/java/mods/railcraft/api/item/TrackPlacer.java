@@ -28,7 +28,7 @@ import net.minecraft.world.World;
  * <p/>
  * If you defined your rails with a TrackSpec, you don't need to worry about this.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 @ActivationBlockingItem
 public interface TrackPlacer {

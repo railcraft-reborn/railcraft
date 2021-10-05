@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public abstract class CartLockdownEvent extends Event {
 

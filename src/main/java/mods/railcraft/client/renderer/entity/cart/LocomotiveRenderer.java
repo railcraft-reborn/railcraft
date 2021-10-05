@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public abstract class LocomotiveRenderer<T extends LocomotiveEntity>
     extends CustomMinecartRenderer<T> {

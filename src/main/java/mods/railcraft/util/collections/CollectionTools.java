@@ -12,7 +12,7 @@ import java.util.function.UnaryOperator;
 /**
  * Created by CovertJaguar on 3/25/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class CollectionTools {
   private CollectionTools() {}
