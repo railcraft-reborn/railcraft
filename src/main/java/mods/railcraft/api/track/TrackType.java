@@ -115,7 +115,7 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
 
     /**
      * Invokes after a minecart has passed over us
-     * 
+     *
      * @param level - the level.
      * @param cart - The {@link AbstractMinecartEntity} that passed us.
      * @param pos - our position.
@@ -130,7 +130,7 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
 
     /**
      * Event handler for when a mob collides with us over (this) rail
-     * 
+     *
      * @see mods.railcraft.world.level.block.track.behaivor.CollisionHandler CollisionHandler
      * @param level The world.
      * @param pos Block's position in world
@@ -141,7 +141,7 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
 
     /**
      * Returns the max speed of the rail at the specified position.
-     * 
+     *
      * @see mods.railcraft.world.level.block.track.behaivor.SpeedController SpeedController
      * @param level The world.
      * @param cart The cart on the rail, may be null.

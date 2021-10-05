@@ -27,7 +27,7 @@ public interface SignalNetwork<T> {
 
   /**
    * If the signal network
-   * 
+   *
    * @return
    */
   boolean isLinking();
