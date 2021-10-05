@@ -16,10 +16,9 @@
     "__DESC.messages": "======= Messages =======",
 
     "message.link.broken":"Link Broken",
-    "message.link.created":"Link Created",
-    "message.link.failed":"Link Failed",
+    "message.link.created":"§aLink Created§r",
+    "message.link.failed":"§cLink Failed§r",
     "message.link.started":"Link Started",
-   
 
     "__DESC.blocks": "======= Blocks =======",
 
@@ -35,13 +34,13 @@
     "block.railcraft.token_signal": "Token Signal",
     "block.railcraft.dual_block_signal": "Dual-Head Block Signal",
     "block.railcraft.dual_distant_signal": "Dual-Head Distant Signal",
-    "block.railcraft.dual_token_signal": "Dual-Head Token Signal", 
-    "block.railcraft.signal_controller_box": "Signal Controller Box", 
-    "block.railcraft.signal_receiver_box": "Signal Receiver Box", 
-    "block.railcraft.signal_capacitor_box": "Signal Capacitor Box", 
-    "block.railcraft.analog_signal_controller_box": "Analog Signal Controller Box", 
+    "block.railcraft.dual_token_signal": "Dual-Head Token Signal",
+    "block.railcraft.signal_controller_box": "Signal Controller Box",
+    "block.railcraft.signal_receiver_box": "Signal Receiver Box",
+    "block.railcraft.signal_capacitor_box": "Signal Capacitor Box",
+    "block.railcraft.analog_signal_controller_box": "Analog Signal Controller Box",
     "block.railcraft.signal_interlock_box": "Signal Interlock Box",
-    "block.railcraft.signal_sequencer_box": "Signal Sequencer Box", 
+    "block.railcraft.signal_sequencer_box": "Signal Sequencer Box",
     "block.railcraft.block_signal_relay_box": "Block Signal Relay Box",
     "block.railcraft.manual_rolling_machine": "Manual Rolling Machine",
     "block.railcraft.force_track_emitter": "Force Track Emitter",
@@ -71,6 +70,39 @@
     "item.railcraft.tunnel_bore": "Tunnel Bore",
     "item.railcraft.track_layer": "Track Layer",
     "item.railcraft.track_remover": "Track Remover",
+
+    "item.railcraft.steel_ingot": "Steel Ingot",
+    "item.railcraft.copper_ingot": "Copper Ingot",
+    "item.railcraft.tin_ingot": "Tin Ingot",
+    "item.railcraft.zinc_ingot": "Zinc Ingot",
+    "item.railcraft.brass_ingot": "Brass Ingot",
+    "item.railcraft.bronze_ingot": "Bronze Ingot",
+
+    "item.railcraft.steel_nugget": "Steel Nugget",
+    "item.railcraft.copper_nugget": "Copper Nugget",
+    "item.railcraft.tin_nugget": "Tin Nugget",
+    "item.railcraft.zinc_nugget": "Zinc Nugget",
+    "item.railcraft.brass_nugget": "Brass Nugget",
+    "item.railcraft.bronze_nugget": "Bronze Nugget",
+
+    "item.railcraft.controller_circuit": "Controller Circuit",
+    "item.railcraft.receiver_circuit": "Receiver Circuit",
+    "item.railcraft.signal_circuit": "Signal Circuit",
+
+    "item.railcraft.wooden_tie": "Wooden Tie",
+    "item.railcraft.stone_tie": "Stone Tie",
+    "item.railcraft.wooden_railbed": "Wooden Railbed",
+    "item.railcraft.stone_railbed": "Stone Railbed",
+    "item.railcraft.rebar": "Rebar",
+
+    "item.railcraft.wooden_rail": "Wooden Rail",
+    "item.railcraft.standard_rail": "Standard Rail",
+    "item.railcraft.advanced_rail": "Advanced Rail",
+    "item.railcraft.reinforced_rail": "Reinforced Rail",
+    "item.railcraft.high_speed_rail": "High Speed Rail",
+    "item.railcraft.electric_rail": "Electric Rail",
+
+    "item.railcraft.creosote_bucket": "Creosote Bucket",
 
     "__DESC.misc": "======= Misc GUI/tooltip =======",
 
@@ -112,27 +144,24 @@
     "goggles.description": "Right-click to change aura.",
 
     "signal_surveyor.invalid_track": "§cNo track found near %s.",
-    "signal_surveyor.begin": "§dBeginning survey.",
-    "signal_surveyor.success": "§aSuccessfully paired signals.",
-    "signal_surveyor.invalid_pair": "§cPairing invalid.",
-    "signal_surveyor.lost": "§cFirst signal no longer exists.",
-    "signal_surveyor.unloaded": "§cFirst signal's chunk has been unloaded.",
-    "signal_surveyor.abandoned": "§dSurvey abandoned.",
-    "signal_surveyor.invalid_block": "§cNot a valid signal.",
+    "signal_surveyor.begin": "§dBeginning survey.§r",
+    "signal_surveyor.success": "§aSuccessfully paired signals.§r",
+    "signal_surveyor.invalid_pair": "§cPairing invalid.§r",
+    "signal_surveyor.lost": "§cFirst signal no longer exists.§r",
+    "signal_surveyor.unloaded": "§cFirst signal's chunk has been unloaded.§r",
+    "signal_surveyor.abandoned": "§dSurvey abandoned.§r",
+    "signal_surveyor.invalid_block": "§cNot a valid signal.§r",
 
-    "signal_tuner.begin": "§dStarted pairing %s §dwith a receiver.",
-    "signal_tuner.abandoned": "§dStopped pairing.",
-    "signal_tuner.unloaded": "§cSignal controller's chunk has been unloaded.",
-    "signal_tuner.lost": "§cSignal controller no longer exists.",
-    "signal_tuner.success": "§aSuccessfully paired signal receiver.",
+    "signal_tuner.begin": "§dStarted pairing %s §dwith a receiver.§r",
+    "signal_tuner.abandoned": "§dStopped pairing.§r",
+    "signal_tuner.unloaded": "§cSignal controller's chunk has been unloaded.§r",
+    "signal_tuner.lost": "§cSignal controller no longer exists.§r",
+    "signal_tuner.success": "§aSuccessfully paired signal receiver.§r",
 
     "crowbar.description":"§oRight click while sneaking to link carts§r",
 
     "container.manual_rolling_machine": "Manual Rolling Machine",
-    
-    "gui.railcraft.filter": "Filter",
 
-    "itemGroup.railcraft": "Railcraft",
 
     "signal_aspect.green": "Green",
     "signal_aspect.blink_yellow": "Blink Yellow",
@@ -146,5 +175,10 @@
     "signal_capacitor_box.mode.falling_edge": "Falling Edge",
     "signal_capacitor_box.mode.falling_edge.description": "Start timer when the last input signal turns off.",
 
-    "fluid.railcraft.steam": "Steam"
+    "gui.railcraft.filter": "Filter",
+
+    "itemGroup.railcraft": "Railcraft",
+
+    "fluid.railcraft.steam": "Steam",
+    "fluid.railcraft.creosote": "Creosote"
 }

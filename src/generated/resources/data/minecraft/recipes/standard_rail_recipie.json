@@ -1,0 +1,18 @@
+{
+  "type": "railcraft:rolling",
+  "pattern": [
+    "I I",
+    "I I",
+    "I I"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "railcraft:standard_rail",
+    "count": 8
+  },
+  "tickCost": 100
+}

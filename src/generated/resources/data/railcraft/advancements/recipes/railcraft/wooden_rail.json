@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "railcraft:wooden_rail"
+    ]
+  },
+  "criteria": {
+    "has_wooden_tie": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:rail"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "railcraft:wooden_rail"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_wooden_tie",
+      "has_the_recipe"
+    ]
+  ]
+}

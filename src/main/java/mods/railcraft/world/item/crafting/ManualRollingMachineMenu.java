@@ -89,7 +89,7 @@ public class ManualRollingMachineMenu extends Container {
 
   /**
    * Progress of the current recipie, in "float percent" ie: 10% == 0.1, 50% = 0.5%
-   * 
+   *
    * @return The progress, used by
    *         {@link mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen
    *         RollingTableScreen}
@@ -103,7 +103,7 @@ public class ManualRollingMachineMenu extends Container {
   /**
    * Callback when RollingTableEntity finished ticking away, does: - Adds the item to the
    * resultSlots - Resets the TileEntity's timings
-   * 
+   *
    * @param devnull This Parameter does Not Exist
    */
   private void onFinishedCallback(Void devnull) {
@@ -121,34 +121,26 @@ public class ManualRollingMachineMenu extends Container {
     }
   }
 
-  // todo: make this static again,
-  private void slotChangedCraftingGrid(int slotID, World world, PlayerEntity user,
-      CraftingInventory craftItemHold, CraftResultInventory resultInventory) {
-    if (!world.isClientSide()) {
-      ServerPlayerEntity serverplayerentity = (ServerPlayerEntity) user;
+  @Override
+  public void slotsChanged(IInventory inventory) {
+    if (!this.level.isClientSide) {
+      ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)this.player;
       ItemStack itemstack = ItemStack.EMPTY;
-      Optional<RollingRecipe> optional = world.getServer().getRecipeManager()
-          .getRecipeFor(RailcraftRecipeTypes.ROLLING, craftItemHold, world);
+      Optional<RollingRecipe> optional = this.level.getServer().getRecipeManager().getRecipeFor(RailcraftRecipeTypes.ROLLING, this.craftSlots, this.level);
 
       this.setData(0, 10000); // nuke the clock
       this.setData(2, 0);
       if (optional.isPresent()) {
         RollingRecipe icraftingrecipe = optional.get();
-        if (resultInventory.setRecipeUsed(world, serverplayerentity, icraftingrecipe)) {
-          itemstack = icraftingrecipe.assemble(craftItemHold);
+        if (this.resultSlotClickyBox.setRecipeUsed(this.level, serverplayerentity, icraftingrecipe)) {
+          itemstack = icraftingrecipe.assemble(this.craftSlots);
           this.setData(0, icraftingrecipe.getTickCost());
         }
       }
       this.resultSlotClickyBox.setItem(0, itemstack);
-      serverplayerentity.connection.send(new SSetSlotPacket(slotID, 1, itemstack));
+      serverplayerentity.connection.send(new SSetSlotPacket(this.containerId, 1, itemstack));
       this.cachedFinishItem = itemstack;
     }
-  }
-
-  @Override
-  public void slotsChanged(IInventory inventory) {
-    this.slotChangedCraftingGrid(this.containerId, this.level, this.player, this.craftSlots,
-        this.resultSlots);
   }
 
   @Override

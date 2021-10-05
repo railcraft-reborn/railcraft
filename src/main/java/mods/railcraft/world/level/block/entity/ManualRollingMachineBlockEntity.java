@@ -93,7 +93,7 @@ public class ManualRollingMachineBlockEntity extends LockableTileEntity
 
   /**
    * Progress of the current recipie, in "float percent" ie: 10% == 0.1, 50% = 0.5%
-   * 
+   *
    * @return The progress, used by
    *         {@link mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen
    *         RollingTableScreen}
@@ -126,7 +126,6 @@ public class ManualRollingMachineBlockEntity extends LockableTileEntity
     return true;
   }
 
-  // todo: implement this painful proc at rollingtable powered variant
   @Override
   public ItemStack getItem(int slotID) {
     return ItemStack.EMPTY;

@@ -1,0 +1,21 @@
+{
+  "type": "railcraft:rolling",
+  "pattern": [
+    "SCS",
+    "SCS",
+    "SCS"
+  ],
+  "key": {
+    "S": {
+      "item": "railcraft:standard_rail"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "result": {
+    "item": "railcraft:electric_rail",
+    "count": 6
+  },
+  "tickCost": 100
+}

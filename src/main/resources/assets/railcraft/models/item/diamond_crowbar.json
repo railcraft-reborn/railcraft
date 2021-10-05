@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "railcraft:item/diamond_crowbar"
+    "layer0": "railcraft:item/tools/diamond_crowbar"
   }
 }

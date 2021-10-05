@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:firestone_lava_refinement"
+    ]
+  },
+  "criteria": {
+    "has_firestone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "railcraft:cut_firestone"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:firestone_lava_refinement"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_firestone",
+      "has_the_recipe"
+    ]
+  ]
+}

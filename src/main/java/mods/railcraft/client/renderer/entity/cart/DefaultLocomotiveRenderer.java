@@ -40,6 +40,7 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
   public DefaultLocomotiveRenderer(EntityRendererManager dispatcher, String modelTag,
       EntityModel<? super LocomotiveEntity> model,
       EntityModel<? super LocomotiveEntity> snowLayer) {
+    // Notice: do NOT remove the .png on these ones, they are needed.
     this(dispatcher, modelTag, model, snowLayer, new ResourceLocation[] {
         new ResourceLocation(Railcraft.ID,
             "textures/entity/locomotive/" + modelTag + "/primary.png"),

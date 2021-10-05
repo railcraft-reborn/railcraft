@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R ",
+    "SSS",
+    "   "
+  ],
+  "key": {
+    "R": {
+      "item": "railcraft:rebar"
+    },
+    "S": {
+      "item": "minecraft:stone_slab"
+    }
+  },
+  "result": {
+    "item": "railcraft:stone_tie"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "railcraft:item/goggles"
+    "layer0": "railcraft:item/tools/goggles"
   }
 }

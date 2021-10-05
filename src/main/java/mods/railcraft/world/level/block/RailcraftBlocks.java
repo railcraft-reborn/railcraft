@@ -269,7 +269,7 @@ public class RailcraftBlocks {
               AbstractBlock.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 80F)));
-
+  // firestone (ORE)
   public static final RegistryObject<Block> FIRESTONE =
       BLOCKS.register("firestone",
           () -> new FirestoneBlock(AbstractBlock.Properties.of(Material.STONE)

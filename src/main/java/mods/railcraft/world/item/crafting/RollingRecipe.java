@@ -1,9 +1,5 @@
 package mods.railcraft.world.item.crafting;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
@@ -11,6 +7,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
+
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -26,8 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
- * Rolling recipe class
- * 
+ * Rolling recipe class.
+ *
  * @author LetterN (https://github.com/LetterN)
  */
 public class RollingRecipe implements IRecipe<CraftingInventory> {
@@ -37,6 +37,13 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
   private final ItemStack result;
   private final int tickCost;
 
+  /**
+   * Creates a new recipie.
+   * @param resourceLocation -
+   * @param tickCost - The time cost of the recipie
+   * @param ingredients - Ingredients list of the object
+   * @param resultItemStack - The result
+   */
   public RollingRecipe(ResourceLocation resourceLocation, int tickCost,
       NonNullList<Ingredient> ingredients, ItemStack resultItemStack) {
     this.id = resourceLocation;
@@ -47,7 +54,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
 
   /**
    * Get how long the user should wait before this gets crafted.
-   * 
+   *
    * @return tick cost, in int.
    */
   public int getTickCost() {
@@ -138,8 +145,8 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
       String[] astring = shrink(patternFromJson(JSONUtils.getAsJsonArray(jsonObject, "pattern")));
 
       int tickCost = JSONUtils.getAsInt(jsonObject, "tickCost", 100); // 5 seconds
-      NonNullList<Ingredient> ingredients =
-          dissolvePattern(astring, map, astring[0].length(), astring.length);
+      // I SAID, STRICT 3X3
+      NonNullList<Ingredient> ingredients = dissolvePattern(astring, map, 3, 3);
       ItemStack resultItemStack = itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
       // 3x3 recipies only, attempting to register 4x4's will not work and we will never honor it.
       return new RollingRecipe(resourceLoc, tickCost, ingredients, resultItemStack);
@@ -191,9 +198,10 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
     }
 
     /**
-     * @param jsondat
+     * see vanilla crafting table.
+     * @param jsondat -
      * @return
-     * @see net.minecraft.item.crafting.ShapedRecipe keyFromJson
+     * {@see net.minecraft.item.crafting.ShapedRecipe keyFromJson}
      */
     private static Map<String, Ingredient> keyFromJson(JsonObject jsondat) {
       Map<String, Ingredient> map = Maps.newHashMap();
@@ -257,8 +265,8 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
 
       for (int i1 = 0; i1 < patternArray.length; ++i1) {
         String s = patternArray[i1];
-        i = Math.min(i, Math.max(s.indexOf(' '), 0));
-        int j1 = Math.max(s.lastIndexOf(' '), 0);
+        i = Math.min(i, firstNonSpace(s));
+        int j1 = lastNonSpace(s);
         j = Math.max(j, j1);
         if (j1 < 0) {
           if (k == i1) {
@@ -282,5 +290,20 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
       }
     }
 
+    private static final int firstNonSpace(String in) {
+      int i;
+      for (i = 0; i < in.length() && in.charAt(i) == ' '; ++i) {
+        ;
+      }
+      return i;
+    }
+
+    private static final int lastNonSpace(String in) {
+      int i;
+      for (i = in.length() - 1; i >= 0 && in.charAt(i) == ' '; --i) {
+        ;
+      }
+      return i;
+    }
   }
 }

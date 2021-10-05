@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "railcraft:item/activator_track_kit"
+    "layer0": "railcraft:item/track_kits/activator_track_kit"
   }
 }

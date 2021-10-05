@@ -383,4 +383,144 @@ public class RailcraftItems {
       ITEMS.register("white_metal_post",
           () -> new BlockItem(RailcraftBlocks.WHITE_METAL_POST.get(),
               new Item.Properties().tab(TAB)));
+
+  /* ===== CRAFTING MATERIALS ===== */
+  public static final RegistryObject<Item> STEEL_INGOT =
+    ITEMS.register("steel_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> COPPER_INGOT =
+    ITEMS.register("copper_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> TIN_INGOT =
+    ITEMS.register("tin_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ZINC_INGOT =
+    ITEMS.register("zinc_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRASS_INGOT =
+    ITEMS.register("brass_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRONZE_INGOT =
+    ITEMS.register("bronze_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  // NUGGET
+  public static final RegistryObject<Item> STEEL_NUGGET =
+    ITEMS.register("steel_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> COPPER_NUGGET =
+    ITEMS.register("copper_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> TIN_NUGGET =
+    ITEMS.register("tin_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ZINC_NUGGET =
+    ITEMS.register("zinc_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRASS_NUGGET =
+    ITEMS.register("brass_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRONZE_NUGGET =
+    ITEMS.register("bronze_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  // BLOCK
+  // public static final RegistryObject<BlockItem> STEEL_BLOCK =
+  //   ITEMS.register("steel_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  // public static final RegistryObject<BlockItem> COPPER_BLOCK =
+  //   ITEMS.register("copper_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  // public static final RegistryObject<BlockItem> TIN_BLOCK =
+  //   ITEMS.register("tin_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  // public static final RegistryObject<BlockItem> ZINC_BLOCK =
+  //   ITEMS.register("zinc_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  // public static final RegistryObject<BlockItem> BRASS_BLOCK =
+  //   ITEMS.register("brass_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  // public static final RegistryObject<BlockItem> BRONZE_BLOCK =
+  //   ITEMS.register("bronze_block",
+  //     () -> new BlockItem(new Item.Properties().tab(TAB)));
+
+  //circuits
+  public static final RegistryObject<Item> CONTROLLER_CIRCUIT =
+    ITEMS.register("controller_circuit",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> RECEIVER_CIRCUIT =
+    ITEMS.register("receiver_circuit",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SIGNAL_CIRCUIT =
+    ITEMS.register("signal_circuit",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  //rails
+  public static final RegistryObject<Item> WOODEN_RAIL =
+    ITEMS.register("wooden_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STANDARD_RAIL =
+    ITEMS.register("standard_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ADVANCED_RAIL =
+    ITEMS.register("advanced_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> REINFORCED_RAIL =
+    ITEMS.register("reinforced_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_RAIL =
+    ITEMS.register("high_speed_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ELECTRIC_RAIL =
+    ITEMS.register("electric_rail",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  //misc crafting units
+  public static final RegistryObject<Item> WOODEN_TIE =
+    ITEMS.register("wooden_tie",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STONE_TIE =
+    ITEMS.register("stone_tie",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> REBAR =
+    ITEMS.register("rebar",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> WOODEN_RAILBED =
+    ITEMS.register("wooden_railbed",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STONE_RAILBED =
+    ITEMS.register("stone_railbed",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  /* ===== BUCKETS ===== */
+
+  public static final RegistryObject<Item> CREOSOTE_BUCKET =
+    ITEMS.register("creosote_bucket",
+      () -> new Item(new Item.Properties().tab(TAB)));
 }

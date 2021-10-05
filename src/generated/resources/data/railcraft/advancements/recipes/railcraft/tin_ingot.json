@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "railcraft:tin_ingot"
+    ]
+  },
+  "criteria": {
+    "has_required_compression_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:nuggets/tin"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "railcraft:tin_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_required_compression_material",
+      "has_the_recipe"
+    ]
+  ]
+}

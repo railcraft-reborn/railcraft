@@ -1,7 +1,8 @@
 package mods.railcraft.world.level.block.track.behaivor;
 
 import javax.annotation.Nullable;
-import mods.railcraft.Railcraft;
+
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.util.TrackShapeHelper;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 /**
  * Created by CovertJaguar on 8/2/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar (http://www.railcraft.info)
  */
 public final class HighSpeedTools {
 
@@ -35,8 +36,9 @@ public final class HighSpeedTools {
 
   public static boolean isTrackSafeForHighSpeed(World world, BlockPos pos,
       AbstractMinecartEntity cart) {
-    if (!isHighSpeedTrackAt(world, pos))
+    if (!isHighSpeedTrackAt(world, pos)) {
       return false;
+    }
     RailShape dir = TrackTools.getTrackDirection(world, pos, cart);
     if (!TrackShapeHelper.isStraight(dir)) {
       return false;
@@ -98,8 +100,8 @@ public final class HighSpeedTools {
 
   public static double speedForNextTrack(World world, BlockPos pos, int dist,
       @Nullable AbstractMinecartEntity cart) {
-    double maxSpeed = Railcraft.serverConfig.highSpeedTrackMaxSpeed.get();
-    if (dist < LOOK_AHEAD_DIST)
+    double maxSpeed = RailcraftConfig.server.highSpeedTrackMaxSpeed.get();
+    if (dist < LOOK_AHEAD_DIST) {
       for (Direction side : Direction.Plane.HORIZONTAL) {
         BlockPos nextPos = pos.relative(side);
         boolean foundTrack = AbstractRailBlock.isRail(world, nextPos);
@@ -114,13 +116,16 @@ public final class HighSpeedTools {
         }
         if (foundTrack) {
           RailShape dir = TrackTools.getTrackDirection(world, nextPos, cart);
-          if (dir.isAscending())
+          if (dir.isAscending()) {
             return SPEED_SLOPE;
+          }
           maxSpeed = speedForNextTrack(world, nextPos, dist + 1, cart);
-          if (maxSpeed == SPEED_SLOPE)
+          if (maxSpeed == SPEED_SLOPE) {
             return SPEED_SLOPE;
+          }
         }
       }
+    }
 
     return maxSpeed;
   }

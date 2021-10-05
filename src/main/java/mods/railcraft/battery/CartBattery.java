@@ -22,7 +22,9 @@ import net.minecraft.util.math.BlockPos;
  * <p/>
  *
  * @author CovertJaguar <http://www.railcraft.info/>
+ * @deprecated Use the forge builtin module {@link net.minecraftforge.energy.IEnergyStorage IEnergyStorage}
  */
+@Deprecated
 public class CartBattery extends SimpleBattery implements IBatteryCart {
 
   static final int DRAW_INTERVAL = 8;
@@ -95,7 +97,7 @@ public class CartBattery extends SimpleBattery implements IBatteryCart {
    * Must be called once per tick while on tracks by the owning object. Server side only.
    * <p/>
    * <blockquote>
-   * 
+   *
    * <pre>
    * {@code
    * public void onEntityUpdate()
@@ -106,7 +108,7 @@ public class CartBattery extends SimpleBattery implements IBatteryCart {
    *  }
    * }
    * </pre>
-   * 
+   *
    * </blockquote>
    */
   @Override
@@ -135,7 +137,7 @@ public class CartBattery extends SimpleBattery implements IBatteryCart {
    * function. You don't have to call this function if you don't care about drawing from tracks.
    * <p/>
    * <blockquote>
-   * 
+   *
    * <pre>
    * {@code
    * protected void moveAlongTrack(BlockPos pos, IBlockState state)
@@ -145,7 +147,7 @@ public class CartBattery extends SimpleBattery implements IBatteryCart {
    *  }
    * }
    * </pre>
-   * 
+   *
    * </blockquote>
    */
   @Override

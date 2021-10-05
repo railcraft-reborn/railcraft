@@ -1,8 +1,12 @@
 package mods.railcraft.world.item;
 
-import java.util.Map;
 import com.google.common.collect.MapMaker;
-import mods.railcraft.Railcraft;
+
+import io.netty.handler.codec.marshalling.ThreadLocalUnmarshallerProvider;
+
+import java.util.Map;
+
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.item.Crowbar;
@@ -24,7 +28,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar (http://www.railcraft.info)
  */
 public class CrowbarHandler {
 
@@ -40,33 +44,37 @@ public class CrowbarHandler {
     boolean cancel = false;
 
     ItemStack stack = player.getItemInHand(hand);
-    if (stack.getItem() instanceof Crowbar)
+    if (stack.getItem() instanceof Crowbar) {
       cancel = true;
+    }
 
     if (!stack.isEmpty() && stack.getItem() instanceof Crowbar) {
       player.swing(hand);
       cancel = true;
-    } else
+    } else {
       return cancel;
+    }
 
-    if (player.level.isClientSide())
+    if (player.level.isClientSide()) {
       return cancel;
+    }
 
     Crowbar crowbar = (Crowbar) stack.getItem();
 
-    if (stack.getItem() instanceof SeasonCrowbarItem && cart instanceof RailcraftCart
-        && Railcraft.commonConfig.enableSeasons.get()) {
-      cancel = true;
+    if ((stack.getItem() instanceof SeasonCrowbarItem) && (cart instanceof RailcraftCart)
+        && RailcraftConfig.common.enableSeasons.get()) {
       Season season = SeasonCrowbarItem.getCurrentSeason(stack);
       ((RailcraftCart) cart).setSeason(season);
-      RailcraftAdvancementTriggers.getInstance().onSeasonSet((ServerPlayerEntity) player, cart,
-          season);
-    } else if (crowbar.canLink(player, hand, stack, cart)) {
-      cancel = true;
+      RailcraftAdvancementTriggers.getInstance()
+        .onSeasonSet((ServerPlayerEntity) player, cart, season);
+      return true;
+    }
+    if (crowbar.canLink(player, hand, stack, cart)) {
       linkCart(player, hand, stack, cart, crowbar);
+      return true;
     } else if (crowbar.canBoost(player, hand, stack, cart)) {
-      cancel = true;
       boostCart(player, hand, stack, cart, crowbar);
+      return true;
     }
 
     return cancel;
@@ -76,6 +84,7 @@ public class CrowbarHandler {
       AbstractMinecartEntity cart, Crowbar crowbar) {
     boolean used = false;
     boolean linkable = cart instanceof ILinkableCart;
+
     if (!linkable || ((ILinkableCart) cart).isLinkable()) {
       AbstractMinecartEntity last = linkMap.remove(player);
       if (last != null && last.isAlive()) {
@@ -83,40 +92,39 @@ public class CrowbarHandler {
         if (lm.areLinked(cart, last, false)) {
           lm.breakLink(cart, last);
           used = true;
-          player.displayClientMessage(
-              new TranslationTextComponent("message.link.broken"), false);
+          player.displayClientMessage(new TranslationTextComponent("message.link.broken"), false);
           LinkageManager.printDebug("Reason For Broken Link: User removed link.");
         } else {
           used = lm.createLink(last, cart);
-          if (used)
+          if (used) {
             player.displayClientMessage(
                 new TranslationTextComponent("message.link.created"), false);
+          }
         }
-        if (!used)
-          player.displayClientMessage(
-              new TranslationTextComponent("message.link.failed"), false);
+        if (!used) {
+          player.displayClientMessage(new TranslationTextComponent("message.link.failed"), false);
+        }
       } else {
         linkMap.put(player, cart);
-        player.displayClientMessage(
-            new TranslationTextComponent("message.link.started"), false);
+        player.displayClientMessage(new TranslationTextComponent("message.link.started"), false);
       }
     }
-    if (used)
+    if (used) {
       crowbar.onLink(player, hand, stack, cart);
+    }
   }
 
   private void boostCart(PlayerEntity player, Hand hand, ItemStack stack,
-      AbstractMinecartEntity cart,
-      Crowbar crowbar) {
+      AbstractMinecartEntity cart, Crowbar crowbar) {
     player.causeFoodExhaustion(.25F);
 
     if (player.getVehicle() != null) {
       // NOOP
     } else if (cart instanceof TunnelBoreEntity) {
       // NOOP
-    } else if (cart instanceof IDirectionalCart)
+    } else if (cart instanceof IDirectionalCart) {
       ((IDirectionalCart) cart).reverse();
-    else if (cart instanceof TrackRemoverMinecartEntity) {
+    } else if (cart instanceof TrackRemoverMinecartEntity) {
       ((TrackRemoverMinecartEntity) cart)
           .setMode(((TrackRemoverMinecartEntity) cart).getOtherMode());
     } else {
