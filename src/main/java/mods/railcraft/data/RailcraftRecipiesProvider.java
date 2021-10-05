@@ -68,7 +68,6 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .unlockedBy("has_circuit", has(RailcraftItems.RECEIVER_CIRCUIT.get()))
       .save(finishedRecipie);
 
-
     // this is a tool i think
     ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
       .define('L', Items.LAVA_BUCKET)
@@ -91,7 +90,6 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .unlockedBy("has_firestone", has(RailcraftItems.CRACKED_FIRESTONE.get()))
       .save(finishedRecipie, "firestone_cracked_fixing");
 
-
     /*
      * =====================================
      *     RAILCRAFT CRAFTING COMPONENTS
@@ -102,7 +100,13 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
     this.circuitFromMaterial(finishedRecipie, RailcraftItems.RECEIVER_CIRCUIT.get(), Items.GREEN_WOOL);
     this.circuitFromMaterial(finishedRecipie, RailcraftItems.SIGNAL_CIRCUIT.get(), Items.YELLOW_WOOL);
 
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.STANDARD_RAIL.get(), 1)
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
+      .requires(RailcraftItems.WOODEN_TIE.get())
+      .requires(Tags.Items.INGOTS_IRON)
+      .unlockedBy("has_wooden_tie", has(Items.RAIL))
+      .save(finishedRecipie);
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.STANDARD_RAIL.get())
       .requires(Items.RAIL, 8)
       .unlockedBy("has_rail", has(Items.RAIL))
       .save(finishedRecipie, "rail_deconstruction");
@@ -142,6 +146,41 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .pattern("SCS")
       .save(finishedRecipie);
 
+    this.rebarFromMaterial(finishedRecipie, Tags.Items.INGOTS_IRON, 4, "rebar_iron");
+    this.rebarFromMaterial(finishedRecipie, RailcraftTags.Items.BRONZE_INGOT, 4, "rebar_bronze");
+    this.rebarFromMaterial(finishedRecipie, RailcraftTags.Items.STEEL_INGOT, 6, "rebar_steel");
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())
+      .define('R', RailcraftItems.REBAR.get())
+      .define('S', Items.STONE_SLAB)
+      .pattern(" R ")
+      .pattern("SSS")
+      .pattern("   ")
+      .unlockedBy("has_rebar", has(RailcraftItems.REBAR.get()))
+      .save(finishedRecipie);
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAILBED.get())
+      .requires(RailcraftItems.WOODEN_TIE.get(), 4)
+      .unlockedBy("has_tie", has(RailcraftItems.WOODEN_TIE.get()))
+      .save(finishedRecipie);
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.STONE_RAILBED.get())
+      .requires(RailcraftItems.STONE_TIE.get(), 4)
+      .unlockedBy("has_tie", has(RailcraftItems.WOODEN_TIE.get()))
+      .save(finishedRecipie);
+
+    this.railsFromMaterials(finishedRecipie, RailcraftItems.STRAP_IRON_FLEX_TRACK.get(),
+      RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
+    this.railsFromMaterials(finishedRecipie,Items.RAIL,
+      RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
+    this.railsFromMaterials(finishedRecipie, RailcraftItems.REINFORCED_FLEX_TRACK.get(),
+      RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+    this.railsFromMaterials(finishedRecipie, RailcraftItems.ELECTRIC_FLEX_TRACK.get(),
+      RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+    this.railsFromMaterials(finishedRecipie, RailcraftItems.HIGH_SPEED_FLEX_TRACK.get(),
+      RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+
+
     /* === Item Compression === */
     this.compress(finishedRecipie, RailcraftItems.STEEL_INGOT.get(), RailcraftTags.Items.STEEL_NUGGET);
     this.compress(finishedRecipie, RailcraftItems.TIN_INGOT.get(), RailcraftTags.Items.TIN_NUGGET);
@@ -170,6 +209,42 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie);
   }
 
+  private final void circuitFromMaterial(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, Item woolItem) {
+    ShapedRecipeBuilder.shaped(itemOut)
+    .define('W', woolItem)
+    .define('R', Items.REPEATER)
+    .define('S', Tags.Items.DUSTS_REDSTONE)
+    .define('G', Tags.Items.INGOTS_GOLD)
+    .define('L', Tags.Items.GEMS_LAPIS)
+    .define('B', Tags.Items.SLIMEBALLS)
+    .pattern(" RW")
+    .pattern("BGS")
+    .pattern("WSL")
+    .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+    .save(finishedRecipie);
+  }
+
+  private final void rebarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie, ITag<Item> materialTag, int count, String fancyname) {
+    RollingRecipeBuilder.rolled(RailcraftItems.REBAR.get(), count)
+      .define('I', materialTag)
+      .pattern("  I")
+      .pattern(" I ")
+      .pattern("I  ")
+      .save(finishedRecipie, fancyname);
+  }
+
+  private final void railsFromMaterials(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, Item railType, Item railBedType) {
+    ShapedRecipeBuilder.shaped(itemOut, 32)
+      .define('I', railType)
+      .define('B', railBedType)
+      .pattern("I I")
+      .pattern("IBI")
+      .pattern("I I")
+      .unlockedBy("has_rail", has(railType))
+      .unlockedBy("has_railbed", has(railBedType))
+      .save(finishedRecipie);
+  }
+
   private final void compress(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, ITag<Item> materialTag) {
     ShapedRecipeBuilder.shaped(itemOut)
       .define('#', materialTag)
@@ -186,22 +261,6 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .unlockedBy("has_required_decompression_material", has(materialTag))
       .save(finishedRecipie);
   }
-
-  private final void circuitFromMaterial(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, Item woolItem) {
-    ShapedRecipeBuilder.shaped(itemOut)
-    .define('W', woolItem)
-    .define('R', Items.REPEATER)
-    .define('S', Tags.Items.DUSTS_REDSTONE)
-    .define('G', Tags.Items.INGOTS_GOLD)
-    .define('L', Tags.Items.GEMS_LAPIS)
-    .define('B', Tags.Items.SLIMEBALLS)
-    .pattern(" RW")
-    .pattern("BGS")
-    .pattern("WSL")
-    .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
-    .save(finishedRecipie);
-  }
-
   @Override
   public String getName() {
     return "Railcraft Recipes";

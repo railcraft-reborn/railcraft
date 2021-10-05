@@ -417,4 +417,30 @@ public class RailcraftItems {
     ITEMS.register("electric_rail",
       () -> new Item(new Item.Properties().tab(TAB)));
 
+  //misc crafting units
+  public static final RegistryObject<Item> WOODEN_TIE =
+    ITEMS.register("wooden_tie",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STONE_TIE =
+    ITEMS.register("stone_tie",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> REBAR =
+    ITEMS.register("rebar",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> WOODEN_RAILBED =
+    ITEMS.register("wooden_railbed",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STONE_RAILBED =
+    ITEMS.register("stone_railbed",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  /* ===== BUCKETS ===== */
+
+  public static final RegistryObject<Item> CREOSOTE_BUCKET =
+    ITEMS.register("creosote_bucket",
+      () -> new Item(new Item.Properties().tab(TAB)));
 }

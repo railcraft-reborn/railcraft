@@ -21,15 +21,18 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-def isCI = System.getenv("GITHUB_ACTIONS")
+def isCI = System.getenv("GITHUB_ACTION")
 def nightly = System.getenv("GITHUB_NIGHTLY")
+def ref = System.getenv("GITHUB_REF")
 
 def tag = nightly ? "NIGHTLY" : "CI"
-def suffix = "-${tag}-${System.getenv("GITHUB_RUN_ID")}.${System.getenv("GITHUB_RUN_NUMBER")}"
-def blank = "" // ugh
+def suffix = "-${tag}-${isCI}"
 
 // does in fact follow the semantic versioning. (GAMEVER)-(MODMAJOR.MODMINOR.MODPATCH)-CIMETA-RUNID.RUNINT
-version = "${minecraft_version}-${mod_version}${isCI ? suffix : blank}"
+version = "${minecraft_version}-${mod_version}"
+if(isCI) {
+  version = version + suffix
+}
 group = 'mods.railcraft'
 archivesBaseName = 'railcraft'
 
@@ -42,6 +45,9 @@ java {
 println('')
 println('*************************************************************')
 println('Project Version: ' + version)
+if (isCI) {
+  println("Running in Github Workflow" + (ref ? "on a pull request ${ref}, " : " ") + isCI)
+}
 println('Java: ' + System.getProperty('java.version'))
 println('JVM: ' + System.getProperty('java.vm.version'))
 println('*************************************************************')
@@ -104,6 +110,7 @@ repositories {
     name 'sponge'
     url 'https://repo.spongepowered.org/repository/maven-public'
   }
+  // TODO jei implementation
 }
 
 dependencies {
@@ -123,6 +130,10 @@ jar {
       "MixinConfigs": 'railcraft.mixins.json'
     ])
   }
+  exclude "**/*.bat"
+  exclude "**/*.psd"
+  exclude "**/*.exe"
+  exclude "**/*.db"  // windows thumbs.db cache
 }
 
 mixin {

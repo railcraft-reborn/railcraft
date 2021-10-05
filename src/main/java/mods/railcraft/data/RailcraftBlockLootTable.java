@@ -45,7 +45,7 @@ public class RailcraftBlockLootTable extends BlockLootTables {
     this.dropSelf(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
 
     /* === misc === */
-    this.dropWhenSilkTouch(RailcraftBlocks.FIRESTONE.get());
+    this.dropSelf(RailcraftBlocks.FIRESTONE.get());
     // TODO: implement this ritual thingy
     this.add(RailcraftBlocks.RITUAL.get(), noDrop());
   }

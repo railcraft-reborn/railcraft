@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:stone_tie"
+    },
+    {
+      "item": "railcraft:stone_tie"
+    },
+    {
+      "item": "railcraft:stone_tie"
+    },
+    {
+      "item": "railcraft:stone_tie"
+    }
+  ],
+  "result": {
+    "item": "railcraft:stone_railbed"
+  }
+}

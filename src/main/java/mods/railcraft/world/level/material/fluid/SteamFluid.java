@@ -17,7 +17,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.fluids.FluidAttributes;
 
-public class GasFluid extends Fluid {
+public class SteamFluid extends Fluid {
 
   @Override
   public Item getBucket() {
