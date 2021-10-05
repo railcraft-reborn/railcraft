@@ -16,7 +16,7 @@ import net.minecraft.world.World;
  * Any rail tile entity that can completely halt all cart movement should implement this interface.
  * (Used in collision handling)
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface LockdownTrack {
 

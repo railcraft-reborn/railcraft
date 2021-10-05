@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * Created by CovertJaguar on 9/10/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface IBoilerContainer {
 

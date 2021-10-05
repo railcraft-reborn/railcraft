@@ -17,7 +17,7 @@ import net.minecraft.world.server.ServerWorld;
 /**
  * This interface should be implemented by any cart item, but it is generally optional.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface MinecartPlacer {
 

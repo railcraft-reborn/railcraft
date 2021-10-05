@@ -15,7 +15,7 @@ import net.minecraft.world.IBlockReader;
 /**
  * Created by CovertJaguar on 9/9/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class Predicates {
 

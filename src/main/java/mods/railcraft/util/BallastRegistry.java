@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
  * <p/>
  * It is expected that ballast is affected by gravity.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public abstract class BallastRegistry {
 

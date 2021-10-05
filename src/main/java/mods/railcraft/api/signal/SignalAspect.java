@@ -20,7 +20,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 /**
  * Represents a Signal state.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public enum SignalAspect implements IStringSerializable {
 

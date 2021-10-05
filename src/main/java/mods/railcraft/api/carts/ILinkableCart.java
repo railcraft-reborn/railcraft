@@ -14,7 +14,7 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
  * behavior. It is NOT required to be able to link a cart, it merely gives you more control over the
  * process.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface ILinkableCart {
 

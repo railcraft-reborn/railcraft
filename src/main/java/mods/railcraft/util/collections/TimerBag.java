@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by CovertJaguar on 7/26/2017 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class TimerBag<T> {
 

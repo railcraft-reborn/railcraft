@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Created by CovertJaguar on 7/18/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class RailcraftConstantsAPI {
 

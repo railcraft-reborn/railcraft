@@ -30,7 +30,7 @@ import com.google.common.base.Objects;
  *
  * Created by CovertJaguar on 10/27/2018 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface IBatteryBlock extends Battery {
 

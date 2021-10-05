@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.material.fluid.steam;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class SteamConstants {
 

@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 
 /**
  *
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public interface IEmblemPackageManager {
 

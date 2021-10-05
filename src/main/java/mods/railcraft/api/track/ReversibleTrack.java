@@ -25,7 +25,7 @@ import net.minecraft.world.World;
  * {@link net.minecraft.util.Direction#WEST west}, it is considered reversed.
  * </p>
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface ReversibleTrack {
 

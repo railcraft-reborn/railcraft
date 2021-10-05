@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 /**
  * Created by CovertJaguar on 3/6/2017 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface SpikeMaulTarget {
 

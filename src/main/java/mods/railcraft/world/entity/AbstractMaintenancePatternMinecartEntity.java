@@ -13,7 +13,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public abstract class AbstractMaintenancePatternMinecartEntity extends AbstractMaintenanceMinecartEntity
     implements ISidedInventory {

@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
  *
  * Created by CovertJaguar on 5/28/2017 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 // No iterable: some other mods may add iterable to minecarts or block entities!
 public interface IInventoryComposite

@@ -21,7 +21,7 @@ import java.util.stream.Stream;
  * Each cart can up to two links. They are called Link A and Link B. Some carts
  * will have only Link A, for example the Tunnel Bore.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  * @see CartUtil , ILinkableCart
  */
 public interface ILinkageManager {

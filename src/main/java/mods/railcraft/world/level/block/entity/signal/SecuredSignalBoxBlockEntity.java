@@ -15,7 +15,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlockEntity
     implements Secure<SecuredSignalBoxBlockEntity.Lock> {

@@ -10,7 +10,7 @@ package mods.railcraft.api.track;
 /**
  * Created by CovertJaguar on 8/11/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface TypedTrack {
 

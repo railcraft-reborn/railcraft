@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
  *
  * Created by CovertJaguar on 10/4/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface IBatteryCart extends Battery {
 

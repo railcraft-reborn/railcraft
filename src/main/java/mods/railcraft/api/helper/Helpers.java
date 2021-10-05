@@ -9,7 +9,7 @@ package mods.railcraft.api.helper;
 
 /**
  *
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public class Helpers {
 

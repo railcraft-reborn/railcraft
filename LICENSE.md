@@ -16,17 +16,17 @@
 
 ## Derivatives
 
-* You may create, publish, and earn revenue from a texture pack made for Railcraft so long as it contains no Railcraft code. Additionally, you may use, modify, and distribute any png files or their contents from Railcraft in your Railcraft Texture Pack as long as you provide attribution and a link to the [Railcraft Blog](http://railcraft.info/).
+* You may create, publish, and earn revenue from a texture pack made for Railcraft so long as it contains no Railcraft code. Additionally, you may use, modify, and distribute any png files or their contents from Railcraft in your Railcraft Texture Pack as long as you provide attribution and a link to the [Railcraft Blog](https://railcraft.info/).
 
 * You may create, publish, and earn revenue from an addon made for Railcraft using the Railcraft API (addon being defined as a mini-mod that requires Railcraft be installed to function), though CovertJaguar reserves the right to implement similar features if desired. However, no addon code will be ever be included in Railcraft without the addon makers permission.
 
-* You may create, publish, and earn revenue from videos that display all or part of Railcraft. You should but are not required to provide a link to the [Railcraft Blog](http://railcraft.info/).
+* You may create, publish, and earn revenue from videos that display all or part of Railcraft. You should but are not required to provide a link to the [Railcraft Blog](https://railcraft.info/).
 
-* You may create, publish, and earn revenue from maps that require Railcraft. You may distribute Railcraft with your map if you meet the Public Mod Pack requirements defined below. If you require your users to install Railcraft, provide a link to the [Railcraft Blog](http://railcraft.info/).
+* You may create, publish, and earn revenue from maps that require Railcraft. You may distribute Railcraft with your map if you meet the Public Mod Pack requirements defined below. If you require your users to install Railcraft, provide a link to the [Railcraft Blog](https://railcraft.info/).
 
 ## Distribution
 
-* Except in the case of Public Mod Packs, you may not publicly distribute Railcraft on another site without CovertJaguar's explicit permission. And if you have permission you must include a link to the [Railcraft Blog](http://railcraft.info/) and [Wiki](http://railcraft.info/wiki) and use the download links provided there unless you receive permission to do otherwise. Proper attribution must be provided regardless and you must post a link to this [License](http://railcraft.info/wiki/info:license).
+* Except in the case of Public Mod Packs, you may not publicly distribute Railcraft on another site without CovertJaguar's explicit permission. And if you have permission you must include a link to the [Railcraft Blog](https://railcraft.info/) and [Wiki](https://railcraft.info/wiki) and use the download links provided there unless you receive permission to do otherwise. Proper attribution must be provided regardless and you must post a link to this [License](https://railcraft.info/wiki/info:license).
 
 ## Public Mod Packs
 
@@ -35,9 +35,9 @@
   * You are **REQUIRED** to **PUBLICLY** post a licensing page with entries for all the mods currently in your mod pack (links to licenses, images of PMs, posts by devs, etc...). This is the single most important requirement you must meet. If you cannot or will not do this, you cannot use Railcraft in your mod pack.
   * You may not sell the mod pack.
   * You are not allowed to use the latest series of Railcraft (versioning system being <major.series.revision.build>, ie 3.3.1.0) until a new series is released or one week has passed since the last revision was released. This is to protect the users from unstable versions.
-  * You must provide a link to the [Railcraft Blog](http://railcraft.info/), [Railcraft Wiki](http://railcraft.info/wiki) and [Railcraft License](http://railcraft.info/wiki/info:license) on your website.
+  * You must provide a link to the [Railcraft Blog](https://railcraft.info/), [Railcraft Wiki](https://railcraft.info/wiki) and [Railcraft License](https://railcraft.info/wiki/info:license) on your website.
   * Beta builds or nightlies are never to be packaged as part of a public mod pack. Only public releases ending in zero (x.x.x) can be used in public mod packs.
-  * Explicit permission is no longer required thanks to the great support via [Patreon](http://www.patreon.com/CovertJaguar)! Meet the above requirements and you are good.
+  * Explicit permission is no longer required thanks to the great support via [Patreon](https://www.patreon.com/CovertJaguar)! Meet the above requirements and you are good.
 
 ## Source
 

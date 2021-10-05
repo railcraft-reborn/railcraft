@@ -17,7 +17,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class FluidFuelManager {
 

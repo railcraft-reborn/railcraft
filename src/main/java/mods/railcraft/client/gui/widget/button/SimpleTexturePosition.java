@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.widget.button;
 
 /**
  *
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public class SimpleTexturePosition implements TexturePosition {
 

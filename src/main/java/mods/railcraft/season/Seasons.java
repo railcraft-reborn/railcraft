@@ -8,7 +8,7 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 /**
  * Created by CovertJaguar on 10/7/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class Seasons {
 

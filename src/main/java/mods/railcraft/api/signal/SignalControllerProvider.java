@@ -9,7 +9,7 @@ package mods.railcraft.api.signal;
 import mods.railcraft.api.core.BlockEntityLike;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface SignalControllerProvider extends BlockEntityLike {
 

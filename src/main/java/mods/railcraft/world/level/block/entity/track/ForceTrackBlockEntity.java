@@ -15,7 +15,7 @@ import net.minecraftforge.common.util.Constants;
 /**
  * Created by CovertJaguar on 8/15/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
 

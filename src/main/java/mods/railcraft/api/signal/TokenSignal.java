@@ -11,7 +11,7 @@ import mods.railcraft.api.core.BlockEntityLike;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface TokenSignal extends BlockEntityLike, Signal<TokenSignal> {
 

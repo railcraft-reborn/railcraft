@@ -18,7 +18,7 @@ import net.minecraft.world.World;
  * And so long as you inherit from {@link AbstractPoweredTrackBlock} all the code for updating the
  * power state is already in place (including propagation).
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface PoweredTrack {
 

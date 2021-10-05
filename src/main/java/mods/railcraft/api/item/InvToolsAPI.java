@@ -16,7 +16,7 @@ import net.minecraft.nbt.INBT;
 /**
  * Created by CovertJaguar on 6/7/2017 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class InvToolsAPI {
 

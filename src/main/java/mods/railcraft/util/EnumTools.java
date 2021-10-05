@@ -3,7 +3,7 @@ package mods.railcraft.util;
 /**
  * Created by CovertJaguar on 6/7/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class EnumTools {
 

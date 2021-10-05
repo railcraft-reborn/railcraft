@@ -20,7 +20,7 @@ import java.util.Set;
  * This interface it used to define an item that can
  * be used as a bore head for the Tunnel Bore.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface IBoreHead {
 

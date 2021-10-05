@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 
 /**
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface TuningAuraHelper {
 

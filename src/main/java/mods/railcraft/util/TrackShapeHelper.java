@@ -6,7 +6,7 @@ import net.minecraft.state.properties.RailShape;
 /**
  * Created by CovertJaguar on 3/29/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class TrackShapeHelper {
 

@@ -21,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
  * loader block utilizing the CartBattery interface may be provided in the future, but no guarantee.
  * <p/>
  *
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  * @deprecated Use the forge builtin module {@link net.minecraftforge.energy.IEnergyStorage IEnergyStorage}
  */
 @Deprecated

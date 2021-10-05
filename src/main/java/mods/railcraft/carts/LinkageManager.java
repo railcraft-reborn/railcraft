@@ -33,7 +33,7 @@ import net.minecraftforge.fml.loading.FMLLoader;
  * Generally you can ignore most of this and use the functions that don't require or return Linkage
  * Ids.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public enum LinkageManager implements ILinkageManager {
 

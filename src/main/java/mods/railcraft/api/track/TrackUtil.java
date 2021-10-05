@@ -29,7 +29,7 @@ import net.minecraft.world.server.ServerWorld;
 /**
  * A number of utility functions related to rails.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class TrackUtil {
 

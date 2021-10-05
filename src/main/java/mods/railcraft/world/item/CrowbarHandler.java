@@ -28,7 +28,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 
 /**
- * @author CovertJaguar (http://www.railcraft.info)
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public class CrowbarHandler {
 

@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 /**
  * Created by CovertJaguar on 12/5/2018 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class Optionals {
 

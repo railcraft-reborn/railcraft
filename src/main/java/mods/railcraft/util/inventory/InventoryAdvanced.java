@@ -19,7 +19,7 @@ import net.minecraft.tileentity.TileEntity;
  * <p/>
  * Useful for hiding parts of an inventory from outsiders.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class InventoryAdvanced extends Inventory implements IInventoryComposite {
 

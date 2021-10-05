@@ -31,7 +31,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 /**
  * It also contains some generic code that most carts will find useful.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public abstract class AbstractRailcraftMinecartEntity extends ContainerMinecartEntity
     implements RailcraftCart, IItemCart, IInventoryComposite {

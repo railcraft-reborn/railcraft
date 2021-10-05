@@ -25,7 +25,7 @@ import net.minecraft.world.server.ServerWorld;
 /**
  * Created by CovertJaguar on 4/13/2015 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
     implements SignalControllerProvider, TokenSignal, ITickableTileEntity {

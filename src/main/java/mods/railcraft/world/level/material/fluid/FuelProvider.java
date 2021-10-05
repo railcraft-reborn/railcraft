@@ -2,7 +2,7 @@ package mods.railcraft.world.level.material.fluid;
 
 /**
  *
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public interface FuelProvider {
 

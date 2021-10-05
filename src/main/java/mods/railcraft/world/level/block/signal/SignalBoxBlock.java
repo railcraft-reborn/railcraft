@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 /**
  * Created by CovertJaguar on 9/8/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class SignalBoxBlock extends FourWayBlock {
 

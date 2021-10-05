@@ -22,7 +22,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 /**
- * @author CovertJaguar <http://www.railcraft.info/>
+ * @author CovertJaguar <https://www.railcraft.info/>
  */
 public class CreativeLocomotiveEntity extends LocomotiveEntity implements ISidedInventory {
 

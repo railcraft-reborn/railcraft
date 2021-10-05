@@ -17,7 +17,7 @@ package mods.railcraft.api.carts;
  * interface for general use. It remains in use solely for the
  * IC2 based Energy Loaders.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface IEnergyTransfer {
 

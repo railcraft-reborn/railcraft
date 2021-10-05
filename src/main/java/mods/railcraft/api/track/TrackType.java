@@ -23,7 +23,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 /**
  * Created by CovertJaguar on 8/10/2016 for Railcraft.
  *
- * @author CovertJaguar <http://www.railcraft.info>
+ * @author CovertJaguar <https://www.railcraft.info>
  */
 public class TrackType extends ForgeRegistryEntry<TrackType> {
 

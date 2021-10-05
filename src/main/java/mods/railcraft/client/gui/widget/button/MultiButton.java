@@ -9,7 +9,7 @@ import net.minecraft.util.text.ITextProperties;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
 /**
- * @author CovertJaguar <http://railcraft.info/wiki/info:license>
+ * @author CovertJaguar <https://railcraft.info/wiki/info:license>
  */
 public final class MultiButton<T extends ButtonState> extends RailcraftButton {
 
