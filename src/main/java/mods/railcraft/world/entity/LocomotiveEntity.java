@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.apache.commons.lang3.StringUtils;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.ILinkableCart;
@@ -219,7 +219,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   /**
    * Indicates if this object is locked
-   * 
+   *
    * @return true if it's secured.
    */
   @Override
@@ -229,7 +229,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   /**
    * Indicates if this object is set to private
-   * 
+   *
    * @return true if it's private.
    */
   public boolean isPrivate() {
@@ -238,7 +238,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   /**
    * Can the user use this locomotive?
-   * 
+   *
    * @param user The user.
    * @return true if they can.
    * @see mods.railcraft.world.entity.LocomotiveEntity#isSecure isSecure
@@ -457,7 +457,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
     Speed speed = getSpeed();
     if (isRunning()) {
-      double force = Railcraft.serverConfig.locomotiveHorsepower.get() * 0.01F;
+      double force = RailcraftConfig.SERVER.locomotiveHorsepower.get() * 0.01F;
       if (isReverse())
         force = -force;
       switch (speed) {
@@ -559,7 +559,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
           && (cartVelocityIsGreaterThan(0.2f) || HighSpeedTools.isTravellingHighSpeed(this))
           && RCEntitySelectors.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
-        if (Railcraft.serverConfig.locomotiveDamageMobs.get())
+        if (RailcraftConfig.SERVER.locomotiveDamageMobs.get())
           living.hurt(RailcraftDamageSource.TRAIN, getDamageToRoadKill(living));
         if (living.getHealth() > 0) {
           float yaw = (this.yRot - 90) * (float) Math.PI / 180.0F;

@@ -1,7 +1,7 @@
 package mods.railcraft.world.entity;
 
 import javax.annotation.Nullable;
-import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.sounds.RailcraftSoundEvents;
@@ -78,7 +78,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
-  public AbstractSteamLocomotiveEntity(EntityType<?> type, World world) {
+  protected AbstractSteamLocomotiveEntity(EntityType<?> type, World world) {
     super(type, world);
     setMaxReverseSpeed(Speed.SLOWEST);
 
@@ -86,11 +86,11 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     this.getTankManager().add(this.steamTank);
 
     this.boiler = new SteamBoiler(this.waterTank, this.steamTank)
-        .setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get())
+        .setEfficiencyModifier(RailcraftConfig.SERVER.fuelPerSteamMultiplier.get())
         .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
   }
 
-  public AbstractSteamLocomotiveEntity(EntityType<?> type, double x, double y, double z,
+  protected AbstractSteamLocomotiveEntity(EntityType<?> type, double x, double y, double z,
       World world) {
     super(type, x, y, z, world);
     setMaxReverseSpeed(Speed.SLOWEST);
@@ -99,7 +99,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     this.getTankManager().add(this.steamTank);
 
     this.boiler = new SteamBoiler(this.waterTank, this.steamTank)
-        .setEfficiencyModifier(Railcraft.serverConfig.fuelPerSteamMultiplier.get())
+        .setEfficiencyModifier(RailcraftConfig.SERVER.fuelPerSteamMultiplier.get())
         .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
   }
 

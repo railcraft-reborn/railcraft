@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.track.behaivor;
 
 import javax.annotation.Nullable;
-import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.util.TrackShapeHelper;
@@ -98,7 +98,7 @@ public final class HighSpeedTools {
 
   public static double speedForNextTrack(World world, BlockPos pos, int dist,
       @Nullable AbstractMinecartEntity cart) {
-    double maxSpeed = Railcraft.serverConfig.highSpeedTrackMaxSpeed.get();
+    double maxSpeed = RailcraftConfig.SERVER.highSpeedTrackMaxSpeed.get();
     if (dist < LOOK_AHEAD_DIST)
       for (Direction side : Direction.Plane.HORIZONTAL) {
         BlockPos nextPos = pos.relative(side);

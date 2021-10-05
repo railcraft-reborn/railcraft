@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.track.behaivor;
 
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.carts.CartConstants;
@@ -97,7 +98,7 @@ public enum SpeedController implements TrackType.EventHandler {
 
     @Override
     public double getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
-      return Railcraft.serverConfig.strapIronTrackMaxSpeed.get();
+      return RailcraftConfig.SERVER.strapIronTrackMaxSpeed.get();
     }
   };
 }

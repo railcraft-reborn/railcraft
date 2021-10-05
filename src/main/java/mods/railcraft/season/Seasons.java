@@ -1,9 +1,8 @@
 package mods.railcraft.season;
 
 import java.util.Calendar;
-import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.carts.RailcraftCart;
-import mods.railcraft.client.ClientDist;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 
 /**
@@ -20,12 +19,12 @@ public final class Seasons {
   public static final String POLAR_EXPRESS = "Polar Express";
 
   static {
-    if (Railcraft.commonConfig.enableSeasons.get()) {
+    if (RailcraftConfig.COMMON.enableSeasons.get()) {
       Calendar cal = Calendar.getInstance();
       int month = cal.get(Calendar.MONTH);
       int day = cal.get(Calendar.DAY_OF_MONTH);
 
-      switch (Railcraft.commonConfig.christmas.get()) {
+      switch (RailcraftConfig.COMMON.christmas.get()) {
         case 1:
           CHRISTMAS = true;
           break;
@@ -33,11 +32,11 @@ public final class Seasons {
           CHRISTMAS = false;
           break;
         default:
-          CHRISTMAS = month == Calendar.DECEMBER || month == Calendar.JANUARY;
+          CHRISTMAS = (month == Calendar.DECEMBER) || (month == Calendar.JANUARY);
           break;
       }
 
-      switch (Railcraft.commonConfig.harvest.get()) {
+      switch (RailcraftConfig.COMMON.harvest.get()) {
         case 1:
           HARVEST = true;
           break;
@@ -45,11 +44,11 @@ public final class Seasons {
           HARVEST = false;
           break;
         default:
-          HARVEST = month == Calendar.OCTOBER || month == Calendar.NOVEMBER;
+          HARVEST = (month == Calendar.OCTOBER) || (month == Calendar.NOVEMBER);
           break;
       }
 
-      switch (Railcraft.commonConfig.halloween.get()) {
+      switch (RailcraftConfig.COMMON.halloween.get()) {
         case 1:
           HALLOWEEN = true;
           break;
@@ -69,20 +68,30 @@ public final class Seasons {
     }
   }
 
+  /**
+   * Clientside only.
+   * @param cart
+   * @return
+   */
   public static boolean isGhostTrain(AbstractMinecartEntity cart) {
     Season season =
         cart instanceof RailcraftCart ? ((RailcraftCart) cart).getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT)
-      return (ClientDist.clientConfig.enableGhostTrain.get() && HALLOWEEN)
+      return (RailcraftConfig.CLIENT.enableGhostTrain.get() && HALLOWEEN)
           || cart.hasCustomName() && GHOST_TRAIN.equals(cart.getCustomName().getContents());
     return season == Season.HALLOWEEN;
   }
 
+  /**
+   * Clientside only.
+   * @param cart
+   * @return
+   */
   public static boolean isPolarExpress(AbstractMinecartEntity cart) {
     Season season =
         cart instanceof RailcraftCart ? ((RailcraftCart) cart).getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT)
-      return (ClientDist.clientConfig.enablePolarExpress.get() && CHRISTMAS)
+      return (RailcraftConfig.CLIENT.enablePolarExpress.get() && CHRISTMAS)
           || cart.hasCustomName() && POLAR_EXPRESS.equals(cart.getCustomName().getContents())
           || cart.level.getBiome(cart.blockPosition()).shouldSnow(cart.level, cart.blockPosition());
     return season == Season.CHRISTMAS;

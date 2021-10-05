@@ -1,6 +1,5 @@
 package mods.railcraft.client;
 
-import org.apache.commons.lang3.tuple.Pair;
 import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftDist;
 import mods.railcraft.api.signal.SignalAspect;
@@ -53,36 +52,21 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class ClientDist implements RailcraftDist {
 
-  public static final ClientConfig clientConfig;
-  public static final ForgeConfigSpec clientConfigSpec;
-
-  static {
-    final Pair<ClientConfig, ForgeConfigSpec> clientConfigPair =
-        new ForgeConfigSpec.Builder().configure(ClientConfig::new);
-    clientConfigSpec = clientConfigPair.getRight();
-    clientConfig = clientConfigPair.getLeft();
-  }
-
   private final Minecraft minecraft;
 
   public ClientDist() {
-    ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, clientConfigSpec);
-
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleClientSetup);
     modEventBus.addListener(this::handleItemColors);

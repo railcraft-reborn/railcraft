@@ -2,7 +2,7 @@ package mods.railcraft.world.entity;
 
 import java.util.List;
 import javax.annotation.Nullable;
-import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.ILinkageManager;
 import mods.railcraft.api.track.TrackUtil;
@@ -208,7 +208,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     // return null;
     // if (Train.streamCarts(cart).anyMatch(c -> c.isPassenger(other)))
     // return null;
-    if (other instanceof ItemEntity && Railcraft.serverConfig.cartsCollideWithItems.get())
+    if (other instanceof ItemEntity && RailcraftConfig.SERVER.cartsCollideWithItems.get())
       return other.getBoundingBox().inflate(-0.01);
     return other.isPushable() ? other.getBoundingBox().inflate(-COLLISION_EXPANSION) : null;
   }
@@ -229,7 +229,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
   public @Nullable AxisAlignedBB getBoundingBox(AbstractMinecartEntity cart) {
     if (cart == null || !cart.isAlive())
       return null;
-    if (Railcraft.serverConfig.solidCarts.get())
+    if (RailcraftConfig.SERVER.solidCarts.get())
       return cart.getBoundingBox();
     return null;
   }
@@ -386,7 +386,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       }
 
       if (!other.isAlive()
-          || Railcraft.serverConfig.highSpeedTrackIgnoredEntities.get()
+          || RailcraftConfig.SERVER.highSpeedTrackIgnoredEntities.get()
               .contains(other.getType().getRegistryName().toString()))
         return;
 

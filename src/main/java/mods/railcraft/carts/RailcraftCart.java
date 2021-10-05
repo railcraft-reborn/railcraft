@@ -10,7 +10,7 @@
 package mods.railcraft.carts;
 
 import org.apache.commons.lang3.ArrayUtils;
-import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.season.Season;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.Item;
@@ -49,7 +49,7 @@ public interface RailcraftCart {
   }
 
   default ItemStack[] getItemsDropped(AbstractMinecartEntity cart) {
-    if (Railcraft.serverConfig.cartsBreakOnDrop.get())
+    if (RailcraftConfig.SERVER.cartsBreakOnDrop.get())
       return getComponents(cart);
     else
       return new ItemStack[] {createCartItem(cart)};
@@ -60,7 +60,7 @@ public interface RailcraftCart {
     if (!cart.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
       return;
     ItemStack[] drops = getItemsDropped(cart);
-    if (!Railcraft.serverConfig.cartsBreakOnDrop.get() && cart.hasCustomName()
+    if (!RailcraftConfig.SERVER.cartsBreakOnDrop.get() && cart.hasCustomName()
         && !ArrayUtils.isEmpty(drops))
       drops[0].setHoverName(cart.getCustomName());
     for (ItemStack item : drops) {

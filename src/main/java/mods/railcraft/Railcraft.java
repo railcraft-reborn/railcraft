@@ -1,6 +1,5 @@
 package mods.railcraft;
 
-import org.apache.commons.lang3.tuple.Pair;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
@@ -33,7 +32,6 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -41,7 +39,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DataSerializerEntry;
@@ -50,24 +50,6 @@ import net.minecraftforge.registries.DataSerializerEntry;
 public class Railcraft {
 
   public static final String ID = "railcraft";
-
-  public static final CommonConfig commonConfig;
-  public static final ForgeConfigSpec commonConfigSpec;
-
-  public static final ServerConfig serverConfig;
-  public static final ForgeConfigSpec serverConfigSpec;
-
-  static {
-    final Pair<CommonConfig, ForgeConfigSpec> commonConfigPair =
-        new ForgeConfigSpec.Builder().configure(CommonConfig::new);
-    commonConfigSpec = commonConfigPair.getRight();
-    commonConfig = commonConfigPair.getLeft();
-
-    final Pair<ServerConfig, ForgeConfigSpec> serverConfigPair =
-        new ForgeConfigSpec.Builder().configure(ServerConfig::new);
-    serverConfigSpec = serverConfigPair.getRight();
-    serverConfig = serverConfigPair.getLeft();
-  }
 
   private static Railcraft instance;
 
@@ -82,6 +64,12 @@ public class Railcraft {
 
     MinecraftForge.EVENT_BUS.register(this.minecartHandler);
     MinecraftForge.EVENT_BUS.register(this);
+    // we have to register this all now; forge isn't dumb and will save server config in
+    // the logical world's "serverconfig" dir
+    ModLoadingContext modLoadingContext = ModLoadingContext.get();
+    modLoadingContext.registerConfig(ModConfig.Type.CLIENT, RailcraftConfig.clientSpec);
+    modLoadingContext.registerConfig(ModConfig.Type.COMMON, RailcraftConfig.commonSpec);
+    modLoadingContext.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.serverSpec);
 
     this.dist = DistExecutor.safeRunForDist(() -> ClientDist::new, () -> ServerDist::new);
 

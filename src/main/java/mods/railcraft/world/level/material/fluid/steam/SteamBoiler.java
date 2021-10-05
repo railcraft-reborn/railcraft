@@ -3,7 +3,7 @@ package mods.railcraft.world.level.material.fluid.steam;
 import java.util.Collections;
 import java.util.List;
 import com.google.common.primitives.Floats;
-import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.material.fluid.FuelProvider;
@@ -176,7 +176,7 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
         * (this.getMaxTemperature() / SteamConstants.MAX_HEAT_HIGH);
     fuel *= numTanks;
     fuel *= this.efficiencyModifier;
-    fuel *= Railcraft.serverConfig.fuelPerSteamMultiplier.get();
+    fuel *= RailcraftConfig.SERVER.fuelPerSteamMultiplier.get();
     return fuel;
   }
 

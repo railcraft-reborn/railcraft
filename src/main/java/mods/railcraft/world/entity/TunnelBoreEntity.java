@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
-import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.IBoreHead;
 import mods.railcraft.api.carts.ILinkableCart;
@@ -232,19 +232,19 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
 
       /*
        * boolean mappingExists = false;
-       * 
+       *
        * int blockHarvestLevel = HarvestPlugin.getHarvestLevel(targetState, "pickaxe"); if
        * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >= blockHarvestLevel) return
        * true; mappingExists = true; }
-       * 
+       *
        * blockHarvestLevel = HarvestPlugin.getHarvestLevel(targetState, "axe"); if
        * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >= blockHarvestLevel) return
        * true; mappingExists = true; }
-       * 
+       *
        * blockHarvestLevel = HarvestPlugin.getHarvestLevel(targetState, "shovel"); if
        * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >= blockHarvestLevel) return
        * true; mappingExists = true; }
-       * 
+       *
        * if (mappingExists) return false;
        */
       Item item = head.getItem();
@@ -261,7 +261,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
   }
 
   private boolean isMineableBlock(BlockState blockState) {
-    return Railcraft.serverConfig.boreMinesAllBlocks.get() ||
+    return RailcraftConfig.SERVER.boreMinesAllBlocks.get() ||
         mineableBlocks.contains(blockState.getBlock()) ||
         mineableStates.contains(blockState) ||
         mineableTags.stream().anyMatch(tag -> tag.contains(blockState.getBlock()));
@@ -695,7 +695,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
                 LevelUtil.playerRemoveBlock(this.level, searchPos.immutable(),
                     CartTools.getFakePlayer(this),
                     this.level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
-                        && !Railcraft.serverConfig.boreDestorysBlocks.get());
+                        && !RailcraftConfig.SERVER.boreDestorysBlocks.get());
               }
             }
           }
@@ -829,7 +829,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
     if (breakEvent.isCanceled())
       return false;
 
-    if (!Railcraft.serverConfig.boreDestorysBlocks.get()
+    if (!RailcraftConfig.SERVER.boreDestorysBlocks.get()
         && this.level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
       targetState.getDrops(new LootContext.Builder((ServerWorld) this.level)
           .withParameter(LootParameters.TOOL, head)
@@ -879,7 +879,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
       hardness /= (e * e * 0.2d + 1);
     }
 
-    hardness /= Railcraft.serverConfig.boreMininigSpeedMultiplier.get();
+    hardness /= RailcraftConfig.SERVER.boreMininigSpeedMultiplier.get();
 
     return hardness;
   }

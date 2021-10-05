@@ -2,7 +2,7 @@ package mods.railcraft.world.item;
 
 import java.util.Map;
 import com.google.common.collect.MapMaker;
-import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.item.Crowbar;
@@ -54,19 +54,20 @@ public class CrowbarHandler {
 
     Crowbar crowbar = (Crowbar) stack.getItem();
 
-    if (stack.getItem() instanceof SeasonCrowbarItem && cart instanceof RailcraftCart
-        && Railcraft.commonConfig.enableSeasons.get()) {
-      cancel = true;
+    if ((stack.getItem() instanceof SeasonCrowbarItem) && (cart instanceof RailcraftCart)
+        && RailcraftConfig.COMMON.enableSeasons.get()) {
       Season season = SeasonCrowbarItem.getCurrentSeason(stack);
       ((RailcraftCart) cart).setSeason(season);
-      RailcraftAdvancementTriggers.getInstance().onSeasonSet((ServerPlayerEntity) player, cart,
-          season);
-    } else if (crowbar.canLink(player, hand, stack, cart)) {
-      cancel = true;
+      RailcraftAdvancementTriggers.getInstance()
+        .onSeasonSet((ServerPlayerEntity) player, cart, season);
+      return true;
+    }
+    if (crowbar.canLink(player, hand, stack, cart)) {
       linkCart(player, hand, stack, cart, crowbar);
+      return true;
     } else if (crowbar.canBoost(player, hand, stack, cart)) {
-      cancel = true;
       boostCart(player, hand, stack, cart, crowbar);
+      return true;
     }
 
     return cancel;

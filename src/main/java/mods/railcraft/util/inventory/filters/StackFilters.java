@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
-import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.item.MinecartPlacer;
 import mods.railcraft.tags.RailcraftTags;
@@ -94,8 +94,8 @@ public enum StackFilters implements Predicate<ItemStack> {
     @Override
     protected boolean testType(
         ItemStack stack) {
-      return (Railcraft.serverConfig.chestAllowFluids.get() || !FluidItemHelper.isContainer(stack))
-          && !Railcraft.serverConfig.cargoBlacklist.get()
+      return (RailcraftConfig.SERVER.chestAllowFluids.get() || !FluidItemHelper.isContainer(stack))
+          && !RailcraftConfig.SERVER.cargoBlacklist.get()
               .contains(stack.getItem().getRegistryName().toString());
     }
 

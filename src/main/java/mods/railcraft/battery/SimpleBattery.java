@@ -6,7 +6,9 @@ import mods.railcraft.api.charge.Battery;
  * Created by CovertJaguar on 1/15/2019 for Railcraft.
  *
  * @author CovertJaguar <http://www.railcraft.info>
+ * @deprecated Use the forge builtin module {@link net.minecraftforge.energy.IEnergyStorage IEnergyStorage}
  */
+@Deprecated
 public class SimpleBattery implements Battery {
 
   protected final float capacity;
