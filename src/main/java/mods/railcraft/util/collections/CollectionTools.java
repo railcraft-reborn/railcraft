@@ -1,13 +1,16 @@
 package mods.railcraft.util.collections;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
+import javax.annotation.Nullable;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ForwardingList;
 import com.google.common.collect.HashBiMap;
-
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
 
 /**
  * Created by CovertJaguar on 3/25/2016 for Railcraft.
@@ -15,6 +18,7 @@ import java.util.function.UnaryOperator;
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class CollectionTools {
+
   private CollectionTools() {}
 
   @SafeVarargs

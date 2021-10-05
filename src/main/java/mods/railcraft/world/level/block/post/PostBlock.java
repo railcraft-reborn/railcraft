@@ -5,6 +5,7 @@ import java.util.Map;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.util.VoxelShapeUtil;
 import mods.railcraft.world.level.block.signal.AbstractSignalBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -33,12 +34,25 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class PostBlock extends Block implements IWaterLoggable {
+
+  public static final VoxelShape SHAPE =
+      box(8.0D - 2.0D, 0.0D, 8.0D - 2.0D, 8.0D + 2.0D, 16.0D, 8.0D + 2.0D);
+  public static final Map<Direction, VoxelShape> SIDE_SHAPES =
+      VoxelShapeUtil.createHorizontalShapes(
+          8.0D - 2.0D, 0.0D, 8.0D - 2.0D, 8.0D + 2.0D, 16.0D, 8.0D + 2.0D);
+  public static final VoxelShape COLLISION_SHAPE =
+      box(8.0D - 2.0D, 0.0D, 8.0D - 2.0D, 8.0D + 2.0D, 24.0D, 8.0D - 2.0D);
+  public static final Map<Direction, VoxelShape> COLLISION_SIDE_SHAPES =
+      VoxelShapeUtil.createHorizontalShapes(
+          8.0D - 2.0D, 0.0D, 8.0D - 2.0D, 8.0D + 2.0D, 24.0D, 8.0D + 2.0D);
+  public static final Map<Direction, VoxelShape> OCCLUSION_SIDE_SHAPES =
+      VoxelShapeUtil.createHorizontalShapes(
+          8.0D - 1.0D, 6.0D, 8.0D - 1.0D, 8.0D + 1.0D, 15.0D, 8.0D + 1.0D);
 
   public static final EnumProperty<Column> COLUMN = EnumProperty.create("column", Column.class);
   public static final EnumProperty<Connection> NORTH =
@@ -48,7 +62,7 @@ public class PostBlock extends Block implements IWaterLoggable {
   public static final EnumProperty<Connection> EAST = EnumProperty.create("east", Connection.class);
   public static final EnumProperty<Connection> WEST = EnumProperty.create("west", Connection.class);
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-  public static final Map<Direction, EnumProperty<Connection>> PROPERTY_BY_DIRECTION =
+  public static final Map<Direction, EnumProperty<Connection>> propertyByDirection =
       Util.make(new EnumMap<>(Direction.class), (map) -> {
         map.put(Direction.NORTH, NORTH);
         map.put(Direction.EAST, EAST);
@@ -65,9 +79,9 @@ public class PostBlock extends Block implements IWaterLoggable {
     super(properties);
     properties.strength(3, 15);
 
-    this.collisionShapeByIndex = this.makeShapes(2.0F, 2.0F, 16.0F, 0.0F, 16.0F);
-    this.shapeByIndex = this.makeShapes(2.0F, 2.0F, 16.0F, 0.0F, 16.0F);
-    this.occlusionByIndex = this.makeShapes(2.0F, 1.0F, 16.0F, 6.0F, 15.0F);
+    this.collisionShapeByIndex = VoxelShapeUtil.makeShapes(COLLISION_SHAPE, COLLISION_SIDE_SHAPES);
+    this.shapeByIndex = VoxelShapeUtil.makeShapes(SHAPE, SIDE_SHAPES);
+    this.occlusionByIndex = VoxelShapeUtil.makeShapes(SHAPE, OCCLUSION_SIDE_SHAPES);
 
     for (BlockState blockstate : this.stateDefinition.getPossibleStates()) {
       this.getShapeIndex(blockstate);
@@ -85,43 +99,6 @@ public class PostBlock extends Block implements IWaterLoggable {
   @Override
   protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
     builder.add(COLUMN, NORTH, SOUTH, EAST, WEST, WATERLOGGED);
-  }
-
-  protected VoxelShape[] makeShapes(float width, float extendedWidth,
-      float extendedHeight, float minY, float maxY) {
-    float minX = 8.0F - width;
-    float maxX = 8.0F + width;
-    float minExtendedX = 8.0F - extendedWidth;
-    float maxExtendedX = 8.0F + extendedWidth;
-
-    VoxelShape normalShape = Block.box(minX, 0.0D, minX, maxX, extendedHeight, maxX);
-
-    VoxelShape westExtended = Block.box(
-        minExtendedX, minY, 0.0D, maxExtendedX,
-        maxY, maxExtendedX);
-    VoxelShape northExtended = Block.box(minExtendedX, minY, minExtendedX, maxExtendedX,
-        maxY, 16.0D);
-    VoxelShape southExtended = Block.box(0.0D, minY, minExtendedX, maxExtendedX,
-        maxY, maxExtendedX);
-    VoxelShape voxelshape4 = Block.box(minExtendedX, minY, minExtendedX, 16.0D,
-        maxY, maxExtendedX);
-
-    VoxelShape voxelshape5 = VoxelShapes.or(westExtended, voxelshape4);
-    VoxelShape voxelshape6 = VoxelShapes.or(northExtended, southExtended);
-    VoxelShape[] extendedShapes = new VoxelShape[] {VoxelShapes.empty(),
-        northExtended, southExtended,
-        voxelshape6, westExtended, VoxelShapes.or(northExtended, westExtended),
-        VoxelShapes.or(southExtended, westExtended), VoxelShapes.or(voxelshape6, westExtended),
-        voxelshape4, VoxelShapes.or(northExtended, voxelshape4),
-        VoxelShapes.or(southExtended, voxelshape4), VoxelShapes.or(voxelshape6, voxelshape4),
-        voxelshape5, VoxelShapes.or(northExtended, voxelshape5),
-        VoxelShapes.or(southExtended, voxelshape5), VoxelShapes.or(voxelshape6, voxelshape5)};
-
-    for (int i = 0; i < 16; ++i) {
-      extendedShapes[i] = VoxelShapes.or(normalShape, extendedShapes[i]);
-    }
-
-    return extendedShapes;
   }
 
   @Override
@@ -148,31 +125,18 @@ public class PostBlock extends Block implements IWaterLoggable {
     return this.getShape(blockState, level, blockPos, context);
   }
 
-  private static int indexFor(Direction direction) {
-    return 1 << direction.get2DDataValue();
+  public final int getShapeIndex(BlockState blockState) {
+    return this.stateToIndex.computeIntIfAbsent(blockState, this::computeShapeIndex);
   }
 
-  protected int getShapeIndex(BlockState blockState) {
-    return this.stateToIndex.computeIntIfAbsent(blockState, __ -> {
-      int i = 0;
-      if (blockState.getValue(NORTH) != Connection.NONE) {
-        i |= indexFor(Direction.NORTH);
+  protected int computeShapeIndex(BlockState blockState) {
+    int i = 0;
+    for (Map.Entry<Direction, EnumProperty<Connection>> entry : propertyByDirection.entrySet()) {
+      if (blockState.getValue(entry.getValue()) != Connection.NONE) {
+        i |= VoxelShapeUtil.indexFor(entry.getKey());
       }
-
-      if (blockState.getValue(EAST) != Connection.NONE) {
-        i |= indexFor(Direction.EAST);
-      }
-
-      if (blockState.getValue(SOUTH) != Connection.NONE) {
-        i |= indexFor(Direction.SOUTH);
-      }
-
-      if (blockState.getValue(WEST) != Connection.NONE) {
-        i |= indexFor(Direction.WEST);
-      }
-
-      return i;
-    });
+    }
+    return i;
   }
 
   @Override
@@ -222,7 +186,7 @@ public class PostBlock extends Block implements IWaterLoggable {
     }
 
     return direction.getAxis().getPlane() == Direction.Plane.HORIZONTAL
-        ? blockState.setValue(PROPERTY_BY_DIRECTION.get(direction),
+        ? blockState.setValue(propertyByDirection.get(direction),
             this.getConnection(neighborState,
                 neighborState.isFaceSturdy(level, neighborPos, direction.getOpposite()),
                 direction.getOpposite()))

@@ -15,6 +15,6 @@ public class DualSignalBlock extends AbstractSignalBlock {
 
   public DualSignalBlock(Supplier<? extends AbstractSignalBlockEntity> blockEntityFactory,
       Properties properties) {
-    super(SHAPE, blockEntityFactory, properties);
+    super(SHAPE, HORIZONTAL_CONNECTION_SHAPES, blockEntityFactory, properties);
   }
 }

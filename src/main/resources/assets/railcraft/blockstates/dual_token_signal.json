@@ -2,14 +2,6 @@
   "multipart": [
     {
       "when": {
-        "down": "true"
-      },
-      "apply": {
-        "model": "railcraft:block/signal_pillar"
-      }
-    },
-    {
-      "when": {
         "facing": "north"
       },
       "apply": {
