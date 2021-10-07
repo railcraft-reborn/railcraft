@@ -10,7 +10,7 @@ import net.minecraft.util.text.ITextProperties;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public interface ButtonState extends IStringSerializable {
+public interface ButtonState<T extends ButtonState<T>> extends IStringSerializable {
 
   ITextComponent getLabel();
 
@@ -20,4 +20,6 @@ public interface ButtonState extends IStringSerializable {
   default List<? extends ITextProperties> getTooltip() {
     return null;
   }
+
+  T getNext();
 }

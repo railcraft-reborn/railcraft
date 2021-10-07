@@ -1,13 +1,17 @@
 package mods.railcraft.world.level.block.entity.signal;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.gui.button.MultiButtonController;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.BlockState;
@@ -23,8 +27,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   private short ticksPowered;
   private short ticksToPower = 200;
   private SignalAspect signalAspect = SignalAspect.OFF;
-  private final MultiButtonController<Mode> modeButtonController =
-      MultiButtonController.create(Mode.RISING_EDGE.ordinal(), Mode.values());
+  private Mode mode = Mode.RISING_EDGE;
 
   public SignalCapacitorBoxBlockEntity() {
     super(RailcraftBlockEntityTypes.SIGNAL_CAPACITOR_BOX.get());
@@ -38,8 +41,12 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     this.ticksToPower = ticksToPower;
   }
 
-  public MultiButtonController<Mode> getModeButtonController() {
-    return this.modeButtonController;
+  public Mode getMode() {
+    return this.mode;
+  }
+
+  public void setMode(Mode mode) {
+    this.mode = mode;
   }
 
   @Override
@@ -49,7 +56,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     }
 
     if (this.ticksPowered-- > 0) {
-      if (this.modeButtonController.getCurrentState() == Mode.FALLING_EDGE) {
+      if (this.mode == Mode.FALLING_EDGE) {
         SignalAspect signalAspect = SignalAspect.GREEN;
         boolean powered = PowerUtil.hasRepeaterSignal(this.level, getBlockPos());
         for (Direction direction : Direction.Plane.HORIZONTAL) {
@@ -87,7 +94,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     boolean powered = PowerUtil.hasRepeaterSignal(this.level, this.getBlockPos());
     if (this.ticksPowered <= 0 && powered) {
       this.ticksPowered = this.ticksToPower;
-      if (Objects.equals(this.modeButtonController.getCurrentState(), Mode.RISING_EDGE))
+      if (Objects.equals(this.mode, Mode.RISING_EDGE))
         this.signalAspect = SignalAspect.GREEN;
       this.updateNeighbors();
     }
@@ -98,7 +105,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
       Direction direction, boolean removed) {
     if (neighbor.getRedstoneSignal(direction) > 0) {
       this.ticksPowered = this.ticksToPower;
-      if (this.modeButtonController.getCurrentState() == Mode.RISING_EDGE) {
+      if (this.mode == Mode.RISING_EDGE) {
         this.signalAspect = neighbor.getSignalAspect(direction);
       }
       this.updateNeighbors();
@@ -127,7 +134,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     data.putShort("ticksPowered", this.ticksPowered);
     data.putShort("ticksToPower", this.ticksToPower);
     data.putString("signalAspect", this.signalAspect.getSerializedName());
-    data.put("modeButtonController", this.modeButtonController.serializeNBT());
+    data.putString("mode", this.mode.getSerializedName());
     return data;
   }
 
@@ -136,8 +143,9 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     super.load(state, data);
     this.ticksPowered = data.getShort("ticksPowered");
     this.ticksToPower = data.getShort("ticksToPower");
-    this.signalAspect = SignalAspect.getByName(data.getString("signalAspect")).get();
-    this.modeButtonController.deserializeNBT(data.getCompound("modeButtonController"));
+    this.signalAspect =
+        SignalAspect.getByName(data.getString("signalAspect")).orElse(SignalAspect.OFF);
+    this.mode = Mode.getByName(data.getString("mode")).orElse(Mode.RISING_EDGE);
   }
 
   @Override
@@ -146,7 +154,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     data.writeBoolean(this.ticksPowered > 0);
     data.writeShort(this.ticksToPower);
     data.writeEnum(this.signalAspect);
-    data.writeEnum(this.modeButtonController.getCurrentState());
+    data.writeEnum(this.mode);
   }
 
   @Override
@@ -155,7 +163,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     this.ticksPowered = (short) (data.readBoolean() ? 1 : 0);
     this.ticksToPower = data.readShort();
     this.signalAspect = data.readEnum(SignalAspect.class);
-    this.modeButtonController.setCurrentState(data.readEnum(Mode.class));
+    this.mode = data.readEnum(Mode.class);
   }
 
   @Override
@@ -163,7 +171,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     return this.ticksPowered > 0 ? this.signalAspect : SignalAspect.RED;
   }
 
-  public enum Mode implements ButtonState {
+  public enum Mode implements ButtonState<Mode> {
 
     RISING_EDGE("rising_edge"),
     FALLING_EDGE("falling_edge");
@@ -171,6 +179,9 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     private final String name;
     private final ITextComponent label;
     private final List<? extends ITextComponent> tooltip;
+
+    private static final Map<String, Mode> byName = Arrays.stream(values())
+        .collect(Collectors.toMap(Mode::getSerializedName, Function.identity()));
 
     private Mode(String name) {
       this.name = name;
@@ -195,8 +206,17 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     }
 
     @Override
+    public Mode getNext() {
+      return values()[(this.ordinal() + 1) % values().length];
+    }
+
+    @Override
     public String getSerializedName() {
       return this.name;
+    }
+
+    public static Optional<Mode> getByName(String name) {
+      return Optional.ofNullable(byName.get(name));
     }
   }
 }

@@ -172,9 +172,9 @@
 
     "crowbar.description":"§oRight-click while sneaking to link carts.§r",
     "crowbar.link_broken":"§dLink broken.",
-    "crowbar.link_created":"§aLink created.",
+    "crowbar.link_created":"§aSuccessfully linked carts.",
     "crowbar.link_failed":"§cLink failed.",
-    "crowbar.link_started":"§dLink started.",
+    "crowbar.link_started":"§dStarted linking carts.",
 
     "seasons_crowbar.season": "Current season: %s",
 

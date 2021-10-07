@@ -7,7 +7,7 @@ import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.SecureSignalBoxBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -17,10 +17,10 @@ public class SetActionSignalBoxAttributesMessage {
 
   private final BlockPos blockPos;
   private final Set<SignalAspect> actionSignalAspects;
-  private final SecureSignalBoxBlockEntity.Lock lock;
+  private final LockableSignalBoxBlockEntity.Lock lock;
 
   public SetActionSignalBoxAttributesMessage(BlockPos blockPos,
-      Set<SignalAspect> actionSignalAspects, SecureSignalBoxBlockEntity.Lock lock) {
+      Set<SignalAspect> actionSignalAspects, LockableSignalBoxBlockEntity.Lock lock) {
     this.blockPos = blockPos;
     this.actionSignalAspects = actionSignalAspects;
     this.lock = lock;
@@ -40,7 +40,7 @@ public class SetActionSignalBoxAttributesMessage {
     for (int i = 0; i < size; i++) {
       actionSignalAspects.add(in.readEnum(SignalAspect.class));
     }
-    SecureSignalBoxBlockEntity.Lock lock = in.readEnum(SecureSignalBoxBlockEntity.Lock.class);
+    LockableSignalBoxBlockEntity.Lock lock = in.readEnum(LockableSignalBoxBlockEntity.Lock.class);
     return new SetActionSignalBoxAttributesMessage(blockPos, actionSignalAspects, lock);
   }
 
@@ -52,12 +52,13 @@ public class SetActionSignalBoxAttributesMessage {
         .ifPresent(signalBox -> {
           signalBox.getActionSignalAspects().clear();
           signalBox.getActionSignalAspects().addAll(this.actionSignalAspects);
-          signalBox.getLockController().setCurrentState(this.lock);
-          if (this.lock == SecureSignalBoxBlockEntity.Lock.LOCKED) {
+          signalBox.setLock(this.lock);
+          if (this.lock == LockableSignalBoxBlockEntity.Lock.LOCKED) {
             signalBox.setOwner(senderProfile);
           } else {
             signalBox.setOwner(null);
           }
+          signalBox.syncToClient();
         });
   }
 }

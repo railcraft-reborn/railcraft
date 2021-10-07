@@ -15,7 +15,7 @@ import net.minecraftforge.common.util.Constants;
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public abstract class ActionSignalBoxBlockEntity extends SecureSignalBoxBlockEntity {
+public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockEntity {
 
   private final Set<SignalAspect> actionSignalAspects = EnumSet.of(SignalAspect.GREEN);
 

@@ -1,6 +1,8 @@
 package mods.railcraft.client.gui.screen;
 
 import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Set;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mods.railcraft.api.signal.SignalAspect;
@@ -10,18 +12,24 @@ import mods.railcraft.client.gui.widget.button.ToggleButton;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.SecureSignalBoxBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEntity;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class ActionSignalBoxScreen extends BasicIngameScreen {
 
+  private static final int REFRESH_INTERVAL_TICKS = 20;
+
   private final ActionSignalBoxBlockEntity signalBox;
 
-  private MultiButton<SecureSignalBoxBlockEntity.Lock> lockButton;
+  private final Map<SignalAspect, ToggleButton> signalAspectButtons =
+      new EnumMap<>(SignalAspect.class);
 
+  private MultiButton<LockableSignalBoxBlockEntity.Lock> lockButton;
   private ITextComponent lockButtonTooltip;
+
+  private int refreshTimer;
 
   public ActionSignalBoxScreen(ActionSignalBoxBlockEntity signalBox) {
     super(signalBox.getDisplayName());
@@ -32,49 +40,43 @@ public class ActionSignalBoxScreen extends BasicIngameScreen {
   public void init() {
     int centreX = (this.width - this.x) / 2;
     int centreY = (this.height - this.y) / 2;
-    Set<SignalAspect> actionSignalAspects = this.signalBox.getActionSignalAspects();
-    this.addButton(new ToggleButton(centreX + 7, centreY + 30, 50, 20,
-        SignalAspect.GREEN.getDisplayName(),
-        btn -> this.toggleSignalAspect((ToggleButton) btn, SignalAspect.GREEN),
-        ButtonTexture.LARGE_BUTTON,
-        actionSignalAspects.contains(SignalAspect.GREEN)));
-    this.addButton(new ToggleButton(centreX + 12, centreY + 55, 70, 20,
-        SignalAspect.BLINK_YELLOW.getDisplayName(),
-        btn -> this.toggleSignalAspect((ToggleButton) btn, SignalAspect.BLINK_YELLOW),
-        ButtonTexture.LARGE_BUTTON,
-        actionSignalAspects.contains(SignalAspect.BLINK_YELLOW)));
-    this.addButton(new ToggleButton(centreX + 63, centreY + 30, 50, 20,
-        SignalAspect.YELLOW.getDisplayName(),
-        btn -> this.toggleSignalAspect((ToggleButton) btn, SignalAspect.YELLOW),
-        ButtonTexture.LARGE_BUTTON,
-        actionSignalAspects.contains(SignalAspect.YELLOW)));
-    this.addButton(new ToggleButton(centreX + 94, centreY + 55, 70, 20,
-        SignalAspect.BLINK_RED.getDisplayName(),
-        btn -> this.toggleSignalAspect((ToggleButton) btn, SignalAspect.BLINK_RED),
-        ButtonTexture.LARGE_BUTTON,
-        actionSignalAspects.contains(SignalAspect.BLINK_RED)));
-    this.addButton(new ToggleButton(centreX + 119, centreY + 30, 50, 20,
-        SignalAspect.RED.getDisplayName(),
-        btn -> this.toggleSignalAspect((ToggleButton) btn, SignalAspect.RED),
-        ButtonTexture.LARGE_BUTTON,
-        actionSignalAspects.contains(SignalAspect.RED)));
+
+    this.addSignalAspectButton(SignalAspect.GREEN, centreX + 7, centreY + 30, 50);
+    this.addSignalAspectButton(SignalAspect.YELLOW, centreX + 63, centreY + 30, 50);
+    this.addSignalAspectButton(SignalAspect.RED, centreX + 119, centreY + 30, 50);
+    this.addSignalAspectButton(SignalAspect.BLINK_YELLOW, centreX + 12, centreY + 55, 70);
+    this.addSignalAspectButton(SignalAspect.BLINK_RED, centreX + 94, centreY + 55, 70);
+
     this.addButton(this.lockButton = new MultiButton<>(centreX + 152, centreY + 8, 16, 16,
-        this.signalBox.getLockController(), __ -> {
-          if (this.signalBox.getLockController()
-              .getCurrentState() == SecureSignalBoxBlockEntity.Lock.LOCKED) {
-            this.signalBox.setOwner(this.minecraft.getUser().getGameProfile());
-          }
-          this.sendAttributes();
-        },
+        this.signalBox.getLock(),
+        __ -> this.setLock(this.lockButton.getState()),
         this::renderLockButtonTooltip));
 
     this.updateButtons();
     this.updateLockButtonTooltip();
   }
 
+  private void addSignalAspectButton(SignalAspect signalAspect, int x, int y, int width) {
+    Set<SignalAspect> actionSignalAspects = this.signalBox.getActionSignalAspects();
+    ToggleButton button = new ToggleButton(x, y, width, 20, signalAspect.getDisplayName(),
+        btn -> ((ToggleButton) btn).setToggled(this.toggleSignalAspect(signalAspect)),
+        ButtonTexture.LARGE_BUTTON,
+        actionSignalAspects.contains(signalAspect));
+    this.addButton(button);
+    this.signalAspectButtons.put(signalAspect, button);
+  }
+
+  private void setLock(LockableSignalBoxBlockEntity.Lock lock) {
+    if (this.signalBox.getLock() != lock) {
+      this.signalBox.setLock(lock);
+      this.signalBox.setOwner(lock == LockableSignalBoxBlockEntity.Lock.UNLOCKED ? null
+          : this.minecraft.getUser().getGameProfile());
+      this.sendAttributes();
+    }
+  }
+
   private void updateLockButtonTooltip() {
-    final SecureSignalBoxBlockEntity.Lock lock =
-        this.lockButton.getController().getCurrentState();
+    final LockableSignalBoxBlockEntity.Lock lock = this.lockButton.getState();
     switch (lock) {
       case LOCKED:
         this.lockButtonTooltip =
@@ -96,26 +98,35 @@ public class ActionSignalBoxScreen extends BasicIngameScreen {
         mouseX, mouseY, this.font);
   }
 
-  private void toggleSignalAspect(ToggleButton button, SignalAspect signalAspect) {
+  private boolean toggleSignalAspect(SignalAspect signalAspect) {
     boolean toggled = false;
     if (!this.signalBox.getActionSignalAspects().remove(signalAspect)) {
       this.signalBox.getActionSignalAspects().add(signalAspect);
       toggled = true;
     }
-    button.setToggled(toggled);
     this.sendAttributes();
+    return toggled;
   }
 
   @Override
   public void tick() {
     super.tick();
-    this.updateButtons();
-    this.updateLockButtonTooltip();
+    if (this.refreshTimer++ >= REFRESH_INTERVAL_TICKS) {
+      this.refreshTimer = 0;
+      this.updateButtons();
+      this.updateLockButtonTooltip();
+    }
   }
 
   private void updateButtons() {
     boolean canAccess = this.signalBox.canAccess(this.minecraft.getUser().getGameProfile());
-    this.buttons.forEach(widget -> widget.active = canAccess);
+    this.lockButton.active = canAccess;
+    this.lockButton.setState(this.signalBox.getLock());
+    this.signalAspectButtons.forEach((signalAspect, button) -> {
+      button.active = canAccess;
+      button.setToggled(
+          this.signalBox.getActionSignalAspects().contains(signalAspect));
+    });
   }
 
   private void sendAttributes() {
@@ -125,6 +136,6 @@ public class ActionSignalBoxScreen extends BasicIngameScreen {
     NetworkChannel.PLAY.getSimpleChannel().sendToServer(
         new SetActionSignalBoxAttributesMessage(this.signalBox.getBlockPos(),
             this.signalBox.getActionSignalAspects(),
-            this.lockButton.getController().getCurrentState()));
+            this.lockButton.getState()));
   }
 }

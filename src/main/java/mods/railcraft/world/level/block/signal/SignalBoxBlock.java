@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.signal;
 
 import java.util.function.Supplier;
-import mods.railcraft.api.core.Secure;
+import mods.railcraft.api.core.Lockable;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
@@ -149,8 +149,8 @@ public class SignalBoxBlock extends FourWayBlock {
   @Override
   public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader worldIn,
       BlockPos pos) {
-    return LevelUtil.getBlockEntity(worldIn, pos, Secure.class)
-        .filter(Secure::isLocked)
+    return LevelUtil.getBlockEntity(worldIn, pos, Lockable.class)
+        .filter(Lockable::isLocked)
         .map(__ -> 0.0F)
         .orElseGet(() -> super.getDestroyProgress(state, player, worldIn, pos));
   }

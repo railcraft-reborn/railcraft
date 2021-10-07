@@ -48,10 +48,14 @@ public class SetLocomotiveAttributesMessage {
         if (loco.canControl(player.getGameProfile())) {
           loco.setMode(this.mode);
           loco.setSpeed(this.speed);
-          if (this.lock != LocomotiveEntity.Lock.UNLOCKED) {
-            loco.setOwner(player.getGameProfile());
+          if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.getGameProfile())) {
+            loco.setLock(this.lock);
+            if (this.lock == LocomotiveEntity.Lock.UNLOCKED) {
+              loco.setOwner(null);
+            } else {
+              loco.setOwner(player.getGameProfile());
+            }
           }
-          loco.getLockController().setCurrentState(this.lock);
           loco.setReverse(this.reverse);
         }
       }

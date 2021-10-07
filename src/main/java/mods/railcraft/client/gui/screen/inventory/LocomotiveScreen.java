@@ -35,6 +35,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     extends RailcraftMenuScreen<T> {
 
+  private static final int REFRESH_INTERVAL_TICKS = 20;
+
   private final String typeTag;
   private final Map<LocomotiveEntity.Mode, Button> modeButtons =
       new EnumMap<>(LocomotiveEntity.Mode.class);
@@ -45,15 +47,17 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   private MultiButton<LocomotiveEntity.Lock> lockButton;
   private ITextComponent lockButtonTooltip;
 
+  private int refreshTimer;
+
   protected LocomotiveScreen(T menu, PlayerInventory inv, ITextComponent title, String typeTag) {
     super(menu, inv, title);
     this.typeTag = typeTag;
     this.imageHeight = LocomotiveMenu.DEFAULT_HEIGHT;
+    this.inventoryLabelY = this.imageHeight - 94;
   }
 
   private void updateLockButtonTooltip() {
-    final LocomotiveEntity.Lock lock =
-        this.lockButton.getController().getCurrentState();
+    final LocomotiveEntity.Lock lock = this.lockButton.getState();
     switch (lock) {
       case LOCKED:
         this.lockButtonTooltip = new TranslationTextComponent("screen.locomotive.lock.locked",
@@ -115,10 +119,8 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     // Lock button
     this.addButton(this.lockButton =
         new MultiButton<>(centreX + 152, centreY + this.getYSize() - 111, 16, 16,
-            this.menu.getLocomotive().getLockController(), __ -> {
-              this.menu.getLocomotive().setOwner(this.minecraft.getUser().getGameProfile());
-              this.setDirty();
-            },
+            this.menu.getLocomotive().getLock(),
+            __ -> this.setLock(this.lockButton.getState()),
             this::renderLockButtonTooltip));
 
     this.updateLockButtonTooltip();
@@ -132,21 +134,35 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   }
 
   private void setMode(LocomotiveEntity.Mode mode) {
-    this.getMenu().getLocomotive().setMode(mode);
-    this.setDirty();
+    if (this.getMenu().getLocomotive().getMode() != mode) {
+      this.getMenu().getLocomotive().setMode(mode);
+      this.sendAttributes();
+    }
   }
 
   private void setSpeed(LocomotiveEntity.Speed speed) {
-    this.getMenu().getLocomotive().setSpeed(speed);
-    this.setDirty();
+    if (this.getMenu().getLocomotive().getSpeed() != speed) {
+      this.getMenu().getLocomotive().setSpeed(speed);
+      this.sendAttributes();
+    }
+  }
+
+  private void setLock(LocomotiveEntity.Lock lock) {
+    if (this.getMenu().getLocomotive().getLock() != lock) {
+      this.getMenu().getLocomotive().setLock(lock);
+      this.menu.getLocomotive().setOwner(
+          lock == LocomotiveEntity.Lock.UNLOCKED ? null
+              : this.minecraft.getUser().getGameProfile());
+      this.sendAttributes();
+    }
   }
 
   private void toggleReverse() {
     this.getMenu().getLocomotive().setReverse(!this.getMenu().getLocomotive().isReverse());
-    this.setDirty();
+    this.sendAttributes();
   }
 
-  protected void setDirty() {
+  protected void sendAttributes() {
     this.updateButtons();
     this.updateLockButtonTooltip();
     LocomotiveEntity locomotive = this.getMenu().getLocomotive();
@@ -159,24 +175,24 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   @Override
   public void tick() {
     super.tick();
-    this.updateButtons();
-    this.updateLockButtonTooltip();
+    if (this.refreshTimer++ >= REFRESH_INTERVAL_TICKS) {
+      this.updateButtons();
+      this.updateLockButtonTooltip();
+    }
   }
 
   private void updateButtons() {
     LocomotiveEntity locomotive = this.getMenu().getLocomotive();
-    boolean canControl = locomotive.canControl(this.minecraft.getUser().getGameProfile());
     this.modeButtons
         .forEach((mode, button) -> button.active = locomotive.getMode() != mode
-            && canControl
             && locomotive.isAllowedMode(mode));
     this.speedButtons
         .forEach((speed, button) -> button.active = locomotive.getSpeed() != speed
-            && canControl
             && (!locomotive.isReverse()
                 || speed.getLevel() <= locomotive.getMaxReverseSpeed().getLevel()));
     this.reverseButton.setToggled(locomotive.isReverse());
-    this.reverseButton.active = canControl;
-    this.lockButton.active = canControl;
+    this.lockButton.active = !locomotive.isLocked()
+        || locomotive.getOwnerOrThrow().equals(this.minecraft.getUser().getGameProfile());
+    this.lockButton.setState(locomotive.getLock());
   }
 }

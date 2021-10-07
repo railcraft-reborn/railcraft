@@ -20,7 +20,7 @@ import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.carts.IPaintedCart;
 import mods.railcraft.api.carts.IRoutableCart;
-import mods.railcraft.api.core.Secure;
+import mods.railcraft.api.core.Lockable;
 import mods.railcraft.carts.CartTools;
 import mods.railcraft.carts.LinkageManagerImpl;
 import mods.railcraft.carts.LinkageManagerImpl.LinkType;
@@ -31,7 +31,6 @@ import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.gui.button.MultiButtonController;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.util.MathTools;
@@ -78,14 +77,16 @@ import net.minecraftforge.fml.network.NetworkHooks;
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
-    implements IDirectionalCart, ILinkableCart, IMinecart, Secure<LocomotiveEntity.Lock>,
+    implements IDirectionalCart, ILinkableCart, IMinecart, Lockable,
     IPaintedCart, IRoutableCart {
 
   private static final DataParameter<Boolean> HAS_FUEL =
       EntityDataManager.defineId(LocomotiveEntity.class, DataSerializers.BOOLEAN);
-  private static final DataParameter<Byte> LOCOMOTIVE_MODE =
+  private static final DataParameter<Byte> MODE =
       EntityDataManager.defineId(LocomotiveEntity.class, DataSerializers.BYTE);
-  private static final DataParameter<Byte> LOCOMOTIVE_SPEED =
+  private static final DataParameter<Byte> SPEED =
+      EntityDataManager.defineId(LocomotiveEntity.class, DataSerializers.BYTE);
+  private static final DataParameter<Byte> LOCK =
       EntityDataManager.defineId(LocomotiveEntity.class, DataSerializers.BYTE);
   private static final DataParameter<Boolean> REVERSE =
       EntityDataManager.defineId(LocomotiveEntity.class, DataSerializers.BOOLEAN);
@@ -111,8 +112,6 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   private static final Set<Mode> SUPPORTED_MODES =
       Collections.unmodifiableSet(EnumSet.allOf(Mode.class));
 
-  private final MultiButtonController<Lock> lockController =
-      MultiButtonController.create(0, Lock.values());
   protected float renderYaw;
   private int fuel;
   private int whistleDelay;
@@ -135,8 +134,9 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     this.entityData.define(HAS_FUEL, false);
     this.entityData.define(PRIMARY_COLOR, this.getDefaultPrimaryColor());
     this.entityData.define(SECONDARY_COLOR, this.getDefaultSecondaryColor());
-    this.entityData.define(LOCOMOTIVE_MODE, (byte) Mode.SHUTDOWN.ordinal());
-    this.entityData.define(LOCOMOTIVE_SPEED, (byte) Speed.NORMAL.ordinal());
+    this.entityData.define(MODE, (byte) Mode.SHUTDOWN.ordinal());
+    this.entityData.define(SPEED, (byte) Speed.NORMAL.ordinal());
+    this.entityData.define(LOCK, (byte) Lock.UNLOCKED.ordinal());
     this.entityData.define(REVERSE, false);
     this.entityData.define(EMBLEM, "");
     this.entityData.define(DESTINATION, "");
@@ -173,11 +173,6 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     if (tag.contains("emblem", Constants.NBT.TAG_STRING)) {
       this.setEmblem(tag.getString("emblem"));
     }
-  }
-
-  @Override
-  public MultiButtonController<Lock> getLockController() {
-    return this.lockController;
   }
 
   @Override
@@ -266,11 +261,11 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public Lock getLock() {
-    return this.lockController.getCurrentState();
+    return Lock.values()[this.entityData.get(LOCK)];
   }
 
   public void setLock(Lock lock) {
-    this.lockController.setCurrentState(lock);
+    this.entityData.set(LOCK, (byte) lock.ordinal());
   }
 
   public String getEmblem() {
@@ -297,14 +292,14 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public Mode getMode() {
-    return RailcraftDataSerializers.getEnum(this.getEntityData(), LOCOMOTIVE_MODE, Mode.values());
+    return RailcraftDataSerializers.getEnum(this.getEntityData(), MODE, Mode.values());
   }
 
   public void setMode(Mode mode) {
     if (!this.isAllowedMode(mode)) {
       return;
     }
-    RailcraftDataSerializers.setEnum(this.getEntityData(), LOCOMOTIVE_MODE, mode);
+    RailcraftDataSerializers.setEnum(this.getEntityData(), MODE, mode);
   }
 
   /**
@@ -328,14 +323,14 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
   }
 
   public Speed getSpeed() {
-    return RailcraftDataSerializers.getEnum(this.getEntityData(), LOCOMOTIVE_SPEED, Speed.values());
+    return RailcraftDataSerializers.getEnum(this.getEntityData(), SPEED, Speed.values());
   }
 
   public void setSpeed(Speed speed) {
     if (this.isReverse() && speed.getLevel() > this.getMaxReverseSpeed().getLevel()) {
       return;
     }
-    RailcraftDataSerializers.setEnum(this.getEntityData(), LOCOMOTIVE_SPEED, speed);
+    RailcraftDataSerializers.setEnum(this.getEntityData(), SPEED, speed);
   }
 
   public Speed getMaxReverseSpeed() {
@@ -402,7 +397,8 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
   public final void whistle() {
     if (this.whistleDelay <= 0) {
-      this.level.playSound(null, this, this.getWhistleSound(), this.getSoundSource(), 1.0F, 1.0F);
+      this.level.playSound(null, this, this.getWhistleSound(), this.getSoundSource(),
+          1.0F, 1.0F);
       this.whistleDelay = WHISTLE_DELAY;
     }
   }
@@ -433,7 +429,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
       this.tempIdle--;
     }
 
-    if (this.tickCount % WHISTLE_INTERVAL == 0 && isRunning()
+    if (this.tickCount % WHISTLE_INTERVAL == 0 && this.isRunning()
         && this.random.nextInt(WHISTLE_CHANCE) == 0) {
       this.whistle();
     }
@@ -672,19 +668,16 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
     data.putString("mode", this.getMode().getSerializedName());
     data.putString("speed", this.getSpeed().getSerializedName());
+    data.putString("lock", this.getLock().getSerializedName());
 
     data.putInt("primaryColor", this.getPrimaryColor());
     data.putInt("secondaryColor", this.getSecondaryColor());
 
     data.putFloat("whistlePitch", this.whistlePitch);
 
-    data.putInt("fuel", fuel);
+    data.putInt("fuel", this.fuel);
 
-    data.putBoolean("reverse", this.getEntityData().get(REVERSE));
-
-    data.put("lock", this.lockController.serializeNBT());
-
-
+    data.putBoolean("reverse", this.isReverse());
   }
 
   @Override
@@ -699,6 +692,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
 
     this.setMode(Mode.getByName(data.getString("mode")).orElse(Mode.IDLE));
     this.setSpeed(Speed.getByName(data.getString("speed")).orElse(Speed.NORMAL));
+    this.setLock(Lock.getByName(data.getString("lock")).orElse(Lock.UNLOCKED));
 
     this.setPrimaryColor(data.contains("primaryColor", Constants.NBT.TAG_INT)
         ? data.getInt("primaryColor")
@@ -714,8 +708,6 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     if (data.contains("reverse", Constants.NBT.TAG_BYTE)) {
       this.getEntityData().set(REVERSE, data.getBoolean("reverse"));
     }
-
-    this.lockController.deserializeNBT(data.getCompound("lock"));
   }
 
   public static void applyAction(GameProfile gameProfile, AbstractMinecartEntity cart,
@@ -882,7 +874,7 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     }
   }
 
-  public enum Lock implements ButtonState {
+  public enum Lock implements ButtonState<Lock> {
 
     UNLOCKED("unlocked", ButtonTexture.UNLOCKED_BUTTON),
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON),
@@ -907,6 +899,11 @@ public abstract class LocomotiveEntity extends AbstractRailcraftMinecartEntity
     @Override
     public TexturePosition getTexturePosition() {
       return this.texture;
+    }
+
+    @Override
+    public Lock getNext() {
+      return values()[(this.ordinal() + 1) % values().length];
     }
 
     @Override

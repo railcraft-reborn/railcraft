@@ -6,7 +6,6 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.gui.button.MultiButtonController;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.util.TrackTools;
 import net.minecraft.block.BlockState;
@@ -35,10 +34,8 @@ public abstract class MaintenanceMinecartEntity extends AbstractRailcraftMinecar
       EntityDataManager.defineId(MaintenanceMinecartEntity.class, DataSerializers.BYTE);
   protected static final double DRAG_FACTOR = 0.9;
   private static final int BLINK_DURATION = 3;
-  public static final DataParameter<Byte> CART_MODE =
+  public static final DataParameter<Byte> MODE =
       EntityDataManager.defineId(MaintenanceMinecartEntity.class, DataSerializers.BYTE);
-  private final MultiButtonController<Mode> modeController =
-      MultiButtonController.create(0, Mode.values());
 
   protected MaintenanceMinecartEntity(EntityType<?> type, World world) {
     super(type, world);
@@ -53,7 +50,7 @@ public abstract class MaintenanceMinecartEntity extends AbstractRailcraftMinecar
   protected void defineSynchedData() {
     super.defineSynchedData();
     this.entityData.define(BLINK, (byte) 0);
-    this.entityData.define(CART_MODE, (byte) Mode.SERVICE.ordinal());
+    this.entityData.define(MODE, (byte) Mode.SERVICE.ordinal());
   }
 
   @Override
@@ -61,16 +58,12 @@ public abstract class MaintenanceMinecartEntity extends AbstractRailcraftMinecar
     return this.getMode().getSpeed();
   }
 
-  public MultiButtonController<Mode> getModeController() {
-    return this.modeController;
-  }
-
   public Mode getMode() {
-    return RailcraftDataSerializers.getEnum(this.entityData, CART_MODE, Mode.values());
+    return RailcraftDataSerializers.getEnum(this.entityData, MODE, Mode.values());
   }
 
   public void setMode(Mode mode) {
-    RailcraftDataSerializers.setEnum(this.entityData, CART_MODE, mode);
+    RailcraftDataSerializers.setEnum(this.entityData, MODE, mode);
   }
 
   @Override
@@ -139,7 +132,7 @@ public abstract class MaintenanceMinecartEntity extends AbstractRailcraftMinecar
     return trackShape;
   }
 
-  public enum Mode implements ButtonState {
+  public enum Mode implements ButtonState<Mode> {
 
     SERVICE("service", 0.1F),
     TRANSPORT("transport", 0.4F);
@@ -154,6 +147,10 @@ public abstract class MaintenanceMinecartEntity extends AbstractRailcraftMinecar
       this.label = new TranslationTextComponent("gui.railcraft.cart.maintenance.mode." + name);
     }
 
+    public float getSpeed() {
+      return this.speed;
+    }
+
     @Override
     public ITextComponent getLabel() {
       return this.label;
@@ -164,17 +161,14 @@ public abstract class MaintenanceMinecartEntity extends AbstractRailcraftMinecar
       return ButtonTexture.SMALL_BUTTON;
     }
 
-    public float getSpeed() {
-      return this.speed;
+    @Override
+    public Mode getNext() {
+      return values()[(this.ordinal() + 1) % values().length];
     }
 
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public Mode getNext() {
-      return values()[(this.ordinal() + 1) % values().length];
     }
   }
 }

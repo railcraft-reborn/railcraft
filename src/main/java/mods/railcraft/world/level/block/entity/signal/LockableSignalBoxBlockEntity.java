@@ -1,11 +1,15 @@
 package mods.railcraft.world.level.block.entity.signal;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.core.Secure;
+import mods.railcraft.api.core.Lockable;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.gui.button.MultiButtonController;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -16,24 +20,26 @@ import net.minecraft.util.text.StringTextComponent;
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public abstract class SecureSignalBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements Secure<SecureSignalBoxBlockEntity.Lock> {
+public abstract class LockableSignalBoxBlockEntity extends AbstractSignalBoxBlockEntity
+    implements Lockable {
 
-  private final MultiButtonController<Lock> lockController =
-      MultiButtonController.create(0, Lock.values());
+  private Lock lock = Lock.UNLOCKED;
 
-  public SecureSignalBoxBlockEntity(TileEntityType<?> type) {
+  public LockableSignalBoxBlockEntity(TileEntityType<?> type) {
     super(type);
   }
 
-  @Override
-  public MultiButtonController<Lock> getLockController() {
-    return this.lockController;
+  public Lock getLock() {
+    return this.lock;
+  }
+
+  public void setLock(Lock lock) {
+    this.lock = lock;
   }
 
   @Override
   public boolean isLocked() {
-    return this.lockController.getCurrentState() == Lock.LOCKED;
+    return this.lock == Lock.LOCKED;
   }
 
   public boolean canAccess(GameProfile gameProfile) {
@@ -43,32 +49,35 @@ public abstract class SecureSignalBoxBlockEntity extends AbstractSignalBoxBlockE
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    data.put("lock", this.lockController.serializeNBT());
+    data.putString("lock", this.lock.getSerializedName());
     return data;
   }
 
   @Override
   public void load(BlockState state, CompoundNBT data) {
     super.load(state, data);
-    this.lockController.deserializeNBT(data.getCompound("lock"));
+    this.lock = Lock.getByName(data.getString("lock")).orElse(Lock.UNLOCKED);
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    data.writeEnum(this.lockController.getCurrentState());
+    data.writeEnum(this.lock);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    this.lockController.setCurrentState(data.readEnum(Lock.class));
+    this.lock = data.readEnum(Lock.class);
   }
 
-  public enum Lock implements ButtonState {
+  public enum Lock implements ButtonState<Lock> {
 
     UNLOCKED("unlocked", ButtonTexture.UNLOCKED_BUTTON),
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON);
+
+    private static final Map<String, Lock> byName = Arrays.stream(values())
+        .collect(Collectors.toMap(Lock::getSerializedName, Function.identity()));
 
     private final String name;
     private final TexturePosition texture;
@@ -89,8 +98,17 @@ public abstract class SecureSignalBoxBlockEntity extends AbstractSignalBoxBlockE
     }
 
     @Override
+    public Lock getNext() {
+      return values()[(this.ordinal() + 1) % values().length];
+    }
+
+    @Override
     public String getSerializedName() {
       return this.name;
+    }
+
+    public static Optional<Lock> getByName(String name) {
+      return Optional.ofNullable(byName.get(name));
     }
   }
 }
