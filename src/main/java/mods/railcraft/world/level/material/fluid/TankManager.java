@@ -40,6 +40,12 @@ public class TankManager extends ForwardingList<StandardTank> implements IFluidH
       (t, f) -> t.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, f).isPresent();
   private final List<StandardTank> tanks = new ArrayList<>();
 
+  public TankManager(StandardTank... tanks) {
+    for (StandardTank tank : tanks) {
+      this.add(tank);
+    }
+  }
+
   @Override
   protected List<StandardTank> delegate() {
     return tanks;
@@ -142,13 +148,15 @@ public class TankManager extends ForwardingList<StandardTank> implements IFluidH
       fluidStack.setAmount(capacity);
   }
 
-  public void pull(AdjacentBlockEntityCache cache, Predicate<? super TileEntity> filter, int tankIndex,
+  public void pull(AdjacentBlockEntityCache cache, Predicate<? super TileEntity> filter,
+      int tankIndex,
       int amount, Direction... sides) {
     Collection<IFluidHandler> targets = FluidTools.findNeighbors(cache, filter, sides);
     pull(targets, tankIndex, amount);
   }
 
-  public void push(AdjacentBlockEntityCache cache, Predicate<? super TileEntity> filter, int tankIndex,
+  public void push(AdjacentBlockEntityCache cache, Predicate<? super TileEntity> filter,
+      int tankIndex,
       int amount, Direction... sides) {
     Collection<IFluidHandler> targets = FluidTools.findNeighbors(cache, filter, sides);
     push(targets, tankIndex, amount);

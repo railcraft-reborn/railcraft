@@ -3,11 +3,11 @@ package mods.railcraft.advancements.criterion;
 import java.util.ArrayList;
 import java.util.Collection;
 import com.google.gson.JsonObject;
-import mods.railcraft.api.carts.CartUtil;
+import com.mojang.authlib.GameProfile;
+import mods.railcraft.api.core.Ownable;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.util.JsonTools;
-import mods.railcraft.util.PlayerUtil;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -41,41 +41,35 @@ final class CartLinkingTrigger extends BaseTrigger<CartLinkingTrigger.Instance> 
 
   @SubscribeEvent
   public void onCartLink(CartLinkEvent.Link event) {
-    AbstractMinecartEntity one = event.getCartOne();
-    AbstractMinecartEntity two = event.getCartTwo();
+    this.processCart(event.getCartOne(), event.getCartTwo());
+    this.processCart(event.getCartTwo(), event.getCartOne());
+  }
 
-    ServerPlayerEntity ownerOne =
-        (ServerPlayerEntity) PlayerUtil.getPlayer(one.level, CartUtil.getCartOwner(one));
-    ServerPlayerEntity ownerTwo =
-        (ServerPlayerEntity) PlayerUtil.getPlayer(two.level, CartUtil.getCartOwner(two));
+  private void processCart(AbstractMinecartEntity cart, AbstractMinecartEntity linkedCart) {
+    if (!(cart instanceof Ownable)) {
+      return;
+    }
 
-    Collection<Listener<Instance>> doneOne = new ArrayList<>();
-    Collection<Listener<Instance>> doneTwo = new ArrayList<>();
+    ServerPlayerEntity owner = ((Ownable) cart).getOwner()
+        .map(GameProfile::getId)
+        .map(cart.level::getPlayerByUUID)
+        .filter(ServerPlayerEntity.class::isInstance)
+        .map(ServerPlayerEntity.class::cast)
+        .orElse(null);
+    if (owner == null) {
+      return;
+    }
 
-    if (ownerOne != null) {
-      for (Listener<Instance> listener : manager.get(ownerOne.getAdvancements())) {
-        Instance instance = listener.getTriggerInstance();
-        if (instance.test(ownerOne, one, two)) {
-          doneOne.add(listener);
-        }
+    Collection<Listener<Instance>> done = new ArrayList<>();
+    for (Listener<Instance> listener : this.manager.get(owner.getAdvancements())) {
+      Instance instance = listener.getTriggerInstance();
+      if (instance.test(owner, cart, linkedCart)) {
+        done.add(listener);
       }
     }
 
-    if (ownerTwo != null) {
-      for (Listener<Instance> listener : manager.get(ownerTwo.getAdvancements())) {
-        Instance instance = listener.getTriggerInstance();
-        if (instance.test(ownerTwo, two, one)) {
-          doneTwo.add(listener);
-        }
-      }
-    }
-
-    for (Listener<Instance> listener : doneOne) {
-      listener.run(ownerOne.getAdvancements());
-    }
-
-    for (Listener<Instance> listener : doneTwo) {
-      listener.run(ownerTwo.getAdvancements());
+    for (Listener<Instance> listener : done) {
+      listener.run(owner.getAdvancements());
     }
   }
 

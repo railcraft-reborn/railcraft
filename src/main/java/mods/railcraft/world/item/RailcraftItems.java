@@ -1,7 +1,11 @@
 package mods.railcraft.world.item;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.entity.RailcraftEntityTypes;
+import mods.railcraft.world.entity.CreativeLocomotiveEntity;
+import mods.railcraft.world.entity.ElectricLocomotiveEntity;
+import mods.railcraft.world.entity.SteamLocomotiveEntity;
+import mods.railcraft.world.entity.TrackLayerMinecartEntity;
+import mods.railcraft.world.entity.TrackRemoverMinecartEntity;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
@@ -128,28 +132,23 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> TRACK_REMOVER =
       ITEMS.register("track_remover",
-          () -> new CartItem(
-              RailcraftEntityTypes.TRACK_REMOVER,
+          () -> new CartItem(TrackRemoverMinecartEntity::new,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TRACK_LAYER =
       ITEMS.register("track_layer",
-          () -> new CartItem(
-              RailcraftEntityTypes.TRACK_LAYER,
+          () -> new CartItem(TrackLayerMinecartEntity::new,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TUNNEL_BORE =
       ITEMS.register("tunnel_bore",
-          () -> new TunnelBoreItem(
-              RailcraftEntityTypes.TUNNEL_BORE,
-              new Item.Properties()
-                  .stacksTo(1)
-                  .tab(TAB)));
+          () -> new TunnelBoreItem(new Item.Properties()
+              .stacksTo(1)
+              .tab(TAB)));
 
   public static final RegistryObject<Item> CREATIVE_LOCOMOTIVE =
       ITEMS.register("creative_locomotive",
-          () -> new LocomotiveItem(
-              RailcraftEntityTypes.CREATIVE_LOCOMOTIVE,
+          () -> new LocomotiveItem(CreativeLocomotiveEntity::new,
               DyeColor.BLACK, DyeColor.MAGENTA,
               new Item.Properties()
                   .stacksTo(1)
@@ -157,8 +156,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> ELECTRIC_LOCOMOTIVE =
       ITEMS.register("electric_locomotive",
-          () -> new LocomotiveItem(
-              RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE,
+          () -> new LocomotiveItem(ElectricLocomotiveEntity::new,
               DyeColor.YELLOW, DyeColor.BLACK,
               new Item.Properties()
                   .stacksTo(1)
@@ -166,7 +164,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> STEAM_LOCOMOTIVE =
       ITEMS.register("steam_locomotive",
-          () -> new LocomotiveItem(RailcraftEntityTypes.STEAM_LOCOMOTIVE,
+          () -> new LocomotiveItem(SteamLocomotiveEntity::new,
               DyeColor.LIGHT_GRAY, DyeColor.GRAY,
               new Item.Properties()
                   .stacksTo(1)

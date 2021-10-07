@@ -150,7 +150,7 @@ public class SignalBoxBlock extends FourWayBlock {
   public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader worldIn,
       BlockPos pos) {
     return LevelUtil.getBlockEntity(worldIn, pos, Secure.class)
-        .filter(Secure::isSecure)
+        .filter(Secure::isLocked)
         .map(__ -> 0.0F)
         .orElseGet(() -> super.getDestroyProgress(state, player, worldIn, pos));
   }

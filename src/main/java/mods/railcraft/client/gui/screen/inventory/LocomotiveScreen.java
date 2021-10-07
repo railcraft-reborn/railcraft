@@ -11,7 +11,6 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -19,6 +18,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
+import mods.railcraft.client.gui.widget.button.ToggleButton;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
@@ -29,7 +29,6 @@ import mods.railcraft.world.inventory.LocomotiveMenu;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -41,48 +40,47 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       new EnumMap<>(LocomotiveEntity.Mode.class);
   private final Map<LocomotiveEntity.Speed, Button> speedButtons =
       new EnumMap<>(LocomotiveEntity.Speed.class);
-  private Button reverseButton;
+  private ToggleButton reverseButton;
 
-  private MultiButton<?> lockButton;
-  private List<? extends ITextProperties> lockedTooltip;
-  private List<? extends ITextProperties> unlockedTooltip;
-  private List<? extends ITextProperties> privateTooltip;
-
-  private LocomotiveEntity.Mode mode;
-  private LocomotiveEntity.Speed speed;
-  private boolean reverse;
+  private MultiButton<LocomotiveEntity.Lock> lockButton;
+  private ITextComponent lockButtonTooltip;
 
   protected LocomotiveScreen(T menu, PlayerInventory inv, ITextComponent title, String typeTag) {
     super(menu, inv, title);
     this.typeTag = typeTag;
-    this.mode = menu.getLocomotive().getMode();
-    this.speed = menu.getLocomotive().getSpeed();
-    this.reverse = menu.getLocomotive().isReverse();
-
     this.imageHeight = LocomotiveMenu.DEFAULT_HEIGHT;
+  }
 
-    this.lockedTooltip = Collections.singletonList(
-        new TranslationTextComponent("screen.locomotive.lock.locked",
-            menu.getLocomotive().getClientOwnerName()));
-    this.unlockedTooltip = Collections.singletonList(
-        new TranslationTextComponent("screen.locomotive.lock.unlocked",
-            menu.getLocomotive().getClientOwnerName()));
-    this.privateTooltip = Collections.singletonList(
-        new TranslationTextComponent("screen.locomotive.lock.private",
-            menu.getLocomotive().getClientOwnerName()));
+  private void updateLockButtonTooltip() {
+    final LocomotiveEntity.Lock lock =
+        this.lockButton.getController().getCurrentState();
+    switch (lock) {
+      case LOCKED:
+        this.lockButtonTooltip = new TranslationTextComponent("screen.locomotive.lock.locked",
+            this.menu.getLocomotive().getOwnerOrThrow().getName());
+        break;
+      case UNLOCKED:
+        this.lockButtonTooltip = new TranslationTextComponent("screen.locomotive.lock.unlocked");
+        break;
+      case PRIVATE:
+        this.lockButtonTooltip = new TranslationTextComponent("screen.locomotive.lock.private",
+            this.menu.getLocomotive().getOwnerOrThrow().getName());
+        break;
+      default:
+        break;
+    }
   }
 
   @Override
   public void init() {
     super.init();
-    if (menu.getLocomotive() == null)
-      return;
-    int w = (width - this.getXSize()) / 2;
-    int h = (height - this.getYSize()) / 2;
+
+    int centreX = (this.width - this.getXSize()) / 2;
+    int centreY = (this.height - this.getYSize()) / 2;
 
     // Mode buttons
-    for (Mode mode : menu.getLocomotive().getAllowedModes()) {
-      Button button = new RailcraftButton(0, h + this.getYSize() - 129, 55, 16,
+    for (Mode mode : this.getMenu().getLocomotive().getSupportedModes()) {
+      Button button = new RailcraftButton(0, centreY + this.getYSize() - 129, 55, 16,
           new TranslationTextComponent(
               "screen.locomotive.mode." + mode.getSerializedName()),
           b -> this.setMode(mode),
@@ -94,92 +92,91 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
           ButtonTexture.SMALL_BUTTON);
       this.modeButtons.put(mode, button);
     }
-    GuiUtil.newButtonRowAuto(this::addButton, w + 3, 171, this.modeButtons.values());
+    GuiUtil.newButtonRowAuto(this::addButton, centreX + 3, 171, this.modeButtons.values());
 
     // Reverse button
     this.addButton(this.reverseButton =
-        new RailcraftButton(w + 4, h + this.getYSize() - 112, 12, 16, new StringTextComponent("R"),
-            b -> this.setReverse(!this.reverse), ButtonTexture.SMALL_BUTTON));
-    this.reverseButton.active = this.menu.getLocomotive().isReverse();
+        new ToggleButton(centreX + 4, centreY + this.getYSize() - 112, 12, 16,
+            new StringTextComponent("R"), __ -> this.toggleReverse(),
+            ButtonTexture.SMALL_BUTTON, this.getMenu().getLocomotive().isReverse()));
 
     // Speed buttons
     for (Speed speed : Speed.values()) {
       String label =
           IntStream.range(0, speed.getLevel()).mapToObj(i -> ">").collect(Collectors.joining());
-      Button button = new RailcraftButton(0, h + this.getYSize() - 112,
+      Button button = new RailcraftButton(0, centreY + this.getYSize() - 112,
           7 + speed.getLevel() * 5, 16, new StringTextComponent(label), b -> this.setSpeed(speed),
           ButtonTexture.SMALL_BUTTON);
       button.active = this.menu.getLocomotive().getSpeed() == speed;
       this.speedButtons.put(speed, button);
     }
-    GuiUtil.newButtonRow(this::addButton, w + 21, 5, this.speedButtons.values());
+    GuiUtil.newButtonRow(this::addButton, centreX + 21, 5, this.speedButtons.values());
 
     // Lock button
     this.addButton(this.lockButton =
-        new MultiButton<>(w + 152, h + this.getYSize() - 111, 16, 16,
-            this.menu.getLocomotive().getLockController(), __ -> this.sendAttributes(),
-            this::renderLockTooltip));
-    this.lockButton.active = true;
+        new MultiButton<>(centreX + 152, centreY + this.getYSize() - 111, 16, 16,
+            this.menu.getLocomotive().getLockController(), __ -> {
+              this.menu.getLocomotive().setOwner(this.minecraft.getUser().getGameProfile());
+              this.setDirty();
+            },
+            this::renderLockButtonTooltip));
 
+    this.updateLockButtonTooltip();
     this.updateButtons();
   }
 
+  private void renderLockButtonTooltip(
+      Button button, MatrixStack matrixStack, int mouseX, int mouseY) {
+    this.renderWrappedToolTip(matrixStack, Collections.singletonList(this.lockButtonTooltip),
+        mouseX, mouseY, this.font);
+  }
+
   private void setMode(LocomotiveEntity.Mode mode) {
-    this.mode = mode;
-    this.sendAttributes();
+    this.getMenu().getLocomotive().setMode(mode);
+    this.setDirty();
   }
 
   private void setSpeed(LocomotiveEntity.Speed speed) {
-    this.speed = speed;
-    this.sendAttributes();
+    this.getMenu().getLocomotive().setSpeed(speed);
+    this.setDirty();
   }
 
-  private void setReverse(boolean reverse) {
-    this.reverse = reverse;
-    this.sendAttributes();
+  private void toggleReverse() {
+    this.getMenu().getLocomotive().setReverse(!this.getMenu().getLocomotive().isReverse());
+    this.setDirty();
   }
 
-  protected void sendAttributes() {
-    if (menu.getLocomotive() == null)
-      return;
+  protected void setDirty() {
+    this.updateButtons();
+    this.updateLockButtonTooltip();
+    LocomotiveEntity locomotive = this.getMenu().getLocomotive();
     NetworkChannel.PLAY.getSimpleChannel().sendToServer(
         new SetLocomotiveAttributesMessage(this.menu.getLocomotive().getId(),
-            this.mode, this.speed,
-            this.menu.getLocomotive().getLockController().getCurrentStateIndex(),
-            this.reverse));
+            locomotive.getMode(), locomotive.getSpeed(), locomotive.getLock(),
+            locomotive.isReverse()));
   }
 
   @Override
   public void tick() {
     super.tick();
-    updateButtons();
+    this.updateButtons();
+    this.updateLockButtonTooltip();
   }
 
   private void updateButtons() {
-    this.modeButtons.forEach((mode, button) -> button.active = this.mode != mode);
-    this.speedButtons.forEach((speed, button) -> button.active = this.speed != speed);
-    // if (ownerName != null && !ownerName.equals(locoOwner)) {
-    // this.locoOwner = ownerName;
-    // this.lockedTooltip =
-    // Collections.singletonList(new TranslationTextComponent(
-    // "gui.railcraft.locomotive.tips.button.locked", ownerName));
-    // this.unlockedTooltip =
-    // Collections.singletonList(new TranslationTextComponent(
-    // "gui.railcraft.locomotive.tips.button.unlocked", ownerName));
-    // this.privateTooltip =
-    // Collections.singletonList(new TranslationTextComponent(
-    // "gui.railcraft.locomotive.tips.button.private", ownerName));
-    // }
-  }
-
-  private void renderLockTooltip(Button button, MatrixStack matrixStack, int mouseX, int mouseY) {
-    List<? extends ITextProperties> tooltip = this.menu.getLocomotive().isPrivate()
-        ? this.privateTooltip
-        : this.menu.getLocomotive().isSecure()
-            ? this.lockedTooltip
-            : this.lockButton.active ? this.unlockedTooltip : null;
-    if (tooltip != null) {
-      this.renderWrappedToolTip(matrixStack, tooltip, mouseX, mouseY, font);
-    }
+    LocomotiveEntity locomotive = this.getMenu().getLocomotive();
+    boolean canControl = locomotive.canControl(this.minecraft.getUser().getGameProfile());
+    this.modeButtons
+        .forEach((mode, button) -> button.active = locomotive.getMode() != mode
+            && canControl
+            && locomotive.isAllowedMode(mode));
+    this.speedButtons
+        .forEach((speed, button) -> button.active = locomotive.getSpeed() != speed
+            && canControl
+            && (!locomotive.isReverse()
+                || speed.getLevel() <= locomotive.getMaxReverseSpeed().getLevel()));
+    this.reverseButton.setToggled(locomotive.isReverse());
+    this.reverseButton.active = canControl;
+    this.lockButton.active = canControl;
   }
 }

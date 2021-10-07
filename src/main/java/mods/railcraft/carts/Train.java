@@ -207,8 +207,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     getExisting(next).filter(t -> t != this).ifPresent(Train::kill);
     this.addTrainTag(next);
 
-    AbstractMinecartEntity linkA = LinkageManager.INSTANCE.getLinkedCartA(next);
-    AbstractMinecartEntity linkB = LinkageManager.INSTANCE.getLinkedCartB(next);
+    AbstractMinecartEntity linkA = LinkageManagerImpl.INSTANCE.getLinkedCartA(next);
+    AbstractMinecartEntity linkB = LinkageManagerImpl.INSTANCE.getLinkedCartB(next);
 
     if (linkA != null && linkA != prev && !this.contains(linkA))
       this.rebuild(next, linkA);

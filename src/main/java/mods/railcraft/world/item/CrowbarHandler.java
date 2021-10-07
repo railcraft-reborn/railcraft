@@ -7,7 +7,7 @@ import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.carts.CartTools;
-import mods.railcraft.carts.LinkageManager;
+import mods.railcraft.carts.LinkageManagerImpl;
 import mods.railcraft.carts.RailcraftCart;
 import mods.railcraft.carts.Train;
 import mods.railcraft.season.Season;
@@ -84,12 +84,12 @@ public class CrowbarHandler {
     if (!linkable || ((ILinkableCart) cart).isLinkable()) {
       AbstractMinecartEntity last = linkMap.remove(player);
       if (last != null && last.isAlive()) {
-        LinkageManager lm = LinkageManager.INSTANCE;
+        LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
         if (lm.areLinked(cart, last, false)) {
           lm.breakLink(cart, last);
           used = true;
           player.displayClientMessage(new TranslationTextComponent("crowbar.link_broken"), true);
-          LinkageManager.printDebug("Reason For Broken Link: User removed link.");
+          LinkageManagerImpl.printDebug("Reason For Broken Link: User removed link.");
         } else {
           used = lm.createLink(last, cart);
           if (used) {
@@ -120,8 +120,8 @@ public class CrowbarHandler {
     } else if (cart instanceof IDirectionalCart) {
       ((IDirectionalCart) cart).reverse();
     } else if (cart instanceof TrackRemoverMinecartEntity) {
-      ((TrackRemoverMinecartEntity) cart)
-          .setMode(((TrackRemoverMinecartEntity) cart).getOtherMode());
+      TrackRemoverMinecartEntity trackRemover = (TrackRemoverMinecartEntity) cart;
+      trackRemover.setMode(trackRemover.getMode().getNext());
     } else {
       int lvl = EnchantmentHelper.getItemEnchantmentLevel(RailcraftEnchantments.SMACK.get(), stack);
       if (lvl == 0) {

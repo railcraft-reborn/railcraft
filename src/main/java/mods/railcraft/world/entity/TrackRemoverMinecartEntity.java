@@ -14,8 +14,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
-public class TrackRemoverMinecartEntity extends AbstractMaintenanceMinecartEntity {
+public class TrackRemoverMinecartEntity extends MaintenanceMinecartEntity {
 
   private final Set<BlockPos> tracksBehind = new HashSet<>();
   private final Set<BlockPos> tracksRemoved = new HashSet<>();
@@ -24,7 +25,8 @@ public class TrackRemoverMinecartEntity extends AbstractMaintenanceMinecartEntit
     super(type, world);
   }
 
-  public TrackRemoverMinecartEntity(double x, double y, double z, World world) {
+  public TrackRemoverMinecartEntity(ItemStack itemStack, double x, double y, double z,
+      ServerWorld world) {
     super(RailcraftEntityTypes.TRACK_REMOVER.get(), x, y, z, world);
   }
 
@@ -50,7 +52,7 @@ public class TrackRemoverMinecartEntity extends AbstractMaintenanceMinecartEntit
   }
 
   private void removeTrack(BlockPos track) {
-    if (this.getMode() == CartMode.TRANSPORT)
+    if (this.getMode() == Mode.TRANSPORT)
       return;
     if (track.distSqr(this.blockPosition()) >= 9)
       this.tracksRemoved.add(track);

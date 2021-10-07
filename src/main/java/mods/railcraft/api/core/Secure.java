@@ -10,8 +10,5 @@ public interface Secure<T extends ButtonState> extends Ownable {
 
   MultiButtonController<T> getLockController();
 
-  /*
-   * Indicates if this object is locked
-   */
-  boolean isSecure();
+  boolean isLocked();
 }

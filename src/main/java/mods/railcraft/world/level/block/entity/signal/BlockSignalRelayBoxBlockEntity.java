@@ -57,7 +57,7 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
 
   @Override
   public int getRedstoneSignal(Direction side) {
-    return this.isActionAspect(this.blockSignal.getSignalAspect())
+    return this.isActionSignalAspect(this.blockSignal.getSignalAspect())
         ? PowerUtil.FULL_POWER
         : PowerUtil.NO_POWER;
   }

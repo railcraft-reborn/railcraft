@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import mods.railcraft.api.carts.ILinkableCart;
-import mods.railcraft.api.carts.ILinkageManager;
+import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.util.MathTools;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -35,7 +35,7 @@ import net.minecraftforge.fml.loading.FMLLoader;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public enum LinkageManager implements ILinkageManager {
+public enum LinkageManagerImpl implements LinkageManager {
 
   INSTANCE;
 
@@ -452,7 +452,7 @@ public enum LinkageManager implements ILinkageManager {
       return Collections.emptyList();
     }
     return () -> new Iterator<AbstractMinecartEntity>() {
-      private final LinkageManager lm = INSTANCE;
+      private final LinkageManagerImpl lm = INSTANCE;
       private @Nullable AbstractMinecartEntity last;
       private @Nullable AbstractMinecartEntity next;
       private AbstractMinecartEntity current = start;

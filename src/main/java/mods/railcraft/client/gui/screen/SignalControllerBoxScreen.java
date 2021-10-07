@@ -58,7 +58,7 @@ public class SignalControllerBoxScreen extends BasicIngameScreen {
 
   @Override
   public void removed() {
-    if (this.minecraft.level != null && this.minecraft.level.isClientSide()) {
+    if (this.minecraft.level != null) {
       this.signalBox.setDefaultAspect(this.defaultAspect);
       this.signalBox.setPoweredAspect(this.poweredAspect);
       NetworkChannel.PLAY.getSimpleChannel().sendToServer(

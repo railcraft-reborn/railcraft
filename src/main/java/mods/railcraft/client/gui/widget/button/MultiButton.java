@@ -38,10 +38,10 @@ public final class MultiButton<T extends ButtonState> extends RailcraftButton {
   @Override
   public void onPress() {
     if (this.canChange && this.active) {
-      super.onPress();
       this.controller.incrementState();
       this.setTexturePosition(this.controller.getCurrentState().getTexturePosition());
       this.setMessage(this.controller.getCurrentState().getLabel());
+      super.onPress();
     }
   }
 

@@ -1,6 +1,8 @@
 package mods.railcraft.network;
 
 import java.util.Arrays;
+import java.util.Optional;
+import com.mojang.authlib.GameProfile;
 import mods.railcraft.Railcraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
@@ -55,11 +57,38 @@ public class RailcraftDataSerializers {
         }
       };
 
+  public static final IDataSerializer<Optional<GameProfile>> OPTIONAL_GAME_PROFILE =
+      new IDataSerializer<Optional<GameProfile>>() {
+        @Override
+        public void write(PacketBuffer packetBuffer, Optional<GameProfile> optional) {
+          if (optional.isPresent()) {
+            packetBuffer.writeBoolean(false);
+            GameProfile gameProfile = optional.get();
+            packetBuffer.writeUUID(gameProfile.getId());
+            packetBuffer.writeUtf(gameProfile.getName(), 16);
+          } else {
+            packetBuffer.writeBoolean(true);
+          }
+        }
+
+        @Override
+        public Optional<GameProfile> read(PacketBuffer packetBuffer) {
+          return packetBuffer.readBoolean() ? Optional.empty()
+              : Optional.of(new GameProfile(packetBuffer.readUUID(), packetBuffer.readUtf(16)));
+        }
+
+        @Override
+        public Optional<GameProfile> copy(Optional<GameProfile> optional) {
+          return optional;
+        }
+      };
+
   // We can't use deferred register because we need access to the type parameters of the
   // IDataSerializers
   public static void register(RegistryEvent.Register<DataSerializerEntry> event) {
     register(event.getRegistry(), FLUID_STACK, "fluid_stack");
     register(event.getRegistry(), BYTE_ARRAY, "byte_array");
+    register(event.getRegistry(), OPTIONAL_GAME_PROFILE, "optional_game_profile");
   }
 
   private static void register(IForgeRegistry<DataSerializerEntry> registry,

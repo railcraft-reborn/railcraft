@@ -19,6 +19,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -28,6 +29,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -52,7 +54,6 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   private static final byte TICKS_PER_BOILER_CYCLE = 2;
   private static final int FUEL_PER_REQUEST = 3;
 
-  private final SteamBoiler boiler;
   protected final StandardTank waterTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 6) {
     @Override
     public int fill(FluidStack resource, FluidAction doFill) {
@@ -64,7 +65,11 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
       .setFilterFluid(RailcraftFluids.STEAM)
       .disableDrain()
       .disableFill();
-  // FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt)
+
+  private final SteamBoiler boiler = new SteamBoiler(this.waterTank, this.steamTank)
+      .setEfficiencyModifier(RailcraftConfig.server.fuelPerSteamMultiplier.get())
+      .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
+
   protected final InventoryMapper invWaterInput =
       InventoryMapper.make(this, SLOT_WATER_INPUT, 1)
           .withStackSizeLimit(4);
@@ -72,7 +77,8 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   protected final InventoryMapper invWaterContainers =
       InventoryMapper.make(this, SLOT_WATER_INPUT, 3);
 
-  private final LazyOptional<TankManager> tankManager = LazyOptional.of(TankManager::new);
+  private final LazyOptional<TankManager> tankManager =
+      LazyOptional.of(() -> new TankManager(this.waterTank, this.steamTank));
 
   private int update = this.random.nextInt();
 
@@ -80,27 +86,16 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
 
   protected AbstractSteamLocomotiveEntity(EntityType<?> type, World world) {
     super(type, world);
-    setMaxReverseSpeed(Speed.SLOWEST);
-
-    this.getTankManager().add(this.waterTank);
-    this.getTankManager().add(this.steamTank);
-
-    this.boiler = new SteamBoiler(this.waterTank, this.steamTank)
-        .setEfficiencyModifier(RailcraftConfig.server.fuelPerSteamMultiplier.get())
-        .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
   }
 
-  protected AbstractSteamLocomotiveEntity(EntityType<?> type, double x, double y, double z,
-      World world) {
-    super(type, x, y, z, world);
-    setMaxReverseSpeed(Speed.SLOWEST);
+  protected AbstractSteamLocomotiveEntity(ItemStack itemStack, EntityType<?> type, double x,
+      double y, double z, ServerWorld world) {
+    super(itemStack, type, x, y, z, world);
+  }
 
-    this.getTankManager().add(this.waterTank);
-    this.getTankManager().add(this.steamTank);
-
-    this.boiler = new SteamBoiler(this.waterTank, this.steamTank)
-        .setEfficiencyModifier(RailcraftConfig.server.fuelPerSteamMultiplier.get())
-        .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
+  @Override
+  public Speed getMaxReverseSpeed() {
+    return Speed.SLOWEST;
   }
 
   @Override
@@ -111,7 +106,12 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   }
 
   @Override
-  public SoundEvent getWhistle() {
+  public boolean isAllowedMode(Mode mode) {
+    return this.waterTank.isEmpty() && mode == Mode.SHUTDOWN || super.isAllowedMode(mode);
+  }
+
+  @Override
+  public SoundEvent getWhistleSound() {
     return RailcraftSoundEvents.STEAM_WHISTLE.get();
   }
 
@@ -225,7 +225,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   }
 
   @Override
-  public int getMoreGoJuice() {
+  public int retrieveFuel() {
     FluidStack steam = steamTank.getFluid();
     if (steam == FluidStack.EMPTY) {
       return 0;

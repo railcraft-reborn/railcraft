@@ -5,8 +5,8 @@ import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.filters.StackFilters;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
-import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.steam.SolidFuelProvider;
@@ -22,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
@@ -39,7 +40,8 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
   private static final int[] SLOTS = InvTools.buildSlotArray(0, 7);
 
   private final InventoryMapper fuelInventory = InventoryMapper.make(this, FUEL_SLOT, 1);
-  private final InventoryMapper extraFuelInventory = InventoryMapper.make(this, EXTRA_FUEL_SLOT_A, 3);
+  private final InventoryMapper extraFuelInventory =
+      InventoryMapper.make(this, EXTRA_FUEL_SLOT_A, 3);
   private final InventoryMapper invFuel = InventoryMapper.make(this, FUEL_SLOT, 4);
   private final InventoryMapper ticketInventory =
       new InventoryMapper(this, TICKET_SLOT, 2).ignoreItemChecks();
@@ -50,8 +52,9 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
     super(type, world);
   }
 
-  public SteamLocomotiveEntity(double x, double y, double z, World world) {
-    super(RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, world);
+  public SteamLocomotiveEntity(ItemStack itemStack, double x, double y, double z,
+      ServerWorld world) {
+    super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, world);
   }
 
   @Override
@@ -75,18 +78,6 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
 
   @Override
   public void tick() {
-    // if (Game.isHost(world)) {
-    // if (RailcraftConfig.printSignalDebug()) {
-    // if (outOfWater && !tankWater.isEmpty())
-    // outOfWater = false;
-    // else if (!outOfWater && tankWater.isEmpty()) {
-    // outOfWater = true;
-    // Game.log(Level.INFO, "Solid Steam Locomotive ran out of water! [{0}, {1}, {2}] [locked:{3}]
-    // [idle:{4}] [mode:{5}]", posX, posY, posZ, Train.getTrain(this).isTrainLockedDown(), isIdle(),
-    // getMode().name());
-    // }
-    // }
-    // }
     super.tick();
 
     if (!this.level.isClientSide()) {

@@ -36,7 +36,7 @@ public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
 
   @Override
   public int getRedstoneSignal(Direction direction) {
-    return this.isActionAspect(this.signalReceiver.getPrimarySignalAspect())
+    return this.isActionSignalAspect(this.signalReceiver.getPrimarySignalAspect())
         ? PowerUtil.FULL_POWER
         : PowerUtil.NO_POWER;
   }

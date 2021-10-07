@@ -9,6 +9,7 @@
 
 package mods.railcraft.carts;
 
+import org.apache.commons.lang3.ArrayUtils;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.season.Season;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -20,8 +21,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.world.GameRules;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
@@ -30,8 +29,6 @@ public interface RailcraftCart {
   DataParameter<Byte> SEASON = DataSerializers.BYTE.createAccessor(225);
 
   ItemStack getContents();
-
-  default void initEntityFromItem(ItemStack stack) {}
 
   Item getItem();
 
@@ -46,16 +43,16 @@ public interface RailcraftCart {
   default ItemStack[] getComponents(AbstractMinecartEntity cart) {
     ItemStack contents = getContents();
     if (!contents.isEmpty()) {
-      return new ItemStack[] { new ItemStack(Items.MINECART), contents };
+      return new ItemStack[] {new ItemStack(Items.MINECART), contents};
     }
-    return new ItemStack[] { createCartItem(cart) };
+    return new ItemStack[] {createCartItem(cart)};
   }
 
   default ItemStack[] getItemsDropped(AbstractMinecartEntity cart) {
     if (RailcraftConfig.server.cartsBreakOnDrop.get()) {
       return getComponents(cart);
     } else {
-      return new ItemStack[] { createCartItem(cart) };
+      return new ItemStack[] {createCartItem(cart)};
     }
   }
 

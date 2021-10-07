@@ -4,6 +4,7 @@ package mods.railcraft.network;
 import mods.railcraft.Railcraft;
 import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.network.play.PacketEffect;
+import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
 import mods.railcraft.network.play.SetMenuStringMessage;
@@ -77,6 +78,13 @@ public enum NetworkChannel {
           .encoder(LinkedCartsMessage::encode)
           .decoder(LinkedCartsMessage::decode)
           .consumer(LinkedCartsMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetActionSignalBoxAttributesMessage.class, 0x09,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetActionSignalBoxAttributesMessage::encode)
+          .decoder(SetActionSignalBoxAttributesMessage::decode)
+          .consumer(SetActionSignalBoxAttributesMessage::handle)
           .add();
     }
   };

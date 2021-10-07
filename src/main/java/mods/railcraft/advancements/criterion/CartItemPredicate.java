@@ -1,6 +1,6 @@
 package mods.railcraft.advancements.criterion;
 
-import mods.railcraft.api.item.MinecartPlacer;
+import mods.railcraft.api.item.MinecartFactory;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,6 +11,6 @@ final class CartItemPredicate extends ItemPredicate {
   @Override
   public boolean matches(ItemStack stack) {
     Item item = stack.getItem();
-    return item instanceof MinecartPlacer || item instanceof MinecartItem;
+    return item instanceof MinecartFactory || item instanceof MinecartItem;
   }
 }

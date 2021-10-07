@@ -15,16 +15,16 @@ import net.minecraft.world.World;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public abstract class AbstractMaintenancePatternMinecartEntity extends AbstractMaintenanceMinecartEntity
+public abstract class MaintenancePatternMinecartEntity extends MaintenanceMinecartEntity
     implements ISidedInventory {
 
   protected final InventoryAdvanced patternInv = new InventoryAdvanced(6).callbackInv(this);
 
-  protected AbstractMaintenancePatternMinecartEntity(EntityType<?> type, World world) {
+  protected MaintenancePatternMinecartEntity(EntityType<?> type, World world) {
     super(type, world);
   }
 
-  protected AbstractMaintenancePatternMinecartEntity(EntityType<?> type, double x, double y, double z,
+  protected MaintenancePatternMinecartEntity(EntityType<?> type, double x, double y, double z,
       World world) {
     super(type, x, y, z, world);
   }

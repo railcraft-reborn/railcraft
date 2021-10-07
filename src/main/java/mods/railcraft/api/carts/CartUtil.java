@@ -8,36 +8,20 @@ package mods.railcraft.api.carts;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.api.core.RailcraftFakePlayer;
-import mods.railcraft.api.item.MinecartPlacer;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.MinecartItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.Constants.NBT;
 
 public final class CartUtil {
 
-  private static ILinkageManager linkageManager = new ILinkageManager() {};
+  private static LinkageManager linkageManager = new LinkageManager() {};
   private static ITrainTransferHelper transferHelper = new ITrainTransferHelper() {};
 
   public static ITrainTransferHelper transferHelper() {
@@ -51,108 +35,8 @@ public final class CartUtil {
    *
    * @return an instance of ILinkageManager
    */
-  public static ILinkageManager linkageManager() {
+  public static LinkageManager linkageManager() {
     return linkageManager;
-  }
-
-  /**
-   * Sets a carts owner.
-   * <p/>
-   * The is really only needed by the bukkit ports.
-   */
-  public static void setCartOwner(AbstractMinecartEntity cart, PlayerEntity owner) {
-    setCartOwner(cart, owner.getGameProfile());
-  }
-
-  /**
-   * Sets a carts owner.
-   * <p/>
-   * The is really only needed by the bukkit ports.
-   */
-  public static void setCartOwner(AbstractMinecartEntity cart, GameProfile owner) {
-    if (!cart.level.isClientSide()) {
-      CompoundNBT data = cart.getPersistentData();
-      data.put("owner", NBTUtil.writeGameProfile(new CompoundNBT(),
-          new GameProfile(owner.getId(), owner.getName())));
-      // if (owner.getName() != null)
-      // data.putString("owner", owner.getName());
-      // if (owner.getId() != null)
-      // data.putString("ownerId", owner.getId().toString());
-    }
-  }
-
-  /**
-   * Gets a carts owner. (player.username)
-   * <p/>
-   * The is really only needed by the bukkit ports.
-   */
-  public static GameProfile getCartOwner(AbstractMinecartEntity cart) {
-    CompoundNBT data = cart.getPersistentData();
-
-    if (data.contains("owner", NBT.TAG_COMPOUND)) {
-      GameProfile profile = NBTUtil.readGameProfile(data.getCompound("owner"));
-      if (profile != null) {
-        return profile;
-      }
-    }
-
-    String ownerName = RailcraftConstantsAPI.UNKNOWN_PLAYER;
-    if (data.contains("owner", NBT.TAG_STRING))
-      ownerName = data.getString("owner");
-
-    UUID ownerId = null;
-    if (data.contains("ownerId"))
-      ownerId = UUID.fromString(data.getString("ownerId"));
-    return new GameProfile(ownerId, ownerName);
-  }
-
-  /**
-   * Does the cart have a owner?
-   * <p/>
-   * The is really only needed by the bukkit ports.
-   */
-  public static boolean doesCartHaveOwner(AbstractMinecartEntity cart) {
-    CompoundNBT data = cart.getPersistentData();
-    return data.contains("owner");
-  }
-
-  /**
-   * Spawns a new cart entity using the provided item.
-   * <p/>
-   * The backing item must implement {@code IMinecartItem} and/or extend {@code MinecartItem}.
-   * <p/>
-   * Generally Forge requires all cart items to extend MinecartItem.
-   *
-   * @param owner The player name that should used as the owner
-   * @param cart An ItemStack containing a cart item, will not be changed by the function
-   * @param world The World object
-   * @return the cart placed or null if failed
-   * @see IMinecartItem, MinecartItem
-   */
-  public static @Nullable AbstractMinecartEntity placeCart(GameProfile owner, ItemStack cart,
-      ServerWorld world, BlockPos pos) {
-    cart = cart.copy();
-    if (cart.getItem() instanceof MinecartPlacer) {
-      MinecartPlacer mi = (MinecartPlacer) cart.getItem();
-      return mi.placeCart(owner, cart, world, pos);
-    } else if (cart.getItem() instanceof MinecartItem)
-      try {
-        ActionResultType placed = cart.getItem().useOn(
-            new ItemUseContext(RailcraftFakePlayer.get(world, pos, cart, Hand.MAIN_HAND),
-                Hand.MAIN_HAND,
-                new BlockRayTraceResult(Vector3d.ZERO, Direction.DOWN, pos, false)));
-        if (placed == ActionResultType.SUCCESS) {
-          List<AbstractMinecartEntity> carts = getMinecartsAt(world, pos, 0.3f);
-          if (!carts.isEmpty()) {
-            setCartOwner(carts.get(0), owner);
-            return carts.get(0);
-          }
-        }
-      } catch (Exception e) {
-        return null;
-      }
-
-    return null;
   }
 
   // Most of these functions have been replaced internally by the EntitySearcher, but they remain

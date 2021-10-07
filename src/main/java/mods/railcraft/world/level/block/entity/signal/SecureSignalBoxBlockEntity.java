@@ -2,11 +2,10 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.Secure;
-import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
+import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.gui.button.MultiButtonController;
-import mods.railcraft.util.PlayerUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -17,13 +16,13 @@ import net.minecraft.util.text.StringTextComponent;
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements Secure<SecuredSignalBoxBlockEntity.Lock> {
+public abstract class SecureSignalBoxBlockEntity extends AbstractSignalBoxBlockEntity
+    implements Secure<SecureSignalBoxBlockEntity.Lock> {
 
   private final MultiButtonController<Lock> lockController =
       MultiButtonController.create(0, Lock.values());
 
-  public SecuredSignalBoxBlockEntity(TileEntityType<?> type) {
+  public SecureSignalBoxBlockEntity(TileEntityType<?> type) {
     super(type);
   }
 
@@ -33,12 +32,12 @@ public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlock
   }
 
   @Override
-  public boolean isSecure() {
+  public boolean isLocked() {
     return this.lockController.getCurrentState() == Lock.LOCKED;
   }
 
-  protected boolean canAccess(GameProfile player) {
-    return !this.isSecure() || PlayerUtil.isOwnerOrOp(getOwner(), player);
+  public boolean canAccess(GameProfile gameProfile) {
+    return !this.isLocked() || this.isOwnerOrOperator(gameProfile);
   }
 
   @Override
@@ -57,19 +56,19 @@ public abstract class SecuredSignalBoxBlockEntity extends AbstractSignalBoxBlock
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    data.writeByte(this.lockController.getCurrentStateIndex());
+    data.writeEnum(this.lockController.getCurrentState());
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    this.lockController.setCurrentState(data.readByte());
+    this.lockController.setCurrentState(data.readEnum(Lock.class));
   }
 
   public enum Lock implements ButtonState {
 
-    UNLOCKED("unlocked", new SimpleTexturePosition(224, 0, 16, 16)),
-    LOCKED("locked", new SimpleTexturePosition(240, 0, 16, 16));
+    UNLOCKED("unlocked", ButtonTexture.UNLOCKED_BUTTON),
+    LOCKED("locked", ButtonTexture.LOCKED_BUTTON);
 
     private final String name;
     private final TexturePosition texture;

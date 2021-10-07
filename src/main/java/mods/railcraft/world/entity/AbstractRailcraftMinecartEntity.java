@@ -8,7 +8,6 @@ import mods.railcraft.carts.CartTools;
 import mods.railcraft.carts.RailcraftCart;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.util.inventory.IInventoryComposite;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
@@ -34,7 +33,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public abstract class AbstractRailcraftMinecartEntity extends ContainerMinecartEntity
-    implements RailcraftCart, IItemCart, IInventoryComposite {
+    implements RailcraftCart, IItemCart {
 
   private final Direction[] travelDirectionHistory = new Direction[2];
   protected @Nullable Direction travelDirection;

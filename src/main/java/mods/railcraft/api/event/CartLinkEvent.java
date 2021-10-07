@@ -15,7 +15,7 @@ import net.minecraftforge.eventbus.api.Event;
  *
  * <p>
  * In order to cancel linking, call
- * {@link mods.railcraft.api.carts.ILinkageManager#breakLink(AbstractMinecartEntity, AbstractMinecartEntity)}
+ * {@link mods.railcraft.api.carts.LinkageManager#breakLink(AbstractMinecartEntity, AbstractMinecartEntity)}
  * </p>
  */
 public class CartLinkEvent extends Event {
