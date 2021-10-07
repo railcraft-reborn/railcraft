@@ -57,6 +57,12 @@ public class RollingRecipeBuilder {
     return this.define(key, Ingredient.of(itemValue));
   }
 
+  /**
+   * Define a key for the recipie.
+   * @param key A charachter used by the pattern
+   * @param itemValue The ingredient, can be an {@link net.minecraft.tags.ITag ItemTag}
+   * @return this, for chaning functions.
+   */
   public RollingRecipeBuilder define(Character key, Ingredient itemValue) {
     if (this.key.containsKey(key)) {
       throw new IllegalArgumentException("Symbol '" + key + "' is already defined!");
@@ -69,6 +75,11 @@ public class RollingRecipeBuilder {
     }
   }
 
+  /**
+   * Defines a row of the recipie's pattern.
+   * @param pattern Three char-patern using the keys from the define()
+   * @return this, for chaning functions.
+   */
   public RollingRecipeBuilder pattern(String pattern) {
     if (!this.rows.isEmpty() && pattern.length() != 3) {
       throw new IllegalArgumentException("Pattern must be the same width on every line!");
@@ -82,6 +93,10 @@ public class RollingRecipeBuilder {
     this.save(finishedRecipie, ForgeRegistries.ITEMS.getKey(this.result));
   }
 
+  /**
+   * Saves the item for registration.
+   * @param key Custom filename for multiple recipies creating a single item
+   */
   public void save(Consumer<IFinishedRecipe> finishedRecipie, String key) {
     ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
     if ((new ResourceLocation(key)).equals(resourcelocation)) {
@@ -92,12 +107,17 @@ public class RollingRecipeBuilder {
     }
   }
 
+  /**
+   * Saves the item for registration.
+   */
   public void save(Consumer<IFinishedRecipe> finishedRecipie, ResourceLocation resourceLocation) {
     finishedRecipie.accept(
         new RollingRecipeBuilder.Result(resourceLocation, this.result, this.count,
           this.delay, this.rows, this.key));
   }
+
   public class Result implements IFinishedRecipe {
+
     private final ResourceLocation id;
     private final Item resultItem;
     private final int count;

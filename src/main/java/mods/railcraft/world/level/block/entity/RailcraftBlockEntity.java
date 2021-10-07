@@ -41,8 +41,9 @@ public abstract class RailcraftBlockEntity extends TileEntity
   }
 
   public UUID getId() {
-    if (this.id == null)
+    if (this.id == null) {
       this.id = UUID.randomUUID();
+    }
     return this.id;
   }
 
@@ -85,7 +86,8 @@ public abstract class RailcraftBlockEntity extends TileEntity
 
   protected final void setOwner(GameProfile profile) {
     this.owner = profile;
-    // sendUpdateToClient(); Sending this when a te is initialized will cause client net handler
+    // sendUpdateToClient(); Sending this when a te is initialized will cause client
+    // net handler
     // errors because the tile is not yet on client
   }
 
@@ -102,8 +104,9 @@ public abstract class RailcraftBlockEntity extends TileEntity
     List<String> debug = new ArrayList<>();
     debug.add("Railcraft Tile Entity Data Dump");
     debug.add("Object: " + this);
-    if (!this.level.getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO))
+    if (!this.level.getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO)) {
       debug.add(String.format("Coordinates: d=%d, %s", this.getLevel().dimension(), getBlockPos()));
+    }
     debug.add("Owner: " + this.owner.getName());
     return debug;
   }
@@ -113,10 +116,12 @@ public abstract class RailcraftBlockEntity extends TileEntity
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
     PlayerUtil.writeOwnerToNBT(data, this.owner);
-    if (this.id != null)
+    if (this.id != null) {
       data.putUUID("id", this.id);
-    if (this.customName != null)
+    }
+    if (this.customName != null) {
       data.putString("customName", ITextComponent.Serializer.toJson(this.customName));
+    }
     return data;
   }
 
@@ -125,15 +130,18 @@ public abstract class RailcraftBlockEntity extends TileEntity
   public void load(BlockState blockState, CompoundNBT data) {
     super.load(blockState, data);
     this.owner = PlayerUtil.readOwnerFromNBT(data);
-    if (data.hasUUID("id"))
+    if (data.hasUUID("id")) {
       this.id = data.getUUID("id");
-    if (data.contains("customName", Constants.NBT.TAG_STRING))
+    }
+    if (data.contains("customName", Constants.NBT.TAG_STRING)) {
       this.customName = ITextComponent.Serializer.fromJson(data.getString("customName"));
+    }
   }
 
   public void updateNeighbors() {
-    if (this.hasLevel())
+    if (this.hasLevel()) {
       this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
+    }
   }
 
   public final int getX() {

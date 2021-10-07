@@ -6,8 +6,8 @@ import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxB
 import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DistantSignalBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.DualDistantSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DualBlockSignalBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.DualDistantSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DualTokenSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
@@ -140,6 +140,12 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<TileEntityType<?>> MANUAL_ROLLING_MACHINE =
       BLOCK_ENTITY_TYPES.register("manual_rolling_machine",
           () -> TileEntityType.Builder
-              .of(ManualRollingMachineBlockEntity::new, RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
-              .build(null));
+            .of(ManualRollingMachineBlockEntity::new, RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
+            .build(null));
+
+  public static final RegistryObject<TileEntityType<?>> COKE_OVEN =
+      BLOCK_ENTITY_TYPES.register("coke_oven",
+          () -> TileEntityType.Builder
+            .of(CokeOvenBlockEntity::new, RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
+            .build(null));
 }

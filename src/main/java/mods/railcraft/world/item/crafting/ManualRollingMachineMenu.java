@@ -101,9 +101,12 @@ public class ManualRollingMachineMenu extends Container {
   }
 
   /**
-   * Callback when RollingTableEntity finished ticking away, does: - Adds the item to the
-   * resultSlots - Resets the TileEntity's timings
+   * Callback when RollingTableEntity finished ticking away.
+   * does:
    *
+   * <p>- Adds the item to the resultSlots
+   *
+   * <p>- Resets the TileEntity's timings
    * @param devnull This Parameter does Not Exist
    */
   private void onFinishedCallback(Void devnull) {
@@ -126,13 +129,16 @@ public class ManualRollingMachineMenu extends Container {
     if (!this.level.isClientSide) {
       ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)this.player;
       ItemStack itemstack = ItemStack.EMPTY;
-      Optional<RollingRecipe> optional = this.level.getServer().getRecipeManager().getRecipeFor(RailcraftRecipeTypes.ROLLING, this.craftSlots, this.level);
+      Optional<RollingRecipe> optional = this.level.getServer()
+          .getRecipeManager()
+          .getRecipeFor(RailcraftRecipeTypes.ROLLING, this.craftSlots, this.level);
 
       this.setData(0, 10000); // nuke the clock
       this.setData(2, 0);
       if (optional.isPresent()) {
         RollingRecipe icraftingrecipe = optional.get();
-        if (this.resultSlotClickyBox.setRecipeUsed(this.level, serverplayerentity, icraftingrecipe)) {
+        if (this.resultSlotClickyBox.setRecipeUsed(
+              this.level, serverplayerentity, icraftingrecipe)) {
           itemstack = icraftingrecipe.assemble(this.craftSlots);
           this.setData(0, icraftingrecipe.getTickCost());
         }

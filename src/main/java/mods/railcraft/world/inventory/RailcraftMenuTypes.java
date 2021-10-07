@@ -2,6 +2,7 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.CreativeLocomotiveEntity;
+import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraftforge.fml.RegistryObject;
@@ -32,4 +33,9 @@ public class RailcraftMenuTypes {
   public static final RegistryObject<ContainerType<ManualRollingMachineMenu>> MANUAL_ROLLING_MACHINE =
       MENU_TYPES.register("manual_rolling_machine",
           () -> new ContainerType<ManualRollingMachineMenu>(ManualRollingMachineMenu::new));
+
+  public static final RegistryObject<ContainerType<CokeOvenMenu>> COKE_OVEN =
+      MENU_TYPES.register("coke_oven",
+          () -> new ContainerType<CokeOvenMenu>(CokeOvenMenu::new));
+
 }

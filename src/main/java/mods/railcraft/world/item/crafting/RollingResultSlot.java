@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
 /**
- * Alternate to CraftingResultSlot
+ * Alternate to CraftingResultSlot.
  */
 public class RollingResultSlot extends Slot {
   private final CraftingInventory craftSlots;
