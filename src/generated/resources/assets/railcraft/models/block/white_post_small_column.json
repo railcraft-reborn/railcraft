@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/post_small_column",
+  "textures": {
+    "texture": "railcraft:block/white_post"
+  }
+}

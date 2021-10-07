@@ -198,14 +198,14 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
     this.decompress(finishedRecipie, RailcraftItems.BRONZE_NUGGET.get(), RailcraftTags.Items.BRONZE_INGOT);
 
     // delete vanilla rail recipie
-    ShapedRecipeBuilder.shaped(Items.AIR)
-      .define('I', Tags.Items.INGOTS_IRON)
-      .define('S', Items.STICK)
-      .pattern("S S")
-      .pattern("SIS")
-      .pattern("S S")
-      .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
-      .save(finishedRecipie, "norails");
+//    ShapedRecipeBuilder.shaped(Items.AIR)
+//      .define('I', Tags.Items.INGOTS_IRON)
+//      .define('S', Items.STICK)
+//      .pattern("S S")
+//      .pattern("SIS")
+//      .pattern("S S")
+//      .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+//      .save(finishedRecipie, "norails");
   }
 
   private final void crowbarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, ITag<Item> materialTag) {

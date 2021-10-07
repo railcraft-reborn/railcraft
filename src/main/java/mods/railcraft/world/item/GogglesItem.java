@@ -36,7 +36,7 @@ public class GogglesItem extends ArmorItem {
     if (!level.isClientSide()) {
       incrementAura(itemStack);
       Aura aura = getAura(itemStack);
-      player.displayClientMessage(aura.getDescriptionText(), false);
+      player.displayClientMessage(getDescriptionText(aura.getDisplayName()), true);
     }
     return ActionResult.sidedSuccess(itemStack, level.isClientSide());
   }
@@ -44,8 +44,13 @@ public class GogglesItem extends ArmorItem {
   @Override
   public void appendHoverText(ItemStack itemStack, @Nullable World level,
       List<ITextComponent> lines, ITooltipFlag adv) {
-    lines.add(getAura(itemStack).getDescriptionText());
+    lines.add(getDescriptionText(getAura(itemStack).getDisplayName()));
     lines.add(new TranslationTextComponent("goggles.description"));
+  }
+
+  public static ITextComponent getDescriptionText(ITextComponent displayName) {
+    return new TranslationTextComponent("goggles.aura",
+        displayName.copy().withStyle(TextFormatting.DARK_PURPLE));
   }
 
   public static Aura getAura(ItemStack itemStack) {
@@ -57,14 +62,10 @@ public class GogglesItem extends ArmorItem {
   }
 
   public static void incrementAura(ItemStack itemStack) {
-    Aura aura = Optional.of(itemStack.getOrCreateTag())
-        .filter(tag -> tag.contains("aura", Constants.NBT.TAG_STRING))
-        .map(tag -> tag.getString("aura"))
-        .flatMap(Aura::getByName)
-        .orElse(Aura.NONE)
-        .getNext();
-    if (aura == Aura.TRACKING)
+    Aura aura = getAura(itemStack).getNext();
+    if (aura == Aura.TRACKING) {
       aura.getNext();
+    }
     itemStack.getOrCreateTag().putString("aura", aura.getSerializedName());
   }
 
@@ -100,11 +101,6 @@ public class GogglesItem extends ArmorItem {
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public ITextComponent getDescriptionText() {
-      return new TranslationTextComponent("goggles.aura",
-          this.displayName.copy().withStyle(TextFormatting.DARK_PURPLE));
     }
 
     public Aura getNext() {

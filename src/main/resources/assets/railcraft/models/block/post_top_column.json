@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+	  	"particle": "#texture"
+	},
+	"elements": [
+		{
+			"name": "Center post",
+			"from": [6, 6, 6],
+			"to": [10, 16, 10],
+			"faces": {
+				"north": {"uv": [6, 0, 10, 10], "texture": "#texture", "tintindex": 0},
+				"east": {"uv": [6, 0, 10, 10], "texture": "#texture", "tintindex": 0},
+				"south": {"uv": [6, 0, 10, 10], "texture": "#texture", "tintindex": 0},
+				"west": {"uv": [6, 0, 10, 10], "texture": "#texture", "tintindex": 0},
+				"up": {"uv": [3, 9, 7, 13], "texture": "#texture", "cullface": "up", "tintindex": 0},
+				"down": {"uv": [6, 6, 10, 10], "texture": "#texture", "cullface": "down", "tintindex": 0}
+			}
+		}
+	]
+}

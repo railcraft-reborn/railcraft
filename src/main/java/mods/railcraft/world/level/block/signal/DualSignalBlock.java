@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.signal;
 
 import java.util.function.Supplier;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
+import mods.railcraft.world.level.block.post.PostBlock;
 import net.minecraft.util.math.shapes.VoxelShape;
 
 /**
@@ -15,6 +16,6 @@ public class DualSignalBlock extends AbstractSignalBlock {
 
   public DualSignalBlock(Supplier<? extends AbstractSignalBlockEntity> blockEntityFactory,
       Properties properties) {
-    super(SHAPE, blockEntityFactory, properties);
+    super(SHAPE, PostBlock.HORIZONTAL_CONNECTION_SHAPES, blockEntityFactory, properties);
   }
 }

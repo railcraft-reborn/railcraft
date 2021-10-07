@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -39,18 +38,18 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
 
       if (this.checkAbandonPairing(stack, player, (ServerWorld) level,
           signalNetwork::stopLinking)) {
-        player.sendMessage(
-            new TranslationTextComponent("signal_surveyor.abandoned"), Util.NIL_UUID);
+        player.displayClientMessage(
+            new TranslationTextComponent("signal_surveyor.abandoned"), true);
         return ActionResultType.SUCCESS;
       }
 
       DimensionPos signalPos = this.getPeerPos(stack);
       TrackLocator.Status trackStatus = signal.getTrackLocator().getTrackStatus();
       if (trackStatus == TrackLocator.Status.INVALID) {
-        player.sendMessage(new TranslationTextComponent("signal_surveyor.invalid_track",
-            signal.getDisplayName().getString()), Util.NIL_UUID);
+        player.displayClientMessage(new TranslationTextComponent("signal_surveyor.invalid_track",
+            signal.getDisplayName().getString()), true);
       } else if (signalPos == null) {
-        player.sendMessage(new TranslationTextComponent("signal_surveyor.begin"), Util.NIL_UUID);
+        player.displayClientMessage(new TranslationTextComponent("signal_surveyor.begin"), true);
         this.setPeerPos(stack, DimensionPos.from(blockEntity));
         signalNetwork.startLinking();
       } else if (!Objects.equals(pos, signalPos.getPos())) {
@@ -60,30 +59,31 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
           if (this.tryLinking(signal, otherSignal)) {
             signal.getSignalNetwork().stopLinking();
             otherSignal.getSignalNetwork().stopLinking();
-            player.sendMessage(new TranslationTextComponent("signal_surveyor.success"),
-                Util.NIL_UUID);
+            player.displayClientMessage(new TranslationTextComponent("signal_surveyor.success"),
+                true);
             this.clearPeerPos(stack);
           } else {
-            player.sendMessage(new TranslationTextComponent("signal_surveyor.invalid_pair"),
-                Util.NIL_UUID);
+            player.displayClientMessage(
+                new TranslationTextComponent("signal_surveyor.invalid_pair"),
+                true);
           }
         } else if (level.isLoaded(signalPos.getPos())) {
-          player.sendMessage(new TranslationTextComponent("signal_surveyor.lost"), Util.NIL_UUID);
+          player.displayClientMessage(new TranslationTextComponent("signal_surveyor.lost"), true);
           signalNetwork.stopLinking();
           this.clearPeerPos(stack);
         } else {
-          player.sendMessage(new TranslationTextComponent("signal_surveyor.unloaded"),
-              Util.NIL_UUID);
+          player.displayClientMessage(new TranslationTextComponent("signal_surveyor.unloaded"),
+              true);
         }
       } else {
-        player.sendMessage(new TranslationTextComponent("signal_surveyor.abandoned"),
-            Util.NIL_UUID);
+        player.displayClientMessage(new TranslationTextComponent("signal_surveyor.abandoned"),
+            true);
         signalNetwork.stopLinking();
         this.clearPeerPos(stack);
       }
     } else if (!level.isClientSide()) {
-      player.sendMessage(new TranslationTextComponent("signal_surveyor.invalid_block"),
-          Util.NIL_UUID);
+      player.displayClientMessage(new TranslationTextComponent("signal_surveyor.invalid_block"),
+          true);
     }
 
     return ActionResultType.PASS;

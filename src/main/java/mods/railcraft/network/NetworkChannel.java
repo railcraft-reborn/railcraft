@@ -2,6 +2,7 @@
 package mods.railcraft.network;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.network.play.PacketEffect;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
@@ -70,6 +71,12 @@ public enum NetworkChannel {
           .encoder(SetSignalCapacitorBoxAttributesMessage::encode)
           .decoder(SetSignalCapacitorBoxAttributesMessage::decode)
           .consumer(SetSignalCapacitorBoxAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(LinkedCartsMessage.class, 0x08, NetworkDirection.PLAY_TO_CLIENT)
+          .encoder(LinkedCartsMessage::encode)
+          .decoder(LinkedCartsMessage::decode)
+          .consumer(LinkedCartsMessage::handle)
           .add();
     }
   };

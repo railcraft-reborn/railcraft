@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/post_single_connection",
+  "textures": {
+    "texture": "railcraft:block/orange_post"
+  }
+}

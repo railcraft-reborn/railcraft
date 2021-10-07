@@ -13,13 +13,6 @@
     "entity.railcraft.steam_locomotive":"Steam Locomotive",
     "entity.railcraft.electric_locomotive":"Electric Locomotive",
 
-    "__DESC.messages": "======= Messages =======",
-
-    "message.link.broken":"Link Broken",
-    "message.link.created":"§aLink Created§r",
-    "message.link.failed":"§cLink Failed§r",
-    "message.link.started":"Link Started",
-
     "__DESC.blocks": "======= Blocks =======",
 
     "block.railcraft.reinforced_flex_track": "Reinforced Flex Track",
@@ -44,6 +37,22 @@
     "block.railcraft.block_signal_relay_box": "Block Signal Relay Box",
     "block.railcraft.manual_rolling_machine": "Manual Rolling Machine",
     "block.railcraft.force_track_emitter": "Force Track Emitter",
+    "block.railcraft.black_post": "Black Post",
+    "block.railcraft.red_post": "Red Post",
+    "block.railcraft.green_post": "Green Post",
+    "block.railcraft.brown_post": "Brown Post",
+    "block.railcraft.blue_post": "Blue Post",
+    "block.railcraft.purple_post": "Purple Post",
+    "block.railcraft.cyan_post": "Cyan Post",
+    "block.railcraft.light_gray_post": "Light Gray Post",
+    "block.railcraft.gray_post": "Gray Post",
+    "block.railcraft.pink_post": "Pink Post",
+    "block.railcraft.lime_post": "Lime Post",
+    "block.railcraft.yellow_post": "Yellow Post",
+    "block.railcraft.light_blue_post": "Light Blue Post",
+    "block.railcraft.magenta_post": "Magenta Post",
+    "block.railcraft.orange_post": "Orange Post",
+    "block.railcraft.white_post": "White Post",
 
     "__DESC.items": "======= Items =======",
 
@@ -59,7 +68,7 @@
     "item.railcraft.iron_crowbar": "Iron Crowbar",
     "item.railcraft.steel_crowbar":"Steel Crowbar",
     "item.railcraft.diamond_crowbar":"Diamond Crowbar",
-    "item.railcraft.seasons_crowbar":"Festive Crowbar",
+    "item.railcraft.seasons_crowbar":"Seasons Crowbar",
     "item.railcraft.goggles": "Trackman's Goggles",
     "item.railcraft.signal_block_surveyor": "Signal Block Surveyor",
     "item.railcraft.signal_tuner": "Signal Tuner",
@@ -158,7 +167,18 @@
     "signal_tuner.lost": "§cSignal controller no longer exists.§r",
     "signal_tuner.success": "§aSuccessfully paired signal receiver.§r",
 
-    "crowbar.description":"§oRight click while sneaking to link carts§r",
+    "crowbar.description":"§oRight-click while sneaking to link carts.§r",
+    "crowbar.link_broken":"§dLink broken.",
+    "crowbar.link_created":"§aLink created.",
+    "crowbar.link_failed":"§cLink failed.",
+    "crowbar.link_started":"§dLink started.",
+
+    "seasons_crowbar.season": "Current season: %s",
+
+    "season.default": "Default",
+    "season.halloween": "Halloween",
+    "season.christmas": "Christmas",
+    "season.none": "None",
 
     "container.manual_rolling_machine": "Manual Rolling Machine",
 
@@ -181,4 +201,5 @@
 
     "fluid.railcraft.steam": "Steam",
     "fluid.railcraft.creosote": "Creosote"
+    
 }

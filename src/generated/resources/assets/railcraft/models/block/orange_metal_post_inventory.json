@@ -1,6 +1,0 @@
-{
-  "parent": "railcraft:block/post_inventory",
-  "textures": {
-    "texture": "railcraft:block/orange_metal_post"
-  }
-}

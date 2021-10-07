@@ -1,6 +1,9 @@
 package mods.railcraft;
 
+import java.util.List;
+import java.util.UUID;
 import mods.railcraft.api.event.CartLinkEvent;
+import mods.railcraft.carts.LinkageManager;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.ForgeItemTagsProvider;
@@ -11,9 +14,11 @@ import mods.railcraft.data.RailcraftRecipiesProvider;
 import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
+import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.server.ServerDist;
 import mods.railcraft.sounds.RailcraftSoundEvents;
+import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.LinkageHandler;
 import mods.railcraft.world.entity.MinecartHandler;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -30,10 +35,12 @@ import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,6 +51,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.registries.DataSerializerEntry;
 
 @Mod(Railcraft.ID)
@@ -118,23 +126,47 @@ public class Railcraft {
 
   private void handleGatherData(GatherDataEvent event) {
     DataGenerator dataGen = event.getGenerator();
-    RailcraftBlockTagsProvider blockTags = new RailcraftBlockTagsProvider(dataGen, event.getExistingFileHelper());
+    RailcraftBlockTagsProvider blockTags =
+        new RailcraftBlockTagsProvider(dataGen, event.getExistingFileHelper());
     dataGen.addProvider(blockTags);
     dataGen.addProvider(
-      new ForgeItemTagsProvider(dataGen, blockTags, event.getExistingFileHelper())
-    );
+        new ForgeItemTagsProvider(dataGen, blockTags, event.getExistingFileHelper()));
     dataGen.addProvider(new RailcraftLootTableProvider(dataGen));
     dataGen.addProvider(new RailcraftRecipiesProvider(dataGen));
     dataGen.addProvider(new RailcraftBlockStateProvider(dataGen));
   }
 
   @SubscribeEvent
-  public void tick(TickEvent.WorldTickEvent event) {
+  public void handleWorldTick(TickEvent.WorldTickEvent event) {
     if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
       ServerWorld level = (ServerWorld) event.world;
       TokenRingManager.get(level).tick(level);
-      if (level.getServer().getTickCount() % 32 == 0)
+      if (level.getServer().getTickCount() % 32 == 0) {
         Train.getManager(level).tick();
+      }
+    }
+  }
+
+  @SubscribeEvent
+  public void handlePlayerTick(PlayerTickEvent event) {
+    if (event.player instanceof ServerPlayerEntity && event.player.tickCount % 20 == 0) {
+      ServerPlayerEntity player = (ServerPlayerEntity) event.player;
+      List<AbstractMinecartEntity> carts = EntitySearcher.findMinecarts()
+          .around(player)
+          .outTo(32F)
+          .in(player.level);
+
+      LinkedCartsMessage.LinkedCart[] linkedCarts = new LinkedCartsMessage.LinkedCart[carts.size()];
+      for (int i = 0; i < linkedCarts.length; i++) {
+        AbstractMinecartEntity cart = carts.get(i);
+        UUID trainId = Train.getTrainUUID(cart);
+        linkedCarts[i] = new LinkedCartsMessage.LinkedCart(
+            cart.getId(), trainId,
+            LinkageManager.INSTANCE.getLinkA(cart),
+            LinkageManager.INSTANCE.getLinkB(cart));
+      }
+      NetworkChannel.PLAY.getSimpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
+          player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
     }
   }
 

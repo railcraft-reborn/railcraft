@@ -20,6 +20,7 @@ public class DualBlockSignalBlockEntity extends BlockSignalBlockEntity
 
   @Override
   public void load() {
+    super.load();
     if (!this.level.isClientSide()) {
       this.signalReceiver.refresh();
     }

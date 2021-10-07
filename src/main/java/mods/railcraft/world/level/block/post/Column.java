@@ -4,8 +4,10 @@ import net.minecraft.util.IStringSerializable;
 
 public enum Column implements IStringSerializable {
 
-  NORMAL("normal"),
-  SHORT("short");
+  FULL("full"),
+  TOP("top"),
+  SMALL("small"),
+  PLATFORM("platform");
 
   private final String name;
 

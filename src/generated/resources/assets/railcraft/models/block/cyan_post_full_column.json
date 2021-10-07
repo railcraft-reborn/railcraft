@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/post_full_column",
+  "textures": {
+    "texture": "railcraft:block/cyan_post"
+  }
+}

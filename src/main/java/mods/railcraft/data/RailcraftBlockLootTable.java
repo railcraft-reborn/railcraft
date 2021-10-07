@@ -24,7 +24,7 @@ public class RailcraftBlockLootTable extends BlockLootTables {
     this.add(RailcraftBlocks.FORCE_TRACK.get(), noDrop());
 
     /* === signals === */
-    this.dropSelf(RailcraftBlocks.SIGNAL.get());
+    this.dropSelf(RailcraftBlocks.BLOCK_SIGNAL.get());
     this.dropSelf(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get());
     this.dropSelf(RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get());
     this.dropSelf(RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get());
@@ -48,6 +48,23 @@ public class RailcraftBlockLootTable extends BlockLootTables {
     this.dropSelf(RailcraftBlocks.FIRESTONE.get());
     // TODO: implement this ritual thingy
     this.add(RailcraftBlocks.RITUAL.get(), noDrop());
+
+    this.dropSelf(RailcraftBlocks.BLACK_POST.get());
+    this.dropSelf(RailcraftBlocks.RED_POST.get());
+    this.dropSelf(RailcraftBlocks.GREEN_POST.get());
+    this.dropSelf(RailcraftBlocks.BROWN_POST.get());
+    this.dropSelf(RailcraftBlocks.BLUE_POST.get());
+    this.dropSelf(RailcraftBlocks.PURPLE_POST.get());
+    this.dropSelf(RailcraftBlocks.CYAN_POST.get());
+    this.dropSelf(RailcraftBlocks.LIGHT_GRAY_POST.get());
+    this.dropSelf(RailcraftBlocks.GRAY_POST.get());
+    this.dropSelf(RailcraftBlocks.PINK_POST.get());
+    this.dropSelf(RailcraftBlocks.LIME_POST.get());
+    this.dropSelf(RailcraftBlocks.YELLOW_POST.get());
+    this.dropSelf(RailcraftBlocks.LIGHT_BLUE_POST.get());
+    this.dropSelf(RailcraftBlocks.MAGENTA_POST.get());
+    this.dropSelf(RailcraftBlocks.ORANGE_POST.get());
+    this.dropSelf(RailcraftBlocks.WHITE_POST.get());
   }
 
   @Override

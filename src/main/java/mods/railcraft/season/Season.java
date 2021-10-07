@@ -24,7 +24,7 @@ public enum Season implements IStringSerializable {
 
   private Season(String name) {
     this.name = name;
-    this.displayName = new TranslationTextComponent("gui.railcraft.season." + name);
+    this.displayName = new TranslationTextComponent("season." + name);
   }
 
   public ITextComponent getDisplayName() {

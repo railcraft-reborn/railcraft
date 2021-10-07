@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
+import mods.railcraft.util.VoxelShapeUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,7 +29,6 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
@@ -56,14 +56,14 @@ public abstract class AbstractSignalBlock extends Block implements IWaterLoggabl
 
   private final Supplier<? extends AbstractSignalBlockEntity> blockEntityFactory;
   private final VoxelShape[] shapes;
-  private final Object2IntMap<BlockState> stateToIndex = new Object2IntOpenHashMap<>();
+  protected final Object2IntMap<BlockState> stateToIndex = new Object2IntOpenHashMap<>();
 
-  protected AbstractSignalBlock(VoxelShape shape,
+  protected AbstractSignalBlock(VoxelShape shape, Map<Direction, VoxelShape> connectionShapes,
       Supplier<? extends AbstractSignalBlockEntity> blockEntityFactory,
       Properties properties) {
     super(properties);
     this.blockEntityFactory = blockEntityFactory;
-    this.shapes = this.makeShapes(shape, 2.0F, 0.0F, 16.0F);
+    this.shapes = VoxelShapeUtil.makeShapes(shape, connectionShapes);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(NORTH, false)
         .setValue(EAST, false)
@@ -71,35 +71,6 @@ public abstract class AbstractSignalBlock extends Block implements IWaterLoggabl
         .setValue(WEST, false)
         .setValue(FACING, Direction.NORTH)
         .setValue(WATERLOGGED, false));
-  }
-
-  protected VoxelShape[] makeShapes(VoxelShape mainShape, float connectionWidth,
-      float connectionMinY, float connectionMaxY) {
-    float connectionMinX = 8.0F - connectionWidth;
-    float connectionMaxX = 8.0F + connectionWidth;
-    VoxelShape voxelshape1 = Block.box(connectionMinX, connectionMinY, 0.0D, connectionMaxX,
-        connectionMaxY, connectionMaxX);
-    VoxelShape voxelshape2 = Block.box(connectionMinX, connectionMinY, connectionMinX,
-        connectionMaxX, connectionMaxY, 16.0D);
-    VoxelShape voxelshape3 = Block.box(0.0D, connectionMinY, connectionMinX, connectionMaxX,
-        connectionMaxY, connectionMaxX);
-    VoxelShape voxelshape4 = Block.box(connectionMinX, connectionMinY, connectionMinX, 16.0D,
-        connectionMaxY, connectionMaxX);
-    VoxelShape voxelshape5 = VoxelShapes.or(voxelshape1, voxelshape4);
-    VoxelShape voxelshape6 = VoxelShapes.or(voxelshape2, voxelshape3);
-    VoxelShape[] shapes = new VoxelShape[] {VoxelShapes.empty(), voxelshape2, voxelshape3,
-        voxelshape6, voxelshape1, VoxelShapes.or(voxelshape2, voxelshape1),
-        VoxelShapes.or(voxelshape3, voxelshape1), VoxelShapes.or(voxelshape6, voxelshape1),
-        voxelshape4, VoxelShapes.or(voxelshape2, voxelshape4),
-        VoxelShapes.or(voxelshape3, voxelshape4), VoxelShapes.or(voxelshape6, voxelshape4),
-        voxelshape5, VoxelShapes.or(voxelshape2, voxelshape5),
-        VoxelShapes.or(voxelshape3, voxelshape5), VoxelShapes.or(voxelshape6, voxelshape5)};
-
-    for (int i = 0; i < 16; ++i) {
-      shapes[i] = VoxelShapes.or(mainShape, shapes[i]);
-    }
-
-    return shapes;
   }
 
   @Override
@@ -113,20 +84,18 @@ public abstract class AbstractSignalBlock extends Block implements IWaterLoggabl
     return this.shapes[this.getShapeIndex(blockState)];
   }
 
-  private static int indexFor(Direction direction) {
-    return 1 << direction.get2DDataValue();
+  public final int getShapeIndex(BlockState blockState) {
+    return this.stateToIndex.computeIntIfAbsent(blockState, this::computeShapeIndex);
   }
 
-  protected int getShapeIndex(BlockState blockState) {
-    return this.stateToIndex.computeIntIfAbsent(blockState, __ -> {
-      int i = 0;
-      for (Map.Entry<Direction, BooleanProperty> entry : propertyByDirection.entrySet()) {
-        if (blockState.getValue(entry.getValue())) {
-          i |= indexFor(entry.getKey());
-        }
+  protected int computeShapeIndex(BlockState blockState) {
+    int i = 0;
+    for (Map.Entry<Direction, BooleanProperty> entry : propertyByDirection.entrySet()) {
+      if (blockState.getValue(entry.getValue())) {
+        i |= VoxelShapeUtil.indexFor(entry.getKey());
       }
-      return i;
-    });
+    }
+    return i;
   }
 
   @Override
@@ -187,9 +156,12 @@ public abstract class AbstractSignalBlock extends Block implements IWaterLoggabl
       world.getLiquidTicks().scheduleTick(pos, Fluids.WATER,
           Fluids.WATER.getTickDelay(world));
     }
-    return state.setValue(propertyByDirection.get(direction), this.connectsTo(newState,
-        newState.isFaceSturdy(world, newPos, direction.getOpposite()), direction,
-        state.getValue(FACING)));
+
+    return direction.getAxis().isHorizontal()
+        ? state.setValue(propertyByDirection.get(direction), this.connectsTo(newState,
+            newState.isFaceSturdy(world, newPos, direction.getOpposite()), direction,
+            state.getValue(FACING)))
+        : state;
   }
 
   public boolean connectsTo(BlockState state, boolean faceStudry, Direction direction,
@@ -200,7 +172,7 @@ public abstract class AbstractSignalBlock extends Block implements IWaterLoggabl
       return false;
     }
 
-    if (block instanceof AbstractSignalBlock) {
+    if (state.is(RailcraftTags.Blocks.SIGNAL)) {
       return connectsToDirection(state, direction);
     }
 
