@@ -303,6 +303,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
               new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<BlockItem> COKE_OVEN_BLOCK =
+      ITEMS.register("coke_oven_block",
+          () -> new BlockItem(RailcraftBlocks.COKE_OVEN_BLOCK.get(),
+              new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> BLACK_POST =
       ITEMS.register("black_post",
           () -> new BlockItem(RailcraftBlocks.BLACK_POST.get(),

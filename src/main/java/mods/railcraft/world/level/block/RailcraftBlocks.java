@@ -289,6 +289,12 @@ public class RailcraftBlocks {
           () -> new ManualRollingMachineBlock(AbstractBlock.Properties.of(Material.WOOD)
               .sound(SoundType.WOOD)));
 
+  public static final RegistryObject<Block> COKE_OVEN_BLOCK =
+      BLOCKS.register("coke_oven_block",
+          () -> new CokeOvenBlock(AbstractBlock.Properties.of(Material.STONE)
+              .sound(SoundType.STONE)
+              .harvestTool(ToolType.PICKAXE)));
+
   public static final RegistryObject<Block> BLACK_POST =
       BLOCKS.register("black_post",
           () -> new PostBlock(AbstractBlock.Properties.of(Material.METAL)

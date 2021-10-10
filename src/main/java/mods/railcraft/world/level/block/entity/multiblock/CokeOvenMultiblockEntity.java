@@ -1,35 +1,53 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
 
+import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
+import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.IRecipeHolder;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.IContainerProvider;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultiblockEntity>
-    implements IContainerProvider, IRecipeHolder, ITickableTileEntity, IFluidTank, IInventory {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-  // private static final ITextComponent MENU_TITLE =
-  //     new TranslationTextComponent("container.coke_oven");
+public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultiblockEntity>
+    implements INamedContainerProvider, IRecipeHolder, ITickableTileEntity, IFluidTank, IInventory {
+
+  public static final Logger MULTIBLOCK_LOGGER =
+      LogManager.getLogger("Railcraft/MultiblockEntity/CokeOvenMultiblockEntity");
+  private static final ITextComponent MENU_TITLE =
+      new TranslationTextComponent("container.manual_rolling_machine");
+
   private static final int FLUID_STORAGE_MAX = 10000;
 
   // internal inventory, 3 total. 0 IN, 1 OUT
@@ -76,20 +94,71 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
     }
   };
 
+  public CokeOvenMultiblockEntity() {
+    super(RailcraftBlockEntityTypes.COKE_OVEN.get());
+  }
+
   public CokeOvenMultiblockEntity(TileEntityType<?> tileEntityType) {
     super(tileEntityType);
   }
 
   @Override
-  public boolean isMultiblockPatternValid() {
-    // TODO implement
-    return false;
+  public boolean isMultiblockPatternValid(BlockPos normal) {
+    return this.getPatternEntities(normal) != null;
   }
 
   @Override
-  public @Nullable CokeOvenMultiblockEntity[] getPatternEntities() {
-    // TODO implement
-    return null;
+  public @Nullable Collection<CokeOvenMultiblockEntity> getPatternEntities(BlockPos normal) {
+    int box = 2; // 3-1
+    BlockPos originPos = this.worldPosition.offset(0, -1, 0).offset(
+        (normal.getX() == 0) ? -1 : 0,
+        0,
+        (normal.getZ() == 0) ? -1 : 0);
+    int i = 0;
+    Collection<CokeOvenMultiblockEntity> out = new ArrayList<CokeOvenMultiblockEntity>(0);
+
+    for (BlockPos blockpos : BlockPos.betweenClosed(
+        // 3 - 1
+        originPos, originPos.offset(
+          (normal.getX() == 0) ? box : normal.getX() * box,
+          2,
+          (normal.getZ() == 0) ? box : normal.getZ() * box))) {
+      i++;
+
+      @Nullable BlockState theState;
+      try {
+        theState = this.getLevel().getBlockState(blockpos);
+      } catch (Exception e) {
+        MULTIBLOCK_LOGGER.info("getPatternEntities - " + e.getMessage());
+        this.delink();
+        return null;
+      }
+
+      Block theBlock = theState.getBlock();
+
+      if (i == 14) {
+        if (!theBlock.is(Blocks.AIR)) {
+          MULTIBLOCK_LOGGER.info("NOT AIR");
+          return null;
+        }
+        continue;
+      }
+      if (i != 14
+          && (!theBlock.is(RailcraftBlocks.COKE_OVEN_BLOCK.get())
+              || !theBlock.hasTileEntity(theState))) {
+        MULTIBLOCK_LOGGER.info("NOT COKE OVEN BRICK OR HAS NO TE");
+        return null;
+      }
+
+      TileEntity te = this.getLevel().getBlockEntity(blockpos);
+      if (!(te instanceof CokeOvenMultiblockEntity)) {
+        MULTIBLOCK_LOGGER.info("WRONG TE TYPE, TYPE GOT: " + te.toString());
+        return null;
+      }
+      out.add((CokeOvenMultiblockEntity) te);
+    }
+
+    return out;
   }
 
   @Override
@@ -99,6 +168,10 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
       return null;
     }
     CokeOvenMultiblockEntity parent = this.getParent();
+    if (parent == this) {
+      return new CokeOvenMenu(containerProvider, playerInventory, this, this.dataAccess);
+    }
+
     if (parent == null) {
       return null;
     }
@@ -110,8 +183,8 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
     super.load(blockState, data);
     this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
     ItemStackHelper.loadAllItems(data, this.items);
-    this.recipieRequiredTime = data.getInt("RecipieRequiredTime");
-    this.currentTick = data.getInt("CurrentTick");
+    this.recipieRequiredTime = data.getInt("recipieRequiredTime");
+    this.currentTick = data.getInt("currentTick");
     this.fluid = FluidStack.loadFluidStackFromNBT(data);
   }
 
@@ -119,8 +192,8 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
     ItemStackHelper.saveAllItems(data, this.items);
-    data.putInt("RecipieRequiredTime", this.recipieRequiredTime);
-    data.putInt("CurrentTick", this.currentTick);
+    data.putInt("recipieRequiredTime", this.recipieRequiredTime);
+    data.putInt("currentTick", this.currentTick);
     this.fluid.writeToNBT(data);
     return data;
   }
@@ -353,6 +426,11 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
 
     ItemStack inputStack = this.items.get(0);
     inputStack.shrink(1);
+  }
+
+  @Override
+  public ITextComponent getDisplayName() {
+    return MENU_TITLE;
   }
 
 }

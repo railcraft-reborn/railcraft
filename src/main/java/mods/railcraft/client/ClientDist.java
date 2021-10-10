@@ -6,6 +6,7 @@ import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
 import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
+import mods.railcraft.client.gui.screen.inventory.CokeOvenMenuScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
@@ -154,14 +155,17 @@ public class ClientDist implements RailcraftDist {
         SignalSequencerBoxRenderer::new);
     ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get(),
         SignalInterlockBoxRenderer::new);
+
     ScreenManager.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
         CreativeLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
         ElectricLocomotiveScreen::new);
-    ScreenManager.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
-
+    ScreenManager.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(),
+        SteamLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
         ManualRollingMachineScreen::new);
+    ScreenManager.register(RailcraftMenuTypes.COKE_OVEN.get(),
+        CokeOvenMenuScreen::new);
 
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
         ElectricLocomotiveRenderer::new);

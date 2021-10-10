@@ -114,6 +114,8 @@ public class CokeOvenMenu extends Container {
   public float getBurnProgress() {
     int reqTime = this.data.get(0);
     int currentTick = this.data.get(1);
+    //DZsafety
+    reqTime = ((reqTime == 0) ? 1 : reqTime);
     return Math.max(Math.min(currentTick / reqTime, 1), 0);
   }
 
