@@ -2,7 +2,7 @@ package mods.railcraft.advancements.criterion;
 
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.season.Season;
-import mods.railcraft.world.entity.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.LocomotiveEntity;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;

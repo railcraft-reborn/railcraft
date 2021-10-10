@@ -6,14 +6,14 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.item.Crowbar;
-import mods.railcraft.carts.CartTools;
-import mods.railcraft.carts.LinkageManagerImpl;
-import mods.railcraft.carts.RailcraftCart;
-import mods.railcraft.carts.Train;
 import mods.railcraft.season.Season;
-import mods.railcraft.world.entity.IDirectionalCart;
-import mods.railcraft.world.entity.TrackRemoverMinecartEntity;
-import mods.railcraft.world.entity.TunnelBoreEntity;
+import mods.railcraft.world.entity.cart.CartTools;
+import mods.railcraft.world.entity.cart.IDirectionalCart;
+import mods.railcraft.world.entity.cart.LinkageManagerImpl;
+import mods.railcraft.world.entity.cart.SeasonalCart;
+import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
+import mods.railcraft.world.entity.cart.Train;
+import mods.railcraft.world.entity.cart.TunnelBoreEntity;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -57,10 +57,10 @@ public class CrowbarHandler {
 
     Crowbar crowbar = (Crowbar) stack.getItem();
 
-    if ((stack.getItem() instanceof SeasonsCrowbarItem) && (cart instanceof RailcraftCart)
+    if ((stack.getItem() instanceof SeasonsCrowbarItem) && (cart instanceof SeasonalCart)
         && RailcraftConfig.common.enableSeasons.get()) {
       Season season = SeasonsCrowbarItem.getSeason(stack);
-      ((RailcraftCart) cart).setSeason(season);
+      ((SeasonalCart) cart).setSeason(season);
       RailcraftAdvancementTriggers.getInstance()
           .onSeasonSet((ServerPlayerEntity) player, cart, season);
       return true;

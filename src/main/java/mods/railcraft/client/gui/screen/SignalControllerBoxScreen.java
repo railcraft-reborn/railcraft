@@ -9,7 +9,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class SignalControllerBoxScreen extends BasicIngameScreen {
+public class SignalControllerBoxScreen extends IngameWindowScreen {
 
   private final SignalControllerBoxBlockEntity signalBox;
 
@@ -25,8 +25,8 @@ public class SignalControllerBoxScreen extends BasicIngameScreen {
 
   @Override
   public void init() {
-    int centredX = (this.width - this.x) / 2;
-    int centredY = (this.height - this.y) / 2;
+    int centredX = (this.width - this.windowWidth) / 2;
+    int centredY = (this.height - this.windowHeight) / 2;
     this.addButton(
         new Button(centredX + 10, centredY + 25, 30, 20, new StringTextComponent("<"),
             __ -> this.defaultAspect = this.defaultAspect.getPrevious()));
@@ -46,14 +46,14 @@ public class SignalControllerBoxScreen extends BasicIngameScreen {
       float partialTicks) {
     this.drawCenteredString(matrixStack,
         new TranslationTextComponent("screen.signal_controller_box.default_aspect"),
-        this.x / 2, 25);
+        this.windowWidth / 2, 25);
     this.drawCenteredString(matrixStack, this.defaultAspect.getDisplayName(),
-        this.x / 2, 35);
+        this.windowWidth / 2, 35);
     this.drawCenteredString(matrixStack,
         new TranslationTextComponent("screen.signal_controller_box.powered_aspect"),
-        this.x / 2, 60);
+        this.windowWidth / 2, 60);
     this.drawCenteredString(matrixStack, this.poweredAspect.getDisplayName(),
-        this.x / 2, 70);
+        this.windowWidth / 2, 70);
   }
 
   @Override

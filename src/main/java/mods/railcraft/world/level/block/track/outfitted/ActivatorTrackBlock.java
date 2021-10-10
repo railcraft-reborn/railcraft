@@ -7,7 +7,7 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ActivatorTrackBlock extends AbstractPoweredTrackBlock {
+public class ActivatorTrackBlock extends PoweredTrackBlock {
 
   private static final int POWER_PROPAGATION = 8;
 

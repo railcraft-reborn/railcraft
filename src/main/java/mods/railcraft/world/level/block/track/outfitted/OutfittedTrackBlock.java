@@ -2,11 +2,9 @@ package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.Arrays;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 import mods.railcraft.api.item.Crowbar;
-import mods.railcraft.api.track.ReversibleTrack;
-import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.track.TrackType;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import net.minecraft.block.Block;
@@ -44,26 +42,20 @@ public class OutfittedTrackBlock extends TrackBlock {
   @Override
   public ActionResultType use(BlockState blockState, World level, BlockPos pos, PlayerEntity player,
       Hand hand, BlockRayTraceResult rayTraceResult) {
-    ItemStack heldItem = player.getItemInHand(hand);
-    if (heldItem.getItem() instanceof Crowbar) {
-      Crowbar crowbar = (Crowbar) heldItem.getItem();
-      if (crowbar.canWhack(player, hand, heldItem, pos)
-          && this.onCrowbarWhack(blockState, level, pos, player, hand, heldItem)) {
-        crowbar.onWhack(player, hand, heldItem, pos);
+    ItemStack itemStack = player.getItemInHand(hand);
+    if (itemStack.getItem() instanceof Crowbar) {
+      Crowbar crowbar = (Crowbar) itemStack.getItem();
+      if (crowbar.canWhack(player, hand, itemStack, pos)
+          && this.crowbarWhack(blockState, level, pos, player, hand, itemStack)) {
+        crowbar.onWhack(player, hand, itemStack, pos);
         return ActionResultType.SUCCESS;
       }
     }
     return ActionResultType.CONSUME;
   }
 
-  public boolean onCrowbarWhack(BlockState blockState, World level, BlockPos pos,
-      PlayerEntity player, Hand hand,
-      @Nullable ItemStack heldItem) {
-    if (this instanceof ReversibleTrack) {
-      ReversibleTrack track = (ReversibleTrack) this;
-      track.setReversed(blockState, level, pos, !track.isReversed(blockState, level, pos));
-      return true;
-    }
+  protected boolean crowbarWhack(BlockState blockState, World level, BlockPos pos,
+      PlayerEntity player, Hand hand, ItemStack itemStack) {
     return false;
   }
 
@@ -71,7 +63,7 @@ public class OutfittedTrackBlock extends TrackBlock {
   public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player,
       boolean willHarvest, FluidState fluid) {
     BlockState newState = TrackUtil.setShape(this.getTrackType().getBaseBlock(),
-        TrackTools.getTrackDirectionRaw(state));
+        TrackTools.getRailShapeRaw(state));
     boolean result = world.setBlockAndUpdate(pos, newState);
     // Below is ugly workaround for fluids!
     if (Arrays.stream(Direction.values())

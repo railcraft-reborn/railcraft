@@ -2,8 +2,8 @@ package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.carts.CartTools;
-import mods.railcraft.world.entity.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.CartTools;
+import mods.railcraft.world.entity.cart.LocomotiveEntity;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.block.BlockState;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-public class BoosterTrackBlock extends AbstractPoweredTrackBlock {
+public class BoosterTrackBlock extends PoweredTrackBlock {
 
   private static final int POWER_PROPAGATION = 8;
   private static final double BOOST_FACTOR = 0.04;

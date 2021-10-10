@@ -18,14 +18,30 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
   @Override
   protected void addTags() {
     this.tag(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
-        .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get());
+        .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get())
+        .add(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
     this.tag(BlockTags.RAILS)
-        .add(RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
+        .add(RailcraftBlocks.FORCE_TRACK.get(),
             RailcraftBlocks.ABANDONED_FLEX_TRACK.get(),
+            RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
+            RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ELECTRIC_FLEX_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_FLEX_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
+            RailcraftBlocks.IRON_LOCKING_TRACK.get(),
+            RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
+            RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
+            RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
+            RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.TURNOUT_TRACK.get(),
             RailcraftBlocks.WYE_TRACK.get());
     this.tag(BlockTags.CLIMBABLE).add(RailcraftBlocks.ELEVATOR_TRACK.get());

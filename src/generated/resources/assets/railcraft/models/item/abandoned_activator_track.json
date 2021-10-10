@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "railcraft:block/abandoned_activator_track"
+  }
+}

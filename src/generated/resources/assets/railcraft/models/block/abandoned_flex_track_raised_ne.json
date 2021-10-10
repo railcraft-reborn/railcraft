@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_rail_raised_ne",
+  "textures": {
+    "rail": "railcraft:block/abandoned_flex_track_0"
+  }
+}

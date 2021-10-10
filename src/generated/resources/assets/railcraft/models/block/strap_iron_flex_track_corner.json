@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_curved",
+  "textures": {
+    "rail": "railcraft:block/strap_iron_flex_track_corner"
+  }
+}

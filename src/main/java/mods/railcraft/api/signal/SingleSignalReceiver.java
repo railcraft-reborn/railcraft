@@ -22,6 +22,10 @@ public class SingleSignalReceiver
   private final Runnable syncListener;
   protected final SignalClient primarySignalClient;
 
+  public SingleSignalReceiver(TileEntity blockEntity, Runnable syncListener) {
+    this(blockEntity, syncListener, null);
+  }
+
   public SingleSignalReceiver(TileEntity blockEntity, Runnable syncListener,
       @Nullable Consumer<SignalAspect> primarySignalAspectListener) {
     this.blockEntity = blockEntity;

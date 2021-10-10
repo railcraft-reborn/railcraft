@@ -1,12 +1,27 @@
 {
   "replace": false,
   "values": [
-    "railcraft:reinforced_flex_track",
+    "railcraft:force_track",
     "railcraft:abandoned_flex_track",
+    "railcraft:abandoned_locking_track",
+    "railcraft:abandoned_activator_track",
     "railcraft:electric_flex_track",
+    "railcraft:electric_locking_track",
+    "railcraft:electric_activator_track",
     "railcraft:high_speed_flex_track",
+    "railcraft:high_speed_locking_track",
+    "railcraft:high_speed_activator_track",
     "railcraft:high_speed_electric_flex_track",
+    "railcraft:high_speed_electric_locking_track",
+    "railcraft:high_speed_electric_activator_track",
+    "railcraft:iron_locking_track",
+    "railcraft:iron_activator_track",
+    "railcraft:reinforced_flex_track",
+    "railcraft:reinforced_locking_track",
+    "railcraft:reinforced_activator_track",
     "railcraft:strap_iron_flex_track",
+    "railcraft:strap_iron_locking_track",
+    "railcraft:strap_iron_activator_track",
     "railcraft:turnout_track",
     "railcraft:wye_track"
   ]

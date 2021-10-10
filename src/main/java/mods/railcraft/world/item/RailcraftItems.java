@@ -1,12 +1,13 @@
 package mods.railcraft.world.item;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.entity.CreativeLocomotiveEntity;
-import mods.railcraft.world.entity.ElectricLocomotiveEntity;
-import mods.railcraft.world.entity.SteamLocomotiveEntity;
-import mods.railcraft.world.entity.TrackLayerMinecartEntity;
-import mods.railcraft.world.entity.TrackRemoverMinecartEntity;
+import mods.railcraft.world.entity.cart.CreativeLocomotiveEntity;
+import mods.railcraft.world.entity.cart.ElectricLocomotiveEntity;
+import mods.railcraft.world.entity.cart.SteamLocomotiveEntity;
+import mods.railcraft.world.entity.cart.TrackLayerMinecartEntity;
+import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
@@ -37,7 +38,13 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> SWITCH_TRACK_LEVER =
       ITEMS.register("switch_track_lever",
-          () -> new BlockItem(RailcraftBlocks.SWITCH_TRACK_LEVER.get(), new Item.Properties()));
+          () -> new BlockItem(RailcraftBlocks.SWITCH_TRACK_LEVER.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SWITCH_TRACK_MOTOR =
+      ITEMS.register("switch_track_motor",
+          () -> new BlockItem(RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
+              new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> SIGNAL_TUNER =
       ITEMS.register("signal_tuner",
@@ -211,14 +218,24 @@ public class RailcraftItems {
               RailcraftBlocks.FORCE_TRACK_EMITTER.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<BlockItem> FORCE_TRACK =
-      ITEMS.register("force_track",
-          () -> new BlockItem(RailcraftBlocks.FORCE_TRACK.get(),
+  public static final RegistryObject<Item> ABANDONED_FLEX_TRACK =
+      ITEMS.register("abandoned_flex_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_FLEX_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
-  public static final RegistryObject<Item> REINFORCED_FLEX_TRACK =
-      ITEMS.register("reinforced_flex_track",
-          () -> new BlockItem(RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
+  public static final RegistryObject<Item> ABANDONED_LOCKING_TRACK =
+      ITEMS.register("abandoned_locking_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> ABANDONED_BUFFER_STOP_TRACK =
+      ITEMS.register("abandoned_buffer_stop_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> ABANDONED_ACTIVATOR_TRACK =
+      ITEMS.register("abandoned_activator_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> ELECTRIC_FLEX_TRACK =
@@ -226,9 +243,39 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_FLEX_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
+  public static final RegistryObject<Item> ELECTRIC_LOCKING_TRACK =
+      ITEMS.register("electric_locking_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> ELECTRIC_BUFFER_STOP_TRACK =
+      ITEMS.register("electric_buffer_stop_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> ELECTRIC_ACTIVATOR_TRACK =
+      ITEMS.register("electric_activator_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
   public static final RegistryObject<Item> HIGH_SPEED_FLEX_TRACK =
       ITEMS.register("high_speed_flex_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_FLEX_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_LOCKING_TRACK =
+      ITEMS.register("high_speed_locking_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_BUFFER_STOP_TRACK =
+      ITEMS.register("high_speed_buffer_stop_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_BUFFER_STOP_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_ACTIVATOR_TRACK =
+      ITEMS.register("high_speed_activator_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_FLEX_TRACK =
@@ -236,14 +283,74 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
-  public static final RegistryObject<Item> ABANDONED_FLEX_TRACK =
-      ITEMS.register("abandoned_flex_track",
-          () -> new BlockItem(RailcraftBlocks.ABANDONED_FLEX_TRACK.get(),
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_LOCKING_TRACK =
+      ITEMS.register("high_speed_electric_locking_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_BUFFER_STOP_TRACK =
+      ITEMS.register("high_speed_electric_buffer_stop_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BUFFER_STOP_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK =
+      ITEMS.register("high_speed_electric_activator_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> IRON_LOCKING_TRACK =
+      ITEMS.register("iron_locking_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_LOCKING_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> IRON_BUFFER_STOP_TRACK =
+      ITEMS.register("iron_buffer_stop_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_BUFFER_STOP_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> IRON_ACTIVATOR_TRACK =
+      ITEMS.register("iron_activator_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> REINFORCED_FLEX_TRACK =
+      ITEMS.register("reinforced_flex_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> REINFORCED_LOCKING_TRACK =
+      ITEMS.register("reinforced_locking_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> REINFORCED_BUFFER_STOP_TRACK =
+      ITEMS.register("reinforced_buffer_stop_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> REINFORCED_ACTIVATOR_TRACK =
+      ITEMS.register("reinforced_activator_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> STRAP_IRON_FLEX_TRACK =
       ITEMS.register("strap_iron_flex_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> STRAP_IRON_LOCKING_TRACK =
+      ITEMS.register("strap_iron_locking_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> STRAP_IRON_BUFFER_STOP_TRACK =
+      ITEMS.register("strap_iron_buffer_stop_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> STRAP_IRON_ACTIVATOR_TRACK =
+      ITEMS.register("strap_iron_activator_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> ELEVATOR_TRACK =
@@ -280,9 +387,47 @@ public class RailcraftItems {
       ITEMS.register("seasons_crowbar",
           () -> new SeasonsCrowbarItem(new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> LOCKING_TRACK_KIT =
+      ITEMS.register("locking_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_LOCKING_TRACK)
+              .tab(TAB)));
+
+  public static final RegistryObject<Item> BUFFER_STOP_TRACK_KIT =
+      ITEMS.register("buffer_stop_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED,
+                  RailcraftBlocks.HIGH_SPEED_BUFFER_STOP_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_BUFFER_STOP_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_BUFFER_STOP_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED,
+                  RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK)
+              .tab(TAB)));
+
   public static final RegistryObject<Item> ACTIVATOR_TRACK_KIT =
       ITEMS.register("activator_track_kit",
-          () -> new Item(new Item.Properties().tab(TAB)));
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_ACTIVATOR_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK)
+              .tab(TAB)));
 
   public static final RegistryObject<Item> BOOSTER_TRACK_KIT =
       ITEMS.register("booster_track_kit",

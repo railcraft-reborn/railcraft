@@ -1,12 +1,15 @@
 package mods.railcraft.world.level.block.track;
 
+import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.DyeColor;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.Property;
+import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.tileentity.TileEntity;
@@ -22,77 +25,77 @@ import net.minecraft.world.World;
  */
 public final class ForceTrackBlock extends TrackBlock {
 
+  public static final EnumProperty<DyeColor> COLOR = ForceTrackEmitterBlock.COLOR;
   public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE_STRAIGHT;
 
   public ForceTrackBlock(Properties properties) {
     super(TrackTypes.HIGH_SPEED, properties);
+    this.registerDefaultState(this.stateDefinition.any()
+        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
+        .setValue(COLOR, ForceTrackEmitterBlock.DEFAULT_COLOR));
+  }
+
+  @Override
+  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    super.createBlockStateDefinition(builder);
+    builder.add(COLOR);
   }
 
   @Override
   public Property<RailShape> getShapeProperty() {
-    return SHAPE; // let's not reinvent the wheel.
+    return SHAPE;
   }
 
   @Override
-  protected BlockState updateDir(World worldIn, BlockPos pos, BlockState state,
-      boolean initialPlacement) {
-    return state; // Get the hell off my tile entity!
+  protected BlockState updateDir(World level, BlockPos pos,
+      BlockState blockState, boolean initialPlacement) {
+    return blockState;
   }
 
   @Override
-  public boolean canMakeSlopes(BlockState state, IBlockReader world, BlockPos pos) {
+  public boolean canMakeSlopes(BlockState blockState, IBlockReader world, BlockPos pos) {
     return false;
   }
 
   @Override
-  public boolean isFlexibleRail(BlockState state, IBlockReader world, BlockPos pos) {
+  public boolean isFlexibleRail(BlockState blockState, IBlockReader world, BlockPos pos) {
     return false;
   }
 
   @Override
-  public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn,
-      BlockPos neighborPos, boolean something) {
-    if (blockIn != this) {
-      TileEntity tile = worldIn.getBlockEntity(pos);
+  public void neighborChanged(BlockState blockState,
+      World level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean moved) {
+    if (!neighborBlock.is(this)) {
+      TileEntity tile = level.getBlockEntity(pos);
       if (tile instanceof ForceTrackBlockEntity) {
-        ((ForceTrackBlockEntity) tile).notifyEmitterForTrackChange();
+        ((ForceTrackBlockEntity) tile).neighborChanged();
       }
     }
   }
 
   @Override
-  public float getRailMaxSpeed(BlockState state, World world, BlockPos pos,
+  public float getRailMaxSpeed(BlockState blockState, World world, BlockPos pos,
       AbstractMinecartEntity cart) {
     return 0.6F;
   }
 
   @Override
-  public boolean canBeReplacedByLeaves(BlockState state, IWorldReader world, BlockPos pos) {
+  public boolean canBeReplacedByLeaves(BlockState blockState, IWorldReader world, BlockPos pos) {
     return true;
   }
 
   @Override
-  public boolean canBeReplaced(BlockState state, BlockItemUseContext context) {
+  public boolean canBeReplaced(BlockState blockState, BlockItemUseContext context) {
     return true;
   }
 
   @Override
-  public void onRemove(BlockState state, World worldIn, BlockPos pos,
-      BlockState newState, boolean something) {
-    TileEntity tile = worldIn.getBlockEntity(pos);
-    if (tile instanceof ForceTrackBlockEntity) {
-      ((ForceTrackBlockEntity) tile).notifyEmitterForBreak();
-    }
-    super.onRemove(state, worldIn, pos, newState, something);
-  }
-
-  @Override
-  public boolean hasTileEntity(BlockState state) {
+  public boolean hasTileEntity(BlockState blockState) {
     return true;
   }
 
   @Override
-  public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+  public TileEntity createTileEntity(BlockState blockState, IBlockReader level) {
     return new ForceTrackBlockEntity();
   }
 }

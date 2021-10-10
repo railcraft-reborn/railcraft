@@ -15,7 +15,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.client.model.ElectricLocomotiveModel;
 import mods.railcraft.client.model.SimpleModel;
 import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.world.entity.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.LocomotiveEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;

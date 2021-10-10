@@ -19,11 +19,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySpawnPlacementRegistry.PlacementType;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.state.Property;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -34,7 +31,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
@@ -44,6 +40,8 @@ import net.minecraft.world.World;
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public class TrackBlock extends AbstractRailBlock implements TypedTrack, IChargeBlock {
+
+  public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE;
 
   private static final Map<Charge, ChargeSpec> CHARGE_SPECS =
       ChargeSpec.make(Charge.distribution, ConnectType.TRACK, 0.01);
@@ -61,8 +59,13 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
   }
 
   @Override
+  public TrackType getTrackType() {
+    return this.trackType.get();
+  }
+
+  @Override
   public Property<RailShape> getShapeProperty() {
-    return BlockStateProperties.RAIL_SHAPE;
+    return SHAPE;
   }
 
   @Override
@@ -71,30 +74,33 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
   }
 
   @Override
-  public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player,
-      boolean willHarvest, FluidState fluid) {
-    Charge.distribution.network(world).removeNode(pos);
-    return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-  }
-
-  @Override
-  public void destroy(IWorld world, BlockPos pos, BlockState state) {
-    super.destroy(world, pos, state);
-    Charge.distribution.network(world).removeNode(pos);
-  }
-
-  @Override
   public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-    if (this.getTrackType().isElectric())
+    if (this.getTrackType().isElectric()) {
       Charge.effects().throwSparks(stateIn, worldIn, pos, rand, 75);
+    }
   }
 
   @Override
-  public void onPlace(BlockState state, World level, BlockPos pos, BlockState oldBlockState,
+  public void onPlace(BlockState blockState, World level, BlockPos pos, BlockState oldBlockState,
       boolean moved) {
-    super.onPlace(state, level, pos, oldBlockState, moved);
-    if (this.getTrackType().isElectric())
-      this.registerNode(state, level, pos);
+    super.onPlace(blockState, level, pos, oldBlockState, moved);
+
+    if (!level.isClientSide() && !TrackSupportTools.isSupported(level, pos,
+        this.getTrackType().getMaxSupportDistance())) {
+      level.destroyBlock(pos, true);
+      return;
+    }
+
+    if (this.getTrackType().isElectric()) {
+      this.registerNode(blockState, level, pos);
+    }
+  }
+
+  @Override
+  public void onRemove(BlockState blockState, World level, BlockPos pos, BlockState newBlockState,
+      boolean moved) {
+    super.onRemove(blockState, level, pos, newBlockState, moved);
+    Charge.distribution.network(level).removeNode(pos);
   }
 
   @Override
@@ -103,65 +109,58 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
     return this.getTrackType().isElectric() ? CHARGE_SPECS : Collections.emptyMap();
   }
 
-  public void breakRail(World level, BlockPos pos) {
-    if (!level.isClientSide())
-      level.destroyBlock(pos, true);
-  }
-
-  @Override
-  public void setPlacedBy(World world, BlockPos pos, BlockState state,
-      @Nullable LivingEntity placer, ItemStack stack) {
-    super.setPlacedBy(world, pos, state, placer, stack);
-    if (!TrackSupportTools.isSupported(world, pos,
-        this.getTrackType().getMaxSupportDistance()))
-      breakRail(world, pos);
-  }
-
-  public int getMaxSupportedDistance(World worldIn, BlockPos pos) {
+  public int getMaxSupportedDistance(World level, BlockPos pos) {
     return this.getTrackType().getMaxSupportDistance();
   }
 
   protected boolean isRailValid(BlockState state, World world, BlockPos pos,
       int maxSupportedDistance) {
-    RailShape dir = TrackTools.getTrackDirectionRaw(state);
-    if (!TrackSupportTools.isSupported(world, pos, maxSupportedDistance))
+    RailShape dir = TrackTools.getRailShapeRaw(state);
+    if (!TrackSupportTools.isSupported(world, pos, maxSupportedDistance)) {
       return false;
+    }
     if (maxSupportedDistance == 0) {
-      if (dir == RailShape.ASCENDING_EAST && !canSupportRigidBlock(world, pos.east()))
+      if (dir == RailShape.ASCENDING_EAST && !canSupportRigidBlock(world, pos.east())) {
         return false;
-      if (dir == RailShape.ASCENDING_WEST && !canSupportRigidBlock(world, pos.west()))
+      }
+      if (dir == RailShape.ASCENDING_WEST && !canSupportRigidBlock(world, pos.west())) {
         return false;
-      if (dir == RailShape.ASCENDING_NORTH && !canSupportRigidBlock(world, pos.north()))
+      }
+      if (dir == RailShape.ASCENDING_NORTH && !canSupportRigidBlock(world, pos.north())) {
         return false;
-      if (dir == RailShape.ASCENDING_SOUTH && !canSupportRigidBlock(world, pos.south()))
+      }
+      if (dir == RailShape.ASCENDING_SOUTH && !canSupportRigidBlock(world, pos.south())) {
         return false;
+      }
     }
     return true;
   }
 
   @Override
-  public void neighborChanged(BlockState state, World worldIn, BlockPos pos,
-      Block neighborBlock, BlockPos neighborPos, boolean p_220069_6_) {
-    super.neighborChanged(state, worldIn, pos, neighborBlock, neighborPos, dynamicShape);
-    if (worldIn.isClientSide())
-      return;
-    if (!isRailValid(state, worldIn, pos, getMaxSupportedDistance(worldIn, pos))) {
-      breakRail(worldIn, pos);
+  public void neighborChanged(BlockState blockState, World level, BlockPos pos,
+      Block neighborBlock, BlockPos neighborPos, boolean moved) {
+    if (level.isClientSide()) {
       return;
     }
-    updateState(state, worldIn, pos, neighborBlock);
-    TrackTools.traverseConnectedTracks(worldIn, pos, (w, p) -> {
+    if (!this.isRailValid(blockState, level, pos, this.getMaxSupportedDistance(level, pos))) {
+      level.destroyBlock(pos, true);
+      return;
+    }
+    this.updateState(blockState, level, pos, neighborBlock);
+    TrackTools.traverseConnectedTracks(level, pos, (w, p) -> {
       BlockState s = w.getBlockState(p);
       Block b = s.getBlock();
-      if (!TrackTools.isRail(b))
+      if (!AbstractRailBlock.isRail(s)) {
         return false;
+      }
       if (b instanceof TrackBlock) {
         TrackBlock track = (TrackBlock) b;
         int maxSupportedDistance = track.getMaxSupportedDistance(w, p);
-        if (maxSupportedDistance <= 0 || TrackSupportTools.isSupportedDirectly(w, p))
+        if (maxSupportedDistance <= 0 || TrackSupportTools.isSupportedDirectly(w, p)) {
           return false;
+        }
         if (!track.isRailValid(s, w, p, maxSupportedDistance)) {
-          breakRail(w, p);
+          w.destroyBlock(p, true);
           return false;
         }
       }
@@ -185,8 +184,9 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
 
   @Override
   public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-    if (world.isClientSide())
+    if (world.isClientSide()) {
       return;
+    }
     this.getTrackType().getEventHandler().entityInside(world, pos, state, entity);
   }
 
@@ -233,10 +233,7 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
   }
 
   /**
-   * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable,
-   * returns the passed blockstate.
-   *
-   * @see net.minecraft.block.RailBlock#rotate() Railblock's rotate
+   * @see net.minecraft.block.RailBlock#rotate()
    */
   @Override
   public BlockState rotate(BlockState state, Rotation rot) {
@@ -315,18 +312,15 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
   }
 
   /**
-   * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns
-   * the passed blockstate.
-   *
-   * @see net.minecraft.block.RailBlock#mirror() Railblock's rotate
+   * @see net.minecraft.block.RailBlock#mirror()
    */
+  @SuppressWarnings("deprecation")
   @Override
-  @SuppressWarnings({"incomplete-switch", "deprecation"})
-  public BlockState mirror(BlockState state, Mirror mirrorIn) {
+  public BlockState mirror(BlockState state, Mirror mirror) {
     Property<RailShape> shape = getShapeProperty();
     RailShape railshape = state.getValue(shape);
 
-    switch (mirrorIn) {
+    switch (mirror) {
       case LEFT_RIGHT:
         switch (railshape) {
           case ASCENDING_NORTH:
@@ -342,7 +336,7 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
           case NORTH_EAST:
             return state.setValue(shape, RailShape.SOUTH_EAST);
           default:
-            return super.mirror(state, mirrorIn);
+            return super.mirror(state, mirror);
         }
       case FRONT_BACK:
         switch (railshape) {
@@ -363,14 +357,11 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
           case NORTH_EAST:
             return state.setValue(shape, RailShape.NORTH_WEST);
         }
+      default:
+        break;
     }
 
-    return super.mirror(state, mirrorIn);
-  }
-
-  @Override
-  public TrackType getTrackType() {
-    return this.trackType.get();
+    return super.mirror(state, mirror);
   }
 
   @SuppressWarnings("deprecation")

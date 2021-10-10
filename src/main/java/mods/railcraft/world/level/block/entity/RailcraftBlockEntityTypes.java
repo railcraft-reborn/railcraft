@@ -6,8 +6,8 @@ import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxB
 import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DistantSignalBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.DualDistantSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DualBlockSignalBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.DualDistantSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DualTokenSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
@@ -16,6 +16,7 @@ import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEnti
 import mods.railcraft.world.level.block.entity.signal.SignalSequencerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
+import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -140,6 +141,20 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<TileEntityType<?>> MANUAL_ROLLING_MACHINE =
       BLOCK_ENTITY_TYPES.register("manual_rolling_machine",
           () -> TileEntityType.Builder
-              .of(ManualRollingMachineBlockEntity::new, RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
+              .of(ManualRollingMachineBlockEntity::new,
+                  RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
               .build(null));
+
+  public static final RegistryObject<TileEntityType<?>> SWITCH_TRACK_MOTOR =
+      BLOCK_ENTITY_TYPES.register("switch_track_motor",
+          () -> TileEntityType.Builder
+              .of(SwitchTrackMotorBlockEntity::new, RailcraftBlocks.SWITCH_TRACK_MOTOR.get())
+              .build(null));
+
+  public static final RegistryObject<TileEntityType<?>> LOCKING_TRACK =
+      BLOCK_ENTITY_TYPES.register("locking_track",
+          () -> TileEntityType.Builder
+              .of(LockingTrackBlockEntity::new, RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get())
+              .build(null));
+
 }

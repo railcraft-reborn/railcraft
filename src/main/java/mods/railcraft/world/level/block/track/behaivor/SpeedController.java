@@ -6,11 +6,11 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.carts.CartConstants;
-import mods.railcraft.carts.Train;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
+import mods.railcraft.world.entity.cart.CartConstants;
+import mods.railcraft.world.entity.cart.Train;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.state.properties.RailShape;
@@ -48,7 +48,7 @@ public enum SpeedController implements TrackType.EventHandler {
     public RailShape getRailShapeOverride(IBlockReader level, BlockPos pos, BlockState state,
         @Nullable AbstractMinecartEntity cart) {
       if (cart != null && !cart.level.isClientSide()) {
-        RailShape shape = TrackTools.getTrackDirectionRaw(state);
+        RailShape shape = TrackTools.getRailShapeRaw(state);
         if (TrackShapeHelper.isLevelStraight(shape) && isDerailing(cart)) {
           cart.getPersistentData().putByte(CartConstants.TAG_DERAIL, (byte) 100);
           Vector3d motion = cart.getDeltaMovement();

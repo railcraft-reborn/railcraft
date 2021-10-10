@@ -10,6 +10,7 @@ import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
 import mods.railcraft.network.play.SetMenuStringMessage;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
+import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
 import mods.railcraft.network.play.SyncEntityMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import net.minecraft.util.ResourceLocation;
@@ -85,6 +86,13 @@ public enum NetworkChannel {
           .encoder(SetActionSignalBoxAttributesMessage::encode)
           .decoder(SetActionSignalBoxAttributesMessage::decode)
           .consumer(SetActionSignalBoxAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetSwitchTrackMotorAttributesMessage.class, 0x0A,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetSwitchTrackMotorAttributesMessage::encode)
+          .decoder(SetSwitchTrackMotorAttributesMessage::decode)
+          .consumer(SetSwitchTrackMotorAttributesMessage::handle)
           .add();
     }
   };

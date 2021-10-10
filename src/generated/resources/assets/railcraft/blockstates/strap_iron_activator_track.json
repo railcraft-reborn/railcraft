@@ -1,0 +1,59 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_flex_track"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_flex_track",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/activator_track"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/activator_track",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/activator_track_on"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/activator_track_on",
+        "y": 90
+      }
+    }
+  ]
+}

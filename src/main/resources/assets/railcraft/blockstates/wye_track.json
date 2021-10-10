@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "switched=false,facing=north": {
+      "model": "railcraft:block/wye_track_east",
+      "y": 90
+    },
+    "switched=true,facing=north": {
+      "model": "railcraft:block/wye_track_east_switched",
+      "y": 90
+    },
+    "switched=false,facing=south": {
+      "model": "railcraft:block/wye_track_west",
+      "y": 90
+    },
+    "switched=true,facing=south": {
+      "model": "railcraft:block/wye_track_west_switched",
+      "y": 90
+    },
+    "switched=false,facing=east": {
+      "model": "railcraft:block/wye_track_west"
+    },
+    "switched=true,facing=east": {
+      "model": "railcraft:block/wye_track_west_switched"
+    },
+    "switched=false,facing=west": {
+      "model": "railcraft:block/wye_track_east"
+    },
+    "switched=true,facing=west": {
+      "model": "railcraft:block/wye_track_east_switched"
+    }
+  }
+}

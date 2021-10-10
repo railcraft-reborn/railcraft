@@ -1,55 +1,66 @@
 package mods.railcraft.world.level.block.entity;
 
-import mods.railcraft.api.track.LockdownTrack;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.track.LockingTrack;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 
-public enum ForceTrackEmitterState {
+public enum ForceTrackEmitterState implements IStringSerializable {
 
   /**
    * A state when the track is fully built and ready for carts.
    */
-  EXTENDED(true) {
+  EXTENDED("extended", true) {
     @Override
-    ForceTrackEmitterState afterUseCharge(
+    ForceTrackEmitterState charged(
         ForceTrackEmitterBlockEntity emitter) {
       return emitter.clock(TICKS_PER_REFRESH) ? EXTENDING : this;
     }
 
     @Override
-    void onTransition(ForceTrackEmitterBlockEntity emitter) {
+    void load(ForceTrackEmitterBlockEntity emitter) {
       BlockPos pos = emitter.getBlockPos().above();
       BlockState blockState = emitter.getLevel().getBlockState(pos);
-      if (blockState.getBlock() instanceof LockdownTrack) {
-        LockdownTrack lockdownTrack = (LockdownTrack) blockState.getBlock();
-        lockdownTrack.releaseCart(blockState, emitter.getLevel(), pos);
+      if (blockState.getBlock() instanceof LockingTrack) {
+        ((LockingTrack) blockState.getBlock()).releaseCart();
       }
     }
   },
   /**
    * A state in which no track presents.
    */
-  RETRACTED(false) {
+  RETRACTED("retracted", false) {
     @Override
-    ForceTrackEmitterState whenNoCharge(ForceTrackEmitterBlockEntity emitter) {
+    ForceTrackEmitterState uncharged(ForceTrackEmitterBlockEntity emitter) {
       return this;
     }
   },
   /**
    * A state in which the track is in progress of building.
    */
-  EXTENDING(true) {
+  EXTENDING("extending", true) {
     @Override
-    ForceTrackEmitterState afterUseCharge(
+    ForceTrackEmitterState charged(
         ForceTrackEmitterBlockEntity emitter) {
-      if (emitter.isOutOfPower())
+      if (!Charge.distribution.network(emitter.getLevel())
+          .access(emitter.getBlockPos())
+          .hasCapacity(
+              ForceTrackEmitterBlockEntity.getMaintenanceCost(emitter.getTrackCount() + 1))) {
         return HALTED;
-      if (emitter.getTrackCount() >= MAX_TRACKS)
+      }
+      if (emitter.getTrackCount() >= MAX_TRACKS) {
         return EXTENDED;
+      }
       if (emitter.clock(TICKS_PER_ACTION)) {
         Direction facing = emitter.getBlockState().getValue(ForceTrackEmitterBlock.FACING);
         BlockPos toPlace =
@@ -69,9 +80,9 @@ public enum ForceTrackEmitterState {
   /**
    * A state in which the tracks are destroyed.
    */
-  RETRACTING(false) {
+  RETRACTING("retracting", false) {
     @Override
-    ForceTrackEmitterState whenNoCharge(
+    ForceTrackEmitterState uncharged(
         ForceTrackEmitterBlockEntity emitter) {
       if (emitter.getTrackCount() > 0) {
         if (emitter.clock(TICKS_PER_ACTION)) {
@@ -86,17 +97,25 @@ public enum ForceTrackEmitterState {
   /**
    * A state in which the state will wait for a transition.
    */
-  HALTED(false);
+  HALTED("halted", false);
 
   private static final int TICKS_PER_ACTION = 2;
   private static final int TICKS_PER_REFRESH = 64;
-  public static final int MAX_TRACKS = 64;
+  private static final int MAX_TRACKS = 64;
 
-  static final ForceTrackEmitterState[] VALUES = values();
-  final boolean appearPowered;
+  private static final Map<String, ForceTrackEmitterState> byName = Arrays.stream(values())
+      .collect(Collectors.toMap(ForceTrackEmitterState::getSerializedName, Function.identity()));
 
-  private ForceTrackEmitterState(boolean appearPowered) {
-    this.appearPowered = appearPowered;
+  private final String name;
+  private final boolean visuallyPowered;
+
+  private ForceTrackEmitterState(String name, boolean visuallyPowered) {
+    this.name = name;
+    this.visuallyPowered = visuallyPowered;
+  }
+
+  boolean isVisuallyPowered() {
+    return this.visuallyPowered;
   }
 
   /**
@@ -105,7 +124,7 @@ public enum ForceTrackEmitterState {
    * @param emitter The emitter
    * @return The new state
    */
-  ForceTrackEmitterState afterUseCharge(ForceTrackEmitterBlockEntity emitter) {
+  ForceTrackEmitterState charged(ForceTrackEmitterBlockEntity emitter) {
     return EXTENDING;
   }
 
@@ -114,9 +133,18 @@ public enum ForceTrackEmitterState {
    *
    * @return The new state
    */
-  ForceTrackEmitterState whenNoCharge(ForceTrackEmitterBlockEntity emitter) {
+  ForceTrackEmitterState uncharged(ForceTrackEmitterBlockEntity emitter) {
     return RETRACTING;
   }
 
-  void onTransition(ForceTrackEmitterBlockEntity emitter) {}
+  void load(ForceTrackEmitterBlockEntity emitter) {}
+
+  @Override
+  public String getSerializedName() {
+    return this.name;
+  }
+
+  public static Optional<ForceTrackEmitterState> getByName(String name) {
+    return Optional.ofNullable(byName.get(name));
+  }
 }

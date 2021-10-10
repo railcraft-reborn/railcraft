@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.track.actuator;
 
 import mods.railcraft.api.track.ArrowDirection;
-import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.block.Block;
@@ -34,16 +33,14 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
       EnumProperty.create("red_flag", ArrowDirection.class);
   public static final EnumProperty<ArrowDirection> WHITE_ARROW_DIRECTION =
       EnumProperty.create("white_flag", ArrowDirection.class);
-  public static final BooleanProperty SWITCHED = BooleanProperty.create("thrown");
+  public static final BooleanProperty SWITCHED = BooleanProperty.create("switched");
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-  private static final float BOUNDS = -0.2F;
-  private static final VoxelShape SHAPE =
-      VoxelShapes.create(AABBFactory.start()
-          .box()
-          .expandHorizontally(BOUNDS)
-          .raiseCeilingPixel(-3)
-          .build());
+  private static final VoxelShape BASE_SHAPE = box(4.0D, 0.0D, 4.0D, 12.0D, 5.0D, 12.0D);
+  private static final VoxelShape WINGS_SHAPE = box(6.0D, 0.0D, 0.0D, 10.0D, 3.0D, 16.0D);
+  private static final VoxelShape POST_SHAPE = box(7.0D, 5.0D, 7.0D, 9.0D, 8.0D, 9.0D);
+
+  private static final VoxelShape SHAPE = VoxelShapes.or(BASE_SHAPE, WINGS_SHAPE, POST_SHAPE);
 
   public SwitchTrackActuatorBlock(Properties properties) {
     super(properties);
@@ -52,15 +49,6 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
         .setValue(RED_ARROW_DIRECTION, ArrowDirection.NORTH_SOUTH)
         .setValue(WHITE_ARROW_DIRECTION, ArrowDirection.EAST_WEST)
         .setValue(SWITCHED, false));
-  }
-
-  @Override
-  public void neighborChanged(BlockState blockState, World level, BlockPos blockPos,
-      Block neighborBlock, BlockPos neighborBlockPos, boolean something) {
-    if (neighborBlock instanceof SwitchTrackBlock
-        && !level.getBlockTicks().hasScheduledTick(blockPos, this)) {
-      level.getBlockTicks().scheduleTick(blockPos, this, 0);
-    }
   }
 
   @Override
@@ -132,14 +120,17 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
 
   public static void setSwitched(BlockState blockState, World level, BlockPos blockPos,
       boolean switched) {
+    if (blockState.getValue(SWITCHED) == switched) {
+      return;
+    }
     level.setBlockAndUpdate(blockPos, blockState.setValue(SWITCHED, switched));
-    if (switched)
+    if (switched) {
       level.playSound(null, blockPos, SoundEvents.PISTON_CONTRACT,
           SoundCategory.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
-    else
+    } else {
       level.playSound(null, blockPos, SoundEvents.PISTON_EXTEND,
           SoundCategory.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
-
+    }
     Direction.Plane.HORIZONTAL.forEach(direction -> {
       BlockPos neighborPos = blockPos.relative(direction);
       if (level.getBlockState(neighborPos).getBlock() instanceof ComparatorBlock) {

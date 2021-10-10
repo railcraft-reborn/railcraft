@@ -23,6 +23,9 @@ public class Models {
   public static final ModelsUtil POST_INVENTORY =
       create("post_inventory", "_inventory", StockTextureAliases.TEXTURE);
 
+  public static final ResourceLocation BUFFER_STOP =
+      new ResourceLocation(Railcraft.ID, "block/buffer_stop");
+
   private static ModelsUtil create(String name, String suffix,
       StockTextureAliases... textureAliases) {
     return new ModelsUtil(Optional.of(new ResourceLocation(Railcraft.ID, "block/" + name)),

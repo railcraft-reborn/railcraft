@@ -3,10 +3,11 @@ package mods.railcraft.client;
 import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftDist;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
+import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
 import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
+import mods.railcraft.client.gui.screen.SwitchTrackMotorScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
@@ -37,10 +38,12 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
+import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.ParticleManager;
@@ -98,17 +101,61 @@ public class ClientDist implements RailcraftDist {
   private void handleClientSetup(FMLClientSetupEvent event) {
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELEVATOR_TRACK.get(), RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.FORCE_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_FLEX_TRACK.get(),
         RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
+        RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_FLEX_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_FLEX_TRACK.get(),
         RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_BUFFER_STOP_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
+        RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get(),
         RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BUFFER_STOP_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_LOCKING_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_BUFFER_STOP_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
+        RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.TURNOUT_TRACK.get(),
         RenderType.cutout());
@@ -182,6 +229,10 @@ public class ClientDist implements RailcraftDist {
     event.getBlockColors()
         .register((state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR)
             .getColorValue(), RailcraftBlocks.FORCE_TRACK_EMITTER.get());
+
+    event.getBlockColors()
+        .register((state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackBlock.COLOR)
+            .getColorValue(), RailcraftBlocks.FORCE_TRACK.get());
 
     event.getBlockColors().register(
         (state, level, pos, tintIndex) -> level != null && pos != null
@@ -272,5 +323,9 @@ public class ClientDist implements RailcraftDist {
 
   public static void openActionSignalBoxScreen(ActionSignalBoxBlockEntity signalBox) {
     Minecraft.getInstance().setScreen(new ActionSignalBoxScreen(signalBox));
+  }
+
+  public static void openSwitchTrackMotorScreen(SwitchTrackMotorBlockEntity switchTrackMotor) {
+    Minecraft.getInstance().setScreen(new SwitchTrackMotorScreen(switchTrackMotor));
   }
 }

@@ -3,7 +3,7 @@ package mods.railcraft.world.item;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.world.entity.TunnelBoreEntity;
+import mods.railcraft.world.entity.cart.TunnelBoreEntity;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;

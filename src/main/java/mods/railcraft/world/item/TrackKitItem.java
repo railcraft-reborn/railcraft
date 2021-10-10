@@ -22,7 +22,6 @@ import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -45,64 +44,59 @@ public class TrackKitItem extends Item {
     World level = context.getLevel();
     ItemStack itemStack = player.getItemInHand(context.getHand());
     BlockPos blockPos = context.getClickedPos();
-    player.swing(context.getHand());
 
-    if (level.isClientSide())
-      return ActionResultType.PASS;
+    if (level.isClientSide()) {
+      return ActionResultType.SUCCESS;
+    }
 
     BlockState oldState = level.getBlockState(blockPos);
     if (!AbstractRailBlock.isRail(oldState)) {
       return ActionResultType.PASS;
     }
 
-    TrackType trackType = null;
+    TrackType trackType;
     if (oldState.getBlock() instanceof TrackBlock) {
       trackType = ((TrackBlock) oldState.getBlock()).getTrackType();
     } else if (oldState.getBlock() == Blocks.RAIL) {
       trackType = TrackTypes.IRON.get();
-    }
-
-    if (trackType != null) {
-      RailShape shape = TrackTools.getTrackDirectionRaw(level, blockPos);
-      if (TrackShapeHelper.isStraight(shape)) {
-        if (!shape.isAscending() || this.allowedOnSlopes) {
-          AbstractRailBlock outfittedBlock =
-              this.outfittedBlocks.getOrDefault(trackType.getRegistryName(), () -> null).get();
-          if (outfittedBlock == null) {
-            player.sendMessage(
-                new TranslationTextComponent("gui.railcraft.track_kit.item.invalid.track_type"),
-                Util.NIL_UUID);
-            return ActionResultType.PASS;
-          }
-
-          BlockState outfittedBlockState = outfittedBlock.defaultBlockState();
-          if (level.setBlockAndUpdate(blockPos, outfittedBlockState)) {
-            SoundType soundType =
-                outfittedBlock.getSoundType(outfittedBlockState, level, blockPos, player);
-            level.playSound(player, blockPos, soundType.getPlaceSound(), SoundCategory.BLOCKS,
-                soundType.getVolume(), soundType.getPitch());
-            RailcraftAdvancementTriggers.getInstance().onTrackKitUse((ServerPlayerEntity) player,
-                level, blockPos, itemStack);
-            if (!player.abilities.instabuild) {
-              itemStack.shrink(1);
-            }
-            return ActionResultType.SUCCESS;
-          }
-        } else {
-          player.sendMessage(
-              new TranslationTextComponent("gui.railcraft.track_kit.item.invalid.slope"),
-              Util.NIL_UUID);
-        }
-      } else {
-        player.sendMessage(
-            new TranslationTextComponent("gui.railcraft.track_kit.item.invalid.curve"),
-            Util.NIL_UUID);
-      }
     } else {
-      player.sendMessage(
-          new TranslationTextComponent("gui.railcraft.track_kit.item.invalid.track"),
-          Util.NIL_UUID);
+      return ActionResultType.PASS;
     }
+
+    RailShape shape = TrackTools.getRailShapeRaw(level, blockPos);
+
+    if (!TrackShapeHelper.isStraight(shape)) {
+      player.displayClientMessage(new TranslationTextComponent("track_kit.corners_unsupported"), true);
+      return ActionResultType.PASS;
+    }
+
+    if (shape.isAscending() && !this.allowedOnSlopes) {
+      player.displayClientMessage(new TranslationTextComponent("track_kit.slopes_unsupported"), true);
+      return ActionResultType.PASS;
+    }
+
+    AbstractRailBlock outfittedBlock =
+        this.outfittedBlocks.getOrDefault(trackType.getRegistryName(), () -> null).get();
+    if (outfittedBlock == null) {
+      player.displayClientMessage(
+          new TranslationTextComponent("track_kit.invalid_track_type"), true);
+      return ActionResultType.PASS;
+    }
+
+    BlockState outfittedBlockState = outfittedBlock.defaultBlockState();
+    if (level.setBlockAndUpdate(blockPos, outfittedBlockState)) {
+      SoundType soundType =
+          outfittedBlock.getSoundType(outfittedBlockState, level, blockPos, player);
+      level.playSound(player, blockPos, soundType.getPlaceSound(), SoundCategory.BLOCKS,
+          soundType.getVolume(), soundType.getPitch());
+      RailcraftAdvancementTriggers.getInstance().onTrackKitUse((ServerPlayerEntity) player,
+          level, blockPos, itemStack);
+      if (!player.abilities.instabuild) {
+        itemStack.shrink(1);
+      }
+      return ActionResultType.SUCCESS;
+    }
+
     return ActionResultType.PASS;
   }
 

@@ -5,7 +5,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import mods.railcraft.api.carts.IAlternateCartTexture;
 import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.season.Seasons;
-import mods.railcraft.world.entity.IDirectionalCart;
+import mods.railcraft.world.entity.cart.IDirectionalCart;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MinecartRenderer;

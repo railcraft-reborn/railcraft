@@ -12,7 +12,7 @@ import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 
-public class AnalogSignalControllerBoxScreen extends BasicIngameScreen {
+public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
 
   private final AnalogSignalControllerBoxBlockEntity signalBox;
   private static final Pattern PATTERN_RANGE = Pattern.compile("(\\d+)-(\\d+)|(\\d+)");
@@ -24,7 +24,7 @@ public class AnalogSignalControllerBoxScreen extends BasicIngameScreen {
       new EnumMap<>(SignalAspect.class);
 
   public AnalogSignalControllerBoxScreen(AnalogSignalControllerBoxBlockEntity signalBox) {
-    super(signalBox.getDisplayName(), LARGE_BASIC_BACKGROUND, 176, 113);
+    super(signalBox.getDisplayName(), LARGE_WINDOW_TEXTURE, 176, 113);
     this.signalBox = signalBox;
     for (Map.Entry<SignalAspect, BitSet> entry : signalBox.getSignalAspectTriggerSignals()
         .entrySet()) {
@@ -81,8 +81,8 @@ public class AnalogSignalControllerBoxScreen extends BasicIngameScreen {
 
   @Override
   public void init() {
-    int centeredX = (this.width - this.x) / 2;
-    int centeredY = (this.height - this.y) / 2;
+    int centeredX = (this.width - this.windowWidth) / 2;
+    int centeredY = (this.height - this.windowHeight) / 2;
 
     for (Map.Entry<SignalAspect, BitSet> entry : this.signalAspectTriggerSignals.entrySet()) {
       TextFieldWidget textField = new TextFieldWidget(this.font, centeredX + 72,

@@ -2,7 +2,7 @@ package mods.railcraft.season;
 
 import java.util.Calendar;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.carts.RailcraftCart;
+import mods.railcraft.world.entity.cart.SeasonalCart;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 
 /**
@@ -75,7 +75,7 @@ public final class Seasons {
    */
   public static boolean isGhostTrain(AbstractMinecartEntity cart) {
     Season season =
-        cart instanceof RailcraftCart ? ((RailcraftCart) cart).getSeason() : Season.DEFAULT;
+        cart instanceof SeasonalCart ? ((SeasonalCart) cart).getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT) {
       return (RailcraftConfig.client.enableGhostTrain.get() && HALLOWEEN)
           || cart.hasCustomName() && GHOST_TRAIN.equals(cart.getCustomName().getContents());
@@ -90,7 +90,7 @@ public final class Seasons {
    */
   public static boolean isPolarExpress(AbstractMinecartEntity cart) {
     Season season =
-        cart instanceof RailcraftCart ? ((RailcraftCart) cart).getSeason() : Season.DEFAULT;
+        cart instanceof SeasonalCart ? ((SeasonalCart) cart).getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT) {
       return (RailcraftConfig.client.enablePolarExpress.get() && CHRISTMAS)
           || cart.hasCustomName() && POLAR_EXPRESS.equals(cart.getCustomName().getContents())
