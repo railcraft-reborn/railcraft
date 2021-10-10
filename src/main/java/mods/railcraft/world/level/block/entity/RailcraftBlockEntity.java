@@ -1,50 +1,39 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.Ownable;
-import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.core.Syncable;
 import mods.railcraft.network.PacketBuilder;
-import mods.railcraft.util.PlayerUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.GameRules;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 
 public abstract class RailcraftBlockEntity extends TileEntity
     implements Syncable, Ownable, BlockEntityLike {
 
-  private GameProfile owner = RailcraftFakePlayer.UNKNOWN_USER_PROFILE;
-
   @Nullable
-  private UUID id;
+  private GameProfile owner;
 
   @Nullable
   private ITextComponent customName;
 
   public RailcraftBlockEntity(TileEntityType<?> type) {
     super(type);
-  }
-
-  public UUID getId() {
-    if (this.id == null) {
-      this.id = UUID.randomUUID();
-    }
-    return this.id;
   }
 
   @Override
@@ -60,7 +49,6 @@ public abstract class RailcraftBlockEntity extends TileEntity
     byte[] syncData = new byte[packetBuffer.readableBytes()];
     packetBuffer.readBytes(syncData);
     nbt.putByteArray("sync", syncData);
-
     return nbt;
   }
 
@@ -76,48 +64,58 @@ public abstract class RailcraftBlockEntity extends TileEntity
   }
 
   @Override
+  public void writeSyncData(PacketBuffer data) {
+    if (this.owner == null) {
+      data.writeBoolean(true);
+    } else {
+      data.writeBoolean(false);
+      data.writeUUID(this.owner.getId());
+      data.writeUtf(this.owner.getName(), 16);
+    }
+  }
+
+  @Override
+  public void readSyncData(PacketBuffer data) {
+    if (data.readBoolean()) {
+      this.owner = null;
+    } else {
+      UUID ownerId = data.readUUID();
+      String ownerName = data.readUtf(16);
+      this.owner = new GameProfile(ownerId, ownerName);
+    }
+  }
+
+  @Override
   public void syncToClient() {
     PacketBuilder.instance().sendTileEntityPacket(this);
   }
 
-  public final void clearOwner() {
-    this.setOwner(RailcraftFakePlayer.UNKNOWN_USER_PROFILE);
-  }
-
-  protected final void setOwner(GameProfile profile) {
+  public final void setOwner(@Nullable GameProfile profile) {
     this.owner = profile;
-    // sendUpdateToClient(); Sending this when a te is initialized will cause client
-    // net handler
-    // errors because the tile is not yet on client
   }
 
   @Override
-  public final GameProfile getOwner() {
-    return this.owner;
+  @Nullable
+  public final Optional<GameProfile> getOwner() {
+    return Optional.ofNullable(this.owner);
   }
 
-  public final boolean isOwner(GameProfile player) {
-    return PlayerUtil.isSamePlayer(this.owner, player);
+  public final boolean isOwner(@Nonnull GameProfile gameProfile) {
+    return gameProfile.equals(this.owner);
   }
 
-  public List<String> getDebugOutput() {
-    List<String> debug = new ArrayList<>();
-    debug.add("Railcraft Tile Entity Data Dump");
-    debug.add("Object: " + this);
-    if (!this.level.getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO)) {
-      debug.add(String.format("Coordinates: d=%d, %s", this.getLevel().dimension(), getBlockPos()));
-    }
-    debug.add("Owner: " + this.owner.getName());
-    return debug;
+  public final boolean isOwnerOrOperator(@Nonnull GameProfile gameProfile) {
+    return this.isOwner(gameProfile) || (!this.level.isClientSide()
+        && ((ServerWorld) this.level).getServer().getPlayerList().isOp(gameProfile));
   }
 
   @Override
-  @OverridingMethodsMustInvokeSuper
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    PlayerUtil.writeOwnerToNBT(data, this.owner);
-    if (this.id != null) {
-      data.putUUID("id", this.id);
+    if (this.owner != null) {
+      CompoundNBT ownerTag = new CompoundNBT();
+      NBTUtil.writeGameProfile(ownerTag, this.owner);
+      data.put("owner", ownerTag);
     }
     if (this.customName != null) {
       data.putString("customName", ITextComponent.Serializer.toJson(this.customName));
@@ -126,12 +124,10 @@ public abstract class RailcraftBlockEntity extends TileEntity
   }
 
   @Override
-  @OverridingMethodsMustInvokeSuper
   public void load(BlockState blockState, CompoundNBT data) {
     super.load(blockState, data);
-    this.owner = PlayerUtil.readOwnerFromNBT(data);
-    if (data.hasUUID("id")) {
-      this.id = data.getUUID("id");
+    if (data.contains("owner", Constants.NBT.TAG_COMPOUND)) {
+      this.owner = NBTUtil.readGameProfile(data.getCompound("owner"));
     }
     if (data.contains("customName", Constants.NBT.TAG_STRING)) {
       this.customName = ITextComponent.Serializer.fromJson(data.getString("customName"));

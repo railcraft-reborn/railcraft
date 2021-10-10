@@ -1,29 +1,19 @@
 package mods.railcraft.advancements.criterion;
 
-import static java.util.Objects.requireNonNull;
-import java.util.Collection;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
-import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.event.MultiBlockEvent;
 import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.criterion.NBTPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 final class MultiBlockFormedTrigger extends BaseTrigger<MultiBlockFormedTrigger.Instance> {
@@ -54,23 +44,23 @@ final class MultiBlockFormedTrigger extends BaseTrigger<MultiBlockFormedTrigger.
     return new Instance(type, nbt);
   }
 
-  @SubscribeEvent
-  public void onMultiBlockForm(MultiBlockEvent.Form event) {
-    RailcraftBlockEntity tile = event.getMaster();
-    GameProfile owner = tile.getOwner();
-    MinecraftServer server = requireNonNull(((ServerWorld) tile.getLevel()).getServer());
-    ServerPlayerEntity player = server.getPlayerList().getPlayer(owner.getId());
-    if (player == null) {
-      return; // Offline
-    }
-    PlayerAdvancements advancements = player.getAdvancements();
-    Collection<Listener<MultiBlockFormedTrigger.Instance>> done = manager.get(advancements).stream()
-        .filter(listener -> listener.getTriggerInstance().matches(tile))
-        .collect(Collectors.toList());
-    for (Listener<Instance> listener : done) {
-      listener.run(advancements);
-    }
-  }
+  // TODO trigger this from the multiblock itself.
+//  public void onMultiBlockForm(MultiBlockEvent.Form event) {
+//    RailcraftBlockEntity tile = event.getMaster();
+//    GameProfile owner = tile.getOwner();
+//    MinecraftServer server = requireNonNull(((ServerWorld) tile.getLevel()).getServer());
+//    ServerPlayerEntity player = server.getPlayerList().getPlayer(owner.getId());
+//    if (player == null) {
+//      return; // Offline
+//    }
+//    PlayerAdvancements advancements = player.getAdvancements();
+//    Collection<Listener<MultiBlockFormedTrigger.Instance>> done = manager.get(advancements).stream()
+//        .filter(listener -> listener.getTriggerInstance().matches(tile))
+//        .collect(Collectors.toList());
+//    for (Listener<Instance> listener : done) {
+//      listener.run(advancements);
+//    }
+//  }
 
   static final class Instance implements ICriterionInstance {
 

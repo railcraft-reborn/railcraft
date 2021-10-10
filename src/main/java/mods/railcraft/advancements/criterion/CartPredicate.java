@@ -1,11 +1,11 @@
 package mods.railcraft.advancements.criterion;
 
-import java.util.Objects;
 import javax.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.core.Ownable;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
@@ -64,8 +64,9 @@ public final class CartPredicate {
         && Railcraft.getInstance().getMinecartHandler().canMount(cart) != canMount) {
       return false;
     }
-    if (checksOwner != null && !Objects.equals(player.getGameProfile().getId(),
-        CartUtil.getCartOwner(cart).getId())) {
+    if (checksOwner != null && cart instanceof Ownable
+        && ((Ownable) cart).getOwner().map(owner -> !owner.equals(player.getGameProfile()))
+            .orElse(false)) {
       return false;
     }
     if (!speed.matchesSqr(CartUtil.getCartSpeedUncappedSquared(cart))) {

@@ -1,13 +1,15 @@
 package mods.railcraft.world.entity;
 
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Set;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.inventory.LocomotiveMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
-import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.TicketItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -28,18 +31,24 @@ public class CreativeLocomotiveEntity extends LocomotiveEntity implements ISided
 
   private static final int SLOT_TICKET = 0;
   private static final int[] SLOTS = InvTools.buildSlotArray(0, 1);
+
+  private static final Set<Mode> ALLOWED_MODES =
+      Collections.unmodifiableSet(EnumSet.of(Mode.RUNNING, Mode.SHUTDOWN));
+
   private final IInventory invTicket = new InventoryMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
 
   public CreativeLocomotiveEntity(EntityType<?> type, World world) {
     super(type, world);
   }
 
-  public CreativeLocomotiveEntity(double x, double y, double z, World world) {
-    super(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), x, y, z, world);
+  public CreativeLocomotiveEntity(ItemStack itemStack, double x, double y, double z,
+      ServerWorld level) {
+    super(itemStack, RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), x, y, z, level);
   }
 
-  {
-    setAllowedModes(EnumSet.of(Mode.RUNNING, Mode.SHUTDOWN));
+  @Override
+  public Set<Mode> getSupportedModes() {
+    return ALLOWED_MODES;
   }
 
   @Override
@@ -53,7 +62,7 @@ public class CreativeLocomotiveEntity extends LocomotiveEntity implements ISided
   }
 
   @Override
-  public SoundEvent getWhistle() {
+  public SoundEvent getWhistleSound() {
     return RailcraftSoundEvents.ELECTRIC_WHISTLE.get();
   }
 
@@ -63,7 +72,7 @@ public class CreativeLocomotiveEntity extends LocomotiveEntity implements ISided
   }
 
   @Override
-  public int getMoreGoJuice() {
+  public int retrieveFuel() {
     return 100;
   }
 

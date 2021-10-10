@@ -1,16 +1,15 @@
 package mods.railcraft.world.entity;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import javax.annotation.Nullable;
-
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.CartUtil;
-import mods.railcraft.api.carts.ILinkageManager;
+import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.CartTools;
-import mods.railcraft.carts.LinkageManager;
+import mods.railcraft.carts.LinkageManagerImpl;
 import mods.railcraft.carts.Train;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MathTools;
@@ -18,7 +17,6 @@ import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.Vec2D;
-import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
@@ -31,21 +29,12 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IMinecartCollisionHandler;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class MinecartHandler implements IMinecartCollisionHandler {
 
@@ -59,35 +48,14 @@ public class MinecartHandler implements IMinecartCollisionHandler {
   private static final float COLLISION_EXPANSION = 0.2f;
   private static final int MAX_INTERACT_DIST_SQ = 5 * 5;
 
+  public static final Map<EntityType<?>, EntityType<?>> cartReplacements = new HashMap<>();
+
   public boolean isDerailed(AbstractMinecartEntity cart) {
     return cart.getPersistentData().getInt(CartConstants.TAG_DERAIL) > 0;
   }
 
   public boolean canMount(AbstractMinecartEntity cart) {
     return cart.getPersistentData().getInt(CartConstants.TAG_PREVENT_MOUNT) <= 0;
-  }
-
-  @SubscribeEvent
-  public void onItemUse(PlayerInteractEvent.RightClickBlock event) {
-    PlayerEntity player = event.getPlayer();
-    World world = player.level;
-    if (world.isClientSide()) {
-      return;
-    }
-
-    ItemStack itemStack = event.getItemStack();
-    if (!itemStack.isEmpty()) {
-      Item item = itemStack.getItem();
-      if (CartTools.vanillaCartItemMap.containsKey(item)) {
-        event.setUseItem(Event.Result.DENY);
-        AbstractMinecartEntity placedCart =
-            CartTools.placeCart(CartTools.vanillaCartItemMap.get(item),
-            player.getGameProfile(), itemStack, (ServerWorld) world, event.getPos());
-        if (placedCart != null && !player.isCreative()) {
-          InvTools.dec(itemStack);
-        }
-      }
-    }
   }
 
   @Override
@@ -97,7 +65,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       return;
     }
 
-    ILinkageManager lm = LinkageManager.INSTANCE;
+    LinkageManager lm = LinkageManagerImpl.INSTANCE;
     AbstractMinecartEntity link = lm.getLinkedCartA(cart);
     if (link != null && (link == other || link.hasPassenger(other))) {
       return;
@@ -112,6 +80,30 @@ public class MinecartHandler implements IMinecartCollisionHandler {
 
     if (isPlayer && ((PlayerEntity) other).isSpectator()) {
       return;
+    }
+
+    if (other instanceof AbstractMinecartEntity) {
+      LinkageManagerImpl.INSTANCE.tryAutoLink(cart, (AbstractMinecartEntity) other);
+    }
+
+    this.testHighSpeedCollision(cart, other);
+
+    if (isLiving
+        && cart.level.getBlockState(cart.blockPosition()).is(RailcraftBlocks.ELEVATOR_TRACK.get())
+        && other.getBoundingBox().minY < cart.getBoundingBox().maxY) {
+      other.move(MoverType.SELF,
+          new Vector3d(0, cart.getBoundingBox().maxY - other.getBoundingBox().minY, 0));
+      other.setOnGround(true);
+    }
+
+    // TODO Config entry? ( Go for it -CJ )
+    if (MiscTools.RANDOM.nextFloat() < 0.001f) {
+      List<AbstractMinecartEntity> carts = EntitySearcher.findMinecarts().around(cart)
+          .and(EntityPredicates.ENTITY_STILL_ALIVE, RCEntitySelectors.NON_MECHANICAL)
+          .in(cart.level);
+      if (carts.size() >= 12) {
+        primeToExplode(cart);
+      }
     }
 
     Vector3d cartMotion = cart.getDeltaMovement();
@@ -132,9 +124,6 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       return;
     }
 
-    // System.out.println(cart.getClass().getSimpleName() + ": " + cart.entityId + "
-    // collided with "
-    // + other.getClass().getSimpleName() + ": " + other.entityId);
     Vec2D cartPos = new Vec2D(cart);
     Vec2D otherPos = new Vec2D(other);
 
@@ -189,11 +178,6 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         }
       }
     } else {
-      // if(isPlayer) {
-      // forceX += Math.abs(cart.motionX - other.motionX) / 2;
-      // forceZ += Math.abs(cart.motionZ - other.motionZ) / 2;
-      // }
-      // System.out.printf("forceX=%f, forceZ=%f%n", forceX, forceZ);
       Vec2D cartVel = new Vec2D(cart.getDeltaMovement());
       cartVel.add(forceX, forceZ);
       Vec2D otherVel = new Vec2D(other.getDeltaMovement());
@@ -207,7 +191,6 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       forceX += dampX;
       forceZ += dampZ;
 
-      // System.out.printf("dampX=%f, dampZ=%f%n", dampX, dampZ);
       if (!isPlayer) {
         other.setDeltaMovement(other.getDeltaMovement().add(-forceX, 0.0D, -forceZ));
       }
@@ -217,14 +200,43 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     }
   }
 
+  private void testHighSpeedCollision(AbstractMinecartEntity cart, Entity other) {
+    boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(cart);
+    if (highSpeed) {
+      if (other instanceof AbstractMinecartEntity
+          && Train.areInSameTrain(cart, (AbstractMinecartEntity) other)) {
+        return;
+      }
+      if (Train.streamCarts(cart).anyMatch(c -> c.hasPassenger(other))) {
+        return;
+      }
+
+      if (other instanceof AbstractMinecartEntity) {
+        boolean otherHighSpeed =
+            HighSpeedTools.isTravellingHighSpeed((AbstractMinecartEntity) other);
+        if (!otherHighSpeed || (cart.getDeltaMovement().x() > 0 ^ other.getDeltaMovement().x() > 0)
+            || (cart.getDeltaMovement().z() > 0 ^ other.getDeltaMovement().z() > 0)) {
+          this.primeToExplode(cart);
+          return;
+        }
+      }
+
+      if (!other.isAlive() || RailcraftConfig.server.highSpeedTrackIgnoredEntities.get()
+          .contains(other.getType().getRegistryName().toString())) {
+        return;
+      }
+
+      this.primeToExplode(cart);
+    }
+  }
+
+  private void primeToExplode(AbstractMinecartEntity cart) {
+    cart.getPersistentData().putBoolean(CartConstants.TAG_EXPLODE, true);
+  }
+
   @Override
-  public @Nullable AxisAlignedBB getCollisionBox(AbstractMinecartEntity cart, Entity other) {
-    // return null;
-    // if (other instanceof AbstractMinecartEntity && Train.areInSameTrain(cart,
-    // (AbstractMinecartEntity) other))
-    // return null;
-    // if (Train.streamCarts(cart).anyMatch(c -> c.isPassenger(other)))
-    // return null;
+  @Nullable
+  public AxisAlignedBB getCollisionBox(AbstractMinecartEntity cart, Entity other) {
     if (other instanceof ItemEntity && RailcraftConfig.server.cartsCollideWithItems.get()) {
       return other.getBoundingBox().inflate(-0.01);
     }
@@ -233,10 +245,6 @@ public class MinecartHandler implements IMinecartCollisionHandler {
 
   @Override
   public AxisAlignedBB getMinecartCollisionBox(AbstractMinecartEntity cart) {
-    // return new AxisAlignedBB(0, 0, 0,0,0,0);
-    // return cart.getEntityBoundingBox().expand(MinecartHooks.COLLISION_EXPANSION,
-    // 0,
-    // MinecartHooks.COLLISION_EXPANSION);
     double yaw = Math.toRadians(cart.yRot);
     double diff = ((CART_LENGTH - CART_WIDTH) / 2.0) + MinecartHandler.COLLISION_EXPANSION;
     double x = diff * Math.abs(Math.cos(yaw));
@@ -245,7 +253,8 @@ public class MinecartHandler implements IMinecartCollisionHandler {
   }
 
   @Override
-  public @Nullable AxisAlignedBB getBoundingBox(AbstractMinecartEntity cart) {
+  @Nullable
+  public AxisAlignedBB getBoundingBox(AbstractMinecartEntity cart) {
     if (cart == null || !cart.isAlive()) {
       return null;
     }
@@ -255,13 +264,10 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     return null;
   }
 
-  private void land(AbstractMinecartEntity cart) {
-    cart.getPersistentData().putInt(CartConstants.TAG_LAUNCHED, 0);
-    cart.setMaxSpeedAirLateral(AbstractMinecartEntity.DEFAULT_MAX_SPEED_AIR_LATERAL);
-    cart.setMaxSpeedAirVertical(AbstractMinecartEntity.DEFAULT_MAX_SPEED_AIR_VERTICAL);
-    cart.setDragAir(AbstractMinecartEntity.DEFAULT_AIR_DRAG);
-  }
-
+  /**
+   * @see {@link AbstractMinecartEntityMixin}
+   * @param cart
+   */
   public void handleTick(AbstractMinecartEntity cart) {
     CompoundNBT data = cart.getPersistentData();
 
@@ -291,13 +297,13 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         cart.getPassengers().forEach(p -> p.fallDistance = 0);
       }
       if (launched > 1) {
-        land(cart);
+        this.land(cart);
       }
     } else if (launched == 1) {
       data.putInt(CartConstants.TAG_LAUNCHED, 2);
       cart.setCanUseRail(true);
     } else if (launched > 1 && cart.isOnGround()) {
-      land(cart);
+      this.land(cart);
     }
 
     int mountPrevention = data.getInt(CartConstants.TAG_PREVENT_MOUNT);
@@ -345,92 +351,16 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     double motionZ = Math.copySign(Math.min(Math.abs(motion.z()), 9.5), motion.z());
 
     cart.setDeltaMovement(motionX, motionY, motionZ);
-
-    // List<LivingEntity> entities =
-    // cart.world.getEntitiesWithinAABB(LivingEntity.class,
-    // getMinecartCollisionBox(cart).grow(COLLISION_EXPANSION));
-    //
-    // for (LivingEntity entity : entities) {
-    // if (!cart.isPassenger(entity) && entity.canBePushed()) {
-    // cart.applyEntityCollision(entity);
-    // }
-    // }
   }
 
-  // TODO is this required?
-  public void onMinecartEntityCollision(AbstractMinecartEntity cart, Entity other) {
-    if (other instanceof PlayerEntity && ((PlayerEntity) other).isSpectator()) {
-      return;
-    }
-
-    if (cart.hasPassenger(other)) {
-      return;
-    }
-
-    if (other instanceof AbstractMinecartEntity) {
-      LinkageManager.INSTANCE.tryAutoLink(cart, (AbstractMinecartEntity) other);
-    }
-
-    testHighSpeedCollision(cart, other);
-
-    if (cart.getCollisionHandler() != this && other instanceof LivingEntity
-        && cart.level.getBlockState(cart.blockPosition()).is(RailcraftBlocks.ELEVATOR_TRACK.get())
-        && other.getBoundingBox().minY < cart.getBoundingBox().maxY) {
-      other.move(MoverType.SELF,
-          new Vector3d(0, cart.getBoundingBox().maxY - other.getBoundingBox().minY, 0));
-      other.setOnGround(true);
-    }
-
-    // TODO Config entry? ( Go for it -CJ )
-    if (MiscTools.RANDOM.nextFloat() < 0.001f) {
-      List<AbstractMinecartEntity> carts = EntitySearcher.findMinecarts().around(cart)
-          .and(EntityPredicates.ENTITY_STILL_ALIVE, RCEntitySelectors.NON_MECHANICAL)
-          .in(cart.level);
-      if (carts.size() >= 12) {
-        primeToExplode(cart);
-      }
-    }
-  }
-
-  private void testHighSpeedCollision(AbstractMinecartEntity cart, Entity other) {
-    boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(cart);
-    if (highSpeed) {
-      if (other instanceof AbstractMinecartEntity
-            && Train.areInSameTrain(cart, (AbstractMinecartEntity) other)) {
-        return;
-      }
-      if (Train.streamCarts(cart).anyMatch(c -> c.hasPassenger(other))) {
-        return;
-      }
-
-      if (other instanceof AbstractMinecartEntity) {
-        boolean otherHighSpeed =
-            HighSpeedTools.isTravellingHighSpeed((AbstractMinecartEntity) other);
-        if (!otherHighSpeed || (cart.getDeltaMovement().x() > 0 ^ other.getDeltaMovement().x() > 0)
-            || (cart.getDeltaMovement().z() > 0 ^ other.getDeltaMovement().z() > 0)) {
-          primeToExplode(cart);
-          return;
-        }
-      }
-
-      if (!other.isAlive() || RailcraftConfig.server.highSpeedTrackIgnoredEntities.get()
-          .contains(other.getType().getRegistryName().toString())) {
-        return;
-      }
-
-      primeToExplode(cart);
-    }
-  }
-
-  private void primeToExplode(AbstractMinecartEntity cart) {
-    cart.getPersistentData().putBoolean(CartConstants.TAG_EXPLODE, true);
+  private void land(AbstractMinecartEntity cart) {
+    cart.getPersistentData().putInt(CartConstants.TAG_LAUNCHED, 0);
+    cart.setMaxSpeedAirLateral(AbstractMinecartEntity.DEFAULT_MAX_SPEED_AIR_LATERAL);
+    cart.setMaxSpeedAirVertical(AbstractMinecartEntity.DEFAULT_MAX_SPEED_AIR_VERTICAL);
+    cart.setDragAir(AbstractMinecartEntity.DEFAULT_AIR_DRAG);
   }
 
   public boolean handleInteract(AbstractMinecartEntity cart, PlayerEntity player) {
-    if (!CartUtil.doesCartHaveOwner(cart)) {
-      CartUtil.setCartOwner(cart, player);
-    }
-
     if (!(cart instanceof TunnelBoreEntity) && player.distanceToSqr(cart) > MAX_INTERACT_DIST_SQ) {
       return true;
     }
@@ -453,33 +383,15 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     return false;
   }
 
-  // Substitutes vanilla minecart spawns.
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public void onMinecartSpawn(EntityJoinWorldEvent event) {
-    Entity entity = event.getEntity();
-    EntityType<?> cartType = CartTools.classReplacements.get(entity.getType());
+  public boolean handleSpawn(World level, AbstractMinecartEntity cart) {
+    EntityType<?> cartType = cartReplacements.get(cart.getType());
     if (cartType == null) {
-      return;
+      return false;
     }
 
-    Entity replacement = cartType.create(event.getWorld());
-    replacement.load(entity.saveWithoutId(new CompoundNBT()));
-    entity.remove();
-    event.setCanceled(true);
-    event.getWorld().addFreshEntity(replacement);
-  }
-
-  @SubscribeEvent
-  public void handleEntityLeaveWorld(EntityLeaveWorldEvent event) {
-    Entity entity = event.getEntity();
-    // Fix links for killed carts
-    // Unloaded entities are not "isDead"
-    if (!entity.level.isClientSide() && !entity.isAlive()
-        && entity instanceof AbstractMinecartEntity) {
-      // We only mark Trains for deletion here, this event seems to be called from outside the
-      // server thread.
-      Train.killTrain(((AbstractMinecartEntity) entity));
-      LinkageManager.INSTANCE.breakLinks((AbstractMinecartEntity) entity);
-    }
+    Entity replacement = cartType.create(level);
+    replacement.moveTo(cart.getX(), cart.getY(), cart.getZ());
+    level.addFreshEntity(replacement);
+    return true;
   }
 }

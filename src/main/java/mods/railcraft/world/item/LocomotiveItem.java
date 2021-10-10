@@ -1,18 +1,17 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
-import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import org.apache.logging.log4j.util.Strings;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.item.Filter;
+import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.client.emblem.Emblem;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.inventory.InvTools;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -30,9 +29,9 @@ public class LocomotiveItem extends CartItem implements Filter {
   private final DyeColor defaultSecondary;
   protected final ItemStack sample;
 
-  public LocomotiveItem(Supplier<? extends EntityType<?>> cart,
-      DyeColor primary, DyeColor secondary, Properties properties) {
-    super(cart, properties);
+  public LocomotiveItem(MinecartFactory minecartPlacer, DyeColor primary, DyeColor secondary,
+      Properties properties) {
+    super(minecartPlacer, properties);
     this.defaultPrimary = primary;
     this.defaultSecondary = secondary;
     this.sample = new ItemStack(this, 1);
@@ -44,34 +43,6 @@ public class LocomotiveItem extends CartItem implements Filter {
     return target.getItem() == this && getPrimaryColor(matcher) == getPrimaryColor(target)
         && getSecondaryColor(matcher) == getSecondaryColor(target);
   }
-
-
-  // @Override
-  // public ColorPlugin.IColorFunctionItem colorHandler() {
-  // return (stack, tintIndex) -> {
-  // switch (tintIndex) {
-  // case 0:
-  // return getPrimaryColor(stack).getHexColor();
-  // case 1:
-  // return getSecondaryColor(stack).getHexColor();
-  // default:
-  // return DyeColor.WHITE.getHexColor();
-  // }
-  // };
-  // }
-
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IIcon getIcon(ItemStack stack, int pass) {
-  // String rendererTag = getModel(stack);
-  // LocomotiveModelRenderer renderer = renderType.getRenderer(rendererTag);
-  // if (renderer == null)
-  // return RenderTools.getMissingTexture();
-  // IIcon[] icons = renderer.getItemIcons();
-  // if (pass >= icons.length || icons[pass] == null)
-  // return blankIcon;
-  // return renderer.getItemIcons()[pass];
-  // }
 
   @Override
   public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> info,

@@ -18,7 +18,7 @@ import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.carts.CartConstants;
 import mods.railcraft.carts.CartTools;
-import mods.railcraft.carts.LinkageManager;
+import mods.railcraft.carts.LinkageManagerImpl;
 import mods.railcraft.carts.Train;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.AABBFactory;
@@ -1131,7 +1131,7 @@ public class TunnelBoreEntity extends AbstractRailcraftMinecartEntity implements
   @Override
   public boolean canLink(AbstractMinecartEntity cart) {
     Vector3d pos = getPositionAhead(-LENGTH / 2.0);
-    float dist = LinkageManager.LINKAGE_DISTANCE * 2;
+    float dist = LinkageManagerImpl.LINKAGE_DISTANCE * 2;
     dist = dist * dist;
     return cart.distanceToSqr(pos.x, pos.y, pos.z) < dist;
   }

@@ -3,7 +3,6 @@ package mods.railcraft.client.gui.widget.button;
 import java.util.List;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.gui.button.MultiButtonController;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraftforge.fml.client.gui.GuiUtils;
@@ -11,42 +10,47 @@ import net.minecraftforge.fml.client.gui.GuiUtils;
 /**
  * @author CovertJaguar <https://railcraft.info/wiki/info:license>
  */
-public final class MultiButton<T extends ButtonState> extends RailcraftButton {
+public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton {
 
-  private final MultiButtonController<T> controller;
+  private T state;
   public boolean canChange = true;
 
-  public MultiButton(int x, int y, int width, int height, MultiButtonController<T> controller) {
-    this(x, y, width, height, controller, __ -> {
+  public MultiButton(int x, int y, int width, int height, T state) {
+    this(x, y, width, height, state, __ -> {
     });
   }
 
-  public MultiButton(int x, int y, int width, int height, MultiButtonController<T> controller,
+  public MultiButton(int x, int y, int width, int height, T state,
       IPressable actionListener) {
-    super(x, y, width, height, controller.getCurrentState().getLabel(), actionListener,
-        controller.getCurrentState().getTexturePosition());
-    this.controller = controller;
+    super(x, y, width, height, state.getLabel(), actionListener, state.getTexturePosition());
+    this.state = state;
   }
 
-  public MultiButton(int x, int y, int width, int height, MultiButtonController<T> controller,
+  public MultiButton(int x, int y, int width, int height, T state,
       IPressable actionListener, ITooltip tooltip) {
-    super(x, y, width, height, controller.getCurrentState().getLabel(), actionListener, tooltip,
-        controller.getCurrentState().getTexturePosition());
-    this.controller = controller;
+    super(x, y, width, height, state.getLabel(), actionListener, tooltip,
+        state.getTexturePosition());
+    this.state = state;
   }
 
   @Override
   public void onPress() {
     if (this.canChange && this.active) {
+      this.setState(this.state.getNext());
       super.onPress();
-      this.controller.incrementState();
-      this.setTexturePosition(this.controller.getCurrentState().getTexturePosition());
-      this.setMessage(this.controller.getCurrentState().getLabel());
     }
   }
 
-  public MultiButtonController<T> getController() {
-    return this.controller;
+  public T getState() {
+    return this.state;
+  }
+
+  public void setState(T state) {
+    if (this.state != state) {
+      this.state = this.state.getNext();
+      this.setTexturePosition(this.state.getTexturePosition());
+      this.setMessage(this.state.getLabel());
+    }
   }
 
   @Override
@@ -60,7 +64,7 @@ public final class MultiButton<T extends ButtonState> extends RailcraftButton {
 
   @Override
   public void renderToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
-    List<? extends ITextProperties> tooltip = this.controller.getCurrentState().getTooltip();
+    List<? extends ITextProperties> tooltip = this.state.getTooltip();
     if (tooltip == null) {
       super.renderToolTip(matrixStack, mouseX, mouseY);
       return;

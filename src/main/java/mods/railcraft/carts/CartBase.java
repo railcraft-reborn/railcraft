@@ -9,8 +9,6 @@
 
 package mods.railcraft.carts;
 
-import java.util.ArrayList;
-import java.util.List;
 import mods.railcraft.api.carts.IItemCart;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -52,9 +50,6 @@ public abstract class CartBase extends MinecartEntity implements RailcraftCart, 
     super.readAdditionalSaveData(compound);
     loadFromNBT(compound);
   }
-
-  @Override
-  public void initEntityFromItem(ItemStack stack) {}
 
   @Override
   public final ItemStack getCartItem() {
@@ -102,16 +97,5 @@ public abstract class CartBase extends MinecartEntity implements RailcraftCart, 
   @Override
   public boolean shouldRenderAtSqrDistance(double distance) {
     return CartTools.isInRangeToRenderDist(this, distance);
-  }
-
-  public List<String> getDebugOutput() {
-    List<String> debug = new ArrayList<>();
-    debug.add("Railcraft Entity Data Dump");
-    debug.add("Object: " + this);
-    debug.add(
-        String.format("Coordinates: d=%d, %s", this.level.dimension().toString(), this.position()));
-    debug.add("Owner: " + CartTools.getCartOwnerEntity(this));
-    debug.add("LinkA: " + CartTools.getCartOwnerEntity(this));
-    return debug;
   }
 }

@@ -1,32 +1,19 @@
 package mods.railcraft.carts;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.carts.CartUtil;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
-import mods.railcraft.api.item.MinecartPlacer;
-import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MiscTools;
-import mods.railcraft.util.PlayerUtil;
-import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
-import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.Direction;
@@ -44,63 +31,6 @@ import net.minecraft.world.server.ServerWorld;
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class CartTools {
-
-  public static final Map<Item, EntityType<?>> vanillaCartItemMap = new HashMap<>();
-  public static final Map<EntityType<?>, EntityType<?>> classReplacements =
-      new HashMap<>();
-
-  /**
-   * Spawns a new cart entity using the provided item.
-   * <p/>
-   * The backing item must implement {@code IMinecartItem} and/or extend {@code ItemMinecart}.
-   * <p/>
-   * Generally Forge requires all cart items to extend ItemMinecart.
-   *
-   * @param owner The player name that should used as the owner
-   * @param cart An ItemStack containing a cart item, will not be changed by the function
-   * @param world The World object
-   * @return the cart placed or null if failed
-   * @see MinecartPlacer , ItemMinecart
-   */
-  @Nullable
-  public static AbstractMinecartEntity placeCart(GameProfile owner, ItemStack cart,
-      ServerWorld world, BlockPos pos) {
-    if (cart.isEmpty())
-      return null;
-    cart = cart.copy();
-
-    EntityType<?> vanillaType = vanillaCartItemMap.get(cart.getItem());
-    if (vanillaType != null)
-      return placeCart(vanillaType, owner, cart, world, pos);
-
-    return CartUtil.placeCart(owner, cart, world, pos);
-  }
-
-  public static @Nullable AbstractMinecartEntity placeCart(EntityType<?> cartType,
-      GameProfile owner, ItemStack cartStack, ServerWorld world, BlockPos pos) {
-    BlockState state = world.getBlockState(pos);
-    if (AbstractRailBlock.isRail(state))
-      if (EntitySearcher.findMinecarts().around(pos).in(world).isEmpty()) {
-        RailShape trackShape = TrackTools.getTrackDirectionRaw(state);
-        double h = 0.0D;
-        if (trackShape.isAscending())
-          h = 0.5D;
-
-        Entity entity = cartType.create(world);
-        if (entity instanceof AbstractMinecartEntity) {
-          AbstractMinecartEntity cart = (AbstractMinecartEntity) entity;
-          initCartPos(cart, pos.getX() + 0.5, pos.getY() + 0.0625D + h, pos.getZ() + 0.5);
-          if (entity instanceof RailcraftCart)
-            ((RailcraftCart) entity).initEntityFromItem(cartStack);
-          if (cartStack.hasCustomHoverName())
-            cart.setCustomName(cartStack.getHoverName());
-          CartUtil.setCartOwner(cart, owner);
-          world.addFreshEntity(cart);
-          return cart;
-        }
-      }
-    return null;
-  }
 
   public static void explodeCart(AbstractMinecartEntity cart) {
     if (!cart.isAlive())
@@ -158,16 +88,6 @@ public final class CartTools {
     }
   }
 
-  public static PlayerEntity getCartOwnerEntity(AbstractMinecartEntity cart) {
-    GameProfile owner = CartUtil.getCartOwner(cart);
-    PlayerEntity player = null;
-    if (!RailcraftConstantsAPI.UNKNOWN_PLAYER.equals(owner.getName()))
-      player = PlayerUtil.getPlayer(cart.level, owner);
-    if (player == null)
-      player = getFakePlayer(cart);
-    return player;
-  }
-
   public static ServerPlayerEntity getFakePlayer(AbstractMinecartEntity cart) {
     return RailcraftFakePlayer.get((ServerWorld) cart.level, cart.getX(), cart.getY(), cart.getZ());
   }
@@ -204,8 +124,7 @@ public final class CartTools {
     }
     debug.add("Object: " + cartInfo);
     debug.add("UUID: " + cart.getUUID());
-    debug.add("Owner: " + CartUtil.getCartOwner(cart).getName());
-    LinkageManager lm = LinkageManager.INSTANCE;
+    LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
     debug.add("LinkA: " + lm.getLinkA(cart));
     debug.add("LinkB: " + lm.getLinkB(cart));
     debug.add(

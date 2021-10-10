@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  * @author CovertJaguar <https://www.railcraft.info>
  * @see CartUtil , ILinkableCart
  */
-public interface ILinkageManager {
+public interface LinkageManager {
 
     /**
      * The default max distance at which carts can be linked, divided by 2.

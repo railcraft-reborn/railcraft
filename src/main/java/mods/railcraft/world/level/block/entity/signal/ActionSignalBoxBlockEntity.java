@@ -15,33 +15,37 @@ import net.minecraftforge.common.util.Constants;
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public abstract class ActionSignalBoxBlockEntity extends SecuredSignalBoxBlockEntity {
+public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockEntity {
 
-  private final Set<SignalAspect> actionAspects = EnumSet.of(SignalAspect.GREEN);
+  private final Set<SignalAspect> actionSignalAspects = EnumSet.of(SignalAspect.GREEN);
 
   public ActionSignalBoxBlockEntity(TileEntityType<?> type) {
     super(type);
   }
 
-  protected final boolean isActionAspect(SignalAspect aspect) {
-    return this.actionAspects.contains(aspect);
+  public final Set<SignalAspect> getActionSignalAspects() {
+    return this.actionSignalAspects;
   }
 
-  protected final void addActionAspect(SignalAspect aspect) {
-    this.actionAspects.add(aspect);
+  protected final boolean isActionSignalAspect(SignalAspect signalAspect) {
+    return this.actionSignalAspects.contains(signalAspect);
   }
 
-  protected final void removeActionAspect(SignalAspect aspect) {
-    this.actionAspects.remove(aspect);
+  protected final void addActionSignalAspect(SignalAspect signalAspect) {
+    this.actionSignalAspects.add(signalAspect);
+  }
+
+  protected final void removeActionSignalAspect(SignalAspect signalAspect) {
+    this.actionSignalAspects.remove(signalAspect);
   }
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
     ListNBT actionAspectsTag = new ListNBT();
-    this.actionAspects
+    this.actionSignalAspects
         .forEach(aspect -> actionAspectsTag.add(StringNBT.valueOf(aspect.getSerializedName())));
-    data.put("actionAspects", actionAspectsTag);
+    data.put("actionSignalAspects", actionAspectsTag);
     return data;
   }
 
@@ -50,24 +54,24 @@ public abstract class ActionSignalBoxBlockEntity extends SecuredSignalBoxBlockEn
     super.load(state, data);
     ListNBT actionAspectsTag = data.getList("actionAspects", Constants.NBT.TAG_STRING);
     for (INBT aspectTag : actionAspectsTag) {
-      SignalAspect.getByName(aspectTag.getAsString()).ifPresent(this.actionAspects::add);
+      SignalAspect.getByName(aspectTag.getAsString()).ifPresent(this.actionSignalAspects::add);
     }
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    data.writeVarInt(this.actionAspects.size());
-    this.actionAspects.forEach(data::writeEnum);
+    data.writeVarInt(this.actionSignalAspects.size());
+    this.actionSignalAspects.forEach(data::writeEnum);
   }
 
   @Override
   public void readSyncData(PacketBuffer data) {
     super.readSyncData(data);
-    this.actionAspects.clear();
+    this.actionSignalAspects.clear();
     int size = data.readVarInt();
     for (int i = 0; i < size; i++) {
-      this.actionAspects.add(data.readEnum(SignalAspect.class));
+      this.actionSignalAspects.add(data.readEnum(SignalAspect.class));
     }
   }
 }

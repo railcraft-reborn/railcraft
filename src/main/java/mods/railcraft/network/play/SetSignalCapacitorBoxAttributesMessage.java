@@ -37,7 +37,8 @@ public class SetSignalCapacitorBoxAttributesMessage {
     LevelUtil.getBlockEntity(level, this.blockPos, SignalCapacitorBoxBlockEntity.class)
         .ifPresent(signalBox -> {
           signalBox.setTicksToPower(this.ticksToPower);
-          signalBox.getModeButtonController().setCurrentState(this.mode);
+          signalBox.setMode(this.mode);
+          signalBox.syncToClient();
         });
   }
 }

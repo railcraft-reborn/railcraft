@@ -59,7 +59,7 @@ public interface ILinkableCart {
    * @return The linkage distance
    */
   default float getLinkageDistance(AbstractMinecartEntity cart) {
-    return ILinkageManager.LINKAGE_DISTANCE;
+    return LinkageManager.LINKAGE_DISTANCE;
   }
 
   /**
@@ -72,7 +72,7 @@ public interface ILinkableCart {
    * @return The optimal rest distance
    */
   default float getOptimalDistance(AbstractMinecartEntity cart) {
-    return ILinkageManager.OPTIMAL_DISTANCE;
+    return LinkageManager.OPTIMAL_DISTANCE;
   }
 
   /**

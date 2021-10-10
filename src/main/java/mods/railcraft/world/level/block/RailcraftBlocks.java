@@ -104,7 +104,10 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<SignalBoxBlock> BLOCK_SIGNAL_RELAY_BOX =
       BLOCKS.register("block_signal_relay_box",
-          () -> new SignalBoxBlock(BlockSignalRelayBoxBlockEntity::new,
+          () -> new UsableSignalBoxBlock<>(
+              BlockSignalRelayBoxBlockEntity.class,
+              ClientDist::openActionSignalBoxScreen,
+              BlockSignalRelayBoxBlockEntity::new,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .harvestTool(RailcraftToolTypes.CROWBAR)
                   .harvestLevel(0)
@@ -114,7 +117,10 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<SignalBoxBlock> SIGNAL_RECEIVER_BOX =
       BLOCKS.register("signal_receiver_box",
-          () -> new SignalBoxBlock(SignalReceiverBoxBlockEntity::new,
+          () -> new UsableSignalBoxBlock<>(
+              SignalReceiverBoxBlockEntity.class,
+              ClientDist::openActionSignalBoxScreen,
+              SignalReceiverBoxBlockEntity::new,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .harvestTool(RailcraftToolTypes.CROWBAR)
                   .harvestLevel(0)

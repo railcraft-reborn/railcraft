@@ -125,13 +125,13 @@
     "gui.railcraft.locomotive.tips.item.secondary": "Secondary descriptor. Edit me",
     "gui.railcraft.locomotive.tips.item.whistle": "There is currently no whistle installed.",
 
-    "gui.railcraft.locomotive.steam.tips.button.mode.idle":"Locomotive reduces fuel usage, but retains its heat.\n If the train is held by a track, it behaves as if Idle.",
+    "gui.railcraft.locomotive.steam.tips.button.mode.idle":"Locomotive reduces fuel usage, but retains its heat. If the train is held by a track, it behaves as if idle.",
     "gui.railcraft.locomotive.steam.tips.button.mode.running":"Makes the locomotive move.",
-    "gui.railcraft.locomotive.steam.tips.button.mode.shutdown":"Shuts off the Locomotive.\n Halts all movement and begins the cool-down process.\n This can take some time.",
+    "gui.railcraft.locomotive.steam.tips.button.mode.shutdown":"Shuts off the Locomotive. Halts all movement and begins the cool-down process.",
 
-    "screen.locomotive.lock.locked":"This cart is locked to %s.\n It will only accept Tickets issued by them or an operator.",
-    "screen.locomotive.lock.unlocked":"Click to lock locomotive.\n Once locked, it will only accept Tickets issued by you or an operator.",
-    "screen.locomotive.lock.private":"This cart is private to %s.\n It can only be controlled by them or an operator.",
+    "screen.locomotive.lock.locked":"This cart is locked to %s. It will only accept tickets issued by them or an operator.",
+    "screen.locomotive.lock.unlocked":"Click to lock locomotive. Once locked, it will only accept tickets issued by you or an operator.",
+    "screen.locomotive.lock.private":"This cart is private to %s. It can only be controlled by them or an operator.",
 
     "screen.locomotive.mode.shutdown":"Shutdown",
     "screen.locomotive.mode.running":"Running",
@@ -141,6 +141,9 @@
     "screen.signal_controller_box.powered_aspect": "Powered aspect:",
 
     "screen.signal_capacitor_box.duration":"Duration: %s",
+
+    "screen.action_signal_box.lock.locked": "This signal box is locked to %s. It can only be modified by them or an operator.",
+    "screen.action_signal_box.lock.unlocked": "Click to lock signal box. Once locked, it will only be modifiable by you or an operator",
 
     "goggles.aura.worldspike": "Worldspike",
     "goggles.aura.none": "None",
@@ -169,9 +172,9 @@
 
     "crowbar.description":"§oRight-click while sneaking to link carts.§r",
     "crowbar.link_broken":"§dLink broken.",
-    "crowbar.link_created":"§aLink created.",
+    "crowbar.link_created":"§aSuccessfully linked carts.",
     "crowbar.link_failed":"§cLink failed.",
-    "crowbar.link_started":"§dLink started.",
+    "crowbar.link_started":"§dStarted linking carts.",
 
     "seasons_crowbar.season": "Current season: %s",
 

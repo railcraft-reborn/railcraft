@@ -51,7 +51,7 @@ public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
   public void setEmitter(@Nullable ForceTrackEmitterBlockEntity emitter) {
     this.emitter = emitter;
     if (emitter != null) {
-      this.setOwner(emitter.getOwner());
+      this.setOwner(emitter.getOwner().orElse(null));
       this.color = emitter.getBlockState().getValue(ForceTrackEmitterBlock.COLOR);
       this.index = emitter.getTrackCount();
     }

@@ -54,7 +54,7 @@ public class ShuntingAuraRenderer {
 
           for (LinkedCartsMessage.LinkedCart linkedCart : this.linkedCarts) {
             Entity entity = this.minecraft.level.getEntity(linkedCart.getEntityId());
-            if (!(entity instanceof AbstractMinecartEntity)) {
+            if (!(entity instanceof AbstractMinecartEntity) || linkedCart.getTrainId() == null) {
               continue;
             }
             AbstractMinecartEntity cart = (AbstractMinecartEntity) entity;

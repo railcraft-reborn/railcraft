@@ -3,7 +3,7 @@ package mods.railcraft;
 import java.util.List;
 import java.util.UUID;
 import mods.railcraft.api.event.CartLinkEvent;
-import mods.railcraft.carts.LinkageManager;
+import mods.railcraft.carts.LinkageManagerImpl;
 import mods.railcraft.carts.Train;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.ForgeItemTagsProvider;
@@ -41,6 +41,8 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -162,8 +164,8 @@ public class Railcraft {
         UUID trainId = Train.getTrainUUID(cart);
         linkedCarts[i] = new LinkedCartsMessage.LinkedCart(
             cart.getId(), trainId,
-            LinkageManager.INSTANCE.getLinkA(cart),
-            LinkageManager.INSTANCE.getLinkB(cart));
+            LinkageManagerImpl.INSTANCE.getLinkA(cart),
+            LinkageManagerImpl.INSTANCE.getLinkB(cart));
       }
       NetworkChannel.PLAY.getSimpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
           player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
@@ -188,5 +190,23 @@ public class Railcraft {
     Hand hand = event.getHand();
     event.setCanceled(this.minecartHandler.handleInteract(cart, player));
     event.setCanceled(this.crowbarHandler.handleInteract(cart, player, hand));
+  }
+
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
+  public void handleEntityJoinWorld(EntityJoinWorldEvent event) {
+    if (event.getEntity() instanceof AbstractMinecartEntity) {
+      event.setCanceled(this.minecartHandler.handleSpawn(event.getWorld(),
+          (AbstractMinecartEntity) event.getEntity()));
+    }
+  }
+
+  @SubscribeEvent
+  public void handleEntityLeaveWorld(EntityLeaveWorldEvent event) {
+    if (event.getEntity() instanceof AbstractMinecartEntity
+        && !event.getEntity().level.isClientSide()) {
+      AbstractMinecartEntity cart = (AbstractMinecartEntity) event.getEntity();
+      Train.killTrain(cart);
+      LinkageManagerImpl.INSTANCE.breakLinks(cart);
+    }
   }
 }

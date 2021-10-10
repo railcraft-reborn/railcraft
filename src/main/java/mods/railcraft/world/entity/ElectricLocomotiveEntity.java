@@ -1,6 +1,8 @@
 package mods.railcraft.world.entity;
 
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Set;
 import javax.annotation.Nullable;
 import mods.railcraft.api.charge.CapabilitiesCharge;
 import mods.railcraft.api.charge.IBatteryCart;
@@ -9,8 +11,8 @@ import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
-import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.TicketItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -26,6 +28,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -40,6 +43,10 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
   public static final float MAX_CHARGE = 5000.0F;
   private static final int SLOT_TICKET = 0;
   private static final int[] SLOTS = InvTools.buildSlotArray(0, 1);
+
+  private static final Set<Mode> ALLOWED_MODES =
+      Collections.unmodifiableSet(EnumSet.of(Mode.RUNNING, Mode.SHUTDOWN));
+
   private final IInventory ticketInventory =
       new InventoryMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
   private final LazyOptional<IBatteryCart> cartBattery =
@@ -49,12 +56,14 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
     super(type, world);
   }
 
-  public ElectricLocomotiveEntity(double x, double y, double z, World world) {
-    super(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), x, y, z, world);
+  public ElectricLocomotiveEntity(ItemStack itemStack, double x, double y, double z,
+      ServerWorld world) {
+    super(itemStack, RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), x, y, z, world);
   }
 
-  {
-    this.setAllowedModes(EnumSet.of(Mode.RUNNING, Mode.SHUTDOWN));
+  @Override
+  public Set<Mode> getSupportedModes() {
+    return ALLOWED_MODES;
   }
 
   @Override
@@ -68,7 +77,7 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
   }
 
   @Override
-  public SoundEvent getWhistle() {
+  public SoundEvent getWhistleSound() {
     return RailcraftSoundEvents.ELECTRIC_WHISTLE.get();
   }
 
@@ -78,7 +87,7 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
   }
 
   @Override
-  public int getMoreGoJuice() {
+  public int retrieveFuel() {
     return this.cartBattery
         .filter(cart -> cart.getCharge() > CHARGE_USE_PER_REQUEST)
         .map(cart -> {

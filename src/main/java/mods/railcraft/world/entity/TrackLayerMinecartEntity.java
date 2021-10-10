@@ -14,10 +14,11 @@ import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.IPlantable;
 
-public class TrackLayerMinecartEntity extends AbstractMaintenancePatternMinecartEntity {
+public class TrackLayerMinecartEntity extends MaintenancePatternMinecartEntity {
 
   public static final int SLOT_STOCK = 0;
   public static final int SLOT_REPLACE = 0;
@@ -27,7 +28,8 @@ public class TrackLayerMinecartEntity extends AbstractMaintenancePatternMinecart
     super(type, world);
   }
 
-  public TrackLayerMinecartEntity(double x, double y, double z, World world) {
+  public TrackLayerMinecartEntity(ItemStack itemStack, double x, double y, double z,
+      ServerWorld world) {
     super(RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, world);
   }
 
@@ -54,7 +56,7 @@ public class TrackLayerMinecartEntity extends AbstractMaintenancePatternMinecart
   }
 
   private void placeTrack(BlockPos pos) {
-    if (getMode() == CartMode.TRANSPORT)
+    if (getMode() == Mode.TRANSPORT)
       return;
     pos = pos.relative(travelDirection);
 

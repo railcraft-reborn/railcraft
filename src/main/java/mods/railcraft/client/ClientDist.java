@@ -4,6 +4,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftDist;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
+import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
 import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
 import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenMenuScreen;
@@ -37,6 +38,7 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
@@ -270,5 +272,9 @@ public class ClientDist implements RailcraftDist {
 
   public static void openSignalCapacitorBoxScreen(SignalCapacitorBoxBlockEntity signalBox) {
     Minecraft.getInstance().setScreen(new SignalCapacitorBoxScreen(signalBox));
+  }
+
+  public static void openActionSignalBoxScreen(ActionSignalBoxBlockEntity signalBox) {
+    Minecraft.getInstance().setScreen(new ActionSignalBoxScreen(signalBox));
   }
 }

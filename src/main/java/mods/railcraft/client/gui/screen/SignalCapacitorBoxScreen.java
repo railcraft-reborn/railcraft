@@ -12,13 +12,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class SignalCapacitorBoxScreen extends BasicIngameScreen {
 
   private final SignalCapacitorBoxBlockEntity signalBox;
-  private short ticksToPower;
-  private MultiButton<SignalCapacitorBoxBlockEntity.Mode> stateMode;
+  private MultiButton<SignalCapacitorBoxBlockEntity.Mode> modeButton;
 
   public SignalCapacitorBoxScreen(SignalCapacitorBoxBlockEntity signalBox) {
     super(signalBox.getDisplayName());
     this.signalBox = signalBox;
-    this.ticksToPower = signalBox.getTicksToPower();
   }
 
   @Override
@@ -27,18 +25,18 @@ public class SignalCapacitorBoxScreen extends BasicIngameScreen {
     int centredY = (this.height - this.y) / 2;
     this.addButton(
         new Button(centredX + 13, centredY + 38, 30, 20, new StringTextComponent("-10"),
-            __ -> this.ticksToPower -= 200));
+            __ -> this.incrementTicksToPower(-200)));
     this.addButton(
         new Button(centredX + 53, centredY + 38, 30, 20, new StringTextComponent("-1"),
-            __ -> this.ticksToPower -= 20));
+            __ -> this.incrementTicksToPower(-20)));
     this.addButton(
         new Button(centredX + 93, centredY + 38, 30, 20, new StringTextComponent("+1"),
-            __ -> this.ticksToPower += 20));
+            __ -> this.incrementTicksToPower(20)));
     this.addButton(
         new Button(centredX + 133, centredY + 38, 30, 20, new StringTextComponent("+10"),
-            __ -> this.ticksToPower += 200));
-    this.addButton(this.stateMode = new MultiButton<>(centredX + 23, centredY + 65, 130, 15,
-        this.signalBox.getModeButtonController().copy()));
+            __ -> this.incrementTicksToPower(200)));
+    this.addButton(this.modeButton = new MultiButton<>(centredX + 23, centredY + 65, 130, 15,
+        this.signalBox.getMode(), __ -> this.setMode(this.modeButton.getState())));
   }
 
   @Override
@@ -46,19 +44,34 @@ public class SignalCapacitorBoxScreen extends BasicIngameScreen {
       float partialTicks) {
     this.drawCenteredString(matrixStack,
         new TranslationTextComponent("screen.signal_capacitor_box.duration",
-            this.ticksToPower / 20),
+            this.signalBox.getTicksToPower() / 20),
         this.x / 2, 25);
   }
 
   @Override
-  public void removed() {
-    if (this.minecraft.level != null) {
-      this.signalBox.setTicksToPower(this.ticksToPower);
-      this.signalBox.getModeButtonController()
-          .setCurrentState(this.stateMode.getController().getCurrentState());
-      NetworkChannel.PLAY.getSimpleChannel()
-          .sendToServer(new SetSignalCapacitorBoxAttributesMessage(this.signalBox.getBlockPos(),
-              this.ticksToPower, this.stateMode.getController().getCurrentState()));
+  public void tick() {
+    super.tick();
+    this.modeButton.setState(this.signalBox.getMode());
+  }
+
+  private void setMode(SignalCapacitorBoxBlockEntity.Mode mode) {
+    if (this.signalBox.getMode() != mode) {
+      this.signalBox.setMode(mode);
+      this.sendAttributes();
     }
+  }
+
+  private void incrementTicksToPower(int incrementAmount) {
+    short ticksToPower = (short) (this.signalBox.getTicksToPower() + incrementAmount);
+    if (this.signalBox.getTicksToPower() != ticksToPower) {
+      this.signalBox.setTicksToPower(ticksToPower);
+      this.sendAttributes();
+    }
+  }
+
+  private void sendAttributes() {
+    NetworkChannel.PLAY.getSimpleChannel()
+        .sendToServer(new SetSignalCapacitorBoxAttributesMessage(this.signalBox.getBlockPos(),
+            this.signalBox.getTicksToPower(), this.modeButton.getState()));
   }
 }
