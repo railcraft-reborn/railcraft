@@ -111,6 +111,8 @@ public class ClientDist implements RailcraftDist {
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
         RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_BOOSTER_TRACK.get(),
+        RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_FLEX_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
@@ -118,6 +120,8 @@ public class ClientDist implements RailcraftDist {
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_BOOSTER_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_FLEX_TRACK.get(),
         RenderType.cutout());
@@ -127,6 +131,8 @@ public class ClientDist implements RailcraftDist {
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
         RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK.get(),
+        RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
@@ -135,11 +141,15 @@ public class ClientDist implements RailcraftDist {
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
         RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
+        RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_LOCKING_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_BUFFER_STOP_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_BOOSTER_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
         RenderType.cutout());
@@ -149,6 +159,8 @@ public class ClientDist implements RailcraftDist {
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
         RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_BOOSTER_TRACK.get(),
+        RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
@@ -156,6 +168,8 @@ public class ClientDist implements RailcraftDist {
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
+        RenderType.cutout());
+    RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK.get(),
         RenderType.cutout());
     RenderTypeLookup.setRenderLayer(RailcraftBlocks.TURNOUT_TRACK.get(),
         RenderType.cutout());

@@ -31,6 +31,7 @@ import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackLeverBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackMotorBlock;
 import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
@@ -250,6 +251,13 @@ public class RailcraftBlocks {
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
 
+  public static final RegistryObject<TrackBlock> ABANDONED_BOOSTER_TRACK =
+      BLOCKS.register("abandoned_booster_track",
+          () -> new BoosterTrackBlock(TrackTypes.ABANDONED,
+              AbstractBlock.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, 3.5F)));
+
   public static final RegistryObject<TrackBlock> ELECTRIC_FLEX_TRACK =
       BLOCKS.register("electric_flex_track",
           () -> new TrackBlock(TrackTypes.ELECTRIC,
@@ -282,6 +290,14 @@ public class RailcraftBlocks {
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
 
+  public static final RegistryObject<TrackBlock> ELECTRIC_BOOSTER_TRACK =
+      BLOCKS.register("electric_booster_track",
+          () -> new BoosterTrackBlock(TrackTypes.ELECTRIC,
+              AbstractBlock.Properties.of(Material.DECORATION)
+                  .randomTicks()
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, 3.5F)));
+
   public static final RegistryObject<TrackBlock> HIGH_SPEED_FLEX_TRACK =
       BLOCKS.register("high_speed_flex_track",
           () -> new TrackBlock(TrackTypes.HIGH_SPEED,
@@ -306,6 +322,13 @@ public class RailcraftBlocks {
   public static final RegistryObject<TrackBlock> HIGH_SPEED_ACTIVATOR_TRACK =
       BLOCKS.register("high_speed_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.HIGH_SPEED,
+              AbstractBlock.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, 3.5F)));
+
+  public static final RegistryObject<TrackBlock> HIGH_SPEED_BOOSTER_TRACK =
+      BLOCKS.register("high_speed_booster_track",
+          () -> new BoosterTrackBlock(TrackTypes.HIGH_SPEED,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
@@ -342,6 +365,14 @@ public class RailcraftBlocks {
                   .randomTicks()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
 
+  public static final RegistryObject<TrackBlock> HIGH_SPEED_ELECTRIC_BOOSTER_TRACK =
+      BLOCKS.register("high_speed_electric_booster_track",
+          () -> new BoosterTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+              AbstractBlock.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .randomTicks()
+                  .strength(TrackConstants.HARDNESS, 3.5F)));
+
   public static final RegistryObject<TrackBlock> IRON_LOCKING_TRACK =
       BLOCKS.register("iron_locking_track",
           () -> new LockingTrackBlock(TrackTypes.IRON,
@@ -361,6 +392,14 @@ public class RailcraftBlocks {
   public static final RegistryObject<TrackBlock> IRON_ACTIVATOR_TRACK =
       BLOCKS.register("iron_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.IRON,
+              AbstractBlock.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .randomTicks()
+                  .strength(TrackConstants.HARDNESS, 3.5F)));
+  
+  public static final RegistryObject<TrackBlock> IRON_BOOSTER_TRACK =
+      BLOCKS.register("iron_booster_track",
+          () -> new BoosterTrackBlock(TrackTypes.IRON,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .noCollission()
                   .randomTicks()
@@ -393,6 +432,13 @@ public class RailcraftBlocks {
               AbstractBlock.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 80F)));
+  
+  public static final RegistryObject<TrackBlock> REINFORCED_BOOSTER_TRACK =
+      BLOCKS.register("reinforced_booster_track",
+          () -> new BoosterTrackBlock(TrackTypes.REINFORCED,
+              AbstractBlock.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, 80F)));
 
   public static final RegistryObject<TrackBlock> STRAP_IRON_FLEX_TRACK =
       BLOCKS.register("strap_iron_flex_track",
@@ -418,6 +464,13 @@ public class RailcraftBlocks {
   public static final RegistryObject<TrackBlock> STRAP_IRON_ACTIVATOR_TRACK =
       BLOCKS.register("strap_iron_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.STRAP_IRON,
+              AbstractBlock.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, 3.5F)));
+  
+  public static final RegistryObject<TrackBlock> STRAP_IRON_BOOSTER_TRACK =
+      BLOCKS.register("strap_iron_booster_track",
+          () -> new BoosterTrackBlock(TrackTypes.STRAP_IRON,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 3.5F)));

@@ -406,9 +406,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   @Override
   public void tick() {
     super.tick();
-if(!this.level.isClientSide) {
-  System.out.println(this.yRot);
-}
+
     if (this.level.isClientSide()) {
       if (Seasons.isPolarExpress(this)
           && (!MathTools.nearZero(this.getDeltaMovement().x())
@@ -421,7 +419,6 @@ if(!this.level.isClientSide) {
 
     this.processTicket();
     this.updateFuel();
-
 
     if (this.whistleDelay > 0) {
       this.whistleDelay--;

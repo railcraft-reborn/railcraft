@@ -33,15 +33,16 @@ public class BoosterTrackBlock extends PoweredTrackBlock {
   public void onMinecartPass(BlockState blockState, World level, BlockPos pos,
       AbstractMinecartEntity cart) {
     TrackType trackType = this.getTrackType();
-    if (TrackTypes.REINFORCED.get() == trackType)
-      this.onMinecartPassStandard(blockState, level, pos, cart, BOOST_FACTOR_REINFORCED);
-    else if (trackType.isHighSpeed())
-      this.onMinecartPassHighSpeed(blockState, level, pos, cart);
-    else
-      this.onMinecartPassStandard(blockState, level, pos, cart, BOOST_FACTOR);
+    if (TrackTypes.REINFORCED.get() == trackType) {
+      this.minecartPassStandard(blockState, level, pos, cart, BOOST_FACTOR_REINFORCED);
+    } else if (trackType.isHighSpeed()) {
+      this.minecartPassHighSpeed(blockState, level, pos, cart);
+    } else {
+      this.minecartPassStandard(blockState, level, pos, cart, BOOST_FACTOR);
+    }
   }
 
-  private void onMinecartPassStandard(BlockState blockState, World level, BlockPos pos,
+  private void minecartPassStandard(BlockState blockState, World level, BlockPos pos,
       AbstractMinecartEntity cart, double boostFactor) {
     RailShape dir = getRailShapeRaw(blockState);
     Vector3d motion = cart.getDeltaMovement();
@@ -62,7 +63,7 @@ public class BoosterTrackBlock extends PoweredTrackBlock {
     }
   }
 
-  private void onMinecartPassHighSpeed(BlockState blockState, World level, BlockPos pos,
+  private void minecartPassHighSpeed(BlockState blockState, World level, BlockPos pos,
       AbstractMinecartEntity cart) {
     Vector3d motion = cart.getDeltaMovement();
     if (this.isPowered(blockState, level, pos)) {

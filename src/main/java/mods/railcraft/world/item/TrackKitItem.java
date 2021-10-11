@@ -15,6 +15,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -66,12 +67,14 @@ public class TrackKitItem extends Item {
     RailShape shape = TrackTools.getRailShapeRaw(level, blockPos);
 
     if (!TrackShapeHelper.isStraight(shape)) {
-      player.displayClientMessage(new TranslationTextComponent("track_kit.corners_unsupported"), true);
+      player.displayClientMessage(new TranslationTextComponent("track_kit.corners_unsupported"),
+          true);
       return ActionResultType.PASS;
     }
 
     if (shape.isAscending() && !this.allowedOnSlopes) {
-      player.displayClientMessage(new TranslationTextComponent("track_kit.slopes_unsupported"), true);
+      player.displayClientMessage(new TranslationTextComponent("track_kit.slopes_unsupported"),
+          true);
       return ActionResultType.PASS;
     }
 
@@ -83,7 +86,8 @@ public class TrackKitItem extends Item {
       return ActionResultType.PASS;
     }
 
-    BlockState outfittedBlockState = outfittedBlock.defaultBlockState();
+    BlockState outfittedBlockState =
+        outfittedBlock.getStateForPlacement(new BlockItemUseContext(context));
     if (level.setBlockAndUpdate(blockPos, outfittedBlockState)) {
       SoundType soundType =
           outfittedBlock.getSoundType(outfittedBlockState, level, blockPos, player);

@@ -19,8 +19,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "lockdown",
+        "shape": "north_south",
         "powered": "false"
       },
       "apply": {
@@ -29,8 +29,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "lockdown",
+        "shape": "north_south",
         "powered": "true"
       },
       "apply": {
@@ -39,8 +39,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "lockdown",
+        "shape": "east_west",
         "powered": "false"
       },
       "apply": {
@@ -50,8 +50,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "lockdown",
+        "shape": "east_west",
         "powered": "true"
       },
       "apply": {
@@ -61,8 +61,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "train_lockdown",
+        "shape": "north_south",
         "powered": "false"
       },
       "apply": {
@@ -71,8 +71,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "train_lockdown",
+        "shape": "north_south",
         "powered": "true"
       },
       "apply": {
@@ -81,8 +81,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "train_lockdown",
+        "shape": "east_west",
         "powered": "false"
       },
       "apply": {
@@ -92,8 +92,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "train_lockdown",
+        "shape": "east_west",
         "powered": "true"
       },
       "apply": {
@@ -103,8 +103,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "holding",
+        "shape": "north_south",
         "powered": "false"
       },
       "apply": {
@@ -113,8 +113,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "holding",
+        "shape": "north_south",
         "powered": "true"
       },
       "apply": {
@@ -123,8 +123,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "holding",
+        "shape": "east_west",
         "powered": "false"
       },
       "apply": {
@@ -134,8 +134,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "holding",
+        "shape": "east_west",
         "powered": "true"
       },
       "apply": {
@@ -145,8 +145,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "train_holding",
+        "shape": "north_south",
         "powered": "false"
       },
       "apply": {
@@ -155,8 +155,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "train_holding",
+        "shape": "north_south",
         "powered": "true"
       },
       "apply": {
@@ -165,8 +165,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "train_holding",
+        "shape": "east_west",
         "powered": "false"
       },
       "apply": {
@@ -176,8 +176,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "train_holding",
+        "shape": "east_west",
         "powered": "true"
       },
       "apply": {
@@ -187,8 +187,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "boarding",
+        "shape": "north_south",
         "powered": "false"
       },
       "apply": {
@@ -197,8 +197,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "boarding",
+        "shape": "north_south",
         "powered": "true"
       },
       "apply": {
@@ -207,8 +207,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "boarding",
+        "shape": "east_west",
         "powered": "false"
       },
       "apply": {
@@ -218,8 +218,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "boarding",
+        "shape": "east_west",
         "powered": "true"
       },
       "apply": {
@@ -229,8 +229,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "boarding_reversed",
+        "shape": "north_south",
         "powered": "false"
       },
       "apply": {
@@ -239,8 +239,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "boarding_reversed",
+        "shape": "north_south",
         "powered": "true"
       },
       "apply": {
@@ -249,8 +249,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "boarding_reversed",
+        "shape": "east_west",
         "powered": "false"
       },
       "apply": {
@@ -260,8 +260,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "boarding_reversed",
+        "shape": "east_west",
         "powered": "true"
       },
       "apply": {
@@ -271,8 +271,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "train_boarding",
+        "shape": "north_south",
         "powered": "false"
       },
       "apply": {
@@ -281,8 +281,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "train_boarding",
+        "shape": "north_south",
         "powered": "true"
       },
       "apply": {
@@ -291,8 +291,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "train_boarding",
+        "shape": "east_west",
         "powered": "false"
       },
       "apply": {
@@ -302,8 +302,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "train_boarding",
+        "shape": "east_west",
         "powered": "true"
       },
       "apply": {
@@ -313,8 +313,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "train_boarding_reversed",
+        "shape": "north_south",
         "powered": "false"
       },
       "apply": {
@@ -323,8 +323,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "locking_mode": "train_boarding_reversed",
+        "shape": "north_south",
         "powered": "true"
       },
       "apply": {
@@ -333,8 +333,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "train_boarding_reversed",
+        "shape": "east_west",
         "powered": "false"
       },
       "apply": {
@@ -344,8 +344,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "locking_mode": "train_boarding_reversed",
+        "shape": "east_west",
         "powered": "true"
       },
       "apply": {

@@ -124,36 +124,43 @@ public class RailcraftBlockModelProvider {
         RailcraftBlocks.ABANDONED_FLEX_TRACK.get(),
         RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
         RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK.get(),
-        RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get());
+        RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
+        RailcraftBlocks.ABANDONED_BOOSTER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.ELECTRIC_FLEX_TRACK.get(),
         RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
         RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK.get(),
-        RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get());
+        RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
+        RailcraftBlocks.ELECTRIC_BOOSTER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.HIGH_SPEED_FLEX_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_BUFFER_STOP_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get());
+        RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
+        RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_BUFFER_STOP_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get());
+        RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
+        RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get());
     this.createOutfittedTracks(ModelsResourceUtil.getModelLocation(Blocks.RAIL),
         RailcraftBlocks.IRON_LOCKING_TRACK.get(),
         RailcraftBlocks.IRON_BUFFER_STOP_TRACK.get(),
-        RailcraftBlocks.IRON_ACTIVATOR_TRACK.get());
+        RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
+        RailcraftBlocks.IRON_BOOSTER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
         RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
         RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK.get(),
-        RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get());
+        RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
+        RailcraftBlocks.REINFORCED_BOOSTER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK.get(),
-        RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get());
+        RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
+        RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK.get());
   }
 
   private void delegateItemModel(Block block, ResourceLocation modelLocation) {
@@ -185,7 +192,7 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createAbandonedTracks(Block block, Block lockingTrackBlock,
-      Block bufferStopTrackBlock, Block activatorTrackBlock) {
+      Block bufferStopTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock) {
     ModelTextures texture0 =
         ModelTextures.rail(ModelTextures.getBlockTexture(block, "_0"));
     ModelTextures texture1 =
@@ -205,7 +212,7 @@ public class RailcraftBlockModelProvider {
 
     this.createSimpleFlatItemModel(block, "_0");
     this.createOutfittedTracks(flatModel0, lockingTrackBlock, bufferStopTrackBlock,
-        activatorTrackBlock);
+        activatorTrackBlock, boosterTrackBlock);
 
     this.blockStateOutput.accept(FinishedMultiPartBlockState.multiPart(block)
         .with(
@@ -275,14 +282,15 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createOutfittedTracks(ResourceLocation trackModel, Block lockingTrackBlock,
-      Block bufferStopTrackBlock, Block activatorTrackBlock) {
+      Block bufferStopTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock) {
     this.createLockingTrack(trackModel, lockingTrackBlock);
     this.createBufferStopTrack(trackModel, bufferStopTrackBlock);
-    this.createActivatorTrack(trackModel, activatorTrackBlock);
+    this.createActiveOutfittedTrack(trackModel, activatorTrackBlock);
+    this.createActiveOutfittedTrack(trackModel, boosterTrackBlock);
   }
 
   private void createTracks(Block block, Block lockingTrackBlock, Block bufferStopTrackBlock,
-      Block activatorTrackBlock) {
+      Block activatorTrackBlock, Block boosterTrackBlock) {
     ModelTextures textures = ModelTextures.rail(block);
     ModelTextures cornerTextures =
         ModelTextures.rail(ModelTextures.getBlockTexture(block, "_corner"));
@@ -297,7 +305,7 @@ public class RailcraftBlockModelProvider {
 
     this.createSimpleFlatItemModel(block);
     this.createOutfittedTracks(flatModel, lockingTrackBlock, bufferStopTrackBlock,
-        activatorTrackBlock);
+        activatorTrackBlock, boosterTrackBlock);
 
     this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block)
         .with(BlockStateVariantBuilder.property(BlockStateProperties.RAIL_SHAPE)
@@ -547,7 +555,7 @@ public class RailcraftBlockModelProvider {
     this.createSimpleFlatItemModel(block);
   }
 
-  private void createActivatorTrack(ResourceLocation trackModel, Block block) {
+  private void createActiveOutfittedTrack(ResourceLocation trackModel, Block block) {
     this.blockStateOutput.accept(FinishedMultiPartBlockState.multiPart(block)
         .with(
             IMultiPartPredicateBuilder.condition()
