@@ -71,7 +71,7 @@ public class CokeOvenMenu extends Container {
     ItemStack itemstack = slot.getItem();
     ItemStack itemstack1 = itemstack.copy();
     if (slotID == 1) {
-      if (!this.moveItemStackTo(itemstack1, 2, 38, true)) {
+      if (!this.moveItemStackTo(itemstack1, 1, (36 + INTERNAL_CONTAINER_SLOTS), true)) {
         return ItemStack.EMPTY;
       }
 
@@ -124,13 +124,18 @@ public class CokeOvenMenu extends Container {
   public float getBurnProgress() {
     int reqTime = this.data.get(0);
     int currentTick = this.data.get(1);
-    //DZsafety
-    reqTime = ((reqTime == 0) ? 1 : reqTime);
-    return Math.max(Math.min(currentTick / reqTime, 1), 0);
+    if (reqTime == 0) {
+      return 0F;
+    }
+    return Math.max(Math.min((float)currentTick / (float)reqTime, 1F), 0F);
   }
 
-  public int tankFillProgress() {
+  public boolean isActualyBurning() {
+    return this.data.get(0) != 0;
+  }
+
+  public float tankFillProgress() {
     int tankUsed = this.data.get(2);
-    return Math.max(Math.min(tankUsed / 10000, 1), 0);
+    return Math.max(Math.min((float)tankUsed / 10000F, 1F), 0F);
   }
 }

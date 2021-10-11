@@ -1,7 +1,7 @@
 {
   "type": "railcraft:cokeing",
   "ingredient": {
-    "item": "minecraft:oak_log"
+    "tag": "minecraft:logs"
   },
   "result": {
     "item": "minecraft:charcoal"

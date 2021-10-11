@@ -37,10 +37,10 @@ public class CokeOvenMenuScreen extends ContainerScreen<CokeOvenMenu> {
     float prog = this.menu.getBurnProgress();
     // 24*0.1, basicaly 10% of 24. Rounded for safety!
     // first xy is pos to place, second is asset loc, third is how much to place
-    this.blit(matrixStack, x + 35, y + 44, 176, 61, Math.round(24.00F * prog), 12);
+    this.blit(matrixStack, x + 34, y + 44, 176, 61, Math.round(22.00F * prog), 15);
     // FIRE DRAW
-    if (prog > 0.0f) {
-      this.blit(matrixStack, x + 17, y + 27, 176, 47, Math.round(24.00F * prog), 12);
+    if (this.menu.isActualyBurning()) {
+      this.blit(matrixStack, x + 17, y + 27, 176, 47, 14, 14);
     }
 
     // fluid draw

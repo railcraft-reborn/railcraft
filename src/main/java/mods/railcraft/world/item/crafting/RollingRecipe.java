@@ -62,11 +62,6 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
   }
 
   @Override
-  public String getGroup() {
-    return "ROLLING_MACHINE";
-  }
-
-  @Override
   public boolean matches(CraftingInventory inventory, World world) {
     for (int i = 0; i <= inventory.getWidth() - 3; ++i) {
       for (int j = 0; j <= inventory.getHeight() - 3; ++j) {

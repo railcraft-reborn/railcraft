@@ -211,27 +211,27 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
       return;
     }
 
-    Optional<CokeOvenRecipe> irecipe = this.level.getRecipeManager()
+    Optional<CokeOvenRecipe> irecipe = this.level.getServer()
+        .getRecipeManager()
         .getRecipeFor(RailcraftRecipeTypes.COKEING, this, this.level);
 
     if (!irecipe.isPresent()) {
       this.recipieRequiredTime = 0;
-      MULTIBLOCK_LOGGER.info("RECIPIE BAD");
       return;
     }
     CokeOvenRecipe cokeRecipe = irecipe.get();
-    if (this.canWork(cokeRecipe)) {
-      MULTIBLOCK_LOGGER.info("CANNOT WORK");
+    if (!this.canWork(cokeRecipe)) {
       this.recipieRequiredTime = 0;
       return;
     }
     if (this.currentTick >= this.recipieRequiredTime) {
-      MULTIBLOCK_LOGGER.info("NEW RECIPIE LOADED");
-      this.currentTick = 0;
+      if (recipieRequiredTime != 0) {
+        this.bake(cokeRecipe);
+      }
       this.recipieRequiredTime = this.getTickCost();
-      this.bake(cokeRecipe);
+      this.currentTick = 0;
+      return;
     }
-    MULTIBLOCK_LOGGER.info("RECIPIE FIRE");
     this.currentTick++;
   }
 
@@ -390,9 +390,10 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
   }
 
   protected int getTickCost() {
-    return this.level.getRecipeManager()
-    .getRecipeFor(RailcraftRecipeTypes.COKEING, this, this.level)
-    .map(CokeOvenRecipe::getTickCost).orElse(2400); // 2min base for coal coke
+    return this.level.getServer()
+        .getRecipeManager()
+        .getRecipeFor(RailcraftRecipeTypes.COKEING, this, this.level)
+        .map(CokeOvenRecipe::getTickCost).orElse(2400); // 2min base for coal coke
   }
 
   private void bake(CokeOvenRecipe cokeOvenRecipe) {

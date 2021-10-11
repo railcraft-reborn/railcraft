@@ -51,7 +51,7 @@ public class CokeOvenRecipe implements IRecipe<IInventory> {
   }
 
   public FluidStack assembleFluid() {
-    return this.creosote.copy();
+    return this.getResultFluid().copy();
   }
 
   @Override
@@ -61,7 +61,7 @@ public class CokeOvenRecipe implements IRecipe<IInventory> {
 
   @Override
   public ItemStack assemble(IInventory craftInventory) {
-    return this.result.copy();
+    return this.getResultItem().copy();
   }
 
   @Override
