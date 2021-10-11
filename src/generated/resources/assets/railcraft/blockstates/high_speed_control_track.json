@@ -1,0 +1,169 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:block/high_speed_flex_track"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:block/high_speed_flex_track",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "railcraft:control_track"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "railcraft:control_track",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "railcraft:control_track_on"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "railcraft:control_track_on",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north"
+      },
+      "apply": {
+        "model": "railcraft:block/high_speed_flex_track_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south"
+      },
+      "apply": {
+        "model": "railcraft:block/high_speed_flex_track_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east"
+      },
+      "apply": {
+        "model": "railcraft:block/high_speed_flex_track_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west"
+      },
+      "apply": {
+        "model": "railcraft:block/high_speed_flex_track_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "railcraft:control_track_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "railcraft:control_track_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "railcraft:control_track_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "railcraft:control_track_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "railcraft:control_track_on_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "railcraft:control_track_on_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "railcraft:control_track_on_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "railcraft:control_track_on_raised_sw",
+        "y": 90
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "railcraft:block/high_speed_electric_buffer_stop_track"
+    "layer0": "railcraft:item/high_speed_electric_buffer_stop_track"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "railcraft:block/electric_booster_track"
+    "layer0": "railcraft:item/electric_booster_track"
   }
 }

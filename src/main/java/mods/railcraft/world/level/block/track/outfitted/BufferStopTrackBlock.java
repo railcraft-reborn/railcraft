@@ -9,7 +9,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 
-public class BufferStopTrackBlock extends DirectionalOutfittedTrackBlock {
+public class BufferStopTrackBlock extends ReversibleOutfittedTrackBlock {
 
   private static final VoxelShape BUFFER_STOP_SHAPE = box(2.0D, 0.0D, 2.0D, 14.0D, 12.0D, 14.0D);
   private static final VoxelShape SHAPE = VoxelShapes.or(FLAT_AABB, BUFFER_STOP_SHAPE);

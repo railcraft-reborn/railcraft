@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "railcraft:block/iron_activator_track"
+    "layer0": "railcraft:item/iron_activator_track"
   }
 }

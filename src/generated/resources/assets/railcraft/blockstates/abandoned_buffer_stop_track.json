@@ -2,7 +2,8 @@
   "multipart": [
     {
       "when": {
-        "facing": "north"
+        "shape": "north_south",
+        "reversed": "false"
       },
       "apply": {
         "model": "railcraft:block/buffer_stop"
@@ -10,7 +11,8 @@
     },
     {
       "when": {
-        "facing": "south"
+        "shape": "north_south",
+        "reversed": "true"
       },
       "apply": {
         "model": "railcraft:block/buffer_stop",
@@ -19,7 +21,8 @@
     },
     {
       "when": {
-        "facing": "east"
+        "shape": "east_west",
+        "reversed": "false"
       },
       "apply": {
         "model": "railcraft:block/buffer_stop",
@@ -28,7 +31,8 @@
     },
     {
       "when": {
-        "facing": "west"
+        "shape": "east_west",
+        "reversed": "true"
       },
       "apply": {
         "model": "railcraft:block/buffer_stop",

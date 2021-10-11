@@ -31,7 +31,7 @@ public abstract class PoweredTrackBlock extends OutfittedTrackBlock
 
   @Override
   public boolean isPowered(BlockState blockState, World level, BlockPos pos) {
-    return blockState.getValue(POWERED);
+    return isPowered(blockState);
   }
 
   @Override
@@ -162,5 +162,9 @@ public abstract class PoweredTrackBlock extends OutfittedTrackBlock
             || this.isConnectedRailPowered(level, blockPos, nextBlockState, dir, dist + 1, maxDist);
     }
     return false;
+  }
+
+  public static boolean isPowered(BlockState blockState) {
+    return blockState.getValue(POWERED);
   }
 }

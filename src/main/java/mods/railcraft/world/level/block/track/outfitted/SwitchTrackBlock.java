@@ -12,23 +12,31 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.Property;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public abstract class SwitchTrackBlock extends DirectionalOutfittedTrackBlock {
+public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
 
   public static final BooleanProperty SWITCHED = BooleanProperty.create("switched");
+  public static final EnumProperty<RailShape> SHAPE =
+      EnumProperty.create("shape", RailShape.class, RailShape.NORTH_SOUTH, RailShape.EAST_WEST);
 
   public SwitchTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(FACING, Direction.NORTH)
+        .setValue(REVERSED, false)
         .setValue(SWITCHED, false));
+  }
+
+  @Override
+  public Property<RailShape> getShapeProperty() {
+    return SHAPE;
   }
 
   @Override
@@ -53,7 +61,7 @@ public abstract class SwitchTrackBlock extends DirectionalOutfittedTrackBlock {
   @Override
   public void onPlace(BlockState state, World level, BlockPos pos, BlockState oldBlockState,
       boolean moved) {
-//    this.updateAdjacentBlocks(state, level, pos);
+    // this.updateAdjacentBlocks(state, level, pos);
   }
 
   protected void updateAdjacentBlocks(BlockState blockState, World level, BlockPos pos) {
@@ -68,10 +76,6 @@ public abstract class SwitchTrackBlock extends DirectionalOutfittedTrackBlock {
         }
       }
     }
-  }
-
-  public static Direction getFacing(BlockState blockState) {
-    return blockState.getValue(FACING);
   }
 
   public static boolean isSwitched(BlockState blockState) {

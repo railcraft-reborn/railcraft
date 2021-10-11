@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "railcraft:block/electric_locking_track"
+    "layer0": "railcraft:item/electric_locking_track"
   }
 }

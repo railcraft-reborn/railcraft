@@ -8,15 +8,12 @@ import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -29,7 +26,7 @@ public class TurnoutTrackBlock extends SwitchTrackBlock {
     super(trackType, properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(FACING, Direction.NORTH)
+        .setValue(REVERSED, false)
         .setValue(SWITCHED, false)
         .setValue(MIRRORED, false));
   }
@@ -49,9 +46,8 @@ public class TurnoutTrackBlock extends SwitchTrackBlock {
   public BlockState getStateForPlacement(BlockItemUseContext context) {
     BlockState blockState = super.getStateForPlacement(context);
     BlockPos blockPos = context.getClickedPos();
-    Direction facing = getFacing(blockState);
     return blockState.setValue(MIRRORED,
-        this.determineMirrored(context.getLevel(), blockPos, facing));
+        this.determineMirrored(context.getLevel(), blockPos, getFacing(blockState)));
   }
 
   private boolean determineMirrored(World level, BlockPos blockPos, Direction facing) {
@@ -89,13 +85,6 @@ public class TurnoutTrackBlock extends SwitchTrackBlock {
       }
     }
     return getRailShapeRaw(blockState);
-  }
-
-  @Override
-  protected boolean crowbarWhack(BlockState blockState, World level, BlockPos pos,
-      PlayerEntity player, Hand hand, ItemStack itemStack) {
-    level.setBlockAndUpdate(pos, blockState.setValue(FACING, getFacing(blockState).getOpposite()));
-    return true;
   }
 
   public static boolean isMirrored(BlockState blockState) {

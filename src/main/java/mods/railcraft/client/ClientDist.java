@@ -1,6 +1,5 @@
 package mods.railcraft.client;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftDist;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
@@ -29,7 +28,6 @@ import mods.railcraft.client.renderer.blockentity.SignalRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalSequencerBoxRenderer;
 import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
-import mods.railcraft.client.renderer.model.TextureReplacementModel;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
@@ -47,19 +45,15 @@ import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -81,7 +75,6 @@ public class ClientDist implements RailcraftDist {
     modEventBus.addListener(this::handleItemColors);
     modEventBus.addListener(this::handleBlockColors);
     modEventBus.addListener(this::handleTextureStitch);
-    modEventBus.addListener(this::handleModelRegistry);
     modEventBus.addListener(this::handleParticleRegistration);
 
     MinecraftForge.EVENT_BUS.register(this);
@@ -99,96 +92,9 @@ public class ClientDist implements RailcraftDist {
   // ================================================================================
 
   private void handleClientSetup(FMLClientSetupEvent event) {
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELEVATOR_TRACK.get(), RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.FORCE_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_BOOSTER_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_BOOSTER_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_BUFFER_STOP_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BUFFER_STOP_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_LOCKING_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_BUFFER_STOP_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.IRON_BOOSTER_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_BOOSTER_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.TURNOUT_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.WYE_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.FORCE_TRACK_EMITTER.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.BLOCK_SIGNAL.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.DISTANT_SIGNAL.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.TOKEN_SIGNAL.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
-        RenderType.cutout());
+    RenderLayers.register();
+
+    // === Block Entity Renderers ===
 
     ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.BLOCK_SIGNAL.get(),
         SignalRenderer::new);
@@ -217,14 +123,18 @@ public class ClientDist implements RailcraftDist {
         SignalSequencerBoxRenderer::new);
     ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get(),
         SignalInterlockBoxRenderer::new);
+
+    // === Menu Screens ===
+
     ScreenManager.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
         CreativeLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
         ElectricLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
-
     ScreenManager.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
         ManualRollingMachineScreen::new);
+
+    // === Entity Renderers ===
 
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
         ElectricLocomotiveRenderer::new);
@@ -234,21 +144,19 @@ public class ClientDist implements RailcraftDist {
         ElectricLocomotiveRenderer::new);
   }
 
-  private void handleModelRegistry(ModelRegistryEvent event) {
-    ModelLoaderRegistry.registerLoader(new ResourceLocation(Railcraft.ID, "texture_replacement"),
-        new TextureReplacementModel.Loader());
-  }
-
   private void handleBlockColors(ColorHandlerEvent.Block event) {
-    event.getBlockColors()
-        .register((state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR)
-            .getColorValue(), RailcraftBlocks.FORCE_TRACK_EMITTER.get());
+    BlockColors blockColors = event.getBlockColors();
+    blockColors.register(
+        (state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR)
+            .getColorValue(),
+        RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
-    event.getBlockColors()
-        .register((state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackBlock.COLOR)
-            .getColorValue(), RailcraftBlocks.FORCE_TRACK.get());
+    blockColors.register(
+        (state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackBlock.COLOR)
+            .getColorValue(),
+        RailcraftBlocks.FORCE_TRACK.get());
 
-    event.getBlockColors().register(
+    blockColors.register(
         (state, level, pos, tintIndex) -> level != null && pos != null
             ? BiomeColors.getAverageGrassColor(level, pos)
             : GrassColors.get(0.5D, 1.0D),
