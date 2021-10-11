@@ -160,7 +160,7 @@ public class ClientDist implements RailcraftDist {
         (state, level, pos, tintIndex) -> level != null && pos != null
             ? BiomeColors.getAverageGrassColor(level, pos)
             : GrassColors.get(0.5D, 1.0D),
-        RailcraftBlocks.ABANDONED_FLEX_TRACK.get());
+        RailcraftBlocks.ABANDONED_TRACK.get());
   }
 
   private void handleItemColors(ColorHandlerEvent.Item event) {

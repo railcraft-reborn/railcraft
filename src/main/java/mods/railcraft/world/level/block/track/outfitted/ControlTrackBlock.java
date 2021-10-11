@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-public class ControlTrackBlock extends PoweredTrackBlock {
+public class ControlTrackBlock extends PoweredOutfittedTrackBlock {
 
   private static final double BOOST_AMOUNT = 0.02;
   private static final double SLOW_AMOUNT = 0.02;
@@ -28,7 +28,10 @@ public class ControlTrackBlock extends PoweredTrackBlock {
 
   public ControlTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any().setValue(REVERSED, false));
+    this.registerDefaultState(this.stateDefinition.any()
+        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
+        .setValue(POWERED, false)
+        .setValue(REVERSED, false));
   }
 
   @Override

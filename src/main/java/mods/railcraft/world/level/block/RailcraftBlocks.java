@@ -35,6 +35,7 @@ import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.material.RailcraftMaterials;
@@ -224,8 +225,8 @@ public class RailcraftBlocks {
               .sound(SoundType.METAL)
               .randomTicks()));
 
-  public static final RegistryObject<TrackBlock> ABANDONED_FLEX_TRACK =
-      BLOCKS.register("abandoned_flex_track",
+  public static final RegistryObject<TrackBlock> ABANDONED_TRACK =
+      BLOCKS.register("abandoned_track",
           () -> new AbandonedTrackBlock(TrackTypes.ABANDONED,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .noCollission()
@@ -266,8 +267,8 @@ public class RailcraftBlocks {
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
 
-  public static final RegistryObject<TrackBlock> ELECTRIC_FLEX_TRACK =
-      BLOCKS.register("electric_flex_track",
+  public static final RegistryObject<TrackBlock> ELECTRIC_TRACK =
+      BLOCKS.register("electric_track",
           () -> new TrackBlock(TrackTypes.ELECTRIC,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .randomTicks()
@@ -314,9 +315,16 @@ public class RailcraftBlocks {
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_FLEX_TRACK =
-      BLOCKS.register("high_speed_flex_track",
+  public static final RegistryObject<TrackBlock> HIGH_SPEED_TRACK =
+      BLOCKS.register("high_speed_track",
           () -> new TrackBlock(TrackTypes.HIGH_SPEED,
+              AbstractBlock.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, 3.5F)));
+
+  public static final RegistryObject<TrackBlock> HIGH_SPEED_TRANSITION_TRACK =
+      BLOCKS.register("high_speed_transition_track",
+          () -> new TransitionTrackBlock(TrackTypes.HIGH_SPEED,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
@@ -356,9 +364,17 @@ public class RailcraftBlocks {
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_ELECTRIC_FLEX_TRACK =
-      BLOCKS.register("high_speed_electric_flex_track",
+  public static final RegistryObject<TrackBlock> HIGH_SPEED_ELECTRIC_TRACK =
+      BLOCKS.register("high_speed_electric_track",
           () -> new TrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+              AbstractBlock.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .randomTicks()
+                  .strength(TrackConstants.HARDNESS, 3.5F)));
+
+  public static final RegistryObject<TrackBlock> HIGH_SPEED_ELECTRIC_TRANSITION_TRACK =
+      BLOCKS.register("high_speed_electric_transition_track",
+          () -> new TransitionTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .noCollission()
                   .randomTicks()
@@ -444,8 +460,8 @@ public class RailcraftBlocks {
                   .randomTicks()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
 
-  public static final RegistryObject<TrackBlock> REINFORCED_FLEX_TRACK =
-      BLOCKS.register("reinforced_flex_track",
+  public static final RegistryObject<TrackBlock> REINFORCED_TRACK =
+      BLOCKS.register("reinforced_track",
           () -> new TrackBlock(TrackTypes.REINFORCED,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .noCollission()
@@ -486,8 +502,8 @@ public class RailcraftBlocks {
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 80F)));
 
-  public static final RegistryObject<TrackBlock> STRAP_IRON_FLEX_TRACK =
-      BLOCKS.register("strap_iron_flex_track",
+  public static final RegistryObject<TrackBlock> STRAP_IRON_TRACK =
+      BLOCKS.register("strap_iron_track",
           () -> new TrackBlock(TrackTypes.STRAP_IRON,
               AbstractBlock.Properties.of(Material.DECORATION)
                   .noCollission()

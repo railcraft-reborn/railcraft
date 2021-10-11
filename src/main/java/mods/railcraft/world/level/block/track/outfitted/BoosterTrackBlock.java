@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-public class BoosterTrackBlock extends PoweredTrackBlock {
+public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
 
   private static final int POWER_PROPAGATION = 8;
   private static final double BOOST_FACTOR = 0.04;
@@ -32,6 +32,7 @@ public class BoosterTrackBlock extends PoweredTrackBlock {
   @Override
   public void onMinecartPass(BlockState blockState, World level, BlockPos pos,
       AbstractMinecartEntity cart) {
+    super.onMinecartPass(blockState, level, pos, cart);
     TrackType trackType = this.getTrackType();
     if (TrackTypes.REINFORCED.get() == trackType) {
       this.minecartPassStandard(blockState, level, pos, cart, BOOST_FACTOR_REINFORCED);

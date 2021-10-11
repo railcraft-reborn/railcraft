@@ -5,7 +5,7 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "railcraft:block/abandoned_flex_track_0"
+        "model": "railcraft:abandoned_track_outfitted"
       }
     },
     {
@@ -13,7 +13,7 @@
         "shape": "east_west"
       },
       "apply": {
-        "model": "railcraft:block/abandoned_flex_track_0",
+        "model": "railcraft:abandoned_track_outfitted",
         "y": 90
       }
     },
@@ -60,7 +60,7 @@
         "shape": "ascending_north"
       },
       "apply": {
-        "model": "railcraft:block/abandoned_flex_track_raised_ne"
+        "model": "railcraft:abandoned_track_outfitted_raised_ne"
       }
     },
     {
@@ -68,7 +68,7 @@
         "shape": "ascending_south"
       },
       "apply": {
-        "model": "railcraft:block/abandoned_flex_track_raised_sw"
+        "model": "railcraft:abandoned_track_outfitted_raised_sw"
       }
     },
     {
@@ -76,7 +76,7 @@
         "shape": "ascending_east"
       },
       "apply": {
-        "model": "railcraft:block/abandoned_flex_track_raised_ne",
+        "model": "railcraft:abandoned_track_outfitted_raised_ne",
         "y": 90
       }
     },
@@ -85,7 +85,7 @@
         "shape": "ascending_west"
       },
       "apply": {
-        "model": "railcraft:block/abandoned_flex_track_raised_sw",
+        "model": "railcraft:abandoned_track_outfitted_raised_sw",
         "y": 90
       }
     },

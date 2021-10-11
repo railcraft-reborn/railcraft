@@ -5,7 +5,7 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "minecraft:block/rail"
+        "model": "railcraft:rail_outfitted"
       }
     },
     {
@@ -13,7 +13,7 @@
         "shape": "east_west"
       },
       "apply": {
-        "model": "minecraft:block/rail",
+        "model": "railcraft:rail_outfitted",
         "y": 90
       }
     },
@@ -60,7 +60,7 @@
         "shape": "ascending_north"
       },
       "apply": {
-        "model": "minecraft:block/rail_raised_ne"
+        "model": "railcraft:rail_outfitted_raised_ne"
       }
     },
     {
@@ -68,7 +68,7 @@
         "shape": "ascending_south"
       },
       "apply": {
-        "model": "minecraft:block/rail_raised_sw"
+        "model": "railcraft:rail_outfitted_raised_sw"
       }
     },
     {
@@ -76,7 +76,7 @@
         "shape": "ascending_east"
       },
       "apply": {
-        "model": "minecraft:block/rail_raised_ne",
+        "model": "railcraft:rail_outfitted_raised_ne",
         "y": 90
       }
     },
@@ -85,7 +85,7 @@
         "shape": "ascending_west"
       },
       "apply": {
-        "model": "minecraft:block/rail_raised_sw",
+        "model": "railcraft:rail_outfitted_raised_sw",
         "y": 90
       }
     },

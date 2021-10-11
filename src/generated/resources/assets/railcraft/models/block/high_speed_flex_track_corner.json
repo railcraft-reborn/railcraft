@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/rail_curved",
-  "textures": {
-    "rail": "railcraft:block/high_speed_flex_track_corner"
-  }
-}

@@ -51,7 +51,7 @@ public class OutfittedTrackBlock extends TrackBlock {
         return ActionResultType.SUCCESS;
       }
     }
-    return ActionResultType.CONSUME;
+    return ActionResultType.PASS;
   }
 
   protected boolean crowbarWhack(BlockState blockState, World level, BlockPos pos,

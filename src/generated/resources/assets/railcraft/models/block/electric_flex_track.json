@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/rail_flat",
-  "textures": {
-    "rail": "railcraft:block/electric_flex_track"
-  }
-}

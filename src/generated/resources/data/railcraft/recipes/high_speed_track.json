@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I I",
+    "IBI",
+    "I I"
+  ],
+  "key": {
+    "I": {
+      "item": "railcraft:high_speed_rail"
+    },
+    "B": {
+      "item": "railcraft:stone_railbed"
+    }
+  },
+  "result": {
+    "item": "railcraft:high_speed_track",
+    "count": 32
+  }
+}

@@ -90,7 +90,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
           b -> this.setMode(mode),
           (btn, matrixStack, mouseX, mouseY) -> this.renderWrappedToolTip(
               matrixStack, Collections.singletonList(new TranslationTextComponent(
-                  "screen.locomotive." + typeTag + ".tips.button.mode."
+                  "screen.locomotive." + typeTag + ".mode.desription."
                       + mode.getSerializedName())),
               mouseX, mouseY, this.font),
           ButtonTexture.SMALL_BUTTON);

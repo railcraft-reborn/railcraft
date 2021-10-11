@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "railcraft:block/high_speed_electric_flex_track"
-  }
-}

@@ -44,7 +44,7 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "railcraft:block/high_speed_electric_flex_track"
+        "model": "railcraft:high_speed_electric_track_outfitted"
       }
     },
     {
@@ -52,7 +52,7 @@
         "shape": "east_west"
       },
       "apply": {
-        "model": "railcraft:block/high_speed_electric_flex_track",
+        "model": "railcraft:high_speed_electric_track_outfitted",
         "y": 90
       }
     }

@@ -44,7 +44,7 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "railcraft:block/reinforced_flex_track"
+        "model": "railcraft:reinforced_track_outfitted"
       }
     },
     {
@@ -52,7 +52,7 @@
         "shape": "east_west"
       },
       "apply": {
-        "model": "railcraft:block/reinforced_flex_track",
+        "model": "railcraft:reinforced_track_outfitted",
         "y": 90
       }
     }

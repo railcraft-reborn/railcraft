@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "railcraft:block/abandoned_flex_track_0"
-  }
-}

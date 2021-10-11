@@ -218,9 +218,9 @@ public class RailcraftItems {
               RailcraftBlocks.FORCE_TRACK_EMITTER.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> ABANDONED_FLEX_TRACK =
-      ITEMS.register("abandoned_flex_track",
-          () -> new BlockItem(RailcraftBlocks.ABANDONED_FLEX_TRACK.get(),
+  public static final RegistryObject<Item> ABANDONED_TRACK =
+      ITEMS.register("abandoned_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> ABANDONED_LOCKING_TRACK =
@@ -248,9 +248,9 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ABANDONED_CONTROL_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
-  public static final RegistryObject<Item> ELECTRIC_FLEX_TRACK =
-      ITEMS.register("electric_flex_track",
-          () -> new BlockItem(RailcraftBlocks.ELECTRIC_FLEX_TRACK.get(),
+  public static final RegistryObject<Item> ELECTRIC_TRACK =
+      ITEMS.register("electric_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> ELECTRIC_LOCKING_TRACK =
@@ -278,9 +278,14 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_CONTROL_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
-  public static final RegistryObject<Item> HIGH_SPEED_FLEX_TRACK =
-      ITEMS.register("high_speed_flex_track",
-          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_FLEX_TRACK.get(),
+  public static final RegistryObject<Item> HIGH_SPEED_TRACK =
+      ITEMS.register("high_speed_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_TRANSITION_TRACK =
+      ITEMS.register("high_speed_transition_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> HIGH_SPEED_LOCKING_TRACK =
@@ -308,9 +313,14 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_CONTROL_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
-  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_FLEX_TRACK =
-      ITEMS.register("high_speed_electric_flex_track",
-          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get(),
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TRACK =
+      ITEMS.register("high_speed_electric_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
+              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TRANSITION_TRACK =
+      ITEMS.register("high_speed_electric_transition_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_LOCKING_TRACK =
@@ -363,9 +373,9 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.IRON_CONTROL_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
-  public static final RegistryObject<Item> REINFORCED_FLEX_TRACK =
-      ITEMS.register("reinforced_flex_track",
-          () -> new BlockItem(RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
+  public static final RegistryObject<Item> REINFORCED_TRACK =
+      ITEMS.register("reinforced_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> REINFORCED_LOCKING_TRACK =
@@ -393,9 +403,9 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.REINFORCED_CONTROL_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
-  public static final RegistryObject<Item> STRAP_IRON_FLEX_TRACK =
-      ITEMS.register("strap_iron_flex_track",
-          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get(),
+  public static final RegistryObject<Item> STRAP_IRON_TRACK =
+      ITEMS.register("strap_iron_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_TRACK.get(),
               new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> STRAP_IRON_LOCKING_TRACK =
@@ -530,9 +540,14 @@ public class RailcraftItems {
               .tab(TAB)));
 
 
-  public static final RegistryObject<Item> HIGH_SPEED_TRANSITION_TRACK_KIT =
-      ITEMS.register("high_speed_transition_track_kit",
-          () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> TRANSITION_TRACK_KIT =
+      ITEMS.register("transition_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .setAllowedOnSlopes(true)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK)
+              .tab(TAB)));
 
   public static final RegistryObject<Item> GOGGLES =
       ITEMS.register("goggles",

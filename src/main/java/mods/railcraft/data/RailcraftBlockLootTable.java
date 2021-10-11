@@ -12,13 +12,13 @@ public class RailcraftBlockLootTable extends BlockLootTables {
   @Override
   protected void addTables() {
     /* === tracks === */
-    this.dropSelf(RailcraftBlocks.ABANDONED_FLEX_TRACK.get());
-    this.dropSelf(RailcraftBlocks.ELECTRIC_FLEX_TRACK.get());
+    this.dropSelf(RailcraftBlocks.ABANDONED_TRACK.get());
+    this.dropSelf(RailcraftBlocks.ELECTRIC_TRACK.get());
     this.dropSelf(RailcraftBlocks.ELEVATOR_TRACK.get());
-    this.dropSelf(RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get());
-    this.dropSelf(RailcraftBlocks.HIGH_SPEED_FLEX_TRACK.get());
-    this.dropSelf(RailcraftBlocks.REINFORCED_FLEX_TRACK.get());
-    this.dropSelf(RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get());
+    this.dropSelf(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
+    this.dropSelf(RailcraftBlocks.HIGH_SPEED_TRACK.get());
+    this.dropSelf(RailcraftBlocks.REINFORCED_TRACK.get());
+    this.dropSelf(RailcraftBlocks.STRAP_IRON_TRACK.get());
     this.add(RailcraftBlocks.FORCE_TRACK.get(), noDrop());
 
     /* === signals === */
