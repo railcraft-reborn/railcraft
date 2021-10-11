@@ -24,7 +24,6 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.IIntArray;
@@ -40,12 +39,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultiblockEntity>
-    implements INamedContainerProvider, IRecipeHolder, ITickableTileEntity, IFluidTank, IInventory {
+    implements INamedContainerProvider, IRecipeHolder, IFluidTank, IInventory {
 
-  public static final Logger MULTIBLOCK_LOGGER =
+  private static final Logger MULTIBLOCK_LOGGER =
       LogManager.getLogger("Railcraft/MultiblockEntity/CokeOvenMultiblockEntity");
   private static final ITextComponent MENU_TITLE =
-      new TranslationTextComponent("container.manual_rolling_machine");
+      new TranslationTextComponent("container.coke_oven_multiblock");
 
   private static final int FLUID_STORAGE_MAX = 10000;
 
@@ -198,14 +197,13 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
   }
 
 
-
   // TODO particles
   @Override
   public void tick() {
+    super.tick();
     if (this.level.isClientSide() || !this.isFormed()) {
       return;
     }
-    // TODO neighbour checking for multiblock.
 
     ItemStack itemstack = this.items.get(0);
     if (itemstack.isEmpty()) {
@@ -218,18 +216,22 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
 
     if (!irecipe.isPresent()) {
       this.recipieRequiredTime = 0;
+      MULTIBLOCK_LOGGER.info("RECIPIE BAD");
       return;
     }
     CokeOvenRecipe cokeRecipe = irecipe.get();
     if (this.canWork(cokeRecipe)) {
+      MULTIBLOCK_LOGGER.info("CANNOT WORK");
       this.recipieRequiredTime = 0;
       return;
     }
     if (this.currentTick >= this.recipieRequiredTime) {
+      MULTIBLOCK_LOGGER.info("NEW RECIPIE LOADED");
       this.currentTick = 0;
       this.recipieRequiredTime = this.getTickCost();
       this.bake(cokeRecipe);
     }
+    MULTIBLOCK_LOGGER.info("RECIPIE FIRE");
     this.currentTick++;
   }
 
@@ -283,17 +285,13 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
 
   @Override
   public boolean stillValid(PlayerEntity playerEntity) {
-    if (!this.isFormed()) {
+    if (!this.isFormed() || this.isRemoved()) {
       return false;
     }
-    if (this.level.getBlockEntity(this.worldPosition) != this) {
-      return false;
-    } else {
-      return playerEntity.distanceToSqr(
+    return playerEntity.distanceToSqr(
       (double)this.worldPosition.getX() + 0.5D,
       (double)this.worldPosition.getY() + 0.5D,
       (double)this.worldPosition.getZ() + 0.5D) <= 64.0D;
-    }
   }
 
   @Override

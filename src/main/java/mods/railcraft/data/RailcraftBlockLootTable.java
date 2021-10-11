@@ -43,6 +43,7 @@ public class RailcraftBlockLootTable extends BlockLootTables {
 
     /* === machines === */
     this.dropSelf(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
+    this.dropSelf(RailcraftBlocks.COKE_OVEN_BLOCK.get());
 
     /* === misc === */
     this.dropSelf(RailcraftBlocks.FIRESTONE.get());

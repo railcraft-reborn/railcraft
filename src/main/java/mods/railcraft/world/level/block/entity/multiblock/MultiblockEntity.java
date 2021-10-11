@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -15,9 +16,11 @@ import net.minecraft.util.math.BlockPos;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class MultiblockEntity<T extends MultiblockEntity<T>> extends TileEntity {
+public class MultiblockEntity<T extends MultiblockEntity<T>> extends TileEntity
+    implements ITickableTileEntity {
 
-  public static final Logger MULTIBLOCK_LOGGER = LogManager.getLogger("Railcraft/MultiblockEntity");
+  private static final Logger MULTIBLOCK_LOGGER =
+      LogManager.getLogger("Railcraft/MultiblockEntity");
   public static final int PULL = 1;
   public static final int PUSH = 2;
   public static final int PULL_PUSH = (PULL | PUSH);
@@ -25,6 +28,8 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends TileEntity 
   private boolean formed = false;
   private BlockPos parentPos = BlockPos.ZERO;
   private BlockPos normal = BlockPos.ZERO;
+  private boolean initialized = false;
+  private boolean shouldInitialize = false;
 
   public MultiblockEntity(TileEntityType<?> tileEntityType) {
     super(tileEntityType);
@@ -80,13 +85,12 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends TileEntity 
   }
 
   /**
-   * Sets this tilentity's parent.
+   * Sets this tilentity's parent, delinking first.
    * @param parentPos - The position of the parent
    */
   public void setParent(BlockPos parentPos) {
     MULTIBLOCK_LOGGER.info(
-        "setParent - Setting (" + parentPos.toShortString() + ") as our parentPos."
-        + " We are at (" + this.worldPosition.toShortString() + ")");
+        "setParent - Setting (" + parentPos.toShortString() + ") as our parentPos.");
     this.delink(); // iirc we should not have linked stuffed before
     this.parentPos = parentPos;
     this.formed = true;
@@ -94,9 +98,11 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends TileEntity 
   }
 
   /**
-   * .
+   * Gets the parent of this multiblock, or null if not. Handles delink.
+   * TODO check performance, cache response maybe?
    */
-  public @Nullable T getParent() {
+  @Nullable
+  public T getParent() {
     if (!this.formed) {
       return null;
     }
@@ -106,14 +112,7 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends TileEntity 
     }
     // it's totaly safe :) - speaking of!
     // TODO: implement chunk safety
-    @Nullable TileEntity doesItExist;
-    try {
-      doesItExist = this.getLevel().getBlockEntity(parentPos);
-    } catch (Exception e) {
-      MULTIBLOCK_LOGGER.info("getParent - " + e.getMessage());
-      this.delink();
-      return null;
-    }
+    @Nullable TileEntity doesItExist = this.getLevel().getBlockEntity(parentPos);
 
     if (doesItExist == null || !(doesItExist instanceof MultiblockEntity<?>)) {
       MULTIBLOCK_LOGGER.info("getParent - Parent does not exist OR not the same type. Type or Null:"
@@ -138,8 +137,14 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends TileEntity 
 
   /**
    * Check the link validity.
+   * 1. Checks if the parent exists
+   * 2. checks if the pattern is right (if parent)
+   * If any fails, delinking will happen
    */
   public boolean verifyLink() {
+    if (!this.formed) {
+      return false;
+    }
     MULTIBLOCK_LOGGER.info(
         "verifyLink -Veryfing link. "
         + "Parent: (" + this.parentPos.toShortString() + ")"
@@ -149,8 +154,9 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends TileEntity 
       MULTIBLOCK_LOGGER.info("getParent - Parent didnt exist anymore.");
       return false;
     }
-    if (!this.isMultiblockPatternValid(this.normal)) {
+    if (this.getParent() == this && !this.isMultiblockPatternValid(this.normal)) {
       MULTIBLOCK_LOGGER.info("getParent - Parent is valid (it is us), however pattern broke.");
+      // TODO check for null pointer stupidity
       Collection<T> tileEntities = this.getPatternEntities(this.normal);
       if (tileEntities == null) {
         return false;
@@ -166,6 +172,14 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends TileEntity 
 
   public boolean isFormed() {
     return this.formed;
+  }
+
+  /**
+   * Do something once the game fully loads (after load()).
+   * <b>Always</b> call the parent!
+   */
+  protected void initializeAfterLoad() {
+    this.verifyLink();
   }
 
   /**
@@ -200,22 +214,27 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends TileEntity 
   @Override
   public void load(BlockState blockState, CompoundNBT data) {
     super.load(blockState, data);
-    this.formed = data.getBoolean("isFormed");
+    this.formed = data.getBoolean("formed");
     this.parentPos = NBTUtil.readBlockPos(data.getCompound("parentPos"));
-    this.normal = NBTUtil.readBlockPos(data.getCompound("ourNormal"));
-
-    // if (this.isFormed()) {
-    //   this.verifyLink();
-    // }
+    this.normal = NBTUtil.readBlockPos(data.getCompound("normal"));
+    this.shouldInitialize = true;
   }
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    data.putBoolean("isFormed", this.formed);
+    data.putBoolean("formed", this.formed);
     data.put("parentPos", NBTUtil.writeBlockPos(this.parentPos));
-    data.put("ourNormal", NBTUtil.writeBlockPos(this.normal));
+    data.put("normal", NBTUtil.writeBlockPos(this.normal));
     return data;
+  }
+
+  @Override
+  public void tick() {
+    if (!this.initialized && this.shouldInitialize) {
+      this.initialized = true;
+      this.initializeAfterLoad();
+    }
   }
 
 }

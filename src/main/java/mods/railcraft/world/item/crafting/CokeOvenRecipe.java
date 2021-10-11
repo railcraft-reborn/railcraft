@@ -94,13 +94,13 @@ public class CokeOvenRecipe implements IRecipe<IInventory> {
 
     @Override
     public CokeOvenRecipe fromJson(ResourceLocation resourceLoc, JsonObject jsonObject) {
-      int tickCost = JSONUtils.getAsInt(jsonObject, "tickCost", 1000); // 1 bucket
+      int tickCost = JSONUtils.getAsInt(jsonObject, "tickCost", 1000); // 50 sec
       int creosoteOut = JSONUtils.getAsInt(jsonObject, "creosoteOut", 1000); // 1 bucket
       Ingredient ingredient =
           Ingredient.fromJson(JSONUtils.getAsJsonObject(jsonObject, "ingredient"));
       ItemStack resultItemStack =
           itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
-      // 3x3 recipies only, attempting to register 4x4's will not work and we will never honor it.
+
       return new CokeOvenRecipe(resourceLoc, creosoteOut, tickCost, ingredient, resultItemStack);
     }
 

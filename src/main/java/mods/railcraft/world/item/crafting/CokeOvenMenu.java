@@ -18,23 +18,28 @@ public class CokeOvenMenu extends Container {
   private final World level;
   private final IIntArray data;
   private final IInventory cokeOvenInventory;
+  private static final int INTERNAL_CONTAINER_SLOTS = 2;
 
   public CokeOvenMenu(int containerID, PlayerInventory playerInventory) {
-    this(containerID, playerInventory, new Inventory(2), new IntArray(3));
+    this(containerID, playerInventory, new Inventory(INTERNAL_CONTAINER_SLOTS), new IntArray(3));
   }
 
+  /**
+   * The Menu for the Coke Oven.
+   */
   public CokeOvenMenu(int containerID, PlayerInventory playerInventory,
       IInventory cokeOvenStorageEntity, IIntArray dataAccess) {
     super(RailcraftMenuTypes.COKE_OVEN.get(), containerID);
-    checkContainerSize(cokeOvenStorageEntity, 2);
+    checkContainerSize(cokeOvenStorageEntity, INTERNAL_CONTAINER_SLOTS);
     checkContainerDataCount(dataAccess, 3);
     this.cokeOvenInventory = cokeOvenStorageEntity;
     this.data = dataAccess;
     this.level = playerInventory.player.level;
 
     // our inventory
-    this.addSlot(new Slot(cokeOvenStorageEntity, 0, 56, 17));
-    this.addSlot(new FurnaceResultSlot(playerInventory.player, cokeOvenStorageEntity, 1, 116, 35));
+    this.addSlot(new Slot(cokeOvenStorageEntity, 0, 16, 43));
+    this.addSlot(new FurnaceResultSlot(playerInventory.player, cokeOvenStorageEntity, 1, 62, 43));
+    // fluid slot
 
     // generic player inventory
     for (int i = 0; i < 3; ++i) {
@@ -72,19 +77,24 @@ public class CokeOvenMenu extends Container {
 
       slot.onQuickCraft(itemstack1, itemstack);
       slot.onTake(playerEntity, itemstack1);
-    } else if (slotID != 1 && slotID != 0) {
+    }
+    if (slotID > (INTERNAL_CONTAINER_SLOTS - 1)) {
       if (this.canSmelt(itemstack1)) {
         if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
           return ItemStack.EMPTY;
         }
-      } else if (slotID >= 2 && slotID < 29) {
-        if (!this.moveItemStackTo(itemstack1, 29, 38, false)) {
+      } else if (slotID >= INTERNAL_CONTAINER_SLOTS && slotID < (27 + INTERNAL_CONTAINER_SLOTS)) {
+        if (!this.moveItemStackTo(itemstack1,
+            (27 + INTERNAL_CONTAINER_SLOTS),
+            (36 + INTERNAL_CONTAINER_SLOTS), false)) {
           return ItemStack.EMPTY;
         }
-      } else if (slotID >= 29 && slotID < 38 && !this.moveItemStackTo(itemstack1, 2, 29, false)) {
+      } else if (slotID >= (27 + INTERNAL_CONTAINER_SLOTS)
+          && slotID < (36 + INTERNAL_CONTAINER_SLOTS)
+          && !this.moveItemStackTo(itemstack1, 2, (27 + INTERNAL_CONTAINER_SLOTS), false)) {
         return ItemStack.EMPTY;
       }
-    } else if (!this.moveItemStackTo(itemstack1, 2, 38, false)) {
+    } else if (!this.moveItemStackTo(itemstack1, 2, (36 + INTERNAL_CONTAINER_SLOTS), false)) {
       return ItemStack.EMPTY;
     }
 

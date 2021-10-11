@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.crafting.CokeOvenRecipeBuilder;
 import mods.railcraft.world.item.crafting.RollingRecipeBuilder;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
@@ -170,15 +171,15 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie);
 
     this.railsFromMaterials(finishedRecipie, RailcraftItems.STRAP_IRON_FLEX_TRACK.get(),
-      RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
+        RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
     this.railsFromMaterials(finishedRecipie, Items.RAIL,
-      RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
+        RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
     this.railsFromMaterials(finishedRecipie, RailcraftItems.REINFORCED_FLEX_TRACK.get(),
-      RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+        RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
     this.railsFromMaterials(finishedRecipie, RailcraftItems.ELECTRIC_FLEX_TRACK.get(),
-      RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+        RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
     this.railsFromMaterials(finishedRecipie, RailcraftItems.HIGH_SPEED_FLEX_TRACK.get(),
-      RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+        RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
 
     /* === Item Compression === */
@@ -206,9 +207,18 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
 //      .pattern("S S")
 //      .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 //      .save(finishedRecipie, "norails");
+
+    /*
+     * =====================================
+     *         RAILCRAFT COKE OVEN
+     * =====================================
+     */
+    CokeOvenRecipeBuilder.baked(Items.CHARCOAL, Items.OAK_LOG, 1, 3600, 250)
+        .save(finishedRecipie);
   }
 
-  private final void crowbarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, ITag<Item> materialTag) {
+  private final void crowbarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie,
+      Item itemOut, ITag<Item> materialTag) {
     ShapedRecipeBuilder.shaped(itemOut)
       .define('I', materialTag)
       .define('D', Tags.Items.DYES_RED)
@@ -219,7 +229,8 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie);
   }
 
-  private final void circuitFromMaterial(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, Item woolItem) {
+  private final void circuitFromMaterial(Consumer<IFinishedRecipe> finishedRecipie,
+      Item itemOut, Item woolItem) {
     ShapedRecipeBuilder.shaped(itemOut)
     .define('W', woolItem)
     .define('R', Items.REPEATER)

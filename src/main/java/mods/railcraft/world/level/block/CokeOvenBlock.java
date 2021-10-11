@@ -29,7 +29,8 @@ public class CokeOvenBlock extends Block {
     return true;
   }
 
-  protected void openContainer(World world, BlockPos blockPos, PlayerEntity player, Direction facingDir) {
+  protected void openContainer(World world, BlockPos blockPos,
+      PlayerEntity player, Direction facingDir) {
     TileEntity blockEntity = world.getBlockEntity(blockPos);
     if (!(blockEntity instanceof CokeOvenMultiblockEntity)) {
       return;
@@ -40,9 +41,8 @@ public class CokeOvenBlock extends Block {
       if (!recast.tryToMakeParent(facingDir)) {
         return;
       }
-    } else if (!recast.verifyLink()) {
-      return;
     }
+
     recast = recast.getParent();
     if (recast == null) {
       return;

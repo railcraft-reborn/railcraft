@@ -1,0 +1,11 @@
+{
+  "type": "railcraft:cokeing",
+  "ingredient": {
+    "item": "minecraft:oak_log"
+  },
+  "result": {
+    "item": "minecraft:charcoal"
+  },
+  "tickCost": 3600,
+  "creosoteOut": 250
+}
