@@ -39,7 +39,7 @@ public class RailcraftItems {
       new ItemGroup(Railcraft.ID + "_outfitted_tracks") {
         @Override
         public ItemStack makeIcon() {
-          return new ItemStack(REINFORCED_TRACK.get());
+          return new ItemStack(IRON_DETECTOR_TRACK.get());
         }
       };
 
@@ -260,6 +260,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ABANDONED_GATED_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> ABANDONED_DETECTOR_TRACK =
+      ITEMS.register("abandoned_detector_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_DETECTOR_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> ELECTRIC_TRACK =
       ITEMS.register("electric_track",
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_TRACK.get(),
@@ -295,6 +300,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_GATED_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> ELECTRIC_DETECTOR_TRACK =
+      ITEMS.register("electric_detector_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_DETECTOR_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> HIGH_SPEED_TRACK =
       ITEMS.register("high_speed_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
@@ -320,6 +330,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> HIGH_SPEED_DETECTOR_TRACK =
+      ITEMS.register("high_speed_detector_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TRACK =
       ITEMS.register("high_speed_electric_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
@@ -343,6 +358,11 @@ public class RailcraftItems {
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_BOOSTER_TRACK =
       ITEMS.register("high_speed_electric_booster_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_DETECTOR_TRACK =
+      ITEMS.register("high_speed_electric_detector_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> IRON_LOCKING_TRACK =
@@ -373,6 +393,11 @@ public class RailcraftItems {
   public static final RegistryObject<Item> IRON_GATED_TRACK =
       ITEMS.register("iron_gated_track",
           () -> new BlockItem(RailcraftBlocks.IRON_GATED_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> IRON_DETECTOR_TRACK =
+      ITEMS.register("iron_detector_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_DETECTOR_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> REINFORCED_TRACK =
@@ -410,6 +435,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.REINFORCED_GATED_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> REINFORCED_DETECTOR_TRACK =
+      ITEMS.register("reinforced_detector_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_DETECTOR_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> STRAP_IRON_TRACK =
       ITEMS.register("strap_iron_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_TRACK.get(),
@@ -443,7 +473,12 @@ public class RailcraftItems {
   public static final RegistryObject<Item> STRAP_IRON_GATED_TRACK =
       ITEMS.register("strap_iron_gated_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_GATED_TRACK.get(),
-              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> STRAP_IRON_DETECTOR_TRACK =
+      ITEMS.register("strap_iron_detector_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> ELEVATOR_TRACK =
       ITEMS.register("elevator_track",
@@ -478,6 +513,15 @@ public class RailcraftItems {
   public static final RegistryObject<Item> SEASONS_CROWBAR =
       ITEMS.register("seasons_crowbar",
           () -> new SeasonsCrowbarItem(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> TRANSITION_TRACK_KIT =
+      ITEMS.register("transition_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .setAllowedOnSlopes(true)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK)
+              .tab(TAB)));
 
   public static final RegistryObject<Item> LOCKING_TRACK_KIT =
       ITEMS.register("locking_track_kit",
@@ -540,18 +584,32 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_CONTROL_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_CONTROL_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_CONTROL_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_CONTROL_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_CONTROL_TRACK)
               .tab(TAB)));
 
-
-  public static final RegistryObject<Item> TRANSITION_TRACK_KIT =
-      ITEMS.register("transition_track_kit",
+  public static final RegistryObject<Item> GATED_TRACK_KIT =
+      ITEMS.register("gated_track_kit",
           () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
-              .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK)
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_GATED_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_GATED_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_GATED_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_GATED_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_GATED_TRACK)
+              .tab(TAB)));
+
+  public static final RegistryObject<Item> DETECTOR_TRACK_KIT =
+      ITEMS.register("detector_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .setAllowedOnSlopes(true)
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_DETECTOR_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_DETECTOR_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK)
               .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK)
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_DETECTOR_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_DETECTOR_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK)
               .tab(TAB)));
 
   public static final RegistryObject<Item> GOGGLES =

@@ -58,11 +58,11 @@ public enum LockingMode implements IStringSerializable {
   }
 
   public LockingMode next() {
-    return values()[(ordinal() + 1) % values().length];
+    return values()[(this.ordinal() + 1) % values().length];
   }
 
   public LockingMode previous() {
-    return values()[(ordinal() + values().length - 1) % values().length];
+    return values()[(this.ordinal() + values().length - 1) % values().length];
   }
 
   @Override

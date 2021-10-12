@@ -19,6 +19,7 @@ import net.minecraft.loot.ValidationTracker;
 import net.minecraft.util.ResourceLocation;
 
 public class RailcraftLootTableProvider extends LootTableProvider {
+
   public RailcraftLootTableProvider(DataGenerator dataGenerator) {
     super(dataGenerator);
   }

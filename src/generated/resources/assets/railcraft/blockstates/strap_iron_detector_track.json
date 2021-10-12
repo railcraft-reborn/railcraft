@@ -1,0 +1,439 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "false",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "false",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "false",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "false",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "false",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "false",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "true",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_on"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "true",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_on",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "true",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_on_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "true",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_on_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "true",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_on_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "true",
+        "mode": "bi_directional"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_on_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "false",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "false",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "false",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "false",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "false",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "false",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "true",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "true",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "true",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "true",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "true",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "true",
+        "mode": "travel"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "false",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "false",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "false",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_raised_sw",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "false",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_raised_ne",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "false",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_raised_sw",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "false",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_raised_ne",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "true",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "true",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "true",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on_raised_sw",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "true",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on_raised_ne",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "true",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on_raised_sw",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "true",
+        "mode": "travel_reversed"
+      },
+      "apply": {
+        "model": "railcraft:block/detector_track_travel_on_raised_ne",
+        "y": 270
+      }
+    }
+  ]
+}
