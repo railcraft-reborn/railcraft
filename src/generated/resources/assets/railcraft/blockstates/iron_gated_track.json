@@ -5,7 +5,7 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "railcraft:rail_outfitted"
+        "model": "railcraft:block/rail_outfitted"
       }
     },
     {
@@ -13,7 +13,7 @@
         "shape": "east_west"
       },
       "apply": {
-        "model": "railcraft:rail_outfitted",
+        "model": "railcraft:block/rail_outfitted",
         "y": 90
       }
     },
@@ -24,7 +24,7 @@
         "one_way": "true"
       },
       "apply": {
-        "model": "railcraft:control_track"
+        "model": "railcraft:block/control_track"
       }
     },
     {
@@ -34,7 +34,7 @@
         "one_way": "true"
       },
       "apply": {
-        "model": "railcraft:control_track",
+        "model": "railcraft:block/control_track",
         "y": 180
       }
     },
@@ -45,7 +45,7 @@
         "one_way": "true"
       },
       "apply": {
-        "model": "railcraft:control_track",
+        "model": "railcraft:block/control_track",
         "y": 90
       }
     },
@@ -56,7 +56,7 @@
         "one_way": "true"
       },
       "apply": {
-        "model": "railcraft:control_track",
+        "model": "railcraft:block/control_track",
         "y": 270
       }
     },

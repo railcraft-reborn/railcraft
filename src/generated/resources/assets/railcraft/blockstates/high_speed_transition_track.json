@@ -5,7 +5,7 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "railcraft:high_speed_track_outfitted"
+        "model": "railcraft:block/high_speed_track_outfitted"
       }
     },
     {
@@ -13,7 +13,7 @@
         "shape": "east_west"
       },
       "apply": {
-        "model": "railcraft:high_speed_track_outfitted",
+        "model": "railcraft:block/high_speed_track_outfitted",
         "y": 90
       }
     },
@@ -22,7 +22,7 @@
         "shape": "ascending_north"
       },
       "apply": {
-        "model": "railcraft:high_speed_track_outfitted_raised_ne"
+        "model": "railcraft:block/high_speed_track_outfitted_raised_ne"
       }
     },
     {
@@ -30,7 +30,7 @@
         "shape": "ascending_south"
       },
       "apply": {
-        "model": "railcraft:high_speed_track_outfitted_raised_sw"
+        "model": "railcraft:block/high_speed_track_outfitted_raised_sw"
       }
     },
     {
@@ -38,7 +38,7 @@
         "shape": "ascending_east"
       },
       "apply": {
-        "model": "railcraft:high_speed_track_outfitted_raised_ne",
+        "model": "railcraft:block/high_speed_track_outfitted_raised_ne",
         "y": 90
       }
     },
@@ -47,7 +47,7 @@
         "shape": "ascending_west"
       },
       "apply": {
-        "model": "railcraft:high_speed_track_outfitted_raised_sw",
+        "model": "railcraft:block/high_speed_track_outfitted_raised_sw",
         "y": 90
       }
     },
@@ -58,7 +58,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track"
+        "model": "railcraft:block/transition_track"
       }
     },
     {
@@ -68,7 +68,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track",
+        "model": "railcraft:block/transition_track",
         "y": 90
       }
     },
@@ -79,7 +79,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track",
+        "model": "railcraft:block/transition_track",
         "y": 180
       }
     },
@@ -90,7 +90,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track",
+        "model": "railcraft:block/transition_track",
         "y": 270
       }
     },
@@ -101,7 +101,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track_raised_ne"
+        "model": "railcraft:block/transition_track_raised_ne"
       }
     },
     {
@@ -111,7 +111,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track_raised_sw"
+        "model": "railcraft:block/transition_track_raised_sw"
       }
     },
     {
@@ -121,7 +121,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track_raised_ne",
+        "model": "railcraft:block/transition_track_raised_ne",
         "y": 90
       }
     },
@@ -132,7 +132,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track_raised_sw",
+        "model": "railcraft:block/transition_track_raised_sw",
         "y": 90
       }
     },
@@ -143,7 +143,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track_raised_sw",
+        "model": "railcraft:block/transition_track_raised_sw",
         "y": 180
       }
     },
@@ -154,7 +154,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track_raised_ne",
+        "model": "railcraft:block/transition_track_raised_ne",
         "y": 180
       }
     },
@@ -165,7 +165,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track_raised_sw",
+        "model": "railcraft:block/transition_track_raised_sw",
         "y": 270
       }
     },
@@ -176,7 +176,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track_raised_ne",
+        "model": "railcraft:block/transition_track_raised_ne",
         "y": 270
       }
     },
@@ -187,7 +187,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track_on"
+        "model": "railcraft:block/transition_track_on"
       }
     },
     {
@@ -197,7 +197,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track_on",
+        "model": "railcraft:block/transition_track_on",
         "y": 90
       }
     },
@@ -208,7 +208,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track_on",
+        "model": "railcraft:block/transition_track_on",
         "y": 180
       }
     },
@@ -219,7 +219,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track_on",
+        "model": "railcraft:block/transition_track_on",
         "y": 270
       }
     },
@@ -230,7 +230,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track_on_raised_ne"
+        "model": "railcraft:block/transition_track_on_raised_ne"
       }
     },
     {
@@ -240,7 +240,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track_on_raised_sw"
+        "model": "railcraft:block/transition_track_on_raised_sw"
       }
     },
     {
@@ -250,7 +250,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track_on_raised_ne",
+        "model": "railcraft:block/transition_track_on_raised_ne",
         "y": 90
       }
     },
@@ -261,7 +261,7 @@
         "reversed": "false"
       },
       "apply": {
-        "model": "railcraft:transition_track_on_raised_sw",
+        "model": "railcraft:block/transition_track_on_raised_sw",
         "y": 90
       }
     },
@@ -272,7 +272,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track_on_raised_sw",
+        "model": "railcraft:block/transition_track_on_raised_sw",
         "y": 180
       }
     },
@@ -283,7 +283,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track_on_raised_ne",
+        "model": "railcraft:block/transition_track_on_raised_ne",
         "y": 180
       }
     },
@@ -294,7 +294,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track_on_raised_sw",
+        "model": "railcraft:block/transition_track_on_raised_sw",
         "y": 270
       }
     },
@@ -305,7 +305,7 @@
         "reversed": "true"
       },
       "apply": {
-        "model": "railcraft:transition_track_on_raised_ne",
+        "model": "railcraft:block/transition_track_on_raised_ne",
         "y": 270
       }
     }

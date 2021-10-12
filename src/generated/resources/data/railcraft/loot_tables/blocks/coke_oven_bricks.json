@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "railcraft:coke_oven_block"
+          "name": "railcraft:coke_oven_bricks"
         }
       ],
       "conditions": [

@@ -44,7 +44,7 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "railcraft:strap_iron_track_outfitted"
+        "model": "railcraft:block/strap_iron_track_outfitted"
       }
     },
     {
@@ -52,7 +52,7 @@
         "shape": "east_west"
       },
       "apply": {
-        "model": "railcraft:strap_iron_track_outfitted",
+        "model": "railcraft:block/strap_iron_track_outfitted",
         "y": 90
       }
     }

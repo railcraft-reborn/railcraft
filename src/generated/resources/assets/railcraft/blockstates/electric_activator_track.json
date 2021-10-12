@@ -5,7 +5,7 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "railcraft:electric_track_outfitted"
+        "model": "railcraft:block/electric_track_outfitted"
       }
     },
     {
@@ -13,7 +13,7 @@
         "shape": "east_west"
       },
       "apply": {
-        "model": "railcraft:electric_track_outfitted",
+        "model": "railcraft:block/electric_track_outfitted",
         "y": 90
       }
     },
@@ -23,7 +23,7 @@
         "powered": "false"
       },
       "apply": {
-        "model": "railcraft:activator_track"
+        "model": "railcraft:block/activator_track"
       }
     },
     {
@@ -32,7 +32,7 @@
         "powered": "false"
       },
       "apply": {
-        "model": "railcraft:activator_track",
+        "model": "railcraft:block/activator_track",
         "y": 90
       }
     },
@@ -42,7 +42,7 @@
         "powered": "true"
       },
       "apply": {
-        "model": "railcraft:activator_track_on"
+        "model": "railcraft:block/activator_track_on"
       }
     },
     {
@@ -51,7 +51,7 @@
         "powered": "true"
       },
       "apply": {
-        "model": "railcraft:activator_track_on",
+        "model": "railcraft:block/activator_track_on",
         "y": 90
       }
     },
@@ -60,7 +60,7 @@
         "shape": "ascending_north"
       },
       "apply": {
-        "model": "railcraft:electric_track_outfitted_raised_ne"
+        "model": "railcraft:block/electric_track_outfitted_raised_ne"
       }
     },
     {
@@ -68,7 +68,7 @@
         "shape": "ascending_south"
       },
       "apply": {
-        "model": "railcraft:electric_track_outfitted_raised_sw"
+        "model": "railcraft:block/electric_track_outfitted_raised_sw"
       }
     },
     {
@@ -76,7 +76,7 @@
         "shape": "ascending_east"
       },
       "apply": {
-        "model": "railcraft:electric_track_outfitted_raised_ne",
+        "model": "railcraft:block/electric_track_outfitted_raised_ne",
         "y": 90
       }
     },
@@ -85,7 +85,7 @@
         "shape": "ascending_west"
       },
       "apply": {
-        "model": "railcraft:electric_track_outfitted_raised_sw",
+        "model": "railcraft:block/electric_track_outfitted_raised_sw",
         "y": 90
       }
     },
@@ -95,7 +95,7 @@
         "powered": "false"
       },
       "apply": {
-        "model": "railcraft:activator_track_raised_ne"
+        "model": "railcraft:block/activator_track_raised_ne"
       }
     },
     {
@@ -104,7 +104,7 @@
         "powered": "false"
       },
       "apply": {
-        "model": "railcraft:activator_track_raised_sw"
+        "model": "railcraft:block/activator_track_raised_sw"
       }
     },
     {
@@ -113,7 +113,7 @@
         "powered": "false"
       },
       "apply": {
-        "model": "railcraft:activator_track_raised_ne",
+        "model": "railcraft:block/activator_track_raised_ne",
         "y": 90
       }
     },
@@ -123,7 +123,7 @@
         "powered": "false"
       },
       "apply": {
-        "model": "railcraft:activator_track_raised_sw",
+        "model": "railcraft:block/activator_track_raised_sw",
         "y": 90
       }
     },
@@ -133,7 +133,7 @@
         "powered": "true"
       },
       "apply": {
-        "model": "railcraft:activator_track_on_raised_ne"
+        "model": "railcraft:block/activator_track_on_raised_ne"
       }
     },
     {
@@ -142,7 +142,7 @@
         "powered": "true"
       },
       "apply": {
-        "model": "railcraft:activator_track_on_raised_sw"
+        "model": "railcraft:block/activator_track_on_raised_sw"
       }
     },
     {
@@ -151,7 +151,7 @@
         "powered": "true"
       },
       "apply": {
-        "model": "railcraft:activator_track_on_raised_ne",
+        "model": "railcraft:block/activator_track_on_raised_ne",
         "y": 90
       }
     },
@@ -161,7 +161,7 @@
         "powered": "true"
       },
       "apply": {
-        "model": "railcraft:activator_track_on_raised_sw",
+        "model": "railcraft:block/activator_track_on_raised_sw",
         "y": 90
       }
     }

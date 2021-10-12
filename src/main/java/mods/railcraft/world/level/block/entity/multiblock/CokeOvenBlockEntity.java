@@ -35,7 +35,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultiblockEntity>
+public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
     implements INamedContainerProvider, IRecipeHolder, IFluidTank, IInventory {
 
   private static final ITextComponent MENU_TITLE =
@@ -55,11 +55,11 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
     public int get(int key) {
       switch (key) {
         case 0:
-          return CokeOvenMultiblockEntity.this.recipieRequiredTime;
+          return CokeOvenBlockEntity.this.recipieRequiredTime;
         case 1:
-          return CokeOvenMultiblockEntity.this.currentTick;
+          return CokeOvenBlockEntity.this.currentTick;
         case 2:
-          return CokeOvenMultiblockEntity.this.fluid.getAmount();
+          return CokeOvenBlockEntity.this.fluid.getAmount();
         default:
           return 0;
       }
@@ -87,11 +87,11 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
     }
   };
 
-  public CokeOvenMultiblockEntity() {
+  public CokeOvenBlockEntity() {
     super(RailcraftBlockEntityTypes.COKE_OVEN.get());
   }
 
-  public CokeOvenMultiblockEntity(TileEntityType<?> tileEntityType) {
+  public CokeOvenBlockEntity(TileEntityType<?> tileEntityType) {
     super(tileEntityType);
   }
 
@@ -101,14 +101,14 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
   }
 
   @Override
-  public @Nullable Collection<CokeOvenMultiblockEntity> getPatternEntities(BlockPos normal) {
+  public @Nullable Collection<CokeOvenBlockEntity> getPatternEntities(BlockPos normal) {
     int box = 2; // 3-1
     BlockPos originPos = this.worldPosition.offset(0, -1, 0).offset(
         (normal.getX() == 0) ? -1 : 0,
         0,
         (normal.getZ() == 0) ? -1 : 0);
     int i = 0;
-    Collection<CokeOvenMultiblockEntity> out = new ArrayList<CokeOvenMultiblockEntity>(0);
+    Collection<CokeOvenBlockEntity> out = new ArrayList<>(0);
 
     for (BlockPos blockpos : BlockPos.betweenClosed(
         // 3 - 1
@@ -135,16 +135,16 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
         continue;
       }
       if (i != 14
-          && (!theBlock.is(RailcraftBlocks.COKE_OVEN_BLOCK.get())
+          && (!theBlock.is(RailcraftBlocks.COKE_OVEN_BRICKS.get())
               || !theBlock.hasTileEntity(theState))) {
         return null;
       }
 
       TileEntity te = this.getLevel().getBlockEntity(blockpos);
-      if (!(te instanceof CokeOvenMultiblockEntity)) {
+      if (!(te instanceof CokeOvenBlockEntity)) {
         return null;
       }
-      out.add((CokeOvenMultiblockEntity) te);
+      out.add((CokeOvenBlockEntity) te);
     }
 
     return out;
@@ -156,7 +156,7 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
     if (!this.isFormed()) {
       return null;
     }
-    CokeOvenMultiblockEntity parent = this.getParent();
+    CokeOvenBlockEntity parent = this.getParent();
     if (parent == this) {
       return new CokeOvenMenu(containerProvider, playerInventory, this, this.dataAccess);
     }

@@ -82,7 +82,7 @@
     "block.railcraft.signal_sequencer_box": "Signal Sequencer Box",
     "block.railcraft.block_signal_relay_box": "Block Signal Relay Box",
     "block.railcraft.manual_rolling_machine": "Manual Rolling Machine",
-    "block.railcraft.coke_oven_block" : "Coke Oven Block",
+    "block.railcraft.coke_oven_bricks" : "Coke Oven Bricks",
     "block.railcraft.force_track_emitter": "Force Track Emitter",
     "block.railcraft.black_post": "Black Post",
     "block.railcraft.red_post": "Red Post",
@@ -257,6 +257,7 @@
     "gui.railcraft.filter": "Filter",
 
     "itemGroup.railcraft": "Railcraft",
+    "itemGroup.railcraft_outfitted_tracks": "Railcraft Outfitted Tracks",
 
     "fluid.railcraft.steam": "Steam",
     "fluid.railcraft.creosote": "Creosote",

@@ -44,7 +44,7 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "railcraft:rail_outfitted"
+        "model": "railcraft:block/rail_outfitted"
       }
     },
     {
@@ -52,7 +52,7 @@
         "shape": "east_west"
       },
       "apply": {
-        "model": "railcraft:rail_outfitted",
+        "model": "railcraft:block/rail_outfitted",
         "y": 90
       }
     }

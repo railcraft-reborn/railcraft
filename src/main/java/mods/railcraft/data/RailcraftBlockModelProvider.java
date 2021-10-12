@@ -35,6 +35,7 @@ import net.minecraft.data.ModelTextures;
 import net.minecraft.data.ModelsResourceUtil;
 import net.minecraft.data.ModelsUtil;
 import net.minecraft.data.StockModelShapes;
+import net.minecraft.data.TexturedModel;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -46,6 +47,7 @@ public class RailcraftBlockModelProvider {
 
   private final Consumer<IFinishedBlockState> blockStateOutput;
   private final BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput;
+  private final Consumer<Item> skippedAutoModelsOutput;
 
   private final ResourceLocation lockingTrackLockdownModel;
   private final ResourceLocation lockingTrackTrainLockdownModel;
@@ -73,9 +75,11 @@ public class RailcraftBlockModelProvider {
   private final TrackModelSet controlTrackModels;
 
   public RailcraftBlockModelProvider(Consumer<IFinishedBlockState> blockStateOutput,
-      BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput) {
+      BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput,
+      Consumer<Item> skippedAutoModelsOutput) {
     this.blockStateOutput = blockStateOutput;
     this.modelOutput = modelOutput;
+    this.skippedAutoModelsOutput = skippedAutoModelsOutput;
 
     this.lockingTrackLockdownModel =
         this.createPassiveRail("locking_track_lockdown");
@@ -120,6 +124,28 @@ public class RailcraftBlockModelProvider {
   }
 
   public void run() {
+    this.skipAutoItemBlock(RailcraftBlocks.FORCE_TRACK_EMITTER.get());
+    this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get());
+    this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get());
+    this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get());
+    this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_RECEIVER_BOX.get());
+    this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
+    this.skipAutoItemBlock(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get());
+    this.skipAutoItemBlock(RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get());
+    this.skipAutoItemBlock(RailcraftBlocks.BLOCK_SIGNAL.get());
+    this.skipAutoItemBlock(RailcraftBlocks.DISTANT_SIGNAL.get());
+    this.skipAutoItemBlock(RailcraftBlocks.TOKEN_SIGNAL.get());
+    this.skipAutoItemBlock(RailcraftBlocks.DUAL_BLOCK_SIGNAL.get());
+    this.skipAutoItemBlock(RailcraftBlocks.DUAL_DISTANT_SIGNAL.get());
+    this.skipAutoItemBlock(RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
+    this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_LEVER.get());
+    this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
+
+    this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
+        TexturedModel.CUBE_TOP_BOTTOM);
+    this.createTrivialBlock(RailcraftBlocks.COKE_OVEN_BRICKS.get(), TexturedModel.CUBE);
+    this.createSimpleFlatItemModel(RailcraftBlocks.ELEVATOR_TRACK.get(), "_off");
+
     this.createPost(RailcraftBlocks.BLACK_POST.get());
     this.createPost(RailcraftBlocks.RED_POST.get());
     this.createPost(RailcraftBlocks.GREEN_POST.get());
@@ -193,6 +219,21 @@ public class RailcraftBlockModelProvider {
         RailcraftBlocks.STRAP_IRON_GATED_TRACK.get());
   }
 
+  private void skipAutoItemBlock(Block block) {
+    this.skippedAutoModelsOutput.accept(block.asItem());
+  }
+
+  private void createTrivialBlock(Block block, TexturedModel.ISupplier textureFactory) {
+    this.blockStateOutput.accept(
+        createSimpleBlock(block, textureFactory.create(block, this.modelOutput)));
+  }
+
+  private static FinishedVariantBlockState createSimpleBlock(Block block,
+      ResourceLocation modelLocation) {
+    return FinishedVariantBlockState.multiVariant(block,
+        BlockModelDefinition.variant().with(BlockModelFields.MODEL, modelLocation));
+  }
+
   private void delegateItemModel(Block block, ResourceLocation modelLocation) {
     this.modelOutput.accept(ModelsResourceUtil.getModelLocation(block.asItem()),
         new BlockModelWriter(modelLocation));
@@ -227,7 +268,8 @@ public class RailcraftBlockModelProvider {
 
   private ResourceLocation createVariant(String name,
       ModelsUtil model, Function<ResourceLocation, ModelTextures> textureFactory) {
-    return model.create(new ResourceLocation(Railcraft.ID, name + model.suffix.orElse("")),
+    return model.create(
+        new ResourceLocation(Railcraft.ID, "block/" + name + model.suffix.orElse("")),
         textureFactory.apply(new ResourceLocation(Railcraft.ID, "block/" + name)),
         this.modelOutput);
   }

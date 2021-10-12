@@ -44,7 +44,7 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "railcraft:electric_track_outfitted"
+        "model": "railcraft:block/electric_track_outfitted"
       }
     },
     {
@@ -52,7 +52,7 @@
         "shape": "east_west"
       },
       "apply": {
-        "model": "railcraft:electric_track_outfitted",
+        "model": "railcraft:block/electric_track_outfitted",
         "y": 90
       }
     }

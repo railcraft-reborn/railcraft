@@ -1,7 +1,9 @@
 package mods.railcraft.data;
 
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -12,11 +14,15 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.data.BlockModelWriter;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.data.IFinishedBlockState;
+import net.minecraft.data.ModelsResourceUtil;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -49,18 +55,21 @@ public class RailcraftBlockStateProvider implements IDataProvider {
       }
     };
 
-    new RailcraftBlockModelProvider(blockStateConsumer, modelConsumer).run();
+    Set<Item> skippedAutoModels = new HashSet<>();
+    new RailcraftBlockModelProvider(blockStateConsumer, modelConsumer, skippedAutoModels::add)
+        .run();
 
-    // ForgeRegistries.BLOCKS.forEach((block) -> {
-    // Item item = Item.BY_BLOCK.get(block);
-    // if (item != null) {
-    // ResourceLocation itemModel = ModelsResourceUtil.getModelLocation(item);
-    // if (!models.containsKey(itemModel)) {
-    // models.put(itemModel,
-    // new BlockModelWriter(ModelsResourceUtil.getModelLocation(block)));
-    // }
-    // }
-    // });
+    RailcraftBlocks.BLOCKS.getEntries().forEach((block) -> {
+      Item item = Item.BY_BLOCK.get(block.get());
+      if (item != null && !skippedAutoModels.contains(item)) {
+        ResourceLocation itemModel = ModelsResourceUtil.getModelLocation(item);
+        if (!models.containsKey(itemModel)) {
+          models.put(itemModel,
+              new BlockModelWriter(ModelsResourceUtil.getModelLocation(block.get())));
+        }
+      }
+    });
+
     this.saveCollection(directoryCache, outputFolder, blockStates,
         RailcraftBlockStateProvider::createBlockStatePath);
     this.saveCollection(directoryCache, outputFolder, models,
