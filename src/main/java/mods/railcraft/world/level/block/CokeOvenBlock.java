@@ -37,10 +37,8 @@ public class CokeOvenBlock extends Block {
     }
     CokeOvenMultiblockEntity recast = (CokeOvenMultiblockEntity) blockEntity;
 
-    if (!recast.isFormed()) {
-      if (!recast.tryToMakeParent(facingDir)) {
-        return;
-      }
+    if (!recast.isFormed() || !recast.tryToMakeParent(facingDir)) {
+      return;
     }
 
     recast = recast.getParent();

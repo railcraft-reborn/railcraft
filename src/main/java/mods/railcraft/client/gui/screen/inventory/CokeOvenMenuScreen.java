@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 public class CokeOvenMenuScreen extends ContainerScreen<CokeOvenMenu> {
+
   private static final ResourceLocation BACKGROUND_TEXTURE =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/coke_oven.png");
 

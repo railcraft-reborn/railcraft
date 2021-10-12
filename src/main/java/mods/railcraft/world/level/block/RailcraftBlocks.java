@@ -587,7 +587,7 @@ public class RailcraftBlocks {
               .sound(SoundType.WOOD)));
 
   public static final RegistryObject<Block> COKE_OVEN_BLOCK =
-      BLOCKS.register("coke_oven_block",
+      BLOCKS.register("coke_oven",
           () -> new CokeOvenBlock(AbstractBlock.Properties.of(Material.STONE)
               .sound(SoundType.STONE)
               .harvestTool(ToolType.PICKAXE)));

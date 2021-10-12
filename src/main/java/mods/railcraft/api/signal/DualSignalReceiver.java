@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class DualSignalReceiver extends SingleSignalReceiver {
 
-  private static final Logger logger = LogManager.getLogger("Railcraft/DualSignalReceiver");
+  private static final Logger logger = LogManager.getLogger();
 
   private final SignalClient secondarySignalClient;
 
