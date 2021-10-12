@@ -148,7 +148,14 @@ public class ManualRollingMachineBlockEntity extends LockableTileEntity
 
   @Override
   public boolean stillValid(PlayerEntity playerEntity) {
-    return true;
+    if (this.level.getBlockEntity(this.worldPosition) != this) {
+      return false;
+    } else {
+      return playerEntity.distanceToSqr(
+          (double)this.worldPosition.getX() + 0.5D,
+          (double)this.worldPosition.getY() + 0.5D,
+          (double)this.worldPosition.getZ() + 0.5D) <= 64.0D;
+    }
   }
 
   @Override

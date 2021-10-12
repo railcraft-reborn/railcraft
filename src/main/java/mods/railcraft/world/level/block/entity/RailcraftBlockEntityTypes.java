@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.multiblock.CokeOvenMultiblockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
@@ -141,9 +142,14 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<TileEntityType<?>> MANUAL_ROLLING_MACHINE =
       BLOCK_ENTITY_TYPES.register("manual_rolling_machine",
           () -> TileEntityType.Builder
-              .of(ManualRollingMachineBlockEntity::new,
-                  RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
-              .build(null));
+            .of(ManualRollingMachineBlockEntity::new, RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
+            .build(null));
+
+  public static final RegistryObject<TileEntityType<?>> COKE_OVEN =
+      BLOCK_ENTITY_TYPES.register("coke_oven",
+          () -> TileEntityType.Builder
+            .of(CokeOvenMultiblockEntity::new, RailcraftBlocks.COKE_OVEN_BLOCK.get())
+            .build(null));
 
   public static final RegistryObject<TileEntityType<?>> SWITCH_TRACK_MOTOR =
       BLOCK_ENTITY_TYPES.register("switch_track_motor",
@@ -156,5 +162,4 @@ public class RailcraftBlockEntityTypes {
           () -> TileEntityType.Builder
               .of(LockingTrackBlockEntity::new, RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get())
               .build(null));
-
 }

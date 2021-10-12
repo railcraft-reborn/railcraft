@@ -29,6 +29,7 @@ jobs:
       - name: Compile and run tests
         env:
           GRADLE_OPTS: -Dorg.gradle.daemon=false
+          GITHUB_PR_NUMBER: ${{github.event.pull_request.number}}
         run: |
           ./gradlew hideOfficialWarningUntilChanged
           ./gradlew build

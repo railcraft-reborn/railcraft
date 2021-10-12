@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:firestone_lava_refinement"
+      "railcraft:firestone_lava_refinement"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:firestone_lava_refinement"
+        "recipe": "railcraft:firestone_lava_refinement"
       }
     }
   },

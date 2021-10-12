@@ -135,8 +135,9 @@ public abstract class RailcraftBlockEntity extends TileEntity
   }
 
   public void updateNeighbors() {
-    if (this.hasLevel())
+    if (this.hasLevel()) {
       this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
+    }
   }
 
   public final int getX() {

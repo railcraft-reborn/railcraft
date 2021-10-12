@@ -48,8 +48,9 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
 
   public void readTeleport(PacketBuffer data) {
     World world = this.minecraft.level;
-    if (world == null)
+    if (world == null) {
       return;
+    }
 
     Vector3d start = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
     Vector3d destination = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
@@ -66,8 +67,9 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   public void readForceSpawn(PacketBuffer data) {
-    if (thinParticles(true))
+    if (thinParticles(true)) {
       return;
+    }
 
     // BlockPos pos = data.readBlockPos();
     // int color = data.readInt();
@@ -79,16 +81,19 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     // double vz = RANDOM.nextGaussian() * 0.1;
     // Vector3d vel = new Vector3d(0, 0, 0);
 
-    // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.1, y, z + 0.1), vel, color));
-    // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.9, y, z + 0.1), vel, color));
-    // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.1, y, z + 0.9), vel, color));
-    // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.9, y, z + 0.9), vel, color));
+    // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.1, y, z +
+    // 0.1), vel, color));
+    // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.9, y, z +
+    // 0.1), vel, color));
+    // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.1, y, z +
+    // 0.9), vel, color));
+    // spawnParticle(new ParticleForceSpawn(world, new Vector3d(x + 0.9, y, z +
+    // 0.9), vel, color));
   }
 
   @Override
   public boolean isTuningAuraActive() {
-    return this.isGoggleAuraActive(GogglesItem.Aura.TUNING)
-        || this.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING);
+    return this.isGoggleAuraActive(GogglesItem.Aura.TUNING) || this.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING);
   }
 
   public boolean isGoggleAuraActive(GogglesItem.Aura aura) {
@@ -110,14 +115,17 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     // double py = pos.getY() + getRandomParticleOffset();
     // double pz = pos.getZ() + getRandomParticleOffset();
     //
-    // TESRSignals.ColorProfile colorProfile = TESRSignals.ColorProfile.COORD_RAINBOW;
+    // TESRSignals.ColorProfile colorProfile =
+    // TESRSignals.ColorProfile.COORD_RAINBOW;
     // if (isGoggleAuraActive(GoggleAura.SIGNALLING))
     // colorProfile = TESRSignals.ColorProfile.CONTROLLER_ASPECT;
     //
     // int color = colorProfile.getColor(start, start.getPos(), dest.getPos());
     //
-    // Particle particle = new ParticleTuningAura(start.getWorld(), new Vector3d(px, py, pz),
-    // EffectManager.getEffectSource(start), EffectManager.getEffectSource(dest), color);
+    // Particle particle = new ParticleTuningAura(start.getWorld(), new Vector3d(px,
+    // py, pz),
+    // EffectManager.getEffectSource(start), EffectManager.getEffectSource(dest),
+    // color);
     // spawnParticle(particle);
     // }
   }
@@ -145,7 +153,8 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     // Particle particle = new ParticleFireSpark(world, start, end);
     // spawnParticle(particle);
     // SoundHelper.playSoundClient(world, es.getPos(), SoundEvents.BLOCK_LAVA_POP,
-    // SoundCategory.BLOCKS, .2F + rand.nextFloat() * .2F, .9F + rand.nextFloat() * .15F);
+    // SoundCategory.BLOCKS, .2F + rand.nextFloat() * .2F, .9F + rand.nextFloat() *
+    // .15F);
   }
 
   public void readFireSpark(PacketBuffer data) {
@@ -160,7 +169,8 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     // IEffectSource es = EffectManager.getEffectSource(source);
     //
     // Vector3d sourcePos = es.getPosF();
-    // if (FMLClientHandler.instance().getClient().player.getDistanceSq(sourcePos.x, sourcePos.y,
+    // if (FMLClientHandler.instance().getClient().player.getDistanceSq(sourcePos.x,
+    // sourcePos.y,
     // sourcePos.z) > 25600)
     // return;
     //
@@ -178,7 +188,8 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     // double zParticle = zCorner + rand.nextFloat() * 16;
     //
     // Particle particle =
-    // new ParticleChunkLoader(world, new Vector3d(xParticle, yParticle, zParticle), es);
+    // new ParticleChunkLoader(world, new Vector3d(xParticle, yParticle, zParticle),
+    // es);
     // spawnParticle(particle);
     // }
     // }
@@ -186,13 +197,15 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
 
   /**
    * Special particle for polar express easter egg.
+   *
    * @param x
    * @param y
    * @param z
    */
   public void snowEffect(double x, double y, double z) {
-    if (thinParticles(true))
+    if (thinParticles(true)) {
       return;
+    }
     double vx = rand.nextGaussian() * 0.1;
     double vy = rand.nextDouble() * 0.01;
     double vz = rand.nextGaussian() * 0.1;
@@ -200,17 +213,20 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   /**
-   * Creates a steam effect on the wheel-side of the trains. Yvel is between 0.02 to 0.03
-   * @param x X Coordinate.
-   * @param y Y Coordinate.
-   * @param z Z Coordinate.
+   * Creates a steam effect on the wheel-side of the trains. Yvel is between 0.02
+   * to 0.03
+   *
+   * @param x  X Coordinate.
+   * @param y  Y Coordinate.
+   * @param z  Z Coordinate.
    * @param vx Velocity in the X coordinate
    * @param vy Velocity in the Y coordinate
    */
   public void steamEffect(double x, double y, double z, double vx, double vz) {
-    if (thinParticles(true))
+    if (thinParticles(true)) {
       return;
-    BasicParticleType steam = new BasicParticleType(false){
+    }
+    BasicParticleType steam = new BasicParticleType(false) {
       @Override
       public BasicParticleType getType() {
         return RailcraftParticles.STEAM.get();
@@ -221,17 +237,20 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   /**
-   * Same as <code>steamEffect</code>, but moves the particle faster (as we're venting the pressure tank)
-   * @param x X Coordinate.
-   * @param y Y Coordinate.
-   * @param z Z Coordinate.
+   * Same as <code>steamEffect</code>, but moves the particle faster (as we're
+   * venting the pressure tank)
+   *
+   * @param x  X Coordinate.
+   * @param y  Y Coordinate.
+   * @param z  Z Coordinate.
    * @param vx Velocity in the X coordinate
    * @param vy Velocity in the Y coordinate
    * @see mods.railcraft.client.ClientEffects#steamEffect() steamEffect
    */
   public void steamJetEffect(double x, double y, double z, double vx, double vz) {
-    if (thinParticles(true))
+    if (thinParticles(true)) {
       return;
+    }
     this.steamEffect(x, y, z, vx * 1.5, vz * 1.5);
   }
 
@@ -242,17 +261,19 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   /**
-   * Effect when the boiler is burning stuff to make steam.
-   * Spawns on the train's smokestack
+   * Effect when the boiler is burning stuff to make steam. Spawns on the train's
+   * smokestack
+   *
    * @param x
    * @param y
    * @param z
    */
   public void locomotiveEffect(double x, double y, double z) {
-    if (thinParticles(false))
+    if (thinParticles(false)) {
       return;
+    }
     if (Seasons.HALLOWEEN && rand.nextInt(4) == 0) { // 20%?
-      BasicParticleType spook = new BasicParticleType(false){
+      BasicParticleType spook = new BasicParticleType(false) {
         @Override
         public BasicParticleType getType() {
           return RailcraftParticles.PUMPKIN.get();
@@ -266,35 +287,37 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
 
   @Override
   public void zapEffectPoint(World world, Vector3d source) {
-    if (thinParticles(false))
+    if (thinParticles(false)) {
       return;
+    }
 
-    BasicParticleType spark = new BasicParticleType(false){
+    BasicParticleType spark = new BasicParticleType(false) {
       @Override
       public BasicParticleType getType() {
         return RailcraftParticles.SPARK.get();
       }
     };
 
-    spawnParticle(
-      spark, source.x, source.y, source.z,
-      rand.nextDouble() - 0.5D, rand.nextDouble() - 0.5D, rand.nextDouble() - 0.5D);
+    spawnParticle(spark, source.x, source.y, source.z, rand.nextDouble() - 0.5D, rand.nextDouble() - 0.5D,
+        rand.nextDouble() - 0.5D);
 
-    world.playLocalSound(source.x, source.y, source.z,
-      RailcraftSoundEvents.ZAP.get(), SoundCategory.BLOCKS, 0.2F, 0.75F, false);
+    world.playLocalSound(source.x, source.y, source.z, RailcraftSoundEvents.ZAP.get(), SoundCategory.BLOCKS, 0.2F,
+        0.75F, false);
   }
 
   @Override
   public void zapEffectDeath(World world, Vector3d source) {
-    if (!world.isClientSide())
+    if (!world.isClientSide()) {
       return;
-    if (thinParticles(false))
+    }
+    if (thinParticles(false)) {
       return;
+    }
 
-    world.playLocalSound(source.x, source.y, source.z,
-      RailcraftSoundEvents.ZAP.get(), SoundCategory.BLOCKS, 3F, 0.75F, false);
+    world.playLocalSound(source.x, source.y, source.z, RailcraftSoundEvents.ZAP.get(), SoundCategory.BLOCKS, 3F, 0.75F,
+        false);
 
-    BasicParticleType spark = new BasicParticleType(false){
+    BasicParticleType spark = new BasicParticleType(false) {
       @Override
       public BasicParticleType getType() {
         return RailcraftParticles.SPARK.get();
@@ -302,9 +325,8 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     };
 
     for (int i = 0; i < 20; i++) {
-      spawnParticle(
-        spark, source.x, source.y, source.z,
-        rand.nextDouble() - 0.5D, rand.nextDouble() - 0.5D, rand.nextDouble() - 0.5D);
+      spawnParticle(spark, source.x, source.y, source.z, rand.nextDouble() - 0.5D, rand.nextDouble() - 0.5D,
+          rand.nextDouble() - 0.5D);
     }
   }
 
@@ -315,14 +337,14 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
 
   @Override
   public void zapEffectSurface(BlockState stateIn, World worldIn, BlockPos pos) {
-    if (thinParticles(false))
+    if (thinParticles(false)) {
       return;
+    }
 
-    worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(),
-      RailcraftSoundEvents.ZAP.get(), SoundCategory.BLOCKS,
-      0.1F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
+    worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), RailcraftSoundEvents.ZAP.get(), SoundCategory.BLOCKS,
+        0.1F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 
-    BasicParticleType spark = new BasicParticleType(false){
+    BasicParticleType spark = new BasicParticleType(false) {
       @Override
       public BasicParticleType getType() {
         return RailcraftParticles.SPARK.get();
@@ -330,20 +352,18 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     };
 
     for (Direction side : Direction.values()) {
-      if (!Block.shouldRenderFace(stateIn, worldIn, pos, side))
+      if (!Block.shouldRenderFace(stateIn, worldIn, pos, side)) {
         continue;
+      }
       Vector3d normal = Vector3d.atLowerCornerOf(side.getNormal());
-      Vector3d variance = new Vector3d(
-        (rand.nextGaussian() - 0.5) * 0.2,
-        (rand.nextGaussian() - 0.5) * 0.2,
-        (rand.nextGaussian() - 0.5) * 0.2);
+      Vector3d variance = new Vector3d((rand.nextGaussian() - 0.5) * 0.2, (rand.nextGaussian() - 0.5) * 0.2,
+          (rand.nextGaussian() - 0.5) * 0.2);
       Vector3d vel = normal.add(variance);
-      // TODO This should probably use the bounding box or something. Its got to be wrong for
+      // TODO This should probably use the bounding box or something. Its got to be
+      // wrong for
       // tracks
       // atm.
-      Vector3d start = new Vector3d(
-          pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5
-        ).add(normal.scale(0.5));
+      Vector3d start = new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).add(normal.scale(0.5));
       switch (side.getAxis()) {
         case X:
           start = start.add(new Vector3d(0.0, rand.nextDouble() - 0.5, rand.nextDouble() - 0.5));
@@ -353,6 +373,8 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
           break;
         case Z:
           start = start.add(new Vector3d(rand.nextDouble() - 0.5, rand.nextDouble() - 0.5, 0.0));
+          break;
+        default:
           break;
       }
       spawnParticle(

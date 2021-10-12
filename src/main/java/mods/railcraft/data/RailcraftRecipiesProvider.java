@@ -2,8 +2,10 @@ package mods.railcraft.data;
 
 import java.util.function.Consumer;
 
+import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.crafting.CokeOvenRecipeBuilder;
 import mods.railcraft.world.item.crafting.RollingRecipeBuilder;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
@@ -14,6 +16,7 @@ import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 
 public class RailcraftRecipiesProvider extends RecipeProvider {
@@ -77,7 +80,7 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .pattern("RSR")
       .pattern("LRL")
       .unlockedBy("has_firestone", has(RailcraftItems.CUT_FIRESTONE.get()))
-      .save(finishedRecipie, "firestone_lava_refinement");
+      .save(finishedRecipie, Railcraft.ID + ":firestone_lava_refinement");
 
     ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
       .define('L', Items.LAVA_BUCKET)
@@ -88,7 +91,7 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .pattern("RSR")
       .pattern("LRL")
       .unlockedBy("has_firestone", has(RailcraftItems.CRACKED_FIRESTONE.get()))
-      .save(finishedRecipie, "firestone_cracked_fixing");
+      .save(finishedRecipie, Railcraft.ID + ":firestone_cracked_fixing");
 
     /*
      * =====================================
@@ -109,20 +112,20 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
     ShapelessRecipeBuilder.shapeless(RailcraftItems.STANDARD_RAIL.get())
       .requires(Items.RAIL, 8)
       .unlockedBy("has_rail", has(Items.RAIL))
-      .save(finishedRecipie, "rail_deconstruction");
+      .save(finishedRecipie, Railcraft.ID + ":rail_deconstruction");
 
     RollingRecipeBuilder.rolled(RailcraftItems.STANDARD_RAIL.get(), 8)
       .define('I', Tags.Items.INGOTS_IRON)
       .pattern("I I")
       .pattern("I I")
       .pattern("I I")
-      .save(finishedRecipie, "standard_rail_recipie");
+      .save(finishedRecipie, Railcraft.ID + ":standard_rail_recipie");
     RollingRecipeBuilder.rolled(RailcraftItems.STANDARD_RAIL.get(), 16)
       .define('I', RailcraftTags.Items.STEEL_INGOT)
       .pattern("I I")
       .pattern("I I")
       .pattern("I I")
-      .save(finishedRecipie, "steel_rail_recipie");
+      .save(finishedRecipie, Railcraft.ID + ":steel_rail_recipie");
     RollingRecipeBuilder.rolled(RailcraftItems.ADVANCED_RAIL.get(), 8)
       .define('I', RailcraftItems.STANDARD_RAIL.get())
       .define('R', Tags.Items.DUSTS_REDSTONE)
@@ -146,9 +149,12 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .pattern("SCS")
       .save(finishedRecipie);
 
-    this.rebarFromMaterial(finishedRecipie, Tags.Items.INGOTS_IRON, 4, "rebar_iron");
-    this.rebarFromMaterial(finishedRecipie, RailcraftTags.Items.BRONZE_INGOT, 4, "rebar_bronze");
-    this.rebarFromMaterial(finishedRecipie, RailcraftTags.Items.STEEL_INGOT, 6, "rebar_steel");
+    this.rebarFromMaterial(finishedRecipie, Tags.Items.INGOTS_IRON, 4,
+        Railcraft.ID + ":rebar_iron");
+    this.rebarFromMaterial(finishedRecipie, RailcraftTags.Items.BRONZE_INGOT, 4,
+        Railcraft.ID + ":rebar_bronze");
+    this.rebarFromMaterial(finishedRecipie, RailcraftTags.Items.STEEL_INGOT, 6,
+        Railcraft.ID + ":rebar_steel");
 
     ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())
       .define('R', RailcraftItems.REBAR.get())
@@ -169,16 +175,16 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .unlockedBy("has_tie", has(RailcraftItems.WOODEN_TIE.get()))
       .save(finishedRecipie);
 
-    this.railsFromMaterials(finishedRecipie, RailcraftItems.STRAP_IRON_TRACK.get(),
-      RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
+    // this.railsFromMaterials(finishedRecipie, RailcraftItems.IRON_.get(),
+    //     RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
     this.railsFromMaterials(finishedRecipie, Items.RAIL,
-      RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
+        RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
     this.railsFromMaterials(finishedRecipie, RailcraftItems.REINFORCED_TRACK.get(),
-      RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+        RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
     this.railsFromMaterials(finishedRecipie, RailcraftItems.ELECTRIC_TRACK.get(),
-      RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+        RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
     this.railsFromMaterials(finishedRecipie, RailcraftItems.HIGH_SPEED_TRACK.get(),
-      RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+        RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
 
     /* === Item Compression === */
@@ -206,9 +212,18 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
 //      .pattern("S S")
 //      .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 //      .save(finishedRecipie, "norails");
+
+    /*
+     * =====================================
+     *         RAILCRAFT COKE OVEN
+     * =====================================
+     */
+    CokeOvenRecipeBuilder.baked(Items.CHARCOAL, ItemTags.LOGS, 1, 3600, 250)
+        .save(finishedRecipie, Railcraft.ID + ":log_to_charcoal");
   }
 
-  private final void crowbarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, ITag<Item> materialTag) {
+  private final void crowbarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie,
+      Item itemOut, ITag<Item> materialTag) {
     ShapedRecipeBuilder.shaped(itemOut)
       .define('I', materialTag)
       .define('D', Tags.Items.DYES_RED)
@@ -219,7 +234,8 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie);
   }
 
-  private final void circuitFromMaterial(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, Item woolItem) {
+  private final void circuitFromMaterial(Consumer<IFinishedRecipe> finishedRecipie,
+      Item itemOut, Item woolItem) {
     ShapedRecipeBuilder.shaped(itemOut)
     .define('W', woolItem)
     .define('R', Items.REPEATER)
@@ -243,7 +259,8 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie, fancyname);
   }
 
-  private final void railsFromMaterials(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, Item railType, Item railBedType) {
+  private final void railsFromMaterials(Consumer<IFinishedRecipe> finishedRecipie,
+      Item itemOut, Item railType, Item railBedType) {
     ShapedRecipeBuilder.shaped(itemOut, 32)
       .define('I', railType)
       .define('B', railBedType)
@@ -255,7 +272,8 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie);
   }
 
-  private final void compress(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, ITag<Item> materialTag) {
+  private final void compress(Consumer<IFinishedRecipe> finishedRecipie,
+      Item itemOut, ITag<Item> materialTag) {
     ShapedRecipeBuilder.shaped(itemOut)
       .define('#', materialTag)
       .pattern("###")
@@ -265,7 +283,8 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie);
   }
 
-  private final void decompress(Consumer<IFinishedRecipe> finishedRecipie, Item itemOut, ITag<Item> materialTag) {
+  private final void decompress(Consumer<IFinishedRecipe> finishedRecipie,
+      Item itemOut, ITag<Item> materialTag) {
     ShapelessRecipeBuilder.shapeless(itemOut, 9)
       .requires(materialTag)
       .unlockedBy("has_required_decompression_material", has(materialTag))

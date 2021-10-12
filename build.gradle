@@ -23,10 +23,10 @@ apply plugin: 'maven-publish'
 
 def isCI = System.getenv("GITHUB_ACTION")
 def nightly = System.getenv("GITHUB_NIGHTLY")
-def ref = System.getenv("GITHUB_REF")
+def ref = System.getenv("GITHUB_PR_NUMBER")
 
 def tag = nightly ? "NIGHTLY" : "CI"
-def suffix = "-${tag}-${isCI}"
+def suffix = "-${tag}" + (ref ? "-${ref}" : "")
 
 // does in fact follow the semantic versioning. (GAMEVER)-(MODMAJOR.MODMINOR.MODPATCH)-CIMETA-RUNID.RUNINT
 version = "${minecraft_version}-${mod_version}"
@@ -46,7 +46,7 @@ println('')
 println('*************************************************************')
 println('Project Version: ' + version)
 if (isCI) {
-  println("Running in Github Workflow" + (ref ? "on a pull request ${ref}, " : " ") + isCI)
+  println("Running in Github Workflow ${tag}" + (ref ? " on a pull request ${ref}." : "."))
 }
 println('Java: ' + System.getProperty('java.version'))
 println('JVM: ' + System.getProperty('java.vm.version'))

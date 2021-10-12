@@ -6,6 +6,7 @@ import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
 import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
 import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
+import mods.railcraft.client.gui.screen.inventory.CokeOvenMenuScreen;
 import mods.railcraft.client.gui.screen.SwitchTrackMotorScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
@@ -130,9 +131,12 @@ public class ClientDist implements RailcraftDist {
         CreativeLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
         ElectricLocomotiveScreen::new);
-    ScreenManager.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
+    ScreenManager.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(),
+        SteamLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
         ManualRollingMachineScreen::new);
+    ScreenManager.register(RailcraftMenuTypes.COKE_OVEN.get(),
+        CokeOvenMenuScreen::new);
 
     // === Entity Renderers ===
 

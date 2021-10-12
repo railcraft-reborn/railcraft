@@ -1,8 +1,10 @@
 package mods.railcraft.client.gui.screen.inventory.widget;
 
 import java.util.List;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
 import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.client.util.FluidRenderer;
@@ -27,17 +29,19 @@ public class FluidGaugeWidgetRenderer extends WidgetRenderer<FluidGaugeWidget> {
   @Override
   public void draw(RailcraftMenuScreen<?> gui, MatrixStack matrixStack, int guiX, int guiY,
       int mouseX, int mouseY) {
-    if (this.widget.tank == null)
+    if (this.widget.tank == null) {
       return;
+    }
 
     FluidStack fluidStack = this.widget.tank.getFluid();
-    if (fluidStack == null || fluidStack.getAmount() <= 0)
+    if (fluidStack == null || fluidStack.getAmount() <= 0) {
       return;
+    }
 
-    TextureAtlasSprite fluidIcon =
-        FluidRenderer.getFluidTexture(fluidStack, FluidRenderer.FlowState.STILL);
-    if (fluidIcon == null)
+    TextureAtlasSprite fluidIcon = FluidRenderer.getFluidTexture(fluidStack, FluidRenderer.FlowState.STILL);
+    if (fluidIcon == null) {
       return;
+    }
 
     float scale = Math.min(fluidStack.getAmount(), this.widget.tank.getCapacity())
         / (float) this.widget.tank.getCapacity();
@@ -53,16 +57,17 @@ public class FluidGaugeWidgetRenderer extends WidgetRenderer<FluidGaugeWidget> {
 
     for (int col = 0; col < this.widget.w / 16; col++) {
       for (int row = 0; row <= this.widget.h / 16; row++) {
-        blit(matrixStack, guiX + this.widget.x + col * 16,
-            guiY + this.widget.y + row * 16 - 1, this.getBlitOffset(), 16, 16, fluidIcon);
+        blit(matrixStack, guiX + this.widget.x + col * 16, guiY + this.widget.y + row * 16 - 1, this.getBlitOffset(),
+            16, 16, fluidIcon);
       }
     }
 
     RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
     gui.bindTexture(gui.getTextureLocation());
     int mask = (int) Math.floor(this.widget.h * scale);
-    if (mask == 0 && fluidStack.getAmount() > 0)
+    if (mask == 0 && fluidStack.getAmount() > 0) {
       mask = 1;
+    }
     gui.blit(matrixStack, guiX + this.widget.x, guiY + this.widget.y - 1, this.widget.x,
         this.widget.y - 1, this.widget.w, this.widget.h - mask + 1);
     gui.blit(matrixStack, guiX + this.widget.x, guiY + this.widget.y, this.widget.u, this.widget.v,

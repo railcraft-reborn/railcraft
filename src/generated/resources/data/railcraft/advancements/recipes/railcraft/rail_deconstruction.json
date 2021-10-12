@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:firestone_cracked_fixing"
+      "railcraft:rail_deconstruction"
     ]
   },
   "criteria": {
-    "has_firestone": {
+    "has_rail": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "railcraft:cracked_firestone"
+            "item": "minecraft:rail"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:firestone_cracked_fixing"
+        "recipe": "railcraft:rail_deconstruction"
       }
     }
   },
   "requirements": [
     [
-      "has_firestone",
+      "has_rail",
       "has_the_recipe"
     ]
   ]
