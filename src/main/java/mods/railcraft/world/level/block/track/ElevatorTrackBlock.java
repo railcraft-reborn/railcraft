@@ -1,9 +1,9 @@
 package mods.railcraft.world.level.block.track;
 
 import javax.annotation.Nullable;
-import mods.railcraft.carts.CartConstants;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.world.entity.cart.CartConstants;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

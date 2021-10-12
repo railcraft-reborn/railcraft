@@ -9,7 +9,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class SignalCapacitorBoxScreen extends BasicIngameScreen {
+public class SignalCapacitorBoxScreen extends IngameWindowScreen {
 
   private final SignalCapacitorBoxBlockEntity signalBox;
   private MultiButton<SignalCapacitorBoxBlockEntity.Mode> modeButton;
@@ -21,8 +21,8 @@ public class SignalCapacitorBoxScreen extends BasicIngameScreen {
 
   @Override
   public void init() {
-    int centredX = (this.width - this.x) / 2;
-    int centredY = (this.height - this.y) / 2;
+    int centredX = (this.width - this.windowWidth) / 2;
+    int centredY = (this.height - this.windowHeight) / 2;
     this.addButton(
         new Button(centredX + 13, centredY + 38, 30, 20, new StringTextComponent("-10"),
             __ -> this.incrementTicksToPower(-200)));
@@ -45,7 +45,7 @@ public class SignalCapacitorBoxScreen extends BasicIngameScreen {
     this.drawCenteredString(matrixStack,
         new TranslationTextComponent("screen.signal_capacitor_box.duration",
             this.signalBox.getTicksToPower() / 20),
-        this.x / 2, 25);
+        this.windowWidth / 2, 25);
   }
 
   @Override

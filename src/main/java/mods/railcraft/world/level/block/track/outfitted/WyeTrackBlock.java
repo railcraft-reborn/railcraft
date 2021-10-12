@@ -25,20 +25,18 @@ public class WyeTrackBlock extends SwitchTrackBlock {
   @Override
   public RailShape getRailDirection(BlockState blockState, IBlockReader world, BlockPos pos,
       @Nullable AbstractMinecartEntity cart) {
-    final WyeTrackBlockEntity blockEntity = (WyeTrackBlockEntity) world.getBlockEntity(pos);
-    final boolean mirrored = isMirrored(blockState);
-    RailShape dir = getRailShapeRaw(blockState);
-    if (cart != null) {
-      if (dir == RailShape.NORTH_SOUTH) {
-        dir = mirrored
-            ? blockEntity.shouldSwitchForCart(cart) ? RailShape.NORTH_WEST : RailShape.SOUTH_WEST
-            : blockEntity.shouldSwitchForCart(cart) ? RailShape.SOUTH_EAST : RailShape.NORTH_EAST;
-      } else if (dir == RailShape.EAST_WEST) {
-        dir = mirrored
-            ? blockEntity.shouldSwitchForCart(cart) ? RailShape.NORTH_EAST : RailShape.NORTH_WEST
-            : blockEntity.shouldSwitchForCart(cart) ? RailShape.SOUTH_WEST : RailShape.SOUTH_EAST;
-      }
+    final boolean switched = isSwitched(blockState);
+    switch (getFacing(blockState)) {
+      case NORTH:
+        return switched ? RailShape.SOUTH_WEST : RailShape.SOUTH_EAST;
+      case SOUTH:
+        return switched ? RailShape.NORTH_EAST : RailShape.NORTH_WEST;
+      case EAST:
+        return switched ? RailShape.NORTH_WEST : RailShape.SOUTH_WEST;
+      case WEST:
+        return switched ? RailShape.SOUTH_EAST : RailShape.NORTH_EAST;
+      default:
+        throw new IllegalStateException("Invalid facing direction.");
     }
-    return dir;
   }
 }

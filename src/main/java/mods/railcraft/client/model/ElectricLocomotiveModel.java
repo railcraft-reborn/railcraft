@@ -2,7 +2,7 @@ package mods.railcraft.client.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import mods.railcraft.world.entity.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.LocomotiveEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 

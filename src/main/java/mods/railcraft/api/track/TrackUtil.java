@@ -104,20 +104,16 @@ public final class TrackUtil {
    * @param cart The cart to check
    * @return True if being held
    */
-  public static boolean isCartLockedDown(AbstractMinecartEntity cart) {
+  public static boolean isCartLocked(AbstractMinecartEntity cart) {
     BlockPos pos = cart.blockPosition();
 
-    if (AbstractRailBlock.isRail(cart.level, pos.below()))
+    if (AbstractRailBlock.isRail(cart.level, pos.below())) {
       pos = pos.below();
+    }
 
     BlockState blockState = cart.level.getBlockState(pos);
-    if (blockState.getBlock() instanceof LockdownTrack) {
-      LockdownTrack lockdownTrack = (LockdownTrack) blockState.getBlock();
-      if (lockdownTrack.isCartLockedDown(blockState, cart.level, pos, cart)) {
-        return true;
-      }
-    }
-    return false;
+    return blockState.getBlock() instanceof LockingTrack &&
+        ((LockingTrack) blockState.getBlock()).isCartLocked(cart);
   }
 
   public static int countAdjacentTracks(World world, BlockPos pos) {

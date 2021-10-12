@@ -1,13 +1,13 @@
 package mods.railcraft.client;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftDist;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
+import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
 import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenMenuScreen;
+import mods.railcraft.client.gui.screen.SwitchTrackMotorScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
@@ -29,7 +29,6 @@ import mods.railcraft.client.renderer.blockentity.SignalRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalSequencerBoxRenderer;
 import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
-import mods.railcraft.client.renderer.model.TextureReplacementModel;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
@@ -38,26 +37,24 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
+import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -79,7 +76,6 @@ public class ClientDist implements RailcraftDist {
     modEventBus.addListener(this::handleItemColors);
     modEventBus.addListener(this::handleBlockColors);
     modEventBus.addListener(this::handleTextureStitch);
-    modEventBus.addListener(this::handleModelRegistry);
     modEventBus.addListener(this::handleParticleRegistration);
 
     MinecraftForge.EVENT_BUS.register(this);
@@ -97,38 +93,9 @@ public class ClientDist implements RailcraftDist {
   // ================================================================================
 
   private void handleClientSetup(FMLClientSetupEvent event) {
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELEVATOR_TRACK.get(), RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.REINFORCED_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ABANDONED_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.ELECTRIC_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.TURNOUT_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.WYE_TRACK.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.FORCE_TRACK_EMITTER.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.BLOCK_SIGNAL.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.DISTANT_SIGNAL.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.TOKEN_SIGNAL.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(),
-        RenderType.cutout());
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
-        RenderType.cutout());
+    RenderLayers.register();
+
+    // === Block Entity Renderers ===
 
     ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.BLOCK_SIGNAL.get(),
         SignalRenderer::new);
@@ -158,6 +125,8 @@ public class ClientDist implements RailcraftDist {
     ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get(),
         SignalInterlockBoxRenderer::new);
 
+    // === Menu Screens ===
+
     ScreenManager.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
         CreativeLocomotiveScreen::new);
     ScreenManager.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
@@ -169,6 +138,8 @@ public class ClientDist implements RailcraftDist {
     ScreenManager.register(RailcraftMenuTypes.COKE_OVEN.get(),
         CokeOvenMenuScreen::new);
 
+    // === Entity Renderers ===
+
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
         ElectricLocomotiveRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(),
@@ -177,21 +148,23 @@ public class ClientDist implements RailcraftDist {
         ElectricLocomotiveRenderer::new);
   }
 
-  private void handleModelRegistry(ModelRegistryEvent event) {
-    ModelLoaderRegistry.registerLoader(new ResourceLocation(Railcraft.ID, "texture_replacement"),
-        new TextureReplacementModel.Loader());
-  }
-
   private void handleBlockColors(ColorHandlerEvent.Block event) {
-    event.getBlockColors()
-        .register((state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR)
-            .getColorValue(), RailcraftBlocks.FORCE_TRACK_EMITTER.get());
+    BlockColors blockColors = event.getBlockColors();
+    blockColors.register(
+        (state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR)
+            .getColorValue(),
+        RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
-    event.getBlockColors().register(
+    blockColors.register(
+        (state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackBlock.COLOR)
+            .getColorValue(),
+        RailcraftBlocks.FORCE_TRACK.get());
+
+    blockColors.register(
         (state, level, pos, tintIndex) -> level != null && pos != null
             ? BiomeColors.getAverageGrassColor(level, pos)
             : GrassColors.get(0.5D, 1.0D),
-        RailcraftBlocks.ABANDONED_FLEX_TRACK.get());
+        RailcraftBlocks.ABANDONED_TRACK.get());
   }
 
   private void handleItemColors(ColorHandlerEvent.Item event) {
@@ -276,5 +249,9 @@ public class ClientDist implements RailcraftDist {
 
   public static void openActionSignalBoxScreen(ActionSignalBoxBlockEntity signalBox) {
     Minecraft.getInstance().setScreen(new ActionSignalBoxScreen(signalBox));
+  }
+
+  public static void openSwitchTrackMotorScreen(SwitchTrackMotorBlockEntity switchTrackMotor) {
+    Minecraft.getInstance().setScreen(new SwitchTrackMotorScreen(switchTrackMotor));
   }
 }

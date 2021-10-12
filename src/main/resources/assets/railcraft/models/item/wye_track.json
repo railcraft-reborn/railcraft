@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "railcraft:block/wye_east_left"
-  }
-}

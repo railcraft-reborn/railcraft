@@ -31,14 +31,14 @@ public class TrackTypes {
 
   public static final RegistryObject<TrackType> ABANDONED =
       TRACK_TYPES.register("abandoned",
-          () -> new TrackType.Builder(RailcraftBlocks.ABANDONED_FLEX_TRACK)
+          () -> new TrackType.Builder(RailcraftBlocks.ABANDONED_TRACK)
               .setEventHandler(SpeedController.ABANDONED)
               .setMaxSupportDistance(2)
               .build());
 
   public static final RegistryObject<TrackType> ELECTRIC =
       TRACK_TYPES.register("electric",
-          () -> new TrackType.Builder(RailcraftBlocks.ELECTRIC_FLEX_TRACK)
+          () -> new TrackType.Builder(RailcraftBlocks.ELECTRIC_TRACK)
               .setEventHandler(
                   new CompositeHandler(CollisionHandler.ELECTRIC, SpeedController.IRON))
               .setElectric(true)
@@ -46,36 +46,36 @@ public class TrackTypes {
 
   public static final RegistryObject<TrackType> HIGH_SPEED =
       TRACK_TYPES.register("high_speed",
-          () -> new TrackType.Builder(RailcraftBlocks.ELECTRIC_FLEX_TRACK)
+          () -> new TrackType.Builder(RailcraftBlocks.HIGH_SPEED_TRACK)
               .setEventHandler(SpeedController.HIGH_SPEED)
               .setHighSpeed(true)
               .build());
 
   public static final RegistryObject<TrackType> HIGH_SPEED_ELECTRIC =
       TRACK_TYPES.register("high_speed_electric",
-          () -> new TrackType.Builder(RailcraftBlocks.ELECTRIC_FLEX_TRACK)
+          () -> new TrackType.Builder(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK)
               .setEventHandler(
                   new CompositeHandler(CollisionHandler.ELECTRIC, SpeedController.HIGH_SPEED))
               .setElectric(true)
               .setHighSpeed(true)
               .build());
 
-  public static final RegistryObject<TrackType> STRAP_IRON =
-      TRACK_TYPES.register("strap_iron",
-          () -> new TrackType.Builder(RailcraftBlocks.STRAP_IRON_FLEX_TRACK)
-              .setEventHandler(SpeedController.STRAP_IRON)
-              .build());
-
-  public static final RegistryObject<TrackType> REINFORCED =
-      TRACK_TYPES.register("reinforced",
-          () -> new TrackType.Builder(RailcraftBlocks.REINFORCED_FLEX_TRACK)
-              .setEventHandler(SpeedController.REINFORCED)
-              .build());
-
   public static final RegistryObject<TrackType> IRON =
       TRACK_TYPES.register("iron",
           () -> new TrackType.Builder(() -> (AbstractRailBlock) Blocks.RAIL)
               .setEventHandler(SpeedController.IRON)
+              .build());
+
+  public static final RegistryObject<TrackType> REINFORCED =
+      TRACK_TYPES.register("reinforced",
+          () -> new TrackType.Builder(RailcraftBlocks.REINFORCED_TRACK)
+              .setEventHandler(SpeedController.REINFORCED)
+              .build());
+
+  public static final RegistryObject<TrackType> STRAP_IRON =
+      TRACK_TYPES.register("strap_iron",
+          () -> new TrackType.Builder(RailcraftBlocks.STRAP_IRON_TRACK)
+              .setEventHandler(SpeedController.STRAP_IRON)
               .build());
 
   private static class CompositeHandler implements TrackType.EventHandler {

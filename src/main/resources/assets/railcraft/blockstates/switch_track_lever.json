@@ -141,79 +141,79 @@
         },
         {
             "when": {
-                "thrown": "true",
+                "switched": "true",
                 "facing": "north"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_lever_on"
+                "model": "railcraft:block/switch_track_actuator_lever_on"
             }
         },
         {
             "when": {
-                "thrown": "true",
+                "switched": "true",
                 "facing": "east"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_lever_on",
+                "model": "railcraft:block/switch_track_actuator_lever_on",
                 "y": 90
             }
         },
         {
             "when": {
-                "thrown": "true",
+                "switched": "true",
                 "facing": "south"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_lever_on",
+                "model": "railcraft:block/switch_track_actuator_lever_on",
                 "y": 180
             }
         },
         {
             "when": {
-                "thrown": "true",
+                "switched": "true",
                 "facing": "west"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_lever_on",
+                "model": "railcraft:block/switch_track_actuator_lever_on",
                 "y": 270
             }
         },
         {
             "when": {
-                "thrown": "false",
+                "switched": "false",
                 "facing": "north"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_lever_off"
+                "model": "railcraft:block/switch_track_actuator_lever_off"
             }
         },
         {
             "when": {
-                "thrown": "false",
+                "switched": "false",
                 "facing": "east"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_lever_off",
+                "model": "railcraft:block/switch_track_actuator_lever_off",
                 "y": 90
             }
         },
         {
             "when": {
-                "thrown": "false",
+                "switched": "false",
                 "facing": "south"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_lever_off",
+                "model": "railcraft:block/switch_track_actuator_lever_off",
                 "y": 180
             }
         },
         {
             "when": {
-                "thrown": "false",
+                "switched": "false",
                 "facing": "west"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_lever_off",
+                "model": "railcraft:block/switch_track_actuator_lever_off",
                 "y": 270
             }
         }

@@ -1,0 +1,60 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/buffer_stop"
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/buffer_stop",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/buffer_stop",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/buffer_stop",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:high_speed_track_outfitted"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:high_speed_track_outfitted",
+        "y": 90
+      }
+    }
+  ]
+}

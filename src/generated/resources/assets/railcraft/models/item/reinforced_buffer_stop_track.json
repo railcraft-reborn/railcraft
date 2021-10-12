@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "railcraft:item/reinforced_buffer_stop_track"
+  }
+}

@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:block/rail_curved",
-    "textures": {
-        "rail": "railcraft:block/abandoned_flex_track_turned"
-    }
-}

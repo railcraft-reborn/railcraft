@@ -22,9 +22,9 @@ import mods.railcraft.client.gui.widget.button.ToggleButton;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
-import mods.railcraft.world.entity.LocomotiveEntity;
-import mods.railcraft.world.entity.LocomotiveEntity.Mode;
-import mods.railcraft.world.entity.LocomotiveEntity.Speed;
+import mods.railcraft.world.entity.cart.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.LocomotiveEntity.Mode;
+import mods.railcraft.world.entity.cart.LocomotiveEntity.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
@@ -90,7 +90,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
           b -> this.setMode(mode),
           (btn, matrixStack, mouseX, mouseY) -> this.renderWrappedToolTip(
               matrixStack, Collections.singletonList(new TranslationTextComponent(
-                  "screen.locomotive." + typeTag + ".tips.button.mode."
+                  "screen.locomotive." + typeTag + ".mode.desription."
                       + mode.getSerializedName())),
               mouseX, mouseY, this.font),
           ButtonTexture.SMALL_BUTTON);
@@ -153,6 +153,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       this.menu.getLocomotive().setOwner(
           lock == LocomotiveEntity.Lock.UNLOCKED ? null
               : this.minecraft.getUser().getGameProfile());
+      this.updateLockButtonTooltip();
       this.sendAttributes();
     }
   }

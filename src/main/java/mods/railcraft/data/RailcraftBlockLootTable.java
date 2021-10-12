@@ -1,8 +1,8 @@
 package mods.railcraft.data;
 
 import java.util.stream.Collectors;
-
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
 import net.minecraft.block.Block;
 import net.minecraft.data.loot.BlockLootTables;
 import net.minecraftforge.fml.RegistryObject;
@@ -12,15 +12,13 @@ public class RailcraftBlockLootTable extends BlockLootTables {
   @Override
   protected void addTables() {
     /* === tracks === */
-    this.dropSelf(RailcraftBlocks.ABANDONED_FLEX_TRACK.get());
-    this.dropSelf(RailcraftBlocks.ELECTRIC_FLEX_TRACK.get());
+    this.dropSelf(RailcraftBlocks.ABANDONED_TRACK.get());
+    this.dropSelf(RailcraftBlocks.ELECTRIC_TRACK.get());
     this.dropSelf(RailcraftBlocks.ELEVATOR_TRACK.get());
-    this.dropSelf(RailcraftBlocks.HIGH_SPEED_ELECTRIC_FLEX_TRACK.get());
-    this.dropSelf(RailcraftBlocks.HIGH_SPEED_FLEX_TRACK.get());
-    this.dropSelf(RailcraftBlocks.REINFORCED_FLEX_TRACK.get());
-    this.dropSelf(RailcraftBlocks.STRAP_IRON_FLEX_TRACK.get());
-    this.dropSelf(RailcraftBlocks.TURNOUT_TRACK.get());
-    this.dropSelf(RailcraftBlocks.WYE_TRACK.get());
+    this.dropSelf(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
+    this.dropSelf(RailcraftBlocks.HIGH_SPEED_TRACK.get());
+    this.dropSelf(RailcraftBlocks.REINFORCED_TRACK.get());
+    this.dropSelf(RailcraftBlocks.STRAP_IRON_TRACK.get());
     this.add(RailcraftBlocks.FORCE_TRACK.get(), noDrop());
 
     /* === signals === */
@@ -39,6 +37,7 @@ public class RailcraftBlockLootTable extends BlockLootTables {
     this.dropSelf(RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
     this.dropSelf(RailcraftBlocks.FORCE_TRACK_EMITTER.get());
     this.dropSelf(RailcraftBlocks.SWITCH_TRACK_LEVER.get());
+    this.dropSelf(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
     this.dropSelf(RailcraftBlocks.TOKEN_SIGNAL.get());
 
     /* === machines === */
@@ -72,6 +71,7 @@ public class RailcraftBlockLootTable extends BlockLootTables {
   protected Iterable<Block> getKnownBlocks() {
     return RailcraftBlocks.BLOCKS.getEntries().stream()
         .map(RegistryObject::get)
+        .filter(block -> !(block instanceof OutfittedTrackBlock)) // No drops for outfitted track
         .collect(Collectors.toSet());
   }
 }

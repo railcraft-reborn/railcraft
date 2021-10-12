@@ -3,7 +3,7 @@ package mods.railcraft.client.renderer.entity.cart;
 import javax.annotation.Nullable;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.season.Seasons;
-import mods.railcraft.world.entity.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.LocomotiveEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.ResourceLocation;

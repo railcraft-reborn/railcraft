@@ -1,0 +1,313 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:high_speed_electric_track_outfitted"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:high_speed_electric_track_outfitted",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north"
+      },
+      "apply": {
+        "model": "railcraft:high_speed_electric_track_outfitted_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south"
+      },
+      "apply": {
+        "model": "railcraft:high_speed_electric_track_outfitted_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east"
+      },
+      "apply": {
+        "model": "railcraft:high_speed_electric_track_outfitted_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west"
+      },
+      "apply": {
+        "model": "railcraft:high_speed_electric_track_outfitted_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "false",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "false",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "false",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "false",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "false",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "false",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "false",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "false",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "false",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_raised_sw",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "false",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_raised_ne",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "false",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_raised_sw",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "false",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_raised_ne",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "true",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "true",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "powered": "true",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "powered": "true",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "true",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on_raised_ne"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "true",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on_raised_sw"
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "true",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "true",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north",
+        "powered": "true",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on_raised_sw",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south",
+        "powered": "true",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on_raised_ne",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east",
+        "powered": "true",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on_raised_sw",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west",
+        "powered": "true",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "railcraft:transition_track_on_raised_ne",
+        "y": 270
+      }
+    }
+  ]
+}

@@ -87,7 +87,6 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
     TrackScanner.Result result =
         TrackScanner.scanStraightTrackSection(this.getLevel(), trackPos, peerTrackPos);
     if (result.getStatus() != TrackScanner.Status.VALID) {
-      System.out.println(result.getStatus());
       return false;
     }
 

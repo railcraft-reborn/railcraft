@@ -17,6 +17,7 @@ import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEnti
 import mods.railcraft.world.level.block.entity.signal.SignalSequencerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
+import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -149,4 +150,5 @@ public class RailcraftBlockEntityTypes {
           () -> TileEntityType.Builder
             .of(CokeOvenMultiblockEntity::new, RailcraftBlocks.COKE_OVEN_BLOCK.get())
             .build(null));
+
 }

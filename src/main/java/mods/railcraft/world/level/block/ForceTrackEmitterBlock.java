@@ -42,7 +42,8 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-// TODO: https://nekoyue.github.io/ForgeJavaDocs-NG/javadoc/1.16.5/net/minecraftforge/energy/EnergyStorage.html
+// TODO:
+// https://nekoyue.github.io/ForgeJavaDocs-NG/javadoc/1.16.5/net/minecraftforge/energy/EnergyStorage.html
 public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlock {
 
   public static final DyeColor DEFAULT_COLOR = DyeColor.LIGHT_BLUE;
@@ -181,12 +182,14 @@ public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlo
       boolean something) {
     super.onRemove(state, worldIn, pos, newState, something);
     deregisterNode(worldIn, pos);
-    LevelUtil.getBlockEntity(worldIn, pos, ForceTrackEmitterBlockEntity.class)
-        .ifPresent(ForceTrackEmitterBlockEntity::clearTracks);
   }
 
   @Override
   public TileEntity newBlockEntity(IBlockReader p_196283_1_) {
     return new ForceTrackEmitterBlockEntity();
+  }
+
+  public static Direction getFacing(BlockState blockState) {
+    return blockState.getValue(FACING);
   }
 }

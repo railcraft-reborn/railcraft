@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "railcraft:item/strap_iron_locking_track"
+  }
+}

@@ -16,8 +16,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -48,10 +46,6 @@ public class ForceTrackEmitterBlockEntity extends RailcraftTickableBlockEntity
     return this.trackCount;
   }
 
-  public void setTrackCount(int trackCount) {
-    this.trackCount = trackCount;
-  }
-
   public void checkSignal() {
     if (this.level.isClientSide())
       return;
@@ -65,23 +59,26 @@ public class ForceTrackEmitterBlockEntity extends RailcraftTickableBlockEntity
   public void tick() {
     super.tick();
 
-    if (this.level.isClientSide())
+    if (this.level.isClientSide()) {
       return;
+    }
 
     ForceTrackEmitterState lastState = this.state;
     if (!this.isPowered()) {
-      this.state = lastState.whenNoCharge(this);
+      this.state = lastState.uncharged(this);
     } else {
       double draw = getMaintenanceCost(getTrackCount());
+      this.state = lastState.charged(this);
+
       if (Charge.distribution.network(this.level).access(this.worldPosition).useCharge(draw)) {
-        this.state = lastState.afterUseCharge(this);
+        this.state = lastState.charged(this);
       } else {
-        this.state = lastState.whenNoCharge(this);
+        this.state = lastState.uncharged(this);
       }
     }
 
     if (this.state != lastState) {
-      this.state.onTransition(this);
+      this.state.load(this);
       this.syncToClient();
     }
   }
@@ -93,18 +90,17 @@ public class ForceTrackEmitterBlockEntity extends RailcraftTickableBlockEntity
   }
 
   @SuppressWarnings("deprecation")
-  boolean placeTrack(BlockPos toPlace, BlockState prevState, RailShape direction) {
-    ForceTrackBlock trackForce = RailcraftBlocks.FORCE_TRACK.get();
-    if (trackForce != null && prevState.isAir(this.level, toPlace)) {
-      this.spawnParticles(toPlace);
-      BlockState place =
-          trackForce.defaultBlockState().setValue(ForceTrackBlock.SHAPE, direction);
-      this.level.setBlockAndUpdate(toPlace, place);
-      TileEntity tile = this.level.getBlockEntity(toPlace);
-      if (tile instanceof ForceTrackBlockEntity) {
-        ForceTrackBlockEntity track = (ForceTrackBlockEntity) tile;
+  boolean placeTrack(BlockPos blockPos, BlockState existingBlockState, RailShape railShape) {
+    if (existingBlockState.isAir(this.level, blockPos)) {
+      this.spawnParticles(blockPos);
+      BlockState trackBlockState = RailcraftBlocks.FORCE_TRACK.get().defaultBlockState()
+          .setValue(ForceTrackBlock.SHAPE, railShape);
+      this.level.setBlockAndUpdate(blockPos, trackBlockState);
+      TileEntity blockEntity = this.level.getBlockEntity(blockPos);
+      if (blockEntity instanceof ForceTrackBlockEntity) {
+        ForceTrackBlockEntity track = (ForceTrackBlockEntity) blockEntity;
         track.setEmitter(this);
-        this.setTrackCount(this.getTrackCount() + 1);
+        this.trackCount++;
         return true;
       }
     }
@@ -115,12 +111,6 @@ public class ForceTrackEmitterBlockEntity extends RailcraftTickableBlockEntity
     return BASE_DRAW + CHARGE_PER_TRACK * tracks;
   }
 
-  public boolean isOutOfPower() {
-    return !Charge.distribution.network(this.level)
-        .access(this.getBlockPos())
-        .hasCapacity(getMaintenanceCost(this.getTrackCount() + 1));
-  }
-
   void removeFirstTrack() {
     BlockPos toRemove = this.worldPosition.above().relative(
         this.getBlockState().getValue(ForceTrackEmitterBlock.FACING),
@@ -128,49 +118,62 @@ public class ForceTrackEmitterBlockEntity extends RailcraftTickableBlockEntity
     this.removeTrack(toRemove);
   }
 
-  private void removeTrack(BlockPos toRemove) {
-    this.removingTrack = true;
-    if (this.level.isLoaded(toRemove)
-        && this.level.getBlockState(toRemove).is(RailcraftBlocks.FORCE_TRACK.get())) {
-      this.spawnParticles(toRemove);
-      LevelUtil.setAir(this.level, toRemove);
-    }
-    this.setTrackCount(this.getTrackCount() - 1);
-    this.removingTrack = false;
-  }
-
   @Override
   public void setRemoved() {
     super.setRemoved();
-    this.clearTracks();
+    if (!this.level.isClientSide()) {
+      this.clearTracks();
+    }
   }
 
   public void clearTracks() {
-    this.clearTracks(0);
+    this.clearTracks(this.getBlockPos().above().relative(
+        ForceTrackEmitterBlock.getFacing(this.getBlockState())));
   }
 
-  public void clearTracks(int lastIndex) {
-    if (this.removingTrack || lastIndex == getTrackCount()) {
+  public void clearTracks(BlockPos startPos) {
+    if (this.removingTrack) {
       return;
     }
-    Direction facing = this.getBlockState().getValue(ForceTrackEmitterBlock.FACING);
-    BlockPos.Mutable toRemove = this.getBlockPos().mutable();
-    toRemove.move(Direction.UP);
-    toRemove.move(facing, getTrackCount());
-    while (getTrackCount() > lastIndex) {
-      this.removeTrack(toRemove);
-      toRemove.move(facing.getOpposite());
+
+    BlockPos endPos = this.getBlockPos().above().relative(
+        ForceTrackEmitterBlock.getFacing(this.getBlockState()), this.trackCount);
+
+    if (startPos.getX() == endPos.getX()) {
+      BlockPos
+          .betweenClosedStream(endPos.getX(), endPos.getY(), startPos.getZ(), endPos.getX(),
+              endPos.getY(), endPos.getZ())
+          .forEach(this::removeTrack);
+    } else if (startPos.getZ() == endPos.getZ()) {
+      BlockPos
+          .betweenClosedStream(startPos.getX(), endPos.getY(), endPos.getZ(), endPos.getX(),
+              endPos.getY(), endPos.getZ())
+          .forEach(this::removeTrack);
+    } else {
+      throw new IllegalStateException("Block not aligned.");
     }
+
     this.notifyTrackChange();
   }
+
+  private void removeTrack(BlockPos blockPos) {
+    this.removingTrack = true;
+    if (this.level.isLoaded(blockPos)
+        && this.level.getBlockState(blockPos).is(RailcraftBlocks.FORCE_TRACK.get())) {
+      this.spawnParticles(blockPos);
+      LevelUtil.setAir(this.level, blockPos);
+    }
+    this.trackCount--;
+    this.removingTrack = false;
+  }
+
 
   public void notifyTrackChange() {
     this.state = ForceTrackEmitterState.HALTED;
   }
 
   private boolean isPowered() {
-    return this.getBlockState().is(RailcraftBlocks.FORCE_TRACK_EMITTER.get())
-        && this.getBlockState().getValue(ForceTrackEmitterBlock.POWERED);
+    return this.getBlockState().getValue(ForceTrackEmitterBlock.POWERED);
   }
 
   private void setPowered(boolean powered) {
@@ -182,43 +185,43 @@ public class ForceTrackEmitterBlockEntity extends RailcraftTickableBlockEntity
   }
 
   public boolean setColor(DyeColor color) {
-    BlockState state = this.getBlockState();
-    if (state.is(RailcraftBlocks.FORCE_TRACK_EMITTER.get())) {
-      if (this.getBlockState().getValue(ForceTrackEmitterBlock.COLOR) != color) {
-        this.level.setBlockAndUpdate(this.worldPosition,
-            state.setValue(ForceTrackEmitterBlock.COLOR, color));
-        this.clearTracks();
-        return true;
-      }
+    if (this.getBlockState().getValue(ForceTrackEmitterBlock.COLOR) != color) {
+      this.level.setBlockAndUpdate(this.worldPosition,
+          this.getBlockState().setValue(ForceTrackEmitterBlock.COLOR, color));
+      this.clearTracks();
+      return true;
     }
     return false;
   }
 
   @Override
   public void onMagnify(PlayerEntity viewer) {
-    viewer.sendMessage(new TranslationTextComponent("gui.railcraft.force.track.emitter.info",
-        this.getTrackCount()), Util.NIL_UUID);
+    viewer.displayClientMessage(
+        new TranslationTextComponent("gui.railcraft.force.track.emitter.info",
+            this.getTrackCount()),
+        true);
   }
 
   @Override
   public CompoundNBT save(CompoundNBT data) {
     super.save(data);
-    data.putInt("numTracks", this.getTrackCount());
-    data.putString("state", this.state.name());
+    data.putInt("trackCount", this.getTrackCount());
+    data.putString("state", this.state.getSerializedName());
     return data;
   }
 
   @Override
   public void load(BlockState blockState, CompoundNBT data) {
     super.load(blockState, data);
-    this.setTrackCount(data.getInt("numTracks"));
-    this.state = ForceTrackEmitterState.valueOf(data.getString("state"));
+    this.trackCount = data.getInt("trackCount");
+    this.state = ForceTrackEmitterState.getByName(data.getString("state"))
+        .orElse(ForceTrackEmitterState.RETRACTED);
   }
 
   @Override
   public void writeSyncData(PacketBuffer data) {
     super.writeSyncData(data);
-    data.writeEnum(state);
+    data.writeEnum(this.state);
   }
 
   @Override

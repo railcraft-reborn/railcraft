@@ -17,7 +17,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ActionSignalBoxScreen extends BasicIngameScreen {
+public class ActionSignalBoxScreen extends IngameWindowScreen {
 
   private static final int REFRESH_INTERVAL_TICKS = 20;
 
@@ -38,8 +38,8 @@ public class ActionSignalBoxScreen extends BasicIngameScreen {
 
   @Override
   public void init() {
-    int centreX = (this.width - this.x) / 2;
-    int centreY = (this.height - this.y) / 2;
+    int centreX = (this.width - this.windowWidth) / 2;
+    int centreY = (this.height - this.windowHeight) / 2;
 
     this.addSignalAspectButton(SignalAspect.GREEN, centreX + 7, centreY + 30, 50);
     this.addSignalAspectButton(SignalAspect.YELLOW, centreX + 63, centreY + 30, 50);
@@ -71,6 +71,7 @@ public class ActionSignalBoxScreen extends BasicIngameScreen {
       this.signalBox.setLock(lock);
       this.signalBox.setOwner(lock == LockableSignalBoxBlockEntity.Lock.UNLOCKED ? null
           : this.minecraft.getUser().getGameProfile());
+      this.updateLockButtonTooltip();
       this.sendAttributes();
     }
   }

@@ -3,10 +3,10 @@ package mods.railcraft.world.level.block.track.behaivor;
 import javax.annotation.Nullable;
 
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.carts.CartConstants;
-import mods.railcraft.carts.CartTools;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
+import mods.railcraft.world.entity.cart.CartConstants;
+import mods.railcraft.world.entity.cart.CartTools;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.state.properties.RailShape;

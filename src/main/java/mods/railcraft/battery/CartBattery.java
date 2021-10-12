@@ -5,7 +5,7 @@ import com.google.common.collect.Streams;
 import mods.railcraft.api.charge.CapabilitiesCharge;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.IBatteryCart;
-import mods.railcraft.carts.Train;
+import mods.railcraft.world.entity.cart.Train;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.util.math.BlockPos;
 

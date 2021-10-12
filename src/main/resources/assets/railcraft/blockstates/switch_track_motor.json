@@ -1,0 +1,143 @@
+{
+    "multipart": [
+        {
+            "when": {
+                "red_flag": "north"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_red"
+            }
+        },
+        {
+            "when": {
+                "red_flag": "east"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_red",
+                "y": 90
+            }
+        },
+        {
+            "when": {
+                "red_flag": "south"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_red",
+                "y": 180
+            }
+        },
+        {
+            "when": {
+                "red_flag": "west"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_red",
+                "y": 270
+            }
+        },
+        {
+            "when": {
+                "red_flag": "north_south"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_neutral_red"
+            }
+        },
+        {
+            "when": {
+                "red_flag": "east_west"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_neutral_red",
+                "y": 90
+            }
+        },
+        {
+            "when": {
+                "white_flag": "north"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_white"
+            }
+        },
+        {
+            "when": {
+                "white_flag": "east"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_white",
+                "y": 90
+            }
+        },
+        {
+            "when": {
+                "white_flag": "south"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_white",
+                "y": 180
+            }
+        },
+        {
+            "when": {
+                "white_flag": "west"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_white",
+                "y": 270
+            }
+        },
+        {
+            "when": {
+                "white_flag": "north_south"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_neutral_white"
+            }
+        },
+        {
+            "when": {
+                "white_flag": "east_west"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator_flag_neutral_white",
+                "y": 90
+            }
+        },
+        {
+            "when": {
+                "facing": "north"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator"
+            }
+        },
+        {
+            "when": {
+                "facing": "east"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator",
+                "y": 90
+            }
+        },
+        {
+            "when": {
+                "facing": "south"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator",
+                "y": 180
+            }
+        },
+        {
+            "when": {
+                "facing": "west"
+            },
+            "apply": {
+                "model": "railcraft:block/switch_track_actuator",
+                "y": 270
+            }
+        }
+    ]
+}

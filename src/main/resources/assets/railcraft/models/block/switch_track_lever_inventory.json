@@ -7,8 +7,7 @@
 		"side_short": "railcraft:block/switch_track_actuator_side_short",
 		"red_flag": "railcraft:block/switch_track_actuator_flag_red",
 		"white_flag": "railcraft:block/switch_track_actuator_flag_white",
-		"particle": "railcraft:block/switch_track_lever",
-		"lever": "railcraft:block/switch_track_lever"
+		"lever": "railcraft:block/switch_track_actuator_lever"
 	},
 	"elements": [
 		{
@@ -62,8 +61,8 @@
 		},
 		{
 			"name": "lever",
-			"from": [7, 0.5, 13],
-			"to": [9, 10.5, 15],
+			"from": [7, 0.5, 1],
+			"to": [9, 10.5, 3],
 			"rotation": {"angle": 45, "axis": "z", "origin": [8, 1.5, 14]},
 			"faces": {
 				"north": {"uv": [7, 6, 9, 16], "texture": "#lever"},

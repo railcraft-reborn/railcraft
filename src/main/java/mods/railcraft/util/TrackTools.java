@@ -73,28 +73,28 @@ public final class TrackTools {
     throw new IllegalArgumentException("Block was not a track");
   }
 
-  public static RailShape getTrackDirectionRaw(IBlockReader world, BlockPos pos) {
-    return getTrackDirectionRaw(world.getBlockState(pos));
+  public static RailShape getRailShapeRaw(IBlockReader level, BlockPos pos) {
+    return getRailShapeRaw(level.getBlockState(pos));
   }
 
-  public static RailShape getTrackDirectionRaw(BlockState state) {
-    Property<RailShape> prop = getRailDirectionProperty(state.getBlock());
-    return state.getValue(prop);
+  public static RailShape getRailShapeRaw(BlockState blockState) {
+    return blockState.getValue(getRailShapeProperty(blockState.getBlock()));
   }
 
   @SuppressWarnings("deprecation")
-  public static Property<RailShape> getRailDirectionProperty(Block block) {
-    if (block instanceof AbstractRailBlock)
+  public static Property<RailShape> getRailShapeProperty(Block block) {
+    if (block instanceof AbstractRailBlock) {
       return ((AbstractRailBlock) block).getShapeProperty();
+    }
     throw new IllegalArgumentException("Block was not a track");
   }
 
-  public static boolean setTrackDirection(World world, BlockPos pos, RailShape wanted) {
-    BlockState state = world.getBlockState(pos);
-    Property<RailShape> prop = getRailDirectionProperty(state.getBlock());
-    if (prop.getPossibleValues().contains(wanted)) {
-      state = state.setValue(prop, wanted);
-      return world.setBlockAndUpdate(pos, state);
+  public static boolean setRailShape(World level, BlockPos pos, RailShape railShape) {
+    BlockState blockState = level.getBlockState(pos);
+    Property<RailShape> prop = getRailShapeProperty(blockState.getBlock());
+    if (prop.getPossibleValues().contains(railShape)) {
+      blockState = blockState.setValue(prop, railShape);
+      return level.setBlockAndUpdate(pos, blockState);
     }
     return false;
   }
@@ -171,7 +171,7 @@ public final class TrackTools {
 
   public static Set<BlockPos> getConnectedTracks(IWorldReader level, BlockPos pos) {
     final RailShape shape = AbstractRailBlock.isRail(level.getBlockState(pos))
-        ? getTrackDirectionRaw(level, pos)
+        ? getRailShapeRaw(level, pos)
         : RailShape.NORTH_SOUTH;
     return Direction.Plane.HORIZONTAL.stream()
         .map(side -> getTrackConnectedTrackAt(level, pos.relative(side), shape))
@@ -189,7 +189,7 @@ public final class TrackTools {
       return up;
     BlockPos down = pos.below();
     if (AbstractRailBlock.isRail(level.getBlockState(down))
-        && getTrackDirectionRaw(level, down).isAscending())
+        && getRailShapeRaw(level, down).isAscending())
       return down;
     return null;
   }
