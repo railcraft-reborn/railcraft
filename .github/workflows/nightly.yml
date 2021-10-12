@@ -6,8 +6,6 @@ on:
 jobs:
   nightly:
     name: Deploy nightly
-    strategy:
-      fail-fast: false
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -31,6 +29,9 @@ jobs:
         run: |
           ./gradlew hideOfficialWarningUntilChanged
           ./gradlew build
+      - name: Zip Files
+        run : |
+          powershell "Compress-Archive ./build/libs ./railcraft-nightly.zip"
       - name: Deploy Windows nightly
         uses: WebFreak001/deploy-nightly@v1.1.0
         env:
@@ -38,7 +39,7 @@ jobs:
         with:
           upload_url: https://uploads.github.com/repos/Sm0keySa1m0n/Railcraft/releases/50391151/assets{?name,label}
           release_id: 50391151
-          asset_path: ./build/libs
+          asset_path: ./railcraft-nightly.zip
           asset_name: railcraft-nightly-$$.zip
           asset_content_type: application/zip
           max_releases: 5
