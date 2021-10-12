@@ -35,16 +35,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultiblockEntity>
     implements INamedContainerProvider, IRecipeHolder, IFluidTank, IInventory {
 
-  private static final Logger logger =
-      LogManager.getLogger("Railcraft/MultiblockEntity/CokeOvenMultiblockEntity");
   private static final ITextComponent MENU_TITLE =
-      new TranslationTextComponent("container.coke_oven_multiblock");
+      new TranslationTextComponent("container.coke_oven");
 
   private static final int FLUID_STORAGE_MAX = 10000;
 
@@ -127,7 +122,6 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
       try {
         theState = this.getLevel().getBlockState(blockpos);
       } catch (Exception e) {
-        logger.info("getPatternEntities - " + e.getMessage());
         this.delink();
         return null;
       }
@@ -136,7 +130,6 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
 
       if (i == 14) {
         if (!theBlock.is(Blocks.AIR)) {
-          logger.info("NOT AIR");
           return null;
         }
         continue;
@@ -144,13 +137,11 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
       if (i != 14
           && (!theBlock.is(RailcraftBlocks.COKE_OVEN_BLOCK.get())
               || !theBlock.hasTileEntity(theState))) {
-        logger.info("NOT COKE OVEN BRICK OR HAS NO TE");
         return null;
       }
 
       TileEntity te = this.getLevel().getBlockEntity(blockpos);
       if (!(te instanceof CokeOvenMultiblockEntity)) {
-        logger.info("WRONG TE TYPE, TYPE GOT: " + te.toString());
         return null;
       }
       out.add((CokeOvenMultiblockEntity) te);

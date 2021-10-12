@@ -235,7 +235,7 @@
     "season.none": "None",
 
     "container.manual_rolling_machine": "Manual Rolling Machine",
-    "container.coke_oven_multiblock": "Coke Oven",
+    "container.coke_oven": "Coke Oven",
 
     "signal_aspect.green": "Green",
     "signal_aspect.blink_yellow": "Blink Yellow",
