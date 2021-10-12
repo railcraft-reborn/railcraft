@@ -175,15 +175,15 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .unlockedBy("has_tie", has(RailcraftItems.WOODEN_TIE.get()))
       .save(finishedRecipie);
 
-    this.railsFromMaterials(finishedRecipie, RailcraftItems.STRAP_IRON_FLEX_TRACK.get(),
-        RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
+    // this.railsFromMaterials(finishedRecipie, RailcraftItems.IRON_.get(),
+    //     RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
     this.railsFromMaterials(finishedRecipie, Items.RAIL,
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    this.railsFromMaterials(finishedRecipie, RailcraftItems.REINFORCED_FLEX_TRACK.get(),
+    this.railsFromMaterials(finishedRecipie, RailcraftItems.REINFORCED_TRACK.get(),
         RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    this.railsFromMaterials(finishedRecipie, RailcraftItems.ELECTRIC_FLEX_TRACK.get(),
+    this.railsFromMaterials(finishedRecipie, RailcraftItems.ELECTRIC_TRACK.get(),
         RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    this.railsFromMaterials(finishedRecipie, RailcraftItems.HIGH_SPEED_FLEX_TRACK.get(),
+    this.railsFromMaterials(finishedRecipie, RailcraftItems.HIGH_SPEED_TRACK.get(),
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
 

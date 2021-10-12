@@ -133,7 +133,7 @@ public class CokeOvenRecipeBuilder {
     }
 
     public IRecipeSerializer<?> getType() {
-      return RailcraftRecipeSerializers.COKEING.get();
+      return RailcraftRecipeSerializers.COKE_OVEN_COOKING.get();
     }
 
     public ResourceLocation getId() {

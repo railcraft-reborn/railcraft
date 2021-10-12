@@ -81,12 +81,12 @@ public class CokeOvenRecipe implements IRecipe<IInventory> {
 
   @Override
   public IRecipeSerializer<?> getSerializer() {
-    return RailcraftRecipeSerializers.COKEING.get();
+    return RailcraftRecipeSerializers.COKE_OVEN_COOKING.get();
   }
 
   @Override
   public IRecipeType<?> getType() {
-    return RailcraftRecipeTypes.COKEING;
+    return RailcraftRecipeTypes.COKE_OVEN_COOKING;
   }
 
   public static class CokeOvenRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>>

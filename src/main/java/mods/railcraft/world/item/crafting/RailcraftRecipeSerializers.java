@@ -19,6 +19,7 @@ public class RailcraftRecipeSerializers {
   public static final RegistryObject<IRecipeSerializer<?>> ROLLING =
       RECIPE_SERIALIZERS.register("rolling", RollingRecipe.RollingRecipeSerializer::new);
 
-  public static final RegistryObject<IRecipeSerializer<?>> COKEING =
-      RECIPE_SERIALIZERS.register("cokeing", CokeOvenRecipe.CokeOvenRecipeSerializer::new);
+  public static final RegistryObject<IRecipeSerializer<?>> COKE_OVEN_COOKING =
+      RECIPE_SERIALIZERS.register("coke_oven_cooking",
+          CokeOvenRecipe.CokeOvenRecipeSerializer::new);
 }

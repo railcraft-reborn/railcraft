@@ -151,4 +151,15 @@ public class RailcraftBlockEntityTypes {
             .of(CokeOvenMultiblockEntity::new, RailcraftBlocks.COKE_OVEN_BLOCK.get())
             .build(null));
 
+  public static final RegistryObject<TileEntityType<?>> SWITCH_TRACK_MOTOR =
+      BLOCK_ENTITY_TYPES.register("switch_track_motor",
+          () -> TileEntityType.Builder
+              .of(SwitchTrackMotorBlockEntity::new, RailcraftBlocks.SWITCH_TRACK_MOTOR.get())
+              .build(null));
+
+  public static final RegistryObject<TileEntityType<?>> LOCKING_TRACK =
+      BLOCK_ENTITY_TYPES.register("locking_track",
+          () -> TileEntityType.Builder
+              .of(LockingTrackBlockEntity::new, RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get())
+              .build(null));
 }

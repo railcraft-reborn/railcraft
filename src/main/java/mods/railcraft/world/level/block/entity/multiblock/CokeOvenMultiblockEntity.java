@@ -41,7 +41,7 @@ import org.apache.logging.log4j.Logger;
 public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultiblockEntity>
     implements INamedContainerProvider, IRecipeHolder, IFluidTank, IInventory {
 
-  private static final Logger MULTIBLOCK_LOGGER =
+  private static final Logger LOGGER =
       LogManager.getLogger("Railcraft/MultiblockEntity/CokeOvenMultiblockEntity");
   private static final ITextComponent MENU_TITLE =
       new TranslationTextComponent("container.coke_oven_multiblock");
@@ -127,7 +127,7 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
       try {
         theState = this.getLevel().getBlockState(blockpos);
       } catch (Exception e) {
-        MULTIBLOCK_LOGGER.info("getPatternEntities - " + e.getMessage());
+        LOGGER.info("getPatternEntities - " + e.getMessage());
         this.delink();
         return null;
       }
@@ -136,7 +136,7 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
 
       if (i == 14) {
         if (!theBlock.is(Blocks.AIR)) {
-          MULTIBLOCK_LOGGER.info("NOT AIR");
+          LOGGER.info("NOT AIR");
           return null;
         }
         continue;
@@ -144,13 +144,13 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
       if (i != 14
           && (!theBlock.is(RailcraftBlocks.COKE_OVEN_BLOCK.get())
               || !theBlock.hasTileEntity(theState))) {
-        MULTIBLOCK_LOGGER.info("NOT COKE OVEN BRICK OR HAS NO TE");
+        LOGGER.info("NOT COKE OVEN BRICK OR HAS NO TE");
         return null;
       }
 
       TileEntity te = this.getLevel().getBlockEntity(blockpos);
       if (!(te instanceof CokeOvenMultiblockEntity)) {
-        MULTIBLOCK_LOGGER.info("WRONG TE TYPE, TYPE GOT: " + te.toString());
+        LOGGER.info("WRONG TE TYPE, TYPE GOT: " + te.toString());
         return null;
       }
       out.add((CokeOvenMultiblockEntity) te);
@@ -213,7 +213,7 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
 
     Optional<CokeOvenRecipe> irecipe = this.level.getServer()
         .getRecipeManager()
-        .getRecipeFor(RailcraftRecipeTypes.COKEING, this, this.level);
+        .getRecipeFor(RailcraftRecipeTypes.COKE_OVEN_COOKING, this, this.level);
 
     if (!irecipe.isPresent()) {
       this.recipieRequiredTime = 0;
@@ -392,7 +392,7 @@ public class CokeOvenMultiblockEntity extends MultiblockEntity<CokeOvenMultibloc
   protected int getTickCost() {
     return this.level.getServer()
         .getRecipeManager()
-        .getRecipeFor(RailcraftRecipeTypes.COKEING, this, this.level)
+        .getRecipeFor(RailcraftRecipeTypes.COKE_OVEN_COOKING, this, this.level)
         .map(CokeOvenRecipe::getTickCost).orElse(2400); // 2min base for coal coke
   }
 

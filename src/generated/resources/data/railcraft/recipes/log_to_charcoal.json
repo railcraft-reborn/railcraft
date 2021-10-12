@@ -1,5 +1,5 @@
 {
-  "type": "railcraft:cokeing",
+  "type": "railcraft:coke_oven_cooking",
   "ingredient": {
     "tag": "minecraft:logs"
   },

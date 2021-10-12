@@ -115,7 +115,8 @@ public class CokeOvenMenu extends Container {
 
   protected boolean canSmelt(ItemStack itemStack) {
     return this.level.getRecipeManager()
-      .getRecipeFor(RailcraftRecipeTypes.COKEING, new Inventory(itemStack), this.level).isPresent();
+      .getRecipeFor(RailcraftRecipeTypes.COKE_OVEN_COOKING,
+          new Inventory(itemStack), this.level).isPresent();
   }
 
   /**
