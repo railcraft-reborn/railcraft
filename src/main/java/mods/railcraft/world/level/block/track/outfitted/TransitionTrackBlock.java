@@ -6,50 +6,26 @@ import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.entity.cart.CartTools;
 import mods.railcraft.world.entity.cart.LocomotiveEntity;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-public class TransitionTrackBlock extends PoweredOutfittedTrackBlock {
+public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
   private static final double BOOST_AMOUNT = 0.04;
   private static final double SLOW_FACTOR = 0.65;
   private static final double BOOST_THRESHOLD = 0.01;
   private static final double START_BOOST = 0.02;
 
-  public static final BooleanProperty REVERSED = ReversibleOutfittedTrackBlock.REVERSED;
-
   public TransitionTrackBlock(Supplier<? extends TrackType> trackType,
       Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(POWERED, false)
-        .setValue(REVERSED, false));
-  }
-
-  @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-    super.createBlockStateDefinition(builder);
-    builder.add(REVERSED);
-  }
-
-  @Override
-  public BlockState getStateForPlacement(BlockItemUseContext context) {
-    return super.getStateForPlacement(context)
-        .setValue(REVERSED, context.getHorizontalDirection() == Direction.SOUTH
-            || context.getHorizontalDirection() == Direction.WEST);
   }
 
   @Override
@@ -97,10 +73,6 @@ public class TransitionTrackBlock extends PoweredOutfittedTrackBlock {
       PlayerEntity player, Hand hand, ItemStack itemStack) {
     level.setBlockAndUpdate(pos, blockState.setValue(REVERSED, !blockState.getValue(REVERSED)));
     return true;
-  }
-
-  public static boolean isReversed(BlockState blockState) {
-    return blockState.getValue(REVERSED);
   }
 
   private static void boostCartSpeed(AbstractMinecartEntity cart, double currentSpeed) {

@@ -366,8 +366,6 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
 
   @SuppressWarnings("deprecation")
   public static RailShape getRailShapeRaw(BlockState state) {
-    return AbstractRailBlock.isRail(state)
-        ? state.getValue(((AbstractRailBlock) state.getBlock()).getShapeProperty())
-        : RailShape.NORTH_SOUTH;
+    return state.getValue(((AbstractRailBlock) state.getBlock()).getShapeProperty());
   }
 }
