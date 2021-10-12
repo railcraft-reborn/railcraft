@@ -6,6 +6,7 @@ import mods.railcraft.api.track.TrackType;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -18,7 +19,8 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
 
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-  public PoweredOutfittedTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
+  public PoweredOutfittedTrackBlock(Supplier<? extends TrackType> trackType,
+      Properties properties) {
     super(trackType, properties);
     this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
   }
@@ -27,6 +29,12 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
   protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(POWERED);
+  }
+
+  @Override
+  public BlockState getStateForPlacement(BlockItemUseContext context) {
+    return super.getStateForPlacement(context)
+        .setValue(POWERED, context.getLevel().hasNeighborSignal(context.getClickedPos()));
   }
 
   @Override

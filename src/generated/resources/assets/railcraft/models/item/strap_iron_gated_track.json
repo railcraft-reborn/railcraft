@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "railcraft:item/high_speed_buffer_stop_track"
+    "layer0": "railcraft:item/strap_iron_gated_track"
   }
 }

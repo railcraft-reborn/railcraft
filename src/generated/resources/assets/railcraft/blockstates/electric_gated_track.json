@@ -1,0 +1,252 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:electric_track_outfitted"
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:electric_track_outfitted",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "reversed": "false",
+        "one_way": "true"
+      },
+      "apply": {
+        "model": "railcraft:control_track"
+      }
+    },
+    {
+      "when": {
+        "shape": "north_south",
+        "reversed": "true",
+        "one_way": "true"
+      },
+      "apply": {
+        "model": "railcraft:control_track",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "reversed": "false",
+        "one_way": "true"
+      },
+      "apply": {
+        "model": "railcraft:control_track",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west",
+        "reversed": "true",
+        "one_way": "true"
+      },
+      "apply": {
+        "model": "railcraft:control_track",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "open": "false",
+        "shape": "north_south",
+        "in_wall": "false",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "open": "false",
+        "shape": "north_south",
+        "in_wall": "false",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate"
+      }
+    },
+    {
+      "when": {
+        "open": "false",
+        "shape": "east_west",
+        "in_wall": "false",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "open": "false",
+        "shape": "east_west",
+        "in_wall": "false",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "open": "true",
+        "shape": "north_south",
+        "in_wall": "false",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_open",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "open": "true",
+        "shape": "north_south",
+        "in_wall": "false",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_open"
+      }
+    },
+    {
+      "when": {
+        "open": "true",
+        "shape": "east_west",
+        "in_wall": "false",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_open",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "open": "true",
+        "shape": "east_west",
+        "in_wall": "false",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_open",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "open": "false",
+        "shape": "north_south",
+        "in_wall": "true",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_wall",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "open": "false",
+        "shape": "north_south",
+        "in_wall": "true",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_wall"
+      }
+    },
+    {
+      "when": {
+        "open": "false",
+        "shape": "east_west",
+        "in_wall": "true",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_wall",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "open": "false",
+        "shape": "east_west",
+        "in_wall": "true",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_wall",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "open": "true",
+        "shape": "north_south",
+        "in_wall": "true",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_wall_open",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "open": "true",
+        "shape": "north_south",
+        "in_wall": "true",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_wall_open"
+      }
+    },
+    {
+      "when": {
+        "open": "true",
+        "shape": "east_west",
+        "in_wall": "true",
+        "reversed": "false"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_wall_open",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "open": "true",
+        "shape": "east_west",
+        "in_wall": "true",
+        "reversed": "true"
+      },
+      "apply": {
+        "model": "minecraft:block/oak_fence_gate_wall_open",
+        "y": 90
+      }
+    }
+  ]
+}

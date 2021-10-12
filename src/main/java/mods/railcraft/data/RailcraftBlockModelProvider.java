@@ -4,7 +4,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -13,13 +12,13 @@ import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -147,50 +146,51 @@ public class RailcraftBlockModelProvider {
         RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK.get(),
         RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
         RailcraftBlocks.ABANDONED_BOOSTER_TRACK.get(),
-        RailcraftBlocks.ABANDONED_CONTROL_TRACK.get());
+        RailcraftBlocks.ABANDONED_CONTROL_TRACK.get(),
+        RailcraftBlocks.ABANDONED_GATED_TRACK.get());
     this.createTracks(
         RailcraftBlocks.ELECTRIC_TRACK.get(),
         RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
         RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK.get(),
         RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
         RailcraftBlocks.ELECTRIC_BOOSTER_TRACK.get(),
-        RailcraftBlocks.ELECTRIC_CONTROL_TRACK.get());
-    this.createTracks(
+        RailcraftBlocks.ELECTRIC_CONTROL_TRACK.get(),
+        RailcraftBlocks.ELECTRIC_GATED_TRACK.get());
+    this.createHighSpeedTracks(
         RailcraftBlocks.HIGH_SPEED_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_BUFFER_STOP_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_CONTROL_TRACK.get());
-    this.createTracks(
+        RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK.get());
+    this.createHighSpeedTracks(
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_BUFFER_STOP_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_CONTROL_TRACK.get());
+        RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get());
     this.createOutfittedTracks(Blocks.RAIL,
         RailcraftBlocks.IRON_LOCKING_TRACK.get(),
         RailcraftBlocks.IRON_BUFFER_STOP_TRACK.get(),
         RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
         RailcraftBlocks.IRON_BOOSTER_TRACK.get(),
-        RailcraftBlocks.IRON_CONTROL_TRACK.get());
+        RailcraftBlocks.IRON_CONTROL_TRACK.get(),
+        RailcraftBlocks.IRON_GATED_TRACK.get());
     this.createTracks(
         RailcraftBlocks.REINFORCED_TRACK.get(),
         RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
         RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK.get(),
         RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
         RailcraftBlocks.REINFORCED_BOOSTER_TRACK.get(),
-        RailcraftBlocks.REINFORCED_CONTROL_TRACK.get());
+        RailcraftBlocks.REINFORCED_CONTROL_TRACK.get(),
+        RailcraftBlocks.REINFORCED_GATED_TRACK.get());
     this.createTracks(
         RailcraftBlocks.STRAP_IRON_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK.get(),
-        RailcraftBlocks.STRAP_IRON_CONTROL_TRACK.get());
+        RailcraftBlocks.STRAP_IRON_CONTROL_TRACK.get(),
+        RailcraftBlocks.STRAP_IRON_GATED_TRACK.get());
   }
 
   private void delegateItemModel(Block block, ResourceLocation modelLocation) {
@@ -329,7 +329,13 @@ public class RailcraftBlockModelProvider {
 
   private void createAbandonedTracks(Block block, Block lockingTrackBlock,
       Block bufferStopTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
-      Block controlTrackBlock) {
+      Block controlTrackBlock, Block gatedTrackBlock) {
+    this.createAbandonedFlexTrack(block);
+    this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
+        boosterTrackBlock, controlTrackBlock, gatedTrackBlock);
+  }
+
+  private void createAbandonedFlexTrack(Block block) {
     ModelTextures texture0 =
         ModelTextures.rail(ModelTextures.getBlockTexture(block, "_0"));
     ModelTextures texture1 =
@@ -348,8 +354,6 @@ public class RailcraftBlockModelProvider {
         StockModelShapes.RAIL_RAISED_SW.create(block, texture0, this.modelOutput);
 
     this.createSimpleFlatItemModel(block, "_0");
-    this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock,
-        activatorTrackBlock, boosterTrackBlock, controlTrackBlock);
 
     this.blockStateOutput.accept(FinishedMultiPartBlockState.multiPart(block)
         .with(
@@ -419,14 +423,40 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createTracks(Block block, Block lockingTrackBlock, Block bufferStopTrackBlock,
-      Block activatorTrackBlock, Block boosterTrackBlock, Block controlTrackBlock) {
-    this.createTracks(block, null, lockingTrackBlock, bufferStopTrackBlock,
-        activatorTrackBlock, boosterTrackBlock, controlTrackBlock);
+      Block activatorTrackBlock, Block boosterTrackBlock, Block controlTrackBlock,
+      Block gatedTrackBlock) {
+    this.createFlexTrack(block);
+    this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
+        boosterTrackBlock, controlTrackBlock, gatedTrackBlock);
   }
 
-  private void createTracks(Block block, @Nullable Block transitionTrackBlock,
-      Block lockingTrackBlock, Block bufferStopTrackBlock,
-      Block activatorTrackBlock, Block boosterTrackBlock, Block controlTrackBlock) {
+  private void createOutfittedTracks(Block block, Block lockingTrackBlock,
+      Block bufferStopTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
+      Block controlTrackBlock, Block gatedTrackBlock) {
+    TrackModelSet outfittedTrackModels = this.createOutfittedTrackModels(block);
+    this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.getFlatModel());
+    this.createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.getFlatModel());
+    this.createActiveOutfittedTrack(activatorTrackBlock, true, outfittedTrackModels,
+        this.activatorTrackModels, this.activeActivatorTrackModels);
+    this.createActiveOutfittedTrack(boosterTrackBlock, true, outfittedTrackModels,
+        this.boosterTrackModels, this.activeBoosterTrackModels);
+    this.createControlTrack(controlTrackBlock, outfittedTrackModels);
+    this.createGatedTrack(gatedTrackBlock, outfittedTrackModels);
+  }
+
+  private void createHighSpeedTracks(Block block, Block transitionTrackBlock,
+      Block lockingTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock) {
+    this.createFlexTrack(block);
+    TrackModelSet outfittedTrackModels = this.createOutfittedTrackModels(block);
+    this.createTransitionTrack(transitionTrackBlock, outfittedTrackModels);
+    this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.getFlatModel());
+    this.createActiveOutfittedTrack(activatorTrackBlock, true, outfittedTrackModels,
+        this.activatorTrackModels, this.activeActivatorTrackModels);
+    this.createActiveOutfittedTrack(boosterTrackBlock, true, outfittedTrackModels,
+        this.boosterTrackModels, this.activeBoosterTrackModels);
+  }
+
+  private void createFlexTrack(Block block) {
     ModelTextures textures = ModelTextures.rail(block);
     ModelTextures cornerTextures =
         ModelTextures.rail(ModelTextures.getBlockTexture(block, "_corner"));
@@ -440,8 +470,6 @@ public class RailcraftBlockModelProvider {
         StockModelShapes.RAIL_RAISED_SW.create(block, textures, this.modelOutput);
 
     this.createSimpleFlatItemModel(block);
-    this.createOutfittedTracks(block, transitionTrackBlock, lockingTrackBlock, bufferStopTrackBlock,
-        activatorTrackBlock, boosterTrackBlock, controlTrackBlock);
 
     this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block)
         .with(BlockStateVariantBuilder.property(BlockStateProperties.RAIL_SHAPE)
@@ -471,33 +499,6 @@ public class RailcraftBlockModelProvider {
             .select(RailShape.NORTH_EAST, BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, cornerModel)
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))));
-  }
-
-  private void createOutfittedTracks(Block block,
-      Block lockingTrackBlock, Block bufferStopTrackBlock, Block activatorTrackBlock,
-      Block boosterTrackBlock, Block controlTrackBlock) {
-    this.createOutfittedTracks(block, null, lockingTrackBlock, bufferStopTrackBlock,
-        activatorTrackBlock, boosterTrackBlock, controlTrackBlock);
-  }
-
-  private void createOutfittedTracks(Block block, @Nullable Block transitionTrackBlock,
-      Block lockingTrackBlock, Block bufferStopTrackBlock, Block activatorTrackBlock,
-      Block boosterTrackBlock, Block controlTrackBlock) {
-    TrackModelSet outfittedTrackModels =
-        this.createTrackModels(block.getRegistryName().getPath() + "_outfitted");
-
-    if (transitionTrackBlock != null) {
-      this.createTransitionTrack(transitionTrackBlock, outfittedTrackModels,
-          this.transitionTrackModels, this.activeTransitionTrackModels);
-    }
-
-    this.createLockingTrack(outfittedTrackModels.getFlatModel(), lockingTrackBlock);
-    this.createBufferStopTrack(outfittedTrackModels.getFlatModel(), bufferStopTrackBlock);
-    this.createActiveOutfittedTrack(activatorTrackBlock, true, outfittedTrackModels,
-        this.activatorTrackModels, this.activeActivatorTrackModels);
-    this.createActiveOutfittedTrack(boosterTrackBlock, true, outfittedTrackModels,
-        this.boosterTrackModels, this.activeBoosterTrackModels);
-    this.createControlTrack(controlTrackBlock, outfittedTrackModels, this.controlTrackModels);
   }
 
   private void createTurnoutTrack(Block block) {
@@ -600,7 +601,7 @@ public class RailcraftBlockModelProvider {
     this.createSimpleFlatItemModel(block, "_east");
   }
 
-  private void createLockingTrack(ResourceLocation trackModel, Block block) {
+  private void createLockingTrack(Block block, ResourceLocation trackModel) {
     FinishedMultiPartBlockState blockState = FinishedMultiPartBlockState.multiPart(block)
         .with(
             IMultiPartPredicateBuilder.condition()
@@ -675,7 +676,7 @@ public class RailcraftBlockModelProvider {
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90));
   }
 
-  private void createBufferStopTrack(ResourceLocation trackModel, Block block) {
+  private void createBufferStopTrack(Block block, ResourceLocation trackModel) {
     this.blockStateOutput.accept(FinishedMultiPartBlockState.multiPart(block)
         .with(
             IMultiPartPredicateBuilder.condition()
@@ -845,8 +846,7 @@ public class RailcraftBlockModelProvider {
     this.createSimpleFlatItemModel(block.asItem());
   }
 
-  private void createControlTrack(Block block,
-      TrackModelSet trackModels, TrackModelSet trackKitModels) {
+  private void createControlTrack(Block block, TrackModelSet trackModels) {
     this.blockStateOutput.accept(FinishedMultiPartBlockState.multiPart(block)
         .with(
             IMultiPartPredicateBuilder.condition()
@@ -865,14 +865,14 @@ public class RailcraftBlockModelProvider {
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getFlatModel()))
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel()))
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getFlatModel())
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
         .with(
             IMultiPartPredicateBuilder.or(
@@ -883,7 +883,7 @@ public class RailcraftBlockModelProvider {
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getFlatModel())
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
         .with(
             IMultiPartPredicateBuilder.or(
@@ -894,7 +894,7 @@ public class RailcraftBlockModelProvider {
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getFlatModel())
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
         .with(
             IMultiPartPredicateBuilder.condition()
@@ -924,21 +924,21 @@ public class RailcraftBlockModelProvider {
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel()))
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedNorthEastModel()))
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel()))
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedSouthWestModel()))
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel())
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedNorthEastModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
         .with(
             IMultiPartPredicateBuilder.condition()
@@ -946,7 +946,7 @@ public class RailcraftBlockModelProvider {
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel())
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedSouthWestModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
         .with(
             IMultiPartPredicateBuilder.or(
@@ -957,7 +957,7 @@ public class RailcraftBlockModelProvider {
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel())
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedSouthWestModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
         .with(
             IMultiPartPredicateBuilder.or(
@@ -968,7 +968,7 @@ public class RailcraftBlockModelProvider {
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel())
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedNorthEastModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
         .with(
             IMultiPartPredicateBuilder.or(
@@ -979,7 +979,7 @@ public class RailcraftBlockModelProvider {
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel())
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedSouthWestModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
         .with(
             IMultiPartPredicateBuilder.or(
@@ -990,15 +990,13 @@ public class RailcraftBlockModelProvider {
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)),
             BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel())
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedNorthEastModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270)));
 
     this.createSimpleFlatItemModel(block.asItem());
   }
 
-  private void createTransitionTrack(Block block,
-      TrackModelSet trackModels, TrackModelSet trackKitModels, TrackModelSet activeTrackKitModels) {
-
+  private void createTransitionTrack(Block block, TrackModelSet trackModels) {
     FinishedMultiPartBlockState blockState = FinishedMultiPartBlockState.multiPart(block)
         .with(
             IMultiPartPredicateBuilder.condition()
@@ -1034,28 +1032,28 @@ public class RailcraftBlockModelProvider {
                 .with(BlockModelFields.MODEL, trackModels.getRaisedSouthWestModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90));
 
-    this.addTransitionVariant(blockState, false, trackKitModels);
-    this.addTransitionVariant(blockState, true, activeTrackKitModels);
+    this.addTransitionVariants(blockState, false, this.transitionTrackModels);
+    this.addTransitionVariants(blockState, true, this.activeTransitionTrackModels);
 
     this.blockStateOutput.accept(blockState);
 
     this.createSimpleFlatItemModel(block.asItem());
   }
 
-  private void addTransitionVariant(FinishedMultiPartBlockState blockState, boolean powered,
+  private void addTransitionVariants(FinishedMultiPartBlockState blockState, boolean powered,
       TrackModelSet trackKitModels) {
     blockState
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, false)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getFlatModel()))
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, false)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getFlatModel())
@@ -1063,7 +1061,7 @@ public class RailcraftBlockModelProvider {
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, true)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getFlatModel())
@@ -1071,7 +1069,7 @@ public class RailcraftBlockModelProvider {
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, true)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getFlatModel())
@@ -1079,21 +1077,21 @@ public class RailcraftBlockModelProvider {
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, false)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel()))
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, false)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel()))
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, false)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel())
@@ -1101,7 +1099,7 @@ public class RailcraftBlockModelProvider {
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, false)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel())
@@ -1109,7 +1107,7 @@ public class RailcraftBlockModelProvider {
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, true)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel())
@@ -1117,7 +1115,7 @@ public class RailcraftBlockModelProvider {
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, true)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel())
@@ -1125,7 +1123,7 @@ public class RailcraftBlockModelProvider {
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(TransitionTrackBlock.REVERSED, true)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel())
@@ -1133,12 +1131,115 @@ public class RailcraftBlockModelProvider {
         .with(
             IMultiPartPredicateBuilder.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
-                .term(
-                    TransitionTrackBlock.REVERSED, true)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
             BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel())
                 .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270));
+  }
+
+  private void createGatedTrack(Block block, TrackModelSet trackModels) {
+    ResourceLocation closedGateModel =
+        ModelsResourceUtil.getModelLocation(Blocks.OAK_FENCE_GATE);
+    ResourceLocation openGateModel =
+        ModelsResourceUtil.getModelLocation(Blocks.OAK_FENCE_GATE, "_open");
+    ResourceLocation closedWallGateModel =
+        ModelsResourceUtil.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall");
+    ResourceLocation openWallGateModel =
+        ModelsResourceUtil.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall_open");
+
+    FinishedMultiPartBlockState blockState = FinishedMultiPartBlockState.multiPart(block)
+        .with(
+            IMultiPartPredicateBuilder.condition()
+                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
+            BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, trackModels.getFlatModel()))
+        .with(
+            IMultiPartPredicateBuilder.condition()
+                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
+            BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, trackModels.getFlatModel())
+                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+        .with(
+            IMultiPartPredicateBuilder.condition()
+                .term(GatedTrackBlock.ONE_WAY, true)
+                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, false),
+            BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel()))
+        .with(
+            IMultiPartPredicateBuilder.condition()
+                .term(GatedTrackBlock.ONE_WAY, true)
+                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, true),
+            BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
+                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+        .with(
+            IMultiPartPredicateBuilder.condition()
+                .term(GatedTrackBlock.ONE_WAY, true)
+                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, false),
+            BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
+                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+        .with(
+            IMultiPartPredicateBuilder.condition()
+                .term(GatedTrackBlock.ONE_WAY, true)
+                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, true),
+            BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
+                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270));
+
+    this.addGateVariants(blockState, false, false, closedGateModel);
+    this.addGateVariants(blockState, true, false, openGateModel);
+    this.addGateVariants(blockState, false, true, closedWallGateModel);
+    this.addGateVariants(blockState, true, true, openWallGateModel);
+
+    this.blockStateOutput.accept(blockState);
+
+    this.createSimpleFlatItemModel(block.asItem());
+  }
+
+  private void addGateVariants(FinishedMultiPartBlockState blockState, boolean open, boolean inWall,
+      ResourceLocation model) {
+    blockState
+        .with(
+            IMultiPartPredicateBuilder.condition()
+                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, false) // North
+                .term(GatedTrackBlock.OPEN, open)
+                .term(GatedTrackBlock.IN_WALL, inWall),
+            BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, model)
+                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+        .with(
+            IMultiPartPredicateBuilder.condition()
+                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, true) // South
+                .term(GatedTrackBlock.OPEN, open)
+                .term(GatedTrackBlock.IN_WALL, inWall),
+            BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, model))
+        .with(
+            IMultiPartPredicateBuilder.condition()
+                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, false) // East
+                .term(GatedTrackBlock.OPEN, open)
+                .term(GatedTrackBlock.IN_WALL, inWall),
+            BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, model)
+                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+        .with(
+            IMultiPartPredicateBuilder.condition()
+                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+                .term(ReversibleOutfittedTrackBlock.REVERSED, true) // West
+                .term(GatedTrackBlock.OPEN, open)
+                .term(GatedTrackBlock.IN_WALL, inWall),
+            BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, model)
+                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90));
   }
 
   private ResourceLocation createPassiveRail(String name) {
@@ -1147,6 +1248,10 @@ public class RailcraftBlockModelProvider {
 
   private ResourceLocation createActiveRail(String name) {
     return this.createVariant(name + "_on", StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+  }
+
+  private TrackModelSet createOutfittedTrackModels(Block block) {
+    return this.createTrackModels(block.getRegistryName().getPath() + "_outfitted");
   }
 
   private TrackModelSet createTrackModels(String name) {

@@ -5,7 +5,9 @@
     "refmap": "railcraft.refmap.json",
     "mixins": [
         "AbstractMinecartEntityMixin",
-        "EntityMixin"
+        "EntityMixin",
+        "FenceBlockMixin",
+        "WallBlockMixin"
     ],
     "client": [
 
