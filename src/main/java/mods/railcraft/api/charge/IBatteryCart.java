@@ -12,16 +12,13 @@ import net.minecraft.util.math.BlockPos;
 
 /**
  * Indicates a battery carried by a cart.
- *
- * <p>
  * This cart battery is not related to the charge system of a world.
- * </p>
  *
- * Created by CovertJaguar on 10/4/2016 for Railcraft.
+ * <p>Created by CovertJaguar on 10/4/2016 for Railcraft.
  *
- * @author CovertJaguar <https://www.railcraft.info>
+ * @author CovertJaguar (https://www.railcraft.info)
  */
-public interface IBatteryCart extends Battery {
+public interface IBatteryCart extends ChargeStorage {
 
   /**
    * The type of the cart battery.

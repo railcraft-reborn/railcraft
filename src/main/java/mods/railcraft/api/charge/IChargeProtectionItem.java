@@ -14,9 +14,9 @@ import net.minecraft.item.ItemStack;
 /**
  * Implemented by items like the Overalls to prevent Charge based damage.
  *
- * Created by CovertJaguar on 10/18/2018 for Railcraft.
+ * <p>Created by CovertJaguar on 10/18/2018 for Railcraft.
  *
- * @author CovertJaguar <https://www.railcraft.info>
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public interface IChargeProtectionItem {
 
@@ -41,12 +41,12 @@ public interface IChargeProtectionItem {
    */
   default ZapResult zap(ItemStack stack, LivingEntity owner, float attackDamage) {
     ItemStack resultStack;
-    if (owner.getRandom().nextInt(150) == 0
-        && stack.hurt(1, owner.getRandom(),
-            owner instanceof ServerPlayerEntity ? (ServerPlayerEntity) owner : null))
+    if (owner.getRandom().nextInt(150) == 0 && stack.hurt(1, owner.getRandom(),
+          owner instanceof ServerPlayerEntity ? (ServerPlayerEntity) owner : null)) {
       resultStack = ItemStack.EMPTY;
-    else
+    } else {
       resultStack = stack;
+    }
     return new ZapResult(resultStack, attackDamage);
   }
 

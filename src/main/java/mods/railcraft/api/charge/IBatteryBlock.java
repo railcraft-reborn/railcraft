@@ -12,27 +12,32 @@ import com.google.common.base.Objects;
 /**
  * Batteries the heart of the Charge Network.
  *
- * Consumers and 'wires' don't need batteries, but generators and battery blocks do.
+ * <p>Consumers and 'wires' don't need batteries, but generators and battery blocks do.
  *
- * You don't to have a Tile Entity to provide a battery for the network, serialization and ticking
- * is handled by the network itself.
+ * <p>You don't to have a Tile Entity to provide a battery for the network,
+ * serialization and ticking is handled by the network itself.
  *
- * Generators should add their power output directly to its battery object.
+ * <p>Generators should add their power output directly to its battery object.
  *
- * You shouldn't hold onto battery objects for longer than you need them. The API makes no guarantee
- * that the battery object assigned to a specific coordinate will always be the same object.
+ * <p><b>You shouldn't hold onto battery objects for longer than you need them.</b>
+ * The API makes no guarantee that the battery object assigned to a specific coordinate
+ * will always be the same object.
  *
- * Such that sometimes: {@code
+ *
+ * <p>Such that sometimes:
+ * <pre>
+ * {@code
  * IBatteryBlock bat1 = Charge.distribution.network(world).access(pos).getBattery();
  * IBatteryBlock bat2 = Charge.distribution.network(world).access(pos).getBattery();
  * bat1 != bat2
  * }
+ * </pre>
  *
- * Created by CovertJaguar on 10/27/2018 for Railcraft.
+ * <p>Created by CovertJaguar on 10/27/2018 for Railcraft.
  *
- * @author CovertJaguar <https://www.railcraft.info>
+ * @author CovertJaguar (https://www.railcraft.info)
  */
-public interface IBatteryBlock extends Battery {
+public interface IBatteryBlock extends ChargeStorage {
 
   enum State {
     /**
@@ -49,7 +54,7 @@ public interface IBatteryBlock extends Battery {
      * Rechargeable batteries can be filled and drained indefinitely. The charge network will
      * balance the change level between all the rechargeable batteries in the network.
      *
-     * Generators should posses a small rechargeable battery just large enough to hold the
+     * <p>Generators should posses a small rechargeable battery just large enough to hold the
      * generator's max per tick output with a similar draw level and 100% efficiency.
      */
     RECHARGEABLE("tile.railcraft.battery.state.rechargeable"),
@@ -79,8 +84,8 @@ public interface IBatteryBlock extends Battery {
   /**
    * Sets the current state of the battery.
    *
-   * The state of a battery is always under the control of the client, the network will never change
-   * it for you.
+   * <p>The state of a battery is always under the control of the client,
+   * the network will never change it for you.
    *
    * @param stateImpl The battery's new state.
    */
@@ -94,6 +99,7 @@ public interface IBatteryBlock extends Battery {
     private final double efficiency;
 
     /**
+     * Creates a new battery Spec.
      * @param initialState The initial state of the battery.
      * @param capacity The capacity of the battery.
      * @param maxDraw How much charge can be drawn from this battery per tick.
@@ -134,15 +140,17 @@ public interface IBatteryBlock extends Battery {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o)
+      if (this == o) {
         return true;
-      if (o == null || getClass() != o.getClass())
+      }
+      if (o == null || getClass() != o.getClass()) {
         return false;
+      }
       Spec spec = (Spec) o;
-      return Double.compare(spec.capacity, capacity) == 0 &&
-          Double.compare(spec.maxDraw, maxDraw) == 0 &&
-          Double.compare(spec.efficiency, efficiency) == 0 &&
-          initialState == spec.initialState;
+      return (Double.compare(spec.capacity, capacity) == 0)
+          && (Double.compare(spec.maxDraw, maxDraw) == 0)
+          && (Double.compare(spec.efficiency, efficiency) == 0)
+          && (initialState == spec.initialState);
     }
 
     @Override

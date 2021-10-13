@@ -2,7 +2,8 @@ package mods.railcraft.gui.widget;
 
 import java.util.ArrayList;
 import java.util.List;
-import mods.railcraft.api.charge.Battery;
+
+import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.util.HumanReadableNumberFormatter;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
@@ -13,11 +14,11 @@ import net.minecraft.util.text.StringTextComponent;
 public class ChargeBatteryIndicator implements Gauge {
 
   private float charge;
-  private final Battery battery;
+  private final ChargeStorage battery;
 
   private final List<ITextProperties> tooltip = new ArrayList<>();
 
-  public ChargeBatteryIndicator(Battery battery) {
+  public ChargeBatteryIndicator(ChargeStorage battery) {
     this.battery = battery;
   }
 
@@ -40,8 +41,9 @@ public class ChargeBatteryIndicator implements Gauge {
   @Override
   public float getMeasurement() {
     float capacity = battery.getCapacity();
-    if (capacity <= 0.0)
+    if (capacity <= 0.0) {
       return 0.0F;
+    }
     return Math.min(charge, capacity) / capacity;
   }
 

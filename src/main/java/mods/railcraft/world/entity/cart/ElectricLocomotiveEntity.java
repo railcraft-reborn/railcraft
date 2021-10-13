@@ -34,7 +34,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 /**
- * @author CovertJaguar <https://www.railcraft.info/>
+ * @author CovertJaguar (https://www.railcraft.info/)
  */
 public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISidedInventory {
 
@@ -92,7 +92,7 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
     return this.cartBattery
         .filter(cart -> cart.getCharge() > CHARGE_USE_PER_REQUEST)
         .map(cart -> {
-          cart.removeCharge(CHARGE_USE_PER_REQUEST);
+          cart.removeCharge(CHARGE_USE_PER_REQUEST, false);
           return FUEL_PER_REQUEST;
         })
         .orElse(0);
@@ -111,16 +111,18 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
   @Override
   public void tick() {
     super.tick();
-    if (this.level.isClientSide())
+    if (this.level.isClientSide()) {
       return;
+    }
     this.cartBattery.ifPresent(cart -> cart.tick(this));
   }
 
   @Override
   protected void moveAlongTrack(BlockPos pos, BlockState state) {
     super.moveAlongTrack(pos, state);
-    if (this.level.isClientSide())
+    if (this.level.isClientSide()) {
       return;
+    }
     this.cartBattery.ifPresent(cart -> cart.tickOnTrack(this, pos));
   }
 
@@ -166,8 +168,9 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    if (capability == CapabilitiesCharge.CART_BATTERY)
+    if (capability == CapabilitiesCharge.CART_BATTERY) {
       return this.cartBattery.cast();
+    }
     return super.getCapability(capability, facing);
   }
 

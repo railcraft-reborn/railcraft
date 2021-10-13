@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.core.Ownable;
 import mods.railcraft.util.HostEffects;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.Magnifiable;
@@ -20,17 +19,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 
 /**
- * @author CovertJaguar <https://www.railcraft.info>
+ * .
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public class ForceTrackEmitterBlockEntity extends RailcraftTickableBlockEntity
-    implements Ownable, Magnifiable {
+    implements Magnifiable {
 
   private static final double BASE_DRAW = 22;
   private static final double CHARGE_PER_TRACK = 2;
   private int trackCount;
   private ForceTrackEmitterState state = ForceTrackEmitterState.RETRACTED;
   /**
-   * Field to prevent recursive removing of tracks when a track is broken by the emitter
+   * Field to prevent recursive removing of tracks when a track is broken by the emitter.
    */
   private boolean removingTrack;
 
@@ -70,7 +70,9 @@ public class ForceTrackEmitterBlockEntity extends RailcraftTickableBlockEntity
       double draw = getMaintenanceCost(getTrackCount());
       this.state = lastState.charged(this);
 
-      if (Charge.distribution.network(this.level).access(this.worldPosition).useCharge(draw)) {
+      if (Charge.distribution.network(this.level)
+          .access(this.worldPosition)
+          .useCharge(draw, false)) {
         this.state = lastState.charged(this);
       } else {
         this.state = lastState.uncharged(this);

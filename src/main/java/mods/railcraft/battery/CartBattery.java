@@ -1,7 +1,9 @@
 package mods.railcraft.battery;
 
-import java.util.Random;
 import com.google.common.collect.Streams;
+
+import java.util.Random;
+
 import mods.railcraft.api.charge.CapabilitiesCharge;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.IBatteryCart;
@@ -11,20 +13,9 @@ import net.minecraft.util.math.BlockPos;
 
 /**
  * This interface provides a simple means of using or producing Electricity within a train.
- * <p/>
- * The original Ic2 Battery Carts implement IEnergyTransfer. IEnergyTransfer was a naive
- * implementation of a Energy storage system for carts. I'll leave it in place because of its Ic2
- * specific functions, but for all intents and purposes this is the recommended and easier to
- * implement interface for Electricity related minecarts. In fact, the Railcraft Ic2 Energy Carts
- * will be redirecting to this interface. The Energy Loaders will continue to work exclusively with
- * IEnergyTransfer for the moment due to the high Ic2 coupling of their design. An alternative
- * loader block utilizing the CartBattery interface may be provided in the future, but no guarantee.
- * <p/>
  *
- * @author CovertJaguar <https://www.railcraft.info/>
- * @deprecated Use the forge builtin module {@link net.minecraftforge.energy.IEnergyStorage IEnergyStorage}
+ * @author CovertJaguar (https://www.railcraft.info/)
  */
-@Deprecated
 public class CartBattery extends SimpleBattery implements IBatteryCart {
 
   static final int DRAW_INTERVAL = 8;
@@ -52,16 +43,18 @@ public class CartBattery extends SimpleBattery implements IBatteryCart {
 
   @Override
   public void setCharge(float charge) {
-    if (type == IBatteryCart.Type.USER)
+    if (type == IBatteryCart.Type.USER) {
       return;
+    }
     super.setCharge(charge);
   }
 
   @Override
-  public void addCharge(float charge) {
-    if (type == IBatteryCart.Type.USER)
-      return;
-    super.addCharge(charge);
+  public float addCharge(float charge, boolean simulate) {
+    if (type == IBatteryCart.Type.USER) {
+      return 0.0F;
+    }
+    return super.addCharge(charge, simulate);
   }
 
   @Override
@@ -80,21 +73,24 @@ public class CartBattery extends SimpleBattery implements IBatteryCart {
   }
 
   protected void removeLosses() {
-    if (lossPerTick > 0.0F)
-      if (charge >= lossPerTick)
+    if (lossPerTick > 0.0F) {
+      if (charge >= lossPerTick) {
         charge -= lossPerTick;
-      else
+      } else {
         charge = 0.0F;
+      }
+    }
   }
 
   /*
-   * ******************************************************************** The following functions
-   * must be called from your EntityMinecart subclass
+   * ********************************************************************
+   * The following functions must be called from your EntityMinecart subclass
    * ********************************************************************
    */
 
   /**
-   * Must be called once per tick while on tracks by the owning object. Server side only.
+   * Must be called once per tick while on tracks by the owning object. Server
+   * side only.
    * <p/>
    * <blockquote>
    *
@@ -119,22 +115,23 @@ public class CartBattery extends SimpleBattery implements IBatteryCart {
     draw = (draw * 24.0F + chargeDrawnThisTick) / 25.0F;
     chargeDrawnThisTick = 0.0F;
 
-    if (drewFromTrack > 0)
+    if (drewFromTrack > 0) {
       drewFromTrack--;
-    else if (type == IBatteryCart.Type.USER && charge < (capacity * 0.5F)
+    } else if (type == IBatteryCart.Type.USER
+        && charge < (capacity * 0.5F)
         && clock % DRAW_INTERVAL == 0) {
       Train.streamCarts(owner)
           .flatMap(c -> Streams.stream(c.getCapability(CapabilitiesCharge.CART_BATTERY).resolve()))
-          .filter(c -> c.getType() != IBatteryCart.Type.USER && c.getCharge() > 0)
-          .findAny()
-          .ifPresent(c -> charge += c.removeCharge(capacity - charge));
+          .filter(c -> c.getType() != IBatteryCart.Type.USER && c.getCharge() > 0).findAny()
+          .ifPresent(c -> charge += c.removeCharge(capacity - charge, false));
     }
   }
 
   /**
-   * If you want to be able to draw power from the track, this function needs to be called once per
-   * tick. Server side only. Generally this means overriding the EntityMinecart.moveAlongTrack()
-   * function. You don't have to call this function if you don't care about drawing from tracks.
+   * If you want to be able to draw power from the track, this function needs to
+   * be called once per tick. Server side only. Generally this means overriding
+   * the EntityMinecart.moveAlongTrack() function. You don't have to call this
+   * function if you don't care about drawing from tracks.
    * <p/>
    * <blockquote>
    *
@@ -153,10 +150,12 @@ public class CartBattery extends SimpleBattery implements IBatteryCart {
   @Override
   public void tickOnTrack(AbstractMinecartEntity owner, BlockPos pos) {
     if (!owner.level.isClientSide() && type == Type.USER && needsCharging()) {
-      double drawnFromTrack =
-          Charge.distribution.network(owner.level).access(pos).removeCharge(capacity - charge);
-      if (drawnFromTrack > 0.0)
+      double drawnFromTrack = Charge.distribution.network(owner.level)
+          .access(pos)
+          .removeCharge(capacity - charge, false);
+      if (drawnFromTrack > 0.0) {
         drewFromTrack = DRAW_INTERVAL * 4;
+      }
       charge += drawnFromTrack;
     }
   }

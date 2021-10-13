@@ -7,34 +7,37 @@
 
 package mods.railcraft.api.charge;
 
+import com.google.common.base.Objects;
+
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Random;
+
 import javax.annotation.Nullable;
-import com.google.common.base.Objects;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 /**
- * This interface must be implement by any {@link net.minecraft.block.Block} that wants to interface
- * with any of the charge networks.
+ * This interface must be implement by any {@link net.minecraft.block.Block Block}
+ * that wants to interface with any of the charge networks.
  *
- * Created by CovertJaguar on 7/25/2016 for Railcraft.
+ * <p>Created by CovertJaguar on 7/25/2016 for Railcraft.
  *
- * @author CovertJaguar <https://www.railcraft.info>
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public interface IChargeBlock {
 
   /**
    * Asks the Block to provide a map of ChargeSpecs for each network.
    *
-   * It is generally to be considered an error to return the same charge definition to multiple
+   * <p>It is generally to be considered an error to return the same charge definition to multiple
    * networks. Most blocks will probably be members of the {@link Charge#distribution} network only.
    *
-   * Only "transformer" blocks that pass charge from one network to another should respond to
+   * <p>Only "transformer" blocks that pass charge from one network to another should respond to
    * multiple networks.
    *
    * @return A mapping of networks to ChargeSpecs. Most blocks should only respond to one type of
@@ -49,7 +52,7 @@ public interface IChargeBlock {
   /**
    * The Charge Meter calls this to get access for meter readings.
    *
-   * Most blocks don't need to touch this, but Multi-blocks may want to redirect to the master
+   * <p>Most blocks don't need to touch this, but Multi-blocks may want to redirect to the master
    * block.
    */
   default @Nullable Charge.IAccess getMeterAccess(Charge network, BlockState state, World world,
@@ -58,13 +61,13 @@ public interface IChargeBlock {
   }
 
   /**
-   * Helper method for registering a block to the networks.
+   * Helper method for registering a block to the network.
    *
-   * This function must be called from the following functions:
+   * <p>This function must be called from the following functions:
    * {@link net.minecraft.block.Block#onBlockAdded(World, BlockPos, BlockState)}
    * {@link net.minecraft.block.Block#updateTick(World, BlockPos, BlockState, Random)}
    *
-   * The block must set {@link net.minecraft.block.Block#setTickRandomly(boolean)} to true in the
+   * <p>The block must set {@link net.minecraft.block.Block#setTickRandomly(boolean)} to true in the
    * constructor.
    */
   default void registerNode(BlockState state, World world, BlockPos pos) {
@@ -74,11 +77,11 @@ public interface IChargeBlock {
   /**
    * Helper method for removing a block from the networks.
    *
-   * This function must be called from the following function:
+   * <p>This function must be called from the following function:
    * {@link net.minecraft.block.Block#breakBlock(World, BlockPos, BlockState)}
    */
-  // FLATTENING make sure this not called during state changes
   default void deregisterNode(World world, BlockPos pos) {
+    // FLATTENING make sure this not called during state changes
     EnumSet.allOf(Charge.class).forEach(n -> n.network(world).removeNode(pos));
   }
 
@@ -115,6 +118,7 @@ public interface IChargeBlock {
     }
 
     /**
+     * Creates a new charge specification.
      * @param connectType This controls how our block will connect to other blocks. Many blocks can
      *        only connect in specific ways due to block shape.
      * @param losses The cost of connecting this block to the charge network due to resistance
@@ -144,21 +148,24 @@ public interface IChargeBlock {
     @Override
     public String toString() {
       String string = String.format("ChargeSpec{%s, losses=%.2f}", connectType, losses);
-      if (batterySpec != null)
+      if (batterySpec != null) {
         string += "|" + batterySpec;
+      }
       return string;
     }
 
     @Override
     public boolean equals(Object o) {
-      if (this == o)
+      if (this == o) {
         return true;
-      if (o == null || getClass() != o.getClass())
+      }
+      if (o == null || getClass() != o.getClass()) {
         return false;
+      }
       ChargeSpec that = (ChargeSpec) o;
-      return Double.compare(that.losses, losses) == 0 &&
-          connectType == that.connectType &&
-          Objects.equal(batterySpec, that.batterySpec);
+      return Double.compare(that.losses, losses) == 0
+          && connectType == that.connectType
+          && Objects.equal(batterySpec, that.batterySpec);
     }
 
     @Override
