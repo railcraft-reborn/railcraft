@@ -58,6 +58,8 @@ public class RailcraftBlockStateProvider implements IDataProvider {
     Set<Item> skippedAutoModels = new HashSet<>();
     new RailcraftBlockModelProvider(blockStateConsumer, modelConsumer, skippedAutoModels::add)
         .run();
+    new RailcraftItemModelProvider(modelConsumer).run();
+
 
     RailcraftBlocks.BLOCKS.getEntries().forEach((block) -> {
       Item item = Item.BY_BLOCK.get(block.get());

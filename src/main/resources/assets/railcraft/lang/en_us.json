@@ -133,6 +133,9 @@
     "item.railcraft.tunnel_bore": "Tunnel Bore",
     "item.railcraft.track_layer": "Track Layer",
     "item.railcraft.track_remover": "Track Remover",
+    "item.railcraft.iron_spike_maul": "Iron Spike Maul",
+    "item.railcraft.steel_spike_maul": "Steel Spike Maul",
+    "item.railcraft.diamond_spike_maul": "Diamond Spike Maul",
 
     "item.railcraft.steel_ingot": "Steel Ingot",
     "item.railcraft.copper_ingot": "Copper Ingot",
@@ -282,5 +285,7 @@
 
     "track_kit.corners_unsupported": "§cCorners Are Unsupported",
     "track_kit.slopes_unsupported": "§cSlopes Are Unsupported",
-    "track_kit.invalid_track_type": "§cInvalid Track Type"
+    "track_kit.invalid_track_type": "§cInvalid Track Type",
+
+    "spike_maul.description": "Converts track to switches and junctions."
 }

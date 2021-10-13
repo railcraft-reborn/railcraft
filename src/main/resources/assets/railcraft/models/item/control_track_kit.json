@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "railcraft:item/control_track_kit"
-  }
-}

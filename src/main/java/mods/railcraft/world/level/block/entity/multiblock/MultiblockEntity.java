@@ -102,6 +102,7 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
   /**
    * Gets the parent of this multiblock, or null if not. Does delinking and cacheing.
    */
+  @SuppressWarnings("unchecked")
   @Nullable
   public T getParent() {
     if (!this.formed) {

@@ -18,7 +18,7 @@ final class TrackItemPredicate extends ItemPredicate {
     Boolean highSpeed = JsonTools.nullableBoolean(json, "high_speed");
     Boolean electric = JsonTools.nullableBoolean(json, "electric");
     TrackType type = JsonTools.getFromRegistryWhenPresent(json, "track_type",
-        TrackTypes.REGISTRY.get(), null);
+        TrackTypes.registry.get(), null);
     return new TrackItemPredicate(highSpeed, electric, type);
   };
 

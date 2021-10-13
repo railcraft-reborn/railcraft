@@ -2,6 +2,6 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "railcraft:item/firestone",
-    "layer1": "railcraft:item/firestone_cracked"
+    "layer1": "railcraft:item/cracked_firestone"
   }
 }

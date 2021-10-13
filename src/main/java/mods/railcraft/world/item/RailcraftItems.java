@@ -43,6 +43,21 @@ public class RailcraftItems {
         }
       };
 
+  public static final RegistryObject<Item> IRON_SPIKE_MAUL =
+      ITEMS.register("iron_spike_maul",
+          () -> new SpikeMaulItem(11.0F, -3.5F, ItemTier.IRON,
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_SPIKE_MAUL =
+      ITEMS.register("steel_spike_maul",
+          () -> new SpikeMaulItem(11.0F, -3.4F, RailcraftItemTier.STEEL,
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> DIAMOND_SPIKE_MAUL =
+      ITEMS.register("diamond_spike_maul",
+          () -> new SpikeMaulItem(11.0F, -3.3F, ItemTier.DIAMOND,
+              new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> SWITCH_TRACK_LEVER =
       ITEMS.register("switch_track_lever",
           () -> new BlockItem(RailcraftBlocks.SWITCH_TRACK_LEVER.get(),
