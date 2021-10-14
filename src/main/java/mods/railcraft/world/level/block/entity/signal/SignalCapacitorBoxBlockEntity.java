@@ -19,6 +19,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -171,7 +172,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     return this.ticksPowered > 0 ? this.signalAspect : SignalAspect.RED;
   }
 
-  public enum Mode implements ButtonState<Mode> {
+  public enum Mode implements ButtonState<Mode>, IStringSerializable {
 
     RISING_EDGE("rising_edge"),
     FALLING_EDGE("falling_edge");

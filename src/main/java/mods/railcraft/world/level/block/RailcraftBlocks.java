@@ -56,6 +56,26 @@ public class RailcraftBlocks {
   public static final DeferredRegister<Block> BLOCKS =
       DeferredRegister.create(ForgeRegistries.BLOCKS, Railcraft.ID);
 
+  public static final RegistryObject<AdvancedItemLoaderBlock> ADVANCED_ITEM_LOADER =
+      BLOCKS.register("advanced_item_loader",
+          () -> new AdvancedItemLoaderBlock(AbstractBlock.Properties.of(Material.STONE)
+              .sound(SoundType.STONE)));
+
+  public static final RegistryObject<AdvancedItemUnloaderBlock> ADVANCED_ITEM_UNLOADER =
+      BLOCKS.register("advanced_item_unloader",
+          () -> new AdvancedItemUnloaderBlock(AbstractBlock.Properties.of(Material.STONE)
+              .sound(SoundType.STONE)));
+
+  public static final RegistryObject<ItemLoaderBlock> ITEM_LOADER =
+      BLOCKS.register("item_loader",
+          () -> new ItemLoaderBlock(AbstractBlock.Properties.of(Material.STONE)
+              .sound(SoundType.STONE)));
+
+  public static final RegistryObject<ItemUnloaderBlock> ITEM_UNLOADER =
+      BLOCKS.register("item_unloader",
+          () -> new ItemUnloaderBlock(AbstractBlock.Properties.of(Material.STONE)
+              .sound(SoundType.STONE)));
+
   public static final RegistryObject<SwitchTrackActuatorBlock> SWITCH_TRACK_LEVER =
       BLOCKS.register("switch_track_lever",
           () -> new SwitchTrackLeverBlock(AbstractBlock.Properties.of(Material.DECORATION)
@@ -649,7 +669,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<Block> COKE_OVEN_BRICKS =
       BLOCKS.register("coke_oven_bricks",
-          () -> new CokeOvenBricks(AbstractBlock.Properties.of(Material.STONE)
+          () -> new CokeOvenBricksBlock(AbstractBlock.Properties.of(Material.STONE)
               .sound(SoundType.STONE)
               .harvestTool(ToolType.PICKAXE)));
 

@@ -3,17 +3,13 @@ package mods.railcraft.util.inventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
 import mods.railcraft.util.inventory.wrappers.SidedInventoryDecorator;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 /**
@@ -37,19 +33,19 @@ import net.minecraftforge.items.IItemHandler;
  */
 public abstract class InventoryAdaptor implements IInventoryManipulator {
 
-  private final Object inventory;
+  private final InventoryIterator<?> inventory;
 
-  private InventoryAdaptor(Object inventory) {
+  private InventoryAdaptor(InventoryIterator<?> inventory) {
     this.inventory = inventory;
   }
 
-  public Object getBackingObject() {
+  public InventoryIterator<?> getBackingObject() {
     return inventory;
   }
 
-  static InventoryAdaptor of(final IInventory inventory) {
+  public static InventoryAdaptor of(final IInventory inventory) {
     Objects.requireNonNull(inventory);
-    return new InventoryAdaptor(inventory) {
+    return new InventoryAdaptor(InventoryIterator.get(inventory)) {
 
       @Override
       public int slotCount() {
@@ -58,9 +54,9 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
     };
   }
 
-  static InventoryAdaptor of(final IItemHandler inventory) {
+  public static InventoryAdaptor of(final IItemHandler inventory) {
     Objects.requireNonNull(inventory);
-    return new InventoryAdaptor(inventory) {
+    return new InventoryAdaptor(InventoryIterator.get(inventory)) {
 
       @Override
       public int slotCount() {
@@ -69,24 +65,8 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
     };
   }
 
-  static Optional<InventoryAdaptor> of(@Nullable Object obj) {
-    return of(obj, null);
-  }
-
-  static Optional<InventoryAdaptor> of(@Nullable Object obj, @Nullable Direction side) {
-    InventoryAdaptor inv = null;
-    if (obj instanceof InventoryAdaptor) {
-      inv = (InventoryAdaptor) obj;
-    } else if (obj instanceof ICapabilityProvider && ((ICapabilityProvider) obj)
-        .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side).isPresent()) {
-      inv = of(((ICapabilityProvider) obj)
-          .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side).orElse(null));
-    } else if (side != null && obj instanceof ISidedInventory) {
-      inv = of(new SidedInventoryDecorator((ISidedInventory) obj, side));
-    } else if (obj instanceof IInventory) {
-      inv = of((IInventory) obj);
-    }
-    return Optional.ofNullable(inv);
+  static InventoryAdaptor of(ISidedInventory sidedInventory, Direction direction) {
+    return of(new SidedInventoryDecorator(sidedInventory, direction));
   }
 
   @Override
@@ -108,7 +88,7 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
     stack = stack.copy();
     List<IInvSlot> filledSlots = new ArrayList<>();
     List<IInvSlot> emptySlots = new ArrayList<>();
-    for (IInvSlot slot : InventoryIterator.get(this)) {
+    for (IInvSlot slot : this.inventory) {
       if (slot.canPutStackInSlot(stack)) {
         if (slot.getStack().isEmpty())
           emptySlots.add(slot);
@@ -131,7 +111,7 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
    */
   @Override
   public ItemStack removeStack(int maxAmount, Predicate<ItemStack> filter, boolean simulate) {
-    for (IInvSlot slot : InventoryIterator.get(this)) {
+    for (IInvSlot slot : this.inventory) {
       ItemStack stack = slot.getStack();
       if (!stack.isEmpty() && slot.canTakeStackFromSlot() && filter.test(stack)) {
         return slot.removeFromSlot(maxAmount, simulate);
@@ -145,7 +125,7 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
       boolean simulate) {
     int amountNeeded = maxAmount;
     List<ItemStack> outputList = new ArrayList<>();
-    for (IInvSlot slot : InventoryIterator.get(this)) {
+    for (IInvSlot slot : this.inventory) {
       if (amountNeeded <= 0)
         break;
       ItemStack stack = slot.getStack();
@@ -161,8 +141,8 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
   }
 
   @Override
-  public ItemStack moveOneItemTo(IInventoryComposite dest, Predicate<ItemStack> filter) {
-    for (IInvSlot slot : InventoryIterator.get(this)) {
+  public ItemStack moveOneItemTo(IInventoryManipulator dest, Predicate<ItemStack> filter) {
+    for (IInvSlot slot : this.inventory) {
       if (slot.hasStack() && slot.canTakeStackFromSlot() && slot.matches(filter)) {
         ItemStack stack = slot.getStack();
         stack = InvTools.copyOne(stack);
@@ -176,11 +156,11 @@ public abstract class InventoryAdaptor implements IInventoryManipulator {
 
   @Override
   public Stream<? extends IInvSlot> streamSlots() {
-    return InventoryIterator.get(this).stream();
+    return this.inventory.stream();
   }
 
   @Override
   public Stream<ItemStack> streamStacks() {
-    return InventoryIterator.get(this).streamStacks();
+    return this.inventory.streamStacks();
   }
 }

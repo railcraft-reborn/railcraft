@@ -149,18 +149,17 @@ public final class CartUtil {
    *
    * @return speed
    */
-  public static double getCartSpeedUncapped(AbstractMinecartEntity cart) {
-    return Math.sqrt(getCartSpeedUncappedSquared(cart));
+  public static double getCartSpeedUncapped(Vector3d deltaMovement) {
+    return Math.sqrt(getCartSpeedUncappedSquared(deltaMovement));
   }
 
-  public static double getCartSpeedUncappedSquared(AbstractMinecartEntity cart) {
-    Vector3d deltaMovement = cart.getDeltaMovement();
+  public static double getCartSpeedUncappedSquared(Vector3d deltaMovement) {
     return deltaMovement.x() * deltaMovement.x() + deltaMovement.z() * deltaMovement.z();
   }
 
-  public static boolean cartVelocityIsLessThan(AbstractMinecartEntity cart, float vel) {
-    return Math.abs(cart.getDeltaMovement().x()) < vel
-        && Math.abs(cart.getDeltaMovement().z()) < vel;
+  public static boolean cartVelocityIsLessThan(Vector3d deltaMovement, float velocity) {
+    return Math.abs(deltaMovement.x()) < velocity
+        && Math.abs(deltaMovement.z()) < velocity;
   }
 
   private CartUtil() {}

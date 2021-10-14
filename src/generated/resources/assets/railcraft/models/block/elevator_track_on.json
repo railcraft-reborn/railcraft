@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/template_elevator_track",
+  "textures": {
+    "texture": "railcraft:block/elevator_track_on"
+  }
+}

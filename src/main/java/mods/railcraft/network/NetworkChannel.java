@@ -6,6 +6,7 @@ import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.network.play.PacketEffect;
 import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
+import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
 import mods.railcraft.network.play.SetMenuStringMessage;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
@@ -93,6 +94,13 @@ public enum NetworkChannel {
           .encoder(SetSwitchTrackMotorAttributesMessage::encode)
           .decoder(SetSwitchTrackMotorAttributesMessage::decode)
           .consumer(SetSwitchTrackMotorAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetItemManipulatorAttributesMessage.class, 0x0B,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetItemManipulatorAttributesMessage::encode)
+          .decoder(SetItemManipulatorAttributesMessage::decode)
+          .consumer(SetItemManipulatorAttributesMessage::handle)
           .add();
     }
   };

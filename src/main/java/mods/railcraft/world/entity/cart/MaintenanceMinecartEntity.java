@@ -18,6 +18,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.state.properties.RailShape;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -132,7 +133,7 @@ public abstract class MaintenanceMinecartEntity extends RailcraftMinecartEntity 
     return trackShape;
   }
 
-  public enum Mode implements ButtonState<Mode> {
+  public enum Mode implements ButtonState<Mode>, IStringSerializable {
 
     SERVICE("service", 0.1F),
     TRANSPORT("transport", 0.4F);

@@ -32,13 +32,13 @@ public enum SpeedController implements TrackType.EventHandler {
       return 0.36D;
     }
 
-    private boolean isDerailing(
-        AbstractMinecartEntity cart) {
-      if (CartUtil.getCartSpeedUncapped(cart) > 0.35F && MiscTools.RANDOM.nextInt(500) == 250) {
+    private boolean isDerailing(AbstractMinecartEntity cart) {
+      if (CartUtil.getCartSpeedUncapped(cart.getDeltaMovement()) > 0.35F
+          && MiscTools.RANDOM.nextInt(500) == 250) {
         return true;
       }
       return Train.streamCarts(cart)
-        .anyMatch(Railcraft.getInstance().getMinecartHandler()::isDerailed);
+          .anyMatch(Railcraft.getInstance().getMinecartHandler()::isDerailed);
     }
 
     @Override

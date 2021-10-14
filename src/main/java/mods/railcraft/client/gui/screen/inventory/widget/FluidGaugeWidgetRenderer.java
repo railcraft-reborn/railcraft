@@ -63,7 +63,7 @@ public class FluidGaugeWidgetRenderer extends WidgetRenderer<FluidGaugeWidget> {
     }
 
     RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-    gui.bindTexture(gui.getTextureLocation());
+    gui.bindTexture(gui.getWidgetsTexture());
     int mask = (int) Math.floor(this.widget.h * scale);
     if (mask == 0 && fluidStack.getAmount() > 0) {
       mask = 1;

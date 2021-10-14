@@ -41,7 +41,8 @@ public class SetMenuStringMessage {
   private static void processOnClient(SetMenuStringMessage message) {
     Minecraft mc = Minecraft.getInstance();
     if (mc.player.containerMenu instanceof RailcraftMenu
-        && mc.player.containerMenu.containerId == message.windowId)
+        && mc.player.containerMenu.containerId == message.windowId) {
       ((RailcraftMenu) mc.player.containerMenu).updateString(message.dataId, message.str);
+    }
   }
 }

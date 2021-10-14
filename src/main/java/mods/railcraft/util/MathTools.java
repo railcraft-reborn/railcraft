@@ -15,7 +15,7 @@ import net.minecraft.util.math.vector.Vector3i;
 public final class MathTools {
 
   public static final UUID NIL_UUID = new UUID(0, 0);
-  private static final ThreadLocalRandom RAND = ThreadLocalRandom.current();
+  private static final ThreadLocalRandom random = ThreadLocalRandom.current();
 
   public static boolean isNil(UUID uuid) {
     return NIL_UUID.equals(uuid);
@@ -56,15 +56,15 @@ public final class MathTools {
   }
 
   public static double gaussian() {
-    return RAND.nextGaussian();
+    return random.nextGaussian();
   }
 
   public static float nextFloat() {
-    return RAND.nextFloat();
+    return random.nextFloat();
   }
 
   public static float signedFloat() {
-    return signedFloat(RAND);
+    return signedFloat(random);
   }
 
   public static float signedFloat(Random random) {
@@ -72,7 +72,7 @@ public final class MathTools {
   }
 
   public static int unit() {
-    return unit(RAND);
+    return unit(random);
   }
 
   /**

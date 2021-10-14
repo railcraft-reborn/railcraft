@@ -20,8 +20,8 @@ public class CokeOvenMenu extends Container {
   private final IInventory cokeOvenInventory;
   private static final int INTERNAL_CONTAINER_SLOTS = 2;
 
-  public CokeOvenMenu(int containerID, PlayerInventory playerInventory) {
-    this(containerID, playerInventory, new Inventory(INTERNAL_CONTAINER_SLOTS), new IntArray(3));
+  public CokeOvenMenu(int id, PlayerInventory inventory) {
+    this(id, inventory, new Inventory(INTERNAL_CONTAINER_SLOTS), new IntArray(3));
   }
 
   /**

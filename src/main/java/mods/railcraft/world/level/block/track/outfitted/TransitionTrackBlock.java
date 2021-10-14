@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.entity.cart.CartTools;
@@ -44,8 +45,8 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
       return;
     }
 
-    final Vector3d motion = cart.getDeltaMovement();
-    final double speed = motion.length();
+    final Vector3d deltaMovement = cart.getDeltaMovement();
+    final double speed = CartUtil.getCartSpeedUncapped(deltaMovement);
 
     if (speed <= BOOST_THRESHOLD) {
       CartTools.startBoost(cart, pos, railShape, START_BOOST);
@@ -54,13 +55,13 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
     final boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(cart);
     if (TrackShapeHelper.isNorthSouth(railShape)) {
-      if (reversed ^ motion.z() < 0) {
+      if (reversed ^ deltaMovement.z() < 0) {
         boostCartSpeed(cart, speed);
       } else {
         slowOrNormalCartSpeed(cart, highSpeed);
       }
     } else {
-      if (!reversed ^ motion.x() < 0) {
+      if (!reversed ^ deltaMovement.x() < 0) {
         boostCartSpeed(cart, speed);
       } else {
         slowOrNormalCartSpeed(cart, highSpeed);

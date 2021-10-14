@@ -22,12 +22,18 @@ public final class CartPredicate {
   public static final CartPredicate ANY = new CartPredicate(null, null, null, null, null, null,
       FloatBound.ANY, EntityPredicate.ANY);
 
-  final @Nullable Boolean highSpeed;
-  final @Nullable Boolean launched;
-  final @Nullable Boolean elevator;
-  final @Nullable Boolean derail;
-  final @Nullable Boolean canMount;
-  final @Nullable Boolean checksOwner;
+  @Nullable
+  final Boolean highSpeed;
+  @Nullable
+  final Boolean launched;
+  @Nullable
+  final Boolean elevator;
+  @Nullable
+  final Boolean derail;
+  @Nullable
+  final Boolean canMount;
+  @Nullable
+  final Boolean checksOwner;
 
   final FloatBound speed;
   final EntityPredicate parent;
@@ -46,33 +52,34 @@ public final class CartPredicate {
   }
 
   public boolean test(ServerPlayerEntity player, AbstractMinecartEntity cart) {
-    if (highSpeed != null && HighSpeedTools.isTravellingHighSpeed(cart) != highSpeed) {
+    if (this.highSpeed != null && HighSpeedTools.isTravellingHighSpeed(cart) != this.highSpeed) {
       return false;
     }
-    if (launched != null
-        && Railcraft.getInstance().getLinkageHandler().isLaunched(cart) != launched) {
+    if (this.launched != null
+        && Railcraft.getInstance().getLinkageHandler().isLaunched(cart) != this.launched) {
       return false;
     }
-    if (elevator != null
-        && Railcraft.getInstance().getLinkageHandler().isOnElevator(cart) != elevator) {
+    if (this.elevator != null
+        && Railcraft.getInstance().getLinkageHandler().isOnElevator(cart) != this.elevator) {
       return false;
     }
-    if (derail != null && Railcraft.getInstance().getMinecartHandler().isDerailed(cart) != derail) {
+    if (this.derail != null
+        && Railcraft.getInstance().getMinecartHandler().isDerailed(cart) != this.derail) {
       return false;
     }
-    if (canMount != null
-        && Railcraft.getInstance().getMinecartHandler().canMount(cart) != canMount) {
+    if (this.canMount != null
+        && Railcraft.getInstance().getMinecartHandler().canMount(cart) != this.canMount) {
       return false;
     }
-    if (checksOwner != null && cart instanceof Ownable
+    if (this.checksOwner != null && cart instanceof Ownable
         && ((Ownable) cart).getOwner().map(owner -> !owner.equals(player.getGameProfile()))
             .orElse(false)) {
       return false;
     }
-    if (!speed.matchesSqr(CartUtil.getCartSpeedUncappedSquared(cart))) {
+    if (!this.speed.matchesSqr(CartUtil.getCartSpeedUncappedSquared(cart.getDeltaMovement()))) {
       return false;
     }
-    return parent.matches(player, cart);
+    return this.parent.matches(player, cart);
   }
 
   private void addOptionalBoolean(JsonObject json, String name, @Nullable Boolean value) {

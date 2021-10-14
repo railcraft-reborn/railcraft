@@ -37,10 +37,17 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
   private static final VoxelShape BASE_SHAPE = box(4.0D, 0.0D, 4.0D, 12.0D, 5.0D, 12.0D);
-  private static final VoxelShape WINGS_SHAPE = box(6.0D, 0.0D, 0.0D, 10.0D, 3.0D, 16.0D);
   private static final VoxelShape POST_SHAPE = box(7.0D, 5.0D, 7.0D, 9.0D, 8.0D, 9.0D);
+  private static final VoxelShape NORTH_SOUTH_WINGS_SHAPE =
+      box(6.0D, 0.0D, 0.0D, 10.0D, 3.0D, 16.0D);
+  private static final VoxelShape EAST_WEST_WINGS_SHAPE =
+      box(0.0D, 0.0D, 6.0D, 16.0D, 3.0D, 10.0D);
 
-  private static final VoxelShape SHAPE = VoxelShapes.or(BASE_SHAPE, WINGS_SHAPE, POST_SHAPE);
+  private static final VoxelShape NORTH_SOUTH_SHAPE =
+      VoxelShapes.or(BASE_SHAPE, NORTH_SOUTH_WINGS_SHAPE, POST_SHAPE);
+  private static final VoxelShape EAST_WEST_SHAPE =
+      VoxelShapes.or(BASE_SHAPE, EAST_WEST_WINGS_SHAPE, POST_SHAPE);
+
 
   public SwitchTrackActuatorBlock(Properties properties) {
     super(properties);
@@ -96,7 +103,9 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
   @Override
   public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos,
       ISelectionContext context) {
-    return SHAPE;
+    return state.getValue(FACING).getAxis() == Direction.Axis.Z
+        ? NORTH_SOUTH_SHAPE
+        : EAST_WEST_SHAPE;
   }
 
   @Override

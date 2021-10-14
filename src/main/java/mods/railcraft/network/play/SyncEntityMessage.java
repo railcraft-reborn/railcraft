@@ -33,7 +33,8 @@ public class SyncEntityMessage {
     return new SyncEntityMessage(in.readVarInt(), new PacketBuffer(in.readBytes(in.readVarInt())));
   }
 
-  public void handle(Supplier<NetworkEvent.Context> ctx) {
-    NetworkUtil.getEntity(ctx.get(), this.entityId, Syncable.class).readSyncData(data);
+  public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+    NetworkUtil.getEntity(ctx.get(), this.entityId, Syncable.class).readSyncData(this.data);
+    return true;
   }
 }

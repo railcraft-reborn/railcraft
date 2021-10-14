@@ -12,9 +12,9 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class CokeOvenBricks extends Block {
+public class CokeOvenBricksBlock extends Block {
 
-  public CokeOvenBricks(Properties properties) {
+  public CokeOvenBricksBlock(Properties properties) {
     super(properties);
   }
 

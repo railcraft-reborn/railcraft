@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "railcraft:block/advanced_item_loader_down"
+    },
+    "facing=east": {
+      "model": "railcraft:block/advanced_item_loader",
+      "y": 90,
+      "x": 0
+    },
+    "facing=north": {
+      "model": "railcraft:block/advanced_item_loader",
+      "y": 0,
+      "x": 0
+    },
+    "facing=south": {
+      "model": "railcraft:block/advanced_item_loader",
+      "y": 180,
+      "x": 0
+    },
+    "facing=up": {
+      "model": "railcraft:block/advanced_item_loader_up"
+    },
+    "facing=west": {
+      "model": "railcraft:block/advanced_item_loader",
+      "y": 270,
+      "x": 0
+    }
+  }
+}

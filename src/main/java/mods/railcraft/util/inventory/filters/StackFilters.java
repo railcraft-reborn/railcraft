@@ -12,11 +12,12 @@ import mods.railcraft.util.BallastRegistry;
 import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.inventory.IInventoryComposite;
+import mods.railcraft.util.inventory.IInventoryManipulator;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.StemBlock;
-import net.minecraft.entity.item.minecart.MinecartEntity;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -76,15 +77,16 @@ public enum StackFilters implements Predicate<ItemStack> {
   // },
   FLUID_CONTAINER {
     @Override
-    protected boolean testType(ItemStack stack) {
+    protected boolean testType(
+        ItemStack stack) {
       return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
     }
   },
   FEED {
     @Override
-    protected boolean testType(ItemStack stack) {
-      return stack.getItem().getFoodProperties() != null
-          || stack.getItem() == Items.WHEAT
+    protected boolean testType(
+        ItemStack stack) {
+      return stack.getItem().getFoodProperties() != null || stack.getItem() == Items.WHEAT
           || stack.getItem() instanceof BlockItem
               && ((BlockItem) stack.getItem()).getBlock() instanceof StemBlock;
     }
@@ -102,7 +104,8 @@ public enum StackFilters implements Predicate<ItemStack> {
   },
   RAW_METAL {
     @Override
-    protected boolean testType(ItemStack stack) {
+    protected boolean testType(
+        ItemStack stack) {
       return RailcraftTags.Items.METAL.contains(stack.getItem());
     }
   };
@@ -156,14 +159,15 @@ public enum StackFilters implements Predicate<ItemStack> {
    * Matches against the provided Inventory. If the Item class extends IFilterItem then it will pass
    * the check to the item.
    */
-  public static Predicate<ItemStack> anyMatch(final IInventoryComposite inv) {
+  public static Predicate<ItemStack> anyMatch(final IInventoryManipulator inv) {
     return stack -> inv.streamStacks().anyMatch(f -> InvTools.matchesFilter(f, stack));
   }
 
   /**
    * Matches against the provided ItemStacks.
    *
-   * <p>If no ItemStacks are provided to match against, it returns true.
+   * <p>
+   * If no ItemStacks are provided to match against, it returns true.
    */
   public static Predicate<ItemStack> anyOf(final ItemStack... stacks) {
     return anyOf(Arrays.asList(stacks));
@@ -172,7 +176,8 @@ public enum StackFilters implements Predicate<ItemStack> {
   /**
    * Matches against the provided ItemStacks.
    *
-   * <p>If no ItemStacks are provided to match against, it returns true.
+   * <p>
+   * If no ItemStacks are provided to match against, it returns true.
    */
   public static Predicate<ItemStack> anyOf(final Collection<ItemStack> stacks) {
     return stack -> stacks.isEmpty() || stacks.stream().allMatch(ItemStack::isEmpty)
@@ -186,8 +191,9 @@ public enum StackFilters implements Predicate<ItemStack> {
   /**
    * Matches only if the given ItemStack does not match any of the provided ItemStacks.
    *
-   * <p>Returns false if the ItemStack being matched is null and true if the stacks to match
-   * against is empty/nulled.
+   * <p>
+   * Returns false if the ItemStack being matched is null and true if the stacks to match against is
+   * empty/nulled.
    */
   public static Predicate<ItemStack> noneOf(final ItemStack... stacks) {
     return noneOf(Arrays.asList(stacks));
@@ -196,8 +202,9 @@ public enum StackFilters implements Predicate<ItemStack> {
   /**
    * Matches only if the given ItemStack does not match any of the provided ItemStacks.
    *
-   * <p>Returns false if the ItemStack being matched is null and true if the stacks to match
-   * against is empty/nulled.
+   * <p>
+   * Returns false if the ItemStack being matched is null and true if the stacks to match against is
+   * empty/nulled.
    */
   public static Predicate<ItemStack> noneOf(final Collection<ItemStack> stacks) {
     return stack -> {
@@ -238,7 +245,7 @@ public enum StackFilters implements Predicate<ItemStack> {
   /**
    * Matches if the ItemStack matches the given cart.
    */
-  public static Predicate<ItemStack> isCart(@Nullable final MinecartEntity cart) {
+  public static Predicate<ItemStack> isCart(@Nullable final AbstractMinecartEntity cart) {
     return stack -> {
       if (stack.isEmpty()) {
         return false;

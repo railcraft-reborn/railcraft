@@ -14,6 +14,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -68,7 +69,7 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     this.lock = data.readEnum(Lock.class);
   }
 
-  public enum Lock implements ButtonState<Lock> {
+  public enum Lock implements ButtonState<Lock>, IStringSerializable {
 
     UNLOCKED("unlocked", ButtonTexture.UNLOCKED_BUTTON),
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON);

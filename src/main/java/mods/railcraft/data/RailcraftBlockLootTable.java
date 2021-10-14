@@ -11,6 +11,11 @@ public class RailcraftBlockLootTable extends BlockLootTables {
 
   @Override
   protected void addTables() {
+    this.dropSelf(RailcraftBlocks.ITEM_LOADER.get());
+    this.dropSelf(RailcraftBlocks.ITEM_UNLOADER.get());
+    this.dropSelf(RailcraftBlocks.ADVANCED_ITEM_LOADER.get());
+    this.dropSelf(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get());
+
     /* === tracks === */
     this.dropSelf(RailcraftBlocks.ABANDONED_TRACK.get());
     this.dropOther(RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),

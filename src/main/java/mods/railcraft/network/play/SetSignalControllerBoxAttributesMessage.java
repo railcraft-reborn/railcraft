@@ -33,12 +33,13 @@ public class SetSignalControllerBoxAttributesMessage {
         in.readEnum(SignalAspect.class), in.readEnum(SignalAspect.class));
   }
 
-  public void handle(Supplier<NetworkEvent.Context> context) {
+  public boolean handle(Supplier<NetworkEvent.Context> context) {
     ServerWorld level = context.get().getSender().getLevel();
     LevelUtil.getBlockEntity(level, this.blockPos, SignalControllerBoxBlockEntity.class)
         .ifPresent(signalBox -> {
           signalBox.setDefaultAspect(this.defaultAspect);
           signalBox.setPoweredAspect(this.poweredAspect);
         });
+    return true;
   }
 }

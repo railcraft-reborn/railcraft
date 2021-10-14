@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "railcraft:block/item_loader_top",
+    "bottom": "railcraft:block/item_loader_bottom",
+    "side": "railcraft:block/item_loader_side"
+  }
+}
