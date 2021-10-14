@@ -2,7 +2,7 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.ChargeBatteryIndicator;
 import mods.railcraft.gui.widget.GaugeWidget;
-import mods.railcraft.world.entity.cart.ElectricLocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotives.ElectricLocomotiveEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketBuffer;

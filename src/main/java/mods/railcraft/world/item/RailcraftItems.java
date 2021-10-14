@@ -2,10 +2,10 @@ package mods.railcraft.world.item;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.cart.CreativeLocomotiveEntity;
-import mods.railcraft.world.entity.cart.ElectricLocomotiveEntity;
-import mods.railcraft.world.entity.cart.SteamLocomotiveEntity;
 import mods.railcraft.world.entity.cart.TrackLayerMinecartEntity;
 import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
+import mods.railcraft.world.entity.cart.locomotives.ElectricLocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotives.SteamLocomotiveEntity;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.inventory.EquipmentSlotType;

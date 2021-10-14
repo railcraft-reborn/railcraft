@@ -1,16 +1,20 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.cart.locomotives;
 
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
+
 import javax.annotation.Nullable;
-import mods.railcraft.api.charge.CapabilitiesCharge;
+
+import mods.railcraft.api.charge.CapabilityCharge;
+import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.api.charge.IBatteryCart;
 import mods.railcraft.battery.CartBattery;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
+import mods.railcraft.world.entity.cart.LocomotiveEntity;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
@@ -34,14 +38,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 /**
+ * The electric locomotive.
  * @author CovertJaguar (https://www.railcraft.info/)
  */
 public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISidedInventory {
 
-  private static final int CHARGE_USE_PER_TICK = 20;
+  // as of 2021 all of the numbers have been increased due to RF/FE usage
+  private static final int CHARGE_USE_PER_TICK = 80;
   private static final int FUEL_PER_REQUEST = 1;
   private static final int CHARGE_USE_PER_REQUEST = CHARGE_USE_PER_TICK * FUEL_PER_REQUEST;
-  public static final float MAX_CHARGE = 5000.0F;
+  public static final int MAX_CHARGE = 20000;
   private static final int SLOT_TICKET = 0;
   private static final int[] SLOTS = InvTools.buildSlotArray(0, 1);
 
@@ -50,8 +56,8 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
 
   private final IInventory ticketInventory =
       new InventoryMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
-  private final LazyOptional<IBatteryCart> cartBattery =
-      LazyOptional.of(() -> new CartBattery(IBatteryCart.Type.USER, MAX_CHARGE));
+  private final LazyOptional<CartBattery> cartBattery =
+      LazyOptional.of(() -> new CartBattery(IBatteryCart.Type.USER, MAX_CHARGE, 0, 10000));
 
   public ElectricLocomotiveEntity(EntityType<?> type, World world) {
     super(type, world);
@@ -89,6 +95,7 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
 
   @Override
   public int retrieveFuel() {
+    // Picks up fuel from us or other cells on this train
     return this.cartBattery
         .filter(cart -> cart.getCharge() > CHARGE_USE_PER_REQUEST)
         .map(cart -> {
@@ -161,29 +168,27 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
     }
   }
 
-  public IBatteryCart getBatteryCart() {
-    return this.getCapability(CapabilitiesCharge.CART_BATTERY)
+  public ChargeStorage getBatteryCart() {
+    return this.getCapability(CapabilityCharge.CART_BATTERY)
         .orElseThrow(IllegalStateException::new);
   }
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    if (capability == CapabilitiesCharge.CART_BATTERY) {
-      return this.cartBattery.cast();
-    }
-    return super.getCapability(capability, facing);
+    super.getCapability(capability, facing);
+    return CapabilityCharge.CART_BATTERY.orEmpty(capability, this.cartBattery.cast());
   }
 
   @Override
   public void addAdditionalSaveData(CompoundNBT data) {
     super.addAdditionalSaveData(data);
-    this.cartBattery.ifPresent(cart -> data.put("battery", cart.serializeNBT()));
+    // this.cartBattery.ifPresent(cart -> data.put("battery", cart.serializeNBT()));
   }
 
   @Override
   public void readAdditionalSaveData(CompoundNBT data) {
     super.readAdditionalSaveData(data);
-    this.cartBattery.ifPresent(cart -> cart.deserializeNBT(data.getCompound("battery")));
+    // this.cartBattery.ifPresent(cart -> cart.deserializeNBT(data.getCompound("battery")));
   }
 
   @Override

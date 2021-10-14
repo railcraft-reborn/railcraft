@@ -2,11 +2,11 @@ package mods.railcraft.world.entity;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.cart.CreativeLocomotiveEntity;
-import mods.railcraft.world.entity.cart.ElectricLocomotiveEntity;
-import mods.railcraft.world.entity.cart.SteamLocomotiveEntity;
 import mods.railcraft.world.entity.cart.TrackLayerMinecartEntity;
 import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
 import mods.railcraft.world.entity.cart.TunnelBoreEntity;
+import mods.railcraft.world.entity.cart.locomotives.ElectricLocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotives.SteamLocomotiveEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;

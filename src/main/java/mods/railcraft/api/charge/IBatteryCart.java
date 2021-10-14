@@ -51,12 +51,12 @@ public interface IBatteryCart extends ChargeStorage {
   /**
    * Returns the per-tick loss of charge in the cart battery.
    */
-  float getLosses();
+  int getLosses();
 
   /**
    * Returns the approximated average charge used in the last 25 ticks.
    */
-  float getDraw();
+  int getDraw();
 
   /**
    * Update the battery and tries to draw charge from other carts.

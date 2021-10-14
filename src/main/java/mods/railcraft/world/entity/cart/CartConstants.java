@@ -1,7 +1,7 @@
 package mods.railcraft.world.entity.cart;
 
 /**
- * @author CovertJaguar <https://www.railcraft.info>
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public class CartConstants {
 

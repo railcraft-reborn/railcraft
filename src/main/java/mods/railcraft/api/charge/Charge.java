@@ -83,13 +83,15 @@ import net.minecraft.world.World;
  * least once per restart, though not all at the same time. Research is being done on how difficult
  * it would be to persist nodes as well as batteries. But that is an enhancement for the future.
  *
- * <p>The unit of measurement used for Charge is based on IndustrialCraft2's Energy Units.
- * This means, ignoring efficiency losses, that 1 Charge equals 1 EU. This allows for
+ * <p>The unit of measurement used for Charge is now based on Forge Energy.
+ * This means, ignoring efficiency losses, that 1 Charge equals 1 FE/RF. This allows for
  * simple conversion between the two systems. However, as a simplification, Railcraft's Charge
  * lacks a concept of voltage. There are however plans for separate transmission and distribution
  * networks, which would result in similar needs for transformers to convert from one to the other.
  * You will see traces of these  new features scattered throughout this API.
  * The framework is in place, it just lacks the blocks themselves to make it work.
+ *
+ * <p>As of 2021, Charge changed from 1 Charge unit to 1 IC2 EU to 1 Charge unit to 1 FE/RF
  *
  * <p>Created by CovertJaguar on 10/19/2018 for Railcraft.
  *
@@ -150,6 +152,7 @@ public enum Charge {
 
     /**
      * The network is the primary means of interfacing with charge.
+     * There is one network per game world/dimentions.
      */
     default Network network(IWorld world) {
       return new Network() {};
@@ -232,8 +235,8 @@ public enum Charge {
      * @return amount removed, may be less than desiredAmount
      * @see Charge.IAccess#useCharge
      */
-    default double removeCharge(double amount, boolean simulate) {
-      return 0.0;
+    default int removeCharge(double amount, boolean simulate) {
+      return 0;
     }
 
     /**

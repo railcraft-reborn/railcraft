@@ -2,6 +2,8 @@ package mods.railcraft;
 
 import java.util.List;
 import java.util.UUID;
+
+import mods.railcraft.api.charge.CapabilityCharge;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.ForgeItemTagsProvider;
@@ -51,6 +53,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -87,6 +90,7 @@ public class Railcraft {
 
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+    modEventBus.addListener(this::preInit);
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
 
@@ -124,6 +128,10 @@ public class Railcraft {
 
   public static Railcraft getInstance() {
     return instance;
+  }
+
+  public void preInit(FMLCommonSetupEvent evt) {
+    CapabilityCharge.register();
   }
 
   private void handleGatherData(GatherDataEvent event) {

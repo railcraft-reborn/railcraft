@@ -1,11 +1,15 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.cart.locomotives;
 
 import javax.annotation.Nullable;
+
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
+import mods.railcraft.world.entity.cart.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.LocomotiveEntity.Mode;
+import mods.railcraft.world.entity.cart.LocomotiveEntity.Speed;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
@@ -37,6 +41,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
+ * The steam locomotive.
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
@@ -57,6 +62,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   protected final StandardTank waterTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 6) {
     @Override
     public int fill(FluidStack resource, FluidAction doFill) {
+      // handles boiler explotion
       return super.fill(onFillWater(resource), doFill);
     }
   }.setFilterFluid(() -> Fluids.WATER);
@@ -161,7 +167,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
         this.processState = FluidTools.processContainer(this.invWaterContainers,
             this.waterTank, ProcessType.DRAIN_ONLY, this.processState);
       }
-      return;
+      return; // particles should NOT run serverside (it's a waste)
     }
     // future information: renderYaw FACES at -x when at 0deg
     double rads = Math.toRadians(renderYaw);

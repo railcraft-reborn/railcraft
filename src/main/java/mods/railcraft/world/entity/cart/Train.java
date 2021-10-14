@@ -1,5 +1,8 @@
 package mods.railcraft.world.entity.cart;
 
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.MapMaker;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,13 +20,12 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import javax.annotation.Nullable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.MapMaker;
-import mods.railcraft.api.charge.CapabilitiesCharge;
+
+import mods.railcraft.api.charge.CapabilityCharge;
 import mods.railcraft.api.charge.IBatteryCart;
+import mods.railcraft.battery.CartBattery;
 import mods.railcraft.util.collections.Streams;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -39,8 +41,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
- * @author CovertJaguar <https://www.railcraft.info>
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public final class Train implements Iterable<AbstractMinecartEntity> {
 
@@ -88,8 +93,9 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
    * This function is NOT thread safe and will throw an error if called outside the server thread.
    */
   public static Optional<Train> get(@Nullable AbstractMinecartEntity cart) {
-    if (cart == null || cart.level.isClientSide())
+    if (cart == null || cart.level.isClientSide()) {
       return Optional.empty();
+    }
     Manager manager = getManager((ServerWorld) cart.level);
     Train train = manager.get(getTrainUUID(cart));
     if (train == null) {
@@ -123,8 +129,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   /**
-   * Will stream all carts in the train if on the server, or just the passed in cart if on the
-   * client.
+   * Will stream all carts in the train if on the server, or just the passed in
+   * cart if on the client.
    */
   public static Stream<AbstractMinecartEntity> streamCarts(AbstractMinecartEntity cart) {
     return get(cart).map(Train::stream).orElseGet(() -> Stream.of(cart));
@@ -140,12 +146,13 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return Train.get(cart).map(t -> t.size() > 1).orElse(false);
   }
 
-  public static boolean areInSameTrain(@Nullable AbstractMinecartEntity cart1,
-      @Nullable AbstractMinecartEntity cart2) {
-    if (cart1 == null || cart2 == null)
+  public static boolean areInSameTrain(@Nullable AbstractMinecartEntity cart1, @Nullable AbstractMinecartEntity cart2) {
+    if (cart1 == null || cart2 == null) {
       return false;
-    if (cart1 == cart2)
+    }
+    if (cart1 == cart2) {
       return true;
+    }
 
     UUID train1 = getTrainUUID(cart1);
     UUID train2 = getTrainUUID(cart2);
@@ -153,20 +160,23 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return train1 != null && Objects.equals(train1, train2);
   }
 
-  private static Optional<Train> getLongerTrain(AbstractMinecartEntity cart1,
-      AbstractMinecartEntity cart2) {
+  private static Optional<Train> getLongerTrain(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2) {
     Optional<Train> train1 = getExisting(cart1);
     Optional<Train> train2 = getExisting(cart2);
 
-    if (train1.equals(train2))
+    if (train1.equals(train2)) {
       return train1;
-    if (!train1.isPresent())
+    }
+    if (!train1.isPresent()) {
       return train2;
-    if (!train2.isPresent())
+    }
+    if (!train2.isPresent()) {
       return train1;
+    }
 
-    if (train1.get().size() >= train2.get().size())
+    if (train1.get().size() >= train2.get().size()) {
       return train1;
+    }
     return train2;
   }
 
@@ -196,12 +206,13 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   private void rebuild(@Nullable AbstractMinecartEntity prev, AbstractMinecartEntity next) {
-    if (prev == null || this.carts.getFirst() == prev.getUUID())
+    if (prev == null || this.carts.getFirst() == prev.getUUID()) {
       this.carts.addFirst(next.getUUID());
-    else if (carts.getLast() == prev.getUUID())
+    } else if (carts.getLast() == prev.getUUID()) {
       this.carts.addLast(next.getUUID());
-    else
+    } else {
       throw new IllegalStateException("Passed a non-null prev value on an empty train!");
+    }
 
     getExisting(next).filter(t -> t != this).ifPresent(Train::kill);
     this.addTrainTag(next);
@@ -209,11 +220,13 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     AbstractMinecartEntity linkA = LinkageManagerImpl.INSTANCE.getLinkedCartA(next);
     AbstractMinecartEntity linkB = LinkageManagerImpl.INSTANCE.getLinkedCartB(next);
 
-    if (linkA != null && linkA != prev && !this.contains(linkA))
+    if (linkA != null && linkA != prev && !this.contains(linkA)) {
       this.rebuild(next, linkA);
+    }
 
-    if (linkB != null && linkB != prev && !this.contains(linkB))
+    if (linkB != null && linkB != prev && !this.contains(linkB)) {
       this.rebuild(next, linkB);
+    }
   }
 
   private boolean isInvalid() {
@@ -272,16 +285,11 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   public Optional<LocomotiveEntity> getHeadLocomotive() {
-    return getEnds().stream()
-        .map(this::getCart)
-        .flatMap(Streams.ofType(LocomotiveEntity.class))
-        .findFirst();
+    return getEnds().stream().map(this::getCart).flatMap(Streams.ofType(LocomotiveEntity.class)).findFirst();
   }
 
   public Stream<AbstractMinecartEntity> stream() {
-    return safeCarts.stream()
-        .map(this::getCart)
-        .filter(Objects::nonNull);
+    return safeCarts.stream().map(this::getCart).filter(Objects::nonNull);
   }
 
   public <T extends AbstractMinecartEntity> Stream<T> stream(Class<T> cartClass) {
@@ -306,13 +314,12 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   public Optional<IItemHandlerModifiable> getItemHandler() {
-    List<IItemHandlerModifiable> cartHandlers = stream()
-        .flatMap(cart -> cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            .map(Stream::of).orElse(Stream.empty()))
-        .flatMap(Streams.ofType(IItemHandlerModifiable.class))
-        .collect(Collectors.toList());
-    if (cartHandlers.isEmpty())
+    List<IItemHandlerModifiable> cartHandlers = stream().flatMap(cart -> cart
+        .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(Stream::of).orElse(Stream.empty()))
+        .flatMap(Streams.ofType(IItemHandlerModifiable.class)).collect(Collectors.toList());
+    if (cartHandlers.isEmpty()) {
       return Optional.empty();
+    }
     return Optional.of(new CombinedInvWrapper(cartHandlers.toArray(new IItemHandlerModifiable[0])));
   }
 
@@ -330,17 +337,17 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
 
   private float calculateMaxSpeed() {
     double locoBoost = Math.max(0.0, getNumRunningLocomotives() - 1.0) * 0.075;
-    return (float) (double) stream()
-        .mapToDouble(c -> Math.min(c.getMaxCartSpeedOnRail(), softMaxSpeed(c) + locoBoost)).min()
-        .orElse(1.2F);
+    return (float) (double) stream().mapToDouble(c -> Math.min(c.getMaxCartSpeedOnRail(), softMaxSpeed(c) + locoBoost))
+        .min().orElse(1.2F);
   }
 
   private float softMaxSpeed(AbstractMinecartEntity cart) {
-    if (cart instanceof WeightedCart)
+    if (cart instanceof WeightedCart) {
       return ((WeightedCart) cart).softMaxSpeed();
-    return cart.getCapability(CapabilitiesCharge.CART_BATTERY)
-        .filter(bat -> bat.getType() != IBatteryCart.Type.USER)
-        .map(bat -> 0.03F).orElse(cart.getMaxCartSpeedOnRail());
+    }
+    return cart.getCapability(CapabilityCharge.CART_BATTERY)
+        .filter(bat -> ((CartBattery) bat).getType() != IBatteryCart.Type.USER).map(bat -> 0.03F)
+        .orElse(cart.getMaxCartSpeedOnRail());
   }
 
   private void setMaxSpeed(float trainSpeed) {
@@ -380,9 +387,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
 
   public enum State implements IStringSerializable {
 
-    STOPPED("stopped"),
-    IDLE("idle"),
-    NORMAL("normal");
+    STOPPED("stopped"), IDLE("idle"), NORMAL("normal");
 
     private static final Map<String, State> byName = Arrays.stream(values())
         .collect(Collectors.toMap(State::getSerializedName, Function.identity()));
@@ -427,11 +432,9 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     }
     UUID id = tag.getUUID("id");
     State state = State.getByName(tag.getString("state")).orElse(State.NORMAL);
-    List<UUID> carts = tag.getList("carts", Constants.NBT.TAG_INT_ARRAY).stream()
-        .map(NBTUtil::loadUUID)
+    List<UUID> carts = tag.getList("carts", Constants.NBT.TAG_INT_ARRAY).stream().map(NBTUtil::loadUUID)
         .collect(Collectors.toList());
-    Set<UUID> locks = tag.getList("locks", Constants.NBT.TAG_INT_ARRAY).stream()
-        .map(NBTUtil::loadUUID)
+    Set<UUID> locks = tag.getList("locks", Constants.NBT.TAG_INT_ARRAY).stream().map(NBTUtil::loadUUID)
         .collect(Collectors.toSet());
     return new Train(id, state, carts, locks);
   }
@@ -465,7 +468,6 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   public static final class Manager extends ForwardingMap<UUID, Train> {
-
 
     final World level;
     final SaveData data;
@@ -545,8 +547,9 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
       trains.clear();
       for (INBT each : nbt.getList("trains", Constants.NBT.TAG_COMPOUND)) {
         Train train = Train.readFromNBT((CompoundNBT) each);
-        if (train != null)
+        if (train != null) {
           trains.put(train.getId(), train);
+        }
       }
       logger.debug("Loaded {} trains", trains.size());
     }
