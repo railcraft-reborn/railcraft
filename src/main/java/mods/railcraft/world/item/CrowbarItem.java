@@ -42,17 +42,15 @@ public class CrowbarItem extends ToolItem implements Crowbar {
   private final Set<Class<? extends Block>> shiftRotations = new HashSet<>();
   private final Set<Class<? extends Block>> bannedRotations = new HashSet<>();
 
-  public CrowbarItem(float attackDamageIn, float attackSpeedIn, IItemTier tier,
-      Properties properties) {
-    super(
-        attackDamageIn, attackSpeedIn, tier,
+  public CrowbarItem(float attackDamage, float attackSpeed, IItemTier tier, Properties properties) {
+    super(attackDamage, attackSpeed, tier,
         Sets.newHashSet(Blocks.RAIL, Blocks.DETECTOR_RAIL, Blocks.POWERED_RAIL,
             Blocks.ACTIVATOR_RAIL),
         properties.addToolType(RailcraftToolTypes.CROWBAR, 2));
-    shiftRotations.add(LeverBlock.class);
-    shiftRotations.add(AbstractButtonBlock.class);
-    shiftRotations.add(ChestBlock.class);
-    bannedRotations.add(AbstractRailBlock.class);
+    this.shiftRotations.add(LeverBlock.class);
+    this.shiftRotations.add(AbstractButtonBlock.class);
+    this.shiftRotations.add(ChestBlock.class);
+    this.bannedRotations.add(AbstractRailBlock.class);
   }
 
   @Override
@@ -62,11 +60,11 @@ public class CrowbarItem extends ToolItem implements Crowbar {
   }
 
   private boolean isShiftRotation(Class<? extends Block> cls) {
-    return shiftRotations.stream().anyMatch(shift -> shift.isAssignableFrom(cls));
+    return this.shiftRotations.stream().anyMatch(shift -> shift.isAssignableFrom(cls));
   }
 
   private boolean isBannedRotation(Class<? extends Block> cls) {
-    return bannedRotations.stream().anyMatch(banned -> banned.isAssignableFrom(cls));
+    return this.bannedRotations.stream().anyMatch(banned -> banned.isAssignableFrom(cls));
   }
 
   @SuppressWarnings("deprecation")

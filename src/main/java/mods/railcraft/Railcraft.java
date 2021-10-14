@@ -98,7 +98,7 @@ public class Railcraft {
     RailcraftBlocks.BLOCKS.register(modEventBus);
     RailcraftItems.ITEMS.register(modEventBus);
     RailcraftBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
-    TrackTypes.TRACK_TYPES.register(modEventBus);
+    TrackTypes.trackTypes.register(modEventBus);
     RailcraftFluids.FLUIDS.register(modEventBus);
     RailcraftMenuTypes.MENU_TYPES.register(modEventBus);
     RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);

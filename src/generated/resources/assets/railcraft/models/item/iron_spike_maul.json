@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "railcraft:item/iron_spike_maul"
+  }
+}

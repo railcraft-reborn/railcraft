@@ -9,10 +9,11 @@ package mods.railcraft.api.item;
 
 import java.util.ArrayList;
 import java.util.List;
-import mods.railcraft.api.track.TrackType;
+import java.util.function.Supplier;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.properties.RailShape;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -31,25 +32,39 @@ public interface SpikeMaulTarget {
   /**
    * Returns true when the given state is your resulting state.
    *
-   * @param world The world
-   * @param pos The position
-   * @param state The block state
-   * @return True if the given state is the target's result
+   * @param blockState - the block state
+   * @param level - the level
+   * @param blockPos - the position
+   * @return {@code true} if it matches, {@code false} otherwise
    */
-  boolean matches(World world, BlockPos pos, BlockState state);
+  boolean matches(BlockState blockState, World level, BlockPos blockPos);
 
   /**
    * Returns true when you successfully set another state to your resulting state. Return false to
    * revert changes.
    *
-   * @param world The world
-   * @param pos The position
-   * @param state The block state
-   * @param player The player
-   * @param shape The rail direction
-   * @param trackType The track type
-   * @return If operation is successful
+   * @param context - the {@link ItemUseContext}
+   * @return {@code true} if successful, {@code false} otherwise
    */
-  boolean setToTarget(World world, BlockPos pos, BlockState state, PlayerEntity player,
-      RailShape shape, TrackType trackType);
+  boolean use(ItemUseContext context);
+
+  public class Simple implements SpikeMaulTarget {
+
+    private final Supplier<? extends Block> block;
+
+    public Simple(Supplier<? extends Block> block) {
+      this.block = block;
+    }
+
+    @Override
+    public boolean matches(BlockState blockState, World level, BlockPos blockPos) {
+      return blockState.is(this.block.get());
+    }
+
+    @Override
+    public boolean use(ItemUseContext context) {
+      return context.getLevel().setBlockAndUpdate(context.getClickedPos(),
+          this.block.get().getStateForPlacement(new BlockItemUseContext(context)));
+    }
+  }
 }

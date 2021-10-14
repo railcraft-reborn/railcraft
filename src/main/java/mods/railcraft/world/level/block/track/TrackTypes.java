@@ -23,21 +23,21 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 public class TrackTypes {
 
-  public static final DeferredRegister<TrackType> TRACK_TYPES =
+  public static final DeferredRegister<TrackType> trackTypes =
       DeferredRegister.create(TrackType.class, Railcraft.ID);
 
-  public static final Lazy<IForgeRegistry<TrackType>> REGISTRY =
-      Lazy.of(TRACK_TYPES.makeRegistry("track_types", RegistryBuilder::new));
+  public static final Lazy<IForgeRegistry<TrackType>> registry =
+      Lazy.of(trackTypes.makeRegistry("track_type", RegistryBuilder::new));
 
   public static final RegistryObject<TrackType> ABANDONED =
-      TRACK_TYPES.register("abandoned",
+      trackTypes.register("abandoned",
           () -> new TrackType.Builder(RailcraftBlocks.ABANDONED_TRACK)
               .setEventHandler(SpeedController.ABANDONED)
               .setMaxSupportDistance(2)
               .build());
 
   public static final RegistryObject<TrackType> ELECTRIC =
-      TRACK_TYPES.register("electric",
+      trackTypes.register("electric",
           () -> new TrackType.Builder(RailcraftBlocks.ELECTRIC_TRACK)
               .setEventHandler(
                   new CompositeHandler(CollisionHandler.ELECTRIC, SpeedController.IRON))
@@ -45,14 +45,14 @@ public class TrackTypes {
               .build());
 
   public static final RegistryObject<TrackType> HIGH_SPEED =
-      TRACK_TYPES.register("high_speed",
+      trackTypes.register("high_speed",
           () -> new TrackType.Builder(RailcraftBlocks.HIGH_SPEED_TRACK)
               .setEventHandler(SpeedController.HIGH_SPEED)
               .setHighSpeed(true)
               .build());
 
   public static final RegistryObject<TrackType> HIGH_SPEED_ELECTRIC =
-      TRACK_TYPES.register("high_speed_electric",
+      trackTypes.register("high_speed_electric",
           () -> new TrackType.Builder(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK)
               .setEventHandler(
                   new CompositeHandler(CollisionHandler.ELECTRIC, SpeedController.HIGH_SPEED))
@@ -61,19 +61,19 @@ public class TrackTypes {
               .build());
 
   public static final RegistryObject<TrackType> IRON =
-      TRACK_TYPES.register("iron",
+      trackTypes.register("iron",
           () -> new TrackType.Builder(() -> (AbstractRailBlock) Blocks.RAIL)
               .setEventHandler(SpeedController.IRON)
               .build());
 
   public static final RegistryObject<TrackType> REINFORCED =
-      TRACK_TYPES.register("reinforced",
+      trackTypes.register("reinforced",
           () -> new TrackType.Builder(RailcraftBlocks.REINFORCED_TRACK)
               .setEventHandler(SpeedController.REINFORCED)
               .build());
 
   public static final RegistryObject<TrackType> STRAP_IRON =
-      TRACK_TYPES.register("strap_iron",
+      trackTypes.register("strap_iron",
           () -> new TrackType.Builder(RailcraftBlocks.STRAP_IRON_TRACK)
               .setEventHandler(SpeedController.STRAP_IRON)
               .build());
