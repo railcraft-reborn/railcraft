@@ -16,7 +16,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE =
+  private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/item_manipulator.png");
 
   private final static ITextComponent FILTERS_TEXT =
@@ -71,6 +71,6 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
 
   @Override
   public ResourceLocation getWidgetsTexture() {
-    return WIDGETS_TEXTURE;
+    return WIDGETS_TEXTURE_LOCATION;
   }
 }

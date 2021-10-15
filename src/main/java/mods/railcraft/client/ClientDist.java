@@ -10,6 +10,7 @@ import mods.railcraft.client.gui.screen.SwitchTrackMotorScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenMenuScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
+import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
@@ -22,6 +23,8 @@ import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
 import mods.railcraft.client.renderer.blockentity.AnalogSignalControllerBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.BlockSignalRelayBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.DualSignalRenderer;
+import mods.railcraft.client.renderer.blockentity.FluidLoaderRenderer;
+import mods.railcraft.client.renderer.blockentity.FluidManipulatorRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalCapacitorBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalControllerBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalInterlockBoxRenderer;
@@ -125,6 +128,10 @@ public class ClientDist implements RailcraftDist {
         SignalSequencerBoxRenderer::new);
     ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get(),
         SignalInterlockBoxRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.FLUID_LOADER.get(),
+        FluidLoaderRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.FLUID_UNLOADER.get(),
+        FluidManipulatorRenderer::new);
 
     // === Menu Screens ===
 
@@ -140,7 +147,8 @@ public class ClientDist implements RailcraftDist {
         CokeOvenMenuScreen::new);
     ScreenManager.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(),
         ItemManipulatorScreen::new);
-
+    ScreenManager.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(),
+        FluidManipulatorScreen::new);
     // === Entity Renderers ===
 
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
@@ -198,6 +206,9 @@ public class ClientDist implements RailcraftDist {
       event.addSprite(AbstractSignalBoxRenderer.BOTTOM_TEXTURE_LOCATION);
       event.addSprite(AbstractSignalBoxRenderer.CONNECTED_SIDE_TEXTURE_LOCATION);
       event.addSprite(AbstractSignalBoxRenderer.SIDE_TEXTURE_LOCATION);
+      event.addSprite(FluidManipulatorRenderer.INTERIOR_TEXTURE_LOCATION);
+      event.addSprite(FluidLoaderRenderer.PIPE_END_TEXTURE_LOCATION);
+      event.addSprite(FluidLoaderRenderer.PIPE_SIDE_TEXTURE_LOCATION);
     }
   }
 

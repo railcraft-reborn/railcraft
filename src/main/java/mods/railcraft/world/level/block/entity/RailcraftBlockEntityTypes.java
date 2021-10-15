@@ -30,6 +30,18 @@ public class RailcraftBlockEntityTypes {
   public static final DeferredRegister<TileEntityType<?>> BLOCK_ENTITY_TYPES =
       DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Railcraft.ID);
 
+  public static final RegistryObject<TileEntityType<FluidLoaderBlockEntity>> FLUID_LOADER =
+      BLOCK_ENTITY_TYPES.register("fluid_loader",
+          () -> TileEntityType.Builder
+              .of(FluidLoaderBlockEntity::new, RailcraftBlocks.FLUID_LOADER.get())
+              .build(null));
+
+  public static final RegistryObject<TileEntityType<FluidUnloaderBlockEntity>> FLUID_UNLOADER =
+      BLOCK_ENTITY_TYPES.register("fluid_unloader",
+          () -> TileEntityType.Builder
+              .of(FluidUnloaderBlockEntity::new, RailcraftBlocks.FLUID_UNLOADER.get())
+              .build(null));
+
   public static final RegistryObject<TileEntityType<ItemLoaderBlockEntity>> ITEM_LOADER =
       BLOCK_ENTITY_TYPES.register("item_loader",
           () -> TileEntityType.Builder

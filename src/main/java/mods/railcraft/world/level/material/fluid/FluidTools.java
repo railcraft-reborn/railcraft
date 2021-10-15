@@ -12,7 +12,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.AdjacentBlockEntityCache;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
@@ -212,18 +211,22 @@ public final class FluidTools {
     }
   }
 
-  public static Collection<IFluidHandler> findNeighbors(AdjacentBlockEntityCache cache,
-      Predicate<? super TileEntity> filter, Direction... sides) {
+  public static Collection<IFluidHandler> findNeighbors(World level, BlockPos centrePos,
+      Predicate<? super TileEntity> filter, Direction... directions) {
     List<IFluidHandler> targets = new ArrayList<>();
-    for (Direction side : sides) {
-      TileEntity tile = cache.getTileOnSide(side);
-      if (tile == null)
+    for (Direction direction : directions) {
+      TileEntity blockEntity = level.getBlockEntity(centrePos.relative(direction));
+      if (blockEntity == null) {
         continue;
-      if (!TankManager.TANK_FILTER.apply(tile, side.getOpposite()))
+      }
+      if (!TankManager.TANK_FILTER.apply(blockEntity, direction.getOpposite())) {
         continue;
-      if (!filter.test(tile))
+      }
+      if (!filter.test(blockEntity)) {
         continue;
-      tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite())
+      }
+      blockEntity
+          .getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite())
           .ifPresent(targets::add);
     }
     return targets;

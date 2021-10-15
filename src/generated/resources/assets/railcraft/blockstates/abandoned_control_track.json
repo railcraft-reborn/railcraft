@@ -19,9 +19,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/control_track"
@@ -29,9 +29,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/control_track",
@@ -42,12 +42,12 @@
       "when": {
         "OR": [
           {
-            "shape": "north_south",
-            "powered": "true"
+            "powered": "true",
+            "shape": "north_south"
           },
           {
-            "shape": "north_south",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "north_south"
           }
         ]
       },
@@ -60,12 +60,12 @@
       "when": {
         "OR": [
           {
-            "shape": "east_west",
-            "powered": "true"
+            "powered": "true",
+            "shape": "east_west"
           },
           {
-            "shape": "east_west",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "east_west"
           }
         ]
       },
@@ -110,9 +110,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/control_track_raised_ne"
@@ -120,9 +120,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/control_track_raised_sw"
@@ -130,9 +130,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/control_track_raised_ne",
@@ -141,9 +141,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/control_track_raised_sw",
@@ -154,12 +154,12 @@
       "when": {
         "OR": [
           {
-            "shape": "ascending_north",
-            "powered": "true"
+            "powered": "true",
+            "shape": "ascending_north"
           },
           {
-            "shape": "ascending_north",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "ascending_north"
           }
         ]
       },
@@ -172,12 +172,12 @@
       "when": {
         "OR": [
           {
-            "shape": "ascending_south",
-            "powered": "true"
+            "powered": "true",
+            "shape": "ascending_south"
           },
           {
-            "shape": "ascending_south",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "ascending_south"
           }
         ]
       },
@@ -190,12 +190,12 @@
       "when": {
         "OR": [
           {
-            "shape": "ascending_east",
-            "powered": "true"
+            "powered": "true",
+            "shape": "ascending_east"
           },
           {
-            "shape": "ascending_east",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "ascending_east"
           }
         ]
       },
@@ -208,12 +208,12 @@
       "when": {
         "OR": [
           {
-            "shape": "ascending_west",
-            "powered": "true"
+            "powered": "true",
+            "shape": "ascending_west"
           },
           {
-            "shape": "ascending_west",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "ascending_west"
           }
         ]
       },

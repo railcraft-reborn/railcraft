@@ -19,9 +19,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "reversed": "false",
-        "one_way": "true"
+        "one_way": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/control_track"
@@ -29,9 +29,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "reversed": "true",
-        "one_way": "true"
+        "one_way": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/control_track",
@@ -40,9 +40,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "reversed": "false",
-        "one_way": "true"
+        "one_way": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/control_track",
@@ -51,9 +51,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "reversed": "true",
-        "one_way": "true"
+        "one_way": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/control_track",
@@ -63,9 +63,9 @@
     {
       "when": {
         "open": "false",
-        "shape": "north_south",
         "in_wall": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate",
@@ -75,9 +75,9 @@
     {
       "when": {
         "open": "false",
-        "shape": "north_south",
         "in_wall": "false",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate"
@@ -86,9 +86,9 @@
     {
       "when": {
         "open": "false",
-        "shape": "east_west",
         "in_wall": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate",
@@ -98,9 +98,9 @@
     {
       "when": {
         "open": "false",
-        "shape": "east_west",
         "in_wall": "false",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate",
@@ -110,9 +110,9 @@
     {
       "when": {
         "open": "true",
-        "shape": "north_south",
         "in_wall": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_open",
@@ -122,9 +122,9 @@
     {
       "when": {
         "open": "true",
-        "shape": "north_south",
         "in_wall": "false",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_open"
@@ -133,9 +133,9 @@
     {
       "when": {
         "open": "true",
-        "shape": "east_west",
         "in_wall": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_open",
@@ -145,9 +145,9 @@
     {
       "when": {
         "open": "true",
-        "shape": "east_west",
         "in_wall": "false",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_open",
@@ -157,9 +157,9 @@
     {
       "when": {
         "open": "false",
-        "shape": "north_south",
         "in_wall": "true",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall",
@@ -169,9 +169,9 @@
     {
       "when": {
         "open": "false",
-        "shape": "north_south",
         "in_wall": "true",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall"
@@ -180,9 +180,9 @@
     {
       "when": {
         "open": "false",
-        "shape": "east_west",
         "in_wall": "true",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall",
@@ -192,9 +192,9 @@
     {
       "when": {
         "open": "false",
-        "shape": "east_west",
         "in_wall": "true",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall",
@@ -204,9 +204,9 @@
     {
       "when": {
         "open": "true",
-        "shape": "north_south",
         "in_wall": "true",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall_open",
@@ -216,9 +216,9 @@
     {
       "when": {
         "open": "true",
-        "shape": "north_south",
         "in_wall": "true",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall_open"
@@ -227,9 +227,9 @@
     {
       "when": {
         "open": "true",
-        "shape": "east_west",
         "in_wall": "true",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall_open",
@@ -239,9 +239,9 @@
     {
       "when": {
         "open": "true",
-        "shape": "east_west",
         "in_wall": "true",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall_open",

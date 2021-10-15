@@ -65,15 +65,16 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
     packedLight = LightTexture.pack(signalAspect.getLampLight(), skyLight);
 
     this.signalAspectModel.clear();
+    this.signalAspectModel.setPackedLight(packedLight);
+    this.signalAspectModel.setPackedOverlay(packedOverlay);
     this.signalAspectModel.set(direction,
-        new CuboidModel.Face()
+        this.signalAspectModel.new Face()
             .setSprite(spriteGetter.apply(ASPECT_TEXTURE_LOCATIONS.get(signalAspect)))
-            .setSize(16).setPackedLight(packedLight).setPackedOverlay(packedOverlay));
+            .setSize(16));
 
     IVertexBuilder vertexBuilder =
         renderTypeBuffer.getBuffer(RenderType.entityCutout(PlayerContainer.BLOCK_ATLAS));
     CuboidModelRenderer.render(this.signalAspectModel, matrixStack, vertexBuilder, 0xFFFFFFFF,
-        FaceDisplay.FRONT,
-        false);
+        FaceDisplay.FRONT, false);
   }
 }

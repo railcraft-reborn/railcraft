@@ -1,11 +1,12 @@
 package mods.railcraft.client.util;
 
-import java.util.function.Function;
 import javax.annotation.Nullable;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.MissingTextureSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -14,107 +15,54 @@ import net.minecraftforge.fluids.FluidStack;
  */
 public class FluidRenderer {
 
-  // private static final Map<Fluid, int[]> flowingRenderCache = new HashMap<>();
-  // private static final Map<Fluid, int[]> stillRenderCache = new HashMap<>();
-  // public static final int DISPLAY_STAGES = 100;
+  private static final Minecraft minecraft = Minecraft.getInstance();
 
-  public enum FlowState {
+  private static final FluidRenderMap<Int2ObjectMap<CuboidModel>> cachedCenterFluids =
+      new FluidRenderMap<>();
+
+  public static final int STAGES = 100;
+
+  @Nullable
+  public static CuboidModel getFluidModel(FluidStack fluid, int stage) {
+    if (cachedCenterFluids.containsKey(fluid) && cachedCenterFluids.get(fluid).containsKey(stage)) {
+      return cachedCenterFluids.get(fluid).get(stage);
+    }
+
+    if (fluid.getFluid().getAttributes().getStillTexture(fluid) != null) {
+      CuboidModel model = new CuboidModel();
+      model.setAll(model.new Face()
+          .setSprite(FluidRenderer.getFluidTexture(fluid, FluidRenderer.FluidType.STILL)));
+
+      model.setMinX(0.01F);
+      model.setMinY(0.0F);
+      model.setMinZ(0.01F);
+
+      model.setMaxX(0.99F);
+      model.setMaxY(stage / (float) STAGES);
+      model.setMaxZ(0.99F);
+
+      cachedCenterFluids.computeIfAbsent(fluid, f -> new Int2ObjectOpenHashMap<>())
+          .put(stage, model);
+      return model;
+    }
+
+    return null;
+  }
+
+  public static TextureAtlasSprite getFluidTexture(FluidStack fluidStack,
+      FluidType type) {
+    Fluid fluid = fluidStack.getFluid();
+    ResourceLocation spriteLocation;
+    if (type == FluidType.STILL) {
+      spriteLocation = fluid.getAttributes().getStillTexture(fluidStack);
+    } else {
+      spriteLocation = fluid.getAttributes().getFlowingTexture(fluidStack);
+    }
+    return minecraft.getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(spriteLocation);
+  }
+
+  public enum FluidType {
     STILL,
     FLOWING
   }
-
-  private static @Nullable ResourceLocation findFluidTexture(@Nullable FluidStack fluidStack,
-      FlowState flowState) {
-    if (fluidStack == null)
-      return null;
-    return flowState == FlowState.FLOWING
-        ? fluidStack.getFluid().getAttributes().getFlowingTexture(fluidStack)
-        : fluidStack.getFluid().getAttributes().getStillTexture(fluidStack);
-  }
-
-  // public static boolean hasTexture(@Nullable FluidStack fluidStack, FlowState flowState) {
-  // if (fluidStack == null)
-  // return false;
-  // ResourceLocation location = findFluidTexture(fluidStack, flowState);
-  // return location != null;
-  // }
-  //
-  public static TextureAtlasSprite getFluidTexture(@Nullable FluidStack fluidStack,
-      FlowState flowState) {
-    Function<ResourceLocation, TextureAtlasSprite> textureAtlas =
-        Minecraft.getInstance().getTextureAtlas(getFluidSheet(fluidStack));
-    if (fluidStack == null)
-      return textureAtlas.apply(MissingTextureSprite.getLocation());
-    ResourceLocation location = findFluidTexture(fluidStack, flowState);
-    return textureAtlas.apply(location);
-  }
-
-  @SuppressWarnings("deprecation")
-  public static ResourceLocation getFluidSheet(@Nullable FluidStack fluidStack) {
-    return AtlasTexture.LOCATION_BLOCKS;
-  }
-
-  // @Nullable
-  // public static ResourceLocation setupFluidTexture(@Nullable FluidStack fluidStack, FlowState
-  // flowState, CubeRenderer.RenderInfo renderInfo) {
-  // if (fluidStack == null)
-  // return null;
-  // TextureAtlasSprite capTex = getFluidTexture(fluidStack, FlowState.STILL);
-  // TextureAtlasSprite sideTex = getFluidTexture(fluidStack, flowState);
-  // renderInfo.setTexture(EnumFacing.UP, capTex);
-  // renderInfo.setTexture(EnumFacing.DOWN, capTex);
-  // for (EnumFacing side : EnumFacing.HORIZONTALS) {
-  // renderInfo.setTexture(side, sideTex);
-  // }
-  // return getFluidSheet(fluidStack);
-  // }
-
-  // public static void setColorForFluid(FluidStack fluidStack) {
-  // RenderTools.setColor(fluidStack.getFluid().getColor(fluidStack));
-  // }
-
-  // @Deprecated
-  // public static int[] getLiquidDisplayLists(FluidStack fluidStack) {
-  // return getLiquidDisplayLists(fluidStack, FlowState.STILL);
-  // }
-  //
-  // @Deprecated // broken
-  // public static int[] getLiquidDisplayLists(FluidStack fluidStack, FlowState flowState) {
-  // Map<Fluid, int[]> cache = flowState == FlowState.FLOWING ? flowingRenderCache :
-  // stillRenderCache;
-  // int[] displayLists = cache.get(fluidStack.getFluid());
-  // if (displayLists != null)
-  // return displayLists;
-  //
-  // displayLists = new int[DISPLAY_STAGES];
-  //
-  // CubeRenderer.RenderInfo renderInfo = new CubeRenderer.RenderInfo();
-  //
-  // setupFluidTexture(fluidStack, flowState, renderInfo);
-  //
-  // OpenGL.glDisable(GL11.GL_LIGHTING);
-  // OpenGL.glDisable(GL11.GL_BLEND);
-  // OpenGL.glDisable(GL11.GL_CULL_FACE);
-  // for (int s = 0; s < DISPLAY_STAGES; ++s) {
-  // displayLists[s] = GLAllocation.generateDisplayLists(1);
-  // GL11.glNewList(displayLists[s], GL11.GL_COMPILE);
-  //
-  // renderInfo.boundingBox = AABBFactory.start().box().setMaxY((double) s / (double)
-  // DISPLAY_STAGES).grow(-0.01).build();
-  //
-  // CubeRenderer.render(renderInfo);
-  //
-  // GL11.glEndList();
-  // }
-  //
-  // OpenGL.glColor4f(1, 1, 1, 1);
-  // OpenGL.glEnable(GL11.GL_CULL_FACE);
-  // OpenGL.glEnable(GL11.GL_BLEND);
-  // OpenGL.glEnable(GL11.GL_LIGHTING);
-  //
-  // cache.put(fluidStack.getFluid(), displayLists);
-  //
-  // return displayLists;
-  // }
-
 }

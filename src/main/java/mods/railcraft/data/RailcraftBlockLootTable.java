@@ -11,6 +11,8 @@ public class RailcraftBlockLootTable extends BlockLootTables {
 
   @Override
   protected void addTables() {
+    this.dropSelf(RailcraftBlocks.FLUID_LOADER.get());
+    this.dropSelf(RailcraftBlocks.FLUID_UNLOADER.get());
     this.dropSelf(RailcraftBlocks.ITEM_LOADER.get());
     this.dropSelf(RailcraftBlocks.ITEM_UNLOADER.get());
     this.dropSelf(RailcraftBlocks.ADVANCED_ITEM_LOADER.get());

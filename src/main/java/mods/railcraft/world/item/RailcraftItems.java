@@ -43,6 +43,16 @@ public class RailcraftItems {
         }
       };
 
+  public static final RegistryObject<Item> FLUID_LOADER =
+      ITEMS.register("fluid_loader",
+          () -> new BlockItem(RailcraftBlocks.FLUID_LOADER.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> FLUID_UNLOADER =
+      ITEMS.register("fluid_unloader",
+          () -> new BlockItem(RailcraftBlocks.FLUID_UNLOADER.get(),
+              new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> ADVANCED_ITEM_LOADER =
       ITEMS.register("advanced_item_loader",
           () -> new BlockItem(RailcraftBlocks.ADVANCED_ITEM_LOADER.get(),

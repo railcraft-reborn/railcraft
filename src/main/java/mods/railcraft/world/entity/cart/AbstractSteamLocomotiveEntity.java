@@ -2,7 +2,7 @@ package mods.railcraft.world.entity.cart;
 
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.IFluidCart;
+import mods.railcraft.api.carts.FluidCart;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
@@ -31,6 +31,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -40,7 +41,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
-    implements IFluidCart, IBoilerContainer {
+    implements FluidCart, IBoilerContainer {
 
   public static final int SLOT_WATER_INPUT = 0;
   public static final int SLOT_WATER_PROCESSING = 1;
@@ -80,7 +81,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   private final LazyOptional<TankManager> tankManager =
       LazyOptional.of(() -> new TankManager(this.waterTank, this.steamTank));
 
-  private int update = this.random.nextInt();
+  private int fluidProcessingTimer = this.random.nextInt();
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
@@ -137,8 +138,6 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
     super.tick();
 
     if (!this.level.isClientSide()) {
-      this.update++;
-
       if (this.waterTank.isEmpty()) {
         this.setMode(Mode.SHUTDOWN);
       }
@@ -157,7 +156,8 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
         }
       }
 
-      if ((this.update % FluidTools.BUCKET_FILL_TIME) == 0) {
+      if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {
+        this.fluidProcessingTimer = 0;
         this.processState = FluidTools.processContainer(this.invWaterContainers,
             this.waterTank, ProcessType.DRAIN_ONLY, this.processState);
       }
@@ -240,7 +240,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   @Override
   public void addAdditionalSaveData(CompoundNBT data) {
     super.addAdditionalSaveData(data);
-    this.getTankManager().writeTanksToNBT(data);
+    data.put("tankManager", this.getTankManager().serializeNBT());
     data.put("boiler", this.boiler.serializeNBT());
     data.putString("processState", this.processState.getSerializedName());
   }
@@ -248,7 +248,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   @Override
   public void readAdditionalSaveData(CompoundNBT data) {
     super.readAdditionalSaveData(data);
-    this.getTankManager().readTanksFromNBT(data);
+    this.getTankManager().deserializeNBT(data.getList("tankManager", Constants.NBT.TAG_COMPOUND));
     this.boiler.deserializeNBT(data.getCompound("boiler"));
     this.processState = FluidTools.ProcessState.getByName(data.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);

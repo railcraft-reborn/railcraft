@@ -179,6 +179,8 @@ public class RailcraftBlockModelProvider {
     this.createPost(RailcraftBlocks.ORANGE_POST.get());
     this.createPost(RailcraftBlocks.WHITE_POST.get());
 
+    this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
+    this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
     this.createManipulator(RailcraftBlocks.ITEM_LOADER.get());
     this.createManipulator(RailcraftBlocks.ITEM_UNLOADER.get());
     this.createDirectionalManipulator(RailcraftBlocks.ADVANCED_ITEM_LOADER.get(),
@@ -336,6 +338,19 @@ public class RailcraftBlockModelProvider {
             })));
 
     this.createSimpleFlatItemModel(block);
+  }
+
+  private void createFluidManipulator(Block block) {
+    this.createManipulator(block);
+    ResourceLocation model =
+        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(block, "_inventory",
+            new ModelTextures()
+                .put(StockTextureAliases.SIDE,
+                    new ResourceLocation(Railcraft.ID, "block/fluid_manipulator_side_inventory"))
+                .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(block, "_top"))
+                .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(block, "_bottom")),
+            this.modelOutput);
+    this.delegateItemModel(block, model);
   }
 
   private void createManipulator(Block block) {

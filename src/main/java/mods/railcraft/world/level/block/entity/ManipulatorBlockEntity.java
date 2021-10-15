@@ -22,6 +22,7 @@ import mods.railcraft.util.inventory.filters.StackFilters;
 import mods.railcraft.world.level.block.ManipulatorBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -37,7 +38,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 
 public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
-    implements ITickableTileEntity {
+    implements ITickableTileEntity, INamedContainerProvider {
 
   public static final float STOP_VELOCITY = 0.02f;
   public static final int PAUSE_DELAY = 4;
@@ -78,7 +79,7 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
 
   protected Direction getFacing() {
     BlockState blockState = this.getBlockState();
-    return ((ManipulatorBlock) blockState.getBlock()).getFacing(blockState);
+    return ((ManipulatorBlock<?>) blockState.getBlock()).getFacing(blockState);
   }
 
   @Nullable
@@ -158,7 +159,7 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
     if (this.isManualMode()) {
       powered = false;
     }
-    if (ManipulatorBlock.isPowered(this.getBlockState()) != powered) {
+    if (this.hasLevel() && ManipulatorBlock.isPowered(this.getBlockState()) != powered) {
       this.level.setBlockAndUpdate(this.getBlockPos(),
           this.getBlockState().setValue(ManipulatorBlock.POWERED, powered));
     }

@@ -56,6 +56,18 @@ public class RailcraftBlocks {
   public static final DeferredRegister<Block> BLOCKS =
       DeferredRegister.create(ForgeRegistries.BLOCKS, Railcraft.ID);
 
+  public static final RegistryObject<FluidLoaderBlock> FLUID_LOADER =
+      BLOCKS.register("fluid_loader",
+          () -> new FluidLoaderBlock(AbstractBlock.Properties.of(Material.STONE)
+              .sound(SoundType.STONE)
+              .noOcclusion()));
+
+  public static final RegistryObject<FluidUnloaderBlock> FLUID_UNLOADER =
+      BLOCKS.register("fluid_unloader",
+          () -> new FluidUnloaderBlock(AbstractBlock.Properties.of(Material.STONE)
+              .sound(SoundType.STONE)
+              .noOcclusion()));
+
   public static final RegistryObject<AdvancedItemLoaderBlock> ADVANCED_ITEM_LOADER =
       BLOCKS.register("advanced_item_loader",
           () -> new AdvancedItemLoaderBlock(AbstractBlock.Properties.of(Material.STONE)

@@ -15,11 +15,13 @@ public class SignalRenderer extends AbstractSignalRenderer<AbstractSignalBlockEn
   }
 
   @Override
-  public void render(AbstractSignalBlockEntity tile, float partialTicks, MatrixStack matrixStack,
+  public void render(AbstractSignalBlockEntity blockEntity, float partialTicks,
+      MatrixStack matrixStack,
       IRenderTypeBuffer renderTypeBuffer, int packedLight, int packedOverlay) {
-    super.render(tile, partialTicks, matrixStack, renderTypeBuffer, packedLight, packedOverlay);
-    Direction direction = tile.getBlockState().getValue(AbstractSignalBlock.FACING);
-    SignalAspect signalAspect = tile.getPrimarySignalAspect().getDisplayAspect();
+    super.render(blockEntity, partialTicks, matrixStack, renderTypeBuffer, packedLight,
+        packedOverlay);
+    Direction direction = blockEntity.getBlockState().getValue(AbstractSignalBlock.FACING);
+    SignalAspect signalAspect = blockEntity.getPrimarySignalAspect().getDisplayAspect();
     matrixStack.pushPose();
     {
       double zOffset = -0.175D;

@@ -41,13 +41,6 @@ public class CuboidModelRenderer {
    */
   public static void render(CuboidModel model, MatrixStack matrix, IVertexBuilder buffer,
       int[] colors, FaceDisplay faceDisplay, boolean fakeDisableDiffuse) {
-    // TODO - 10.1: Further attempt to fix z-fighting at larger distances if we make it not render
-    // the sides when it is in a solid block
-    // that may improve performance some, but definitely would reduce/remove the majority of
-    // remaining z-fighting that is going on
-    // Shift it so that the min values are all greater than or equal to zero as the various drawing
-    // code
-    // has some issues when it comes to handling negative numbers
     float xShift = MathHelper.floor(model.getMinX());
     float yShift = MathHelper.floor(model.getMinY());
     float zShift = MathHelper.floor(model.getMinZ());
