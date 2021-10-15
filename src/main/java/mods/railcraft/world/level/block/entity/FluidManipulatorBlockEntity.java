@@ -81,12 +81,12 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
         .orElse(null);
   }
 
-  public boolean interact(PlayerEntity player, Hand hand) {
-    boolean bucket = FluidTools.interactWithFluidHandler(player, hand, this.tank);
-    if (bucket && !this.level.isClientSide()) {
+  public boolean use(PlayerEntity player, Hand hand) {
+    boolean success = FluidTools.interactWithFluidHandler(player, hand, this.tank);
+    if (success && !this.level.isClientSide()) {
       this.syncToClient();
     }
-    return bucket;
+    return success;
   }
 
   @Override

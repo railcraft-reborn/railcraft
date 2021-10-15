@@ -5,7 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.world.IBlockReader;
 
-public class FluidLoaderBlock extends ManipulatorBlock<FluidLoaderBlockEntity> {
+public class FluidLoaderBlock extends FluidManipulatorBlock<FluidLoaderBlockEntity> {
 
   protected FluidLoaderBlock(Properties properties) {
     super(FluidLoaderBlockEntity.class, properties);

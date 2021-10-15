@@ -63,7 +63,6 @@ public class FluidManipulatorRenderer extends TileEntityRenderer<FluidManipulato
       if (model != null) {
         matrixStack.pushPose();
         {
-          matrixStack.translate(0.0F, 0.125F, 0.0F);
           model.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
           model.setPackedOverlay(packedOverlay);
           CuboidModelRenderer.render(model, matrixStack, builder,

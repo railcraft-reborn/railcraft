@@ -68,9 +68,9 @@ public final class FluidTools {
 
   public static boolean interactWithFluidHandler(PlayerEntity player, Hand hand,
       IFluidHandler fluidHandler) {
-    if (!player.level.isClientSide())
-      return FluidUtil.interactWithFluidHandler(player, hand, fluidHandler);
-    return FluidItemHelper.isContainer(player.getItemInHand(hand));
+    return player.level.isClientSide()
+        ? FluidItemHelper.isContainer(player.getItemInHand(hand))
+        : FluidUtil.interactWithFluidHandler(player, hand, fluidHandler);
   }
 
   public enum ProcessType {
