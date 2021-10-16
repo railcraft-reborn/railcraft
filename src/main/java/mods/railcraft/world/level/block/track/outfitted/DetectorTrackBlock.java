@@ -121,7 +121,7 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
       return;
     }
 
-    private static void updatePowerState(BlockState blockState, World level, BlockPos blockPos,
+    protected static void updatePowerState(BlockState blockState, World level, BlockPos blockPos,
         boolean reversed) {
       List<AbstractMinecartEntity> carts = findCarts(level, blockPos);
       if (carts.isEmpty()) {
