@@ -173,7 +173,7 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   @Override
   protected void load() {
     super.load();
-    if (this.isParent()) {
+    if (this.isParent() && !this.getLevel().isClientSide()) {
       this.level.setBlock(this.worldPosition,
           this.level.getBlockState(this.worldPosition)
               .setValue(CokeOvenBricksBlock.ISPARENT, true), 3);
@@ -206,6 +206,10 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   public void tick() {
     super.tick();
 
+    if (this.level.isClientSide() || !this.isFormed()) {
+      return;
+    }
+
     if (this.isParent()) {
       BlockState parentBrick = this.level.getBlockState(this.worldPosition);
       // isParent status
@@ -216,7 +220,7 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
       }
 
       // only set if needed, burn stat
-      if (this.recipieRequiredTime < 0
+      if (this.recipieRequiredTime <= 0
           && parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
         this.level.setBlock(this.worldPosition,
             parentBrick.setValue(CokeOvenBricksBlock.ISLIT, false), 3);
@@ -228,10 +232,6 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
             parentBrick.setValue(CokeOvenBricksBlock.ISLIT, true), 3);
         // this.setChanged();
       }
-    }
-
-    if (this.level.isClientSide() || !this.isFormed()) {
-      return;
     }
 
     ItemStack itemstack = this.items.get(0);

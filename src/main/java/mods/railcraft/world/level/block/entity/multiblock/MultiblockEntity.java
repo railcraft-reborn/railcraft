@@ -109,10 +109,7 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
    * @return TRUE if yes.
    */
   public boolean isParent() {
-    if (this.normal == null) {
-      return false;
-    }
-    return this.parentPos.equals(BlockPos.ZERO) && (this.getParent() == this);
+    return this.parentPos.equals(BlockPos.ZERO);
   }
 
   /**
