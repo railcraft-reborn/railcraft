@@ -102,12 +102,14 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   }
 
   @Override
-  public @Nullable Collection<CokeOvenBlockEntity> getPatternEntities(BlockPos normal) {
+  @Nullable
+  public Collection<CokeOvenBlockEntity> getPatternEntities(BlockPos normal) {
     int box = 2; // 3-1
     BlockPos originPos = this.worldPosition.offset(0, -1, 0).offset(
         (normal.getX() == 0) ? -1 : 0,
         0,
         (normal.getZ() == 0) ? -1 : 0);
+
     int i = 0;
     Collection<CokeOvenBlockEntity> out = new ArrayList<>(0);
 
@@ -197,44 +199,30 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
       BlockState parentBrick = this.level.getBlockState(this.worldPosition);
       // isParent status
       if (!parentBrick.getValue(CokeOvenBricksBlock.ISPARENT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricksBlock.ISPARENT, true), 3);
         this.setChanged();
       }
 
       // only set if needed, burn stat
       if ((this.currentTick >= this.recipieRequiredTime)
           && parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricksBlock.ISLIT, false), 3);
         this.setChanged();
-        return;
       }
       if ((this.currentTick < this.recipieRequiredTime)
           && !parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricksBlock.ISLIT, true), 3);
         this.setChanged();
-        return;
       }
     }
+
     if (this.level.isClientSide() || !this.isFormed()) {
       return;
     }
 
-    if (this.isParent()) {
-      BlockState parentBrick = this.level.getBlockState(this.worldPosition);
-      // isParent status
-      if (!parentBrick.getValue(CokeOvenBricksBlock.ISPARENT)) {
-        this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.ISPARENT, Boolean.valueOf(true)), 3);
-      }
-      // only set if needed, burn stat
-      if ((this.currentTick >= this.recipieRequiredTime)
-          && parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
-        this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.ISLIT, Boolean.valueOf(false)), 3);
-      }
-      if ((this.currentTick < this.recipieRequiredTime)
-          && !parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
-        this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.ISLIT, Boolean.valueOf(true)), 3);
-      }
-    }
     ItemStack itemstack = this.items.get(0);
     if (itemstack.isEmpty()) {
       this.recipieRequiredTime = 0;

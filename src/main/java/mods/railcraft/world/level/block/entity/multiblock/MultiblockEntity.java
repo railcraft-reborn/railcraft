@@ -48,7 +48,11 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
 
     // rotate 90 degrees, facing AWAY from the user
     this.normal = new BlockPos(facingDir.getClockWise().getClockWise().getNormal());
-    if (!this.isMultiblockPatternValid(this.normal) || this.level.isClientSide()) {
+    if (this.level.isClientSide()) {
+      // silently fail.
+      return false;
+    }
+    if (!this.isMultiblockPatternValid(this.normal)) {
       logger.info("TryToMakeParent - Fail, pattern invalid OR clientside.");
       return false;
     }
@@ -104,6 +108,9 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
    * @return TRUE if yes.
    */
   public boolean isParent() {
+    if (this.normal == null || !this.isFormed()) {
+      return false;
+    }
     return this.parentPos.equals(BlockPos.ZERO);
   }
 
@@ -268,8 +275,8 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
     super.save(data);
     data.putBoolean("formed", this.formed);
     data.put("parentPos", NBTUtil.writeBlockPos(this.parentPos));
-    // do not save the normal when it's zero.
-    if (this.normal == BlockPos.ZERO) {
+    // do not save the normal when it's null.
+    if (this.normal != null) {
       data.put("normal", NBTUtil.writeBlockPos(this.normal));
     }
     return data;

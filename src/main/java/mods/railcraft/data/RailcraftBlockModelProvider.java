@@ -203,7 +203,8 @@ public class RailcraftBlockModelProvider {
               .with(BlockModelFields.MODEL, cokeParentStateOn))
             ));
 
-    this.createSimpleFlatItemModel(RailcraftBlocks.ELEVATOR_TRACK.get(), "_off");
+    // this.skipAutoItemBlock(RailcraftBlocks.ELEVATOR_TRACK.get());
+    // this.createSimpleFlatItemModel(RailcraftBlocks.ELEVATOR_TRACK.get(), "_off");
 
     this.createPost(RailcraftBlocks.BLACK_POST.get());
     this.createPost(RailcraftBlocks.RED_POST.get());
