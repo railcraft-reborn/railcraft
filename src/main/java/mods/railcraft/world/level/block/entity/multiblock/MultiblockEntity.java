@@ -66,6 +66,7 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
     for (T tileEntity : tileEntities) {
       tileEntity.setParent(this.worldPosition);
     }
+    this.setParent(BlockPos.ZERO);
     logger.info("TryToMakeParent - Success.");
 
     return true;
@@ -108,10 +109,10 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
    * @return TRUE if yes.
    */
   public boolean isParent() {
-    if (this.normal == null || !this.isFormed()) {
+    if (this.normal == null) {
       return false;
     }
-    return this.parentPos.equals(BlockPos.ZERO);
+    return this.parentPos.equals(BlockPos.ZERO) && (this.getParent() == this);
   }
 
   /**
@@ -161,6 +162,7 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
         "delink - Delink, last parent pos: (" + this.parentPos.toShortString() + ")");
     this.formed = false;
     this.parentPos = BlockPos.ZERO;
+    this.normal = null;
     this.entityCache = null;
     this.setChanged();
   }

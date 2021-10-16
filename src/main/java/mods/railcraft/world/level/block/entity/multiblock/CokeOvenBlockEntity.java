@@ -171,6 +171,16 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   }
 
   @Override
+  protected void load() {
+    super.load();
+    if (this.isParent()) {
+      this.level.setBlock(this.worldPosition,
+          this.level.getBlockState(this.worldPosition)
+              .setValue(CokeOvenBricksBlock.ISPARENT, true), 3);
+    }
+  }
+
+  @Override
   public void load(BlockState blockState, CompoundNBT data) {
     super.load(blockState, data);
     this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
@@ -195,27 +205,28 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   @Override
   public void tick() {
     super.tick();
+
     if (this.isParent()) {
       BlockState parentBrick = this.level.getBlockState(this.worldPosition);
       // isParent status
       if (!parentBrick.getValue(CokeOvenBricksBlock.ISPARENT)) {
         this.level.setBlock(this.worldPosition,
             parentBrick.setValue(CokeOvenBricksBlock.ISPARENT, true), 3);
-        this.setChanged();
+        // this.setChanged();
       }
 
       // only set if needed, burn stat
-      if ((this.currentTick >= this.recipieRequiredTime)
+      if (this.recipieRequiredTime < 0
           && parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
         this.level.setBlock(this.worldPosition,
             parentBrick.setValue(CokeOvenBricksBlock.ISLIT, false), 3);
-        this.setChanged();
+        // this.setChanged();
       }
-      if ((this.currentTick < this.recipieRequiredTime)
+      if (this.recipieRequiredTime > 0
           && !parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
         this.level.setBlock(this.worldPosition,
             parentBrick.setValue(CokeOvenBricksBlock.ISLIT, true), 3);
-        this.setChanged();
+        // this.setChanged();
       }
     }
 

@@ -117,7 +117,9 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
       return values()[(this.ordinal() + values().length - 1) % values().length];
     }
 
-    protected abstract void updatePowerState(BlockState blockState, World level, BlockPos blockPos);
+    protected void updatePowerState(BlockState blockState, World level, BlockPos blockPos) {
+      return;
+    }
 
     private static void updatePowerState(BlockState blockState, World level, BlockPos blockPos,
         boolean reversed) {
