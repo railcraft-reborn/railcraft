@@ -43,6 +43,34 @@ public class RailcraftItems {
         }
       };
 
+  public static final RegistryObject<Item> FLUID_LOADER =
+      ITEMS.register("fluid_loader",
+          () -> new BlockItem(RailcraftBlocks.FLUID_LOADER.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> FLUID_UNLOADER =
+      ITEMS.register("fluid_unloader",
+          () -> new BlockItem(RailcraftBlocks.FLUID_UNLOADER.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ADVANCED_ITEM_LOADER =
+      ITEMS.register("advanced_item_loader",
+          () -> new BlockItem(RailcraftBlocks.ADVANCED_ITEM_LOADER.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ADVANCED_ITEM_UNLOADER =
+      ITEMS.register("advanced_item_unloader",
+          () -> new BlockItem(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ITEM_LOADER =
+      ITEMS.register("item_loader",
+          () -> new BlockItem(RailcraftBlocks.ITEM_LOADER.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ITEM_UNLOADER =
+      ITEMS.register("item_unloader",
+          () -> new BlockItem(RailcraftBlocks.ITEM_UNLOADER.get(), new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> IRON_SPIKE_MAUL =
       ITEMS.register("iron_spike_maul",
           () -> new SpikeMaulItem(11.0F, -3.5F, ItemTier.IRON,

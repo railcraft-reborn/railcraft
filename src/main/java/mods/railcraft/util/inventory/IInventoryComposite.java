@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import com.google.common.collect.Iterators;
 import mods.railcraft.util.inventory.filters.StackFilters;
 import net.minecraft.item.ItemStack;
 
@@ -20,9 +19,7 @@ import net.minecraft.item.ItemStack;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-// No iterable: some other mods may add iterable to minecarts or block entities!
-public interface IInventoryComposite
-    extends /* Iterable<InventoryAdaptor>, */ IInventoryManipulator {
+public interface IInventoryComposite extends IInventoryManipulator {
 
   /**
    * Each IInventoryComposite is comprised of a collection of InventoryAdaptor objects.
@@ -37,11 +34,7 @@ public interface IInventoryComposite
    *
    * @see InventoryAdaptor
    */
-  default Iterator<InventoryAdaptor> adaptors() {
-    return InventoryAdaptor.of(this)
-        .map(Iterators::singletonIterator)
-        .orElseThrow(UnsupportedOperationException::new);
-  }
+  Iterator<InventoryAdaptor> adaptors();
 
   default Iterable<InventoryAdaptor> iterable() {
     return this::adaptors;
@@ -60,7 +53,7 @@ public interface IInventoryComposite
    * @return null if nothing was moved, the stack moved otherwise
    */
   @Override
-  default ItemStack moveOneItemTo(IInventoryComposite dest, Predicate<ItemStack> filter) {
+  default ItemStack moveOneItemTo(IInventoryManipulator dest, Predicate<ItemStack> filter) {
     return stream().map(src -> src.moveOneItemTo(dest, filter))
         .filter(StackFilters.nonEmpty())
         .findFirst()

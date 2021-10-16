@@ -32,7 +32,7 @@ public class SetSignalCapacitorBoxAttributesMessage {
         in.readEnum(SignalCapacitorBoxBlockEntity.Mode.class));
   }
 
-  public void handle(Supplier<NetworkEvent.Context> context) {
+  public boolean handle(Supplier<NetworkEvent.Context> context) {
     ServerWorld level = context.get().getSender().getLevel();
     LevelUtil.getBlockEntity(level, this.blockPos, SignalCapacitorBoxBlockEntity.class)
         .ifPresent(signalBox -> {
@@ -40,5 +40,6 @@ public class SetSignalCapacitorBoxAttributesMessage {
           signalBox.setMode(this.mode);
           signalBox.syncToClient();
         });
+    return true;
   }
 }

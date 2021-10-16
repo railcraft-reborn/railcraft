@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
+import java.util.Optional;
 import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -24,9 +24,9 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     this.widgetRenderers.add(renderer);
   }
 
-  protected RailcraftMenuScreen(T container, PlayerInventory playerInventory,
+  protected RailcraftMenuScreen(T menu, PlayerInventory inventory,
       ITextComponent title) {
-    super(container, playerInventory, title);
+    super(menu, inventory, title);
   }
 
   /**
@@ -44,27 +44,20 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
 
     if (this.inventory.getCarried().isEmpty()) {
       for (WidgetRenderer<?> element : this.widgetRenderers) {
-        if (element.widget.hidden)
-          continue;
-        List<? extends ITextProperties> tips = element.getTooltip();
-        if (tips == null)
-          continue;
-        if (element.isMouseOver(mouseX - left, mouseY - top)) {
-          this.renderWrappedToolTip(matrixStack, tips, mouseX, mouseY, this.font);
+        if (!element.widget.hidden) {
+          List<? extends ITextProperties> tooltip = element.getTooltip();
+          if (tooltip != null && element.isMouseOver(mouseX - left, mouseY - top)) {
+            this.renderWrappedToolTip(matrixStack, tooltip, mouseX, mouseY, this.font);
+          }
         }
       }
 
-      for (Object obj : this.menu.slots) {
-        if (!(obj instanceof SlotRailcraft))
-          continue;
-        SlotRailcraft slot = (SlotRailcraft) obj;
-        if (!slot.getItem().isEmpty())
-          continue;
-        List<? extends ITextProperties> tips = slot.getTooltip();
-        if (tips == null)
-          continue;
-        if (this.isMouseOverSlot(slot, mouseX, mouseY)) {
-          this.renderWrappedToolTip(matrixStack, tips, mouseX, mouseY, this.font);
+      for (Slot slot : this.menu.slots) {
+        if (slot instanceof SlotRailcraft && slot.getItem().isEmpty()) {
+          List<? extends ITextProperties> tooltip = ((SlotRailcraft) slot).getTooltip();
+          if (tooltip != null && this.isMouseOverSlot(slot, mouseX, mouseY)) {
+            this.renderWrappedToolTip(matrixStack, tooltip, mouseX, mouseY, this.font);
+          }
         }
       }
     }
@@ -72,60 +65,54 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     this.renderTooltip(matrixStack, mouseX, mouseY);
   }
 
-  public abstract ResourceLocation getTextureLocation();
+  public abstract ResourceLocation getWidgetsTexture();
 
   @SuppressWarnings("deprecation")
   @Override
   protected void renderBg(MatrixStack matrixStack, float f, int mouseX, int mouseY) {
     RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-    bindTexture(this.getTextureLocation());
+    this.bindTexture(this.getWidgetsTexture());
 
     int x = (width - this.getXSize()) / 2;
     int y = (height - this.getYSize()) / 2;
 
-    drawGuiBackground(matrixStack, x, y);
+    this.blit(matrixStack, x, y, 0, 0, this.getXSize(), this.getYSize());
 
-    int mX = mouseX - this.leftPos;
-    int mY = mouseY - this.topPos;
+    int relativeMouseX = mouseX - this.leftPos;
+    int relativeMouseY = mouseY - this.topPos;
 
     for (WidgetRenderer<?> element : this.widgetRenderers) {
-      if (element.widget.hidden)
-        continue;
-      element.draw(this, matrixStack, x, y, mX, mY);
+      if (!element.widget.hidden) {
+        element.draw(this, matrixStack, x, y, relativeMouseX, relativeMouseY);
+      }
     }
   }
 
-  protected void drawGuiBackground(MatrixStack matrixStack, int x, int y) {
-    this.blit(matrixStack, x, y, 0, 0, this.getXSize(), this.getYSize());
-  }
-
-  private @Nullable Slot getSlotAtPosition(int par1, int par2) {
+  private Optional<Slot> getSlotAtPosition(int mouseX, int mouseY) {
     return this.menu.slots.stream()
-        .filter(var4 -> isMouseOverSlot(var4, par1, par2))
-        .findFirst().orElse(null);
+        .filter(slot -> this.isMouseOverSlot(slot, mouseX, mouseY))
+        .findFirst();
   }
 
   /**
    * Returns if the passed mouse position is over the specified slot.
    */
-  private boolean isMouseOverSlot(Slot par1Slot, int par2, int par3) {
-    int var4 = this.leftPos;
-    int var5 = this.topPos;
-    par2 -= var4;
-    par3 -= var5;
-    return par2 >= par1Slot.x - 1 && par2 < par1Slot.x + 16 + 1 && par3 >= par1Slot.y - 1
-        && par3 < par1Slot.y + 16 + 1;
+  private boolean isMouseOverSlot(Slot slot, int mouseX, int mouseY) {
+    mouseX -= this.leftPos;
+    mouseY -= this.topPos;
+    return mouseX >= slot.x - 1 && mouseX < slot.x + 16 + 1 && mouseY >= slot.y - 1
+        && mouseY < slot.y + 16 + 1;
   }
 
   @Override
   public boolean mouseClicked(double mouseX, double mouseY, int button) {
-    double mX = mouseX - this.leftPos;
-    double mY = mouseY - this.topPos;
+    double relativeMouseX = mouseX - this.leftPos;
+    double relativeMouseY = mouseY - this.topPos;
 
     if (this.widgetRenderers.stream()
         .filter(element -> !element.widget.hidden)
-        .filter(element -> element.isMouseOver(mX, mY))
-        .anyMatch(element -> element.mouseClicked(mX, mY, button))) {
+        .filter(element -> element.isMouseOver(relativeMouseX, relativeMouseY))
+        .anyMatch(element -> element.mouseClicked(relativeMouseX, relativeMouseY, button))) {
       return true;
     }
 
@@ -145,16 +132,4 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
   public void bindTexture(ResourceLocation texture) {
     this.minecraft.textureManager.bind(texture);
   }
-
-  // public void drawTexture(int x, int y, int w, int h, float uMin, float vMin, float uMax, float
-  // vMax) {
-  // Tessellator tessellator = Tessellator.instance();
-  // WorldRenderer wr = tessellator.getWorldRenderer();
-  // wr.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-  // wr.pos(x + 0, y + h, zLevel).tex(uMin, vMax).endVertex();
-  // wr.pos(x + w, y + h, zLevel).tex(uMax, vMax).endVertex();
-  // wr.pos(x + w, y + 0, zLevel).tex(uMax, vMin).endVertex();
-  // wr.pos(x + 0, y + 0, zLevel).tex(uMin, vMin).endVertex();
-  // }
-
 }

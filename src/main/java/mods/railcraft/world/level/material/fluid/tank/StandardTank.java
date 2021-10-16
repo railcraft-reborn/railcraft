@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 /**
  * Our fancy type of tank. Use this preferably over forge's default one
+ *
  * @see net.minecraftforge.fluids.capability.templates.FluidTank Forge FluidTank
  * @author CovertJaguar (https://www.railcraft.info)
  */
@@ -26,7 +27,8 @@ public class StandardTank extends FluidTank {
   private int tankIndex;
   private boolean hidden;
 
-  protected @Nullable Supplier<FluidStack> filter;
+  @Nullable
+  protected Supplier<FluidStack> filter;
 
   @Nullable
   private Consumer<StandardTank> updateCallback;
@@ -58,6 +60,7 @@ public class StandardTank extends FluidTank {
 
   /**
    * Internal fill function which IGNORES disablefill made by us.
+   *
    * @param resource FluidStack representing the Fluid and maximum amount of fluid to be
    * @param action If SIMULATE, fill will only be simulated.
    * @return Amount of resource that was (or would have been, if simulated) filled.
@@ -81,6 +84,7 @@ public class StandardTank extends FluidTank {
 
   /**
    * Internal drain function which IGNORES disablefill made by us.
+   *
    * @param maxDrain Maximum amount of fluid to drain.
    * @param action If SIMULATE, fill will only be simulated.
    * @return FluidStack representing the Fluid and amount that was
@@ -93,6 +97,7 @@ public class StandardTank extends FluidTank {
 
   /**
    * Disables draning of our tank. Blocks drain() from draining.
+   *
    * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#drain() Drain Function
    * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalDrain()
    *    Bypassed Drain Function
@@ -104,6 +109,7 @@ public class StandardTank extends FluidTank {
 
   /**
    * Disables filling of our tank.
+   *
    * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#fill() Fill Function
    * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalFill()
    *    Bypassed Fill Function

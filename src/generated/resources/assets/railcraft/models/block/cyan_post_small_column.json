@@ -1,5 +1,5 @@
 {
-  "parent": "railcraft:block/post_small_column",
+  "parent": "railcraft:block/template_post_small_column",
   "textures": {
     "texture": "railcraft:block/cyan_post"
   }

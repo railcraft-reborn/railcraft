@@ -1,7 +1,10 @@
 package mods.railcraft.util.inventory.wrappers;
 
+import java.util.Iterator;
 import java.util.function.Predicate;
+import com.google.common.collect.Iterators;
 import mods.railcraft.util.Predicates;
+import mods.railcraft.util.inventory.InventoryAdaptor;
 import mods.railcraft.util.inventory.filters.StackFilters;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -65,6 +68,11 @@ public class InventoryMapper extends InvWrapperBase {
   public InventoryMapper withStackSizeLimit(int limit) {
     stackSizeLimit = limit;
     return this;
+  }
+
+  @Override
+  public Iterator<InventoryAdaptor> adaptors() {
+    return Iterators.singletonIterator(InventoryAdaptor.of(this));
   }
 
   @Override

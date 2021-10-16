@@ -44,7 +44,7 @@ public class SetActionSignalBoxAttributesMessage {
     return new SetActionSignalBoxAttributesMessage(blockPos, actionSignalAspects, lock);
   }
 
-  public void handle(Supplier<NetworkEvent.Context> context) {
+  public boolean handle(Supplier<NetworkEvent.Context> context) {
     ServerWorld level = context.get().getSender().getLevel();
     GameProfile senderProfile = context.get().getSender().getGameProfile();
     LevelUtil.getBlockEntity(level, this.blockPos, ActionSignalBoxBlockEntity.class)
@@ -60,5 +60,6 @@ public class SetActionSignalBoxAttributesMessage {
           }
           signalBox.syncToClient();
         });
+    return true;
   }
 }

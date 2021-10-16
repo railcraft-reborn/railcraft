@@ -149,7 +149,7 @@ public class LockingTrackBlockEntity extends RailcraftTickableBlockEntity
   }
 
   private void lockCurrentCart() {
-    if (currentCart != null) {
+    if (this.currentCart != null) {
       HighSpeedTools.performHighSpeedChecks(this.level, this.getBlockPos(), this.currentCart);
       Train train = Train.get(this.currentCart).orElse(null);
       if (this.currentTrain != train && this.currentTrain != null) {
@@ -159,8 +159,8 @@ public class LockingTrackBlockEntity extends RailcraftTickableBlockEntity
       if (this.currentTrain != null) {
         this.currentTrain.addLock(this.id);
       }
-      MinecraftForge.EVENT_BUS
-          .post(new CartLockdownEvent.Lock(this.currentCart, this.getBlockPos()));
+      MinecraftForge.EVENT_BUS.post(
+          new CartLockdownEvent.Lock(this.currentCart, this.getBlockPos()));
       this.lockingModeController.locked(this.currentCart);
       this.currentCart.setDeltaMovement(0.0D, this.currentCart.getDeltaMovement().y(), 0.0D);
       RailShape railShape = TrackBlock.getRailShapeRaw(this.getBlockState());

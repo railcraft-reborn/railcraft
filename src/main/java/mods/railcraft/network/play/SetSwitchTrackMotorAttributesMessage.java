@@ -51,7 +51,7 @@ public class SetSwitchTrackMotorAttributesMessage {
         redstoneTriggered, lock);
   }
 
-  public void handle(Supplier<NetworkEvent.Context> context) {
+  public boolean handle(Supplier<NetworkEvent.Context> context) {
     ServerWorld level = context.get().getSender().getLevel();
     GameProfile senderProfile = context.get().getSender().getGameProfile();
     LevelUtil.getBlockEntity(level, this.blockPos, SwitchTrackMotorBlockEntity.class)
@@ -68,5 +68,6 @@ public class SetSwitchTrackMotorAttributesMessage {
           }
           signalBox.syncToClient();
         });
+    return true;
   }
 }

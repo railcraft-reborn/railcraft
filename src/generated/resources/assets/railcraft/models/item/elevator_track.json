@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "railcraft:block/elevator_track_off"
+    "layer0": "railcraft:block/elevator_track"
   }
 }

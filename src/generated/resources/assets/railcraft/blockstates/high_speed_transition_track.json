@@ -53,9 +53,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/transition_track"
@@ -63,9 +63,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/transition_track",
@@ -74,9 +74,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "powered": "false",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/transition_track",
@@ -85,9 +85,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "powered": "false",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/transition_track",
@@ -96,9 +96,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/transition_track_raised_ne"
@@ -106,9 +106,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/transition_track_raised_sw"
@@ -116,9 +116,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/transition_track_raised_ne",
@@ -127,9 +127,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "powered": "false",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/transition_track_raised_sw",
@@ -138,9 +138,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "powered": "false",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/transition_track_raised_sw",
@@ -149,9 +149,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "powered": "false",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/transition_track_raised_ne",
@@ -160,9 +160,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "powered": "false",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/transition_track_raised_sw",
@@ -171,9 +171,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "powered": "false",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/transition_track_raised_ne",
@@ -182,9 +182,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "powered": "true",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on"
@@ -192,9 +192,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "powered": "true",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on",
@@ -203,9 +203,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "powered": "true",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on",
@@ -214,9 +214,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "powered": "true",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on",
@@ -225,9 +225,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "powered": "true",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on_raised_ne"
@@ -235,9 +235,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "powered": "true",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on_raised_sw"
@@ -245,9 +245,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "powered": "true",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on_raised_ne",
@@ -256,9 +256,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "powered": "true",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on_raised_sw",
@@ -267,9 +267,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "powered": "true",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on_raised_sw",
@@ -278,9 +278,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "powered": "true",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on_raised_ne",
@@ -289,9 +289,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "powered": "true",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on_raised_sw",
@@ -300,9 +300,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "powered": "true",
-        "reversed": "true"
+        "reversed": "true",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/transition_track_on_raised_ne",

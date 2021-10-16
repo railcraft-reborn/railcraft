@@ -46,7 +46,7 @@ public final class Predicates {
     return clazz::isInstance;
   }
 
-  public static <T> Predicate<T> notInstanceOf(Class<? extends T> clazz) {
+  public static <T> Predicate<T> notOfType(Class<? extends T> clazz) {
     return Predicates.<T>instanceOf(clazz).negate();
   }
 

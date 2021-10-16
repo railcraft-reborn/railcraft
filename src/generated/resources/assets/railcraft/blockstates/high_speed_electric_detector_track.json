@@ -53,9 +53,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "mode": "bi_directional",
-        "powered": "false"
+        "powered": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track"
@@ -63,9 +63,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "mode": "bi_directional",
-        "powered": "false"
+        "powered": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track",
@@ -74,9 +74,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "mode": "bi_directional",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/detector_track_raised_ne"
@@ -84,9 +84,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "mode": "bi_directional",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_raised_sw"
@@ -94,9 +94,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "mode": "bi_directional",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/detector_track_raised_ne",
@@ -105,9 +105,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "mode": "bi_directional",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_raised_sw",
@@ -116,9 +116,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "mode": "bi_directional",
-        "powered": "true"
+        "powered": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_on"
@@ -126,9 +126,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "mode": "bi_directional",
-        "powered": "true"
+        "powered": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_on",
@@ -137,9 +137,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "mode": "bi_directional",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/detector_track_on_raised_ne"
@@ -147,9 +147,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "mode": "bi_directional",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_on_raised_sw"
@@ -157,9 +157,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "mode": "bi_directional",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/detector_track_on_raised_ne",
@@ -168,9 +168,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "mode": "bi_directional",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_on_raised_sw",
@@ -179,9 +179,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "mode": "travel",
-        "powered": "false"
+        "powered": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel"
@@ -189,9 +189,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "mode": "travel",
-        "powered": "false"
+        "powered": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel",
@@ -200,9 +200,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "mode": "travel",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_raised_ne"
@@ -210,9 +210,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "mode": "travel",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_raised_sw"
@@ -220,9 +220,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "mode": "travel",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_raised_ne",
@@ -231,9 +231,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "mode": "travel",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_raised_sw",
@@ -242,9 +242,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "mode": "travel",
-        "powered": "true"
+        "powered": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on"
@@ -252,9 +252,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "mode": "travel",
-        "powered": "true"
+        "powered": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on",
@@ -263,9 +263,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "mode": "travel",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on_raised_ne"
@@ -273,9 +273,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "mode": "travel",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on_raised_sw"
@@ -283,9 +283,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "mode": "travel",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on_raised_ne",
@@ -294,9 +294,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "mode": "travel",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on_raised_sw",
@@ -305,9 +305,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "mode": "travel_reversed",
-        "powered": "false"
+        "powered": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel",
@@ -316,9 +316,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "mode": "travel_reversed",
-        "powered": "false"
+        "powered": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel",
@@ -327,9 +327,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "mode": "travel_reversed",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_raised_sw",
@@ -338,9 +338,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "mode": "travel_reversed",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_raised_ne",
@@ -349,9 +349,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "mode": "travel_reversed",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_raised_sw",
@@ -360,9 +360,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "mode": "travel_reversed",
-        "powered": "false"
+        "powered": "false",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_raised_ne",
@@ -371,9 +371,9 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "mode": "travel_reversed",
-        "powered": "true"
+        "powered": "true",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on",
@@ -382,9 +382,9 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "mode": "travel_reversed",
-        "powered": "true"
+        "powered": "true",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on",
@@ -393,9 +393,9 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "mode": "travel_reversed",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on_raised_sw",
@@ -404,9 +404,9 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "mode": "travel_reversed",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on_raised_ne",
@@ -415,9 +415,9 @@
     },
     {
       "when": {
-        "shape": "ascending_east",
         "mode": "travel_reversed",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on_raised_sw",
@@ -426,9 +426,9 @@
     },
     {
       "when": {
-        "shape": "ascending_west",
         "mode": "travel_reversed",
-        "powered": "true"
+        "powered": "true",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/detector_track_travel_on_raised_ne",

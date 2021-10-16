@@ -39,9 +39,10 @@ public class LinkedCartsMessage {
     return new LinkedCartsMessage(linkedCarts);
   }
 
-  public void handle(Supplier<NetworkEvent.Context> context) {
+  public boolean handle(Supplier<NetworkEvent.Context> context) {
     Railcraft.getInstance().getClientDist().getShuntingAuraRenderer()
         .setLinkedCarts(this.linkedCarts);
+    return true;
   }
 
   public static class LinkedCart {

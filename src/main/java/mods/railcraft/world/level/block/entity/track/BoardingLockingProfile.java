@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity.track;
 
+import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
@@ -30,7 +31,7 @@ public class BoardingLockingProfile implements LockingModeController {
   }
 
   private Vector3d applyBoost(Direction.Axis axis, Vector3d deltaMovement) {
-    double speed = deltaMovement.length();
+    double speed = CartUtil.getCartSpeedUncapped(deltaMovement);
     double boost = speed > 0.005D
         ? (Math.abs(deltaMovement.get(axis)) / speed) * LockingTrackBlockEntity.BOOST_FACTOR
         : LockingTrackBlockEntity.START_BOOST;

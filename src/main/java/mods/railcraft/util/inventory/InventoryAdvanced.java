@@ -1,8 +1,10 @@
 package mods.railcraft.util.inventory;
 
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
+import com.google.common.collect.Iterators;
 import mods.railcraft.util.Optionals;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.INBTSerializable;
 
 /**
  * Creates a standalone instance of IInventory.
@@ -21,11 +24,13 @@ import net.minecraft.tileentity.TileEntity;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class InventoryAdvanced extends Inventory implements IInventoryComposite {
+public class InventoryAdvanced extends Inventory
+    implements IInventoryComposite, INBTSerializable<ListNBT> {
 
-  public static final InventoryAdvanced ZERO_SIZE_INV = new InventoryAdvanced(0);
+  public static final InventoryAdvanced EMPTY = new InventoryAdvanced(0);
 
-  private @Nullable Callback callback;
+  @Nullable
+  private Callback callback;
   private int maxStackSize = 64;
 
   public InventoryAdvanced(int size) {
@@ -46,20 +51,12 @@ public class InventoryAdvanced extends Inventory implements IInventoryComposite 
 
   public InventoryAdvanced callback(Callback callback) {
     this.callback = callback;
-    addListener(callback);
-    return this;
-  }
-
-  public InventoryAdvanced callback(Object callback) {
-    if (callback instanceof IInventory)
-      return callbackInv((IInventory) callback);
-    if (callback instanceof RailcraftBlockEntity)
-      return callbackTile((RailcraftBlockEntity) callback);
+    this.addListener(callback);
     return this;
   }
 
   public InventoryAdvanced phantom() {
-    maxStackSize = 127;
+    this.maxStackSize = 127;
     return this;
   }
 
@@ -74,40 +71,40 @@ public class InventoryAdvanced extends Inventory implements IInventoryComposite 
 
   @Override
   public int getMaxStackSize() {
-    return maxStackSize;
+    return this.maxStackSize;
   }
 
   @Override
   public boolean stillValid(PlayerEntity PlayerEntity) {
-    return callback == null || callback.stillValid(PlayerEntity);
+    return this.callback == null || callback.stillValid(PlayerEntity);
   }
 
   @Override
   public void startOpen(PlayerEntity player) {
-    if (callback != null) {
-      callback.startOpen(player);
+    if (this.callback != null) {
+      this.callback.startOpen(player);
     }
   }
 
   @Override
   public void stopOpen(PlayerEntity player) {
-    if (callback != null) {
-      callback.stopOpen(player);
+    if (this.callback != null) {
+      this.callback.stopOpen(player);
     }
   }
 
-  public void writeToNBT(String tag, CompoundNBT data) {
-    InvTools.writeInvToNBT(this, tag, data);
+  @Override
+  public ListNBT serializeNBT() {
+    return InvTools.writeInventory(this);
   }
 
-  public void readFromNBT(String tag, CompoundNBT data) {
-    ListNBT list = data.getList(tag, 10);
-    for (byte entry = 0; entry < list.size(); entry++) {
-      CompoundNBT itemTag = list.getCompound(entry);
-      int slot = itemTag.getByte(InvTools.TAG_SLOT);
-      if (slot >= 0 && slot < getContainerSize()) {
-        ItemStack stack = ItemStack.of(itemTag);
-        setItem(slot, stack);
+  @Override
+  public void deserializeNBT(ListNBT tag) {
+    for (byte i = 0; i < tag.size(); i++) {
+      CompoundNBT slotTag = tag.getCompound(i);
+      int slot = slotTag.getByte(InvTools.TAG_SLOT);
+      if (slot >= 0 && slot < this.getContainerSize()) {
+        this.setItem(slot, ItemStack.of(slotTag));
       }
     }
   }
@@ -174,12 +171,17 @@ public class InventoryAdvanced extends Inventory implements IInventoryComposite 
 
     @Override
     public boolean stillValid(PlayerEntity player) {
-      return Optionals.test(tile(), t -> RailcraftBlockEntity.isUsableByPlayerHelper(t, player));
+      return Optionals.test(tile(), t -> RailcraftBlockEntity.stillValid(t, player));
     }
 
     @Override
     public void containerChanged(IInventory invBasic) {
       tile().ifPresent(TileEntity::setChanged);
     }
+  }
+
+  @Override
+  public Iterator<InventoryAdaptor> adaptors() {
+    return Iterators.singletonIterator(InventoryAdaptor.of(this));
   }
 }

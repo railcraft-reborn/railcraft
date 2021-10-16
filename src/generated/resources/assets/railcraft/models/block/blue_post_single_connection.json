@@ -1,5 +1,5 @@
 {
-  "parent": "railcraft:block/post_single_connection",
+  "parent": "railcraft:block/template_post_single_connection",
   "textures": {
     "texture": "railcraft:block/blue_post"
   }

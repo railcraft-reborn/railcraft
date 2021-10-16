@@ -1,5 +1,8 @@
 package mods.railcraft.util.inventory.wrappers;
 
+import java.util.Iterator;
+import com.google.common.collect.Iterators;
+import mods.railcraft.util.inventory.InventoryAdaptor;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -23,6 +26,11 @@ public class SidedInventoryDecorator extends InvWrapperBase implements ISidedInv
     super(inv, checkItems);
     this.inv = inv;
     this.side = side;
+  }
+
+  @Override
+  public Iterator<InventoryAdaptor> adaptors() {
+    return Iterators.singletonIterator(InventoryAdaptor.of(this));
   }
 
   @Override

@@ -31,7 +31,6 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
   private final EntityModel<? super LocomotiveEntity> snowLayer;
   private final ResourceLocation[] textures;
   private final int[] color = new int[3];
-  // protected final IIcon[] itemIcons = new IIcon[3];
   private float emblemSize = 0.15F;
   private float emblemOffsetX = 0.47F;
   private float emblemOffsetY = -0.17F;

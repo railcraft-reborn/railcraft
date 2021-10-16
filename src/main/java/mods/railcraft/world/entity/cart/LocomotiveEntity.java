@@ -932,7 +932,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
     }
   }
 
-  public enum Lock implements ButtonState<Lock> {
+  public enum Lock implements ButtonState<Lock>, IStringSerializable{
 
     UNLOCKED("unlocked", ButtonTexture.UNLOCKED_BUTTON),
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON),

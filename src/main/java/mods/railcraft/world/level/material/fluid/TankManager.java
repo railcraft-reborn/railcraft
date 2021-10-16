@@ -1,17 +1,12 @@
 package mods.railcraft.world.level.material.fluid;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
-import javax.annotation.Nullable;
 import com.google.common.collect.ForwardingList;
-import mods.railcraft.util.AdjacentBlockEntityCache;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -19,7 +14,7 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -28,7 +23,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class TankManager extends ForwardingList<StandardTank> implements IFluidHandler {
+public class TankManager extends ForwardingList<StandardTank>
+    implements IFluidHandler, INBTSerializable<ListNBT> {
 
   public static final TankManager NIL = new TankManager() {
     @Override
@@ -36,6 +32,7 @@ public class TankManager extends ForwardingList<StandardTank> implements IFluidH
       return Collections.emptyList();
     }
   };
+
   public static final BiFunction<TileEntity, Direction, Boolean> TANK_FILTER =
       (t, f) -> t.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, f).isPresent();
   private final List<StandardTank> tanks = new ArrayList<>();
@@ -48,47 +45,47 @@ public class TankManager extends ForwardingList<StandardTank> implements IFluidH
 
   @Override
   protected List<StandardTank> delegate() {
-    return tanks;
+    return this.tanks;
   }
 
   @Override
   public boolean add(StandardTank tank) {
-    tanks.add(tank);
-    int index = tanks.indexOf(tank);
+    this.tanks.add(tank);
+    int index = this.tanks.indexOf(tank);
     tank.setTankIndex(index);
     return true;
   }
 
-  public void writeTanksToNBT(CompoundNBT data) {
-    ListNBT tagList = new ListNBT();
-    for (byte slot = 0; slot < tanks.size(); slot++) {
-      StandardTank tank = tanks.get(slot);
-      if (tank.getFluid() != null) {
-        CompoundNBT tag = new CompoundNBT();
-        tag.putByte("tank", slot);
-        tank.writeToNBT(tag);
-        tagList.add(tag);
+  @Override
+  public ListNBT serializeNBT() {
+    ListNBT tanksTag = new ListNBT();
+    for (byte i = 0; i < this.tanks.size(); i++) {
+      StandardTank tank = this.tanks.get(i);
+      CompoundNBT tankTag = new CompoundNBT();
+      tankTag.putByte("index", i);
+      tank.writeToNBT(tankTag);
+      tanksTag.add(tankTag);
+    }
+    return tanksTag;
+  }
+
+  @Override
+  public void deserializeNBT(ListNBT tanksTag) {
+    for (INBT tankTag : tanksTag) {
+      int index = ((CompoundNBT) tankTag).getByte("index");
+      if (index >= 0 && index < this.tanks.size()) {
+        this.tanks.get(index).readFromNBT(((CompoundNBT) tankTag));
       }
     }
-    data.put("tanks", tagList);
   }
 
-  public void readTanksFromNBT(CompoundNBT data) {
-    ListNBT tagList = data.getList("tanks", Constants.NBT.TAG_COMPOUND);
-    for (INBT tag : tagList) {
-      int slot = ((CompoundNBT) tag).getByte("tank");
-      if (slot >= 0 && slot < tanks.size())
-        tanks.get(slot).readFromNBT(((CompoundNBT) tag));
-    }
-  }
-
-  public void writePacketData(PacketBuffer data) throws IOException {
+  public void writePacketData(PacketBuffer data) {
     for (StandardTank tank : tanks) {
       data.writeFluidStack(tank.getFluid());
     }
   }
 
-  public void readPacketData(PacketBuffer data) throws IOException {
+  public void readPacketData(PacketBuffer data) {
     for (StandardTank tank : tanks) {
       tank.setFluid(data.readFluidStack());
     }
@@ -96,83 +93,68 @@ public class TankManager extends ForwardingList<StandardTank> implements IFluidH
 
   @Override
   public int fill(FluidStack resource, FluidAction doFill) {
-    return tanks.stream().mapToInt(tank -> tank.fill(resource, doFill)).filter(filled -> filled > 0)
-        .findFirst().orElse(0);
+    return this.tanks.stream()
+        .mapToInt(tank -> tank.fill(resource, doFill))
+        .filter(filled -> filled > 0)
+        .findFirst()
+        .orElse(0);
   }
 
-  public int fill(int tankIndex, @Nullable FluidStack resource, FluidAction doFill) {
-    if (tankIndex < 0 || tankIndex >= tanks.size() || resource == null)
-      return 0;
-
-    return tanks.get(tankIndex).fill(resource, doFill);
-  }
-
-  @Override
-  public @Nullable FluidStack drain(FluidStack resource, FluidAction doDrain) {
-    return tanks.stream().map(tank -> tank.drain(resource, doDrain)).filter(Objects::nonNull)
-        .findFirst().orElse(null);
+  public int fill(int tankIndex, FluidStack resource, FluidAction doFill) {
+    return this.tanks.get(tankIndex).fill(resource, doFill);
   }
 
   @Override
-  public @Nullable FluidStack drain(int maxDrain, FluidAction doDrain) {
-    return tanks.stream().map(tank -> tank.drain(maxDrain, doDrain)).filter(Objects::nonNull)
-        .findFirst().orElse(null);
+  public FluidStack drain(FluidStack resource, FluidAction doDrain) {
+    return this.tanks.stream()
+        .map(tank -> tank.drain(resource, doDrain))
+        .findFirst()
+        .orElse(null);
   }
 
-  public @Nullable FluidStack drain(int tankIndex, FluidStack resource, FluidAction doDrain) {
-    if (tankIndex < 0 || tankIndex >= tanks.size())
-      return null;
-
-    return tanks.get(tankIndex).drain(resource, doDrain);
+  @Override
+  public FluidStack drain(int maxDrain, FluidAction doDrain) {
+    return this.tanks.stream()
+        .map(tank -> tank.drain(maxDrain, doDrain))
+        .findFirst()
+        .orElse(null);
   }
 
-  public @Nullable FluidStack drain(int tankIndex, int maxDrain, FluidAction doDrain) {
-    if (tankIndex < 0 || tankIndex >= tanks.size())
-      return null;
+  public FluidStack drain(int tankIndex, FluidStack resource, FluidAction doDrain) {
+    return this.tanks.get(tankIndex).drain(resource, doDrain);
+  }
 
-    return tanks.get(tankIndex).drain(maxDrain, doDrain);
+  public FluidStack drain(int tankIndex, int maxDrain, FluidAction doDrain) {
+    return this.tanks.get(tankIndex).drain(maxDrain, doDrain);
   }
 
   @Override
   public StandardTank get(int tankIndex) {
-    if (tankIndex < 0 || tankIndex >= tanks.size())
-      throw new IllegalArgumentException("No Fluid Tank exists for index " + tankIndex);
-    return tanks.get(tankIndex);
+    return this.tanks.get(tankIndex);
   }
 
   public void setCapacity(int tankIndex, int capacity) {
-    StandardTank tank = get(tankIndex);
+    StandardTank tank = this.get(tankIndex);
     tank.setCapacity(capacity);
     FluidStack fluidStack = tank.getFluid();
-    if (fluidStack != null && fluidStack.getAmount() > capacity)
+    if (fluidStack != null && fluidStack.getAmount() > capacity) {
       fluidStack.setAmount(capacity);
-  }
-
-  public void pull(AdjacentBlockEntityCache cache, Predicate<? super TileEntity> filter,
-      int tankIndex,
-      int amount, Direction... sides) {
-    Collection<IFluidHandler> targets = FluidTools.findNeighbors(cache, filter, sides);
-    pull(targets, tankIndex, amount);
-  }
-
-  public void push(AdjacentBlockEntityCache cache, Predicate<? super TileEntity> filter,
-      int tankIndex,
-      int amount, Direction... sides) {
-    Collection<IFluidHandler> targets = FluidTools.findNeighbors(cache, filter, sides);
-    push(targets, tankIndex, amount);
+    }
   }
 
   public void pull(Collection<IFluidHandler> targets, int tankIndex, int amount) {
-    transfer(targets, tankIndex, (me, them) -> FluidUtil.tryFluidTransfer(me, them, amount, true));
+    this.transfer(targets, tankIndex,
+        (me, them) -> FluidUtil.tryFluidTransfer(me, them, amount, true));
   }
 
   public void push(Collection<IFluidHandler> targets, int tankIndex, int amount) {
-    transfer(targets, tankIndex, (me, them) -> FluidUtil.tryFluidTransfer(them, me, amount, true));
+    this.transfer(targets, tankIndex,
+        (me, them) -> FluidUtil.tryFluidTransfer(them, me, amount, true));
   }
 
   public void transfer(Collection<IFluidHandler> targets, int tankIndex,
       BiConsumer<IFluidHandler, IFluidHandler> transfer) {
-    targets.forEach(them -> transfer.accept(get(tankIndex), them));
+    targets.forEach(them -> transfer.accept(this.get(tankIndex), them));
   }
 
   @Override

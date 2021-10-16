@@ -32,10 +32,19 @@ public class RailcraftMenuTypes {
 
   public static final RegistryObject<ContainerType<ManualRollingMachineMenu>> MANUAL_ROLLING_MACHINE =
       MENU_TYPES.register("manual_rolling_machine",
-          () -> new ContainerType<ManualRollingMachineMenu>(ManualRollingMachineMenu::new));
+          () -> new ContainerType<>(ManualRollingMachineMenu::new));
 
   public static final RegistryObject<ContainerType<CokeOvenMenu>> COKE_OVEN =
       MENU_TYPES.register("coke_oven",
-          () -> new ContainerType<CokeOvenMenu>(CokeOvenMenu::new));
+          () -> new ContainerType<>(CokeOvenMenu::new));
 
+  public static final RegistryObject<ContainerType<ItemManipulatorMenu>> ITEM_MANIPULATOR =
+      MENU_TYPES.register("item_manipulator",
+          () -> new ContainerType<>(
+              (IContainerFactory<ItemManipulatorMenu>) ItemManipulatorMenu::create));
+
+  public static final RegistryObject<ContainerType<FluidManipulatorMenu>> FLUID_MANIPULATOR =
+      MENU_TYPES.register("fluid_manipulator",
+          () -> new ContainerType<>(
+              (IContainerFactory<FluidManipulatorMenu>) FluidManipulatorMenu::create));
 }

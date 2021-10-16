@@ -288,38 +288,39 @@ public abstract class InvTools {
     return ItemStack.isSame(stackA, stackB) && stackA.getCount() <= stackB.getCount();
   }
 
-  public static void writeInvToNBT(IInventory inv, String tag, CompoundNBT data) {
-    ListNBT list = new ListNBT();
-    for (byte slot = 0; slot < inv.getContainerSize(); slot++) {
-      ItemStack stack = inv.getItem(slot);
-      if (!stack.isEmpty()) {
-        CompoundNBT itemTag = new CompoundNBT();
-        itemTag.putByte(TAG_SLOT, slot);
-        writeItemToNBT(stack, itemTag);
-        list.add(itemTag);
+  public static ListNBT writeInventory(IInventory inventory) {
+    ListNBT tag = new ListNBT();
+    for (byte i = 0; i < inventory.getContainerSize(); i++) {
+      ItemStack itemStack = inventory.getItem(i);
+      if (!itemStack.isEmpty()) {
+        CompoundNBT slotTag = new CompoundNBT();
+        slotTag.putByte("index", i);
+        writeItem(itemStack, slotTag);
+        tag.add(slotTag);
       }
     }
-    data.put(tag, list);
+    return tag;
   }
 
-  public static void readInvFromNBT(IInventory inv, String tag, CompoundNBT data) {
-    ListNBT list = data.getList(tag, 10);
-    for (byte entry = 0; entry < list.size(); entry++) {
-      CompoundNBT itemTag = list.getCompound(entry);
-      int slot = itemTag.getByte(TAG_SLOT);
-      if (slot >= 0 && slot < inv.getContainerSize()) {
-        ItemStack stack = ItemStack.of(itemTag);
-        inv.setItem(slot, stack);
+  public static void readInventory(IInventory inventory, ListNBT tag) {
+    for (byte i = 0; i < tag.size(); i++) {
+      CompoundNBT slotTag = tag.getCompound(i);
+      int slot = slotTag.getByte("index");
+      if (slot >= 0 && slot < inventory.getContainerSize()) {
+        ItemStack itemStack = ItemStack.of(slotTag);
+        inventory.setItem(slot, itemStack);
       }
     }
   }
 
-  public static void writeItemToNBT(ItemStack stack, CompoundNBT data) {
-    if (stack.isEmpty())
+  public static void writeItem(ItemStack itemStack, CompoundNBT tag) {
+    if (itemStack.isEmpty()) {
       return;
-    if (stack.getCount() > 127)
-      setSize(stack, 127);
-    stack.save(data);
+    }
+    if (itemStack.getCount() > 127) {
+      setSize(itemStack, 127);
+    }
+    itemStack.save(tag);
   }
 
   public static boolean isStackEqualToBlock(ItemStack stack, @Nullable Block block) {

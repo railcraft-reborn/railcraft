@@ -1,5 +1,5 @@
 {
-  "parent": "railcraft:block/post_platform",
+  "parent": "railcraft:block/template_post_platform",
   "textures": {
     "texture": "railcraft:block/green_post"
   }

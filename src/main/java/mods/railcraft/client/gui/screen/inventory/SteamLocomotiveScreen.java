@@ -42,7 +42,7 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
   }
 
   @Override
-  public ResourceLocation getTextureLocation() {
+  public ResourceLocation getWidgetsTexture() {
     return TEXTURE_LOCATION;
   }
 

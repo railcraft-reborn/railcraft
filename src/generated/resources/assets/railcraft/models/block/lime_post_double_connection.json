@@ -1,5 +1,5 @@
 {
-  "parent": "railcraft:block/post_double_connection",
+  "parent": "railcraft:block/template_post_double_connection",
   "textures": {
     "texture": "railcraft:block/lime_post"
   }

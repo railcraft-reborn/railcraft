@@ -13,7 +13,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
  *
  * Created by CovertJaguar on 4/2/2015.
  */
-@SuppressWarnings("unused")
 public final class FluidItemHelper {
 
   public static boolean isContainer(ItemStack stack) {

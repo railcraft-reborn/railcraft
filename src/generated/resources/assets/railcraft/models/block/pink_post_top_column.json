@@ -1,5 +1,5 @@
 {
-  "parent": "railcraft:block/post_top_column",
+  "parent": "railcraft:block/template_post_top_column",
   "textures": {
     "texture": "railcraft:block/pink_post"
   }

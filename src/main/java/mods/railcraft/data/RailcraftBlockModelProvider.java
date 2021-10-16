@@ -8,12 +8,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.level.block.CokeOvenBricks;
+import mods.railcraft.world.level.block.AdvancedItemLoaderBlock;
+import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
+import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
@@ -43,6 +45,7 @@ import net.minecraft.data.StockTextureAliases;
 import net.minecraft.data.TexturedModel;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.Direction;
@@ -188,7 +191,8 @@ public class RailcraftBlockModelProvider {
 
     this.blockStateOutput.accept(
         FinishedVariantBlockState.multiVariant(cokeBrick).with(
-            BlockStateVariantBuilder.properties(CokeOvenBricks.ISLIT, CokeOvenBricks.ISPARENT)
+            BlockStateVariantBuilder.properties(CokeOvenBricksBlock.ISLIT,
+                CokeOvenBricksBlock.ISPARENT)
             .select(false, false, BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, cokeDefaultState))
             .select(true, false, BlockModelDefinition.variant()
@@ -217,6 +221,17 @@ public class RailcraftBlockModelProvider {
     this.createPost(RailcraftBlocks.MAGENTA_POST.get());
     this.createPost(RailcraftBlocks.ORANGE_POST.get());
     this.createPost(RailcraftBlocks.WHITE_POST.get());
+
+    this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
+    this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
+    this.createManipulator(RailcraftBlocks.ITEM_LOADER.get());
+    this.createManipulator(RailcraftBlocks.ITEM_UNLOADER.get());
+    this.createDirectionalManipulator(RailcraftBlocks.ADVANCED_ITEM_LOADER.get(),
+        AdvancedItemLoaderBlock.FACING);
+    this.createDirectionalManipulator(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get(),
+        AdvancedItemLoaderBlock.FACING);
+
+    this.createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
 
     this.createTurnoutTrack(RailcraftBlocks.TURNOUT_TRACK.get());
     this.createWyeTrack(RailcraftBlocks.WYE_TRACK.get());
@@ -334,6 +349,109 @@ public class RailcraftBlockModelProvider {
         new ResourceLocation(Railcraft.ID, "block/" + name + model.suffix.orElse("")),
         textureFactory.apply(new ResourceLocation(Railcraft.ID, "block/" + name)),
         this.modelOutput);
+  }
+
+  private void createElevatorTrack(Block block) {
+    ResourceLocation model =
+        Models.ELEVATOR_TRACK.create(block, ModelTextures.defaultTexture(block), this.modelOutput);
+    ResourceLocation activeModel = this.createSuffixedVariant(block, "_on", Models.ELEVATOR_TRACK,
+        ModelTextures::defaultTexture);
+
+    this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block)
+        .with(BlockStateVariantBuilder
+            .properties(ElevatorTrackBlock.POWERED, ElevatorTrackBlock.FACING)
+            .generate((powered, facing) -> {
+              BlockModelFields.Rotation yRot = BlockModelFields.Rotation.R0;
+              switch (facing) {
+                case SOUTH:
+                  yRot = BlockModelFields.Rotation.R180;
+                  break;
+                case EAST:
+                  yRot = BlockModelFields.Rotation.R90;
+                  break;
+                case WEST:
+                  yRot = BlockModelFields.Rotation.R270;
+                  break;
+                default:
+                  break;
+              }
+              return BlockModelDefinition.variant()
+                  .with(BlockModelFields.MODEL, powered ? activeModel : model)
+                  .with(BlockModelFields.Y_ROT, yRot);
+            })));
+
+    this.createSimpleFlatItemModel(block);
+  }
+
+  private void createFluidManipulator(Block block) {
+    this.createManipulator(block);
+    ResourceLocation model =
+        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(block, "_inventory",
+            new ModelTextures()
+                .put(StockTextureAliases.SIDE,
+                    new ResourceLocation(Railcraft.ID, "block/fluid_manipulator_side_inventory"))
+                .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(block, "_top"))
+                .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(block, "_bottom")),
+            this.modelOutput);
+    this.delegateItemModel(block, model);
+  }
+
+  private void createManipulator(Block block) {
+    ResourceLocation model =
+        StockModelShapes.CUBE_BOTTOM_TOP.create(block, ModelTextures.cubeBottomTop(block),
+            this.modelOutput);
+    this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block,
+        BlockModelDefinition.variant()
+            .with(BlockModelFields.MODEL, model)));
+  }
+
+  private void createDirectionalManipulator(Block block, DirectionProperty facingProperty) {
+    ResourceLocation horizontalModel =
+        StockModelShapes.CUBE_ORIENTABLE.create(block, ModelTextures.orientableCubeOnlyTop(block),
+            this.modelOutput);
+    ResourceLocation upModel =
+        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(block, "_up",
+            new ModelTextures()
+                .put(StockTextureAliases.SIDE, ModelTextures.getBlockTexture(block, "_side"))
+                .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(block, "_front"))
+                .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(block, "_top")),
+            this.modelOutput);
+    ResourceLocation downModel =
+        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(block, "_down",
+            new ModelTextures()
+                .put(StockTextureAliases.SIDE, ModelTextures.getBlockTexture(block, "_side"))
+                .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(block, "_top"))
+                .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(block, "_front")),
+            this.modelOutput);
+    this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block)
+        .with(BlockStateVariantBuilder.property(facingProperty)
+            .generate(facing -> {
+              BlockModelFields.Rotation yRot = BlockModelFields.Rotation.R0;
+              BlockModelFields.Rotation xRot = BlockModelFields.Rotation.R0;
+              switch (facing) {
+                case SOUTH:
+                  yRot = BlockModelFields.Rotation.R180;
+                  break;
+                case EAST:
+                  yRot = BlockModelFields.Rotation.R90;
+                  break;
+                case WEST:
+                  yRot = BlockModelFields.Rotation.R270;
+                  break;
+                case UP:
+                  return BlockModelDefinition.variant()
+                      .with(BlockModelFields.MODEL, upModel);
+                case DOWN:
+                  return BlockModelDefinition.variant()
+                      .with(BlockModelFields.MODEL, downModel);
+                default:
+                  break;
+              }
+              return BlockModelDefinition.variant()
+                  .with(BlockModelFields.MODEL, horizontalModel)
+                  .with(BlockModelFields.Y_ROT, yRot)
+                  .with(BlockModelFields.X_ROT, xRot);
+            })));
   }
 
   private void createPost(Block block) {

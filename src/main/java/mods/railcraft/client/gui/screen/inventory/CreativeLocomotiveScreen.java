@@ -19,7 +19,7 @@ public class CreativeLocomotiveScreen
   }
 
   @Override
-  public ResourceLocation getTextureLocation() {
+  public ResourceLocation getWidgetsTexture() {
     return TEXTURE_LOCATION;
   }
 }

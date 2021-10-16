@@ -43,10 +43,10 @@ public class ElevatorTrackBlock extends Block {
 
   public static final DirectionProperty FACING = HorizontalBlock.FACING;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-  protected static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
-  protected static final VoxelShape WEST_AABB = Block.box(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-  protected static final VoxelShape SOUTH_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 3.0D);
-  protected static final VoxelShape NORTH_AABB = Block.box(0.0D, 0.0D, 13.0D, 16.0D, 16.0D, 16.0D);
+  protected static final VoxelShape EAST_SHAPE = box(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
+  protected static final VoxelShape WEST_SHAPE = box(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+  protected static final VoxelShape SOUTH_SHAPE = box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 3.0D);
+  protected static final VoxelShape NORTH_SHAPE = box(0.0D, 0.0D, 13.0D, 16.0D, 16.0D, 16.0D);
 
 
   // /**
@@ -153,14 +153,14 @@ public class ElevatorTrackBlock extends Block {
       BlockPos pos, ISelectionContext context) {
     switch (state.getValue(FACING)) {
       case NORTH:
-        return NORTH_AABB;
+        return NORTH_SHAPE;
       case SOUTH:
-        return SOUTH_AABB;
+        return SOUTH_SHAPE;
       case WEST:
-        return WEST_AABB;
+        return WEST_SHAPE;
       case EAST:
       default:
-        return EAST_AABB;
+        return EAST_SHAPE;
     }
   }
 

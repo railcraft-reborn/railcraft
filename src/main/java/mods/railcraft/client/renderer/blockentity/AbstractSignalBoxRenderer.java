@@ -71,37 +71,32 @@ public abstract class AbstractSignalBoxRenderer
     Function<ResourceLocation, TextureAtlasSprite> spriteGetter =
         Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS);
 
-    this.model.set(Direction.UP, new CuboidModel.Face()
+    this.model.setPackedLight(packedLight);
+    this.model.setPackedOverlay(packedOverlay);
+
+    this.model.set(Direction.UP, this.model.new Face()
         .setSprite(spriteGetter.apply(this.getTopTextureLocation()))
-        .setSize(16)
-        .setPackedLight(packedLight)
-        .setPackedOverlay(packedOverlay));
-    this.model.set(Direction.DOWN, new CuboidModel.Face()
+        .setSize(16));
+    this.model.set(Direction.DOWN, this.model.new Face()
         .setSprite(spriteGetter.apply(BOTTOM_TEXTURE_LOCATION))
-        .setSize(16)
-        .setPackedLight(packedLight)
-        .setPackedOverlay(packedOverlay));
+        .setSize(16));
 
     for (Direction direction : Direction.Plane.HORIZONTAL) {
       if (SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction)) {
-        this.model.set(direction, new CuboidModel.Face()
+        this.model.set(direction, this.model.new Face()
             .setSprite(spriteGetter.apply(CONNECTED_SIDE_TEXTURE_LOCATION))
-            .setSize(16)
-            .setPackedLight(packedLight)
-            .setPackedOverlay(packedOverlay));
+            .setSize(16));
       } else {
-        this.model.set(direction, new CuboidModel.Face()
+        this.model.set(direction, this.model.new Face()
             .setSprite(spriteGetter.apply(SIDE_TEXTURE_LOCATION))
-            .setSize(16)
-            .setPackedLight(packedLight)
-            .setPackedOverlay(packedOverlay));
+            .setSize(16));
       }
     }
 
     IVertexBuilder vertexBuilder =
         renderTypeBuffer.getBuffer(RenderType.entityCutout(PlayerContainer.BLOCK_ATLAS));
-    CuboidModelRenderer.render(
-        this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH, false);
+    CuboidModelRenderer.render(this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH,
+        false);
 
     for (Direction direction : Direction.Plane.HORIZONTAL) {
       if (SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction)) {
@@ -110,7 +105,7 @@ public abstract class AbstractSignalBoxRenderer
         SignalAspect aspect = blockEntity.getSignalAspect(direction).getDisplayAspect();
         final int skyLight = LightTexture.sky(packedLight);
         final int facePackedLight = LightTexture.pack(aspect.getLampLight(), skyLight);
-        this.model.set(direction, new CuboidModel.Face()
+        this.model.set(direction, this.model.new Face()
             .setSprite(spriteGetter.apply(ASPECT_TEXTURE_LOCATIONS.get(aspect)))
             .setSize(16)
             .setPackedLight(facePackedLight)

@@ -54,7 +54,7 @@ public interface IInventoryManipulator {
   /**
    * Moves a single item matching the filter from this inventory to another.
    */
-  ItemStack moveOneItemTo(IInventoryComposite dest, Predicate<ItemStack> filter);
+  ItemStack moveOneItemTo(IInventoryManipulator dest, Predicate<ItemStack> filter);
 
   Stream<? extends IInvSlot> streamSlots();
 
@@ -144,7 +144,7 @@ public interface IInventoryManipulator {
    * @param dest the destination inventory
    * @return null if nothing was moved, the stack moved otherwise
    */
-  default ItemStack moveOneItemTo(IInventoryComposite dest) {
+  default ItemStack moveOneItemTo(IInventoryManipulator dest) {
     return moveOneItemTo(dest, Predicates.alwaysTrue());
   }
 

@@ -17,12 +17,11 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-// todo: multiblock base block type (so that we have isparent property)
-public class CokeOvenBricks extends Block {
+public class CokeOvenBricksBlock extends Block {
   public static final BooleanProperty ISLIT = BooleanProperty.create("lit");
   public static final BooleanProperty ISPARENT = BooleanProperty.create("parent");
 
-  public CokeOvenBricks(Properties properties) {
+  public CokeOvenBricksBlock(Properties properties) {
     super(properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(ISLIT, Boolean.valueOf(false))

@@ -176,7 +176,7 @@ public abstract class RailcraftBlockEntity extends TileEntity
     return this;
   }
 
-  public static boolean isUsableByPlayerHelper(TileEntity tile, PlayerEntity player) {
+  public static boolean stillValid(TileEntity tile, PlayerEntity player) {
     return !tile.isRemoved() && tile.getLevel().getBlockEntity(tile.getBlockPos()) == tile
         && player.distanceToSqr(tile.getBlockPos().getX(), tile.getBlockPos().getY(),
             tile.getBlockPos().getZ()) <= 64;

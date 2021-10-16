@@ -44,10 +44,11 @@ public class SetAnalogSignalControllerBoxAttributesMessage {
         signalAspectTriggerSignals);
   }
 
-  public void handle(Supplier<NetworkEvent.Context> context) {
+  public boolean handle(Supplier<NetworkEvent.Context> context) {
     ServerWorld level = context.get().getSender().getLevel();
     LevelUtil.getBlockEntity(level, this.blockPos, AnalogSignalControllerBoxBlockEntity.class)
         .ifPresent(
             signalBox -> signalBox.setSignalAspectTriggerSignals(this.signalAspectTriggerSignals));
+    return true;
   }
 }

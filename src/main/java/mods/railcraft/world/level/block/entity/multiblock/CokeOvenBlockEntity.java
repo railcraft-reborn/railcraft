@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
-import mods.railcraft.world.level.block.CokeOvenBricks;
+import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.Block;
@@ -196,18 +196,18 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
     if (this.isParent()) {
       BlockState parentBrick = this.level.getBlockState(this.worldPosition);
       // isParent status
-      if (!parentBrick.getValue(CokeOvenBricks.ISPARENT)) {
+      if (!parentBrick.getValue(CokeOvenBricksBlock.ISPARENT)) {
         this.setChanged();
       }
 
       // only set if needed, burn stat
       if ((this.currentTick >= this.recipieRequiredTime)
-          && parentBrick.getValue(CokeOvenBricks.ISLIT)) {
+          && parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
         this.setChanged();
         return;
       }
       if ((this.currentTick < this.recipieRequiredTime)
-          && !parentBrick.getValue(CokeOvenBricks.ISLIT)) {
+          && !parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
         this.setChanged();
         return;
       }
@@ -219,20 +219,20 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
     if (this.isParent()) {
       BlockState parentBrick = this.level.getBlockState(this.worldPosition);
       // isParent status
-      if (!parentBrick.getValue(CokeOvenBricks.ISPARENT)) {
+      if (!parentBrick.getValue(CokeOvenBricksBlock.ISPARENT)) {
         this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricks.ISPARENT, Boolean.valueOf(true)), 3);
+            parentBrick.setValue(CokeOvenBricksBlock.ISPARENT, Boolean.valueOf(true)), 3);
       }
       // only set if needed, burn stat
       if ((this.currentTick >= this.recipieRequiredTime)
-          && parentBrick.getValue(CokeOvenBricks.ISLIT)) {
+          && parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
         this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricks.ISLIT, Boolean.valueOf(false)), 3);
+            parentBrick.setValue(CokeOvenBricksBlock.ISLIT, Boolean.valueOf(false)), 3);
       }
       if ((this.currentTick < this.recipieRequiredTime)
-          && !parentBrick.getValue(CokeOvenBricks.ISLIT)) {
+          && !parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
         this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricks.ISLIT, Boolean.valueOf(true)), 3);
+            parentBrick.setValue(CokeOvenBricksBlock.ISLIT, Boolean.valueOf(true)), 3);
       }
     }
     ItemStack itemstack = this.items.get(0);
