@@ -159,7 +159,7 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handlePlayerTick(PlayerTickEvent event) {
-    if (event.player instanceof ServerPlayerEntity && event.player.tickCount % 20 == 0) {
+    if ((event.player instanceof ServerPlayerEntity) && (event.player.tickCount % 20) == 0) {
       ServerPlayerEntity player = (ServerPlayerEntity) event.player;
       List<AbstractMinecartEntity> carts = EntitySearcher.findMinecarts()
           .around(player)

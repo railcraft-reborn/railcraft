@@ -47,9 +47,9 @@ public class CartBattery extends SimpleBattery implements IBatteryCart {
 
   @Override
   public void setCharge(int charge) {
-    if (type == IBatteryCart.Type.USER) {
-      return;
-    }
+    // if (type == IBatteryCart.Type.USER) {
+    //   return;
+    // }
     super.setCharge(charge);
   }
 

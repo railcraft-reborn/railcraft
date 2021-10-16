@@ -8,8 +8,8 @@ see LICENSE.md for details.
 package mods.railcraft.api.charge;
 
 import mods.railcraft.battery.SimpleBattery;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.IntNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
@@ -36,7 +36,9 @@ public final class CapabilityCharge {
           @Override
           public INBT writeNBT(Capability<ChargeStorage> capability, ChargeStorage instance,
               Direction side) {
-            return IntNBT.valueOf(instance.getCharge());
+            // todo: check if capacity is needed
+            return instance.serializeNBT();
+            // return IntNBT.valueOf(instance.getCharge());
           }
 
           @Override
@@ -46,7 +48,8 @@ public final class CapabilityCharge {
               throw new IllegalArgumentException(
                   "Can not deserialize to an instance that isn't the default implementation");
             }
-            ((SimpleBattery)instance).setCharge(((IntNBT)nbt).getAsInt());
+            instance.deserializeNBT((CompoundNBT)nbt);
+            // ((SimpleBattery)instance).setCharge(((IntNBT)nbt).getAsInt());
           }
         },
         () -> new SimpleBattery(1000));

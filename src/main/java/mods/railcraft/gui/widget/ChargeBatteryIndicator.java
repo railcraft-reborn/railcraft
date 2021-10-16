@@ -40,7 +40,7 @@ public class ChargeBatteryIndicator implements Gauge {
 
   @Override
   public float getMeasurement() {
-    float capacity = battery.getCapacity();
+    float capacity = this.battery.getCapacity();
     if (capacity <= 0.0) {
       return 0.0F;
     }

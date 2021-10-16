@@ -8,8 +8,6 @@ import mods.railcraft.client.ClientEffects;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.entity.cart.LocomotiveEntity;
-import mods.railcraft.world.entity.cart.LocomotiveEntity.Mode;
-import mods.railcraft.world.entity.cart.LocomotiveEntity.Speed;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
@@ -68,7 +66,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   }.setFilterFluid(() -> Fluids.WATER);
 
   protected final StandardTank steamTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 16)
-      .setFilterFluid(RailcraftFluids.STEAM)
+      .setFilterFluid(() -> RailcraftFluids.STEAM.get())
       .disableDrain()
       .disableFill();
 

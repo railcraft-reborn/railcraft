@@ -5,7 +5,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 /**
- * @author CovertJaguar <https://www.railcraft.info>
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public class FilteredTank extends StandardTank {
 
@@ -15,6 +15,7 @@ public class FilteredTank extends StandardTank {
 
   public FilteredTank setFilterFluid(Supplier<? extends Fluid> filter) {
     this.filter = () -> new FluidStack(filter.get(), 1);
+    this.setValidator((FluidStack fluidStack) -> this.filter.get().isFluidEqual(fluidStack));
     return this;
   }
 

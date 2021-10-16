@@ -1,11 +1,14 @@
 package mods.railcraft.world.item;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
+
 import javax.annotation.Nullable;
-import com.google.common.collect.Lists;
+
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.item.SpikeMaulTarget;
@@ -52,8 +55,6 @@ public class SpikeMaulItem extends ToolItem {
   public ActionResultType useOn(ItemUseContext context) {
     World level = context.getLevel();
     BlockPos blockPos = context.getClickedPos();
-    PlayerEntity player = context.getPlayer();
-    ItemStack heldStack = player.getItemInHand(context.getHand());
 
     if (SpikeMaulTarget.spikeMaulTargets.isEmpty()) {
       return ActionResultType.PASS;
@@ -74,6 +75,7 @@ public class SpikeMaulItem extends ToolItem {
       return ActionResultType.PASS;
     }
 
+    PlayerEntity player = context.getPlayer();
     List<SpikeMaulTarget> list = SpikeMaulTarget.spikeMaulTargets;
     if (player.isCrouching()) {
       list = Lists.reverse(list);
@@ -110,6 +112,7 @@ public class SpikeMaulItem extends ToolItem {
       return ActionResultType.FAIL;
     }
 
+    ItemStack heldStack = player.getItemInHand(context.getHand());
     BlockState newBlockState = level.getBlockState(blockPos);
     SoundType soundtype = newBlockState.getSoundType(level, blockPos, player);
     level.playSound(player, blockPos,

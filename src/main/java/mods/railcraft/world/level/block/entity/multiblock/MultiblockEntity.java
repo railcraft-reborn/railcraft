@@ -100,6 +100,14 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
   }
 
   /**
+   * Is this a parent.
+   * @return TRUE if yes.
+   */
+  public boolean isParent() {
+    return this.parentPos.equals(BlockPos.ZERO);
+  }
+
+  /**
    * Gets the parent of this multiblock, or null if not. Does delinking and cacheing.
    */
   @SuppressWarnings("unchecked")
@@ -114,7 +122,7 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
       return null;
     }
     // us
-    if (this.parentPos.equals(BlockPos.ZERO)) {
+    if (this.isParent()) {
       if (entityCache == null || entityCache.isRemoved()) {
         entityCache = (T) this;
       }

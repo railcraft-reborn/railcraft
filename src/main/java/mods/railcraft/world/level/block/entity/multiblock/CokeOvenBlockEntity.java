@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
+import mods.railcraft.world.level.block.CokeOvenBricks;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.Block;
@@ -192,10 +193,48 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   @Override
   public void tick() {
     super.tick();
+    if (this.isParent()) {
+      BlockState parentBrick = this.level.getBlockState(this.worldPosition);
+      // isParent status
+      if (!parentBrick.getValue(CokeOvenBricks.ISPARENT)) {
+        this.setChanged();
+      }
+
+      // only set if needed, burn stat
+      if ((this.currentTick >= this.recipieRequiredTime)
+          && parentBrick.getValue(CokeOvenBricks.ISLIT)) {
+        this.setChanged();
+        return;
+      }
+      if ((this.currentTick < this.recipieRequiredTime)
+          && !parentBrick.getValue(CokeOvenBricks.ISLIT)) {
+        this.setChanged();
+        return;
+      }
+    }
     if (this.level.isClientSide() || !this.isFormed()) {
       return;
     }
 
+    if (this.isParent()) {
+      BlockState parentBrick = this.level.getBlockState(this.worldPosition);
+      // isParent status
+      if (!parentBrick.getValue(CokeOvenBricks.ISPARENT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricks.ISPARENT, Boolean.valueOf(true)), 3);
+      }
+      // only set if needed, burn stat
+      if ((this.currentTick >= this.recipieRequiredTime)
+          && parentBrick.getValue(CokeOvenBricks.ISLIT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricks.ISLIT, Boolean.valueOf(false)), 3);
+      }
+      if ((this.currentTick < this.recipieRequiredTime)
+          && !parentBrick.getValue(CokeOvenBricks.ISLIT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricks.ISLIT, Boolean.valueOf(true)), 3);
+      }
+    }
     ItemStack itemstack = this.items.get(0);
     if (itemstack.isEmpty()) {
       this.recipieRequiredTime = 0;
