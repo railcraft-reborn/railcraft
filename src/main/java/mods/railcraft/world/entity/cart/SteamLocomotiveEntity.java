@@ -166,11 +166,6 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
   }
 
   @Override
-  public boolean doesCartMatchFilter(ItemStack stack) {
-    return stack.getItem() == RailcraftItems.STEAM_LOCOMOTIVE.get();
-  }
-
-  @Override
   protected Container createMenu(int id, PlayerInventory playerInventory) {
     return new SteamLocomotiveMenu(id, playerInventory, this);
   }

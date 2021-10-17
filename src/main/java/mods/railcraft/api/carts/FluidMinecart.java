@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
  *
  * @see mods.railcraft.api.carts.ITrainTransferHelper
  */
-public interface FluidCart {
+public interface FluidMinecart {
   /**
    * This function controls whether a cart can pass push or pull requests. This function is only
    * called if the cart cannot fulfill the request itself.

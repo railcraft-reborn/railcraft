@@ -14,6 +14,7 @@ import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
+import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.particle.ParticlePumpkin;
 import mods.railcraft.client.particle.ParticleSpark;
 import mods.railcraft.client.particle.ParticleSteam;
@@ -33,6 +34,7 @@ import mods.railcraft.client.renderer.blockentity.SignalRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalSequencerBoxRenderer;
 import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
+import mods.railcraft.client.renderer.entity.cart.TankMinecartRenderer;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
@@ -149,7 +151,12 @@ public class ClientDist implements RailcraftDist {
         ItemManipulatorScreen::new);
     ScreenManager.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(),
         FluidManipulatorScreen::new);
+    ScreenManager.register(RailcraftMenuTypes.TANK_MINECART.get(),
+        TankMinecartScreen::new);
     // === Entity Renderers ===
+
+    RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.TANK_MINECART.get(),
+        TankMinecartRenderer::new);
 
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
         ElectricLocomotiveRenderer::new);

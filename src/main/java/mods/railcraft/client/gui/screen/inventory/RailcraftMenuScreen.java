@@ -2,7 +2,6 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -86,12 +85,6 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
         element.draw(this, matrixStack, x, y, relativeMouseX, relativeMouseY);
       }
     }
-  }
-
-  private Optional<Slot> getSlotAtPosition(int mouseX, int mouseY) {
-    return this.menu.slots.stream()
-        .filter(slot -> this.isMouseOverSlot(slot, mouseX, mouseY))
-        .findFirst();
   }
 
   /**

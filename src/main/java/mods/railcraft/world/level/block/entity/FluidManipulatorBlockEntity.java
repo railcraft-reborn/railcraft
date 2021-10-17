@@ -55,6 +55,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     this.tankManager.add(this.tank);
     this.tank.setValidator(
         fluidStack -> this.getFilterFluid().map(fluidStack::isFluidEqual).orElse(true));
+    this.tank.setUpdateCallback(__ -> this.syncToClient());
   }
 
   public TankManager getTankManager() {

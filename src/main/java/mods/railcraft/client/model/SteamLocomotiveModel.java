@@ -3,6 +3,7 @@ package mods.railcraft.client.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import mods.railcraft.world.entity.cart.LocomotiveEntity;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
@@ -15,6 +16,7 @@ public class SteamLocomotiveModel extends EntityModel<LocomotiveEntity> {
   }
 
   public SteamLocomotiveModel(float scale) {
+    super(RenderType::entityTranslucentCull);
     this.loco = new ModelRenderer(this);
     this.loco.setTexSize(128, 64);
 

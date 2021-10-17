@@ -157,7 +157,7 @@ public abstract class InvTools {
     }
   }
 
-  public static void dropItem(@Nullable ItemStack stack, World world, BlockPos pos) {
+  public static void dropItem(ItemStack stack, World world, BlockPos pos) {
     InventoryHelper.dropItemStack(
         world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
   }

@@ -1,6 +1,7 @@
 package mods.railcraft.client.model;
 
 import java.util.Arrays;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -10,10 +11,11 @@ public class LowSidesMinecartModel<T extends Entity> extends SegmentedModel<T> {
   private final ModelRenderer[] cubes = new ModelRenderer[6];
 
   public LowSidesMinecartModel() {
-    this(0f);
+    this(0.0F);
   }
 
   public LowSidesMinecartModel(float scale) {
+    super(RenderType::entityTranslucentCull);
     cubes[0] = new ModelRenderer(this, 0, 10);
     cubes[1] = new ModelRenderer(this, 0, 0);
     cubes[2] = new ModelRenderer(this, 0, 0);

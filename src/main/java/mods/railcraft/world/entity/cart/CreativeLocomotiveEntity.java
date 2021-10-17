@@ -123,11 +123,6 @@ public class CreativeLocomotiveEntity extends LocomotiveEntity implements ISided
   }
 
   @Override
-  public boolean doesCartMatchFilter(ItemStack stack) {
-    return this.getCartItem().getItem() == stack.getItem();
-  }
-
-  @Override
   protected Container createMenu(int id, PlayerInventory playerInventory) {
     return new LocomotiveMenu<>(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), id,
         playerInventory, this);

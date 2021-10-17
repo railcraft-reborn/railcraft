@@ -95,11 +95,11 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
     }
 
     if (Seasons.isPolarExpress(cart)) {
-      this.model.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
+      this.snowLayer.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
       IVertexBuilder vertexBuilder =
-          renderTypeBuffer.getBuffer(this.model.renderType(this.textures[3]));
-      this.model.renderToBuffer(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY,
-          1.0F, 1.0F, 1.0F, 1.0F);
+          renderTypeBuffer.getBuffer(this.snowLayer.renderType(this.textures[3]));
+      this.snowLayer.renderToBuffer(matrixStack, vertexBuilder, packedLight,
+          OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     ResourceLocation emblemTexture = this.getEmblemTexture(cart);

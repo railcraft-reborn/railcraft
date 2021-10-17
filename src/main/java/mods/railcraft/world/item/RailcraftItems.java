@@ -3,6 +3,7 @@ package mods.railcraft.world.item;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.cart.CreativeLocomotiveEntity;
 import mods.railcraft.world.entity.cart.ElectricLocomotiveEntity;
+import mods.railcraft.world.entity.cart.TankMinecartEntity;
 import mods.railcraft.world.entity.cart.SteamLocomotiveEntity;
 import mods.railcraft.world.entity.cart.TrackLayerMinecartEntity;
 import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
@@ -42,6 +43,11 @@ public class RailcraftItems {
           return new ItemStack(IRON_DETECTOR_TRACK.get());
         }
       };
+
+  public static final RegistryObject<Item> TANK_MINECART =
+      ITEMS.register("tank_minecart",
+          () -> new CartItem(TankMinecartEntity::new,
+              new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> FLUID_LOADER =
       ITEMS.register("fluid_loader",

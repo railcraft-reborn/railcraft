@@ -25,6 +25,7 @@ public class RailcraftItemModelProvider {
   }
 
   public void run() {
+    this.generateFlatItem(RailcraftItems.TANK_MINECART.get(), StockModelShapes.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.TRACK_LAYER.get(), StockModelShapes.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.TRACK_REMOVER.get(), StockModelShapes.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.TUNNEL_BORE.get(), StockModelShapes.FLAT_ITEM);

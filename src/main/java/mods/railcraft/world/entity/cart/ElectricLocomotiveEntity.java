@@ -184,11 +184,6 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
   }
 
   @Override
-  public boolean doesCartMatchFilter(ItemStack stack) {
-    return stack.getItem() == this.getItem();
-  }
-
-  @Override
   protected Container createMenu(int id, PlayerInventory playerInventory) {
     return new ElectricLocomotiveMenu(id, playerInventory, this);
   }

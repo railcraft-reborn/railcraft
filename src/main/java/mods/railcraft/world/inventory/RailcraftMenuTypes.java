@@ -47,4 +47,9 @@ public class RailcraftMenuTypes {
       MENU_TYPES.register("fluid_manipulator",
           () -> new ContainerType<>(
               (IContainerFactory<FluidManipulatorMenu>) FluidManipulatorMenu::create));
+
+  public static final RegistryObject<ContainerType<TankMinecartMenu>> TANK_MINECART =
+      MENU_TYPES.register("tank_minecart",
+          () -> new ContainerType<>(
+              (IContainerFactory<TankMinecartMenu>) TankMinecartMenu::create));
 }

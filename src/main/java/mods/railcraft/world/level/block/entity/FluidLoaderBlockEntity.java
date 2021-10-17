@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.entity;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.FluidCart;
+import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.Predicates;
@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -24,11 +25,12 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
   private static final int RESET_WAIT = 200;
   private static final int TRANSFER_RATE = 20;
-  private static final float MAX_PIPE_LENGTH = 0.96F;
+  private static final float MAX_PIPE_LENGTH = 1.25F;
   private static final float PIPE_INCREMENT = 0.01f;
   private static final Direction[] PULL_FROM = Stream.of(Direction.values())
       .filter(direction -> direction != Direction.DOWN)
       .toArray(Direction[]::new);
+  private float lastPipeLength;
   private float pipeLength;
   private boolean needsPipe;
 
@@ -40,11 +42,12 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     this.pipeLength = 0;
   }
 
-  public float getPipeLength() {
-    return this.pipeLength;
+  public float getPipeLength(float partialTicks) {
+    return MathHelper.lerp(partialTicks, this.lastPipeLength, this.pipeLength);
   }
 
   private void setPipeLength(float pipeLength) {
+    this.lastPipeLength = this.pipeLength;
     this.pipeLength = pipeLength;
     this.syncToClient();
   }
@@ -77,8 +80,8 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   @Override
   protected void reset() {
     super.reset();
-    if (this.currentCart instanceof FluidCart) {
-      ((FluidCart) this.currentCart).setFilling(false);
+    if (this.currentCart instanceof FluidMinecart) {
+      ((FluidMinecart) this.currentCart).setFilling(false);
     }
   }
 
@@ -154,8 +157,9 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
       this.setPowered(false);
     }
 
-    if (cart instanceof FluidCart)
-      ((FluidCart) cart).setFilling(this.isProcessing());
+    if (cart instanceof FluidMinecart) {
+      ((FluidMinecart) cart).setFilling(this.isProcessing());
+    }
 
     if (!this.tank.getFluid().isEmpty()
         && tankCart.fill(this.tank.getFluid(), FluidAction.SIMULATE) == 0) {

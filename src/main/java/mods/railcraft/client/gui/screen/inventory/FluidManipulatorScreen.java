@@ -18,7 +18,7 @@ public class FluidManipulatorScreen extends ManipulatorScreen<FluidManipulatorMe
       FluidManipulatorMenu menu, PlayerInventory playerInventory,
       ITextComponent title) {
     super(menu, playerInventory, title);
-    this.registerWidgetRenderer(new FluidGaugeWidgetRenderer(menu.getFluidGuage()));
+    this.registerWidgetRenderer(new FluidGaugeWidgetRenderer(menu.getFluidGauge()));
   }
 
   @Override

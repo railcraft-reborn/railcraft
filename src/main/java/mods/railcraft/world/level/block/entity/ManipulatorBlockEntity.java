@@ -46,7 +46,8 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
   private static final Set<RedstoneMode> SUPPORTED_REDSTONE_MODES =
       Collections.unmodifiableSet(EnumSet.allOf(RedstoneMode.class));
 
-  private final InventoryAdvanced invCarts = new InventoryAdvanced(2).callbackInv(this).phantom();
+  private final InventoryAdvanced cartFiltersInventory =
+      new InventoryAdvanced(2).callbackInv(this).phantom();
   private RedstoneMode redstoneMode = RedstoneMode.COMPLETE;
   @Nullable
   protected AbstractMinecartEntity currentCart;
@@ -95,11 +96,11 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
     if (this.isSendCartGateAction()) {
       return false;
     }
-    ItemStack minecartSlot1 = getCartFilters().getItem(0);
-    ItemStack minecartSlot2 = getCartFilters().getItem(1);
-    if (!minecartSlot1.isEmpty() || !minecartSlot2.isEmpty()) {
+    ItemStack filterStack1 = this.getCartFilters().getItem(0);
+    ItemStack filterStack2 = this.getCartFilters().getItem(1);
+    if (!filterStack1.isEmpty() || !filterStack2.isEmpty()) {
       Predicate<ItemStack> matcher = StackFilters.isCart(cart);
-      return matcher.test(minecartSlot1) || matcher.test(minecartSlot2);
+      return matcher.test(filterStack1) || matcher.test(filterStack2);
     }
     return true;
   }
@@ -166,7 +167,7 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
   }
 
   public final InventoryAdvanced getCartFilters() {
-    return this.invCarts;
+    return this.cartFiltersInventory;
   }
 
   public boolean isSendCartGateAction() {

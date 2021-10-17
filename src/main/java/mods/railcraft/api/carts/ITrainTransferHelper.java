@@ -26,7 +26,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
  *
  * @see CartUtil
  * @see mods.railcraft.api.carts.IItemCart
- * @see mods.railcraft.api.carts.FluidCart
+ * @see mods.railcraft.api.carts.FluidMinecart
  */
 public interface ITrainTransferHelper {
   // ***************************************************************************************************************************
@@ -40,7 +40,7 @@ public interface ITrainTransferHelper {
    * @param stack the ItemStack to be pushed
    * @return the ItemStack that remains after any pushed items were removed, or null if it was fully
    *         pushed
-   * @see mods.railcraft.api.carts.FluidCart
+   * @see mods.railcraft.api.carts.FluidMinecart
    */
   default ItemStack pushStack(AbstractMinecartEntity requester, ItemStack stack) {
     return stack;
@@ -87,7 +87,7 @@ public interface ITrainTransferHelper {
    * @param fluidStack the amount and type of Fluid to be pushed
    * @return the FluidStack that remains after any pushed Fluid was removed, or null if it was fully
    *         pushed
-   * @see mods.railcraft.api.carts.FluidCart
+   * @see mods.railcraft.api.carts.FluidMinecart
    */
   default @Nullable FluidStack pushFluid(AbstractMinecartEntity requester, FluidStack fluidStack) {
     return fluidStack;
@@ -99,7 +99,7 @@ public interface ITrainTransferHelper {
    * @param requester the source AbstractMinecartEntity
    * @param fluidStack the amount and type of Fluid requested
    * @return the FluidStack pulled from the Train, or null if the request cannot be met
-   * @see mods.railcraft.api.carts.FluidCart
+   * @see mods.railcraft.api.carts.FluidMinecart
    */
   default @Nullable FluidStack pullFluid(AbstractMinecartEntity requester,
       @Nullable FluidStack fluidStack) {
