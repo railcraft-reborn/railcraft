@@ -17,7 +17,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class RailcraftRecipiesProvider extends RecipeProvider {
 
@@ -92,6 +94,21 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .pattern("LRL")
       .unlockedBy("has_firestone", has(RailcraftItems.CRACKED_FIRESTONE.get()))
       .save(finishedRecipie, Railcraft.ID + ":firestone_cracked_fixing");
+
+    /*
+     * =====================================
+     *        RAILCRAFT BLOCKS
+     * =====================================
+     */
+    ShapedRecipeBuilder.shaped(RailcraftItems.COKE_OVEN_BRICKS.get())
+      .define('B', Items.BRICK)
+      .define('S', Tags.Items.SAND)
+      .pattern("SBS")
+      .pattern("BSB")
+      .pattern("SBS")
+      .unlockedBy("has_brick", has(Items.BRICK))
+      .unlockedBy("has_snad", has(Tags.Items.SAND)) // intentional
+      .save(finishedRecipie);
 
     /*
      * =====================================
@@ -237,20 +254,21 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
   private final void circuitFromMaterial(Consumer<IFinishedRecipe> finishedRecipie,
       Item itemOut, Item woolItem) {
     ShapedRecipeBuilder.shaped(itemOut)
-    .define('W', woolItem)
-    .define('R', Items.REPEATER)
-    .define('S', Tags.Items.DUSTS_REDSTONE)
-    .define('G', Tags.Items.INGOTS_GOLD)
-    .define('L', Tags.Items.GEMS_LAPIS)
-    .define('B', Tags.Items.SLIMEBALLS)
-    .pattern(" RW")
-    .pattern("BGS")
-    .pattern("WSL")
-    .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
-    .save(finishedRecipie);
+      .define('W', woolItem)
+      .define('R', Items.REPEATER)
+      .define('S', Tags.Items.DUSTS_REDSTONE)
+      .define('G', Tags.Items.INGOTS_GOLD)
+      .define('L', Tags.Items.GEMS_LAPIS)
+      .define('B', Tags.Items.SLIMEBALLS)
+      .pattern(" RW")
+      .pattern("BGS")
+      .pattern("WSL")
+      .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+      .save(finishedRecipie);
   }
 
-  private final void rebarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie, ITag<Item> materialTag, int count, String fancyname) {
+  private final void rebarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie,
+      ITag<Item> materialTag, int count, String fancyname) {
     RollingRecipeBuilder.rolled(RailcraftItems.REBAR.get(), count)
       .define('I', materialTag)
       .pattern("  I")
@@ -262,14 +280,17 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
   private final void railsFromMaterials(Consumer<IFinishedRecipe> finishedRecipie,
       Item itemOut, Item railType, Item railBedType) {
     ShapedRecipeBuilder.shaped(itemOut, 32)
-      .define('I', railType)
-      .define('B', railBedType)
-      .pattern("I I")
-      .pattern("IBI")
-      .pattern("I I")
-      .unlockedBy("has_rail", has(railType))
-      .unlockedBy("has_railbed", has(railBedType))
-      .save(finishedRecipie);
+        .define('I', railType)
+        .define('B', railBedType)
+        .pattern("I I")
+        .pattern("IBI")
+        .pattern("I I")
+        .unlockedBy("has_rail", has(railType))
+        .unlockedBy("has_railbed", has(railBedType))
+        // this is deliberate as vanilla ones fail to properly register (rails.json already exists)
+        .save(finishedRecipie,
+            new ResourceLocation(Railcraft.ID + ":"
+                + ForgeRegistries.ITEMS.getKey(itemOut).getPath()));
   }
 
   private final void compress(Consumer<IFinishedRecipe> finishedRecipie,
