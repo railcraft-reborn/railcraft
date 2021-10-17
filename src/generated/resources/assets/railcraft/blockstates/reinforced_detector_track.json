@@ -53,8 +53,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "north_south",
+        "mode": "bi_directional",
         "powered": "false"
       },
       "apply": {
@@ -63,8 +63,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "east_west",
+        "mode": "bi_directional",
         "powered": "false"
       },
       "apply": {
@@ -74,8 +74,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "ascending_north",
+        "mode": "bi_directional",
         "powered": "false"
       },
       "apply": {
@@ -84,8 +84,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "ascending_south",
+        "mode": "bi_directional",
         "powered": "false"
       },
       "apply": {
@@ -94,8 +94,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "ascending_east",
+        "mode": "bi_directional",
         "powered": "false"
       },
       "apply": {
@@ -105,8 +105,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "ascending_west",
+        "mode": "bi_directional",
         "powered": "false"
       },
       "apply": {
@@ -116,8 +116,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "north_south",
+        "mode": "bi_directional",
         "powered": "true"
       },
       "apply": {
@@ -126,8 +126,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "east_west",
+        "mode": "bi_directional",
         "powered": "true"
       },
       "apply": {
@@ -137,8 +137,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "ascending_north",
+        "mode": "bi_directional",
         "powered": "true"
       },
       "apply": {
@@ -147,8 +147,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "ascending_south",
+        "mode": "bi_directional",
         "powered": "true"
       },
       "apply": {
@@ -157,8 +157,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "ascending_east",
+        "mode": "bi_directional",
         "powered": "true"
       },
       "apply": {
@@ -168,8 +168,8 @@
     },
     {
       "when": {
-        "mode": "bi_directional",
         "shape": "ascending_west",
+        "mode": "bi_directional",
         "powered": "true"
       },
       "apply": {
@@ -179,8 +179,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "north_south",
+        "mode": "travel",
         "powered": "false"
       },
       "apply": {
@@ -189,8 +189,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "east_west",
+        "mode": "travel",
         "powered": "false"
       },
       "apply": {
@@ -200,8 +200,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "ascending_north",
+        "mode": "travel",
         "powered": "false"
       },
       "apply": {
@@ -210,8 +210,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "ascending_south",
+        "mode": "travel",
         "powered": "false"
       },
       "apply": {
@@ -220,8 +220,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "ascending_east",
+        "mode": "travel",
         "powered": "false"
       },
       "apply": {
@@ -231,8 +231,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "ascending_west",
+        "mode": "travel",
         "powered": "false"
       },
       "apply": {
@@ -242,8 +242,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "north_south",
+        "mode": "travel",
         "powered": "true"
       },
       "apply": {
@@ -252,8 +252,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "east_west",
+        "mode": "travel",
         "powered": "true"
       },
       "apply": {
@@ -263,8 +263,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "ascending_north",
+        "mode": "travel",
         "powered": "true"
       },
       "apply": {
@@ -273,8 +273,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "ascending_south",
+        "mode": "travel",
         "powered": "true"
       },
       "apply": {
@@ -283,8 +283,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "ascending_east",
+        "mode": "travel",
         "powered": "true"
       },
       "apply": {
@@ -294,8 +294,8 @@
     },
     {
       "when": {
-        "mode": "travel",
         "shape": "ascending_west",
+        "mode": "travel",
         "powered": "true"
       },
       "apply": {
@@ -305,8 +305,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "north_south",
+        "mode": "travel_reversed",
         "powered": "false"
       },
       "apply": {
@@ -316,8 +316,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "east_west",
+        "mode": "travel_reversed",
         "powered": "false"
       },
       "apply": {
@@ -327,8 +327,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "ascending_north",
+        "mode": "travel_reversed",
         "powered": "false"
       },
       "apply": {
@@ -338,8 +338,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "ascending_south",
+        "mode": "travel_reversed",
         "powered": "false"
       },
       "apply": {
@@ -349,8 +349,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "ascending_east",
+        "mode": "travel_reversed",
         "powered": "false"
       },
       "apply": {
@@ -360,8 +360,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "ascending_west",
+        "mode": "travel_reversed",
         "powered": "false"
       },
       "apply": {
@@ -371,8 +371,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "north_south",
+        "mode": "travel_reversed",
         "powered": "true"
       },
       "apply": {
@@ -382,8 +382,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "east_west",
+        "mode": "travel_reversed",
         "powered": "true"
       },
       "apply": {
@@ -393,8 +393,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "ascending_north",
+        "mode": "travel_reversed",
         "powered": "true"
       },
       "apply": {
@@ -404,8 +404,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "ascending_south",
+        "mode": "travel_reversed",
         "powered": "true"
       },
       "apply": {
@@ -415,8 +415,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "ascending_east",
+        "mode": "travel_reversed",
         "powered": "true"
       },
       "apply": {
@@ -426,8 +426,8 @@
     },
     {
       "when": {
-        "mode": "travel_reversed",
         "shape": "ascending_west",
+        "mode": "travel_reversed",
         "powered": "true"
       },
       "apply": {

@@ -122,8 +122,11 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
 
   protected void updateTravelDirection(BlockPos pos, BlockState state) {
     RailShape shape = TrackTools.getTrackDirection(level, pos, state);
-    @Nullable Direction facing = determineTravelDirection(shape);
-    @Nullable Direction previousEnumFacing = travelDirectionHistory[1];
+
+    @Nullable
+    Direction facing = determineTravelDirection(shape);
+    @Nullable
+    Direction previousEnumFacing = travelDirectionHistory[1];
 
     if (previousEnumFacing != null && travelDirectionHistory[0] == previousEnumFacing) {
       travelDirection = facing;

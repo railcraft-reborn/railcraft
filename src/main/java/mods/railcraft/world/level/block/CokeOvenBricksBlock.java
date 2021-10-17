@@ -3,14 +3,12 @@ package mods.railcraft.world.level.block;
 import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -18,20 +16,20 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class CokeOvenBricksBlock extends Block {
-  public static final BooleanProperty ISLIT = BooleanProperty.create("lit");
-  public static final BooleanProperty ISPARENT = BooleanProperty.create("parent");
+  public static final BooleanProperty LIT = BlockStateProperties.LIT;
+  public static final BooleanProperty PARENT = BooleanProperty.create("parent");
 
   public CokeOvenBricksBlock(Properties properties) {
     super(properties);
     this.registerDefaultState(this.stateDefinition.any()
-        .setValue(ISLIT, Boolean.valueOf(false))
-        .setValue(ISPARENT, Boolean.valueOf(false)));
+        .setValue(LIT, Boolean.valueOf(false))
+        .setValue(PARENT, Boolean.valueOf(false)));
   }
 
   @Override
   protected void createBlockStateDefinition(
         StateContainer.Builder<Block, BlockState> stateContainer) {
-    stateContainer.add(ISLIT, ISPARENT);
+    stateContainer.add(LIT, PARENT);
   }
 
   @Override

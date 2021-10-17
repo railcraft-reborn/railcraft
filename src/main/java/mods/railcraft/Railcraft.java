@@ -90,7 +90,7 @@ public class Railcraft {
 
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-    modEventBus.addListener(this::preInit);
+    modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
 
@@ -130,7 +130,7 @@ public class Railcraft {
     return instance;
   }
 
-  public void preInit(FMLCommonSetupEvent evt) {
+  public void handleCommonSetup(FMLCommonSetupEvent evt) {
     CapabilityCharge.register();
   }
 

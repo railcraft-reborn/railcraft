@@ -191,8 +191,8 @@ public class RailcraftBlockModelProvider {
 
     this.blockStateOutput.accept(
         FinishedVariantBlockState.multiVariant(cokeBrick).with(
-            BlockStateVariantBuilder.properties(CokeOvenBricksBlock.ISLIT,
-                CokeOvenBricksBlock.ISPARENT)
+            BlockStateVariantBuilder.properties(CokeOvenBricksBlock.LIT,
+                CokeOvenBricksBlock.PARENT)
             .select(false, false, BlockModelDefinition.variant()
                 .with(BlockModelFields.MODEL, cokeDefaultState))
             .select(true, false, BlockModelDefinition.variant()

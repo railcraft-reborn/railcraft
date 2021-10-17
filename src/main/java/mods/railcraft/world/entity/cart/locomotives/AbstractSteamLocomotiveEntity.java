@@ -67,7 +67,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   }.setFilterFluid(() -> Fluids.WATER);
 
   protected final StandardTank steamTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 16)
-      .setFilterFluid(() -> RailcraftFluids.STEAM.get())
+      .setFilterFluid(RailcraftFluids.STEAM)
       .disableDrain()
       .disableFill();
 

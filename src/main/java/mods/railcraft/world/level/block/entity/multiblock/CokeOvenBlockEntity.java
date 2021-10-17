@@ -176,7 +176,7 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
     if (this.isParent() && !this.getLevel().isClientSide()) {
       this.level.setBlock(this.worldPosition,
           this.level.getBlockState(this.worldPosition)
-              .setValue(CokeOvenBricksBlock.ISPARENT, true), 3);
+              .setValue(CokeOvenBricksBlock.PARENT, true), 3);
     }
   }
 
@@ -213,23 +213,23 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
     if (this.isParent()) {
       BlockState parentBrick = this.level.getBlockState(this.worldPosition);
       // isParent status
-      if (!parentBrick.getValue(CokeOvenBricksBlock.ISPARENT)) {
+      if (!parentBrick.getValue(CokeOvenBricksBlock.PARENT)) {
         this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.ISPARENT, true), 3);
+            parentBrick.setValue(CokeOvenBricksBlock.PARENT, true), 3);
         // this.setChanged();
       }
 
       // only set if needed, burn stat
       if (this.recipieRequiredTime <= 0
-          && parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
+          && parentBrick.getValue(CokeOvenBricksBlock.LIT)) {
         this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.ISLIT, false), 3);
+            parentBrick.setValue(CokeOvenBricksBlock.LIT, false), 3);
         // this.setChanged();
       }
       if (this.recipieRequiredTime > 0
-          && !parentBrick.getValue(CokeOvenBricksBlock.ISLIT)) {
+          && !parentBrick.getValue(CokeOvenBricksBlock.LIT)) {
         this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.ISLIT, true), 3);
+            parentBrick.setValue(CokeOvenBricksBlock.LIT, true), 3);
         // this.setChanged();
       }
     }
