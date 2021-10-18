@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.BallastRegistry;
@@ -258,15 +257,16 @@ public enum StackFilters implements Predicate<ItemStack> {
       if (cart == null) {
         return false;
       }
-      if (cart instanceof IMinecart) {
-        if (stack.hasCustomHoverName()) {
-          return ((IMinecart) cart).doesCartMatchFilter(stack)
-              && stack.getDisplayName().equals(cart.getCartItem().getDisplayName());
-        }
-        return ((IMinecart) cart).doesCartMatchFilter(stack);
-      }
+
       ItemStack cartItem = cart.getCartItem();
-      return !stack.isEmpty() && cartItem.sameItem(stack);
+      boolean matches = !stack.isEmpty() && cartItem.sameItem(stack);
+
+      if (stack.hasCustomHoverName()) {
+        return matches && stack.getDisplayName().getContents()
+            .equals(cart.getCartItem().getDisplayName().getContents());
+      }
+
+      return matches;
     };
   }
 

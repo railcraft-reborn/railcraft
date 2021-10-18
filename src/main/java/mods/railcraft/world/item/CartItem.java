@@ -36,7 +36,7 @@ public class CartItem extends Item {
       AbstractMinecartEntity minecart = this.minecartFactory.createMinecart(
           itemStack, pos.getX(), pos.getY(), pos.getZ(), (ServerWorld) level);
       if (minecart != null) {
-        minecart.yRot = context.getHorizontalDirection().getOpposite().toYRot();
+        minecart.yRot = context.getHorizontalDirection().toYRot();
         level.addFreshEntity(minecart);
         itemStack.shrink(1);
       }

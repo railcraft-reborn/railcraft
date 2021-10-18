@@ -18,7 +18,8 @@ import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-public class FluidManipulatorRenderer extends TileEntityRenderer<FluidManipulatorBlockEntity> {
+public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
+    extends TileEntityRenderer<T> {
 
   public static final ResourceLocation INTERIOR_TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "entity/fluid_manipulator/interior");
@@ -32,7 +33,7 @@ public class FluidManipulatorRenderer extends TileEntityRenderer<FluidManipulato
   }
 
   @Override
-  public void render(FluidManipulatorBlockEntity blockEntity, float partialTicks,
+  public void render(T blockEntity, float partialTicks,
       MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight,
       int packedOverlay) {
     interiorModel.setAll(interiorModel.new Face()
@@ -48,21 +49,19 @@ public class FluidManipulatorRenderer extends TileEntityRenderer<FluidManipulato
     StandardTank tank = blockEntity.getTankManager().get(0);
     FluidStack fluidStack = tank.getFluid();
     if (fluidStack != null && fluidStack.getAmount() > 0) {
-      float cap = tank.getCapacity();
-      float level = Math.min(fluidStack.getAmount(), cap) / cap;
 
-      int modelNumber;
-      if (fluidStack.getFluid().getAttributes().isGaseous(fluidStack)) {
-        modelNumber = FluidRenderer.STAGES - 1;
-      } else {
-        modelNumber =
-            Math.min(FluidRenderer.STAGES - 1, (int) (level * (FluidRenderer.STAGES - 1)));
-      }
+      float capacity = tank.getCapacity();
+      float level = Math.min(fluidStack.getAmount(), capacity) / capacity;
+      int stage = fluidStack.getFluid().getAttributes().isGaseous(fluidStack)
+          ? FluidRenderer.STAGES - 1
+          : Math.min(FluidRenderer.STAGES - 1, (int) (level * (FluidRenderer.STAGES - 1)));
 
-      CuboidModel model = FluidRenderer.getFluidModel(fluidStack, modelNumber);
+      CuboidModel model =
+          FluidRenderer.getFluidModel(fluidStack, stage, FluidRenderer.FluidType.STILL);
       if (model != null) {
         matrixStack.pushPose();
         {
+          matrixStack.translate(0.0D, RenderUtil.PIXEL / 16.0D, 0.0D);
           model.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
           model.setPackedOverlay(packedOverlay);
           CuboidModelRenderer.render(model, matrixStack, builder,

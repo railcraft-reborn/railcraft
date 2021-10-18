@@ -9,6 +9,7 @@
 
     "__DESC.entities": "======= Entities =======",
 
+    "entity.railcraft.tank_minecart": "Minecart with Tank",
     "entity.railcraft.creative_locomotive": "Creative Locomotive",
     "entity.railcraft.steam_locomotive":"Steam Locomotive",
     "entity.railcraft.electric_locomotive":"Electric Locomotive",
@@ -116,6 +117,7 @@
 
     "__DESC.items": "======= Items =======",
 
+    "item.railcraft.tank_minecart": "Minecart with Tank",
     "item.railcraft.cracked_firestone": "Cracked Firestone",
     "item.railcraft.raw_firestone": "Raw Firestone",
     "item.railcraft.cut_firestone": "Cut Firestone",
@@ -222,7 +224,7 @@
     "screen.manipulator.cart_filters": "Carts",
     "screen.item_manipulator.filters": "Filters",
     "screen.item_manipulator.buffer": "Buffer",
-
+    
     "goggles.aura.worldspike": "Worldspike",
     "goggles.aura.none": "None",
     "goggles.aura.shunting": "Shunting",

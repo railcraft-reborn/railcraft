@@ -3,7 +3,7 @@ package mods.railcraft.world.entity.cart.locomotives;
 import javax.annotation.Nullable;
 
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.FluidCart;
+import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
@@ -44,7 +44,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
-    implements FluidCart, IBoilerContainer {
+    implements FluidMinecart, IBoilerContainer {
 
   public static final int SLOT_WATER_INPUT = 0;
   public static final int SLOT_WATER_PROCESSING = 1;

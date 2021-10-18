@@ -19,7 +19,6 @@ import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
-import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.carts.IPaintedCart;
 import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.api.core.Lockable;
@@ -80,7 +79,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class LocomotiveEntity extends RailcraftMinecartEntity
-    implements IDirectionalCart, ILinkableCart, IMinecart, Lockable,
+    implements IDirectionalCart, ILinkableCart, Lockable,
     IPaintedCart, IRoutableCart {
 
   private static final DataParameter<Boolean> HAS_FUEL =
@@ -932,7 +931,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
     }
   }
 
-  public enum Lock implements ButtonState<Lock>, IStringSerializable{
+  public enum Lock implements ButtonState<Lock>, IStringSerializable {
 
     UNLOCKED("unlocked", ButtonTexture.UNLOCKED_BUTTON),
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON),

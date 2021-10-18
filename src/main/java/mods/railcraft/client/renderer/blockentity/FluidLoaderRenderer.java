@@ -6,7 +6,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.FluidLoaderBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -15,7 +15,7 @@ import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 
-public class FluidLoaderRenderer extends FluidManipulatorRenderer {
+public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlockEntity> {
 
   private static final float PIPE_OFFSET = 5 * RenderUtil.PIXEL;
   public static final ResourceLocation PIPE_SIDE_TEXTURE_LOCATION =
@@ -30,7 +30,7 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer {
   }
 
   @Override
-  public void render(FluidManipulatorBlockEntity blockEntity, float partialTicks,
+  public void render(FluidLoaderBlockEntity blockEntity, float partialTicks,
       MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight,
       int packedOverlay) {
     super.render(blockEntity, partialTicks, matrixStack, renderTypeBuffer, packedLight,
@@ -53,9 +53,15 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer {
 
     pipeModel.setPackedLight(packedLight);
     pipeModel.setPackedOverlay(packedOverlay);
-    IVertexBuilder vertexBuilder =
-        renderTypeBuffer.getBuffer(RenderType.entityCutout(PlayerContainer.BLOCK_ATLAS));
-    CuboidModelRenderer.render(pipeModel, matrixStack, vertexBuilder, 0xFFFFFFFF,
-        CuboidModelRenderer.FaceDisplay.BOTH, false);
+
+    matrixStack.pushPose();
+    {
+      pipeModel.setMinY(RenderUtil.PIXEL - blockEntity.getPipeLength(partialTicks));
+      IVertexBuilder vertexBuilder =
+          renderTypeBuffer.getBuffer(RenderType.entityCutout(PlayerContainer.BLOCK_ATLAS));
+      CuboidModelRenderer.render(pipeModel, matrixStack, vertexBuilder, 0xFFFFFFFF,
+          CuboidModelRenderer.FaceDisplay.BOTH, false);
+    }
+    matrixStack.popPose();
   }
 }

@@ -85,10 +85,12 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
 
   @Override
   public ActionResultType interact(PlayerEntity player, Hand hand) {
-    NetworkHooks.openGui((ServerPlayerEntity) player, this,
-        data -> data.writeVarInt(this.getId()));
-    PiglinTasks.angerNearbyPiglins(player, true);
-    return ActionResultType.sidedSuccess(level.isClientSide());
+    if (!player.level.isClientSide()) {
+      NetworkHooks.openGui((ServerPlayerEntity) player, this,
+          data -> data.writeVarInt(this.getId()));
+      PiglinTasks.angerNearbyPiglins(player, true);
+    }
+    return ActionResultType.sidedSuccess(this.level.isClientSide());
   }
 
   @Override

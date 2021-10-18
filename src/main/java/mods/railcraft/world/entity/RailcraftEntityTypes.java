@@ -20,24 +20,40 @@ public class RailcraftEntityTypes {
   public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
       DeferredRegister.create(ForgeRegistries.ENTITIES, Railcraft.ID);
 
-  public static final RegistryObject<EntityType<?>> TRACK_REMOVER =
+  public static final RegistryObject<EntityType<TankMinecartEntity>> TANK_MINECART =
+      ENTITY_TYPES.register("tank_minecart",
+          () -> create("tank_minecart",
+              EntityType.Builder
+                  .<TankMinecartEntity>of(TankMinecartEntity::new, EntityClassification.MISC)
+                  .clientTrackingRange(256)
+                  .updateInterval(2)
+                  .sized(0.98F, 0.7F)));
+
+  public static final RegistryObject<EntityType<TrackRemoverMinecartEntity>> TRACK_REMOVER =
       ENTITY_TYPES.register("track_remover",
           () -> create("track_remover",
-              EntityType.Builder.of(TrackRemoverMinecartEntity::new, EntityClassification.MISC)
+              EntityType.Builder
+                  .<TrackRemoverMinecartEntity>of(TrackRemoverMinecartEntity::new,
+                      EntityClassification.MISC)
                   .clientTrackingRange(256)
-                  .updateInterval(2)));
+                  .updateInterval(2)
+                  .sized(0.98F, 0.7F)));
 
-  public static final RegistryObject<EntityType<?>> TRACK_LAYER =
+  public static final RegistryObject<EntityType<TrackLayerMinecartEntity>> TRACK_LAYER =
       ENTITY_TYPES.register("track_layer",
           () -> create("track_layer",
-              EntityType.Builder.of(TrackLayerMinecartEntity::new, EntityClassification.MISC)
+              EntityType.Builder
+                  .<TrackLayerMinecartEntity>of(TrackLayerMinecartEntity::new,
+                      EntityClassification.MISC)
                   .clientTrackingRange(256)
-                  .updateInterval(2)));
+                  .updateInterval(2)
+                  .sized(0.98F, 0.7F)));
 
-  public static final RegistryObject<EntityType<?>> TUNNEL_BORE =
+  public static final RegistryObject<EntityType<TunnelBoreEntity>> TUNNEL_BORE =
       ENTITY_TYPES.register("tunnel_bore",
           () -> create("tunnel_bore",
-              EntityType.Builder.of(TunnelBoreEntity::new, EntityClassification.MISC)
+              EntityType.Builder
+                  .<TunnelBoreEntity>of(TunnelBoreEntity::new, EntityClassification.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(TunnelBoreEntity.LENGTH, TunnelBoreEntity.HEIGHT)));

@@ -1,10 +1,10 @@
 package mods.railcraft;
 
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.commons.lang3.tuple.Pair;
+import com.google.common.collect.Lists;
+import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -12,8 +12,6 @@ import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 public class RailcraftConfig {
 
@@ -63,6 +61,7 @@ public class RailcraftConfig {
     public final DoubleValue fuelPerSteamMultiplier;
     public final DoubleValue steamLocomotiveEfficiency;
     public final IntValue tankCartFluidTransferRate;
+    public final IntValue tankCartFluidCapacity;
 
     Server(Builder builder) {
       builder.comment("High Speed Track Configuration");
@@ -152,10 +151,19 @@ public class RailcraftConfig {
           .comment(
               "Tank cart fluid transfer rate in milli-buckets per tick, min=4, default=32, max=2048.")
           .defineInRange("tankCartFluidTransferRate", 32, 4, 2048);
+
+      this.tankCartFluidCapacity = builder
+          .comment("Tank cart capacity in buckets, min=4, default=32, max=512")
+          .defineInRange("tankCartFluidCapacity", 32, 4, 512);
+    }
+
+    public int getTankCartFluidCapacity() {
+      return this.tankCartFluidCapacity.get() * FluidTools.BUCKET_VOLUME;
     }
   }
 
   public static class Common {
+
     public final BooleanValue enableSeasons;
     public final IntValue christmas;
     public final IntValue halloween;

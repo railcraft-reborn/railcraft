@@ -3,6 +3,7 @@ package mods.railcraft.client.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import mods.railcraft.world.entity.cart.LocomotiveEntity;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
@@ -11,10 +12,11 @@ public class ElectricLocomotiveModel extends EntityModel<LocomotiveEntity> {
   private final ModelRenderer loco;
 
   public ElectricLocomotiveModel() {
-    this(0f);
+    this(0.0F);
   }
 
   public ElectricLocomotiveModel(float scale) {
+    super(RenderType::entityTranslucentCull);
     this.loco = new ModelRenderer(this);
     this.loco.setTexSize(128, 64);
     // wheels

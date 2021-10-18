@@ -27,7 +27,7 @@ public abstract class RailcraftMenu extends Container {
 
   private final PlayerEntity player;
 
-  private final Predicate<PlayerEntity> isUsableByPlayer;
+  private final Predicate<PlayerEntity> validator;
   private final List<Widget> widgets = new ArrayList<>();
 
   private final Set<ServerPlayerEntity> syncListeners = new HashSet<>();
@@ -38,10 +38,15 @@ public abstract class RailcraftMenu extends Container {
   }
 
   protected RailcraftMenu(@Nullable ContainerType<?> type, int id, PlayerEntity player,
-      Predicate<PlayerEntity> isUsableByPlayer) {
+      Predicate<PlayerEntity> validator) {
     super(type, id);
     this.player = player;
-    this.isUsableByPlayer = isUsableByPlayer;
+    this.validator = validator;
+  }
+  
+  @Override
+  public boolean stillValid(PlayerEntity playerEntity) {
+    return this.validator.test(playerEntity);
   }
 
   @Override
@@ -110,7 +115,7 @@ public abstract class RailcraftMenu extends Container {
 
   @Override
   public boolean isSynched(PlayerEntity entityplayer) {
-    return isUsableByPlayer.test(entityplayer);
+    return validator.test(entityplayer);
   }
 
   @Override

@@ -2,7 +2,6 @@ package mods.railcraft.client.renderer.entity.cart;
 
 import org.apache.commons.lang3.StringUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import mods.railcraft.api.carts.IAlternateCartTexture;
 import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.cart.IDirectionalCart;
@@ -11,7 +10,6 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
@@ -105,59 +103,29 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecartEntity>
           MathHelper.sin(roll) * roll * damage / 10.0F * (float) cart.getHurtDir()));
     }
 
+    boolean ghostTrain = Seasons.isGhostTrain(cart);
+    float colorIntensity = ghostTrain ? 0.5F : 1.0F;
 
-    // TODO Ghost train
+    this.renderBody(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight,
+        colorIntensity, colorIntensity, colorIntensity, Seasons.isGhostTrain(cart) ? 0.8F : 1.0F);
 
-    // boolean ghost = SeasonPlugin.isGhostTrain(cart);
-    // if (ghost) {
-    // GlStateManager.enableBlend();
-    // GlStateManager.disableLighting();
-    // GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,
-    // GlStateManager.DestFactor.DST_COLOR);
-    // float color = 0.5F;
-    // GlStateManager.color(color, color, color, 0.8F);
-    // }
-
-
-    matrixStack.pushPose();
-    {
-      // getBodyRenderer(cart.getClass()).render(this, cart, partialTicks, matrixStack,
-      // renderTypeBuffer, packedLight, 1.0F, 1.0F, 1.0F, 1.0F);
-      this.renderBody(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight, 1.0F, 1.0F,
-          1.0F, 1.0F);
+    if (ghostTrain) {
+      matrixStack.pushPose();
+      {
+        float scale = 1.1F;
+        matrixStack.scale(scale, scale, scale);
+        this.renderBody(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight,
+            1.0F, 1.0F, 1.0F, 0.4F);
+      }
+      matrixStack.popPose();
     }
-    matrixStack.popPose();
-
-    // if (ghost) {
-    // float scale = 1.1F;
-    // p_225623_4_.scale(scale, scale, scale);
-    // GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,
-    // GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
-    // float color = 1F;
-    // GlStateManager.color(color, color, color, 0.15F);
-    // doRender(cart, light, partialTicks, p_225623_4_, renderTypeBuffer, packedLight);
-    // GlStateManager.color(1F, 1F, 1F, 1F);
-    //
-    // GlStateManager.disableBlend();
-    // GlStateManager.enableLighting();
-    // GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,
-    // GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-    // }
-
 
     matrixStack.popPose();
   }
 
   protected abstract void renderBody(T cart, float partialTicks, MatrixStack matrixStack,
-      IRenderTypeBuffer renderTypeBuffer, int packedLight, float red, float green, float blue,
-      float alpha);
-
-  @Override
-  public ResourceLocation getTextureLocation(T cart) {
-    if (cart instanceof IAlternateCartTexture)
-      return ((IAlternateCartTexture) cart).getTextureFile();
-    return super.getTextureLocation(cart);
-  }
+      IRenderTypeBuffer renderTypeBuffer, int packedLight,
+      float red, float green, float blue, float alpha);
 
   public EntityModel<T> getMinecartModel() {
     return this.model;

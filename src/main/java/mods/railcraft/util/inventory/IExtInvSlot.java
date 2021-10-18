@@ -29,7 +29,7 @@ public interface IExtInvSlot extends IInvSlot {
   }
 
   default void validate(World world, BlockPos pos) {
-    validate(world, pos, this::canPutStackInSlot);
+    this.validate(world, pos, this::canPutStackInSlot);
   }
 
   default void validate(World world, BlockPos pos, Predicate<ItemStack> filter) {

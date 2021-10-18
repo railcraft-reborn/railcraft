@@ -43,6 +43,11 @@ public class RailcraftItems {
         }
       };
 
+  public static final RegistryObject<Item> TANK_MINECART =
+      ITEMS.register("tank_minecart",
+          () -> new CartItem(TankMinecartEntity::new,
+              new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> FLUID_LOADER =
       ITEMS.register("fluid_loader",
           () -> new BlockItem(RailcraftBlocks.FLUID_LOADER.get(),

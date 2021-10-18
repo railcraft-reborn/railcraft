@@ -1,6 +1,5 @@
 package mods.railcraft.client.util;
 
-import javax.annotation.Nullable;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
@@ -22,31 +21,26 @@ public class FluidRenderer {
 
   public static final int STAGES = 100;
 
-  @Nullable
-  public static CuboidModel getFluidModel(FluidStack fluid, int stage) {
+  public static CuboidModel getFluidModel(FluidStack fluid, int stage, FluidType type) {
     if (cachedCenterFluids.containsKey(fluid) && cachedCenterFluids.get(fluid).containsKey(stage)) {
       return cachedCenterFluids.get(fluid).get(stage);
     }
 
-    if (fluid.getFluid().getAttributes().getStillTexture(fluid) != null) {
-      CuboidModel model = new CuboidModel();
-      model.setAll(model.new Face()
-          .setSprite(FluidRenderer.getFluidTexture(fluid, FluidRenderer.FluidType.STILL)));
+    CuboidModel model = new CuboidModel();
+    model.setAll(model.new Face().setSprite(
+        FluidRenderer.getFluidTexture(fluid, type)));
 
-      model.setMinX(0.01F);
-      model.setMinY(0.0F);
-      model.setMinZ(0.01F);
+    model.setMinX(0.01F);
+    model.setMinY(0.0F);
+    model.setMinZ(0.01F);
 
-      model.setMaxX(0.99F);
-      model.setMaxY(stage / (float) STAGES);
-      model.setMaxZ(0.99F);
+    model.setMaxX(0.99F);
+    model.setMaxY(stage / (float) STAGES);
+    model.setMaxZ(0.99F);
 
-      cachedCenterFluids.computeIfAbsent(fluid, f -> new Int2ObjectOpenHashMap<>())
-          .put(stage, model);
-      return model;
-    }
-
-    return null;
+    cachedCenterFluids.computeIfAbsent(fluid, f -> new Int2ObjectOpenHashMap<>())
+        .put(stage, model);
+    return model;
   }
 
   public static TextureAtlasSprite getFluidTexture(FluidStack fluidStack,
