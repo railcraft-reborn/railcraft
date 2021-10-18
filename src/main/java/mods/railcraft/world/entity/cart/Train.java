@@ -23,9 +23,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
-import mods.railcraft.api.charge.CapabilityCharge;
-import mods.railcraft.api.charge.IBatteryCart;
-import mods.railcraft.battery.CartBattery;
 import mods.railcraft.util.collections.Streams;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -345,9 +342,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     if (cart instanceof WeightedCart) {
       return ((WeightedCart) cart).softMaxSpeed();
     }
-    return cart.getCapability(CapabilityCharge.CART_BATTERY)
-        .filter(bat -> ((CartBattery) bat).getType() != IBatteryCart.Type.USER).map(bat -> 0.03F)
-        .orElse(cart.getMaxCartSpeedOnRail());
+    return cart.getMaxCartSpeedOnRail();
   }
 
   private void setMaxSpeed(float trainSpeed) {

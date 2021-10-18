@@ -8,6 +8,7 @@
 package mods.railcraft.api.charge;
 
 import com.google.common.base.Objects;
+import net.minecraftforge.energy.IEnergyStorage;
 
 /**
  * Batteries the heart of the Charge Network.
@@ -37,7 +38,7 @@ import com.google.common.base.Objects;
  *
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public interface IBatteryBlock extends ChargeStorage {
+public interface IBatteryBlock extends IEnergyStorage {
 
   enum State {
     /**
