@@ -270,6 +270,9 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
      */
     CokeOvenRecipeBuilder.baked(Items.CHARCOAL, ItemTags.LOGS, 1, 3600, 250)
         .save(finishedRecipie, Railcraft.ID + ":log_to_charcoal");
+
+    CokeOvenRecipeBuilder.baked(RailcraftItems.COAL_COKE.get(), Items.COAL, 1, 3600, 250)
+        .save(finishedRecipie);
   }
 
   private final void crowbarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie,

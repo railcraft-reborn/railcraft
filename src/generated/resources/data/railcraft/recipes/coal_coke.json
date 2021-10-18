@@ -1,0 +1,11 @@
+{
+  "type": "railcraft:coke_oven_cooking",
+  "ingredient": {
+    "item": "minecraft:coal"
+  },
+  "result": {
+    "item": "railcraft:coal_coke"
+  },
+  "tickCost": 3600,
+  "creosoteOut": 250
+}

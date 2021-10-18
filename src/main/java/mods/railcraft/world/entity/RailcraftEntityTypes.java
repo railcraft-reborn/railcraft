@@ -2,6 +2,7 @@ package mods.railcraft.world.entity;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.cart.CreativeLocomotiveEntity;
+import mods.railcraft.world.entity.cart.TankMinecartEntity;
 import mods.railcraft.world.entity.cart.TrackLayerMinecartEntity;
 import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
 import mods.railcraft.world.entity.cart.TunnelBoreEntity;
