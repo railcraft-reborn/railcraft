@@ -2,26 +2,28 @@ package mods.railcraft.world.entity.cart.wagons;
 
 import javax.annotation.Nullable;
 
-import mods.railcraft.api.carts.IEnergyTransfer;
-import mods.railcraft.api.charge.CapabilityCharge;
-import mods.railcraft.api.charge.IBatteryCart;
-import mods.railcraft.battery.CartBattery;
+import mods.railcraft.util.RailcraftNBTUtil;
+import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.entity.cart.RailcraftMinecartEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
 
-public class EnergyWagon extends RailcraftMinecartEntity
-    implements IEnergyTransfer {
+public class EnergyWagon extends RailcraftMinecartEntity {
 
   public static final int MAX_CHARGE = 100000;
   public static final int CHARGE_LIMIT = 1000;
-  private final LazyOptional<IBatteryCart> cartBattery =
-      LazyOptional.of(() -> new CartBattery(IBatteryCart.Type.USER, MAX_CHARGE));
+  private final LazyOptional<IEnergyStorage> cartBattery =
+      LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
 
   protected EnergyWagon(EntityType<?> type, World world) {
     super(type, world);
@@ -38,56 +40,45 @@ public class EnergyWagon extends RailcraftMinecartEntity
   }
 
   @Override
-  public double injectEnergy(Object source, double amount, int tier,
-      boolean ignoreTransferLimit, boolean simulate, boolean passAlong) {
-    if (!simulate) {
-      cartBattery.map(cart -> cart.addCharge((int)amount, false));
-    }
-    return amount;
-  }
-
-  @Override
-  public double extractEnergy(Object source, double amount, int tier,
-      boolean ignoreTransferLimit, boolean simulate, boolean passAlong) {
-    if (!simulate) {
-      cartBattery.map(cart -> cart.removeCharge((int)amount, false));
-    }
-    return amount;
-  }
-
-  @Override
-  public boolean canInjectEnergy() {
-    return cartBattery.map(cart -> {
-      return (cart.getCharge() < (double)MAX_CHARGE);
-    }).orElse(false);
-  }
-
-  @Override
-  public boolean canExtractEnergy() {
-    return true;
-  }
-
-  @Override
-  public int getCapacity() {
-    return MAX_CHARGE;
-  }
-
-  @Override
-  public double getEnergy() {
-    return cartBattery.map(cart -> {
-      return cart.getCharge();
-    }).orElse(0);
-  }
-
-  @Override
-  public int getTransferLimit() {
-    return CHARGE_LIMIT;
-  }
-
-  @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    super.getCapability(capability, facing);
-    return CapabilityCharge.CART_BATTERY.orEmpty(capability, this.cartBattery.cast());
+    if (CapabilityEnergy.ENERGY == capability) {
+      return this.cartBattery.cast();
+    }
+    return super.getCapability(capability, facing);
+  }
+
+  @Override
+  public void readAdditionalSaveData(CompoundNBT data) {
+    super.readAdditionalSaveData(data);
+    this.cartBattery.ifPresent(cell ->
+        RailcraftNBTUtil.loadEnergyCell(data.getCompound("battery"), cell));
+  }
+
+  @Override
+  public void addAdditionalSaveData(CompoundNBT data) {
+    super.addAdditionalSaveData(data);
+    this.cartBattery.ifPresent(cell ->
+        data.put("battery", RailcraftNBTUtil.saveEnergyCell(cell)));
+  }
+
+  // @Override
+  // protected void loadFromItemStack(ItemStack itemStack) {
+  //   super.loadFromItemStack(itemStack);
+  //   CompoundNBT tag = itemStack.getTag();
+
+  //   if (tag.contains("batteryEnergy")) {
+  //     this.cartBattery.ifPresent(cell ->
+  //         cell.receiveEnergy(tag.getInt("batteryEnergy"), false));
+  //   }
+  // }
+
+  @Override
+  public ItemStack getCartItem() {
+    ItemStack itemStack = super.getCartItem();
+    this.cartBattery.ifPresent(cell -> {
+      InvTools.getItemData(itemStack).putInt("batteryEnergy",  cell.getEnergyStored());
+    });
+    return itemStack;
   }
 
   @Override

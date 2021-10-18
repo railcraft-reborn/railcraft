@@ -66,4 +66,5 @@ public class CokeOvenBricksBlock extends Block {
 
     return ActionResultType.sidedSuccess(level.isClientSide());
   }
+
 }

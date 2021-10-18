@@ -203,7 +203,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   protected abstract Item getItem();
 
   @Override
-  public final ItemStack getCartItem() {
+  public ItemStack getCartItem() {
     ItemStack itemStack = this.getItem().getDefaultInstance();
     if (this.isLocked()) {
       LocomotiveItem.setOwnerData(itemStack, this.getOwnerOrThrow());

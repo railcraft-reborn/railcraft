@@ -35,9 +35,12 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
      * =====================================
      */
     /* === Crowbar === */
-    this.crowbarFromMaterial(finishedRecipie, RailcraftItems.IRON_CROWBAR.get(), Tags.Items.INGOTS_IRON);
-    this.crowbarFromMaterial(finishedRecipie, RailcraftItems.STEEL_CROWBAR.get(), RailcraftTags.Items.STEEL_INGOT);
-    this.crowbarFromMaterial(finishedRecipie, RailcraftItems.DIAMOND_CROWBAR.get(), Tags.Items.GEMS_DIAMOND);
+    this.crowbarFromMaterial(finishedRecipie, RailcraftItems.IRON_CROWBAR.get(),
+        Tags.Items.INGOTS_IRON);
+    this.crowbarFromMaterial(finishedRecipie, RailcraftItems.STEEL_CROWBAR.get(),
+        RailcraftTags.Items.STEEL_INGOT);
+    this.crowbarFromMaterial(finishedRecipie, RailcraftItems.DIAMOND_CROWBAR.get(),
+        Tags.Items.GEMS_DIAMOND);
 
     ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get())
       .define('C', Items.COMPASS)
@@ -71,6 +74,22 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .pattern("LLL")
       .unlockedBy("has_steel", has(RailcraftTags.Items.STEEL_INGOT))
       .unlockedBy("has_circuit", has(RailcraftItems.RECEIVER_CIRCUIT.get()))
+      .save(finishedRecipie);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.WHISTLE_TUNER.get())
+      .define('N', RailcraftTags.Items.STEEL_NUGGET)
+      .pattern("N N")
+      .pattern("NNN")
+      .pattern(" N ")
+      .unlockedBy("has_nugget", has(RailcraftTags.Items.STEEL_NUGGET))
+      .save(finishedRecipie);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.OVERALLS.get())
+      .define('W', Items.CYAN_WOOL)
+      .pattern("WWW")
+      .pattern("W W")
+      .pattern("W W")
+      .unlockedBy("has_wool", has(Items.CYAN_WOOL))
       .save(finishedRecipie);
 
     // this is a tool i think
@@ -115,10 +134,12 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
      *     RAILCRAFT CRAFTING COMPONENTS
      * =====================================
      */
-    /* === Component recipies === */
-    this.circuitFromMaterial(finishedRecipie, RailcraftItems.CONTROLLER_CIRCUIT.get(), Items.RED_WOOL);
-    this.circuitFromMaterial(finishedRecipie, RailcraftItems.RECEIVER_CIRCUIT.get(), Items.GREEN_WOOL);
-    this.circuitFromMaterial(finishedRecipie, RailcraftItems.SIGNAL_CIRCUIT.get(), Items.YELLOW_WOOL);
+    this.circuitFromMaterial(finishedRecipie, RailcraftItems.CONTROLLER_CIRCUIT.get(),
+        Items.RED_WOOL);
+    this.circuitFromMaterial(finishedRecipie, RailcraftItems.RECEIVER_CIRCUIT.get(),
+        Items.GREEN_WOOL);
+    this.circuitFromMaterial(finishedRecipie, RailcraftItems.SIGNAL_CIRCUIT.get(),
+        Items.YELLOW_WOOL);
 
     ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
       .requires(RailcraftItems.WOODEN_TIE.get())
@@ -205,20 +226,32 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
 
 
     /* === Item Compression === */
-    this.compress(finishedRecipie, RailcraftItems.STEEL_INGOT.get(), RailcraftTags.Items.STEEL_NUGGET);
-    this.compress(finishedRecipie, RailcraftItems.TIN_INGOT.get(), RailcraftTags.Items.TIN_NUGGET);
-    this.compress(finishedRecipie, RailcraftItems.COPPER_INGOT.get(), RailcraftTags.Items.COPPER_NUGGET);
-    this.compress(finishedRecipie, RailcraftItems.ZINC_INGOT.get(), RailcraftTags.Items.ZINC_NUGGET);
-    this.compress(finishedRecipie, RailcraftItems.BRASS_INGOT.get(), RailcraftTags.Items.BRASS_NUGGET);
-    this.compress(finishedRecipie, RailcraftItems.BRONZE_INGOT.get(), RailcraftTags.Items.BRONZE_NUGGET);
+    this.compress(finishedRecipie, RailcraftItems.STEEL_INGOT.get(),
+        RailcraftTags.Items.STEEL_NUGGET);
+    this.compress(finishedRecipie, RailcraftItems.TIN_INGOT.get(),
+        RailcraftTags.Items.TIN_NUGGET);
+    this.compress(finishedRecipie, RailcraftItems.COPPER_INGOT.get(),
+        RailcraftTags.Items.COPPER_NUGGET);
+    this.compress(finishedRecipie, RailcraftItems.ZINC_INGOT.get(),
+        RailcraftTags.Items.ZINC_NUGGET);
+    this.compress(finishedRecipie, RailcraftItems.BRASS_INGOT.get(),
+        RailcraftTags.Items.BRASS_NUGGET);
+    this.compress(finishedRecipie, RailcraftItems.BRONZE_INGOT.get(),
+        RailcraftTags.Items.BRONZE_NUGGET);
 
     /* === Item Decompression === */
-    this.decompress(finishedRecipie, RailcraftItems.STEEL_NUGGET.get(), RailcraftTags.Items.STEEL_INGOT);
-    this.decompress(finishedRecipie, RailcraftItems.TIN_NUGGET.get(), RailcraftTags.Items.TIN_INGOT);
-    this.decompress(finishedRecipie, RailcraftItems.COPPER_NUGGET.get(), RailcraftTags.Items.COPPER_INGOT);
-    this.decompress(finishedRecipie, RailcraftItems.ZINC_NUGGET.get(), RailcraftTags.Items.ZINC_INGOT);
-    this.decompress(finishedRecipie, RailcraftItems.BRASS_NUGGET.get(), RailcraftTags.Items.BRASS_INGOT);
-    this.decompress(finishedRecipie, RailcraftItems.BRONZE_NUGGET.get(), RailcraftTags.Items.BRONZE_INGOT);
+    this.decompress(finishedRecipie, RailcraftItems.STEEL_NUGGET.get(),
+        RailcraftTags.Items.STEEL_INGOT);
+    this.decompress(finishedRecipie, RailcraftItems.TIN_NUGGET.get(),
+        RailcraftTags.Items.TIN_INGOT);
+    this.decompress(finishedRecipie, RailcraftItems.COPPER_NUGGET.get(),
+        RailcraftTags.Items.COPPER_INGOT);
+    this.decompress(finishedRecipie, RailcraftItems.ZINC_NUGGET.get(),
+        RailcraftTags.Items.ZINC_INGOT);
+    this.decompress(finishedRecipie, RailcraftItems.BRASS_NUGGET.get(),
+        RailcraftTags.Items.BRASS_INGOT);
+    this.decompress(finishedRecipie, RailcraftItems.BRONZE_NUGGET.get(),
+        RailcraftTags.Items.BRONZE_INGOT);
 
     // delete vanilla rail recipie
 //    ShapedRecipeBuilder.shaped(Items.AIR)
@@ -311,6 +344,7 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .unlockedBy("has_required_decompression_material", has(materialTag))
       .save(finishedRecipie);
   }
+
   @Override
   public String getName() {
     return "Railcraft Recipes";

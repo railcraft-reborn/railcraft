@@ -15,7 +15,7 @@ public class ElectricLocomotiveMenu extends LocomotiveMenu<ElectricLocomotiveEnt
       ElectricLocomotiveEntity loco) {
     super(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(), id, playerInv, loco);
     this.chargeIndicator = new ChargeBatteryIndicator(loco.getBatteryCart());
-    addWidget(new GaugeWidget(chargeIndicator, 57, 20, 176, 0, 62, 8, false));
+    this.addWidget(new GaugeWidget(this.chargeIndicator, 57, 20, 176, 0, 62, 8, false));
   }
 
   public static ElectricLocomotiveMenu create(int id, PlayerInventory playerInventory,

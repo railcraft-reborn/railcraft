@@ -677,13 +677,15 @@ public class RailcraftBlocks {
   public static final RegistryObject<Block> MANUAL_ROLLING_MACHINE =
       BLOCKS.register("manual_rolling_machine",
           () -> new ManualRollingMachineBlock(AbstractBlock.Properties.of(Material.WOOD)
-              .sound(SoundType.WOOD)));
+              .sound(SoundType.WOOD)
+              .strength(2.0F)));
 
   public static final RegistryObject<Block> COKE_OVEN_BRICKS =
       BLOCKS.register("coke_oven_bricks",
           () -> new CokeOvenBricksBlock(AbstractBlock.Properties.of(Material.STONE)
               .sound(SoundType.STONE)
-              .harvestTool(ToolType.PICKAXE)));
+              .harvestTool(ToolType.PICKAXE)
+              .strength(2F, 6.0F)));
 
   public static final RegistryObject<Block> BLACK_POST =
       BLOCKS.register("black_post",

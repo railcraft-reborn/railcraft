@@ -6,11 +6,8 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import mods.railcraft.api.charge.CapabilityCharge;
-import mods.railcraft.api.charge.ChargeStorage;
-import mods.railcraft.api.charge.IBatteryCart;
-import mods.railcraft.battery.CartBattery;
 import mods.railcraft.sounds.RailcraftSoundEvents;
+import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -36,6 +33,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
 
 /**
  * The electric locomotive.
@@ -47,7 +47,8 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
   private static final int ACTUAL_FUEL_GAIN_PER_REQUEST = 20; //the original value
   private static final int FUEL_PER_REQUEST = 1;
   // multiplied by 4 because rf
-  private static final int CHARGE_USE_PER_REQUEST = (ACTUAL_FUEL_GAIN_PER_REQUEST * 4) * FUEL_PER_REQUEST;
+  private static final int CHARGE_USE_PER_REQUEST =
+      (ACTUAL_FUEL_GAIN_PER_REQUEST * 4) * FUEL_PER_REQUEST;
   public static final int MAX_CHARGE = 20000;
   private static final int SLOT_TICKET = 0;
   private static final int[] SLOTS = InvTools.buildSlotArray(0, 1);
@@ -57,8 +58,8 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
 
   private final IInventory ticketInventory =
       new InventoryMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
-  private final CartBattery cartBattery =
-      new CartBattery(IBatteryCart.Type.USER, MAX_CHARGE);
+  private final LazyOptional<IEnergyStorage> cartBattery =
+      LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
 
   public ElectricLocomotiveEntity(EntityType<?> type, World world) {
     super(type, world);
@@ -96,12 +97,13 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
 
   @Override
   public int retrieveFuel() {
-    if (this.cartBattery.getCharge() < CHARGE_USE_PER_REQUEST) {
-      return 0;
-    }
-    // Picks up fuel from us or other cells on this train
-    this.cartBattery.removeCharge(CHARGE_USE_PER_REQUEST, false);
-    return ACTUAL_FUEL_GAIN_PER_REQUEST;
+    return this.cartBattery
+        .filter(cart -> cart.getEnergyStored() > CHARGE_USE_PER_REQUEST)
+        .map(cart -> {
+          cart.extractEnergy(CHARGE_USE_PER_REQUEST, false);
+          return ACTUAL_FUEL_GAIN_PER_REQUEST;
+        })
+        .orElse(0);
   }
 
   @Override
@@ -120,7 +122,6 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
     if (this.level.isClientSide()) {
       return;
     }
-    this.cartBattery.tick(this);
   }
 
   @Override
@@ -129,7 +130,6 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
     if (this.level.isClientSide()) {
       return;
     }
-    this.cartBattery.tickOnTrack(this, pos);
   }
 
   @Override
@@ -167,28 +167,51 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements ISided
     }
   }
 
-  public ChargeStorage getBatteryCart() {
-    return this.getCapability(CapabilityCharge.CART_BATTERY)
+  public IEnergyStorage getBatteryCart() {
+    return this.getCapability(CapabilityEnergy.ENERGY)
         .orElseThrow(IllegalStateException::new);
   }
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    super.getCapability(capability, facing);
-    return CapabilityCharge.CART_BATTERY.orEmpty(capability,
-        LazyOptional.of(() -> this.cartBattery));
+    if (CapabilityEnergy.ENERGY == capability) {
+      return this.cartBattery.cast();
+    }
+    return super.getCapability(capability, facing);
   }
 
   @Override
   public void readAdditionalSaveData(CompoundNBT data) {
     super.readAdditionalSaveData(data);
-    this.cartBattery.deserializeNBT(data.getCompound("battery"));
+    this.cartBattery.ifPresent(cell ->
+        RailcraftNBTUtil.loadEnergyCell(data.getCompound("battery"), cell));
   }
 
   @Override
   public void addAdditionalSaveData(CompoundNBT data) {
     super.addAdditionalSaveData(data);
-    data.put("battery", this.cartBattery.serializeNBT());
+    this.cartBattery.ifPresent(cell ->
+        data.put("battery", RailcraftNBTUtil.saveEnergyCell(cell)));
+  }
+
+  @Override
+  protected void loadFromItemStack(ItemStack itemStack) {
+    super.loadFromItemStack(itemStack);
+    CompoundNBT tag = itemStack.getTag();
+
+    if (tag.contains("batteryEnergy")) {
+      this.cartBattery.ifPresent(cell ->
+          cell.receiveEnergy(tag.getInt("batteryEnergy"), false));
+    }
+  }
+
+  @Override
+  public ItemStack getCartItem() {
+    ItemStack itemStack = super.getCartItem();
+    this.cartBattery.ifPresent(cell -> {
+      InvTools.getItemData(itemStack).putInt("batteryEnergy",  cell.getEnergyStored());
+    });
+    return itemStack;
   }
 
   @Override
