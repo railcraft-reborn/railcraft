@@ -1,5 +1,7 @@
 package mods.railcraft.world.entity.cart;
 
+import com.mojang.authlib.GameProfile;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -11,9 +13,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
 import javax.annotation.Nullable;
-import org.apache.commons.lang3.StringUtils;
-import com.mojang.authlib.GameProfile;
+
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
@@ -70,7 +72,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
+ * Locmotive class, for trains that does the push/pulling.
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class LocomotiveEntity extends RailcraftMinecartEntity
@@ -140,9 +145,14 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
     this.entityData.define(OWNER, Optional.empty());
   }
 
-  protected abstract int getDefaultPrimaryColor();
+  // purple and black, no ""texture"".
+  protected int getDefaultPrimaryColor() {
+    return DyeColor.PURPLE.getColorValue();
+  }
 
-  protected abstract int getDefaultSecondaryColor();
+  protected int getDefaultSecondaryColor() {
+    return DyeColor.BLACK.getColorValue();
+  }
 
   protected void loadFromItemStack(ItemStack itemStack) {
     CompoundNBT tag = itemStack.getTag();
@@ -186,10 +196,13 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
     return 1f + (float) this.random.nextGaussian() * 0.2f;
   }
 
+  /**
+   * Returns the cart's actual item.
+   */
   protected abstract Item getItem();
 
   @Override
-  public final ItemStack getCartItem() {
+  public ItemStack getCartItem() {
     ItemStack itemStack = this.getItem().getDefaultInstance();
     if (this.isLocked()) {
       LocomotiveItem.setOwnerData(itemStack, this.getOwnerOrThrow());
@@ -204,23 +217,23 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
 
   @Override
   public ActionResultType interact(PlayerEntity player, Hand hand) {
-    if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player, hand))) {
+    if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player, hand))
+        || this.level.isClientSide()) {
       return ActionResultType.CONSUME;
     }
+
     ItemStack itemStack = player.getItemInHand(hand);
-    if (!this.level.isClientSide()) {
-      if (!itemStack.isEmpty() && itemStack.getItem() == RailcraftItems.WHISTLE_TUNER.get()) {
-        if (this.whistleDelay <= 0) {
-          this.whistlePitch = this.getNewWhistlePitch();
-          this.whistle();
-          itemStack.hurtAndBreak(1, (ServerPlayerEntity) player,
-              __ -> player.broadcastBreakEvent(hand));
-        }
-        return ActionResultType.CONSUME;
+    if (!itemStack.isEmpty() && itemStack.getItem() == RailcraftItems.WHISTLE_TUNER.get()) {
+      if (this.whistleDelay <= 0) {
+        this.whistlePitch = this.getNewWhistlePitch();
+        this.whistle();
+        itemStack.hurtAndBreak(1, (ServerPlayerEntity) player,
+            serverPlayerEntity -> player.broadcastBreakEvent(hand));
       }
-      if (this.canControl(player.getGameProfile())) {
-        super.interact(player, hand); // open gui
-      }
+      return ActionResultType.CONSUME;
+    }
+    if (this.canControl(player.getGameProfile())) {
+      super.interact(player, hand); // open gui
     }
     return ActionResultType.CONSUME;
   }
@@ -248,7 +261,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
    * Can the user use this locomotive?.
    *
    * @param gameProfile The user.
-   * @return true if they can.
+   * @return TRUE if they can.
    * @see mods.railcraft.world.entity.cart.LocomotiveEntity#isSecure isSecure
    * @see mods.railcraft.world.entity.cart.LocomotiveEntity#isPrivate isPrivate
    */
@@ -259,10 +272,16 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
             gameProfile);
   }
 
+  /**
+   * Gets the lock status.
+   */
   public Lock getLock() {
     return Lock.values()[this.entityData.get(LOCK)];
   }
 
+  /**
+   * Sets the lock from the status.
+   */
   public void setLock(Lock lock) {
     this.entityData.set(LOCK, (byte) lock.ordinal());
   }
@@ -277,6 +296,9 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
     }
   }
 
+  /**
+   * Gets the destination ticket item.
+   */
   public ItemStack getDestItem() {
     return getTicketInventory().getItem(1);
   }
@@ -286,14 +308,42 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
     return this.getEntityData().get(DESTINATION);
   }
 
+  /**
+   * Set the destination used by routing the train around your train network.
+   */
   public void setDestination(String destination) {
     this.getEntityData().set(DESTINATION, destination);
   }
 
+  /**
+   * Alternative to {@link LocomotiveEntity#setDestination(String destination)} (void return),
+   * sets the destination based on the ticket the user has.
+   */
+  public boolean setDestination(ItemStack ticket) {
+    if (ticket.getItem() instanceof TicketItem) {
+      if (this.isLocked() && !TicketItem.matchesOwnerOrOp(ticket, this.getOwnerOrThrow())) {
+        return false;
+      }
+      String destination = TicketItem.getDestination(ticket);
+      if (!destination.equals(this.getDestination())) {
+        this.setDestination(destination);
+        this.getTicketInventory().setItem(1, TicketItem.copyTicket(ticket));
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Gets the current train's mode. Returns an enum mode.
+   */
   public Mode getMode() {
     return RailcraftDataSerializers.getEnum(this.getEntityData(), MODE, Mode.values());
   }
 
+  /**
+   * Sets the current train's mode.
+   */
   public void setMode(Mode mode) {
     if (!this.isAllowedMode(mode)) {
       return;
@@ -303,7 +353,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
 
   /**
    * Modes of operation that this {@link LocomotiveEntity} supports.
-   * 
+   *
    * @return a {@link Set} of supported {@link Mode}s.
    */
   public Set<Mode> getSupportedModes() {
@@ -313,7 +363,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   /**
    * Determines if the specified {@link Mode} is allowed in the {@link LocomotiveEntity}'s current
    * state.
-   * 
+   *
    * @param mode - the {@link Mode} to check
    * @return {@code true} if the specified mode is allowed
    */
@@ -321,25 +371,44 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
     return this.getSupportedModes().contains(mode);
   }
 
+  /**
+   * Get the train's max speed, accelerate speed, and breaking/reverse speed.
+   * @see Speed
+   */
   public Speed getSpeed() {
     return RailcraftDataSerializers.getEnum(this.getEntityData(), SPEED, Speed.values());
   }
 
+  /**
+   * Sets the train's speed level.
+   * @see Speed
+   */
   public void setSpeed(Speed speed) {
-    if (this.isReverse() && speed.getLevel() > this.getMaxReverseSpeed().getLevel()) {
+    if (this.isReverse() && (speed.getLevel() > this.getMaxReverseSpeed().getLevel())) {
       return;
     }
     RailcraftDataSerializers.setEnum(this.getEntityData(), SPEED, speed);
   }
 
+  /**
+   * Gets the train's reverse speed from the {@link Speed} enum.
+   */
   public Speed getMaxReverseSpeed() {
     return Speed.NORMAL;
   }
 
+  /**
+   * Shifts the train speed up.
+   * @see Speed
+   */
   public void increaseSpeed() {
     this.setSpeed(this.getSpeed().shiftUp());
   }
 
+  /**
+   * Shifts the train speed down.
+   * @see Speed
+   */
   public void decreaseSpeed() {
     this.setSpeed(this.getSpeed().shiftDown());
   }
@@ -394,6 +463,9 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
 
   public abstract SoundEvent getWhistleSound();
 
+  /**
+   * Play a whistle sfx.
+   */
   public final void whistle() {
     if (this.whistleDelay <= 0) {
       this.level.playSound(null, this, this.getWhistleSound(), this.getSoundSource(),
@@ -427,26 +499,11 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
       this.tempIdle--;
     }
 
-    if (this.tickCount % WHISTLE_INTERVAL == 0 && this.isRunning()
+    if ((this.tickCount % WHISTLE_INTERVAL) == 0
+        && this.isRunning()
         && this.random.nextInt(WHISTLE_CHANCE) == 0) {
       this.whistle();
     }
-  }
-
-  @Override
-  public boolean setDestination(ItemStack ticket) {
-    if (ticket.getItem() instanceof TicketItem) {
-      if (this.isLocked() && !TicketItem.matchesOwnerOrOp(ticket, this.getOwnerOrThrow())) {
-        return false;
-      }
-      String destination = TicketItem.getDestination(ticket);
-      if (!destination.equals(this.getDestination())) {
-        this.setDestination(destination);
-        this.getTicketInventory().setItem(1, TicketItem.copyTicket(ticket));
-        return true;
-      }
-    }
-    return false;
   }
 
   protected abstract IInventory getTicketInventory();
@@ -795,9 +852,14 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
     this.entityData.set(SECONDARY_COLOR, color);
   }
 
+  /**
+   * The train states.
+   */
   public enum Mode implements IStringSerializable {
 
-    SHUTDOWN("shutdown"), IDLE("idle"), RUNNING("running");
+    SHUTDOWN("shutdown"),
+    IDLE("idle"),
+    RUNNING("running");
 
     private static final Map<String, Mode> byName = Arrays.stream(values())
         .collect(Collectors.toMap(Mode::getSerializedName, Function.identity()));
@@ -818,6 +880,9 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
     }
   }
 
+  /**
+   * The train's current speed settings.
+   */
   public enum Speed implements IStringSerializable {
 
     SLOWEST("slowest", 1, 1, 0),

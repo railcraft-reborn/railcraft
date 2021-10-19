@@ -2,11 +2,11 @@ package mods.railcraft.world.item;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.cart.CreativeLocomotiveEntity;
-import mods.railcraft.world.entity.cart.ElectricLocomotiveEntity;
-import mods.railcraft.world.entity.cart.TankMinecartEntity;
-import mods.railcraft.world.entity.cart.SteamLocomotiveEntity;
 import mods.railcraft.world.entity.cart.TrackLayerMinecartEntity;
 import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
+import mods.railcraft.world.entity.cart.locomotives.ElectricLocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotives.SteamLocomotiveEntity;
+import mods.railcraft.world.entity.cart.minecart.TankMinecartEntity;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -551,7 +551,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> STEEL_CROWBAR =
       ITEMS.register("steel_crowbar",
-          () -> new CrowbarItem(2.5F, -2.7F, ItemTier.IRON,
+          () -> new CrowbarItem(2.5F, -2.7F, RailcraftItemTier.STEEL,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> DIAMOND_CROWBAR =
@@ -756,6 +756,15 @@ public class RailcraftItems {
               new Item.Properties().tab(TAB)));
 
   /* ===== CRAFTING MATERIALS ===== */
+  public static final RegistryObject<Item> COAL_COKE =
+      ITEMS.register("coal_coke",
+          () -> new Item(new Item.Properties().tab(TAB)){
+            @Override
+            public int getBurnTime(ItemStack itemStack) {
+              return 3200;
+            }
+          });
+
   public static final RegistryObject<Item> STEEL_INGOT =
       ITEMS.register("steel_ingot",
           () -> new Item(new Item.Properties().tab(TAB)));

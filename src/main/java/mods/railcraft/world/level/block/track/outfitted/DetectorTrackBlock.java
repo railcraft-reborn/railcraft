@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.PowerUtil;
@@ -117,9 +118,11 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
       return values()[(this.ordinal() + values().length - 1) % values().length];
     }
 
-    protected abstract void updatePowerState(BlockState blockState, World level, BlockPos blockPos);
+    protected void updatePowerState(BlockState blockState, World level, BlockPos blockPos) {
+      return;
+    }
 
-    private static void updatePowerState(BlockState blockState, World level, BlockPos blockPos,
+    protected static void updatePowerState(BlockState blockState, World level, BlockPos blockPos,
         boolean reversed) {
       List<AbstractMinecartEntity> carts = findCarts(level, blockPos);
       if (carts.isEmpty()) {

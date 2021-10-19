@@ -2,9 +2,11 @@ package mods.railcraft;
 
 import java.util.List;
 import java.util.UUID;
+
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.ForgeItemTagsProvider;
+import mods.railcraft.data.RailcraftAdvancementProviders;
 import mods.railcraft.data.RailcraftBlockStateProvider;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
@@ -134,6 +136,7 @@ public class Railcraft {
     dataGen.addProvider(
         new ForgeItemTagsProvider(dataGen, blockTags, event.getExistingFileHelper()));
     dataGen.addProvider(new RailcraftLootTableProvider(dataGen));
+    dataGen.addProvider(new RailcraftAdvancementProviders(dataGen));
     dataGen.addProvider(new RailcraftRecipiesProvider(dataGen));
     dataGen.addProvider(new RailcraftBlockStateProvider(dataGen));
   }
@@ -151,7 +154,7 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handlePlayerTick(PlayerTickEvent event) {
-    if (event.player instanceof ServerPlayerEntity && event.player.tickCount % 20 == 0) {
+    if ((event.player instanceof ServerPlayerEntity) && (event.player.tickCount % 20) == 0) {
       ServerPlayerEntity player = (ServerPlayerEntity) event.player;
       List<AbstractMinecartEntity> carts = EntitySearcher.findMinecarts()
           .around(player)

@@ -38,7 +38,6 @@ public class RailcraftBlockStateProvider implements IDataProvider {
   }
 
   public void run(DirectoryCache directoryCache) {
-    Path outputFolder = this.generator.getOutputFolder();
     Map<Block, IFinishedBlockState> blockStates = Maps.newHashMap();
     Consumer<IFinishedBlockState> blockStateConsumer = (blockState) -> {
       Block block = blockState.getBlock();
@@ -71,6 +70,8 @@ public class RailcraftBlockStateProvider implements IDataProvider {
         }
       }
     });
+
+    Path outputFolder = this.generator.getOutputFolder();
 
     this.saveCollection(directoryCache, outputFolder, blockStates,
         RailcraftBlockStateProvider::createBlockStatePath);

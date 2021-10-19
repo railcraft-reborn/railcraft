@@ -76,7 +76,9 @@ public class RailcraftItemModelProvider {
     this.generateFlatItem(RailcraftItems.ZINC_INGOT.get(), StockModelShapes.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.ZINC_NUGGET.get(), StockModelShapes.FLAT_ITEM);
 
-    this.generateFlatItem(RailcraftItems.REBAR.get(), StockModelShapes.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.COAL_COKE.get(), StockModelShapes.FLAT_ITEM);
+
+    this.generateFlatItem(RailcraftItems.REBAR.get(), StockModelShapes.FLAT_HANDHELD_ROD_ITEM);
 
     this.generateFlatItem(RailcraftItems.DIAMOND_CROWBAR.get(),
         StockModelShapes.FLAT_HANDHELD_ITEM);

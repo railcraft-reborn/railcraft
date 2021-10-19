@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
@@ -48,7 +48,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 /**
- * @author CovertJaguar <https://www.railcraft.info>
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public final class FluidTools {
 
@@ -59,13 +59,21 @@ public final class FluidTools {
 
   private FluidTools() {}
 
-  public static ITextComponent toString(@Nullable FluidStack fluidStack) {
-    if (fluidStack == null)
-      return new StringTextComponent("null");
+  public static ITextComponent toString(FluidStack fluidStack) {
+    if (fluidStack.isEmpty()) {
+      return new StringTextComponent("Empty");
+    }
     return new StringTextComponent(fluidStack.getAmount() + "x")
         .append(fluidStack.getDisplayName());
   }
 
+  /**
+   * Handles interaction with an item that can (or might) store fluids.
+   * @param player The Player
+   * @param hand The Hand
+   * @param fluidHandler A Fluidhandler
+   * @return TRUE if we should return success, FALSE if super must be called.
+   */
   public static boolean interactWithFluidHandler(PlayerEntity player, Hand hand,
       IFluidHandler fluidHandler) {
     return player.level.isClientSide()
@@ -74,10 +82,7 @@ public final class FluidTools {
   }
 
   public enum ProcessType {
-    FILL_ONLY,
-    DRAIN_ONLY,
-    FILL_THEN_DRAIN,
-    DRAIN_THEN_FILL
+    FILL_ONLY, DRAIN_ONLY, FILL_THEN_DRAIN, DRAIN_THEN_FILL
   }
 
   public enum ProcessState implements IStringSerializable {
@@ -107,12 +112,12 @@ public final class FluidTools {
 
   private static void sendToProcessing(IInventory inv) {
     InventoryMapper.make(inv, 0, 1)
-        .moveOneItemTo(InventoryMapper.make(inv, 1, 1).ignoreItemChecks());
+      .moveOneItemTo(InventoryMapper.make(inv, 1, 1).ignoreItemChecks());
   }
 
   private static void sendToOutput(IInventory inv) {
     InventoryMapper.make(inv, 1, 1)
-        .moveOneItemTo(InventoryMapper.make(inv, 2, 1).ignoreItemChecks());
+      .moveOneItemTo(InventoryMapper.make(inv, 2, 1).ignoreItemChecks());
   }
 
   private static ProcessState tryFill(IInventory inv, StandardTank tank, ItemStack container) {
@@ -138,12 +143,12 @@ public final class FluidTools {
   }
 
   /**
-   * Expects a three slot inventory, with input as slot 0, processing as slot 1, and output as slot
-   * 2. Will handle moving an item through all stages from input to output for either filling or
-   * draining.
+   * Expects a three slot inventory, with input as slot 0, processing as slot 1,
+   * and output as slot 2. Will handle moving an item through all stages from
+   * input to output for either filling or draining.
    */
-  public static ProcessState processContainer(IInventory inv, StandardTank tank, ProcessType type,
-      ProcessState state) {
+  public static ProcessState processContainer(IInventory inv, StandardTank tank,
+      ProcessType type, ProcessState state) {
     ItemStack container = inv.getItem(1);
     if (container.isEmpty() || !FluidUtil.getFluidHandler(container).isPresent()) {
       sendToProcessing(inv);
@@ -155,23 +160,27 @@ public final class FluidTools {
       } else if (type == ProcessType.DRAIN_ONLY) {
         return tryDrain(inv, tank, container);
       } else if (type == ProcessType.FILL_THEN_DRAIN) {
-        if (FluidUtil.tryFillContainer(container, tank, FluidAttributes.BUCKET_VOLUME, null, false)
-            .isSuccess())
+        if (FluidUtil.tryFillContainer(container, tank,
+            FluidAttributes.BUCKET_VOLUME, null, false).isSuccess()) {
           return tryFill(inv, tank, container);
-        else
+        } else {
           return tryDrain(inv, tank, container);
+        }
       } else if (type == ProcessType.DRAIN_THEN_FILL) {
-        if (FluidUtil.tryEmptyContainer(container, tank, FluidAttributes.BUCKET_VOLUME, null, false)
-            .isSuccess())
+        if (FluidUtil.tryEmptyContainer(container, tank,
+            FluidAttributes.BUCKET_VOLUME, null, false).isSuccess()) {
           return tryDrain(inv, tank, container);
-        else
+        } else {
           return tryFill(inv, tank, container);
+        }
       }
     }
-    if (state == ProcessState.FILLING)
+    if (state == ProcessState.FILLING) {
       return tryFill(inv, tank, container);
-    if (state == ProcessState.DRAINING)
+    }
+    if (state == ProcessState.DRAINING) {
       return tryDrain(inv, tank, container);
+    }
     return state;
   }
 
@@ -185,10 +194,12 @@ public final class FluidTools {
   }
 
   public static boolean isFullFluidBlock(BlockState state, World world, BlockPos pos) {
-    if (state.getBlock() instanceof FlowingFluidBlock)
+    if (state.getBlock() instanceof FlowingFluidBlock) {
       return state.getValue(FlowingFluidBlock.LEVEL) == 0;
-    if (state.getBlock() instanceof IFluidBlock)
+    }
+    if (state.getBlock() instanceof IFluidBlock) {
       return Math.abs(((IFluidBlock) state.getBlock()).getFilledPercentage(world, pos)) == 1.0;
+    }
     return false;
   }
 
@@ -196,6 +207,11 @@ public final class FluidTools {
     return state.getFluidState().getType();
   }
 
+  /**
+   * Does drip particles.
+   * @deprecated Use Fluid#getDripParticle()
+   */
+  @Deprecated
   public static void drip(World level, BlockPos pos, BlockState state, Random rand,
       float particleRed, float particleGreen, float particleBlue) {
     if (rand.nextInt(10) == 0 && Block.canSupportRigidBlock(level, pos.below())
@@ -206,7 +222,8 @@ public final class FluidTools {
 
       // TODO implement this particle
       // Particle fx =
-      // new ParticleDrip(world, new Vec3d(px, py, pz), particleRed, particleGreen, particleBlue);
+      // new ParticleDrip(world, new Vec3d(px, py, pz), particleRed, particleGreen,
+      // particleBlue);
       // FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
     }
   }

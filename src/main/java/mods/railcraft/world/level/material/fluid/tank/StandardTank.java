@@ -16,9 +16,9 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 /**
  * Our fancy type of tank. Use this preferably over forge's default one
- * 
+ *
  * @see net.minecraftforge.fluids.capability.templates.FluidTank Forge FluidTank
- * @author CovertJaguar <https://www.railcraft.info>
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public class StandardTank extends FluidTank {
 
@@ -40,9 +40,6 @@ public class StandardTank extends FluidTank {
 
   public StandardTank(int capacity) {
     super(capacity);
-    if (this.filter != null) {
-      this.setValidator(fluidStack -> this.filter.get().isFluidEqual(fluidStack));
-    }
   }
 
   @Override
@@ -63,37 +60,36 @@ public class StandardTank extends FluidTank {
 
   /**
    * Internal fill function which IGNORES disablefill made by us.
-   * 
+   *
    * @param resource FluidStack representing the Fluid and maximum amount of fluid to be
    * @param action If SIMULATE, fill will only be simulated.
    * @return Amount of resource that was (or would have been, if simulated) filled.
-   * @see net.minecraftforge.fluids.capability.templates.FluidTank#fill() Forge FluidTank
+   * @see net.minecraftforge.fluids.capability.templates.FluidTank#fill() Forge FluidTank#fill()
    */
   public int internalFill(FluidStack resource, FluidAction action) {
     return super.fill(resource, action);
   }
 
   /**
-   * Internal fill function which IGNORES disablefill made by us.
-   * 
-   * @param maxDrain FluidStack representing the Fluid and maximum amount of fluid to be drained.
+   * Internal drain function which IGNORES disableDrain made by us.
+   * @param resource FluidStack representing the Fluid and maximum amount of fluid to be drained.
    * @param action If SIMULATE, fill will only be simulated.
-   * @return FluidStack representing the Fluid and amount that was (or would have been, if
-   *         simulated) drained.
-   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain() Forge FluidTank
+   * @return FluidStack representing the Fluid and amount that
+   *     was (or would have been, if simulated) drained.
+   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain() Forge FluidTank#drain()
    */
   public FluidStack internalDrain(FluidStack resource, FluidAction action) {
     return super.drain(resource, action);
   }
 
   /**
-   * Internal fill function which IGNORES disablefill made by us.
-   * 
+   * Internal drain function which IGNORES disablefill made by us.
+   *
    * @param maxDrain Maximum amount of fluid to drain.
    * @param action If SIMULATE, fill will only be simulated.
-   * @return FluidStack representing the Fluid and amount that was (or would have been, if
-   *         simulated) drained.
-   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain() Forge FluidTank
+   * @return FluidStack representing the Fluid and amount that was
+   *     (or would have been, if simulated) drained.
+   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain() Forge FluidTank#drain()
    */
   public FluidStack internalDrain(int maxDrain, FluidAction action) {
     return super.drain(maxDrain, action);
@@ -101,10 +97,10 @@ public class StandardTank extends FluidTank {
 
   /**
    * Disables draning of our tank. Blocks drain() from draining.
-   * 
+   *
    * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#drain() Drain Function
-   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalDrain() Bypassed Drain
-   *      Function
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalDrain()
+   *    Bypassed Drain Function
    */
   public StandardTank disableDrain() {
     this.disableDrain = true;
@@ -113,10 +109,10 @@ public class StandardTank extends FluidTank {
 
   /**
    * Disables filling of our tank.
-   * 
+   *
    * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#fill() Fill Function
-   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalFill() Bypassed Fill
-   *      Function
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalFill()
+   *    Bypassed Fill Function
    */
   public StandardTank disableFill() {
     this.disableFill = true;
@@ -125,8 +121,6 @@ public class StandardTank extends FluidTank {
 
   /**
    * Sets the tank's visibility.
-   * 
-   * @param hidden
    */
   public void setHidden(boolean hidden) {
     this.hidden = hidden;
@@ -147,8 +141,9 @@ public class StandardTank extends FluidTank {
 
   public int getColor() {
     Fluid f = getFluidType();
-    if (f == null)
+    if (f == null) {
       return DEFAULT_COLOR;
+    }
     return f.getAttributes().getColor(getFluid());
   }
 
@@ -161,8 +156,8 @@ public class StandardTank extends FluidTank {
   }
 
   /**
-   * Get the fluid type we currently have
-   * 
+   * Get the fluid type we currently have.
+   *
    * @return Fluid type or <code>Fluids.EMPTY</code> if empty
    */
   public Fluid getFluidType() {
@@ -171,8 +166,9 @@ public class StandardTank extends FluidTank {
 
   @Override
   public void setFluid(@Nullable FluidStack resource) {
-    if (!isFluidValid(resource))
+    if (!isFluidValid(resource)) {
       return;
+    }
     super.setFluid(resource);
     this.onContentsChanged();
   }
@@ -180,8 +176,9 @@ public class StandardTank extends FluidTank {
   @Override
   protected void onContentsChanged() {
     this.refreshTooltip();
-    if (updateCallback != null)
+    if (updateCallback != null) {
       updateCallback.accept(this);
+    }
   }
 
   public List<? extends ITextProperties> getTooltip() {
@@ -193,21 +190,24 @@ public class StandardTank extends FluidTank {
     int amount = getFluidAmount();
     FluidStack fluidStack = getFluid();
 
-    if (fluidStack.isEmpty() && filter != null)
+    if (fluidStack.isEmpty() && filter != null) {
       fluidStack = filter.get();
+    }
 
-    if (!fluidStack.isEmpty())
+    if (!fluidStack.isEmpty()) {
       this.tooltip.add(getFluidNameToolTip(fluidStack));
+    }
 
     this.tooltip.add(
         new StringTextComponent(String.format(Locale.ENGLISH, "%,d / %,d", amount, getCapacity()))
-            .withStyle(TextFormatting.GRAY));
+        .withStyle(TextFormatting.GRAY));
   }
 
   protected ITextProperties getFluidNameToolTip(FluidStack fluidStack) {
     Rarity rarity = fluidStack.getFluid().getAttributes().getRarity(fluidStack);
-    if (rarity == null)
+    if (rarity == null) {
       rarity = Rarity.COMMON;
+    }
     return fluidStack.getDisplayName().copy().withStyle(rarity.color);
   }
 

@@ -118,76 +118,86 @@ public abstract class RailcraftMenu extends Container {
     return validator.test(entityplayer);
   }
 
-  // TODO: test new parameters
   @Override
   public ItemStack clicked(int slotId, int mouseButton, ClickType clickType,
       PlayerEntity player) {
     Slot slot = slotId < 0 ? null : this.slots.get(slotId);
-    if (slot instanceof SlotRailcraft && ((SlotRailcraft) slot).isPhantom())
+    if (slot instanceof SlotRailcraft && ((SlotRailcraft) slot).isPhantom()) {
       return slotClickPhantom((SlotRailcraft) slot, mouseButton, clickType, player);
+    }
     return super.clicked(slotId, mouseButton, clickType, player);
   }
 
-  protected ItemStack slotClickPhantom(SlotRailcraft slot, int mouseButton, ClickType clickType,
-      PlayerEntity player) {
+  protected ItemStack slotClickPhantom(SlotRailcraft slot, int mouseButton,
+      ClickType clickType, PlayerEntity player) {
     ItemStack stack = ItemStack.EMPTY;
 
     if (mouseButton == 2) {
-      if (slot.canAdjustPhantom())
+      if (slot.canAdjustPhantom()) {
         slot.set(ItemStack.EMPTY);
+      }
     } else if (mouseButton == 0 || mouseButton == 1) {
       PlayerInventory playerInv = player.inventory;
       slot.setChanged();
       ItemStack stackSlot = slot.getItem();
       ItemStack stackHeld = playerInv.getCarried();
 
-      if (!stackSlot.isEmpty())
+      if (!stackSlot.isEmpty()) {
         stack = stackSlot.copy();
+      }
 
       if (stackSlot.isEmpty()) {
-        if (!stackHeld.isEmpty() && slot.mayPlace(stackHeld))
+        if (!stackHeld.isEmpty() && slot.mayPlace(stackHeld)) {
           fillPhantomSlot(slot, stackHeld, mouseButton);
+        }
       } else if (stackHeld.isEmpty()) {
         adjustPhantomSlot(slot, mouseButton, clickType);
         slot.onTake(player, playerInv.getCarried());
-      } else if (slot.mayPlace(stackHeld))
-        if (InvTools.isItemEqual(stackSlot, stackHeld))
+      } else if (slot.mayPlace(stackHeld)) {
+        if (InvTools.isItemEqual(stackSlot, stackHeld)) {
           adjustPhantomSlot(slot, mouseButton, clickType);
-        else
+        } else {
           fillPhantomSlot(slot, stackHeld, mouseButton);
+        }
+      }
     }
     return stack;
   }
 
   protected void adjustPhantomSlot(SlotRailcraft slot, int mouseButton, ClickType clickType) {
-    if (!slot.canAdjustPhantom())
+    if (!slot.canAdjustPhantom()) {
       return;
+    }
     ItemStack stackSlot = slot.getItem();
-    if (stackSlot.isEmpty())
+    if (stackSlot.isEmpty()) {
       return;
+    }
     int stackSize;
-    if (clickType == ClickType.QUICK_MOVE)
-      stackSize =
-          mouseButton == 0 ? (stackSlot.getCount() + 1) / 2 : stackSlot.getCount() * 2;
-    else
-      stackSize =
-          mouseButton == 0 ? stackSlot.getCount() - 1 : stackSlot.getCount() + 1;
+    if (clickType == ClickType.QUICK_MOVE) {
+      stackSize = mouseButton == 0 ? (stackSlot.getCount() + 1) / 2 : stackSlot.getCount() * 2;
+    } else {
+      stackSize = mouseButton == 0 ? stackSlot.getCount() - 1 : stackSlot.getCount() + 1;
+    }
 
-    if (stackSize > slot.getMaxStackSize())
+    if (stackSize > slot.getMaxStackSize()) {
       stackSize = slot.getMaxStackSize();
+    }
 
     InvTools.setSize(stackSlot, stackSize);
 
-    if (stackSlot.isEmpty())
+    if (stackSlot.isEmpty()) {
       slot.set(ItemStack.EMPTY);
+    }
   }
 
   protected void fillPhantomSlot(SlotRailcraft slot, ItemStack stackHeld, int mouseButton) {
-    if (!slot.canAdjustPhantom())
+    if (!slot.canAdjustPhantom()) {
       return;
+    }
     int stackSize = mouseButton == 0 ? stackHeld.getCount() : 1;
-    if (stackSize > slot.getMaxStackSize())
+    if (stackSize > slot.getMaxStackSize()) {
       stackSize = slot.getMaxStackSize();
+    }
     ItemStack phantomStack = stackHeld.copy();
     InvTools.setSize(phantomStack, stackSize);
 
@@ -196,7 +206,7 @@ public abstract class RailcraftMenu extends Container {
 
   protected boolean shiftItemStack(ItemStack stackToShift, int start, int end) {
     boolean changed = false;
-    if (stackToShift.isStackable())
+    if (stackToShift.isStackable()) {
       for (int slotIndex = start; !stackToShift.isEmpty() && slotIndex < end; slotIndex++) {
         Slot slot = this.slots.get(slotIndex);
         ItemStack stackInSlot = slot.getItem();
@@ -216,7 +226,8 @@ public abstract class RailcraftMenu extends Container {
           }
         }
       }
-    if (!stackToShift.isEmpty())
+    }
+    if (!stackToShift.isEmpty()) {
       for (int slotIndex = start; !stackToShift.isEmpty() && slotIndex < end; slotIndex++) {
         Slot slot = this.slots.get(slotIndex);
         ItemStack stackInSlot = slot.getItem();
@@ -230,6 +241,7 @@ public abstract class RailcraftMenu extends Container {
           changed = true;
         }
       }
+    }
     return changed;
   }
 
@@ -238,15 +250,19 @@ public abstract class RailcraftMenu extends Container {
       Slot slot = this.slots.get(machineIndex);
       if (slot instanceof SlotRailcraft) {
         SlotRailcraft slotRailcraft = (SlotRailcraft) slot;
-        if (slotRailcraft.isPhantom())
+        if (slotRailcraft.isPhantom()) {
           continue;
-        if (!slotRailcraft.canShift())
+        }
+        if (!slotRailcraft.canShift()) {
           continue;
+        }
       }
-      if (!slot.mayPlace(stackToShift))
+      if (!slot.mayPlace(stackToShift)) {
         continue;
-      if (shiftItemStack(stackToShift, machineIndex, machineIndex + 1))
+      }
+      if (shiftItemStack(stackToShift, machineIndex, machineIndex + 1)) {
         return true;
+      }
     }
     return false;
   }
@@ -262,21 +278,26 @@ public abstract class RailcraftMenu extends Container {
       originalStack = stackInSlot.copy();
       if (!(slotIndex >= numSlots - 9 * 4 && tryShiftItem(stackInSlot, numSlots))) {
         if (slotIndex >= numSlots - 9 * 4 && slotIndex < numSlots - 9) {
-          if (!shiftItemStack(stackInSlot, numSlots - 9, numSlots))
+          if (!shiftItemStack(stackInSlot, numSlots - 9, numSlots)) {
             return ItemStack.EMPTY;
+          }
         } else if (slotIndex >= numSlots - 9) {
-          if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots - 9))
+          if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots - 9)) {
             return ItemStack.EMPTY;
-        } else if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots))
+          }
+        } else if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots)) {
           return ItemStack.EMPTY;
+        }
       }
-      slot.onQuickCraft(stackInSlot, originalStack);
-      if (stackInSlot.isEmpty())
+      slot.onQuickCraft(stackInSlot, originalStack); // we should not call this?
+      if (stackInSlot.isEmpty()) {
         slot.set(ItemStack.EMPTY);
-      else
+      } else {
         slot.setChanged();
-      if (stackInSlot.getCount() == originalStack.getCount())
+      }
+      if (stackInSlot.getCount() == originalStack.getCount()) {
         return ItemStack.EMPTY;
+      }
       slot.onTake(player, stackInSlot);
     }
     return originalStack;

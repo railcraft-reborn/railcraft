@@ -20,6 +20,9 @@ import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
+/**
+ * Instance handlig all of railcraft network IOs.
+ */
 public enum NetworkChannel {
 
   PLAY(new ResourceLocation(Railcraft.ID, "play")) {

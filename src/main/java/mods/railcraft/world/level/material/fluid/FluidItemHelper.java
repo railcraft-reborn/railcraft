@@ -52,18 +52,18 @@ public final class FluidItemHelper {
   }
 
 
-  public static boolean isRoomInContainer(ItemStack stack, @Nullable Fluid fluid) {
+  public static boolean isRoomInContainer(ItemStack stack, Fluid fluid) {
     return FluidUtil.getFluidHandler(stack)
         .filter(item -> item.fill(
             new FluidStack(fluid, FluidTools.BUCKET_VOLUME), FluidAction.SIMULATE) > 0)
         .isPresent();
   }
 
-  public static boolean containsFluid(ItemStack stack, @Nullable Fluid fluid) {
+  public static boolean containsFluid(ItemStack stack, Fluid fluid) {
     return FluidUtil.getFluidHandler(stack)
         .filter(item -> {
           for (int i = 0; i < item.getTanks(); i++) {
-            if (item.getFluidInTank(i).getFluid() != fluid) {
+            if (!item.getFluidInTank(i).getFluid().isSame(fluid)) {
               return false;
             }
           }

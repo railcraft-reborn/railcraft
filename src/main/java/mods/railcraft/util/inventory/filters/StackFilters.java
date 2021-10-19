@@ -32,6 +32,11 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 public enum StackFilters implements Predicate<ItemStack> {
 
   ALL,
+  /**
+   * .
+   * @depricated use {@link ForgeHooks#getBurnTime(Itemstack stack)}
+   */
+  @Deprecated
   FUEL {
     @Override
     protected boolean testType(ItemStack stack) {

@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
+import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.block.Block;
@@ -18,6 +19,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.IRecipeHolder;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -101,12 +103,14 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   }
 
   @Override
-  public @Nullable Collection<CokeOvenBlockEntity> getPatternEntities(BlockPos normal) {
+  @Nullable
+  public Collection<CokeOvenBlockEntity> getPatternEntities(BlockPos normal, boolean ignoreChecks) {
     int box = 2; // 3-1
     BlockPos originPos = this.worldPosition.offset(0, -1, 0).offset(
         (normal.getX() == 0) ? -1 : 0,
         0,
         (normal.getZ() == 0) ? -1 : 0);
+
     int i = 0;
     Collection<CokeOvenBlockEntity> out = new ArrayList<>(0);
 
@@ -118,36 +122,43 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
           (normal.getZ() == 0) ? box : normal.getZ() * box))) {
       i++;
 
-      @Nullable BlockState theState;
-      try {
-        theState = this.getLevel().getBlockState(blockpos);
-      } catch (Exception e) {
-        this.delink();
-        return null;
-      }
-
+      BlockState theState = this.getLevel().getBlockState(blockpos);
       Block theBlock = theState.getBlock();
 
-      if (i == 14) {
+      if ((i == 14) && !ignoreChecks) {
         if (!theBlock.is(Blocks.AIR)) {
           return null;
         }
         continue;
       }
-      if (i != 14
+      if (!ignoreChecks && (i != 14
           && (!theBlock.is(RailcraftBlocks.COKE_OVEN_BRICKS.get())
-              || !theBlock.hasTileEntity(theState))) {
+              || !theBlock.hasTileEntity(theState)))) {
         return null;
       }
 
       TileEntity te = this.getLevel().getBlockEntity(blockpos);
-      if (!(te instanceof CokeOvenBlockEntity)) {
+      if (!(te instanceof CokeOvenBlockEntity)) { // this is important though
+        if (ignoreChecks) { // probably air
+          continue;
+        }
         return null;
       }
       out.add((CokeOvenBlockEntity) te);
     }
 
     return out;
+  }
+
+  @Override
+  public void delink() {
+    super.delink();
+    if (!this.getLevel().isClientSide()) {
+      BlockState state = this.level.getBlockState(this.worldPosition);
+      state.setValue(CokeOvenBricksBlock.PARENT, false);
+      state.setValue(CokeOvenBricksBlock.LIT, false);
+      this.level.setBlock(this.worldPosition, state, 3);
+    }
   }
 
   @Override
@@ -165,6 +176,16 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
       return null;
     }
     return parent.createMenu(containerProvider, playerInventory, player);
+  }
+
+  @Override
+  protected void load() {
+    super.load();
+    if (this.isParent() && !this.getLevel().isClientSide()) {
+      this.level.setBlock(this.worldPosition,
+          this.level.getBlockState(this.worldPosition)
+              .setValue(CokeOvenBricksBlock.PARENT, true), 3);
+    }
   }
 
   @Override
@@ -192,8 +213,47 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   @Override
   public void tick() {
     super.tick();
-    if (this.level.isClientSide() || !this.isFormed()) {
+
+    if (this.level.isClientSide()) {
       return;
+    }
+
+    BlockState parentBrick = this.level.getBlockState(this.worldPosition);
+
+    if (!this.isFormed()) {
+      if (parentBrick.getValue(CokeOvenBricksBlock.PARENT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricksBlock.PARENT, false), 3);
+      }
+
+      if (parentBrick.getValue(CokeOvenBricksBlock.LIT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricksBlock.LIT, false), 3);
+      }
+      return;
+    }
+
+    if (this.isParent()) {
+      // isParent status
+      if (!parentBrick.getValue(CokeOvenBricksBlock.PARENT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricksBlock.PARENT, true), 3);
+        // this.setChanged();
+      }
+
+      // only set if needed, burn stat
+      if (this.recipieRequiredTime <= 0
+          && parentBrick.getValue(CokeOvenBricksBlock.LIT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricksBlock.LIT, false), 3);
+        // this.setChanged();
+      }
+      if (this.recipieRequiredTime > 0
+          && !parentBrick.getValue(CokeOvenBricksBlock.LIT)) {
+        this.level.setBlock(this.worldPosition,
+            parentBrick.setValue(CokeOvenBricksBlock.LIT, true), 3);
+        // this.setChanged();
+      }
     }
 
     ItemStack itemstack = this.items.get(0);
@@ -415,6 +475,16 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
 
     ItemStack inputStack = this.items.get(0);
     inputStack.shrink(1);
+  }
+
+  @Override
+  public void setRemoved() {
+    if (this.getLevel().isClientSide()) {
+      super.setRemoved();
+      return; //do not run deletion clientside.
+    }
+    InventoryHelper.dropContents(this.getLevel(), this.getBlockPos(), this.items);
+    super.setRemoved(); // at this point, the block itself is null
   }
 
   @Override

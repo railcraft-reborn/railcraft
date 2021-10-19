@@ -22,12 +22,10 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
 
   private static final Logger logger =
       LogManager.getLogger("Railcraft/MultiblockEntity");
-  public static final int PULL = 1;
-  public static final int PUSH = 2;
-  public static final int PULL_PUSH = (PULL | PUSH);
 
   private boolean formed = false;
   private BlockPos parentPos = BlockPos.ZERO;
+  @Nullable
   private BlockPos normal;
   private T entityCache;
 
@@ -40,20 +38,29 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
    * @return true if ok, false if not.
    */
   public boolean tryToMakeParent(Direction facingDir) {
-    logger.info("TryToMakeParent - Trying to create THIS as a parent.");
+    if (this.level.isClientSide()) {
+      logger.info("TryToMakeParent - Denied, clientside.");
+      return false;
+    }
+    if (this.isParent()) {
+      logger.info("TryToMakeParent - Denied, this is already a parent.");
+      return false;
+    }
     if (facingDir.getStepY() != 0) {
       logger.info("TryToMakeParent - Denied, face is either UP/DOWN.");
       return false;
     }
+    logger.info("TryToMakeParent - Trying to create THIS as a parent.");
 
     // rotate 90 degrees, facing AWAY from the user
-    this.normal = new BlockPos(facingDir.getClockWise().getClockWise().getNormal());
-    if (!this.isMultiblockPatternValid(this.normal) || this.level.isClientSide()) {
-      logger.info("TryToMakeParent - Fail, pattern invalid OR clientside.");
+    BlockPos normal = new BlockPos(facingDir.getClockWise().getClockWise().getNormal());
+    logger.info("TryToMakeParent - N: " + normal.toShortString());
+    if (!this.isMultiblockPatternValid(normal)) {
+      logger.info("TryToMakeParent - Fail, pattern invalid.");
       return false;
     }
 
-    Collection<T> tileEntities = this.getPatternEntities(this.normal);
+    Collection<T> tileEntities = this.getPatternEntities(normal);
     if (tileEntities == null) {
       logger.info("TryToMakeParent - Fail, getPatternEntities returned null.");
       return false;
@@ -62,6 +69,8 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
     for (T tileEntity : tileEntities) {
       tileEntity.setParent(this.worldPosition);
     }
+    this.setParent(BlockPos.ZERO);
+    this.normal = normal; // ok you see, setparent delinks and sets default normal to nul
     logger.info("TryToMakeParent - Success.");
 
     return true;
@@ -77,17 +86,26 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
   }
 
   /**
-   * Gathers all of the block's tileentities. Required.
+   * Gathers all of the block's tileentities. Does not ignore checks.
    * @return List of TileEntity we gathered
    */
   @Nullable
   public Collection<T> getPatternEntities(BlockPos normal) {
+    return this.getPatternEntities(normal, false);
+  }
+
+  /**
+   * Gathers all of the block's tileentities. Required.d
+   * @return List of TileEntity we gathered
+   */
+  @Nullable
+  public Collection<T> getPatternEntities(BlockPos normal, boolean ignoreChecks) {
     return null;
   }
 
   /**
    * Sets this tilentity's parent, delinking first.
-   * @param parentPos - The position of the parent
+   * @param parentPos - The position of the parent. NOT RELATIVE
    */
   public void setParent(BlockPos parentPos) {
     logger.info(
@@ -97,6 +115,17 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
     // we do not precache the ref here, though i can.
     this.formed = true;
     this.setChanged();
+  }
+
+  /**
+   * Is this a parent.
+   * @return TRUE if yes.
+   */
+  public boolean isParent() {
+    if (this.getLevel().isClientSide() || !this.formed) {
+      return false;
+    }
+    return this.parentPos.equals(BlockPos.ZERO);
   }
 
   /**
@@ -114,7 +143,7 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
       return null;
     }
     // us
-    if (this.parentPos.equals(BlockPos.ZERO)) {
+    if (this.isParent()) {
       if (entityCache == null || entityCache.isRemoved()) {
         entityCache = (T) this;
       }
@@ -144,8 +173,10 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
   public void delink() {
     logger.info(
         "delink - Delink, last parent pos: (" + this.parentPos.toShortString() + ")");
+    // if parent pos == zero then drop item
     this.formed = false;
     this.parentPos = BlockPos.ZERO;
+    this.normal = null;
     this.entityCache = null;
     this.setChanged();
   }
@@ -194,41 +225,37 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
     return this.formed;
   }
 
-  /**
-   * Do something once the game fully loads (after load()).
-   * <b>Always</b> call the parent!
-   */
-  protected void initializeAfterLoad() {
-    this.verifyLink();
+  @Nullable
+  public BlockPos getNormal() {
+    return this.normal;
   }
 
-  /**
-   * Sets the facing direction's Fluid IO.
-   * This is on a per-face basis as we do not need complex in outs just yet. might move this
-   * @param face - The face.
-   * @param pushpullFlag - Methods:
-   *  {@link mods.railcraft.world.level.block.entity.multiblock.MultiblockEntity#PULL PULL}
-   *  {@link mods.railcraft.world.level.block.entity.multiblock.MultiblockEntity#PUSH PUSH}
-   *  {@link
-   *    mods.railcraft.world.level.block.entity.multiblock.MultiblockEntity#PULL_PUSH PULL_PUSH}
-   * @return
-   */
-  public boolean setFacingDirectionFluidIO(Direction face, int pushpullFlag) {
-    return false;
-  }
+  @Override
+  public void setRemoved() {
+    if (this.getLevel().isClientSide()) {
+      super.setRemoved(); // run basic deltion
+      logger.warn("Clientside delink, ignored.");
+      return; //do not run deletion clientside.
+    }
 
-  /**
-   * Sets the facing direction's Item IO.
-   * @param face - The face.
-   * @param pushpullFlag - Methods:
-   *  {@link mods.railcraft.world.level.block.entity.multiblock.MultiblockEntity#PULL PULL}
-   *  {@link mods.railcraft.world.level.block.entity.multiblock.MultiblockEntity#PUSH PUSH}
-   *  {@link
-   *    mods.railcraft.world.level.block.entity.multiblock.MultiblockEntity#PULL_PUSH PULL_PUSH}
-   * @return
-   */
-  public boolean setFacingDirectionItemIO(Direction face, int pushpullFlag) {
-    return false;
+    logger.warn("Serverside delink.");
+
+    @Nullable
+    T theParent = this.getParent();
+    if (theParent == null) {
+      logger.warn("Multiblock has no parent, apparently.");
+      return;
+    }
+    Collection<T> tileEntities = theParent.getPatternEntities(theParent.getNormal(), true);
+    if (tileEntities == null) {
+      return;
+    }
+
+    for (T tileEntity : tileEntities) {
+      tileEntity.delink();
+    }
+    super.setRemoved(); // intentional, this MUST RUN LAST.
+    return;
   }
 
   @Override
@@ -260,8 +287,8 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
     super.save(data);
     data.putBoolean("formed", this.formed);
     data.put("parentPos", NBTUtil.writeBlockPos(this.parentPos));
-    // do not save the normal when it's zero.
-    if (this.normal == BlockPos.ZERO) {
+    // do not save the normal when it's null.
+    if (this.normal != null) {
       data.put("normal", NBTUtil.writeBlockPos(this.normal));
     }
     return data;

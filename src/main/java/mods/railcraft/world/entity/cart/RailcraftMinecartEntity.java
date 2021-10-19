@@ -2,7 +2,9 @@ package mods.railcraft.world.entity.cart;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.Nullable;
+
 import mods.railcraft.api.carts.IItemCart;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.TrackShapeHelper;
@@ -29,9 +31,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 /**
- * It also contains some generic code that most carts will find useful.
+ * Basetype of RC minecarts. It also contains some generic code that most carts will find useful.
  *
- * @author CovertJaguar <https://www.railcraft.info>
+ * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
     implements SeasonalCart, IItemCart {
@@ -102,6 +104,7 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
   }
 
   /**
+   * Returns the minecart type.
    * {@link net.minecraft.entity.item.EntityArmorStand#IS_RIDEABLE_MINECART}
    */
   @Override
@@ -120,12 +123,13 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
   }
 
   protected void updateTravelDirection(BlockPos pos, BlockState state) {
-    RailShape shape =
-        TrackTools.getTrackDirection(level, pos, state);
+    RailShape shape = TrackTools.getTrackDirection(level, pos, state);
+
     @Nullable
     Direction facing = determineTravelDirection(shape);
     @Nullable
     Direction previousEnumFacing = travelDirectionHistory[1];
+
     if (previousEnumFacing != null && travelDirectionHistory[0] == previousEnumFacing) {
       travelDirection = facing;
       verticalTravelDirection = determineVerticalTravelDirection(shape);
@@ -134,38 +138,47 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
     travelDirectionHistory[1] = facing;
   }
 
-  private @Nullable Direction determineTravelDirection(RailShape shape) {
+  @Nullable
+  private Direction determineTravelDirection(RailShape shape) {
     if (TrackShapeHelper.isStraight(shape)) {
-      if (getX() - xo > 0)
+      if (getX() - xo > 0) {
         return Direction.EAST;
-      if (getX() - xo < 0)
+      }
+      if (getX() - xo < 0) {
         return Direction.WEST;
-      if (getZ() - zo > 0)
+      }
+      if (getZ() - zo > 0) {
         return Direction.SOUTH;
-      if (getZ() - zo < 0)
+      }
+      if (getZ() - zo < 0) {
         return Direction.NORTH;
+      }
     } else {
       switch (shape) {
         case SOUTH_EAST:
-          if (zo > getZ())
+          if (zo > getZ()) {
             return Direction.EAST;
-          else
+          } else {
             return Direction.SOUTH;
+          }
         case SOUTH_WEST:
-          if (zo > getZ())
+          if (zo > getZ()) {
             return Direction.WEST;
-          else
+          } else {
             return Direction.SOUTH;
+          }
         case NORTH_WEST:
-          if (zo > getZ())
+          if (zo > getZ()) {
             return Direction.NORTH;
-          else
+          } else {
             return Direction.WEST;
+          }
         case NORTH_EAST:
-          if (zo > getZ())
+          if (zo > getZ()) {
             return Direction.NORTH;
-          else
+          } else {
             return Direction.EAST;
+          }
         default:
           break;
       }
@@ -174,8 +187,9 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
   }
 
   private @Nullable Direction determineVerticalTravelDirection(RailShape shape) {
-    if (shape.isAscending())
+    if (shape.isAscending()) {
       return this.yo < getY() ? Direction.UP : Direction.DOWN;
+    }
     return null;
   }
 

@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.cart.locomotives;
 
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.util.inventory.InvTools;
@@ -24,19 +24,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
+* The actual steam locomotive.
+* @author CovertJaguar (https://www.railcraft.info/)
+*/
 public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
     implements ISidedInventory {
 
   private static final int FUEL_SLOT = 3;
   private static final int EXTRA_FUEL_SLOT_A = 4;
   private static final int EXTRA_FUEL_SLOT_B = 5;
-  private static final int EXTRA_SLOT_FUE_SLOTL_C = 6;
+  private static final int EXTRA_FUEL_SLOT_C = 6;
   private static final int TICKET_SLOT = 7;
   private static final int[] SLOTS = InvTools.buildSlotArray(0, 7);
 
@@ -47,15 +49,27 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
   private final InventoryMapper ticketInventory =
       new InventoryMapper(this, TICKET_SLOT, 2).ignoreItemChecks();
 
-  // private boolean outOfWater = true;
-
   public SteamLocomotiveEntity(EntityType<?> type, World world) {
     super(type, world);
+
+    this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
+      @Override
+      public float consumeFuel() {
+        return SteamLocomotiveEntity.this.isShutdown() ? 0.0F : super.consumeFuel();
+      }
+    });
   }
 
   public SteamLocomotiveEntity(ItemStack itemStack, double x, double y, double z,
       ServerWorld world) {
     super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, world);
+
+    this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
+      @Override
+      public float consumeFuel() {
+        return SteamLocomotiveEntity.this.isShutdown() ? 0.0F : super.consumeFuel();
+      }
+    });
   }
 
   @Override
@@ -68,32 +82,26 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
     return DyeColor.GRAY.getColorValue();
   }
 
-  {
-    this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
-      @Override
-      public float consumeFuel() {
-        return SteamLocomotiveEntity.this.isShutdown() ? 0.0F : super.consumeFuel();
-      }
-    });
-  }
-
   @Override
   public void tick() {
     super.tick();
 
-    if (!this.level.isClientSide()) {
-      extraFuelInventory.moveOneItemTo(fuelInventory);
-      fuelInventory.moveOneItemTo(invWaterOutput, StackFilters.FUEL.negate());
-      ItemStack stack =
-          CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(extraFuelInventory));
-      if (!stack.isEmpty())
-        extraFuelInventory.addStack(stack);
-      if (isSafeToFill() && waterTank.getFluidAmount() < waterTank.getCapacity() / 2) {
-        FluidStack pulled =
-            CartUtil.transferHelper().pullFluid(this, new FluidStack(Fluids.WATER, 1));
-        if (pulled != null) {
-          waterTank.fill(pulled, FluidAction.EXECUTE);
-        }
+    if (this.level.isClientSide()) {
+      return;
+    }
+    extraFuelInventory.moveOneItemTo(fuelInventory);
+    // fuelInventory.moveOneItemTo(invWaterOutput,
+    //     (ItemStack item) -> (ForgeHooks.getBurnTime(item) > 0));
+    ItemStack stack =
+        CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(extraFuelInventory));
+    if (!stack.isEmpty()) {
+      extraFuelInventory.addStack(stack);
+    }
+    if (isSafeToFill() && waterTank.getFluidAmount() < waterTank.getCapacity() / 2) {
+      FluidStack pulled =
+          CartUtil.transferHelper().pullFluid(this, new FluidStack(Fluids.WATER, 1));
+      if (pulled != null) {
+        waterTank.fill(pulled, FluidAction.EXECUTE);
       }
     }
   }
@@ -101,11 +109,13 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
   @Override
   public boolean needsFuel() {
     FluidStack water = waterTank.getFluid();
-    if (water == null || water.getAmount() < waterTank.getCapacity() / 3)
+    if (water == null || water.getAmount() < waterTank.getCapacity() / 3) {
       return true;
-    int numItems = invFuel.countItems(StackFilters.FUEL);
-    if (numItems == 0)
+    }
+    int numItems = invFuel.countItems((ItemStack item) -> (ForgeHooks.getBurnTime(item) > 0));
+    if (numItems == 0) {
       return true;
+    }
     int maxItems = invFuel.countMaxItemStackSize();
     return (float) numItems / (float) maxItems < 0.25F;
   }
@@ -139,14 +149,18 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
   public boolean canPlaceItem(int slot, ItemStack stack) {
     switch (slot) {
       case FUEL_SLOT:
+        return ForgeHooks.getBurnTime(stack) > 0;
       case EXTRA_FUEL_SLOT_A:
+        return ForgeHooks.getBurnTime(stack) > 0;
       case EXTRA_FUEL_SLOT_B:
-      case EXTRA_SLOT_FUE_SLOTL_C:
-        return StackFilters.FUEL.test(stack);
+        return ForgeHooks.getBurnTime(stack) > 0;
+      case EXTRA_FUEL_SLOT_C:
+        return ForgeHooks.getBurnTime(stack) > 0;
       case SLOT_WATER_INPUT:
-        if (FluidItemHelper.getFluidStackInContainer(stack)
-            .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent())
-          return false;
+        // if (FluidItemHelper.getFluidStackInContainer(stack)
+        //     .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
+        //   return false;
+        // } we allow tanks instafilling.
         return FluidItemHelper.containsFluid(stack, Fluids.WATER);
       case TICKET_SLOT:
         return TicketItem.FILTER.test(stack);
@@ -157,7 +171,7 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
 
   @Override
   public boolean canAcceptPushedItem(AbstractMinecartEntity requester, ItemStack stack) {
-    return StackFilters.FUEL.test(stack);
+    return ForgeHooks.getBurnTime(stack) > 0;
   }
 
   @Override

@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
+    "lit=false,parent=false": {
       "model": "railcraft:block/coke_oven_bricks"
+    },
+    "lit=false,parent=true": {
+      "model": "railcraft:block/coke_oven_bricks_parent"
+    },
+    "lit=true,parent=false": {
+      "model": "railcraft:block/coke_oven_bricks"
+    },
+    "lit=true,parent=true": {
+      "model": "railcraft:block/coke_oven_bricks_parent_on"
     }
   }
 }

@@ -1,12 +1,15 @@
 package mods.railcraft.data;
 
+import com.google.gson.JsonElement;
+
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import com.google.gson.JsonElement;
+
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AdvancedItemLoaderBlock;
+import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
@@ -160,7 +163,48 @@ public class RailcraftBlockModelProvider {
 
     this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
         TexturedModel.CUBE_TOP_BOTTOM);
-    this.createTrivialBlock(RailcraftBlocks.COKE_OVEN_BRICKS.get(), TexturedModel.CUBE);
+
+    // TODO cleanup, this is disgusting.
+    final Block cokeBrick = RailcraftBlocks.COKE_OVEN_BRICKS.get();
+    final ResourceLocation cokeDefaultState =
+        TexturedModel.CUBE.create(cokeBrick, this.modelOutput);
+    final ResourceLocation cokeParentState =
+        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(cokeBrick,
+          "_parent",
+          ((new ModelTextures()).put(
+            StockTextureAliases.SIDE,
+            ModelTextures.getBlockTexture(cokeBrick, "_parent"))
+              .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(cokeBrick))
+              .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(cokeBrick))
+          ),
+          this.modelOutput);
+    final ResourceLocation cokeParentStateOn =
+        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(cokeBrick,
+          "_parent_on",
+          ((new ModelTextures()).put(
+            StockTextureAliases.SIDE,
+            ModelTextures.getBlockTexture(cokeBrick, "_parent_on"))
+              .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(cokeBrick))
+              .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(cokeBrick))
+          ),
+          this.modelOutput);
+
+    this.blockStateOutput.accept(
+        FinishedVariantBlockState.multiVariant(cokeBrick).with(
+            BlockStateVariantBuilder.properties(CokeOvenBricksBlock.LIT,
+                CokeOvenBricksBlock.PARENT)
+            .select(false, false, BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, cokeDefaultState))
+            .select(true, false, BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, cokeDefaultState))
+            .select(false, true, BlockModelDefinition.variant()
+                .with(BlockModelFields.MODEL, cokeParentState))
+            .select(true, true, BlockModelDefinition.variant()
+              .with(BlockModelFields.MODEL, cokeParentStateOn))
+            ));
+
+    // this.skipAutoItemBlock(RailcraftBlocks.ELEVATOR_TRACK.get());
+    // this.createSimpleFlatItemModel(RailcraftBlocks.ELEVATOR_TRACK.get(), "_off");
 
     this.createPost(RailcraftBlocks.BLACK_POST.get());
     this.createPost(RailcraftBlocks.RED_POST.get());

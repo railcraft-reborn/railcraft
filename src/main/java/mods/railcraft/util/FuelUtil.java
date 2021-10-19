@@ -23,13 +23,17 @@ public class FuelUtil {
    *
    * @param stack The item to test
    * @return The fuel value
+   * @depricated use {@link ForgeHooks#getBurnTime(Itemstack stack)}
    */
+  @Deprecated
   public static int getBurnTime(ItemStack stack) {
-    if (stack.isEmpty())
+    if (stack.isEmpty()) {
       return 0;
+    }
 
-    if (InvTools.isItemEqualSemiStrict(stack, lastFuel))
+    if (InvTools.isItemEqualSemiStrict(stack, lastFuel)) {
       return lastFuelValue;
+    }
 
     lastFuel = stack;
     lastFuelValue = findFuelValue(stack);
@@ -43,8 +47,9 @@ public class FuelUtil {
     // if (itemID == Item.coal.itemID && stack.getItemDamage() == 0)
     // return 1600;
 
-    if (item == Items.BLAZE_ROD)
+    if (item == Items.BLAZE_ROD) {
       return 1000;
+    }
 
     return FluidItemHelper.getFluidStackInContainer(stack)
         .filter(fluidStack -> fluidStack.getFluid() == Fluids.LAVA)
