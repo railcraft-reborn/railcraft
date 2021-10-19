@@ -2,7 +2,7 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.util.inventory.filters.StackFilters;
-import mods.railcraft.world.entity.cart.TankMinecartEntity;
+import mods.railcraft.world.entity.cart.minecart.TankMinecartEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;

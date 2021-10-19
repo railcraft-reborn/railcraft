@@ -26,7 +26,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 public class TankManager extends ForwardingList<StandardTank>
     implements IFluidHandler, INBTSerializable<ListNBT> {
 
-  public static final TankManager NIL = new TankManager() {
+  public static final TankManager EMPTY = new TankManager() {
     @Override
     protected List<StandardTank> delegate() {
       return Collections.emptyList();
