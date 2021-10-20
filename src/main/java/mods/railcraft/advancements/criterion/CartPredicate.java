@@ -102,7 +102,8 @@ public final class CartPredicate {
   }
 
   public static CartPredicate deserialize(@Nullable JsonObject element) {
-    if (element == null || element.isJsonNull()) {
+    if (element == null || element.isJsonNull()
+        || (element.isJsonObject() && element.getAsJsonObject().size() < 1)) {
       return CartPredicate.ANY;
     }
 

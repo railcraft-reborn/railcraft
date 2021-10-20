@@ -1,0 +1,36 @@
+{
+  "parent": "railcraft:carts/locomotive",
+  "display": {
+    "icon": {
+      "item": "minecraft:minecart"
+    },
+    "title": {
+      "translate": "advancements.railcraft.carts.bed_cart.name"
+    },
+    "description": {
+      "translate": "advancements.railcraft.carts.bed_cart.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "has_vanilla_track": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:rail"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_vanilla_track"
+    ]
+  ]
+}

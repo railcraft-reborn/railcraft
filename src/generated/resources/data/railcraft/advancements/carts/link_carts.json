@@ -1,0 +1,34 @@
+{
+  "parent": "railcraft:carts/root",
+  "display": {
+    "icon": {
+      "item": "railcraft:steel_crowbar",
+      "nbt": "{Damage:0}"
+    },
+    "title": {
+      "translate": "advancements.railcraft.carts.link_carts.name"
+    },
+    "description": {
+      "translate": "advancements.railcraft.carts.link_carts.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "linked_carts": {
+      "trigger": "railcraft:cart_linking",
+      "conditions": {
+        "owned": {},
+        "other": {}
+      }
+    }
+  },
+  "requirements": [
+    [
+      "linked_carts"
+    ]
+  ]
+}

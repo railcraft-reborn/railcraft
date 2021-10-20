@@ -187,6 +187,25 @@
     "item.railcraft.gated_track_kit": "Gated Track Kit",
     "item.railcraft.detector_track_kit": "Detector Track Kit",
 
+    "__DESC.advancement": "======= Advancements =======",
+
+    "advancements.railcraft.carts.root.name": "Railcraft Carts",
+    "advancements.railcraft.carts.root.desc": "Vehicles and magic from Railcraft",
+
+    "advancements.railcraft.carts.bed_cart.name": "Dreams on the wheels",
+    "advancements.railcraft.carts.bed_cart.desc": "Sleeping while riding the bed cart",
+    "advancements.railcraft.carts.jukebox_cart.name": "Moving Music",
+    "advancements.railcraft.carts.jukebox_cart.desc": "Play a record in a jukebox cart",
+    "advancements.railcraft.carts.link_carts.name": "Linking Carts",
+    "advancements.railcraft.carts.link_carts.desc": "Never forget to sneak!",
+    "advancements.railcraft.carts.locomotive.name": "Rolling Through",
+    "advancements.railcraft.carts.locomotive.desc": "Power your train with locomotives",
+    "advancements.railcraft.carts.seasons.name": "Anachronism",
+    "advancements.railcraft.carts.seasons.desc": "Tweak with a seasons crowbar the season of a cart",
+    "advancements.railcraft.carts.surprise.name": "Opportune Kaboom",
+    "advancements.railcraft.carts.surprise.desc": "Explode a seasonal cart and collect (really?) gifts",
+
+
     "__DESC.misc": "======= Misc GUI/tooltip =======",
 
     "gui.railcraft.routing.ticket.tips.issuer": "Issuer:",
@@ -224,7 +243,7 @@
     "screen.manipulator.cart_filters": "Carts",
     "screen.item_manipulator.filters": "Filters",
     "screen.item_manipulator.buffer": "Buffer",
-    
+
     "goggles.aura.worldspike": "Worldspike",
     "goggles.aura.none": "None",
     "goggles.aura.shunting": "Shunting",
