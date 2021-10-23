@@ -11,6 +11,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public enum Season implements IStringSerializable {
 
+  /**
+   * "any" season. Can be ANYTHING exept NONE.
+   * Mostly used as a predicate. See SetSeasonTrigger for implem.
+   */
+  ANY("any"),
   DEFAULT("default"),
   HALLOWEEN("halloween"),
   CHRISTMAS("christmas"),
@@ -34,6 +39,11 @@ public enum Season implements IStringSerializable {
   @Override
   public String getSerializedName() {
     return this.name;
+  }
+
+  public boolean equals(Season season) {
+    return (this.name == season.name)
+      || (season.name != Season.NONE.name && season.name == Season.ANY.name);
   }
 
   public Season getNext() {

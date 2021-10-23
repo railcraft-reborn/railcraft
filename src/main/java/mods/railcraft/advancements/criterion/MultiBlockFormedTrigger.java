@@ -1,28 +1,30 @@
 package mods.railcraft.advancements.criterion;
 
-import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+
+import javax.annotation.Nullable;
+
+import mods.railcraft.Railcraft;
 import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
-import net.minecraft.advancements.ICriterionInstance;
+import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
 import net.minecraft.advancements.criterion.NBTPredicate;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.ForgeRegistries;
 
-final class MultiBlockFormedTrigger extends BaseTrigger<MultiBlockFormedTrigger.Instance> {
+public class MultiBlockFormedTrigger extends
+    AbstractCriterionTrigger<MultiBlockFormedTrigger.Instance> {
 
-  static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("multiblock_formed");
-
-  MultiBlockFormedTrigger() {
-    MinecraftForge.EVENT_BUS.register(this);
-  }
+  private static final ResourceLocation ID =
+      new ResourceLocation(Railcraft.ID + ":multiblock_formed");
 
   @Override
   public ResourceLocation getId() {
@@ -30,7 +32,9 @@ final class MultiBlockFormedTrigger extends BaseTrigger<MultiBlockFormedTrigger.
   }
 
   @Override
-  public Instance createInstance(JsonObject json, ConditionArrayParser parser) {
+  protected MultiBlockFormedTrigger.Instance createInstance(JsonObject json,
+      AndPredicate andPredicate, ConditionArrayParser parser) {
+
     TileEntityType<?> type;
     if (json.has("type")) {
       type = ForgeRegistries.TILE_ENTITIES.getValue(
@@ -41,38 +45,41 @@ final class MultiBlockFormedTrigger extends BaseTrigger<MultiBlockFormedTrigger.
     NBTPredicate nbt =
         JsonTools.whenPresent(json, "nbt", NBTPredicate::fromJson, NBTPredicate.ANY);
 
-    return new Instance(type, nbt);
+    return new MultiBlockFormedTrigger.Instance(andPredicate, type, nbt);
   }
 
-  // TODO trigger this from the multiblock itself.
-//  public void onMultiBlockForm(MultiBlockEvent.Form event) {
-//    RailcraftBlockEntity tile = event.getMaster();
-//    GameProfile owner = tile.getOwner();
-//    MinecraftServer server = requireNonNull(((ServerWorld) tile.getLevel()).getServer());
-//    ServerPlayerEntity player = server.getPlayerList().getPlayer(owner.getId());
-//    if (player == null) {
-//      return; // Offline
-//    }
-//    PlayerAdvancements advancements = player.getAdvancements();
-//    Collection<Listener<MultiBlockFormedTrigger.Instance>> done = manager.get(advancements).stream()
-//        .filter(listener -> listener.getTriggerInstance().matches(tile))
-//        .collect(Collectors.toList());
-//    for (Listener<Instance> listener : done) {
-//      listener.run(advancements);
-//    }
-//  }
+  /**
+   * Invoked when the user forms a multiblock.
+   */
+  public void trigger(ServerPlayerEntity playerEntity, RailcraftBlockEntity tile) {
+    this.trigger(playerEntity, (MultiBlockFormedTrigger.Instance criterionInstance) -> {
+      return criterionInstance.matches(tile);
+    });
+  }
 
-  static final class Instance implements ICriterionInstance {
+  public static class Instance extends CriterionInstance {
 
-    final @Nullable TileEntityType<?> type;
-    final NBTPredicate nbt;
+    private final @Nullable TileEntityType<?> type;
+    private final NBTPredicate nbt;
 
-    Instance(@Nullable TileEntityType<?> type, NBTPredicate nbtPredicate) {
+    Instance(AndPredicate entityPredicate,
+        @Nullable TileEntityType<?> type, NBTPredicate nbtPredicate) {
+      super(MultiBlockFormedTrigger.ID, entityPredicate);
       this.type = type;
       this.nbt = nbtPredicate;
     }
 
-    boolean matches(RailcraftBlockEntity tile) {
+    public static MultiBlockFormedTrigger.Instance formedMultiBlock(
+        TileEntityType<?> tileEntityType) {
+      return formedMultiBlock(tileEntityType, NBTPredicate.ANY);
+    }
+
+    public static MultiBlockFormedTrigger.Instance formedMultiBlock(
+        TileEntityType<?> tileEntityType, NBTPredicate nbtPredicate) {
+      return new MultiBlockFormedTrigger.Instance(AndPredicate.ANY, tileEntityType, nbtPredicate);
+    }
+
+    public boolean matches(RailcraftBlockEntity tile) {
       return Conditions.check(this.type, tile.getType())
           && nbt.matches(tile.save(new CompoundNBT()));
     }
@@ -92,4 +99,5 @@ final class MultiBlockFormedTrigger extends BaseTrigger<MultiBlockFormedTrigger.
       return json;
     }
   }
+
 }

@@ -1,9 +1,11 @@
 package mods.railcraft.world.level.block;
 
+import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -51,7 +53,16 @@ public class CokeOvenBricksBlock extends Block {
     }
     CokeOvenBlockEntity recast = (CokeOvenBlockEntity) blockEntity;
 
-    if (!recast.isFormed() && !recast.tryToMakeParent(rayTraceResult.getDirection())) {
+    boolean ttmpResult = recast.tryToMakeParent(rayTraceResult.getDirection());
+
+    if (ttmpResult) {
+      // it returned true, therefore it should trigger the advancement.
+      // currently it is hacky as we do not ref the user during construction. Alternatively,
+      // we can make the crowbar the building tool like in immersive engi
+      RailcraftCriteriaTriggers.MULTIBLOCK_FORM.trigger((ServerPlayerEntity)player, recast);
+    }
+
+    if (!recast.isFormed() && !ttmpResult) {
       return ActionResultType.PASS;
     }
 

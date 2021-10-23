@@ -1,8 +1,10 @@
 package mods.railcraft.advancements.criterion;
 
-import javax.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import javax.annotation.Nullable;
+
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.core.Ownable;
@@ -23,20 +25,20 @@ public final class CartPredicate {
       FloatBound.ANY, EntityPredicate.ANY);
 
   @Nullable
-  final Boolean highSpeed;
+  private final Boolean highSpeed;
   @Nullable
-  final Boolean launched;
+  private final Boolean launched;
   @Nullable
-  final Boolean elevator;
+  private final Boolean elevator;
   @Nullable
-  final Boolean derail;
+  private final Boolean derail;
   @Nullable
-  final Boolean canMount;
+  private final Boolean canMount;
   @Nullable
-  final Boolean checksOwner;
+  private final Boolean checksOwner;
 
-  final FloatBound speed;
-  final EntityPredicate parent;
+  private final FloatBound speed;
+  private final EntityPredicate parent;
 
   public CartPredicate(@Nullable Boolean highSpeed, @Nullable Boolean launched,
       @Nullable Boolean elevator, @Nullable Boolean derail, @Nullable Boolean canMount,

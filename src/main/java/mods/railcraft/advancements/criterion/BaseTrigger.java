@@ -12,6 +12,7 @@ import net.minecraft.util.Tuple;
 /**
  * Implements 3 methods to make life easier.
  */
+@Deprecated
 public abstract class BaseTrigger<T extends ICriterionInstance> implements ICriterionTrigger<T> {
 
   protected final ListenerManager<T> manager = new ListenerManager<>();

@@ -1,0 +1,29 @@
+{
+  "parent": "railcraft:tracks/regular_track",
+  "display": {
+    "icon": {
+      "item": "railcraft:raw_firestone"
+    },
+    "title": {
+      "translate": "advancements.railcraft.tracks.track_kit.name"
+    },
+    "description": {
+      "translate": "advancements.railcraft.tracks.track_kit.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_raw_firestone": {
+      "trigger": "railcraft:use_track_kit",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_firestone"
+    ]
+  ]
+}

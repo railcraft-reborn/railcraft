@@ -13,24 +13,19 @@
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": false,
-    "hidden": false,
-    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+    "hidden": false
   },
   "criteria": {
-    "has_vanilla_track": {
-      "trigger": "minecraft:inventory_changed",
+    "stal_played": {
+      "trigger": "railcraft:jukebox_cart_play_music",
       "conditions": {
-        "items": [
-          {
-            "item": "minecraft:rail"
-          }
-        ]
+        "cart": {}
       }
     }
   },
   "requirements": [
     [
-      "has_vanilla_track"
+      "stal_played"
     ]
   ]
 }

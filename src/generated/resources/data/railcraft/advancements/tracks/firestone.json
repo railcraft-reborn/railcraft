@@ -1,14 +1,14 @@
 {
-  "parent": "railcraft:carts/root",
+  "parent": "railcraft:tracks/root",
   "display": {
     "icon": {
-      "item": "railcraft:steam_locomotive"
+      "item": "railcraft:raw_firestone"
     },
     "title": {
-      "translate": "advancements.railcraft.carts.locomotive.name"
+      "translate": "advancements.railcraft.tracks.firestone.name"
     },
     "description": {
-      "translate": "advancements.railcraft.carts.locomotive.desc"
+      "translate": "advancements.railcraft.tracks.firestone.desc"
     },
     "frame": "challenge",
     "show_toast": true,
@@ -16,12 +16,12 @@
     "hidden": false
   },
   "criteria": {
-    "has_locomotives": {
+    "has_raw_firestone": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "railcraft:steam_locomotive"
+            "item": "railcraft:raw_firestone"
           }
         ]
       }
@@ -29,7 +29,7 @@
   },
   "requirements": [
     [
-      "has_locomotives"
+      "has_raw_firestone"
     ]
   ]
 }

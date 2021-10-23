@@ -1,13 +1,17 @@
 package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
+
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.util.LevelUtil;
-import net.minecraft.advancements.ICriterionInstance;
+import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.LocationPredicate;
 import net.minecraft.advancements.criterion.NBTPredicate;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
@@ -16,9 +20,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
-final class SpikeMaulUseTrigger extends BaseTrigger<SpikeMaulUseTrigger.Instance> {
+public class SpikeMaulUseTrigger extends AbstractCriterionTrigger<SpikeMaulUseTrigger.Instance> {
 
-  static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("spike_maul_use");
+  private static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("spike_maul_use");
 
   @Override
   public ResourceLocation getId() {
@@ -26,29 +30,47 @@ final class SpikeMaulUseTrigger extends BaseTrigger<SpikeMaulUseTrigger.Instance
   }
 
   @Override
-  public Instance createInstance(JsonObject json, ConditionArrayParser parser) {
+  public SpikeMaulUseTrigger.Instance createInstance(JsonObject json,
+      EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
     NBTPredicate nbt =
         JsonTools.whenPresent(json, "nbt", NBTPredicate::fromJson, NBTPredicate.ANY);
     ItemPredicate tool =
         JsonTools.whenPresent(json, "tool", ItemPredicate::fromJson, ItemPredicate.ANY);
     LocationPredicate locationPredicate = JsonTools.whenPresent(json, "location",
         LocationPredicate::fromJson, LocationPredicate.ANY);
-    return new Instance(nbt, tool, locationPredicate);
+    return new SpikeMaulUseTrigger.Instance(entityPredicate, nbt, tool, locationPredicate);
   }
 
-  static final class Instance implements ICriterionInstance {
+  /**
+   * Invoked when the user successfully uses a spike maul.
+   */
+  public void trigger(ServerPlayerEntity playerEntity, ItemStack item,
+      ServerWorld world, BlockPos pos) {
+    this.trigger(playerEntity, (SpikeMaulUseTrigger.Instance criterionInstance) -> {
+      return criterionInstance.matches(item, world, pos);
+    });
+  }
 
-    final NBTPredicate nbt;
-    final ItemPredicate tool;
-    final LocationPredicate location;
+  public static class Instance extends CriterionInstance {
 
-    Instance(NBTPredicate nbt, ItemPredicate tool, LocationPredicate predicate) {
+    private final NBTPredicate nbt;
+    private final ItemPredicate tool;
+    private final LocationPredicate location;
+
+    Instance(EntityPredicate.AndPredicate entityPredicate, NBTPredicate nbt,
+        ItemPredicate tool, LocationPredicate predicate) {
+      super(SpikeMaulUseTrigger.ID, entityPredicate);
       this.nbt = nbt;
       this.tool = tool;
       this.location = predicate;
     }
 
-    boolean matches(ItemStack item, ServerWorld world, BlockPos pos) {
+    public static SpikeMaulUseTrigger.Instance hasUsedSpikeMaul() {
+      return new SpikeMaulUseTrigger.Instance(EntityPredicate.AndPredicate.ANY,
+        NBTPredicate.ANY, ItemPredicate.ANY, LocationPredicate.ANY);
+    }
+
+    public boolean matches(ItemStack item, ServerWorld world, BlockPos pos) {
       return LevelUtil.getBlockEntity(world, pos)
           .map(te -> te.save(new CompoundNBT()))
           .map(nbt::matches)
@@ -63,7 +85,7 @@ final class SpikeMaulUseTrigger extends BaseTrigger<SpikeMaulUseTrigger.Instance
     }
 
     @Override
-    public JsonObject serializeToJson(ConditionArraySerializer p_230240_1_) {
+    public JsonObject serializeToJson(ConditionArraySerializer serializer) {
       JsonObject json = new JsonObject();
       json.add("nbt", this.nbt.serializeToJson());
       json.add("tool", this.tool.serializeToJson());

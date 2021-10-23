@@ -1,14 +1,14 @@
 {
-  "parent": "railcraft:carts/root",
+  "parent": "railcraft:tracks/manual_rolling_machine",
   "display": {
     "icon": {
-      "item": "railcraft:steam_locomotive"
+      "item": "railcraft:high_speed_track"
     },
     "title": {
-      "translate": "advancements.railcraft.carts.locomotive.name"
+      "translate": "advancements.railcraft.tracks.high_speed_track.name"
     },
     "description": {
-      "translate": "advancements.railcraft.carts.locomotive.desc"
+      "translate": "advancements.railcraft.tracks.high_speed_track.desc"
     },
     "frame": "challenge",
     "show_toast": true,
@@ -16,12 +16,12 @@
     "hidden": false
   },
   "criteria": {
-    "has_locomotives": {
+    "has_hs_track": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "railcraft:steam_locomotive"
+            "item": "railcraft:high_speed_track"
           }
         ]
       }
@@ -29,7 +29,7 @@
   },
   "requirements": [
     [
-      "has_locomotives"
+      "has_hs_track"
     ]
   ]
 }

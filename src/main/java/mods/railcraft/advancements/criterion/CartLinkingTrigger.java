@@ -23,18 +23,21 @@ public class CartLinkingTrigger extends AbstractCriterionTrigger<CartLinkingTrig
   }
 
   @Override
-  public Instance createInstance(JsonObject json, EntityPredicate.AndPredicate entityPredicate,
-      ConditionArrayParser parser) {
+  public CartLinkingTrigger.Instance createInstance(JsonObject json,
+      EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
     CartPredicate owned =
         JsonTools.whenPresent(json, "owned", CartPredicate::deserialize, CartPredicate.ANY);
     CartPredicate other =
         JsonTools.whenPresent(json, "other", CartPredicate::deserialize, CartPredicate.ANY);
-    return new Instance(entityPredicate, owned, other);
+    return new CartLinkingTrigger.Instance(entityPredicate, owned, other);
   }
 
+  /**
+   * Invoked when the user links a cart.
+   */
   public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity owned,
       AbstractMinecartEntity other) {
-    this.trigger(playerEntity, (Instance criterionInstance) -> {
+    this.trigger(playerEntity, (CartLinkingTrigger.Instance criterionInstance) -> {
       return criterionInstance.matches(playerEntity, owned, other);
     });
   }

@@ -62,8 +62,8 @@
     },
     {
       "when": {
-        "open": "false",
         "shape": "north_south",
+        "open": "false",
         "in_wall": "false",
         "reversed": "false"
       },
@@ -74,8 +74,8 @@
     },
     {
       "when": {
-        "open": "false",
         "shape": "north_south",
+        "open": "false",
         "in_wall": "false",
         "reversed": "true"
       },
@@ -85,8 +85,8 @@
     },
     {
       "when": {
-        "open": "false",
         "shape": "east_west",
+        "open": "false",
         "in_wall": "false",
         "reversed": "false"
       },
@@ -97,8 +97,8 @@
     },
     {
       "when": {
-        "open": "false",
         "shape": "east_west",
+        "open": "false",
         "in_wall": "false",
         "reversed": "true"
       },
@@ -109,8 +109,8 @@
     },
     {
       "when": {
-        "open": "true",
         "shape": "north_south",
+        "open": "true",
         "in_wall": "false",
         "reversed": "false"
       },
@@ -121,8 +121,8 @@
     },
     {
       "when": {
-        "open": "true",
         "shape": "north_south",
+        "open": "true",
         "in_wall": "false",
         "reversed": "true"
       },
@@ -132,8 +132,8 @@
     },
     {
       "when": {
-        "open": "true",
         "shape": "east_west",
+        "open": "true",
         "in_wall": "false",
         "reversed": "false"
       },
@@ -144,8 +144,8 @@
     },
     {
       "when": {
-        "open": "true",
         "shape": "east_west",
+        "open": "true",
         "in_wall": "false",
         "reversed": "true"
       },
@@ -156,8 +156,8 @@
     },
     {
       "when": {
-        "open": "false",
         "shape": "north_south",
+        "open": "false",
         "in_wall": "true",
         "reversed": "false"
       },
@@ -168,8 +168,8 @@
     },
     {
       "when": {
-        "open": "false",
         "shape": "north_south",
+        "open": "false",
         "in_wall": "true",
         "reversed": "true"
       },
@@ -179,8 +179,8 @@
     },
     {
       "when": {
-        "open": "false",
         "shape": "east_west",
+        "open": "false",
         "in_wall": "true",
         "reversed": "false"
       },
@@ -191,8 +191,8 @@
     },
     {
       "when": {
-        "open": "false",
         "shape": "east_west",
+        "open": "false",
         "in_wall": "true",
         "reversed": "true"
       },
@@ -203,8 +203,8 @@
     },
     {
       "when": {
-        "open": "true",
         "shape": "north_south",
+        "open": "true",
         "in_wall": "true",
         "reversed": "false"
       },
@@ -215,8 +215,8 @@
     },
     {
       "when": {
-        "open": "true",
         "shape": "north_south",
+        "open": "true",
         "in_wall": "true",
         "reversed": "true"
       },
@@ -226,8 +226,8 @@
     },
     {
       "when": {
-        "open": "true",
         "shape": "east_west",
+        "open": "true",
         "in_wall": "true",
         "reversed": "false"
       },
@@ -238,8 +238,8 @@
     },
     {
       "when": {
-        "open": "true",
         "shape": "east_west",
+        "open": "true",
         "in_wall": "true",
         "reversed": "true"
       },

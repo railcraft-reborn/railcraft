@@ -1,21 +1,22 @@
 package mods.railcraft.advancements.criterion;
 
-import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
+
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.season.Season;
-import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonTools;
-import net.minecraft.advancements.ICriterionInstance;
+import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.util.ResourceLocation;
 
-final class SetSeasonTrigger extends BaseTrigger<SetSeasonTrigger.Instance> {
+public class SetSeasonTrigger extends AbstractCriterionTrigger<SetSeasonTrigger.Instance> {
 
-  static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("set_season");
+  private static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("set_season");
 
   @Override
   public ResourceLocation getId() {
@@ -23,27 +24,43 @@ final class SetSeasonTrigger extends BaseTrigger<SetSeasonTrigger.Instance> {
   }
 
   @Override
-  public Instance createInstance(JsonObject json, ConditionArrayParser parser) {
+  public Instance createInstance(JsonObject json,
+      EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
     Season season = JsonTools.whenPresent(json, "season",
         (element) -> Season.getByName(element.getAsString()).orElse(null), null);
     CartPredicate cartPredicate =
         JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
-    return new Instance(season, cartPredicate);
+    return new SetSeasonTrigger.Instance(entityPredicate, season, cartPredicate);
   }
 
-  static final class Instance implements ICriterionInstance {
+  /**
+   * Invoked when the user changes the cart's season option i think?.
+   */
+  public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity cart,
+      Season target) {
+    this.trigger(playerEntity, (SetSeasonTrigger.Instance criterionInstance) -> {
+      return criterionInstance.matches(playerEntity, cart, target);
+    });
+  }
 
-    @Nullable
-    final Season season;
-    final CartPredicate cartPredicate;
+  public static class Instance extends CriterionInstance {
 
-    Instance(@Nullable Season season, CartPredicate predicate) {
+    private final Season season;
+    private final CartPredicate cartPredicate;
+
+    Instance(EntityPredicate.AndPredicate entityPredicate, Season season, CartPredicate predicate) {
+      super(SetSeasonTrigger.ID, entityPredicate);
       this.season = season;
       this.cartPredicate = predicate;
     }
 
-    boolean test(ServerPlayerEntity player, AbstractMinecartEntity cart, Season target) {
-      return Conditions.check(this.season, target) && this.cartPredicate.test(player, cart);
+    public static SetSeasonTrigger.Instance onSeasonSet() {
+      return new SetSeasonTrigger.Instance(EntityPredicate.AndPredicate.ANY,
+          Season.ANY, CartPredicate.ANY);
+    }
+
+    public boolean matches(ServerPlayerEntity player, AbstractMinecartEntity cart, Season target) {
+      return this.season.equals(target) && this.cartPredicate.test(player, cart);
     }
 
     @Override
@@ -52,7 +69,7 @@ final class SetSeasonTrigger extends BaseTrigger<SetSeasonTrigger.Instance> {
     }
 
     @Override
-    public JsonObject serializeToJson(ConditionArraySerializer p_230240_1_) {
+    public JsonObject serializeToJson(ConditionArraySerializer serializer) {
       JsonObject json = new JsonObject();
       json.addProperty("season", this.season.getSerializedName());
       json.add("cart", this.cartPredicate.serializeToJson());
