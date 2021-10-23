@@ -19,8 +19,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "powered": "false",
+        "shape": "north_south",
         "reversed": "false"
       },
       "apply": {
@@ -29,8 +29,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "powered": "false",
+        "shape": "east_west",
         "reversed": "false"
       },
       "apply": {
@@ -42,8 +42,8 @@
       "when": {
         "OR": [
           {
-            "shape": "north_south",
-            "powered": "true"
+            "powered": "true",
+            "shape": "north_south"
           },
           {
             "shape": "north_south",
@@ -60,8 +60,8 @@
       "when": {
         "OR": [
           {
-            "shape": "east_west",
-            "powered": "true"
+            "powered": "true",
+            "shape": "east_west"
           },
           {
             "shape": "east_west",
@@ -110,8 +110,8 @@
     },
     {
       "when": {
-        "shape": "ascending_north",
         "powered": "false",
+        "shape": "ascending_north",
         "reversed": "false"
       },
       "apply": {
@@ -120,8 +120,8 @@
     },
     {
       "when": {
-        "shape": "ascending_south",
         "powered": "false",
+        "shape": "ascending_south",
         "reversed": "false"
       },
       "apply": {
@@ -130,8 +130,8 @@
     },
     {
       "when": {
+        "powered": "false",
         "shape": "ascending_east",
-        "powered": "false",
         "reversed": "false"
       },
       "apply": {
@@ -141,8 +141,8 @@
     },
     {
       "when": {
+        "powered": "false",
         "shape": "ascending_west",
-        "powered": "false",
         "reversed": "false"
       },
       "apply": {
@@ -154,8 +154,8 @@
       "when": {
         "OR": [
           {
-            "shape": "ascending_north",
-            "powered": "true"
+            "powered": "true",
+            "shape": "ascending_north"
           },
           {
             "shape": "ascending_north",
@@ -172,8 +172,8 @@
       "when": {
         "OR": [
           {
-            "shape": "ascending_south",
-            "powered": "true"
+            "powered": "true",
+            "shape": "ascending_south"
           },
           {
             "shape": "ascending_south",
@@ -190,8 +190,8 @@
       "when": {
         "OR": [
           {
-            "shape": "ascending_east",
-            "powered": "true"
+            "powered": "true",
+            "shape": "ascending_east"
           },
           {
             "shape": "ascending_east",
@@ -208,8 +208,8 @@
       "when": {
         "OR": [
           {
-            "shape": "ascending_west",
-            "powered": "true"
+            "powered": "true",
+            "shape": "ascending_west"
           },
           {
             "shape": "ascending_west",

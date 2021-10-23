@@ -27,7 +27,7 @@ public class SetSeasonTrigger extends AbstractCriterionTrigger<SetSeasonTrigger.
   public Instance createInstance(JsonObject json,
       EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
     Season season = JsonTools.whenPresent(json, "season",
-        (element) -> Season.getByName(element.getAsString()).orElse(null), null);
+        (element) -> Season.getByName(element.get("value").getAsString()).orElse(Season.NONE), Season.NONE);
     CartPredicate cartPredicate =
         JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
     return new SetSeasonTrigger.Instance(entityPredicate, season, cartPredicate);
@@ -71,7 +71,9 @@ public class SetSeasonTrigger extends AbstractCriterionTrigger<SetSeasonTrigger.
     @Override
     public JsonObject serializeToJson(ConditionArraySerializer serializer) {
       JsonObject json = new JsonObject();
-      json.addProperty("season", this.season.getSerializedName());
+      JsonObject season = new JsonObject();
+      season.addProperty("value", this.season.getSerializedName());
+      json.add("season", season);
       json.add("cart", this.cartPredicate.serializeToJson());
       return json;
     }

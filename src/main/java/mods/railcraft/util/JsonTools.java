@@ -9,10 +9,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public final class JsonTools {
 
-  public static @Nullable <T> T whenPresent(JsonObject object, String tag,
-      Function<JsonObject, ? extends T> function, @Nullable T fallback) {
+  @Nullable
+  public static <T> T whenPresent(JsonObject object, String tag,
+      Function<JsonObject, ? extends T> doesExisFunction, @Nullable T fallback) {
     if (object.has(tag)) {
-      return function.apply(object.getAsJsonObject(tag));
+      return doesExisFunction.apply(object.getAsJsonObject(tag));
     }
     return fallback;
   }
