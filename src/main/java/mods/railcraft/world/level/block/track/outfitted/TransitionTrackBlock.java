@@ -5,7 +5,7 @@ import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.entity.cart.CartTools;
-import mods.railcraft.world.entity.cart.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;

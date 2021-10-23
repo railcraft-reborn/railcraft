@@ -1,12 +1,11 @@
 package mods.railcraft.world.level.material.fluid;
 
 import java.util.Optional;
-import javax.annotation.Nullable;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 /**
  * Helper functions for Fluid Items
@@ -21,7 +20,7 @@ public final class FluidItemHelper {
 
   public static boolean isFluidInContainer(ItemStack stack) {
     return FluidUtil.getFluidHandler(stack)
-        .filter(item -> item.getTanks() > 0 && !item.getFluidInTank(0).isEmpty())
+        .filter(item -> !item.drain(1, IFluidHandler.FluidAction.SIMULATE).isEmpty())
         .isPresent();
   }
 
@@ -51,11 +50,10 @@ public final class FluidItemHelper {
         .isPresent();
   }
 
-
   public static boolean isRoomInContainer(ItemStack stack, Fluid fluid) {
     return FluidUtil.getFluidHandler(stack)
-        .filter(item -> item.fill(
-            new FluidStack(fluid, FluidTools.BUCKET_VOLUME), FluidAction.SIMULATE) > 0)
+        .filter(item -> item.fill(new FluidStack(fluid, 1),
+            IFluidHandler.FluidAction.SIMULATE) > 0)
         .isPresent();
   }
 

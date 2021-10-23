@@ -1,7 +1,7 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.entity.cart.CreativeLocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotive.CreativeLocomotiveEntity;
 import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
 import net.minecraft.inventory.container.ContainerType;

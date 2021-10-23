@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class CartLinkingTrigger extends AbstractCriterionTrigger<CartLinkingTrigger.Instance> {
 
-  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID + ":cart_linking");
+  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "cart_linking");
 
   @Override
   public ResourceLocation getId() {
@@ -37,9 +37,8 @@ public class CartLinkingTrigger extends AbstractCriterionTrigger<CartLinkingTrig
    */
   public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity owned,
       AbstractMinecartEntity other) {
-    this.trigger(playerEntity, (CartLinkingTrigger.Instance criterionInstance) -> {
-      return criterionInstance.matches(playerEntity, owned, other);
-    });
+    this.trigger(playerEntity,
+        (criterionInstance) -> criterionInstance.matches(playerEntity, owned, other));
   }
 
   public static class Instance extends CriterionInstance {
@@ -47,7 +46,7 @@ public class CartLinkingTrigger extends AbstractCriterionTrigger<CartLinkingTrig
     private final CartPredicate owned;
     private final CartPredicate other;
 
-    Instance(EntityPredicate.AndPredicate entityPredicate,
+    private Instance(EntityPredicate.AndPredicate entityPredicate,
         CartPredicate owned, CartPredicate other) {
       super(CartLinkingTrigger.ID, entityPredicate);
       this.owned = owned;

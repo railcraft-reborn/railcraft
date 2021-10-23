@@ -1,10 +1,9 @@
-package mods.railcraft.world.entity.cart.minecart;
+package mods.railcraft.world.entity.cart;
 
 import javax.annotation.Nullable;
 
 import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.inventory.InvTools;
-import mods.railcraft.world.entity.cart.RailcraftMinecartEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

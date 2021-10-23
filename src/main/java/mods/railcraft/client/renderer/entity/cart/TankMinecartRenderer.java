@@ -10,7 +10,7 @@ import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.world.entity.cart.minecart.TankMinecartEntity;
+import mods.railcraft.world.entity.cart.TankMinecartEntity;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;

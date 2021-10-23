@@ -30,5 +30,4 @@ public class RailcraftCriteriaTriggers {
     CriteriaTriggers.register(SEASON_SET);
     CriteriaTriggers.register(KILLED_BY_LOCOMOTIVE);
   }
-
 }

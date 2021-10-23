@@ -35,13 +35,10 @@ public class MultiBlockFormedTrigger extends
   protected MultiBlockFormedTrigger.Instance createInstance(JsonObject json,
       AndPredicate andPredicate, ConditionArrayParser parser) {
 
-    TileEntityType<?> type;
-    if (json.has("type")) {
-      type = ForgeRegistries.TILE_ENTITIES.getValue(
-          new ResourceLocation(json.get("type").getAsString()));
-    } else {
-      type = null;
-    }
+    TileEntityType<?> type = json.has("type")
+        ? ForgeRegistries.TILE_ENTITIES.getValue(
+            new ResourceLocation(json.get("type").getAsString()))
+        : null;
     NBTPredicate nbt =
         JsonTools.whenPresent(json, "nbt", NBTPredicate::fromJson, NBTPredicate.ANY);
 
@@ -52,9 +49,7 @@ public class MultiBlockFormedTrigger extends
    * Invoked when the user forms a multiblock.
    */
   public void trigger(ServerPlayerEntity playerEntity, RailcraftBlockEntity tile) {
-    this.trigger(playerEntity, (MultiBlockFormedTrigger.Instance criterionInstance) -> {
-      return criterionInstance.matches(tile);
-    });
+    this.trigger(playerEntity, (criterionInstance) -> criterionInstance.matches(tile));
   }
 
   public static class Instance extends CriterionInstance {
@@ -62,7 +57,7 @@ public class MultiBlockFormedTrigger extends
     private final @Nullable TileEntityType<?> type;
     private final NBTPredicate nbt;
 
-    Instance(AndPredicate entityPredicate,
+    private Instance(AndPredicate entityPredicate,
         @Nullable TileEntityType<?> type, NBTPredicate nbtPredicate) {
       super(MultiBlockFormedTrigger.ID, entityPredicate);
       this.type = type;

@@ -36,10 +36,6 @@ public enum Season implements IStringSerializable {
     return this.name;
   }
 
-  public boolean equals(Season season) {
-    return (this.name == season.name);
-  }
-
   public Season getNext() {
     return values()[(this.ordinal() + 1) % values().length];
   }

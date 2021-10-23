@@ -2,8 +2,8 @@ package mods.railcraft.world.inventory;
 
 import java.util.Collections;
 import javax.annotation.Nullable;
-import mods.railcraft.world.entity.cart.CreativeLocomotiveEntity;
-import mods.railcraft.world.entity.cart.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotive.CreativeLocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart.locomotives;
+package mods.railcraft.world.entity.cart.locomotive;
 
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.util.inventory.InvTools;
@@ -9,7 +9,6 @@ import mods.railcraft.world.inventory.SteamLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
-import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.steam.SolidFuelProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -29,9 +28,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
-* The actual steam locomotive.
-* @author CovertJaguar (https://www.railcraft.info/)
-*/
+ * The actual steam locomotive.
+ * 
+ * @author CovertJaguar (https://www.railcraft.info/)
+ */
 public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
     implements ISidedInventory {
 
@@ -91,7 +91,7 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
     }
     extraFuelInventory.moveOneItemTo(fuelInventory);
     // fuelInventory.moveOneItemTo(invWaterOutput,
-    //     (ItemStack item) -> (ForgeHooks.getBurnTime(item) > 0));
+    // (ItemStack item) -> (ForgeHooks.getBurnTime(item) > 0));
     ItemStack stack =
         CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(extraFuelInventory));
     if (!stack.isEmpty()) {
@@ -158,8 +158,8 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
         return ForgeHooks.getBurnTime(stack) > 0;
       case SLOT_WATER_INPUT:
         // if (FluidItemHelper.getFluidStackInContainer(stack)
-        //     .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
-        //   return false;
+        // .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
+        // return false;
         // } we allow tanks instafilling.
         return FluidItemHelper.containsFluid(stack, Fluids.WATER);
       case TICKET_SLOT:

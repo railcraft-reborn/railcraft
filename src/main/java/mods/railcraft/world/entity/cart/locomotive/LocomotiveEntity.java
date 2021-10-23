@@ -1,6 +1,4 @@
-package mods.railcraft.world.entity.cart;
-
-import com.mojang.authlib.GameProfile;
+package mods.railcraft.world.entity.cart.locomotive;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,11 +11,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
 import javax.annotation.Nullable;
-
+import org.apache.commons.lang3.StringUtils;
+import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
 import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.IPaintedCart;
@@ -37,6 +34,12 @@ import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.collections.Streams;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
+import mods.railcraft.world.entity.cart.CartTools;
+import mods.railcraft.world.entity.cart.IDirectionalCart;
+import mods.railcraft.world.entity.cart.LinkageManagerImpl;
+import mods.railcraft.world.entity.cart.MaintenanceMinecartEntity;
+import mods.railcraft.world.entity.cart.RailcraftMinecartEntity;
+import mods.railcraft.world.entity.cart.Train;
 import mods.railcraft.world.entity.cart.LinkageManagerImpl.LinkType;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
@@ -73,10 +76,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * Locmotive class, for trains that does the push/pulling.
+ * 
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class LocomotiveEntity extends RailcraftMinecartEntity
@@ -263,8 +265,8 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
    *
    * @param gameProfile The user.
    * @return TRUE if they can.
-   * @see mods.railcraft.world.entity.cart.LocomotiveEntity#isSecure isSecure
-   * @see mods.railcraft.world.entity.cart.LocomotiveEntity#isPrivate isPrivate
+   * @see mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity#isSecure isSecure
+   * @see mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity#isPrivate isPrivate
    */
   public boolean canControl(GameProfile gameProfile) {
     return !this.isPrivate()
@@ -317,8 +319,8 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   }
 
   /**
-   * Alternative to {@link LocomotiveEntity#setDestination(String destination)} (void return),
-   * sets the destination based on the ticket the user has.
+   * Alternative to {@link LocomotiveEntity#setDestination(String destination)} (void return), sets
+   * the destination based on the ticket the user has.
    */
   public boolean setDestination(ItemStack ticket) {
     if (ticket.getItem() instanceof TicketItem) {
@@ -374,6 +376,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
 
   /**
    * Get the train's max speed, accelerate speed, and breaking/reverse speed.
+   * 
    * @see Speed
    */
   public Speed getSpeed() {
@@ -382,6 +385,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
 
   /**
    * Sets the train's speed level.
+   * 
    * @see Speed
    */
   public void setSpeed(Speed speed) {
@@ -400,6 +404,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
 
   /**
    * Shifts the train speed up.
+   * 
    * @see Speed
    */
   public void increaseSpeed() {
@@ -408,6 +413,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
 
   /**
    * Shifts the train speed down.
+   * 
    * @see Speed
    */
   public void decreaseSpeed() {

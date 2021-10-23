@@ -7,7 +7,7 @@ import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.Predicates;
-import mods.railcraft.world.entity.cart.locomotives.SteamLocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotive.SteamLocomotiveEntity;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;

@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart.minecart;
+package mods.railcraft.world.entity.cart;
 
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -10,7 +10,6 @@ import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.InventoryIterator;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
-import mods.railcraft.world.entity.cart.FilteredMinecartEntity;
 import mods.railcraft.world.inventory.TankMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;

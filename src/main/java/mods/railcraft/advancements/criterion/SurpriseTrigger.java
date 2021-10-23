@@ -1,8 +1,7 @@
 package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
-
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
 import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
 import net.minecraft.advancements.criterion.CriterionInstance;
@@ -15,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class SurpriseTrigger extends AbstractCriterionTrigger<SurpriseTrigger.Instance> {
 
-  private static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("surprise");
+  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "surprise");
 
   @Override
   public ResourceLocation getId() {
@@ -34,16 +33,15 @@ public class SurpriseTrigger extends AbstractCriterionTrigger<SurpriseTrigger.In
    * Invoked when the user explodes a cart.
    */
   public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity cart) {
-    this.trigger(playerEntity, (SurpriseTrigger.Instance criterionInstance) -> {
-      return criterionInstance.matches(playerEntity, cart);
-    });
+    this.trigger(playerEntity,
+        (criterionInstance) -> criterionInstance.matches(playerEntity, cart));
   }
 
   public static class Instance extends CriterionInstance {
 
     private final CartPredicate cartPredicate;
 
-    Instance(EntityPredicate.AndPredicate entityPredicate, CartPredicate predicate) {
+    private Instance(EntityPredicate.AndPredicate entityPredicate, CartPredicate predicate) {
       super(SurpriseTrigger.ID, entityPredicate);
       this.cartPredicate = predicate;
     }

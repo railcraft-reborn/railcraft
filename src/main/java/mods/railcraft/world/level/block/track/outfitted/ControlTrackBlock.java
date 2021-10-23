@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.world.entity.cart.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.state.properties.RailShape;

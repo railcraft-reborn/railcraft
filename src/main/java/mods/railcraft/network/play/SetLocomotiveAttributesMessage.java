@@ -1,7 +1,7 @@
 package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
-import mods.railcraft.world.entity.cart.LocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;

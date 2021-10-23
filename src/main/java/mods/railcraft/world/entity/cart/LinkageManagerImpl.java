@@ -7,8 +7,9 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-
-import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.event.CartLinkEvent;
@@ -17,27 +18,23 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.loading.FMLLoader;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
-* The LinkageManager contains all the functions needed to link and interacted with linked carts.
-* <p/>
-* One concept if import is that of the Linkage Id. Every cart is given a unique identifier by the
-* LinkageManager the first time it encounters the cart.
-* <p/>
-* This identifier is stored in the entity's NBT data between world loads so that links are
-* persistent rather than transitory.
-* <p/>
-* Links are also stored in NBT data as an Integer value that contains the Linkage Id of the cart it
-* is linked to.
-* <p/>
-* Generally you can ignore most of this and use the functions that don't require or return Linkage
-* Ids.
-*
-* @author CovertJaguar (https://www.railcraft.info)
-*/
+ * The LinkageManager contains all the functions needed to link and interacted with linked carts.
+ * <p/>
+ * One concept if import is that of the Linkage Id. Every cart is given a unique identifier by the
+ * LinkageManager the first time it encounters the cart.
+ * <p/>
+ * This identifier is stored in the entity's NBT data between world loads so that links are
+ * persistent rather than transitory.
+ * <p/>
+ * Links are also stored in NBT data as an Integer value that contains the Linkage Id of the cart it
+ * is linked to.
+ * <p/>
+ * Generally you can ignore most of this and use the functions that don't require or return Linkage
+ * Ids.
+ *
+ * @author CovertJaguar (https://www.railcraft.info)
+ */
 public enum LinkageManagerImpl implements LinkageManager {
 
   INSTANCE;
@@ -56,22 +53,22 @@ public enum LinkageManagerImpl implements LinkageManager {
   }
 
   /**
-  * Returns the linkage id of the cart and adds the cart the linkage cache.
-  *
-  * @param cart The AbstractMinecartEntity
-  * @return The linkage id
-  */
+   * Returns the linkage id of the cart and adds the cart the linkage cache.
+   *
+   * @param cart The AbstractMinecartEntity
+   * @return The linkage id
+   */
   public UUID getLinkageId(AbstractMinecartEntity cart) {
     return cart.getUUID();
   }
 
   /**
-  * Returns the square of the max distance two carts can be and still be linkable.
-  *
-  * @param cart1 First Cart
-  * @param cart2 Second Cart
-  * @return The square of the linkage distance
-  */
+   * Returns the square of the max distance two carts can be and still be linkable.
+   *
+   * @param cart1 First Cart
+   * @param cart2 Second Cart
+   * @return The square of the linkage distance
+   */
   private float getLinkageDistanceSq(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2) {
     float dist = 0;
     if (cart1 instanceof ILinkableCart) {
@@ -101,7 +98,8 @@ public enum LinkageManagerImpl implements LinkageManager {
         if (hasFreeLink(cart, link)) {
           cart.getPersistentData().putBoolean(link.autoLink, true);
           ret = true;
-          printDebug("Cart {}({}) Set To Auto Link on Link {} With First Collision.", getLinkageId(cart),
+          printDebug("Cart {}({}) Set To Auto Link on Link {} With First Collision.",
+              getLinkageId(cart),
               cart.getDisplayName(), link);
         }
       }
@@ -117,13 +115,15 @@ public enum LinkageManagerImpl implements LinkageManager {
     if (!hasFreeLink(cart)) {
       removeAutoLinks(cart);
     }
-    return cart.getPersistentData().getBoolean(AUTO_LINK_A) || cart.getPersistentData().getBoolean(AUTO_LINK_B);
+    return cart.getPersistentData().getBoolean(AUTO_LINK_A)
+        || cart.getPersistentData().getBoolean(AUTO_LINK_B);
   }
 
   @Override
   public boolean tryAutoLink(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2) {
     if ((hasAutoLink(cart1) || hasAutoLink(cart2)) && createLink(cart1, cart2)) {
-      printDebug("Automatically Linked Carts {}({}) and {}({}).", getLinkageId(cart1), cart1.getDisplayName(),
+      printDebug("Automatically Linked Carts {}({}) and {}({}).", getLinkageId(cart1),
+          cart1.getDisplayName(),
           getLinkageId(cart2), cart2.getDisplayName());
       return true;
     }
@@ -170,8 +170,7 @@ public enum LinkageManagerImpl implements LinkageManager {
   }
 
   /**
-   * Creates a link between two carts, but only if there is nothing preventing
-   * such a link.
+   * Creates a link between two carts, but only if there is nothing preventing such a link.
    *
    * @param cart1 First Cart
    * @param cart2 Second Cart
@@ -240,7 +239,8 @@ public enum LinkageManagerImpl implements LinkageManager {
     return getLink(cart, LinkType.LINK_B);
   }
 
-  private void setLinkUnidirectional(AbstractMinecartEntity source, AbstractMinecartEntity target, LinkType linkType) {
+  private void setLinkUnidirectional(AbstractMinecartEntity source, AbstractMinecartEntity target,
+      LinkType linkType) {
     // hasFreeLink(source, linkType) checked
     UUID id = getLinkageId(target);
     source.getPersistentData().putLong(linkType.tagHigh, id.getMostSignificantBits());
@@ -249,8 +249,7 @@ public enum LinkageManagerImpl implements LinkageManager {
   }
 
   /**
-   * Returns the cart linked to LinkType A or null if nothing is currently
-   * occupying LinkType A.
+   * Returns the cart linked to LinkType A or null if nothing is currently occupying LinkType A.
    *
    * @param cart The cart for which to get the link
    * @return The linked cart or null
@@ -261,8 +260,7 @@ public enum LinkageManagerImpl implements LinkageManager {
   }
 
   /**
-   * Returns the cart linked to LinkType B or null if nothing is currently
-   * occupying LinkType B.
+   * Returns the cart linked to LinkType B or null if nothing is currently occupying LinkType B.
    *
    * @param cart The cart for which to get the link
    * @return The linked cart or null
@@ -272,7 +270,8 @@ public enum LinkageManagerImpl implements LinkageManager {
     return getLinkedCart(cart, LinkType.LINK_B);
   }
 
-  public @Nullable AbstractMinecartEntity getLinkedCart(AbstractMinecartEntity cart, LinkType type) {
+  public @Nullable AbstractMinecartEntity getLinkedCart(AbstractMinecartEntity cart,
+      LinkType type) {
     return CartTools.getCartFromUUID(cart.level, getLink(cart, type));
   }
 
@@ -291,14 +290,15 @@ public enum LinkageManagerImpl implements LinkageManager {
   /**
    * Returns true if the two carts are linked directly to each other.
    *
-   * @param cart1  First Cart
-   * @param cart2  Second Cart
-   * @param strict true if both carts should have linking data pointing to the
-   *               other cart, false if its ok if only one cart has the data (this
-   *               is technically an invalid state, but its been known to happen)
+   * @param cart1 First Cart
+   * @param cart2 Second Cart
+   * @param strict true if both carts should have linking data pointing to the other cart, false if
+   *        its ok if only one cart has the data (this is technically an invalid state, but its been
+   *        known to happen)
    * @return True if linked
    */
-  public boolean areLinked(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2, boolean strict) {
+  public boolean areLinked(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2,
+      boolean strict) {
     if (cart1 == cart2) {
       return false;
     }
@@ -312,7 +312,8 @@ public enum LinkageManagerImpl implements LinkageManager {
 
       logger.log(FMLLoader.isProduction() ? Level.WARN : Level.DEBUG,
           "Linking discrepancy between carts {}({}) and {}({}): The first cart reports {} for linked while the second one reports {}!",
-          getLinkageId(cart1), cart1.getDisplayName(), getLinkageId(cart2), cart2.getDisplayName(), cart1Linked,
+          getLinkageId(cart1), cart1.getDisplayName(), getLinkageId(cart2), cart2.getDisplayName(),
+          cart1Linked,
           cart2Linked);
     }
 
@@ -331,7 +332,8 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @return true if the repair was successful.
    */
   public boolean repairLink(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2) {
-    boolean repaired = repairLinkUnidirectional(cart1, cart2) && repairLinkUnidirectional(cart2, cart1);
+    boolean repaired =
+        repairLinkUnidirectional(cart1, cart2) && repairLinkUnidirectional(cart2, cart1);
     if (repaired) {
       Train.repairTrain(cart1, cart2);
     } else {
@@ -343,7 +345,8 @@ public enum LinkageManagerImpl implements LinkageManager {
   private boolean repairLinkUnidirectional(AbstractMinecartEntity from, AbstractMinecartEntity to) {
     UUID link = getLinkageId(to);
 
-    return link.equals(getLinkA(from)) || link.equals(getLinkB(from)) || setLinkUnidirectional(from, to);
+    return link.equals(getLinkA(from)) || link.equals(getLinkB(from))
+        || setLinkUnidirectional(from, to);
   }
 
   @Override
@@ -395,17 +398,19 @@ public enum LinkageManagerImpl implements LinkageManager {
    *
    * This has the most argument and tries to prevent a recursion.
    *
-   * @param one     One of the carts given
-   * @param two     The cart, given or calculated via a link
+   * @param one One of the carts given
+   * @param two The cart, given or calculated via a link
    * @param linkOne The link from one, given or calculated
    * @param linkTwo The link from two, calculated
    */
-  private void breakLinkInternal(AbstractMinecartEntity one, AbstractMinecartEntity two, @Nullable LinkType linkOne,
+  private void breakLinkInternal(AbstractMinecartEntity one, AbstractMinecartEntity two,
+      @Nullable LinkType linkOne,
       @Nullable LinkType linkTwo) {
     if ((linkOne == null) != (linkTwo == null)) {
       logger.log(FMLLoader.isProduction() ? Level.WARN : Level.DEBUG,
           "Linking discrepancy between carts {}({}) and {}({}): The first cart reports {} for linked while the second one reports {}!",
-          getLinkageId(one), one.getDisplayName(), getLinkageId(two), two.getDisplayName(), linkOne == null,
+          getLinkageId(one), one.getDisplayName(), getLinkageId(two), two.getDisplayName(),
+          linkOne == null,
           linkTwo == null);
     }
 
@@ -421,16 +426,19 @@ public enum LinkageManagerImpl implements LinkageManager {
 
   private @Nullable LinkType getLinkType(AbstractMinecartEntity from, AbstractMinecartEntity to) {
     UUID linkTo = getLinkageId(to);
-    return Arrays.stream(LinkType.VALUES).filter(link -> linkTo.equals(getLink(from, link))).findFirst().orElse(null);
+    return Arrays.stream(LinkType.VALUES).filter(link -> linkTo.equals(getLink(from, link)))
+        .findFirst().orElse(null);
   }
 
-  private void breakLinkUnidirectional(AbstractMinecartEntity cart, AbstractMinecartEntity other, LinkType linkType) {
+  private void breakLinkUnidirectional(AbstractMinecartEntity cart, AbstractMinecartEntity other,
+      LinkType linkType) {
     removeLinkTags(cart, linkType);
     if (cart instanceof ILinkableCart) {
       ((ILinkableCart) cart).onLinkBroken(other);
     }
 
-    printDebug("Cart {0}({1}) unidirectionally unlinked {2}({3}) at ({4}).", getLinkageId(cart), cart.getDisplayName(),
+    printDebug("Cart {0}({1}) unidirectionally unlinked {2}({3}) at ({4}).", getLinkageId(cart),
+        cart.getDisplayName(),
         getLinkageId(other), other, linkType.name());
   }
 
@@ -455,7 +463,8 @@ public enum LinkageManagerImpl implements LinkageManager {
     return Train.streamCarts(cart);
   }
 
-  public Iterable<AbstractMinecartEntity> linkIterator(final AbstractMinecartEntity start, final LinkType type) {
+  public Iterable<AbstractMinecartEntity> linkIterator(final AbstractMinecartEntity start,
+      final LinkType type) {
     if (MathTools.isNil(getLink(start, type))) {
       return Collections.emptyList();
     }

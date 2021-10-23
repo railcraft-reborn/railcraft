@@ -43,18 +43,17 @@ public class JukeboxCartPlayMusicTrigger
    */
   public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity cart,
       ResourceLocation music) {
-    this.trigger(playerEntity, (Instance criterionInstance) -> {
-      return criterionInstance.matches(playerEntity, cart, music);
-    });
+    this.trigger(playerEntity,
+        (criterionInstance) -> criterionInstance.matches(playerEntity, cart, music));
   }
 
   public static class Instance extends CriterionInstance {
 
     @Nullable
-    private final  ResourceLocation music;
+    private final ResourceLocation music;
     private final CartPredicate cart;
 
-    Instance(EntityPredicate.AndPredicate entityPredicate,
+    private Instance(EntityPredicate.AndPredicate entityPredicate,
         @Nullable ResourceLocation music, CartPredicate cart) {
       super(JukeboxCartPlayMusicTrigger.ID, entityPredicate);
       this.music = music;

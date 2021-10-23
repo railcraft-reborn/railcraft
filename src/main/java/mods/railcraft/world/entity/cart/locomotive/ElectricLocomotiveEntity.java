@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart.locomotives;
+package mods.railcraft.world.entity.cart.locomotive;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -11,7 +11,6 @@ import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
-import mods.railcraft.world.entity.cart.LocomotiveEntity;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;

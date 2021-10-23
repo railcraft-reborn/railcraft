@@ -7,8 +7,6 @@
 
 package mods.railcraft.api.core;
 
-import net.minecraft.util.ResourceLocation;
-
 /**
  * Created by CovertJaguar on 7/18/2016 for Railcraft.
  *
@@ -21,10 +19,6 @@ public final class RailcraftConstantsAPI {
   public static final String CORE_ID = API_PREFIX + "core";
   public static final String RAILCRAFT_PLAYER = "[" + MOD_ID + "]";
   public static final String UNKNOWN_PLAYER = "[unknown]";
-
-  public static ResourceLocation locationOf(String name) {
-    return new ResourceLocation(MOD_ID, name);
-  }
 
   private RailcraftConstantsAPI() {}
 }

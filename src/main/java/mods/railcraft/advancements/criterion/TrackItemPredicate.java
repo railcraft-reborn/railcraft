@@ -26,7 +26,7 @@ final class TrackItemPredicate extends ItemPredicate {
   private final @Nullable Boolean electric;
   private final @Nullable TrackType type;
 
-  TrackItemPredicate(@Nullable Boolean highSpeed, @Nullable Boolean electric,
+  private TrackItemPredicate(@Nullable Boolean highSpeed, @Nullable Boolean electric,
       @Nullable TrackType type) {
     this.highSpeed = highSpeed;
     this.electric = electric;

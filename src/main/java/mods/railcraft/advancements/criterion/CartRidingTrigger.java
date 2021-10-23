@@ -1,8 +1,7 @@
 package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
-
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
 import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
 import net.minecraft.advancements.criterion.CriterionInstance;
@@ -18,16 +17,16 @@ import net.minecraft.util.ResourceLocation;
  */
 public class CartRidingTrigger extends AbstractCriterionTrigger<CartRidingTrigger.Instance> {
 
-  private static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("cart_riding");
+  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "cart_riding");
   // private static final int FREQUENCY = 20;
 
   // private final Map<ServerPlayerEntity, AbstractMinecartEntity> mounting =
-  //     new MapMaker().weakKeys().weakValues().makeMap();
+  // new MapMaker().weakKeys().weakValues().makeMap();
 
   // private int counter;
 
   // CartRidingTrigger() {
-  //   MinecraftForge.EVENT_BUS.register(this);
+  // MinecraftForge.EVENT_BUS.register(this);
   // }
 
   @Override
@@ -47,46 +46,45 @@ public class CartRidingTrigger extends AbstractCriterionTrigger<CartRidingTrigge
    * Invoked when the user rides a cart.
    */
   public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity cart) {
-    this.trigger(playerEntity, (CartRidingTrigger.Instance criterionInstance) -> {
-      return criterionInstance.matches(playerEntity, cart);
-    });
+    this.trigger(playerEntity,
+        (criterionInstance) -> criterionInstance.matches(playerEntity, cart));
   }
 
   // @SubscribeEvent
   // public void onMount(EntityMountEvent event) {
-  //   if (!(event.getEntityMounting() instanceof ServerPlayerEntity)
-  //       || !(event.getEntityBeingMounted() instanceof AbstractMinecartEntity)) {
-  //     return;
-  //   }
+  // if (!(event.getEntityMounting() instanceof ServerPlayerEntity)
+  // || !(event.getEntityBeingMounted() instanceof AbstractMinecartEntity)) {
+  // return;
+  // }
 
-  //   ServerPlayerEntity rider = (ServerPlayerEntity) event.getEntityMounting();
-  //   AbstractMinecartEntity cart = (AbstractMinecartEntity) event.getEntityBeingMounted();
+  // ServerPlayerEntity rider = (ServerPlayerEntity) event.getEntityMounting();
+  // AbstractMinecartEntity cart = (AbstractMinecartEntity) event.getEntityBeingMounted();
 
-  //   if (event.isMounting()) {
-  //     mounting.put(rider, cart);
-  //   } else {
-  //     mounting.remove(rider);
-  //   }
+  // if (event.isMounting()) {
+  // mounting.put(rider, cart);
+  // } else {
+  // mounting.remove(rider);
+  // }
   // }
 
   // @SubscribeEvent
   // public void tick(ServerTickEvent event) {
-  //   if (counter != FREQUENCY) {
-  //     counter++;
-  //     return;
-  //   }
-  //   counter = 0;
+  // if (counter != FREQUENCY) {
+  // counter++;
+  // return;
+  // }
+  // counter = 0;
 
-  //   for (Entry<ServerPlayerEntity, AbstractMinecartEntity> entry : mounting.entrySet()) {
-  //     trigger(entry.getKey(), instance -> instance.test(entry.getKey(), entry.getValue()));
-  //   }
+  // for (Entry<ServerPlayerEntity, AbstractMinecartEntity> entry : mounting.entrySet()) {
+  // trigger(entry.getKey(), instance -> instance.test(entry.getKey(), entry.getValue()));
+  // }
   // }
 
   public static class Instance extends CriterionInstance {
 
     private final CartPredicate cartPredicate;
 
-    Instance(EntityPredicate.AndPredicate entityPredicate, CartPredicate predicate) {
+    private Instance(EntityPredicate.AndPredicate entityPredicate, CartPredicate predicate) {
       super(CartRidingTrigger.ID, entityPredicate);
       this.cartPredicate = predicate;
     }

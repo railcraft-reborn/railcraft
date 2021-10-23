@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart.locomotives;
+package mods.railcraft.world.entity.cart.locomotive;
 
 import javax.annotation.Nullable;
 
@@ -7,7 +7,6 @@ import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
-import mods.railcraft.world.entity.cart.LocomotiveEntity;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;

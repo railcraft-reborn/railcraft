@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class BedCartSleepTrigger extends AbstractCriterionTrigger<BedCartSleepTrigger.Instance> {
 
-  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID + ":bed_cart_sleep");
+  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "bed_cart_sleep");
 
   @Override
   public ResourceLocation getId() {
@@ -34,16 +34,15 @@ public class BedCartSleepTrigger extends AbstractCriterionTrigger<BedCartSleepTr
    * Invoked when the user sleeps on a cart.
    */
   public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity cartPredicate) {
-    this.trigger(playerEntity, (BedCartSleepTrigger.Instance criterionInstance) -> {
-      return criterionInstance.matches(playerEntity, cartPredicate);
-    });
+    this.trigger(playerEntity,
+        (criterionInstance) -> criterionInstance.matches(playerEntity, cartPredicate));
   }
 
   public static class Instance extends CriterionInstance {
 
     private final CartPredicate cartPredicate;
 
-    Instance(EntityPredicate.AndPredicate entityPredicate, CartPredicate predicate) {
+    private Instance(EntityPredicate.AndPredicate entityPredicate, CartPredicate predicate) {
       super(BedCartSleepTrigger.ID, entityPredicate);
       this.cartPredicate = predicate;
     }

@@ -1,7 +1,7 @@
 package mods.railcraft.client.gui.screen.inventory;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.entity.cart.CreativeLocomotiveEntity;
+import mods.railcraft.world.entity.cart.locomotive.CreativeLocomotiveEntity;
 import mods.railcraft.world.inventory.LocomotiveMenu;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;

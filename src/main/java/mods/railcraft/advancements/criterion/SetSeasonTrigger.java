@@ -1,10 +1,8 @@
 package mods.railcraft.advancements.criterion;
 
-import com.google.gson.JsonObject;
-
 import javax.annotation.Nullable;
-
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+import com.google.gson.JsonObject;
+import mods.railcraft.Railcraft;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.JsonTools;
 import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
@@ -18,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class SetSeasonTrigger extends AbstractCriterionTrigger<SetSeasonTrigger.Instance> {
 
-  private static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("set_season");
+  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "set_season");
 
   @Override
   public ResourceLocation getId() {
@@ -44,9 +42,8 @@ public class SetSeasonTrigger extends AbstractCriterionTrigger<SetSeasonTrigger.
    */
   public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity cart,
       Season target) {
-    this.trigger(playerEntity, (SetSeasonTrigger.Instance criterionInstance) ->
-        criterionInstance.matches(playerEntity, cart, target)
-    );
+    this.trigger(playerEntity,
+        (criterionInstance) -> criterionInstance.matches(playerEntity, cart, target));
   }
 
   public static class Instance extends CriterionInstance {
@@ -55,7 +52,7 @@ public class SetSeasonTrigger extends AbstractCriterionTrigger<SetSeasonTrigger.
     private final Season season;
     private final CartPredicate cartPredicate;
 
-    Instance(EntityPredicate.AndPredicate entityPredicate, @Nullable Season season,
+    private Instance(EntityPredicate.AndPredicate entityPredicate, @Nullable Season season,
         CartPredicate predicate) {
       super(SetSeasonTrigger.ID, entityPredicate);
       this.season = season;

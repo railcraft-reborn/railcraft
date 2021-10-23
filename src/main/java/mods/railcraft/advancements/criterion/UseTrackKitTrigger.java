@@ -1,8 +1,7 @@
 package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
-
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.util.LevelUtil;
 import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
@@ -22,7 +21,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class UseTrackKitTrigger extends AbstractCriterionTrigger<UseTrackKitTrigger.Instance> {
 
-  private static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("use_track_kit");
+  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "use_track_kit");
 
   @Override
   public ResourceLocation getId() {
@@ -46,9 +45,8 @@ public class UseTrackKitTrigger extends AbstractCriterionTrigger<UseTrackKitTrig
    */
   public void trigger(ServerPlayerEntity playerEntity, ServerWorld world,
       BlockPos blockPos, ItemStack stack) {
-    this.trigger(playerEntity, (UseTrackKitTrigger.Instance criterionInstance) -> {
-      return criterionInstance.matches(playerEntity.getLevel(), blockPos, stack);
-    });
+    this.trigger(playerEntity,
+        (criterionInstance) -> criterionInstance.matches(playerEntity.getLevel(), blockPos, stack));
   }
 
   public static class Instance extends CriterionInstance {
@@ -57,7 +55,7 @@ public class UseTrackKitTrigger extends AbstractCriterionTrigger<UseTrackKitTrig
     private final ItemPredicate item;
     private final LocationPredicate location;
 
-    Instance(EntityPredicate.AndPredicate entityPredicate, NBTPredicate nbtPredicate,
+    private Instance(EntityPredicate.AndPredicate entityPredicate, NBTPredicate nbtPredicate,
         ItemPredicate itemPredicate, LocationPredicate locationPredicate) {
       super(UseTrackKitTrigger.ID, entityPredicate);
       this.blockEntityNbt = nbtPredicate;

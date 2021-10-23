@@ -17,7 +17,6 @@ import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.BallastRegistry;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.HarvestUtil;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.MiscTools;
@@ -69,6 +68,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolType;
@@ -1038,7 +1038,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     for (int slot = 0; slot < invFuel.getContainerSize(); slot++) {
       ItemStack stack = invFuel.getItem(slot);
       if (!stack.isEmpty()) {
-        burn = FuelUtil.getBurnTime(stack);
+        burn = ForgeHooks.getBurnTime(stack);
         if (burn > 0) {
           if (stack.getItem().hasContainerItem(stack)) {
             invFuel.setItem(slot, stack.getItem().getContainerItem(stack));

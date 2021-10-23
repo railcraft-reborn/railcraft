@@ -1,8 +1,7 @@
 package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
-
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
 import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
 import net.minecraft.advancements.criterion.CriterionInstance;
@@ -19,8 +18,8 @@ import net.minecraft.util.ResourceLocation;
 public class KilledByLocomotiveTrigger
     extends AbstractCriterionTrigger<KilledByLocomotiveTrigger.Instance> {
 
-  private static final ResourceLocation ID
-      = RailcraftConstantsAPI.locationOf("killed_by_locomotive");
+  private static final ResourceLocation ID =
+      new ResourceLocation(Railcraft.ID, "killed_by_locomotive");
 
   @Override
   public ResourceLocation getId() {
@@ -48,13 +47,9 @@ public class KilledByLocomotiveTrigger
 
     private final CartPredicate cart;
 
-    Instance(EntityPredicate.AndPredicate entityPredicate, CartPredicate cart) {
+    private Instance(EntityPredicate.AndPredicate entityPredicate, CartPredicate cart) {
       super(KilledByLocomotiveTrigger.ID, entityPredicate);
       this.cart = cart;
-    }
-
-    public static CartRidingTrigger.Instance hasDied() {
-      return new CartRidingTrigger.Instance(EntityPredicate.AndPredicate.ANY, CartPredicate.ANY);
     }
 
     public boolean matches(ServerPlayerEntity player, AbstractMinecartEntity cart) {

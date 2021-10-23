@@ -8,7 +8,6 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.BallastRegistry;
-import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.inventory.IInventoryComposite;
 import mods.railcraft.util.inventory.IInventoryManipulator;
@@ -22,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.MinecartItem;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 /**
@@ -32,15 +32,10 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 public enum StackFilters implements Predicate<ItemStack> {
 
   ALL,
-  /**
-   * .
-   * @depricated use {@link ForgeHooks#getBurnTime(Itemstack stack)}
-   */
-  @Deprecated
   FUEL {
     @Override
     protected boolean testType(ItemStack stack) {
-      return FuelUtil.getBurnTime(stack) > 0;
+      return ForgeHooks.getBurnTime(stack) > 0;
     }
 
   },
@@ -53,8 +48,7 @@ public enum StackFilters implements Predicate<ItemStack> {
   },
   MINECART {
     @Override
-    protected boolean testType(
-        ItemStack stack) {
+    protected boolean testType(ItemStack stack) {
       return stack.getItem() instanceof MinecartItem || stack.getItem() instanceof MinecartFactory;
     }
 
@@ -276,6 +270,6 @@ public enum StackFilters implements Predicate<ItemStack> {
 
   @Override
   public boolean test(ItemStack stack) {
-    return !stack.isEmpty() && testType(stack);
+    return !stack.isEmpty() && this.testType(stack);
   }
 }

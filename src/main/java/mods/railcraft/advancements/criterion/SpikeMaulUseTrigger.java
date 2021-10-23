@@ -1,8 +1,7 @@
 package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
-
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.util.LevelUtil;
 import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
@@ -22,7 +21,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class SpikeMaulUseTrigger extends AbstractCriterionTrigger<SpikeMaulUseTrigger.Instance> {
 
-  private static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("spike_maul_use");
+  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "spike_maul_use");
 
   @Override
   public ResourceLocation getId() {
@@ -46,9 +45,7 @@ public class SpikeMaulUseTrigger extends AbstractCriterionTrigger<SpikeMaulUseTr
    */
   public void trigger(ServerPlayerEntity playerEntity, ItemStack item,
       ServerWorld world, BlockPos pos) {
-    this.trigger(playerEntity, (SpikeMaulUseTrigger.Instance criterionInstance) -> {
-      return criterionInstance.matches(item, world, pos);
-    });
+    this.trigger(playerEntity, (criterionInstance) -> criterionInstance.matches(item, world, pos));
   }
 
   public static class Instance extends CriterionInstance {
@@ -57,7 +54,7 @@ public class SpikeMaulUseTrigger extends AbstractCriterionTrigger<SpikeMaulUseTr
     private final ItemPredicate tool;
     private final LocationPredicate location;
 
-    Instance(EntityPredicate.AndPredicate entityPredicate, NBTPredicate nbt,
+    private Instance(EntityPredicate.AndPredicate entityPredicate, NBTPredicate nbt,
         ItemPredicate tool, LocationPredicate predicate) {
       super(SpikeMaulUseTrigger.ID, entityPredicate);
       this.nbt = nbt;
@@ -67,16 +64,17 @@ public class SpikeMaulUseTrigger extends AbstractCriterionTrigger<SpikeMaulUseTr
 
     public static SpikeMaulUseTrigger.Instance hasUsedSpikeMaul() {
       return new SpikeMaulUseTrigger.Instance(EntityPredicate.AndPredicate.ANY,
-        NBTPredicate.ANY, ItemPredicate.ANY, LocationPredicate.ANY);
+          NBTPredicate.ANY, ItemPredicate.ANY, LocationPredicate.ANY);
     }
 
     public boolean matches(ItemStack item, ServerWorld world, BlockPos pos) {
-      return LevelUtil.getBlockEntity(world, pos)
-          .map(te -> te.save(new CompoundNBT()))
-          .map(nbt::matches)
+      return LevelUtil
+          .getBlockEntity(world, pos)
+          .map(blockEntity -> blockEntity.save(new CompoundNBT()))
+          .map(this.nbt::matches)
           .orElse(false)
-          && tool.matches(item)
-          && location.matches(world, pos.getX(), pos.getY(), pos.getZ());
+          && this.tool.matches(item)
+          && this.location.matches(world, pos.getX(), pos.getY(), pos.getZ());
     }
 
     @Override
