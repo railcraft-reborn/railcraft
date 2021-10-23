@@ -92,7 +92,7 @@ public class Railcraft {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     modEventBus.addListener(this::handleGatherData);
-    modEventBus.addListener(this::onCommonSetup);
+    modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
 
     RailcraftEntityTypes.ENTITY_TYPES.register(modEventBus);
@@ -131,10 +131,8 @@ public class Railcraft {
     return instance;
   }
 
-  private void onCommonSetup(FMLCommonSetupEvent event) {
-    event.enqueueWork(() -> {
-      RailcraftCriteriaTriggers.register();
-    });
+  private void handleCommonSetup(FMLCommonSetupEvent event) {
+    event.enqueueWork(RailcraftCriteriaTriggers::register);
   }
 
   private void handleGatherData(GatherDataEvent event) {
