@@ -1,0 +1,35 @@
+{
+  "parent": "railcraft:tracks/manual_rolling_machine",
+  "display": {
+    "icon": {
+      "item": "railcraft:high_speed_track"
+    },
+    "title": {
+      "translate": "advancements.railcraft.tracks.high_speed_track.name"
+    },
+    "description": {
+      "translate": "advancements.railcraft.tracks.high_speed_track.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_hs_track": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "railcraft:high_speed_track"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_hs_track"
+    ]
+  ]
+}

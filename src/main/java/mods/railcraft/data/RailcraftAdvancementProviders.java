@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import mods.railcraft.data.advancements.CraftingAdvancements;
+import mods.railcraft.data.advancements.CartAdvancements;
+import mods.railcraft.data.advancements.TrackAdvancements;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.AdvancementProvider;
 import net.minecraft.data.DataGenerator;
@@ -29,7 +30,7 @@ public class RailcraftAdvancementProviders extends AdvancementProvider {
   private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
   private final DataGenerator generator;
   private final List<Consumer<Consumer<Advancement>>> tabs =
-      ImmutableList.of(new CraftingAdvancements());
+      ImmutableList.of(new CartAdvancements(), new TrackAdvancements());
 
   public RailcraftAdvancementProviders(DataGenerator dataGenerator) {
     super(dataGenerator);

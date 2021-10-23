@@ -1,20 +1,27 @@
 package mods.railcraft.advancements.criterion;
 
-import java.util.Objects;
-import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+
+import java.util.Objects;
+
+import javax.annotation.Nullable;
+
+import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
-import net.minecraft.advancements.ICriterionInstance;
+import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.util.ResourceLocation;
 
-final class JukeboxCartPlayMusicTrigger extends BaseTrigger<JukeboxCartPlayMusicTrigger.Instance> {
+public class JukeboxCartPlayMusicTrigger
+    extends AbstractCriterionTrigger<JukeboxCartPlayMusicTrigger.Instance> {
 
-  static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("jukebox_cart_play_music");
+  private static final ResourceLocation ID =
+      new ResourceLocation(Railcraft.ID + ":jukebox_cart_play_music");
 
   @Override
   public ResourceLocation getId() {
@@ -22,25 +29,50 @@ final class JukeboxCartPlayMusicTrigger extends BaseTrigger<JukeboxCartPlayMusic
   }
 
   @Override
-  public Instance createInstance(JsonObject json, ConditionArrayParser parser) {
+  public JukeboxCartPlayMusicTrigger.Instance createInstance(JsonObject json,
+      EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
     ResourceLocation sound = JsonTools.whenPresent(json, "music",
         (element) -> new ResourceLocation(element.getAsString()), null);
     CartPredicate cart =
         JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
-    return new Instance(sound, cart);
+    return new JukeboxCartPlayMusicTrigger.Instance(entityPredicate, sound, cart);
   }
 
-  static final class Instance implements ICriterionInstance {
+  /**
+   * Invoked when the user plays music on a cart.
+   */
+  public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity cart,
+      ResourceLocation music) {
+    this.trigger(playerEntity, (Instance criterionInstance) -> {
+      return criterionInstance.matches(playerEntity, cart, music);
+    });
+  }
 
-    final @Nullable ResourceLocation music;
-    final CartPredicate cart;
+  public static class Instance extends CriterionInstance {
 
-    Instance(@Nullable ResourceLocation music, CartPredicate cart) {
+    @Nullable
+    private final  ResourceLocation music;
+    private final CartPredicate cart;
+
+    Instance(EntityPredicate.AndPredicate entityPredicate,
+        @Nullable ResourceLocation music, CartPredicate cart) {
+      super(JukeboxCartPlayMusicTrigger.ID, entityPredicate);
       this.music = music;
       this.cart = cart;
     }
 
-    boolean test(ServerPlayerEntity player, AbstractMinecartEntity cart, ResourceLocation sound) {
+    public static JukeboxCartPlayMusicTrigger.Instance hasPlayedAnyMusic() {
+      return new JukeboxCartPlayMusicTrigger.Instance(EntityPredicate.AndPredicate.ANY,
+          null, CartPredicate.ANY);
+    }
+
+    public static JukeboxCartPlayMusicTrigger.Instance hasPlayedMusic(ResourceLocation music) {
+      return new JukeboxCartPlayMusicTrigger.Instance(EntityPredicate.AndPredicate.ANY,
+          music, CartPredicate.ANY);
+    }
+
+    public boolean matches(ServerPlayerEntity player, AbstractMinecartEntity cart,
+        ResourceLocation sound) {
       return (music == null || Objects.equals(sound, music)) && this.cart.test(player, cart);
     }
 
@@ -50,10 +82,11 @@ final class JukeboxCartPlayMusicTrigger extends BaseTrigger<JukeboxCartPlayMusic
     }
 
     @Override
-    public JsonObject serializeToJson(ConditionArraySerializer p_230240_1_) {
+    public JsonObject serializeToJson(ConditionArraySerializer serializer) {
       JsonObject json = new JsonObject();
-      if (this.music != null)
+      if (this.music != null) {
         json.addProperty("music", this.music.toString());
+      }
       json.add("cart", this.cart.serializeToJson());
       return json;
     }

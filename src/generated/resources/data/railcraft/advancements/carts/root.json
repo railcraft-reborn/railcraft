@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "railcraft:diamond_crowbar",
+      "nbt": "{Damage:0}"
+    },
+    "title": {
+      "translate": "advancements.railcraft.carts.root.name"
+    },
+    "description": {
+      "translate": "advancements.railcraft.carts.root.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "default_unlock": {
+      "trigger": "minecraft:tick",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "default_unlock"
+    ]
+  ]
+}

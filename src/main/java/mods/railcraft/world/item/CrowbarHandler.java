@@ -1,9 +1,11 @@
 package mods.railcraft.world.item;
 
 import java.util.Map;
+
 import com.google.common.collect.MapMaker;
+
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
+import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.season.Season;
@@ -61,8 +63,7 @@ public class CrowbarHandler {
         && RailcraftConfig.common.enableSeasons.get()) {
       Season season = SeasonsCrowbarItem.getSeason(stack);
       ((SeasonalCart) cart).setSeason(season);
-      RailcraftAdvancementTriggers.getInstance()
-          .onSeasonSet((ServerPlayerEntity) player, cart, season);
+      RailcraftCriteriaTriggers.SEASON_SET.trigger((ServerPlayerEntity) player, cart, season);
       return true;
     }
     if (crowbar.canLink(player, hand, stack, cart)) {
@@ -93,6 +94,9 @@ public class CrowbarHandler {
         } else {
           used = lm.createLink(last, cart);
           if (used) {
+            if (!player.level.isClientSide()) {
+              RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayerEntity)player, last, cart);
+            }
             player.displayClientMessage(new TranslationTextComponent("crowbar.link_created"), true);
           }
         }

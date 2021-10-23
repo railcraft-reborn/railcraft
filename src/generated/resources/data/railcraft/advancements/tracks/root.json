@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "railcraft:reinforced_track"
+    },
+    "title": {
+      "translate": "advancements.railcraft.tracks.root.name"
+    },
+    "description": {
+      "translate": "advancements.railcraft.tracks.root.desc"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "default_unlock": {
+      "trigger": "minecraft:tick",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "default_unlock"
+    ]
+  ]
+}

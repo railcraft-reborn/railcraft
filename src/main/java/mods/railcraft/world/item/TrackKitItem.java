@@ -1,9 +1,11 @@
 package mods.railcraft.world.item;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.util.Map;
 import java.util.function.Supplier;
-import com.google.common.collect.ImmutableMap;
-import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
+
+import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
@@ -26,6 +28,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.RegistryObject;
 
 public class TrackKitItem extends Item {
@@ -93,8 +96,10 @@ public class TrackKitItem extends Item {
           outfittedBlock.getSoundType(outfittedBlockState, level, blockPos, player);
       level.playSound(player, blockPos, soundType.getPlaceSound(), SoundCategory.BLOCKS,
           soundType.getVolume(), soundType.getPitch());
-      RailcraftAdvancementTriggers.getInstance().onTrackKitUse((ServerPlayerEntity) player,
-          level, blockPos, itemStack);
+
+      RailcraftCriteriaTriggers.TRACK_KIT_USE.trigger(
+          (ServerPlayerEntity) player, (ServerWorld) level, blockPos, itemStack);
+
       if (!player.abilities.instabuild) {
         itemStack.shrink(1);
       }

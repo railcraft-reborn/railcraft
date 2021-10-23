@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
+import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.IPaintedCart;
 import mods.railcraft.api.carts.IRoutableCart;
@@ -648,8 +649,8 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
                   MathHelper.cos(yaw) * KNOCKBACK * 0.5F));
         } else {
           if (living instanceof ServerPlayerEntity) {
-            RailcraftAdvancementTriggers.getInstance()
-                .onKilledByLocomotive((ServerPlayerEntity) living, this);
+            RailcraftCriteriaTriggers.KILLED_BY_LOCOMOTIVE.trigger(
+                (ServerPlayerEntity) living, this);
           }
         }
         return;

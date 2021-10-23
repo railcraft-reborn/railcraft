@@ -1,16 +1,21 @@
 package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+
+import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
-import net.minecraft.advancements.ICriterionInstance;
+import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.util.ResourceLocation;
 
-final class BedCartSleepTrigger extends BaseTrigger<BedCartSleepTrigger.Instance> {
+public class BedCartSleepTrigger extends AbstractCriterionTrigger<BedCartSleepTrigger.Instance> {
 
-  static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("bed_cart_sleep");
+  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID + ":bed_cart_sleep");
 
   @Override
   public ResourceLocation getId() {
@@ -18,18 +23,37 @@ final class BedCartSleepTrigger extends BaseTrigger<BedCartSleepTrigger.Instance
   }
 
   @Override
-  public Instance createInstance(JsonObject json, ConditionArrayParser parser) {
+  public BedCartSleepTrigger.Instance createInstance(JsonObject json,
+      EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
     CartPredicate predicate =
         JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
-    return new Instance(predicate);
+    return new BedCartSleepTrigger.Instance(entityPredicate, predicate);
   }
 
-  static final class Instance implements ICriterionInstance {
+  /**
+   * Invoked when the user sleeps on a cart.
+   */
+  public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity cartPredicate) {
+    this.trigger(playerEntity, (BedCartSleepTrigger.Instance criterionInstance) -> {
+      return criterionInstance.matches(playerEntity, cartPredicate);
+    });
+  }
 
-    final CartPredicate cartPredicate;
+  public static class Instance extends CriterionInstance {
 
-    Instance(CartPredicate predicate) {
+    private final CartPredicate cartPredicate;
+
+    Instance(EntityPredicate.AndPredicate entityPredicate, CartPredicate predicate) {
+      super(BedCartSleepTrigger.ID, entityPredicate);
       this.cartPredicate = predicate;
+    }
+
+    public static BedCartSleepTrigger.Instance hasSlept() {
+      return new BedCartSleepTrigger.Instance(EntityPredicate.AndPredicate.ANY, CartPredicate.ANY);
+    }
+
+    public boolean matches(ServerPlayerEntity player, AbstractMinecartEntity cartPredicate) {
+      return this.cartPredicate.test(player, cartPredicate) && player.isSleeping();
     }
 
     @Override
@@ -38,7 +62,7 @@ final class BedCartSleepTrigger extends BaseTrigger<BedCartSleepTrigger.Instance
     }
 
     @Override
-    public JsonObject serializeToJson(ConditionArraySerializer p_230240_1_) {
+    public JsonObject serializeToJson(ConditionArraySerializer serializer) {
       JsonObject json = new JsonObject();
       json.add("cart", this.cartPredicate.serializeToJson());
       return json;

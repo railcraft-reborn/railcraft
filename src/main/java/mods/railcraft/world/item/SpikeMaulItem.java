@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import mods.railcraft.advancements.criterion.RailcraftAdvancementTriggers;
+import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.item.SpikeMaulTarget;
 import mods.railcraft.api.track.TrackType;
@@ -43,6 +43,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class SpikeMaulItem extends ToolItem {
 
@@ -119,8 +120,9 @@ public class SpikeMaulItem extends ToolItem {
         newBlockState.getSoundType(level, blockPos, player).getPlaceSound(),
         SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 
-    RailcraftAdvancementTriggers.getInstance().onSpikeMaulUsageSuccess(
-        (ServerPlayerEntity) player, level, blockPos, heldStack);
+    RailcraftCriteriaTriggers.SPIKE_MAUL_USE.trigger(
+        (ServerPlayerEntity)player, heldStack, (ServerWorld)level, blockPos);
+
     heldStack.shrink(1);
     return ActionResultType.SUCCESS;
   }

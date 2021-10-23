@@ -19,8 +19,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "one_way": "true",
+        "shape": "north_south",
         "reversed": "false"
       },
       "apply": {
@@ -29,8 +29,8 @@
     },
     {
       "when": {
-        "shape": "north_south",
         "one_way": "true",
+        "shape": "north_south",
         "reversed": "true"
       },
       "apply": {
@@ -40,8 +40,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "one_way": "true",
+        "shape": "east_west",
         "reversed": "false"
       },
       "apply": {
@@ -51,8 +51,8 @@
     },
     {
       "when": {
-        "shape": "east_west",
         "one_way": "true",
+        "shape": "east_west",
         "reversed": "true"
       },
       "apply": {
@@ -63,8 +63,8 @@
     {
       "when": {
         "open": "false",
-        "shape": "north_south",
         "in_wall": "false",
+        "shape": "north_south",
         "reversed": "false"
       },
       "apply": {
@@ -75,8 +75,8 @@
     {
       "when": {
         "open": "false",
-        "shape": "north_south",
         "in_wall": "false",
+        "shape": "north_south",
         "reversed": "true"
       },
       "apply": {
@@ -86,8 +86,8 @@
     {
       "when": {
         "open": "false",
-        "shape": "east_west",
         "in_wall": "false",
+        "shape": "east_west",
         "reversed": "false"
       },
       "apply": {
@@ -98,8 +98,8 @@
     {
       "when": {
         "open": "false",
-        "shape": "east_west",
         "in_wall": "false",
+        "shape": "east_west",
         "reversed": "true"
       },
       "apply": {
@@ -110,8 +110,8 @@
     {
       "when": {
         "open": "true",
-        "shape": "north_south",
         "in_wall": "false",
+        "shape": "north_south",
         "reversed": "false"
       },
       "apply": {
@@ -122,8 +122,8 @@
     {
       "when": {
         "open": "true",
-        "shape": "north_south",
         "in_wall": "false",
+        "shape": "north_south",
         "reversed": "true"
       },
       "apply": {
@@ -133,8 +133,8 @@
     {
       "when": {
         "open": "true",
-        "shape": "east_west",
         "in_wall": "false",
+        "shape": "east_west",
         "reversed": "false"
       },
       "apply": {
@@ -145,8 +145,8 @@
     {
       "when": {
         "open": "true",
-        "shape": "east_west",
         "in_wall": "false",
+        "shape": "east_west",
         "reversed": "true"
       },
       "apply": {
@@ -157,8 +157,8 @@
     {
       "when": {
         "open": "false",
-        "shape": "north_south",
         "in_wall": "true",
+        "shape": "north_south",
         "reversed": "false"
       },
       "apply": {
@@ -169,8 +169,8 @@
     {
       "when": {
         "open": "false",
-        "shape": "north_south",
         "in_wall": "true",
+        "shape": "north_south",
         "reversed": "true"
       },
       "apply": {
@@ -180,8 +180,8 @@
     {
       "when": {
         "open": "false",
-        "shape": "east_west",
         "in_wall": "true",
+        "shape": "east_west",
         "reversed": "false"
       },
       "apply": {
@@ -192,8 +192,8 @@
     {
       "when": {
         "open": "false",
-        "shape": "east_west",
         "in_wall": "true",
+        "shape": "east_west",
         "reversed": "true"
       },
       "apply": {
@@ -204,8 +204,8 @@
     {
       "when": {
         "open": "true",
-        "shape": "north_south",
         "in_wall": "true",
+        "shape": "north_south",
         "reversed": "false"
       },
       "apply": {
@@ -216,8 +216,8 @@
     {
       "when": {
         "open": "true",
-        "shape": "north_south",
         "in_wall": "true",
+        "shape": "north_south",
         "reversed": "true"
       },
       "apply": {
@@ -227,8 +227,8 @@
     {
       "when": {
         "open": "true",
-        "shape": "east_west",
         "in_wall": "true",
+        "shape": "east_west",
         "reversed": "false"
       },
       "apply": {
@@ -239,8 +239,8 @@
     {
       "when": {
         "open": "true",
-        "shape": "east_west",
         "in_wall": "true",
+        "shape": "east_west",
         "reversed": "true"
       },
       "apply": {

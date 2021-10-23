@@ -11,6 +11,7 @@ import net.minecraft.advancements.ICriterionTrigger.Listener;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.util.Tuple;
 
+@Deprecated
 final class ListenerManager<T extends ICriterionInstance> {
 
   private final Map<PlayerAdvancements, Collection<Listener<T>>> map = new HashMap<>();

@@ -1,27 +1,27 @@
 {
+  "parent": "railcraft:tracks/manual_rolling_machine",
   "display": {
     "icon": {
-      "item": "minecraft:rail"
+      "item": "railcraft:strap_iron_track"
     },
     "title": {
-      "translate": "advancements.crafting.rail.title"
+      "translate": "advancements.railcraft.tracks.wooden_track.name"
     },
     "description": {
-      "translate": "advancements.crafting.rail.description"
+      "translate": "advancements.railcraft.tracks.wooden_track.desc"
     },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": false,
-    "hidden": false,
-    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+    "hidden": false
   },
   "criteria": {
-    "has_vanilla_track": {
+    "has_strap_iron": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:rail"
+            "item": "railcraft:strap_iron_track"
           }
         ]
       }
@@ -29,7 +29,7 @@
   },
   "requirements": [
     [
-      "has_vanilla_track"
+      "has_strap_iron"
     ]
   ]
 }

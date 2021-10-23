@@ -1,16 +1,26 @@
 package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
+
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.util.JsonTools;
-import net.minecraft.advancements.ICriterionInstance;
+import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.util.ResourceLocation;
 
-final class KilledByLocomotiveTrigger extends BaseTrigger<KilledByLocomotiveTrigger.Instance> {
+/**
+ * I tried to fight the train. The train won.
+ */
+public class KilledByLocomotiveTrigger
+    extends AbstractCriterionTrigger<KilledByLocomotiveTrigger.Instance> {
 
-  static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("killed_by_locomotive");
+  private static final ResourceLocation ID
+      = RailcraftConstantsAPI.locationOf("killed_by_locomotive");
 
   @Override
   public ResourceLocation getId() {
@@ -18,18 +28,37 @@ final class KilledByLocomotiveTrigger extends BaseTrigger<KilledByLocomotiveTrig
   }
 
   @Override
-  public Instance createInstance(JsonObject json, ConditionArrayParser parser) {
+  public KilledByLocomotiveTrigger.Instance createInstance(JsonObject json,
+      EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
     CartPredicate predicate =
         JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
-    return new Instance(predicate);
+    return new KilledByLocomotiveTrigger.Instance(entityPredicate, predicate);
   }
 
-  static final class Instance implements ICriterionInstance {
+  /**
+   * Invoked when the user dies due to train tomfoolery.
+   */
+  public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity cart) {
+    this.trigger(playerEntity, (KilledByLocomotiveTrigger.Instance criterionInstance) -> {
+      return criterionInstance.matches(playerEntity, cart);
+    });
+  }
 
-    final CartPredicate cart;
+  public static class Instance extends CriterionInstance {
 
-    Instance(CartPredicate cart) {
+    private final CartPredicate cart;
+
+    Instance(EntityPredicate.AndPredicate entityPredicate, CartPredicate cart) {
+      super(KilledByLocomotiveTrigger.ID, entityPredicate);
       this.cart = cart;
+    }
+
+    public static CartRidingTrigger.Instance hasDied() {
+      return new CartRidingTrigger.Instance(EntityPredicate.AndPredicate.ANY, CartPredicate.ANY);
+    }
+
+    public boolean matches(ServerPlayerEntity player, AbstractMinecartEntity cart) {
+      return this.cart.test(player, cart);
     }
 
     @Override
@@ -38,7 +67,7 @@ final class KilledByLocomotiveTrigger extends BaseTrigger<KilledByLocomotiveTrig
     }
 
     @Override
-    public JsonObject serializeToJson(ConditionArraySerializer p_230240_1_) {
+    public JsonObject serializeToJson(ConditionArraySerializer serializer) {
       JsonObject json = new JsonObject();
       json.add("cart", this.cart.serializeToJson());
       return json;

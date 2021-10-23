@@ -1,29 +1,21 @@
 package mods.railcraft.advancements.criterion;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import com.google.gson.JsonObject;
-import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.core.Ownable;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.api.event.CartLinkEvent;
+
+import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
-import net.minecraft.advancements.ICriterionInstance;
+import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-final class CartLinkingTrigger extends BaseTrigger<CartLinkingTrigger.Instance> {
+public class CartLinkingTrigger extends AbstractCriterionTrigger<CartLinkingTrigger.Instance> {
 
-  static final ResourceLocation ID = RailcraftConstantsAPI.locationOf("cart_linking");
-
-  CartLinkingTrigger() {
-    MinecraftForge.EVENT_BUS.register(this);
-  }
+  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID + ":cart_linking");
 
   @Override
   public ResourceLocation getId() {
@@ -31,59 +23,43 @@ final class CartLinkingTrigger extends BaseTrigger<CartLinkingTrigger.Instance> 
   }
 
   @Override
-  public Instance createInstance(JsonObject json, ConditionArrayParser parser) {
+  public CartLinkingTrigger.Instance createInstance(JsonObject json,
+      EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
     CartPredicate owned =
         JsonTools.whenPresent(json, "owned", CartPredicate::deserialize, CartPredicate.ANY);
     CartPredicate other =
         JsonTools.whenPresent(json, "other", CartPredicate::deserialize, CartPredicate.ANY);
-    return new Instance(owned, other);
+    return new CartLinkingTrigger.Instance(entityPredicate, owned, other);
   }
 
-  @SubscribeEvent
-  public void onCartLink(CartLinkEvent.Link event) {
-    this.processCart(event.getCartOne(), event.getCartTwo());
-    this.processCart(event.getCartTwo(), event.getCartOne());
+  /**
+   * Invoked when the user links a cart.
+   */
+  public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity owned,
+      AbstractMinecartEntity other) {
+    this.trigger(playerEntity, (CartLinkingTrigger.Instance criterionInstance) -> {
+      return criterionInstance.matches(playerEntity, owned, other);
+    });
   }
 
-  private void processCart(AbstractMinecartEntity cart, AbstractMinecartEntity linkedCart) {
-    if (!(cart instanceof Ownable)) {
-      return;
-    }
+  public static class Instance extends CriterionInstance {
 
-    ServerPlayerEntity owner = ((Ownable) cart).getOwner()
-        .map(GameProfile::getId)
-        .map(cart.level::getPlayerByUUID)
-        .filter(ServerPlayerEntity.class::isInstance)
-        .map(ServerPlayerEntity.class::cast)
-        .orElse(null);
-    if (owner == null) {
-      return;
-    }
+    private final CartPredicate owned;
+    private final CartPredicate other;
 
-    Collection<Listener<Instance>> done = new ArrayList<>();
-    for (Listener<Instance> listener : this.manager.get(owner.getAdvancements())) {
-      Instance instance = listener.getTriggerInstance();
-      if (instance.test(owner, cart, linkedCart)) {
-        done.add(listener);
-      }
-    }
-
-    for (Listener<Instance> listener : done) {
-      listener.run(owner.getAdvancements());
-    }
-  }
-
-  static final class Instance implements ICriterionInstance {
-
-    final CartPredicate owned;
-    final CartPredicate other;
-
-    Instance(CartPredicate owned, CartPredicate other) {
+    Instance(EntityPredicate.AndPredicate entityPredicate,
+        CartPredicate owned, CartPredicate other) {
+      super(CartLinkingTrigger.ID, entityPredicate);
       this.owned = owned;
       this.other = other;
     }
 
-    boolean test(ServerPlayerEntity player, AbstractMinecartEntity owned,
+    public static CartLinkingTrigger.Instance hasLinked() {
+      return new CartLinkingTrigger.Instance(EntityPredicate.AndPredicate.ANY,
+          CartPredicate.ANY, CartPredicate.ANY);
+    }
+
+    public boolean matches(ServerPlayerEntity player, AbstractMinecartEntity owned,
         AbstractMinecartEntity other) {
       return this.owned.test(player, owned) && this.other.test(player, other);
     }
@@ -101,4 +77,5 @@ final class CartLinkingTrigger extends BaseTrigger<CartLinkingTrigger.Instance> 
       return json;
     }
   }
+
 }

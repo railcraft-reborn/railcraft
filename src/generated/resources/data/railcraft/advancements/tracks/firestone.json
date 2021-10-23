@@ -1,0 +1,35 @@
+{
+  "parent": "railcraft:tracks/root",
+  "display": {
+    "icon": {
+      "item": "railcraft:raw_firestone"
+    },
+    "title": {
+      "translate": "advancements.railcraft.tracks.firestone.name"
+    },
+    "description": {
+      "translate": "advancements.railcraft.tracks.firestone.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_raw_firestone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "railcraft:raw_firestone"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_firestone"
+    ]
+  ]
+}
