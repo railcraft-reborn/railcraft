@@ -2,6 +2,8 @@ package mods.railcraft.advancements.criterion;
 
 import com.google.gson.JsonObject;
 
+import javax.annotation.Nullable;
+
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.JsonTools;
@@ -26,8 +28,12 @@ public class SetSeasonTrigger extends AbstractCriterionTrigger<SetSeasonTrigger.
   @Override
   public Instance createInstance(JsonObject json,
       EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
+
+    @Nullable
     Season season = JsonTools.whenPresent(json, "season",
-        (element) -> Season.getByName(element.get("value").getAsString()).orElse(Season.NONE), Season.NONE);
+        // || this element down here returns a json **object**, not an element, so you cannot
+        // \/ use getAsString
+        (element) -> Season.getByName(element.get("value").getAsString()).orElse(null), null);
     CartPredicate cartPredicate =
         JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
     return new SetSeasonTrigger.Instance(entityPredicate, season, cartPredicate);
@@ -38,17 +44,19 @@ public class SetSeasonTrigger extends AbstractCriterionTrigger<SetSeasonTrigger.
    */
   public void trigger(ServerPlayerEntity playerEntity, AbstractMinecartEntity cart,
       Season target) {
-    this.trigger(playerEntity, (SetSeasonTrigger.Instance criterionInstance) -> {
-      return criterionInstance.matches(playerEntity, cart, target);
-    });
+    this.trigger(playerEntity, (SetSeasonTrigger.Instance criterionInstance) ->
+        criterionInstance.matches(playerEntity, cart, target)
+    );
   }
 
   public static class Instance extends CriterionInstance {
 
+    @Nullable
     private final Season season;
     private final CartPredicate cartPredicate;
 
-    Instance(EntityPredicate.AndPredicate entityPredicate, Season season, CartPredicate predicate) {
+    Instance(EntityPredicate.AndPredicate entityPredicate, @Nullable Season season,
+        CartPredicate predicate) {
       super(SetSeasonTrigger.ID, entityPredicate);
       this.season = season;
       this.cartPredicate = predicate;
@@ -56,11 +64,12 @@ public class SetSeasonTrigger extends AbstractCriterionTrigger<SetSeasonTrigger.
 
     public static SetSeasonTrigger.Instance onSeasonSet() {
       return new SetSeasonTrigger.Instance(EntityPredicate.AndPredicate.ANY,
-          Season.ANY, CartPredicate.ANY);
+          null, CartPredicate.ANY);
     }
 
     public boolean matches(ServerPlayerEntity player, AbstractMinecartEntity cart, Season target) {
-      return this.season.equals(target) && this.cartPredicate.test(player, cart);
+      return (this.season != null ? this.season.equals(target) : true)
+          && this.cartPredicate.test(player, cart);
     }
 
     @Override
@@ -71,9 +80,11 @@ public class SetSeasonTrigger extends AbstractCriterionTrigger<SetSeasonTrigger.
     @Override
     public JsonObject serializeToJson(ConditionArraySerializer serializer) {
       JsonObject json = new JsonObject();
-      JsonObject season = new JsonObject();
-      season.addProperty("value", this.season.getSerializedName());
-      json.add("season", season);
+      if (this.season != null) {
+        JsonObject season = new JsonObject();
+        season.addProperty("value", this.season.getSerializedName());
+        json.add("season", season);
+      }
       json.add("cart", this.cartPredicate.serializeToJson());
       return json;
     }

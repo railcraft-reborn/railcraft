@@ -20,9 +20,6 @@
     "on_season_set": {
       "trigger": "railcraft:set_season",
       "conditions": {
-        "season": {
-          "value": "any"
-        },
         "cart": {}
       }
     }
