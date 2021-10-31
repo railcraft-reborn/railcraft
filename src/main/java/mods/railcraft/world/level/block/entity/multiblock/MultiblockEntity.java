@@ -1,12 +1,16 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
+import com.google.common.collect.Lists;
+
 import java.util.Collection;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
 import mods.railcraft.world.level.block.entity.RailcraftTickableBlockEntity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
@@ -17,8 +21,8 @@ import net.minecraft.util.math.BlockPos;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
-public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTickableBlockEntity {
+public abstract class MultiblockEntity<T extends MultiblockEntity<T>>
+    extends RailcraftTickableBlockEntity implements INamedContainerProvider {
 
   private static final Logger logger =
       LogManager.getLogger("Railcraft/MultiblockEntity");
@@ -28,9 +32,11 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
   @Nullable
   private BlockPos normal;
   private T entityCache;
+  private final MultiblockPattern pattern;
 
-  public MultiblockEntity(TileEntityType<?> tileEntityType) {
+  public MultiblockEntity(TileEntityType<?> tileEntityType, MultiblockPattern pattern) {
     super(tileEntityType);
+    this.pattern = pattern;
   }
 
   /**
@@ -54,19 +60,13 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
 
     // rotate 90 degrees, facing AWAY from the user
     BlockPos normal = new BlockPos(facingDir.getClockWise().getClockWise().getNormal());
-    logger.info("TryToMakeParent - N: " + normal.toShortString());
+    logger.debug("TryToMakeParent - Normal: " + normal.toShortString());
     if (!this.isMultiblockPatternValid(normal)) {
       logger.info("TryToMakeParent - Fail, pattern invalid.");
       return false;
     }
 
-    Collection<T> tileEntities = this.getPatternEntities(normal);
-    if (tileEntities == null) {
-      logger.info("TryToMakeParent - Fail, getPatternEntities returned null.");
-      return false;
-    }
-
-    for (T tileEntity : tileEntities) {
+    for (T tileEntity : this.getPatternEntities(normal)) {
       tileEntity.setParent(this.worldPosition);
     }
     this.setParent(BlockPos.ZERO);
@@ -77,35 +77,34 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
   }
 
   /**
-   * Handles the pattern detection. Required.
+   * Handles the pattern detection.
    * @return true if pattern detection is ok, false if not.
    */
   public boolean isMultiblockPatternValid(BlockPos normal) {
-    // SCAN BY NORMAL.
-    return false;
+    return this.pattern.verifyPattern(this.getBlockPos(), normal, this.getLevel());
   }
 
   /**
-   * Gathers all of the block's tileentities. Does not ignore checks.
+   * Gathers all of the block's tileentities. Required.
    * @return List of TileEntity we gathered
    */
-  @Nullable
+  @SuppressWarnings("unchecked")
   public Collection<T> getPatternEntities(BlockPos normal) {
-    return this.getPatternEntities(normal, false);
-  }
-
-  /**
-   * Gathers all of the block's tileentities. Required.d
-   * @return List of TileEntity we gathered
-   */
-  @Nullable
-  public Collection<T> getPatternEntities(BlockPos normal, boolean ignoreChecks) {
-    return null;
+    Collection<T> teCollection = Lists.newArrayList();
+    for (BlockPos pos : this.pattern.getPatternPos(this.getBlockPos(), normal)) {
+      @Nullable
+      TileEntity te = this.getLevel().getBlockEntity(pos);
+      if (te == null) {
+        continue; // might be air. multiblocks have air sometimes.
+      }
+      teCollection.add((T)te);
+    }
+    return teCollection;
   }
 
   /**
    * Sets this tilentity's parent, delinking first.
-   * @param parentPos - The position of the parent. NOT RELATIVE
+   * @param parentPos - The position of the parent in the world.
    */
   public void setParent(BlockPos parentPos) {
     logger.info(
@@ -129,6 +128,16 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
   }
 
   /**
+   * Revalidate the cached parent TE.
+   */
+  private T stateWhileRevalidate(Supplier<T> getValidEntity) {
+    if (this.entityCache == null || this.entityCache.isRemoved()) {
+      this.entityCache = getValidEntity.get();
+    }
+    return this.entityCache;
+  }
+
+  /**
    * Gets the parent of this multiblock, or null if not. Does delinking and cacheing.
    */
   @SuppressWarnings("unchecked")
@@ -144,27 +153,22 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
     }
     // us
     if (this.isParent()) {
-      if (entityCache == null || entityCache.isRemoved()) {
-        entityCache = (T) this;
-      }
-      return (T) entityCache;
+      return this.stateWhileRevalidate(() -> (T) this);
     }
     // not us
-    if (entityCache == null || entityCache.isRemoved()) {
-      // it's totaly safe :) - speaking of!
-      // TODO: implement chunk safety
-      @Nullable TileEntity doesItExist = this.getLevel().getBlockEntity(parentPos);
+    return this.stateWhileRevalidate(() -> {
+      @Nullable
+      TileEntity doesItExist = this.getLevel().getBlockEntity(parentPos);
 
-      if (doesItExist == null || !(doesItExist instanceof MultiblockEntity<?>)) {
+      if (doesItExist == null || !((doesItExist.getTileEntity()) instanceof MultiblockEntity<?>)) {
         logger.info(
-            "getParent - Parent does not exist OR not the same type. Type or Null:"
+            "getParent - Parent does not exist OR not the same type. Type or Null: "
             + ((doesItExist == null) ? "null" : doesItExist.toString()));
         this.delink();
         return null;
       }
-      entityCache = (T) doesItExist;
-    }
-    return entityCache;
+      return (T) doesItExist.getTileEntity();
+    });
   }
 
   /**
@@ -197,7 +201,7 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
         + "Us: (" + this.worldPosition.toShortString() + ")");
     if (this.getParent() == null) {
       this.delink();
-      logger.info("getParent - Parent didnt exist anymore.");
+      logger.info("verifyLink - Parent didnt exist anymore.");
       return false;
     }
     // we do not save normals if we arent the parent.
@@ -206,14 +210,9 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
     }
 
     if (this.getParent() == this && !this.isMultiblockPatternValid(this.normal)) {
-      logger.info("getParent - Parent is valid (it is us), however pattern broke.");
+      logger.info("verifyLink - Parent is valid (it is us), however pattern broke.");
 
-      Collection<T> tileEntities = this.getPatternEntities(this.normal);
-      if (tileEntities == null) {
-        return false;
-      }
-
-      for (T tileEntity : tileEntities) {
+      for (T tileEntity : this.getPatternEntities(this.normal)) {
         tileEntity.delink();
       }
       return false;
@@ -241,17 +240,13 @@ public class MultiblockEntity<T extends MultiblockEntity<T>> extends RailcraftTi
     logger.warn("Serverside delink.");
 
     @Nullable
-    T theParent = this.getParent();
+    MultiblockEntity<T> theParent = this.getParent();
     if (theParent == null) {
       logger.warn("Multiblock has no parent, apparently.");
       return;
     }
-    Collection<T> tileEntities = theParent.getPatternEntities(theParent.getNormal(), true);
-    if (tileEntities == null) {
-      return;
-    }
 
-    for (T tileEntity : tileEntities) {
+    for (T tileEntity : theParent.getPatternEntities(theParent.getNormal())) {
       tileEntity.delink();
     }
     super.setRemoved(); // intentional, this MUST RUN LAST.

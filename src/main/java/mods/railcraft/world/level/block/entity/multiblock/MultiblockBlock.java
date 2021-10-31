@@ -1,34 +1,33 @@
-package mods.railcraft.world.level.block;
+package mods.railcraft.world.level.block.entity.multiblock;
 
 import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
-import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class CokeOvenBricksBlock extends MultiblockBlock {
-  public static final BooleanProperty LIT = BlockStateProperties.LIT;
+public abstract class MultiblockBlock extends Block {
+  public static final BooleanProperty PARENT = BooleanProperty.create("parent");
 
-  public CokeOvenBricksBlock(Properties properties) {
+  /**
+   * Create a new multiblock TE.
+   */
+  public MultiblockBlock(Properties properties) {
     super(properties);
+    this.registerDefaultState(this.addDefaultBlockState(this.stateDefinition.any()));
   }
 
-  @Override
   protected BlockState addDefaultBlockState(BlockState defaultBlockState) {
-    defaultBlockState = super.addDefaultBlockState(defaultBlockState);
-    defaultBlockState.setValue(LIT, Boolean.valueOf(false));
+    defaultBlockState.setValue(PARENT, Boolean.valueOf(false));
     return defaultBlockState;
   }
 
@@ -36,12 +35,7 @@ public class CokeOvenBricksBlock extends MultiblockBlock {
   protected void createBlockStateDefinition(
         StateContainer.Builder<Block, BlockState> stateContainer) {
     super.createBlockStateDefinition(stateContainer);
-    stateContainer.add(LIT);
-  }
-
-  @Override
-  public TileEntity createTileEntity(BlockState blockState, IBlockReader level) {
-    return new CokeOvenBlockEntity();
+    stateContainer.add(PARENT);
   }
 
   @Override
@@ -53,19 +47,24 @@ public class CokeOvenBricksBlock extends MultiblockBlock {
   public ActionResultType use(BlockState blockState, World level,
       BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
     TileEntity blockEntity = level.getBlockEntity(pos);
-    if (level.isClientSide()) {
-      return ActionResultType.sidedSuccess(level.isClientSide());
-    }
 
-    if (!(blockEntity instanceof CokeOvenBlockEntity)) {
+    if (!(blockEntity instanceof MultiblockEntity<?>)) {
       return ActionResultType.PASS;
     }
-    CokeOvenBlockEntity recast = (CokeOvenBlockEntity) blockEntity;
+
+    if (level.isClientSide()) {
+      return ActionResultType.SUCCESS;
+    }
+    // everything under here must be serverside.
+
+    MultiblockEntity<?> recast = (MultiblockEntity<?>) blockEntity;
 
     if (recast.getParent() == null) {
       boolean ttmpResult = recast.tryToMakeParent(rayTraceResult.getDirection());
 
       if (!recast.isFormed() && !ttmpResult) { // it failed and it's not assembled.
+        player.displayClientMessage(
+            new TranslationTextComponent("multiblock.assembly_failed"), true);
         return ActionResultType.PASS;
       }
 
