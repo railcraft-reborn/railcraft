@@ -23,11 +23,12 @@ public abstract class MultiblockBlock extends Block {
    */
   public MultiblockBlock(Properties properties) {
     super(properties);
+    // TODO: this MIGHT be causing stupid overhead (placing defaultstate is slow)
     this.registerDefaultState(this.addDefaultBlockState(this.stateDefinition.any()));
   }
 
   protected BlockState addDefaultBlockState(BlockState defaultBlockState) {
-    defaultBlockState.setValue(PARENT, Boolean.valueOf(false));
+    defaultBlockState.setValue(PARENT, Boolean.FALSE);
     return defaultBlockState;
   }
 
@@ -48,15 +49,15 @@ public abstract class MultiblockBlock extends Block {
       BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
     TileEntity blockEntity = level.getBlockEntity(pos);
 
+    if (level.isClientSide() || hand.equals(Hand.OFF_HAND)) {
+      return ActionResultType.SUCCESS;
+    }
+
     if (!(blockEntity instanceof MultiblockEntity<?>)) {
       return ActionResultType.PASS;
     }
 
-    if (level.isClientSide()) {
-      return ActionResultType.SUCCESS;
-    }
     // everything under here must be serverside.
-
     MultiblockEntity<?> recast = (MultiblockEntity<?>) blockEntity;
 
     if (recast.getParent() == null) {
@@ -64,7 +65,7 @@ public abstract class MultiblockBlock extends Block {
 
       if (!recast.isFormed() && !ttmpResult) { // it failed and it's not assembled.
         player.displayClientMessage(
-            new TranslationTextComponent("multiblock.assembly_failed"), true);
+            new TranslationTextComponent("screen.multiblock.assembly_failed"), true);
         return ActionResultType.PASS;
       }
 

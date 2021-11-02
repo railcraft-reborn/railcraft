@@ -23,26 +23,26 @@ public class MultiblockPattern {
   private final int sizeY;
   private final int sizeZ;
   private final int offsetX;
-  private final int offsetZ;
-  private final ArrayList<ArrayList<ArrayList<BlockPredicate>>> threeDarray;
+  private final int offsetY;
+  private final BlockPredicate[][][] pattern;
 
-  MultiblockPattern(ArrayList<ArrayList<ArrayList<BlockPredicate>>> pattern,
-      int offsetX, int offsetZ) {
+  MultiblockPattern(BlockPredicate[][][] pattern,
+      int offsetX, int offsetY) {
     this.offsetX = offsetX;
-    this.offsetZ = offsetZ;
+    this.offsetY = offsetY;
     // Z Y X
-    this.sizeZ = pattern.size();
-    this.threeDarray = pattern;
+    this.sizeZ = pattern.length;
+    this.pattern = pattern;
 
     int highestY = 0;
     int highestX = 0;
-    for (ArrayList<ArrayList<BlockPredicate>> blocksY : pattern) {
-      int yyLen = blocksY.size();
+    for (BlockPredicate[][] blocksY : pattern) {
+      int yyLen = blocksY.length;
       if (yyLen > highestY) {
         highestY = yyLen;
       }
-      for (ArrayList<BlockPredicate> blocksX : blocksY) {
-        int xxLen = blocksX.size();
+      for (BlockPredicate[] blocksX : blocksY) {
+        int xxLen = blocksX.length;
         if (xxLen > highestX) {
           highestX = xxLen;
         }
@@ -64,8 +64,8 @@ public class MultiblockPattern {
     int boxZ = this.sizeZ - 1;
     BlockPos originPos = worldPos.offset(
           (normal.getX() == 0) ? this.offsetX : 0,
-          -1, // this.offsetY
-          (normal.getZ() == 0) ? this.offsetZ : 0);
+          this.offsetY, // this.offsetY
+          (normal.getZ() == 0) ? this.offsetX : 0);
 
     return BlockPos.betweenClosed(
         originPos, originPos.offset(
@@ -91,11 +91,11 @@ public class MultiblockPattern {
           // you may ask: what the fuck? and my answer: me too, what the fuck?
           (normal.getX() == 0) ? -this.offsetX : (normal.getX() == -1) ? this.sizeX - 1 : 0,
           1,
-          (normal.getZ() == 0) ? -this.offsetZ : (normal.getZ() == -1) ? this.sizeZ - 1 : 0);
+          (normal.getZ() == 0) ? -this.offsetX : (normal.getZ() == -1) ? this.sizeZ - 1 : 0);
       BlockPredicate predicate =
-          this.threeDarray.get(denormalizedPos.getZ())
-            .get(denormalizedPos.getY())
-            .get(denormalizedPos.getX());
+          this.pattern[denormalizedPos.getZ()]
+            [denormalizedPos.getY()]
+            [denormalizedPos.getX()];
 
       if (!predicate.matches((ServerWorld)currentLevel, pos)) {
         logger.info("verifyPattern: Multiblock failed at POS: " + pos.toShortString());
@@ -128,8 +128,18 @@ public class MultiblockPattern {
       return this;
     }
 
+    /**
+     * "Build" the pattern, returning a new MultiblockPattern.
+     */
     public MultiblockPattern build() {
-      return new MultiblockPattern(this.pattern, this.offsetX, this.offsetZ);
+      // chaos! https://stackoverflow.com/questions/34744288/java-3d-arraylist-into-a-3d-array
+      BlockPredicate[][][] patternArray =
+          this.pattern.stream().map(u1 -> // Z
+              u1.stream().map(u2 -> // Y
+                  u2.toArray(new BlockPredicate[0])) // X
+                  .toArray(BlockPredicate[][]::new))
+                  .toArray(BlockPredicate[][][]::new);
+      return new MultiblockPattern(patternArray, this.offsetX, this.offsetZ);
     }
   }
 }

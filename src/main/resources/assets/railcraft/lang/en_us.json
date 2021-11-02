@@ -267,6 +267,8 @@
     "screen.item_manipulator.filters": "Filters",
     "screen.item_manipulator.buffer": "Buffer",
 
+    "screen.multiblock.assembly_failed": "Multiblock Assembly Failed",
+
     "goggles.aura.worldspike": "Worldspike",
     "goggles.aura.none": "None",
     "goggles.aura.shunting": "Shunting",
