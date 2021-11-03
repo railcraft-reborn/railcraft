@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.multiblock;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.advancements.criterion.BlockPredicate;
 import net.minecraft.util.math.BlockPos;
@@ -107,7 +107,7 @@ public class MultiblockPattern {
   }
 
   public static class Builder {
-    private final ArrayList<ArrayList<ArrayList<BlockPredicate>>> pattern =
+    private final List<List<List<BlockPredicate>>> pattern =
         // Y Z X
         Lists.newArrayList(Lists.newArrayList(Lists.newArrayList()));
     private final int offsetX;
@@ -123,7 +123,7 @@ public class MultiblockPattern {
      * @param pattern A list (like [[b,b,b],[b,b,b],[b,b,b]]), this is a flat cut
      * @return this, for chaning functions.
      */
-    public Builder pattern(ArrayList<ArrayList<BlockPredicate>> pattern) {
+    public Builder pattern(List<List<BlockPredicate>> pattern) {
       this.pattern.add(pattern);
       return this;
     }

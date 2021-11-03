@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.multiblock;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.advancements.criterion.BlockPredicate;
@@ -23,7 +23,7 @@ public class RailcraftMultiblockPatterns {
     final BlockPredicate cokeBrickPredicate = new BlockPredicate(null,
         RailcraftBlocks.COKE_OVEN_BRICKS.get(), StatePropertiesPredicate.ANY, NBTPredicate.ANY);
 
-    final ArrayList<ArrayList<BlockPredicate>> arry1 =
+    final List<List<BlockPredicate>> arry1 =
         Lists.newArrayList(
           Lists.newArrayList(
             cokeBrickPredicate, cokeBrickPredicate, cokeBrickPredicate
