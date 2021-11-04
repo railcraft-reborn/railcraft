@@ -1,7 +1,5 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
@@ -10,11 +8,8 @@ import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
-import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -22,15 +17,12 @@ import net.minecraft.inventory.IRecipeHolder;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
@@ -38,7 +30,7 @@ import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
-    implements INamedContainerProvider, IRecipeHolder, IFluidTank, IInventory {
+    implements IRecipeHolder, IFluidTank, IInventory {
 
   private static final ITextComponent MENU_TITLE =
       new TranslationTextComponent("container.coke_oven");
@@ -90,64 +82,11 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   };
 
   public CokeOvenBlockEntity() {
-    super(RailcraftBlockEntityTypes.COKE_OVEN.get());
+    this(RailcraftBlockEntityTypes.COKE_OVEN.get());
   }
 
   public CokeOvenBlockEntity(TileEntityType<?> tileEntityType) {
-    super(tileEntityType);
-  }
-
-  @Override
-  public boolean isMultiblockPatternValid(BlockPos normal) {
-    return this.getPatternEntities(normal) != null;
-  }
-
-  @Override
-  @Nullable
-  public Collection<CokeOvenBlockEntity> getPatternEntities(BlockPos normal, boolean ignoreChecks) {
-    int box = 2; // 3-1
-    BlockPos originPos = this.worldPosition.offset(0, -1, 0).offset(
-        (normal.getX() == 0) ? -1 : 0,
-        0,
-        (normal.getZ() == 0) ? -1 : 0);
-
-    int i = 0;
-    Collection<CokeOvenBlockEntity> out = new ArrayList<>(0);
-
-    for (BlockPos blockpos : BlockPos.betweenClosed(
-        // 3 - 1
-        originPos, originPos.offset(
-          (normal.getX() == 0) ? box : normal.getX() * box,
-          2,
-          (normal.getZ() == 0) ? box : normal.getZ() * box))) {
-      i++;
-
-      BlockState theState = this.getLevel().getBlockState(blockpos);
-      Block theBlock = theState.getBlock();
-
-      if ((i == 14) && !ignoreChecks) {
-        if (!theBlock.is(Blocks.AIR)) {
-          return null;
-        }
-        continue;
-      }
-      if (!ignoreChecks && (i != 14
-          && (!theBlock.is(RailcraftBlocks.COKE_OVEN_BRICKS.get())
-              || !theBlock.hasTileEntity(theState)))) {
-        return null;
-      }
-
-      TileEntity te = this.getLevel().getBlockEntity(blockpos);
-      if (!(te instanceof CokeOvenBlockEntity)) { // this is important though
-        if (ignoreChecks) { // probably air
-          continue;
-        }
-        return null;
-      }
-      out.add((CokeOvenBlockEntity) te);
-    }
-
-    return out;
+    super(tileEntityType, RailcraftMultiblockPatterns.COKE_OVEN);
   }
 
   @Override

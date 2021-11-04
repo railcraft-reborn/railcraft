@@ -1,11 +1,10 @@
 package mods.railcraft.world.level.block;
 
-import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
+import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -17,21 +16,25 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class CokeOvenBricksBlock extends Block {
+public class CokeOvenBricksBlock extends MultiblockBlock {
   public static final BooleanProperty LIT = BlockStateProperties.LIT;
-  public static final BooleanProperty PARENT = BooleanProperty.create("parent");
 
   public CokeOvenBricksBlock(Properties properties) {
     super(properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(LIT, Boolean.valueOf(false))
-        .setValue(PARENT, Boolean.valueOf(false)));
+  }
+
+  @Override
+  protected BlockState addDefaultBlockState(BlockState defaultBlockState) {
+    defaultBlockState = super.addDefaultBlockState(defaultBlockState);
+    defaultBlockState.setValue(LIT, Boolean.FALSE);
+    return defaultBlockState;
   }
 
   @Override
   protected void createBlockStateDefinition(
         StateContainer.Builder<Block, BlockState> stateContainer) {
-    stateContainer.add(LIT, PARENT);
+    super.createBlockStateDefinition(stateContainer);
+    stateContainer.add(LIT);
   }
 
   @Override
@@ -40,42 +43,16 @@ public class CokeOvenBricksBlock extends Block {
   }
 
   @Override
-  public boolean hasTileEntity(BlockState blockState) {
-    return true;
-  }
-
-  @Override
   public ActionResultType use(BlockState blockState, World level,
       BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
-    TileEntity blockEntity = level.getBlockEntity(pos);
-    if (!(blockEntity instanceof CokeOvenBlockEntity)) {
-      return ActionResultType.PASS;
-    }
-    CokeOvenBlockEntity recast = (CokeOvenBlockEntity) blockEntity;
-
-    boolean ttmpResult = recast.tryToMakeParent(rayTraceResult.getDirection());
-
-    if (ttmpResult) {
-      // it returned true, therefore it should trigger the advancement.
-      // currently it is hacky as we do not ref the user during construction. Alternatively,
-      // we can make the crowbar the building tool like in immersive engi
-      RailcraftCriteriaTriggers.MULTIBLOCK_FORM.trigger((ServerPlayerEntity)player, recast);
+    if (level.isClientSide()) {
+      return ActionResultType.sidedSuccess(level.isClientSide());
     }
 
-    if (!recast.isFormed() && !ttmpResult) {
+    if (!(level.getBlockEntity(pos) instanceof CokeOvenBlockEntity)) {
       return ActionResultType.PASS;
     }
 
-    recast = recast.getParent();
-    if (recast == null) {
-      return ActionResultType.PASS;
-    }
-
-    player.openMenu(recast);
-    // player.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
-    // TODO: interaction stats
-
-    return ActionResultType.sidedSuccess(level.isClientSide());
+    return super.use(blockState, level, pos, player, hand, rayTraceResult);
   }
-
 }
