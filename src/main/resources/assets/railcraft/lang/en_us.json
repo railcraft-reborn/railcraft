@@ -277,6 +277,8 @@
     "screen.tunnel_bore.ballast": "Ballast",
     "screen.tunnel_bore.track": "Track",
 
+    "screen.multiblock.assembly_failed": "Multiblock Assembly Failed",
+
     "goggles.aura.worldspike": "Worldspike",
     "goggles.aura.none": "None",
     "goggles.aura.shunting": "Shunting",
