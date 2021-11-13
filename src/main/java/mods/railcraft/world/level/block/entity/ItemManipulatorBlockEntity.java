@@ -260,7 +260,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-    return new ItemManipulatorMenu(this, id, inventory);
+    return new ItemManipulatorMenu(id, inventory, this);
   }
 
   @Override

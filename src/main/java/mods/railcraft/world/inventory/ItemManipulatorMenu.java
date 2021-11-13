@@ -1,16 +1,13 @@
 package mods.railcraft.world.inventory;
 
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.ItemManipulatorBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
 
 public class ItemManipulatorMenu extends ManipulatorMenu<ItemManipulatorBlockEntity> {
 
-  public ItemManipulatorMenu(ItemManipulatorBlockEntity manipulator,
-      int id, PlayerInventory inventory) {
-    super(manipulator, RailcraftMenuTypes.ITEM_MANIPULATOR.get(), id, inventory);
+  public ItemManipulatorMenu(int id, PlayerInventory inventory,
+      ItemManipulatorBlockEntity manipulator) {
+    super(RailcraftMenuTypes.ITEM_MANIPULATOR.get(), id, inventory, manipulator);
   }
 
   @Override
@@ -27,15 +24,5 @@ public class ItemManipulatorMenu extends ManipulatorMenu<ItemManipulatorBlockEnt
         this.addSlot(manipulator.getBufferSlot(k + i * 3, 116 + k * 18, 26 + i * 18));
       }
     }
-  }
-
-  public static ItemManipulatorMenu create(int id, PlayerInventory inventory, PacketBuffer data) {
-    BlockPos blockPos = data.readBlockPos();
-    ItemManipulatorBlockEntity manipulator = LevelUtil
-        .getBlockEntity(inventory.player.level, blockPos,
-            ItemManipulatorBlockEntity.class)
-        .orElseThrow(() -> new IllegalStateException(
-            "No item manipulator found at [" + blockPos.toString() + "]"));
-    return new ItemManipulatorMenu(manipulator, id, inventory);
   }
 }

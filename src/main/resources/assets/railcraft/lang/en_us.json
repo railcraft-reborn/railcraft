@@ -13,6 +13,7 @@
     "entity.railcraft.creative_locomotive": "Creative Locomotive",
     "entity.railcraft.steam_locomotive":"Steam Locomotive",
     "entity.railcraft.electric_locomotive":"Electric Locomotive",
+    "entity.railcraft.tunnel_bore": "Tunnel Bore",
 
     "__DESC.blocks": "======= Blocks =======",
 
@@ -117,6 +118,10 @@
 
     "__DESC.items": "======= Items =======",
 
+    "item.railcraft.iron_tunnel_bore_head": "Iron Tunnel Bore Head",
+    "item.railcraft.bronze_tunnel_bore_head": "Bronze Tunnel Bore Head",
+    "item.railcraft.steel_tunnel_bore_head": "Steel Tunnel Bore Head",
+    "item.railcraft.diamond_tunnel_bore_head": "Diamond Tunnel Bore Head",
     "item.railcraft.tank_minecart": "Minecart with Tank",
     "item.railcraft.cracked_firestone": "Cracked Firestone",
     "item.railcraft.raw_firestone": "Raw Firestone",
@@ -266,6 +271,11 @@
     "screen.manipulator.cart_filters": "Carts",
     "screen.item_manipulator.filters": "Filters",
     "screen.item_manipulator.buffer": "Buffer",
+
+    "screen.tunnel_bore.head": "Head",
+    "screen.tunnel_bore.fuel": "Fuel",
+    "screen.tunnel_bore.ballast": "Ballast",
+    "screen.tunnel_bore.track": "Track",
 
     "goggles.aura.worldspike": "Worldspike",
     "goggles.aura.none": "None",

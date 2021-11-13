@@ -9,13 +9,11 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
-import mods.railcraft.api.carts.IBoreHead;
 import mods.railcraft.api.carts.ILinkableCart;
-import mods.railcraft.api.core.RailcraftFakePlayer;
+import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.AABBFactory;
-import mods.railcraft.util.BallastRegistry;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.HarvestUtil;
 import mods.railcraft.util.LevelUtil;
@@ -30,6 +28,7 @@ import mods.railcraft.util.inventory.filters.StackFilters;
 import mods.railcraft.util.inventory.wrappers.InventoryMapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
+import mods.railcraft.world.inventory.TunnelBoreMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
@@ -47,11 +46,13 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -74,6 +75,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkableCart {
 
@@ -221,32 +223,12 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
       return false;
     }
 
-    if (head.getItem() instanceof IBoreHead) {
-
-      /*
-       * boolean mappingExists = false;
-       *
-       * int blockHarvestLevel = HarvestPlugin.getHarvestLevel(targetState, "pickaxe"); if
-       * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >= blockHarvestLevel) return
-       * true; mappingExists = true; }
-       *
-       * blockHarvestLevel = HarvestPlugin.getHarvestLevel(targetState, "axe"); if
-       * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >= blockHarvestLevel) return
-       * true; mappingExists = true; }
-       *
-       * blockHarvestLevel = HarvestPlugin.getHarvestLevel(targetState, "shovel"); if
-       * (blockHarvestLevel > -1) { if (boreHead.getHarvestLevel() >= blockHarvestLevel) return
-       * true; mappingExists = true; }
-       *
-       * if (mappingExists) return false;
-       */
+    if (head.getItem() instanceof TunnelBoreHead) {
       Item item = head.getItem();
-      Set<ToolType> toolClasses = item.getToolTypes(head);
-      PlayerEntity fakePlayer = RailcraftFakePlayer.get(
-          (ServerWorld) this.level, this.getX(), this.getY(), this.getZ());
-
-      return toolClasses.stream().anyMatch(tool -> item.getHarvestLevel(head, tool, fakePlayer,
-          targetState) >= HarvestUtil.getHarvestLevel(targetState, tool));
+      Set<ToolType> toolTypes = item.getToolTypes(head);
+      return toolTypes.stream()
+          .anyMatch(tool -> item.getHarvestLevel(head, tool, null, targetState) >= HarvestUtil
+              .getHarvestLevel(targetState, tool));
     }
 
     return false;
@@ -680,7 +662,9 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     if (!Block.canSupportRigidBlock(this.level, targetPos)) {
       for (IExtInvSlot slot : InventoryIterator.get(invBallast)) {
         ItemStack stack = slot.getStack();
-        if (!stack.isEmpty() && BallastRegistry.isItemBallast(stack)) {
+        if (!stack.isEmpty()
+            && stack.getItem() instanceof BlockItem
+            && ((BlockItem) stack.getItem()).getBlock().is(RailcraftTags.Blocks.BALLAST)) {
           BlockPos.Mutable searchPos = targetPos.mutable();
           for (int i = 0; i < MAX_FILL_DEPTH; i++) {
             searchPos.move(Direction.DOWN);
@@ -892,8 +876,8 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     hardness *= HARDNESS_MULTIPLIER;
 
     ItemStack boreSlot = getItem(0);
-    if (!boreSlot.isEmpty() && boreSlot.getItem() instanceof IBoreHead) {
-      IBoreHead head = (IBoreHead) boreSlot.getItem();
+    if (!boreSlot.isEmpty() && boreSlot.getItem() instanceof TunnelBoreHead) {
+      TunnelBoreHead head = (TunnelBoreHead) boreSlot.getItem();
       double dig = head.getDigModifier();
       hardness /= dig;
       int e = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, boreSlot);
@@ -1076,10 +1060,11 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     entityData.set(BORE_HEAD, boreStack);
   }
 
-  public @Nullable IBoreHead getBoreHead() {
+  @Nullable
+  public TunnelBoreHead getBoreHead() {
     ItemStack boreStack = entityData.get(BORE_HEAD);
-    if (boreStack.getItem() instanceof IBoreHead) {
-      return (IBoreHead) boreStack.getItem();
+    if (boreStack.getItem() instanceof TunnelBoreHead) {
+      return (TunnelBoreHead) boreStack.getItem();
     }
     return null;
   }
@@ -1168,7 +1153,12 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   }
 
   @Override
-  protected Container createMenu(int containerProvider, PlayerInventory playerInventory) {
-    return null;
+  protected Container createMenu(int id, PlayerInventory inventory) {
+    return new TunnelBoreMenu(id, inventory, this);
+  }
+
+  @Override
+  public IPacket<?> getAddEntityPacket() {
+    return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

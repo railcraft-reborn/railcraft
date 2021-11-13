@@ -1,20 +1,17 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.inventory.filters.StackFilters;
 import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
 
 public class FluidManipulatorMenu extends ManipulatorMenu<FluidManipulatorBlockEntity> {
 
   private final FluidGaugeWidget fluidGauge;
 
-  public FluidManipulatorMenu(FluidManipulatorBlockEntity manipulator,
-      int id, PlayerInventory inventory) {
-    super(manipulator, RailcraftMenuTypes.FLUID_MANIPULATOR.get(), id, inventory);
+  public FluidManipulatorMenu(int id, PlayerInventory inventory,
+      FluidManipulatorBlockEntity manipulator) {
+    super(RailcraftMenuTypes.FLUID_MANIPULATOR.get(), id, inventory, manipulator);
     this.addWidget(this.fluidGauge =
         new FluidGaugeWidget(manipulator.getTankManager().get(0), 17, 21, 176, 0, 16, 47));
   }
@@ -29,15 +26,5 @@ public class FluidManipulatorMenu extends ManipulatorMenu<FluidManipulatorBlockE
     this.addSlot(new SlotStackFilter(StackFilters.FLUID_CONTAINER, manipulator, 0, 152, 26));
     this.addSlot(new SlotOutput(manipulator, 1, 152, 62));
     this.addSlot(new SlotOutput(manipulator, 2, 116, 62));
-  }
-
-  public static FluidManipulatorMenu create(int id, PlayerInventory inventory, PacketBuffer data) {
-    BlockPos blockPos = data.readBlockPos();
-    FluidManipulatorBlockEntity manipulator = LevelUtil
-        .getBlockEntity(inventory.player.level, blockPos,
-            FluidManipulatorBlockEntity.class)
-        .orElseThrow(() -> new IllegalStateException(
-            "No fluid manipulator found at [" + blockPos.toString() + "]"));
-    return new FluidManipulatorMenu(manipulator, id, inventory);
   }
 }

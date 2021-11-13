@@ -8,7 +8,8 @@ import net.minecraft.util.LazyValue;
 
 public enum RailcraftItemTier implements IItemTier {
 
-  STEEL(2, 500, 7, 2.5F, 9, () -> Ingredient.of(RailcraftTags.Items.STEEL_INGOT));
+  STEEL(2, 500, 7, 2.5F, 9, () -> Ingredient.of(RailcraftTags.Items.STEEL_INGOT)),
+  BRONZE(2, 500, 7, 2.5F, 13, () -> Ingredient.of(RailcraftTags.Items.BRONZE_INGOT));
 
   private final int level;
   private final int uses;

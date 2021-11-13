@@ -150,7 +150,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-    return new FluidManipulatorMenu(this, id, inventory);
+    return new FluidManipulatorMenu(id, inventory, this);
   }
 
   @Override

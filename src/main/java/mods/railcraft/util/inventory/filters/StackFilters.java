@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.BallastRegistry;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.inventory.IInventoryComposite;
 import mods.railcraft.util.inventory.IInventoryManipulator;
@@ -56,7 +55,8 @@ public enum StackFilters implements Predicate<ItemStack> {
   BALLAST {
     @Override
     protected boolean testType(ItemStack stack) {
-      return BallastRegistry.isItemBallast(stack);
+      return stack.getItem() instanceof BlockItem
+          && ((BlockItem) stack.getItem()).getBlock().is(RailcraftTags.Blocks.BALLAST);
     }
   },
   // EMPTY_BUCKET {

@@ -15,6 +15,7 @@ import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -32,10 +33,8 @@ public class TankMinecartRenderer extends ContentModelMinecartRenderer<TankMinec
   private static final LowSidesMinecartModel<TankMinecartEntity> SNOW_MODEL =
       new LowSidesMinecartModel<>(0.125F);
   private static final SimpleCubeModel TANK_MODEL =
-      Util.make(new SimpleCubeModel(), model -> {
-        model.setTexture(new ResourceLocation(Railcraft.ID, "textures/entity/minecart/tank.png"));
-        model.doBackFaceCulling(false);
-      });
+      Util.make(new SimpleCubeModel(RenderType::entityTranslucentCull), model -> model.setTexture(
+          new ResourceLocation(Railcraft.ID, "textures/entity/minecart/tank.png")));
 
   public TankMinecartRenderer(EntityRendererManager renderManager) {
     super(renderManager);

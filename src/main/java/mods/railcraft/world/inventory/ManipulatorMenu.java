@@ -11,18 +11,18 @@ public class ManipulatorMenu<T extends ManipulatorBlockEntity> extends Railcraft
   private T manipulator;
   private final boolean hasCartFilter;
 
-  protected ManipulatorMenu(T manipulator, ContainerType<?> type, int id,
-      PlayerInventory inventory) {
-    this(manipulator, true, type, id, inventory);
+  protected ManipulatorMenu(ContainerType<?> type, int id, PlayerInventory inventory,
+      T manipulator) {
+    this(type, id, inventory, manipulator, true);
   }
 
-  protected ManipulatorMenu(T manipulator, boolean hasCartFilter,
-      ContainerType<?> type, int id, PlayerInventory inventory) {
+  protected ManipulatorMenu(ContainerType<?> type, int id, PlayerInventory inventory, T manipulator,
+      boolean hasCartFilter) {
     super(type, id, inventory);
     this.manipulator = manipulator;
     this.hasCartFilter = hasCartFilter;
 
-    addSlots(manipulator);
+    this.addSlots(manipulator);
 
     if (hasCartFilter) {
       this.addSlot(new SlotMinecartPhantom(this.manipulator.getCartFilters(), 0, 71, 26));

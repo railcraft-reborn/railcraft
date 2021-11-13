@@ -57,7 +57,7 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
 
   @Override
   public SignalAspect getPrimarySignalAspect() {
-    return this.signalController.getSignalAspect();
+    return this.blockSignal.getSignalAspect();
   }
 
   @Override

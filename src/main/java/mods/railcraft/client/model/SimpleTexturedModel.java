@@ -1,5 +1,7 @@
 package mods.railcraft.client.model;
 
+import java.util.function.Function;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -8,7 +10,10 @@ import net.minecraft.util.ResourceLocation;
 public class SimpleTexturedModel extends SimpleModel {
 
   private ResourceLocation texture;
-  private boolean backFaceCulling = true;
+
+  public SimpleTexturedModel(Function<ResourceLocation, RenderType> renderTypeFactory) {
+    super(renderTypeFactory);
+  }
 
   public SimpleTexturedModel() {
     super();
@@ -24,19 +29,5 @@ public class SimpleTexturedModel extends SimpleModel {
 
   public ResourceLocation getTexture() {
     return texture;
-  }
-
-  /**
-   * @return the backFaceCulling
-   */
-  public boolean cullBackFaces() {
-    return backFaceCulling;
-  }
-
-  /**
-   * @param backFaceCulling the backFaceCulling to set
-   */
-  public void doBackFaceCulling(boolean backFaceCulling) {
-    this.backFaceCulling = backFaceCulling;
   }
 }

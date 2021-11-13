@@ -44,6 +44,31 @@ public class RailcraftItems {
         }
       };
 
+  public static final RegistryObject<Item> IRON_TUNNEL_BORE_HEAD =
+      ITEMS.register("iron_tunnel_bore_head",
+          () -> new IronTunnelBoreHeadItem(new Item.Properties()
+              .tab(TAB)
+              .durability(1500)));
+
+  public static final RegistryObject<Item> BRONZE_TUNNEL_BORE_HEAD =
+      ITEMS.register("bronze_tunnel_bore_head",
+          () -> new BronzeTunnelBoreHeadItem(new Item.Properties()
+              .tab(TAB)
+              .durability(1200)));
+
+  public static final RegistryObject<Item> STEEL_TUNNEL_BORE_HEAD =
+      ITEMS.register("steel_tunnel_bore_head",
+          () -> new SteelTunnelBoreHeadItem(
+              new Item.Properties()
+                  .tab(TAB)
+                  .durability(3000)));
+
+  public static final RegistryObject<Item> DIAMOND_TUNNEL_BORE_HEAD =
+      ITEMS.register("diamond_tunnel_bore_head",
+          () -> new DiamondTunnelBoreHeadItem(new Item.Properties()
+              .tab(TAB)
+              .durability(6000)));
+
   public static final RegistryObject<Item> TANK_MINECART =
       ITEMS.register("tank_minecart",
           () -> new CartItem(TankMinecartEntity::new,
@@ -758,7 +783,7 @@ public class RailcraftItems {
   /* ===== CRAFTING MATERIALS ===== */
   public static final RegistryObject<Item> COAL_COKE =
       ITEMS.register("coal_coke",
-          () -> new Item(new Item.Properties().tab(TAB)){
+          () -> new Item(new Item.Properties().tab(TAB)) {
             @Override
             public int getBurnTime(ItemStack itemStack) {
               return 3200;

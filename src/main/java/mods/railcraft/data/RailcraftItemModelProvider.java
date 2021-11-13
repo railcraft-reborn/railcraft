@@ -25,6 +25,12 @@ public class RailcraftItemModelProvider {
   }
 
   public void run() {
+    this.generateFlatItem(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get(), StockModelShapes.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get(), StockModelShapes.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get(), StockModelShapes.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get(),
+        StockModelShapes.FLAT_ITEM);
+
     this.generateFlatItem(RailcraftItems.TANK_MINECART.get(), StockModelShapes.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.TRACK_LAYER.get(), StockModelShapes.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.TRACK_REMOVER.get(), StockModelShapes.FLAT_ITEM);

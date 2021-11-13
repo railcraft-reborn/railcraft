@@ -32,11 +32,11 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotiveEntity> {
     this.addSlot(new SlotRailcraft(this.getLocomotive(), 6, 80, 56)); // Fuel
 
     this.addDataSlot(new SimpleIntReferenceHolder(
-        () -> (int) Math.round(SteamLocomotiveMenu.this.getLocomotive().getBoiler().getBurnTime()),
+        () -> (int) Math.round(locomotive.getBoiler().getBurnTime()),
         this.getLocomotive().getBoiler()::setBurnTime));
 
     this.addDataSlot(new SimpleIntReferenceHolder(
-        () -> (int) Math.round(this.getLocomotive().getBoiler().getCurrentItemBurnTime()),
+        () -> (int) Math.round(locomotive.getBoiler().getCurrentItemBurnTime()),
         this.getLocomotive().getBoiler()::setCurrentItemBurnTime));
   }
 

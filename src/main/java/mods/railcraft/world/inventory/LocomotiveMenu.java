@@ -5,11 +5,9 @@ import javax.annotation.Nullable;
 import mods.railcraft.world.entity.cart.locomotive.CreativeLocomotiveEntity;
 import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
 import mods.railcraft.world.item.TicketItem;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
@@ -42,15 +40,9 @@ public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
   }
 
   public static LocomotiveMenu<CreativeLocomotiveEntity> creative(int id,
-      PlayerInventory playerInventory, PacketBuffer data) {
-    int entityId = data.readVarInt();
-    Entity entity = playerInventory.player.level.getEntity(entityId);
-    if (entity instanceof CreativeLocomotiveEntity) {
-      return new LocomotiveMenu<CreativeLocomotiveEntity>(
-          RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), id,
-          playerInventory, (CreativeLocomotiveEntity) entity);
-    }
-    throw new IllegalStateException("Cannot find locomotive with ID: " + entityId);
+      PlayerInventory inventory, CreativeLocomotiveEntity entity) {
+    return new LocomotiveMenu<>(
+        RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), id, inventory, entity);
   }
 
   public T getLocomotive() {

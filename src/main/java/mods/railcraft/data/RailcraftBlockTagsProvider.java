@@ -6,6 +6,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class RailcraftBlockTagsProvider extends BlockTagsProvider {
@@ -17,6 +18,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
   @Override
   protected void addTags() {
+    this.tag(RailcraftTags.Blocks.BALLAST)
+        .addTag(Tags.Blocks.GRAVEL);
     this.tag(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
         .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get())
         .add(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());

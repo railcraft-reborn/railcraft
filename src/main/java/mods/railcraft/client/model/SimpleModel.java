@@ -1,10 +1,12 @@
 package mods.railcraft.client.model;
 
+import java.util.function.Function;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -14,7 +16,11 @@ public class SimpleModel extends Model {
   protected final ModelRenderer renderer;
 
   public SimpleModel() {
-    super(RenderType::entityCutoutNoCull);
+    this(RenderType::entityCutoutNoCull);
+  }
+
+  public SimpleModel(Function<ResourceLocation, RenderType> renderTypeFactory) {
+    super(renderTypeFactory);
     this.renderer = new ModelRenderer(this);
   }
 

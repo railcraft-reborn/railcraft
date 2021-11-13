@@ -107,7 +107,7 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecartEntity>
     float colorIntensity = ghostTrain ? 0.5F : 1.0F;
 
     this.renderBody(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight,
-        colorIntensity, colorIntensity, colorIntensity, Seasons.isGhostTrain(cart) ? 0.8F : 1.0F);
+        colorIntensity, colorIntensity, colorIntensity, ghostTrain ? 0.8F : 1.0F);
 
     if (ghostTrain) {
       matrixStack.pushPose();
