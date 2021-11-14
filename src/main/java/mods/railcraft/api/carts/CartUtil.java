@@ -21,10 +21,10 @@ import net.minecraft.world.World;
 
 public final class CartUtil {
 
-  private static LinkageManager linkageManager = new LinkageManager() {};
-  private static ITrainTransferHelper transferHelper = new ITrainTransferHelper() {};
+  public static LinkageManager linkageManager = new LinkageManager() {};
+  public static TrainTransferHelper transferHelper = new TrainTransferHelper() {};
 
-  public static ITrainTransferHelper transferHelper() {
+  public static TrainTransferHelper transferHelper() {
     return transferHelper;
   }
 

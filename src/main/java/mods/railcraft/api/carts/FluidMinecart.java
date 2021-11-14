@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
  * <p/>
  * Created by CovertJaguar on 5/9/2015.
  *
- * @see mods.railcraft.api.carts.ITrainTransferHelper
+ * @see mods.railcraft.api.carts.TrainTransferHelper
  */
 public interface FluidMinecart {
   /**

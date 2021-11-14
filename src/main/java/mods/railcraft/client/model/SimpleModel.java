@@ -16,7 +16,7 @@ public class SimpleModel extends Model {
   protected final ModelRenderer renderer;
 
   public SimpleModel() {
-    this(RenderType::entityCutoutNoCull);
+    this(RenderType::entityCutout);
   }
 
   public SimpleModel(Function<ResourceLocation, RenderType> renderTypeFactory) {

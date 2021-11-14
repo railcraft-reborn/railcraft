@@ -1,9 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.Map;
-
 import com.google.common.collect.MapMaker;
-
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
@@ -11,7 +9,7 @@ import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.season.Season;
 import mods.railcraft.world.entity.cart.CartTools;
 import mods.railcraft.world.entity.cart.IDirectionalCart;
-import mods.railcraft.world.entity.cart.LinkageManagerImpl;
+import mods.railcraft.world.entity.cart.RailcraftLinkageManager;
 import mods.railcraft.world.entity.cart.SeasonalCart;
 import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
 import mods.railcraft.world.entity.cart.Train;
@@ -22,6 +20,7 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -38,23 +37,15 @@ public class CrowbarHandler {
           .weakValues()
           .makeMap();
 
-  public boolean handleInteract(AbstractMinecartEntity cart, PlayerEntity player, Hand hand) {
-    boolean cancel = false;
-
+  public ActionResultType handleInteract(AbstractMinecartEntity cart, PlayerEntity player,
+      Hand hand) {
     ItemStack stack = player.getItemInHand(hand);
-    if (stack.getItem() instanceof Crowbar) {
-      cancel = true;
-    }
-
-    if (!stack.isEmpty() && stack.getItem() instanceof Crowbar) {
-      player.swing(hand);
-      cancel = true;
-    } else {
-      return cancel;
+    if (stack.isEmpty() || !(stack.getItem() instanceof Crowbar)) {
+      return ActionResultType.PASS;
     }
 
     if (player.level.isClientSide()) {
-      return cancel;
+      return ActionResultType.SUCCESS;
     }
 
     Crowbar crowbar = (Crowbar) stack.getItem();
@@ -64,17 +55,18 @@ public class CrowbarHandler {
       Season season = SeasonsCrowbarItem.getSeason(stack);
       ((SeasonalCart) cart).setSeason(season);
       RailcraftCriteriaTriggers.SEASON_SET.trigger((ServerPlayerEntity) player, cart, season);
-      return true;
-    }
-    if (crowbar.canLink(player, hand, stack, cart)) {
-      linkCart(player, hand, stack, cart, crowbar);
-      return true;
-    } else if (crowbar.canBoost(player, hand, stack, cart)) {
-      boostCart(player, hand, stack, cart, crowbar);
-      return true;
+      return ActionResultType.CONSUME;
     }
 
-    return cancel;
+    if (crowbar.canLink(player, hand, stack, cart)) {
+      this.linkCart(player, hand, stack, cart, crowbar);
+      return ActionResultType.CONSUME;
+    } else if (crowbar.canBoost(player, hand, stack, cart)) {
+      this.boostCart(player, hand, stack, cart, crowbar);
+      return ActionResultType.CONSUME;
+    }
+
+    return ActionResultType.PASS;
   }
 
   private void linkCart(PlayerEntity player, Hand hand, ItemStack stack,
@@ -85,17 +77,17 @@ public class CrowbarHandler {
     if (!linkable || ((ILinkableCart) cart).isLinkable()) {
       AbstractMinecartEntity last = linkMap.remove(player);
       if (last != null && last.isAlive()) {
-        LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
+        RailcraftLinkageManager lm = RailcraftLinkageManager.INSTANCE;
         if (lm.areLinked(cart, last, false)) {
           lm.breakLink(cart, last);
           used = true;
           player.displayClientMessage(new TranslationTextComponent("crowbar.link_broken"), true);
-          LinkageManagerImpl.printDebug("Reason For Broken Link: User removed link.");
+          RailcraftLinkageManager.printDebug("Reason For Broken Link: User removed link.");
         } else {
           used = lm.createLink(last, cart);
           if (used) {
             if (!player.level.isClientSide()) {
-              RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayerEntity)player, last, cart);
+              RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayerEntity) player, last, cart);
             }
             player.displayClientMessage(new TranslationTextComponent("crowbar.link_created"), true);
           }

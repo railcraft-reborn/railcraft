@@ -33,9 +33,9 @@ import net.minecraftforge.fml.loading.FMLLoader;
  * Generally you can ignore most of this and use the functions that don't require or return Linkage
  * Ids.
  *
- * @author CovertJaguar (https://www.railcraft.info)
+ * @author CovertJaguar <https://www.railcraft.info>
  */
-public enum LinkageManagerImpl implements LinkageManager {
+public enum RailcraftLinkageManager implements LinkageManager {
 
   INSTANCE;
 
@@ -469,7 +469,7 @@ public enum LinkageManagerImpl implements LinkageManager {
       return Collections.emptyList();
     }
     return () -> new Iterator<AbstractMinecartEntity>() {
-      private final LinkageManagerImpl lm = INSTANCE;
+      private final RailcraftLinkageManager lm = INSTANCE;
       private @Nullable AbstractMinecartEntity last;
       private @Nullable AbstractMinecartEntity next;
       private AbstractMinecartEntity current = start;

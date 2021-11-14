@@ -21,7 +21,10 @@ public abstract class StandardMinecartRenderer<T extends AbstractMinecartEntity>
   public static final ResourceLocation SNOW_TEXTURE =
       new ResourceLocation(Railcraft.ID, "textures/carts/cart_snow.png");
 
-  public static final EntityModel<AbstractMinecartEntity> MINECART_MODEL =
+  public static final EntityModel<AbstractMinecartEntity> STANDARD_BODY_MODEL =
+      new RailcraftMinecartModel<>();
+
+  public static final EntityModel<AbstractMinecartEntity> STANDARD_SNOW_MODEL =
       new RailcraftMinecartModel<>(0.125F);
 
   public StandardMinecartRenderer(EntityRendererManager renderManager) {
@@ -35,7 +38,7 @@ public abstract class StandardMinecartRenderer<T extends AbstractMinecartEntity>
     matrixStack.pushPose();
     {
       matrixStack.scale(-1.0F, -1.0F, 1.0F);
-      EntityModel<T> bodyModel = this.getBodyModel(cart);
+      EntityModel<? super T> bodyModel = this.getBodyModel(cart);
       IVertexBuilder bodyVertexBuilder =
           renderTypeBuffer.getBuffer(bodyModel.renderType(this.getTextureLocation(cart)));
       bodyModel.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
@@ -43,7 +46,7 @@ public abstract class StandardMinecartRenderer<T extends AbstractMinecartEntity>
           OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
 
       if (Seasons.isPolarExpress(cart)) {
-        EntityModel<T> snowModel = this.getSnowModel(cart);
+        EntityModel<? super T> snowModel = this.getSnowModel(cart);
         IVertexBuilder snowVertexBuilder =
             renderTypeBuffer.getBuffer(snowModel.renderType(SNOW_TEXTURE));
         snowModel.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
@@ -53,22 +56,15 @@ public abstract class StandardMinecartRenderer<T extends AbstractMinecartEntity>
     }
     matrixStack.popPose();
 
-    matrixStack.pushPose();
-    {
-      float blockScale = 0.74F;
-      matrixStack.scale(blockScale, blockScale, blockScale);
-      matrixStack.translate(0.0D, 0.25D, 0.0D);
-      this.renderContents(cart, partialTicks, matrixStack,
-          renderTypeBuffer, packedLight, red, green, blue, alpha);
-    }
-    matrixStack.popPose();
+    this.renderContents(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight,
+        red, green, blue, alpha);
   }
 
   protected abstract void renderContents(T cart, float partialTicks, MatrixStack matrixStack,
       IRenderTypeBuffer renderTypeBuffer, int packedLight,
       float red, float green, float blue, float alpha);
 
-  protected abstract EntityModel<T> getBodyModel(T cart);
+  protected abstract EntityModel<? super T> getBodyModel(T cart);
 
-  protected abstract EntityModel<T> getSnowModel(T cart);
+  protected abstract EntityModel<? super T> getSnowModel(T cart);
 }

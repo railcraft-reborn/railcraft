@@ -19,6 +19,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -86,11 +87,17 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
   @Override
   public ActionResultType interact(PlayerEntity player, Hand hand) {
     if (!player.level.isClientSide()) {
-      NetworkHooks.openGui((ServerPlayerEntity) player, this,
-          data -> data.writeVarInt(this.getId()));
+      if (this.hasMenu()) {
+        NetworkHooks.openGui((ServerPlayerEntity) player, this,
+            data -> data.writeVarInt(this.getId()));
+      }
       PiglinTasks.angerNearbyPiglins(player, true);
     }
     return ActionResultType.sidedSuccess(this.level.isClientSide());
+  }
+
+  protected boolean hasMenu() {
+    return true;
   }
 
   @Override
@@ -220,5 +227,10 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
   @Override
   public boolean shouldRenderAtSqrDistance(double distance) {
     return CartTools.isInRangeToRenderDist(this, distance);
+  }
+
+  @Override
+  public IPacket<?> getAddEntityPacket() {
+    return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

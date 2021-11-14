@@ -4,7 +4,6 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
-import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.util.inventory.IExtInvSlot;
 import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.util.inventory.InventoryIterator;
@@ -28,7 +27,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -36,13 +34,11 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 public class TankMinecartEntity extends FilteredMinecartEntity
     implements ISidedInventory, FluidMinecart {
@@ -140,10 +136,6 @@ public class TankMinecartEntity extends FilteredMinecartEntity
 
   @Override
   public ActionResultType interact(PlayerEntity player, Hand hand) {
-    if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player, hand))) {
-      return ActionResultType.CONSUME;
-    }
-
     if (FluidTools.interactWithFluidHandler(player, hand, getTankManager())) {
       return ActionResultType.SUCCESS;
     }
@@ -234,10 +226,5 @@ public class TankMinecartEntity extends FilteredMinecartEntity
   @Override
   protected Container createMenu(int id, PlayerInventory playerInventory) {
     return new TankMinecartMenu(id, playerInventory, this);
-  }
-
-  @Override
-  public IPacket<?> getAddEntityPacket() {
-    return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

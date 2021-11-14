@@ -28,7 +28,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
  * @see mods.railcraft.api.carts.IItemCart
  * @see mods.railcraft.api.carts.FluidMinecart
  */
-public interface ITrainTransferHelper {
+public interface TrainTransferHelper {
   // ***************************************************************************************************************************
   // Items
   // ***************************************************************************************************************************

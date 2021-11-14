@@ -18,5 +18,6 @@ public class SimpleCubeModel extends SimpleTexturedModel {
     super(renderTypeFactory);
     this.renderer.setTexSize(64, 32);
     this.renderer.addBox(-8F, -8F, -8F, 16, 16, 16);
+    this.renderer.setPos(8.0F, 8.0F, 8.0F);
   }
 }

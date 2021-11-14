@@ -24,7 +24,6 @@ import mods.railcraft.client.ClientEffects;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
-import mods.railcraft.event.MinecartInteractEvent;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.season.Seasons;
@@ -36,11 +35,11 @@ import mods.railcraft.util.inventory.InvTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.cart.CartTools;
 import mods.railcraft.world.entity.cart.IDirectionalCart;
-import mods.railcraft.world.entity.cart.LinkageManagerImpl;
 import mods.railcraft.world.entity.cart.MaintenanceMinecartEntity;
+import mods.railcraft.world.entity.cart.RailcraftLinkageManager;
+import mods.railcraft.world.entity.cart.RailcraftLinkageManager.LinkType;
 import mods.railcraft.world.entity.cart.RailcraftMinecartEntity;
 import mods.railcraft.world.entity.cart.Train;
-import mods.railcraft.world.entity.cart.LinkageManagerImpl.LinkType;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
@@ -58,7 +57,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -72,9 +70,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 /**
  * Locmotive class, for trains that does the push/pulling.
@@ -220,8 +216,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
 
   @Override
   public ActionResultType interact(PlayerEntity player, Hand hand) {
-    if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player, hand))
-        || this.level.isClientSide()) {
+    if (this.level.isClientSide()) {
       return ActionResultType.CONSUME;
     }
 
@@ -804,7 +799,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
       return true;
     }
 
-    LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
+    RailcraftLinkageManager lm = RailcraftLinkageManager.INSTANCE;
 
     if (StreamSupport.stream(lm.linkIterator(this, LinkType.LINK_A).spliterator(), false)
         .anyMatch(linked -> !isExemptFromLinkLimits(linked))) {
@@ -820,7 +815,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
 
   @Override
   public float getLinkageDistance(AbstractMinecartEntity cart) {
-    return LinkageManagerImpl.LINKAGE_DISTANCE;
+    return RailcraftLinkageManager.LINKAGE_DISTANCE;
   }
 
   @Override
@@ -978,10 +973,5 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
     public static Optional<Lock> getByName(String name) {
       return Optional.ofNullable(byName.get(name));
     }
-  }
-
-  @Override
-  public IPacket<?> getAddEntityPacket() {
-    return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

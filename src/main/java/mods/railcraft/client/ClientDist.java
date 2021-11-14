@@ -37,6 +37,8 @@ import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.TankMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.TunnelBoreRenderer;
+import mods.railcraft.client.renderer.entity.cart.TrackLayerMinecartRenderer;
+import mods.railcraft.client.renderer.entity.cart.TrackRemoverMinecartRenderer;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
@@ -161,7 +163,10 @@ public class ClientDist implements RailcraftDist {
 
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.TANK_MINECART.get(),
         TankMinecartRenderer::new);
-
+    RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.TRACK_LAYER.get(),
+        TrackLayerMinecartRenderer::new);
+    RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.TRACK_REMOVER.get(),
+        TrackRemoverMinecartRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
         ElectricLocomotiveRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(),

@@ -1106,7 +1106,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   @Override
   public boolean canLink(AbstractMinecartEntity cart) {
     Vector3d pos = getPositionAhead(-LENGTH / 2.0);
-    float dist = LinkageManagerImpl.LINKAGE_DISTANCE * 2;
+    float dist = RailcraftLinkageManager.LINKAGE_DISTANCE * 2;
     dist = dist * dist;
     return cart.distanceToSqr(pos.x, pos.y, pos.z) < dist;
   }

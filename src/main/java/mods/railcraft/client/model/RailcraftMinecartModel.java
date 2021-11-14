@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 
 public class RailcraftMinecartModel<T extends Entity> extends SegmentedModel<T> {
 
-  public ModelRenderer[] sideModels = new ModelRenderer[7];
+  public ModelRenderer[] sideModels = new ModelRenderer[6];
 
   public RailcraftMinecartModel() {
     this(0.0F);

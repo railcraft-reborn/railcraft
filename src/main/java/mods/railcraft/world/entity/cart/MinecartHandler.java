@@ -61,7 +61,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       return;
     }
 
-    LinkageManager lm = LinkageManagerImpl.INSTANCE;
+    LinkageManager lm = RailcraftLinkageManager.INSTANCE;
     AbstractMinecartEntity link = lm.getLinkedCartA(cart);
     if (link != null && (link == other || link.hasPassenger(other))) {
       return;
@@ -79,7 +79,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     }
 
     if (other instanceof AbstractMinecartEntity) {
-      LinkageManagerImpl.INSTANCE.tryAutoLink(cart, (AbstractMinecartEntity) other);
+      RailcraftLinkageManager.INSTANCE.tryAutoLink(cart, (AbstractMinecartEntity) other);
     }
 
     this.testHighSpeedCollision(cart, other);

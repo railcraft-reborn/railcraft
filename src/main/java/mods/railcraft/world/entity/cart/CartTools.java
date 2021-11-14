@@ -124,7 +124,7 @@ public final class CartTools {
     }
     debug.add("Object: " + cartInfo);
     debug.add("UUID: " + cart.getUUID());
-    LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
+    RailcraftLinkageManager lm = RailcraftLinkageManager.INSTANCE;
     debug.add("LinkA: " + lm.getLinkA(cart));
     debug.add("LinkB: " + lm.getLinkB(cart));
     debug.add(

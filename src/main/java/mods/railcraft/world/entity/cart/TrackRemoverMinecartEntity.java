@@ -33,12 +33,14 @@ public class TrackRemoverMinecartEntity extends MaintenanceMinecartEntity {
   @Override
   protected void moveAlongTrack(BlockPos pos, BlockState state) {
     super.moveAlongTrack(pos, state);
-    if (this.level.isClientSide())
+    if (this.level.isClientSide()) {
       return;
+    }
 
     for (BlockPos track : this.tracksBehind) {
-      if (track.equals(pos))
+      if (track.equals(pos)) {
         continue;
+      }
       this.removeTrack(track);
     }
     this.tracksBehind.removeAll(this.tracksRemoved);
@@ -48,23 +50,29 @@ public class TrackRemoverMinecartEntity extends MaintenanceMinecartEntity {
   }
 
   private void addTravelledTrack(BlockPos pos) {
-    tracksBehind.add(pos);
+    this.tracksBehind.add(pos);
   }
 
   private void removeTrack(BlockPos track) {
-    if (this.getMode() == Mode.TRANSPORT)
+    if (this.getMode() == Mode.TRANSPORT) {
       return;
-    if (track.distSqr(this.blockPosition()) >= 9)
+    }
+    if (track.distSqr(this.blockPosition()) >= 9) {
       this.tracksRemoved.add(track);
-    else if (!AbstractRailBlock.isRail(this.level, track))
+    } else if (!AbstractRailBlock.isRail(this.level, track)) {
       this.tracksRemoved.add(track);
-    else if (this.level.getBlockState(track).is(RailcraftBlocks.FORCE_TRACK.get()))
+    } else if (this.level.getBlockState(track).is(RailcraftBlocks.FORCE_TRACK.get())) {
       this.tracksRemoved.add(track);
-    else if (EntitySearcher.findMinecarts().around(track).outTo(0.2f).in(this.level).isEmpty()) {
+    } else if (EntitySearcher.findMinecarts().around(track).outTo(0.2f).in(this.level).isEmpty()) {
       this.removeOldTrack(track, this.level.getBlockState(track));
       this.blink();
       this.tracksRemoved.add(track);
     }
+  }
+
+  @Override
+  protected boolean hasMenu() {
+    return false;
   }
 
   @Override

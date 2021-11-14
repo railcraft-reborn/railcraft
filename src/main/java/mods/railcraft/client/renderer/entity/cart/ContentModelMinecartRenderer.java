@@ -29,28 +29,28 @@ public abstract class ContentModelMinecartRenderer<T extends AbstractMinecartEnt
   public void renderContents(T cart, float partialTicks, MatrixStack matrixStack,
       IRenderTypeBuffer renderTypeBuffer, int packedLight,
       float red, float green, float blue, float alpha) {
+    matrixStack.pushPose();
+    {
+      int blockOffset = cart.getDisplayOffset();
+      float scale = 0.75F;
+      matrixStack.scale(scale, scale, scale);
+      matrixStack.translate(-0.5D, (blockOffset - 8.0F) / 16.0F, -0.5D);
 
-    int blockOffset = cart.getDisplayOffset();
-    BlockState blockstate = cart.getDisplayBlockState();
-    if (blockstate.getRenderShape() != BlockRenderType.INVISIBLE) {
-      matrixStack.pushPose();
-      {
-        float scale = 0.75F;
-        matrixStack.scale(scale, scale, scale);
-        matrixStack.translate(-0.5D, (blockOffset - 8.0F) / 16.0F, 0.5D);
+      BlockState blockstate = cart.getDisplayBlockState();
+      if (blockstate.getRenderShape() != BlockRenderType.INVISIBLE) {
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
         Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockstate, matrixStack,
             renderTypeBuffer, packedLight, OverlayTexture.NO_OVERLAY);
       }
-      matrixStack.popPose();
-    }
 
-    SimpleTexturedModel contents = this.getContentModel(cart);
-    IVertexBuilder vertexBuilder =
-        renderTypeBuffer.getBuffer(contents.renderType(contents.getTexture()));
-    contents.renderToBuffer(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, red,
-        green, blue, alpha);
+      SimpleTexturedModel contents = this.getContentsModel(cart);
+      IVertexBuilder vertexBuilder =
+          renderTypeBuffer.getBuffer(contents.renderType(contents.getTexture()));
+      contents.renderToBuffer(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY,
+          red, green, blue, alpha);
+    }
+    matrixStack.popPose();
   }
 
-  protected abstract SimpleTexturedModel getContentModel(T cart);
+  protected abstract SimpleTexturedModel getContentsModel(T cart);
 }

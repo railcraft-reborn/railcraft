@@ -1,8 +1,5 @@
 package mods.railcraft.world.entity.cart;
 
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.MapMaker;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,9 +17,12 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import javax.annotation.Nullable;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.MapMaker;
+import mods.railcraft.util.CompositeFluidHandler;
 import mods.railcraft.util.collections.Streams;
 import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -35,12 +35,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info)
@@ -127,8 +126,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   /**
-   * Will stream all carts in the train if on the server, or just the passed in
-   * cart if on the client.
+   * Will stream all carts in the train if on the server, or just the passed in cart if on the
+   * client.
    */
   public static Stream<AbstractMinecartEntity> streamCarts(AbstractMinecartEntity cart) {
     return get(cart).map(Train::stream).orElseGet(() -> Stream.of(cart));
@@ -144,7 +143,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return Train.get(cart).map(t -> t.size() > 1).orElse(false);
   }
 
-  public static boolean areInSameTrain(@Nullable AbstractMinecartEntity cart1, @Nullable AbstractMinecartEntity cart2) {
+  public static boolean areInSameTrain(@Nullable AbstractMinecartEntity cart1,
+      @Nullable AbstractMinecartEntity cart2) {
     if (cart1 == null || cart2 == null) {
       return false;
     }
@@ -158,7 +158,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return train1 != null && Objects.equals(train1, train2);
   }
 
-  private static Optional<Train> getLongerTrain(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2) {
+  private static Optional<Train> getLongerTrain(AbstractMinecartEntity cart1,
+      AbstractMinecartEntity cart2) {
     Optional<Train> train1 = getExisting(cart1);
     Optional<Train> train2 = getExisting(cart2);
 
@@ -215,8 +216,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     getExisting(next).filter(t -> t != this).ifPresent(Train::kill);
     this.addTrainTag(next);
 
-    AbstractMinecartEntity linkA = LinkageManagerImpl.INSTANCE.getLinkedCartA(next);
-    AbstractMinecartEntity linkB = LinkageManagerImpl.INSTANCE.getLinkedCartB(next);
+    AbstractMinecartEntity linkA = RailcraftLinkageManager.INSTANCE.getLinkedCartA(next);
+    AbstractMinecartEntity linkB = RailcraftLinkageManager.INSTANCE.getLinkedCartB(next);
 
     if (linkA != null && linkA != prev && !this.contains(linkA)) {
       this.rebuild(next, linkA);
@@ -283,7 +284,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   public Optional<LocomotiveEntity> getHeadLocomotive() {
-    return getEnds().stream().map(this::getCart).flatMap(Streams.ofType(LocomotiveEntity.class)).findFirst();
+    return getEnds().stream().map(this::getCart).flatMap(Streams.ofType(LocomotiveEntity.class))
+        .findFirst();
   }
 
   public Stream<AbstractMinecartEntity> stream() {
@@ -312,13 +314,26 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   public Optional<IItemHandlerModifiable> getItemHandler() {
-    List<IItemHandlerModifiable> cartHandlers = stream().flatMap(cart -> cart
-        .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(Stream::of).orElse(Stream.empty()))
-        .flatMap(Streams.ofType(IItemHandlerModifiable.class)).collect(Collectors.toList());
-    if (cartHandlers.isEmpty()) {
-      return Optional.empty();
-    }
-    return Optional.of(new CombinedInvWrapper(cartHandlers.toArray(new IItemHandlerModifiable[0])));
+    List<IItemHandlerModifiable> cartHandlers = stream()
+        .flatMap(cart -> cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            .map(Stream::of)
+            .orElse(Stream.empty()))
+        .flatMap(Streams.ofType(IItemHandlerModifiable.class))
+        .collect(Collectors.toList());
+    return cartHandlers.isEmpty()
+        ? Optional.empty()
+        : Optional.of(new CombinedInvWrapper(cartHandlers.toArray(new IItemHandlerModifiable[0])));
+  }
+
+  public Optional<IFluidHandler> getFluidHandler() {
+    List<IFluidHandler> cartHandlers = stream()
+        .flatMap(cart -> cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            .map(Stream::of)
+            .orElse(Stream.empty()))
+        .collect(Collectors.toList());
+    return cartHandlers.isEmpty()
+        ? Optional.empty()
+        : Optional.of(new CompositeFluidHandler(cartHandlers));
   }
 
   public int size() {
@@ -335,7 +350,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
 
   private float calculateMaxSpeed() {
     double locoBoost = Math.max(0.0, getNumRunningLocomotives() - 1.0) * 0.075;
-    return (float) (double) stream().mapToDouble(c -> Math.min(c.getMaxCartSpeedOnRail(), softMaxSpeed(c) + locoBoost))
+    return (float) (double) stream()
+        .mapToDouble(c -> Math.min(c.getMaxCartSpeedOnRail(), softMaxSpeed(c) + locoBoost))
         .min().orElse(1.2F);
   }
 
@@ -428,10 +444,12 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     }
     UUID id = tag.getUUID("id");
     State state = State.getByName(tag.getString("state")).orElse(State.NORMAL);
-    List<UUID> carts = tag.getList("carts", Constants.NBT.TAG_INT_ARRAY).stream().map(NBTUtil::loadUUID)
-        .collect(Collectors.toList());
-    Set<UUID> locks = tag.getList("locks", Constants.NBT.TAG_INT_ARRAY).stream().map(NBTUtil::loadUUID)
-        .collect(Collectors.toSet());
+    List<UUID> carts =
+        tag.getList("carts", Constants.NBT.TAG_INT_ARRAY).stream().map(NBTUtil::loadUUID)
+            .collect(Collectors.toList());
+    Set<UUID> locks =
+        tag.getList("locks", Constants.NBT.TAG_INT_ARRAY).stream().map(NBTUtil::loadUUID)
+            .collect(Collectors.toSet());
     return new Train(id, state, carts, locks);
   }
 

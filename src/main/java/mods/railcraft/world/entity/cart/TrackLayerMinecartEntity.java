@@ -82,7 +82,7 @@ public class TrackLayerMinecartEntity extends MaintenancePatternMinecartEntity {
   }
 
   private boolean isValidNewTrackPosition(BlockPos pos) {
-    return isValidReplacementBlock(pos) && Block.canSupportRigidBlock(this.level, pos);
+    return isValidReplacementBlock(pos) && Block.canSupportRigidBlock(this.level, pos.below());
   }
 
   @SuppressWarnings("deprecation")

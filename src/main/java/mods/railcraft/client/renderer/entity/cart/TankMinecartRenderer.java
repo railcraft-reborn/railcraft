@@ -147,7 +147,7 @@ public class TankMinecartRenderer extends ContentModelMinecartRenderer<TankMinec
   }
 
   @Override
-  protected SimpleTexturedModel getContentModel(TankMinecartEntity cart) {
+  protected SimpleTexturedModel getContentsModel(TankMinecartEntity cart) {
     return TANK_MODEL;
   }
 

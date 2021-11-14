@@ -60,16 +60,16 @@ public final class LinkageHandler {
    * @param cart2 AbstractMinecartEntity
    */
   protected void adjustVelocity(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2,
-      LinkageManagerImpl.LinkType linkType) {
+      RailcraftLinkageManager.LinkType linkType) {
     String timer = LINK_A_TIMER;
-    if (linkType == LinkageManagerImpl.LinkType.LINK_B)
+    if (linkType == RailcraftLinkageManager.LinkType.LINK_B)
       timer = LINK_B_TIMER;
     if (!cart1.level.dimension().equals(cart2.level.dimension())) {
       short count = cart1.getPersistentData().getShort(timer);
       count++;
       if (count > 200) {
-        LinkageManagerImpl.INSTANCE.breakLink(cart1, cart2);
-        LinkageManagerImpl.printDebug("Reason For Broken Link: Carts in different dimensions.");
+        RailcraftLinkageManager.INSTANCE.breakLink(cart1, cart2);
+        RailcraftLinkageManager.printDebug("Reason For Broken Link: Carts in different dimensions.");
       }
       cart1.getPersistentData().putShort(timer, count);
       return;
@@ -78,8 +78,8 @@ public final class LinkageHandler {
 
     double dist = cart1.distanceTo(cart2);
     if (dist > MAX_DISTANCE) {
-      LinkageManagerImpl.INSTANCE.breakLink(cart1, cart2);
-      LinkageManagerImpl.printDebug("Reason For Broken Link: Max distance exceeded.");
+      RailcraftLinkageManager.INSTANCE.breakLink(cart1, cart2);
+      RailcraftLinkageManager.printDebug("Reason For Broken Link: Max distance exceeded.");
       return;
     }
 
@@ -175,8 +175,8 @@ public final class LinkageHandler {
     if (isOnElevator(cart))
       return;
 
-    boolean linkedA = adjustLinkedCart(cart, LinkageManagerImpl.LinkType.LINK_A);
-    boolean linkedB = adjustLinkedCart(cart, LinkageManagerImpl.LinkType.LINK_B);
+    boolean linkedA = adjustLinkedCart(cart, RailcraftLinkageManager.LinkType.LINK_A);
+    boolean linkedB = adjustLinkedCart(cart, RailcraftLinkageManager.LinkType.LINK_B);
     boolean linked = linkedA || linkedB;
 
     // Centroid
@@ -216,9 +216,9 @@ public final class LinkageHandler {
 
   }
 
-  private boolean adjustLinkedCart(AbstractMinecartEntity cart, LinkageManagerImpl.LinkType linkType) {
+  private boolean adjustLinkedCart(AbstractMinecartEntity cart, RailcraftLinkageManager.LinkType linkType) {
     boolean linked = false;
-    LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
+    RailcraftLinkageManager lm = RailcraftLinkageManager.INSTANCE;
     AbstractMinecartEntity link = lm.getLinkedCart(cart, linkType);
     if (link != null) {
       // sanity check to ensure links are consistent

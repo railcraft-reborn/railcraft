@@ -91,11 +91,13 @@ public abstract class MaintenanceMinecartEntity extends RailcraftMinecartEntity 
   @Override
   public void tick() {
     super.tick();
-    if (this.level.isClientSide())
+    if (this.level.isClientSide()) {
       return;
+    }
 
-    if (isBlinking())
-      setBlink((byte) (getBlink() - 1));
+    if (this.isBlinking()) {
+      this.setBlink((byte) (this.getBlink() - 1));
+    }
   }
 
   @Override
@@ -112,17 +114,19 @@ public abstract class MaintenanceMinecartEntity extends RailcraftMinecartEntity 
   protected boolean placeNewTrack(BlockPos pos, int slotStock,
       RailShape trackShape) {
     ItemStack trackStock = getItem(slotStock);
-    if (!trackStock.isEmpty())
+    if (!trackStock.isEmpty()) {
       if (TrackUtil.placeRailAt(trackStock, (ServerWorld) this.level, pos)) {
         this.removeItem(slotStock, 1);
-        blink();
+        this.blink();
         return true;
       }
+    }
     return false;
   }
 
   protected RailShape removeOldTrack(BlockPos pos, BlockState state) {
     List<ItemStack> drops = state.getDrops(new LootContext.Builder((ServerWorld) this.level)
+        .withParameter(LootParameters.TOOL, ItemStack.EMPTY)
         .withParameter(LootParameters.ORIGIN, Vector3d.atCenterOf(pos)));
 
     for (ItemStack stack : drops) {
