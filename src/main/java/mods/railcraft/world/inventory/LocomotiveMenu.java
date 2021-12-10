@@ -2,15 +2,15 @@ package mods.railcraft.world.inventory;
 
 import java.util.Collections;
 import javax.annotation.Nullable;
-import mods.railcraft.world.entity.cart.locomotive.CreativeLocomotiveEntity;
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 
-public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
+public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
 
   public static final int DEFAULT_HEIGHT = 161;
 
@@ -39,8 +39,8 @@ public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
     this.addPlayerSlots(playerInv, guiHeight);
   }
 
-  public static LocomotiveMenu<CreativeLocomotiveEntity> creative(int id,
-      Inventory inventory, CreativeLocomotiveEntity entity) {
+  public static LocomotiveMenu<CreativeLocomotive> creative(int id,
+      Inventory inventory, CreativeLocomotive entity) {
     return new LocomotiveMenu<>(
         RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), id, inventory, entity);
   }

@@ -7,13 +7,13 @@ import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.season.Season;
-import mods.railcraft.world.entity.cart.CartTools;
-import mods.railcraft.world.entity.cart.IDirectionalCart;
-import mods.railcraft.world.entity.cart.RailcraftLinkageManager;
-import mods.railcraft.world.entity.cart.SeasonalCart;
-import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
-import mods.railcraft.world.entity.cart.Train;
-import mods.railcraft.world.entity.cart.TunnelBoreEntity;
+import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.IDirectionalCart;
+import mods.railcraft.world.entity.vehicle.RailcraftLinkageManager;
+import mods.railcraft.world.entity.vehicle.SeasonalCart;
+import mods.railcraft.world.entity.vehicle.TrackRemover;
+import mods.railcraft.world.entity.vehicle.Train;
+import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -111,12 +111,12 @@ public class CrowbarHandler {
 
     if (player.getVehicle() != null) {
       // NOOP
-    } else if (cart instanceof TunnelBoreEntity) {
+    } else if (cart instanceof TunnelBore) {
       // NOOP
     } else if (cart instanceof IDirectionalCart) {
       ((IDirectionalCart) cart).reverse();
-    } else if (cart instanceof TrackRemoverMinecartEntity) {
-      TrackRemoverMinecartEntity trackRemover = (TrackRemoverMinecartEntity) cart;
+    } else if (cart instanceof TrackRemover) {
+      TrackRemover trackRemover = (TrackRemover) cart;
       trackRemover.setMode(trackRemover.getMode().getNext());
     } else {
       int lvl = EnchantmentHelper.getItemEnchantmentLevel(RailcraftEnchantments.SMACK.get(), stack);

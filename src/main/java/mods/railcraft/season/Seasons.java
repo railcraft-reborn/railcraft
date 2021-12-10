@@ -2,7 +2,7 @@ package mods.railcraft.season;
 
 import java.util.Calendar;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.world.entity.cart.SeasonalCart;
+import mods.railcraft.world.entity.vehicle.SeasonalCart;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**

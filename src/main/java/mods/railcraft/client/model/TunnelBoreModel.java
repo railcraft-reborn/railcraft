@@ -1,6 +1,6 @@
 package mods.railcraft.client.model;
 
-import mods.railcraft.world.entity.cart.TunnelBoreEntity;
+import mods.railcraft.world.entity.vehicle.TunnelBore;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.renderer.RenderType;
 
-public class TunnelBoreModel extends HierarchicalModel<TunnelBoreEntity> {
+public class TunnelBoreModel extends HierarchicalModel<TunnelBore> {
 
   private final ModelPart root;
   private final ModelPart boreHead;
@@ -150,7 +150,7 @@ public class TunnelBoreModel extends HierarchicalModel<TunnelBoreEntity> {
   }
 
   @Override
-  public void setupAnim(TunnelBoreEntity p_225597_1_, float p_225597_2_, float p_225597_3_,
+  public void setupAnim(TunnelBore p_225597_1_, float p_225597_2_, float p_225597_3_,
       float p_225597_4_, float p_225597_5_, float p_225597_6_) {}
 
   @Override

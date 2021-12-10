@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import java.util.HashMap;
 import java.util.List;
@@ -356,7 +356,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
   }
 
   public boolean handleInteract(AbstractMinecart cart, Player player) {
-    if (!(cart instanceof TunnelBoreEntity) && player.distanceToSqr(cart) > MAX_INTERACT_DIST_SQ) {
+    if (!(cart instanceof TunnelBore) && player.distanceToSqr(cart) > MAX_INTERACT_DIST_SQ) {
       return true;
     }
     if (!cart.isAlive()) {

@@ -11,7 +11,7 @@ import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.world.entity.cart.TankMinecartEntity;
+import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -25,13 +25,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecartEntity> {
+public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart> {
 
   private static final ResourceLocation TANK_TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/entity/minecart/tank.png");
 
-  private final LowSidesMinecartModel<TankMinecartEntity> bodyModel;
-  private final LowSidesMinecartModel<TankMinecartEntity> snowModel;
+  private final LowSidesMinecartModel<TankMinecart> bodyModel;
+  private final LowSidesMinecartModel<TankMinecart> snowModel;
   private final CubeModel tankModel;
 
   public TankMinecartRenderer(EntityRendererProvider.Context context) {
@@ -45,7 +45,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecartE
   }
 
   @Override
-  protected void renderContents(TankMinecartEntity cart, float partialTicks,
+  protected void renderContents(TankMinecart cart, float partialTicks,
       PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight, float red,
       float green, float blue, float alpha) {
     VertexConsumer vertexBuilder =
@@ -60,7 +60,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecartE
     }
   }
 
-  private void renderTank(TankMinecartEntity cart, float partialTicks, PoseStack matrixStack,
+  private void renderTank(TankMinecart cart, float partialTicks, PoseStack matrixStack,
       MultiBufferSource renderTypeBuffer, int packedLight, float red,
       float green, float blue, float alpha) {
     StandardTank tank = cart.getTankManager().get(0);
@@ -116,7 +116,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecartE
     }
   }
 
-  private void renderFilterItem(TankMinecartEntity cart, float partialTicks,
+  private void renderFilterItem(TankMinecart cart, float partialTicks,
       PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight, float red,
       float green, float blue, float alpha) {
     matrixStack.pushPose();
@@ -147,12 +147,12 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecartE
   }
 
   @Override
-  protected EntityModel<TankMinecartEntity> getBodyModel(TankMinecartEntity cart) {
+  protected EntityModel<TankMinecart> getBodyModel(TankMinecart cart) {
     return this.bodyModel;
   }
 
   @Override
-  protected EntityModel<TankMinecartEntity> getSnowModel(TankMinecartEntity cart) {
+  protected EntityModel<TankMinecart> getSnowModel(TankMinecart cart) {
     return this.snowModel;
   }
 }

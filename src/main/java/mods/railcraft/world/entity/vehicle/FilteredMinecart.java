@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import mods.railcraft.api.item.PrototypedItem;
 import mods.railcraft.util.container.AdvancedContainer;
@@ -12,17 +12,17 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.level.Level;
 import net.minecraft.nbt.Tag;
 
-public abstract class FilteredMinecartEntity extends RailcraftMinecartEntity {
+public abstract class FilteredMinecart extends RailcraftMinecart {
 
   private static final EntityDataAccessor<ItemStack> FILTER =
-      SynchedEntityData.defineId(FilteredMinecartEntity.class, EntityDataSerializers.ITEM_STACK);
+      SynchedEntityData.defineId(FilteredMinecart.class, EntityDataSerializers.ITEM_STACK);
   private final AdvancedContainer invFilter = new AdvancedContainer(1).callbackContainer(this).phantom();
 
-  protected FilteredMinecartEntity(EntityType<?> type, Level level) {
+  protected FilteredMinecart(EntityType<?> type, Level level) {
     super(type, level);
   }
 
-  protected FilteredMinecartEntity(ItemStack itemStack, EntityType<?> type, double x, double y, double z,
+  protected FilteredMinecart(ItemStack itemStack, EntityType<?> type, double x, double y, double z,
       Level level) {
     super(type, x, y, z, level);
     this.setFilter(getFilterFromCartItem(itemStack));

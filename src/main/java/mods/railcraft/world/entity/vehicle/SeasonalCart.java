@@ -7,7 +7,7 @@
  license page at https://railcraft.info/wiki/info:license.
  -----------------------------------------------------------------------------*/
 
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import mods.railcraft.season.Season;
 

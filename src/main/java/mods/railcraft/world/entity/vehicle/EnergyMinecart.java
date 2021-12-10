@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import javax.annotation.Nullable;
 
@@ -17,18 +17,18 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class EnergyMinecartEntity extends RailcraftMinecartEntity {
+public class EnergyMinecart extends RailcraftMinecart {
 
   public static final int MAX_CHARGE = 100000;
   public static final int CHARGE_LIMIT = 1000;
   private final LazyOptional<IEnergyStorage> cartBattery =
       LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
 
-  protected EnergyMinecartEntity(EntityType<?> type, Level world) {
+  protected EnergyMinecart(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  protected EnergyMinecartEntity(EntityType<?> type, double x, double y, double z,
+  protected EnergyMinecart(EntityType<?> type, double x, double y, double z,
       Level world) {
     super(type, x, y, z, world);
   }

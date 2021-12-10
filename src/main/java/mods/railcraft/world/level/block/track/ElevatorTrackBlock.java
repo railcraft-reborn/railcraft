@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.track;
 import javax.annotation.Nullable;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.world.entity.cart.CartConstants;
+import mods.railcraft.world.entity.vehicle.CartConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;

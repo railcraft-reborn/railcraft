@@ -7,7 +7,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.util.JsonTools;
-import mods.railcraft.world.entity.cart.CartConstants;
+import mods.railcraft.world.entity.vehicle.CartConstants;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;

@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,22 +34,22 @@ import net.minecraftforge.network.NetworkHooks;
  *
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public abstract class RailcraftMinecartEntity extends AbstractMinecartContainer
+public abstract class RailcraftMinecart extends AbstractMinecartContainer
     implements SeasonalCart, IItemCart {
 
   private static final EntityDataAccessor<Byte> SEASON =
-      SynchedEntityData.defineId(RailcraftMinecartEntity.class, EntityDataSerializers.BYTE);
+      SynchedEntityData.defineId(RailcraftMinecart.class, EntityDataSerializers.BYTE);
 
   private final Direction[] travelDirectionHistory = new Direction[2];
   protected @Nullable Direction travelDirection;
   protected @Nullable Direction verticalTravelDirection;
   protected List<ContainerMapper> invMappers = new ArrayList<>();
 
-  protected RailcraftMinecartEntity(EntityType<?> type, Level world) {
+  protected RailcraftMinecart(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  protected RailcraftMinecartEntity(EntityType<?> type, double x, double y, double z,
+  protected RailcraftMinecart(EntityType<?> type, double x, double y, double z,
       Level world) {
     super(type, x, y, z, world);
   }

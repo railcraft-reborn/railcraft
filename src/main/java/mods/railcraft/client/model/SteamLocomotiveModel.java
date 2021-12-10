@@ -1,6 +1,6 @@
 package mods.railcraft.client.model;
 
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 
-public class SteamLocomotiveModel extends HierarchicalModel<LocomotiveEntity> {
+public class SteamLocomotiveModel extends HierarchicalModel<Locomotive> {
 
   private final ModelPart root;
 
@@ -59,7 +59,7 @@ public class SteamLocomotiveModel extends HierarchicalModel<LocomotiveEntity> {
   }
 
   @Override
-  public void setupAnim(LocomotiveEntity p_225597_1_, float p_225597_2_, float p_225597_3_,
+  public void setupAnim(Locomotive p_225597_1_, float p_225597_2_, float p_225597_3_,
       float p_225597_4_, float p_225597_5_, float p_225597_6_) {}
 
   @Override

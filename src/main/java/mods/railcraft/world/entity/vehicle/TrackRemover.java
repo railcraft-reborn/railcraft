@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,16 +16,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
-public class TrackRemoverMinecartEntity extends MaintenanceMinecartEntity {
+public class TrackRemover extends MaintenanceMinecart {
 
   private final Set<BlockPos> tracksBehind = new HashSet<>();
   private final Set<BlockPos> tracksRemoved = new HashSet<>();
 
-  public TrackRemoverMinecartEntity(EntityType<?> type, Level world) {
+  public TrackRemover(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  public TrackRemoverMinecartEntity(ItemStack itemStack, double x, double y, double z,
+  public TrackRemover(ItemStack itemStack, double x, double y, double z,
       ServerLevel world) {
     super(RailcraftEntityTypes.TRACK_REMOVER.get(), x, y, z, world);
   }

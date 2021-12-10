@@ -22,8 +22,8 @@ import mods.railcraft.client.gui.widget.button.ToggleButton;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity.Speed;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -37,13 +37,13 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   private static final int REFRESH_INTERVAL_TICKS = 20;
 
   private final String typeTag;
-  private final Map<LocomotiveEntity.Mode, Button> modeButtons =
-      new EnumMap<>(LocomotiveEntity.Mode.class);
-  private final Map<LocomotiveEntity.Speed, Button> speedButtons =
-      new EnumMap<>(LocomotiveEntity.Speed.class);
+  private final Map<Locomotive.Mode, Button> modeButtons =
+      new EnumMap<>(Locomotive.Mode.class);
+  private final Map<Locomotive.Speed, Button> speedButtons =
+      new EnumMap<>(Locomotive.Speed.class);
   private ToggleButton reverseButton;
 
-  private MultiButton<LocomotiveEntity.Lock> lockButton;
+  private MultiButton<Locomotive.Lock> lockButton;
   private Component lockButtonTooltip;
 
   private int refreshTimer;
@@ -56,7 +56,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   }
 
   private void updateLockButtonTooltip() {
-    final LocomotiveEntity.Lock lock = this.lockButton.getState();
+    final Locomotive.Lock lock = this.lockButton.getState();
     switch (lock) {
       case LOCKED:
         this.lockButtonTooltip = new TranslatableComponent("screen.locomotive.lock.locked",
@@ -133,25 +133,25 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
         mouseX, mouseY, this.font);
   }
 
-  private void setMode(LocomotiveEntity.Mode mode) {
+  private void setMode(Locomotive.Mode mode) {
     if (this.getMenu().getLocomotive().getMode() != mode) {
       this.getMenu().getLocomotive().setMode(mode);
       this.sendAttributes();
     }
   }
 
-  private void setSpeed(LocomotiveEntity.Speed speed) {
+  private void setSpeed(Locomotive.Speed speed) {
     if (this.getMenu().getLocomotive().getSpeed() != speed) {
       this.getMenu().getLocomotive().setSpeed(speed);
       this.sendAttributes();
     }
   }
 
-  private void setLock(LocomotiveEntity.Lock lock) {
+  private void setLock(Locomotive.Lock lock) {
     if (this.getMenu().getLocomotive().getLock() != lock) {
       this.getMenu().getLocomotive().setLock(lock);
       this.menu.getLocomotive().setOwner(
-          lock == LocomotiveEntity.Lock.UNLOCKED ? null
+          lock == Locomotive.Lock.UNLOCKED ? null
               : this.minecraft.getUser().getGameProfile());
       this.updateLockButtonTooltip();
       this.sendAttributes();
@@ -166,7 +166,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   protected void sendAttributes() {
     this.updateButtons();
     this.updateLockButtonTooltip();
-    LocomotiveEntity locomotive = this.getMenu().getLocomotive();
+    Locomotive locomotive = this.getMenu().getLocomotive();
     NetworkChannel.GAME.getSimpleChannel().sendToServer(
         new SetLocomotiveAttributesMessage(this.menu.getLocomotive().getId(),
             locomotive.getMode(), locomotive.getSpeed(), locomotive.getLock(),
@@ -183,7 +183,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   }
 
   private void updateButtons() {
-    LocomotiveEntity locomotive = this.getMenu().getLocomotive();
+    Locomotive locomotive = this.getMenu().getLocomotive();
     this.modeButtons
         .forEach((mode, button) -> button.active = locomotive.getMode() != mode
             && locomotive.isAllowedMode(mode));

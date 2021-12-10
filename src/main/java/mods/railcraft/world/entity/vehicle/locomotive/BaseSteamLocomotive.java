@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart.locomotive;
+package mods.railcraft.world.entity.vehicle.locomotive;
 
 import javax.annotation.Nullable;
 
@@ -42,7 +42,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
  * The steam locomotive.
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
+public abstract class BaseSteamLocomotive extends Locomotive
     implements FluidMinecart, IBoilerContainer {
 
   public static final int SLOT_WATER_INPUT = 0;
@@ -50,9 +50,9 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   public static final int SLOT_WATER_OUTPUT = 2;
 
   private static final EntityDataAccessor<Boolean> SMOKE =
-      SynchedEntityData.defineId(AbstractSteamLocomotiveEntity.class, EntityDataSerializers.BOOLEAN);
+      SynchedEntityData.defineId(BaseSteamLocomotive.class, EntityDataSerializers.BOOLEAN);
   private static final EntityDataAccessor<Boolean> STEAM =
-      SynchedEntityData.defineId(AbstractSteamLocomotiveEntity.class, EntityDataSerializers.BOOLEAN);
+      SynchedEntityData.defineId(BaseSteamLocomotive.class, EntityDataSerializers.BOOLEAN);
 
   private static final byte TICKS_PER_BOILER_CYCLE = 2;
   private static final int FUEL_PER_REQUEST = 3;
@@ -88,11 +88,11 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
-  protected AbstractSteamLocomotiveEntity(EntityType<?> type, Level world) {
+  protected BaseSteamLocomotive(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  protected AbstractSteamLocomotiveEntity(ItemStack itemStack, EntityType<?> type, double x,
+  protected BaseSteamLocomotive(ItemStack itemStack, EntityType<?> type, double x,
       double y, double z, ServerLevel world) {
     super(itemStack, type, x, y, z, world);
   }

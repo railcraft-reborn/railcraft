@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import mods.railcraft.network.play.LinkedCartsMessage;
-import mods.railcraft.world.entity.cart.CartTools;
+import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.client.Minecraft;

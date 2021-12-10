@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -74,7 +74,7 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
 
-public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkableCart {
+public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
 
   public static final float SPEED = 0.03F;
   public static final float LENGTH = 6.2f;
@@ -143,13 +143,13 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   public static final Set<Tag<Block>> replaceableTags = Sets.newHashSet(BlockTags.FLOWERS);
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =
-      SynchedEntityData.defineId(TunnelBoreEntity.class, EntityDataSerializers.BOOLEAN);
+      SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.BOOLEAN);
   private static final EntityDataAccessor<Boolean> MOVING =
-      SynchedEntityData.defineId(TunnelBoreEntity.class, EntityDataSerializers.BOOLEAN);
+      SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.BOOLEAN);
   private static final EntityDataAccessor<Direction> FACING =
-      SynchedEntityData.defineId(TunnelBoreEntity.class, EntityDataSerializers.DIRECTION);
+      SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.DIRECTION);
   private static final EntityDataAccessor<ItemStack> BORE_HEAD =
-      SynchedEntityData.defineId(TunnelBoreEntity.class, EntityDataSerializers.ITEM_STACK);
+      SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.ITEM_STACK);
 
   public final ContainerMapper invFuel =
       ContainerMapper.make(this, 1, 6).withFilters(StackFilters.FUEL);
@@ -169,17 +169,17 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   private int burnTime;
   private int fuel;
   private final boolean hasInit;
-  private final TunnelBorePartEntity[] partArray;
+  private final TunnelBorePart[] partArray;
 
-  public TunnelBoreEntity(EntityType<?> type, Level world) {
+  public TunnelBore(EntityType<?> type, Level world) {
     this(world, 0, 0, 0, Direction.SOUTH);
   }
 
-  public TunnelBoreEntity(Level world, double x, double y, double z) {
+  public TunnelBore(Level world, double x, double y, double z) {
     this(world, x, y, z, Direction.SOUTH);
   }
 
-  public TunnelBoreEntity(Level world, double x, double y, double z, Direction f) {
+  public TunnelBore(Level world, double x, double y, double z, Direction f) {
     super(RailcraftEntityTypes.TUNNEL_BORE.get(), x, y, z, world);
     setFacing(f);
   }
@@ -188,15 +188,15 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     float headW = 1.5F;
     float headH = 2.6F;
     float headSO = 0.7F;
-    partArray = new TunnelBorePartEntity[] {
+    partArray = new TunnelBorePart[] {
         // ------------------------------------- name, width, height, forwardOffset, sideOffset
-        new TunnelBorePartEntity(this, "head1", headW, headH, 1.85F, -headSO),
-        new TunnelBorePartEntity(this, "head2", headW, headH, 1.85F, headSO),
-        new TunnelBorePartEntity(this, "head3", headW, headH, 2.3F, -headSO),
-        new TunnelBorePartEntity(this, "head4", headW, headH, 2.3F, headSO),
-        new TunnelBorePartEntity(this, "body", 2.0F, 1.9F, 0.6F),
-        new TunnelBorePartEntity(this, "tail1", 1.6F, 1.4F, -1F),
-        new TunnelBorePartEntity(this, "tail2", 1.6F, 1.4F, -2.2F),
+        new TunnelBorePart(this, "head1", headW, headH, 1.85F, -headSO),
+        new TunnelBorePart(this, "head2", headW, headH, 1.85F, headSO),
+        new TunnelBorePart(this, "head3", headW, headH, 2.3F, -headSO),
+        new TunnelBorePart(this, "head4", headW, headH, 2.3F, headSO),
+        new TunnelBorePart(this, "body", 2.0F, 1.9F, 0.6F),
+        new TunnelBorePart(this, "tail1", 1.6F, 1.4F, -1F),
+        new TunnelBorePart(this, "tail2", 1.6F, 1.4F, -2.2F),
     };
     hasInit = true;
     invMappers = Arrays.asList(invFuel, invBallast, invRails);
@@ -1131,7 +1131,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     return this.partArray;
   }
 
-  public boolean attackEntityFromPart(TunnelBorePartEntity part, DamageSource damageSource,
+  public boolean attackEntityFromPart(TunnelBorePart part, DamageSource damageSource,
       float damage) {
     return hurt(damageSource, damage);
   }

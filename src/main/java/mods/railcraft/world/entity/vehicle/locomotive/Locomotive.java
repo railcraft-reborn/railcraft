@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart.locomotive;
+package mods.railcraft.world.entity.vehicle.locomotive;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,13 +32,13 @@ import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.collections.Streams;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
-import mods.railcraft.world.entity.cart.CartTools;
-import mods.railcraft.world.entity.cart.IDirectionalCart;
-import mods.railcraft.world.entity.cart.MaintenanceMinecartEntity;
-import mods.railcraft.world.entity.cart.RailcraftLinkageManager;
-import mods.railcraft.world.entity.cart.RailcraftLinkageManager.LinkType;
-import mods.railcraft.world.entity.cart.RailcraftMinecartEntity;
-import mods.railcraft.world.entity.cart.Train;
+import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.IDirectionalCart;
+import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
+import mods.railcraft.world.entity.vehicle.RailcraftLinkageManager;
+import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
+import mods.railcraft.world.entity.vehicle.Train;
+import mods.railcraft.world.entity.vehicle.RailcraftLinkageManager.LinkType;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
@@ -76,30 +76,30 @@ import net.minecraft.world.phys.Vec3;
  * 
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public abstract class LocomotiveEntity extends RailcraftMinecartEntity
+public abstract class Locomotive extends RailcraftMinecart
     implements IDirectionalCart, ILinkableCart, Lockable,
     IPaintedCart, IRoutableCart {
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =
-      SynchedEntityData.defineId(LocomotiveEntity.class, EntityDataSerializers.BOOLEAN);
+      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BOOLEAN);
   private static final EntityDataAccessor<Byte> MODE =
-      SynchedEntityData.defineId(LocomotiveEntity.class, EntityDataSerializers.BYTE);
+      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BYTE);
   private static final EntityDataAccessor<Byte> SPEED =
-      SynchedEntityData.defineId(LocomotiveEntity.class, EntityDataSerializers.BYTE);
+      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BYTE);
   private static final EntityDataAccessor<Byte> LOCK =
-      SynchedEntityData.defineId(LocomotiveEntity.class, EntityDataSerializers.BYTE);
+      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BYTE);
   private static final EntityDataAccessor<Boolean> REVERSE =
-      SynchedEntityData.defineId(LocomotiveEntity.class, EntityDataSerializers.BOOLEAN);
+      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BOOLEAN);
   private static final EntityDataAccessor<Integer> PRIMARY_COLOR =
-      SynchedEntityData.defineId(LocomotiveEntity.class, EntityDataSerializers.INT);
+      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<Integer> SECONDARY_COLOR =
-      SynchedEntityData.defineId(LocomotiveEntity.class, EntityDataSerializers.INT);
+      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<String> EMBLEM =
-      SynchedEntityData.defineId(LocomotiveEntity.class, EntityDataSerializers.STRING);
+      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.STRING);
   private static final EntityDataAccessor<String> DESTINATION =
-      SynchedEntityData.defineId(LocomotiveEntity.class, EntityDataSerializers.STRING);
+      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.STRING);
   private static final EntityDataAccessor<Optional<GameProfile>> OWNER =
-      SynchedEntityData.defineId(LocomotiveEntity.class,
+      SynchedEntityData.defineId(Locomotive.class,
           RailcraftDataSerializers.OPTIONAL_GAME_PROFILE);
 
   private static final double DRAG_FACTOR = 0.9;
@@ -118,11 +118,11 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   private int tempIdle;
   private float whistlePitch = getNewWhistlePitch();
 
-  protected LocomotiveEntity(EntityType<?> type, Level world) {
+  protected Locomotive(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  protected LocomotiveEntity(ItemStack itemStack, EntityType<?> type, double x,
+  protected Locomotive(ItemStack itemStack, EntityType<?> type, double x,
       double y, double z, ServerLevel level) {
     super(type, x, y, z, level);
     this.loadFromItemStack(itemStack);
@@ -259,8 +259,8 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
    *
    * @param gameProfile The user.
    * @return TRUE if they can.
-   * @see mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity#isSecure isSecure
-   * @see mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity#isPrivate isPrivate
+   * @see mods.railcraft.world.entity.vehicle.locomotive.Locomotive#isSecure isSecure
+   * @see mods.railcraft.world.entity.vehicle.locomotive.Locomotive#isPrivate isPrivate
    */
   public boolean canControl(Player player) {
     return !this.isPrivate()
@@ -313,7 +313,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   }
 
   /**
-   * Alternative to {@link LocomotiveEntity#setDestination(String destination)} (void return), sets
+   * Alternative to {@link Locomotive#setDestination(String destination)} (void return), sets
    * the destination based on the ticket the user has.
    */
   public boolean setDestination(ItemStack ticket) {
@@ -354,7 +354,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   }
 
   /**
-   * Modes of operation that this {@link LocomotiveEntity} supports.
+   * Modes of operation that this {@link Locomotive} supports.
    *
    * @return a {@link Set} of supported {@link Mode}s.
    */
@@ -363,7 +363,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   }
 
   /**
-   * Determines if the specified {@link Mode} is allowed in the {@link LocomotiveEntity}'s current
+   * Determines if the specified {@link Mode} is allowed in the {@link Locomotive}'s current
    * state.
    *
    * @param mode - the {@link Mode} to check
@@ -661,7 +661,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
         return;
       }
       if (this.collidedWithOtherLocomotive(entity)) {
-        LocomotiveEntity otherLoco = (LocomotiveEntity) entity;
+        Locomotive otherLoco = (Locomotive) entity;
         this.explode();
         if (otherLoco.isAlive()) {
           otherLoco.explode();
@@ -673,10 +673,10 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   }
 
   private boolean collidedWithOtherLocomotive(Entity entity) {
-    if (!(entity instanceof LocomotiveEntity)) {
+    if (!(entity instanceof Locomotive)) {
       return false;
     }
-    LocomotiveEntity otherLoco = (LocomotiveEntity) entity;
+    Locomotive otherLoco = (Locomotive) entity;
     if (getUUID().equals(entity.getUUID())) {
       return false;
     }
@@ -768,9 +768,9 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   }
 
   public static void applyAction(Player player, AbstractMinecart cart,
-      boolean single, Consumer<LocomotiveEntity> action) {
+      boolean single, Consumer<Locomotive> action) {
     var locos = Train.streamCarts(cart)
-        .flatMap(Streams.ofType(LocomotiveEntity.class))
+        .flatMap(Streams.ofType(Locomotive.class))
         .filter(loco -> loco.canControl(player));
     if (single) {
       locos.findAny().ifPresent(action);
@@ -816,7 +816,7 @@ public abstract class LocomotiveEntity extends RailcraftMinecartEntity
   }
 
   private boolean isExemptFromLinkLimits(AbstractMinecart cart) {
-    return cart instanceof LocomotiveEntity || cart instanceof MaintenanceMinecartEntity;
+    return cart instanceof Locomotive || cart instanceof MaintenanceMinecart;
   }
 
   @Override

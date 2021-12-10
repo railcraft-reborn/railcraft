@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.util.container.AdvancedContainer;
@@ -16,16 +16,16 @@ import net.minecraft.nbt.Tag;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public abstract class MaintenancePatternMinecartEntity extends MaintenanceMinecartEntity
+public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
     implements WorldlyContainer {
 
   protected final AdvancedContainer patternInventory = new AdvancedContainer(6).callbackContainer(this);
 
-  protected MaintenancePatternMinecartEntity(EntityType<?> type, Level world) {
+  protected MaintenancePatternMinecart(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  protected MaintenancePatternMinecartEntity(EntityType<?> type, double x, double y, double z,
+  protected MaintenancePatternMinecart(EntityType<?> type, double x, double y, double z,
       Level world) {
     super(type, x, y, z, world);
   }

@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.container.ContainerTools;
@@ -18,17 +18,17 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.IPlantable;
 
-public class TrackLayerMinecartEntity extends MaintenancePatternMinecartEntity {
+public class TrackLayer extends MaintenancePatternMinecart {
 
   public static final int SLOT_STOCK = 0;
   public static final int SLOT_REPLACE = 0;
   public static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
 
-  public TrackLayerMinecartEntity(EntityType<?> type, Level world) {
+  public TrackLayer(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  public TrackLayerMinecartEntity(ItemStack itemStack, double x, double y, double z,
+  public TrackLayer(ItemStack itemStack, double x, double y, double z,
       ServerLevel world) {
     super(RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, world);
   }
@@ -91,8 +91,8 @@ public class TrackLayerMinecartEntity extends MaintenancePatternMinecartEntity {
     return (state.isAir() ||
         block instanceof IPlantable ||
         block instanceof IForgeShearable ||
-        TunnelBoreEntity.replaceableTags.stream().anyMatch(state::is) ||
-        TunnelBoreEntity.replaceableBlocks.contains(block));
+        TunnelBore.replaceableTags.stream().anyMatch(state::is) ||
+        TunnelBore.replaceableBlocks.contains(block));
   }
 
   @Override

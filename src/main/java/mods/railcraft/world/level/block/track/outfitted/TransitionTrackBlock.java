@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.world.entity.cart.CartTools;
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -83,8 +83,8 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   private static void slowCartSpeed(AbstractMinecart cart) {
-    if (cart instanceof LocomotiveEntity) {
-      ((LocomotiveEntity) cart).forceIdle(20);
+    if (cart instanceof Locomotive) {
+      ((Locomotive) cart).forceIdle(20);
     }
     cart.setDeltaMovement(cart.getDeltaMovement().multiply(SLOW_FACTOR, 1.0D, SLOW_FACTOR));
   }

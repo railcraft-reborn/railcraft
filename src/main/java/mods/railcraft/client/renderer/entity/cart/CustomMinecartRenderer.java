@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.season.Seasons;
-import mods.railcraft.world.entity.cart.IDirectionalCart;
+import mods.railcraft.world.entity.vehicle.IDirectionalCart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

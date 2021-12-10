@@ -8,7 +8,7 @@ import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.world.entity.cart.CartConstants;
+import mods.railcraft.world.entity.vehicle.CartConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

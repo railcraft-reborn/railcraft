@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 /**
  * Created by CovertJaguar on 12/4/2018 for Railcraft.

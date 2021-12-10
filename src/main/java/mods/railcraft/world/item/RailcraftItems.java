@@ -2,12 +2,12 @@ package mods.railcraft.world.item;
 
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.entity.cart.TankMinecartEntity;
-import mods.railcraft.world.entity.cart.TrackLayerMinecartEntity;
-import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
-import mods.railcraft.world.entity.cart.locomotive.CreativeLocomotiveEntity;
-import mods.railcraft.world.entity.cart.locomotive.ElectricLocomotiveEntity;
-import mods.railcraft.world.entity.cart.locomotive.SteamLocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.TankMinecart;
+import mods.railcraft.world.entity.vehicle.TrackLayer;
+import mods.railcraft.world.entity.vehicle.TrackRemover;
+import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
+import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
+import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -73,7 +73,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> TANK_MINECART =
       ITEMS.register("tank_minecart",
-          () -> new CartItem(TankMinecartEntity::new,
+          () -> new CartItem(TankMinecart::new,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> FLUID_LOADER =
@@ -222,12 +222,12 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> TRACK_REMOVER =
       ITEMS.register("track_remover",
-          () -> new CartItem(TrackRemoverMinecartEntity::new,
+          () -> new CartItem(TrackRemover::new,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TRACK_LAYER =
       ITEMS.register("track_layer",
-          () -> new CartItem(TrackLayerMinecartEntity::new,
+          () -> new CartItem(TrackLayer::new,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TUNNEL_BORE =
@@ -238,7 +238,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> CREATIVE_LOCOMOTIVE =
       ITEMS.register("creative_locomotive",
-          () -> new LocomotiveItem(CreativeLocomotiveEntity::new,
+          () -> new LocomotiveItem(CreativeLocomotive::new,
               DyeColor.BLACK, DyeColor.MAGENTA,
               new Item.Properties()
                   .stacksTo(1)
@@ -246,7 +246,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> ELECTRIC_LOCOMOTIVE =
       ITEMS.register("electric_locomotive",
-          () -> new LocomotiveItem(ElectricLocomotiveEntity::new,
+          () -> new LocomotiveItem(ElectricLocomotive::new,
               DyeColor.YELLOW, DyeColor.BLACK,
               new Item.Properties()
                   .stacksTo(1)
@@ -254,7 +254,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> STEAM_LOCOMOTIVE =
       ITEMS.register("steam_locomotive",
-          () -> new LocomotiveItem(SteamLocomotiveEntity::new,
+          () -> new LocomotiveItem(SteamLocomotive::new,
               DyeColor.LIGHT_GRAY, DyeColor.GRAY,
               new Item.Properties()
                   .stacksTo(1)

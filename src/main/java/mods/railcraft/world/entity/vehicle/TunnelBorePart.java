@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -12,7 +12,7 @@ import net.minecraftforge.entity.PartEntity;
  *
  * Created by CovertJaguar on 11/19/2015.
  */
-public class TunnelBorePartEntity extends PartEntity<TunnelBoreEntity> {
+public class TunnelBorePart extends PartEntity<TunnelBore> {
 
   public final String partName;
   public final float forwardOffset;
@@ -20,12 +20,12 @@ public class TunnelBorePartEntity extends PartEntity<TunnelBoreEntity> {
 
   private final EntityDimensions size;
 
-  public TunnelBorePartEntity(TunnelBoreEntity parent, String partName, float width, float height,
+  public TunnelBorePart(TunnelBore parent, String partName, float width, float height,
       float forwardOffset) {
     this(parent, partName, width, height, forwardOffset, 0.0F);
   }
 
-  public TunnelBorePartEntity(TunnelBoreEntity parent, String partName, float width, float height,
+  public TunnelBorePart(TunnelBore parent, String partName, float width, float height,
       float forwardOffset, float sideOffset) {
     super(parent);
     this.size = EntityDimensions.scalable(width, height);

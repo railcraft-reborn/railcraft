@@ -13,7 +13,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.season.Seasons;
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -24,11 +24,11 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEntity> {
+public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
 
   protected final String modelTag;
-  private final EntityModel<? super LocomotiveEntity> model;
-  private final EntityModel<? super LocomotiveEntity> snowLayer;
+  private final EntityModel<? super Locomotive> model;
+  private final EntityModel<? super Locomotive> snowLayer;
   private final ResourceLocation[] textures;
   private final float[][] color = new float[3][];
   private float emblemSize = 0.15F;
@@ -37,8 +37,8 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
   private float emblemOffsetZ = -0.515F;
 
   public DefaultLocomotiveRenderer(EntityRendererProvider.Context context, String modelTag,
-      EntityModel<? super LocomotiveEntity> model,
-      EntityModel<? super LocomotiveEntity> snowLayer) {
+      EntityModel<? super Locomotive> model,
+      EntityModel<? super Locomotive> snowLayer) {
     // Notice: do NOT remove the .png on these ones, they are needed.
     this(context, modelTag, model, snowLayer, new ResourceLocation[] {
         new ResourceLocation(Railcraft.ID,
@@ -53,8 +53,8 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
   }
 
   public DefaultLocomotiveRenderer(EntityRendererProvider.Context context, String modelTag,
-      EntityModel<? super LocomotiveEntity> model,
-      EntityModel<? super LocomotiveEntity> snowLayer, ResourceLocation[] textures) {
+      EntityModel<? super Locomotive> model,
+      EntityModel<? super Locomotive> snowLayer, ResourceLocation[] textures) {
     super(context);
     this.modelTag = modelTag;
     this.model = model;
@@ -71,7 +71,7 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
   }
 
   @Override
-  public void renderBody(LocomotiveEntity cart, float time, PoseStack matrixStack,
+  public void renderBody(Locomotive cart, float time, PoseStack matrixStack,
       MultiBufferSource renderTypeBuffer, int packedLight, float red, float green, float blue,
       float alpha) {
     matrixStack.pushPose();
@@ -133,7 +133,7 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
   }
 
   @Override
-  public ResourceLocation getTextureLocation(LocomotiveEntity loco) {
+  public ResourceLocation getTextureLocation(Locomotive loco) {
     throw new IllegalStateException();
   }
 }

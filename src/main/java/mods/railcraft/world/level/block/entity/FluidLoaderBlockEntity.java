@@ -7,7 +7,7 @@ import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.Predicates;
-import mods.railcraft.world.entity.cart.locomotive.SteamLocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -126,8 +126,8 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
   @Override
   protected void processCart(AbstractMinecart cart) {
-    if (cart instanceof SteamLocomotiveEntity) {
-      SteamLocomotiveEntity loco = (SteamLocomotiveEntity) cart;
+    if (cart instanceof SteamLocomotive) {
+      SteamLocomotive loco = (SteamLocomotive) cart;
       if (!loco.isSafeToFill()) {
         this.retractPipe();
         return;

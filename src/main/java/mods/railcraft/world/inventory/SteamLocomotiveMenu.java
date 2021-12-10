@@ -2,17 +2,17 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
-import mods.railcraft.world.entity.cart.locomotive.SteamLocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.network.FriendlyByteBuf;
 
-public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotiveEntity> {
+public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
 
   public static final int HEIGHT = 205;
 
   public SteamLocomotiveMenu(int id, Inventory playerInventory,
-      SteamLocomotiveEntity locomotive) {
+      SteamLocomotive locomotive) {
     super(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), id, playerInventory, locomotive, HEIGHT);
 
     this.addWidget(
@@ -44,8 +44,8 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotiveEntity> {
       FriendlyByteBuf data) {
     int entityId = data.readVarInt();
     Entity entity = playerInventory.player.level.getEntity(entityId);
-    if (entity instanceof SteamLocomotiveEntity) {
-      return new SteamLocomotiveMenu(id, playerInventory, (SteamLocomotiveEntity) entity);
+    if (entity instanceof SteamLocomotive) {
+      return new SteamLocomotiveMenu(id, playerInventory, (SteamLocomotive) entity);
     }
     throw new IllegalStateException("Cannot find locomotive with ID: " + entityId);
   }

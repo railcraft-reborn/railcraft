@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -40,15 +40,15 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-public class TankMinecartEntity extends FilteredMinecartEntity
+public class TankMinecart extends FilteredMinecart
     implements WorldlyContainer, FluidMinecart {
 
   // Can't use FluidStack directly because its equals method doesn't consider amount so will never
   // sync if the amount is changed.
   private static final EntityDataAccessor<CompoundTag> FLUID_STACK_TAG =
-      SynchedEntityData.defineId(TankMinecartEntity.class, EntityDataSerializers.COMPOUND_TAG);
+      SynchedEntityData.defineId(TankMinecart.class, EntityDataSerializers.COMPOUND_TAG);
   private static final EntityDataAccessor<Boolean> FILLING =
-      SynchedEntityData.defineId(TankMinecartEntity.class, EntityDataSerializers.BOOLEAN);
+      SynchedEntityData.defineId(TankMinecart.class, EntityDataSerializers.BOOLEAN);
   private static final int SLOT_INPUT = 0;
   private static final int SLOT_PROCESSING = 1;
   private static final int SLOT_OUTPUT = 2;
@@ -64,11 +64,11 @@ public class TankMinecartEntity extends FilteredMinecartEntity
   private int fluidProcessingTimer;
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
-  public TankMinecartEntity(EntityType<?> type, Level world) {
+  public TankMinecart(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  public TankMinecartEntity(ItemStack itemStack, double x, double y, double z, Level level) {
+  public TankMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
     super(itemStack, RailcraftEntityTypes.TANK_MINECART.get(), x, y, z, level);
   }
 

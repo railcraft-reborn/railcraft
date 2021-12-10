@@ -8,7 +8,7 @@ import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.client.model.RailcraftModelLayers;
 import mods.railcraft.client.model.TunnelBoreModel;
 import mods.railcraft.season.Seasons;
-import mods.railcraft.world.entity.cart.TunnelBoreEntity;
+import mods.railcraft.world.entity.vehicle.TunnelBore;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class TunnelBoreRenderer extends EntityRenderer<TunnelBoreEntity> {
+public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
 
   private static final ResourceLocation TEXTURE =
       new ResourceLocation(Railcraft.ID, "textures/entity/tunnel_bore/tunnel_bore.png");
@@ -31,7 +31,7 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBoreEntity> {
 
   // A lot of this is copied from the minecart renderer.
   @Override
-  public void render(TunnelBoreEntity bore, float yaw, float partialTicks,
+  public void render(TunnelBore bore, float yaw, float partialTicks,
       PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight) {
     matrixStack.pushPose();
     {
@@ -87,7 +87,7 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBoreEntity> {
   }
 
   @Override
-  public ResourceLocation getTextureLocation(TunnelBoreEntity entity) {
+  public ResourceLocation getTextureLocation(TunnelBore entity) {
     TunnelBoreHead head = entity.getBoreHead();
     return head == null ? TEXTURE : head.getTextureLocation();
   }

@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart.locomotive;
+package mods.railcraft.world.entity.vehicle.locomotive;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -40,7 +40,7 @@ import net.minecraftforge.energy.IEnergyStorage;
  * The electric locomotive.
  * @author CovertJaguar (https://www.railcraft.info/)
  */
-public class ElectricLocomotiveEntity extends LocomotiveEntity implements WorldlyContainer {
+public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
   // as of 2021 all of the numbers have been increased due to RF/FE usage
   private static final int ACTUAL_FUEL_GAIN_PER_REQUEST = 20; //the original value
@@ -60,11 +60,11 @@ public class ElectricLocomotiveEntity extends LocomotiveEntity implements Worldl
   private final LazyOptional<IEnergyStorage> cartBattery =
       LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
 
-  public ElectricLocomotiveEntity(EntityType<?> type, Level world) {
+  public ElectricLocomotive(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  public ElectricLocomotiveEntity(ItemStack itemStack, double x, double y, double z,
+  public ElectricLocomotive(ItemStack itemStack, double x, double y, double z,
       ServerLevel world) {
     super(itemStack, RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), x, y, z, world);
   }

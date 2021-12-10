@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.MapMaker;
 import mods.railcraft.util.CompositeFluidHandler;
 import mods.railcraft.util.collections.Streams;
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -282,8 +282,8 @@ public final class Train implements Iterable<AbstractMinecart> {
     return ends;
   }
 
-  public Optional<LocomotiveEntity> getHeadLocomotive() {
-    return getEnds().stream().map(this::getCart).flatMap(Streams.ofType(LocomotiveEntity.class))
+  public Optional<Locomotive> getHeadLocomotive() {
+    return getEnds().stream().map(this::getCart).flatMap(Streams.ofType(Locomotive.class))
         .findFirst();
   }
 
@@ -301,7 +301,7 @@ public final class Train implements Iterable<AbstractMinecart> {
   }
 
   public int getNumRunningLocomotives() {
-    return (int) stream(LocomotiveEntity.class).filter(LocomotiveEntity::isRunning).count();
+    return (int) stream(Locomotive.class).filter(Locomotive::isRunning).count();
   }
 
   public <T extends AbstractMinecart> List<T> getCarts(Class<T> cartClass) {

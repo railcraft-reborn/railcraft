@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 import java.util.List;
 import mods.railcraft.api.carts.CartUtil;
@@ -29,20 +29,20 @@ import net.minecraft.server.level.ServerLevel;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public abstract class MaintenanceMinecartEntity extends RailcraftMinecartEntity {
+public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
   private static final EntityDataAccessor<Byte> BLINK =
-      SynchedEntityData.defineId(MaintenanceMinecartEntity.class, EntityDataSerializers.BYTE);
+      SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.BYTE);
   protected static final double DRAG_FACTOR = 0.9;
   private static final int BLINK_DURATION = 3;
   public static final EntityDataAccessor<Byte> MODE =
-      SynchedEntityData.defineId(MaintenanceMinecartEntity.class, EntityDataSerializers.BYTE);
+      SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.BYTE);
 
-  protected MaintenanceMinecartEntity(EntityType<?> type, Level world) {
+  protected MaintenanceMinecart(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  protected MaintenanceMinecartEntity(EntityType<?> type, double x, double y, double z,
+  protected MaintenanceMinecart(EntityType<?> type, double x, double y, double z,
       Level world) {
     super(type, x, y, z, world);
   }

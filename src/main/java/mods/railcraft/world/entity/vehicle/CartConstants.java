@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart;
+package mods.railcraft.world.entity.vehicle;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info)

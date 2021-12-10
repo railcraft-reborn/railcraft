@@ -3,7 +3,7 @@ package mods.railcraft.client.renderer.entity.cart;
 import javax.annotation.Nullable;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.season.Seasons;
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
@@ -12,7 +12,7 @@ import net.minecraft.world.item.DyeColor;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public abstract class LocomotiveRenderer<T extends LocomotiveEntity>
+public abstract class LocomotiveRenderer<T extends Locomotive>
     extends CustomMinecartRenderer<T> {
 
   public LocomotiveRenderer(EntityRendererProvider.Context context) {

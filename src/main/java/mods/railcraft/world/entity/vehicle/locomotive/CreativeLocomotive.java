@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart.locomotive;
+package mods.railcraft.world.entity.vehicle.locomotive;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -28,7 +28,7 @@ import net.minecraft.server.level.ServerLevel;
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public class CreativeLocomotiveEntity extends LocomotiveEntity implements WorldlyContainer {
+public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
 
   private static final int SLOT_TICKET = 0;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
@@ -38,11 +38,11 @@ public class CreativeLocomotiveEntity extends LocomotiveEntity implements Worldl
 
   private final Container invTicket = new ContainerMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
 
-  public CreativeLocomotiveEntity(EntityType<?> type, Level world) {
+  public CreativeLocomotive(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  public CreativeLocomotiveEntity(ItemStack itemStack, double x, double y, double z,
+  public CreativeLocomotive(ItemStack itemStack, double x, double y, double z,
       ServerLevel level) {
     super(itemStack, RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), x, y, z, level);
   }

@@ -1,11 +1,11 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.entity.cart.TankMinecartEntity;
-import mods.railcraft.world.entity.cart.TunnelBoreEntity;
-import mods.railcraft.world.entity.cart.locomotive.CreativeLocomotiveEntity;
-import mods.railcraft.world.entity.cart.locomotive.ElectricLocomotiveEntity;
-import mods.railcraft.world.entity.cart.locomotive.SteamLocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.TankMinecart;
+import mods.railcraft.world.entity.vehicle.TunnelBore;
+import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
+import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
+import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
 import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
@@ -26,20 +26,20 @@ public class RailcraftMenuTypes {
   public static final DeferredRegister<MenuType<?>> MENU_TYPES =
       DeferredRegister.create(ForgeRegistries.CONTAINERS, Railcraft.ID);
 
-  public static final RegistryObject<MenuType<LocomotiveMenu<CreativeLocomotiveEntity>>> CREATIVE_LOCOMOTIVE =
+  public static final RegistryObject<MenuType<LocomotiveMenu<CreativeLocomotive>>> CREATIVE_LOCOMOTIVE =
       MENU_TYPES.register("creative_locomotive",
           () -> new MenuType<>(
-              entityMenu(CreativeLocomotiveEntity.class, LocomotiveMenu::creative)));
+              entityMenu(CreativeLocomotive.class, LocomotiveMenu::creative)));
 
   public static final RegistryObject<MenuType<ElectricLocomotiveMenu>> ELECTRIC_LOCOMOTIVE =
       MENU_TYPES.register("electric_locomotive",
           () -> new MenuType<>(
-              entityMenu(ElectricLocomotiveEntity.class, ElectricLocomotiveMenu::new)));
+              entityMenu(ElectricLocomotive.class, ElectricLocomotiveMenu::new)));
 
   public static final RegistryObject<MenuType<SteamLocomotiveMenu>> STEAM_LOCOMOTIVE =
       MENU_TYPES.register("steam_locomotive",
           () -> new MenuType<>(
-              entityMenu(SteamLocomotiveEntity.class, SteamLocomotiveMenu::new)));
+              entityMenu(SteamLocomotive.class, SteamLocomotiveMenu::new)));
 
   public static final RegistryObject<MenuType<ManualRollingMachineMenu>> MANUAL_ROLLING_MACHINE =
       MENU_TYPES.register("manual_rolling_machine",
@@ -61,11 +61,11 @@ public class RailcraftMenuTypes {
 
   public static final RegistryObject<MenuType<TankMinecartMenu>> TANK_MINECART =
       MENU_TYPES.register("tank_minecart",
-          () -> new MenuType<>(entityMenu(TankMinecartEntity.class, TankMinecartMenu::new)));
+          () -> new MenuType<>(entityMenu(TankMinecart.class, TankMinecartMenu::new)));
 
   public static final RegistryObject<MenuType<TunnelBoreMenu>> TUNNEL_BORE =
       MENU_TYPES.register("tunnel_bore",
-          () -> new MenuType<>(entityMenu(TunnelBoreEntity.class, TunnelBoreMenu::new)));
+          () -> new MenuType<>(entityMenu(TunnelBore.class, TunnelBoreMenu::new)));
 
   private static <T extends AbstractContainerMenu, E extends Entity> IContainerFactory<T> entityMenu(
       Class<E> entityType, CustomMenuFactory<T, E> factory) {

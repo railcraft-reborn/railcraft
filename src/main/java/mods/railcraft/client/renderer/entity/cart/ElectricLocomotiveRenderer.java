@@ -16,7 +16,7 @@ import mods.railcraft.client.model.ElectricLocomotiveLampModel;
 import mods.railcraft.client.model.ElectricLocomotiveModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
 import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -49,7 +49,7 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
   }
 
   @Override
-  public void renderBody(LocomotiveEntity cart, float time, PoseStack poseStack,
+  public void renderBody(Locomotive cart, float time, PoseStack poseStack,
       MultiBufferSource renderTypeBuffer, int packedLight, float red, float green, float blue,
       float alpha) {
     super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, red, green, blue,
@@ -59,7 +59,7 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
       poseStack.scale(-1, -1, 1);
       poseStack.translate(0.05F, 0.0F, 0.0F);
 
-      boolean bright = ((LocomotiveEntity) cart).getMode() == LocomotiveEntity.Mode.RUNNING;
+      boolean bright = ((Locomotive) cart).getMode() == Locomotive.Mode.RUNNING;
 
       VertexConsumer vertexBuilder = bright
           ? renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOn))

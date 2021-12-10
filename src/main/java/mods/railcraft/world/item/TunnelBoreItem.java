@@ -3,7 +3,7 @@ package mods.railcraft.world.item;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.world.entity.cart.TunnelBoreEntity;
+import mods.railcraft.world.entity.vehicle.TunnelBore;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -43,7 +43,7 @@ public class TunnelBoreItem extends Item {
               playerFacing = Direction.WEST;
           }
 
-          var bore = new TunnelBoreEntity(
+          var bore = new TunnelBore(
               level, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, playerFacing);
           level.addFreshEntity(bore);
         }

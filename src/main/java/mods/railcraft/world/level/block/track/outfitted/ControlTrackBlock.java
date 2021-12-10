@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
@@ -62,7 +62,7 @@ public class ControlTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
       }
     }
 
-    if (cart instanceof LocomotiveEntity && ((LocomotiveEntity) cart).isShutdown()) {
+    if (cart instanceof Locomotive && ((Locomotive) cart).isShutdown()) {
       double yaw = cart.getYRot() * Math.PI / 180D;
       double cos = Math.cos(yaw);
       double sin = Math.sin(yaw);

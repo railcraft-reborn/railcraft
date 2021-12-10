@@ -2,8 +2,8 @@ package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.world.entity.cart.CartTools;
-import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
+import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.core.BlockPos;
@@ -80,8 +80,8 @@ public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
     } else {
       boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(cart);
       if (highSpeed) {
-        if (cart instanceof LocomotiveEntity) {
-          ((LocomotiveEntity) cart).forceIdle(20);
+        if (cart instanceof Locomotive) {
+          ((Locomotive) cart).forceIdle(20);
         }
         cart.setDeltaMovement(motion.multiply(SLOW_FACTOR_HS, 0.0D, SLOW_FACTOR_HS));
 

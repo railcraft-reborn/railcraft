@@ -7,7 +7,7 @@ import mods.railcraft.client.model.MaintenanceLampModel;
 import mods.railcraft.client.model.MaintenanceModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
 import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.world.entity.cart.MaintenanceMinecartEntity;
+import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.MinecartModel;
 import net.minecraft.client.model.Model;
@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 public abstract class MaintenanceMinecartRenderer
-    extends ContentsMinecartRenderer<MaintenanceMinecartEntity> {
+    extends ContentsMinecartRenderer<MaintenanceMinecart> {
 
   private static final ResourceLocation LAMP_ON_TEX =
       new ResourceLocation(Railcraft.ID, "textures/entity/minecart/maintenance_lamp_on.png");
@@ -29,8 +29,8 @@ public abstract class MaintenanceMinecartRenderer
 
   private final ResourceLocation maintenanceTextureLocation;
 
-  private final MinecartModel<MaintenanceMinecartEntity> bodyModel;
-  private final DeformableMinecartModel<MaintenanceMinecartEntity> snowModel;
+  private final MinecartModel<MaintenanceMinecart> bodyModel;
+  private final DeformableMinecartModel<MaintenanceMinecart> snowModel;
 
   private final Model maintenanceModel;
   private final Model lampModel;
@@ -51,7 +51,7 @@ public abstract class MaintenanceMinecartRenderer
   }
 
   @Override
-  public void renderContents(MaintenanceMinecartEntity cart, float partialTicks,
+  public void renderContents(MaintenanceMinecart cart, float partialTicks,
       PoseStack poseStack, MultiBufferSource bufferSource, int packedLight,
       float red, float green, float blue, float alpha) {
     var maintenanceVertexConsumer = bufferSource.getBuffer(
@@ -67,7 +67,7 @@ public abstract class MaintenanceMinecartRenderer
       ResourceLocation textureLocation;
       if (blinking) {
         textureLocation = LAMP_ON_TEX;
-      } else if (cart.getMode() == MaintenanceMinecartEntity.Mode.TRANSPORT) {
+      } else if (cart.getMode() == MaintenanceMinecart.Mode.TRANSPORT) {
         textureLocation = LAMP_DISABLED_TEX;
       } else {
         textureLocation = LAMP_OFF_TEX;
@@ -82,14 +82,14 @@ public abstract class MaintenanceMinecartRenderer
   }
 
   @Override
-  protected EntityModel<? super MaintenanceMinecartEntity> getBodyModel(
-      MaintenanceMinecartEntity cart) {
+  protected EntityModel<? super MaintenanceMinecart> getBodyModel(
+      MaintenanceMinecart cart) {
     return this.bodyModel;
   }
 
   @Override
-  protected EntityModel<? super MaintenanceMinecartEntity> getSnowModel(
-      MaintenanceMinecartEntity cart) {
+  protected EntityModel<? super MaintenanceMinecart> getSnowModel(
+      MaintenanceMinecart cart) {
     return this.snowModel;
   }
 }

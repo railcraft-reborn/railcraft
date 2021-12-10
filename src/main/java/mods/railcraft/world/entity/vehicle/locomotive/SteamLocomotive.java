@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.cart.locomotive;
+package mods.railcraft.world.entity.vehicle.locomotive;
 
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.util.container.ContainerTools;
@@ -32,7 +32,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
  * 
  * @author CovertJaguar (https://www.railcraft.info/)
  */
-public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
+public class SteamLocomotive extends BaseSteamLocomotive
     implements WorldlyContainer {
 
   private static final int FUEL_SLOT = 3;
@@ -49,25 +49,25 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
   private final ContainerMapper ticketInventory =
       new ContainerMapper(this, TICKET_SLOT, 2).ignoreItemChecks();
 
-  public SteamLocomotiveEntity(EntityType<?> type, Level world) {
+  public SteamLocomotive(EntityType<?> type, Level world) {
     super(type, world);
 
     this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
       public float consumeFuel() {
-        return SteamLocomotiveEntity.this.isShutdown() ? 0.0F : super.consumeFuel();
+        return SteamLocomotive.this.isShutdown() ? 0.0F : super.consumeFuel();
       }
     });
   }
 
-  public SteamLocomotiveEntity(ItemStack itemStack, double x, double y, double z,
+  public SteamLocomotive(ItemStack itemStack, double x, double y, double z,
       ServerLevel world) {
     super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, world);
 
     this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
       public float consumeFuel() {
-        return SteamLocomotiveEntity.this.isShutdown() ? 0.0F : super.consumeFuel();
+        return SteamLocomotive.this.isShutdown() ? 0.0F : super.consumeFuel();
       }
     });
   }

@@ -2,7 +2,7 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.util.container.filters.StackFilters;
-import mods.railcraft.world.entity.cart.TankMinecartEntity;
+import mods.railcraft.world.entity.vehicle.TankMinecart;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -13,7 +13,7 @@ public class TankMinecartMenu extends RailcraftMenu {
   private final FluidGaugeWidget fluidGuage;
 
   public TankMinecartMenu(int id, Inventory playerInventory,
-      TankMinecartEntity tankMinecart) {
+      TankMinecart tankMinecart) {
     super(RailcraftMenuTypes.TANK_MINECART.get(), id, playerInventory);
 
     this.addWidget(this.fluidGuage =
@@ -44,8 +44,8 @@ public class TankMinecartMenu extends RailcraftMenu {
       FriendlyByteBuf data) {
     int entityId = data.readVarInt();
     Entity entity = playerInventory.player.level.getEntity(entityId);
-    if (entity instanceof TankMinecartEntity) {
-      return new TankMinecartMenu(id, playerInventory, (TankMinecartEntity) entity);
+    if (entity instanceof TankMinecart) {
+      return new TankMinecartMenu(id, playerInventory, (TankMinecart) entity);
     }
     throw new IllegalStateException("Cannot find tank minecart with ID: " + entityId);
   }

@@ -2,16 +2,16 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.util.container.filters.StackFilters;
-import mods.railcraft.world.entity.cart.TunnelBoreEntity;
+import mods.railcraft.world.entity.vehicle.TunnelBore;
 import net.minecraft.world.entity.player.Inventory;
 
 public class TunnelBoreMenu extends RailcraftMenu {
 
   public static final int IMAGE_HEIGHT = 222;
 
-  private final TunnelBoreEntity tunnelBore;
+  private final TunnelBore tunnelBore;
 
-  public TunnelBoreMenu(int id, Inventory playerInventory, TunnelBoreEntity tunnelBore) {
+  public TunnelBoreMenu(int id, Inventory playerInventory, TunnelBore tunnelBore) {
     super(RailcraftMenuTypes.TUNNEL_BORE.get(), id, playerInventory);
     this.tunnelBore = tunnelBore;
 
@@ -42,7 +42,7 @@ public class TunnelBoreMenu extends RailcraftMenu {
         tunnelBore::getFuel, tunnelBore::setFuel));
   }
 
-  public TunnelBoreEntity getTunnelBore() {
+  public TunnelBore getTunnelBore() {
     return this.tunnelBore;
   }
 }
