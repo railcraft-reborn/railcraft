@@ -9,11 +9,11 @@ import mods.railcraft.world.level.block.entity.track.BoardingLockingProfile;
 import mods.railcraft.world.level.block.entity.track.EmptyLockingProfile;
 import mods.railcraft.world.level.block.entity.track.HoldingLockingProfile;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
-public enum LockingMode implements IStringSerializable {
+public enum LockingMode implements StringRepresentable {
 
   LOCKDOWN("lockdown", LockType.CART),
   TRAIN_LOCKDOWN("train_lockdown", LockType.TRAIN),
@@ -29,7 +29,7 @@ public enum LockingMode implements IStringSerializable {
       .collect(Collectors.toMap(LockingMode::getSerializedName, Function.identity()));
 
   private final String name;
-  private final ITextComponent displayName;
+  private final Component displayName;
   private final LockType lockType;
   private final Function<? super LockingTrackBlockEntity, ? extends LockingModeController> factory;
 
@@ -40,12 +40,12 @@ public enum LockingMode implements IStringSerializable {
   private LockingMode(String name, LockType lockType,
       Function<? super LockingTrackBlockEntity, ? extends LockingModeController> factory) {
     this.name = name;
-    this.displayName = new TranslationTextComponent("locking_track.mode." + name);
+    this.displayName = new TranslatableComponent("locking_track.mode." + name);
     this.lockType = lockType;
     this.factory = factory;
   }
 
-  public ITextComponent getDisplayName() {
+  public Component getDisplayName() {
     return this.displayName;
   }
 

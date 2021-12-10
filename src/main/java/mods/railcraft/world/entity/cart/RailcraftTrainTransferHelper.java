@@ -8,13 +8,13 @@ import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.api.carts.IItemCart;
 import mods.railcraft.api.carts.TrainTransferHelper;
 import mods.railcraft.util.collections.StackKey;
-import mods.railcraft.util.inventory.InventoryAdaptor;
-import mods.railcraft.util.inventory.filters.StackFilters;
+import mods.railcraft.util.container.ContainerAdaptor;
+import mods.railcraft.util.container.filters.StackFilters;
 import mods.railcraft.world.level.material.fluid.FluidTools;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -38,10 +38,10 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
    * Offers an item stack to linked carts or drops it if no one wants it.
    */
   @Override
-  public void offerOrDropItem(AbstractMinecartEntity cart, ItemStack stack) {
+  public void offerOrDropItem(AbstractMinecart cart, ItemStack stack) {
     stack = this.pushStack(cart, stack);
     if (!stack.isEmpty()) {
-      InventoryHelper.dropItemStack(cart.level, cart.getX(), cart.getY(), cart.getZ(), stack);
+      Containers.dropItemStack(cart.level, cart.getX(), cart.getY(), cart.getZ(), stack);
     }
   }
 
@@ -49,8 +49,8 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   // Items
   // ***************************************************************************************************************************
   @Override
-  public ItemStack pushStack(AbstractMinecartEntity requester, ItemStack stack) {
-    Iterable<AbstractMinecartEntity> carts =
+  public ItemStack pushStack(AbstractMinecart requester, ItemStack stack) {
+    Iterable<AbstractMinecart> carts =
         RailcraftLinkageManager.INSTANCE.linkIterator(requester,
             RailcraftLinkageManager.LinkType.LINK_A);
     stack = _pushStack(requester, carts, stack);
@@ -67,11 +67,11 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
     return stack;
   }
 
-  private ItemStack _pushStack(AbstractMinecartEntity requester,
-      Iterable<AbstractMinecartEntity> carts, ItemStack stack) {
-    for (AbstractMinecartEntity cart : carts) {
-      InventoryAdaptor adaptor = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-          .map(InventoryAdaptor::of)
+  private ItemStack _pushStack(AbstractMinecart requester,
+      Iterable<AbstractMinecart> carts, ItemStack stack) {
+    for (AbstractMinecart cart : carts) {
+      ContainerAdaptor adaptor = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+          .map(ContainerAdaptor::of)
           .orElse(null);
       if (adaptor != null && this.canAcceptPushedItem(requester, cart, stack)) {
         stack = adaptor.addStack(stack);
@@ -85,8 +85,8 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   }
 
   @Override
-  public ItemStack pullStack(AbstractMinecartEntity requester, Predicate<ItemStack> filter) {
-    Iterable<AbstractMinecartEntity> carts =
+  public ItemStack pullStack(AbstractMinecart requester, Predicate<ItemStack> filter) {
+    Iterable<AbstractMinecart> carts =
         RailcraftLinkageManager.INSTANCE.linkIterator(requester,
             RailcraftLinkageManager.LinkType.LINK_A);
     ItemStack stack = this._pullStack(requester, carts, filter);
@@ -98,14 +98,14 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
     return this._pullStack(requester, carts, filter);
   }
 
-  private ItemStack _pullStack(AbstractMinecartEntity requester,
-      Iterable<AbstractMinecartEntity> carts, Predicate<ItemStack> filter) {
+  private ItemStack _pullStack(AbstractMinecart requester,
+      Iterable<AbstractMinecart> carts, Predicate<ItemStack> filter) {
     ItemStack result = ItemStack.EMPTY;
-    AbstractMinecartEntity upTo = null;
-    InventoryAdaptor targetInv = null;
-    for (AbstractMinecartEntity cart : carts) {
-      InventoryAdaptor inv = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-          .map(InventoryAdaptor::of)
+    AbstractMinecart upTo = null;
+    ContainerAdaptor targetInv = null;
+    for (AbstractMinecart cart : carts) {
+      ContainerAdaptor inv = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+          .map(ContainerAdaptor::of)
           .orElse(null);
       if (inv != null) {
         Set<StackKey> items = inv.findAll(filter);
@@ -128,7 +128,7 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
       return ItemStack.EMPTY;
     }
 
-    for (AbstractMinecartEntity cart : carts) {
+    for (AbstractMinecart cart : carts) {
       if (cart == upTo) {
         break;
       }
@@ -144,19 +144,19 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
     return ItemStack.EMPTY;
   }
 
-  private boolean canAcceptPushedItem(AbstractMinecartEntity requester, AbstractMinecartEntity cart,
+  private boolean canAcceptPushedItem(AbstractMinecart requester, AbstractMinecart cart,
       ItemStack stack) {
     return !(cart instanceof IItemCart) || ((IItemCart) cart).canAcceptPushedItem(requester, stack);
   }
 
-  private boolean canProvidePulledItem(AbstractMinecartEntity requester,
-      AbstractMinecartEntity cart,
+  private boolean canProvidePulledItem(AbstractMinecart requester,
+      AbstractMinecart cart,
       ItemStack stack) {
     return !(cart instanceof IItemCart)
         || ((IItemCart) cart).canProvidePulledItem(requester, stack);
   }
 
-  private boolean blocksItemRequests(AbstractMinecartEntity cart, ItemStack stack) {
+  private boolean blocksItemRequests(AbstractMinecart cart, ItemStack stack) {
     return cart instanceof IItemCart
         ? !((IItemCart) cart).canPassItemRequests(stack)
         : cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
@@ -165,7 +165,7 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   }
 
   @Override
-  public Optional<IItemHandlerModifiable> getTrainItemHandler(AbstractMinecartEntity cart) {
+  public Optional<IItemHandlerModifiable> getTrainItemHandler(AbstractMinecart cart) {
     return Train.get(cart).flatMap(Train::getItemHandler);
   }
 
@@ -173,8 +173,8 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   // Fluids
   // ***************************************************************************************************************************
   @Override
-  public FluidStack pushFluid(AbstractMinecartEntity requester, FluidStack fluidStack) {
-    Iterable<AbstractMinecartEntity> carts =
+  public FluidStack pushFluid(AbstractMinecart requester, FluidStack fluidStack) {
+    Iterable<AbstractMinecart> carts =
         RailcraftLinkageManager.INSTANCE.linkIterator(requester,
             RailcraftLinkageManager.LinkType.LINK_A);
     fluidStack = this._pushFluid(requester, carts, fluidStack);
@@ -190,10 +190,10 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
     return fluidStack;
   }
 
-  private @Nullable FluidStack _pushFluid(AbstractMinecartEntity requester,
-      Iterable<AbstractMinecartEntity> carts,
+  private @Nullable FluidStack _pushFluid(AbstractMinecart requester,
+      Iterable<AbstractMinecart> carts,
       FluidStack fluidStack) {
-    for (AbstractMinecartEntity cart : carts) {
+    for (AbstractMinecart cart : carts) {
       if (canAcceptPushedFluid(requester, cart, fluidStack)) {
         cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP)
             .ifPresent(fluidHandler -> fluidStack.setAmount(
@@ -211,11 +211,11 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   }
 
   @Override
-  public FluidStack pullFluid(AbstractMinecartEntity requester, FluidStack fluidStack) {
+  public FluidStack pullFluid(AbstractMinecart requester, FluidStack fluidStack) {
     if (fluidStack.isEmpty()) {
       return FluidStack.EMPTY;
     }
-    Iterable<AbstractMinecartEntity> carts =
+    Iterable<AbstractMinecart> carts =
         RailcraftLinkageManager.INSTANCE.linkIterator(requester,
             RailcraftLinkageManager.LinkType.LINK_A);
     FluidStack pulled = this._pullFluid(requester, carts, fluidStack);
@@ -227,10 +227,10 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
     return this._pullFluid(requester, carts, fluidStack);
   }
 
-  private FluidStack _pullFluid(AbstractMinecartEntity requester,
-      Iterable<AbstractMinecartEntity> carts,
+  private FluidStack _pullFluid(AbstractMinecart requester,
+      Iterable<AbstractMinecart> carts,
       FluidStack fluidStack) {
-    for (AbstractMinecartEntity cart : carts) {
+    for (AbstractMinecart cart : carts) {
       if (canProvidePulledFluid(requester, cart, fluidStack)) {
         IFluidHandler fluidHandler =
             cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.DOWN)
@@ -250,8 +250,8 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
     return FluidStack.EMPTY;
   }
 
-  private boolean canAcceptPushedFluid(AbstractMinecartEntity requester,
-      AbstractMinecartEntity cart,
+  private boolean canAcceptPushedFluid(AbstractMinecart requester,
+      AbstractMinecart cart,
       FluidStack fluid) {
     IFluidHandler fluidHandler = cart
         .getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null);
@@ -264,8 +264,8 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
     return fluidHandler.fill(new FluidStack(fluid, 1), IFluidHandler.FluidAction.SIMULATE) > 0;
   }
 
-  private boolean canProvidePulledFluid(AbstractMinecartEntity requester,
-      AbstractMinecartEntity cart, FluidStack fluid) {
+  private boolean canProvidePulledFluid(AbstractMinecart requester,
+      AbstractMinecart cart, FluidStack fluid) {
     IFluidHandler fluidHandler =
         cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.DOWN)
             .orElse(null);
@@ -279,7 +279,7 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
         .isEmpty();
   }
 
-  private boolean blocksFluidRequests(AbstractMinecartEntity cart, FluidStack fluid) {
+  private boolean blocksFluidRequests(AbstractMinecart cart, FluidStack fluid) {
     return cart instanceof FluidMinecart
         ? !((FluidMinecart) cart).canPassFluidRequests(fluid)
         : cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
@@ -300,7 +300,7 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   }
 
   @Override
-  public Optional<IFluidHandler> getTrainFluidHandler(AbstractMinecartEntity cart) {
+  public Optional<IFluidHandler> getTrainFluidHandler(AbstractMinecart cart) {
     return Train.get(cart).flatMap(Train::getFluidHandler);
   }
 }

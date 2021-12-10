@@ -4,10 +4,10 @@ import javax.annotation.Nullable;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.item.DyeColor;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.StringUtil;
+import net.minecraft.world.item.DyeColor;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -15,19 +15,19 @@ import net.minecraft.util.StringUtils;
 public abstract class LocomotiveRenderer<T extends LocomotiveEntity>
     extends CustomMinecartRenderer<T> {
 
-  public LocomotiveRenderer(EntityRendererManager renderManager) {
-    super(renderManager);
+  public LocomotiveRenderer(EntityRendererProvider.Context context) {
+    super(context);
   }
 
-  protected int getPrimaryColor(T loco) {
+  protected float[] getPrimaryColor(T loco) {
     return Seasons.isGhostTrain(loco)
-        ? DyeColor.LIGHT_GRAY.getColorValue()
+        ? DyeColor.LIGHT_GRAY.getTextureDiffuseColors()
         : loco.getPrimaryColor();
   }
 
-  protected int getSecondaryColor(T loco) {
+  protected float[] getSecondaryColor(T loco) {
     return Seasons.isGhostTrain(loco)
-        ? DyeColor.LIGHT_GRAY.getColorValue()
+        ? DyeColor.LIGHT_GRAY.getTextureDiffuseColors()
         : loco.getSecondaryColor();
   }
 
@@ -35,7 +35,7 @@ public abstract class LocomotiveRenderer<T extends LocomotiveEntity>
   protected ResourceLocation getEmblemTexture(T loco) {
     String emblem = loco.getEmblem();
     ResourceLocation emblemTexture = null;
-    if (!StringUtils.isNullOrEmpty(emblem) && EmblemToolsClient.packageManager != null)
+    if (!StringUtil.isNullOrEmpty(emblem) && EmblemToolsClient.packageManager != null)
       emblemTexture = EmblemToolsClient.packageManager.getEmblemTextureLocation(emblem);
     return emblemTexture;
   }

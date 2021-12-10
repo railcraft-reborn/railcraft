@@ -1,36 +1,36 @@
 package mods.railcraft.world.entity.cart;
 
 import mods.railcraft.api.carts.CartUtil;
-import mods.railcraft.util.inventory.InvTools;
-import mods.railcraft.util.inventory.InventoryAdvanced;
-import mods.railcraft.util.inventory.filters.StackFilters;
-import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import mods.railcraft.util.container.AdvancedContainer;
+import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.container.filters.StackFilters;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.nbt.Tag;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public abstract class MaintenancePatternMinecartEntity extends MaintenanceMinecartEntity
-    implements ISidedInventory {
+    implements WorldlyContainer {
 
-  protected final InventoryAdvanced patternInventory = new InventoryAdvanced(6).callbackInv(this);
+  protected final AdvancedContainer patternInventory = new AdvancedContainer(6).callbackContainer(this);
 
-  protected MaintenancePatternMinecartEntity(EntityType<?> type, World world) {
+  protected MaintenancePatternMinecartEntity(EntityType<?> type, Level world) {
     super(type, world);
   }
 
   protected MaintenancePatternMinecartEntity(EntityType<?> type, double x, double y, double z,
-      World world) {
+      Level world) {
     super(type, x, y, z, world);
   }
 
-  public IInventory getPattern() {
+  public Container getPattern() {
     return patternInventory;
   }
 
@@ -54,7 +54,7 @@ public abstract class MaintenancePatternMinecartEntity extends MaintenanceMineca
 
     ItemStack stackStock = getItem(slotStock);
 
-    if (!stackStock.isEmpty() && !InvTools.isItemEqual(stackReplace, stackStock)) {
+    if (!stackStock.isEmpty() && !ContainerTools.isItemEqual(stackReplace, stackStock)) {
       CartUtil.transferHelper().offerOrDropItem(this, stackStock);
       this.setItem(slotStock, ItemStack.EMPTY);
       stackStock = ItemStack.EMPTY;
@@ -63,22 +63,22 @@ public abstract class MaintenancePatternMinecartEntity extends MaintenanceMineca
     if (stackReplace.isEmpty())
       return;
 
-    if (!InvTools.isStackFull(stackStock) && stackStock.getCount() < getMaxStackSize())
+    if (!ContainerTools.isStackFull(stackStock) && stackStock.getCount() < getMaxStackSize())
       this.setItem(slotStock,
-          InvTools.copy(stackReplace, stackStock.getCount() + CartUtil.transferHelper()
+          ContainerTools.copy(stackReplace, stackStock.getCount() + CartUtil.transferHelper()
               .pullStack(this, StackFilters.of(stackReplace)).getCount()));
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundNBT data) {
+  protected void addAdditionalSaveData(CompoundTag data) {
     super.addAdditionalSaveData(data);
     data.put("patternInventory", this.patternInventory.serializeNBT());
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundNBT data) {
+  protected void readAdditionalSaveData(CompoundTag data) {
     super.readAdditionalSaveData(data);
     this.patternInventory.deserializeNBT(
-        data.getList("patternInventory", Constants.NBT.TAG_COMPOUND));
+        data.getList("patternInventory", Tag.TAG_COMPOUND));
   }
 }

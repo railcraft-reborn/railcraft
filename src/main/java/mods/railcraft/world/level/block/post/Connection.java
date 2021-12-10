@@ -1,8 +1,8 @@
 package mods.railcraft.world.level.block.post;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
-public enum Connection implements IStringSerializable {
+public enum Connection implements StringRepresentable {
 
   NONE("name"),
   SINGLE("single"),

@@ -1,8 +1,8 @@
 package mods.railcraft.world.level.block.post;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
-public enum Column implements IStringSerializable {
+public enum Column implements StringRepresentable {
 
   FULL("full"),
   TOP("top"),

@@ -6,7 +6,9 @@ import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Created by CovertJaguar on 8/15/2016 for Railcraft.
@@ -18,12 +20,12 @@ public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
   @Nullable
   private ForceTrackEmitterBlockEntity emitter;
 
-  public ForceTrackBlockEntity() {
-    this(RailcraftBlockEntityTypes.FORCE_TRACK.get());
+  public ForceTrackBlockEntity(BlockPos blockPos, BlockState blockState) {
+    this(RailcraftBlockEntityTypes.FORCE_TRACK.get(), blockPos, blockState);
   }
 
-  public ForceTrackBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public ForceTrackBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
   @Override

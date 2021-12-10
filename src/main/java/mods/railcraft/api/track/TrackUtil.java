@@ -11,20 +11,20 @@ import javax.annotation.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.item.TrackPlacer;
 import mods.railcraft.api.item.TrackTypeLike;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.Property;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 /**
  * A number of utility functions related to rails.
@@ -33,7 +33,7 @@ import net.minecraft.world.server.ServerWorld;
  */
 public final class TrackUtil {
 
-  public static BlockState setShape(AbstractRailBlock block, @Nullable RailShape trackShape) {
+  public static BlockState setShape(BaseRailBlock block, @Nullable RailShape trackShape) {
     @SuppressWarnings("deprecation")
     Property<RailShape> property = block.getShapeProperty();
     BlockState state = block.defaultBlockState();
@@ -58,21 +58,21 @@ public final class TrackUtil {
    * @return true if successful
    * @see TrackPlacer
    */
-  public static boolean placeRailAt(ItemStack stack, ServerWorld world, BlockPos pos,
+  public static boolean placeRailAt(ItemStack stack, ServerLevel world, BlockPos pos,
       RailShape trackShape) {
     if (stack.getItem() instanceof TrackPlacer)
       return ((TrackPlacer) stack.getItem()).placeTrack(stack.copy(),
           RailcraftFakePlayer.get(world, pos.relative(Direction.UP)), world, pos, trackShape);
     if (stack.getItem() instanceof BlockItem) {
       Block block = ((BlockItem) stack.getItem()).getBlock();
-      if (block instanceof AbstractRailBlock) {
-        BlockState blockState = setShape((AbstractRailBlock) block, trackShape);
+      if (block instanceof BaseRailBlock) {
+        BlockState blockState = setShape((BaseRailBlock) block, trackShape);
         boolean success = world.setBlockAndUpdate(pos, blockState);
         if (success) {
           SoundType soundType = block.getSoundType(blockState, world, pos, null);
           world.playSound(null, pos,
               soundType.getPlaceSound(),
-              SoundCategory.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F,
+              SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F,
               soundType.getPitch() * 0.8F);
         }
         return success;
@@ -81,7 +81,7 @@ public final class TrackUtil {
     return false;
   }
 
-  public static boolean placeRailAt(ItemStack stack, ServerWorld world, BlockPos pos) {
+  public static boolean placeRailAt(ItemStack stack, ServerLevel world, BlockPos pos) {
     return placeRailAt(stack, world, pos, RailShape.NORTH_SOUTH);
   }
 
@@ -104,10 +104,10 @@ public final class TrackUtil {
    * @param cart The cart to check
    * @return True if being held
    */
-  public static boolean isCartLocked(AbstractMinecartEntity cart) {
+  public static boolean isCartLocked(AbstractMinecart cart) {
     BlockPos pos = cart.blockPosition();
 
-    if (AbstractRailBlock.isRail(cart.level, pos.below())) {
+    if (BaseRailBlock.isRail(cart.level, pos.below())) {
       pos = pos.below();
     }
 
@@ -116,16 +116,16 @@ public final class TrackUtil {
         ((LockingTrack) blockState.getBlock()).isCartLocked(cart);
   }
 
-  public static int countAdjacentTracks(World world, BlockPos pos) {
+  public static int countAdjacentTracks(Level world, BlockPos pos) {
     return (int) Direction.Plane.HORIZONTAL.stream()
         .filter(side -> isTrackFuzzyAt(world, pos.relative(side)))
         .count();
   }
 
-  public static boolean isTrackFuzzyAt(World world, BlockPos pos) {
-    return AbstractRailBlock.isRail(world, pos)
-        || (AbstractRailBlock.isRail(world, pos.above())
-            || AbstractRailBlock.isRail(world, pos.below()));
+  public static boolean isTrackFuzzyAt(Level world, BlockPos pos) {
+    return BaseRailBlock.isRail(world, pos)
+        || (BaseRailBlock.isRail(world, pos.above())
+            || BaseRailBlock.isRail(world, pos.below()));
   }
 
   public static TrackType getTrackType(ItemStack stack) {

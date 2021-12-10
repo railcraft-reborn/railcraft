@@ -3,19 +3,19 @@ package mods.railcraft.util;
 import java.util.Arrays;
 import java.util.Random;
 import javax.annotation.Nullable;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 public final class MiscTools {
 
@@ -29,24 +29,24 @@ public final class MiscTools {
   /**
    * Same as {@link net.minecraft.block.Block#rayTrace(BlockPos, Vector3d, Vector3d, AxisAlignedBB)}
    */
-  public static @Nullable RayTraceResult rayTrace(BlockPos pos, Vector3d start, Vector3d end,
+  public static @Nullable HitResult rayTrace(BlockPos pos, Vec3 start, Vec3 end,
       VoxelShape shape) {
-    Vector3d vec3d = start.subtract(pos.getX(), pos.getY(), pos.getZ());
-    Vector3d vec3d1 = end.subtract(pos.getX(), pos.getY(), pos.getZ());
-    BlockRayTraceResult raytraceresult = shape.clip(vec3d, vec3d1, pos);
+    Vec3 vec3d = start.subtract(pos.getX(), pos.getY(), pos.getZ());
+    Vec3 vec3d1 = end.subtract(pos.getX(), pos.getY(), pos.getZ());
+    BlockHitResult raytraceresult = shape.clip(vec3d, vec3d1, pos);
     return raytraceresult == null ? null
-        : new BlockRayTraceResult(
+        : new BlockHitResult(
             raytraceresult.getLocation().add(pos.getX(), pos.getY(), pos.getZ()),
             raytraceresult.getDirection(),
             pos, raytraceresult.isInside());
   }
 
-  public static @Nullable RayTraceResult rayTracePlayerLook(PlayerEntity player) {
+  public static @Nullable HitResult rayTracePlayerLook(Player player) {
     float reachAttribute = (float) player
         .getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
     double reachDistance = player.isCreative() ? reachAttribute : reachAttribute - 0.5F;
-    RayTraceResult hitResult = player.pick(reachDistance, 1.0F, false);
-    Vector3d eyePosition = player.getEyePosition(1.0F);
+    HitResult hitResult = player.pick(reachDistance, 1.0F, false);
+    Vec3 eyePosition = player.getEyePosition(1.0F);
     boolean flag = !player.isCreative() && reachDistance > 3.0D;
     double distance = player.isCreative() ? 6.0D : reachDistance;
     if (player.isCreative()) {
@@ -58,20 +58,20 @@ public final class MiscTools {
       distance = hitResult.getLocation().distanceToSqr(eyePosition);
     }
 
-    Vector3d viewVector = player.getViewVector(1.0F);
-    Vector3d reachPosition = eyePosition.add(
+    Vec3 viewVector = player.getViewVector(1.0F);
+    Vec3 reachPosition = eyePosition.add(
         viewVector.x * reachDistance, viewVector.y * reachDistance, viewVector.z * reachDistance);
-    AxisAlignedBB boundingBox = player.getBoundingBox()
+    AABB boundingBox = player.getBoundingBox()
         .expandTowards(viewVector.scale(reachDistance))
         .inflate(1.0D, 1.0D, 1.0D);
-    EntityRayTraceResult entityRayTraceResult = ProjectileHelper.getEntityHitResult(player,
+    EntityHitResult entityRayTraceResult = ProjectileUtil.getEntityHitResult(player,
         eyePosition, reachPosition, boundingBox,
         entity -> !entity.isSpectator() && entity.isPickable(), distance);
     if (entityRayTraceResult != null) {
-      Vector3d entityHitLocation = entityRayTraceResult.getLocation();
+      Vec3 entityHitLocation = entityRayTraceResult.getLocation();
       double entityHitDistance = eyePosition.distanceToSqr(entityHitLocation);
       if (flag && entityHitDistance > 9.0D) {
-        return BlockRayTraceResult.miss(entityHitLocation,
+        return BlockHitResult.miss(entityHitLocation,
             Direction.getNearest(viewVector.x, viewVector.y, viewVector.z),
             new BlockPos(entityHitLocation));
       } else if (entityHitDistance < distance || hitResult == null) {
@@ -87,10 +87,10 @@ public final class MiscTools {
    * @param player PlayerEntity
    * @return a side value 0-5
    */
-  public static @Nullable Direction getCurrentMousedOverSide(PlayerEntity player) {
-    RayTraceResult mouseOver = rayTracePlayerLook(player);
-    if (mouseOver instanceof BlockRayTraceResult)
-      return ((BlockRayTraceResult) mouseOver).getDirection();
+  public static @Nullable Direction getCurrentMousedOverSide(Player player) {
+    HitResult mouseOver = rayTracePlayerLook(player);
+    if (mouseOver instanceof BlockHitResult)
+      return ((BlockHitResult) mouseOver).getDirection();
     return null;
   }
 
@@ -103,9 +103,9 @@ public final class MiscTools {
     return Direction.orderedByNearest(entity)[0];
   }
 
-  public static @Nullable Direction getSideFacingTrack(World world, BlockPos pos) {
+  public static @Nullable Direction getSideFacingTrack(Level world, BlockPos pos) {
     return Arrays.stream(Direction.values())
-        .filter(dir -> AbstractRailBlock.isRail(world, pos.relative(dir)))
+        .filter(dir -> BaseRailBlock.isRail(world, pos.relative(dir)))
         .findFirst()
         .orElse(null);
   }

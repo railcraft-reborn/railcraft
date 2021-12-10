@@ -6,11 +6,11 @@ import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -36,7 +36,7 @@ public class StandardTank extends FluidTank {
   private boolean disableDrain;
   private boolean disableFill;
 
-  private final List<ITextProperties> tooltip = new ArrayList<>();
+  private final List<Component> tooltip = new ArrayList<>();
 
   public StandardTank(int capacity) {
     super(capacity);
@@ -181,7 +181,7 @@ public class StandardTank extends FluidTank {
     }
   }
 
-  public List<? extends ITextProperties> getTooltip() {
+  public List<Component> getTooltip() {
     return this.tooltip;
   }
 
@@ -199,11 +199,11 @@ public class StandardTank extends FluidTank {
     }
 
     this.tooltip.add(
-        new StringTextComponent(String.format(Locale.ENGLISH, "%,d / %,d", amount, getCapacity()))
-        .withStyle(TextFormatting.GRAY));
+        new TextComponent(String.format(Locale.ENGLISH, "%,d / %,d", amount, getCapacity()))
+        .withStyle(ChatFormatting.GRAY));
   }
 
-  protected ITextProperties getFluidNameToolTip(FluidStack fluidStack) {
+  protected Component getFluidNameToolTip(FluidStack fluidStack) {
     Rarity rarity = fluidStack.getFluid().getAttributes().getRarity(fluidStack);
     if (rarity == null) {
       rarity = Rarity.COMMON;

@@ -9,5 +9,5 @@
 @ParametersAreNonnullByDefault
 package mods.railcraft.api.carts;
 
-import mcp.MethodsReturnNonnullByDefault;
 import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;

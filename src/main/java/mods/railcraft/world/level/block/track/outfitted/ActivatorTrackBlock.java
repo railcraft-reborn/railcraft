@@ -2,10 +2,10 @@ package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ActivatorTrackBlock extends PoweredOutfittedTrackBlock {
 
@@ -16,14 +16,14 @@ public class ActivatorTrackBlock extends PoweredOutfittedTrackBlock {
   }
 
   @Override
-  public void onMinecartPass(BlockState blockState, World level, BlockPos pos,
-      AbstractMinecartEntity cart) {
+  public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
+      AbstractMinecart cart) {
     cart.activateMinecart(pos.getX(), pos.getY(), pos.getZ(),
         this.isPowered(blockState, level, pos));
   }
 
   @Override
-  public int getPowerPropagation(BlockState blockState, World level, BlockPos pos) {
+  public int getPowerPropagation(BlockState blockState, Level level, BlockPos pos) {
     return POWER_PROPAGATION;
   }
 }

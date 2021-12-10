@@ -8,7 +8,7 @@ package mods.railcraft.api.signal;
 
 import java.util.UUID;
 import mods.railcraft.api.core.BlockEntityLike;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>

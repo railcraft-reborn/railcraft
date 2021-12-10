@@ -7,13 +7,13 @@
 
 package mods.railcraft.api.core;
 
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 public interface Syncable {
 
-  default void writeSyncData(PacketBuffer data) {}
+  default void writeSyncData(FriendlyByteBuf data) {}
 
-  default void readSyncData(PacketBuffer data) {}
+  default void readSyncData(FriendlyByteBuf data) {}
 
   void syncToClient();
 }

@@ -9,23 +9,22 @@ import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage
 import mods.railcraft.network.play.SetFluidManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
-import mods.railcraft.network.play.SetMenuStringMessage;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
 import mods.railcraft.network.play.SyncEntityMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 /**
  * Instance handlig all of railcraft network IOs.
  */
 public enum NetworkChannel {
 
-  PLAY(new ResourceLocation(Railcraft.ID, "play")) {
+  GAME(new ResourceLocation(Railcraft.ID, "game")) {
     @Override
     public void registerMessages(SimpleChannel simpleChannel) {
       simpleChannel
@@ -40,74 +39,68 @@ public enum NetworkChannel {
           .decoder(PacketEffect::decode)
           .consumer(PacketEffect::handle)
           .add();
-      simpleChannel
-          .messageBuilder(SetMenuStringMessage.class, 0x02, NetworkDirection.PLAY_TO_CLIENT)
-          .encoder(SetMenuStringMessage::encode)
-          .decoder(SetMenuStringMessage::decode)
-          .consumer(SetMenuStringMessage::handle)
-          .add();
-      simpleChannel.messageBuilder(SyncWidgetMessage.class, 0x03, NetworkDirection.PLAY_TO_CLIENT)
+      simpleChannel.messageBuilder(SyncWidgetMessage.class, 0x02, NetworkDirection.PLAY_TO_CLIENT)
           .encoder(SyncWidgetMessage::encode)
           .decoder(SyncWidgetMessage::decode)
           .consumer(SyncWidgetMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(SetLocomotiveAttributesMessage.class, 0x04,
+          .messageBuilder(SetLocomotiveAttributesMessage.class, 0x03,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetLocomotiveAttributesMessage::encode)
           .decoder(SetLocomotiveAttributesMessage::decode)
           .consumer(SetLocomotiveAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(SetSignalControllerBoxAttributesMessage.class, 0x05,
+          .messageBuilder(SetSignalControllerBoxAttributesMessage.class, 0x04,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSignalControllerBoxAttributesMessage::encode)
           .decoder(SetSignalControllerBoxAttributesMessage::decode)
           .consumer(SetSignalControllerBoxAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(SetAnalogSignalControllerBoxAttributesMessage.class, 0x06,
+          .messageBuilder(SetAnalogSignalControllerBoxAttributesMessage.class, 0x05,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetAnalogSignalControllerBoxAttributesMessage::encode)
           .decoder(SetAnalogSignalControllerBoxAttributesMessage::decode)
           .consumer(SetAnalogSignalControllerBoxAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(SetSignalCapacitorBoxAttributesMessage.class, 0x07,
+          .messageBuilder(SetSignalCapacitorBoxAttributesMessage.class, 0x06,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSignalCapacitorBoxAttributesMessage::encode)
           .decoder(SetSignalCapacitorBoxAttributesMessage::decode)
           .consumer(SetSignalCapacitorBoxAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(LinkedCartsMessage.class, 0x08, NetworkDirection.PLAY_TO_CLIENT)
+          .messageBuilder(LinkedCartsMessage.class, 0x07, NetworkDirection.PLAY_TO_CLIENT)
           .encoder(LinkedCartsMessage::encode)
           .decoder(LinkedCartsMessage::decode)
           .consumer(LinkedCartsMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(SetActionSignalBoxAttributesMessage.class, 0x09,
+          .messageBuilder(SetActionSignalBoxAttributesMessage.class, 0x08,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetActionSignalBoxAttributesMessage::encode)
           .decoder(SetActionSignalBoxAttributesMessage::decode)
           .consumer(SetActionSignalBoxAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(SetSwitchTrackMotorAttributesMessage.class, 0x0A,
+          .messageBuilder(SetSwitchTrackMotorAttributesMessage.class, 0x09,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSwitchTrackMotorAttributesMessage::encode)
           .decoder(SetSwitchTrackMotorAttributesMessage::decode)
           .consumer(SetSwitchTrackMotorAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(SetItemManipulatorAttributesMessage.class, 0x0B,
+          .messageBuilder(SetItemManipulatorAttributesMessage.class, 0x0A,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetItemManipulatorAttributesMessage::encode)
           .decoder(SetItemManipulatorAttributesMessage::decode)
           .consumer(SetItemManipulatorAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(SetFluidManipulatorAttributesMessage.class, 0x0C,
+          .messageBuilder(SetFluidManipulatorAttributesMessage.class, 0x0B,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetFluidManipulatorAttributesMessage::encode)
           .decoder(SetFluidManipulatorAttributesMessage::decode)
@@ -146,7 +139,7 @@ public enum NetworkChannel {
 
   public static void registerAll() {
     if (!loaded) {
-      for (NetworkChannel channel : NetworkChannel.values()) {
+      for (var channel : NetworkChannel.values()) {
         channel.registerMessages(channel.simpleChannel);
       }
       loaded = true;

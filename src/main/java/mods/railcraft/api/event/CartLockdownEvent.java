@@ -7,8 +7,8 @@
 
 package mods.railcraft.api.event;
 
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
@@ -16,10 +16,10 @@ import net.minecraftforge.eventbus.api.Event;
  */
 public abstract class CartLockdownEvent extends Event {
 
-  public final AbstractMinecartEntity cart;
+  public final AbstractMinecart cart;
   public final BlockPos pos;
 
-  protected CartLockdownEvent(AbstractMinecartEntity cart, BlockPos pos) {
+  protected CartLockdownEvent(AbstractMinecart cart, BlockPos pos) {
     this.cart = cart;
     this.pos = pos;
   }
@@ -30,7 +30,7 @@ public abstract class CartLockdownEvent extends Event {
    */
   public static final class Lock extends CartLockdownEvent {
 
-    public Lock(AbstractMinecartEntity cart, BlockPos pos) {
+    public Lock(AbstractMinecart cart, BlockPos pos) {
       super(cart, pos);
     }
   }
@@ -41,7 +41,7 @@ public abstract class CartLockdownEvent extends Event {
    */
   public static final class Release extends CartLockdownEvent {
 
-    public Release(AbstractMinecartEntity cart, BlockPos pos) {
+    public Release(AbstractMinecart cart, BlockPos pos) {
       super(cart, pos);
     }
   }

@@ -1,22 +1,22 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.world.level.block.entity.ManipulatorBlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
 
 public class ManipulatorMenu<T extends ManipulatorBlockEntity> extends RailcraftMenu {
 
   private T manipulator;
   private final boolean hasCartFilter;
 
-  protected ManipulatorMenu(ContainerType<?> type, int id, PlayerInventory inventory,
+  protected ManipulatorMenu(MenuType<?> type, int id, Inventory inventory,
       T manipulator) {
     this(type, id, inventory, manipulator, true);
   }
 
-  protected ManipulatorMenu(ContainerType<?> type, int id, PlayerInventory inventory, T manipulator,
+  protected ManipulatorMenu(MenuType<?> type, int id, Inventory inventory, T manipulator,
       boolean hasCartFilter) {
     super(type, id, inventory);
     this.manipulator = manipulator;
@@ -49,7 +49,7 @@ public class ManipulatorMenu<T extends ManipulatorBlockEntity> extends Railcraft
   protected void addSlots(T manipulator) {}
 
   @Override
-  public boolean stillValid(PlayerEntity player) {
+  public boolean stillValid(Player player) {
     return this.manipulator.stillValid(player);
   }
 

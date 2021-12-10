@@ -2,44 +2,38 @@ package mods.railcraft.util;
 
 import java.util.UUID;
 import javax.annotation.Nullable;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.item.ActivationBlockingItem;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.OpEntry;
-import net.minecraft.server.management.PlayerProfileCache;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.LogicalSidedProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
 public final class PlayerUtil {
 
-  public static void writeOwnerToNBT(CompoundNBT nbt, GameProfile owner) {
+  public static void writeOwnerToNBT(CompoundTag nbt, GameProfile owner) {
     if (owner.getName() != null)
       nbt.putString("owner", owner.getName());
     if (owner.getId() != null)
       nbt.putString("ownerId", owner.getId().toString());
   }
 
-  public static GameProfile readOwnerFromNBT(CompoundNBT nbt) {
+  public static GameProfile readOwnerFromNBT(CompoundTag nbt) {
     String ownerName = RailcraftConstantsAPI.UNKNOWN_PLAYER;
-    if (nbt.contains("owner", Constants.NBT.TAG_STRING))
+    if (nbt.contains("owner", Tag.TAG_STRING))
       ownerName = nbt.getString("owner");
     UUID ownerUUID = null;
     if (nbt.hasUUID("ownerId"))
@@ -47,28 +41,28 @@ public final class PlayerUtil {
     return new GameProfile(ownerUUID, ownerName);
   }
 
-  public static @Nullable PlayerEntity getPlayer(World world, GameProfile gameProfile) {
+  public static @Nullable Player getPlayer(Level world, GameProfile gameProfile) {
     UUID playerId = gameProfile.getId();
     if (playerId != null) {
-      PlayerEntity player = world.getPlayerByUUID(playerId);
+      Player player = world.getPlayerByUUID(playerId);
       if (player != null)
         return player;
     }
     return null;
   }
 
-  public static PlayerEntity getItemThrower(ItemEntity item) {
+  public static Player getItemThrower(ItemEntity item) {
     UUID thrower = item.getThrower();
-    PlayerEntity player = null;
+    Player player = null;
     if (thrower != null)
       player = item.level.getPlayerByUUID(item.getThrower());
     if (player == null)
-      player = RailcraftFakePlayer.get((ServerWorld) item.level, item.blockPosition());
+      player = RailcraftFakePlayer.get((ServerLevel) item.level, item.blockPosition());
     return player;
   }
 
-  public static PlayerEntity getOwnerEntity(GameProfile owner, ServerWorld world, BlockPos pos) {
-    PlayerEntity player = null;
+  public static Player getOwnerEntity(GameProfile owner, ServerLevel world, BlockPos pos) {
+    Player player = null;
     if (!RailcraftConstantsAPI.UNKNOWN_PLAYER.equals(owner.getName()))
       player = PlayerUtil.getPlayer(world, owner);
     if (player == null)
@@ -76,34 +70,29 @@ public final class PlayerUtil {
     return player;
   }
 
-  public static ITextComponent getUsername(World world, GameProfile gameProfile) {
+  public static Component getUsername(Level world, GameProfile gameProfile) {
     UUID playerId = gameProfile.getId();
     if (playerId != null) {
-      PlayerEntity player = world.getPlayerByUUID(playerId);
+      Player player = world.getPlayerByUUID(playerId);
       if (player != null)
         return player.getDisplayName();
     }
     String username = gameProfile.getName();
-    return new StringTextComponent(
+    return new TextComponent(
         Strings.isEmpty(username) ? RailcraftConstantsAPI.UNKNOWN_PLAYER : username);
   }
 
-  @SuppressWarnings("unused")
-  public static ITextComponent getUsername(World world, @Nullable UUID playerId) {
+  public static Component getUsername(Level world, @Nullable UUID playerId) {
     if (playerId != null) {
-      PlayerEntity player = world.getPlayerByUUID(playerId);
+      Player player = world.getPlayerByUUID(playerId);
       if (player != null)
         return player.getDisplayName();
     }
-    return new StringTextComponent(RailcraftConstantsAPI.UNKNOWN_PLAYER);
+    return new TextComponent(RailcraftConstantsAPI.UNKNOWN_PLAYER);
   }
 
-  public static boolean isOwnerOrOp(GameProfile owner, PlayerEntity player) {
-    return isOwnerOrOp(owner, player.getGameProfile());
-  }
-
-  public static boolean isOwnerOrOp(@Nullable GameProfile owner, @Nullable GameProfile accessor) {
-    return !(owner == null || accessor == null) && (owner.equals(accessor) || isPlayerOp(accessor));
+  public static boolean isOwnerOrOp(GameProfile owner, Player player) {
+    return player.getGameProfile().equals(owner) || player.hasPermissions(2);
   }
 
   public static boolean isSamePlayer(GameProfile a, GameProfile b) {
@@ -112,31 +101,12 @@ public final class PlayerUtil {
     return a.getName() != null && a.getName().equals(b.getName());
   }
 
-  public static boolean isPlayerOp(GameProfile player) {
-    return getPermissionLevel(player) >= 2;
-  }
-
-  public static int getPermissionLevel(GameProfile gameProfile) {
-    MinecraftServer mcServer = getServer();
-    if (mcServer != null && mcServer.getPlayerList().isOp(gameProfile)) {
-      OpEntry opsEntry = mcServer.getPlayerList().getOps().get(gameProfile);
-      return opsEntry != null ? opsEntry.getLevel() : 0;
-    }
-    return 0;
-  }
-
-  public static boolean isPlayerConnected(GameProfile player) {
-    MinecraftServer mcServer = getServer();
-    return mcServer != null
-        && mcServer.getPlayerList().getPlayerByName(player.getName()) != null;
-  }
-
-  public static void swingArm(PlayerEntity player, Hand hand) {
+  public static void swingArm(Player player, InteractionHand hand) {
     player.swing(hand);
   }
 
-  public static boolean doesItemBlockActivation(PlayerEntity player, Hand hand) {
-    if (player.isShiftKeyDown() || hand == Hand.OFF_HAND)
+  public static boolean doesItemBlockActivation(Player player, InteractionHand hand) {
+    if (player.isShiftKeyDown() || hand == InteractionHand.OFF_HAND)
       return true;
     ItemStack heldItem = player.getItemInHand(hand);
     if (!heldItem.isEmpty()) {
@@ -144,21 +114,5 @@ public final class PlayerUtil {
           || Annotations.isAnnotatedDeepSearch(ActivationBlockingItem.class, heldItem.getItem());
     }
     return false;
-  }
-
-  public static GameProfile fillGameProfile(GameProfile profile) {
-    String name = profile.getName();
-    UUID id = profile.getId();
-    if (!StringUtils.isBlank(name) && id != null) {
-      return profile;
-    }
-    PlayerProfileCache cache = getServer().getProfileCache();
-    GameProfile filled = id == null ? cache.get(name) : cache.get(id);
-    return filled == null ? profile : filled;
-  }
-
-  @Nullable
-  private static MinecraftServer getServer() {
-    return LogicalSidedProvider.INSTANCE.<MinecraftServer>get(LogicalSide.SERVER);
   }
 }

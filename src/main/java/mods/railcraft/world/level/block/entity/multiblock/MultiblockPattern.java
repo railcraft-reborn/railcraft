@@ -4,10 +4,10 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-import net.minecraft.advancements.criterion.BlockPredicate;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.advancements.critereon.BlockPredicate;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,9 +15,11 @@ import org.apache.logging.log4j.Logger;
 /**
  * Multiblock pattern. ONLY FOR CUBE-LIKE STRUCTURES!
  *
- * <p>You are facing it in the Z axis (BACK/FOURTH), while LEFT-RIGHT is X, and UP/DOWN is Y.
+ * <p>
+ * You are facing it in the Z axis (BACK/FOURTH), while LEFT-RIGHT is X, and UP/DOWN is Y.
  */
 public class MultiblockPattern {
+
   private static final Logger logger = LogManager.getLogger();
   private final int sizeX;
   private final int sizeY;
@@ -26,8 +28,7 @@ public class MultiblockPattern {
   private final int offsetY;
   private final BlockPredicate[][][] pattern;
 
-  MultiblockPattern(BlockPredicate[][][] pattern,
-      int offsetX, int offsetY) {
+  private MultiblockPattern(BlockPredicate[][][] pattern, int offsetX, int offsetY) {
     this.offsetX = offsetX;
     this.offsetY = offsetY;
     // Z Y X
@@ -36,12 +37,12 @@ public class MultiblockPattern {
 
     int highestY = 0;
     int highestX = 0;
-    for (BlockPredicate[][] blocksY : pattern) {
+    for (var blocksY : pattern) {
       int yyLen = blocksY.length;
       if (yyLen > highestY) {
         highestY = yyLen;
       }
-      for (BlockPredicate[] blocksX : blocksY) {
+      for (var blocksX : blocksY) {
         int xxLen = blocksX.length;
         if (xxLen > highestX) {
           highestX = xxLen;
@@ -54,6 +55,7 @@ public class MultiblockPattern {
 
   /**
    * Gets BlockPos from the pattern.
+   * 
    * @param worldPos The target location
    * @param normal Used for offsetting
    * @return Iteratable list of the pattern's position
@@ -63,25 +65,26 @@ public class MultiblockPattern {
     int boxY = this.sizeY - 1;
     int boxZ = this.sizeZ - 1;
     BlockPos originPos = worldPos.offset(
-          (normal.getX() == 0) ? this.offsetX : 0,
-          this.offsetY, // this.offsetY
-          (normal.getZ() == 0) ? this.offsetX : 0);
+        (normal.getX() == 0) ? this.offsetX : 0,
+        this.offsetY, // this.offsetY
+        (normal.getZ() == 0) ? this.offsetX : 0);
 
     return BlockPos.betweenClosed(
         originPos, originPos.offset(
-          (normal.getX() == 0) ? boxX : normal.getX() * boxX, // positive or negative, but never 0
-          boxY, // you CANNOT assemble multiblocks on the top.
-          (normal.getZ() == 0) ? boxZ : normal.getZ() * boxZ));
+            (normal.getX() == 0) ? boxX : normal.getX() * boxX, // positive or negative, but never 0
+            boxY, // you CANNOT assemble multiblocks on the top.
+            (normal.getZ() == 0) ? boxZ : normal.getZ() * boxZ));
   }
 
   /**
    * Verifies the pattern.
+   * 
    * @param worldPos The targeted block's {@link BlockPos}.
    * @param normal The normal/face that the user clicked on.
    * @param currentLevel The current game world. Must be serverside.
    * @return TRUE if the pattern is valid, FALSE if not.
    */
-  public boolean verifyPattern(BlockPos worldPos, BlockPos normal, World currentLevel) {
+  public boolean verifyPattern(BlockPos worldPos, BlockPos normal, Level currentLevel) {
     if (currentLevel.isClientSide()) {
       return false;
     }
@@ -93,11 +96,9 @@ public class MultiblockPattern {
           1,
           (normal.getZ() == 0) ? -this.offsetX : (normal.getZ() == -1) ? this.sizeZ - 1 : 0);
       BlockPredicate predicate =
-          this.pattern[denormalizedPos.getZ()]
-            [denormalizedPos.getY()]
-            [denormalizedPos.getX()];
+          this.pattern[denormalizedPos.getZ()][denormalizedPos.getY()][denormalizedPos.getX()];
 
-      if (!predicate.matches((ServerWorld)currentLevel, pos)) {
+      if (!predicate.matches((ServerLevel) currentLevel, pos)) {
         logger.info("verifyPattern: Multiblock failed at POS: " + pos.toShortString());
         return false;
       }
@@ -120,6 +121,7 @@ public class MultiblockPattern {
 
     /**
      * Defines a row (both X and Y) of the recipie's pattern.
+     * 
      * @param pattern A list (like [[b,b,b],[b,b,b],[b,b,b]]), this is a flat cut
      * @return this, for chaning functions.
      */
@@ -135,10 +137,10 @@ public class MultiblockPattern {
       // chaos! https://stackoverflow.com/questions/34744288/java-3d-arraylist-into-a-3d-array
       BlockPredicate[][][] patternArray =
           this.pattern.stream().map(u1 -> // Z
-              u1.stream().map(u2 -> // Y
-                  u2.toArray(new BlockPredicate[0])) // X
-                  .toArray(BlockPredicate[][]::new))
-                  .toArray(BlockPredicate[][][]::new);
+          u1.stream().map(u2 -> // Y
+          u2.toArray(new BlockPredicate[0])) // X
+              .toArray(BlockPredicate[][]::new))
+              .toArray(BlockPredicate[][][]::new);
       return new MultiblockPattern(patternArray, this.offsetX, this.offsetZ);
     }
   }

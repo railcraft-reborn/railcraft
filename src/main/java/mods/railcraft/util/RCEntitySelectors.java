@@ -2,10 +2,10 @@ package mods.railcraft.util;
 
 import java.util.Objects;
 import java.util.function.Predicate;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.EntitySelector;
 
 /**
  * Created by CovertJaguar on 10/19/2018 for Railcraft.
@@ -16,8 +16,8 @@ public enum RCEntitySelectors implements Predicate<Entity> {
 
   LIVING {
     private final Predicate<Entity> predicate =
-        Predicates.and(Objects::nonNull, EntityPredicates.ENTITY_STILL_ALIVE,
-            EntityPredicates.NO_SPECTATORS);
+        Predicates.and(Objects::nonNull, EntitySelector.ENTITY_STILL_ALIVE,
+            EntitySelector.NO_SPECTATORS);
 
     @Override
     public boolean test(Entity entity) {
@@ -28,8 +28,8 @@ public enum RCEntitySelectors implements Predicate<Entity> {
     @Override
     public boolean test(Entity entity) {
       return LIVING.test(entity)
-          && EntityPredicates.ATTACK_ALLOWED.test(entity)
-          && !(entity.getVehicle() instanceof AbstractMinecartEntity)
+          && entity.isAttackable()
+          && !(entity.getVehicle() instanceof AbstractMinecart)
           && entity instanceof LivingEntity
           && ((LivingEntity) entity).getMaxHealth() < 100;
     }

@@ -1,15 +1,15 @@
 package mods.railcraft.world.item.enchantment;
 
 import mods.railcraft.api.item.Crowbar;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class RailcraftToolEnchantment extends Enchantment {
 
-  public RailcraftToolEnchantment(Rarity rarity, EquipmentSlotType... slots) {
-    super(rarity, EnchantmentType.DIGGER, slots);
+  public RailcraftToolEnchantment(Rarity rarity, EquipmentSlot... slots) {
+    super(rarity, EnchantmentCategory.DIGGER, slots);
   }
 
   @Override

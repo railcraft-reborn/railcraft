@@ -1,8 +1,8 @@
 package mods.railcraft.world.item.enchantment;
 
 import mods.railcraft.api.item.Crowbar;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Boost enchantment.
@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 public class SmackEnchantment extends RailcraftToolEnchantment {
 
   public SmackEnchantment(Rarity rarity) {
-    super(rarity, EquipmentSlotType.MAINHAND);
+    super(rarity, EquipmentSlot.MAINHAND);
   }
 
   @Override

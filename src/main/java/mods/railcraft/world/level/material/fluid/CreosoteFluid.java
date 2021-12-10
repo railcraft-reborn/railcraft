@@ -2,22 +2,22 @@ package mods.railcraft.world.level.material.fluid;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.FlowingFluid;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Item;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.Item;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public class CreosoteFluid extends FlowingFluid {
@@ -36,19 +36,19 @@ public class CreosoteFluid extends FlowingFluid {
   }
 
   @Override
-  protected boolean canBeReplacedWith(FluidState fluidState, IBlockReader reader,
+  protected boolean canBeReplacedWith(FluidState fluidState, BlockGetter reader,
       BlockPos blockPos, Fluid fluid, Direction direction) {
     return false;
   }
 
   @Override
-  public Vector3d getFlow(IBlockReader reader, BlockPos blockPos,
+  public Vec3 getFlow(BlockGetter reader, BlockPos blockPos,
       FluidState fluidState) {
-    return Vector3d.ZERO;
+    return Vec3.ZERO;
   }
 
   @Override
-  public int getTickDelay(IWorldReader worldReader) {
+  public int getTickDelay(LevelReader worldReader) {
     return 5;
   }
 
@@ -73,9 +73,9 @@ public class CreosoteFluid extends FlowingFluid {
   }
 
   @Override
-  public VoxelShape getShape(FluidState fluidState, IBlockReader blockReader,
+  public VoxelShape getShape(FluidState fluidState, BlockGetter blockReader,
       BlockPos blockPos) {
-    return VoxelShapes.empty();
+    return Shapes.empty();
   }
 
   @Override
@@ -95,15 +95,15 @@ public class CreosoteFluid extends FlowingFluid {
   }
 
   @Override
-  protected void beforeDestroyingBlock(IWorld world, BlockPos blockPos, BlockState blockState) {}
+  protected void beforeDestroyingBlock(LevelAccessor world, BlockPos blockPos, BlockState blockState) {}
 
   @Override
-  protected int getSlopeFindDistance(IWorldReader world) {
+  protected int getSlopeFindDistance(LevelReader world) {
     return 4;
   }
 
   @Override
-  protected int getDropOff(IWorldReader world) {
+  protected int getDropOff(LevelReader world) {
     return 1;
   }
 

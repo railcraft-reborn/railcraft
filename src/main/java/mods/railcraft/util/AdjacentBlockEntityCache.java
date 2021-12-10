@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import javax.annotation.Nullable;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -20,12 +20,12 @@ public final class AdjacentBlockEntityCache {
   private static final int DELAY_MAX = 2400;
   private static final int DELAY_STEP = 2;
   private final Timer[] timer = new Timer[6];
-  private final TileEntity[] cache = new TileEntity[6];
+  private final BlockEntity[] cache = new BlockEntity[6];
   private final int[] delay = new int[6];
-  private final TileEntity blockEntity;
+  private final BlockEntity blockEntity;
   private final Set<ICacheListener> listeners = new LinkedHashSet<>();
 
-  public AdjacentBlockEntityCache(TileEntity blockEntity) {
+  public AdjacentBlockEntityCache(BlockEntity blockEntity) {
     this.blockEntity = blockEntity;
     Arrays.fill(this.delay, DELAY_MIN);
     for (int i = 0; i < this.timer.length; i++) {
@@ -37,7 +37,7 @@ public final class AdjacentBlockEntityCache {
     this.listeners.add(listener);
   }
 
-  private @Nullable TileEntity searchSide(Direction side) {
+  private @Nullable BlockEntity searchSide(Direction side) {
     return LevelUtil.getBlockEntityWeak(this.blockEntity.getLevel(),
         this.blockEntity.getBlockPos().relative(side));
   }
@@ -59,7 +59,7 @@ public final class AdjacentBlockEntityCache {
     Arrays.stream(this.timer).forEach(Timer::reset);
   }
 
-  protected void setTile(Direction side, @Nullable TileEntity tile) {
+  protected void setTile(Direction side, @Nullable BlockEntity tile) {
     int s = side.ordinal();
     if (cache[s] != tile) {
       cache[s] = tile;
@@ -67,7 +67,7 @@ public final class AdjacentBlockEntityCache {
     }
   }
 
-  private void changed(Direction side, @Nullable TileEntity newTile) {
+  private void changed(Direction side, @Nullable BlockEntity newTile) {
     listeners.forEach(l -> l.changed(side, newTile));
   }
 
@@ -77,13 +77,13 @@ public final class AdjacentBlockEntityCache {
     return pos.getX() >> 4 == sidePos.getX() >> 4 && pos.getZ() >> 4 == sidePos.getZ() >> 4;
   }
 
-  public Optional<TileEntity> onSide(Direction side) {
+  public Optional<BlockEntity> onSide(Direction side) {
     return Optional.ofNullable(getTileOnSide(side));
   }
 
-  public @Nullable TileEntity getTileOnSide(Direction side) {
+  public @Nullable BlockEntity getTileOnSide(Direction side) {
     if (!isInSameChunk(side)) {
-      TileEntity tile = searchSide(side);
+      BlockEntity tile = searchSide(side);
       changed(side, tile);
       return tile;
     }
@@ -121,7 +121,7 @@ public final class AdjacentBlockEntityCache {
 
   public interface ICacheListener {
 
-    void changed(Direction side, @Nullable TileEntity newBlockEntity);
+    void changed(Direction side, @Nullable BlockEntity newBlockEntity);
 
     void purge();
   }

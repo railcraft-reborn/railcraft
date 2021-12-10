@@ -1,14 +1,14 @@
 package mods.railcraft.client.util;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import com.mojang.math.Matrix4f;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RenderUtil {
@@ -80,11 +80,11 @@ public class RenderUtil {
     return (color >> 24 & 0xFF) / 255.0F;
   }
 
-  public static void renderBlockHoverText(BlockPos blockPos, ITextComponent text,
-      MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight) {
+  public static void renderBlockHoverText(BlockPos blockPos, Component text,
+      PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight) {
     if (minecraft.hitResult != null
-        && minecraft.hitResult.getType() == RayTraceResult.Type.BLOCK
-        && ((BlockRayTraceResult) minecraft.hitResult).getBlockPos().equals(blockPos)) {
+        && minecraft.hitResult.getType() == HitResult.Type.BLOCK
+        && ((BlockHitResult) minecraft.hitResult).getBlockPos().equals(blockPos)) {
       matrixStack.pushPose();
       {
         matrixStack.translate(0.5D, 1.5D, 0.5D);
@@ -94,8 +94,8 @@ public class RenderUtil {
     }
   }
 
-  public static void renderWorldText(FontRenderer font, ITextComponent text,
-      MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight) {
+  public static void renderWorldText(Font font, Component text,
+      PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight) {
     matrixStack.pushPose();
     {
       matrixStack.mulPose(minecraft.gameRenderer.getMainCamera().rotation());

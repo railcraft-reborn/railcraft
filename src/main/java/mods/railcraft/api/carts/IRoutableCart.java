@@ -8,7 +8,7 @@
 package mods.railcraft.api.carts;
 
 import mods.railcraft.api.core.Ownable;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>

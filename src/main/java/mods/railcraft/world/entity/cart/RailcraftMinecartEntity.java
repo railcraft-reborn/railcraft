@@ -2,57 +2,55 @@ package mods.railcraft.world.entity.cart;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.Nullable;
-
 import mods.railcraft.api.carts.IItemCart;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.util.inventory.wrappers.InventoryMapper;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.item.minecart.ContainerMinecartEntity;
-import net.minecraft.entity.monster.piglin.PiglinTasks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import mods.railcraft.util.container.wrappers.ContainerMapper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.monster.piglin.PiglinAi;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.AbstractMinecartContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraftforge.network.NetworkHooks;
 
 /**
  * Basetype of RC minecarts. It also contains some generic code that most carts will find useful.
  *
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
+public abstract class RailcraftMinecartEntity extends AbstractMinecartContainer
     implements SeasonalCart, IItemCart {
 
-  private static final DataParameter<Byte> SEASON =
-      EntityDataManager.defineId(RailcraftMinecartEntity.class, DataSerializers.BYTE);
+  private static final EntityDataAccessor<Byte> SEASON =
+      SynchedEntityData.defineId(RailcraftMinecartEntity.class, EntityDataSerializers.BYTE);
 
   private final Direction[] travelDirectionHistory = new Direction[2];
   protected @Nullable Direction travelDirection;
   protected @Nullable Direction verticalTravelDirection;
-  protected List<InventoryMapper> invMappers = new ArrayList<>();
+  protected List<ContainerMapper> invMappers = new ArrayList<>();
 
-  protected RailcraftMinecartEntity(EntityType<?> type, World world) {
+  protected RailcraftMinecartEntity(EntityType<?> type, Level world) {
     super(type, world);
   }
 
   protected RailcraftMinecartEntity(EntityType<?> type, double x, double y, double z,
-      World world) {
+      Level world) {
     super(type, x, y, z, world);
   }
 
@@ -73,27 +71,27 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundNBT tag) {
+  protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
     tag.putString("season", this.getSeason().getSerializedName());
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundNBT tag) {
+  protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
     this.setSeason(Season.getByName(tag.getString("season")).orElse(Season.DEFAULT));
   }
 
   @Override
-  public ActionResultType interact(PlayerEntity player, Hand hand) {
+  public InteractionResult interact(Player player, InteractionHand hand) {
     if (!player.level.isClientSide()) {
       if (this.hasMenu()) {
-        NetworkHooks.openGui((ServerPlayerEntity) player, this,
+        NetworkHooks.openGui((ServerPlayer) player, this,
             data -> data.writeVarInt(this.getId()));
       }
-      PiglinTasks.angerNearbyPiglins(player, true);
+      PiglinAi.angerNearbyPiglins(player, true);
     }
-    return ActionResultType.sidedSuccess(this.level.isClientSide());
+    return InteractionResult.sidedSuccess(this.level.isClientSide());
   }
 
   protected boolean hasMenu() {
@@ -101,13 +99,13 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
   }
 
   @Override
-  public void remove() {
+  public void remove(RemovalReason reason) {
     if (this.level.isClientSide()) {
       for (int slot = 0; slot < this.getContainerSize(); slot++) {
         this.setItem(slot, ItemStack.EMPTY);
       }
     }
-    super.remove();
+    super.remove(reason);
   }
 
   /**
@@ -115,7 +113,7 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
    * {@link net.minecraft.entity.item.EntityArmorStand#IS_RIDEABLE_MINECART}
    */
   @Override
-  public AbstractMinecartEntity.Type getMinecartType() {
+  public AbstractMinecart.Type getMinecartType() {
     throw new UnsupportedOperationException();
   }
 
@@ -206,12 +204,12 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
   }
 
   @Override
-  public boolean canAcceptPushedItem(AbstractMinecartEntity requester, ItemStack stack) {
+  public boolean canAcceptPushedItem(AbstractMinecart requester, ItemStack stack) {
     return false;
   }
 
   @Override
-  public boolean canProvidePulledItem(AbstractMinecartEntity requester, ItemStack stack) {
+  public boolean canProvidePulledItem(AbstractMinecart requester, ItemStack stack) {
     return false;
   }
 
@@ -230,7 +228,7 @@ public abstract class RailcraftMinecartEntity extends ContainerMinecartEntity
   }
 
   @Override
-  public IPacket<?> getAddEntityPacket() {
+  public Packet<?> getAddEntityPacket() {
     return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

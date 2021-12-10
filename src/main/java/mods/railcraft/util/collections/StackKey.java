@@ -9,9 +9,9 @@
 
 package mods.railcraft.util.collections;
 
-import mods.railcraft.util.inventory.InvTools;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import mods.railcraft.util.container.ContainerTools;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * Created by CovertJaguar on 10/28/2016 for Railcraft.
@@ -23,7 +23,7 @@ public class StackKey {
   private final ItemStack stack;
 
   public StackKey(ItemStack stack) {
-    this.stack = InvTools.copyOne(stack);
+    this.stack = ContainerTools.copyOne(stack);
   }
 
   @Override
@@ -35,7 +35,7 @@ public class StackKey {
       return false;
     }
     final StackKey other = (StackKey) obj;
-    return InvTools.isItemEqual(stack, other.stack);
+    return ContainerTools.isItemEqual(stack, other.stack);
   }
 
   @Override
@@ -43,7 +43,7 @@ public class StackKey {
     int hash = 5;
     hash = 23 * hash + stack.getItem().hashCode();
     hash = 23 * hash + stack.getDamageValue();
-    CompoundNBT nbt = stack.getTag();
+    CompoundTag nbt = stack.getTag();
     if (nbt != null)
       hash = 23 * hash + nbt.hashCode();
     return hash;

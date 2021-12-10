@@ -1,20 +1,22 @@
 package mods.railcraft.world.level.block;
 
+import javax.annotation.Nullable;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class CokeOvenBricksBlock extends MultiblockBlock {
   public static final BooleanProperty LIT = BlockStateProperties.LIT;
@@ -32,25 +34,34 @@ public class CokeOvenBricksBlock extends MultiblockBlock {
 
   @Override
   protected void createBlockStateDefinition(
-        StateContainer.Builder<Block, BlockState> stateContainer) {
+      StateDefinition.Builder<Block, BlockState> stateContainer) {
     super.createBlockStateDefinition(stateContainer);
     stateContainer.add(LIT);
   }
 
   @Override
-  public TileEntity createTileEntity(BlockState blockState, IBlockReader level) {
-    return new CokeOvenBlockEntity();
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new CokeOvenBlockEntity(blockPos, blockState);
+  }
+
+  @Nullable
+  @Override
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
+      BlockEntityType<T> type) {
+    return level.isClientSide() ? null
+        : createTickerHelper(type, RailcraftBlockEntityTypes.COKE_OVEN.get(),
+            CokeOvenBlockEntity::serverTick);
   }
 
   @Override
-  public ActionResultType use(BlockState blockState, World level,
-      BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+  public InteractionResult use(BlockState blockState, Level level,
+      BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
-      return ActionResultType.sidedSuccess(level.isClientSide());
+      return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     if (!(level.getBlockEntity(pos) instanceof CokeOvenBlockEntity)) {
-      return ActionResultType.PASS;
+      return InteractionResult.PASS;
     }
 
     return super.use(blockState, level, pos, player, hand, rayTraceResult);

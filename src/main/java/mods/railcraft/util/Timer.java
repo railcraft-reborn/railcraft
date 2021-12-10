@@ -1,6 +1,6 @@
 package mods.railcraft.util;
 
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 /**
  *
@@ -10,7 +10,7 @@ public class Timer {
 
   private long startTime = Long.MIN_VALUE;
 
-  public boolean hasTriggered(World world, int ticks) {
+  public boolean hasTriggered(Level world, int ticks) {
     long currentTime = world.getGameTime();
     if (currentTime >= (ticks + startTime) || startTime > currentTime) {
       startTime = currentTime;

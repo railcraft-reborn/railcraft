@@ -4,12 +4,12 @@ import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.phys.Vec3;
 
 public class ControlTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
@@ -21,15 +21,15 @@ public class ControlTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public int getPowerPropagation(BlockState blockState, World level, BlockPos pos) {
+  public int getPowerPropagation(BlockState blockState, Level level, BlockPos pos) {
     return 16;
   }
 
   @Override
-  public void onMinecartPass(BlockState blockState, World level, BlockPos pos,
-      AbstractMinecartEntity cart) {
+  public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
+      AbstractMinecart cart) {
     final RailShape trackShape = getRailShapeRaw(blockState);
-    final Vector3d deltaMovement = cart.getDeltaMovement();
+    final Vec3 deltaMovement = cart.getDeltaMovement();
     final boolean powered = isPowered(blockState);
     final boolean reversed = isReversed(blockState);
     if (TrackShapeHelper.isNorthSouth(trackShape)) {
@@ -63,7 +63,7 @@ public class ControlTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     }
 
     if (cart instanceof LocomotiveEntity && ((LocomotiveEntity) cart).isShutdown()) {
-      double yaw = cart.yRot * Math.PI / 180D;
+      double yaw = cart.getYRot() * Math.PI / 180D;
       double cos = Math.cos(yaw);
       double sin = Math.sin(yaw);
       float limit = 0.01f;
@@ -71,9 +71,8 @@ public class ControlTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
           || (deltaMovement.x() < -limit && cos > 0)
           || (deltaMovement.z() > limit && sin < 0)
           || (deltaMovement.z() < -limit && sin > 0)) {
-        cart.yRot += 180D;
-        cart.yRot = cart.yRot % 360.0F;
-        cart.yRotO = cart.yRot;
+        cart.setYRot((cart.getYRot() + 180.0F) % 360.0F);
+        cart.yRotO = cart.getYRot();
       }
     }
   }

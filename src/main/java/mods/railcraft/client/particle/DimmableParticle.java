@@ -1,17 +1,17 @@
 package mods.railcraft.client.particle;
 
-import net.minecraft.client.particle.SpriteTexturedParticle;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.multiplayer.ClientLevel;
 
-public abstract class DimmableParticle extends SpriteTexturedParticle {
+public abstract class DimmableParticle extends TextureSheetParticle {
 
   protected DimmableParticle(
-      ClientWorld level, double x, double y, double z) {
+      ClientLevel level, double x, double y, double z) {
     super(level, x, y, z);
   }
 
   protected DimmableParticle(
-      ClientWorld level, double x, double y, double z, double dx, double dy, double dz) {
+      ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
     super(level, x, y, z, dx, dy, dz);
   }
 

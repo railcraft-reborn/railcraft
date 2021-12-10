@@ -10,22 +10,22 @@ import mods.railcraft.api.item.TrackPlacer;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TypedTrack;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.Property;
-import net.minecraft.state.properties.RailShape;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -34,8 +34,8 @@ public final class TrackTools {
 
   public static final int TRAIN_LOCKDOWN_DELAY = 200;
 
-  public static boolean isStraightTrackAt(IBlockReader world, BlockPos pos) {
-    return AbstractRailBlock.isRail(world.getBlockState(pos))
+  public static boolean isStraightTrackAt(BlockGetter world, BlockPos pos) {
+    return BaseRailBlock.isRail(world.getBlockState(pos))
         && TrackShapeHelper.isStraight(getTrackDirection(world, pos));
   }
 
@@ -43,37 +43,35 @@ public final class TrackTools {
     return isRail(stack.getItem());
   }
 
-  public static boolean isRail(Block block) {
-    return block.is(BlockTags.RAILS) && block instanceof AbstractRailBlock;
-  }
-
   public static boolean isRail(Item item) {
     return item instanceof TrackPlacer
-        || (item instanceof BlockItem && isRail(((BlockItem) item).getBlock()));
+        || (item instanceof BlockItem blockItem
+            && blockItem.getBlock() instanceof BaseRailBlock
+            && BlockTags.RAILS.contains(blockItem.getBlock()));
   }
 
-  public static RailShape getTrackDirection(IBlockReader world, BlockPos pos,
+  public static RailShape getTrackDirection(BlockGetter world, BlockPos pos,
       BlockState state) {
     return getTrackDirection(world, pos, state, null);
   }
 
-  public static RailShape getTrackDirection(IBlockReader world, BlockPos pos) {
-    return getTrackDirection(world, pos, (AbstractMinecartEntity) null);
+  public static RailShape getTrackDirection(BlockGetter world, BlockPos pos) {
+    return getTrackDirection(world, pos, (AbstractMinecart) null);
   }
 
-  public static RailShape getTrackDirection(IBlockReader world, BlockPos pos,
-      @Nullable AbstractMinecartEntity cart) {
+  public static RailShape getTrackDirection(BlockGetter world, BlockPos pos,
+      @Nullable AbstractMinecart cart) {
     return getTrackDirection(world, pos, world.getBlockState(pos), cart);
   }
 
-  public static RailShape getTrackDirection(IBlockReader world, BlockPos pos,
-      BlockState state, @Nullable AbstractMinecartEntity cart) {
-    if (state.getBlock() instanceof AbstractRailBlock)
-      return ((AbstractRailBlock) state.getBlock()).getRailDirection(state, world, pos, cart);
+  public static RailShape getTrackDirection(BlockGetter world, BlockPos pos,
+      BlockState state, @Nullable AbstractMinecart cart) {
+    if (state.getBlock() instanceof BaseRailBlock)
+      return ((BaseRailBlock) state.getBlock()).getRailDirection(state, world, pos, cart);
     throw new IllegalArgumentException("Block was not a track");
   }
 
-  public static RailShape getRailShapeRaw(IBlockReader level, BlockPos pos) {
+  public static RailShape getRailShapeRaw(BlockGetter level, BlockPos pos) {
     return getRailShapeRaw(level.getBlockState(pos));
   }
 
@@ -83,13 +81,13 @@ public final class TrackTools {
 
   @SuppressWarnings("deprecation")
   public static Property<RailShape> getRailShapeProperty(Block block) {
-    if (block instanceof AbstractRailBlock) {
-      return ((AbstractRailBlock) block).getShapeProperty();
+    if (block instanceof BaseRailBlock) {
+      return ((BaseRailBlock) block).getShapeProperty();
     }
     throw new IllegalArgumentException("Block was not a track");
   }
 
-  public static boolean setRailShape(World level, BlockPos pos, RailShape railShape) {
+  public static boolean setRailShape(Level level, BlockPos pos, RailShape railShape) {
     BlockState blockState = level.getBlockState(pos);
     Property<RailShape> prop = getRailShapeProperty(blockState.getBlock());
     if (prop.getPossibleValues().contains(railShape)) {
@@ -99,11 +97,11 @@ public final class TrackTools {
     return false;
   }
 
-  public static TrackType getTrackTypeAt(IBlockReader world, BlockPos pos) {
+  public static TrackType getTrackTypeAt(BlockGetter world, BlockPos pos) {
     return getTrackTypeAt(world, pos, world.getBlockState(pos));
   }
 
-  public static TrackType getTrackTypeAt(IBlockReader world, BlockPos pos, BlockState state) {
+  public static TrackType getTrackTypeAt(BlockGetter world, BlockPos pos, BlockState state) {
     if (state.getBlock() instanceof TypedTrack) {
       return ((TypedTrack) state.getBlock()).getTrackType();
     }
@@ -155,13 +153,13 @@ public final class TrackTools {
   // trackClass.isAssignableFrom(((TileTrackOutfitted) tile).getTrackKitInstance().getClass());
   // }
 
-  public static void traverseConnectedTracks(World world, BlockPos pos,
-      BiFunction<World, BlockPos, Boolean> action) {
+  public static void traverseConnectedTracks(Level world, BlockPos pos,
+      BiFunction<Level, BlockPos, Boolean> action) {
     _traverseConnectedTracks(world, pos, action, new HashSet<>());
   }
 
-  private static void _traverseConnectedTracks(World world, BlockPos pos,
-      BiFunction<World, BlockPos, Boolean> action, Set<BlockPos> visited) {
+  private static void _traverseConnectedTracks(Level world, BlockPos pos,
+      BiFunction<Level, BlockPos, Boolean> action, Set<BlockPos> visited) {
     visited.add(pos);
     if (!action.apply(world, pos))
       return;
@@ -169,8 +167,8 @@ public final class TrackTools {
         .forEach(p -> _traverseConnectedTracks(world, p, action, visited));
   }
 
-  public static Set<BlockPos> getConnectedTracks(IWorldReader level, BlockPos pos) {
-    final RailShape shape = AbstractRailBlock.isRail(level.getBlockState(pos))
+  public static Set<BlockPos> getConnectedTracks(LevelReader level, BlockPos pos) {
+    final RailShape shape = BaseRailBlock.isRail(level.getBlockState(pos))
         ? getRailShapeRaw(level, pos)
         : RailShape.NORTH_SOUTH;
     return Direction.Plane.HORIZONTAL.stream()
@@ -180,15 +178,15 @@ public final class TrackTools {
   }
 
   @Nullable
-  public static BlockPos getTrackConnectedTrackAt(IWorldReader level, BlockPos pos,
+  public static BlockPos getTrackConnectedTrackAt(LevelReader level, BlockPos pos,
       RailShape shape) {
-    if (AbstractRailBlock.isRail(level.getBlockState(pos)))
+    if (BaseRailBlock.isRail(level.getBlockState(pos)))
       return pos;
     BlockPos up = pos.above();
-    if (shape.isAscending() && AbstractRailBlock.isRail(level.getBlockState(up)))
+    if (shape.isAscending() && BaseRailBlock.isRail(level.getBlockState(up)))
       return up;
     BlockPos down = pos.below();
-    if (AbstractRailBlock.isRail(level.getBlockState(down))
+    if (BaseRailBlock.isRail(level.getBlockState(down))
         && getRailShapeRaw(level, down).isAscending())
       return down;
     return null;

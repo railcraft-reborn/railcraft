@@ -7,13 +7,13 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class CokeOvenRecipeBuilder {
@@ -24,7 +24,7 @@ public class CokeOvenRecipeBuilder {
   private final int delay;
   private final int creosoteOut;
 
-  public CokeOvenRecipeBuilder(IItemProvider resultItem, Ingredient ingredient,
+  public CokeOvenRecipeBuilder(ItemLike resultItem, Ingredient ingredient,
       int resultCount, int recipieDelay, int creosoteOut) {
     this.result = resultItem.asItem();
     this.ingredient = ingredient;
@@ -33,47 +33,47 @@ public class CokeOvenRecipeBuilder {
     this.creosoteOut = creosoteOut;
   }
 
-  public static CokeOvenRecipeBuilder baked(IItemProvider resultItem, IItemProvider ingredient) {
+  public static CokeOvenRecipeBuilder baked(ItemLike resultItem, ItemLike ingredient) {
     return baked(resultItem, ingredient, 1, 100);
   }
 
-  public static CokeOvenRecipeBuilder baked(IItemProvider resultItem, IItemProvider ingredient,
+  public static CokeOvenRecipeBuilder baked(ItemLike resultItem, ItemLike ingredient,
       int resultCount) {
     return baked(resultItem, ingredient, resultCount, 100, 100);
   }
 
-  public static CokeOvenRecipeBuilder baked(IItemProvider resultItem, IItemProvider ingredient,
+  public static CokeOvenRecipeBuilder baked(ItemLike resultItem, ItemLike ingredient,
       int resultCount, int recipieDelay) {
     return baked(resultItem, ingredient, resultCount, recipieDelay, 100);
   }
 
-  public static CokeOvenRecipeBuilder baked(IItemProvider resultItem, IItemProvider ingredient,
+  public static CokeOvenRecipeBuilder baked(ItemLike resultItem, ItemLike ingredient,
       int resultCount, int recipieDelay, int creosoteOut) {
     return new CokeOvenRecipeBuilder(resultItem, Ingredient.of(ingredient),
       resultCount, recipieDelay, creosoteOut);
   }
 
-  public static CokeOvenRecipeBuilder baked(IItemProvider resultItem, ITag<Item> ingredient) {
+  public static CokeOvenRecipeBuilder baked(ItemLike resultItem, Tag<Item> ingredient) {
     return baked(resultItem, ingredient, 1, 100);
   }
 
-  public static CokeOvenRecipeBuilder baked(IItemProvider resultItem, ITag<Item> ingredient,
+  public static CokeOvenRecipeBuilder baked(ItemLike resultItem, Tag<Item> ingredient,
       int resultCount) {
     return baked(resultItem, ingredient, resultCount, 100, 100);
   }
 
-  public static CokeOvenRecipeBuilder baked(IItemProvider resultItem, ITag<Item> ingredient,
+  public static CokeOvenRecipeBuilder baked(ItemLike resultItem, Tag<Item> ingredient,
       int resultCount, int recipieDelay) {
     return baked(resultItem, ingredient, resultCount, recipieDelay, 100);
   }
 
-  public static CokeOvenRecipeBuilder baked(IItemProvider resultItem, ITag<Item> ingredient,
+  public static CokeOvenRecipeBuilder baked(ItemLike resultItem, Tag<Item> ingredient,
       int resultCount, int recipieDelay, int creosoteOut) {
     return new CokeOvenRecipeBuilder(resultItem, Ingredient.of(ingredient),
       resultCount, recipieDelay, creosoteOut);
   }
 
-  public void save(Consumer<IFinishedRecipe> finishedRecipie) {
+  public void save(Consumer<FinishedRecipe> finishedRecipie) {
     this.save(finishedRecipie, ForgeRegistries.ITEMS.getKey(this.result));
   }
 
@@ -81,7 +81,7 @@ public class CokeOvenRecipeBuilder {
    * Saves the item for registration.
    * @param key Custom filename for multiple recipies creating a single item
    */
-  public void save(Consumer<IFinishedRecipe> finishedRecipie, String key) {
+  public void save(Consumer<FinishedRecipe> finishedRecipie, String key) {
     ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
     if ((new ResourceLocation(key)).equals(resourcelocation)) {
       throw new IllegalStateException("Shaped Recipe "
@@ -94,13 +94,13 @@ public class CokeOvenRecipeBuilder {
   /**
    * Saves the item for registration.
    */
-  public void save(Consumer<IFinishedRecipe> finishedRecipie, ResourceLocation resourceLocation) {
+  public void save(Consumer<FinishedRecipe> finishedRecipie, ResourceLocation resourceLocation) {
     finishedRecipie.accept(
         new CokeOvenRecipeBuilder.Result(resourceLocation, this.result, this.ingredient,
             this.count, this.delay, this.creosoteOut));
   }
 
-  public class Result implements IFinishedRecipe {
+  public class Result implements FinishedRecipe {
 
     private final ResourceLocation id;
     private final Item result;
@@ -132,7 +132,7 @@ public class CokeOvenRecipeBuilder {
       jsonOut.add("creosoteOut", new JsonPrimitive(this.creosoteOut));
     }
 
-    public IRecipeSerializer<?> getType() {
+    public RecipeSerializer<?> getType() {
       return RailcraftRecipeSerializers.COKE_OVEN_COOKING.get();
     }
 

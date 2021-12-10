@@ -6,17 +6,17 @@ import javax.annotation.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.util.PlayerUtil;
-import mods.railcraft.util.inventory.InvTools;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import mods.railcraft.util.container.ContainerTools;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -31,7 +31,7 @@ public class TicketItem extends Item {
     super(properties);
   }
 
-  public boolean validateNBT(CompoundNBT nbt) {
+  public boolean validateNBT(CompoundTag nbt) {
     String dest = nbt.getString("dest");
     return dest.length() < LINE_LENGTH;
   }
@@ -51,28 +51,28 @@ public class TicketItem extends Item {
    * allows items to add custom lines of information to the mouse over description
    */
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> list,
-      ITooltipFlag par4) {
+  public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> list,
+      TooltipFlag par4) {
     if (stack.hasTag()) {
       GameProfile owner = getOwner(stack);
       if (owner.getId() != null) {
-        list.add(new TranslationTextComponent("gui.railcraft.routing.ticket.tips.issuer"));
-        list.add(PlayerUtil.getUsername(world, owner).copy().withStyle(TextFormatting.GRAY));
+        list.add(new TranslatableComponent("gui.railcraft.routing.ticket.tips.issuer"));
+        list.add(PlayerUtil.getUsername(world, owner).copy().withStyle(ChatFormatting.GRAY));
       }
 
       String dest = getDestination(stack);
       if (!"".equals(dest)) {
-        list.add(new TranslationTextComponent("gui.railcraft.routing.ticket.tips.dest"));
-        list.add(new StringTextComponent(dest).withStyle(TextFormatting.GRAY));
+        list.add(new TranslatableComponent("gui.railcraft.routing.ticket.tips.dest"));
+        list.add(new TextComponent(dest).withStyle(ChatFormatting.GRAY));
       }
     } else
-      list.add(new TranslationTextComponent("gui.railcraft.routing.ticket.tips.blank"));
+      list.add(new TranslatableComponent("gui.railcraft.routing.ticket.tips.blank"));
   }
 
-  public static boolean isNBTValid(@Nullable CompoundNBT nbt) {
+  public static boolean isNBTValid(@Nullable CompoundTag nbt) {
     if (nbt == null)
       return false;
-    else if (!nbt.contains("dest", Constants.NBT.TAG_STRING))
+    else if (!nbt.contains("dest", Tag.TAG_STRING))
       return false;
 
     String dest = nbt.getString("dest");
@@ -86,7 +86,7 @@ public class TicketItem extends Item {
       ItemStack ticket = RailcraftItems.TICKET.get().getDefaultInstance();
       if (ticket.isEmpty())
         return ItemStack.EMPTY;
-      CompoundNBT nbt = source.getTag();
+      CompoundTag nbt = source.getTag();
       if (nbt != null)
         ticket.setTag(nbt.copy());
       return ticket;
@@ -102,7 +102,7 @@ public class TicketItem extends Item {
       return false;
     if (owner == null)
       return false;
-    CompoundNBT data = InvTools.getItemData(ticket);
+    CompoundTag data = ContainerTools.getItemData(ticket);
     data.putString("dest", dest);
     data.putString("title", title);
     PlayerUtil.writeOwnerToNBT(data, owner);
@@ -112,21 +112,16 @@ public class TicketItem extends Item {
   public static String getDestination(ItemStack ticket) {
     if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
       return "";
-    CompoundNBT nbt = ticket.getTag();
+    CompoundTag nbt = ticket.getTag();
     if (nbt == null)
       return "";
     return nbt.getString("dest");
   }
 
-  public static boolean matchesOwnerOrOp(ItemStack ticket, GameProfile player) {
-    return ticket.getItem() instanceof TicketItem
-        && PlayerUtil.isOwnerOrOp(getOwner(ticket), player);
-  }
-
   public static GameProfile getOwner(ItemStack ticket) {
     if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
-    CompoundNBT nbt = ticket.getTag();
+    CompoundTag nbt = ticket.getTag();
     if (nbt == null)
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
     return PlayerUtil.readOwnerFromNBT(nbt);

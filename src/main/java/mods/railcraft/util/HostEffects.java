@@ -5,15 +5,15 @@ import io.netty.buffer.Unpooled;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.network.play.PacketEffect;
 import mods.railcraft.util.effects.EffectManager;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 /**
  * Effects done on the logical server.
@@ -28,12 +28,12 @@ public final class HostEffects implements Charge.IHostZapEffect {
     Charge.internalSetHostEffects(this);
   }
 
-  public void teleportEffect(Entity entity, Vector3d destination) {
+  public void teleportEffect(Entity entity, Vec3 destination) {
     if (entity.level.isClientSide())
       return;
 
     sendEffect(RemoteEffectType.TELEPORT, entity.level,
-        new Vector3d(entity.getX(), entity.getY(), entity.getZ()), data -> {
+        new Vec3(entity.getX(), entity.getY(), entity.getZ()), data -> {
           data.writeDouble(entity.getX());
           data.writeDouble(entity.getY());
           data.writeDouble(entity.getZ());
@@ -43,10 +43,10 @@ public final class HostEffects implements Charge.IHostZapEffect {
         });
 
     entity.level.playSound(
-        null, entity, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.BLOCKS, 0.25F, 1.0F);
+        null, entity, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1.0F);
   }
 
-  public void forceTrackSpawnEffect(World world, BlockPos pos, int color) {
+  public void forceTrackSpawnEffect(Level world, BlockPos pos, int color) {
     if (world.isClientSide())
       return;
 
@@ -56,10 +56,10 @@ public final class HostEffects implements Charge.IHostZapEffect {
     });
 
     world.playSound(
-        null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.BLOCKS, 0.25F, 1.0F);
+        null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1.0F);
   }
 
-  public void fireSparkEffect(World world, Vector3d start, Vector3d end) {
+  public void fireSparkEffect(Level world, Vec3 start, Vec3 end) {
     if (world.isClientSide())
       return;
 
@@ -74,7 +74,7 @@ public final class HostEffects implements Charge.IHostZapEffect {
   }
 
   @Override
-  public void zapEffectDeath(World world, Object source) {
+  public void zapEffectDeath(Level world, Object source) {
     if (world.isClientSide())
       return;
 
@@ -87,19 +87,19 @@ public final class HostEffects implements Charge.IHostZapEffect {
         });
   }
 
-  public void blockCrack(World world, BlockPos source, Vector3d pos, Vector3d velocity,
+  public void blockCrack(Level world, BlockPos source, Vec3 pos, Vec3 velocity,
       BlockState state,
       String texture) {
     blockParticle(world, source, pos, velocity, state, texture, false);
   }
 
-  public void blockDust(World world, BlockPos source, Vector3d pos, Vector3d velocity,
+  public void blockDust(Level world, BlockPos source, Vec3 pos, Vec3 velocity,
       BlockState state,
       String texture) {
     blockParticle(world, source, pos, velocity, state, texture, true);
   }
 
-  private void blockParticle(World world, BlockPos source, Vector3d pos, Vector3d velocity,
+  private void blockParticle(Level world, BlockPos source, Vec3 pos, Vec3 velocity,
       BlockState state, String texture, boolean dust) {
     sendEffect(RemoteEffectType.BLOCK_PARTICLE, world, pos, data -> {
       data.writeBlockPos(source);
@@ -115,18 +115,18 @@ public final class HostEffects implements Charge.IHostZapEffect {
     });
   }
 
-  private void sendEffect(RemoteEffectType type, World world, BlockPos pos,
-      Consumer<PacketBuffer> writer) {
+  private void sendEffect(RemoteEffectType type, Level world, BlockPos pos,
+      Consumer<FriendlyByteBuf> writer) {
     preparePacket(type, writer).sendPacket(world, pos);
   }
 
-  private void sendEffect(RemoteEffectType type, World world, Vector3d pos,
-      Consumer<PacketBuffer> writer) {
+  private void sendEffect(RemoteEffectType type, Level world, Vec3 pos,
+      Consumer<FriendlyByteBuf> writer) {
     preparePacket(type, writer).sendPacket(world, pos);
   }
 
-  private PacketEffect preparePacket(RemoteEffectType type, Consumer<PacketBuffer> writer) {
-    PacketBuffer buf = new PacketBuffer(Unpooled.buffer());
+  private PacketEffect preparePacket(RemoteEffectType type, Consumer<FriendlyByteBuf> writer) {
+    FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
     writer.accept(buf);
     return new PacketEffect(type, buf);
   }

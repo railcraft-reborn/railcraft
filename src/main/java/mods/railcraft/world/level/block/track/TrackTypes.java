@@ -6,20 +6,20 @@ import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.behaivor.CollisionHandler;
 import mods.railcraft.world.level.block.track.behaivor.SpeedController;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.RegistryObject;
 
 public class TrackTypes {
 
@@ -62,7 +62,7 @@ public class TrackTypes {
 
   public static final RegistryObject<TrackType> IRON =
       trackTypes.register("iron",
-          () -> new TrackType.Builder(() -> (AbstractRailBlock) Blocks.RAIL)
+          () -> new TrackType.Builder(() -> (BaseRailBlock) Blocks.RAIL)
               .setEventHandler(SpeedController.IRON)
               .build());
 
@@ -89,24 +89,24 @@ public class TrackTypes {
     }
 
     @Override
-    public void minecartPass(World level, AbstractMinecartEntity cart, BlockPos pos) {
+    public void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {
       this.speedController.minecartPass(level, cart, pos);
     }
 
     @Override
-    public void entityInside(World level, BlockPos pos, BlockState blockState, Entity entity) {
+    public void entityInside(Level level, BlockPos pos, BlockState blockState, Entity entity) {
       this.collisionHandler.entityInside(level, pos, blockState, entity);
     }
 
     @Override
     @Nullable
-    public RailShape getRailShapeOverride(IBlockReader level,
-        BlockPos pos, BlockState blockState, @Nullable AbstractMinecartEntity cart) {
+    public RailShape getRailShapeOverride(BlockGetter level,
+        BlockPos pos, BlockState blockState, @Nullable AbstractMinecart cart) {
       return this.speedController.getRailShapeOverride(level, pos, blockState, cart);
     }
 
     @Override
-    public double getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
+    public double getMaxSpeed(Level level, @Nullable AbstractMinecart cart, BlockPos pos) {
       return this.speedController.getMaxSpeed(level, cart, pos);
     }
   }

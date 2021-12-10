@@ -1,20 +1,20 @@
 package mods.railcraft.world.entity.cart;
 
 import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.util.inventory.InvTools;
+import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.IPlantable;
 
@@ -22,14 +22,14 @@ public class TrackLayerMinecartEntity extends MaintenancePatternMinecartEntity {
 
   public static final int SLOT_STOCK = 0;
   public static final int SLOT_REPLACE = 0;
-  public static final int[] SLOTS = InvTools.buildSlotArray(0, 1);
+  public static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
 
-  public TrackLayerMinecartEntity(EntityType<?> type, World world) {
+  public TrackLayerMinecartEntity(EntityType<?> type, Level world) {
     super(type, world);
   }
 
   public TrackLayerMinecartEntity(ItemStack itemStack, double x, double y, double z,
-      ServerWorld world) {
+      ServerLevel world) {
     super(RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, world);
   }
 
@@ -85,11 +85,10 @@ public class TrackLayerMinecartEntity extends MaintenancePatternMinecartEntity {
     return isValidReplacementBlock(pos) && Block.canSupportRigidBlock(this.level, pos.below());
   }
 
-  @SuppressWarnings("deprecation")
   private boolean isValidReplacementBlock(BlockPos pos) {
     BlockState state = this.level.getBlockState(pos);
     Block block = state.getBlock();
-    return (state.isAir(this.level, pos) ||
+    return (state.isAir() ||
         block instanceof IPlantable ||
         block instanceof IForgeShearable ||
         TunnelBoreEntity.replaceableTags.stream().anyMatch(state::is) ||
@@ -104,11 +103,11 @@ public class TrackLayerMinecartEntity extends MaintenancePatternMinecartEntity {
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
     ItemStack trackReplace = patternInventory.getItem(SLOT_REPLACE);
-    return InvTools.isItemEqual(stack, trackReplace);
+    return ContainerTools.isItemEqual(stack, trackReplace);
   }
 
   @Override
-  protected Container createMenu(int p_213968_1_, PlayerInventory p_213968_2_) {
+  protected AbstractContainerMenu createMenu(int p_213968_1_, Inventory p_213968_2_) {
     return null;
   }
 }

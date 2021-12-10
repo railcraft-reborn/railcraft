@@ -8,10 +8,12 @@ import mods.railcraft.api.signal.SimpleBlockSignalNetwork;
 import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
     implements BlockSignal, SignalControllerProvider {
@@ -21,8 +23,8 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   private final SimpleBlockSignalNetwork blockSignal =
       new SimpleBlockSignalNetwork(2, this::syncToClient, this::signalAspectChanged, this);
 
-  public BlockSignalRelayBoxBlockEntity() {
-    super(RailcraftBlockEntityTypes.SIGNAL_RELAY_BOX.get());
+  public BlockSignalRelayBoxBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.BLOCK_SIGNAL_RELAY_BOX.get(), blockPos, blockState);
   }
 
   @Override
@@ -33,21 +35,10 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public void tick() {
-    super.tick();
-    if (this.level.isClientSide()) {
-      this.signalController.spawnTuningAuraParticles();
-      return;
-    }
-    this.blockSignal.tickServer();
-  }
-
-  @Override
-  public void load() {
-    if (!this.level.isClientSide()) {
-      this.signalController.refresh();
-      this.blockSignal.refresh();
-    }
+  public void onLoad() {
+    super.onLoad();
+    this.signalController.refresh();
+    this.blockSignal.refresh();
   }
 
   private void signalAspectChanged(SignalAspect signalAspect) {
@@ -63,29 +54,28 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.put("blockSignal", this.blockSignal.serializeNBT());
-    data.put("signalController", this.signalController.serializeNBT());
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.put("blockSignal", this.blockSignal.serializeNBT());
+    tag.put("signalController", this.signalController.serializeNBT());
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.blockSignal.deserializeNBT(data.getCompound("blockSignal"));
-    this.signalController.deserializeNBT(data.getCompound("signalController"));
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.blockSignal.deserializeNBT(tag.getCompound("blockSignal"));
+    this.signalController.deserializeNBT(tag.getCompound("signalController"));
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     this.blockSignal.writeSyncData(data);
     this.signalController.writeSyncData(data);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.blockSignal.readSyncData(data);
     this.signalController.readSyncData(data);
@@ -104,5 +94,15 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   @Override
   public SignalController getSignalController() {
     return this.signalController;
+  }
+
+  public static void clientTick(Level level, BlockPos blockPos, BlockState blockState,
+      BlockSignalRelayBoxBlockEntity blockEntity) {
+    blockEntity.signalController.spawnTuningAuraParticles();
+  }
+
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      BlockSignalRelayBoxBlockEntity blockEntity) {
+    blockEntity.blockSignal.serverTick();
   }
 }

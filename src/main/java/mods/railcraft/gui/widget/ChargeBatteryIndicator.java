@@ -2,10 +2,9 @@ package mods.railcraft.gui.widget;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import mods.railcraft.util.HumanReadableNumberFormatter;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.energy.IEnergyStorage;
 
 /*
@@ -17,7 +16,7 @@ public class ChargeBatteryIndicator implements Gauge {
   private final IEnergyStorage battery;
 
   // alloc 2, charge% and nRF / mnRF CU
-  private final List<ITextProperties> tooltip = new ArrayList<>(2);
+  private final List<Component> tooltip = new ArrayList<>(2);
 
   public ChargeBatteryIndicator(IEnergyStorage battery) {
     this.battery = battery;
@@ -29,8 +28,8 @@ public class ChargeBatteryIndicator implements Gauge {
     int current = Math.min(this.charge, capacity);
     float chargeLevel = capacity <= 0.0F ? 0.0F : (current / capacity) * 100.0F;
     this.tooltip.clear();
-    this.tooltip.add(new StringTextComponent(String.format("%.0f%%", chargeLevel)));
-    this.tooltip.add(new StringTextComponent(
+    this.tooltip.add(new TextComponent(String.format("%.0f%%", chargeLevel)));
+    this.tooltip.add(new TextComponent(
         HumanReadableNumberFormatter.format(current)
         + " / "
         + HumanReadableNumberFormatter.format(capacity)
@@ -39,7 +38,7 @@ public class ChargeBatteryIndicator implements Gauge {
   }
 
   @Override
-  public List<? extends ITextProperties> getTooltip() {
+  public List<Component> getTooltip() {
     return this.tooltip;
   }
 

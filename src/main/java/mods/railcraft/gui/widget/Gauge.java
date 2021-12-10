@@ -2,7 +2,7 @@ package mods.railcraft.gui.widget;
 
 import java.util.Collections;
 import java.util.List;
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.network.chat.Component;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -11,7 +11,7 @@ public interface Gauge {
 
   void refresh();
 
-  default List<? extends ITextProperties> getTooltip() {
+  default List<Component> getTooltip() {
     return Collections.emptyList();
   }
 

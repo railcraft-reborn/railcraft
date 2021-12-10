@@ -1,79 +1,57 @@
 package mods.railcraft.world.inventory;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.network.PacketBuilder;
-import mods.railcraft.util.inventory.InvTools;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.IContainerListener;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import mods.railcraft.util.container.ContainerTools;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public abstract class RailcraftMenu extends Container {
+public abstract class RailcraftMenu extends AbstractContainerMenu {
 
-  private final PlayerEntity player;
+  private final Player player;
 
-  private final Predicate<PlayerEntity> validator;
+  private final Predicate<Player> validator;
   private final List<Widget> widgets = new ArrayList<>();
 
-  private final Set<ServerPlayerEntity> syncListeners = new HashSet<>();
-
-  protected RailcraftMenu(@Nullable ContainerType<?> type, int id,
-      PlayerInventory playerInventory) {
+  protected RailcraftMenu(@Nullable MenuType<?> type, int id,
+      Inventory playerInventory) {
     this(type, id, playerInventory.player, playerInventory::stillValid);
   }
 
-  protected RailcraftMenu(@Nullable ContainerType<?> type, int id, PlayerEntity player,
-      Predicate<PlayerEntity> validator) {
+  protected RailcraftMenu(@Nullable MenuType<?> type, int id, Player player,
+      Predicate<Player> validator) {
     super(type, id);
     this.player = player;
     this.validator = validator;
   }
-  
+
   @Override
-  public boolean stillValid(PlayerEntity playerEntity) {
+  public boolean stillValid(Player playerEntity) {
     return this.validator.test(playerEntity);
-  }
-
-  @Override
-  public void addSlotListener(IContainerListener listener) {
-    super.addSlotListener(listener);
-    if (listener instanceof ServerPlayerEntity) {
-      this.syncListeners.add((ServerPlayerEntity) listener);
-    }
-  }
-
-  @Override
-  public void removeSlotListener(IContainerListener listener) {
-    super.removeSlotListener(listener);
-    if (listener instanceof ServerPlayerEntity) {
-      this.syncListeners.remove((ServerPlayerEntity) listener);
-    }
   }
 
   public List<Widget> getWidgets() {
     return this.widgets;
   }
 
-  protected final void addPlayerSlots(PlayerInventory invPlayer) {
+  protected final void addPlayerSlots(Inventory invPlayer) {
     addPlayerSlots(invPlayer, 166);
   }
 
-  protected final void addPlayerSlots(PlayerInventory invPlayer, int guiHeight) {
+  protected final void addPlayerSlots(Inventory invPlayer, int guiHeight) {
     for (int i = 0; i < 3; i++) {
       for (int k = 0; k < 9; k++) {
         addSlot(new Slot(invPlayer, k + i * 9 + 9, 8 + k * 18, guiHeight - 82 + i * 18));
@@ -93,58 +71,33 @@ public abstract class RailcraftMenu extends Container {
   public final void broadcastChanges() {
     super.broadcastChanges();
     if (!this.player.level.isClientSide()) {
-      sendUpdateToClient();
-      sendWidgetsServerData();
+      this.widgets.forEach(widget -> PacketBuilder.instance()
+          .sendGuiWidgetPacket((ServerPlayer) this.player, this.containerId, widget));
     }
   }
 
-  private void sendWidgetsServerData() {
-    widgets.forEach(this::sendWidgetServerData);
-  }
-
-  private void sendWidgetServerData(Widget widget) {
-    this.syncListeners
-        .forEach(l -> PacketBuilder.instance().sendGuiWidgetPacket(l, this.containerId, widget));
-  }
-
-  public void sendUpdateToClient() {}
-
-  public void updateString(byte id, String data) {}
-
-  public void updateData(byte id, PacketBuffer data) {}
-
   @Override
-  public boolean isSynched(PlayerEntity entityplayer) {
-    return validator.test(entityplayer);
-  }
-
-  @Override
-  public ItemStack clicked(int slotId, int mouseButton, ClickType clickType,
-      PlayerEntity player) {
+  public void clicked(int slotId, int mouseButton, ClickType clickType,
+      Player player) {
     Slot slot = slotId < 0 ? null : this.slots.get(slotId);
     if (slot instanceof SlotRailcraft && ((SlotRailcraft) slot).isPhantom()) {
-      return slotClickPhantom((SlotRailcraft) slot, mouseButton, clickType, player);
+      this.slotClickPhantom((SlotRailcraft) slot, mouseButton, clickType, player);
     }
-    return super.clicked(slotId, mouseButton, clickType, player);
+    super.clicked(slotId, mouseButton, clickType, player);
   }
 
-  protected ItemStack slotClickPhantom(SlotRailcraft slot, int mouseButton,
-      ClickType clickType, PlayerEntity player) {
-    ItemStack stack = ItemStack.EMPTY;
+  protected void slotClickPhantom(SlotRailcraft slot, int mouseButton,
+      ClickType clickType, Player player) {
 
     if (mouseButton == 2) {
       if (slot.canAdjustPhantom()) {
         slot.set(ItemStack.EMPTY);
       }
     } else if (mouseButton == 0 || mouseButton == 1) {
-      PlayerInventory playerInv = player.inventory;
+      Inventory playerInv = player.getInventory();
       slot.setChanged();
       ItemStack stackSlot = slot.getItem();
-      ItemStack stackHeld = playerInv.getCarried();
-
-      if (!stackSlot.isEmpty()) {
-        stack = stackSlot.copy();
-      }
+      ItemStack stackHeld = playerInv.getSelected();
 
       if (stackSlot.isEmpty()) {
         if (!stackHeld.isEmpty() && slot.mayPlace(stackHeld)) {
@@ -152,16 +105,15 @@ public abstract class RailcraftMenu extends Container {
         }
       } else if (stackHeld.isEmpty()) {
         adjustPhantomSlot(slot, mouseButton, clickType);
-        slot.onTake(player, playerInv.getCarried());
+        slot.onTake(player, playerInv.getSelected());
       } else if (slot.mayPlace(stackHeld)) {
-        if (InvTools.isItemEqual(stackSlot, stackHeld)) {
+        if (ContainerTools.isItemEqual(stackSlot, stackHeld)) {
           adjustPhantomSlot(slot, mouseButton, clickType);
         } else {
           fillPhantomSlot(slot, stackHeld, mouseButton);
         }
       }
     }
-    return stack;
   }
 
   protected void adjustPhantomSlot(SlotRailcraft slot, int mouseButton, ClickType clickType) {
@@ -183,7 +135,7 @@ public abstract class RailcraftMenu extends Container {
       stackSize = slot.getMaxStackSize();
     }
 
-    InvTools.setSize(stackSlot, stackSize);
+    ContainerTools.setSize(stackSlot, stackSize);
 
     if (stackSlot.isEmpty()) {
       slot.set(ItemStack.EMPTY);
@@ -199,7 +151,7 @@ public abstract class RailcraftMenu extends Container {
       stackSize = slot.getMaxStackSize();
     }
     ItemStack phantomStack = stackHeld.copy();
-    InvTools.setSize(phantomStack, stackSize);
+    ContainerTools.setSize(phantomStack, stackSize);
 
     slot.set(phantomStack);
   }
@@ -210,17 +162,17 @@ public abstract class RailcraftMenu extends Container {
       for (int slotIndex = start; !stackToShift.isEmpty() && slotIndex < end; slotIndex++) {
         Slot slot = this.slots.get(slotIndex);
         ItemStack stackInSlot = slot.getItem();
-        if (!stackInSlot.isEmpty() && InvTools.isItemEqual(stackInSlot, stackToShift)) {
+        if (!stackInSlot.isEmpty() && ContainerTools.isItemEqual(stackInSlot, stackToShift)) {
           int resultingStackSize = stackInSlot.getCount() + stackToShift.getCount();
           int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
           if (resultingStackSize <= max) {
-            InvTools.setSize(stackToShift, 0);
-            InvTools.setSize(stackInSlot, resultingStackSize);
+            ContainerTools.setSize(stackToShift, 0);
+            ContainerTools.setSize(stackInSlot, resultingStackSize);
             slot.setChanged();
             changed = true;
           } else if (stackInSlot.getCount() < max) {
-            InvTools.decSize(stackToShift, max - stackInSlot.getCount());
-            InvTools.setSize(stackInSlot, max);
+            ContainerTools.decSize(stackToShift, max - stackInSlot.getCount());
+            ContainerTools.setSize(stackInSlot, max);
             slot.setChanged();
             changed = true;
           }
@@ -234,8 +186,8 @@ public abstract class RailcraftMenu extends Container {
         if (stackInSlot.isEmpty()) {
           int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
           stackInSlot = stackToShift.copy();
-          InvTools.setSize(stackInSlot, Math.min(stackToShift.getCount(), max));
-          InvTools.decSize(stackToShift, stackInSlot.getCount());
+          ContainerTools.setSize(stackInSlot, Math.min(stackToShift.getCount(), max));
+          ContainerTools.decSize(stackToShift, stackInSlot.getCount());
           slot.set(stackInSlot);
           slot.setChanged();
           changed = true;
@@ -268,7 +220,7 @@ public abstract class RailcraftMenu extends Container {
   }
 
   @Override
-  public ItemStack quickMoveStack(PlayerEntity player, int slotIndex) {
+  public ItemStack quickMoveStack(Player player, int slotIndex) {
     ItemStack originalStack = ItemStack.EMPTY;
     Slot slot = this.slots.get(slotIndex);
     int numSlots = this.slots.size();

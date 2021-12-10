@@ -1,19 +1,17 @@
 package mods.railcraft.world.level.material.fluid.steam;
 
-import com.google.common.primitives.Floats;
-
 import java.util.Collections;
 import java.util.List;
-
+import com.google.common.primitives.Floats;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.material.fluid.FuelProvider;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
@@ -21,9 +19,10 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
  * The boiler itself. Used to simulate turning water into steam.
+ * 
  * @author CovertJaguar (https://www.railcraft.info/)
  */
-public class SteamBoiler implements INBTSerializable<CompoundNBT> {
+public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
   private final Gauge temperatureGauge = new TemperatureGauge();
 
@@ -243,8 +242,8 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
   }
 
   @Override
-  public CompoundNBT serializeNBT() {
-    CompoundNBT tag = new CompoundNBT();
+  public CompoundTag serializeNBT() {
+    CompoundTag tag = new CompoundTag();
     tag.putFloat("temperature", this.temperature);
     tag.putFloat("maxTemperature", this.maxTemperature);
     tag.putFloat("burnTime", this.burnTime);
@@ -253,7 +252,7 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
   }
 
   @Override
-  public void deserializeNBT(CompoundNBT tag) {
+  public void deserializeNBT(CompoundTag tag) {
     this.setTemperature(tag.getFloat("temperature"));
     this.setMaxTemperature(tag.getFloat("maxTemperature"));
     this.setBurnTime(tag.getFloat("burnTime"));
@@ -284,16 +283,16 @@ public class SteamBoiler implements INBTSerializable<CompoundNBT> {
 
   private class TemperatureGauge implements Gauge {
 
-    private List<? extends ITextProperties> tooltip;
+    private List<Component> tooltip;
 
     @Override
     public void refresh() {
       this.tooltip = Collections.singletonList(
-          new StringTextComponent(String.format("%.0f°", SteamBoiler.this.getTemperature())));
+          new TextComponent(String.format("%.0f°", SteamBoiler.this.getTemperature())));
     }
 
     @Override
-    public List<? extends ITextProperties> getTooltip() {
+    public List<Component> getTooltip() {
       return this.tooltip;
     }
 

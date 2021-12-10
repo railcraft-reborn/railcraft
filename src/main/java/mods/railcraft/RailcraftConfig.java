@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.collect.Lists;
 import mods.railcraft.world.level.material.fluid.FluidTools;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;

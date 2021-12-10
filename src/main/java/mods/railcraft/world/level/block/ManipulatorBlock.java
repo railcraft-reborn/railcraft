@@ -2,26 +2,28 @@ package mods.railcraft.world.level.block;
 
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.ManipulatorBlockEntity;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 
-public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends Block {
+public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends BaseEntityBlock {
 
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -33,44 +35,40 @@ public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(POWERED);
   }
 
   @Override
-  public boolean hasTileEntity(BlockState blockState) {
-    return true;
+  public RenderShape getRenderShape(BlockState blockState) {
+    return RenderShape.MODEL;
   }
 
   @Override
-  public abstract T createTileEntity(BlockState blockState, IBlockReader level);
-
-  @Override
-  public ActionResultType use(BlockState blockState, World level,
-      BlockPos blockPos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+  public InteractionResult use(BlockState blockState, Level level,
+      BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (!level.isClientSide()) {
-      TileEntity blockEntity = level.getBlockEntity(blockPos);
+      BlockEntity blockEntity = level.getBlockEntity(blockPos);
       if (!this.blockEntityType.isInstance(blockEntity)) {
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
       }
 
       NetworkHooks.openGui(
-          (ServerPlayerEntity) player, this.blockEntityType.cast(blockEntity), blockPos);
+          (ServerPlayer) player, this.blockEntityType.cast(blockEntity), blockPos);
     }
-    return ActionResultType.sidedSuccess(level.isClientSide());
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   public abstract Direction getFacing(BlockState blockState);
 
   @Override
-  public int getSignal(BlockState blockState, IBlockReader level, BlockPos blockPos,
+  public int getSignal(BlockState blockState, BlockGetter level, BlockPos blockPos,
       Direction direction) {
     boolean emit = false;
     if (isPowered(blockState)) {
-      BlockState neighborBlockState =
-          level.getBlockState(blockPos.relative(direction.getOpposite()));
-      emit = AbstractRailBlock.isRail(neighborBlockState)
+      var neighborBlockState = level.getBlockState(blockPos.relative(direction.getOpposite()));
+      emit = BaseRailBlock.isRail(neighborBlockState)
           || neighborBlockState.is(Blocks.REDSTONE_WIRE)
           || neighborBlockState.is(Blocks.REPEATER);
     }

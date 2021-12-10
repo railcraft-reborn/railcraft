@@ -5,28 +5,28 @@ import javax.annotation.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import mods.railcraft.api.core.Syncable;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class SingleSignalReceiver
-    implements SignalReceiver, INBTSerializable<CompoundNBT>, Syncable {
+    implements SignalReceiver, INBTSerializable<CompoundTag>, Syncable {
 
   private static final Logger logger = LogManager.getLogger();
 
-  protected final TileEntity blockEntity;
+  protected final BlockEntity blockEntity;
   private final Runnable syncListener;
   protected final SignalClient primarySignalClient;
 
-  public SingleSignalReceiver(TileEntity blockEntity, Runnable syncListener) {
+  public SingleSignalReceiver(BlockEntity blockEntity, Runnable syncListener) {
     this(blockEntity, syncListener, null);
   }
 
-  public SingleSignalReceiver(TileEntity blockEntity, Runnable syncListener,
+  public SingleSignalReceiver(BlockEntity blockEntity, Runnable syncListener,
       @Nullable Consumer<SignalAspect> primarySignalAspectListener) {
     this.blockEntity = blockEntity;
     this.syncListener = syncListener;
@@ -64,24 +64,24 @@ public class SingleSignalReceiver
   }
 
   @Override
-  public CompoundNBT serializeNBT() {
-    CompoundNBT tag = new CompoundNBT();
+  public CompoundTag serializeNBT() {
+    CompoundTag tag = new CompoundTag();
     tag.put("primarySignalClient", this.primarySignalClient.serializeNBT());
     return tag;
   }
 
   @Override
-  public void deserializeNBT(CompoundNBT tag) {
+  public void deserializeNBT(CompoundTag tag) {
     this.primarySignalClient.deserializeNBT(tag.getCompound("primarySignalClient"));
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     data.writeEnum(this.primarySignalClient.getSignalAspect());
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     this.primarySignalClient.setSignalAspect(data.readEnum(SignalAspect.class));
   }
 
@@ -90,7 +90,7 @@ public class SingleSignalReceiver
     this.syncListener.run();
   }
 
-  protected class SignalClient implements INBTSerializable<CompoundNBT> {
+  protected class SignalClient implements INBTSerializable<CompoundTag> {
 
     @Nullable
     private final Consumer<SignalAspect> signalAspectListener;
@@ -103,7 +103,7 @@ public class SingleSignalReceiver
     }
 
     protected void linked(SignalController signalController) {
-      SignalController lastSignalController = this.getSignalController();
+      var lastSignalController = this.getSignalController();
       if (lastSignalController == signalController) {
         logger.warn("Signal receiver @ [{}] is already linked to signal controller @ [{}]",
             SingleSignalReceiver.this.blockEntity.getBlockPos(), signalController.getBlockPos());
@@ -114,11 +114,13 @@ public class SingleSignalReceiver
       }
       this.signalControllerPos = signalController.getBlockPos();
       this.setSignalAspect(signalController.getSignalAspect());
+      SingleSignalReceiver.this.blockEntity.setChanged();
     }
 
     protected void unlinked() {
       this.signalControllerPos = null;
       this.setSignalAspect(SignalAspect.BLINK_RED);
+      SingleSignalReceiver.this.blockEntity.setChanged();
     }
 
     protected SignalAspect getSignalAspect() {
@@ -145,10 +147,10 @@ public class SingleSignalReceiver
       if (this.signalControllerPos == null) {
         return null;
       }
-      TileEntity blockEntity =
+      var blockEntity =
           SingleSignalReceiver.this.blockEntity.getLevel().getBlockEntity(this.signalControllerPos);
-      if (blockEntity instanceof SignalControllerProvider) {
-        return ((SignalControllerProvider) blockEntity).getSignalController();
+      if (blockEntity instanceof SignalControllerProvider provider) {
+        return provider.getSignalController();
       } else {
         this.signalControllerPos = null;
         return null;
@@ -156,32 +158,32 @@ public class SingleSignalReceiver
     }
 
     protected void refresh() {
-      SignalController signalController = this.getSignalController();
+      var signalController = this.getSignalController();
       if (signalController != null) {
         this.setSignalAspect(signalController.getSignalAspect());
       }
     }
 
     protected void unlink() {
-      SignalController signalController = this.getSignalController();
+      var signalController = this.getSignalController();
       if (signalController != null) {
         signalController.removePeer(SingleSignalReceiver.this.blockEntity.getBlockPos());
       }
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-      CompoundNBT tag = new CompoundNBT();
+    public CompoundTag serializeNBT() {
+      var tag = new CompoundTag();
       if (this.signalControllerPos != null) {
-        tag.put("signalControllerPos", NBTUtil.writeBlockPos(this.signalControllerPos));
+        tag.put("signalControllerPos", NbtUtils.writeBlockPos(this.signalControllerPos));
       }
       return tag;
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT tag) {
-      if (tag.contains("signalControllerPos", Constants.NBT.TAG_COMPOUND)) {
-        this.signalControllerPos = NBTUtil.readBlockPos(tag.getCompound("signalControllerPos"));
+    public void deserializeNBT(CompoundTag tag) {
+      if (tag.contains("signalControllerPos", Tag.TAG_COMPOUND)) {
+        this.signalControllerPos = NbtUtils.readBlockPos(tag.getCompound("signalControllerPos"));
       }
     }
   }

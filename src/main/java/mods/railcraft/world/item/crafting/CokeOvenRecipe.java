@@ -4,20 +4,20 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class CokeOvenRecipe implements IRecipe<IInventory> {
+public class CokeOvenRecipe implements Recipe<Container> {
 
   private final ResourceLocation id;
   private final Ingredient recipeItem;
@@ -55,12 +55,12 @@ public class CokeOvenRecipe implements IRecipe<IInventory> {
   }
 
   @Override
-  public boolean matches(IInventory craftInventory, World world) {
+  public boolean matches(Container craftInventory, Level world) {
     return this.recipeItem.test(craftInventory.getItem(0));
   }
 
   @Override
-  public ItemStack assemble(IInventory craftInventory) {
+  public ItemStack assemble(Container craftInventory) {
     return this.getResultItem().copy();
   }
 
@@ -80,32 +80,32 @@ public class CokeOvenRecipe implements IRecipe<IInventory> {
   }
 
   @Override
-  public IRecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<?> getSerializer() {
     return RailcraftRecipeSerializers.COKE_OVEN_COOKING.get();
   }
 
   @Override
-  public IRecipeType<?> getType() {
+  public RecipeType<?> getType() {
     return RailcraftRecipeTypes.COKE_OVEN_COOKING;
   }
 
-  public static class CokeOvenRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>>
-      implements IRecipeSerializer<CokeOvenRecipe> {
+  public static class CokeOvenRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>>
+      implements RecipeSerializer<CokeOvenRecipe> {
 
     @Override
     public CokeOvenRecipe fromJson(ResourceLocation resourceLoc, JsonObject jsonObject) {
-      int tickCost = JSONUtils.getAsInt(jsonObject, "tickCost", 1000); // 50 sec
-      int creosoteOut = JSONUtils.getAsInt(jsonObject, "creosoteOut", 1000); // 1 bucket
+      int tickCost = GsonHelper.getAsInt(jsonObject, "tickCost", 1000); // 50 sec
+      int creosoteOut = GsonHelper.getAsInt(jsonObject, "creosoteOut", 1000); // 1 bucket
       Ingredient ingredient =
-          Ingredient.fromJson(JSONUtils.getAsJsonObject(jsonObject, "ingredient"));
+          Ingredient.fromJson(GsonHelper.getAsJsonObject(jsonObject, "ingredient"));
       ItemStack resultItemStack =
-          itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
+          itemFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
 
       return new CokeOvenRecipe(resourceLoc, creosoteOut, tickCost, ingredient, resultItemStack);
     }
 
     @Override
-    public CokeOvenRecipe fromNetwork(ResourceLocation resourceLoc, PacketBuffer packetBuffer) {
+    public CokeOvenRecipe fromNetwork(ResourceLocation resourceLoc, FriendlyByteBuf packetBuffer) {
       int creosoteOut = packetBuffer.readVarInt();
       int tickCost = packetBuffer.readVarInt();
       Ingredient ingredient = Ingredient.fromNetwork(packetBuffer);
@@ -115,7 +115,7 @@ public class CokeOvenRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public void toNetwork(PacketBuffer packetBuffer, CokeOvenRecipe recipe) {
+    public void toNetwork(FriendlyByteBuf packetBuffer, CokeOvenRecipe recipe) {
       packetBuffer.writeVarInt(recipe.creosote.getAmount());
       packetBuffer.writeVarInt(recipe.tickCost);
       recipe.recipeItem.toNetwork(packetBuffer);

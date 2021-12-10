@@ -3,11 +3,11 @@ package mods.railcraft.data;
 import java.util.stream.Collectors;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.data.loot.BlockLootTables;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.RegistryObject;
 
-public class RailcraftBlockLootTable extends BlockLootTables {
+public class RailcraftBlockLootTable extends BlockLoot {
 
   @Override
   protected void addTables() {

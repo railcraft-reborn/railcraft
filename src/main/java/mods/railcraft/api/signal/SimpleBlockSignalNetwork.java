@@ -19,11 +19,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackScanner;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -48,7 +48,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
 
   public SimpleBlockSignalNetwork(int maxPeers, Runnable syncListener,
       @Nullable Consumer<SignalAspect> signalAspectListener,
-      TileEntity blockEntity) {
+      BlockEntity blockEntity) {
     super(BlockSignal.class, maxPeers, syncListener, blockEntity);
     this.trackLocator = new TrackLocator(blockEntity);
     this.signalAspectListener = signalAspectListener;
@@ -132,23 +132,6 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
         .reduce(SignalAspect.GREEN, SignalAspect::mostRestrictive);
   }
 
-  // protected abstract void updateSignalAspects();
-
-  // @Nullable
-  // protected SignalAspect getAdditionalAspect(BlockPos peerPos) {
-  // return null;
-  // }
-
-  // public SignalAspect determineAspect(BlockSignal peer) {
-  // if (this.isLinking())
-  // return SignalAspect.BLINK_YELLOW;
-  // SignalAspect calculatedAspect = this.calculateSignalAspect(peer);
-  // SignalAspect additionalAspect =
-  // peer.getSignalNetwork().getAdditionalAspect(this.getBlockPos());
-  // return additionalAspect == null ? calculatedAspect
-  // : SignalAspect.mostRestrictive(calculatedAspect, additionalAspect);
-  // }
-
   private SignalAspect calculateSignalAspect(BlockSignal peer) {
     BlockPos trackPos = this.trackLocator.getTrackPos();
     if (trackPos == null)
@@ -175,14 +158,14 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
     int xOffset = otherTrack.getX() > trackPos.getX() ? -3 : 3;
     int zOffset = otherTrack.getZ() > trackPos.getZ() ? -3 : 3;
 
-    List<AbstractMinecartEntity> carts = CartUtil.getMinecartsIn(getLevel(),
+    List<AbstractMinecart> carts = CartUtil.getMinecartsIn(getLevel(),
         new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2));
     // System.out.printf("%d, %d, %d, %d, %d, %d\n", i1, j1, k1, i2, j2, k2);
     // System.out.println("carts = " + carts.size());
     SignalAspect newAspect = SignalAspect.GREEN;
-    for (AbstractMinecartEntity cart : carts) {
-      int cartX = MathHelper.floor(cart.getX());
-      int cartZ = MathHelper.floor(cart.getZ());
+    for (AbstractMinecart cart : carts) {
+      int cartX = Mth.floor(cart.getX());
+      int cartZ = Mth.floor(cart.getZ());
       double motionX = cart.getDeltaMovement().x();
       double motionZ = cart.getDeltaMovement().z();
       if (Math.abs(motionX) < 0.08 && Math.abs(motionZ) < 0.08)
@@ -243,7 +226,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
         "INVALID_SCAN_FAIL: " + scanResult.getStatus().toString());
   }
 
-  public void tickServer() {
+  public void serverTick() {
     if (this.aspectUpdateTimer++ >= SignalTools.aspectUpdateInterval) {
       this.aspectUpdateTimer = 0;
       SignalAspect lastAspect = this.signalAspect;
@@ -312,13 +295,13 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeEnum(this.signalAspect);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.signalAspect = data.readEnum(SignalAspect.class);
   }

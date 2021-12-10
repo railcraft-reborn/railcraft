@@ -6,35 +6,32 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.inventory.InvTools;
-import mods.railcraft.util.inventory.wrappers.InventoryMapper;
+import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.potion.PotionUtils;
-import net.minecraft.potion.Potions;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -59,11 +56,11 @@ public final class FluidTools {
 
   private FluidTools() {}
 
-  public static ITextComponent toString(FluidStack fluidStack) {
+  public static Component toString(FluidStack fluidStack) {
     if (fluidStack.isEmpty()) {
-      return new StringTextComponent("Empty");
+      return new TextComponent("Empty");
     }
-    return new StringTextComponent(fluidStack.getAmount() + "x")
+    return new TextComponent(fluidStack.getAmount() + "x")
         .append(fluidStack.getDisplayName());
   }
 
@@ -74,7 +71,7 @@ public final class FluidTools {
    * @param fluidHandler A Fluidhandler
    * @return TRUE if we should return success, FALSE if super must be called.
    */
-  public static boolean interactWithFluidHandler(PlayerEntity player, Hand hand,
+  public static boolean interactWithFluidHandler(Player player, InteractionHand hand,
       IFluidHandler fluidHandler) {
     return player.level.isClientSide()
         ? FluidItemHelper.isContainer(player.getItemInHand(hand))
@@ -85,7 +82,7 @@ public final class FluidTools {
     FILL_ONLY, DRAIN_ONLY, FILL_THEN_DRAIN, DRAIN_THEN_FILL
   }
 
-  public enum ProcessState implements IStringSerializable {
+  public enum ProcessState implements StringRepresentable {
 
     FILLING("filling"),
     DRAINING("draining"),
@@ -110,35 +107,35 @@ public final class FluidTools {
     }
   }
 
-  private static void sendToProcessing(IInventory inv) {
-    InventoryMapper.make(inv, 0, 1)
-      .moveOneItemTo(InventoryMapper.make(inv, 1, 1).ignoreItemChecks());
+  private static void sendToProcessing(Container inv) {
+    ContainerMapper.make(inv, 0, 1)
+      .moveOneItemTo(ContainerMapper.make(inv, 1, 1).ignoreItemChecks());
   }
 
-  private static void sendToOutput(IInventory inv) {
-    InventoryMapper.make(inv, 1, 1)
-      .moveOneItemTo(InventoryMapper.make(inv, 2, 1).ignoreItemChecks());
+  private static void sendToOutput(Container inv) {
+    ContainerMapper.make(inv, 1, 1)
+      .moveOneItemTo(ContainerMapper.make(inv, 2, 1).ignoreItemChecks());
   }
 
-  private static ProcessState tryFill(IInventory inv, StandardTank tank, ItemStack container) {
+  private static ProcessState tryFill(Container inv, StandardTank tank, ItemStack container) {
     FluidActionResult filled =
         FluidUtil.tryFillContainer(container, tank, FluidAttributes.BUCKET_VOLUME, null, true);
     if (!filled.isSuccess()) {
       sendToOutput(inv);
       return ProcessState.RESET;
     }
-    inv.setItem(1, InvTools.makeSafe(filled.getResult()));
+    inv.setItem(1, ContainerTools.makeSafe(filled.getResult()));
     return ProcessState.FILLING;
   }
 
-  private static ProcessState tryDrain(IInventory inv, StandardTank tank, ItemStack container) {
+  private static ProcessState tryDrain(Container inv, StandardTank tank, ItemStack container) {
     FluidActionResult drained =
         FluidUtil.tryEmptyContainer(container, tank, FluidAttributes.BUCKET_VOLUME, null, true);
     if (!drained.isSuccess()) {
       sendToOutput(inv);
       return ProcessState.RESET;
     }
-    inv.setItem(1, InvTools.makeSafe(drained.getResult()));
+    inv.setItem(1, ContainerTools.makeSafe(drained.getResult()));
     return ProcessState.DRAINING;
   }
 
@@ -147,7 +144,7 @@ public final class FluidTools {
    * and output as slot 2. Will handle moving an item through all stages from
    * input to output for either filling or draining.
    */
-  public static ProcessState processContainer(IInventory inv, StandardTank tank,
+  public static ProcessState processContainer(Container inv, StandardTank tank,
       ProcessType type, ProcessState state) {
     ItemStack container = inv.getItem(1);
     if (container.isEmpty() || !FluidUtil.getFluidHandler(container).isPresent()) {
@@ -189,13 +186,13 @@ public final class FluidTools {
     MinecraftForge.EVENT_BUS.register(WaterBottleEventHandler.INSTANCE);
   }
 
-  public static boolean isFullFluidBlock(World world, BlockPos pos) {
+  public static boolean isFullFluidBlock(Level world, BlockPos pos) {
     return isFullFluidBlock(world.getBlockState(pos), world, pos);
   }
 
-  public static boolean isFullFluidBlock(BlockState state, World world, BlockPos pos) {
-    if (state.getBlock() instanceof FlowingFluidBlock) {
-      return state.getValue(FlowingFluidBlock.LEVEL) == 0;
+  public static boolean isFullFluidBlock(BlockState state, Level world, BlockPos pos) {
+    if (state.getBlock() instanceof LiquidBlock) {
+      return state.getValue(LiquidBlock.LEVEL) == 0;
     }
     if (state.getBlock() instanceof IFluidBlock) {
       return Math.abs(((IFluidBlock) state.getBlock()).getFilledPercentage(world, pos)) == 1.0;
@@ -207,32 +204,11 @@ public final class FluidTools {
     return state.getFluidState().getType();
   }
 
-  /**
-   * Does drip particles.
-   * @deprecated Use Fluid#getDripParticle()
-   */
-  @Deprecated
-  public static void drip(World level, BlockPos pos, BlockState state, Random rand,
-      float particleRed, float particleGreen, float particleBlue) {
-    if (rand.nextInt(10) == 0 && Block.canSupportRigidBlock(level, pos.below())
-        && !level.getBlockState(pos.below(2)).getMaterial().blocksMotion()) {
-      double px = (double) ((float) pos.getX() + rand.nextFloat());
-      double py = (double) pos.getY() - 1.05D;
-      double pz = (double) ((float) pos.getZ() + rand.nextFloat());
-
-      // TODO implement this particle
-      // Particle fx =
-      // new ParticleDrip(world, new Vec3d(px, py, pz), particleRed, particleGreen,
-      // particleBlue);
-      // FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
-    }
-  }
-
-  public static Collection<IFluidHandler> findNeighbors(World level, BlockPos centrePos,
-      Predicate<? super TileEntity> filter, Direction... directions) {
+  public static Collection<IFluidHandler> findNeighbors(Level level, BlockPos centrePos,
+      Predicate<? super BlockEntity> filter, Direction... directions) {
     List<IFluidHandler> targets = new ArrayList<>();
     for (Direction direction : directions) {
-      TileEntity blockEntity = level.getBlockEntity(centrePos.relative(direction));
+      BlockEntity blockEntity = level.getBlockEntity(centrePos.relative(direction));
       if (blockEntity == null) {
         continue;
       }

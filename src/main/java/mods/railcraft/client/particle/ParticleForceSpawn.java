@@ -1,17 +1,17 @@
 package mods.railcraft.client.particle;
 
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
 
 public class ParticleForceSpawn extends ParticleBaseSmokeShrinking {
 
   public static final float SMOKE_GRAVITY = -0.1F;
 
-  public ParticleForceSpawn(ClientWorld world, double x, double y, double z, double dx, double dy,
+  public ParticleForceSpawn(ClientLevel world, double x, double y, double z, double dx, double dy,
       double dz, int color) {
     this(world, x, y, z, dx, dy, dz, color, 1.0F);
   }
 
-  public ParticleForceSpawn(ClientWorld world, double x, double y, double z, double dx, double dy,
+  public ParticleForceSpawn(ClientLevel world, double x, double y, double z, double dx, double dy,
       double dz, int color, float scale) {
     super(world, x, y, z, dx, dy, dz, scale);
     this.gravity = SMOKE_GRAVITY;

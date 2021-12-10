@@ -3,28 +3,28 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.world.level.block.entity.track.SwitchTrackBlockEntity;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
-public class WyeTrackBlock extends SwitchTrackBlock {
+public class WyeTrackBlock extends SwitchTrackBlock implements EntityBlock {
 
   public WyeTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
   }
 
   @Override
-  public SwitchTrackBlockEntity createTileEntity(BlockState state, IBlockReader reader) {
-    return new WyeTrackBlockEntity();
-  }
-
-  @Override
-  public RailShape getRailDirection(BlockState blockState, IBlockReader world, BlockPos pos,
-      @Nullable AbstractMinecartEntity cart) {
+  public RailShape getRailDirection(BlockState blockState, BlockGetter world, BlockPos pos,
+      @Nullable AbstractMinecart cart) {
     final boolean switched = isSwitched(blockState);
     switch (getFacing(blockState)) {
       case NORTH:
@@ -38,5 +38,27 @@ public class WyeTrackBlock extends SwitchTrackBlock {
       default:
         throw new IllegalStateException("Invalid facing direction.");
     }
+  }
+
+  @Override
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new WyeTrackBlockEntity(blockPos, blockState);
+  }
+
+  @Nullable
+  @Override
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
+      BlockEntityType<T> type) {
+    return level.isClientSide() ? null
+        : createTickerHelper(type, RailcraftBlockEntityTypes.WYE_TRACK.get(),
+            WyeTrackBlockEntity::serverTick);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nullable
+  protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
+      BlockEntityType<A> type, BlockEntityType<E> expectedType,
+      BlockEntityTicker<? super E> ticker) {
+    return expectedType == type ? (BlockEntityTicker<A>) ticker : null;
   }
 }

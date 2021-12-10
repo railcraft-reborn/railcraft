@@ -11,45 +11,46 @@ import java.util.stream.Stream;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import mods.railcraft.util.collections.StackKey;
-import mods.railcraft.util.inventory.IInventoryManipulator;
-import mods.railcraft.util.inventory.InvTools;
-import mods.railcraft.util.inventory.InventoryAdaptor;
-import mods.railcraft.util.inventory.InventoryAdvanced;
-import mods.railcraft.util.inventory.InventoryComposite;
-import mods.railcraft.util.inventory.InventoryManifest;
-import mods.railcraft.util.inventory.filters.StackFilters;
-import mods.railcraft.util.inventory.wrappers.InventoryMapper;
+import mods.railcraft.util.container.AdvancedContainer;
+import mods.railcraft.util.container.CompositeContainerAdaptor;
+import mods.railcraft.util.container.ContainerAdaptor;
+import mods.railcraft.util.container.ContainerManifest;
+import mods.railcraft.util.container.ContainerManipulator;
+import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
-    implements INamedContainerProvider {
+    implements MenuProvider {
 
   protected static final Map<TransferMode, Predicate<ItemManipulatorBlockEntity>> modeHasWork =
       new EnumMap<>(TransferMode.class);
-  protected static final int[] SLOTS = InvTools.buildSlotArray(0, 9);
-  protected IInventoryManipulator cart;
+  protected static final int[] SLOTS = ContainerTools.buildSlotArray(0, 9);
+  protected ContainerManipulator cart;
 
   static {
     modeHasWork.put(TransferMode.ALL, tile -> {
-      IInventoryManipulator dest = tile.getDestination();
+      ContainerManipulator dest = tile.getDestination();
 
       return tile.getSource().streamStacks()
           .filter(StackFilters.anyMatch(tile.getItemFilters()))
@@ -57,10 +58,10 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     });
 
     modeHasWork.put(TransferMode.TRANSFER, tile -> {
-      InventoryManifest filterManifest = InventoryManifest.create(tile.getItemFilters());
-      InventoryManifest sourceManifest =
-          InventoryManifest.create(tile.getSource(), filterManifest.keySet());
-      IInventoryManipulator dest = tile.getDestination();
+      ContainerManifest filterManifest = ContainerManifest.create(tile.getItemFilters());
+      ContainerManifest sourceManifest =
+          ContainerManifest.create(tile.getSource(), filterManifest.keySet());
+      ContainerManipulator dest = tile.getDestination();
 
       return sourceManifest.values().stream()
           .filter(entry -> dest.willAcceptAny(entry.stacks()))
@@ -69,11 +70,11 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     });
 
     modeHasWork.put(TransferMode.STOCK, tile -> {
-      IInventoryManipulator dest = tile.getDestination();
-      InventoryManifest filterManifest = InventoryManifest.create(tile.getItemFilters());
-      InventoryManifest sourceManifest =
-          InventoryManifest.create(tile.getSource(), filterManifest.keySet());
-      InventoryManifest destManifest = InventoryManifest.create(dest, filterManifest.keySet());
+      ContainerManipulator dest = tile.getDestination();
+      ContainerManifest filterManifest = ContainerManifest.create(tile.getItemFilters());
+      ContainerManifest sourceManifest =
+          ContainerManifest.create(tile.getSource(), filterManifest.keySet());
+      ContainerManifest destManifest = ContainerManifest.create(dest, filterManifest.keySet());
 
       return sourceManifest.values().stream()
           .filter(entry -> dest.willAcceptAny(entry.stacks()))
@@ -81,16 +82,16 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     });
 
     modeHasWork.put(TransferMode.EXCESS, tile -> {
-      IInventoryManipulator dest = tile.getDestination();
-      InventoryManifest filterManifest = InventoryManifest.create(tile.getItemFilters());
-      InventoryManifest sourceManifest =
-          InventoryManifest.create(tile.getSource(), filterManifest.keySet());
+      ContainerManipulator dest = tile.getDestination();
+      ContainerManifest filterManifest = ContainerManifest.create(tile.getItemFilters());
+      ContainerManifest sourceManifest =
+          ContainerManifest.create(tile.getSource(), filterManifest.keySet());
 
       if (filterManifest.values().stream()
           .anyMatch(entry -> sourceManifest.count(entry.key()) > entry.count()))
         return true;
 
-      InventoryManifest remainingManifest = InventoryManifest.create(tile.getSource());
+      ContainerManifest remainingManifest = ContainerManifest.create(tile.getSource());
       remainingManifest.keySet()
           .removeIf(stackKey -> StackFilters.anyMatch(tile.getItemFilters()).test(stackKey.get()));
 
@@ -98,21 +99,23 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     });
   }
 
-  protected final InventoryComposite chests = InventoryComposite.create();
+  protected final CompositeContainerAdaptor chests = CompositeContainerAdaptor.create();
   protected final Multiset<StackKey> transferredItems = HashMultiset.create();
-  protected final InventoryMapper bufferInventory;
-  private final InventoryAdvanced invFilters = new InventoryAdvanced(9).callbackInv(this).phantom();
+  protected final ContainerMapper bufferContainer;
+  private final AdvancedContainer filtersContainer =
+      new AdvancedContainer(9).callbackContainer(this).phantom();
   private TransferMode transferMode = TransferMode.ALL;
 
-  protected ItemManipulatorBlockEntity(TileEntityType<?> type) {
-    super(type);
-    setInventorySize(9);
-    bufferInventory = InventoryMapper.make(getInventory()).ignoreItemChecks();
+  protected ItemManipulatorBlockEntity(BlockEntityType<?> type, BlockPos blockPos,
+      BlockState blockState) {
+    super(type, blockPos, blockState);
+    this.setContainerSize(9);
+    this.bufferContainer = ContainerMapper.make(this.getContainer()).ignoreItemChecks();
   }
 
-  public abstract IInventoryManipulator getSource();
+  public abstract ContainerManipulator getSource();
 
-  public abstract IInventoryManipulator getDestination();
+  public abstract ContainerManipulator getDestination();
 
   public TransferMode getTransferMode() {
     return this.transferMode;
@@ -122,8 +125,8 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     this.transferMode = transferMode;
   }
 
-  public final InventoryAdvanced getItemFilters() {
-    return this.invFilters;
+  public final AdvancedContainer getItemFilters() {
+    return this.filtersContainer;
   }
 
   public abstract Slot getBufferSlot(int id, int x, int y);
@@ -143,14 +146,14 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     this.transferredItems.clear();
   }
 
-  protected Collection<InventoryAdaptor> getAdjacentInventories() {
-    List<InventoryAdaptor> containers = new ArrayList<>();
+  protected Collection<ContainerAdaptor> getAdjacentContainers() {
+    List<ContainerAdaptor> containers = new ArrayList<>();
     for (Direction direction : Direction.values()) {
-      TileEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
+      BlockEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
       if (blockEntity != null) {
         blockEntity
             .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite())
-            .map(InventoryAdaptor::of)
+            .map(ContainerAdaptor::of)
             .ifPresent(containers::add);
       }
     }
@@ -158,21 +161,21 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Override
-  protected void processCart(AbstractMinecartEntity cart) {
+  protected void processCart(AbstractMinecart cart) {
     this.chests.clear();
-    this.chests.add(this.bufferInventory);
-    this.chests.addAll(this.getAdjacentInventories());
+    this.chests.add(this.bufferContainer);
+    this.chests.addAll(this.getAdjacentContainers());
 
-    InventoryAdaptor cartInv = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-        this.getFacing().getOpposite()).map(InventoryAdaptor::of).orElse(null);
+    ContainerAdaptor cartInv = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+        this.getFacing().getOpposite()).map(ContainerAdaptor::of).orElse(null);
     if (cartInv == null) {
       sendCart(cart);
       return;
     }
     this.cart = cartInv;
 
-    InventoryManifest filterManifest = InventoryManifest.create(getItemFilters());
-    Stream<InventoryManifest.ManifestEntry> manifestStream = filterManifest.values().stream();
+    ContainerManifest filterManifest = ContainerManifest.create(getItemFilters());
+    Stream<ContainerManifest.ManifestEntry> manifestStream = filterManifest.values().stream();
     switch (getTransferMode()) {
       case ALL: {
         if (filterManifest.isEmpty()) {
@@ -189,14 +192,14 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
         break;
       }
       case STOCK: {
-        InventoryManifest destManifest =
-            InventoryManifest.create(getDestination(), filterManifest.keySet());
+        ContainerManifest destManifest =
+            ContainerManifest.create(getDestination(), filterManifest.keySet());
         moveItem(manifestStream.filter(entry -> destManifest.count(entry.key()) < entry.count()));
         break;
       }
       case EXCESS: {
-        InventoryManifest sourceManifest =
-            InventoryManifest.create(getSource(), filterManifest.keySet());
+        ContainerManifest sourceManifest =
+            ContainerManifest.create(getSource(), filterManifest.keySet());
 
         this.moveItem(
             manifestStream.filter(entry -> sourceManifest.count(entry.key()) > entry.count()));
@@ -212,10 +215,10 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Override
-  protected boolean hasWorkForCart(AbstractMinecartEntity cart) {
-    IInventoryManipulator cartInv =
+  protected boolean hasWorkForCart(AbstractMinecart cart) {
+    ContainerManipulator cartInv =
         cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-            this.getFacing().getOpposite()).map(InventoryAdaptor::of).orElse(null);
+            this.getFacing().getOpposite()).map(ContainerAdaptor::of).orElse(null);
     if (cartInv == null || cartInv.slotCount() <= 0) {
       return false;
     }
@@ -234,8 +237,8 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     return modeHasWork.get(this.getTransferMode()).test(this);
   }
 
-  protected void moveItem(Stream<InventoryManifest.ManifestEntry> stream) {
-    List<ItemStack> keys = stream.map(InventoryManifest.ManifestEntry::key)
+  protected void moveItem(Stream<ContainerManifest.ManifestEntry> stream) {
+    List<ItemStack> keys = stream.map(ContainerManifest.ManifestEntry::key)
         .map(StackKey::get)
         .collect(Collectors.toList());
     ItemStack moved =
@@ -251,43 +254,42 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Override
-  public boolean canHandleCart(AbstractMinecartEntity cart) {
+  public boolean canHandleCart(AbstractMinecart cart) {
     return cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-        this.getFacing().getOpposite()).map(InventoryAdaptor::of)
+        this.getFacing().getOpposite()).map(ContainerAdaptor::of)
         .map(inventory -> inventory.slotCount() > 0).orElse(false)
         && super.canHandleCart(cart);
   }
 
   @Override
-  public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
+  public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
     return new ItemManipulatorMenu(id, inventory, this);
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeEnum(this.transferMode);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.transferMode = data.readEnum(TransferMode.class);
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.putString("transferMode", this.transferMode.getSerializedName());
-    data.put("itemFilters", this.getItemFilters().serializeNBT());
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putString("transferMode", this.transferMode.getSerializedName());
+    tag.put("itemFilters", this.getItemFilters().serializeNBT());
   }
 
   @Override
-  public void load(BlockState blockState, CompoundNBT data) {
-    super.load(blockState, data);
+  public void load(CompoundTag tag) {
+    super.load( tag);
     this.transferMode =
-        TransferMode.getByName(data.getString("transferMode")).orElse(TransferMode.ALL);
-    this.getItemFilters().deserializeNBT(data.getList("itemFilters", Constants.NBT.TAG_COMPOUND));
+        TransferMode.getByName(tag.getString("transferMode")).orElse(TransferMode.ALL);
+    this.getItemFilters().deserializeNBT(tag.getList("itemFilters", Tag.TAG_COMPOUND));
   }
 }

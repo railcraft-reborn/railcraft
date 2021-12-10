@@ -10,21 +10,23 @@ import mods.railcraft.api.core.Lockable;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     implements Lockable {
 
   private Lock lock = Lock.UNLOCKED;
 
-  public LockableSwitchTrackActuatorBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public LockableSwitchTrackActuatorBlockEntity(BlockEntityType<?> type, BlockPos blockPos,
+      BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
   public Lock getLock() {
@@ -45,31 +47,30 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.putString("lock", this.lock.getSerializedName());
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putString("lock", this.lock.getSerializedName());
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.lock = Lock.getByName(data.getString("lock")).orElse(Lock.UNLOCKED);
+  public void load( CompoundTag tag) {
+    super.load( tag);
+    this.lock = Lock.getByName(tag.getString("lock")).orElse(Lock.UNLOCKED);
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeEnum(this.lock);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.lock = data.readEnum(Lock.class);
   }
 
-  public enum Lock implements ButtonState<Lock>, IStringSerializable {
+  public enum Lock implements ButtonState<Lock>, StringRepresentable {
 
     UNLOCKED("unlocked", ButtonTexture.UNLOCKED_BUTTON),
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON);
@@ -86,8 +87,8 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     }
 
     @Override
-    public ITextComponent getLabel() {
-      return StringTextComponent.EMPTY;
+    public Component getLabel() {
+      return TextComponent.EMPTY;
     }
 
     @Override

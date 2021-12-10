@@ -10,41 +10,42 @@ import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.IChargeBlock;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.Optionals;
-import mods.railcraft.util.inventory.InvTools;
+import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterState;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
-// TODO:
-// https://nekoyue.github.io/ForgeJavaDocs-NG/javadoc/1.16.5/net/minecraftforge/energy/EnergyStorage.html
-public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlock {
+public class ForceTrackEmitterBlock extends BaseEntityBlock implements IChargeBlock {
 
   public static final DyeColor DEFAULT_COLOR = DyeColor.LIGHT_BLUE;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -62,54 +63,54 @@ public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlo
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(FACING, POWERED, COLOR);
   }
 
   @Override
-  public BlockRenderType getRenderShape(BlockState state) {
-    return BlockRenderType.MODEL;
+  public RenderShape getRenderShape(BlockState state) {
+    return RenderShape.MODEL;
   }
 
   @Override
-  public Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, IBlockReader world,
+  public Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, BlockGetter world,
       BlockPos pos) {
     return CHARGE_SPECS;
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public ActionResultType use(BlockState state, World worldIn, BlockPos pos,
-      PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+  public InteractionResult use(BlockState state, Level worldIn, BlockPos pos,
+      Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (super.use(state, worldIn, pos, player, hand, rayTraceResult).consumesAction())
-      return ActionResultType.CONSUME;
+      return InteractionResult.CONSUME;
     if (player.isShiftKeyDown())
-      return ActionResultType.FAIL;
+      return InteractionResult.FAIL;
     ItemStack heldItem = player.getItemInHand(hand);
-    if (heldItem.isEmpty() || hand == Hand.OFF_HAND)
-      return ActionResultType.FAIL;
-    TileEntity blockEntity = worldIn.getBlockEntity(pos);
+    if (heldItem.isEmpty() || hand == InteractionHand.OFF_HAND)
+      return InteractionResult.FAIL;
+    BlockEntity blockEntity = worldIn.getBlockEntity(pos);
     if (blockEntity instanceof ForceTrackEmitterBlockEntity) {
       ForceTrackEmitterBlockEntity t = (ForceTrackEmitterBlockEntity) blockEntity;
       if (Optionals.test(Optional.ofNullable(DyeColor.getColor(heldItem)), t::setColor)) {
         if (!player.isCreative())
-          player.setItemInHand(hand, InvTools.depleteItem(heldItem));
-        return ActionResultType.SUCCESS;
+          player.setItemInHand(hand, ContainerTools.depleteItem(heldItem));
+        return InteractionResult.SUCCESS;
       }
     }
-    return ActionResultType.FAIL;
+    return InteractionResult.FAIL;
   }
 
   private ItemStack getItem(BlockState blockState) {
     ItemStack itemStack = this.asItem().getDefaultInstance();
-    CompoundNBT tag = itemStack.getOrCreateTag();
+    CompoundTag tag = itemStack.getOrCreateTag();
     tag.putInt("color", blockState.getValue(COLOR).getId());
     return itemStack;
   }
 
   @Override
-  public ItemStack getPickBlock(BlockState blockState, RayTraceResult target, IBlockReader world,
-      BlockPos pos, PlayerEntity player) {
+  public ItemStack getCloneItemStack(BlockState blockState, HitResult target, BlockGetter world,
+      BlockPos pos, Player player) {
     return this.getItem(blockState);
   }
 
@@ -119,22 +120,23 @@ public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlo
   }
 
   @Override
-  public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+  public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
     if (stateIn.getValue(POWERED))
       Charge.effects().throwSparks(stateIn, worldIn, pos, rand, 10);
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+  public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
     super.randomTick(state, worldIn, pos, rand);
     registerNode(state, worldIn, pos);
   }
 
   @Override
-  public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction) {
+  public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos,
+      Rotation direction) {
     if (!LevelUtil.getBlockEntity(world, pos, ForceTrackEmitterBlockEntity.class)
-        .map(ForceTrackEmitterBlockEntity::getState)
+        .map(ForceTrackEmitterBlockEntity::getStateInstance)
         .filter(ForceTrackEmitterState.RETRACTED::equals)
         .isPresent()) {
       return state;
@@ -143,13 +145,13 @@ public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlo
   }
 
   @Override
-  public BlockState getStateForPlacement(BlockItemUseContext context) {
+  public BlockState getStateForPlacement(BlockPlaceContext context) {
     return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState,
+  public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState,
       boolean something) {
     super.onPlace(state, worldIn, pos, oldState, something);
     registerNode(state, worldIn, pos);
@@ -157,7 +159,7 @@ public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlo
 
   @SuppressWarnings("deprecation")
   @Override
-  public void neighborChanged(BlockState state, World world, BlockPos pos, Block block,
+  public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block,
       BlockPos changedPos, boolean something) {
     super.neighborChanged(state, world, pos, block, changedPos, something);
     LevelUtil.getBlockEntity(world, pos, ForceTrackEmitterBlockEntity.class)
@@ -165,7 +167,7 @@ public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlo
   }
 
   @Override
-  public void setPlacedBy(World world, BlockPos pos, BlockState state,
+  public void setPlacedBy(Level world, BlockPos pos, BlockState state,
       @Nullable LivingEntity livingEntity, ItemStack itemStack) {
     super.setPlacedBy(world, pos, state, livingEntity, itemStack);
     DyeColor color = DyeColor.getColor(itemStack);
@@ -178,15 +180,24 @@ public class ForceTrackEmitterBlock extends ContainerBlock implements IChargeBlo
 
   @SuppressWarnings("deprecation")
   @Override
-  public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState,
+  public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState,
       boolean something) {
     super.onRemove(state, worldIn, pos, newState, something);
     deregisterNode(worldIn, pos);
   }
 
   @Override
-  public TileEntity newBlockEntity(IBlockReader p_196283_1_) {
-    return new ForceTrackEmitterBlockEntity();
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new ForceTrackEmitterBlockEntity(blockPos, blockState);
+  }
+
+  @Nullable
+  @Override
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
+      BlockEntityType<T> type) {
+    return level.isClientSide() ? null
+        : createTickerHelper(type, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get(),
+            ForceTrackEmitterBlockEntity::serverTick);
   }
 
   public static Direction getFacing(BlockState blockState) {

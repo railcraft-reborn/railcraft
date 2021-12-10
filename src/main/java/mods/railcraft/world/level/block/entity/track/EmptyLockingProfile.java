@@ -1,27 +1,27 @@
 package mods.railcraft.world.level.block.entity.track;
 
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.nbt.CompoundTag;
 
 public enum EmptyLockingProfile implements LockingModeController {
 
   INSTANCE;
 
   @Override
-  public CompoundNBT serializeNBT() {
-    return new CompoundNBT();
+  public CompoundTag serializeNBT() {
+    return new CompoundTag();
   }
 
   @Override
-  public void deserializeNBT(CompoundNBT tag) {}
+  public void deserializeNBT(CompoundTag tag) {}
 
   @Override
-  public void locked(AbstractMinecartEntity cart) {}
+  public void locked(AbstractMinecart cart) {}
 
   @Override
-  public void passed(AbstractMinecartEntity cart) {}
+  public void passed(AbstractMinecart cart) {}
 
   @Override
-  public void released(AbstractMinecartEntity cart) {}
+  public void released(AbstractMinecart cart) {}
 }

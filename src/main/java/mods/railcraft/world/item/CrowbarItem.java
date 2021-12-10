@@ -4,58 +4,52 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
-import com.google.common.collect.Sets;
 import mods.railcraft.api.item.Crowbar;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
-import mods.railcraft.world.level.block.RailcraftToolTypes;
-import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
-import net.minecraft.block.AbstractButtonBlock;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.LeverBlock;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.ToolItem;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class CrowbarItem extends ToolItem implements Crowbar {
+public class CrowbarItem extends DiggerItem implements Crowbar {
 
   private static final int BOOST_DAMAGE = 1;
   private final Set<Class<? extends Block>> shiftRotations = new HashSet<>();
   private final Set<Class<? extends Block>> bannedRotations = new HashSet<>();
 
-  public CrowbarItem(float attackDamage, float attackSpeed, IItemTier tier, Properties properties) {
-    super(attackDamage, attackSpeed, tier,
-        Sets.newHashSet(Blocks.RAIL, Blocks.DETECTOR_RAIL, Blocks.POWERED_RAIL,
-            Blocks.ACTIVATOR_RAIL),
-        properties.addToolType(RailcraftToolTypes.CROWBAR, 2));
+  public CrowbarItem(float attackDamage, float attackSpeed, Tier tier, Properties properties) {
+    super(attackDamage, attackSpeed, tier, RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR, properties);
     this.shiftRotations.add(LeverBlock.class);
-    this.shiftRotations.add(AbstractButtonBlock.class);
+    this.shiftRotations.add(ButtonBlock.class);
     this.shiftRotations.add(ChestBlock.class);
-    this.bannedRotations.add(AbstractRailBlock.class);
+    this.bannedRotations.add(BaseRailBlock.class);
   }
 
   @Override
-  public boolean doesSneakBypassUse(ItemStack stack, IWorldReader world, BlockPos pos,
-      PlayerEntity player) {
+  public boolean doesSneakBypassUse(ItemStack stack, LevelReader world, BlockPos pos,
+      Player player) {
     return true;
   }
 
@@ -67,44 +61,46 @@ public class CrowbarItem extends ToolItem implements Crowbar {
     return this.bannedRotations.stream().anyMatch(banned -> banned.isAssignableFrom(cls));
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public ActionResultType onItemUseFirst(ItemStack itemStack, ItemUseContext context) {
-    PlayerEntity player = context.getPlayer();
-    Hand hand = context.getHand();
+  public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
+    Player player = context.getPlayer();
+    InteractionHand hand = context.getHand();
     ItemStack stack = player.getItemInHand(hand);
-    World world = context.getLevel();
+    Level world = context.getLevel();
     BlockPos pos = context.getClickedPos();
     BlockState blockState = world.getBlockState(pos);
 
-    if (blockState.isAir(world, pos))
-      return ActionResultType.PASS;
+    if (blockState.isAir()) {
+      return InteractionResult.PASS;
+    }
 
-    if (player.isShiftKeyDown() != isShiftRotation(blockState.getBlock().getClass()))
-      return ActionResultType.PASS;
+    if (player.isShiftKeyDown() != this.isShiftRotation(blockState.getBlock().getClass())) {
+      return InteractionResult.PASS;
+    }
 
-    if (isBannedRotation(blockState.getBlock().getClass()))
-      return ActionResultType.PASS;
+    if (isBannedRotation(blockState.getBlock().getClass())) {
+      return InteractionResult.PASS;
+    }
 
     if (!world.isClientSide()) {
       BlockState newBlockState = blockState.rotate(world, pos, Rotation.CLOCKWISE_90);
       if (newBlockState != blockState) {
         world.setBlockAndUpdate(pos, newBlockState);
         player.swing(hand);
-        stack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
-        return ActionResultType.SUCCESS;
+        stack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        return InteractionResult.SUCCESS;
       }
     }
 
-    return ActionResultType.PASS;
+    return InteractionResult.PASS;
   }
 
   @Override
-  public boolean mineBlock(ItemStack stack, World world, BlockState state, BlockPos pos,
+  public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos,
       LivingEntity entityLiving) {
     if (!world.isClientSide())
-      if (entityLiving instanceof PlayerEntity) {
-        PlayerEntity player = (PlayerEntity) entityLiving;
+      if (entityLiving instanceof Player) {
+        Player player = (Player) entityLiving;
         if (!player.isShiftKeyDown()) {
           int level = EnchantmentHelper
               .getItemEnchantmentLevel(RailcraftEnchantments.DESTRUCTION.get(), stack) * 2 + 1;
@@ -121,7 +117,7 @@ public class CrowbarItem extends ToolItem implements Crowbar {
    */
   @Override
   public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    stack.hurtAndBreak(2, attacker, __ -> attacker.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+    stack.hurtAndBreak(2, attacker, __ -> attacker.broadcastBreakEvent(EquipmentSlot.MAINHAND));
     return true;
   }
   // @Override
@@ -144,65 +140,65 @@ public class CrowbarItem extends ToolItem implements Crowbar {
 
 
   @Override
-  public boolean canWhack(PlayerEntity player, Hand hand, ItemStack crowbar, BlockPos pos) {
+  public boolean canWhack(Player player, InteractionHand hand, ItemStack crowbar, BlockPos pos) {
     return true;
   }
 
   @Override
-  public void onWhack(PlayerEntity player, Hand hand, ItemStack crowbar, BlockPos pos) {
-    crowbar.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+  public void onWhack(Player player, InteractionHand hand, ItemStack crowbar, BlockPos pos) {
+    crowbar.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(EquipmentSlot.MAINHAND));
     player.swing(hand);
   }
 
   @Override
-  public boolean canLink(PlayerEntity player, Hand hand, ItemStack crowbar,
-      AbstractMinecartEntity cart) {
+  public boolean canLink(Player player, InteractionHand hand, ItemStack crowbar,
+      AbstractMinecart cart) {
     return player.isShiftKeyDown();
   }
 
   @Override
-  public void onLink(PlayerEntity player, Hand hand, ItemStack crowbar,
-      AbstractMinecartEntity cart) {
-    crowbar.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+  public void onLink(Player player, InteractionHand hand, ItemStack crowbar,
+      AbstractMinecart cart) {
+    crowbar.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(EquipmentSlot.MAINHAND));
     player.swing(hand);
   }
 
   @Override
-  public boolean canBoost(PlayerEntity player, Hand hand, ItemStack crowbar,
-      AbstractMinecartEntity cart) {
+  public boolean canBoost(Player player, InteractionHand hand, ItemStack crowbar,
+      AbstractMinecart cart) {
     return !player.isShiftKeyDown();
   }
 
   @Override
-  public void onBoost(PlayerEntity player, Hand hand, ItemStack crowbar,
-      AbstractMinecartEntity cart) {
+  public void onBoost(Player player, InteractionHand hand, ItemStack crowbar,
+      AbstractMinecart cart) {
     crowbar.hurtAndBreak(BOOST_DAMAGE, player,
-        __ -> player.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
+        __ -> player.broadcastBreakEvent(EquipmentSlot.MAINHAND));
     player.swing(hand);
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> info,
-      ITooltipFlag adv) {
-    info.add(new TranslationTextComponent("crowbar.description"));
+  public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> info,
+      TooltipFlag adv) {
+    info.add(new TranslatableComponent("crowbar.description"));
   }
 
-  private void removeExtraBlocks(World world, int level, BlockPos pos, BlockState state,
-      PlayerEntity player) {
+  private void removeExtraBlocks(Level world, int level, BlockPos pos, BlockState state,
+      Player player) {
     if (level > 0) {
       LevelUtil.playerRemoveBlock(world, pos, player);
       checkBlocks(world, level, pos, player);
     }
   }
 
-  private void checkBlock(World world, int level, BlockPos pos, PlayerEntity player) {
+  private void checkBlock(Level world, int level, BlockPos pos, Player player) {
     BlockState state = world.getBlockState(pos);
-    if (AbstractRailBlock.isRail(state) || state.getBlock() instanceof ElevatorTrackBlock
-        || state.isToolEffective(RailcraftToolTypes.CROWBAR))
+    if (player.hasCorrectToolForDrops(state)) {
       removeExtraBlocks(world, level - 1, pos, state, player);
+    }
   }
 
-  private void checkBlocks(World world, int level, BlockPos pos, PlayerEntity player) {
+  private void checkBlocks(Level world, int level, BlockPos pos, Player player) {
     // NORTH
     checkBlock(world, level, pos.offset(0, 0, -1), player);
     checkBlock(world, level, pos.offset(0, 1, -1), player);

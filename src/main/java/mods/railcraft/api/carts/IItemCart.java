@@ -6,8 +6,8 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.carts;
 
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * This class replaces IItemTransfer for controlling how items move through a train.
@@ -43,7 +43,7 @@ public interface IItemCart {
      * @param stack     the ItemStack
      * @return true if the cart can accept the item
      */
-    boolean canAcceptPushedItem(AbstractMinecartEntity requester, ItemStack stack);
+    boolean canAcceptPushedItem(AbstractMinecart requester, ItemStack stack);
 
     /**
      * This function controls whether a cart will fulfill a pull request for a specific item.
@@ -55,5 +55,5 @@ public interface IItemCart {
      * @param stack     the ItemStack
      * @return true if the cart can provide the item
      */
-    boolean canProvidePulledItem(AbstractMinecartEntity requester, ItemStack stack);
+    boolean canProvidePulledItem(AbstractMinecart requester, ItemStack stack);
 }

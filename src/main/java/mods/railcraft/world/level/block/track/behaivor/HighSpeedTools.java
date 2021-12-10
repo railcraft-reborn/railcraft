@@ -7,14 +7,14 @@ import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.entity.cart.CartConstants;
 import mods.railcraft.world.entity.cart.CartTools;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 
 /**
  * Created by CovertJaguar on 8/2/2016 for Railcraft.
@@ -28,14 +28,14 @@ public final class HighSpeedTools {
   public static final int LOOK_AHEAD_DIST = 2;
   public static final float SPEED_SLOPE = 0.45f;
 
-  public static void checkSafetyAndExplode(World world, BlockPos pos, AbstractMinecartEntity cart) {
+  public static void checkSafetyAndExplode(Level world, BlockPos pos, AbstractMinecart cart) {
     if (!isTrackSafeForHighSpeed(world, pos, cart)) {
       CartTools.explodeCart(cart);
     }
   }
 
-  public static boolean isTrackSafeForHighSpeed(World world, BlockPos pos,
-      AbstractMinecartEntity cart) {
+  public static boolean isTrackSafeForHighSpeed(Level world, BlockPos pos,
+      AbstractMinecart cart) {
     if (!isHighSpeedTrackAt(world, pos)) {
       return false;
     }
@@ -61,21 +61,21 @@ public final class HighSpeedTools {
     return false;
   }
 
-  private static boolean isTrackHighSpeedCapable(World world, BlockPos pos) {
+  private static boolean isTrackHighSpeedCapable(Level world, BlockPos pos) {
     return !world.isLoaded(pos) || isHighSpeedTrackAt(world, pos);
   }
 
-  private static void limitSpeed(AbstractMinecartEntity cart) {
-    Vector3d motion = cart.getDeltaMovement();
+  private static void limitSpeed(AbstractMinecart cart) {
+    Vec3 motion = cart.getDeltaMovement();
     double motionX = Math.copySign(Math.min(SPEED_CUTOFF, Math.abs(motion.x())), motion.x());
     double motionZ = Math.copySign(Math.min(SPEED_CUTOFF, Math.abs(motion.z())), motion.z());
     cart.setDeltaMovement(motionX, motion.y(), motionZ);
   }
 
-  public static void performHighSpeedChecks(World world, BlockPos pos,
-      AbstractMinecartEntity cart) {
+  public static void performHighSpeedChecks(Level world, BlockPos pos,
+      AbstractMinecart cart) {
     boolean highSpeed = isTravellingHighSpeed(cart);
-    Vector3d currentMotion = cart.getDeltaMovement();
+    Vec3 currentMotion = cart.getDeltaMovement();
     if (highSpeed) {
       checkSafetyAndExplode(world, pos, cart);
     } else if (isTrackSafeForHighSpeed(world, pos, cart)) {
@@ -94,22 +94,22 @@ public final class HighSpeedTools {
     }
   }
 
-  public static boolean isHighSpeedTrackAt(IBlockReader world, BlockPos pos) {
+  public static boolean isHighSpeedTrackAt(BlockGetter world, BlockPos pos) {
     return TrackTools.getTrackTypeAt(world, pos).isHighSpeed();
   }
 
-  public static double speedForNextTrack(World world, BlockPos pos, int dist,
-      @Nullable AbstractMinecartEntity cart) {
+  public static double speedForNextTrack(Level world, BlockPos pos, int dist,
+      @Nullable AbstractMinecart cart) {
     double maxSpeed = RailcraftConfig.server.highSpeedTrackMaxSpeed.get();
     if (dist < LOOK_AHEAD_DIST) {
       for (Direction side : Direction.Plane.HORIZONTAL) {
         BlockPos nextPos = pos.relative(side);
-        boolean foundTrack = AbstractRailBlock.isRail(world, nextPos);
+        boolean foundTrack = BaseRailBlock.isRail(world, nextPos);
         if (!foundTrack) {
-          if (AbstractRailBlock.isRail(world, nextPos.above())) {
+          if (BaseRailBlock.isRail(world, nextPos.above())) {
             foundTrack = true;
             nextPos = nextPos.above();
-          } else if (AbstractRailBlock.isRail(world, nextPos.below())) {
+          } else if (BaseRailBlock.isRail(world, nextPos.below())) {
             foundTrack = true;
             nextPos = nextPos.below();
           }
@@ -130,11 +130,11 @@ public final class HighSpeedTools {
     return maxSpeed;
   }
 
-  public static void setTravellingHighSpeed(AbstractMinecartEntity cart, boolean flag) {
+  public static void setTravellingHighSpeed(AbstractMinecart cart, boolean flag) {
     cart.getPersistentData().putBoolean(CartConstants.TAG_HIGH_SPEED, flag);
   }
 
-  public static boolean isTravellingHighSpeed(AbstractMinecartEntity cart) {
+  public static boolean isTravellingHighSpeed(AbstractMinecart cart) {
     return cart.getPersistentData().getBoolean(CartConstants.TAG_HIGH_SPEED);
   }
 }

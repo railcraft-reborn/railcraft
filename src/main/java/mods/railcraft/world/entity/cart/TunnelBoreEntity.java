@@ -15,67 +15,64 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.HarvestUtil;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.util.inventory.IExtInvSlot;
-import mods.railcraft.util.inventory.IInvSlot;
-import mods.railcraft.util.inventory.InvTools;
-import mods.railcraft.util.inventory.InventoryIterator;
-import mods.railcraft.util.inventory.filters.StackFilters;
-import mods.railcraft.util.inventory.wrappers.InventoryMapper;
+import mods.railcraft.util.container.ContainerIterator;
+import mods.railcraft.util.container.ContainerSlot;
+import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.container.ModifiableContainerSlot;
+import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TunnelBoreMenu;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.state.properties.RailShape;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkableCart {
 
@@ -127,7 +124,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
       Blocks.END_STONE);
 
   @SuppressWarnings("unchecked")
-  public static final Set<ITag<Block>> mineableTags = Sets.newHashSet(
+  public static final Set<Tag<Block>> mineableTags = Sets.newHashSet(
       Tags.Blocks.ORES,
       Tags.Blocks.NETHERRACK,
       Tags.Blocks.COBBLESTONE,
@@ -143,23 +140,23 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   public static final Set<Block> replaceableBlocks = Sets.newHashSet(Blocks.TORCH);
 
   @SuppressWarnings("unchecked")
-  public static final Set<ITag<Block>> replaceableTags = Sets.newHashSet(BlockTags.FLOWERS);
+  public static final Set<Tag<Block>> replaceableTags = Sets.newHashSet(BlockTags.FLOWERS);
 
-  private static final DataParameter<Boolean> HAS_FUEL =
-      EntityDataManager.defineId(TunnelBoreEntity.class, DataSerializers.BOOLEAN);
-  private static final DataParameter<Boolean> MOVING =
-      EntityDataManager.defineId(TunnelBoreEntity.class, DataSerializers.BOOLEAN);
-  private static final DataParameter<Direction> FACING =
-      EntityDataManager.defineId(TunnelBoreEntity.class, DataSerializers.DIRECTION);
-  private static final DataParameter<ItemStack> BORE_HEAD =
-      EntityDataManager.defineId(TunnelBoreEntity.class, DataSerializers.ITEM_STACK);
+  private static final EntityDataAccessor<Boolean> HAS_FUEL =
+      SynchedEntityData.defineId(TunnelBoreEntity.class, EntityDataSerializers.BOOLEAN);
+  private static final EntityDataAccessor<Boolean> MOVING =
+      SynchedEntityData.defineId(TunnelBoreEntity.class, EntityDataSerializers.BOOLEAN);
+  private static final EntityDataAccessor<Direction> FACING =
+      SynchedEntityData.defineId(TunnelBoreEntity.class, EntityDataSerializers.DIRECTION);
+  private static final EntityDataAccessor<ItemStack> BORE_HEAD =
+      SynchedEntityData.defineId(TunnelBoreEntity.class, EntityDataSerializers.ITEM_STACK);
 
-  public final InventoryMapper invFuel =
-      InventoryMapper.make(this, 1, 6).withFilters(StackFilters.FUEL);
-  public final InventoryMapper invBallast =
-      InventoryMapper.make(this, 7, 9).withFilters(StackFilters.BALLAST);
-  public final InventoryMapper invRails =
-      InventoryMapper.make(this, 16, 9).withFilters(StackFilters.TRACK);
+  public final ContainerMapper invFuel =
+      ContainerMapper.make(this, 1, 6).withFilters(StackFilters.FUEL);
+  public final ContainerMapper invBallast =
+      ContainerMapper.make(this, 7, 9).withFilters(StackFilters.BALLAST);
+  public final ContainerMapper invRails =
+      ContainerMapper.make(this, 16, 9).withFilters(StackFilters.TRACK);
   // protected static final int WATCHER_ID_BURN_TIME = 22;
 
   protected int delay;
@@ -174,15 +171,15 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   private final boolean hasInit;
   private final TunnelBorePartEntity[] partArray;
 
-  public TunnelBoreEntity(EntityType<?> type, World world) {
+  public TunnelBoreEntity(EntityType<?> type, Level world) {
     this(world, 0, 0, 0, Direction.SOUTH);
   }
 
-  public TunnelBoreEntity(World world, double x, double y, double z) {
+  public TunnelBoreEntity(Level world, double x, double y, double z) {
     this(world, x, y, z, Direction.SOUTH);
   }
 
-  public TunnelBoreEntity(World world, double x, double y, double z, Direction f) {
+  public TunnelBoreEntity(Level world, double x, double y, double z, Direction f) {
     super(RailcraftEntityTypes.TUNNEL_BORE.get(), x, y, z, world);
     setFacing(f);
   }
@@ -219,19 +216,8 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   }
 
   public boolean canHeadHarvestBlock(ItemStack head, BlockState targetState) {
-    if (head.isEmpty()) {
-      return false;
-    }
-
-    if (head.getItem() instanceof TunnelBoreHead) {
-      Item item = head.getItem();
-      Set<ToolType> toolTypes = item.getToolTypes(head);
-      return toolTypes.stream()
-          .anyMatch(tool -> item.getHarvestLevel(head, tool, null, targetState) >= HarvestUtil
-              .getHarvestLevel(targetState, tool));
-    }
-
-    return false;
+    return !head.isEmpty()
+        && (!targetState.requiresCorrectToolForDrops() || head.isCorrectToolForDrops(targetState));
   }
 
   private boolean isMineableBlock(BlockState blockState) {
@@ -269,14 +255,14 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
         setHurtTime(10);
         markHurt();
         setDamage(getDamage() + damage * 10);
-        boolean flag = (source.getEntity() instanceof PlayerEntity)
-            && ((PlayerEntity) source.getEntity()).isCreative();
+        boolean flag = (source.getEntity() instanceof Player)
+            && ((Player) source.getEntity()).isCreative();
 
         if (flag || getDamage() > 120) {
           ejectPassengers();
 
           if (flag && !hasCustomName()) {
-            this.remove();
+            this.remove(RemovalReason.KILLED);
           } else {
             this.destroy(source);
           }
@@ -307,7 +293,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
       default:
         break;
     }
-    this.setRot(yaw, this.xRot);
+    this.setRot(yaw, this.getXRot());
   }
 
   @Override
@@ -348,10 +334,9 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
       maxZ += len;
     }
 
-    this.setBoundingBox(new AxisAlignedBB(minX, y, minZ, maxX, y + height, maxZ));
+    this.setBoundingBox(new AABB(minX, y, minZ, maxX, y + height, maxZ));
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void tick() {
     clock++;
@@ -422,12 +407,12 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
               setActive(false);
             }
             placeRail = false;
-          } else if (AbstractRailBlock.isRail(existingState)) {
+          } else if (BaseRailBlock.isRail(existingState)) {
             if (dir != TrackTools.getTrackDirection(this.level, targetPos, this)) {
               TrackTools.setRailShape(this.level, targetPos, dir);
               setDelay(STANDARD_DELAY);
             }
-          } else if (existingState.isAir(this.level, targetPos)
+          } else if (existingState.isAir()
               || replaceableBlocks.contains(existingState.getBlock())) {
             placeRail = true;
             setDelay(STANDARD_DELAY);
@@ -463,9 +448,9 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
       }
 
       if (isMinecartPowered()) {
-        Vector3d headPos = getPositionAhead(3.3);
+        Vec3 headPos = getPositionAhead(3.3);
         double size = 0.8;
-        AxisAlignedBB entitySearchBox = AABBFactory.start()
+        AABB entitySearchBox = AABBFactory.start()
             .setBoundsToPoint(headPos)
             .expandHorizontally(size)
             .raiseCeiling(2).build();
@@ -486,10 +471,10 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
       }
     }
 
-    Vector3d motion = this.getDeltaMovement();
+    Vec3 motion = this.getDeltaMovement();
     if (isMoving()) {
-      float factorX = -MathHelper.sin((float) Math.toRadians(this.yRot));
-      float factorZ = MathHelper.cos((float) Math.toRadians(this.yRot));
+      float factorX = -Mth.sin((float) Math.toRadians(this.getYRot()));
+      float factorZ = Mth.cos((float) Math.toRadians(this.getYRot()));
       this.setDeltaMovement(SPEED * factorX, motion.y(), SPEED * factorZ);
     } else {
       this.setDeltaMovement(0.0D, motion.y(), 0.0D);
@@ -520,7 +505,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     }
   }
 
-  protected Vector3d getPositionAhead(double offset) {
+  protected Vec3 getPositionAhead(double offset) {
     double x = this.getX();
     double z = this.getZ();
 
@@ -536,7 +521,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
       z += offset;
     }
 
-    return new Vector3d(x, this.getY(), z);
+    return new Vec3(x, this.getY(), z);
   }
 
   protected double getOffsetX(double x, double forwardOffset, double sideOffset) {
@@ -657,20 +642,20 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     }
   }
 
-  @SuppressWarnings("deprecation")
   protected boolean placeBallast(BlockPos targetPos) {
     if (!Block.canSupportRigidBlock(this.level, targetPos)) {
-      for (IExtInvSlot slot : InventoryIterator.get(invBallast)) {
+      for (ModifiableContainerSlot slot : ContainerIterator.get(invBallast)) {
         ItemStack stack = slot.getStack();
         if (!stack.isEmpty()
             && stack.getItem() instanceof BlockItem
-            && ((BlockItem) stack.getItem()).getBlock().is(RailcraftTags.Blocks.BALLAST)) {
-          BlockPos.Mutable searchPos = targetPos.mutable();
+            && RailcraftTags.Blocks.BALLAST.contains(((BlockItem) stack.getItem()).getBlock())) {
+          BlockPos.MutableBlockPos searchPos = targetPos.mutable();
           for (int i = 0; i < MAX_FILL_DEPTH; i++) {
             searchPos.move(Direction.DOWN);
             if (Block.canSupportRigidBlock(this.level, searchPos)) {
               // Fill ballast
-              BlockState state = InvTools.getBlockStateFromStack(stack, this.level, targetPos);
+              BlockState state =
+                  ContainerTools.getBlockStateFromStack(stack, this.level, targetPos);
               if (state != null) {
                 slot.decreaseStack();
                 this.level.setBlockAndUpdate(targetPos, state);
@@ -678,7 +663,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
               }
             } else {
               BlockState state = this.level.getBlockState(searchPos);
-              if (!state.isAir(this.level, searchPos) && !state.getMaterial().isLiquid()) {
+              if (!state.isAir() && !state.getMaterial().isLiquid()) {
                 // Break other blocks first
                 LevelUtil.playerRemoveBlock(this.level, searchPos.immutable(),
                     CartTools.getFakePlayer(this),
@@ -701,20 +686,19 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     }
   }
 
-  @SuppressWarnings("deprecation")
   protected boolean placeTrack(BlockPos targetPos, BlockState oldState, RailShape shape) {
-    PlayerEntity owner = CartTools.getFakePlayer(this);
+    Player owner = CartTools.getFakePlayer(this);
 
     if (replaceableBlocks.contains(oldState.getBlock())) {
       LevelUtil.destroyBlock(this.level, targetPos, owner, true);
     }
 
-    if (oldState.isAir(this.level, targetPos)
+    if (oldState.isAir()
         && Block.canSupportRigidBlock(this.level, targetPos.below())) {
-      for (IInvSlot slot : InventoryIterator.get(invRails)) {
+      for (ContainerSlot slot : ContainerIterator.get(invRails)) {
         ItemStack stack = slot.getStack();
         if (!stack.isEmpty()) {
-          boolean placed = TrackUtil.placeRailAt(stack, (ServerWorld) this.level, targetPos, shape);
+          boolean placed = TrackUtil.placeRailAt(stack, (ServerLevel) this.level, targetPos, shape);
           if (placed) {
             slot.decreaseStack();
           }
@@ -794,11 +778,11 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
    */
   protected boolean mineBlock(BlockPos targetPos, RailShape preferredShape) {
     BlockState targetState = this.level.getBlockState(targetPos);
-    if (targetState.getBlock().isAir(targetState, this.level, targetPos)) {
+    if (targetState.isAir()) {
       return true;
     }
 
-    if (AbstractRailBlock.isRail(targetState)) {
+    if (BaseRailBlock.isRail(targetState)) {
       RailShape targetShape =
           TrackTools.getTrackDirection(this.level, targetPos, targetState, this);
       if (preferredShape == targetShape) {
@@ -817,7 +801,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
       return false;
     }
 
-    ServerPlayerEntity fakePlayer = CartTools.getFakePlayerWith(this, head);
+    ServerPlayer fakePlayer = CartTools.getFakePlayerWith(this, head);
 
     // Fires break event within; harvest handled separately
     BlockEvent.BreakEvent breakEvent =
@@ -831,16 +815,16 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     if (!RailcraftConfig.server.boreDestorysBlocks.get()
         && this.level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
       targetState
-          .getDrops(new LootContext.Builder((ServerWorld) this.level)
-              .withParameter(LootParameters.TOOL, head)
-              .withParameter(LootParameters.KILLER_ENTITY, this)
-              .withParameter(LootParameters.ORIGIN, this.position()))
+          .getDrops(new LootContext.Builder((ServerLevel) this.level)
+              .withParameter(LootContextParams.TOOL, head)
+              .withParameter(LootContextParams.KILLER_ENTITY, this)
+              .withParameter(LootContextParams.ORIGIN, this.position()))
           .forEach(stack -> {
             if (StackFilters.FUEL.test(stack)) {
               stack = invFuel.addStack(stack);
             }
 
-            if (!stack.isEmpty() && InvTools.isStackEqualToBlock(stack, Blocks.GRAVEL)) {
+            if (!stack.isEmpty() && ContainerTools.isStackEqualToBlock(stack, Blocks.GRAVEL)) {
               stack = invBallast.addStack(stack);
             }
 
@@ -889,14 +873,14 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     return hardness;
   }
 
-  @SuppressWarnings("deprecation")
   protected float getBlockHardness(BlockPos pos, RailShape dir) {
-    if (this.level.getBlockState(pos).isAir(this.level, pos)) {
+    var blockState = this.level.getBlockState(pos);
+
+    if (blockState.isAir()) {
       return 0;
     }
 
-    BlockState blockState = this.level.getBlockState(pos);
-    if (AbstractRailBlock.isRail(blockState)) {
+    if (BaseRailBlock.isRail(blockState)) {
       RailShape trackMeta = TrackTools.getTrackDirection(this.level, pos, blockState, this);
       if (dir == trackMeta) {
         return 0;
@@ -932,7 +916,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundNBT data) {
+  protected void addAdditionalSaveData(CompoundTag data) {
     // fuel = getFuel();
     super.addAdditionalSaveData(data);
     data.putInt("facing", getFacing().get3DDataValue());
@@ -943,7 +927,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundNBT data) {
+  protected void readAdditionalSaveData(CompoundTag data) {
     super.readAdditionalSaveData(data);
     setFacing(Direction.from3DDataValue(data.getInt("facing")));
     setDelay(data.getInt("delay"));
@@ -1022,7 +1006,7 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
     for (int slot = 0; slot < invFuel.getContainerSize(); slot++) {
       ItemStack stack = invFuel.getItem(slot);
       if (!stack.isEmpty()) {
-        burn = ForgeHooks.getBurnTime(stack);
+        burn = ForgeHooks.getBurnTime(stack, null);
         if (burn > 0) {
           if (stack.getItem().hasContainerItem(stack)) {
             invFuel.setItem(slot, stack.getItem().getContainerItem(stack));
@@ -1104,8 +1088,8 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   }
 
   @Override
-  public boolean canLink(AbstractMinecartEntity cart) {
-    Vector3d pos = getPositionAhead(-LENGTH / 2.0);
+  public boolean canLink(AbstractMinecart cart) {
+    Vec3 pos = getPositionAhead(-LENGTH / 2.0);
     float dist = RailcraftLinkageManager.LINKAGE_DISTANCE * 2;
     dist = dist * dist;
     return cart.distanceToSqr(pos.x, pos.y, pos.z) < dist;
@@ -1117,23 +1101,23 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   }
 
   @Override
-  public float getLinkageDistance(AbstractMinecartEntity cart) {
+  public float getLinkageDistance(AbstractMinecart cart) {
     return 4f;
   }
 
   @Override
-  public float getOptimalDistance(AbstractMinecartEntity cart) {
+  public float getOptimalDistance(AbstractMinecart cart) {
     return 3.1f;
   }
 
   @Override
-  public void onLinkCreated(AbstractMinecartEntity cart) {}
+  public void onLinkCreated(AbstractMinecart cart) {}
 
   @Override
-  public void onLinkBroken(AbstractMinecartEntity cart) {}
+  public void onLinkBroken(AbstractMinecart cart) {}
 
   @Override
-  public boolean canBeAdjusted(AbstractMinecartEntity cart) {
+  public boolean canBeAdjusted(AbstractMinecart cart) {
     return !isActive();
   }
 
@@ -1153,12 +1137,12 @@ public class TunnelBoreEntity extends RailcraftMinecartEntity implements ILinkab
   }
 
   @Override
-  protected Container createMenu(int id, PlayerInventory inventory) {
+  protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
     return new TunnelBoreMenu(id, inventory, this);
   }
 
   @Override
-  public IPacket<?> getAddEntityPacket() {
+  public Packet<?> getAddEntityPacket() {
     return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

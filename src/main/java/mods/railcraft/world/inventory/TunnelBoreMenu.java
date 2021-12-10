@@ -1,9 +1,9 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.api.carts.TunnelBoreHead;
-import mods.railcraft.util.inventory.filters.StackFilters;
+import mods.railcraft.util.container.filters.StackFilters;
 import mods.railcraft.world.entity.cart.TunnelBoreEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.world.entity.player.Inventory;
 
 public class TunnelBoreMenu extends RailcraftMenu {
 
@@ -11,7 +11,7 @@ public class TunnelBoreMenu extends RailcraftMenu {
 
   private final TunnelBoreEntity tunnelBore;
 
-  public TunnelBoreMenu(int id, PlayerInventory playerInventory, TunnelBoreEntity tunnelBore) {
+  public TunnelBoreMenu(int id, Inventory playerInventory, TunnelBoreEntity tunnelBore) {
     super(RailcraftMenuTypes.TUNNEL_BORE.get(), id, playerInventory);
     this.tunnelBore = tunnelBore;
 

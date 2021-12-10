@@ -7,9 +7,9 @@
 
 package mods.railcraft.api.track;
 
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Created by CovertJaguar on 3/19/2016 for Railcraft.
@@ -25,7 +25,7 @@ public final class TrackScanner {
    * @param world The World object
    * @return true if they are connected
    */
-  public static boolean areTracksConnectedAlongAxis(World world, BlockPos start, BlockPos end) {
+  public static boolean areTracksConnectedAlongAxis(Level world, BlockPos start, BlockPos end) {
     return scanStraightTrackSection(world, start, end).status == Status.VALID;
   }
 
@@ -38,7 +38,7 @@ public final class TrackScanner {
    * @param world The World object
    * @return ScanResult object with results
    */
-  public static Result scanStraightTrackSection(World world, BlockPos start, BlockPos end) {
+  public static Result scanStraightTrackSection(Level world, BlockPos start, BlockPos end) {
     int x1 = start.getX();
     int y1 = start.getY();
     int z1 = start.getZ();
@@ -67,13 +67,13 @@ public final class TrackScanner {
       for (int xx = min; xx <= max; xx++) {
         // if (world.blockExists(xx, yy, z1))
         BlockPos p = new BlockPos(xx, yy, z1);
-        if (AbstractRailBlock.isRail(world, p)) {
+        if (BaseRailBlock.isRail(world, p)) {
           // NOOP
-        } else if (AbstractRailBlock.isRail(world, p.below())) {
+        } else if (BaseRailBlock.isRail(world, p.below())) {
           yy--;
           if (yy < minY)
             minY = yy;
-        } else if (AbstractRailBlock.isRail(world, p.above())) {
+        } else if (BaseRailBlock.isRail(world, p.above())) {
           yy++;
           if (yy > maxY)
             maxY = yy;
@@ -98,13 +98,13 @@ public final class TrackScanner {
       for (int zz = min; zz <= max; zz++) {
         // if (world.blockExists(x1, yy, zz))
         BlockPos p = new BlockPos(x1, yy, zz);
-        if (AbstractRailBlock.isRail(world, p)) {
+        if (BaseRailBlock.isRail(world, p)) {
           // NOOP
-        } else if (AbstractRailBlock.isRail(world, p.below())) {
+        } else if (BaseRailBlock.isRail(world, p.below())) {
           yy--;
           if (yy < minY)
             minY = yy;
-        } else if (AbstractRailBlock.isRail(world, p.above())) {
+        } else if (BaseRailBlock.isRail(world, p.above())) {
           yy++;
           if (yy > maxY)
             maxY = yy;

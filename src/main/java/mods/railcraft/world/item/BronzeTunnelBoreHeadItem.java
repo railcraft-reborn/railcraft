@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import mods.railcraft.Railcraft;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class BronzeTunnelBoreHeadItem extends TunnelBoreHeadItem {
 

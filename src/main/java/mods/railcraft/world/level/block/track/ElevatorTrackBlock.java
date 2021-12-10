@@ -4,31 +4,31 @@ import javax.annotation.Nullable;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.cart.CartConstants;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * Implementation of the iron ladder blocks. Iron ladders act much like normal (wooden) ladders.
@@ -41,7 +41,7 @@ public class ElevatorTrackBlock extends Block {
 
   public static final byte ELEVATOR_TIMER = 20;
 
-  public static final DirectionProperty FACING = HorizontalBlock.FACING;
+  public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   protected static final VoxelShape EAST_SHAPE = box(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
   protected static final VoxelShape WEST_SHAPE = box(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
@@ -75,17 +75,17 @@ public class ElevatorTrackBlock extends Block {
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(FACING, POWERED);
   }
 
-  private boolean canAttachTo(IBlockReader world, BlockPos pos, Direction direction) {
+  private boolean canAttachTo(BlockGetter world, BlockPos pos, Direction direction) {
     BlockState blockstate = world.getBlockState(pos);
     return blockstate.isFaceSturdy(world, pos, direction);
   }
 
   @Override
-  public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+  public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
     Direction direction = state.getValue(FACING);
     return this.canAttachTo(world, pos.relative(direction.getOpposite()), direction);
   }
@@ -93,7 +93,7 @@ public class ElevatorTrackBlock extends Block {
   @SuppressWarnings("deprecation")
   @Override
   public BlockState updateShape(BlockState state, Direction direction,
-      BlockState newState, IWorld world, BlockPos pos, BlockPos newPos) {
+      BlockState newState, LevelAccessor world, BlockPos pos, BlockPos newPos) {
     if (direction.getOpposite() == state.getValue(FACING)
         && !state.canSurvive(world, pos)) {
       return Blocks.AIR.defaultBlockState();
@@ -104,7 +104,7 @@ public class ElevatorTrackBlock extends Block {
 
   @Nullable
   @Override
-  public BlockState getStateForPlacement(BlockItemUseContext context) {
+  public BlockState getStateForPlacement(BlockPlaceContext context) {
     if (!context.replacingClickedOnBlock()) {
       BlockState blockstate = context.getLevel().getBlockState(
           context.getClickedPos().relative(context.getClickedFace().getOpposite()));
@@ -114,7 +114,7 @@ public class ElevatorTrackBlock extends Block {
     }
 
     BlockState defaultBlockState = this.defaultBlockState();
-    IWorldReader level = context.getLevel();
+    LevelReader level = context.getLevel();
     BlockPos pos = context.getClickedPos();
 
     for (Direction direction : context.getNearestLookingDirections()) {
@@ -140,7 +140,7 @@ public class ElevatorTrackBlock extends Block {
     return blockState.rotate(mirror.getRotation(blockState.getValue(FACING)));
   }
 
-  public static boolean getPowered(IBlockReader world, BlockPos pos) {
+  public static boolean getPowered(BlockGetter world, BlockPos pos) {
     return getPowered(world.getBlockState(pos));
   }
 
@@ -149,8 +149,8 @@ public class ElevatorTrackBlock extends Block {
   }
 
   @Override
-  public VoxelShape getShape(BlockState state, IBlockReader world,
-      BlockPos pos, ISelectionContext context) {
+  public VoxelShape getShape(BlockState state, BlockGetter world,
+      BlockPos pos, CollisionContext context) {
     switch (state.getValue(FACING)) {
       case NORTH:
         return NORTH_SHAPE;
@@ -165,7 +165,7 @@ public class ElevatorTrackBlock extends Block {
   }
 
   @Override
-  public void setPlacedBy(World level, BlockPos pos, BlockState blockState, LivingEntity placer,
+  public void setPlacedBy(Level level, BlockPos pos, BlockState blockState, LivingEntity placer,
       ItemStack stack) {
     boolean powered = getPowered(blockState);
     if (powered != this.determinePowered(level, pos, blockState))
@@ -174,7 +174,7 @@ public class ElevatorTrackBlock extends Block {
 
   @SuppressWarnings("deprecation")
   @Override
-  public void neighborChanged(BlockState blockState, World level, BlockPos pos, Block neighborBlock,
+  public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
       BlockPos neighborPos, boolean something) {
     super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, something);
     boolean powered = getPowered(blockState);
@@ -183,14 +183,14 @@ public class ElevatorTrackBlock extends Block {
   }
 
   @Override
-  public void entityInside(BlockState blockState, World level, BlockPos pos, Entity entityIn) {
+  public void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entityIn) {
     entityIn.fallDistance = 0;
-    if (level.isClientSide() || !(entityIn instanceof AbstractMinecartEntity))
+    if (level.isClientSide() || !(entityIn instanceof AbstractMinecart))
       return;
-    minecartInteraction(level, (AbstractMinecartEntity) entityIn, pos);
+    minecartInteraction(level, (AbstractMinecart) entityIn, pos);
   }
 
-  protected boolean determinePowered(World level, BlockPos pos, BlockState state) {
+  protected boolean determinePowered(Level level, BlockPos pos, BlockState state) {
     BlockPos posUp = pos.above();
     BlockState stateUp = level.getBlockState(posUp);
     return level.hasNeighborSignal(pos)
@@ -205,7 +205,7 @@ public class ElevatorTrackBlock extends Block {
    * @param cart the minecart for which the state will be updated. It is assumed that the minecart
    *        is within the area of effect of the block
    */
-  protected void minecartInteraction(World level, AbstractMinecartEntity cart, BlockPos pos) {
+  protected void minecartInteraction(Level level, AbstractMinecart cart, BlockPos pos) {
     cart.getPersistentData().putByte(CartConstants.TAG_ELEVATOR, ELEVATOR_TIMER);
     cart.setNoGravity(true);
     BlockState state = level.getBlockState(pos);
@@ -222,12 +222,12 @@ public class ElevatorTrackBlock extends Block {
     }
   }
 
-  private boolean moveUp(World level, BlockState state, AbstractMinecartEntity cart, BlockPos pos) {
+  private boolean moveUp(Level level, BlockState state, AbstractMinecart cart, BlockPos pos) {
     BlockPos posUp = pos.above();
     boolean hasPath = level.getBlockState(posUp).is(this) && getPowered(level, posUp);
     if (hasPath) {
       if (isPathEmpty(state, cart, posUp, true)) {
-        Vector3d motion = cart.getDeltaMovement();
+        Vec3 motion = cart.getDeltaMovement();
         cart.setDeltaMovement(motion.x(), RIDE_VELOCITY, motion.z());
       } else {
         holdPosition(state, cart, pos);
@@ -237,13 +237,13 @@ public class ElevatorTrackBlock extends Block {
     return false;
   }
 
-  private boolean moveDown(World level, BlockState state, AbstractMinecartEntity cart,
+  private boolean moveDown(Level level, BlockState state, AbstractMinecart cart,
       BlockPos pos) {
     BlockPos posDown = pos.below();
     boolean hasPath = level.getBlockState(posDown).is(this) && !getPowered(level, posDown);
     if (hasPath) {
       if (isPathEmpty(state, cart, posDown, false)) {
-        Vector3d motion = cart.getDeltaMovement();
+        Vec3 motion = cart.getDeltaMovement();
         cart.setDeltaMovement(motion.x(), -RIDE_VELOCITY, motion.z());
       } else {
         holdPosition(state, cart, pos);
@@ -253,7 +253,7 @@ public class ElevatorTrackBlock extends Block {
     return false;
   }
 
-  private void holdPosition(BlockState state, AbstractMinecartEntity cart, BlockPos pos) {
+  private void holdPosition(BlockState state, AbstractMinecart cart, BlockPos pos) {
     cart.moveTo(cart.getX(), pos.getY() - cart.getBbHeight() / 2.0 + 0.5, cart.getZ(),
         getCartRotation(state, cart), 0F);
     cart.setDeltaMovement(cart.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D));
@@ -266,13 +266,13 @@ public class ElevatorTrackBlock extends Block {
    * @param cart the minecart for which motion and rotation will be adjusted
    */
   protected void keepMinecartConnected(BlockPos pos, BlockState state,
-      AbstractMinecartEntity cart) {
-    if (AbstractRailBlock.isRail(cart.level, pos.below())
-        || AbstractRailBlock.isRail(cart.level, pos.below(2)))
+      AbstractMinecart cart) {
+    if (BaseRailBlock.isRail(cart.level, pos.below())
+        || BaseRailBlock.isRail(cart.level, pos.below(2)))
       cart.setCanUseRail(false);
     else
       cart.setCanUseRail(true);
-    Vector3d motion = cart.getDeltaMovement();
+    Vec3 motion = cart.getDeltaMovement();
     cart.setDeltaMovement((pos.getX() + 0.5) - cart.getX(), motion.y(),
         (pos.getZ() + 0.5) - cart.getZ());
 
@@ -284,15 +284,15 @@ public class ElevatorTrackBlock extends Block {
    *
    * @param cart the minecart for which rotation will be adjusted
    */
-  protected void alignMinecart(BlockState state, AbstractMinecartEntity cart) {
-    cart.yRot = getCartRotation(state, cart);
+  protected void alignMinecart(BlockState state, AbstractMinecart cart) {
+    cart.setYRot(this.getCartRotation(state, cart));
   }
 
-  private float getCartRotation(BlockState state, AbstractMinecartEntity cart) {
+  private float getCartRotation(BlockState state, AbstractMinecart cart) {
     return state.getValue(FACING).getStepY();
   }
 
-  private boolean isPathEmpty(BlockState state, AbstractMinecartEntity cart, BlockPos pos,
+  private boolean isPathEmpty(BlockState state, AbstractMinecart cart, BlockPos pos,
       boolean up) {
     if (cart.level.getBlockState(pos).getMaterial().isSolid())
       return false;
@@ -316,17 +316,17 @@ public class ElevatorTrackBlock extends Block {
   /**
    * Pushes a Minecart onto a Railcraft block opposite the elevator if possible.
    */
-  private boolean pushMinecartOntoRail(World world, BlockPos pos, BlockState state,
-      AbstractMinecartEntity cart, boolean up) {
+  private boolean pushMinecartOntoRail(Level world, BlockPos pos, BlockState state,
+      AbstractMinecart cart, boolean up) {
     cart.setCanUseRail(true);
     Direction.Axis axis = state.getValue(FACING).getAxis();
     for (BlockPos target : new BlockPos[] {pos, up ? pos.above() : pos.below()}) {
       for (Direction.AxisDirection direction : Direction.AxisDirection.values()) {
-        if (AbstractRailBlock.isRail(world,
+        if (BaseRailBlock.isRail(world,
             target.relative(Direction.get(direction, axis)))) {
           holdPosition(state, cart, target);
           double vel = direction.getStep() * RIDE_VELOCITY;
-          Vector3d motion = cart.getDeltaMovement();
+          Vec3 motion = cart.getDeltaMovement();
           if (axis == Direction.Axis.Z)
             cart.setDeltaMovement(motion.x(), motion.y(), vel);
           else

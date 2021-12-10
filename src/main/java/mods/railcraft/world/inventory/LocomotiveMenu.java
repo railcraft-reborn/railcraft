@@ -5,10 +5,10 @@ import javax.annotation.Nullable;
 import mods.railcraft.world.entity.cart.locomotive.CreativeLocomotiveEntity;
 import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
 import mods.railcraft.world.item.TicketItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 
 public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
 
@@ -17,12 +17,12 @@ public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
   private final T locomotive;
   public String ownerName;
 
-  public LocomotiveMenu(@Nullable ContainerType<?> type, int id, PlayerInventory playerInv,
+  public LocomotiveMenu(@Nullable MenuType<?> type, int id, Inventory playerInv,
       T locomotive) {
     this(type, id, playerInv, locomotive, DEFAULT_HEIGHT);
   }
 
-  protected LocomotiveMenu(@Nullable ContainerType<?> type, int id, PlayerInventory playerInv,
+  protected LocomotiveMenu(@Nullable MenuType<?> type, int id, Inventory playerInv,
       T locomotive, int guiHeight) {
     super(type, id, playerInv);
     this.locomotive = locomotive;
@@ -30,7 +30,7 @@ public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
         locomotive.getContainerSize() - 2, 116, guiHeight - 111).setStackLimit(1);
     slotTicket.setTooltip(
         Collections.singletonList(
-            new TranslationTextComponent("gui.railcraft.locomotive.tips.slot.ticket")));
+            new TranslatableComponent("gui.railcraft.locomotive.tips.slot.ticket")));
     this.addSlot(slotTicket);
     // TODO: make some way to clear this?
     this.addSlot(
@@ -40,7 +40,7 @@ public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
   }
 
   public static LocomotiveMenu<CreativeLocomotiveEntity> creative(int id,
-      PlayerInventory inventory, CreativeLocomotiveEntity entity) {
+      Inventory inventory, CreativeLocomotiveEntity entity) {
     return new LocomotiveMenu<>(
         RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), id, inventory, entity);
   }
@@ -50,12 +50,7 @@ public class LocomotiveMenu<T extends LocomotiveEntity> extends RailcraftMenu {
   }
 
   @Override
-  public void updateString(byte id, String data) {
-
-  }
-
-  @Override
-  public boolean stillValid(PlayerEntity playerEntity) {
+  public boolean stillValid(Player playerEntity) {
     return true;
   }
 }

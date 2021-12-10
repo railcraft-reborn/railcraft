@@ -9,13 +9,14 @@ import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.Predicates;
 import mods.railcraft.world.entity.cart.locomotive.SteamLocomotiveEntity;
 import mods.railcraft.world.level.material.fluid.FluidTools;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -34,8 +35,8 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   private float pipeLength;
   private boolean needsPipe;
 
-  public FluidLoaderBlockEntity() {
-    super(RailcraftBlockEntityTypes.FLUID_LOADER.get());
+  public FluidLoaderBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.FLUID_LOADER.get(),  blockPos,  blockState);
   }
 
   private void resetPipeLength() {
@@ -43,7 +44,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   }
 
   public float getPipeLength(float partialTicks) {
-    return MathHelper.lerp(partialTicks, this.lastPipeLength, this.pipeLength);
+    return Mth.lerp(partialTicks, this.lastPipeLength, this.pipeLength);
   }
 
   private void setPipeLength(float pipeLength) {
@@ -72,8 +73,8 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   }
 
   @Override
-  public AxisAlignedBB getRenderBoundingBox() {
-    return new AxisAlignedBB(this.getX(), this.getY() - 1, this.getZ(), this.getX() + 1,
+  public AABB getRenderBoundingBox() {
+    return new AABB(this.getX(), this.getY() - 1, this.getZ(), this.getX() + 1,
         this.getY() + 1, this.getZ() + 1);
   }
 
@@ -94,12 +95,12 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
   @Nullable
   @Override
-  public AbstractMinecartEntity getCart() {
+  public AbstractMinecart getCart() {
     AABBFactory factory = AABBFactory.start()
         .createBoxForTileAt(this.getBlockPos().below(2))
         .raiseCeiling(1)
         .grow(-0.1F);
-    AbstractMinecartEntity cart = EntitySearcher.findMinecarts()
+    AbstractMinecart cart = EntitySearcher.findMinecarts()
         .around(factory)
         .in(this.level)
         .any();
@@ -108,7 +109,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   }
 
   @Override
-  protected void waitForReset(@Nullable AbstractMinecartEntity cart) {
+  protected void waitForReset(@Nullable AbstractMinecart cart) {
     if (isPipeRetracted()) {
       this.sendCart(cart);
     } else {
@@ -124,7 +125,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   }
 
   @Override
-  protected void processCart(AbstractMinecartEntity cart) {
+  protected void processCart(AbstractMinecart cart) {
     if (cart instanceof SteamLocomotiveEntity) {
       SteamLocomotiveEntity loco = (SteamLocomotiveEntity) cart;
       if (!loco.isSafeToFill()) {
@@ -174,7 +175,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   }
 
   @Override
-  protected boolean hasWorkForCart(AbstractMinecartEntity cart) {
+  protected boolean hasWorkForCart(AbstractMinecart cart) {
     if (!this.isPipeRetracted()) {
       return true;
     }
@@ -230,26 +231,25 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.putFloat("pipeLength", this.pipeLength);
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putFloat("pipeLength", this.pipeLength);
   }
 
   @Override
-  public void load(BlockState blockState, CompoundNBT data) {
-    super.load(blockState, data);
-    this.pipeLength = data.getFloat("pipeLength");
+  public void load( CompoundTag tag) {
+    super.load( tag);
+    this.pipeLength = tag.getFloat("pipeLength");
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeFloat(this.pipeLength);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.setPipeLength(data.readFloat());
   }

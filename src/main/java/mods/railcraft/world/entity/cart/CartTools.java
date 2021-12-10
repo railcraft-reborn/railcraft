@@ -8,100 +8,104 @@ import javax.annotation.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
-import net.minecraft.block.Block;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.Direction;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class CartTools {
 
-  public static void explodeCart(AbstractMinecartEntity cart) {
-    if (!cart.isAlive())
+  public static void explodeCart(AbstractMinecart cart) {
+    if (!cart.isAlive()) {
       return;
+    }
     HighSpeedTools.setTravellingHighSpeed(cart, false);
     cart.setDeltaMovement(0, cart.getDeltaMovement().y(), 0);
 
-    if (cart.level.isClientSide())
+    if (cart.level.isClientSide()) {
       return;
+    }
     removePassengers(cart, cart.getX(), cart.getY() + 1.5D, cart.getZ());
-    cart.level.explode(cart, cart.getX(), cart.getY(), cart.getZ(), 3F, Explosion.Mode.DESTROY);
-    if (MiscTools.RANDOM.nextInt(2) == 0)
-      cart.remove();
+    cart.level.explode(cart, cart.getX(), cart.getY(), cart.getZ(), 3F,
+        Explosion.BlockInteraction.DESTROY);
+    if (MiscTools.RANDOM.nextInt(2) == 0) {
+      cart.kill();
+    }
   }
 
-  public static boolean cartVelocityIsLessThan(AbstractMinecartEntity cart, float vel) {
+  public static boolean cartVelocityIsLessThan(AbstractMinecart cart, float vel) {
     return Math.abs(cart.getDeltaMovement().x()) < vel
         && Math.abs(cart.getDeltaMovement().z()) < vel;
   }
 
-  public static List<UUID> getMinecartUUIDsAt(World world, BlockPos pos, float sensitivity) {
+  public static List<UUID> getMinecartUUIDsAt(Level world, BlockPos pos, float sensitivity) {
     return getMinecartUUIDsAt(world, pos.getX(), pos.getY(), pos.getZ(), sensitivity);
   }
 
-  public static List<UUID> getMinecartUUIDsAt(World world, int x, int y, int z, float sensitivity) {
+  public static List<UUID> getMinecartUUIDsAt(Level world, int x, int y, int z, float sensitivity) {
     sensitivity = Math.min(sensitivity, 0.49f);
     return world
-        .getEntitiesOfClass(AbstractMinecartEntity.class,
-            new AxisAlignedBB(x + sensitivity, y + sensitivity, z + sensitivity,
+        .getEntitiesOfClass(AbstractMinecart.class,
+            new AABB(x + sensitivity, y + sensitivity, z + sensitivity,
                 x + 1 - sensitivity,
                 y + 1 - sensitivity, z + 1 - sensitivity),
-            EntityPredicates.ENTITY_STILL_ALIVE)
+            EntitySelector.ENTITY_STILL_ALIVE)
         .stream()
         .map(Entity::getUUID)
         .collect(Collectors.toList());
   }
 
-  public static void addPassenger(AbstractMinecartEntity cart, Entity passenger) {
+  public static void addPassenger(AbstractMinecart cart, Entity passenger) {
     passenger.startRiding(cart);
   }
 
-  public static void removePassengers(AbstractMinecartEntity cart) {
+  public static void removePassengers(AbstractMinecart cart) {
     removePassengers(cart, cart.getX(), cart.getY(), cart.getZ());
   }
 
-  public static void removePassengers(AbstractMinecartEntity cart, double x, double y, double z) {
+  public static void removePassengers(AbstractMinecart cart, double x, double y, double z) {
     List<Entity> passengers = cart.getPassengers();
     cart.ejectPassengers();
     for (Entity entity : passengers) {
-      if (entity instanceof ServerPlayerEntity) {
-        ServerPlayerEntity player = ((ServerPlayerEntity) entity);
+      if (entity instanceof ServerPlayer) {
+        ServerPlayer player = ((ServerPlayer) entity);
         player.setPos(x, y, z);
       } else
-        entity.moveTo(x, y, z, entity.yRot, entity.xRot);
+        entity.moveTo(x, y, z, entity.getYRot(), entity.getXRot());
     }
   }
 
-  public static ServerPlayerEntity getFakePlayer(AbstractMinecartEntity cart) {
-    return RailcraftFakePlayer.get((ServerWorld) cart.level, cart.getX(), cart.getY(), cart.getZ());
+  public static ServerPlayer getFakePlayer(AbstractMinecart cart) {
+    return RailcraftFakePlayer.get((ServerLevel) cart.level, cart.getX(), cart.getY(), cart.getZ());
   }
 
-  public static ServerPlayerEntity getFakePlayerWith(AbstractMinecartEntity cart, ItemStack stack) {
-    ServerPlayerEntity player = getFakePlayer(cart);
-    player.setItemInHand(Hand.MAIN_HAND, stack);
+  public static ServerPlayer getFakePlayerWith(AbstractMinecart cart, ItemStack stack) {
+    ServerPlayer player = getFakePlayer(cart);
+    player.setItemInHand(InteractionHand.MAIN_HAND, stack);
     return player;
   }
 
   /**
    * Checks if the entity is in range to render.
    */
-  public static boolean isInRangeToRenderDist(AbstractMinecartEntity entity, double distance) {
+  public static boolean isInRangeToRenderDist(AbstractMinecart entity, double distance) {
     double range = entity.getBoundingBox().getSize();
 
     if (Double.isNaN(range)) {
@@ -112,7 +116,7 @@ public final class CartTools {
     return distance < range * range;
   }
 
-  public static List<String> getDebugOutput(AbstractMinecartEntity cart) {
+  public static List<String> getDebugOutput(AbstractMinecart cart) {
     List<String> debug = new ArrayList<>();
     debug.add("Railcraft Minecart Data Dump");
     String cartInfo;
@@ -144,14 +148,14 @@ public final class CartTools {
    * @param id Cart's persistent UUID
    * @return AbstractMinecartEntity
    */
-  public static @Nullable AbstractMinecartEntity getCartFromUUID(@Nullable World world,
+  public static @Nullable AbstractMinecart getCartFromUUID(@Nullable Level world,
       @Nullable UUID id) {
     if (world == null || id == null)
       return null;
-    if (world instanceof ServerWorld) {
-      Entity entity = ((ServerWorld) world).getEntity(id);
-      if (entity instanceof AbstractMinecartEntity && entity.isAlive()) {
-        return (AbstractMinecartEntity) entity;
+    if (world instanceof ServerLevel) {
+      Entity entity = ((ServerLevel) world).getEntity(id);
+      if (entity instanceof AbstractMinecart && entity.isAlive()) {
+        return (AbstractMinecart) entity;
       }
     } else {
       return getClientCartFromUUID(world, id);
@@ -159,39 +163,39 @@ public final class CartTools {
     return null;
   }
 
-  private static AbstractMinecartEntity getClientCartFromUUID(World world, UUID id) {
-    ClientWorld clientWorld = (ClientWorld) world;
+  private static AbstractMinecart getClientCartFromUUID(Level world, UUID id) {
+    ClientLevel clientWorld = (ClientLevel) world;
     // for performance reasons
     // noinspection Convert2streamapi
     for (Entity entity : clientWorld.entitiesForRendering()) {
-      if (entity instanceof AbstractMinecartEntity && entity.isAlive()
+      if (entity instanceof AbstractMinecart && entity.isAlive()
           && entity.getUUID().equals(id))
-        return (AbstractMinecartEntity) entity;
+        return (AbstractMinecart) entity;
     }
     return null;
   }
 
-  public static boolean startBoost(AbstractMinecartEntity cart, BlockPos pos,
+  public static boolean startBoost(AbstractMinecart cart, BlockPos pos,
       RailShape dir, double startBoost) {
-    World world = cart.level;
+    Level world = cart.level;
     if (dir == RailShape.EAST_WEST) {
       if (Block.canSupportCenter(world, pos.west(), Direction.EAST)) {
-        Vector3d motion = cart.getDeltaMovement();
+        Vec3 motion = cart.getDeltaMovement();
         cart.setDeltaMovement(startBoost, motion.y(), motion.z());
         return true;
 
       } else if (Block.canSupportCenter(world, pos.east(), Direction.WEST)) {
-        Vector3d motion = cart.getDeltaMovement();
+        Vec3 motion = cart.getDeltaMovement();
         cart.setDeltaMovement(-startBoost, motion.y(), motion.z());
         return true;
       }
     } else if (dir == RailShape.NORTH_SOUTH) {
       if (Block.canSupportCenter(world, pos.north(), Direction.SOUTH)) {
-        Vector3d motion = cart.getDeltaMovement();
+        Vec3 motion = cart.getDeltaMovement();
         cart.setDeltaMovement(motion.x(), motion.y(), startBoost);
         return true;
       } else if (Block.canSupportCenter(world, pos.south(), Direction.NORTH)) {
-        Vector3d motion = cart.getDeltaMovement();
+        Vec3 motion = cart.getDeltaMovement();
         cart.setDeltaMovement(motion.x(), motion.y(), -startBoost);
         return true;
       }
@@ -199,21 +203,22 @@ public final class CartTools {
     return false;
   }
 
-  public static void smackCart(AbstractMinecartEntity cart, PlayerEntity smacker,
+  public static void smackCart(AbstractMinecart cart, Player smacker,
       float smackVelocity) {
     smackCart(cart, cart, smacker, smackVelocity);
   }
 
-  public static void smackCart(AbstractMinecartEntity respect, AbstractMinecartEntity cart,
-      PlayerEntity smacker,
+  public static void smackCart(AbstractMinecart respect, AbstractMinecart cart,
+      Player smacker,
       float smackVelocity) {
     cart.setDeltaMovement(
         cart.getDeltaMovement().add(Math.copySign(smackVelocity, respect.getX() - smacker.getX()),
             0, Math.copySign(smackVelocity, respect.getZ() - smacker.getZ())));
   }
 
-  public static void initCartPos(AbstractMinecartEntity entity, double x, double y, double z) {
-    entity.setPosAndOldPos(x, y, z);
-    entity.setDeltaMovement(Vector3d.ZERO);
+  public static void initCartPos(AbstractMinecart entity, double x, double y, double z) {
+    entity.setPos(x, y, z);
+    entity.setOldPosAndRot();
+    entity.setDeltaMovement(Vec3.ZERO);
   }
 }

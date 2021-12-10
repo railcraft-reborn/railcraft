@@ -1,15 +1,15 @@
 package mods.railcraft.util;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * Created by CovertJaguar on 3/9/2016 for Railcraft.
@@ -20,7 +20,7 @@ import net.minecraft.world.IBlockReader;
 @ParametersAreNonnullByDefault
 public class AABBFactory {
 
-  public static final AxisAlignedBB FULL_BOX = start().box().build();
+  public static final AABB FULL_BOX = start().box().build();
   public static final double PIXEL = 1.0 / 16.0;
 
   public double minX;
@@ -36,11 +36,11 @@ public class AABBFactory {
     return new AABBFactory();
   }
 
-  public AxisAlignedBB build() {
-    return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+  public AABB build() {
+    return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
   }
 
-  public AABBFactory fromAABB(AxisAlignedBB box) {
+  public AABBFactory fromAABB(AABB box) {
     return setBounds(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ);
   }
 
@@ -58,7 +58,7 @@ public class AABBFactory {
     return this;
   }
 
-  public AABBFactory setBoundsToPoint(Vector3d vector) {
+  public AABBFactory setBoundsToPoint(Vec3 vector) {
     minX = vector.x;
     minY = vector.y;
     minZ = vector.z;
@@ -68,7 +68,7 @@ public class AABBFactory {
     return this;
   }
 
-  public AABBFactory setBoundsFromBlock(BlockState state, IBlockReader world, BlockPos pos) {
+  public AABBFactory setBoundsFromBlock(BlockState state, BlockGetter world, BlockPos pos) {
     VoxelShape shape = state.getShape(world, pos);
     setBounds(
         pos.getX() + shape.min(Direction.Axis.X),
@@ -180,7 +180,7 @@ public class AABBFactory {
     return this;
   }
 
-  public AABBFactory expandToCoordinate(Vector3d point) {
+  public AABBFactory expandToCoordinate(Vec3 point) {
     return expandToCoordinate(point.x(), point.y(), point.z());
   }
 
@@ -207,7 +207,7 @@ public class AABBFactory {
     return this;
   }
 
-  public AABBFactory offset(Vector3i pos) {
+  public AABBFactory offset(Vec3i pos) {
     return offset(pos.getX(), pos.getY(), pos.getZ());
   }
 

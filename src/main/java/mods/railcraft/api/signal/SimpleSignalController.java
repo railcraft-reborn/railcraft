@@ -8,9 +8,9 @@ package mods.railcraft.api.signal;
 
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -23,12 +23,12 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
   private final Consumer<SignalAspect> signalAspectListener;
   private SignalAspect signalAspect = SignalAspect.GREEN;
 
-  public SimpleSignalController(int maxPeers, Runnable syncListener, TileEntity blockEntity,
+  public SimpleSignalController(int maxPeers, Runnable syncListener, BlockEntity blockEntity,
       boolean blinkRedWithoutPeers) {
     this(maxPeers, syncListener, blockEntity, blinkRedWithoutPeers, null);
   }
 
-  public SimpleSignalController(int maxPeers, Runnable syncListener, TileEntity blockEntity,
+  public SimpleSignalController(int maxPeers, Runnable syncListener, BlockEntity blockEntity,
       boolean blinkRedWithoutPeers,
       @Nullable Consumer<SignalAspect> signalAspectListener) {
     super(SignalReceiverProvider.class, maxPeers, syncListener, blockEntity);
@@ -117,13 +117,13 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeEnum(this.signalAspect);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.signalAspect = data.readEnum(SignalAspect.class);
   }

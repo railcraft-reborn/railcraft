@@ -1,50 +1,47 @@
 package mods.railcraft.world.item.crafting;
 
 import java.util.Optional;
-
 import javax.annotation.Nullable;
-
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.CraftResultInventory;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.CraftingResultSlot;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.SSetSlotPacket;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.inventory.ResultSlot;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 /**
  * cannot extend using WorkbenchContainerClass, all of the good vars are privated AND our table is
  * locked
  */
-public class ManualRollingMachineMenu extends Container {
+public class ManualRollingMachineMenu extends AbstractContainerMenu {
 
-  private final CraftingInventory craftSlots = new CraftingInventory(this, 3, 3);
-  private final CraftResultInventory resultSlots = new CraftResultInventory();
-  private final CraftResultInventory resultSlotClickyBox = new CraftResultInventory();
+  private final CraftingContainer craftSlots = new CraftingContainer(this, 3, 3);
+  private final ResultContainer resultSlots = new ResultContainer();
+  private final ResultContainer resultSlotClickyBox = new ResultContainer();
   private final RollingResultSlot craftingResultSlot;
-  private final World level;
-  private final PlayerEntity player;
+  private final Level level;
+  private final Player player;
   private ItemStack cachedFinishItem;
   // KEY INFO:
   // 1. required time | 2. currentTick (UNSETTABLE)
   // 3. shouldFire - 1 == true
-  private final IIntArray data;
+  private final ContainerData data;
 
-  public ManualRollingMachineMenu(int containerID, PlayerInventory playerInventory) {
-    this(containerID, playerInventory, new IntArray(3), null);
+  public ManualRollingMachineMenu(int containerID, Inventory playerInventory) {
+    this(containerID, playerInventory, new SimpleContainerData(3), null);
   }
 
-  public ManualRollingMachineMenu(int containerID, PlayerInventory playerInventory, IIntArray data,
+  public ManualRollingMachineMenu(int containerID, Inventory playerInventory, ContainerData data,
       @Nullable ManualRollingMachineBlockEntity rollingTable) {
     super(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(), containerID);
     this.player = playerInventory.player;
@@ -54,13 +51,8 @@ public class ManualRollingMachineMenu extends Container {
     this.craftingResultSlot = new RollingResultSlot(playerInventory.player, this.craftSlots,
         this.resultSlots, 0, 124, 35);
     this.addSlot(craftingResultSlot);
-    this.addSlot(new CraftingResultSlot(playerInventory.player, this.craftSlots,
-        this.resultSlotClickyBox, 1, 93, 27) {
-      @Override
-      public ItemStack onTake(PlayerEntity player, ItemStack itemStack) {
-        return ItemStack.EMPTY;
-      }
-    });
+    this.addSlot(new ResultSlot(playerInventory.player, this.craftSlots, this.resultSlotClickyBox,
+        1, 93, 27));
 
     for (int y = 0; y < 3; ++y) {
       for (int x = 0; x < 3; ++x) {
@@ -101,12 +93,14 @@ public class ManualRollingMachineMenu extends Container {
   }
 
   /**
-   * Callback when RollingTableEntity finished ticking away.
-   * does:
+   * Callback when RollingTableEntity finished ticking away. does:
    *
-   * <p>- Adds the item to the resultSlots
+   * <p>
+   * - Adds the item to the resultSlots
    *
-   * <p>- Resets the TileEntity's timings
+   * <p>
+   * - Resets the TileEntity's timings
+   * 
    * @param devnull This Parameter does Not Exist
    */
   private void onFinishedCallback(Void devnull) {
@@ -119,15 +113,13 @@ public class ManualRollingMachineMenu extends Container {
       this.resultSlots.setItem(0, finishedItem);
       this.craftingResultSlot.takeCraftingItems(this.player);
       this.setData(2, 0); // reset timings onfinish, keep the time
-      ((ServerPlayerEntity) this.player).connection
-          .send(new SSetSlotPacket(this.containerId, 0, finishedItem));
     }
   }
 
   @Override
-  public void slotsChanged(IInventory inventory) {
+  public void slotsChanged(Container inventory) {
     if (!this.level.isClientSide) {
-      ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)this.player;
+      ServerPlayer serverplayerentity = (ServerPlayer) this.player;
       ItemStack itemstack = ItemStack.EMPTY;
       Optional<RollingRecipe> optional = this.level.getServer()
           .getRecipeManager()
@@ -138,57 +130,57 @@ public class ManualRollingMachineMenu extends Container {
       if (optional.isPresent()) {
         RollingRecipe icraftingrecipe = optional.get();
         if (this.resultSlotClickyBox.setRecipeUsed(
-              this.level, serverplayerentity, icraftingrecipe)) {
+            this.level, serverplayerentity, icraftingrecipe)) {
           itemstack = icraftingrecipe.assemble(this.craftSlots);
           this.setData(0, icraftingrecipe.getTickCost());
         }
       }
       this.resultSlotClickyBox.setItem(0, itemstack);
-      serverplayerentity.connection.send(new SSetSlotPacket(this.containerId, 1, itemstack));
+
       this.cachedFinishItem = itemstack;
     }
   }
 
   @Override
-  public void removed(PlayerEntity playerEntity) {
+  public void removed(Player playerEntity) {
     super.removed(playerEntity);
     this.setData(0, 10000); // nuke the clock
     this.setData(2, 0);
     this.cachedFinishItem = null;
-    this.clearContainer(playerEntity, this.level, this.craftSlots);
-    this.clearContainer(playerEntity, this.level, this.resultSlots);
+    this.clearContainer(playerEntity, this.craftSlots);
+    this.clearContainer(playerEntity, this.resultSlots);
   }
 
   @Override
-  public boolean stillValid(PlayerEntity user) {
+  public boolean stillValid(Player user) {
     return user.isAlive();
   }
 
   @Override
-  public ItemStack clicked(int slotID, int quickCraft, ClickType clickType, PlayerEntity user) {
+  public void clicked(int slotID, int quickCraft, ClickType clickType, Player user) {
     if (slotID == 1) {
       Slot slot = this.slots.get(slotID);
       if (slot != null && slot.hasItem()) {
         if (this.data == null) {
-          return ItemStack.EMPTY;
+          return;
         }
         // not equal? DO NOT.
         if (this.cachedFinishItem != null
             && !this.resultSlots.getItem(0).equals(this.cachedFinishItem, false)
             && !this.resultSlots.getItem(0).equals(ItemStack.EMPTY, false)) {
-          return ItemStack.EMPTY;
+          return;
         }
         if (this.data.get(2) == 0) {
           setData(2, 1);
         }
       }
-      return ItemStack.EMPTY;
+      return;
     }
-    return super.clicked(slotID, quickCraft, clickType, user);
+    super.clicked(slotID, quickCraft, clickType, user);
   }
 
   @Override
-  public ItemStack quickMoveStack(PlayerEntity user, int slotID) {
+  public ItemStack quickMoveStack(Player user, int slotID) {
     Slot slot = this.slots.get(slotID);
 
     if (slot == null || !slot.hasItem() || slotID == 1) {
@@ -232,9 +224,9 @@ public class ManualRollingMachineMenu extends Container {
       return ItemStack.EMPTY;
     }
 
-    ItemStack itemstack2 = slot.onTake(user, itemstack1);
+    slot.onTake(user, itemstack1);
     if (slotID == 0 || slotID == 1) {
-      user.drop(itemstack2, false);
+      user.drop(itemstack1, false);
     }
 
     return itemstack;

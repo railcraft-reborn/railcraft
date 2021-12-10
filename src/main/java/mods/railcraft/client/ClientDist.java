@@ -16,37 +16,27 @@ import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
+import mods.railcraft.client.model.RailcraftLayerDefinitions;
 import mods.railcraft.client.particle.ParticlePumpkin;
 import mods.railcraft.client.particle.ParticleSpark;
 import mods.railcraft.client.particle.ParticleSteam;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
-import mods.railcraft.client.renderer.blockentity.AnalogSignalControllerBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.BlockSignalRelayBoxRenderer;
-import mods.railcraft.client.renderer.blockentity.DualSignalRenderer;
 import mods.railcraft.client.renderer.blockentity.FluidLoaderRenderer;
 import mods.railcraft.client.renderer.blockentity.FluidManipulatorRenderer;
+import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
 import mods.railcraft.client.renderer.blockentity.SignalCapacitorBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalControllerBoxRenderer;
-import mods.railcraft.client.renderer.blockentity.SignalInterlockBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalReceiverBoxRenderer;
-import mods.railcraft.client.renderer.blockentity.SignalRenderer;
-import mods.railcraft.client.renderer.blockentity.SignalSequencerBoxRenderer;
-import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
-import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
-import mods.railcraft.client.renderer.entity.cart.TankMinecartRenderer;
-import mods.railcraft.client.renderer.entity.cart.TunnelBoreRenderer;
-import mods.railcraft.client.renderer.entity.cart.TrackLayerMinecartRenderer;
-import mods.railcraft.client.renderer.entity.cart.TrackRemoverMinecartRenderer;
+import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
 import mods.railcraft.particle.RailcraftParticles;
-import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
@@ -54,24 +44,23 @@ import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEnt
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.world.GrassColors;
-import net.minecraft.world.biome.BiomeColors;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -87,6 +76,8 @@ public class ClientDist implements RailcraftDist {
     modEventBus.addListener(this::handleBlockColors);
     modEventBus.addListener(this::handleTextureStitch);
     modEventBus.addListener(this::handleParticleRegistration);
+    modEventBus.addListener(this::handleRegisterRenderers);
+    modEventBus.addListener(this::handleRegisterLayerDefinitions);
 
     MinecraftForge.EVENT_BUS.register(this);
 
@@ -105,95 +96,43 @@ public class ClientDist implements RailcraftDist {
   private void handleClientSetup(FMLClientSetupEvent event) {
     RenderLayers.register();
 
-    // === Block Entity Renderers ===
-
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.BLOCK_SIGNAL.get(),
-        SignalRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.DISTANT_SIGNAL.get(),
-        SignalRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.TOKEN_SIGNAL.get(),
-        SignalRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.DUAL_SIGNAL.get(),
-        DualSignalRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.DUAL_DISTANT_SIGNAL.get(),
-        DualSignalRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.DUAL_TOKEN_SIGNAL.get(),
-        DualSignalRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get(),
-        SignalControllerBoxRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_CAPACITOR_BOX.get(),
-        SignalCapacitorBoxRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_RECEIVER_BOX.get(),
-        SignalReceiverBoxRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_RELAY_BOX.get(),
-        BlockSignalRelayBoxRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(
-        RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
-        AnalogSignalControllerBoxRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_SEQUENCER_BOX.get(),
-        SignalSequencerBoxRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get(),
-        SignalInterlockBoxRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.FLUID_LOADER.get(),
-        FluidLoaderRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(RailcraftBlockEntityTypes.FLUID_UNLOADER.get(),
-        FluidManipulatorRenderer::new);
-
     // === Menu Screens ===
 
-    ScreenManager.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
+    MenuScreens.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
         CreativeLocomotiveScreen::new);
-    ScreenManager.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
+    MenuScreens.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
         ElectricLocomotiveScreen::new);
-    ScreenManager.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(),
+    MenuScreens.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(),
         SteamLocomotiveScreen::new);
-    ScreenManager.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
+    MenuScreens.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
         ManualRollingMachineScreen::new);
-    ScreenManager.register(RailcraftMenuTypes.COKE_OVEN.get(),
+    MenuScreens.register(RailcraftMenuTypes.COKE_OVEN.get(),
         CokeOvenMenuScreen::new);
-    ScreenManager.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(),
+    MenuScreens.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(),
         ItemManipulatorScreen::new);
-    ScreenManager.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(),
+    MenuScreens.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(),
         FluidManipulatorScreen::new);
-    ScreenManager.register(RailcraftMenuTypes.TANK_MINECART.get(),
+    MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(),
         TankMinecartScreen::new);
-    ScreenManager.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
-
-    // === Entity Renderers ===
-
-    RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.TANK_MINECART.get(),
-        TankMinecartRenderer::new);
-    RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.TRACK_LAYER.get(),
-        TrackLayerMinecartRenderer::new);
-    RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.TRACK_REMOVER.get(),
-        TrackRemoverMinecartRenderer::new);
-    RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
-        ElectricLocomotiveRenderer::new);
-    RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(),
-        SteamLocomotiveRenderer::new);
-    RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(),
-        ElectricLocomotiveRenderer::new);
-
-    RenderingRegistry.registerEntityRenderingHandler(RailcraftEntityTypes.TUNNEL_BORE.get(),
-        TunnelBoreRenderer::new);
+    MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
   }
 
   private void handleBlockColors(ColorHandlerEvent.Block event) {
     BlockColors blockColors = event.getBlockColors();
     blockColors.register(
-        (state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR)
-            .getColorValue(),
+        (state, worldIn, pos,
+            tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
     blockColors.register(
-        (state, worldIn, pos, tintIndex) -> state.getValue(ForceTrackBlock.COLOR)
-            .getColorValue(),
+        (state, worldIn, pos,
+            tintIndex) -> state.getValue(ForceTrackBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK.get());
 
     blockColors.register(
         (state, level, pos, tintIndex) -> level != null && pos != null
             ? BiomeColors.getAverageGrassColor(level, pos)
-            : GrassColors.get(0.5D, 1.0D),
+            : GrassColor.get(0.5D, 1.0D),
         RailcraftBlocks.ABANDONED_TRACK.get());
   }
 
@@ -202,9 +141,9 @@ public class ClientDist implements RailcraftDist {
         (stack, tintIndex) -> {
           switch (tintIndex) {
             case 0:
-              return LocomotiveItem.getPrimaryColor(stack).getColorValue();
+              return LocomotiveItem.getPrimaryColor(stack).getMaterialColor().col;
             case 1:
-              return LocomotiveItem.getSecondaryColor(stack).getColorValue();
+              return LocomotiveItem.getSecondaryColor(stack).getMaterialColor().col;
             default:
               return 0xFFFFFFFF;
           }
@@ -215,7 +154,7 @@ public class ClientDist implements RailcraftDist {
   }
 
   private void handleTextureStitch(TextureStitchEvent.Pre event) {
-    if (event.getMap().location().equals(PlayerContainer.BLOCK_ATLAS)) {
+    if (event.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS)) {
       AbstractSignalRenderer.ASPECT_TEXTURE_LOCATIONS.values().forEach(event::addSprite);
       AbstractSignalBoxRenderer.ASPECT_TEXTURE_LOCATIONS.values().forEach(event::addSprite);
       event.addSprite(SignalControllerBoxRenderer.TEXTURE_LOCATION);
@@ -232,13 +171,22 @@ public class ClientDist implements RailcraftDist {
   }
 
   private void handleParticleRegistration(ParticleFactoryRegisterEvent event) {
-    final ParticleManager particleEngine = this.minecraft.particleEngine;
+    final ParticleEngine particleEngine = this.minecraft.particleEngine;
     particleEngine.register(RailcraftParticles.STEAM.get(),
         ParticleSteam.SteamParticleFactory::new);
     particleEngine.register(RailcraftParticles.SPARK.get(),
         ParticleSpark.SparkParticleFactory::new);
     particleEngine.register(RailcraftParticles.PUMPKIN.get(),
         ParticlePumpkin.PumpkinParticleFactory::new);
+  }
+
+  private void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+    RailcraftEntityRenderers.register(event);
+    RailcraftBlockEntityRenderers.register(event);
+  }
+
+  private void handleRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+    RailcraftLayerDefinitions.createRoots(event::registerLayerDefinition);
   }
 
   // ================================================================================
@@ -254,8 +202,8 @@ public class ClientDist implements RailcraftDist {
   }
 
   @SubscribeEvent
-  public void handleRenderWorldLast(RenderWorldLastEvent event) {
-    this.shuntingAuraRenderer.render(event.getPartialTicks(), event.getMatrixStack());
+  public void handleRenderWorldLast(RenderLevelLastEvent event) {
+    this.shuntingAuraRenderer.render(event.getPartialTick(), event.getPoseStack());
   }
 
   @SubscribeEvent

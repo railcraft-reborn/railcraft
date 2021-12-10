@@ -1,9 +1,16 @@
 package mods.railcraft.world.level.block;
 
+import javax.annotation.Nullable;
 import mods.railcraft.world.level.block.entity.FluidUnloaderBlockEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.world.IBlockReader;
+import mods.railcraft.world.level.block.entity.ManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class FluidUnloaderBlock extends FluidManipulatorBlock<FluidUnloaderBlockEntity> {
 
@@ -12,12 +19,21 @@ public class FluidUnloaderBlock extends FluidManipulatorBlock<FluidUnloaderBlock
   }
 
   @Override
-  public FluidUnloaderBlockEntity createTileEntity(BlockState blockState, IBlockReader level) {
-    return new FluidUnloaderBlockEntity();
+  public Direction getFacing(BlockState blockState) {
+    return Direction.UP;
   }
 
   @Override
-  public Direction getFacing(BlockState blockState) {
-    return Direction.UP;
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new FluidUnloaderBlockEntity(blockPos, blockState);
+  }
+
+  @Nullable
+  @Override
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
+      BlockEntityType<T> type) {
+    return level.isClientSide() ? null
+        : createTickerHelper(type, RailcraftBlockEntityTypes.FLUID_UNLOADER.get(),
+            ManipulatorBlockEntity::serverTick);
   }
 }

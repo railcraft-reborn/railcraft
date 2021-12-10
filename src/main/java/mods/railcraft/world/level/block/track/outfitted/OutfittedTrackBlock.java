@@ -7,23 +7,23 @@ import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.TrackBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.Property;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.IFluidBlock;
 
 public class OutfittedTrackBlock extends TrackBlock {
@@ -40,27 +40,27 @@ public class OutfittedTrackBlock extends TrackBlock {
   }
 
   @Override
-  public ActionResultType use(BlockState blockState, World level, BlockPos pos, PlayerEntity player,
-      Hand hand, BlockRayTraceResult rayTraceResult) {
+  public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player,
+      InteractionHand hand, BlockHitResult rayTraceResult) {
     ItemStack itemStack = player.getItemInHand(hand);
     if (itemStack.getItem() instanceof Crowbar) {
       Crowbar crowbar = (Crowbar) itemStack.getItem();
       if (crowbar.canWhack(player, hand, itemStack, pos)
           && this.crowbarWhack(blockState, level, pos, player, hand, itemStack)) {
         crowbar.onWhack(player, hand, itemStack, pos);
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
       }
     }
-    return ActionResultType.PASS;
+    return InteractionResult.PASS;
   }
 
-  protected boolean crowbarWhack(BlockState blockState, World level, BlockPos pos,
-      PlayerEntity player, Hand hand, ItemStack itemStack) {
+  protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos,
+      Player player, InteractionHand hand, ItemStack itemStack) {
     return false;
   }
 
   @Override
-  public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player,
+  public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player,
       boolean willHarvest, FluidState fluid) {
     BlockState newState = TrackUtil.setShape(this.getTrackType().getBaseBlock(),
         TrackTools.getRailShapeRaw(state));
@@ -70,14 +70,14 @@ public class OutfittedTrackBlock extends TrackBlock {
         .map(pos::relative)
         .map(world::getBlockState)
         .map(BlockState::getBlock)
-        .anyMatch(block -> block instanceof IFluidBlock || block instanceof FlowingFluidBlock)) {
+        .anyMatch(block -> block instanceof IFluidBlock || block instanceof LiquidBlock)) {
       Block.dropResources(newState, world, pos);
     }
     return result;
   }
 
   @Override
-  public boolean isFlexibleRail(BlockState state, IBlockReader world, BlockPos pos) {
+  public boolean isFlexibleRail(BlockState state, BlockGetter world, BlockPos pos) {
     return false;
   }
 }

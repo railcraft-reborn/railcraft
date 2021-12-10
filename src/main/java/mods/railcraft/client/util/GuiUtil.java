@@ -2,13 +2,13 @@ package mods.railcraft.client.util;
 
 import java.util.Collection;
 import java.util.function.Consumer;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
 
 public class GuiUtil {
 
 
-  public static void newButtonRowAuto(Consumer<Widget> addButton, int xStart, int xSize,
+  public static void newButtonRowAuto(Consumer<AbstractWidget> addButton, int xStart, int xSize,
       Collection<? extends Button> buttons) {
     int buttonWidth = buttons.stream().mapToInt(Button::getWidth).sum();
     int remaining = xSize - buttonWidth;
@@ -22,7 +22,7 @@ public class GuiUtil {
     }
   }
 
-  public static void newButtonRowBookended(Consumer<Widget> buttonList, int xStart, int xEnd,
+  public static void newButtonRowBookended(Consumer<AbstractWidget> buttonList, int xStart, int xEnd,
       Collection<? extends Button> buttons) {
     int buttonWidth = buttons.stream().mapToInt(Button::getWidth).sum();
     int remaining = (xEnd - xStart) - buttonWidth;
@@ -36,7 +36,7 @@ public class GuiUtil {
     }
   }
 
-  public static void newButtonRow(Consumer<Widget> buttonList, int xStart, int spacing,
+  public static void newButtonRow(Consumer<AbstractWidget> buttonList, int xStart, int spacing,
       Collection<? extends Button> buttons) {
     int pointer = 0;
     for (Button b : buttons) {

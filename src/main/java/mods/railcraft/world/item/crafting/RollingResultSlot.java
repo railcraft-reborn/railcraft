@@ -1,21 +1,21 @@
 package mods.railcraft.world.item.crafting;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
 
 /**
  * Alternate to CraftingResultSlot.
  */
 public class RollingResultSlot extends Slot {
-  private final CraftingInventory craftSlots;
-  private final PlayerEntity player;
+  private final CraftingContainer craftSlots;
+  private final Player player;
 
-  public RollingResultSlot(PlayerEntity user, CraftingInventory craftingInventory,
-      IInventory outputInventory, int slotID, int x, int y) {
+  public RollingResultSlot(Player user, CraftingContainer craftingInventory,
+      Container outputInventory, int slotID, int x, int y) {
     super(outputInventory, slotID, x, y);
     this.player = user;
     this.craftSlots = craftingInventory;
@@ -46,12 +46,11 @@ public class RollingResultSlot extends Slot {
   }
 
   @Override
-  public ItemStack onTake(PlayerEntity playerEntity, ItemStack itemStack) {
+  public void onTake(Player playerEntity, ItemStack itemStack) {
     this.checkTakeAchievements(itemStack);
-    return itemStack;
   }
 
-  public void takeCraftingItems(PlayerEntity playerEntity) {
+  public void takeCraftingItems(Player playerEntity) {
     NonNullList<ItemStack> recipieRemaningItems =
         playerEntity.level.getRecipeManager().getRemainingItemsFor(RailcraftRecipeTypes.ROLLING,
             this.craftSlots, playerEntity.level);
@@ -70,7 +69,7 @@ public class RollingResultSlot extends Slot {
             && ItemStack.tagMatches(itemstack, itemstack1)) {
           itemstack1.grow(itemstack.getCount());
           this.craftSlots.setItem(i, itemstack1);
-        } else if (!this.player.inventory.add(itemstack1)) {
+        } else if (!this.player.getInventory().add(itemstack1)) {
           this.player.drop(itemstack1, false);
         }
       }

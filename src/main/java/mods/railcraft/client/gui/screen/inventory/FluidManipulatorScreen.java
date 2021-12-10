@@ -5,9 +5,9 @@ import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeWidgetRendere
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetFluidManipulatorAttributesMessage;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
 public class FluidManipulatorScreen extends ManipulatorScreen<FluidManipulatorMenu> {
 
@@ -15,15 +15,15 @@ public class FluidManipulatorScreen extends ManipulatorScreen<FluidManipulatorMe
       new ResourceLocation(Railcraft.ID, "textures/gui/container/fluid_manipulator.png");
 
   public FluidManipulatorScreen(
-      FluidManipulatorMenu menu, PlayerInventory playerInventory,
-      ITextComponent title) {
+      FluidManipulatorMenu menu, Inventory playerInventory,
+      Component title) {
     super(menu, playerInventory, title);
     this.registerWidgetRenderer(new FluidGaugeWidgetRenderer(menu.getFluidGauge()));
   }
 
   @Override
   protected void sendAttributes() {
-    NetworkChannel.PLAY.getSimpleChannel().sendToServer(new SetFluidManipulatorAttributesMessage(
+    NetworkChannel.GAME.getSimpleChannel().sendToServer(new SetFluidManipulatorAttributesMessage(
         this.menu.getManipulator().getBlockPos(), this.menu.getManipulator().getRedstoneMode()));
   }
 

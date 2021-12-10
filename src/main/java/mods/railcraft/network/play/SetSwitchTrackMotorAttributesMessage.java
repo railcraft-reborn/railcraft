@@ -3,15 +3,13 @@ package mods.railcraft.network.play;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Supplier;
-import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class SetSwitchTrackMotorAttributesMessage {
 
@@ -29,7 +27,7 @@ public class SetSwitchTrackMotorAttributesMessage {
     this.lock = lock;
   }
 
-  public void encode(PacketBuffer out) {
+  public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);
     out.writeVarInt(this.actionSignalAspects.size());
     this.actionSignalAspects.forEach(out::writeEnum);
@@ -37,23 +35,22 @@ public class SetSwitchTrackMotorAttributesMessage {
     out.writeEnum(this.lock);
   }
 
-  public static SetSwitchTrackMotorAttributesMessage decode(PacketBuffer in) {
-    BlockPos blockPos = in.readBlockPos();
-    int size = in.readVarInt();
-    Set<SignalAspect> actionSignalAspects = EnumSet.noneOf(SignalAspect.class);
+  public static SetSwitchTrackMotorAttributesMessage decode(FriendlyByteBuf in) {
+    var blockPos = in.readBlockPos();
+    var size = in.readVarInt();
+    var actionSignalAspects = EnumSet.noneOf(SignalAspect.class);
     for (int i = 0; i < size; i++) {
       actionSignalAspects.add(in.readEnum(SignalAspect.class));
     }
-    boolean redstoneTriggered = in.readBoolean();
-    LockableSwitchTrackActuatorBlockEntity.Lock lock =
-        in.readEnum(LockableSwitchTrackActuatorBlockEntity.Lock.class);
+    var redstoneTriggered = in.readBoolean();
+    var lock = in.readEnum(LockableSwitchTrackActuatorBlockEntity.Lock.class);
     return new SetSwitchTrackMotorAttributesMessage(blockPos, actionSignalAspects,
         redstoneTriggered, lock);
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    ServerWorld level = context.get().getSender().getLevel();
-    GameProfile senderProfile = context.get().getSender().getGameProfile();
+    var level = context.get().getSender().getLevel();
+    var senderProfile = context.get().getSender().getGameProfile();
     LevelUtil.getBlockEntity(level, this.blockPos, SwitchTrackMotorBlockEntity.class)
         .filter(signalBox -> signalBox.canAccess(senderProfile))
         .ifPresent(signalBox -> {

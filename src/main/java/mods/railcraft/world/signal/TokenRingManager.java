@@ -8,51 +8,48 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.saveddata.SavedData;
 
 /**
  * Created by CovertJaguar on 7/26/2016 for Railcraft.
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class TokenRingManager extends WorldSavedData {
+public class TokenRingManager extends SavedData {
 
   public static final String DATA_TAG = "railcraft.tokens";
 
-  private final ServerWorld level;
+  private final ServerLevel level;
   private final Map<UUID, SimpleTokenRing> tokenRings = new HashMap<>();
   private int clock;
 
-  public TokenRingManager(ServerWorld level) {
-    super(DATA_TAG);
+  public TokenRingManager(ServerLevel level) {
     this.level = level;
   }
 
-  @Override
-  public void load(CompoundNBT data) {
-    List<INBT> tokenRingList = data.getList("tokenRings", Constants.NBT.TAG_COMPOUND);
-    for (INBT nbt : tokenRingList) {
-      CompoundNBT entry = (CompoundNBT) nbt;
+  private void load(CompoundTag data) {
+    List<Tag> tokenRingList = data.getList("tokenRings", Tag.TAG_COMPOUND);
+    for (Tag nbt : tokenRingList) {
+      CompoundTag entry = (CompoundTag) nbt;
       UUID id = entry.getUUID("id");
       SimpleTokenRing tokenRing = new SimpleTokenRing(this.level, this, id);
       this.tokenRings.put(id, tokenRing);
-      List<INBT> signalList = entry.getList("signals", Constants.NBT.TAG_COMPOUND);
+      List<Tag> signalList = entry.getList("signals", Tag.TAG_COMPOUND);
       Set<BlockPos> signalPositions = signalList.stream()
-          .map(CompoundNBT.class::cast)
-          .map(NBTUtil::readBlockPos)
+          .map(CompoundTag.class::cast)
+          .map(NbtUtils::readBlockPos)
           .filter(Objects::nonNull)
           .collect(Collectors.toSet());
       tokenRing.loadSignals(signalPositions);
-      List<INBT> cartList = entry.getList("carts", Constants.NBT.TAG_COMPOUND);
+      List<Tag> cartList = entry.getList("carts", Tag.TAG_COMPOUND);
       Set<UUID> carts = cartList.stream()
-          .map(CompoundNBT.class::cast)
+          .map(CompoundTag.class::cast)
           .map(signal -> signal.getUUID("cart"))
           .filter(Objects::nonNull)
           .collect(Collectors.toSet());
@@ -61,19 +58,19 @@ public class TokenRingManager extends WorldSavedData {
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    ListNBT tokenRingList = new ListNBT();
+  public CompoundTag save(CompoundTag data) {
+    ListTag tokenRingList = new ListTag();
     for (SimpleTokenRing tokenRing : tokenRings.values()) {
-      CompoundNBT tokenData = new CompoundNBT();
+      CompoundTag tokenData = new CompoundTag();
       tokenData.putUUID("id", tokenRing.getId());
-      ListNBT signalList = new ListNBT();
+      ListTag signalList = new ListTag();
       for (BlockPos pos : tokenRing.getPeers()) {
-        signalList.add(NBTUtil.writeBlockPos(pos));
+        signalList.add(NbtUtils.writeBlockPos(pos));
       }
       tokenData.put("signals", signalList);
-      ListNBT cartList = new ListNBT();
+      ListTag cartList = new ListTag();
       for (UUID uuid : tokenRing.getTrackedCarts()) {
-        CompoundNBT cart = new CompoundNBT();
+        CompoundTag cart = new CompoundTag();
         cart.putUUID("cart", uuid);
         cartList.add(cart);
       }
@@ -84,7 +81,7 @@ public class TokenRingManager extends WorldSavedData {
     return data;
   }
 
-  public void tick(ServerWorld level) {
+  public void tick(ServerLevel level) {
     this.clock++;
     if (this.clock >= 32) {
       this.clock = 0;
@@ -103,7 +100,12 @@ public class TokenRingManager extends WorldSavedData {
     return this.tokenRings.values();
   }
 
-  public static TokenRingManager get(ServerWorld level) {
-    return level.getDataStorage().computeIfAbsent(() -> new TokenRingManager(level), DATA_TAG);
+  public static TokenRingManager get(ServerLevel level) {
+    return level.getDataStorage().computeIfAbsent(tag -> {
+      var manager = new TokenRingManager(level);
+      manager.load(tag);
+      return manager;
+
+    }, () -> new TokenRingManager(level), DATA_TAG);
   }
 }

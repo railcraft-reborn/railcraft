@@ -15,14 +15,14 @@ import mods.railcraft.world.entity.cart.TrackRemoverMinecartEntity;
 import mods.railcraft.world.entity.cart.Train;
 import mods.railcraft.world.entity.cart.TunnelBoreEntity;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info)
@@ -31,21 +31,21 @@ public class CrowbarHandler {
 
   public static final float SMACK_VELOCITY = 0.07f;
 
-  private static final Map<PlayerEntity, AbstractMinecartEntity> linkMap =
+  private static final Map<Player, AbstractMinecart> linkMap =
       new MapMaker()
           .weakKeys()
           .weakValues()
           .makeMap();
 
-  public ActionResultType handleInteract(AbstractMinecartEntity cart, PlayerEntity player,
-      Hand hand) {
+  public InteractionResult handleInteract(AbstractMinecart cart, Player player,
+      InteractionHand hand) {
     ItemStack stack = player.getItemInHand(hand);
     if (stack.isEmpty() || !(stack.getItem() instanceof Crowbar)) {
-      return ActionResultType.PASS;
+      return InteractionResult.PASS;
     }
 
     if (player.level.isClientSide()) {
-      return ActionResultType.SUCCESS;
+      return InteractionResult.SUCCESS;
     }
 
     Crowbar crowbar = (Crowbar) stack.getItem();
@@ -54,50 +54,50 @@ public class CrowbarHandler {
         && RailcraftConfig.common.enableSeasons.get()) {
       Season season = SeasonsCrowbarItem.getSeason(stack);
       ((SeasonalCart) cart).setSeason(season);
-      RailcraftCriteriaTriggers.SEASON_SET.trigger((ServerPlayerEntity) player, cart, season);
-      return ActionResultType.CONSUME;
+      RailcraftCriteriaTriggers.SEASON_SET.trigger((ServerPlayer) player, cart, season);
+      return InteractionResult.CONSUME;
     }
 
     if (crowbar.canLink(player, hand, stack, cart)) {
       this.linkCart(player, hand, stack, cart, crowbar);
-      return ActionResultType.CONSUME;
+      return InteractionResult.CONSUME;
     } else if (crowbar.canBoost(player, hand, stack, cart)) {
       this.boostCart(player, hand, stack, cart, crowbar);
-      return ActionResultType.CONSUME;
+      return InteractionResult.CONSUME;
     }
 
-    return ActionResultType.PASS;
+    return InteractionResult.PASS;
   }
 
-  private void linkCart(PlayerEntity player, Hand hand, ItemStack stack,
-      AbstractMinecartEntity cart, Crowbar crowbar) {
+  private void linkCart(Player player, InteractionHand hand, ItemStack stack,
+      AbstractMinecart cart, Crowbar crowbar) {
     boolean used = false;
     boolean linkable = cart instanceof ILinkableCart;
 
     if (!linkable || ((ILinkableCart) cart).isLinkable()) {
-      AbstractMinecartEntity last = linkMap.remove(player);
+      AbstractMinecart last = linkMap.remove(player);
       if (last != null && last.isAlive()) {
         RailcraftLinkageManager lm = RailcraftLinkageManager.INSTANCE;
         if (lm.areLinked(cart, last, false)) {
           lm.breakLink(cart, last);
           used = true;
-          player.displayClientMessage(new TranslationTextComponent("crowbar.link_broken"), true);
+          player.displayClientMessage(new TranslatableComponent("crowbar.link_broken"), true);
           RailcraftLinkageManager.printDebug("Reason For Broken Link: User removed link.");
         } else {
           used = lm.createLink(last, cart);
           if (used) {
             if (!player.level.isClientSide()) {
-              RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayerEntity) player, last, cart);
+              RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayer) player, last, cart);
             }
-            player.displayClientMessage(new TranslationTextComponent("crowbar.link_created"), true);
+            player.displayClientMessage(new TranslatableComponent("crowbar.link_created"), true);
           }
         }
         if (!used) {
-          player.displayClientMessage(new TranslationTextComponent("crowbar.link_failed"), true);
+          player.displayClientMessage(new TranslatableComponent("crowbar.link_failed"), true);
         }
       } else {
         linkMap.put(player, cart);
-        player.displayClientMessage(new TranslationTextComponent("crowbar.link_started"), true);
+        player.displayClientMessage(new TranslatableComponent("crowbar.link_started"), true);
       }
     }
     if (used) {
@@ -105,8 +105,8 @@ public class CrowbarHandler {
     }
   }
 
-  private void boostCart(PlayerEntity player, Hand hand, ItemStack stack,
-      AbstractMinecartEntity cart, Crowbar crowbar) {
+  private void boostCart(Player player, InteractionHand hand, ItemStack stack,
+      AbstractMinecart cart, Crowbar crowbar) {
     player.causeFoodExhaustion(.25F);
 
     if (player.getVehicle() != null) {
@@ -127,7 +127,7 @@ public class CrowbarHandler {
       Train.get(cart).ifPresent(train -> {
         float smackVelocity = SMACK_VELOCITY * (float) Math.pow(1.7, lvl);
         smackVelocity /= (float) Math.pow(train.size(), 1D / (1 + lvl));
-        for (AbstractMinecartEntity each : train) {
+        for (AbstractMinecart each : train) {
           CartTools.smackCart(cart, each, player, smackVelocity);
         }
       });

@@ -2,14 +2,14 @@ package mods.railcraft.world.inventory;
 
 import javax.annotation.Nullable;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public class SlotWaterLimited extends SlotWater {
 
-  public SlotWaterLimited(IInventory iinventory, int slotIndex, int posX, int posY) {
+  public SlotWaterLimited(Container iinventory, int slotIndex, int posX, int posY) {
     super(iinventory, slotIndex, posX, posY);
     this.setStackLimit(4);
   }

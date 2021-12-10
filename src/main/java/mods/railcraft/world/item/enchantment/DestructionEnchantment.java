@@ -1,13 +1,13 @@
 package mods.railcraft.world.item.enchantment;
 
 import mods.railcraft.api.item.Crowbar;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 
 public class DestructionEnchantment extends RailcraftToolEnchantment {
 
   public DestructionEnchantment(Rarity rarity) {
-    super(rarity, EquipmentSlotType.MAINHAND);
+    super(rarity, EquipmentSlot.MAINHAND);
   }
 
   @Override

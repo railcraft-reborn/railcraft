@@ -4,9 +4,9 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 /**
@@ -52,7 +52,7 @@ public class FluidRenderer {
     } else {
       spriteLocation = fluid.getAttributes().getFlowingTexture(fluidStack);
     }
-    return minecraft.getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(spriteLocation);
+    return minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(spriteLocation);
   }
 
   public enum FluidType {

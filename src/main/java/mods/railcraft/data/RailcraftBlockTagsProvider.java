@@ -3,17 +3,16 @@ package mods.railcraft.data;
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
-  public RailcraftBlockTagsProvider(DataGenerator dataGenerator,
-      ExistingFileHelper existingFileHelper) {
-    super(dataGenerator, Railcraft.ID, existingFileHelper);
+  public RailcraftBlockTagsProvider(DataGenerator generator, ExistingFileHelper fileHelper) {
+    super(generator, Railcraft.ID, fileHelper);
   }
 
   @Override
@@ -97,6 +96,23 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),
             RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
             RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
+    this.tag(RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR)
+        .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get(), RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
+            RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
+            RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get(), RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
+            RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
+            RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get(), RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
+            RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
+            RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
+            RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),
+            RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.ELEVATOR_TRACK.get())
+        .addTag(BlockTags.RAILS);
+
+    this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        .add(RailcraftBlocks.FIRESTONE.get(), RailcraftBlocks.COKE_OVEN_BRICKS.get());
+
+    this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
+        .add(RailcraftBlocks.FIRESTONE.get());
   }
 
   @Override

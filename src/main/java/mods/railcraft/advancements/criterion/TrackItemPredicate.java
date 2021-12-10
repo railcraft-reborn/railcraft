@@ -9,8 +9,8 @@ import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.item.ItemStack;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.world.item.ItemStack;
 
 final class TrackItemPredicate extends ItemPredicate {
 

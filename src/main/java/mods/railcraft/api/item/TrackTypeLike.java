@@ -8,7 +8,7 @@
 package mods.railcraft.api.item;
 
 import mods.railcraft.api.track.TrackType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public interface TrackTypeLike {
 

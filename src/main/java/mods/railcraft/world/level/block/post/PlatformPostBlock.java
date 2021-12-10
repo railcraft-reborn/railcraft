@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.post;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class PlatformPostBlock extends PostBlock {
 

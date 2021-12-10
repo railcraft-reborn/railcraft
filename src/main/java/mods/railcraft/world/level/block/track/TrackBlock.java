@@ -10,36 +10,32 @@ import mods.railcraft.api.charge.IChargeBlock;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TypedTrack;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.world.level.block.RailcraftToolTypes;
 import mods.railcraft.world.level.block.track.behaivor.TrackSupportTools;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySpawnPlacementRegistry.PlacementType;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.Property;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * Created by CovertJaguar on 8/29/2016 for Railcraft.
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class TrackBlock extends AbstractRailBlock implements TypedTrack, IChargeBlock {
+public class TrackBlock extends BaseRailBlock implements TypedTrack, IChargeBlock {
 
   public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE;
 
@@ -49,13 +45,11 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
   private final Supplier<? extends TrackType> trackType;
 
   public TrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
-    super(false, properties.strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
-        .sound(SoundType.METAL)
-        .harvestTool(RailcraftToolTypes.CROWBAR)
-        .harvestLevel(0));
+    super(false, properties);
     this.trackType = trackType;
-    this.registerDefaultState(
-        this.stateDefinition.any().setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH));
+    this.registerDefaultState(this.stateDefinition.any()
+        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
+        .setValue(WATERLOGGED, false));
   }
 
   @Override
@@ -69,19 +63,19 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-    builder.add(this.getShapeProperty());
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    builder.add(this.getShapeProperty(), WATERLOGGED);
   }
 
   @Override
-  public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+  public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
     if (this.getTrackType().isElectric()) {
       Charge.effects().throwSparks(stateIn, worldIn, pos, rand, 75);
     }
   }
 
   @Override
-  public void onPlace(BlockState blockState, World level, BlockPos pos, BlockState oldBlockState,
+  public void onPlace(BlockState blockState, Level level, BlockPos pos, BlockState oldBlockState,
       boolean moved) {
     super.onPlace(blockState, level, pos, oldBlockState, moved);
 
@@ -97,7 +91,7 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
   }
 
   @Override
-  public void onRemove(BlockState blockState, World level, BlockPos pos, BlockState newBlockState,
+  public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newBlockState,
       boolean moved) {
     super.onRemove(blockState, level, pos, newBlockState, moved);
     Charge.distribution.network(level).removeNode(pos);
@@ -105,15 +99,15 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
 
   @Override
   public Map<Charge, ChargeSpec> getChargeSpecs(
-      BlockState state, IBlockReader level, BlockPos pos) {
+      BlockState state, BlockGetter level, BlockPos pos) {
     return this.getTrackType().isElectric() ? CHARGE_SPECS : Collections.emptyMap();
   }
 
-  public int getMaxSupportedDistance(World level, BlockPos pos) {
+  public int getMaxSupportedDistance(Level level, BlockPos pos) {
     return this.getTrackType().getMaxSupportDistance();
   }
 
-  protected boolean isRailValid(BlockState state, World world, BlockPos pos,
+  protected boolean isRailValid(BlockState state, Level world, BlockPos pos,
       int maxSupportedDistance) {
     RailShape dir = TrackTools.getRailShapeRaw(state);
     if (!TrackSupportTools.isSupported(world, pos, maxSupportedDistance)) {
@@ -137,7 +131,7 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
   }
 
   @Override
-  public void neighborChanged(BlockState blockState, World level, BlockPos pos,
+  public void neighborChanged(BlockState blockState, Level level, BlockPos pos,
       Block neighborBlock, BlockPos neighborPos, boolean moved) {
     if (level.isClientSide()) {
       return;
@@ -150,7 +144,7 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
     TrackTools.traverseConnectedTracks(level, pos, (w, p) -> {
       BlockState s = w.getBlockState(p);
       Block b = s.getBlock();
-      if (!AbstractRailBlock.isRail(s)) {
+      if (!BaseRailBlock.isRail(s)) {
         return false;
       }
       if (b instanceof TrackBlock) {
@@ -169,21 +163,21 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
   }
 
   @Override
-  public void onMinecartPass(BlockState state, World world, BlockPos pos,
-      AbstractMinecartEntity cart) {
+  public void onMinecartPass(BlockState state, Level world, BlockPos pos,
+      AbstractMinecart cart) {
     this.getTrackType().getEventHandler().minecartPass(world, cart, pos);
   }
 
   @Override
-  public RailShape getRailDirection(BlockState state, IBlockReader world, BlockPos pos,
-      @Nullable AbstractMinecartEntity cart) {
+  public RailShape getRailDirection(BlockState state, BlockGetter world, BlockPos pos,
+      @Nullable AbstractMinecart cart) {
     RailShape shape =
         this.getTrackType().getEventHandler().getRailShapeOverride(world, pos, state, cart);
     return shape == null ? super.getRailDirection(state, world, pos, cart) : shape;
   }
 
   @Override
-  public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+  public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
     if (world.isClientSide()) {
       return;
     }
@@ -191,43 +185,32 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
   }
 
   @Override
-  public float getRailMaxSpeed(BlockState state, World world, BlockPos pos,
-      AbstractMinecartEntity cart) {
+  public float getRailMaxSpeed(BlockState state, Level world, BlockPos pos,
+      AbstractMinecart cart) {
     return (float) this.getTrackType().getEventHandler().getMaxSpeed(world, cart, pos);
   }
 
   @Override
-  public boolean canMakeSlopes(BlockState state, IBlockReader world, BlockPos pos) {
+  public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
     return TrackSupportTools.isSupportedDirectly(world, pos);
   }
 
   @Override
-  public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
-    return !AbstractRailBlock.isRail(level.getBlockState(pos.above()))
-        && !AbstractRailBlock.isRail(level.getBlockState(pos.below()))
+  public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    return !BaseRailBlock.isRail(level.getBlockState(pos.above()))
+        && !BaseRailBlock.isRail(level.getBlockState(pos.below()))
         && TrackSupportTools.isSupported(level, pos, this.getTrackType().getMaxSupportDistance());
   }
 
   @Override
-  public boolean canBeReplacedByLeaves(BlockState state, IWorldReader world, BlockPos pos) {
-    return false;
-  }
-
-  @Override
-  public boolean canCreatureSpawn(BlockState state, IBlockReader world, BlockPos pos,
-      PlacementType type, EntityType<?> entityType) {
-    return false;
-  }
-
-  @Override
-  public boolean isConduitFrame(BlockState state, IWorldReader world, BlockPos pos,
+  public boolean isConduitFrame(BlockState state, LevelReader world, BlockPos pos,
       BlockPos conduit) {
     return false;
   }
 
   @Override
-  public VoxelShape getShape(BlockState blockState, IBlockReader level, BlockPos blockPos,
-      ISelectionContext context) {
+  public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos blockPos,
+      CollisionContext context) {
     RailShape railShape = blockState.is(this) ? blockState.getValue(this.getShapeProperty()) : null;
     return railShape != null && railShape.isAscending() ? HALF_BLOCK_AABB : FLAT_AABB;
   }
@@ -366,6 +349,6 @@ public class TrackBlock extends AbstractRailBlock implements TypedTrack, ICharge
 
   @SuppressWarnings("deprecation")
   public static RailShape getRailShapeRaw(BlockState state) {
-    return state.getValue(((AbstractRailBlock) state.getBlock()).getShapeProperty());
+    return state.getValue(((BaseRailBlock) state.getBlock()).getShapeProperty());
   }
 }

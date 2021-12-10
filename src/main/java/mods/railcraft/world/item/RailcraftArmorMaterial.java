@@ -1,16 +1,16 @@
 package mods.railcraft.world.item;
 
 import java.util.function.Supplier;
+import com.google.common.base.Suppliers;
 import mods.railcraft.tags.RailcraftTags;
-import net.minecraft.block.Blocks;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
 
-public enum RailcraftArmorMaterial implements IArmorMaterial {
+public enum RailcraftArmorMaterial implements ArmorMaterial {
 
   OVERALLS("railcraft:overalls", 5, new int[] {1, 2, 3, 1}, 15, SoundEvents.ARMOR_EQUIP_LEATHER,
       0.0F, 0.0F, () -> Ingredient.of(Blocks.BLUE_WOOL)),
@@ -25,7 +25,7 @@ public enum RailcraftArmorMaterial implements IArmorMaterial {
   private final SoundEvent sound;
   private final float toughness;
   private final float knockbackResistance;
-  private final LazyValue<Ingredient> repairIngredient;
+  private final Supplier<Ingredient> repairIngredient;
 
   private RailcraftArmorMaterial(String name, int durabilityMultiplier, int[] slotProtections,
       int enchantmentValue, SoundEvent sound, float toughness, float knockbackResistance,
@@ -37,16 +37,16 @@ public enum RailcraftArmorMaterial implements IArmorMaterial {
     this.sound = sound;
     this.toughness = toughness;
     this.knockbackResistance = knockbackResistance;
-    this.repairIngredient = new LazyValue<>(repairIngredient);
+    this.repairIngredient = Suppliers.memoize(repairIngredient::get);
   }
 
   @Override
-  public int getDurabilityForSlot(EquipmentSlotType slot) {
+  public int getDurabilityForSlot(EquipmentSlot slot) {
     return HEALTH_PER_SLOT[slot.getIndex()] * this.durabilityMultiplier;
   }
 
   @Override
-  public int getDefenseForSlot(EquipmentSlotType slot) {
+  public int getDefenseForSlot(EquipmentSlot slot) {
     return this.slotProtections[slot.getIndex()];
   }
 

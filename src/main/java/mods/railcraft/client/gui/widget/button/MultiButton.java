@@ -1,41 +1,45 @@
 package mods.railcraft.client.gui.widget.button;
 
 import java.util.List;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.gui.button.ButtonState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraft.network.chat.Component;
 
 /**
  * @author CovertJaguar <https://railcraft.info/wiki/info:license>
  */
 public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton {
 
-  private T state;
-  public boolean canChange = true;
+  private static final OnPress NO_PRESS = __ -> {
+  };
 
-  public MultiButton(int x, int y, int width, int height, T state) {
-    this(x, y, width, height, state, __ -> {
-    });
-  }
+  private final TooltipRenderer tooltipRenderer;
+  private T state;
+  private boolean locked;
 
   public MultiButton(int x, int y, int width, int height, T state,
-      IPressable actionListener) {
+      TooltipRenderer tooltipRenderer) {
+    this(x, y, width, height, state, tooltipRenderer, NO_PRESS);
+  }
+
+  public MultiButton(int x, int y, int width, int height, T state, TooltipRenderer tooltipRenderer,
+      OnPress actionListener) {
     super(x, y, width, height, state.getLabel(), actionListener, state.getTexturePosition());
     this.state = state;
+    this.tooltipRenderer = tooltipRenderer;
   }
 
-  public MultiButton(int x, int y, int width, int height, T state,
-      IPressable actionListener, ITooltip tooltip) {
+  public MultiButton(int x, int y, int width, int height, T state, TooltipRenderer tooltipRenderer,
+      OnPress actionListener, OnTooltip tooltip) {
     super(x, y, width, height, state.getLabel(), actionListener, tooltip,
         state.getTexturePosition());
     this.state = state;
+    this.tooltipRenderer = tooltipRenderer;
   }
 
   @Override
   public void onPress() {
-    if (this.canChange && this.active) {
+    if (!this.locked && this.active) {
       this.setState(this.state.getNext());
       super.onPress();
     }
@@ -54,23 +58,25 @@ public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton
   }
 
   @Override
-  public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY,
+  public void renderButton(PoseStack poseStack, int mouseX, int mouseY,
       float partialTicks) {
-    super.renderButton(matrixStack, mouseX, mouseY, partialTicks);
-    if (this.isHovered()) {
-      this.renderToolTip(matrixStack, mouseX, mouseY);
+    super.renderButton(poseStack, mouseX, mouseY, partialTicks);
+    if (this.isHoveredOrFocused()) {
+      this.renderToolTip(poseStack, mouseX, mouseY);
     }
   }
 
   @Override
-  public void renderToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
-    List<? extends ITextProperties> tooltip = this.state.getTooltip();
+  public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY) {
+    List<Component> tooltip = this.state.getTooltip();
     if (tooltip == null) {
-      super.renderToolTip(matrixStack, mouseX, mouseY);
+      super.renderToolTip(poseStack, mouseX, mouseY);
       return;
     }
-    Minecraft minecraft = Minecraft.getInstance();
-    GuiUtils.drawHoveringText(matrixStack, tooltip, mouseX, mouseY, minecraft.screen.width,
-        minecraft.screen.height, -1, minecraft.font);
+    this.tooltipRenderer.renderTooltip(poseStack, tooltip, mouseX, mouseY);
+  }
+
+  public interface TooltipRenderer {
+    void renderTooltip(PoseStack poseStack, List<Component> tooltip, int x, int y);
   }
 }

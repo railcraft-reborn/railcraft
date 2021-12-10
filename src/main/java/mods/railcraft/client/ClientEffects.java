@@ -3,30 +3,30 @@ package mods.railcraft.client;
 import java.util.Random;
 import java.util.Set;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.signal.TuningAuraHelper;
 import mods.railcraft.api.signal.SignalTools;
+import mods.railcraft.api.signal.TuningAuraHelper;
 import mods.railcraft.particle.RailcraftParticles;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.world.item.GogglesItem;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.ParticleStatus;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.client.ParticleStatus;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -46,14 +46,14 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     Charge.internalSetEffects(this);
   }
 
-  public void readTeleport(PacketBuffer data) {
-    World world = this.minecraft.level;
+  public void readTeleport(FriendlyByteBuf data) {
+    Level world = this.minecraft.level;
     if (world == null) {
       return;
     }
 
-    Vector3d start = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
-    Vector3d destination = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
+    Vec3 start = new Vec3(data.readDouble(), data.readDouble(), data.readDouble());
+    Vec3 destination = new Vec3(data.readDouble(), data.readDouble(), data.readDouble());
     for (int i = 0; i < TELEPORT_PARTICLES; i++) {
       double travel = (double) i / ((double) TELEPORT_PARTICLES - 1.0D);
       float vX = (rand.nextFloat() - 0.5F) * 0.2F;
@@ -66,7 +66,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     }
   }
 
-  public void readForceSpawn(PacketBuffer data) {
+  public void readForceSpawn(FriendlyByteBuf data) {
     if (thinParticles(true)) {
       return;
     }
@@ -97,7 +97,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   public boolean isGoggleAuraActive(GogglesItem.Aura aura) {
-    ItemStack itemStack = this.minecraft.player.getItemBySlot(EquipmentSlotType.HEAD);
+    ItemStack itemStack = this.minecraft.player.getItemBySlot(EquipmentSlot.HEAD);
     return itemStack.getItem() instanceof GogglesItem && GogglesItem.getAura(itemStack) == aura;
   }
 
@@ -106,7 +106,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   @Override
-  public void spawnTuningAuraParticles(TileEntity start, TileEntity dest) {
+  public void spawnTuningAuraParticles(BlockEntity start, BlockEntity dest) {
     // if (thinParticles(false))
     // return;
     // if (rand.nextInt(2) == 0) {
@@ -130,7 +130,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     // }
   }
 
-  public void trailEffect(BlockPos start, TileEntity dest, long colorSeed) {
+  public void trailEffect(BlockPos start, BlockEntity dest, long colorSeed) {
     // if (thinParticles(false))
     // return;
     // if (mc.player.getDistanceSq(start) > TRACKING_DISTANCE)
@@ -146,7 +146,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     // }
   }
 
-  public void fireSparkEffect(World world, Vector3d start, Vector3d end) {
+  public void fireSparkEffect(Level world, Vec3 start, Vec3 end) {
     // if (thinParticles(false))
     // return;
     // IEffectSource es = EffectManager.getEffectSource(start);
@@ -157,13 +157,13 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     // .15F);
   }
 
-  public void readFireSpark(PacketBuffer data) {
-    Vector3d start = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
-    Vector3d destination = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
+  public void readFireSpark(FriendlyByteBuf data) {
+    Vec3 start = new Vec3(data.readDouble(), data.readDouble(), data.readDouble());
+    Vec3 destination = new Vec3(data.readDouble(), data.readDouble(), data.readDouble());
     fireSparkEffect(minecraft.level, start, destination);
   }
 
-  public void chunkLoaderEffect(World world, Object source, Set<ChunkPos> chunks) {
+  public void chunkLoaderEffect(Level world, Object source, Set<ChunkPos> chunks) {
     // if (!isGoggleAuraActive(GoggleAura.WORLDSPIKE))
     // return;
     // IEffectSource es = EffectManager.getEffectSource(source);
@@ -226,9 +226,9 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     if (thinParticles(true)) {
       return;
     }
-    BasicParticleType steam = new BasicParticleType(false) {
+    SimpleParticleType steam = new SimpleParticleType(false) {
       @Override
-      public BasicParticleType getType() {
+      public SimpleParticleType getType() {
         return RailcraftParticles.STEAM.get();
       }
     };
@@ -254,7 +254,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     this.steamEffect(x, y, z, vx * 1.5, vz * 1.5);
   }
 
-  public void chimneyEffect(ClientWorld world, double x, double y, double z, int color) {
+  public void chimneyEffect(ClientLevel world, double x, double y, double z, int color) {
     // if (thinParticles(false))
     // return;
     // spawnParticle(new ParticleChimney(world, x, y, z, color));
@@ -273,9 +273,9 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
       return;
     }
     if (Seasons.HALLOWEEN && rand.nextInt(4) == 0) { // 20%?
-      BasicParticleType spook = new BasicParticleType(false) {
+      SimpleParticleType spook = new SimpleParticleType(false) {
         @Override
-        public BasicParticleType getType() {
+        public SimpleParticleType getType() {
           return RailcraftParticles.PUMPKIN.get();
         }
       };
@@ -286,14 +286,14 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   @Override
-  public void zapEffectPoint(World world, Vector3d source) {
+  public void zapEffectPoint(Level world, Vec3 source) {
     if (thinParticles(false)) {
       return;
     }
 
-    BasicParticleType spark = new BasicParticleType(false) {
+    SimpleParticleType spark = new SimpleParticleType(false) {
       @Override
-      public BasicParticleType getType() {
+      public SimpleParticleType getType() {
         return RailcraftParticles.SPARK.get();
       }
     };
@@ -301,12 +301,12 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     spawnParticle(spark, source.x, source.y, source.z, rand.nextDouble() - 0.5D, rand.nextDouble() - 0.5D,
         rand.nextDouble() - 0.5D);
 
-    world.playLocalSound(source.x, source.y, source.z, RailcraftSoundEvents.ZAP.get(), SoundCategory.BLOCKS, 0.2F,
+    world.playLocalSound(source.x, source.y, source.z, RailcraftSoundEvents.ZAP.get(), SoundSource.BLOCKS, 0.2F,
         0.75F, false);
   }
 
   @Override
-  public void zapEffectDeath(World world, Vector3d source) {
+  public void zapEffectDeath(Level world, Vec3 source) {
     if (!world.isClientSide()) {
       return;
     }
@@ -314,12 +314,12 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
       return;
     }
 
-    world.playLocalSound(source.x, source.y, source.z, RailcraftSoundEvents.ZAP.get(), SoundCategory.BLOCKS, 3F, 0.75F,
+    world.playLocalSound(source.x, source.y, source.z, RailcraftSoundEvents.ZAP.get(), SoundSource.BLOCKS, 3F, 0.75F,
         false);
 
-    BasicParticleType spark = new BasicParticleType(false) {
+    SimpleParticleType spark = new SimpleParticleType(false) {
       @Override
-      public BasicParticleType getType() {
+      public SimpleParticleType getType() {
         return RailcraftParticles.SPARK.get();
       }
     };
@@ -330,49 +330,49 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     }
   }
 
-  public void readZapDeath(PacketBuffer data) {
-    Vector3d pos = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
+  public void readZapDeath(FriendlyByteBuf data) {
+    Vec3 pos = new Vec3(data.readDouble(), data.readDouble(), data.readDouble());
     zapEffectDeath(minecraft.level, pos);
   }
 
   @Override
-  public void zapEffectSurface(BlockState stateIn, World worldIn, BlockPos pos) {
+  public void zapEffectSurface(BlockState stateIn, Level worldIn, BlockPos pos) {
     if (thinParticles(false)) {
       return;
     }
 
-    worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), RailcraftSoundEvents.ZAP.get(), SoundCategory.BLOCKS,
+    worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), RailcraftSoundEvents.ZAP.get(), SoundSource.BLOCKS,
         0.1F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 
-    BasicParticleType spark = new BasicParticleType(false) {
+    SimpleParticleType spark = new SimpleParticleType(false) {
       @Override
-      public BasicParticleType getType() {
+      public SimpleParticleType getType() {
         return RailcraftParticles.SPARK.get();
       }
     };
 
     for (Direction side : Direction.values()) {
-      if (!Block.shouldRenderFace(stateIn, worldIn, pos, side)) {
+      if (!Block.shouldRenderFace(stateIn, worldIn, pos, side, pos.relative(side))) {
         continue;
       }
-      Vector3d normal = Vector3d.atLowerCornerOf(side.getNormal());
-      Vector3d variance = new Vector3d((rand.nextGaussian() - 0.5) * 0.2, (rand.nextGaussian() - 0.5) * 0.2,
+      Vec3 normal = Vec3.atLowerCornerOf(side.getNormal());
+      Vec3 variance = new Vec3((rand.nextGaussian() - 0.5) * 0.2, (rand.nextGaussian() - 0.5) * 0.2,
           (rand.nextGaussian() - 0.5) * 0.2);
-      Vector3d vel = normal.add(variance);
+      Vec3 vel = normal.add(variance);
       // TODO This should probably use the bounding box or something. Its got to be
       // wrong for
       // tracks
       // atm.
-      Vector3d start = new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).add(normal.scale(0.5));
+      Vec3 start = new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).add(normal.scale(0.5));
       switch (side.getAxis()) {
         case X:
-          start = start.add(new Vector3d(0.0, rand.nextDouble() - 0.5, rand.nextDouble() - 0.5));
+          start = start.add(new Vec3(0.0, rand.nextDouble() - 0.5, rand.nextDouble() - 0.5));
           break;
         case Y:
-          start = start.add(new Vector3d(rand.nextDouble() - 0.5, 0.0, rand.nextDouble() - 0.5));
+          start = start.add(new Vec3(rand.nextDouble() - 0.5, 0.0, rand.nextDouble() - 0.5));
           break;
         case Z:
-          start = start.add(new Vector3d(rand.nextDouble() - 0.5, rand.nextDouble() - 0.5, 0.0));
+          start = start.add(new Vec3(rand.nextDouble() - 0.5, rand.nextDouble() - 0.5, 0.0));
           break;
         default:
           break;
@@ -383,7 +383,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     }
   }
 
-  public void blockParticle(ClientWorld world, Object source, Vector3d pos, Vector3d velocity,
+  public void blockParticle(ClientLevel world, Object source, Vec3 pos, Vec3 velocity,
       BlockState state, boolean blockDust) {
     // ParticleBlockCrack particle = new ParticleBlockCrack(world, pos.x, pos.y, pos.z, velocity.x,
     // velocity.y, velocity.z, state);
@@ -397,10 +397,10 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     // spawnParticle(particle);
   }
 
-  public void readBlockParticle(PacketBuffer data) {
+  public void readBlockParticle(FriendlyByteBuf data) {
     BlockPos block = data.readBlockPos();
-    Vector3d pos = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
-    Vector3d velocity = new Vector3d(data.readDouble(), data.readDouble(), data.readDouble());
+    Vec3 pos = new Vec3(data.readDouble(), data.readDouble(), data.readDouble());
+    Vec3 velocity = new Vec3(data.readDouble(), data.readDouble(), data.readDouble());
     BlockState state = Block.stateById(data.readVarInt());
     boolean blockDust = data.readBoolean();
     blockParticle(minecraft.level, block, pos, velocity, state, blockDust);
@@ -428,7 +428,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     }
   }
 
-  protected void spawnParticle(IParticleData particle, double pX, double pY, double pZ, double vX, double vY, double vZ) {
+  protected void spawnParticle(ParticleOptions particle, double pX, double pY, double pZ, double vX, double vY, double vZ) {
     minecraft.particleEngine.add(minecraft.particleEngine.createParticle(particle, pX, pY, pZ, vX, vY, vZ));
   }
 }

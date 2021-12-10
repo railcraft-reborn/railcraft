@@ -2,13 +2,13 @@ package mods.railcraft.world.level.block;
 
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 public abstract class FluidManipulatorBlock<T extends FluidManipulatorBlockEntity>
     extends ManipulatorBlock<T> {
@@ -18,11 +18,11 @@ public abstract class FluidManipulatorBlock<T extends FluidManipulatorBlockEntit
   }
 
   @Override
-  public ActionResultType use(BlockState blockState, World level,
-      BlockPos blockPos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+  public InteractionResult use(BlockState blockState, Level level,
+      BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     return LevelUtil.getBlockEntity(level, blockPos, FluidManipulatorBlockEntity.class)
         .filter(blockEntity -> blockEntity.use(player, hand))
-        .map(__ -> ActionResultType.SUCCESS)
+        .map(__ -> InteractionResult.SUCCESS)
         .orElseGet(() -> super.use(blockState, level, blockPos, player, hand, rayTraceResult));
   }
 }

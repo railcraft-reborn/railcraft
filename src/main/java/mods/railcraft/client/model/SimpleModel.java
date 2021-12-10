@@ -1,49 +1,49 @@
 package mods.railcraft.client.model;
 
 import java.util.function.Function;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.Model;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public class SimpleModel extends Model {
 
-  protected final ModelRenderer renderer;
+  protected final ModelPart root;
 
-  public SimpleModel() {
-    this(RenderType::entityCutout);
+  public SimpleModel(ModelPart root) {
+    this(RenderType::entityCutout, root);
   }
 
-  public SimpleModel(Function<ResourceLocation, RenderType> renderTypeFactory) {
+  public SimpleModel(Function<ResourceLocation, RenderType> renderTypeFactory, ModelPart root) {
     super(renderTypeFactory);
-    this.renderer = new ModelRenderer(this);
+    this.root = root;
   }
 
   @Override
-  public void renderToBuffer(MatrixStack matrix, IVertexBuilder vertexBuilder, int packedLight,
+  public void renderToBuffer(
+      PoseStack poseStack, VertexConsumer vertexBuilder, int packedLight,
       int packedOverlay, float red, float green, float blue, float alpha) {
-    renderer.render(matrix, vertexBuilder, packedLight, packedOverlay, red, green,
-        blue, alpha);
+    this.root.render(poseStack, vertexBuilder, packedLight, packedOverlay, red, green, blue, alpha);
   }
 
   public void setRotation(float x, float y, float z) {
-    renderer.xRot = x;
-    renderer.yRot = y;
-    renderer.zRot = z;
+    root.xRot = x;
+    root.yRot = y;
+    root.zRot = z;
   }
 
   public void rotateY(float degrees) {
-    renderer.yRot += degrees;
+    root.yRot += degrees;
   }
 
   public void resetRotation() {
-    renderer.xRot = 0;
-    renderer.yRot = 0;
-    renderer.zRot = 0;
+    root.xRot = 0;
+    root.yRot = 0;
+    root.zRot = 0;
   }
 }

@@ -7,15 +7,15 @@ import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.entity.cart.CartTools;
 import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.phys.Vec3;
 
 public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
@@ -30,13 +30,13 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public int getPowerPropagation(BlockState blockState, World level, BlockPos pos) {
+  public int getPowerPropagation(BlockState blockState, Level level, BlockPos pos) {
     return 16;
   }
 
   @Override
-  public void onMinecartPass(BlockState blockState, World level, BlockPos pos,
-      AbstractMinecartEntity cart) {
+  public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
+      AbstractMinecart cart) {
     super.onMinecartPass(blockState, level, pos, cart);
     final boolean reversed = isReversed(blockState);
     final RailShape railShape = getRailShapeRaw(blockState);
@@ -45,7 +45,7 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
       return;
     }
 
-    final Vector3d deltaMovement = cart.getDeltaMovement();
+    final Vec3 deltaMovement = cart.getDeltaMovement();
     final double speed = CartUtil.getCartSpeedUncapped(deltaMovement);
 
     if (speed <= BOOST_THRESHOLD) {
@@ -70,26 +70,26 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  protected boolean crowbarWhack(BlockState blockState, World level, BlockPos pos,
-      PlayerEntity player, Hand hand, ItemStack itemStack) {
+  protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos,
+      Player player, InteractionHand hand, ItemStack itemStack) {
     level.setBlockAndUpdate(pos, blockState.setValue(REVERSED, !blockState.getValue(REVERSED)));
     return true;
   }
 
-  private static void boostCartSpeed(AbstractMinecartEntity cart, double currentSpeed) {
-    Vector3d motion = cart.getDeltaMovement();
+  private static void boostCartSpeed(AbstractMinecart cart, double currentSpeed) {
+    Vec3 motion = cart.getDeltaMovement();
     cart.setDeltaMovement(motion.add((motion.x() / currentSpeed) * BOOST_AMOUNT, 0.0D,
         (motion.z() / currentSpeed) * BOOST_AMOUNT));
   }
 
-  private static void slowCartSpeed(AbstractMinecartEntity cart) {
+  private static void slowCartSpeed(AbstractMinecart cart) {
     if (cart instanceof LocomotiveEntity) {
       ((LocomotiveEntity) cart).forceIdle(20);
     }
     cart.setDeltaMovement(cart.getDeltaMovement().multiply(SLOW_FACTOR, 1.0D, SLOW_FACTOR));
   }
 
-  private static void slowOrNormalCartSpeed(AbstractMinecartEntity cart, boolean highSpeed) {
+  private static void slowOrNormalCartSpeed(AbstractMinecart cart, boolean highSpeed) {
     if (highSpeed) {
       slowCartSpeed(cart);
     } else {
@@ -97,8 +97,8 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     }
   }
 
-  private static void normalCartSpeed(AbstractMinecartEntity cart) {
-    final Vector3d deltaMovement = cart.getDeltaMovement();
+  private static void normalCartSpeed(AbstractMinecart cart) {
+    final Vec3 deltaMovement = cart.getDeltaMovement();
     if (Math.abs(deltaMovement.x()) > 0.01) {
       cart.setDeltaMovement(Math.copySign(0.3F, deltaMovement.x()), deltaMovement.y(),
           deltaMovement.z());

@@ -10,13 +10,13 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.LootTableProvider;
-import net.minecraft.loot.LootParameterSet;
-import net.minecraft.loot.LootParameterSets;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.LootTableManager;
-import net.minecraft.loot.ValidationTracker;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.LootTables;
+import net.minecraft.world.level.storage.loot.ValidationContext;
+import net.minecraft.resources.ResourceLocation;
 
 public class RailcraftLootTableProvider extends LootTableProvider {
 
@@ -25,17 +25,17 @@ public class RailcraftLootTableProvider extends LootTableProvider {
   }
 
   @Override
-  protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> getTables() {
-    ImmutableList.Builder<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> builder =
+  protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
+    ImmutableList.Builder<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> builder =
         ImmutableList.builder();
-    builder.add(Pair.of(RailcraftBlockLootTable::new, LootParameterSets.BLOCK));
+    builder.add(Pair.of(RailcraftBlockLootTable::new, LootContextParamSets.BLOCK));
     return builder.build();
   }
 
   @Override
   protected void validate(Map<ResourceLocation, LootTable> map,
-      ValidationTracker validationTracker) {
-    map.forEach((location, lootTable) -> LootTableManager.validate(validationTracker,
+      ValidationContext validationTracker) {
+    map.forEach((location, lootTable) -> LootTables.validate(validationTracker,
         location, lootTable));
   }
 

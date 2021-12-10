@@ -2,22 +2,24 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.function.Consumer;
 import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.LockableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class ManualRollingMachineBlockEntity extends LockableTileEntity
-    implements ITickableTileEntity {
+public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
 
-  private static final ITextComponent MENU_TITLE =
-      new TranslationTextComponent("container.manual_rolling_machine");
+  private static final Component MENU_TITLE =
+      new TranslatableComponent("container.manual_rolling_machine");
 
   private int recipieRequiredTime = 12222222;
   private int currentTick = 0;
@@ -26,7 +28,7 @@ public class ManualRollingMachineBlockEntity extends LockableTileEntity
   // KEY INFO:
   // 1. required time | 2. currentTick (UNSETTABLE)
   // 3. shouldFire - 1 == true
-  protected final IIntArray data = new IIntArray() {
+  protected final ContainerData data = new ContainerData() {
     public int get(int key) {
       switch (key) {
         case 0:
@@ -64,12 +66,13 @@ public class ManualRollingMachineBlockEntity extends LockableTileEntity
     }
   };
 
-  public ManualRollingMachineBlockEntity() {
-    super(RailcraftBlockEntityTypes.MANUAL_ROLLING_MACHINE.get());
+  public ManualRollingMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.MANUAL_ROLLING_MACHINE.get(), blockPos, blockState);
   }
 
-  public ManualRollingMachineBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public ManualRollingMachineBlockEntity(BlockEntityType<?> type, BlockPos blockPos,
+      BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
   public void setRequiredTime(int requiredTime) {
@@ -99,7 +102,7 @@ public class ManualRollingMachineBlockEntity extends LockableTileEntity
    *         RollingTableScreen}
    */
   public float rollingProgress() {
-    return Math.max(Math.min((float) currentTick / (float) recipieRequiredTime, 1F), 0.0F);
+    return Mth.clamp((float) this.currentTick / (float) this.recipieRequiredTime, 0.0F, 1.0F);
   }
 
   public void resetProgress() {
@@ -107,13 +110,13 @@ public class ManualRollingMachineBlockEntity extends LockableTileEntity
     this.currentTick = 0;
   }
 
-  @Override
-  public void tick() {
-    if (!this.shouldFire) {
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      ManualRollingMachineBlockEntity blockEntity) {
+    if (!blockEntity.shouldFire) {
       return;
     }
-    this.currentTick++;
-    this.updateRollingStatus();
+    blockEntity.currentTick++;
+    blockEntity.updateRollingStatus();
   }
 
   @Override
@@ -147,14 +150,14 @@ public class ManualRollingMachineBlockEntity extends LockableTileEntity
   }
 
   @Override
-  public boolean stillValid(PlayerEntity playerEntity) {
+  public boolean stillValid(Player playerEntity) {
     if (this.level.getBlockEntity(this.worldPosition) != this) {
       return false;
     } else {
       return playerEntity.distanceToSqr(
-          (double)this.worldPosition.getX() + 0.5D,
-          (double)this.worldPosition.getY() + 0.5D,
-          (double)this.worldPosition.getZ() + 0.5D) <= 64.0D;
+          (double) this.worldPosition.getX() + 0.5D,
+          (double) this.worldPosition.getY() + 0.5D,
+          (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
     }
   }
 
@@ -164,12 +167,12 @@ public class ManualRollingMachineBlockEntity extends LockableTileEntity
   }
 
   @Override
-  protected ITextComponent getDefaultName() {
+  protected Component getDefaultName() {
     return MENU_TITLE;
   }
 
   @Override
-  protected Container createMenu(int containerProvider, PlayerInventory playerInventory) {
+  protected AbstractContainerMenu createMenu(int containerProvider, Inventory playerInventory) {
     return new ManualRollingMachineMenu(containerProvider, playerInventory, this.data, this);
   }
 }

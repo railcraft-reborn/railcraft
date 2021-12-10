@@ -1,24 +1,21 @@
 package mods.railcraft.world.item;
 
-import java.util.Random;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.util.LevelUtil;
-import mods.railcraft.util.MiscTools;
-import mods.railcraft.util.inventory.InvTools;
+import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -34,7 +31,7 @@ public class FirestoneItem extends Item {
       return true;
     if (RailcraftItems.CRACKED_FIRESTONE.get() == stack.getItem())
       return true;
-    return InvTools.isStackEqualToBlock(stack, RailcraftBlocks.FIRESTONE.get());
+    return ContainerTools.isStackEqualToBlock(stack, RailcraftBlocks.FIRESTONE.get());
   };
 
   public FirestoneItem(Properties properties) {
@@ -65,7 +62,7 @@ public class FirestoneItem extends Item {
    * @return A new Entity object to spawn or null
    */
   @Override
-  public FirestoneItemEntity createEntity(World world, Entity original, ItemStack stack) {
+  public FirestoneItemEntity createEntity(Level world, Entity original, ItemStack stack) {
     return createEntityItem(world, original, stack);
   }
 
@@ -79,7 +76,7 @@ public class FirestoneItem extends Item {
     return false;
   }
 
-  public static FirestoneItemEntity createEntityItem(World world, Entity original,
+  public static FirestoneItemEntity createEntityItem(Level world, Entity original,
       ItemStack stack) {
     FirestoneItemEntity entity =
         new FirestoneItemEntity(original.getX(), original.getY(), original.getZ(), world, stack);
@@ -89,8 +86,8 @@ public class FirestoneItem extends Item {
     return entity;
   }
 
-  public static boolean trySpawnFire(World world, BlockPos pos, ItemStack stack,
-      PlayerEntity holder) {
+  public static boolean trySpawnFire(Level world, BlockPos pos, ItemStack stack,
+      Player holder) {
     if (stack.isEmpty() || !SPAWNS_FIRE.test(stack))
       return false;
     boolean spawnedFire = false;
@@ -104,31 +101,29 @@ public class FirestoneItem extends Item {
     return spawnedFire;
   }
 
-  public static boolean spawnFire(World world, BlockPos pos, @Nullable PlayerEntity holder) {
-    Random rnd = MiscTools.RANDOM;
-    int x = pos.getX() - 5 + rnd.nextInt(12);
-    int y = pos.getY() - 5 + rnd.nextInt(12);
-    int z = pos.getZ() - 5 + rnd.nextInt(12);
+  public static boolean spawnFire(Level level, BlockPos pos, @Nullable Player holder) {
+    int x = pos.getX() - 5 + level.getRandom().nextInt(12);
+    int y = pos.getY() - 5 + level.getRandom().nextInt(12);
+    int z = pos.getZ() - 5 + level.getRandom().nextInt(12);
 
     if (y < 1)
       y = 1;
-    if (y > world.getHeight())
-      y = world.getHeight() - 2;
+    if (y > level.getHeight())
+      y = level.getHeight() - 2;
 
     BlockPos firePos = new BlockPos(x, y, z);
-    return canBurn(world, firePos)
-        && LevelUtil.setBlockState(world, firePos, Blocks.FIRE.defaultBlockState(), holder);
+    return canBurn(level, firePos)
+        && LevelUtil.setBlockState(level, firePos, Blocks.FIRE.defaultBlockState(), holder);
   }
 
-  @SuppressWarnings("deprecation")
-  private static boolean canBurn(World world, BlockPos pos) {
-    if (world.getBlockState(pos).isAir(world, pos))
+  private static boolean canBurn(Level world, BlockPos pos) {
+    if (world.getBlockState(pos).isAir()) {
       return false;
-    for (Direction side : Direction.values()) {
-      BlockPos offset = pos.relative(side);
-      BlockState offsetBlockState = world.getBlockState(offset);
-      if (!offsetBlockState.isAir(world, offset)
-          && offsetBlockState.getMaterial() != Material.FIRE) {
+    }
+    for (var side : Direction.values()) {
+      var offset = pos.relative(side);
+      var offsetBlockState = world.getBlockState(offset);
+      if (!offsetBlockState.isAir() && offsetBlockState.getMaterial() != Material.FIRE) {
         return true;
       }
     }

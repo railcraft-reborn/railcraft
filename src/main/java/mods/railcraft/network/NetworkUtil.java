@@ -1,11 +1,9 @@
 
 package mods.railcraft.network;
 
-import java.util.Optional;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.LogicalSidedProvider;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraftforge.common.util.LogicalSidedProvider;
+import net.minecraftforge.network.NetworkEvent;
 
 public class NetworkUtil {
 
@@ -35,8 +33,7 @@ public class NetworkUtil {
 
   public static <T> T getEntity(NetworkEvent.Context context, int entityId,
       Class<T> clazz) {
-    return LogicalSidedProvider.CLIENTWORLD
-        .<Optional<World>>get(context.getDirection().getReceptionSide())
+    return LogicalSidedProvider.CLIENTWORLD.get(context.getDirection().getReceptionSide())
         .map(level -> level.getEntity(entityId))
         .filter(clazz::isInstance)
         .map(clazz::cast)

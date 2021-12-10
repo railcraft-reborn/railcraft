@@ -3,14 +3,14 @@ package mods.railcraft.world.entity.cart;
 import javax.annotation.Nullable;
 
 import mods.railcraft.util.RailcraftNBTUtil;
-import mods.railcraft.util.inventory.InvTools;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.world.World;
+import mods.railcraft.util.container.ContainerTools;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -24,12 +24,12 @@ public class EnergyMinecartEntity extends RailcraftMinecartEntity {
   private final LazyOptional<IEnergyStorage> cartBattery =
       LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
 
-  protected EnergyMinecartEntity(EntityType<?> type, World world) {
+  protected EnergyMinecartEntity(EntityType<?> type, Level world) {
     super(type, world);
   }
 
   protected EnergyMinecartEntity(EntityType<?> type, double x, double y, double z,
-      World world) {
+      Level world) {
     super(type, x, y, z, world);
   }
 
@@ -47,14 +47,14 @@ public class EnergyMinecartEntity extends RailcraftMinecartEntity {
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundNBT data) {
+  public void readAdditionalSaveData(CompoundTag data) {
     super.readAdditionalSaveData(data);
     this.cartBattery.ifPresent(cell ->
         RailcraftNBTUtil.loadEnergyCell(data.getCompound("battery"), cell));
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundNBT data) {
+  public void addAdditionalSaveData(CompoundTag data) {
     super.addAdditionalSaveData(data);
     this.cartBattery.ifPresent(cell ->
         data.put("battery", RailcraftNBTUtil.saveEnergyCell(cell)));
@@ -72,16 +72,16 @@ public class EnergyMinecartEntity extends RailcraftMinecartEntity {
   // }
 
   @Override
-  public ItemStack getCartItem() {
-    ItemStack itemStack = super.getCartItem();
+  public ItemStack getPickResult() {
+    ItemStack itemStack = super.getPickResult();
     this.cartBattery.ifPresent(cell -> {
-      InvTools.getItemData(itemStack).putInt("batteryEnergy",  cell.getEnergyStored());
+      ContainerTools.getItemData(itemStack).putInt("batteryEnergy",  cell.getEnergyStored());
     });
     return itemStack;
   }
 
   @Override
-  protected Container createMenu(int id, PlayerInventory playerInventory) {
+  protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
     // TODO Auto-generated method stub
     return null;
   }

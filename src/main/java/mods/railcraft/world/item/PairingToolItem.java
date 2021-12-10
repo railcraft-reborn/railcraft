@@ -3,12 +3,12 @@ package mods.railcraft.world.item;
 import javax.annotation.Nullable;
 import mods.railcraft.api.core.DimensionPos;
 import mods.railcraft.api.item.ActivationBlockingItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Created by CovertJaguar on 6/7/2016 for Railcraft.
@@ -24,8 +24,8 @@ public class PairingToolItem extends Item {
 
   @Nullable
   public DimensionPos getPeerPos(ItemStack itemStack) {
-    CompoundNBT tag = itemStack.getTag();
-    return tag != null && tag.contains("peerPos", Constants.NBT.TAG_COMPOUND)
+    CompoundTag tag = itemStack.getTag();
+    return tag != null && tag.contains("peerPos", Tag.TAG_COMPOUND)
         ? DimensionPos.readTag(tag.getCompound("peerPos"))
         : null;
   }
@@ -35,14 +35,14 @@ public class PairingToolItem extends Item {
   }
 
   public void clearPeerPos(ItemStack itemStack) {
-    CompoundNBT tag = itemStack.getTag();
+    CompoundTag tag = itemStack.getTag();
     if (tag != null) {
       tag.remove("peerPos");
     }
   }
 
-  public <T> boolean checkAbandonPairing(ItemStack itemStack, PlayerEntity player,
-      ServerWorld level, Runnable stopLinking) {
+  public <T> boolean checkAbandonPairing(ItemStack itemStack, Player player,
+      ServerLevel level, Runnable stopLinking) {
     DimensionPos signalPos = this.getPeerPos(itemStack);
     if (signalPos != null) {
       if (signalPos.getDim().compareTo(level.dimension()) != 0) {

@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
@@ -13,9 +13,9 @@ import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class SwitchTrackMotorScreen extends IngameWindowScreen {
 
@@ -27,7 +27,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
       new EnumMap<>(SignalAspect.class);
 
   private MultiButton<LockableSwitchTrackActuatorBlockEntity.Lock> lockButton;
-  private ITextComponent lockButtonTooltip;
+  private Component lockButtonTooltip;
 
   private ToggleButton redstoneTriggeredButton;
 
@@ -50,15 +50,15 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
     this.addSignalAspectButton(SignalAspect.BLINK_YELLOW, centreX + 12, centreY + 55, 70);
     this.addSignalAspectButton(SignalAspect.BLINK_RED, centreX + 94, centreY + 55, 70);
 
-    this.addButton(
+    this.addRenderableWidget(
         this.redstoneTriggeredButton = new ToggleButton(centreX + 34, centreY + 80, 110, 20,
-            new TranslationTextComponent("screen.switch_track_motor.redstone_triggered"),
+            new TranslatableComponent("screen.switch_track_motor.redstone_triggered"),
             button -> ((ToggleButton) button).setToggled(this.toggleRedstoneTriggered()),
             ButtonTexture.LARGE_BUTTON,
             this.switchTrackMotor.isRedstoneTriggered()));
 
-    this.addButton(this.lockButton = new MultiButton<>(centreX + 152, centreY + 8, 16, 16,
-        this.switchTrackMotor.getLock(),
+    this.addRenderableWidget(this.lockButton = new MultiButton<>(centreX + 152, centreY + 8, 16, 16,
+        this.switchTrackMotor.getLock(), this::renderComponentTooltip,
         __ -> this.setLock(this.lockButton.getState()),
         this::renderLockButtonTooltip));
 
@@ -72,7 +72,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
         btn -> ((ToggleButton) btn).setToggled(this.toggleSignalAspect(signalAspect)),
         ButtonTexture.LARGE_BUTTON,
         actionSignalAspects.contains(signalAspect));
-    this.addButton(button);
+    this.addRenderableWidget(button);
     this.signalAspectButtons.put(signalAspect, button);
   }
 
@@ -92,21 +92,21 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
     switch (lock) {
       case LOCKED:
         this.lockButtonTooltip =
-            new TranslationTextComponent("screen.action_signal_box.lock.locked",
+            new TranslatableComponent("screen.action_signal_box.lock.locked",
                 this.switchTrackMotor.getOwnerOrThrow().getName());
         break;
       case UNLOCKED:
         this.lockButtonTooltip =
-            new TranslationTextComponent("screen.action_signal_box.lock.unlocked");
+            new TranslatableComponent("screen.action_signal_box.lock.unlocked");
         break;
       default:
         break;
     }
   }
 
-  private void renderLockButtonTooltip(Button button, MatrixStack matrixStack,
+  private void renderLockButtonTooltip(Button button, PoseStack matrixStack,
       int mouseX, int mouseY) {
-    this.renderWrappedToolTip(matrixStack, Collections.singletonList(this.lockButtonTooltip),
+    this.renderComponentTooltip(matrixStack, Collections.singletonList(this.lockButtonTooltip),
         mouseX, mouseY, this.font);
   }
 
@@ -154,7 +154,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
     if (!this.switchTrackMotor.canAccess(this.minecraft.getUser().getGameProfile())) {
       return;
     }
-    NetworkChannel.PLAY.getSimpleChannel().sendToServer(
+    NetworkChannel.GAME.getSimpleChannel().sendToServer(
         new SetSwitchTrackMotorAttributesMessage(this.switchTrackMotor.getBlockPos(),
             this.switchTrackMotor.getActionSignalAspects(),
             this.switchTrackMotor.isRedstoneTriggered(),

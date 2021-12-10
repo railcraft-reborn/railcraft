@@ -1,17 +1,17 @@
 package mods.railcraft.world.damagesource;
 
 import mods.railcraft.util.MiscTools;
-import mods.railcraft.util.inventory.InvTools;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import mods.railcraft.util.container.ContainerTools;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -50,10 +50,10 @@ public class RailcraftDamageSource extends DamageSource {
   }
 
   @Override
-  public ITextComponent getLocalizedDeathMessage(LivingEntity entity) {
+  public Component getLocalizedDeathMessage(LivingEntity entity) {
     String locTag =
         "death.railcraft." + this.msgId + "." + (MiscTools.RANDOM.nextInt(this.numMessages) + 1);
-    return new TranslationTextComponent(locTag, entity.getName());
+    return new TranslatableComponent(locTag, entity.getName());
   }
 
   public static final EventHandler EVENT_HANDLER = new EventHandler();
@@ -65,14 +65,14 @@ public class RailcraftDamageSource extends DamageSource {
       if (event.getSource() == STEAM)
         for (ItemEntity entityItem : event.getDrops()) {
           ItemStack drop = entityItem.getItem();
-          World level = event.getEntityLiving().level;
+          Level level = event.getEntityLiving().level;
           ItemStack cooked = level.getRecipeManager()
-              .getRecipeFor(IRecipeType.SMELTING, new Inventory(drop), level)
-              .map(FurnaceRecipe::getResultItem)
+              .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
+              .map(SmeltingRecipe::getResultItem)
               .orElse(ItemStack.EMPTY);
           if (!cooked.isEmpty() && MiscTools.RANDOM.nextDouble() < 0.5) {
             cooked = cooked.copy();
-            InvTools.setSize(cooked, drop.getCount());
+            ContainerTools.setSize(cooked, drop.getCount());
             entityItem.setItem(cooked);
           }
         }

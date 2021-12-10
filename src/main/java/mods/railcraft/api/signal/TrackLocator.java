@@ -8,9 +8,9 @@
 package mods.railcraft.api.signal;
 
 import javax.annotation.Nullable;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 
 /**
  * Created by CovertJaguar on 7/9/2017 for Railcraft.
@@ -19,11 +19,11 @@ import net.minecraft.util.math.BlockPos;
  */
 public class TrackLocator {
 
-  private TileEntity blockEntity;
+  private BlockEntity blockEntity;
   @Nullable
   private BlockPos trackLocation;
 
-  public TrackLocator(TileEntity blockEntity) {
+  public TrackLocator(BlockEntity blockEntity) {
     this.blockEntity = blockEntity;
   }
 
@@ -39,7 +39,7 @@ public class TrackLocator {
       return locateTrack();
     if (!this.blockEntity.getLevel().isLoaded(this.trackLocation))
       return Status.UNKNOWN;
-    if (!AbstractRailBlock.isRail(this.blockEntity.getLevel(), this.trackLocation)) {
+    if (!BaseRailBlock.isRail(this.blockEntity.getLevel(), this.trackLocation)) {
       this.trackLocation = null;
       return this.locateTrack();
     }
@@ -85,7 +85,7 @@ public class TrackLocator {
       BlockPos pos = new BlockPos(x, y - i, z);
       if (!this.blockEntity.getLevel().isLoaded(pos))
         return Status.UNKNOWN;
-      if (AbstractRailBlock.isRail(this.blockEntity.getLevel(), pos)) {
+      if (BaseRailBlock.isRail(this.blockEntity.getLevel(), pos)) {
         this.trackLocation = pos;
         return Status.VALID;
       }

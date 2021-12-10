@@ -2,10 +2,8 @@ package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
 import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class SetLocomotiveAttributesMessage {
 
@@ -24,7 +22,7 @@ public class SetLocomotiveAttributesMessage {
     this.reverse = reverse;
   }
 
-  public void encode(PacketBuffer out) {
+  public void encode(FriendlyByteBuf out) {
     out.writeVarInt(this.entityId);
     out.writeEnum(this.mode);
     out.writeEnum(this.speed);
@@ -32,7 +30,7 @@ public class SetLocomotiveAttributesMessage {
     out.writeBoolean(this.reverse);
   }
 
-  public static SetLocomotiveAttributesMessage decode(PacketBuffer in) {
+  public static SetLocomotiveAttributesMessage decode(FriendlyByteBuf in) {
     return new SetLocomotiveAttributesMessage(in.readVarInt(),
         in.readEnum(LocomotiveEntity.Mode.class),
         in.readEnum(LocomotiveEntity.Speed.class),
@@ -41,23 +39,20 @@ public class SetLocomotiveAttributesMessage {
 
   public boolean handle(Supplier<NetworkEvent.Context> ctx) {
     ctx.get().enqueueWork(() -> {
-      ServerPlayerEntity player = ctx.get().getSender();
-      Entity entity = player.level.getEntity(this.entityId);
-      if (entity instanceof LocomotiveEntity) {
-        LocomotiveEntity loco = (LocomotiveEntity) entity;
-        if (loco.canControl(player.getGameProfile())) {
-          loco.setMode(this.mode);
-          loco.setSpeed(this.speed);
-          if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.getGameProfile())) {
-            loco.setLock(this.lock);
-            if (this.lock == LocomotiveEntity.Lock.UNLOCKED) {
-              loco.setOwner(null);
-            } else {
-              loco.setOwner(player.getGameProfile());
-            }
+      var player = ctx.get().getSender();
+      var entity = player.level.getEntity(this.entityId);
+      if (entity instanceof LocomotiveEntity loco && loco.canControl(player)) {
+        loco.setMode(this.mode);
+        loco.setSpeed(this.speed);
+        if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.getGameProfile())) {
+          loco.setLock(this.lock);
+          if (this.lock == LocomotiveEntity.Lock.UNLOCKED) {
+            loco.setOwner(null);
+          } else {
+            loco.setOwner(player.getGameProfile());
           }
-          loco.setReverse(this.reverse);
         }
+        loco.setReverse(this.reverse);
       }
     });
     return true;

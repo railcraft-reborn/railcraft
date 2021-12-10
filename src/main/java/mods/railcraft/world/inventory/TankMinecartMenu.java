@@ -1,18 +1,18 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
-import mods.railcraft.util.inventory.filters.StackFilters;
+import mods.railcraft.util.container.filters.StackFilters;
 import mods.railcraft.world.entity.cart.TankMinecartEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class TankMinecartMenu extends RailcraftMenu {
 
   private final FluidGaugeWidget fluidGuage;
 
-  public TankMinecartMenu(int id, PlayerInventory playerInventory,
+  public TankMinecartMenu(int id, Inventory playerInventory,
       TankMinecartEntity tankMinecart) {
     super(RailcraftMenuTypes.TANK_MINECART.get(), id, playerInventory);
 
@@ -40,8 +40,8 @@ public class TankMinecartMenu extends RailcraftMenu {
     return this.fluidGuage;
   }
 
-  public static TankMinecartMenu create(int id, PlayerInventory playerInventory,
-      PacketBuffer data) {
+  public static TankMinecartMenu create(int id, Inventory playerInventory,
+      FriendlyByteBuf data) {
     int entityId = data.readVarInt();
     Entity entity = playerInventory.player.level.getEntity(entityId);
     if (entity instanceof TankMinecartEntity) {

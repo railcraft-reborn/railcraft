@@ -3,20 +3,19 @@ package mods.railcraft.gui.button;
 import java.util.List;
 import javax.annotation.Nullable;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.network.chat.Component;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface ButtonState<T extends ButtonState<T>> {
 
-  ITextComponent getLabel();
+  Component getLabel();
 
   TexturePosition getTexturePosition();
 
   @Nullable
-  default List<? extends ITextProperties> getTooltip() {
+  default List<Component> getTooltip() {
     return null;
   }
 

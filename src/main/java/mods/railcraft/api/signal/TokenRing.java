@@ -9,7 +9,7 @@ package mods.railcraft.api.signal;
 
 import java.util.Set;
 import java.util.UUID;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 /**
  * Created by CovertJaguar on 7/26/2017 for Railcraft.

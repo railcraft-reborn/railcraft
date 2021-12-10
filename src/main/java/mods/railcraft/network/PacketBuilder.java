@@ -4,15 +4,15 @@ import javax.annotation.Nullable;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.Syncable;
 import mods.railcraft.gui.widget.Widget;
-import mods.railcraft.network.play.SetMenuStringMessage;
 import mods.railcraft.network.play.SyncEntityMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -29,20 +29,22 @@ public final class PacketBuilder {
     return instance;
   }
 
-  public void sendTileEntityPacket(TileEntity tile) {
-    if (tile.getLevel() instanceof ServerWorld) {
-      ServerWorld world = (ServerWorld) tile.getLevel();
-      SUpdateTileEntityPacket packet = tile.getUpdatePacket();
-      if (packet != null)
+  public void sendTileEntityPacket(BlockEntity tile) {
+    if (tile.getLevel() instanceof ServerLevel) {
+      ServerLevel world = (ServerLevel) tile.getLevel();
+      Packet<ClientGamePacketListener> packet = tile.getUpdatePacket();
+      if (packet != null) {
         PacketDispatcher.sendVanillaPacketToWatchers(packet, world, tile.getBlockPos());
+      }
     }
   }
 
-  public void sendTileEntityPacket(@Nullable TileEntity tile, ServerPlayerEntity player) {
+  public void sendTileEntityPacket(@Nullable BlockEntity tile, ServerPlayer player) {
     if (tile != null) {
-      SUpdateTileEntityPacket packet = tile.getUpdatePacket();
-      if (packet != null)
+      Packet<ClientGamePacketListener> packet = tile.getUpdatePacket();
+      if (packet != null) {
         PacketDispatcher.sendToPlayer(packet, player);
+      }
     }
   }
 
@@ -64,11 +66,6 @@ public final class PacketBuilder {
   // }
   // }
   //
-  public void sendGuiStringPacket(ServerPlayerEntity listener, int windowId, int key,
-      String value) {
-    SetMenuStringMessage pkt = new SetMenuStringMessage(windowId, key, value);
-    PacketDispatcher.sendToPlayer(pkt, (ServerPlayerEntity) listener);
-  }
 
   //
   // public void sendGuiDataPacket(IContainerListener listener, int windowId, int key, byte[] value)
@@ -79,9 +76,9 @@ public final class PacketBuilder {
   // }
   // }
   //
-  public void sendGuiWidgetPacket(ServerPlayerEntity player, int windowId, Widget widget) {
+  public void sendGuiWidgetPacket(ServerPlayer player, int windowId, Widget widget) {
     if (widget.hasServerSyncData(player)) {
-      PacketBuffer byteBuf = new PacketBuffer(Unpooled.buffer());
+      FriendlyByteBuf byteBuf = new FriendlyByteBuf(Unpooled.buffer());
       widget.writeServerSyncData(player, byteBuf);
       SyncWidgetMessage pkt = new SyncWidgetMessage(windowId, widget.getId(), byteBuf);
       PacketDispatcher.sendToPlayer(pkt, player);

@@ -2,14 +2,14 @@ package mods.railcraft.world.level.block.track;
 
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
 /**
  * Created by CovertJaguar on 8/2/2016 for Railcraft.
@@ -24,17 +24,18 @@ public class AbandonedTrackBlock extends TrackBlock {
     super(trackType, properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(GRASS, false)
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH));
+        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
+        .setValue(WATERLOGGED, false));
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(GRASS);
   }
 
   @Override
-  public BlockState getStateForPlacement(BlockItemUseContext context) {
+  public BlockState getStateForPlacement(BlockPlaceContext context) {
     boolean grass = Direction.Plane.HORIZONTAL.stream()
         .anyMatch(s -> context.getLevel().getBlockState(context.getClickedPos().relative(s))
             .is(Blocks.TALL_GRASS));

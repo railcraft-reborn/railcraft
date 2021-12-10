@@ -1,17 +1,12 @@
 package mods.railcraft.client.renderer.blockentity;
 
 import mods.railcraft.Railcraft;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class SignalCapacitorBoxRenderer extends AbstractSignalBoxRenderer {
 
   public static final ResourceLocation TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "entity/signal_box/signal_capacitor_box");
-
-  public SignalCapacitorBoxRenderer(TileEntityRendererDispatcher dispatcher) {
-    super(dispatcher);
-  }
 
   @Override
   protected ResourceLocation getTopTextureLocation() {

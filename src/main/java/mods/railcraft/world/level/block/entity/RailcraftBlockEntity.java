@@ -10,41 +10,42 @@ import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.api.core.Syncable;
 import mods.railcraft.network.PacketBuilder;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class RailcraftBlockEntity extends TileEntity
+public abstract class RailcraftBlockEntity extends BlockEntity
     implements Syncable, Ownable, BlockEntityLike {
 
   @Nullable
   private GameProfile owner;
 
   @Nullable
-  private ITextComponent customName;
+  private Component customName;
 
-  public RailcraftBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public RailcraftBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
   @Override
-  public final SUpdateTileEntityPacket getUpdatePacket() {
-    return new SUpdateTileEntityPacket(this.getBlockPos(), 0, this.getUpdateTag());
+  public final ClientboundBlockEntityDataPacket getUpdatePacket() {
+    return ClientboundBlockEntityDataPacket.create(this);
   }
 
   @Override
-  public final CompoundNBT getUpdateTag() {
-    CompoundNBT nbt = super.getUpdateTag();
-    PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
+  public final CompoundTag getUpdateTag() {
+    CompoundTag nbt = super.getUpdateTag();
+    FriendlyByteBuf packetBuffer = new FriendlyByteBuf(Unpooled.buffer());
     this.writeSyncData(packetBuffer);
     byte[] syncData = new byte[packetBuffer.readableBytes()];
     packetBuffer.readBytes(syncData);
@@ -53,18 +54,18 @@ public abstract class RailcraftBlockEntity extends TileEntity
   }
 
   @Override
-  public final void handleUpdateTag(BlockState blockState, CompoundNBT nbt) {
-    byte[] bytes = nbt.getByteArray("sync");
-    this.readSyncData(new PacketBuffer(Unpooled.wrappedBuffer(bytes)));
+  public final void handleUpdateTag(CompoundTag tag) {
+    byte[] bytes = tag.getByteArray("sync");
+    this.readSyncData(new FriendlyByteBuf(Unpooled.wrappedBuffer(bytes)));
   }
 
   @Override
-  public final void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-    this.handleUpdateTag(this.getBlockState(), pkt.getTag());
+  public final void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet) {
+    this.handleUpdateTag(packet.getTag());
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     if (this.owner == null) {
       data.writeBoolean(true);
     } else {
@@ -75,7 +76,7 @@ public abstract class RailcraftBlockEntity extends TileEntity
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     if (data.readBoolean()) {
       this.owner = null;
     } else {
@@ -106,37 +107,31 @@ public abstract class RailcraftBlockEntity extends TileEntity
 
   public final boolean isOwnerOrOperator(@Nonnull GameProfile gameProfile) {
     return this.isOwner(gameProfile) || (!this.level.isClientSide()
-        && ((ServerWorld) this.level).getServer().getPlayerList().isOp(gameProfile));
+        && ((ServerLevel) this.level).getServer().getPlayerList().isOp(gameProfile));
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
+  public CompoundTag save(CompoundTag data) {
     super.save(data);
     if (this.owner != null) {
-      CompoundNBT ownerTag = new CompoundNBT();
-      NBTUtil.writeGameProfile(ownerTag, this.owner);
+      CompoundTag ownerTag = new CompoundTag();
+      NbtUtils.writeGameProfile(ownerTag, this.owner);
       data.put("owner", ownerTag);
     }
     if (this.customName != null) {
-      data.putString("customName", ITextComponent.Serializer.toJson(this.customName));
+      data.putString("customName", Component.Serializer.toJson(this.customName));
     }
     return data;
   }
 
   @Override
-  public void load(BlockState blockState, CompoundNBT data) {
-    super.load(blockState, data);
-    if (data.contains("owner", Constants.NBT.TAG_COMPOUND)) {
-      this.owner = NBTUtil.readGameProfile(data.getCompound("owner"));
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    if (tag.contains("owner", Tag.TAG_COMPOUND)) {
+      this.owner = NbtUtils.readGameProfile(tag.getCompound("owner"));
     }
-    if (data.contains("customName", Constants.NBT.TAG_STRING)) {
-      this.customName = ITextComponent.Serializer.fromJson(data.getString("customName"));
-    }
-  }
-
-  public void updateNeighbors() {
-    if (this.hasLevel()) {
-      this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
+    if (tag.contains("customName", Tag.TAG_STRING)) {
+      this.customName = Component.Serializer.fromJson(tag.getString("customName"));
     }
   }
 
@@ -157,26 +152,26 @@ public abstract class RailcraftBlockEntity extends TileEntity
     return this.customName != null;
   }
 
-  public void setCustomName(@Nullable ITextComponent name) {
+  public void setCustomName(@Nullable Component name) {
     this.customName = name;
   }
 
   @Override
-  public ITextComponent getName() {
+  public Component getName() {
     return this.hasCustomName() ? this.customName : this.getBlockState().getBlock().getName();
   }
 
   @Override
-  public ITextComponent getDisplayName() {
+  public Component getDisplayName() {
     return this.getName();
   }
 
   @Override
-  public final TileEntity asBlockEntity() {
+  public final BlockEntity asBlockEntity() {
     return this;
   }
 
-  public static boolean stillValid(TileEntity tile, PlayerEntity player) {
+  public static boolean stillValid(BlockEntity tile, Player player) {
     return !tile.isRemoved() && tile.getLevel().getBlockEntity(tile.getBlockPos()) == tile
         && player.distanceToSqr(tile.getBlockPos().getX(), tile.getBlockPos().getY(),
             tile.getBlockPos().getZ()) <= 64;

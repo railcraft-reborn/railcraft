@@ -11,12 +11,12 @@ import mods.railcraft.advancements.criterion.SurpriseTrigger;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.advancements.criterion.TickTrigger;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.TickTrigger;
+import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class CartAdvancements implements Consumer<Consumer<Advancement>> {
 
@@ -28,19 +28,19 @@ public class CartAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement rcRoot = Advancement.Builder.advancement()
         .display(
             RailcraftItems.DIAMOND_CROWBAR.get(),
-            new TranslationTextComponent("advancements.railcraft.carts.root.name"),
-            new TranslationTextComponent("advancements.railcraft.carts.root.desc"),
+            new TranslatableComponent("advancements.railcraft.carts.root.name"),
+            new TranslatableComponent("advancements.railcraft.carts.root.desc"),
             new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
             FrameType.TASK,
             true, false, false)
-        .addCriterion("default_unlock", new TickTrigger.Instance(EntityPredicate.AndPredicate.ANY))
+        .addCriterion("default_unlock", new TickTrigger.TriggerInstance(EntityPredicate.Composite.ANY))
         .save(consumer, Railcraft.ID + ":carts/root");
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.STEEL_CROWBAR.get(),
-            new TranslationTextComponent("advancements.railcraft.carts.link_carts.name"),
-            new TranslationTextComponent("advancements.railcraft.carts.link_carts.desc"),
+            new TranslatableComponent("advancements.railcraft.carts.link_carts.name"),
+            new TranslatableComponent("advancements.railcraft.carts.link_carts.desc"),
             null,
             FrameType.TASK,
             true, false, false)
@@ -52,8 +52,8 @@ public class CartAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.SEASONS_CROWBAR.get(),
-            new TranslationTextComponent("advancements.railcraft.carts.seasons.name"),
-            new TranslationTextComponent("advancements.railcraft.carts.seasons.desc"),
+            new TranslatableComponent("advancements.railcraft.carts.seasons.name"),
+            new TranslatableComponent("advancements.railcraft.carts.seasons.desc"),
             null,
             FrameType.GOAL,
             true, false, false)
@@ -64,21 +64,21 @@ public class CartAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement rcLocomotive = Advancement.Builder.advancement()
         .display(
             RailcraftItems.STEAM_LOCOMOTIVE.get(),
-            new TranslationTextComponent("advancements.railcraft.carts.locomotive.name"),
-            new TranslationTextComponent("advancements.railcraft.carts.locomotive.desc"),
+            new TranslatableComponent("advancements.railcraft.carts.locomotive.name"),
+            new TranslatableComponent("advancements.railcraft.carts.locomotive.desc"),
             null,
             FrameType.CHALLENGE,
             true, true, false)
         .addCriterion("has_locomotives",
-            InventoryChangeTrigger.Instance.hasItems(RailcraftItems.STEAM_LOCOMOTIVE.get()))
+            InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STEAM_LOCOMOTIVE.get()))
         .parent(rcRoot)
         .save(consumer, Railcraft.ID + ":carts/locomotive");
 
     Advancement.Builder.advancement()
         .display(
             Items.MINECART,
-            new TranslationTextComponent("advancements.railcraft.carts.bed_cart.name"),
-            new TranslationTextComponent("advancements.railcraft.carts.bed_cart.desc"),
+            new TranslatableComponent("advancements.railcraft.carts.bed_cart.name"),
+            new TranslatableComponent("advancements.railcraft.carts.bed_cart.desc"),
             null,
             FrameType.TASK,
             true, false, false)
@@ -89,8 +89,8 @@ public class CartAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             Items.MINECART,
-            new TranslationTextComponent("advancements.railcraft.carts.jukebox_cart.name"),
-            new TranslationTextComponent("advancements.railcraft.carts.jukebox_cart.desc"),
+            new TranslatableComponent("advancements.railcraft.carts.jukebox_cart.name"),
+            new TranslatableComponent("advancements.railcraft.carts.jukebox_cart.desc"),
             null,
             FrameType.TASK,
             true, false, false)
@@ -101,8 +101,8 @@ public class CartAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             Items.MINECART,
-            new TranslationTextComponent("advancements.railcraft.carts.surprise.name"),
-            new TranslationTextComponent("advancements.railcraft.carts.surprise.desc"),
+            new TranslatableComponent("advancements.railcraft.carts.surprise.name"),
+            new TranslatableComponent("advancements.railcraft.carts.surprise.desc"),
             null,
             FrameType.TASK,
             true, true, false)

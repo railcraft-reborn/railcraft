@@ -1,14 +1,29 @@
 package mods.railcraft.client.model;
 
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+
 /**
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public class MaintenanceLampModel extends SimpleModel {
 
-  public MaintenanceLampModel() {
-    this.renderer.setTexSize(16, 16);
-    this.renderer.addBox("lamp", -2, 10.75F, -2, 4, 4, 4, -0.5F, 0, 1);
-    this.renderer.setPos(8.0F, 8.0F, 8.0F);
+  public MaintenanceLampModel(ModelPart root) {
+    super(root);
+  }
+
+  public static LayerDefinition createBodyLayer() {
+    var mesh = new MeshDefinition();
+    var root = mesh.getRoot();
+    root.addOrReplaceChild("lamp",
+        CubeListBuilder.create()
+            .texOffs(0, 1)
+            .addBox(-2, 10.75F, -2, 4, 4, 4),
+        PartPose.offset(8.0F, 6.0F, 8.0F));
+    return LayerDefinition.create(mesh, 16, 16);
   }
 }

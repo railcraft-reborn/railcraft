@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
-public enum Season implements IStringSerializable {
+public enum Season implements StringRepresentable {
 
   DEFAULT("default"),
   HALLOWEEN("halloween"),
@@ -20,14 +20,14 @@ public enum Season implements IStringSerializable {
       .collect(Collectors.toMap(Season::getSerializedName, Function.identity()));
 
   private final String name;
-  private final ITextComponent displayName;
+  private final Component displayName;
 
   private Season(String name) {
     this.name = name;
-    this.displayName = new TranslationTextComponent("season." + name);
+    this.displayName = new TranslatableComponent("season." + name);
   }
 
-  public ITextComponent getDisplayName() {
+  public Component getDisplayName() {
     return this.displayName;
   }
 

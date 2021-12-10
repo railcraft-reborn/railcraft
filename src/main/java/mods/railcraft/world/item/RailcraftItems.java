@@ -1,5 +1,6 @@
 package mods.railcraft.world.item;
 
+import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.cart.TankMinecartEntity;
 import mods.railcraft.world.entity.cart.TrackLayerMinecartEntity;
@@ -9,17 +10,18 @@ import mods.railcraft.world.entity.cart.locomotive.ElectricLocomotiveEntity;
 import mods.railcraft.world.entity.cart.locomotive.SteamLocomotiveEntity;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTier;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftItems {
 
@@ -29,15 +31,15 @@ public class RailcraftItems {
   /**
    * Railcraft's creative tab.
    */
-  public static final ItemGroup TAB = new ItemGroup(Railcraft.ID) {
+  public static final CreativeModeTab TAB = new CreativeModeTab(Railcraft.ID) {
     @Override
     public ItemStack makeIcon() {
       return new ItemStack(IRON_CROWBAR.get());
     }
   };
 
-  public static final ItemGroup OUTFITTED_TRACKS_TAB =
-      new ItemGroup(Railcraft.ID + "_outfitted_tracks") {
+  public static final CreativeModeTab OUTFITTED_TRACKS_TAB =
+      new CreativeModeTab(Railcraft.ID + "_outfitted_tracks") {
         @Override
         public ItemStack makeIcon() {
           return new ItemStack(IRON_DETECTOR_TRACK.get());
@@ -104,7 +106,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> IRON_SPIKE_MAUL =
       ITEMS.register("iron_spike_maul",
-          () -> new SpikeMaulItem(11.0F, -3.5F, ItemTier.IRON,
+          () -> new SpikeMaulItem(11.0F, -3.5F, Tiers.IRON,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> STEEL_SPIKE_MAUL =
@@ -114,7 +116,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> DIAMOND_SPIKE_MAUL =
       ITEMS.register("diamond_spike_maul",
-          () -> new SpikeMaulItem(11.0F, -3.3F, ItemTier.DIAMOND,
+          () -> new SpikeMaulItem(11.0F, -3.3F, Tiers.DIAMOND,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> SWITCH_TRACK_LEVER =
@@ -268,7 +270,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> OVERALLS =
       ITEMS.register("overalls",
-          () -> new ArmorItem(RailcraftArmorMaterial.OVERALLS, EquipmentSlotType.LEGS,
+          () -> new ArmorItem(RailcraftArmorMaterial.OVERALLS, EquipmentSlot.LEGS,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> CRACKED_FIRESTONE =
@@ -302,7 +304,7 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ABANDONED_TRACK =
       ITEMS.register("abandoned_track",
           () -> new BlockItem(RailcraftBlocks.ABANDONED_TRACK.get(),
-              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+              new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> ABANDONED_LOCKING_TRACK =
       ITEMS.register("abandoned_locking_track",
@@ -342,7 +344,7 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ELECTRIC_TRACK =
       ITEMS.register("electric_track",
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_TRACK.get(),
-              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+              new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> ELECTRIC_LOCKING_TRACK =
       ITEMS.register("electric_locking_track",
@@ -382,7 +384,7 @@ public class RailcraftItems {
   public static final RegistryObject<Item> HIGH_SPEED_TRACK =
       ITEMS.register("high_speed_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
-              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+              new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> HIGH_SPEED_TRANSITION_TRACK =
       ITEMS.register("high_speed_transition_track",
@@ -412,7 +414,7 @@ public class RailcraftItems {
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TRACK =
       ITEMS.register("high_speed_electric_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
-              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+              new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TRANSITION_TRACK =
       ITEMS.register("high_speed_electric_transition_track",
@@ -477,7 +479,7 @@ public class RailcraftItems {
   public static final RegistryObject<Item> REINFORCED_TRACK =
       ITEMS.register("reinforced_track",
           () -> new BlockItem(RailcraftBlocks.REINFORCED_TRACK.get(),
-              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+              new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> REINFORCED_LOCKING_TRACK =
       ITEMS.register("reinforced_locking_track",
@@ -517,7 +519,7 @@ public class RailcraftItems {
   public static final RegistryObject<Item> STRAP_IRON_TRACK =
       ITEMS.register("strap_iron_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_TRACK.get(),
-              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+              new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> STRAP_IRON_LOCKING_TRACK =
       ITEMS.register("strap_iron_locking_track",
@@ -557,7 +559,7 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ELEVATOR_TRACK =
       ITEMS.register("elevator_track",
           () -> new BlockItem(RailcraftBlocks.ELEVATOR_TRACK.get(),
-              new Item.Properties().tab(ItemGroup.TAB_TRANSPORTATION)));
+              new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> WYE_TRACK =
       ITEMS.register("wye_track",
@@ -571,7 +573,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> IRON_CROWBAR =
       ITEMS.register("iron_crowbar",
-          () -> new CrowbarItem(2.5F, -2.8F, ItemTier.IRON,
+          () -> new CrowbarItem(2.5F, -2.8F, Tiers.IRON,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> STEEL_CROWBAR =
@@ -581,7 +583,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> DIAMOND_CROWBAR =
       ITEMS.register("diamond_crowbar",
-          () -> new CrowbarItem(2.5F, -2.4F, ItemTier.DIAMOND,
+          () -> new CrowbarItem(2.5F, -2.4F, Tiers.DIAMOND,
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> SEASONS_CROWBAR =
@@ -785,7 +787,7 @@ public class RailcraftItems {
       ITEMS.register("coal_coke",
           () -> new Item(new Item.Properties().tab(TAB)) {
             @Override
-            public int getBurnTime(ItemStack itemStack) {
+            public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
               return 3200;
             }
           });

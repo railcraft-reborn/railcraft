@@ -9,7 +9,7 @@ package mods.railcraft.api.core;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.util.INameable;
+import net.minecraft.world.Nameable;
 
 /**
  * Implemented by objects that can be owned.
@@ -19,7 +19,7 @@ import net.minecraft.util.INameable;
  *
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public interface Ownable extends INameable {
+public interface Ownable extends Nameable {
 
   /**
    * Returns the GameProfile of the owner of the object.

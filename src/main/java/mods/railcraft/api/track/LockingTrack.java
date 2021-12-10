@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.track;
 
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**
  * Any rail tile entity that can completely halt all cart movement should implement this interface.
@@ -17,7 +17,7 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
  */
 public interface LockingTrack {
 
-  boolean isCartLocked(AbstractMinecartEntity cart);
+  boolean isCartLocked(AbstractMinecart cart);
 
   void releaseCart();
 }

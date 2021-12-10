@@ -4,10 +4,10 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
-import mods.railcraft.util.inventory.IExtInvSlot;
-import mods.railcraft.util.inventory.InvTools;
-import mods.railcraft.util.inventory.InventoryIterator;
-import mods.railcraft.util.inventory.wrappers.InventoryMapper;
+import mods.railcraft.util.container.ModifiableContainerSlot;
+import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.container.ContainerIterator;
+import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TankMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
@@ -16,43 +16,43 @@ import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.TankManager;
 import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.Containers;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class TankMinecartEntity extends FilteredMinecartEntity
-    implements ISidedInventory, FluidMinecart {
+    implements WorldlyContainer, FluidMinecart {
 
   // Can't use FluidStack directly because its equals method doesn't consider amount so will never
   // sync if the amount is changed.
-  private static final DataParameter<CompoundNBT> FLUID_STACK_TAG =
-      EntityDataManager.defineId(TankMinecartEntity.class, DataSerializers.COMPOUND_TAG);
-  private static final DataParameter<Boolean> FILLING =
-      EntityDataManager.defineId(TankMinecartEntity.class, DataSerializers.BOOLEAN);
+  private static final EntityDataAccessor<CompoundTag> FLUID_STACK_TAG =
+      SynchedEntityData.defineId(TankMinecartEntity.class, EntityDataSerializers.COMPOUND_TAG);
+  private static final EntityDataAccessor<Boolean> FILLING =
+      SynchedEntityData.defineId(TankMinecartEntity.class, EntityDataSerializers.BOOLEAN);
   private static final int SLOT_INPUT = 0;
   private static final int SLOT_PROCESSING = 1;
   private static final int SLOT_OUTPUT = 2;
-  private static final int[] SLOTS = InvTools.buildSlotArray(0, 3);
+  private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 3);
   private final StandardTank tank =
       (StandardTank) new FilteredTank(RailcraftConfig.server.getTankCartFluidCapacity())
           .setUpdateCallback(tank -> this.fluidChanged(tank.getFluid()))
@@ -60,31 +60,31 @@ public class TankMinecartEntity extends FilteredMinecartEntity
               .map(fluidStack::isFluidEqual)
               .orElse(true));
   private final TankManager tankManager = new TankManager(this.tank);
-  private final InventoryMapper invLiquids = InventoryMapper.make(this).ignoreItemChecks();
+  private final ContainerMapper invLiquids = ContainerMapper.make(this).ignoreItemChecks();
   private int fluidProcessingTimer;
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
-  public TankMinecartEntity(EntityType<?> type, World world) {
+  public TankMinecartEntity(EntityType<?> type, Level world) {
     super(type, world);
   }
 
-  public TankMinecartEntity(ItemStack itemStack, double x, double y, double z, World level) {
+  public TankMinecartEntity(ItemStack itemStack, double x, double y, double z, Level level) {
     super(itemStack, RailcraftEntityTypes.TANK_MINECART.get(), x, y, z, level);
   }
 
   @Override
   protected void defineSynchedData() {
     super.defineSynchedData();
-    this.entityData.define(FLUID_STACK_TAG, new CompoundNBT());
+    this.entityData.define(FLUID_STACK_TAG, new CompoundTag());
     this.entityData.define(FILLING, false);
   }
 
   private void fluidChanged(FluidStack fluidStack) {
-    this.entityData.set(FLUID_STACK_TAG, fluidStack.writeToNBT(new CompoundNBT()));
+    this.entityData.set(FLUID_STACK_TAG, fluidStack.writeToNBT(new CompoundTag()));
   }
 
   @Override
-  public void onSyncedDataUpdated(DataParameter<?> key) {
+  public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
     super.onSyncedDataUpdated(key);
 
     if (!this.level.isClientSide()) {
@@ -107,9 +107,9 @@ public class TankMinecartEntity extends FilteredMinecartEntity
   }
 
   @Override
-  public void remove() {
-    super.remove();
-    InventoryHelper.dropContents(this.level, this, this.invLiquids);
+  public void remove(RemovalReason reason) {
+    super.remove(reason);
+    Containers.dropContents(this.level, this, this.invLiquids);
   }
 
   @Override
@@ -120,7 +120,7 @@ public class TankMinecartEntity extends FilteredMinecartEntity
       return;
     }
 
-    InventoryIterator<IExtInvSlot> it = InventoryIterator.get(this);
+    ContainerIterator<ModifiableContainerSlot> it = ContainerIterator.get(this);
     it.slot(SLOT_INPUT).validate(this.level, this.blockPosition());
     it.slot(SLOT_PROCESSING).validate(this.level, this.blockPosition(),
         FluidItemHelper::isContainer);
@@ -135,9 +135,9 @@ public class TankMinecartEntity extends FilteredMinecartEntity
   }
 
   @Override
-  public ActionResultType interact(PlayerEntity player, Hand hand) {
+  public InteractionResult interact(Player player, InteractionHand hand) {
     if (FluidTools.interactWithFluidHandler(player, hand, getTankManager())) {
-      return ActionResultType.SUCCESS;
+      return InteractionResult.SUCCESS;
     }
 
     return super.interact(player, hand);
@@ -149,15 +149,15 @@ public class TankMinecartEntity extends FilteredMinecartEntity
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundNBT data) {
+  protected void readAdditionalSaveData(CompoundTag data) {
     super.readAdditionalSaveData(data);
     this.processState = FluidTools.ProcessState.getByName(data.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);
-    this.tankManager.deserializeNBT(data.getList("tankManager", Constants.NBT.TAG_COMPOUND));
+    this.tankManager.deserializeNBT(data.getList("tankManager", Tag.TAG_COMPOUND));
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundNBT data) {
+  protected void addAdditionalSaveData(CompoundTag data) {
     super.addAdditionalSaveData(data);
     data.putString("processState", this.processState.getSerializedName());
     data.put("tankManager", this.tankManager.serializeNBT());
@@ -177,7 +177,7 @@ public class TankMinecartEntity extends FilteredMinecartEntity
     return filter.isEmpty() ? Optional.empty() : FluidItemHelper.getFluidStackInContainer(filter);
   }
 
-  public IInventory getInvLiquids() {
+  public Container getInvLiquids() {
     return this.invLiquids;
   }
 
@@ -209,12 +209,12 @@ public class TankMinecartEntity extends FilteredMinecartEntity
   }
 
   @Override
-  public boolean canAcceptPushedFluid(AbstractMinecartEntity requester, FluidStack fluid) {
+  public boolean canAcceptPushedFluid(AbstractMinecart requester, FluidStack fluid) {
     return this.canPassFluidRequests(fluid);
   }
 
   @Override
-  public boolean canProvidePulledFluid(AbstractMinecartEntity requester, FluidStack fluid) {
+  public boolean canProvidePulledFluid(AbstractMinecart requester, FluidStack fluid) {
     return this.canPassFluidRequests(fluid);
   }
 
@@ -224,7 +224,7 @@ public class TankMinecartEntity extends FilteredMinecartEntity
   }
 
   @Override
-  protected Container createMenu(int id, PlayerInventory playerInventory) {
+  protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
     return new TankMinecartMenu(id, playerInventory, this);
   }
 }

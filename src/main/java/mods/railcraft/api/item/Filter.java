@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.item;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Created by CovertJaguar on 5/26/2017 for Railcraft.

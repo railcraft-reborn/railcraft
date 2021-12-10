@@ -8,12 +8,12 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import com.google.common.collect.ForwardingList;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public class TankManager extends ForwardingList<StandardTank>
-    implements IFluidHandler, INBTSerializable<ListNBT> {
+    implements IFluidHandler, INBTSerializable<ListTag> {
 
   public static final TankManager EMPTY = new TankManager() {
     @Override
@@ -33,7 +33,7 @@ public class TankManager extends ForwardingList<StandardTank>
     }
   };
 
-  public static final BiFunction<TileEntity, Direction, Boolean> TANK_FILTER =
+  public static final BiFunction<BlockEntity, Direction, Boolean> TANK_FILTER =
       (t, f) -> t.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, f).isPresent();
   private final List<StandardTank> tanks = new ArrayList<>();
 
@@ -57,11 +57,11 @@ public class TankManager extends ForwardingList<StandardTank>
   }
 
   @Override
-  public ListNBT serializeNBT() {
-    ListNBT tanksTag = new ListNBT();
+  public ListTag serializeNBT() {
+    ListTag tanksTag = new ListTag();
     for (byte i = 0; i < this.tanks.size(); i++) {
       StandardTank tank = this.tanks.get(i);
-      CompoundNBT tankTag = new CompoundNBT();
+      CompoundTag tankTag = new CompoundTag();
       tankTag.putByte("index", i);
       tank.writeToNBT(tankTag);
       tanksTag.add(tankTag);
@@ -70,22 +70,22 @@ public class TankManager extends ForwardingList<StandardTank>
   }
 
   @Override
-  public void deserializeNBT(ListNBT tanksTag) {
-    for (INBT tankTag : tanksTag) {
-      int index = ((CompoundNBT) tankTag).getByte("index");
+  public void deserializeNBT(ListTag tanksTag) {
+    for (Tag tankTag : tanksTag) {
+      int index = ((CompoundTag) tankTag).getByte("index");
       if (index >= 0 && index < this.tanks.size()) {
-        this.tanks.get(index).readFromNBT(((CompoundNBT) tankTag));
+        this.tanks.get(index).readFromNBT(((CompoundTag) tankTag));
       }
     }
   }
 
-  public void writePacketData(PacketBuffer data) {
+  public void writePacketData(FriendlyByteBuf data) {
     for (StandardTank tank : tanks) {
       data.writeFluidStack(tank.getFluid());
     }
   }
 
-  public void readPacketData(PacketBuffer data) {
+  public void readPacketData(FriendlyByteBuf data) {
     for (StandardTank tank : tanks) {
       tank.setFluid(data.readFluidStack());
     }

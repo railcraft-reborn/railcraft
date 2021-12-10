@@ -2,14 +2,14 @@ package mods.railcraft.client.util;
 
 import java.util.Arrays;
 import javax.annotation.Nullable;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.util.CuboidModel.Face;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Matrix3f;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 
 /**
  * Adapted from Mantle's FluidRenderer and Tinker's SmelteryTankRenderer
@@ -30,7 +30,7 @@ public class CuboidModelRenderer {
 
   private CuboidModelRenderer() {}
 
-  public static void render(CuboidModel model, MatrixStack matrix, IVertexBuilder buffer, int argb,
+  public static void render(CuboidModel model, PoseStack matrix, VertexConsumer buffer, int argb,
       FaceDisplay faceDisplay, boolean fakeDisableDiffuse) {
     Arrays.fill(combinedARGB, argb);
     render(model, matrix, buffer, combinedARGB, faceDisplay, fakeDisableDiffuse);
@@ -39,11 +39,11 @@ public class CuboidModelRenderer {
   /**
    * @implNote Based off of Tinker's
    */
-  public static void render(CuboidModel model, MatrixStack matrix, IVertexBuilder buffer,
+  public static void render(CuboidModel model, PoseStack matrix, VertexConsumer buffer,
       int[] colors, FaceDisplay faceDisplay, boolean fakeDisableDiffuse) {
-    float xShift = MathHelper.floor(model.getMinX());
-    float yShift = MathHelper.floor(model.getMinY());
-    float zShift = MathHelper.floor(model.getMinZ());
+    float xShift = Mth.floor(model.getMinX());
+    float yShift = Mth.floor(model.getMinY());
+    float zShift = Mth.floor(model.getMinZ());
     matrix.pushPose();
     matrix.translate(xShift, yShift, zShift);
     float minX = model.getMinX() - xShift;
@@ -58,7 +58,7 @@ public class CuboidModelRenderer {
     float[] xBounds = getBlockBounds(xDelta, minX, maxX);
     float[] yBounds = getBlockBounds(yDelta, minY, maxY);
     float[] zBounds = getBlockBounds(zDelta, minZ, maxZ);
-    MatrixStack.Entry lastMatrix = matrix.last();
+    PoseStack.Pose lastMatrix = matrix.last();
     Matrix4f matrix4f = lastMatrix.pose();
     Matrix3f normalMatrix = lastMatrix.normal();
     Vector3f normal = fakeDisableDiffuse ? NORMAL : Vector3f.YP;
@@ -137,7 +137,7 @@ public class CuboidModelRenderer {
   /**
    * @implNote From Mantle with some adjustments
    */
-  private static void putTexturedQuad(IVertexBuilder buffer, Matrix4f matrix, Matrix3f normalMatrix,
+  private static void putTexturedQuad(VertexConsumer buffer, Matrix4f matrix, Matrix3f normalMatrix,
       @Nullable Face spriteInfo, Vector3f from, Vector3f to,
       Direction face, int[] colors, FaceDisplay faceDisplay,
       Vector3f normal) {
@@ -263,7 +263,7 @@ public class CuboidModelRenderer {
     }
   }
 
-  private static void drawFace(IVertexBuilder buffer, Matrix4f matrix, Matrix3f normalMatrix,
+  private static void drawFace(VertexConsumer buffer, Matrix4f matrix, Matrix3f normalMatrix,
       float red, float green, float blue, float alpha, float minU, float maxU,
       float minV, float maxV, int light, int overlay, FaceDisplay faceDisplay, Vector3f normal,
       float x1, float y1, float z1,

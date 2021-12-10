@@ -6,17 +6,19 @@ import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.world.entity.cart.CartTools;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class WyeTrackBlockEntity extends SwitchTrackBlockEntity {
 
-  public WyeTrackBlockEntity() {
-    this(RailcraftBlockEntityTypes.WYE_TRACK.get());
+  public WyeTrackBlockEntity(BlockPos blockPos, BlockState blockState) {
+    this(RailcraftBlockEntityTypes.WYE_TRACK.get(), blockPos, blockState);
   }
 
-  public WyeTrackBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public WyeTrackBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
   @Override

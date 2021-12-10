@@ -7,19 +7,19 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -27,35 +27,35 @@ import net.minecraftforge.common.util.Constants;
 public class GogglesItem extends ArmorItem {
 
   public GogglesItem(Properties properties) {
-    super(RailcraftArmorMaterial.GOGGLES, EquipmentSlotType.HEAD, properties);
+    super(RailcraftArmorMaterial.GOGGLES, EquipmentSlot.HEAD, properties);
   }
 
   @Override
-  public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
+  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
     ItemStack itemStack = player.getItemInHand(hand);
     if (!level.isClientSide()) {
       incrementAura(itemStack);
       Aura aura = getAura(itemStack);
       player.displayClientMessage(getDescriptionText(aura.getDisplayName()), true);
     }
-    return ActionResult.sidedSuccess(itemStack, level.isClientSide());
+    return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
   }
 
   @Override
-  public void appendHoverText(ItemStack itemStack, @Nullable World level,
-      List<ITextComponent> lines, ITooltipFlag adv) {
+  public void appendHoverText(ItemStack itemStack, @Nullable Level level,
+      List<Component> lines, TooltipFlag adv) {
     lines.add(getDescriptionText(getAura(itemStack).getDisplayName()));
-    lines.add(new TranslationTextComponent("goggles.description"));
+    lines.add(new TranslatableComponent("goggles.description"));
   }
 
-  public static ITextComponent getDescriptionText(ITextComponent displayName) {
-    return new TranslationTextComponent("goggles.aura",
-        displayName.copy().withStyle(TextFormatting.DARK_PURPLE));
+  public static Component getDescriptionText(Component displayName) {
+    return new TranslatableComponent("goggles.aura",
+        displayName.copy().withStyle(ChatFormatting.DARK_PURPLE));
   }
 
   public static Aura getAura(ItemStack itemStack) {
     return Optional.ofNullable(itemStack.getTag())
-        .filter(tag -> tag.contains("aura", Constants.NBT.TAG_STRING))
+        .filter(tag -> tag.contains("aura", Tag.TAG_STRING))
         .map(tag -> tag.getString("aura"))
         .flatMap(Aura::getByName)
         .orElse(Aura.NONE);
@@ -69,7 +69,7 @@ public class GogglesItem extends ArmorItem {
     itemStack.getOrCreateTag().putString("aura", aura.getSerializedName());
   }
 
-  public enum Aura implements IStringSerializable {
+  public enum Aura implements StringRepresentable {
 
     NONE("none"),
     TRACKING("tracking"),
@@ -83,14 +83,14 @@ public class GogglesItem extends ArmorItem {
         Arrays.stream(values()).collect(Collectors.toMap(Aura::getName, Function.identity()));
 
     private String name;
-    private final ITextComponent displayName;
+    private final Component displayName;
 
     private Aura(String name) {
       this.name = name;
-      this.displayName = new TranslationTextComponent("goggles.aura." + name);
+      this.displayName = new TranslatableComponent("goggles.aura." + name);
     }
 
-    public ITextComponent getDisplayName() {
+    public Component getDisplayName() {
       return this.displayName;
     }
 

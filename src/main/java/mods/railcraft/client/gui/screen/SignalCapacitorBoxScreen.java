@@ -1,13 +1,13 @@
 package mods.railcraft.client.gui.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class SignalCapacitorBoxScreen extends IngameWindowScreen {
 
@@ -23,27 +23,29 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
   public void init() {
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
-    this.addButton(
-        new Button(centredX + 13, centredY + 38, 30, 20, new StringTextComponent("-10"),
+    this.addRenderableWidget(
+        new Button(centredX + 13, centredY + 38, 30, 20, new TextComponent("-10"),
             __ -> this.incrementTicksToPower(-200)));
-    this.addButton(
-        new Button(centredX + 53, centredY + 38, 30, 20, new StringTextComponent("-1"),
+    this.addRenderableWidget(
+        new Button(centredX + 53, centredY + 38, 30, 20, new TextComponent("-1"),
             __ -> this.incrementTicksToPower(-20)));
-    this.addButton(
-        new Button(centredX + 93, centredY + 38, 30, 20, new StringTextComponent("+1"),
+    this.addRenderableWidget(
+        new Button(centredX + 93, centredY + 38, 30, 20, new TextComponent("+1"),
             __ -> this.incrementTicksToPower(20)));
-    this.addButton(
-        new Button(centredX + 133, centredY + 38, 30, 20, new StringTextComponent("+10"),
+    this.addRenderableWidget(
+        new Button(centredX + 133, centredY + 38, 30, 20, new TextComponent("+10"),
             __ -> this.incrementTicksToPower(200)));
-    this.addButton(this.modeButton = new MultiButton<>(centredX + 23, centredY + 65, 130, 15,
-        this.signalBox.getMode(), __ -> this.setMode(this.modeButton.getState())));
+    this.addRenderableWidget(
+        this.modeButton = new MultiButton<>(centredX + 23, centredY + 65, 130, 15,
+            this.signalBox.getMode(), this::renderComponentTooltip,
+            __ -> this.setMode(this.modeButton.getState())));
   }
 
   @Override
-  protected void renderContent(MatrixStack matrixStack, int mouseX, int mouseY,
+  protected void renderContent(PoseStack matrixStack, int mouseX, int mouseY,
       float partialTicks) {
     this.drawCenteredString(matrixStack,
-        new TranslationTextComponent("screen.signal_capacitor_box.duration",
+        new TranslatableComponent("screen.signal_capacitor_box.duration",
             this.signalBox.getTicksToPower() / 20),
         this.windowWidth / 2, 25);
   }
@@ -70,7 +72,7 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    NetworkChannel.PLAY.getSimpleChannel()
+    NetworkChannel.GAME.getSimpleChannel()
         .sendToServer(new SetSignalCapacitorBoxAttributesMessage(this.signalBox.getBlockPos(),
             this.signalBox.getTicksToPower(), this.modeButton.getState()));
   }

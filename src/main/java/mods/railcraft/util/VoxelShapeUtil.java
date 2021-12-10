@@ -2,10 +2,10 @@ package mods.railcraft.util;
 
 import java.util.EnumMap;
 import java.util.Map;
-import net.minecraft.block.Block;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
 
 /**
  * 
@@ -21,7 +21,7 @@ public class VoxelShapeUtil {
       VoxelShape shape = mainShape;
       for (Map.Entry<Direction, VoxelShape> entry : connectionShapes.entrySet()) {
         if ((i & indexFor(entry.getKey())) != 0) {
-          shape = VoxelShapes.or(shape, entry.getValue());
+          shape = Shapes.or(shape, entry.getValue());
         }
       }
       shapes[i] = shape;

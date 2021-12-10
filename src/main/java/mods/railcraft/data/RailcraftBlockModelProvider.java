@@ -26,34 +26,34 @@ import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlo
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.data.BlockModelDefinition;
-import net.minecraft.data.BlockModelFields;
-import net.minecraft.data.BlockModelFields.Rotation;
-import net.minecraft.data.BlockModelWriter;
-import net.minecraft.data.BlockStateVariantBuilder;
-import net.minecraft.data.FinishedMultiPartBlockState;
-import net.minecraft.data.FinishedVariantBlockState;
-import net.minecraft.data.IFinishedBlockState;
-import net.minecraft.data.IMultiPartPredicateBuilder;
-import net.minecraft.data.ModelTextures;
-import net.minecraft.data.ModelsResourceUtil;
-import net.minecraft.data.ModelsUtil;
-import net.minecraft.data.StockModelShapes;
-import net.minecraft.data.StockTextureAliases;
-import net.minecraft.data.TexturedModel;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.data.models.blockstates.Variant;
+import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.blockstates.VariantProperties.Rotation;
+import net.minecraft.data.models.model.DelegatedModel;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
+import net.minecraft.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.blockstates.Condition;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.data.models.model.ModelTemplate;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.data.models.model.TexturedModel;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 
 public class RailcraftBlockModelProvider {
 
-  private final Consumer<IFinishedBlockState> blockStateOutput;
+  private final Consumer<BlockStateGenerator> blockStateOutput;
   private final BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput;
   private final Consumer<Item> skippedAutoModelsOutput;
 
@@ -86,7 +86,7 @@ public class RailcraftBlockModelProvider {
   private final StraightTrackModels travelDetectorTrackModels;
   private final StraightTrackModels activeTravelDetectotTrackModels;
 
-  public RailcraftBlockModelProvider(Consumer<IFinishedBlockState> blockStateOutput,
+  public RailcraftBlockModelProvider(Consumer<BlockStateGenerator> blockStateOutput,
       BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput,
       Consumer<Item> skippedAutoModelsOutput) {
     this.blockStateOutput = blockStateOutput;
@@ -169,38 +169,38 @@ public class RailcraftBlockModelProvider {
     final ResourceLocation cokeDefaultState =
         TexturedModel.CUBE.create(cokeBrick, this.modelOutput);
     final ResourceLocation cokeParentState =
-        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(cokeBrick,
+        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(cokeBrick,
           "_parent",
-          ((new ModelTextures()).put(
-            StockTextureAliases.SIDE,
-            ModelTextures.getBlockTexture(cokeBrick, "_parent"))
-              .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(cokeBrick))
-              .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(cokeBrick))
+          ((new TextureMapping()).put(
+            TextureSlot.SIDE,
+            TextureMapping.getBlockTexture(cokeBrick, "_parent"))
+              .put(TextureSlot.TOP, TextureMapping.getBlockTexture(cokeBrick))
+              .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(cokeBrick))
           ),
           this.modelOutput);
     final ResourceLocation cokeParentStateOn =
-        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(cokeBrick,
+        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(cokeBrick,
           "_parent_on",
-          ((new ModelTextures()).put(
-            StockTextureAliases.SIDE,
-            ModelTextures.getBlockTexture(cokeBrick, "_parent_on"))
-              .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(cokeBrick))
-              .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(cokeBrick))
+          ((new TextureMapping()).put(
+            TextureSlot.SIDE,
+            TextureMapping.getBlockTexture(cokeBrick, "_parent_on"))
+              .put(TextureSlot.TOP, TextureMapping.getBlockTexture(cokeBrick))
+              .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(cokeBrick))
           ),
           this.modelOutput);
 
     this.blockStateOutput.accept(
-        FinishedVariantBlockState.multiVariant(cokeBrick).with(
-            BlockStateVariantBuilder.properties(CokeOvenBricksBlock.LIT,
+        MultiVariantGenerator.multiVariant(cokeBrick).with(
+            PropertyDispatch.properties(CokeOvenBricksBlock.LIT,
                 CokeOvenBricksBlock.PARENT)
-            .select(false, false, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cokeDefaultState))
-            .select(true, false, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cokeDefaultState))
-            .select(false, true, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cokeParentState))
-            .select(true, true, BlockModelDefinition.variant()
-              .with(BlockModelFields.MODEL, cokeParentStateOn))
+            .select(false, false, Variant.variant()
+                .with(VariantProperties.MODEL, cokeDefaultState))
+            .select(true, false, Variant.variant()
+                .with(VariantProperties.MODEL, cokeDefaultState))
+            .select(false, true, Variant.variant()
+                .with(VariantProperties.MODEL, cokeParentState))
+            .select(true, true, Variant.variant()
+              .with(VariantProperties.MODEL, cokeParentStateOn))
             ));
 
     // this.skipAutoItemBlock(RailcraftBlocks.ELEVATOR_TRACK.get());
@@ -301,51 +301,51 @@ public class RailcraftBlockModelProvider {
     this.skippedAutoModelsOutput.accept(block.asItem());
   }
 
-  private void createTrivialBlock(Block block, TexturedModel.ISupplier textureFactory) {
+  private void createTrivialBlock(Block block, TexturedModel.Provider textureFactory) {
     this.blockStateOutput.accept(
         createSimpleBlock(block, textureFactory.create(block, this.modelOutput)));
   }
 
-  private static FinishedVariantBlockState createSimpleBlock(Block block,
+  private static MultiVariantGenerator createSimpleBlock(Block block,
       ResourceLocation modelLocation) {
-    return FinishedVariantBlockState.multiVariant(block,
-        BlockModelDefinition.variant().with(BlockModelFields.MODEL, modelLocation));
+    return MultiVariantGenerator.multiVariant(block,
+        Variant.variant().with(VariantProperties.MODEL, modelLocation));
   }
 
   private void delegateItemModel(Block block, ResourceLocation modelLocation) {
-    this.modelOutput.accept(ModelsResourceUtil.getModelLocation(block.asItem()),
-        new BlockModelWriter(modelLocation));
+    this.modelOutput.accept(ModelLocationUtils.getModelLocation(block.asItem()),
+        new DelegatedModel(modelLocation));
   }
 
   private void createSimpleFlatItemModel(Block block) {
     Item item = block.asItem();
     if (item != Items.AIR) {
-      StockModelShapes.FLAT_ITEM.create(ModelsResourceUtil.getModelLocation(item),
-          ModelTextures.layer0(block), this.modelOutput);
+      ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item),
+          TextureMapping.layer0(block), this.modelOutput);
     }
   }
 
   private void createSimpleFlatItemModel(Item item) {
-    StockModelShapes.FLAT_ITEM.create(ModelsResourceUtil.getModelLocation(item),
-        ModelTextures.layer0(item), this.modelOutput);
+    ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item),
+        TextureMapping.layer0(item), this.modelOutput);
   }
 
   private void createSimpleFlatItemModel(Block block, String textureSuffix) {
     Item item = block.asItem();
-    StockModelShapes.FLAT_ITEM.create(ModelsResourceUtil.getModelLocation(item),
-        ModelTextures.layer0(ModelTextures.getBlockTexture(block, textureSuffix)),
+    ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item),
+        TextureMapping.layer0(TextureMapping.getBlockTexture(block, textureSuffix)),
         this.modelOutput);
   }
 
   private ResourceLocation createSuffixedVariant(Block block, String suffix,
-      ModelsUtil model, Function<ResourceLocation, ModelTextures> textureFactory) {
+      ModelTemplate model, Function<ResourceLocation, TextureMapping> textureFactory) {
     return model.createWithSuffix(block, suffix,
-        textureFactory.apply(ModelTextures.getBlockTexture(block, suffix)),
+        textureFactory.apply(TextureMapping.getBlockTexture(block, suffix)),
         this.modelOutput);
   }
 
   private ResourceLocation createVariant(String name,
-      ModelsUtil model, Function<ResourceLocation, ModelTextures> textureFactory) {
+      ModelTemplate model, Function<ResourceLocation, TextureMapping> textureFactory) {
     return model.create(
         new ResourceLocation(Railcraft.ID, "block/" + name + model.suffix.orElse("")),
         textureFactory.apply(new ResourceLocation(Railcraft.ID, "block/" + name)),
@@ -354,31 +354,31 @@ public class RailcraftBlockModelProvider {
 
   private void createElevatorTrack(Block block) {
     ResourceLocation model =
-        Models.ELEVATOR_TRACK.create(block, ModelTextures.defaultTexture(block), this.modelOutput);
+        Models.ELEVATOR_TRACK.create(block, TextureMapping.defaultTexture(block), this.modelOutput);
     ResourceLocation activeModel = this.createSuffixedVariant(block, "_on", Models.ELEVATOR_TRACK,
-        ModelTextures::defaultTexture);
+        TextureMapping::defaultTexture);
 
-    this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block)
-        .with(BlockStateVariantBuilder
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch
             .properties(ElevatorTrackBlock.POWERED, ElevatorTrackBlock.FACING)
             .generate((powered, facing) -> {
-              BlockModelFields.Rotation yRot = BlockModelFields.Rotation.R0;
+              VariantProperties.Rotation yRot = VariantProperties.Rotation.R0;
               switch (facing) {
                 case SOUTH:
-                  yRot = BlockModelFields.Rotation.R180;
+                  yRot = VariantProperties.Rotation.R180;
                   break;
                 case EAST:
-                  yRot = BlockModelFields.Rotation.R90;
+                  yRot = VariantProperties.Rotation.R90;
                   break;
                 case WEST:
-                  yRot = BlockModelFields.Rotation.R270;
+                  yRot = VariantProperties.Rotation.R270;
                   break;
                 default:
                   break;
               }
-              return BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, powered ? activeModel : model)
-                  .with(BlockModelFields.Y_ROT, yRot);
+              return Variant.variant()
+                  .with(VariantProperties.MODEL, powered ? activeModel : model)
+                  .with(VariantProperties.Y_ROT, yRot);
             })));
 
     this.createSimpleFlatItemModel(block);
@@ -387,76 +387,76 @@ public class RailcraftBlockModelProvider {
   private void createFluidManipulator(Block block) {
     this.createManipulator(block);
     ResourceLocation model =
-        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(block, "_inventory",
-            new ModelTextures()
-                .put(StockTextureAliases.SIDE,
+        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_inventory",
+            new TextureMapping()
+                .put(TextureSlot.SIDE,
                     new ResourceLocation(Railcraft.ID, "block/fluid_manipulator_side_inventory"))
-                .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(block, "_top"))
-                .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(block, "_bottom")),
+                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
+                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom")),
             this.modelOutput);
     this.delegateItemModel(block, model);
   }
 
   private void createManipulator(Block block) {
     ResourceLocation model =
-        StockModelShapes.CUBE_BOTTOM_TOP.create(block, ModelTextures.cubeBottomTop(block),
+        ModelTemplates.CUBE_BOTTOM_TOP.create(block, TextureMapping.cubeBottomTop(block),
             this.modelOutput);
-    this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block,
-        BlockModelDefinition.variant()
-            .with(BlockModelFields.MODEL, model)));
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block,
+        Variant.variant()
+            .with(VariantProperties.MODEL, model)));
   }
 
   private void createDirectionalManipulator(Block block, DirectionProperty facingProperty) {
     ResourceLocation horizontalModel =
-        StockModelShapes.CUBE_ORIENTABLE.create(block, ModelTextures.orientableCubeOnlyTop(block),
+        ModelTemplates.CUBE_ORIENTABLE.create(block, TextureMapping.orientableCubeOnlyTop(block),
             this.modelOutput);
     ResourceLocation upModel =
-        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(block, "_up",
-            new ModelTextures()
-                .put(StockTextureAliases.SIDE, ModelTextures.getBlockTexture(block, "_side"))
-                .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(block, "_front"))
-                .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(block, "_top")),
+        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_up",
+            new TextureMapping()
+                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
+                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_front"))
+                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_top")),
             this.modelOutput);
     ResourceLocation downModel =
-        StockModelShapes.CUBE_BOTTOM_TOP.createWithSuffix(block, "_down",
-            new ModelTextures()
-                .put(StockTextureAliases.SIDE, ModelTextures.getBlockTexture(block, "_side"))
-                .put(StockTextureAliases.TOP, ModelTextures.getBlockTexture(block, "_top"))
-                .put(StockTextureAliases.BOTTOM, ModelTextures.getBlockTexture(block, "_front")),
+        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_down",
+            new TextureMapping()
+                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
+                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
+                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_front")),
             this.modelOutput);
-    this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block)
-        .with(BlockStateVariantBuilder.property(facingProperty)
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.property(facingProperty)
             .generate(facing -> {
-              BlockModelFields.Rotation yRot = BlockModelFields.Rotation.R0;
-              BlockModelFields.Rotation xRot = BlockModelFields.Rotation.R0;
+              VariantProperties.Rotation yRot = VariantProperties.Rotation.R0;
+              VariantProperties.Rotation xRot = VariantProperties.Rotation.R0;
               switch (facing) {
                 case SOUTH:
-                  yRot = BlockModelFields.Rotation.R180;
+                  yRot = VariantProperties.Rotation.R180;
                   break;
                 case EAST:
-                  yRot = BlockModelFields.Rotation.R90;
+                  yRot = VariantProperties.Rotation.R90;
                   break;
                 case WEST:
-                  yRot = BlockModelFields.Rotation.R270;
+                  yRot = VariantProperties.Rotation.R270;
                   break;
                 case UP:
-                  return BlockModelDefinition.variant()
-                      .with(BlockModelFields.MODEL, upModel);
+                  return Variant.variant()
+                      .with(VariantProperties.MODEL, upModel);
                 case DOWN:
-                  return BlockModelDefinition.variant()
-                      .with(BlockModelFields.MODEL, downModel);
+                  return Variant.variant()
+                      .with(VariantProperties.MODEL, downModel);
                 default:
                   break;
               }
-              return BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, horizontalModel)
-                  .with(BlockModelFields.Y_ROT, yRot)
-                  .with(BlockModelFields.X_ROT, xRot);
+              return Variant.variant()
+                  .with(VariantProperties.MODEL, horizontalModel)
+                  .with(VariantProperties.Y_ROT, yRot)
+                  .with(VariantProperties.X_ROT, xRot);
             })));
   }
 
   private void createPost(Block block) {
-    ModelTextures textures = ModelTextures.defaultTexture(block);
+    TextureMapping textures = TextureMapping.defaultTexture(block);
     ResourceLocation fullColumnModel = Models.POST_COLUMN.create(block,
         textures, this.modelOutput);
     ResourceLocation doubleConnectionModel = Models.POST_DOUBLE_CONNECTION.create(block,
@@ -473,81 +473,81 @@ public class RailcraftBlockModelProvider {
         textures, this.modelOutput);
     this.delegateItemModel(block, inventoryModel);
     this.blockStateOutput.accept(
-        FinishedMultiPartBlockState.multiPart(block)
+        MultiPartGenerator.multiPart(block)
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.COLUMN, Column.PLATFORM),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, platformModel))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, platformModel))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.COLUMN, Column.TOP),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, topColumnModel))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, topColumnModel))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.COLUMN, Column.SMALL),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, middleColumnModel))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, middleColumnModel))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.COLUMN, Column.FULL),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, fullColumnModel))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, fullColumnModel))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.NORTH, Connection.SINGLE),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, singleConnectionModel)
-                    .with(BlockModelFields.UV_LOCK, true))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, singleConnectionModel)
+                    .with(VariantProperties.UV_LOCK, true))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.NORTH, Connection.DOUBLE),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, doubleConnectionModel)
-                    .with(BlockModelFields.UV_LOCK, true))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, doubleConnectionModel)
+                    .with(VariantProperties.UV_LOCK, true))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.SOUTH, Connection.SINGLE),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, singleConnectionModel)
-                    .with(BlockModelFields.Y_ROT, Rotation.R180)
-                    .with(BlockModelFields.UV_LOCK, true))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, singleConnectionModel)
+                    .with(VariantProperties.Y_ROT, Rotation.R180)
+                    .with(VariantProperties.UV_LOCK, true))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.SOUTH, Connection.DOUBLE),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, doubleConnectionModel)
-                    .with(BlockModelFields.Y_ROT, Rotation.R180)
-                    .with(BlockModelFields.UV_LOCK, true))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, doubleConnectionModel)
+                    .with(VariantProperties.Y_ROT, Rotation.R180)
+                    .with(VariantProperties.UV_LOCK, true))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.EAST, Connection.SINGLE),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, singleConnectionModel)
-                    .with(BlockModelFields.Y_ROT, Rotation.R90)
-                    .with(BlockModelFields.UV_LOCK, true))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, singleConnectionModel)
+                    .with(VariantProperties.Y_ROT, Rotation.R90)
+                    .with(VariantProperties.UV_LOCK, true))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.EAST, Connection.DOUBLE),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, doubleConnectionModel)
-                    .with(BlockModelFields.Y_ROT, Rotation.R90)
-                    .with(BlockModelFields.UV_LOCK, true))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, doubleConnectionModel)
+                    .with(VariantProperties.Y_ROT, Rotation.R90)
+                    .with(VariantProperties.UV_LOCK, true))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.WEST, Connection.SINGLE),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, singleConnectionModel)
-                    .with(BlockModelFields.Y_ROT, Rotation.R270)
-                    .with(BlockModelFields.UV_LOCK, true))
+                Variant.variant()
+                    .with(VariantProperties.MODEL, singleConnectionModel)
+                    .with(VariantProperties.Y_ROT, Rotation.R270)
+                    .with(VariantProperties.UV_LOCK, true))
             .with(
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(PostBlock.WEST, Connection.DOUBLE),
-                BlockModelDefinition.variant()
-                    .with(BlockModelFields.MODEL, doubleConnectionModel)
-                    .with(BlockModelFields.Y_ROT, Rotation.R270)
-                    .with(BlockModelFields.UV_LOCK, true)));
+                Variant.variant()
+                    .with(VariantProperties.MODEL, doubleConnectionModel)
+                    .with(VariantProperties.Y_ROT, Rotation.R270)
+                    .with(VariantProperties.UV_LOCK, true)));
   }
 
   private void createAbandonedTracks(Block block, Block lockingTrackBlock,
@@ -559,90 +559,90 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createAbandonedFlexTrack(Block block) {
-    ModelTextures texture0 =
-        ModelTextures.rail(ModelTextures.getBlockTexture(block, "_0"));
-    ModelTextures texture1 =
-        ModelTextures.rail(ModelTextures.getBlockTexture(block, "_1"));
-    ModelTextures cornerTextures =
-        ModelTextures.rail(ModelTextures.getBlockTexture(block, "_corner"));
+    TextureMapping texture0 =
+        TextureMapping.rail(TextureMapping.getBlockTexture(block, "_0"));
+    TextureMapping texture1 =
+        TextureMapping.rail(TextureMapping.getBlockTexture(block, "_1"));
+    TextureMapping cornerTextures =
+        TextureMapping.rail(TextureMapping.getBlockTexture(block, "_corner"));
     ResourceLocation flatModel0 =
-        StockModelShapes.RAIL_FLAT.createWithSuffix(block, "_0", texture0, this.modelOutput);
+        ModelTemplates.RAIL_FLAT.createWithSuffix(block, "_0", texture0, this.modelOutput);
     ResourceLocation flatModel1 =
-        StockModelShapes.RAIL_FLAT.createWithSuffix(block, "_1", texture1, this.modelOutput);
+        ModelTemplates.RAIL_FLAT.createWithSuffix(block, "_1", texture1, this.modelOutput);
     ResourceLocation cornerModel =
-        StockModelShapes.RAIL_CURVED.create(block, cornerTextures, this.modelOutput);
+        ModelTemplates.RAIL_CURVED.create(block, cornerTextures, this.modelOutput);
     ResourceLocation raisedNorthEastModel =
-        StockModelShapes.RAIL_RAISED_NE.create(block, texture0, this.modelOutput);
+        ModelTemplates.RAIL_RAISED_NE.create(block, texture0, this.modelOutput);
     ResourceLocation raisedSouthWestModel =
-        StockModelShapes.RAIL_RAISED_SW.create(block, texture0, this.modelOutput);
+        ModelTemplates.RAIL_RAISED_SW.create(block, texture0, this.modelOutput);
 
     this.createSimpleFlatItemModel(block, "_0");
 
-    this.blockStateOutput.accept(FinishedMultiPartBlockState.multiPart(block)
+    this.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(AbandonedTrackBlock.GRASS, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, new ResourceLocation("block/grass")))
+            Variant.variant()
+                .with(VariantProperties.MODEL, new ResourceLocation("block/grass")))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant().with(BlockModelFields.MODEL, flatModel0),
-            BlockModelDefinition.variant().with(BlockModelFields.MODEL, flatModel1))
+            Variant.variant().with(VariantProperties.MODEL, flatModel0),
+            Variant.variant().with(VariantProperties.MODEL, flatModel1))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(BlockStateProperties.RAIL_SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, flatModel0)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, flatModel1)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, flatModel0)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90),
+            Variant.variant()
+                .with(VariantProperties.MODEL, flatModel1)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_EAST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, raisedNorthEastModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, raisedNorthEastModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, raisedSouthWestModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, raisedSouthWestModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_NORTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, raisedNorthEastModel))
+            Variant.variant()
+                .with(VariantProperties.MODEL, raisedNorthEastModel))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, raisedSouthWestModel))
+            Variant.variant()
+                .with(VariantProperties.MODEL, raisedSouthWestModel))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(BlockStateProperties.RAIL_SHAPE, RailShape.SOUTH_EAST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cornerModel))
+            Variant.variant()
+                .with(VariantProperties.MODEL, cornerModel))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(BlockStateProperties.RAIL_SHAPE, RailShape.SOUTH_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cornerModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, cornerModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cornerModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, cornerModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_EAST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cornerModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270)));
+            Variant.variant()
+                .with(VariantProperties.MODEL, cornerModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
   }
 
   private void createTracks(Block block, Block lockingTrackBlock, Block bufferStopTrackBlock,
@@ -683,142 +683,142 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createFlexTrack(Block block) {
-    ModelTextures textures = ModelTextures.rail(block);
-    ModelTextures cornerTextures =
-        ModelTextures.rail(ModelTextures.getBlockTexture(block, "_corner"));
+    TextureMapping textures = TextureMapping.rail(block);
+    TextureMapping cornerTextures =
+        TextureMapping.rail(TextureMapping.getBlockTexture(block, "_corner"));
     ResourceLocation flatModel =
-        StockModelShapes.RAIL_FLAT.create(block, textures, this.modelOutput);
+        ModelTemplates.RAIL_FLAT.create(block, textures, this.modelOutput);
     ResourceLocation cornerModel =
-        StockModelShapes.RAIL_CURVED.create(block, cornerTextures, this.modelOutput);
+        ModelTemplates.RAIL_CURVED.create(block, cornerTextures, this.modelOutput);
     ResourceLocation raisedNorthEastModel =
-        StockModelShapes.RAIL_RAISED_NE.create(block, textures, this.modelOutput);
+        ModelTemplates.RAIL_RAISED_NE.create(block, textures, this.modelOutput);
     ResourceLocation raisedSouthWestModel =
-        StockModelShapes.RAIL_RAISED_SW.create(block, textures, this.modelOutput);
+        ModelTemplates.RAIL_RAISED_SW.create(block, textures, this.modelOutput);
 
     this.createSimpleFlatItemModel(block);
 
-    this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block)
-        .with(BlockStateVariantBuilder.property(BlockStateProperties.RAIL_SHAPE)
-            .select(RailShape.NORTH_SOUTH, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, flatModel))
-            .select(RailShape.EAST_WEST, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, flatModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
-            .select(RailShape.ASCENDING_EAST, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, raisedNorthEastModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
-            .select(RailShape.ASCENDING_WEST, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, raisedSouthWestModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
-            .select(RailShape.ASCENDING_NORTH, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, raisedNorthEastModel))
-            .select(RailShape.ASCENDING_SOUTH, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, raisedSouthWestModel))
-            .select(RailShape.SOUTH_EAST, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cornerModel))
-            .select(RailShape.SOUTH_WEST, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cornerModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
-            .select(RailShape.NORTH_WEST, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cornerModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
-            .select(RailShape.NORTH_EAST, BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, cornerModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))));
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.property(BlockStateProperties.RAIL_SHAPE)
+            .select(RailShape.NORTH_SOUTH, Variant.variant()
+                .with(VariantProperties.MODEL, flatModel))
+            .select(RailShape.EAST_WEST, Variant.variant()
+                .with(VariantProperties.MODEL, flatModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+            .select(RailShape.ASCENDING_EAST, Variant.variant()
+                .with(VariantProperties.MODEL, raisedNorthEastModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+            .select(RailShape.ASCENDING_WEST, Variant.variant()
+                .with(VariantProperties.MODEL, raisedSouthWestModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+            .select(RailShape.ASCENDING_NORTH, Variant.variant()
+                .with(VariantProperties.MODEL, raisedNorthEastModel))
+            .select(RailShape.ASCENDING_SOUTH, Variant.variant()
+                .with(VariantProperties.MODEL, raisedSouthWestModel))
+            .select(RailShape.SOUTH_EAST, Variant.variant()
+                .with(VariantProperties.MODEL, cornerModel))
+            .select(RailShape.SOUTH_WEST, Variant.variant()
+                .with(VariantProperties.MODEL, cornerModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+            .select(RailShape.NORTH_WEST, Variant.variant()
+                .with(VariantProperties.MODEL, cornerModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+            .select(RailShape.NORTH_EAST, Variant.variant()
+                .with(VariantProperties.MODEL, cornerModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))));
   }
 
   private void createTurnoutTrack(Block block) {
     ResourceLocation northModel = this.createSuffixedVariant(block, "_north",
-        StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
     ResourceLocation northSwitchedModel = this.createSuffixedVariant(block, "_north_switched",
-        StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
     ResourceLocation southModel = this.createSuffixedVariant(block, "_south",
-        StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
     ResourceLocation southSwitchedModel = this.createSuffixedVariant(block, "_south_switched",
-        StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
 
-    this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block)
-        .with(BlockStateVariantBuilder.properties(SwitchTrackBlock.SHAPE,
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.properties(SwitchTrackBlock.SHAPE,
             ReversibleOutfittedTrackBlock.REVERSED, TurnoutTrackBlock.MIRRORED,
             SwitchTrackBlock.SWITCHED)
-            .select(RailShape.NORTH_SOUTH, false, false, false, BlockModelDefinition.variant() // North
-                .with(BlockModelFields.MODEL, northModel))
-            .select(RailShape.NORTH_SOUTH, false, false, true, BlockModelDefinition.variant() // North
-                .with(BlockModelFields.MODEL, northSwitchedModel))
-            .select(RailShape.NORTH_SOUTH, true, false, false, BlockModelDefinition.variant() // South
-                .with(BlockModelFields.MODEL, southModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
-            .select(RailShape.NORTH_SOUTH, true, false, true, BlockModelDefinition.variant() // South
-                .with(BlockModelFields.MODEL, southSwitchedModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
-            .select(RailShape.NORTH_SOUTH, false, true, false, BlockModelDefinition.variant() // North
-                .with(BlockModelFields.MODEL, southModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
-            .select(RailShape.NORTH_SOUTH, false, true, true, BlockModelDefinition.variant() // North
-                .with(BlockModelFields.MODEL, southSwitchedModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
-            .select(RailShape.NORTH_SOUTH, true, true, false, BlockModelDefinition.variant() // South
-                .with(BlockModelFields.MODEL, southModel))
-            .select(RailShape.NORTH_SOUTH, true, true, true, BlockModelDefinition.variant() // South
-                .with(BlockModelFields.MODEL, southSwitchedModel))
-            .select(RailShape.EAST_WEST, false, false, false, BlockModelDefinition.variant() // East
-                .with(BlockModelFields.MODEL, northModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
-            .select(RailShape.EAST_WEST, false, false, true, BlockModelDefinition.variant() // East
-                .with(BlockModelFields.MODEL, northSwitchedModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
-            .select(RailShape.EAST_WEST, true, false, false, BlockModelDefinition.variant() // West
-                .with(BlockModelFields.MODEL, northModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
-            .select(RailShape.EAST_WEST, true, false, true, BlockModelDefinition.variant() // West
-                .with(BlockModelFields.MODEL, northSwitchedModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
-            .select(RailShape.EAST_WEST, false, true, false, BlockModelDefinition.variant() // East
-                .with(BlockModelFields.MODEL, southModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
-            .select(RailShape.EAST_WEST, false, true, true, BlockModelDefinition.variant() // East
-                .with(BlockModelFields.MODEL, southSwitchedModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
-            .select(RailShape.EAST_WEST, true, true, false, BlockModelDefinition.variant() // West
-                .with(BlockModelFields.MODEL, southModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
-            .select(RailShape.EAST_WEST, true, true, true, BlockModelDefinition.variant() // West
-                .with(BlockModelFields.MODEL, southSwitchedModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))));
+            .select(RailShape.NORTH_SOUTH, false, false, false, Variant.variant() // North
+                .with(VariantProperties.MODEL, northModel))
+            .select(RailShape.NORTH_SOUTH, false, false, true, Variant.variant() // North
+                .with(VariantProperties.MODEL, northSwitchedModel))
+            .select(RailShape.NORTH_SOUTH, true, false, false, Variant.variant() // South
+                .with(VariantProperties.MODEL, southModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+            .select(RailShape.NORTH_SOUTH, true, false, true, Variant.variant() // South
+                .with(VariantProperties.MODEL, southSwitchedModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+            .select(RailShape.NORTH_SOUTH, false, true, false, Variant.variant() // North
+                .with(VariantProperties.MODEL, southModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+            .select(RailShape.NORTH_SOUTH, false, true, true, Variant.variant() // North
+                .with(VariantProperties.MODEL, southSwitchedModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+            .select(RailShape.NORTH_SOUTH, true, true, false, Variant.variant() // South
+                .with(VariantProperties.MODEL, southModel))
+            .select(RailShape.NORTH_SOUTH, true, true, true, Variant.variant() // South
+                .with(VariantProperties.MODEL, southSwitchedModel))
+            .select(RailShape.EAST_WEST, false, false, false, Variant.variant() // East
+                .with(VariantProperties.MODEL, northModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+            .select(RailShape.EAST_WEST, false, false, true, Variant.variant() // East
+                .with(VariantProperties.MODEL, northSwitchedModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+            .select(RailShape.EAST_WEST, true, false, false, Variant.variant() // West
+                .with(VariantProperties.MODEL, northModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+            .select(RailShape.EAST_WEST, true, false, true, Variant.variant() // West
+                .with(VariantProperties.MODEL, northSwitchedModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+            .select(RailShape.EAST_WEST, false, true, false, Variant.variant() // East
+                .with(VariantProperties.MODEL, southModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+            .select(RailShape.EAST_WEST, false, true, true, Variant.variant() // East
+                .with(VariantProperties.MODEL, southSwitchedModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+            .select(RailShape.EAST_WEST, true, true, false, Variant.variant() // West
+                .with(VariantProperties.MODEL, southModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+            .select(RailShape.EAST_WEST, true, true, true, Variant.variant() // West
+                .with(VariantProperties.MODEL, southSwitchedModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
 
     this.createSimpleFlatItemModel(block, "_north");
   }
 
   private void createWyeTrack(Block block) {
     ResourceLocation eastModel = this.createSuffixedVariant(block, "_east",
-        StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
     ResourceLocation eastSwitchedModel = this.createSuffixedVariant(block, "_east_switched",
-        StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
     ResourceLocation westModel = this.createSuffixedVariant(block, "_west",
-        StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
     ResourceLocation westSwitchedModel = this.createSuffixedVariant(block, "_west_switched",
-        StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
 
-    this.blockStateOutput.accept(FinishedVariantBlockState.multiVariant(block)
-        .with(BlockStateVariantBuilder.properties(SwitchTrackBlock.SHAPE,
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.properties(SwitchTrackBlock.SHAPE,
             ReversibleOutfittedTrackBlock.REVERSED, SwitchTrackBlock.SWITCHED)
             .generate((railShape, reversed, switched) -> {
               Direction facing = ReversibleOutfittedTrackBlock.getDirection(railShape, reversed);
               switch (facing) {
                 case NORTH:
-                  return BlockModelDefinition.variant()
-                      .with(BlockModelFields.MODEL, switched ? eastSwitchedModel : eastModel)
-                      .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90);
+                  return Variant.variant()
+                      .with(VariantProperties.MODEL, switched ? eastSwitchedModel : eastModel)
+                      .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
                 case SOUTH:
-                  return BlockModelDefinition.variant()
-                      .with(BlockModelFields.MODEL, switched ? westSwitchedModel : westModel)
-                      .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90);
+                  return Variant.variant()
+                      .with(VariantProperties.MODEL, switched ? westSwitchedModel : westModel)
+                      .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
                 case EAST:
-                  return BlockModelDefinition.variant()
-                      .with(BlockModelFields.MODEL, switched ? westSwitchedModel : westModel);
+                  return Variant.variant()
+                      .with(VariantProperties.MODEL, switched ? westSwitchedModel : westModel);
                 case WEST:
-                  return BlockModelDefinition.variant()
-                      .with(BlockModelFields.MODEL, switched ? eastSwitchedModel : eastModel);
+                  return Variant.variant()
+                      .with(VariantProperties.MODEL, switched ? eastSwitchedModel : eastModel);
                 default:
                   throw new UnsupportedOperationException();
               }
@@ -828,18 +828,18 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createLockingTrack(Block block, ResourceLocation trackModel) {
-    FinishedMultiPartBlockState blockState = FinishedMultiPartBlockState.multiPart(block)
+    MultiPartGenerator blockState = MultiPartGenerator.multiPart(block)
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModel))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModel))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90));
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
 
     this.addLockingMode(LockingMode.LOCKDOWN, this.lockingTrackLockdownModel,
         this.lockingTrackActiveLockdownModel,
@@ -868,80 +868,80 @@ public class RailcraftBlockModelProvider {
   }
 
   private void addLockingMode(LockingMode lockingMode, ResourceLocation model,
-      ResourceLocation poweredModel, FinishedMultiPartBlockState blockState) {
+      ResourceLocation poweredModel, MultiPartGenerator blockState) {
     blockState
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
                 .term(LockingTrackBlock.POWERED, false)
                 .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, model))
+            Variant.variant()
+                .with(VariantProperties.MODEL, model))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
                 .term(LockingTrackBlock.POWERED, true)
                 .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, poweredModel))
+            Variant.variant()
+                .with(VariantProperties.MODEL, poweredModel))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
                 .term(LockingTrackBlock.POWERED, false)
                 .term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, model)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, model)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
                 .term(LockingTrackBlock.POWERED, true)
                 .term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, poweredModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90));
+            Variant.variant()
+                .with(VariantProperties.MODEL, poweredModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
   }
 
   private void createBufferStopTrack(Block block, ResourceLocation trackModel) {
-    this.blockStateOutput.accept(FinishedMultiPartBlockState.multiPart(block)
+    this.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false), // North
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, Models.BUFFER_STOP))
+            Variant.variant()
+                .with(VariantProperties.MODEL, Models.BUFFER_STOP))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true), // South
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, Models.BUFFER_STOP)
-                .with(BlockModelFields.Y_ROT, Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, Models.BUFFER_STOP)
+                .with(VariantProperties.Y_ROT, Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false), // East
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, Models.BUFFER_STOP)
-                .with(BlockModelFields.Y_ROT, Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, Models.BUFFER_STOP)
+                .with(VariantProperties.Y_ROT, Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true), // West
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, Models.BUFFER_STOP)
-                .with(BlockModelFields.Y_ROT, Rotation.R270))
+            Variant.variant()
+                .with(VariantProperties.MODEL, Models.BUFFER_STOP)
+                .with(VariantProperties.Y_ROT, Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModel))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModel))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModel)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90)));
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModel)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
 
     this.createSimpleFlatItemModel(block.asItem());
   }
@@ -950,121 +950,121 @@ public class RailcraftBlockModelProvider {
       StraightTrackModels trackModels, StraightTrackModels trackKitModels,
       StraightTrackModels activeTrackKitModels) {
 
-    FinishedMultiPartBlockState blockState = FinishedMultiPartBlockState.multiPart(block)
+    MultiPartGenerator blockState = MultiPartGenerator.multiPart(block)
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, activeTrackKitModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, activeTrackKitModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, activeTrackKitModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90));
+            Variant.variant()
+                .with(VariantProperties.MODEL, activeTrackKitModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
 
     if (allowedOnSlopes) {
       blockState
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, trackModels.getRaisedNorthEastModel()))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel()))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, trackModels.getRaisedSouthWestModel()))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel()))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, trackModels.getRaisedNorthEastModel())
-                  .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel())
+                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, trackModels.getRaisedSouthWestModel())
-                  .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel())
+                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(PoweredOutfittedTrackBlock.POWERED, false)
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel()))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, trackKitModels.getRaisedNorthEastModel()))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(PoweredOutfittedTrackBlock.POWERED, false)
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel()))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, trackKitModels.getRaisedSouthWestModel()))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(PoweredOutfittedTrackBlock.POWERED, false)
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel())
-                  .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, trackKitModels.getRaisedNorthEastModel())
+                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(PoweredOutfittedTrackBlock.POWERED, false)
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel())
-                  .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, trackKitModels.getRaisedSouthWestModel())
+                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(PoweredOutfittedTrackBlock.POWERED, true)
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, activeTrackKitModels.getRaisedNorthEastModel()))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, activeTrackKitModels.getRaisedNorthEastModel()))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(PoweredOutfittedTrackBlock.POWERED, true)
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, activeTrackKitModels.getRaisedSouthWestModel()))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, activeTrackKitModels.getRaisedSouthWestModel()))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(PoweredOutfittedTrackBlock.POWERED, true)
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, activeTrackKitModels.getRaisedNorthEastModel())
-                  .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+              Variant.variant()
+                  .with(VariantProperties.MODEL, activeTrackKitModels.getRaisedNorthEastModel())
+                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
           .with(
-              IMultiPartPredicateBuilder.condition()
+              Condition.condition()
                   .term(PoweredOutfittedTrackBlock.POWERED, true)
                   .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-              BlockModelDefinition.variant()
-                  .with(BlockModelFields.MODEL, activeTrackKitModels.getRaisedSouthWestModel())
-                  .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90));
+              Variant.variant()
+                  .with(VariantProperties.MODEL, activeTrackKitModels.getRaisedSouthWestModel())
+                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
     }
 
     this.blockStateOutput.accept(blockState);
@@ -1073,190 +1073,190 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createControlTrack(Block block, StraightTrackModels trackModels) {
-    this.blockStateOutput.accept(FinishedMultiPartBlockState.multiPart(block)
+    this.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.or(
-                IMultiPartPredicateBuilder.condition()
+            Condition.or(
+                Condition.condition()
                     .term(PoweredOutfittedTrackBlock.POWERED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.or(
-                IMultiPartPredicateBuilder.condition()
+            Condition.or(
+                Condition.condition()
                     .term(PoweredOutfittedTrackBlock.POWERED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedNorthEastModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedSouthWestModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedNorthEastModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getRaisedNorthEastModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedSouthWestModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getRaisedSouthWestModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getRaisedNorthEastModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
                 .term(ControlTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getRaisedSouthWestModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.or(
-                IMultiPartPredicateBuilder.condition()
+            Condition.or(
+                Condition.condition()
                     .term(PoweredOutfittedTrackBlock.POWERED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getRaisedSouthWestModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.or(
-                IMultiPartPredicateBuilder.condition()
+            Condition.or(
+                Condition.condition()
                     .term(PoweredOutfittedTrackBlock.POWERED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getRaisedNorthEastModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.or(
-                IMultiPartPredicateBuilder.condition()
+            Condition.or(
+                Condition.condition()
                     .term(PoweredOutfittedTrackBlock.POWERED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getRaisedSouthWestModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.or(
-                IMultiPartPredicateBuilder.condition()
+            Condition.or(
+                Condition.condition()
                     .term(PoweredOutfittedTrackBlock.POWERED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-                IMultiPartPredicateBuilder.condition()
+                Condition.condition()
                     .term(ControlTrackBlock.REVERSED, true)
                     .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270)));
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getRaisedNorthEastModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
 
     this.createSimpleFlatItemModel(block.asItem());
   }
 
   private void createTransitionTrack(Block block, StraightTrackModels trackModels) {
-    FinishedMultiPartBlockState blockState = FinishedMultiPartBlockState.multiPart(block)
+    MultiPartGenerator blockState = MultiPartGenerator.multiPart(block)
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedNorthEastModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedSouthWestModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90));
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
 
     this.addTransitionVariants(blockState, false, this.transitionTrackModels);
     this.addTransitionVariants(blockState, true, this.activeTransitionTrackModels);
@@ -1266,157 +1266,157 @@ public class RailcraftBlockModelProvider {
     this.createSimpleFlatItemModel(block.asItem());
   }
 
-  private void addTransitionVariants(FinishedMultiPartBlockState blockState, boolean powered,
+  private void addTransitionVariants(MultiPartGenerator blockState, boolean powered,
       StraightTrackModels trackKitModels) {
     blockState
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getRaisedNorthEastModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getRaisedSouthWestModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getRaisedNorthEastModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getRaisedSouthWestModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getRaisedSouthWestModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getRaisedNorthEastModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getRaisedSouthWestModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, powered)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackKitModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270));
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackKitModels.getRaisedNorthEastModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
   }
 
   private void createGatedTrack(Block block, StraightTrackModels trackModels) {
     ResourceLocation closedGateModel =
-        ModelsResourceUtil.getModelLocation(Blocks.OAK_FENCE_GATE);
+        ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE);
     ResourceLocation openGateModel =
-        ModelsResourceUtil.getModelLocation(Blocks.OAK_FENCE_GATE, "_open");
+        ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_open");
     ResourceLocation closedWallGateModel =
-        ModelsResourceUtil.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall");
+        ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall");
     ResourceLocation openWallGateModel =
-        ModelsResourceUtil.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall_open");
+        ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall_open");
 
-    FinishedMultiPartBlockState blockState = FinishedMultiPartBlockState.multiPart(block)
+    MultiPartGenerator blockState = MultiPartGenerator.multiPart(block)
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(GatedTrackBlock.ONE_WAY, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(GatedTrackBlock.ONE_WAY, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(GatedTrackBlock.ONE_WAY, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(GatedTrackBlock.ONE_WAY, true)
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.controlTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270));
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.controlTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
 
     this.addGateVariants(blockState, false, false, closedGateModel);
     this.addGateVariants(blockState, true, false, openGateModel);
@@ -1428,387 +1428,387 @@ public class RailcraftBlockModelProvider {
     this.createSimpleFlatItemModel(block.asItem());
   }
 
-  private void addGateVariants(FinishedMultiPartBlockState blockState, boolean open, boolean inWall,
+  private void addGateVariants(MultiPartGenerator blockState, boolean open, boolean inWall,
       ResourceLocation model) {
     blockState
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false) // North
                 .term(GatedTrackBlock.OPEN, open)
                 .term(GatedTrackBlock.IN_WALL, inWall),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, model)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, model)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true) // South
                 .term(GatedTrackBlock.OPEN, open)
                 .term(GatedTrackBlock.IN_WALL, inWall),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, model))
+            Variant.variant()
+                .with(VariantProperties.MODEL, model))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false) // East
                 .term(GatedTrackBlock.OPEN, open)
                 .term(GatedTrackBlock.IN_WALL, inWall),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, model)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+            Variant.variant()
+                .with(VariantProperties.MODEL, model)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true) // West
                 .term(GatedTrackBlock.OPEN, open)
                 .term(GatedTrackBlock.IN_WALL, inWall),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, model)
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90));
+            Variant.variant()
+                .with(VariantProperties.MODEL, model)
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
   }
 
   private void createDetectorTrack(Block block, StraightTrackModels trackModels) {
-    this.blockStateOutput.accept(FinishedMultiPartBlockState.multiPart(block)
+    this.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedNorthEastModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedSouthWestModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, trackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.detectorTrackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.detectorTrackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.detectorTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.detectorTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.detectorTrackModels.getRaisedNorthEastModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.detectorTrackModels.getRaisedNorthEastModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.detectorTrackModels.getRaisedSouthWestModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.detectorTrackModels.getRaisedSouthWestModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.detectorTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.detectorTrackModels.getRaisedNorthEastModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.detectorTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.detectorTrackModels.getRaisedSouthWestModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.activeDetectorTrackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.activeDetectorTrackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.activeDetectorTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.activeDetectorTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeDetectorTrackModels.getRaisedNorthEastModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeDetectorTrackModels.getRaisedSouthWestModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeDetectorTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeDetectorTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.travelDetectorTrackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.travelDetectorTrackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.travelDetectorTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.travelDetectorTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.travelDetectorTrackModels.getRaisedNorthEastModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.travelDetectorTrackModels.getRaisedSouthWestModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.travelDetectorTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.travelDetectorTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.activeTravelDetectotTrackModels.getFlatModel()))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.activeTravelDetectotTrackModels.getFlatModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.activeTravelDetectotTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.activeTravelDetectotTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeTravelDetectotTrackModels.getRaisedNorthEastModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeTravelDetectotTrackModels.getRaisedSouthWestModel()))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeTravelDetectotTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeTravelDetectotTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R90))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.travelDetectorTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.travelDetectorTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.travelDetectorTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.travelDetectorTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.travelDetectorTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.travelDetectorTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.travelDetectorTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, false),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.travelDetectorTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.activeTravelDetectotTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.activeTravelDetectotTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL, this.activeTravelDetectotTrackModels.getFlatModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+            Variant.variant()
+                .with(VariantProperties.MODEL, this.activeTravelDetectotTrackModels.getFlatModel())
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeTravelDetectotTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeTravelDetectotTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R180))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeTravelDetectotTrackModels.getRaisedSouthWestModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270))
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
         .with(
-            IMultiPartPredicateBuilder.condition()
+            Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
                 .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
                 .term(DetectorTrackBlock.POWERED, true),
-            BlockModelDefinition.variant()
-                .with(BlockModelFields.MODEL,
+            Variant.variant()
+                .with(VariantProperties.MODEL,
                     this.activeTravelDetectotTrackModels.getRaisedNorthEastModel())
-                .with(BlockModelFields.Y_ROT, BlockModelFields.Rotation.R270)));
+                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
 
     this.createSimpleFlatItemModel(block.asItem());
   }
 
   private ResourceLocation createPassiveRail(String name) {
-    return this.createVariant(name, StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+    return this.createVariant(name, ModelTemplates.RAIL_FLAT, TextureMapping::rail);
   }
 
   private ResourceLocation createActiveRail(String name) {
-    return this.createVariant(name + "_on", StockModelShapes.RAIL_FLAT, ModelTextures::rail);
+    return this.createVariant(name + "_on", ModelTemplates.RAIL_FLAT, TextureMapping::rail);
   }
 
   private StraightTrackModels createOutfittedTrackModels(Block block) {
@@ -1819,18 +1819,18 @@ public class RailcraftBlockModelProvider {
     return new StraightTrackModels()
         .setFlatModel(this.createPassiveRail(name))
         .setRaisedNorthEastModel(
-            this.createVariant(name, StockModelShapes.RAIL_RAISED_NE, ModelTextures::rail))
+            this.createVariant(name, ModelTemplates.RAIL_RAISED_NE, TextureMapping::rail))
         .setRaisedSouthWestModel(
-            this.createVariant(name, StockModelShapes.RAIL_RAISED_SW, ModelTextures::rail));
+            this.createVariant(name, ModelTemplates.RAIL_RAISED_SW, TextureMapping::rail));
   }
 
   private StraightTrackModels createActiveTrackModels(String name) {
     return new StraightTrackModels()
         .setFlatModel(this.createActiveRail(name))
         .setRaisedNorthEastModel(this.createVariant(name + "_on",
-            StockModelShapes.RAIL_RAISED_NE, ModelTextures::rail))
+            ModelTemplates.RAIL_RAISED_NE, TextureMapping::rail))
         .setRaisedSouthWestModel(this.createVariant(name + "_on",
-            StockModelShapes.RAIL_RAISED_SW, ModelTextures::rail));
+            ModelTemplates.RAIL_RAISED_SW, TextureMapping::rail));
   }
 
   private class StraightTrackModels {

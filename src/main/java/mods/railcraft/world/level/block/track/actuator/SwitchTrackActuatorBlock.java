@@ -3,31 +3,32 @@ package mods.railcraft.world.level.block.track.actuator;
 import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ComparatorBlock;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ComparatorBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterLoggable {
+public class SwitchTrackActuatorBlock extends HorizontalDirectionalBlock
+    implements SimpleWaterloggedBlock {
 
   public static final EnumProperty<ArrowDirection> RED_ARROW_DIRECTION =
       EnumProperty.create("red_flag", ArrowDirection.class);
@@ -44,9 +45,9 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
       box(0.0D, 0.0D, 6.0D, 16.0D, 3.0D, 10.0D);
 
   private static final VoxelShape NORTH_SOUTH_SHAPE =
-      VoxelShapes.or(BASE_SHAPE, NORTH_SOUTH_WINGS_SHAPE, POST_SHAPE);
+      Shapes.or(BASE_SHAPE, NORTH_SOUTH_WINGS_SHAPE, POST_SHAPE);
   private static final VoxelShape EAST_WEST_SHAPE =
-      VoxelShapes.or(BASE_SHAPE, EAST_WEST_WINGS_SHAPE, POST_SHAPE);
+      Shapes.or(BASE_SHAPE, EAST_WEST_WINGS_SHAPE, POST_SHAPE);
 
 
   public SwitchTrackActuatorBlock(Properties properties) {
@@ -59,12 +60,12 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(FACING, RED_ARROW_DIRECTION, WHITE_ARROW_DIRECTION, SWITCHED, WATERLOGGED);
   }
 
   @Override
-  public boolean propagatesSkylightDown(BlockState state, IBlockReader level, BlockPos pos) {
+  public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
     return !state.getValue(WATERLOGGED);
   }
 
@@ -75,10 +76,10 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
   }
 
   @Override
-  public BlockState getStateForPlacement(BlockItemUseContext context) {
-    IBlockReader level = context.getLevel();
-    BlockPos pos = context.getClickedPos();
-    FluidState fluidState = level.getFluidState(pos);
+  public BlockState getStateForPlacement(BlockPlaceContext context) {
+    var level = context.getLevel();
+    var pos = context.getClickedPos();
+    var fluidState = level.getFluidState(pos);
     return this.defaultBlockState()
         .setValue(FACING, Direction.Plane.HORIZONTAL.stream()
             .filter(side -> level.getBlockState(pos.relative(side))
@@ -90,19 +91,18 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
 
   @Override
   public BlockState updateShape(BlockState state, Direction direction,
-      BlockState newState, IWorld world, BlockPos pos, BlockPos newPos) {
+      BlockState newState, LevelAccessor level, BlockPos pos, BlockPos newPos) {
     if (state.getValue(WATERLOGGED)) {
-      world.getLiquidTicks().scheduleTick(pos, Fluids.WATER,
-          Fluids.WATER.getTickDelay(world));
+      level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
     }
-    return world.getBlockState(newPos).getBlock() instanceof SwitchTrackBlock
+    return level.getBlockState(newPos).getBlock() instanceof SwitchTrackBlock
         ? state.setValue(FACING, direction)
         : state;
   }
 
   @Override
-  public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos,
-      ISelectionContext context) {
+  public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
+      CollisionContext context) {
     return state.getValue(FACING).getAxis() == Direction.Axis.Z
         ? NORTH_SOUTH_SHAPE
         : EAST_WEST_SHAPE;
@@ -114,12 +114,12 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState state, World level, BlockPos pos) {
+  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
     return isSwitched(state) ? PowerUtil.FULL_POWER : PowerUtil.NO_POWER;
   }
 
   @Override
-  public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
+  public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
     return canSupportRigidBlock(level, pos.below());
   }
 
@@ -127,7 +127,7 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
     return blockState.getValue(SWITCHED);
   }
 
-  public static void setSwitched(BlockState blockState, World level, BlockPos blockPos,
+  public static void setSwitched(BlockState blockState, Level level, BlockPos blockPos,
       boolean switched) {
     if (blockState.getValue(SWITCHED) == switched) {
       return;
@@ -135,10 +135,10 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
     level.setBlockAndUpdate(blockPos, blockState.setValue(SWITCHED, switched));
     if (switched) {
       level.playSound(null, blockPos, SoundEvents.PISTON_CONTRACT,
-          SoundCategory.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
+          SoundSource.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
     } else {
       level.playSound(null, blockPos, SoundEvents.PISTON_EXTEND,
-          SoundCategory.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
+          SoundSource.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
     }
     Direction.Plane.HORIZONTAL.forEach(direction -> {
       BlockPos neighborPos = blockPos.relative(direction);
@@ -156,7 +156,7 @@ public class SwitchTrackActuatorBlock extends HorizontalBlock implements IWaterL
     return blockState.getValue(WHITE_ARROW_DIRECTION);
   }
 
-  public static void updateArrowDirections(BlockState blockState, World level, BlockPos blockPos,
+  public static void updateArrowDirections(BlockState blockState, Level level, BlockPos blockPos,
       ArrowDirection redArrowDirection, ArrowDirection whiteArrowDirection) {
     BlockState newState = blockState;
     boolean changed = false;

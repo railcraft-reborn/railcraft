@@ -1,29 +1,24 @@
 package mods.railcraft.client.renderer.blockentity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DualSignalBlockEntity;
-import mods.railcraft.world.level.block.signal.AbstractSignalBlock;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.Direction;
+import mods.railcraft.world.level.block.signal.SignalBlock;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.Direction;
 
 public final class DualSignalRenderer<T extends AbstractSignalBlockEntity & DualSignalBlockEntity>
     extends AbstractSignalRenderer<T> {
 
-  public DualSignalRenderer(TileEntityRendererDispatcher disptacher) {
-    super(disptacher);
-  }
-
   @Override
   public void render(
-      T blockEntity, float partialTicks, MatrixStack matrixStack,
-      IRenderTypeBuffer renderTypeBuffer, int packedLight, int packedOverlay) {
+      T blockEntity, float partialTicks, PoseStack matrixStack,
+      MultiBufferSource renderTypeBuffer, int packedLight, int packedOverlay) {
     super.render(blockEntity, partialTicks, matrixStack, renderTypeBuffer, packedLight,
         packedOverlay);
 
-    Direction direction = blockEntity.getBlockState().getValue(AbstractSignalBlock.FACING);
+    Direction direction = blockEntity.getBlockState().getValue(SignalBlock.FACING);
     matrixStack.pushPose();
     {
       double zOffset = -0.175D;

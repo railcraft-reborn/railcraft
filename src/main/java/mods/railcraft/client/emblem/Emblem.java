@@ -1,6 +1,6 @@
 package mods.railcraft.client.emblem;
 
-import net.minecraft.item.Rarity;
+import net.minecraft.world.item.Rarity;
 
 /**
  *

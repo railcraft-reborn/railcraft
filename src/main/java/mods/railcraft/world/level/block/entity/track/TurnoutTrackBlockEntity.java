@@ -7,17 +7,20 @@ import mods.railcraft.world.entity.cart.CartTools;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TurnoutTrackBlockEntity extends SwitchTrackBlockEntity {
 
-  public TurnoutTrackBlockEntity() {
-    this(RailcraftBlockEntityTypes.TURNOUT_TRACK.get());
+  public TurnoutTrackBlockEntity(BlockPos blockPos, BlockState blockState) {
+    this(RailcraftBlockEntityTypes.TURNOUT_TRACK.get(), blockPos, blockState);
   }
 
-  public TurnoutTrackBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public TurnoutTrackBlockEntity(BlockEntityType<?> type, BlockPos blockPos,
+      BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
   @Override

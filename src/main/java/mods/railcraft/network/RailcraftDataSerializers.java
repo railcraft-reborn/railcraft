@@ -4,11 +4,11 @@ import java.util.Arrays;
 import java.util.Optional;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Railcraft;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.network.datasync.IDataSerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.DataSerializerEntry;
@@ -21,15 +21,15 @@ import net.minecraftforge.registries.IForgeRegistry;
  */
 public class RailcraftDataSerializers {
 
-  public static final IDataSerializer<FluidStack> FLUID_STACK =
-      new IDataSerializer<FluidStack>() {
+  public static final EntityDataSerializer<FluidStack> FLUID_STACK =
+      new EntityDataSerializer<FluidStack>() {
         @Override
-        public final void write(PacketBuffer buf, FluidStack value) {
+        public final void write(FriendlyByteBuf buf, FluidStack value) {
           buf.writeFluidStack(value);
         }
 
         @Override
-        public final FluidStack read(PacketBuffer buf) {
+        public final FluidStack read(FriendlyByteBuf buf) {
           return buf.readFluidStack();
         }
 
@@ -39,15 +39,15 @@ public class RailcraftDataSerializers {
         }
       };
 
-  public static final IDataSerializer<byte[]> BYTE_ARRAY =
-      new IDataSerializer<byte[]>() {
+  public static final EntityDataSerializer<byte[]> BYTE_ARRAY =
+      new EntityDataSerializer<byte[]>() {
         @Override
-        public void write(PacketBuffer packetBuffer, byte[] bytes) {
+        public void write(FriendlyByteBuf packetBuffer, byte[] bytes) {
           packetBuffer.writeByteArray(bytes);
         }
 
         @Override
-        public byte[] read(PacketBuffer packetBuffer) {
+        public byte[] read(FriendlyByteBuf packetBuffer) {
           return packetBuffer.readByteArray();
         }
 
@@ -57,10 +57,10 @@ public class RailcraftDataSerializers {
         }
       };
 
-  public static final IDataSerializer<Optional<GameProfile>> OPTIONAL_GAME_PROFILE =
-      new IDataSerializer<Optional<GameProfile>>() {
+  public static final EntityDataSerializer<Optional<GameProfile>> OPTIONAL_GAME_PROFILE =
+      new EntityDataSerializer<Optional<GameProfile>>() {
         @Override
-        public void write(PacketBuffer packetBuffer, Optional<GameProfile> optional) {
+        public void write(FriendlyByteBuf packetBuffer, Optional<GameProfile> optional) {
           if (optional.isPresent()) {
             packetBuffer.writeBoolean(false);
             GameProfile gameProfile = optional.get();
@@ -72,7 +72,7 @@ public class RailcraftDataSerializers {
         }
 
         @Override
-        public Optional<GameProfile> read(PacketBuffer packetBuffer) {
+        public Optional<GameProfile> read(FriendlyByteBuf packetBuffer) {
           return packetBuffer.readBoolean() ? Optional.empty()
               : Optional.of(new GameProfile(packetBuffer.readUUID(), packetBuffer.readUtf(16)));
         }
@@ -92,18 +92,18 @@ public class RailcraftDataSerializers {
   }
 
   private static void register(IForgeRegistry<DataSerializerEntry> registry,
-      IDataSerializer<?> serializer, String name) {
+      EntityDataSerializer<?> serializer, String name) {
     registry.register(new DataSerializerEntry(serializer)
         .setRegistryName(new ResourceLocation(Railcraft.ID, name)));
   }
 
-  public static <T extends Enum<T>> void setEnum(EntityDataManager dataManager,
-      DataParameter<Byte> parameter, Enum<T> value) {
+  public static <T extends Enum<T>> void setEnum(SynchedEntityData dataManager,
+      EntityDataAccessor<Byte> parameter, Enum<T> value) {
     dataManager.set(parameter, (byte) value.ordinal());
   }
 
-  public static <T extends Enum<T>> T getEnum(EntityDataManager dataManager,
-      DataParameter<Byte> parameter, T[] values) {
+  public static <T extends Enum<T>> T getEnum(SynchedEntityData dataManager,
+      EntityDataAccessor<Byte> parameter, T[] values) {
     return values[dataManager.get(parameter)];
   }
 }

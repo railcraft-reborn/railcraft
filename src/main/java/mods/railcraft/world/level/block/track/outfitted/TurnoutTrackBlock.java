@@ -3,22 +3,26 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.world.level.block.entity.track.SwitchTrackBlockEntity;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.RailShape;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
-public class TurnoutTrackBlock extends SwitchTrackBlock {
+public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
 
   public static final BooleanProperty MIRRORED = BooleanProperty.create("mirrored");
 
@@ -32,32 +36,27 @@ public class TurnoutTrackBlock extends SwitchTrackBlock {
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(MIRRORED);
   }
 
   @Override
-  public SwitchTrackBlockEntity createTileEntity(BlockState state, IBlockReader reader) {
-    return new TurnoutTrackBlockEntity();
-  }
-
-  @Override
-  public BlockState getStateForPlacement(BlockItemUseContext context) {
+  public BlockState getStateForPlacement(BlockPlaceContext context) {
     BlockState blockState = super.getStateForPlacement(context);
     BlockPos blockPos = context.getClickedPos();
     return blockState.setValue(MIRRORED,
         this.determineMirrored(context.getLevel(), blockPos, getFacing(blockState)));
   }
 
-  private boolean determineMirrored(World level, BlockPos blockPos, Direction facing) {
+  private boolean determineMirrored(Level level, BlockPos blockPos, Direction facing) {
     return level
         .getBlockState(blockPos.relative(facing.getCounterClockWise()))
         .is(BlockTags.RAILS);
   }
 
   @Override
-  public void neighborChanged(BlockState blockState, World level, BlockPos pos, Block neighborBlock,
+  public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
       BlockPos neighborPos, boolean moved) {
     if (!level.isClientSide()) {
       level.setBlockAndUpdate(pos,
@@ -67,8 +66,8 @@ public class TurnoutTrackBlock extends SwitchTrackBlock {
   }
 
   @Override
-  public RailShape getRailDirection(BlockState blockState, IBlockReader world, BlockPos pos,
-      @Nullable AbstractMinecartEntity cart) {
+  public RailShape getRailDirection(BlockState blockState, BlockGetter world, BlockPos pos,
+      @Nullable AbstractMinecart cart) {
     final boolean mirrored = isMirrored(blockState);
     if (isSwitched(blockState)) {
       switch (getFacing(blockState)) {
@@ -85,6 +84,28 @@ public class TurnoutTrackBlock extends SwitchTrackBlock {
       }
     }
     return getRailShapeRaw(blockState);
+  }
+
+  @Override
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new TurnoutTrackBlockEntity(blockPos, blockState);
+  }
+
+  @Nullable
+  @Override
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
+      BlockEntityType<T> type) {
+    return level.isClientSide() ? null
+        : createTickerHelper(type, RailcraftBlockEntityTypes.TURNOUT_TRACK.get(),
+            TurnoutTrackBlockEntity::serverTick);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nullable
+  protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
+      BlockEntityType<A> type, BlockEntityType<E> expectedType,
+      BlockEntityTicker<? super E> ticker) {
+    return expectedType == type ? (BlockEntityTicker<A>) ticker : null;
   }
 
   public static boolean isMirrored(BlockState blockState) {

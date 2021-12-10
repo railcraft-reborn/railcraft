@@ -10,7 +10,7 @@ package mods.railcraft.api.signal;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Stream;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 /**
  * This interface represent an object that can be paired with another object.

@@ -1,21 +1,23 @@
 package mods.railcraft.world.level.block.entity;
 
-import mods.railcraft.util.inventory.IInventoryManipulator;
-import net.minecraft.inventory.container.Slot;
+import mods.railcraft.util.container.ContainerManipulator;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ItemLoaderBlockEntity extends ItemManipulatorBlockEntity {
 
-  public ItemLoaderBlockEntity() {
-    super(RailcraftBlockEntityTypes.ITEM_LOADER.get());
+  public ItemLoaderBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.ITEM_LOADER.get(), blockPos, blockState);
   }
 
   @Override
-  public IInventoryManipulator getSource() {
+  public ContainerManipulator getSource() {
     return this.chests;
   }
 
   @Override
-  public IInventoryManipulator getDestination() {
+  public ContainerManipulator getDestination() {
     return this.cart;
   }
 

@@ -8,23 +8,23 @@ import javax.annotation.Nullable;
 import mods.railcraft.util.HostEffects;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.fluid.FluidTools;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public class RitualBlockEntity extends RailcraftTickableBlockEntity {
+public class RitualBlockEntity extends RailcraftBlockEntity {
 
   public static final int[] REBUILD_DELAY = Util.make(new int[8], delay -> {
     delay[0] = 128;
@@ -44,47 +44,50 @@ public class RitualBlockEntity extends RailcraftTickableBlockEntity {
   public long rotationYaw, preRotationYaw;
   public float yOffset = -2, preYOffset = -2;
   private int rebuildDelay;
-  private ITextComponent itemName;
+  private Component itemName;
 
-  public RitualBlockEntity() {
-    super(RailcraftBlockEntityTypes.RITUAL.get());
+  private int rebuildDelayTicks;
+
+  public RitualBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.RITUAL.get(), blockPos, blockState);
   }
 
-  @Override
-  public void tick() {
-    super.tick();
-    if (this.level.isClientSide()) {
-      preRotationYaw = rotationYaw;
-      rotationYaw += 5;
-      if (rotationYaw >= 360) {
-        rotationYaw = 0;
-        preRotationYaw = rotationYaw;
+  public static void clientTick(Level level, BlockPos blockPos, BlockState blockState,
+      RitualBlockEntity blockEntity) {
+    blockEntity.preRotationYaw = blockEntity.rotationYaw;
+    blockEntity.rotationYaw += 5;
+    if (blockEntity.rotationYaw >= 360) {
+      blockEntity.rotationYaw = 0;
+      blockEntity.preRotationYaw = blockEntity.rotationYaw;
+    }
+    blockEntity.preYOffset = blockEntity.yOffset;
+    if (blockEntity.yOffset < 0) {
+      blockEntity.yOffset += 0.0625F;
+    }
+  }
+
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      RitualBlockEntity blockEntity) {
+    var firestone = RailcraftItems.REFINED_FIRESTONE.get().getDefaultInstance();
+
+    if (blockEntity.charge >= firestone.getMaxDamage()) {
+      return;
+    }
+
+    if (blockEntity.rebuildDelayTicks++ >= REBUILD_DELAY[blockEntity.rebuildDelay]) {
+      blockEntity.rebuildDelayTicks = 0;
+      blockEntity.rebuildDelay++;
+      if (blockEntity.rebuildDelay >= REBUILD_DELAY.length) {
+        blockEntity.rebuildDelay = REBUILD_DELAY.length - 1;
       }
-      preYOffset = yOffset;
-      if (yOffset < 0)
-        yOffset += 0.0625F;
-      return;
+      blockEntity.rebuildQueue();
     }
+    var index = blockEntity.getNextLavaBlock(true);
 
-    ItemStack firestone = RailcraftItems.REFINED_FIRESTONE.get().getDefaultInstance();
-
-    if (charge >= firestone.getMaxDamage())
-      return;
-
-    // if (clock % 4 == 0) {
-    if (this.clock(REBUILD_DELAY[rebuildDelay])) {
-      rebuildDelay++;
-      if (rebuildDelay >= REBUILD_DELAY.length)
-        rebuildDelay = REBUILD_DELAY.length - 1;
-      rebuildQueue();
+    if (index != null && blockEntity.coolLava(index)) {
+      blockEntity.charge++;
+      blockEntity.rebuildDelay = 0;
     }
-    BlockPos index = getNextLavaBlock(true);
-
-    if (index != null && coolLava(index)) {
-      charge++;
-      rebuildDelay = 0;
-    }
-    // }
   }
 
   // logical server
@@ -93,9 +96,9 @@ public class RitualBlockEntity extends RailcraftTickableBlockEntity {
     if (Fluids.LAVA == fluid.getType()) {
       boolean placed = this.level.setBlockAndUpdate(pos, Blocks.OBSIDIAN.defaultBlockState());
       if (placed) {
-        Vector3d startPosition =
-            new Vector3d(pos.getX(), pos.getY(), pos.getZ()).add(0.5, 0.5, 0.5);
-        Vector3d endPosition = new Vector3d(this.worldPosition.getX(), this.worldPosition.getY(),
+        Vec3 startPosition =
+            new Vec3(pos.getX(), pos.getY(), pos.getZ()).add(0.5, 0.5, 0.5);
+        Vec3 endPosition = new Vec3(this.worldPosition.getX(), this.worldPosition.getY(),
             this.worldPosition.getZ()).add(0.5, 0.8, 0.5);
         HostEffects.INSTANCE.fireSparkEffect(this.level, startPosition, endPosition);
         queueAdjacent(pos);
@@ -162,30 +165,31 @@ public class RitualBlockEntity extends RailcraftTickableBlockEntity {
     }
   }
 
-  public ITextComponent getItemName() {
+  public Component getItemName() {
     return itemName;
   }
 
-  public void setItemName(ITextComponent itemName) {
+  public void setItemName(Component itemName) {
     this.itemName = itemName;
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.putShort("charge", (short) charge);
-    data.putByte("rebuildDelay", (byte) rebuildDelay);
-    if (itemName != null)
-      data.putString("itemName", ITextComponent.Serializer.toJson(itemName));
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putShort("charge", (short) this.charge);
+    tag.putByte("rebuildDelay", (byte) this.rebuildDelay);
+    if (this.itemName != null) {
+      tag.putString("itemName", Component.Serializer.toJson(this.itemName));
+    }
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    charge = data.getShort("charge");
-    rebuildDelay = data.getByte("rebuildDelay");
-    if (data.contains("itemName", Constants.NBT.TAG_STRING))
-      itemName = ITextComponent.Serializer.fromJson(data.getString("itemName"));
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.charge = tag.getShort("charge");
+    this.rebuildDelay = tag.getByte("rebuildDelay");
+    if (tag.contains("itemName", Tag.TAG_STRING)) {
+      this.itemName = Component.Serializer.fromJson(tag.getString("itemName"));
+    }
   }
 }

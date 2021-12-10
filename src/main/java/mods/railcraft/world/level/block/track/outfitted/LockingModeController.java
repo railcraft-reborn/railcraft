@@ -1,20 +1,20 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public interface LockingModeController extends INBTSerializable<CompoundNBT> {
+public interface LockingModeController extends INBTSerializable<CompoundTag> {
 
-  default void locked(AbstractMinecartEntity cart) {}
+  default void locked(AbstractMinecart cart) {}
 
-  default void passed(AbstractMinecartEntity cart) {}
+  default void passed(AbstractMinecart cart) {}
 
-  default void released(AbstractMinecartEntity cart) {}
+  default void released(AbstractMinecart cart) {}
 
-  default CompoundNBT serializeNBT() {
-    return new CompoundNBT();
+  default CompoundTag serializeNBT() {
+    return new CompoundTag();
   }
 
-  default void deserializeNBT(CompoundNBT tag) {}
+  default void deserializeNBT(CompoundTag tag) {}
 }

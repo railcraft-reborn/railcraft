@@ -3,11 +3,11 @@ package mods.railcraft.world.inventory;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import javax.annotation.Nullable;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.FormattedText;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -15,14 +15,14 @@ import net.minecraft.util.text.ITextProperties;
 public class SlotRailcraft extends Slot {
 
   @Nullable
-  protected List<? extends ITextProperties> toolTips;
+  protected List<? extends FormattedText> toolTips;
   protected boolean isPhantom;
   protected boolean canAdjustPhantom = true;
   protected boolean canShift = true;
   protected int stackLimit = -1;
   public BooleanSupplier isEnabled = () -> true;
 
-  public SlotRailcraft(IInventory iinventory, int slotIndex, int posX, int posY) {
+  public SlotRailcraft(Container iinventory, int slotIndex, int posX, int posY) {
     super(iinventory, slotIndex, posX, posY);
   }
 
@@ -40,14 +40,14 @@ public class SlotRailcraft extends Slot {
    * @return the toolTips
    */
   @Nullable
-  public List<? extends ITextProperties> getTooltip() {
+  public List<? extends FormattedText> getTooltip() {
     return toolTips;
   }
 
   /**
    * @param toolTips the tooltips to set
    */
-  public void setTooltip(@Nullable List<? extends ITextProperties> toolTips) {
+  public void setTooltip(@Nullable List<? extends FormattedText> toolTips) {
     this.toolTips = toolTips;
   }
 
@@ -91,7 +91,7 @@ public class SlotRailcraft extends Slot {
   }
 
   @Override
-  public boolean mayPickup(PlayerEntity stack) {
+  public boolean mayPickup(Player stack) {
     return !isPhantom();
   }
 

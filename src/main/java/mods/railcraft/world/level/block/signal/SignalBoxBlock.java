@@ -1,46 +1,44 @@
 package mods.railcraft.world.level.block.signal;
 
-import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FourWayBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * Created by CovertJaguar on 9/8/2016 for Railcraft.
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class SignalBoxBlock extends FourWayBlock {
+public abstract class SignalBoxBlock extends CrossCollisionBlock {
 
   private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 15, 14);
 
   public static final BooleanProperty CAP = BooleanProperty.create("cap");
 
-  private final Supplier<? extends AbstractSignalBoxBlockEntity> blockEntityFactory;
-
-  public SignalBoxBlock(Supplier<? extends AbstractSignalBoxBlockEntity> blockEntityFactory,
-      Properties properties) {
+  public SignalBoxBlock(Properties properties) {
     super(2.0F, 2.0F, 16.0F, 16.0F, 24.0F, properties);
-    this.blockEntityFactory = blockEntityFactory;
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(CAP, false)
         .setValue(NORTH, false)
@@ -51,13 +49,13 @@ public class SignalBoxBlock extends FourWayBlock {
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(NORTH, EAST, WEST, SOUTH, CAP, WATERLOGGED);
   }
 
   @Override
-  public VoxelShape getBlockSupportShape(BlockState state, IBlockReader reader, BlockPos pos) {
-    return VoxelShapes.block();
+  public VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos) {
+    return Shapes.block();
   }
 
   public static boolean isConnected(BlockState state, Direction face) {
@@ -66,7 +64,7 @@ public class SignalBoxBlock extends FourWayBlock {
   }
 
   @Override
-  public void neighborChanged(BlockState state, World level, BlockPos pos,
+  public void neighborChanged(BlockState state, Level level, BlockPos pos,
       Block neighborBlock, BlockPos neighborPos, boolean p_220069_6_) {
     LevelUtil.getBlockEntity(level, pos, AbstractSignalBoxBlockEntity.class)
         .ifPresent(AbstractSignalBoxBlockEntity::neighborChanged);
@@ -78,7 +76,7 @@ public class SignalBoxBlock extends FourWayBlock {
   }
 
   @Override
-  public int getSignal(BlockState state, IBlockReader level, BlockPos pos,
+  public int getSignal(BlockState state, BlockGetter level, BlockPos pos,
       Direction direction) {
     return LevelUtil.getBlockEntity(level, pos, AbstractSignalBoxBlockEntity.class)
         .map(blockEntity -> blockEntity.getRedstoneSignal(direction))
@@ -86,33 +84,32 @@ public class SignalBoxBlock extends FourWayBlock {
   }
 
   @Override
-  public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_,
-      ISelectionContext p_220053_4_) {
+  public VoxelShape getShape(BlockState p_220053_1_, BlockGetter p_220053_2_, BlockPos p_220053_3_,
+      CollisionContext p_220053_4_) {
     return SHAPE;
   }
 
   @Override
-  public BlockState getStateForPlacement(BlockItemUseContext context) {
-    IBlockReader level = context.getLevel();
+  public BlockState getStateForPlacement(BlockPlaceContext context) {
+    BlockGetter level = context.getLevel();
     BlockPos pos = context.getClickedPos();
     FluidState fluidState = level.getFluidState(pos);
     return this.defaultBlockState()
         .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public BlockState updateShape(BlockState blockState, Direction direction,
-      BlockState otherState, IWorld world, BlockPos pos, BlockPos otherPos) {
+      BlockState otherState, LevelAccessor level, BlockPos pos, BlockPos otherPos) {
     if (blockState.getValue(WATERLOGGED)) {
-      world.getLiquidTicks().scheduleTick(pos, Fluids.WATER,
-          Fluids.WATER.getTickDelay(world));
+      level.scheduleTick(pos, Fluids.WATER,
+          Fluids.WATER.getTickDelay(level));
     }
     return direction.getAxis().isHorizontal()
         ? blockState.setValue(PROPERTY_BY_DIRECTION.get(direction),
             attachesTo(blockState, otherState))
         : direction == Direction.UP
-            ? blockState.setValue(CAP, !otherState.isAir(world, otherPos))
+            ? blockState.setValue(CAP, !otherState.isAir())
             : blockState;
   }
 
@@ -127,6 +124,16 @@ public class SignalBoxBlock extends FourWayBlock {
     return false;
   }
 
+  @SuppressWarnings("deprecation")
+  @Override
+  public float getDestroyProgress(BlockState state, Player player, BlockGetter blockGetter,
+      BlockPos pos) {
+    return LevelUtil.getBlockEntity(blockGetter, pos, Lockable.class)
+        .filter(Lockable::isLocked)
+        .map(__ -> 0.0F)
+        .orElseGet(() -> super.getDestroyProgress(state, player, blockGetter, pos));
+  }
+
   public static boolean isAspectEmitter(BlockState blockState) {
     return blockState.is(RailcraftTags.Blocks.ASPECT_EMITTER);
   }
@@ -135,23 +142,11 @@ public class SignalBoxBlock extends FourWayBlock {
     return blockState.is(RailcraftTags.Blocks.ASPECT_RECEIVER);
   }
 
-  @Override
-  public boolean hasTileEntity(BlockState state) {
-    return true;
-  }
-
-  @Override
-  public TileEntity createTileEntity(BlockState state, IBlockReader reader) {
-    return this.blockEntityFactory.get();
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader worldIn,
-      BlockPos pos) {
-    return LevelUtil.getBlockEntity(worldIn, pos, Lockable.class)
-        .filter(Lockable::isLocked)
-        .map(__ -> 0.0F)
-        .orElseGet(() -> super.getDestroyProgress(state, player, worldIn, pos));
+  @SuppressWarnings("unchecked")
+  @Nullable
+  protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
+      BlockEntityType<A> type, BlockEntityType<E> expectedType,
+      BlockEntityTicker<? super E> ticker) {
+    return expectedType == type ? (BlockEntityTicker<A>) ticker : null;
   }
 }

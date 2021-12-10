@@ -4,11 +4,11 @@ import java.lang.ref.WeakReference;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.util.Predicates;
-import net.minecraft.enchantment.DamageEnchantment;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.Entity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.item.enchantment.DamageEnchantment;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public class RailcraftDamageEnchantment extends RailcraftToolEnchantment {
 
@@ -20,7 +20,7 @@ public class RailcraftDamageEnchantment extends RailcraftToolEnchantment {
   public RailcraftDamageEnchantment(Rarity rarity, int baseEnchantability,
       int levelEnchantability, int thresholdEnchantability,
       @Nullable Predicate<? super Entity> check, float damageBonusPerLevel) {
-    super(rarity, EquipmentSlotType.MAINHAND);
+    super(rarity, EquipmentSlot.MAINHAND);
     this.baseEnchantability = baseEnchantability;
     this.levelEnchantability = levelEnchantability;
     this.thresholdEnchantability = thresholdEnchantability;
@@ -45,7 +45,7 @@ public class RailcraftDamageEnchantment extends RailcraftToolEnchantment {
   }
 
   @Override
-  public float getDamageBonus(int lvl, CreatureAttribute creatureType) {
+  public float getDamageBonus(int lvl, MobType creatureType) {
     float modifier = 0.0f;
     if ((target != null && check.test(target.get())))
       modifier = lvl * damageBonusPerLevel;

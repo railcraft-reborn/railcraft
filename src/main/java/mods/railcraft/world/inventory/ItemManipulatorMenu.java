@@ -1,11 +1,11 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.world.level.block.entity.ItemManipulatorBlockEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.world.entity.player.Inventory;
 
 public class ItemManipulatorMenu extends ManipulatorMenu<ItemManipulatorBlockEntity> {
 
-  public ItemManipulatorMenu(int id, PlayerInventory inventory,
+  public ItemManipulatorMenu(int id, Inventory inventory,
       ItemManipulatorBlockEntity manipulator) {
     super(RailcraftMenuTypes.ITEM_MANIPULATOR.get(), id, inventory, manipulator);
   }

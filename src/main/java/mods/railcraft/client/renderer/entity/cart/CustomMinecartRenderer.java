@@ -1,45 +1,44 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import org.apache.commons.lang3.StringUtils;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.cart.IDirectionalCart;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.MinecartRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.phys.Vec3;
 
-public abstract class CustomMinecartRenderer<T extends AbstractMinecartEntity>
-    extends MinecartRenderer<T> {
+public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
+    extends EntityRenderer<T> {
 
-  public CustomMinecartRenderer(EntityRendererManager renderManager) {
-    super(renderManager);
+  public CustomMinecartRenderer(EntityRendererProvider.Context context) {
+    super(context);
   }
 
   @Override
   public void render(T cart, float yaw, float partialTicks,
-      MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight) {
-    matrixStack.pushPose();
+      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    poseStack.pushPose();
     long i = (long) cart.getId() * 493286711L;
     i = i * i * 4392167121L + i * 98761L;
     float f = (((float) (i >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
     float f1 = (((float) (i >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
     float f2 = (((float) (i >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-    matrixStack.translate((double) f, (double) f1, (double) f2);
-    double d0 = MathHelper.lerp((double) partialTicks, cart.xOld, cart.getX());
-    double d1 = MathHelper.lerp((double) partialTicks, cart.yOld, cart.getY());
-    double d2 = MathHelper.lerp((double) partialTicks, cart.zOld, cart.getZ());
-    Vector3d vector3d = cart.getPos(d0, d1, d2);
-    float pitch = MathHelper.lerp(partialTicks, cart.xRotO, cart.xRot);
+    poseStack.translate((double) f, (double) f1, (double) f2);
+    double d0 = Mth.lerp((double) partialTicks, cart.xOld, cart.getX());
+    double d1 = Mth.lerp((double) partialTicks, cart.yOld, cart.getY());
+    double d2 = Mth.lerp((double) partialTicks, cart.zOld, cart.getZ());
+    Vec3 vector3d = cart.getPos(d0, d1, d2);
+    float pitch = Mth.lerp(partialTicks, cart.xRotO, cart.getXRot());
     if (vector3d != null) {
-      Vector3d vector3d1 = cart.getPosOffs(d0, d1, d2, (double) 0.3F);
-      Vector3d vector3d2 = cart.getPosOffs(d0, d1, d2, (double) -0.3F);
+      Vec3 vector3d1 = cart.getPosOffs(d0, d1, d2, (double) 0.3F);
+      Vec3 vector3d2 = cart.getPosOffs(d0, d1, d2, (double) -0.3F);
       if (vector3d1 == null) {
         vector3d1 = vector3d;
       }
@@ -48,9 +47,9 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecartEntity>
         vector3d2 = vector3d;
       }
 
-      matrixStack.translate(vector3d.x - d0, (vector3d1.y + vector3d2.y) / 2.0D - d1,
+      poseStack.translate(vector3d.x - d0, (vector3d1.y + vector3d2.y) / 2.0D - d1,
           vector3d.z - d2);
-      Vector3d vector3d3 = vector3d2.add(-vector3d1.x, -vector3d1.y, -vector3d1.z);
+      Vec3 vector3d3 = vector3d2.add(-vector3d1.x, -vector3d1.y, -vector3d1.z);
       if (vector3d3.length() != 0.0D) {
         vector3d3 = vector3d3.normalize();
         yaw = (float) (Math.atan2(vector3d3.z, vector3d3.x) * 180.0D / Math.PI);
@@ -62,7 +61,7 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecartEntity>
       yaw += 360;
     yaw += 360;
 
-    double serverYaw = cart.yRot;
+    double serverYaw = cart.getYRot();
     serverYaw += 180;
     serverYaw %= 360;
     if (serverYaw < 0)
@@ -77,57 +76,53 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecartEntity>
     if (cart instanceof IDirectionalCart) {
       ((IDirectionalCart) cart).setRenderYaw(yaw);
     }
-    matrixStack.translate(0.0D, 0.375D, 0.0D);
+    poseStack.translate(0.0D, 0.375D, 0.0D);
 
     if (cart.hasCustomName() && !Seasons.GHOST_TRAIN.equals(cart.getCustomName().getContents())
         && !Seasons.POLAR_EXPRESS.equals(cart.getCustomName().getContents())) {
-      this.renderNameTag(cart, cart.getCustomName(), matrixStack, renderTypeBuffer, packedLight);
+      this.renderNameTag(cart, cart.getCustomName(), poseStack, bufferSource, packedLight);
     }
 
     if (cart instanceof IRoutableCart) {
       String dest = ((IRoutableCart) cart).getDestination();
       if (!StringUtils.isBlank(dest))
-        this.renderNameTag(cart, new StringTextComponent(dest), matrixStack, renderTypeBuffer,
+        this.renderNameTag(cart, new TextComponent(dest), poseStack, bufferSource,
             packedLight);
     }
 
-    matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - yaw));
-    matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-pitch));
+    poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - yaw));
+    poseStack.mulPose(Vector3f.ZP.rotationDegrees(-pitch));
 
     float roll = (float) cart.getHurtTime() - partialTicks;
     float damage = cart.getDamage() - partialTicks;
     if (damage < 0.0F)
       damage = 0.0F;
     if (roll > 0.0F) {
-      matrixStack.mulPose(Vector3f.XP.rotationDegrees(
-          MathHelper.sin(roll) * roll * damage / 10.0F * (float) cart.getHurtDir()));
+      poseStack.mulPose(Vector3f.XP.rotationDegrees(
+          Mth.sin(roll) * roll * damage / 10.0F * (float) cart.getHurtDir()));
     }
 
     boolean ghostTrain = Seasons.isGhostTrain(cart);
     float colorIntensity = ghostTrain ? 0.5F : 1.0F;
 
-    this.renderBody(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight,
+    this.renderBody(cart, partialTicks, poseStack, bufferSource, packedLight,
         colorIntensity, colorIntensity, colorIntensity, ghostTrain ? 0.8F : 1.0F);
 
     if (ghostTrain) {
-      matrixStack.pushPose();
+      poseStack.pushPose();
       {
         float scale = 1.1F;
-        matrixStack.scale(scale, scale, scale);
-        this.renderBody(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight,
+        poseStack.scale(scale, scale, scale);
+        this.renderBody(cart, partialTicks, poseStack, bufferSource, packedLight,
             1.0F, 1.0F, 1.0F, 0.4F);
       }
-      matrixStack.popPose();
+      poseStack.popPose();
     }
 
-    matrixStack.popPose();
+    poseStack.popPose();
   }
 
-  protected abstract void renderBody(T cart, float partialTicks, MatrixStack matrixStack,
-      IRenderTypeBuffer renderTypeBuffer, int packedLight,
+  protected abstract void renderBody(T cart, float partialTicks, PoseStack poseStack,
+      MultiBufferSource bufferSource, int packedLight,
       float red, float green, float blue, float alpha);
-
-  public EntityModel<T> getMinecartModel() {
-    return this.model;
-  }
 }

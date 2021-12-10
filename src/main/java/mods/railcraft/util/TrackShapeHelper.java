@@ -1,7 +1,7 @@
 package mods.railcraft.util;
 
 import javax.annotation.Nullable;
-import net.minecraft.state.properties.RailShape;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
 /**
  * Created by CovertJaguar on 3/29/2016 for Railcraft.

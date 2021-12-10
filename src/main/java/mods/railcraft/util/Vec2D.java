@@ -1,8 +1,8 @@
 package mods.railcraft.util;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.Vec3i;
 
 /**
  * A mutable 2D Vector class that supports a broader range of math operations than Minecraft's
@@ -35,11 +35,11 @@ public class Vec2D {
 
   public Vec2D() {}
 
-  public Vec2D(final Vector3i p) {
+  public Vec2D(final Vec3i p) {
     this(p.getX(), p.getZ());
   }
 
-  public Vec2D(final Vector3d p) {
+  public Vec2D(final Vec3 p) {
     this(p.x, p.z);
   }
 

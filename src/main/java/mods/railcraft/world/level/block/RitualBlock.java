@@ -1,39 +1,44 @@
 package mods.railcraft.world.level.block;
 
 import java.util.List;
+import java.util.function.Consumer;
+import javax.annotation.Nullable;
 import mods.railcraft.util.AABBFactory;
-import mods.railcraft.world.item.RefinedFirestoneItem;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.RefinedFirestoneItem;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.IBlockRenderProperties;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class RitualBlock extends ContainerBlock {
+public class RitualBlock extends BaseEntityBlock {
 
   public static final BooleanProperty CRACKED = BooleanProperty.create("cracked");
-  public static final VoxelShape SHAPE = VoxelShapes.create(
+  public static final VoxelShape SHAPE = Shapes.create(
       AABBFactory.start()
           .box()
           .expandHorizontally(-0.3)
@@ -47,20 +52,20 @@ public class RitualBlock extends ContainerBlock {
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(CRACKED);
   }
 
   @Override
-  public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos,
-      ISelectionContext context) {
+  public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos,
+      CollisionContext context) {
     return SHAPE;
   }
 
 
   @Override
-  public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world,
-      BlockPos pos, PlayerEntity player) {
+  public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter blockGetter,
+      BlockPos pos, Player player) {
     return RefinedFirestoneItem.getItemCharged();
   }
 
@@ -68,7 +73,7 @@ public class RitualBlock extends ContainerBlock {
   @Override
   public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
     List<ItemStack> drops = super.getDrops(state, builder);
-    TileEntity tile = builder.getOptionalParameter(LootParameters.BLOCK_ENTITY);
+    BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
     if (tile instanceof RitualBlockEntity) {
       RitualBlockEntity firestone = (RitualBlockEntity) tile;
       Item item = state.getValue(CRACKED)
@@ -87,29 +92,37 @@ public class RitualBlock extends ContainerBlock {
   }
 
   @Override
-  public BlockRenderType getRenderShape(BlockState state) {
-    return BlockRenderType.ENTITYBLOCK_ANIMATED;
+  public RenderShape getRenderShape(BlockState state) {
+    return RenderShape.ENTITYBLOCK_ANIMATED;
   }
 
   @Override
-  public boolean canBeReplacedByLeaves(BlockState state, IWorldReader world, BlockPos pos) {
-    return false;
+  public void initializeClient(Consumer<IBlockRenderProperties> consumer) {
+    consumer.accept(new IBlockRenderProperties() {
+      @Override
+      public boolean addDestroyEffects(BlockState state, Level level, BlockPos pos,
+          ParticleEngine particleEngine) {
+        return true;
+      }
+
+      @Override
+      public boolean addHitEffects(BlockState state, Level level, HitResult result,
+          ParticleEngine particleEngine) {
+        return true;
+      }
+    });
   }
 
   @Override
-  public boolean addDestroyEffects(BlockState state, World world, BlockPos pos,
-      ParticleManager effectRenderer) {
-    return true;
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new RitualBlockEntity(blockPos, blockState);
   }
 
+  @Nullable
   @Override
-  public boolean addHitEffects(BlockState state, World worldObj, RayTraceResult target,
-      ParticleManager manager) {
-    return true;
-  }
-
-  @Override
-  public TileEntity newBlockEntity(IBlockReader blockGetter) {
-    return new RitualBlockEntity();
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
+      BlockEntityType<T> type) {
+    return createTickerHelper(type, RailcraftBlockEntityTypes.RITUAL.get(),
+        level.isClientSide() ? RitualBlockEntity::clientTick : RitualBlockEntity::serverTick);
   }
 }

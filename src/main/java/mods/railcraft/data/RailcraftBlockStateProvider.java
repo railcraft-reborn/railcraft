@@ -15,18 +15,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.data.BlockModelWriter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.data.models.model.DelegatedModel;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.data.IDataProvider;
-import net.minecraft.data.IFinishedBlockState;
-import net.minecraft.data.ModelsResourceUtil;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.HashCache;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.world.item.Item;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class RailcraftBlockStateProvider implements IDataProvider {
+public class RailcraftBlockStateProvider implements DataProvider {
 
   private static final Logger logger = LogManager.getLogger();
   private static final Gson gson =
@@ -37,11 +37,11 @@ public class RailcraftBlockStateProvider implements IDataProvider {
     this.generator = generator;
   }
 
-  public void run(DirectoryCache directoryCache) {
-    Map<Block, IFinishedBlockState> blockStates = Maps.newHashMap();
-    Consumer<IFinishedBlockState> blockStateConsumer = (blockState) -> {
+  public void run(HashCache directoryCache) {
+    Map<Block, BlockStateGenerator> blockStates = Maps.newHashMap();
+    Consumer<BlockStateGenerator> blockStateConsumer = (blockState) -> {
       Block block = blockState.getBlock();
-      IFinishedBlockState existingBlockState = blockStates.put(block, blockState);
+      BlockStateGenerator existingBlockState = blockStates.put(block, blockState);
       if (existingBlockState != null) {
         throw new IllegalStateException("Duplicate blockstate definition for " + block);
       }
@@ -63,10 +63,10 @@ public class RailcraftBlockStateProvider implements IDataProvider {
     RailcraftBlocks.BLOCKS.getEntries().forEach((block) -> {
       Item item = Item.BY_BLOCK.get(block.get());
       if (item != null && !skippedAutoModels.contains(item)) {
-        ResourceLocation itemModel = ModelsResourceUtil.getModelLocation(item);
+        ResourceLocation itemModel = ModelLocationUtils.getModelLocation(item);
         if (!models.containsKey(itemModel)) {
           models.put(itemModel,
-              new BlockModelWriter(ModelsResourceUtil.getModelLocation(block.get())));
+              new DelegatedModel(ModelLocationUtils.getModelLocation(block.get())));
         }
       }
     });
@@ -79,13 +79,13 @@ public class RailcraftBlockStateProvider implements IDataProvider {
         RailcraftBlockStateProvider::createModelPath);
   }
 
-  private <T> void saveCollection(DirectoryCache p_240081_1_, Path p_240081_2_,
+  private <T> void saveCollection(HashCache p_240081_1_, Path p_240081_2_,
       Map<T, ? extends Supplier<JsonElement>> p_240081_3_, BiFunction<Path, T, Path> p_240081_4_) {
     p_240081_3_.forEach((p_240088_3_, p_240088_4_) -> {
       Path path = p_240081_4_.apply(p_240081_2_, p_240088_3_);
 
       try {
-        IDataProvider.save(gson, p_240081_1_, p_240088_4_.get(), path);
+        DataProvider.save(gson, p_240081_1_, p_240088_4_.get(), path);
       } catch (Exception exception) {
         logger.error("Couldn't save {}", path, exception);
       }

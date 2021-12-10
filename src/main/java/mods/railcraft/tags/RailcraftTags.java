@@ -1,11 +1,11 @@
 package mods.railcraft.tags;
 
 import mods.railcraft.Railcraft;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
@@ -79,6 +79,8 @@ public class RailcraftTags {
         tag("aspect_emitter");
     public static final Tags.IOptionalNamedTag<Block> POST = tag("post");
     public static final Tags.IOptionalNamedTag<Block> SIGNAL = tag("signal");
+
+    public static final Tags.IOptionalNamedTag<Block> MINEABLE_WITH_CROWBAR = tag("mineable/crowbar");
 
     private static IOptionalNamedTag<Block> tag(String name) {
       return BlockTags.createOptional(new ResourceLocation(Railcraft.ID, name));

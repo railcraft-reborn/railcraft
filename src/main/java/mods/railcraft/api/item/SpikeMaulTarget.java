@@ -10,12 +10,12 @@ package mods.railcraft.api.item;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Created by CovertJaguar on 3/6/2017 for Railcraft.
@@ -37,7 +37,7 @@ public interface SpikeMaulTarget {
    * @param blockPos - the position
    * @return {@code true} if it matches, {@code false} otherwise
    */
-  boolean matches(BlockState blockState, World level, BlockPos blockPos);
+  boolean matches(BlockState blockState, Level level, BlockPos blockPos);
 
   /**
    * Returns true when you successfully set another state to your resulting state. Return false to
@@ -46,7 +46,7 @@ public interface SpikeMaulTarget {
    * @param context - the {@link ItemUseContext}
    * @return {@code true} if successful, {@code false} otherwise
    */
-  boolean use(ItemUseContext context);
+  boolean use(UseOnContext context);
 
   public class Simple implements SpikeMaulTarget {
 
@@ -57,14 +57,14 @@ public interface SpikeMaulTarget {
     }
 
     @Override
-    public boolean matches(BlockState blockState, World level, BlockPos blockPos) {
+    public boolean matches(BlockState blockState, Level level, BlockPos blockPos) {
       return blockState.is(this.block.get());
     }
 
     @Override
-    public boolean use(ItemUseContext context) {
+    public boolean use(UseOnContext context) {
       return context.getLevel().setBlockAndUpdate(context.getClickedPos(),
-          this.block.get().getStateForPlacement(new BlockItemUseContext(context)));
+          this.block.get().getStateForPlacement(new BlockPlaceContext(context)));
     }
   }
 }

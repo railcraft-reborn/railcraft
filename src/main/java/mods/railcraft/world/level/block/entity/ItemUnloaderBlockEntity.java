@@ -3,12 +3,14 @@ package mods.railcraft.world.level.block.entity;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
-import mods.railcraft.util.inventory.IInventoryManipulator;
-import mods.railcraft.util.inventory.InventoryAdaptor;
-import mods.railcraft.util.inventory.InventoryComposite;
+import mods.railcraft.util.container.CompositeContainerAdaptor;
+import mods.railcraft.util.container.ContainerAdaptor;
+import mods.railcraft.util.container.ContainerManipulator;
 import mods.railcraft.world.inventory.SlotOutput;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.inventory.container.Slot;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
@@ -17,8 +19,8 @@ public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
       Collections.unmodifiableSet(
           EnumSet.of(RedstoneMode.IMMEDIATE, RedstoneMode.COMPLETE, RedstoneMode.MANUAL));
 
-  public ItemUnloaderBlockEntity() {
-    super(RailcraftBlockEntityTypes.ITEM_UNLOADER.get());
+  public ItemUnloaderBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.ITEM_UNLOADER.get(), blockPos, blockState);
   }
 
   @Override
@@ -27,12 +29,12 @@ public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
   }
 
   @Override
-  public IInventoryManipulator getSource() {
+  public ContainerManipulator getSource() {
     return this.cart;
   }
 
   @Override
-  public IInventoryManipulator getDestination() {
+  public ContainerManipulator getDestination() {
     return this.chests;
   }
 
@@ -44,23 +46,23 @@ public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
   @Override
   protected void upkeep() {
     super.upkeep();
-    this.clearInventory();
+    this.clearContainer();
   }
 
   @Override
-  public boolean canHandleCart(AbstractMinecartEntity cart) {
+  public boolean canHandleCart(AbstractMinecart cart) {
     return super.canHandleCart(cart)
         && cart
             .getCapability(
                 CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, this.getFacing().getOpposite())
-            .map(InventoryAdaptor::of)
-            .map(InventoryAdaptor::hasItems)
+            .map(ContainerAdaptor::of)
+            .map(ContainerAdaptor::hasItems)
             .orElse(false);
   }
 
-  private void clearInventory() {
-    if (this.bufferInventory.hasItems()) {
-      this.bufferInventory.moveOneItemTo(InventoryComposite.of(this.getAdjacentInventories()));
+  private void clearContainer() {
+    if (this.bufferContainer.hasItems()) {
+      this.bufferContainer.moveOneItemTo(CompositeContainerAdaptor.of(this.getAdjacentContainers()));
     }
   }
 }

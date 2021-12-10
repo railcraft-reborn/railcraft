@@ -9,17 +9,17 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.client.renderer.entity.cart;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -30,17 +30,17 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
   private final EntityModel<? super LocomotiveEntity> model;
   private final EntityModel<? super LocomotiveEntity> snowLayer;
   private final ResourceLocation[] textures;
-  private final int[] color = new int[3];
+  private final float[][] color = new float[3][];
   private float emblemSize = 0.15F;
   private float emblemOffsetX = 0.47F;
   private float emblemOffsetY = -0.17F;
   private float emblemOffsetZ = -0.515F;
 
-  public DefaultLocomotiveRenderer(EntityRendererManager dispatcher, String modelTag,
+  public DefaultLocomotiveRenderer(EntityRendererProvider.Context context, String modelTag,
       EntityModel<? super LocomotiveEntity> model,
       EntityModel<? super LocomotiveEntity> snowLayer) {
     // Notice: do NOT remove the .png on these ones, they are needed.
-    this(dispatcher, modelTag, model, snowLayer, new ResourceLocation[] {
+    this(context, modelTag, model, snowLayer, new ResourceLocation[] {
         new ResourceLocation(Railcraft.ID,
             "textures/entity/locomotive/" + modelTag + "/primary.png"),
         new ResourceLocation(Railcraft.ID,
@@ -52,15 +52,15 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
     });
   }
 
-  public DefaultLocomotiveRenderer(EntityRendererManager dispatcher, String modelTag,
+  public DefaultLocomotiveRenderer(EntityRendererProvider.Context context, String modelTag,
       EntityModel<? super LocomotiveEntity> model,
       EntityModel<? super LocomotiveEntity> snowLayer, ResourceLocation[] textures) {
-    super(dispatcher);
+    super(context);
     this.modelTag = modelTag;
     this.model = model;
     this.snowLayer = snowLayer;
     this.textures = textures;
-    color[2] = 0xFFFFFF;
+    this.color[2] = new float[] {1.0F, 1.0F, 1.0F};
   }
 
   public void setEmblemPosition(float size, float offsetX, float offsetY, float offsetZ) {
@@ -71,32 +71,28 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
   }
 
   @Override
-  public void renderBody(LocomotiveEntity cart, float time, MatrixStack matrixStack,
-      IRenderTypeBuffer renderTypeBuffer, int packedLight, float red, float green, float blue,
+  public void renderBody(LocomotiveEntity cart, float time, PoseStack matrixStack,
+      MultiBufferSource renderTypeBuffer, int packedLight, float red, float green, float blue,
       float alpha) {
     matrixStack.pushPose();
 
     matrixStack.scale(-1, -1, 1);
 
-    color[0] = this.getPrimaryColor(cart);
-    color[1] = this.getSecondaryColor(cart);
+    this.color[0] = this.getPrimaryColor(cart);
+    this.color[1] = this.getSecondaryColor(cart);
 
     for (int pass = 0; pass < 3; pass++) {
-      int c = color[pass];
-      float dim = 1.0F;
-      float c1 = (float) (c >> 16 & 255) / 255.0F;
-      float c2 = (float) (c >> 8 & 255) / 255.0F;
-      float c3 = (float) (c & 255) / 255.0F;
+      float[] color = this.color[pass];
       this.model.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
-      IVertexBuilder vertexBuilder =
+      VertexConsumer vertexBuilder =
           renderTypeBuffer.getBuffer(this.model.renderType(this.textures[pass]));
       this.model.renderToBuffer(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY,
-          c1 * dim, c2 * dim, c3 * dim, alpha);
+          color[0], color[1], color[2], alpha);
     }
 
     if (Seasons.isPolarExpress(cart)) {
       this.snowLayer.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
-      IVertexBuilder vertexBuilder =
+      VertexConsumer vertexBuilder =
           renderTypeBuffer.getBuffer(this.snowLayer.renderType(this.textures[3]));
       this.snowLayer.renderToBuffer(matrixStack, vertexBuilder, packedLight,
           OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -104,7 +100,7 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
 
     ResourceLocation emblemTexture = this.getEmblemTexture(cart);
     if (emblemTexture != null) {
-      IVertexBuilder vertexBuilder =
+      VertexConsumer vertexBuilder =
           renderTypeBuffer.getBuffer(RenderType.entityTranslucent(emblemTexture));
 
       // float size = 0.22F;
@@ -136,4 +132,8 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<LocomotiveEnti
     matrixStack.popPose();
   }
 
+  @Override
+  public ResourceLocation getTextureLocation(LocomotiveEntity loco) {
+    throw new IllegalStateException();
+  }
 }

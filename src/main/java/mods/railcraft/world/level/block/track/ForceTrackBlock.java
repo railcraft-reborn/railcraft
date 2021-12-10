@@ -2,28 +2,28 @@ package mods.railcraft.world.level.block.track;
 
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.DyeColor;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.Property;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
 /**
  * Created by CovertJaguar on 8/2/2016 for Railcraft.
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public final class ForceTrackBlock extends TrackBlock {
+public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
 
   public static final EnumProperty<DyeColor> COLOR = ForceTrackEmitterBlock.COLOR;
   public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE_STRAIGHT;
@@ -32,11 +32,12 @@ public final class ForceTrackBlock extends TrackBlock {
     super(TrackTypes.HIGH_SPEED, properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
+        .setValue(WATERLOGGED, false)
         .setValue(COLOR, ForceTrackEmitterBlock.DEFAULT_COLOR));
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(COLOR);
   }
@@ -47,26 +48,26 @@ public final class ForceTrackBlock extends TrackBlock {
   }
 
   @Override
-  protected BlockState updateDir(World level, BlockPos pos,
+  protected BlockState updateDir(Level level, BlockPos pos,
       BlockState blockState, boolean initialPlacement) {
     return blockState;
   }
 
   @Override
-  public boolean canMakeSlopes(BlockState blockState, IBlockReader world, BlockPos pos) {
+  public boolean canMakeSlopes(BlockState blockState, BlockGetter world, BlockPos pos) {
     return false;
   }
 
   @Override
-  public boolean isFlexibleRail(BlockState blockState, IBlockReader world, BlockPos pos) {
+  public boolean isFlexibleRail(BlockState blockState, BlockGetter world, BlockPos pos) {
     return false;
   }
 
   @Override
   public void neighborChanged(BlockState blockState,
-      World level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean moved) {
-    if (!neighborBlock.is(this)) {
-      TileEntity tile = level.getBlockEntity(pos);
+      Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean moved) {
+    if (neighborBlock != this) {
+      BlockEntity tile = level.getBlockEntity(pos);
       if (tile instanceof ForceTrackBlockEntity) {
         ((ForceTrackBlockEntity) tile).neighborChanged();
       }
@@ -74,28 +75,18 @@ public final class ForceTrackBlock extends TrackBlock {
   }
 
   @Override
-  public float getRailMaxSpeed(BlockState blockState, World world, BlockPos pos,
-      AbstractMinecartEntity cart) {
+  public float getRailMaxSpeed(BlockState blockState, Level world, BlockPos pos,
+      AbstractMinecart cart) {
     return 0.6F;
   }
 
   @Override
-  public boolean canBeReplacedByLeaves(BlockState blockState, IWorldReader world, BlockPos pos) {
+  public boolean canBeReplaced(BlockState blockState, BlockPlaceContext context) {
     return true;
   }
 
   @Override
-  public boolean canBeReplaced(BlockState blockState, BlockItemUseContext context) {
-    return true;
-  }
-
-  @Override
-  public boolean hasTileEntity(BlockState blockState) {
-    return true;
-  }
-
-  @Override
-  public TileEntity createTileEntity(BlockState blockState, IBlockReader level) {
-    return new ForceTrackBlockEntity();
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new ForceTrackBlockEntity(blockPos, blockState);
   }
 }

@@ -3,14 +3,13 @@ package mods.railcraft.client.gui.screen;
 import java.util.BitSet;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
-import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.components.EditBox;
 
 public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
 
@@ -20,22 +19,21 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
 
   private final Map<SignalAspect, BitSet> signalAspectTriggerSignals =
       new EnumMap<>(SignalAspect.class);
-  private final Map<SignalAspect, TextFieldWidget> textFields =
+  private final Map<SignalAspect, EditBox> textFields =
       new EnumMap<>(SignalAspect.class);
 
   public AnalogSignalControllerBoxScreen(AnalogSignalControllerBoxBlockEntity signalBox) {
     super(signalBox.getDisplayName(), LARGE_WINDOW_TEXTURE, 176, 113);
     this.signalBox = signalBox;
-    for (Map.Entry<SignalAspect, BitSet> entry : signalBox.getSignalAspectTriggerSignals()
-        .entrySet()) {
+    for (var entry : signalBox.getSignalAspectTriggerSignals().entrySet()) {
       this.signalAspectTriggerSignals.put(entry.getKey(), (BitSet) entry.getValue().clone());
     }
   }
 
   private String rangeToString(BitSet b) {
-    StringBuilder s = new StringBuilder();
-    int start = -1;
-    for (int i = 0; i < 16; i++) {
+    var s = new StringBuilder();
+    var start = -1;
+    for (var i = 0; i < 16; i++) {
       if (b.get(i)) {
         if (start == -1) {
           s.append(i);
@@ -62,7 +60,7 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
 
   private void parseRegex(String regex, BitSet bits) {
     bits.clear();
-    Matcher m = PATTERN_RANGE.matcher(regex);
+    var m = PATTERN_RANGE.matcher(regex);
     while (m.find()) {
       if (m.groupCount() >= 3 && m.group(3) != null) {
         int i = Integer.parseInt(m.group(3));
@@ -81,33 +79,33 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
 
   @Override
   public void init() {
-    int centeredX = (this.width - this.windowWidth) / 2;
-    int centeredY = (this.height - this.windowHeight) / 2;
+    var centeredX = (this.width - this.windowWidth) / 2;
+    var centeredY = (this.height - this.windowHeight) / 2;
 
-    for (Map.Entry<SignalAspect, BitSet> entry : this.signalAspectTriggerSignals.entrySet()) {
-      TextFieldWidget textField = new TextFieldWidget(this.font, centeredX + 72,
+    for (var entry : this.signalAspectTriggerSignals.entrySet()) {
+      var textField = new EditBox(this.font, centeredX + 72,
           centeredY + getYPosFromIndex(entry.getKey().ordinal()), 95, 10,
           entry.getKey().getDisplayName());
       textField.setMaxLength(37);
       textField.setValue(this.rangeToString(entry.getValue()));
       textField.setFilter(string -> {
-        for (char ch : string.toCharArray()) {
+        for (var ch : string.toCharArray()) {
           if (!Character.isDigit(ch) && ch != ',' && ch != '-') {
             return false;
           }
         }
         return true;
       });
-      this.addButton(textField);
+      this.addRenderableWidget(textField);
       this.textFields.put(entry.getKey(), textField);
     }
   }
 
   @Override
-  protected void renderContent(MatrixStack matrixStack, int mouseX, int mouseY,
+  protected void renderContent(PoseStack poseStack, int mouseX, int mouseY,
       float partialTicks) {
-    for (SignalAspect aspect : SignalAspect.values()) {
-      this.font.draw(matrixStack, aspect.getDisplayName(), 10,
+    for (var aspect : SignalAspect.values()) {
+      this.font.draw(poseStack, aspect.getDisplayName(), 10,
           getYPosFromIndex(aspect.ordinal()) + 1, TEXT_COLOR);
     }
   }
@@ -119,7 +117,7 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
         this.parseRegex(this.textFields.get(entry.getKey()).getValue(), entry.getValue());
       }
       this.signalBox.setSignalAspectTriggerSignals(this.signalAspectTriggerSignals);
-      NetworkChannel.PLAY.getSimpleChannel().sendToServer(
+      NetworkChannel.GAME.getSimpleChannel().sendToServer(
           new SetAnalogSignalControllerBoxAttributesMessage(this.signalBox.getBlockPos(),
               this.signalAspectTriggerSignals));
     }

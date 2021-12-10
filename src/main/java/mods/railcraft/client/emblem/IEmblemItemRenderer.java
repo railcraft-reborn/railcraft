@@ -1,6 +1,6 @@
 package mods.railcraft.client.emblem;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  *

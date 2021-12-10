@@ -9,7 +9,7 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.client.gui.screen.inventory;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeWidgetRenderer;
 import mods.railcraft.client.gui.screen.inventory.widget.GaugeWidgetRenderer;
@@ -17,17 +17,17 @@ import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
 public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu> {
 
   private static final ResourceLocation TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/steam_locomotive.png");
 
-  public SteamLocomotiveScreen(SteamLocomotiveMenu menu, PlayerInventory inv,
-      ITextComponent title) {
+  public SteamLocomotiveScreen(SteamLocomotiveMenu menu, Inventory inv,
+      Component title) {
     super(menu, inv, title, "steam");
     this.imageHeight = SteamLocomotiveMenu.HEIGHT;
     this.inventoryLabelY = 110;
@@ -47,7 +47,7 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
   }
 
   @Override
-  protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+  protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
     super.renderBg(matrixStack, partialTicks, mouseY, mouseY);
     int x = (width - this.getXSize()) / 2;
     int y = (height - this.getYSize()) / 2;

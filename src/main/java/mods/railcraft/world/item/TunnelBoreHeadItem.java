@@ -1,18 +1,23 @@
 package mods.railcraft.world.item;
 
 import java.util.Set;
-import javax.annotation.Nullable;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import com.google.common.collect.Sets;
 import mods.railcraft.api.carts.TunnelBoreHead;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.TieredItem;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TieredItem;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 public abstract class TunnelBoreHeadItem extends TieredItem implements TunnelBoreHead {
 
-  public TunnelBoreHeadItem(IItemTier tier, Properties properties) {
+  private static final Set<ToolAction> toolActions =
+      Stream.of(ToolActions.AXE_DIG, ToolActions.PICKAXE_DIG, ToolActions.SHOVEL_DIG)
+          .collect(Collectors.toCollection(Sets::newIdentityHashSet));
+
+  public TunnelBoreHeadItem(Tier tier, Properties properties) {
     super(tier, properties);
   }
 
@@ -22,18 +27,7 @@ public abstract class TunnelBoreHeadItem extends TieredItem implements TunnelBor
   }
 
   @Override
-  public int getHarvestLevel() {
-    return this.getTier().getLevel();
-  }
-
-  @Override
-  public int getHarvestLevel(ItemStack stack, ToolType toolType, @Nullable PlayerEntity player,
-      @Nullable BlockState blockState) {
-    return TunnelBoreHead.super.getHarvestLevel(stack, toolType, player, blockState);
-  }
-
-  @Override
-  public Set<ToolType> getToolTypes(ItemStack stack) {
-    return TunnelBoreHead.super.getToolTypes(stack);
+  public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+    return toolActions.contains(toolAction);
   }
 }

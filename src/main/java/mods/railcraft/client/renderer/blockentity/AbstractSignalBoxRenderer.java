@@ -3,30 +3,29 @@ package mods.railcraft.client.renderer.blockentity;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Function;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
-import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.client.util.CuboidModelRenderer.FaceDisplay;
+import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 
 public abstract class AbstractSignalBoxRenderer
-    extends TileEntityRenderer<AbstractSignalBoxBlockEntity> {
+    implements BlockEntityRenderer<AbstractSignalBoxBlockEntity> {
 
   public static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS =
       Util.make(new EnumMap<>(SignalAspect.class), map -> {
@@ -52,13 +51,14 @@ public abstract class AbstractSignalBoxRenderer
 
   protected abstract ResourceLocation getTopTextureLocation();
 
-  public AbstractSignalBoxRenderer(TileEntityRendererDispatcher dispatcher) {
-    super(dispatcher);
+  @Override
+  public int getViewDistance() {
+    return 512;
   }
 
   @Override
   public void render(AbstractSignalBoxBlockEntity blockEntity, float partialTicks,
-      MatrixStack poseStack, IRenderTypeBuffer renderTypeBuffer, int packedLight,
+      PoseStack poseStack, MultiBufferSource renderTypeBuffer, int packedLight,
       int packedOverlay) {
 
     SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, poseStack, renderTypeBuffer);
@@ -69,7 +69,7 @@ public abstract class AbstractSignalBoxRenderer
     }
 
     Function<ResourceLocation, TextureAtlasSprite> spriteGetter =
-        Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS);
+        Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
 
     this.model.setPackedLight(packedLight);
     this.model.setPackedOverlay(packedOverlay);
@@ -93,8 +93,8 @@ public abstract class AbstractSignalBoxRenderer
       }
     }
 
-    IVertexBuilder vertexBuilder =
-        renderTypeBuffer.getBuffer(RenderType.entityCutout(PlayerContainer.BLOCK_ATLAS));
+    VertexConsumer vertexBuilder =
+        renderTypeBuffer.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
     CuboidModelRenderer.render(this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH,
         false);
 

@@ -3,7 +3,7 @@ package mods.railcraft.season;
 import java.util.Calendar;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.world.entity.cart.SeasonalCart;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**
  * Created by CovertJaguar on 10/7/2016 for Railcraft.
@@ -73,7 +73,7 @@ public final class Seasons {
    * @param cart - The cart.
    * @return
    */
-  public static boolean isGhostTrain(AbstractMinecartEntity cart) {
+  public static boolean isGhostTrain(AbstractMinecart cart) {
     Season season =
         cart instanceof SeasonalCart ? ((SeasonalCart) cart).getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT) {
@@ -88,7 +88,7 @@ public final class Seasons {
    * @param cart - The cart.
    * @return
    */
-  public static boolean isPolarExpress(AbstractMinecartEntity cart) {
+  public static boolean isPolarExpress(AbstractMinecart cart) {
     Season season =
         cart instanceof SeasonalCart ? ((SeasonalCart) cart).getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT) {

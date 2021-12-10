@@ -1,9 +1,9 @@
 package mods.railcraft.util.effects;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -14,7 +14,7 @@ public class EffectManager {
 
     BlockPos getPos();
 
-    Vector3d getPosF();
+    Vec3 getPosF();
 
     default boolean isDead() {
       return false;
@@ -24,11 +24,11 @@ public class EffectManager {
   public static class EffectSourceBlockPos implements IEffectSource {
 
     private final BlockPos pos;
-    private final Vector3d posF;
+    private final Vec3 posF;
 
     private EffectSourceBlockPos(BlockPos pos) {
       this.pos = pos;
-      this.posF = new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+      this.posF = new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class EffectManager {
     }
 
     @Override
-    public Vector3d getPosF() {
+    public Vec3 getPosF() {
       return posF;
     }
   }
@@ -45,9 +45,9 @@ public class EffectManager {
   public static class EffectSourceVector3d implements IEffectSource {
 
     private final BlockPos pos;
-    private final Vector3d posF;
+    private final Vec3 posF;
 
-    private EffectSourceVector3d(Vector3d pos) {
+    private EffectSourceVector3d(Vec3 pos) {
       this.pos = new BlockPos(pos);
       this.posF = pos;
     }
@@ -58,16 +58,16 @@ public class EffectManager {
     }
 
     @Override
-    public Vector3d getPosF() {
+    public Vec3 getPosF() {
       return posF;
     }
   }
 
   public static class EffectSourceTile implements IEffectSource {
 
-    private final TileEntity source;
+    private final BlockEntity source;
 
-    private EffectSourceTile(TileEntity source) {
+    private EffectSourceTile(BlockEntity source) {
       this.source = source;
     }
 
@@ -77,9 +77,9 @@ public class EffectManager {
     }
 
     @Override
-    public Vector3d getPosF() {
+    public Vec3 getPosF() {
       BlockPos pos = source.getBlockPos();
-      return new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+      return new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
     }
 
     @Override
@@ -102,8 +102,8 @@ public class EffectManager {
     }
 
     @Override
-    public Vector3d getPosF() {
-      return new Vector3d(source.getX(), source.getY() + source.getMyRidingOffset(), source.getZ());
+    public Vec3 getPosF() {
+      return new Vec3(source.getX(), source.getY() + source.getMyRidingOffset(), source.getZ());
     }
 
     @Override
@@ -113,14 +113,14 @@ public class EffectManager {
   }
 
   public static IEffectSource getEffectSource(Object source) {
-    if (source instanceof TileEntity) {
-      return new EffectSourceTile((TileEntity) source);
+    if (source instanceof BlockEntity) {
+      return new EffectSourceTile((BlockEntity) source);
     } else if (source instanceof Entity) {
       return new EffectSourceEntity((Entity) source);
     } else if (source instanceof BlockPos) {
       return new EffectSourceBlockPos((BlockPos) source);
-    } else if (source instanceof Vector3d) {
-      return new EffectSourceVector3d((Vector3d) source);
+    } else if (source instanceof Vec3) {
+      return new EffectSourceVector3d((Vec3) source);
     }
     throw new IllegalArgumentException("Invalid Effect Source");
   }

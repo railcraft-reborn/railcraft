@@ -1,39 +1,37 @@
 package mods.railcraft.world.item;
 
-import com.google.common.collect.ImmutableMap;
-
 import java.util.Map;
 import java.util.function.Supplier;
-
+import com.google.common.collect.ImmutableMap;
 import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraftforge.registries.RegistryObject;
 
 public class TrackKitItem extends Item {
 
-  private final Map<ResourceLocation, Supplier<? extends AbstractRailBlock>> outfittedBlocks;
+  private final Map<ResourceLocation, Supplier<? extends BaseRailBlock>> outfittedBlocks;
   private final boolean allowedOnSlopes;
 
   public TrackKitItem(Properties properties) {
@@ -43,19 +41,19 @@ public class TrackKitItem extends Item {
   }
 
   @Override
-  public ActionResultType useOn(ItemUseContext context) {
-    PlayerEntity player = context.getPlayer();
-    World level = context.getLevel();
+  public InteractionResult useOn(UseOnContext context) {
+    Player player = context.getPlayer();
+    Level level = context.getLevel();
     ItemStack itemStack = player.getItemInHand(context.getHand());
     BlockPos blockPos = context.getClickedPos();
 
     if (level.isClientSide()) {
-      return ActionResultType.SUCCESS;
+      return InteractionResult.SUCCESS;
     }
 
     BlockState oldState = level.getBlockState(blockPos);
-    if (!AbstractRailBlock.isRail(oldState)) {
-      return ActionResultType.PASS;
+    if (!BaseRailBlock.isRail(oldState)) {
+      return InteractionResult.PASS;
     }
 
     TrackType trackType;
@@ -64,65 +62,65 @@ public class TrackKitItem extends Item {
     } else if (oldState.getBlock() == Blocks.RAIL) {
       trackType = TrackTypes.IRON.get();
     } else {
-      return ActionResultType.PASS;
+      return InteractionResult.PASS;
     }
 
     RailShape shape = TrackTools.getRailShapeRaw(level, blockPos);
 
     if (!TrackShapeHelper.isStraight(shape)) {
-      player.displayClientMessage(new TranslationTextComponent("track_kit.corners_unsupported"),
+      player.displayClientMessage(new TranslatableComponent("track_kit.corners_unsupported"),
           true);
-      return ActionResultType.PASS;
+      return InteractionResult.PASS;
     }
 
     if (shape.isAscending() && !this.allowedOnSlopes) {
-      player.displayClientMessage(new TranslationTextComponent("track_kit.slopes_unsupported"),
+      player.displayClientMessage(new TranslatableComponent("track_kit.slopes_unsupported"),
           true);
-      return ActionResultType.PASS;
+      return InteractionResult.PASS;
     }
 
-    AbstractRailBlock outfittedBlock =
+    BaseRailBlock outfittedBlock =
         this.outfittedBlocks.getOrDefault(trackType.getRegistryName(), () -> null).get();
     if (outfittedBlock == null) {
       player.displayClientMessage(
-          new TranslationTextComponent("track_kit.invalid_track_type"), true);
-      return ActionResultType.PASS;
+          new TranslatableComponent("track_kit.invalid_track_type"), true);
+      return InteractionResult.PASS;
     }
 
     BlockState outfittedBlockState =
-        outfittedBlock.getStateForPlacement(new BlockItemUseContext(context));
+        outfittedBlock.getStateForPlacement(new BlockPlaceContext(context));
     if (level.setBlockAndUpdate(blockPos, outfittedBlockState)) {
       SoundType soundType =
           outfittedBlock.getSoundType(outfittedBlockState, level, blockPos, player);
-      level.playSound(player, blockPos, soundType.getPlaceSound(), SoundCategory.BLOCKS,
+      level.playSound(player, blockPos, soundType.getPlaceSound(), SoundSource.BLOCKS,
           soundType.getVolume(), soundType.getPitch());
 
       RailcraftCriteriaTriggers.TRACK_KIT_USE.trigger(
-          (ServerPlayerEntity) player, (ServerWorld) level, blockPos, itemStack);
+          (ServerPlayer) player, (ServerLevel) level, blockPos, itemStack);
 
-      if (!player.abilities.instabuild) {
+      if (!player.getAbilities().instabuild) {
         itemStack.shrink(1);
       }
-      return ActionResultType.SUCCESS;
+      return InteractionResult.SUCCESS;
     }
 
-    return ActionResultType.PASS;
+    return InteractionResult.PASS;
   }
 
   public static class Properties extends Item.Properties {
 
-    private final ImmutableMap.Builder<ResourceLocation, Supplier<? extends AbstractRailBlock>> outfittedBlocks =
+    private final ImmutableMap.Builder<ResourceLocation, Supplier<? extends BaseRailBlock>> outfittedBlocks =
         ImmutableMap.builder();
     private boolean allowedOnSlopes;
 
     public Properties addOutfittedBlock(
         RegistryObject<? extends TrackType> trackType,
-        Supplier<? extends AbstractRailBlock> block) {
+        Supplier<? extends BaseRailBlock> block) {
       return this.addOutfittedBlock(trackType.getId(), block);
     }
 
     public Properties addOutfittedBlock(ResourceLocation trackTypeId,
-        Supplier<? extends AbstractRailBlock> block) {
+        Supplier<? extends BaseRailBlock> block) {
       this.outfittedBlocks.put(trackTypeId, block);
       return this;
     }

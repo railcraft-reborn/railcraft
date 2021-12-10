@@ -8,19 +8,19 @@
 package mods.railcraft.api.item;
 
 import javax.annotation.Nullable;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 /**
  * Should be implemented by any rail item class that wishes to have it's rails placed by for example
@@ -43,11 +43,11 @@ public interface TrackPlacer {
    *        your track, use your default value.
    * @return true if successful
    */
-  default boolean placeTrack(ItemStack stack, @Nullable PlayerEntity player, World world,
+  default boolean placeTrack(ItemStack stack, @Nullable Player player, Level world,
       BlockPos pos, @Nullable RailShape trackShape) {
     return stack.getItem().useOn(
-        new ItemUseContext(player, Hand.MAIN_HAND, new BlockRayTraceResult(Vector3d.ZERO,
-            Direction.UP, pos.below(), false))) == ActionResultType.SUCCESS;
+        new UseOnContext(player, InteractionHand.MAIN_HAND, new BlockHitResult(Vec3.ZERO,
+            Direction.UP, pos.below(), false))) == InteractionResult.SUCCESS;
   }
 
   /**
@@ -62,5 +62,5 @@ public interface TrackPlacer {
    * <p/>
    * If the track has no tile entity, return true on null.
    */
-  boolean isPlacedTileEntity(ItemStack stack, @Nullable TileEntity tile);
+  boolean isPlacedTileEntity(ItemStack stack, @Nullable BlockEntity tile);
 }

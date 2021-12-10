@@ -1,29 +1,29 @@
 package mods.railcraft.world.entity.cart;
 
 import mods.railcraft.api.item.PrototypedItem;
-import mods.railcraft.util.inventory.InventoryAdvanced;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import mods.railcraft.util.container.AdvancedContainer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.level.Level;
+import net.minecraft.nbt.Tag;
 
 public abstract class FilteredMinecartEntity extends RailcraftMinecartEntity {
 
-  private static final DataParameter<ItemStack> FILTER =
-      EntityDataManager.defineId(FilteredMinecartEntity.class, DataSerializers.ITEM_STACK);
-  private final InventoryAdvanced invFilter = new InventoryAdvanced(1).callbackInv(this).phantom();
+  private static final EntityDataAccessor<ItemStack> FILTER =
+      SynchedEntityData.defineId(FilteredMinecartEntity.class, EntityDataSerializers.ITEM_STACK);
+  private final AdvancedContainer invFilter = new AdvancedContainer(1).callbackContainer(this).phantom();
 
-  protected FilteredMinecartEntity(EntityType<?> type, World level) {
+  protected FilteredMinecartEntity(EntityType<?> type, Level level) {
     super(type, level);
   }
 
   protected FilteredMinecartEntity(ItemStack itemStack, EntityType<?> type, double x, double y, double z,
-      World level) {
+      Level level) {
     super(type, x, y, z, level);
     this.setFilter(getFilterFromCartItem(itemStack));
   }
@@ -69,14 +69,14 @@ public abstract class FilteredMinecartEntity extends RailcraftMinecartEntity {
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundNBT data) {
+  protected void readAdditionalSaveData(CompoundTag data) {
     super.readAdditionalSaveData(data);
-    this.invFilter.deserializeNBT(data.getList("filterInventory", Constants.NBT.TAG_COMPOUND));
+    this.invFilter.deserializeNBT(data.getList("filterInventory", Tag.TAG_COMPOUND));
     this.entityData.set(FILTER, this.getFilterInv().getItem(0));
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundNBT data) {
+  protected void addAdditionalSaveData(CompoundTag data) {
     super.addAdditionalSaveData(data);
     data.put("filterInventory", this.invFilter.serializeNBT());
   }
@@ -89,7 +89,7 @@ public abstract class FilteredMinecartEntity extends RailcraftMinecartEntity {
     return this.entityData.get(FILTER);
   }
 
-  public InventoryAdvanced getFilterInv() {
+  public AdvancedContainer getFilterInv() {
     return this.invFilter;
   }
 

@@ -6,14 +6,15 @@ import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.SimpleBlockSignalNetwork;
 import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
-    implements SignalControllerProvider, BlockSignal, ITickableTileEntity {
+    implements SignalControllerProvider, BlockSignal {
 
   private final SimpleSignalController signalController =
       new SimpleSignalController(1, this::syncToClient, this, false,
@@ -22,12 +23,12 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
       new SimpleBlockSignalNetwork(1, this::syncToClient, this.signalController::setSignalAspect,
           this);
 
-  public BlockSignalBlockEntity() {
-    this(RailcraftBlockEntityTypes.BLOCK_SIGNAL.get());
+  public BlockSignalBlockEntity(BlockPos blockPos, BlockState blockState) {
+    this(RailcraftBlockEntityTypes.BLOCK_SIGNAL.get(), blockPos, blockState);
   }
 
-  public BlockSignalBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public BlockSignalBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
   @Override
@@ -38,17 +39,8 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public void tick() {
-    super.tick();
-    if (this.level.isClientSide()) {
-      this.signalController.spawnTuningAuraParticles();
-      return;
-    }
-    this.blockSignal.tickServer();
-  }
-
-  @Override
-  public void load() {
+  public void onLoad() {
+    super.onLoad();
     if (!this.level.isClientSide()) {
       this.signalController.refresh();
       this.blockSignal.refresh();
@@ -61,29 +53,28 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.put("blockSignal", this.blockSignal.serializeNBT());
-    data.put("signalController", this.signalController.serializeNBT());
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.put("blockSignal", this.blockSignal.serializeNBT());
+    tag.put("signalController", this.signalController.serializeNBT());
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.blockSignal.deserializeNBT(data.getCompound("blockSignal"));
-    this.signalController.deserializeNBT(data.getCompound("signalController"));
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.blockSignal.deserializeNBT(tag.getCompound("blockSignal"));
+    this.signalController.deserializeNBT(tag.getCompound("signalController"));
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     this.blockSignal.writeSyncData(data);
     this.signalController.writeSyncData(data);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.blockSignal.readSyncData(data);
     this.signalController.readSyncData(data);
@@ -97,5 +88,15 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
   @Override
   public SimpleBlockSignalNetwork getSignalNetwork() {
     return this.blockSignal;
+  }
+
+  public static void clientTick(Level level, BlockPos blockPos, BlockState blockState,
+      BlockSignalBlockEntity blockEntity) {
+    blockEntity.signalController.spawnTuningAuraParticles();
+  }
+
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      BlockSignalBlockEntity blockEntity) {
+    blockEntity.blockSignal.serverTick();
   }
 }

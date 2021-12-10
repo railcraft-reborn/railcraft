@@ -6,11 +6,11 @@ import java.util.function.Supplier;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.IChargeBlock;
 import mods.railcraft.api.track.TrackType;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Created by CovertJaguar on 8/2/2016 for Railcraft.
@@ -27,19 +27,19 @@ public class ElectricTrackBlock extends TrackBlock implements IChargeBlock {
   }
 
   @Override
-  public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+  public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
     Charge.effects().throwSparks(stateIn, worldIn, pos, rand, 75);
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
+  public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
     super.randomTick(state, worldIn, pos, random);
     registerNode(state, worldIn, pos);
   }
 
   @Override
-  public void onPlace(BlockState state, World worldIn, BlockPos pos,
+  public void onPlace(BlockState state, Level worldIn, BlockPos pos,
       BlockState oldState, boolean something) {
     super.onPlace(state, worldIn, pos, state, something);
     registerNode(state, worldIn, pos);
@@ -47,14 +47,14 @@ public class ElectricTrackBlock extends TrackBlock implements IChargeBlock {
 
   @Override
   public void onRemove(
-      BlockState state, World worldIn, BlockPos pos, BlockState newState,
+      BlockState state, Level worldIn, BlockPos pos, BlockState newState,
       boolean p_196243_5_) {
     super.onRemove(state, worldIn, pos, state, p_196243_5_);
     Charge.distribution.network(worldIn).removeNode(pos);
   }
 
   @Override
-  public Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, IBlockReader world,
+  public Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, BlockGetter world,
       BlockPos pos) {
     return CHARGE_SPECS;
   }

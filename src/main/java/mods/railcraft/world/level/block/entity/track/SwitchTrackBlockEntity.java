@@ -16,17 +16,17 @@ import mods.railcraft.world.entity.cart.CartTools;
 import mods.railcraft.world.entity.cart.Train;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class SwitchTrackBlockEntity extends TileEntity implements ITickableTileEntity {
+public abstract class SwitchTrackBlockEntity extends BlockEntity {
 
   private static final int SPRING_DURATION = 30;
   protected Set<UUID> lockingCarts = new HashSet<>();
@@ -37,81 +37,78 @@ public abstract class SwitchTrackBlockEntity extends TileEntity implements ITick
   @Nullable
   private UUID currentCart;
 
-  public SwitchTrackBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public SwitchTrackBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
-
-  @Override
-  public void tick() {
-    if (this.level.isClientSide()) {
-      return;
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      SwitchTrackBlockEntity blockEntity) {
+    if (blockEntity.locked > 0) {
+      blockEntity.locked--;
     }
 
-    if (this.locked > 0)
-      this.locked--;
-    if (this.sprung > 0)
-      this.sprung--;
-
-    if (this.locked == 0 && this.sprung == 0) {
-      this.lockingCarts.clear(); // Clear out our sets so we don't keep
-      this.springingCarts.clear(); // these carts forever
-      this.decidingCarts.clear();
-      this.currentCart = null;
+    if (blockEntity.sprung > 0) {
+      blockEntity.sprung--;
     }
 
-    final BlockState blockState = this.getBlockState();
+    if (blockEntity.locked == 0 && blockEntity.sprung == 0) {
+      blockEntity.lockingCarts.clear(); // Clear out our sets so we don't keep
+      blockEntity.springingCarts.clear(); // these carts forever
+      blockEntity.decidingCarts.clear();
+      blockEntity.currentCart = null;
+    }
 
     // updating carts we just found in appropriate sets
-    // this keeps exiting carts from getting mixed up with entering carts
-    this.updateSet(this.lockingCarts, this.getCartsAtLockEntrance(),
-        this.springingCarts, this.decidingCarts);
-    this.updateSet(this.springingCarts, this.getCartsAtSpringEntrance(),
-        this.lockingCarts, this.decidingCarts);
-    this.updateSet(this.decidingCarts, this.getCartsAtDecisionEntrance(),
-        this.lockingCarts, this.springingCarts);
+    // blockEntity keeps exiting carts from getting mixed up with entering carts
+    blockEntity.updateSet(blockEntity.lockingCarts, blockEntity.getCartsAtLockEntrance(),
+        blockEntity.springingCarts, blockEntity.decidingCarts);
+    blockEntity.updateSet(blockEntity.springingCarts, blockEntity.getCartsAtSpringEntrance(),
+        blockEntity.lockingCarts, blockEntity.decidingCarts);
+    blockEntity.updateSet(blockEntity.decidingCarts, blockEntity.getCartsAtDecisionEntrance(),
+        blockEntity.lockingCarts, blockEntity.springingCarts);
 
-    // We only set sprung/locked when a cart enters our track, this is
+    // We only set sprung/locked when a cart enters our track, blockEntity is
     // mainly for visual purposes as the subclass's getRailDirectionRaw()
     // determines which direction the carts actually take.
-    List<AbstractMinecartEntity> cartsOnTrack = EntitySearcher.findMinecarts()
-        .around(getBlockPos())
+    List<AbstractMinecart> cartsOnTrack = EntitySearcher.findMinecarts()
+        .around(blockPos)
         .outTo(-0.3f)
-        .in(this.level);
+        .in(blockEntity.level);
     Set<UUID> uuidOnTrack = cartsOnTrack.stream()
         .map(Entity::getUUID)
         .collect(Collectors.toSet());
 
-    AbstractMinecartEntity bestCart = this.getBestCartForVisualState(cartsOnTrack);
+    AbstractMinecart bestCart = blockEntity.getBestCartForVisualState(cartsOnTrack);
 
     boolean wasSwitched = SwitchTrackBlock.isSwitched(blockState);
-    BlockPos actuatorBlockPos = this.getActuatorBlockPos();
-    BlockState actuatorBlockState = this.level.getBlockState(actuatorBlockPos);
+    BlockPos actuatorBlockPos = blockEntity.getActuatorBlockPos();
+    BlockState actuatorBlockState = blockEntity.level.getBlockState(actuatorBlockPos);
     boolean actuatorPresent = actuatorBlockState.is(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR);
     boolean actuatorSwitched = actuatorPresent
         && SwitchTrackActuatorBlock.isSwitched(actuatorBlockState);
-    boolean switched = !this.isLocked() && (actuatorSwitched || this.isSprung());
+    boolean switched = !blockEntity.isLocked() && (actuatorSwitched || blockEntity.isSprung());
 
     // Only allow cartsOnTrack to actually spring or lock the track
     if (bestCart != null && uuidOnTrack.contains(bestCart.getUUID())) {
-      if (this.shouldSwitchForCart(bestCart)) {
-        this.springTrack(bestCart.getUUID());
+      if (blockEntity.shouldSwitchForCart(bestCart)) {
+        blockEntity.springTrack(bestCart.getUUID());
       } else {
-        this.lockTrack(bestCart.getUUID());
+        blockEntity.lockTrack(bestCart.getUUID());
       }
     }
 
     if (switched != wasSwitched) {
-      this.level.setBlockAndUpdate(this.getBlockPos(),
+      blockEntity.level.setBlockAndUpdate(blockEntity.getBlockPos(),
           blockState.setValue(SwitchTrackBlock.SWITCHED, switched));
       if (actuatorPresent) {
         if (actuatorSwitched != switched) {
           SwitchTrackActuatorBlock.setSwitched(
-              actuatorBlockState, this.level, actuatorBlockPos, switched);
+              actuatorBlockState, blockEntity.level, actuatorBlockPos, switched);
 
         }
-        SwitchTrackActuatorBlock.updateArrowDirections(actuatorBlockState, this.level,
-            actuatorBlockPos, this.getRedArrowDirection(), this.getWhiteArrowDirection());
+        SwitchTrackActuatorBlock.updateArrowDirections(actuatorBlockState, blockEntity.level,
+            actuatorBlockPos, blockEntity.getRedArrowDirection(),
+            blockEntity.getWhiteArrowDirection());
       }
     }
   }
@@ -123,12 +120,12 @@ public abstract class SwitchTrackBlockEntity extends TileEntity implements ITick
   // To render the state of the track most accurately, we choose the "best" cart from our set of
   // carts based on distance.
   @Nullable
-  private AbstractMinecartEntity getBestCartForVisualState(
-      List<AbstractMinecartEntity> cartsOnTrack) {
+  private AbstractMinecart getBestCartForVisualState(
+      List<AbstractMinecart> cartsOnTrack) {
     if (!cartsOnTrack.isEmpty()) {
       return cartsOnTrack.get(0);
     } else {
-      AbstractMinecartEntity closestCart = null;
+      AbstractMinecart closestCart = null;
       List<UUID> allCarts = new ArrayList<>();
       allCarts.addAll(lockingCarts);
       allCarts.addAll(springingCarts);
@@ -139,7 +136,7 @@ public abstract class SwitchTrackBlockEntity extends TileEntity implements ITick
           closestCart = CartTools.getCartFromUUID(this.level, testCartUUID);
         } else {
           double closestDist = crudeDistance(this.getBlockPos(), closestCart);
-          AbstractMinecartEntity testCart = CartTools.getCartFromUUID(this.level, testCartUUID);
+          AbstractMinecart testCart = CartTools.getCartFromUUID(this.level, testCartUUID);
           if (testCart != null) {
             double testDist = crudeDistance(this.getBlockPos(), testCart);
             if (testDist < closestDist)
@@ -168,7 +165,7 @@ public abstract class SwitchTrackBlockEntity extends TileEntity implements ITick
    * whether the switch is sprung or not. It caches the server responses for the clients to use.
    * Note: This method should not modify any variables except the cache, we leave that to update().
    */
-  public boolean shouldSwitchForCart(@Nullable AbstractMinecartEntity cart) {
+  public boolean shouldSwitchForCart(@Nullable AbstractMinecart cart) {
     if (cart == null || this.level.isClientSide())
       return false;
 
@@ -221,31 +218,33 @@ public abstract class SwitchTrackBlockEntity extends TileEntity implements ITick
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.putByte("sprung", this.sprung);
-    data.putByte("locked", this.locked);
-    data.put("springingCarts", RailcraftNBTUtil.createUUIDArray(this.springingCarts));
-    data.put("lockingCarts", RailcraftNBTUtil.createUUIDArray(this.lockingCarts));
-    data.put("decidingCarts", RailcraftNBTUtil.createUUIDArray(this.decidingCarts));
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putByte("sprung", this.sprung);
+    tag.putByte("locked", this.locked);
+    tag.put("springingCarts", RailcraftNBTUtil.createUUIDArray(this.springingCarts));
+    tag.put("lockingCarts", RailcraftNBTUtil.createUUIDArray(this.lockingCarts));
+    tag.put("decidingCarts", RailcraftNBTUtil.createUUIDArray(this.decidingCarts));
     if (this.currentCart != null) {
-      data.putUUID("currentCart", this.currentCart);
+      tag.putUUID("currentCart", this.currentCart);
     }
-    return data;
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.sprung = data.getByte("sprung");
-    this.locked = data.getByte("locked");
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.sprung = tag.getByte("sprung");
+    this.locked = tag.getByte("locked");
     this.springingCarts = Sets.newHashSet(
-        RailcraftNBTUtil.loadUUIDArray(data.getList("springingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
+        RailcraftNBTUtil
+            .loadUUIDArray(tag.getList("springingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
     this.lockingCarts = Sets.newHashSet(
-        RailcraftNBTUtil.loadUUIDArray(data.getList("lockingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
+        RailcraftNBTUtil
+            .loadUUIDArray(tag.getList("lockingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
     this.decidingCarts = Sets.newHashSet(
-        RailcraftNBTUtil.loadUUIDArray(data.getList("decidingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
-    this.currentCart = data.hasUUID("currentCart") ? data.getUUID("currentCart") : null;
+        RailcraftNBTUtil
+            .loadUUIDArray(tag.getList("decidingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
+    this.currentCart = tag.hasUUID("currentCart") ? tag.getUUID("currentCart") : null;
   }
 
   private void updateSet(Set<UUID> setToUpdate, List<UUID> potentialUpdates, Set<UUID> reject1,
@@ -257,7 +256,7 @@ public abstract class SwitchTrackBlockEntity extends TileEntity implements ITick
     }
   }
 
-  private static double crudeDistance(BlockPos pos, AbstractMinecartEntity cart) {
+  private static double crudeDistance(BlockPos pos, AbstractMinecart cart) {
     double cx = pos.getX() + .5; // Why not calc this outside and cache it?
     double cz = pos.getZ() + .5; // b/c this is a rare occurrence that we need to calc this
     return Math.abs(cart.getX() - cx) + Math.abs(cart.getZ() - cz); // not the real distance

@@ -7,13 +7,13 @@ import mods.railcraft.api.signal.SignalReceiver;
 import mods.railcraft.api.signal.SignalReceiverProvider;
 import mods.railcraft.api.signal.SingleSignalReceiver;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBlockEntity
     implements SignalReceiverProvider {
@@ -26,8 +26,8 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   private boolean redstoneTriggered;
   private boolean powered;
 
-  public SwitchTrackMotorBlockEntity() {
-    super(RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get());
+  public SwitchTrackMotorBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get(), blockPos, blockState);
   }
 
   public void neighborChanged() {
@@ -64,30 +64,29 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.put("signalReceiver", this.signalReceiver.serializeNBT());
-    ListNBT actionAspectsTag = new ListNBT();
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.put("signalReceiver", this.signalReceiver.serializeNBT());
+    ListTag actionAspectsTag = new ListTag();
     this.actionSignalAspects
-        .forEach(aspect -> actionAspectsTag.add(StringNBT.valueOf(aspect.getSerializedName())));
-    data.put("actionSignalAspects", actionAspectsTag);
-    data.putBoolean("redstoneTriggered", this.redstoneTriggered);
-    return data;
+        .forEach(aspect -> actionAspectsTag.add(StringTag.valueOf(aspect.getSerializedName())));
+    tag.put("actionSignalAspects", actionAspectsTag);
+    tag.putBoolean("redstoneTriggered", this.redstoneTriggered);
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.signalReceiver.deserializeNBT(data.getCompound("signalReceiver"));
-    ListNBT actionAspectsTag = data.getList("actionAspects", Constants.NBT.TAG_STRING);
-    for (INBT aspectTag : actionAspectsTag) {
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.signalReceiver.deserializeNBT(tag.getCompound("signalReceiver"));
+    ListTag actionAspectsTag = tag.getList("actionAspects", Tag.TAG_STRING);
+    for (Tag aspectTag : actionAspectsTag) {
       SignalAspect.getByName(aspectTag.getAsString()).ifPresent(this.actionSignalAspects::add);
     }
-    this.redstoneTriggered = data.getBoolean("redstoneTriggered");
+    this.redstoneTriggered = tag.getBoolean("redstoneTriggered");
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     this.signalReceiver.writeSyncData(data);
     data.writeVarInt(this.actionSignalAspects.size());
@@ -96,7 +95,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.signalReceiver.readSyncData(data);
     this.actionSignalAspects.clear();

@@ -1,20 +1,18 @@
 package mods.railcraft.advancements.criterion;
 
+import javax.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import javax.annotation.Nullable;
-
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.world.entity.cart.CartConstants;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.MinMaxBounds.FloatBound;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**
  * A utility for testing carts or so.
@@ -22,7 +20,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 public final class CartPredicate {
 
   public static final CartPredicate ANY = new CartPredicate(null, null, null, null, null, null,
-      FloatBound.ANY, EntityPredicate.ANY);
+      MinMaxBounds.Doubles.ANY, EntityPredicate.ANY);
 
   @Nullable
   private final Boolean highSpeed;
@@ -37,12 +35,12 @@ public final class CartPredicate {
   @Nullable
   private final Boolean checksOwner;
 
-  private final FloatBound speed;
+  private final MinMaxBounds.Doubles speed;
   private final EntityPredicate parent;
 
   public CartPredicate(@Nullable Boolean highSpeed, @Nullable Boolean launched,
       @Nullable Boolean elevator, @Nullable Boolean derail, @Nullable Boolean canMount,
-      @Nullable Boolean checkOwner, FloatBound speed, EntityPredicate parent) {
+      @Nullable Boolean checkOwner, MinMaxBounds.Doubles speed, EntityPredicate parent) {
     this.highSpeed = highSpeed;
     this.launched = launched;
     this.elevator = elevator;
@@ -53,7 +51,7 @@ public final class CartPredicate {
     this.parent = parent;
   }
 
-  public boolean test(ServerPlayerEntity player, AbstractMinecartEntity cart) {
+  public boolean test(ServerPlayer player, AbstractMinecart cart) {
     if (this.highSpeed != null && HighSpeedTools.isTravellingHighSpeed(cart) != this.highSpeed) {
       return false;
     }
@@ -115,7 +113,7 @@ public final class CartPredicate {
     Boolean derail = JsonTools.nullableBoolean(element, CartConstants.TAG_DERAIL);
     Boolean canMount = JsonTools.nullableBoolean(element, "canMount");
     Boolean checksOwner = JsonTools.nullableBoolean(element, "check_owner");
-    FloatBound speed = FloatBound.fromJson(element.get("speed"));
+    MinMaxBounds.Doubles speed = MinMaxBounds.Doubles.fromJson(element.get("speed"));
     EntityPredicate parent = EntityPredicate.fromJson(element.get("parent"));
 
     return new CartPredicate(highSpeed, launched, elevator, derail, canMount, checksOwner, speed,

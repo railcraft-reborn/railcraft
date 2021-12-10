@@ -6,7 +6,7 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.sounds.RailcraftSoundEvents;
-import mods.railcraft.util.inventory.wrappers.InventoryMapper;
+import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
@@ -16,23 +16,23 @@ import mods.railcraft.world.level.material.fluid.steam.SteamBoiler;
 import mods.railcraft.world.level.material.fluid.steam.SteamConstants;
 import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -49,10 +49,10 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   public static final int SLOT_WATER_PROCESSING = 1;
   public static final int SLOT_WATER_OUTPUT = 2;
 
-  private static final DataParameter<Boolean> SMOKE =
-      EntityDataManager.defineId(AbstractSteamLocomotiveEntity.class, DataSerializers.BOOLEAN);
-  private static final DataParameter<Boolean> STEAM =
-      EntityDataManager.defineId(AbstractSteamLocomotiveEntity.class, DataSerializers.BOOLEAN);
+  private static final EntityDataAccessor<Boolean> SMOKE =
+      SynchedEntityData.defineId(AbstractSteamLocomotiveEntity.class, EntityDataSerializers.BOOLEAN);
+  private static final EntityDataAccessor<Boolean> STEAM =
+      SynchedEntityData.defineId(AbstractSteamLocomotiveEntity.class, EntityDataSerializers.BOOLEAN);
 
   private static final byte TICKS_PER_BOILER_CYCLE = 2;
   private static final int FUEL_PER_REQUEST = 3;
@@ -74,12 +74,12 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
       .setEfficiencyModifier(RailcraftConfig.server.fuelPerSteamMultiplier.get())
       .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
 
-  protected final InventoryMapper invWaterInput =
-      InventoryMapper.make(this, SLOT_WATER_INPUT, 1)
+  protected final ContainerMapper invWaterInput =
+      ContainerMapper.make(this, SLOT_WATER_INPUT, 1)
           .withStackSizeLimit(4);
-  protected final InventoryMapper invWaterOutput = InventoryMapper.make(this, SLOT_WATER_OUTPUT, 1);
-  protected final InventoryMapper invWaterContainers =
-      InventoryMapper.make(this, SLOT_WATER_INPUT, 3);
+  protected final ContainerMapper invWaterOutput = ContainerMapper.make(this, SLOT_WATER_OUTPUT, 1);
+  protected final ContainerMapper invWaterContainers =
+      ContainerMapper.make(this, SLOT_WATER_INPUT, 3);
 
   private final LazyOptional<TankManager> tankManager =
       LazyOptional.of(() -> new TankManager(this.waterTank, this.steamTank));
@@ -88,12 +88,12 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
-  protected AbstractSteamLocomotiveEntity(EntityType<?> type, World world) {
+  protected AbstractSteamLocomotiveEntity(EntityType<?> type, Level world) {
     super(type, world);
   }
 
   protected AbstractSteamLocomotiveEntity(ItemStack itemStack, EntityType<?> type, double x,
-      double y, double z, ServerWorld world) {
+      double y, double z, ServerLevel world) {
     super(itemStack, type, x, y, z, world);
   }
 
@@ -120,9 +120,9 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   }
 
   @Override
-  public ActionResultType interact(PlayerEntity player, Hand hand) {
+  public InteractionResult interact(Player player, InteractionHand hand) {
     return FluidTools.interactWithFluidHandler(player, hand, getTankManager())
-        ? ActionResultType.SUCCESS
+        ? InteractionResult.SUCCESS
         : super.interact(player, hand);
   }
 
@@ -241,7 +241,7 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundNBT data) {
+  public void addAdditionalSaveData(CompoundTag data) {
     super.addAdditionalSaveData(data);
     data.put("tankManager", this.getTankManager().serializeNBT());
     data.put("boiler", this.boiler.serializeNBT());
@@ -249,9 +249,9 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundNBT data) {
+  public void readAdditionalSaveData(CompoundTag data) {
     super.readAdditionalSaveData(data);
-    this.getTankManager().deserializeNBT(data.getList("tankManager", Constants.NBT.TAG_COMPOUND));
+    this.getTankManager().deserializeNBT(data.getList("tankManager", Tag.TAG_COMPOUND));
     this.boiler.deserializeNBT(data.getCompound("boiler"));
     this.processState = FluidTools.ProcessState.getByName(data.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);
@@ -267,12 +267,12 @@ public abstract class AbstractSteamLocomotiveEntity extends LocomotiveEntity
   }
 
   @Override
-  public boolean canAcceptPushedFluid(AbstractMinecartEntity requester, FluidStack fluid) {
+  public boolean canAcceptPushedFluid(AbstractMinecart requester, FluidStack fluid) {
     return Fluids.WATER.isSame(fluid.getFluid());
   }
 
   @Override
-  public boolean canProvidePulledFluid(AbstractMinecartEntity requester, FluidStack fluid) {
+  public boolean canProvidePulledFluid(AbstractMinecart requester, FluidStack fluid) {
     return false;
   }
 

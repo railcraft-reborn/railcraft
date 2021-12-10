@@ -20,173 +20,173 @@ import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftBlockEntityTypes {
 
-  public static final DeferredRegister<TileEntityType<?>> BLOCK_ENTITY_TYPES =
-      DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Railcraft.ID);
+  public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
+      DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Railcraft.ID);
 
-  public static final RegistryObject<TileEntityType<FluidLoaderBlockEntity>> FLUID_LOADER =
+  public static final RegistryObject<BlockEntityType<FluidLoaderBlockEntity>> FLUID_LOADER =
       BLOCK_ENTITY_TYPES.register("fluid_loader",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(FluidLoaderBlockEntity::new, RailcraftBlocks.FLUID_LOADER.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<FluidUnloaderBlockEntity>> FLUID_UNLOADER =
+  public static final RegistryObject<BlockEntityType<FluidUnloaderBlockEntity>> FLUID_UNLOADER =
       BLOCK_ENTITY_TYPES.register("fluid_unloader",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(FluidUnloaderBlockEntity::new, RailcraftBlocks.FLUID_UNLOADER.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<ItemLoaderBlockEntity>> ITEM_LOADER =
+  public static final RegistryObject<BlockEntityType<ItemLoaderBlockEntity>> ITEM_LOADER =
       BLOCK_ENTITY_TYPES.register("item_loader",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(ItemLoaderBlockEntity::new, RailcraftBlocks.ITEM_LOADER.get(),
                   RailcraftBlocks.ADVANCED_ITEM_LOADER.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<ItemUnloaderBlockEntity>> ITEM_UNLOADER =
+  public static final RegistryObject<BlockEntityType<ItemUnloaderBlockEntity>> ITEM_UNLOADER =
       BLOCK_ENTITY_TYPES.register("item_unloader",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(ItemUnloaderBlockEntity::new, RailcraftBlocks.ITEM_UNLOADER.get(),
                   RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<AnalogSignalControllerBoxBlockEntity>> ANALOG_SIGNAL_CONTROLLER_BOX =
+  public static final RegistryObject<BlockEntityType<AnalogSignalControllerBoxBlockEntity>> ANALOG_SIGNAL_CONTROLLER_BOX =
       BLOCK_ENTITY_TYPES.register("analog_signal_controller_box",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(AnalogSignalControllerBoxBlockEntity::new,
                   RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<SignalSequencerBoxBlockEntity>> SIGNAL_SEQUENCER_BOX =
+  public static final RegistryObject<BlockEntityType<SignalSequencerBoxBlockEntity>> SIGNAL_SEQUENCER_BOX =
       BLOCK_ENTITY_TYPES.register("signal_sequencer_box",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(SignalSequencerBoxBlockEntity::new, RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<SignalCapacitorBoxBlockEntity>> SIGNAL_CAPACITOR_BOX =
+  public static final RegistryObject<BlockEntityType<SignalCapacitorBoxBlockEntity>> SIGNAL_CAPACITOR_BOX =
       BLOCK_ENTITY_TYPES.register("signal_capacitor_box",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(SignalCapacitorBoxBlockEntity::new, RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<SignalInterlockBoxBlockEntity>> SIGNAL_INTERLOCK_BOX =
+  public static final RegistryObject<BlockEntityType<SignalInterlockBoxBlockEntity>> SIGNAL_INTERLOCK_BOX =
       BLOCK_ENTITY_TYPES.register("signal_interlock_box",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(SignalInterlockBoxBlockEntity::new, RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<BlockSignalRelayBoxBlockEntity>> SIGNAL_RELAY_BOX =
-      BLOCK_ENTITY_TYPES.register("signal_relay_box",
-          () -> TileEntityType.Builder
+  public static final RegistryObject<BlockEntityType<BlockSignalRelayBoxBlockEntity>> BLOCK_SIGNAL_RELAY_BOX =
+      BLOCK_ENTITY_TYPES.register("block_signal_relay_box",
+          () -> BlockEntityType.Builder
               .of(BlockSignalRelayBoxBlockEntity::new, RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<SignalReceiverBoxBlockEntity>> SIGNAL_RECEIVER_BOX =
+  public static final RegistryObject<BlockEntityType<SignalReceiverBoxBlockEntity>> SIGNAL_RECEIVER_BOX =
       BLOCK_ENTITY_TYPES.register("signal_receiver_box",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(SignalReceiverBoxBlockEntity::new, RailcraftBlocks.SIGNAL_RECEIVER_BOX.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<SignalControllerBoxBlockEntity>> SIGNAL_CONTROLLER_BOX =
+  public static final RegistryObject<BlockEntityType<SignalControllerBoxBlockEntity>> SIGNAL_CONTROLLER_BOX =
       BLOCK_ENTITY_TYPES.register("signal_controller_box",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(SignalControllerBoxBlockEntity::new, RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<DualBlockSignalBlockEntity>> DUAL_SIGNAL =
-      BLOCK_ENTITY_TYPES.register("dual_signal",
-          () -> TileEntityType.Builder
+  public static final RegistryObject<BlockEntityType<DualBlockSignalBlockEntity>> DUAL_BLOCK_SIGNAL =
+      BLOCK_ENTITY_TYPES.register("dual_block_signal",
+          () -> BlockEntityType.Builder
               .of(DualBlockSignalBlockEntity::new, RailcraftBlocks.DUAL_BLOCK_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<DualDistantSignalBlockEntity>> DUAL_DISTANT_SIGNAL =
+  public static final RegistryObject<BlockEntityType<DualDistantSignalBlockEntity>> DUAL_DISTANT_SIGNAL =
       BLOCK_ENTITY_TYPES.register("dual_distant_signal",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(DualDistantSignalBlockEntity::new, RailcraftBlocks.DUAL_DISTANT_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<DualTokenSignalBlockEntity>> DUAL_TOKEN_SIGNAL =
+  public static final RegistryObject<BlockEntityType<DualTokenSignalBlockEntity>> DUAL_TOKEN_SIGNAL =
       BLOCK_ENTITY_TYPES.register("dual_token_signal",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(DualTokenSignalBlockEntity::new, RailcraftBlocks.DUAL_TOKEN_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<BlockSignalBlockEntity>> BLOCK_SIGNAL =
+  public static final RegistryObject<BlockEntityType<BlockSignalBlockEntity>> BLOCK_SIGNAL =
       BLOCK_ENTITY_TYPES.register("block_signal",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(BlockSignalBlockEntity::new, RailcraftBlocks.BLOCK_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<DistantSignalBlockEntity>> DISTANT_SIGNAL =
+  public static final RegistryObject<BlockEntityType<DistantSignalBlockEntity>> DISTANT_SIGNAL =
       BLOCK_ENTITY_TYPES.register("distant_signal",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(DistantSignalBlockEntity::new, RailcraftBlocks.DISTANT_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<TokenSignalBlockEntity>> TOKEN_SIGNAL =
+  public static final RegistryObject<BlockEntityType<TokenSignalBlockEntity>> TOKEN_SIGNAL =
       BLOCK_ENTITY_TYPES.register("token_signal",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(TokenSignalBlockEntity::new, RailcraftBlocks.TOKEN_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<?>> FORCE_TRACK_EMITTER =
+  public static final RegistryObject<BlockEntityType<ForceTrackEmitterBlockEntity>> FORCE_TRACK_EMITTER =
       BLOCK_ENTITY_TYPES.register("force_track_emitter",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(ForceTrackEmitterBlockEntity::new, RailcraftBlocks.FORCE_TRACK_EMITTER.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<?>> FORCE_TRACK =
+  public static final RegistryObject<BlockEntityType<ForceTrackBlockEntity>> FORCE_TRACK =
       BLOCK_ENTITY_TYPES.register("force_track",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(ForceTrackBlockEntity::new, RailcraftBlocks.FORCE_TRACK.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<?>> TURNOUT_TRACK =
+  public static final RegistryObject<BlockEntityType<TurnoutTrackBlockEntity>> TURNOUT_TRACK =
       BLOCK_ENTITY_TYPES.register("turnout_track",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(TurnoutTrackBlockEntity::new, RailcraftBlocks.TURNOUT_TRACK.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<?>> WYE_TRACK =
+  public static final RegistryObject<BlockEntityType<WyeTrackBlockEntity>> WYE_TRACK =
       BLOCK_ENTITY_TYPES.register("wye_track",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(WyeTrackBlockEntity::new, RailcraftBlocks.WYE_TRACK.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<?>> RITUAL =
+  public static final RegistryObject<BlockEntityType<RitualBlockEntity>> RITUAL =
       BLOCK_ENTITY_TYPES.register("ritual",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(RitualBlockEntity::new, RailcraftBlocks.RITUAL.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<?>> MANUAL_ROLLING_MACHINE =
+  public static final RegistryObject<BlockEntityType<ManualRollingMachineBlockEntity>> MANUAL_ROLLING_MACHINE =
       BLOCK_ENTITY_TYPES.register("manual_rolling_machine",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(ManualRollingMachineBlockEntity::new,
                   RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<?>> COKE_OVEN =
+  public static final RegistryObject<BlockEntityType<CokeOvenBlockEntity>> COKE_OVEN =
       BLOCK_ENTITY_TYPES.register("coke_oven",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(CokeOvenBlockEntity::new, RailcraftBlocks.COKE_OVEN_BRICKS.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<?>> SWITCH_TRACK_MOTOR =
+  public static final RegistryObject<BlockEntityType<SwitchTrackMotorBlockEntity>> SWITCH_TRACK_MOTOR =
       BLOCK_ENTITY_TYPES.register("switch_track_motor",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(SwitchTrackMotorBlockEntity::new, RailcraftBlocks.SWITCH_TRACK_MOTOR.get())
               .build(null));
 
-  public static final RegistryObject<TileEntityType<?>> LOCKING_TRACK =
+  public static final RegistryObject<BlockEntityType<LockingTrackBlockEntity>> LOCKING_TRACK =
       BLOCK_ENTITY_TYPES.register("locking_track",
-          () -> TileEntityType.Builder
+          () -> BlockEntityType.Builder
               .of(LockingTrackBlockEntity::new,
                   RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
                   RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),

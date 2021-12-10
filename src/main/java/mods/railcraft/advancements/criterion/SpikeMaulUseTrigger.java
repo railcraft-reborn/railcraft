@@ -4,22 +4,22 @@ import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.util.LevelUtil;
-import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.LocationPredicate;
-import net.minecraft.advancements.criterion.NBTPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.loot.ConditionArraySerializer;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.LocationPredicate;
+import net.minecraft.advancements.critereon.NbtPredicate;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 
-public class SpikeMaulUseTrigger extends AbstractCriterionTrigger<SpikeMaulUseTrigger.Instance> {
+public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrigger.Instance> {
 
   private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "spike_maul_use");
 
@@ -30,9 +30,9 @@ public class SpikeMaulUseTrigger extends AbstractCriterionTrigger<SpikeMaulUseTr
 
   @Override
   public SpikeMaulUseTrigger.Instance createInstance(JsonObject json,
-      EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
-    NBTPredicate nbt =
-        JsonTools.whenPresent(json, "nbt", NBTPredicate::fromJson, NBTPredicate.ANY);
+      EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
+    NbtPredicate nbt =
+        JsonTools.whenPresent(json, "nbt", NbtPredicate::fromJson, NbtPredicate.ANY);
     ItemPredicate tool =
         JsonTools.whenPresent(json, "tool", ItemPredicate::fromJson, ItemPredicate.ANY);
     LocationPredicate locationPredicate = JsonTools.whenPresent(json, "location",
@@ -43,18 +43,18 @@ public class SpikeMaulUseTrigger extends AbstractCriterionTrigger<SpikeMaulUseTr
   /**
    * Invoked when the user successfully uses a spike maul.
    */
-  public void trigger(ServerPlayerEntity playerEntity, ItemStack item,
-      ServerWorld world, BlockPos pos) {
+  public void trigger(ServerPlayer playerEntity, ItemStack item,
+      ServerLevel world, BlockPos pos) {
     this.trigger(playerEntity, (criterionInstance) -> criterionInstance.matches(item, world, pos));
   }
 
-  public static class Instance extends CriterionInstance {
+  public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final NBTPredicate nbt;
+    private final NbtPredicate nbt;
     private final ItemPredicate tool;
     private final LocationPredicate location;
 
-    private Instance(EntityPredicate.AndPredicate entityPredicate, NBTPredicate nbt,
+    private Instance(EntityPredicate.Composite entityPredicate, NbtPredicate nbt,
         ItemPredicate tool, LocationPredicate predicate) {
       super(SpikeMaulUseTrigger.ID, entityPredicate);
       this.nbt = nbt;
@@ -63,14 +63,14 @@ public class SpikeMaulUseTrigger extends AbstractCriterionTrigger<SpikeMaulUseTr
     }
 
     public static SpikeMaulUseTrigger.Instance hasUsedSpikeMaul() {
-      return new SpikeMaulUseTrigger.Instance(EntityPredicate.AndPredicate.ANY,
-          NBTPredicate.ANY, ItemPredicate.ANY, LocationPredicate.ANY);
+      return new SpikeMaulUseTrigger.Instance(EntityPredicate.Composite.ANY,
+          NbtPredicate.ANY, ItemPredicate.ANY, LocationPredicate.ANY);
     }
 
-    public boolean matches(ItemStack item, ServerWorld world, BlockPos pos) {
+    public boolean matches(ItemStack item, ServerLevel world, BlockPos pos) {
       return LevelUtil
           .getBlockEntity(world, pos)
-          .map(blockEntity -> blockEntity.save(new CompoundNBT()))
+          .map(blockEntity -> blockEntity.save(new CompoundTag()))
           .map(this.nbt::matches)
           .orElse(false)
           && this.tool.matches(item)
@@ -83,7 +83,7 @@ public class SpikeMaulUseTrigger extends AbstractCriterionTrigger<SpikeMaulUseTr
     }
 
     @Override
-    public JsonObject serializeToJson(ConditionArraySerializer serializer) {
+    public JsonObject serializeToJson(SerializationContext serializer) {
       JsonObject json = new JsonObject();
       json.add("nbt", this.nbt.serializeToJson());
       json.add("tool", this.tool.serializeToJson());

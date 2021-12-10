@@ -4,16 +4,12 @@ import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.entity.cart.TunnelBoreEntity;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
 public class TunnelBoreItem extends Item {
 
@@ -22,19 +18,18 @@ public class TunnelBoreItem extends Item {
   }
 
   @Override
-  public ActionResultType useOn(ItemUseContext context) {
-    World world = context.getLevel();
-    BlockPos pos = context.getClickedPos();
-    BlockState existingState = world.getBlockState(pos);
-    if (AbstractRailBlock.isRail(existingState)) {
-      if (!world.isClientSide() && EntitySearcher.findMinecarts()
+  public InteractionResult useOn(UseOnContext context) {
+    var level = context.getLevel();
+    var pos = context.getClickedPos();
+    var existingState = level.getBlockState(pos);
+    if (BaseRailBlock.isRail(existingState)) {
+      if (!level.isClientSide() && EntitySearcher.findMinecarts()
           .around(pos)
-          .in(world)
+          .in(level)
           .isEmpty()) {
-        RailShape trackShape =
-            TrackTools.getTrackDirection(world, pos, existingState);
+        var trackShape = TrackTools.getTrackDirection(level, pos, existingState);
         if (TrackShapeHelper.isLevelStraight(trackShape)) {
-          Direction playerFacing = context.getHorizontalDirection().getOpposite();
+          var playerFacing = context.getHorizontalDirection().getOpposite();
 
           if (trackShape == RailShape.NORTH_SOUTH) {
             if (playerFacing == Direction.WEST)
@@ -48,14 +43,14 @@ public class TunnelBoreItem extends Item {
               playerFacing = Direction.WEST;
           }
 
-          AbstractMinecartEntity bore = new TunnelBoreEntity(
-              world, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, playerFacing);
-          world.addFreshEntity(bore);
+          var bore = new TunnelBoreEntity(
+              level, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, playerFacing);
+          level.addFreshEntity(bore);
         }
       }
       context.getItemInHand().shrink(1);
-      return ActionResultType.sidedSuccess(world.isClientSide());
+      return InteractionResult.sidedSuccess(level.isClientSide());
     }
-    return ActionResultType.CONSUME;
+    return InteractionResult.CONSUME;
   }
 }

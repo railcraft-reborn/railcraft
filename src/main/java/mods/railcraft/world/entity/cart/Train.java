@@ -25,16 +25,15 @@ import com.google.common.collect.MapMaker;
 import mods.railcraft.util.CompositeFluidHandler;
 import mods.railcraft.util.collections.Streams;
 import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -44,25 +43,25 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 /**
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public final class Train implements Iterable<AbstractMinecartEntity> {
+public final class Train implements Iterable<AbstractMinecart> {
 
   public static final String TRAIN_NBT = "rcTrain";
 
   private static final Logger logger = LogManager.getLogger();
 
-  private static final Map<ServerWorld, Manager> managers = new MapMaker().weakKeys().makeMap();
+  private static final Map<ServerLevel, Manager> managers = new MapMaker().weakKeys().makeMap();
 
   private final UUID id;
   private final Deque<UUID> carts = new LinkedList<>();
   private final Collection<UUID> safeCarts = Collections.unmodifiableCollection(this.carts);
   private final Set<UUID> locks = new HashSet<>();
   @Nullable
-  private World level;
+  private Level level;
   private State state;
   private boolean dirty = true;
   private boolean dead;
 
-  private Train(AbstractMinecartEntity cart) {
+  private Train(AbstractMinecart cart) {
     this(UUID.randomUUID(),
         State.NORMAL,
         Collections.singleton(cart.getUUID()),
@@ -78,7 +77,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     this.locks.addAll(locks);
   }
 
-  public static Manager getManager(ServerWorld level) {
+  public static Manager getManager(ServerLevel level) {
     return managers.computeIfAbsent(level, Manager::new);
   }
 
@@ -89,11 +88,11 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
    *
    * This function is NOT thread safe and will throw an error if called outside the server thread.
    */
-  public static Optional<Train> get(@Nullable AbstractMinecartEntity cart) {
+  public static Optional<Train> get(@Nullable AbstractMinecart cart) {
     if (cart == null || cart.level.isClientSide()) {
       return Optional.empty();
     }
-    Manager manager = getManager((ServerWorld) cart.level);
+    Manager manager = getManager((ServerLevel) cart.level);
     Train train = manager.get(getTrainUUID(cart));
     if (train == null) {
       train = new Train(cart);
@@ -116,8 +115,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
    *
    * This function is thread safe.
    */
-  public static Optional<Train> getExisting(AbstractMinecartEntity cart) {
-    return Optional.ofNullable(getManager((ServerWorld) cart.level).get(getTrainUUID(cart)));
+  public static Optional<Train> getExisting(AbstractMinecart cart) {
+    return Optional.ofNullable(getManager((ServerLevel) cart.level).get(getTrainUUID(cart)));
   }
 
   @Override
@@ -129,22 +128,22 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
    * Will stream all carts in the train if on the server, or just the passed in cart if on the
    * client.
    */
-  public static Stream<AbstractMinecartEntity> streamCarts(AbstractMinecartEntity cart) {
+  public static Stream<AbstractMinecart> streamCarts(AbstractMinecart cart) {
     return get(cart).map(Train::stream).orElseGet(() -> Stream.of(cart));
   }
 
   @Nullable
-  public static UUID getTrainUUID(AbstractMinecartEntity cart) {
-    CompoundNBT nbt = cart.getPersistentData();
+  public static UUID getTrainUUID(AbstractMinecart cart) {
+    CompoundTag nbt = cart.getPersistentData();
     return nbt.hasUUID(TRAIN_NBT) ? nbt.getUUID(TRAIN_NBT) : null;
   }
 
-  public static boolean isPartOfTrain(AbstractMinecartEntity cart) {
+  public static boolean isPartOfTrain(AbstractMinecart cart) {
     return Train.get(cart).map(t -> t.size() > 1).orElse(false);
   }
 
-  public static boolean areInSameTrain(@Nullable AbstractMinecartEntity cart1,
-      @Nullable AbstractMinecartEntity cart2) {
+  public static boolean areInSameTrain(@Nullable AbstractMinecart cart1,
+      @Nullable AbstractMinecart cart2) {
     if (cart1 == null || cart2 == null) {
       return false;
     }
@@ -158,8 +157,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return train1 != null && Objects.equals(train1, train2);
   }
 
-  private static Optional<Train> getLongerTrain(AbstractMinecartEntity cart1,
-      AbstractMinecartEntity cart2) {
+  private static Optional<Train> getLongerTrain(AbstractMinecart cart1,
+      AbstractMinecart cart2) {
     Optional<Train> train1 = getExisting(cart1);
     Optional<Train> train2 = getExisting(cart2);
 
@@ -179,32 +178,32 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return train2;
   }
 
-  public static void repairTrain(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2) {
+  public static void repairTrain(AbstractMinecart cart1, AbstractMinecart cart2) {
     getLongerTrain(cart1, cart2).ifPresent(t -> t.rebuild(cart1));
   }
 
-  public static void removeTrainTag(AbstractMinecartEntity cart) {
+  public static void removeTrainTag(AbstractMinecart cart) {
     cart.getPersistentData().remove(TRAIN_NBT);
   }
 
-  public void addTrainTag(AbstractMinecartEntity cart) {
+  public void addTrainTag(AbstractMinecart cart) {
     UUID trainId = this.getId();
-    cart.getPersistentData().put(TRAIN_NBT, NBTUtil.createUUID(trainId));
+    cart.getPersistentData().put(TRAIN_NBT, NbtUtils.createUUID(trainId));
   }
 
   @Nullable
-  private AbstractMinecartEntity getCart(UUID cartID) {
+  private AbstractMinecart getCart(UUID cartID) {
     Objects.requireNonNull(this.level);
     return CartTools.getCartFromUUID(this.level, cartID);
   }
 
-  private void rebuild(AbstractMinecartEntity first) {
+  private void rebuild(AbstractMinecart first) {
     this.clear();
     this.rebuild(null, first);
     this.markDirty();
   }
 
-  private void rebuild(@Nullable AbstractMinecartEntity prev, AbstractMinecartEntity next) {
+  private void rebuild(@Nullable AbstractMinecart prev, AbstractMinecart next) {
     if (prev == null || this.carts.getFirst() == prev.getUUID()) {
       this.carts.addFirst(next.getUUID());
     } else if (carts.getLast() == prev.getUUID()) {
@@ -216,8 +215,8 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     getExisting(next).filter(t -> t != this).ifPresent(Train::kill);
     this.addTrainTag(next);
 
-    AbstractMinecartEntity linkA = RailcraftLinkageManager.INSTANCE.getLinkedCartA(next);
-    AbstractMinecartEntity linkB = RailcraftLinkageManager.INSTANCE.getLinkedCartB(next);
+    AbstractMinecart linkA = RailcraftLinkageManager.INSTANCE.getLinkedCartA(next);
+    AbstractMinecart linkB = RailcraftLinkageManager.INSTANCE.getLinkedCartB(next);
 
     if (linkA != null && linkA != prev && !this.contains(linkA)) {
       this.rebuild(next, linkA);
@@ -233,7 +232,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   private boolean isCartInvalid(UUID cartID) {
-    AbstractMinecartEntity cart = getCart(cartID);
+    AbstractMinecart cart = getCart(cartID);
     return cart != null && !this.id.equals(getTrainUUID(cart));
   }
 
@@ -242,7 +241,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
    *
    * This is done for thread safety reasons.
    */
-  public static void killTrain(AbstractMinecartEntity cart) {
+  public static void killTrain(AbstractMinecart cart) {
     // Game.log(Level.WARN, "Thread: " + Thread.currentThread().getName());
     getExisting(cart).ifPresent(Train::kill);
     removeTrainTag(cart);
@@ -262,7 +261,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return this.id;
   }
 
-  public boolean contains(@Nullable AbstractMinecartEntity cart) {
+  public boolean contains(@Nullable AbstractMinecart cart) {
     return cart != null && this.carts.contains(cart.getUUID());
   }
 
@@ -270,7 +269,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return cart != null && this.carts.contains(cart);
   }
 
-  public boolean isTrainEnd(@Nullable AbstractMinecartEntity cart) {
+  public boolean isTrainEnd(@Nullable AbstractMinecart cart) {
     return cart != null && this.getEnds().contains(cart.getUUID());
   }
 
@@ -288,16 +287,16 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
         .findFirst();
   }
 
-  public Stream<AbstractMinecartEntity> stream() {
+  public Stream<AbstractMinecart> stream() {
     return safeCarts.stream().map(this::getCart).filter(Objects::nonNull);
   }
 
-  public <T extends AbstractMinecartEntity> Stream<T> stream(Class<T> cartClass) {
+  public <T extends AbstractMinecart> Stream<T> stream(Class<T> cartClass) {
     return stream().flatMap(Streams.ofType(cartClass));
   }
 
   @Override
-  public Iterator<AbstractMinecartEntity> iterator() {
+  public Iterator<AbstractMinecart> iterator() {
     return stream().iterator();
   }
 
@@ -305,7 +304,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     return (int) stream(LocomotiveEntity.class).filter(LocomotiveEntity::isRunning).count();
   }
 
-  public <T extends AbstractMinecartEntity> List<T> getCarts(Class<T> cartClass) {
+  public <T extends AbstractMinecart> List<T> getCarts(Class<T> cartClass) {
     return stream(cartClass).collect(Collectors.toList());
   }
 
@@ -355,7 +354,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
         .min().orElse(1.2F);
   }
 
-  private float softMaxSpeed(AbstractMinecartEntity cart) {
+  private float softMaxSpeed(AbstractMinecart cart) {
     if (cart instanceof WeightedCart) {
       return ((WeightedCart) cart).softMaxSpeed();
     }
@@ -363,7 +362,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   private void setMaxSpeed(float trainSpeed) {
-    for (AbstractMinecartEntity c : this) {
+    for (AbstractMinecart c : this) {
       c.setCurrentCartSpeedCapOnRail(trainSpeed);
     }
   }
@@ -397,7 +396,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     }
   }
 
-  public enum State implements IStringSerializable {
+  public enum State implements StringRepresentable {
 
     STOPPED("stopped"), IDLE("idle"), NORMAL("normal");
 
@@ -438,33 +437,33 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
   }
 
   @Nullable
-  static Train readFromNBT(CompoundNBT tag) {
+  static Train readFromNBT(CompoundTag tag) {
     if (!tag.hasUUID("id")) {
       return null;
     }
     UUID id = tag.getUUID("id");
     State state = State.getByName(tag.getString("state")).orElse(State.NORMAL);
     List<UUID> carts =
-        tag.getList("carts", Constants.NBT.TAG_INT_ARRAY).stream().map(NBTUtil::loadUUID)
+        tag.getList("carts", Tag.TAG_INT_ARRAY).stream().map(NbtUtils::loadUUID)
             .collect(Collectors.toList());
     Set<UUID> locks =
-        tag.getList("locks", Constants.NBT.TAG_INT_ARRAY).stream().map(NBTUtil::loadUUID)
+        tag.getList("locks", Tag.TAG_INT_ARRAY).stream().map(NbtUtils::loadUUID)
             .collect(Collectors.toSet());
     return new Train(id, state, carts, locks);
   }
 
-  void writeToNBT(CompoundNBT tag) {
+  void writeToNBT(CompoundTag tag) {
     tag.putUUID("id", this.id);
     tag.putString("state", this.state.getSerializedName());
-    ListNBT listTag = new ListNBT();
+    ListTag listTag = new ListTag();
     for (UUID id : this.carts) {
-      listTag.add(NBTUtil.createUUID(id));
+      listTag.add(NbtUtils.createUUID(id));
     }
     tag.put("carts", listTag);
 
-    ListNBT locks = new ListNBT();
+    ListTag locks = new ListTag();
     for (UUID uuid : this.locks) {
-      locks.add(NBTUtil.createUUID(uuid));
+      locks.add(NbtUtils.createUUID(uuid));
     }
     tag.put("locks", locks);
   }
@@ -483,12 +482,16 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
 
   public static final class Manager extends ForwardingMap<UUID, Train> {
 
-    final World level;
-    final SaveData data;
+    final Level level;
+    final TrainSavedData data;
 
-    private Manager(ServerWorld level) {
+    private Manager(ServerLevel level) {
       this.level = level;
-      this.data = level.getDataStorage().computeIfAbsent(SaveData::new, SaveData.ID);
+      this.data = level.getDataStorage().computeIfAbsent(tag -> {
+        var savedData = new TrainSavedData();
+        savedData.load(tag);
+        return savedData;
+      }, TrainSavedData::new, TrainSavedData.ID);
     }
 
     public static void clearTrains() {
@@ -514,7 +517,7 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     }
   }
 
-  public static final class SaveData extends WorldSavedData {
+  public static final class TrainSavedData extends SavedData {
 
     private static final String ID = "railcraft.trains";
 
@@ -552,15 +555,10 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
       }
     };
 
-    public SaveData() {
-      super(ID);
-    }
-
-    @Override
-    public void load(CompoundNBT nbt) {
+    private void load(CompoundTag tag) {
       trains.clear();
-      for (INBT each : nbt.getList("trains", Constants.NBT.TAG_COMPOUND)) {
-        Train train = Train.readFromNBT((CompoundNBT) each);
+      for (Tag each : tag.getList("trains", Tag.TAG_COMPOUND)) {
+        Train train = Train.readFromNBT((CompoundTag) each);
         if (train != null) {
           trains.put(train.getId(), train);
         }
@@ -569,17 +567,17 @@ public final class Train implements Iterable<AbstractMinecartEntity> {
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag tag) {
       logger.debug("Saving {} trains", trains.size());
-      ListNBT listTag = new ListNBT();
+      ListTag trainsTag = new ListTag();
       for (Train train : trains.values()) {
-        CompoundNBT tag = new CompoundNBT();
-        train.writeToNBT(tag);
-        listTag.add(tag);
+        CompoundTag trainTag = new CompoundTag();
+        train.writeToNBT(trainTag);
+        trainsTag.add(trainTag);
         train.setDirty(false);
       }
-      compound.put("trains", listTag);
-      return compound;
+      tag.put("trains", trainsTag);
+      return tag;
     }
 
     @Override

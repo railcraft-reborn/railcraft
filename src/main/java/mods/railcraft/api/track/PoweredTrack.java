@@ -8,9 +8,9 @@
 package mods.railcraft.api.track;
 
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Implementing this interface will allow your track to be powered via Redstone.
@@ -25,7 +25,7 @@ public interface PoweredTrack {
   /**
    * Getter for a simple boolean variable for caching the power state.
    */
-  boolean isPowered(BlockState blockState, World level, BlockPos pos);
+  boolean isPowered(BlockState blockState, Level level, BlockPos pos);
 
   /**
    * Setter for a simple boolean variable for caching the power state.
@@ -34,12 +34,12 @@ public interface PoweredTrack {
    * Note: It is suggested to send update to client if the new powered state is different.
    * </p>
    */
-  void setPowered(BlockState blockState, World level, BlockPos pos, boolean powered);
+  void setPowered(BlockState blockState, Level level, BlockPos pos, boolean powered);
 
   /**
    * The distance that a redstone signal will be passed along from track to track.
    */
-  int getPowerPropagation(BlockState blockState, World level, BlockPos pos);
+  int getPowerPropagation(BlockState blockState, Level level, BlockPos pos);
 
   /**
    * Allows finer control of whether tracks can pass power.

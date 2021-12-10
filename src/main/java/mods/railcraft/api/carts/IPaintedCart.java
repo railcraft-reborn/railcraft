@@ -13,7 +13,7 @@ package mods.railcraft.api.carts;
  */
 public interface IPaintedCart {
 
-  int getPrimaryColor();
+  float[] getPrimaryColor();
 
-  int getSecondaryColor();
+  float[] getSecondaryColor();
 }

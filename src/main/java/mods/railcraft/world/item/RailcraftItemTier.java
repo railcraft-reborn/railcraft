@@ -1,12 +1,12 @@
 package mods.railcraft.world.item;
 
 import java.util.function.Supplier;
+import com.google.common.base.Suppliers;
 import mods.railcraft.tags.RailcraftTags;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
 
-public enum RailcraftItemTier implements IItemTier {
+public enum RailcraftItemTier implements Tier {
 
   STEEL(2, 500, 7, 2.5F, 9, () -> Ingredient.of(RailcraftTags.Items.STEEL_INGOT)),
   BRONZE(2, 500, 7, 2.5F, 13, () -> Ingredient.of(RailcraftTags.Items.BRONZE_INGOT));
@@ -16,7 +16,7 @@ public enum RailcraftItemTier implements IItemTier {
   private final float speed;
   private final float damage;
   private final int enchantmentValue;
-  private final LazyValue<Ingredient> repairIngredient;
+  private final Supplier<Ingredient> repairIngredient;
 
   private RailcraftItemTier(int level, int uses, float speed, float damage, int enchantmentValue,
       Supplier<Ingredient> repairIngredient) {
@@ -25,7 +25,7 @@ public enum RailcraftItemTier implements IItemTier {
     this.speed = speed;
     this.damage = damage;
     this.enchantmentValue = enchantmentValue;
-    this.repairIngredient = new LazyValue<>(repairIngredient);
+    this.repairIngredient = Suppliers.memoize(repairIngredient::get);
   }
 
   @Override

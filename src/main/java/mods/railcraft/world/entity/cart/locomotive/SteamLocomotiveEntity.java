@@ -1,28 +1,28 @@
 package mods.railcraft.world.entity.cart.locomotive;
 
 import mods.railcraft.api.carts.CartUtil;
-import mods.railcraft.util.inventory.InvTools;
-import mods.railcraft.util.inventory.filters.StackFilters;
-import mods.railcraft.util.inventory.wrappers.InventoryMapper;
+import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.steam.SolidFuelProvider;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
@@ -33,23 +33,23 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
  * @author CovertJaguar (https://www.railcraft.info/)
  */
 public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
-    implements ISidedInventory {
+    implements WorldlyContainer {
 
   private static final int FUEL_SLOT = 3;
   private static final int EXTRA_FUEL_SLOT_A = 4;
   private static final int EXTRA_FUEL_SLOT_B = 5;
   private static final int EXTRA_FUEL_SLOT_C = 6;
   private static final int TICKET_SLOT = 7;
-  private static final int[] SLOTS = InvTools.buildSlotArray(0, 7);
+  private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 7);
 
-  private final InventoryMapper fuelInventory = InventoryMapper.make(this, FUEL_SLOT, 1);
-  private final InventoryMapper extraFuelInventory =
-      InventoryMapper.make(this, EXTRA_FUEL_SLOT_A, 3);
-  private final InventoryMapper invFuel = InventoryMapper.make(this, FUEL_SLOT, 4);
-  private final InventoryMapper ticketInventory =
-      new InventoryMapper(this, TICKET_SLOT, 2).ignoreItemChecks();
+  private final ContainerMapper fuelInventory = ContainerMapper.make(this, FUEL_SLOT, 1);
+  private final ContainerMapper extraFuelInventory =
+      ContainerMapper.make(this, EXTRA_FUEL_SLOT_A, 3);
+  private final ContainerMapper fuelContainer = ContainerMapper.make(this, FUEL_SLOT, 4);
+  private final ContainerMapper ticketInventory =
+      new ContainerMapper(this, TICKET_SLOT, 2).ignoreItemChecks();
 
-  public SteamLocomotiveEntity(EntityType<?> type, World world) {
+  public SteamLocomotiveEntity(EntityType<?> type, Level world) {
     super(type, world);
 
     this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
@@ -61,7 +61,7 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
   }
 
   public SteamLocomotiveEntity(ItemStack itemStack, double x, double y, double z,
-      ServerWorld world) {
+      ServerLevel world) {
     super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, world);
 
     this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
@@ -73,13 +73,13 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
   }
 
   @Override
-  protected int getDefaultPrimaryColor() {
-    return DyeColor.LIGHT_GRAY.getColorValue();
+  protected DyeColor getDefaultPrimaryColor() {
+    return DyeColor.LIGHT_GRAY;
   }
 
   @Override
-  protected int getDefaultSecondaryColor() {
-    return DyeColor.GRAY.getColorValue();
+  protected DyeColor getDefaultSecondaryColor() {
+    return DyeColor.GRAY;
   }
 
   @Override
@@ -112,16 +112,17 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
     if (water == null || water.getAmount() < waterTank.getCapacity() / 3) {
       return true;
     }
-    int numItems = invFuel.countItems((ItemStack item) -> (ForgeHooks.getBurnTime(item) > 0));
+    int numItems = this.fuelContainer
+        .countItems(item -> ForgeHooks.getBurnTime(item, null) > 0);
     if (numItems == 0) {
       return true;
     }
-    int maxItems = invFuel.countMaxItemStackSize();
+    int maxItems = this.fuelContainer.countMaxItemStackSize();
     return (float) numItems / (float) maxItems < 0.25F;
   }
 
   @Override
-  protected IInventory getTicketInventory() {
+  protected Container getTicketInventory() {
     return ticketInventory;
   }
 
@@ -149,13 +150,13 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
   public boolean canPlaceItem(int slot, ItemStack stack) {
     switch (slot) {
       case FUEL_SLOT:
-        return ForgeHooks.getBurnTime(stack) > 0;
+        return ForgeHooks.getBurnTime(stack, null) > 0;
       case EXTRA_FUEL_SLOT_A:
-        return ForgeHooks.getBurnTime(stack) > 0;
+        return ForgeHooks.getBurnTime(stack, null) > 0;
       case EXTRA_FUEL_SLOT_B:
-        return ForgeHooks.getBurnTime(stack) > 0;
+        return ForgeHooks.getBurnTime(stack, null) > 0;
       case EXTRA_FUEL_SLOT_C:
-        return ForgeHooks.getBurnTime(stack) > 0;
+        return ForgeHooks.getBurnTime(stack, null) > 0;
       case SLOT_WATER_INPUT:
         // if (FluidItemHelper.getFluidStackInContainer(stack)
         // .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
@@ -170,17 +171,17 @@ public class SteamLocomotiveEntity extends AbstractSteamLocomotiveEntity
   }
 
   @Override
-  public boolean canAcceptPushedItem(AbstractMinecartEntity requester, ItemStack stack) {
-    return ForgeHooks.getBurnTime(stack) > 0;
+  public boolean canAcceptPushedItem(AbstractMinecart requester, ItemStack stack) {
+    return ForgeHooks.getBurnTime(stack, null) > 0;
   }
 
   @Override
-  public boolean canProvidePulledItem(AbstractMinecartEntity requester, ItemStack stack) {
+  public boolean canProvidePulledItem(AbstractMinecart requester, ItemStack stack) {
     return false;
   }
 
   @Override
-  protected Container createMenu(int id, PlayerInventory playerInventory) {
+  protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
     return new SteamLocomotiveMenu(id, playerInventory, this);
   }
 

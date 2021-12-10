@@ -1,11 +1,12 @@
 package mods.railcraft.client.gui.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.IReorderingProcessor;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 
 public class IngameWindowScreen extends Screen {
 
@@ -23,11 +24,11 @@ public class IngameWindowScreen extends Screen {
   protected final int windowHeight;
   protected final ResourceLocation backgroundTexture;
 
-  protected IngameWindowScreen(ITextComponent title) {
+  protected IngameWindowScreen(Component title) {
     this(title, WIDGETS_TEXTURE, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
   }
 
-  protected IngameWindowScreen(ITextComponent title, ResourceLocation backgroundTexture,
+  protected IngameWindowScreen(Component title, ResourceLocation backgroundTexture,
       int windowWidth, int windowHeight) {
     super(title);
     this.windowWidth = windowWidth;
@@ -41,11 +42,11 @@ public class IngameWindowScreen extends Screen {
   }
 
   @Override
-  public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+  public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
     this.renderBackground(matrixStack);
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
-    this.minecraft.getTextureManager().bind(this.backgroundTexture);
+    RenderSystem.setShaderTexture(0, this.backgroundTexture);
     this.blit(matrixStack, centredX, centredY, 0, 0, this.windowWidth, this.windowHeight);
     matrixStack.pushPose();
     {
@@ -57,7 +58,7 @@ public class IngameWindowScreen extends Screen {
     super.render(matrixStack, mouseX, mouseY, partialTicks);
   }
 
-  protected void renderContent(MatrixStack matrixStack, int mouseX, int mouseY,
+  protected void renderContent(PoseStack matrixStack, int mouseX, int mouseY,
       float partialTicks) {}
 
   @Override
@@ -80,8 +81,8 @@ public class IngameWindowScreen extends Screen {
     }
   }
 
-  public void drawCenteredString(MatrixStack matrixStack, ITextComponent text, float x, float y) {
-    IReorderingProcessor orderedText = text.getVisualOrderText();
+  public void drawCenteredString(PoseStack matrixStack, Component text, float x, float y) {
+    FormattedCharSequence orderedText = text.getVisualOrderText();
     this.font.draw(matrixStack, orderedText, x - this.font.width(orderedText) / 2, y, TEXT_COLOR);
   }
 }

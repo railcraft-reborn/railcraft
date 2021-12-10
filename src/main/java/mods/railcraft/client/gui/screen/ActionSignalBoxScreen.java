@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
@@ -13,9 +13,9 @@ import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEntity;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class ActionSignalBoxScreen extends IngameWindowScreen {
 
@@ -27,7 +27,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
       new EnumMap<>(SignalAspect.class);
 
   private MultiButton<LockableSignalBoxBlockEntity.Lock> lockButton;
-  private ITextComponent lockButtonTooltip;
+  private Component lockButtonTooltip;
 
   private int refreshTimer;
 
@@ -47,8 +47,8 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
     this.addSignalAspectButton(SignalAspect.BLINK_YELLOW, centreX + 12, centreY + 55, 70);
     this.addSignalAspectButton(SignalAspect.BLINK_RED, centreX + 94, centreY + 55, 70);
 
-    this.addButton(this.lockButton = new MultiButton<>(centreX + 152, centreY + 8, 16, 16,
-        this.signalBox.getLock(),
+    this.addRenderableWidget(this.lockButton = new MultiButton<>(centreX + 152, centreY + 8, 16, 16,
+        this.signalBox.getLock(), this::renderComponentTooltip,
         __ -> this.setLock(this.lockButton.getState()),
         this::renderLockButtonTooltip));
 
@@ -62,7 +62,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
         btn -> ((ToggleButton) btn).setToggled(this.toggleSignalAspect(signalAspect)),
         ButtonTexture.LARGE_BUTTON,
         actionSignalAspects.contains(signalAspect));
-    this.addButton(button);
+    this.addRenderableWidget(button);
     this.signalAspectButtons.put(signalAspect, button);
   }
 
@@ -81,21 +81,21 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
     switch (lock) {
       case LOCKED:
         this.lockButtonTooltip =
-            new TranslationTextComponent("screen.action_signal_box.lock.locked",
+            new TranslatableComponent("screen.action_signal_box.lock.locked",
                 this.signalBox.getOwnerOrThrow().getName());
         break;
       case UNLOCKED:
         this.lockButtonTooltip =
-            new TranslationTextComponent("screen.action_signal_box.lock.unlocked");
+            new TranslatableComponent("screen.action_signal_box.lock.unlocked");
         break;
       default:
         break;
     }
   }
 
-  private void renderLockButtonTooltip(Button button, MatrixStack matrixStack,
+  private void renderLockButtonTooltip(Button button, PoseStack poseStack,
       int mouseX, int mouseY) {
-    this.renderWrappedToolTip(matrixStack, Collections.singletonList(this.lockButtonTooltip),
+    this.renderComponentTooltip(poseStack, Collections.singletonList(this.lockButtonTooltip),
         mouseX, mouseY, this.font);
   }
 
@@ -134,7 +134,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
     if (!this.signalBox.canAccess(this.minecraft.getUser().getGameProfile())) {
       return;
     }
-    NetworkChannel.PLAY.getSimpleChannel().sendToServer(
+    NetworkChannel.GAME.getSimpleChannel().sendToServer(
         new SetActionSignalBoxAttributesMessage(this.signalBox.getBlockPos(),
             this.signalBox.getActionSignalAspects(),
             this.lockButton.getState()));

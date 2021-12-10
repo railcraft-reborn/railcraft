@@ -8,42 +8,42 @@ import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.util.TrackTools;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public abstract class MaintenanceMinecartEntity extends RailcraftMinecartEntity {
 
-  private static final DataParameter<Byte> BLINK =
-      EntityDataManager.defineId(MaintenanceMinecartEntity.class, DataSerializers.BYTE);
+  private static final EntityDataAccessor<Byte> BLINK =
+      SynchedEntityData.defineId(MaintenanceMinecartEntity.class, EntityDataSerializers.BYTE);
   protected static final double DRAG_FACTOR = 0.9;
   private static final int BLINK_DURATION = 3;
-  public static final DataParameter<Byte> MODE =
-      EntityDataManager.defineId(MaintenanceMinecartEntity.class, DataSerializers.BYTE);
+  public static final EntityDataAccessor<Byte> MODE =
+      SynchedEntityData.defineId(MaintenanceMinecartEntity.class, EntityDataSerializers.BYTE);
 
-  protected MaintenanceMinecartEntity(EntityType<?> type, World world) {
+  protected MaintenanceMinecartEntity(EntityType<?> type, Level world) {
     super(type, world);
   }
 
   protected MaintenanceMinecartEntity(EntityType<?> type, double x, double y, double z,
-      World world) {
+      Level world) {
     super(type, x, y, z, world);
   }
 
@@ -115,7 +115,7 @@ public abstract class MaintenanceMinecartEntity extends RailcraftMinecartEntity 
       RailShape trackShape) {
     ItemStack trackStock = getItem(slotStock);
     if (!trackStock.isEmpty()) {
-      if (TrackUtil.placeRailAt(trackStock, (ServerWorld) this.level, pos)) {
+      if (TrackUtil.placeRailAt(trackStock, (ServerLevel) this.level, pos)) {
         this.removeItem(slotStock, 1);
         this.blink();
         return true;
@@ -125,9 +125,9 @@ public abstract class MaintenanceMinecartEntity extends RailcraftMinecartEntity 
   }
 
   protected RailShape removeOldTrack(BlockPos pos, BlockState state) {
-    List<ItemStack> drops = state.getDrops(new LootContext.Builder((ServerWorld) this.level)
-        .withParameter(LootParameters.TOOL, ItemStack.EMPTY)
-        .withParameter(LootParameters.ORIGIN, Vector3d.atCenterOf(pos)));
+    List<ItemStack> drops = state.getDrops(new LootContext.Builder((ServerLevel) this.level)
+        .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+        .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)));
 
     for (ItemStack stack : drops) {
       CartUtil.transferHelper().offerOrDropItem(this, stack);
@@ -137,19 +137,19 @@ public abstract class MaintenanceMinecartEntity extends RailcraftMinecartEntity 
     return trackShape;
   }
 
-  public enum Mode implements ButtonState<Mode>, IStringSerializable {
+  public enum Mode implements ButtonState<Mode>, StringRepresentable {
 
     SERVICE("service", 0.1F),
     TRANSPORT("transport", 0.4F);
 
     private final String name;
     private final float speed;
-    private final ITextComponent label;
+    private final Component label;
 
     private Mode(String name, float speed) {
       this.name = name;
       this.speed = speed;
-      this.label = new TranslationTextComponent("gui.railcraft.cart.maintenance.mode." + name);
+      this.label = new TranslatableComponent("gui.railcraft.cart.maintenance.mode." + name);
     }
 
     public float getSpeed() {
@@ -157,7 +157,7 @@ public abstract class MaintenanceMinecartEntity extends RailcraftMinecartEntity 
     }
 
     @Override
-    public ITextComponent getLabel() {
+    public Component getLabel() {
       return this.label;
     }
 

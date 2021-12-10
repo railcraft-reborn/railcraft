@@ -1,17 +1,17 @@
 package mods.railcraft.world.level.block.entity.signal;
 
 import java.util.EnumSet;
-import java.util.Set;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
     implements SignalControllerProvider {
@@ -22,8 +22,8 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   private SignalAspect defaultAspect = SignalAspect.GREEN;
   private SignalAspect poweredAspect = SignalAspect.RED;
 
-  public SignalControllerBoxBlockEntity() {
-    super(RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get());
+  public SignalControllerBoxBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get(), blockPos, blockState);
   }
 
   public SignalAspect getDefaultAspect() {
@@ -45,7 +45,8 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void load() {
+  public void onLoad() {
+    super.onLoad();
     if (!this.level.isClientSide()) {
       this.signalController.refresh();
       this.updateSignalAspect();
@@ -56,14 +57,6 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   public void setRemoved() {
     super.setRemoved();
     this.signalController.removed();
-  }
-
-  @Override
-  public void tick() {
-    super.tick();
-    if (this.level.isClientSide()) {
-      this.signalController.spawnTuningAuraParticles();
-    }
   }
 
   @Override
@@ -78,14 +71,13 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   private void updateSignalAspect() {
-    Set<Direction> signalDirections = EnumSet.allOf(Direction.class);
+    var signalDirections = EnumSet.allOf(Direction.class);
     signalDirections.remove(Direction.UP);
 
-    SignalAspect neighborAspect = SignalAspect.GREEN;
-    for (Direction direction : Direction.Plane.HORIZONTAL) {
-      TileEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
-      if (blockEntity instanceof AbstractSignalBoxBlockEntity) {
-        AbstractSignalBoxBlockEntity signalBox = (AbstractSignalBoxBlockEntity) blockEntity;
+    var neighborAspect = SignalAspect.GREEN;
+    for (var direction : Direction.Plane.HORIZONTAL) {
+      var blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
+      if (blockEntity instanceof AbstractSignalBoxBlockEntity signalBox) {
         if (SignalBoxBlock.isAspectEmitter(signalBox.getBlockState())) {
           neighborAspect = SignalAspect.mostRestrictive(neighborAspect,
               signalBox.getSignalAspect(direction.getOpposite()));
@@ -94,8 +86,8 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
       }
     }
 
-    SignalAspect signalAspect = this.defaultAspect;
-    for (Direction direction : signalDirections) {
+    var signalAspect = this.defaultAspect;
+    for (var direction : signalDirections) {
       if (this.level.getSignal(this.getBlockPos().relative(direction), direction) > 0) {
         signalAspect = this.poweredAspect;
         break;
@@ -117,7 +109,7 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
+  public CompoundTag save(CompoundTag data) {
     super.save(data);
     data.putString("defaultAspect", this.defaultAspect.getSerializedName());
     data.putString("poweredAspect", this.poweredAspect.getSerializedName());
@@ -126,15 +118,15 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.defaultAspect = SignalAspect.getByName(data.getString("defaultAspect")).get();
-    this.poweredAspect = SignalAspect.getByName(data.getString("poweredAspect")).get();
-    this.signalController.deserializeNBT(data.getCompound("signalController"));
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.defaultAspect = SignalAspect.getByName(tag.getString("defaultAspect")).get();
+    this.poweredAspect = SignalAspect.getByName(tag.getString("poweredAspect")).get();
+    this.signalController.deserializeNBT(tag.getCompound("signalController"));
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeEnum(this.defaultAspect);
     data.writeEnum(this.poweredAspect);
@@ -142,10 +134,15 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.defaultAspect = data.readEnum(SignalAspect.class);
     this.poweredAspect = data.readEnum(SignalAspect.class);
     this.signalController.readSyncData(data);
+  }
+
+  public static void clientTick(Level level, BlockPos blockPos, BlockState blockState,
+      SignalControllerBoxBlockEntity blockEntity) {
+    blockEntity.signalController.spawnTuningAuraParticles();
   }
 }

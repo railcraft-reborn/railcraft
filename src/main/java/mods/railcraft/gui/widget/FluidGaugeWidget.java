@@ -1,8 +1,8 @@
 package mods.railcraft.gui.widget;
 
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fluids.FluidStack;
 
 
@@ -21,7 +21,7 @@ public class FluidGaugeWidget extends Widget {
   }
 
   @Override
-  public boolean hasServerSyncData(ServerPlayerEntity listener) {
+  public boolean hasServerSyncData(ServerPlayer listener) {
     syncCounter++;
     return (syncCounter % 16) == 0
         || (!this.lastSyncedFluidStack.isEmpty()
@@ -29,7 +29,7 @@ public class FluidGaugeWidget extends Widget {
   }
 
   @Override
-  public void writeServerSyncData(ServerPlayerEntity listener, PacketBuffer data) {
+  public void writeServerSyncData(ServerPlayer listener, FriendlyByteBuf data) {
     super.writeServerSyncData(listener, data);
     FluidStack fluidStack = tank.getFluid();
     this.lastSyncedFluidStack = fluidStack.isEmpty() ? FluidStack.EMPTY : fluidStack.copy();
@@ -38,7 +38,7 @@ public class FluidGaugeWidget extends Widget {
   }
 
   @Override
-  public void readServerSyncData(PacketBuffer data) {
+  public void readServerSyncData(FriendlyByteBuf data) {
     super.readServerSyncData(data);
     tank.setCapacity(data.readInt());
     tank.setFluid(data.readFluidStack());

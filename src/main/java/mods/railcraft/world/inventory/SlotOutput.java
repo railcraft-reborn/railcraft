@@ -1,12 +1,12 @@
 package mods.railcraft.world.inventory;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class SlotOutput extends Slot {
 
-  public SlotOutput(IInventory iinventory, int slotIndex, int posX, int posY) {
+  public SlotOutput(Container iinventory, int slotIndex, int posX, int posY) {
     super(iinventory, slotIndex, posX, posY);
   }
 

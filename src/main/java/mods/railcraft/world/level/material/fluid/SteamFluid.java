@@ -1,20 +1,20 @@
 package mods.railcraft.world.level.material.fluid;
 
 import mods.railcraft.Railcraft;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public class SteamFluid extends Fluid {
@@ -25,19 +25,19 @@ public class SteamFluid extends Fluid {
   }
 
   @Override
-  protected boolean canBeReplacedWith(FluidState fluidState, IBlockReader reader,
+  protected boolean canBeReplacedWith(FluidState fluidState, BlockGetter reader,
       BlockPos blockPos, Fluid fluid, Direction direction) {
     return false;
   }
 
   @Override
-  protected Vector3d getFlow(IBlockReader reader, BlockPos blockPos,
+  protected Vec3 getFlow(BlockGetter reader, BlockPos blockPos,
       FluidState fluidState) {
-    return Vector3d.ZERO;
+    return Vec3.ZERO;
   }
 
   @Override
-  public int getTickDelay(IWorldReader worldReader) {
+  public int getTickDelay(LevelReader worldReader) {
     return 0;
   }
 
@@ -47,7 +47,7 @@ public class SteamFluid extends Fluid {
   }
 
   @Override
-  public float getHeight(FluidState fluidState, IBlockReader blockReader, BlockPos blockPos) {
+  public float getHeight(FluidState fluidState, BlockGetter blockReader, BlockPos blockPos) {
     return 0;
   }
 
@@ -72,9 +72,9 @@ public class SteamFluid extends Fluid {
   }
 
   @Override
-  public VoxelShape getShape(FluidState fluidState, IBlockReader blockReader,
+  public VoxelShape getShape(FluidState fluidState, BlockGetter blockReader,
       BlockPos blockPos) {
-    return VoxelShapes.empty();
+    return Shapes.empty();
   }
 
   @Override

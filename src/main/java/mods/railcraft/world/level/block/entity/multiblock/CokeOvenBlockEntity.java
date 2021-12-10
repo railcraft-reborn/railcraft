@@ -1,39 +1,39 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
 import java.util.Optional;
-
 import javax.annotation.Nullable;
-
 import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IRecipeHolder;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.RecipeHolder;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
-    implements IRecipeHolder, IFluidTank, IInventory {
+public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity>
+    implements RecipeHolder, IFluidTank, Container {
 
-  private static final ITextComponent MENU_TITLE =
-      new TranslationTextComponent("container.coke_oven");
+  private static final Component MENU_TITLE =
+      new TranslatableComponent("container.coke_oven");
 
   private static final int FLUID_STORAGE_MAX = 10000;
 
@@ -45,7 +45,7 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   private int currentTick = 0;
 
   // 0 - required time, 1 - current tick, 2 - fluid amount
-  protected final IIntArray dataAccess = new IIntArray() {
+  protected final ContainerData dataAccess = new ContainerData() {
     public int get(int key) {
       switch (key) {
         case 0:
@@ -81,12 +81,12 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
     }
   };
 
-  public CokeOvenBlockEntity() {
-    this(RailcraftBlockEntityTypes.COKE_OVEN.get());
+  public CokeOvenBlockEntity(BlockPos blockPos, BlockState blockState) {
+    this(RailcraftBlockEntityTypes.COKE_OVEN.get(), blockPos, blockState);
   }
 
-  public CokeOvenBlockEntity(TileEntityType<?> tileEntityType) {
-    super(tileEntityType, RailcraftMultiblockPatterns.COKE_OVEN);
+  public CokeOvenBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
+    super(type, blockPos, blockState, RailcraftMultiblockPatterns.COKE_OVEN);
   }
 
   @Override
@@ -101,128 +101,119 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   }
 
   @Override
-  public Container createMenu(int containerProvider,
-      PlayerInventory playerInventory, PlayerEntity player) {
+  public AbstractContainerMenu createMenu(int containerProvider, Inventory inventory,
+      Player player) {
     if (!this.isFormed()) {
       return null;
     }
     CokeOvenBlockEntity parent = this.getParent();
     if (parent == this) {
-      return new CokeOvenMenu(containerProvider, playerInventory, this, this.dataAccess);
+      return new CokeOvenMenu(containerProvider, inventory, this, this.dataAccess);
     }
 
     if (parent == null) {
       return null;
     }
-    return parent.createMenu(containerProvider, playerInventory, player);
+    return parent.createMenu(containerProvider, inventory, player);
   }
 
   @Override
-  protected void load() {
-    super.load();
+  public void onLoad() {
+    super.onLoad();
     if (this.isParent() && !this.getLevel().isClientSide()) {
       this.level.setBlock(this.worldPosition,
           this.level.getBlockState(this.worldPosition)
-              .setValue(CokeOvenBricksBlock.PARENT, true), 3);
+              .setValue(CokeOvenBricksBlock.PARENT, true),
+          3);
     }
   }
 
   @Override
-  public void load(BlockState blockState, CompoundNBT data) {
-    super.load(blockState, data);
+  public void load(CompoundTag tag) {
+    super.load(tag);
     this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-    ItemStackHelper.loadAllItems(data, this.items);
-    this.recipieRequiredTime = data.getInt("recipieRequiredTime");
-    this.currentTick = data.getInt("currentTick");
-    this.fluid = FluidStack.loadFluidStackFromNBT(data);
+    ContainerHelper.loadAllItems(tag, this.items);
+    this.recipieRequiredTime = tag.getInt("recipieRequiredTime");
+    this.currentTick = tag.getInt("currentTick");
+    this.fluid = FluidStack.loadFluidStackFromNBT(tag);
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    ItemStackHelper.saveAllItems(data, this.items);
-    data.putInt("recipieRequiredTime", this.recipieRequiredTime);
-    data.putInt("currentTick", this.currentTick);
-    this.fluid.writeToNBT(data);
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    ContainerHelper.saveAllItems(tag, this.items);
+    tag.putInt("recipieRequiredTime", this.recipieRequiredTime);
+    tag.putInt("currentTick", this.currentTick);
+    this.fluid.writeToNBT(tag);
   }
-
 
   // TODO particles
-  @Override
-  public void tick() {
-    super.tick();
-
-    if (this.level.isClientSide()) {
-      return;
-    }
-
-    BlockState parentBrick = this.level.getBlockState(this.worldPosition);
-
-    if (!this.isFormed()) {
-      if (parentBrick.getValue(CokeOvenBricksBlock.PARENT)) {
-        this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.PARENT, false), 3);
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      CokeOvenBlockEntity blockEntity) {
+    if (!blockEntity.isFormed()) {
+      if (blockState.getValue(CokeOvenBricksBlock.PARENT)) {
+        level.setBlock(blockPos,
+            blockState.setValue(CokeOvenBricksBlock.PARENT, false), 3);
       }
 
-      if (parentBrick.getValue(CokeOvenBricksBlock.LIT)) {
-        this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.LIT, false), 3);
+      if (blockState.getValue(CokeOvenBricksBlock.LIT)) {
+        level.setBlock(blockPos,
+            blockState.setValue(CokeOvenBricksBlock.LIT, false), 3);
       }
       return;
     }
 
-    if (this.isParent()) {
+    if (blockEntity.isParent()) {
       // isParent status
-      if (!parentBrick.getValue(CokeOvenBricksBlock.PARENT)) {
-        this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.PARENT, true), 3);
+      if (!blockState.getValue(CokeOvenBricksBlock.PARENT)) {
+        level.setBlock(blockPos,
+            blockState.setValue(CokeOvenBricksBlock.PARENT, true), 3);
         // this.setChanged();
       }
 
       // only set if needed, burn stat
-      if (this.recipieRequiredTime <= 0
-          && parentBrick.getValue(CokeOvenBricksBlock.LIT)) {
-        this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.LIT, false), 3);
+      if (blockEntity.recipieRequiredTime <= 0
+          && blockState.getValue(CokeOvenBricksBlock.LIT)) {
+        level.setBlock(blockPos,
+            blockState.setValue(CokeOvenBricksBlock.LIT, false), 3);
         // this.setChanged();
       }
-      if (this.recipieRequiredTime > 0
-          && !parentBrick.getValue(CokeOvenBricksBlock.LIT)) {
-        this.level.setBlock(this.worldPosition,
-            parentBrick.setValue(CokeOvenBricksBlock.LIT, true), 3);
+      if (blockEntity.recipieRequiredTime > 0
+          && !blockState.getValue(CokeOvenBricksBlock.LIT)) {
+        level.setBlock(blockPos,
+            blockState.setValue(CokeOvenBricksBlock.LIT, true), 3);
         // this.setChanged();
       }
     }
 
-    ItemStack itemstack = this.items.get(0);
+    ItemStack itemstack = blockEntity.items.get(0);
     if (itemstack.isEmpty()) {
-      this.recipieRequiredTime = 0;
+      blockEntity.recipieRequiredTime = 0;
       return;
     }
 
-    Optional<CokeOvenRecipe> irecipe = this.level.getServer()
+    Optional<CokeOvenRecipe> irecipe = level.getServer()
         .getRecipeManager()
-        .getRecipeFor(RailcraftRecipeTypes.COKE_OVEN_COOKING, this, this.level);
+        .getRecipeFor(RailcraftRecipeTypes.COKE_OVEN_COOKING, blockEntity, level);
 
     if (!irecipe.isPresent()) {
-      this.recipieRequiredTime = 0;
+      blockEntity.recipieRequiredTime = 0;
       return;
     }
     CokeOvenRecipe cokeRecipe = irecipe.get();
-    if (!this.canWork(cokeRecipe)) {
-      this.recipieRequiredTime = 0;
+    if (!blockEntity.canWork(cokeRecipe)) {
+      blockEntity.recipieRequiredTime = 0;
       return;
     }
-    if (this.currentTick >= this.recipieRequiredTime) {
-      if (recipieRequiredTime != 0) {
-        this.bake(cokeRecipe);
+    if (blockEntity.currentTick >= blockEntity.recipieRequiredTime) {
+      if (blockEntity.recipieRequiredTime != 0) {
+        blockEntity.bake(cokeRecipe);
       }
-      this.recipieRequiredTime = this.getTickCost();
-      this.currentTick = 0;
+      blockEntity.recipieRequiredTime = blockEntity.getTickCost();
+      blockEntity.currentTick = 0;
       return;
     }
-    this.currentTick++;
+    blockEntity.currentTick++;
   }
 
   @Override
@@ -247,12 +238,12 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
 
   @Override
   public ItemStack removeItem(int index, int count) {
-    return ItemStackHelper.removeItem(this.items, index, count);
+    return ContainerHelper.removeItem(this.items, index, count);
   }
 
   @Override
   public ItemStack removeItemNoUpdate(int index) {
-    return ItemStackHelper.takeItem(this.items, index);
+    return ContainerHelper.takeItem(this.items, index);
   }
 
   @Override
@@ -267,21 +258,21 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
     }
     // slot 0 is input
     if (slotID == 0 && !isValid) {
-      this.recipieRequiredTime = 0; //this.getTotalCookTime();
+      this.recipieRequiredTime = 0; // this.getTotalCookTime();
       this.currentTick = 0;
       this.setChanged();
     }
   }
 
   @Override
-  public boolean stillValid(PlayerEntity playerEntity) {
+  public boolean stillValid(Player playerEntity) {
     if (!this.isFormed() || this.isRemoved()) {
       return false;
     }
     return playerEntity.distanceToSqr(
-      (double)this.worldPosition.getX() + 0.5D,
-      (double)this.worldPosition.getY() + 0.5D,
-      (double)this.worldPosition.getZ() + 0.5D) <= 64.0D;
+        (double) this.worldPosition.getX() + 0.5D,
+        (double) this.worldPosition.getY() + 0.5D,
+        (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
   }
 
   @Override
@@ -298,13 +289,13 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   }
 
   @Override
-  public void setRecipeUsed(IRecipe<?> recipe) {
+  public void setRecipeUsed(Recipe<?> recipe) {
     // unused
   }
 
   @Override
   @Nullable
-  public IRecipe<?> getRecipeUsed() {
+  public Recipe<?> getRecipeUsed() {
     // unused
     return null;
   }
@@ -420,15 +411,14 @@ public class CokeOvenBlockEntity extends MultiblockEntity<CokeOvenBlockEntity>
   public void setRemoved() {
     if (this.getLevel().isClientSide()) {
       super.setRemoved();
-      return; //do not run deletion clientside.
+      return; // do not run deletion clientside.
     }
-    InventoryHelper.dropContents(this.getLevel(), this.getBlockPos(), this.items);
+    Containers.dropContents(this.getLevel(), this.getBlockPos(), this.items);
     super.setRemoved(); // at this point, the block itself is null
   }
 
   @Override
-  public ITextComponent getDisplayName() {
+  public Component getDisplayName() {
     return MENU_TITLE;
   }
-
 }

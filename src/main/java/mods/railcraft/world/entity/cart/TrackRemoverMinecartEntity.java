@@ -6,27 +6,27 @@ import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 public class TrackRemoverMinecartEntity extends MaintenanceMinecartEntity {
 
   private final Set<BlockPos> tracksBehind = new HashSet<>();
   private final Set<BlockPos> tracksRemoved = new HashSet<>();
 
-  public TrackRemoverMinecartEntity(EntityType<?> type, World world) {
+  public TrackRemoverMinecartEntity(EntityType<?> type, Level world) {
     super(type, world);
   }
 
   public TrackRemoverMinecartEntity(ItemStack itemStack, double x, double y, double z,
-      ServerWorld world) {
+      ServerLevel world) {
     super(RailcraftEntityTypes.TRACK_REMOVER.get(), x, y, z, world);
   }
 
@@ -59,7 +59,7 @@ public class TrackRemoverMinecartEntity extends MaintenanceMinecartEntity {
     }
     if (track.distSqr(this.blockPosition()) >= 9) {
       this.tracksRemoved.add(track);
-    } else if (!AbstractRailBlock.isRail(this.level, track)) {
+    } else if (!BaseRailBlock.isRail(this.level, track)) {
       this.tracksRemoved.add(track);
     } else if (this.level.getBlockState(track).is(RailcraftBlocks.FORCE_TRACK.get())) {
       this.tracksRemoved.add(track);
@@ -76,7 +76,7 @@ public class TrackRemoverMinecartEntity extends MaintenanceMinecartEntity {
   }
 
   @Override
-  protected Container createMenu(int id, PlayerInventory playerInventory) {
+  protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
     return null;
   }
 

@@ -2,9 +2,9 @@ package mods.railcraft.world.inventory;
 
 import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
-import net.minecraft.util.IntReferenceHolder;
+import net.minecraft.world.inventory.DataSlot;
 
-public class SimpleIntReferenceHolder extends IntReferenceHolder {
+public class SimpleIntReferenceHolder extends DataSlot {
 
   private final IntSupplier getter;
   private final IntConsumer setter;

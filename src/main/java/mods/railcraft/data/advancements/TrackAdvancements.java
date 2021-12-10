@@ -10,12 +10,12 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.advancements.criterion.TickTrigger;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.TickTrigger;
+import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
 
@@ -25,25 +25,25 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement rcRoot = Advancement.Builder.advancement()
         .display(
             RailcraftItems.REINFORCED_TRACK.get(),
-            new TranslationTextComponent("advancements.railcraft.tracks.root.name"),
-            new TranslationTextComponent("advancements.railcraft.tracks.root.desc"),
+            new TranslatableComponent("advancements.railcraft.tracks.root.name"),
+            new TranslatableComponent("advancements.railcraft.tracks.root.desc"),
             new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
             FrameType.TASK,
             false, false, false)
-        .addCriterion("default_unlock", new TickTrigger.Instance(EntityPredicate.AndPredicate.ANY))
+        .addCriterion("default_unlock", new TickTrigger.TriggerInstance(EntityPredicate.Composite.ANY))
         .save(consumer, Railcraft.ID + ":tracks/root");
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.RAW_FIRESTONE.get(),
-            new TranslationTextComponent("advancements.railcraft.tracks.firestone.name"),
-            new TranslationTextComponent("advancements.railcraft.tracks.firestone.desc"),
+            new TranslatableComponent("advancements.railcraft.tracks.firestone.name"),
+            new TranslatableComponent("advancements.railcraft.tracks.firestone.desc"),
             null,
             FrameType.CHALLENGE,
             true, true, false)
         .parent(rcRoot)
         .addCriterion("has_raw_firestone",
-            InventoryChangeTrigger.Instance.hasItems(RailcraftItems.RAW_FIRESTONE.get()))
+            InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.RAW_FIRESTONE.get()))
         .save(consumer, Railcraft.ID + ":tracks/firestone");
 
     // Advancement.Builder.advancement()
@@ -64,9 +64,9 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.COKE_OVEN_BRICKS.get(),
-            new TranslationTextComponent(
+            new TranslatableComponent(
                 "advancements.railcraft.tracks.coke_oven.name"),
-            new TranslationTextComponent(
+            new TranslatableComponent(
                 "advancements.railcraft.tracks.coke_oven.desc"),
             null,
             FrameType.TASK,
@@ -79,16 +79,16 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement rollingTable = Advancement.Builder.advancement()
         .display(
             RailcraftItems.MANUAL_ROLLING_MACHINE.get(),
-            new TranslationTextComponent(
+            new TranslatableComponent(
                 "advancements.railcraft.tracks.manual_rolling_machine.name"),
-            new TranslationTextComponent(
+            new TranslatableComponent(
                 "advancements.railcraft.tracks.manual_rolling_machine.desc"),
             null,
             FrameType.GOAL,
             true, false, false)
         .parent(rcRoot)
         .addCriterion("has_rolling_table",
-            InventoryChangeTrigger.Instance.hasItems(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
+            InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
         .save(consumer, Railcraft.ID + ":tracks/manual_rolling_machine");
 
     // Advancement.Builder.advancement()
@@ -109,21 +109,21 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement basicTrack = Advancement.Builder.advancement()
         .display(
             Items.RAIL,
-            new TranslationTextComponent("advancements.railcraft.tracks.regular_track.name"),
-            new TranslationTextComponent("advancements.railcraft.tracks.regular_track.desc"),
+            new TranslatableComponent("advancements.railcraft.tracks.regular_track.name"),
+            new TranslatableComponent("advancements.railcraft.tracks.regular_track.desc"),
             null,
             FrameType.TASK,
             true, false, false)
         .parent(rollingTable)
         .addCriterion("has_regular",
-            InventoryChangeTrigger.Instance.hasItems(Items.RAIL))
+            InventoryChangeTrigger.TriggerInstance.hasItems(Items.RAIL))
         .save(consumer, Railcraft.ID + ":tracks/regular_track");
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.RAW_FIRESTONE.get(),
-            new TranslationTextComponent("advancements.railcraft.tracks.track_kit.name"),
-            new TranslationTextComponent("advancements.railcraft.tracks.track_kit.desc"),
+            new TranslatableComponent("advancements.railcraft.tracks.track_kit.name"),
+            new TranslatableComponent("advancements.railcraft.tracks.track_kit.desc"),
             null,
             FrameType.GOAL,
             true, true, false)
@@ -134,8 +134,8 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.IRON_SPIKE_MAUL.get(),
-            new TranslationTextComponent("advancements.railcraft.tracks.junctions.name"),
-            new TranslationTextComponent("advancements.railcraft.tracks.junctions.desc"),
+            new TranslatableComponent("advancements.railcraft.tracks.junctions.name"),
+            new TranslatableComponent("advancements.railcraft.tracks.junctions.desc"),
             null,
             FrameType.GOAL,
             true, false, false)
@@ -146,29 +146,29 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.HIGH_SPEED_TRACK.get(),
-            new TranslationTextComponent("advancements.railcraft.tracks.high_speed_track.name"),
-            new TranslationTextComponent("advancements.railcraft.tracks.high_speed_track.desc"),
+            new TranslatableComponent("advancements.railcraft.tracks.high_speed_track.name"),
+            new TranslatableComponent("advancements.railcraft.tracks.high_speed_track.desc"),
             null,
             FrameType.CHALLENGE,
             true, true, false)
         .parent(rollingTable)
         .addCriterion("has_hs_track",
-            InventoryChangeTrigger.Instance.hasItems(RailcraftItems.HIGH_SPEED_TRACK.get()))
+            InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.HIGH_SPEED_TRACK.get()))
         .save(consumer, Railcraft.ID + ":tracks/high_speed_track");
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.STRAP_IRON_TRACK.get(),
-            new TranslationTextComponent(
+            new TranslatableComponent(
                 "advancements.railcraft.tracks.wooden_track.name"),
-            new TranslationTextComponent(
+            new TranslatableComponent(
                 "advancements.railcraft.tracks.wooden_track.desc"),
             null,
             FrameType.TASK,
             true, false, false)
         .parent(rollingTable)
         .addCriterion("has_strap_iron",
-            InventoryChangeTrigger.Instance.hasItems(RailcraftItems.STRAP_IRON_TRACK.get()))
+            InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STRAP_IRON_TRACK.get()))
         .save(consumer, Railcraft.ID + ":tracks/wooden_track");
 
   }

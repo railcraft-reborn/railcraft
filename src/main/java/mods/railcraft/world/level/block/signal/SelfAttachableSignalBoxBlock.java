@@ -1,18 +1,15 @@
 package mods.railcraft.world.level.block.signal;
 
-import java.util.function.Supplier;
-import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SelfAttachableSignalBoxBlock extends SignalBoxBlock {
 
-  public SelfAttachableSignalBoxBlock(
-      Supplier<? extends AbstractSignalBoxBlockEntity> blockEntityFactory, Properties properties) {
-    super(blockEntityFactory, properties);
+  public SelfAttachableSignalBoxBlock(Properties properties) {
+    super(properties);
   }
 
   @Override
   public boolean attachesTo(BlockState blockState, BlockState otherBlockState) {
-    return otherBlockState.getBlock().is(this) || super.attachesTo(blockState, otherBlockState);
+    return otherBlockState.is(this) || super.attachesTo(blockState, otherBlockState);
   }
 }

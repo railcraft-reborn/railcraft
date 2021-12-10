@@ -1,11 +1,11 @@
 package mods.railcraft.world.inventory;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 
 public class SlotUntouchable extends SlotRailcraft {
 
-  public SlotUntouchable(IInventory contents, int id, int x, int y) {
+  public SlotUntouchable(Container contents, int id, int x, int y) {
     super(contents, id, x, y);
     setPhantom();
     setCanAdjustPhantom(false);

@@ -3,25 +3,25 @@ package mods.railcraft.client.renderer.blockentity;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 import mods.railcraft.api.signal.BlockSignal;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.TokenSignal;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.world.item.GogglesItem;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.item.DyeColor;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SignalAuraRenderUtil {
 
-  public static void tryRenderSignalAura(TileEntity blockEntity, MatrixStack matrixStack,
-      IRenderTypeBuffer renderTypeBuffer) {
+  public static void tryRenderSignalAura(BlockEntity blockEntity, PoseStack matrixStack,
+      MultiBufferSource renderTypeBuffer) {
     if (blockEntity instanceof SignalControllerProvider) {
       Collection<BlockPos> peers =
           ((SignalControllerProvider) blockEntity).getSignalController().getPeers();
@@ -56,7 +56,7 @@ public class SignalAuraRenderUtil {
   }
 
   private static void renderSignalAura(
-      TileEntity blockEntity, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer,
+      BlockEntity blockEntity, PoseStack matrixStack, MultiBufferSource renderTypeBuffer,
       Collection<BlockPos> endPoints, ColorSupplier colorProfile) {
     if (endPoints.isEmpty()) {
       return;
@@ -64,7 +64,7 @@ public class SignalAuraRenderUtil {
 
     matrixStack.pushPose();
     {
-      IVertexBuilder builder = renderTypeBuffer.getBuffer(RenderType.lines());
+      VertexConsumer builder = renderTypeBuffer.getBuffer(RenderType.lines());
       Matrix4f matrix = matrixStack.last().pose();
 
       for (BlockPos target : endPoints) {
@@ -91,7 +91,7 @@ public class SignalAuraRenderUtil {
   @FunctionalInterface
   public interface ColorSupplier {
 
-    int getColor(TileEntity blockEntity, BlockPos source, BlockPos target);
+    int getColor(BlockEntity blockEntity, BlockPos source, BlockPos target);
   }
 
   public enum ColorProfile implements ColorSupplier {
@@ -99,7 +99,7 @@ public class SignalAuraRenderUtil {
       private final BlockPos[] coords = new BlockPos[2];
 
       @Override
-      public int getColor(TileEntity blockEntity, BlockPos source, BlockPos target) {
+      public int getColor(BlockEntity blockEntity, BlockPos source, BlockPos target) {
         this.coords[0] = source;
         this.coords[1] = target;
         Arrays.sort(this.coords);
@@ -108,24 +108,24 @@ public class SignalAuraRenderUtil {
     },
     CONSTANT_BLUE {
       @Override
-      public int getColor(TileEntity blockEntity, BlockPos source, BlockPos target) {
-        return DyeColor.BLUE.getColorValue();
+      public int getColor(BlockEntity blockEntity, BlockPos source, BlockPos target) {
+        return DyeColor.BLUE.getFireworkColor();
       }
     },
     CONTROLLER_ASPECT {
       @Override
-      public int getColor(TileEntity blockEntity, BlockPos source, BlockPos target) {
+      public int getColor(BlockEntity blockEntity, BlockPos source, BlockPos target) {
         if (blockEntity instanceof SignalControllerProvider) {
           SignalAspect aspect =
               ((SignalControllerProvider) blockEntity).getSignalController().getSignalAspect();
           switch (aspect) {
             case GREEN:
-              return DyeColor.LIME.getColorValue();
+              return DyeColor.LIME.getFireworkColor();
             case YELLOW:
             case BLINK_YELLOW:
-              return DyeColor.YELLOW.getColorValue();
+              return DyeColor.YELLOW.getFireworkColor();
             default:
-              return DyeColor.RED.getColorValue();
+              return DyeColor.RED.getFireworkColor();
           }
         }
         return CONSTANT_BLUE.getColor(blockEntity, source, target);

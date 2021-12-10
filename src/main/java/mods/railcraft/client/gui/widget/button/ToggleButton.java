@@ -1,19 +1,19 @@
 package mods.railcraft.client.gui.widget.button;
 
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
 
 public class ToggleButton extends RailcraftButton {
 
   private boolean toggled;
 
-  public ToggleButton(int x, int y, int width, int height, ITextComponent text,
-      IPressable actionListener, TexturePosition texturePosition, boolean toggled) {
+  public ToggleButton(int x, int y, int width, int height, Component text,
+      OnPress actionListener, TexturePosition texturePosition, boolean toggled) {
     super(x, y, width, height, text, actionListener, texturePosition);
     this.toggled = toggled;
   }
 
-  public ToggleButton(int x, int y, int width, int height, ITextComponent text,
-      IPressable actionListener, ITooltip tooltip, TexturePosition texturePosition,
+  public ToggleButton(int x, int y, int width, int height, Component text,
+      OnPress actionListener, OnTooltip tooltip, TexturePosition texturePosition,
       boolean toggled) {
     super(x, y, width, height, text, actionListener, tooltip, texturePosition);
     this.toggled = toggled;

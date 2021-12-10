@@ -2,8 +2,8 @@ package mods.railcraft.gui.widget;
 
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -12,7 +12,7 @@ public class GaugeWidget extends Widget {
 
   private final Gauge gauge;
   private final boolean vertical;
-  private final Map<ServerPlayerEntity, Float> previousValues = new HashMap<>();
+  private final Map<ServerPlayer, Float> previousValues = new HashMap<>();
   private boolean first = true;
   private float measurement;
 
@@ -47,20 +47,20 @@ public class GaugeWidget extends Widget {
   }
 
   @Override
-  public boolean hasServerSyncData(ServerPlayerEntity listener) {
+  public boolean hasServerSyncData(ServerPlayer listener) {
     float previousValue = this.previousValues.getOrDefault(listener, 0.0F);
     return previousValue != this.gauge.getServerValue();
   }
 
   @Override
-  public void writeServerSyncData(ServerPlayerEntity listener, PacketBuffer data) {
+  public void writeServerSyncData(ServerPlayer listener, FriendlyByteBuf data) {
     float value = this.gauge.getServerValue();
     data.writeFloat(value);
     this.previousValues.put(listener, value);
   }
 
   @Override
-  public void readServerSyncData(PacketBuffer data) {
+  public void readServerSyncData(FriendlyByteBuf data) {
     this.gauge.setClientValue(data.readFloat());
   }
 }

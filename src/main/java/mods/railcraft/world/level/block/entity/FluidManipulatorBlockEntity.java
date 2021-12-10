@@ -2,56 +2,58 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
 import javax.annotation.Nullable;
-import mods.railcraft.util.inventory.IExtInvSlot;
-import mods.railcraft.util.inventory.InvTools;
-import mods.railcraft.util.inventory.InventoryAdvanced;
-import mods.railcraft.util.inventory.InventoryIterator;
+import mods.railcraft.util.container.AdvancedContainer;
+import mods.railcraft.util.container.ModifiableContainerSlot;
+import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.container.ContainerIterator;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.TankManager;
 import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
-    implements ISidedInventory, INamedContainerProvider {
+    implements WorldlyContainer, MenuProvider {
 
   protected static final int SLOT_INPUT = 0;
   protected static final int SLOT_PROCESSING = 1;
   protected static final int SLOT_OUTPUT = 2;
-  protected static final int[] SLOTS = InvTools.buildSlotArray(0, 3);
+  protected static final int[] SLOTS = ContainerTools.buildSlotArray(0, 3);
   protected static final int CAPACITY = FluidTools.BUCKET_VOLUME * 32;
 
-  protected final InventoryAdvanced fluidFilterInventory =
-      new InventoryAdvanced(1).callbackInv(this).phantom();
+  protected final AdvancedContainer fluidFilterContainer =
+      new AdvancedContainer(1).callbackContainer(this).phantom();
   protected final TankManager tankManager = new TankManager();
   private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> this.tankManager);
   protected final StandardTank tank = new FilteredTank(CAPACITY);
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private int fluidProcessingTimer;
 
-  protected FluidManipulatorBlockEntity(TileEntityType<?> type) {
-    super(type);
-    this.setInventorySize(3);
+  protected FluidManipulatorBlockEntity(BlockEntityType<?> type, BlockPos blockPos,
+      BlockState blockState) {
+    super(type, blockPos, blockState);
+    this.setContainerSize(3);
     this.tankManager.add(this.tank);
     this.tank.setValidator(
         fluidStack -> this.getFilterFluid().map(fluidStack::isFluidEqual).orElse(true));
@@ -62,14 +64,14 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     return this.tankManager;
   }
 
-  public InventoryAdvanced getFluidFilter() {
-    return this.fluidFilterInventory;
+  public AdvancedContainer getFluidFilter() {
+    return this.fluidFilterContainer;
   }
 
   public Optional<FluidStack> getFilterFluid() {
-    return this.fluidFilterInventory.getItem(0).isEmpty()
+    return this.fluidFilterContainer.getItem(0).isEmpty()
         ? Optional.empty()
-        : FluidItemHelper.getFluidStackInContainer(this.fluidFilterInventory.getItem(0));
+        : FluidItemHelper.getFluidStackInContainer(this.fluidFilterContainer.getItem(0));
   }
 
   public FluidStack getFluidHandled() {
@@ -77,12 +79,12 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Nullable
-  protected static IFluidHandler getFluidHandler(AbstractMinecartEntity cart, Direction direction) {
+  protected static IFluidHandler getFluidHandler(AbstractMinecart cart, Direction direction) {
     return cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction)
         .orElse(null);
   }
 
-  public boolean use(PlayerEntity player, Hand hand) {
+  public boolean use(Player player, InteractionHand hand) {
     boolean success = FluidTools.interactWithFluidHandler(player, hand, this.tank);
     if (success && !this.level.isClientSide()) {
       this.syncToClient();
@@ -91,7 +93,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Override
-  public boolean canHandleCart(AbstractMinecartEntity cart) {
+  public boolean canHandleCart(AbstractMinecart cart) {
     return cart
         .getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
             this.getFacing().getOpposite())
@@ -103,7 +105,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   protected void upkeep() {
     super.upkeep();
 
-    InventoryIterator<IExtInvSlot> it = InventoryIterator.get(this);
+    ContainerIterator<ModifiableContainerSlot> it = ContainerIterator.get(this);
     it.slot(SLOT_INPUT).validate(this.level, this.getBlockPos());
     it.slot(SLOT_PROCESSING).validate(this.level, this.getBlockPos(), FluidItemHelper::isContainer);
     it.slot(SLOT_OUTPUT).validate(this.level, this.getBlockPos(), FluidItemHelper::isContainer);
@@ -149,36 +151,35 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Override
-  public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
+  public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
     return new FluidManipulatorMenu(id, inventory, this);
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.putString("processState", this.processState.getSerializedName());
-    data.put("tankManager", this.tankManager.serializeNBT());
-    data.put("invFilter", this.getFluidFilter().serializeNBT());
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putString("processState", this.processState.getSerializedName());
+    tag.put("tankManager", this.tankManager.serializeNBT());
+    tag.put("invFilter", this.getFluidFilter().serializeNBT());
   }
 
   @Override
-  public void load(BlockState blockState, CompoundNBT data) {
-    super.load(blockState, data);
-    this.processState = FluidTools.ProcessState.getByName(data.getString("processState"))
+  public void load( CompoundTag tag) {
+    super.load( tag);
+    this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);
-    this.tankManager.deserializeNBT(data.getList("tankManager", Constants.NBT.TAG_COMPOUND));
-    this.getFluidFilter().deserializeNBT(data.getList("invFilter", Constants.NBT.TAG_COMPOUND));
+    this.tankManager.deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
+    this.getFluidFilter().deserializeNBT(tag.getList("invFilter", Tag.TAG_COMPOUND));
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     this.tankManager.writePacketData(data);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.tankManager.readPacketData(data);
   }

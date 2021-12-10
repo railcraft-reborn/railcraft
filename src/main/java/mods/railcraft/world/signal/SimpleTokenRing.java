@@ -15,11 +15,10 @@ import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MathTools;
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**
  * Created by CovertJaguar on 4/23/2015 for Railcraft. <br>
@@ -31,7 +30,7 @@ import net.minecraft.world.server.ServerWorld;
 public class SimpleTokenRing implements TokenRing {
 
   private static final int MAX_DISTANCE = 256 * 256;
-  private final ServerWorld level;
+  private final ServerLevel level;
   private final TokenRingManager manager;
   private final UUID id;
   private final Set<BlockPos> peers = new HashSet<>();
@@ -39,13 +38,13 @@ public class SimpleTokenRing implements TokenRing {
   private BlockPos centroid = BlockPos.ZERO;
   private boolean linking;
 
-  public SimpleTokenRing(ServerWorld level, TokenRingManager manager, UUID id) {
+  public SimpleTokenRing(ServerLevel level, TokenRingManager manager, UUID id) {
     this.level = level;
     this.manager = manager;
     this.id = id;
   }
 
-  public SimpleTokenRing(ServerWorld level, TokenRingManager manager, UUID id, BlockPos origin) {
+  public SimpleTokenRing(ServerLevel level, TokenRingManager manager, UUID id, BlockPos origin) {
     this(level, manager, id);
     this.addSignal(origin);
   }
@@ -91,14 +90,14 @@ public class SimpleTokenRing implements TokenRing {
         aabbFactory.expandToCoordinate(pos);
       }
       aabbFactory.grow(16).clampToWorld();
-      List<AbstractMinecartEntity> carts = EntitySearcher.findMinecarts()
+      List<AbstractMinecart> carts = EntitySearcher.findMinecarts()
           .around(aabbFactory.build())
           .in(this.level);
       this.trackedCarts.retainAll(carts.stream().map(Entity::getUUID).collect(Collectors.toSet()));
     }
   }
 
-  public boolean isOrphaned(ServerWorld level) {
+  public boolean isOrphaned(ServerLevel level) {
     return !this.peers.stream().map(this::getPeer).allMatch(Optional::isPresent);
   }
 
@@ -123,7 +122,7 @@ public class SimpleTokenRing implements TokenRing {
     this.centroid = MathTools.centroid(this.peers);
   }
 
-  public void markCart(AbstractMinecartEntity cart) {
+  public void markCart(AbstractMinecart cart) {
     UUID cartID = cart.getUUID();
     if (this.trackedCarts.remove(cartID)) {
       this.manager.setDirty();
@@ -168,9 +167,9 @@ public class SimpleTokenRing implements TokenRing {
     if (!this.level.isLoaded(blockPos)) {
       return Optional.empty();
     }
-    TileEntity blockEntity = this.level.getBlockEntity(blockPos);
-    return blockEntity instanceof TokenSignalBlockEntity && !blockEntity.isRemoved()
-        ? Optional.of((TokenSignalBlockEntity) blockEntity)
+    var blockEntity = this.level.getBlockEntity(blockPos);
+    return blockEntity instanceof TokenSignalBlockEntity tokenSignal && !blockEntity.isRemoved()
+        ? Optional.of(tokenSignal)
         : Optional.empty();
   }
 

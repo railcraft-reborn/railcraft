@@ -3,14 +3,14 @@ package mods.railcraft.world.level.block.entity.signal;
 import java.util.EnumSet;
 import java.util.Set;
 import mods.railcraft.api.signal.SignalAspect;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -19,8 +19,9 @@ public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockE
 
   private final Set<SignalAspect> actionSignalAspects = EnumSet.of(SignalAspect.GREEN);
 
-  public ActionSignalBoxBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public ActionSignalBoxBlockEntity(BlockEntityType<?> type, BlockPos blockPos,
+      BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
   public final Set<SignalAspect> getActionSignalAspects() {
@@ -33,40 +34,41 @@ public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockE
 
   protected final void addActionSignalAspect(SignalAspect signalAspect) {
     this.actionSignalAspects.add(signalAspect);
+    this.setChanged();
   }
 
   protected final void removeActionSignalAspect(SignalAspect signalAspect) {
     this.actionSignalAspects.remove(signalAspect);
+    this.setChanged();
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    ListNBT actionAspectsTag = new ListNBT();
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    var actionAspectsTag = new ListTag();
     this.actionSignalAspects
-        .forEach(aspect -> actionAspectsTag.add(StringNBT.valueOf(aspect.getSerializedName())));
-    data.put("actionSignalAspects", actionAspectsTag);
-    return data;
+        .forEach(aspect -> actionAspectsTag.add(StringTag.valueOf(aspect.getSerializedName())));
+    tag.put("actionSignalAspects", actionAspectsTag);
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    ListNBT actionAspectsTag = data.getList("actionAspects", Constants.NBT.TAG_STRING);
-    for (INBT aspectTag : actionAspectsTag) {
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    var actionAspectsTag = tag.getList("actionAspects", Tag.TAG_STRING);
+    for (var aspectTag : actionAspectsTag) {
       SignalAspect.getByName(aspectTag.getAsString()).ifPresent(this.actionSignalAspects::add);
     }
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeVarInt(this.actionSignalAspects.size());
     this.actionSignalAspects.forEach(data::writeEnum);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.actionSignalAspects.clear();
     int size = data.readVarInt();

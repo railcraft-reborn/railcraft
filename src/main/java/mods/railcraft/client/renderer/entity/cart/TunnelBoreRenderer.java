@@ -1,19 +1,20 @@
 package mods.railcraft.client.renderer.entity.cart;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.TunnelBoreHead;
+import mods.railcraft.client.model.RailcraftModelLayers;
 import mods.railcraft.client.model.TunnelBoreModel;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.cart.TunnelBoreEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class TunnelBoreRenderer extends EntityRenderer<TunnelBoreEntity> {
 
@@ -22,16 +23,16 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBoreEntity> {
 
   protected TunnelBoreModel modelTunnelBore;
 
-  public TunnelBoreRenderer(EntityRendererManager renderManager) {
-    super(renderManager);
+  public TunnelBoreRenderer(EntityRendererProvider.Context context) {
+    super(context);
     this.shadowRadius = 0.5F;
-    modelTunnelBore = new TunnelBoreModel();
+    this.modelTunnelBore = new TunnelBoreModel(context.bakeLayer(RailcraftModelLayers.TUNNEL_BORE));
   }
 
   // A lot of this is copied from the minecart renderer.
   @Override
   public void render(TunnelBoreEntity bore, float yaw, float partialTicks,
-      MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLight) {
+      PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight) {
     matrixStack.pushPose();
     {
       long var10 = (long) bore.getId() * 493286711L;
@@ -52,7 +53,7 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBoreEntity> {
         damage = 0.0F;
       if (roll > 0.0F) {
         matrixStack.mulPose(Vector3f.XP.rotationDegrees(
-            MathHelper.sin(roll) * roll * damage / 10.0F * (float) bore.getHurtDir()));
+            Mth.sin(roll) * roll * damage / 10.0F * (float) bore.getHurtDir()));
       }
 
       float light = bore.getBrightness();
@@ -76,7 +77,7 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBoreEntity> {
       this.modelTunnelBore.setBoreHeadRotation(bore.getBoreRotationAngle());
       this.modelTunnelBore.setBoreActive(bore.isMinecartPowered());
       this.modelTunnelBore.setupAnim(bore, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
-      IVertexBuilder vertexBuilder = renderTypeBuffer.getBuffer(
+      VertexConsumer vertexBuilder = renderTypeBuffer.getBuffer(
           this.modelTunnelBore.renderType(textureLocation));
       this.modelTunnelBore.renderToBuffer(matrixStack, vertexBuilder, packedLight,
           OverlayTexture.NO_OVERLAY, colorIntensity, colorIntensity, colorIntensity,

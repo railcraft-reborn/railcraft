@@ -3,16 +3,16 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 import mods.railcraft.api.track.PoweredTrack;
 import mods.railcraft.api.track.TrackType;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
 public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
     implements PoweredTrack {
@@ -22,45 +22,48 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
   public PoweredOutfittedTrackBlock(Supplier<? extends TrackType> trackType,
       Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
+    this.registerDefaultState(this.stateDefinition.any()
+        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
+        .setValue(WATERLOGGED, false)
+        .setValue(POWERED, false));
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(POWERED);
   }
 
   @Override
-  public BlockState getStateForPlacement(BlockItemUseContext context) {
+  public BlockState getStateForPlacement(BlockPlaceContext context) {
     return super.getStateForPlacement(context)
         .setValue(POWERED, context.getLevel().hasNeighborSignal(context.getClickedPos()));
   }
 
   @Override
-  public boolean isPowered(BlockState blockState, World level, BlockPos pos) {
+  public boolean isPowered(BlockState blockState, Level level, BlockPos pos) {
     return isPowered(blockState);
   }
 
   @Override
-  public void setPowered(BlockState blockState, World level, BlockPos pos, boolean powered) {
+  public void setPowered(BlockState blockState, Level level, BlockPos pos, boolean powered) {
     level.setBlockAndUpdate(pos, blockState.setValue(POWERED, powered));
   }
 
   @Override
-  public void onPlace(BlockState blockState, World level, BlockPos pos, BlockState oldBlockState,
+  public void onPlace(BlockState blockState, Level level, BlockPos pos, BlockState oldBlockState,
       boolean moved) {
     super.onPlace(blockState, level, pos, oldBlockState, moved);
     this.testPower(blockState, level, pos);
   }
 
   @Override
-  public void neighborChanged(BlockState blockState, World level, BlockPos pos,
+  public void neighborChanged(BlockState blockState, Level level, BlockPos pos,
       Block neighborBlock, BlockPos neighborPos, boolean moved) {
     this.testPower(blockState, level, pos);
   }
 
-  protected final void testPower(BlockState blockState, World level, BlockPos pos) {
+  protected final void testPower(BlockState blockState, Level level, BlockPos pos) {
     boolean powered = level.getBestNeighborSignal(pos) > 0
         || this.testPowerPropagation(level, pos, blockState,
             this.getPowerPropagation(blockState, level, pos));
@@ -70,19 +73,19 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
     }
   }
 
-  private boolean testPowerPropagation(World world, BlockPos pos,
+  private boolean testPowerPropagation(Level world, BlockPos pos,
       BlockState state, int maxDist) {
     return this.isConnectedRailPowered(world, pos, state, true, 0, maxDist)
         || this.isConnectedRailPowered(world, pos, state, false, 0, maxDist);
   }
 
-  private boolean isConnectedRailPowered(World world, BlockPos pos,
+  private boolean isConnectedRailPowered(Level world, BlockPos pos,
       BlockState state, boolean dir, int dist, int maxDist) {
     if (dist >= maxDist) {
       return false;
     }
     boolean powered = true;
-    BlockPos.Mutable newPos = pos.mutable();
+    BlockPos.MutableBlockPos newPos = pos.mutable();
     RailShape railDirection = this.getRailDirection(state, world, pos, null);
     switch (railDirection) {
       case NORTH_SOUTH: // '\0'
@@ -147,13 +150,13 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
         || (powered && this.testPowered(world, newPos.below(), dir, dist, maxDist, railDirection));
   }
 
-  private boolean testPowered(World level, BlockPos blockPos, boolean dir,
+  private boolean testPowered(Level level, BlockPos blockPos, boolean dir,
       int dist, int maxDist, RailShape prevOrientation) {
     BlockState nextBlockState = level.getBlockState(blockPos);
-    if (AbstractRailBlock.isRail(nextBlockState)
+    if (BaseRailBlock.isRail(nextBlockState)
         && nextBlockState.getBlock() instanceof PoweredTrack) {
       PoweredTrack nextBlock = (PoweredTrack) nextBlockState.getBlock();
-      RailShape nextOrientation = ((AbstractRailBlock) nextBlockState.getBlock())
+      RailShape nextOrientation = ((BaseRailBlock) nextBlockState.getBlock())
           .getRailDirection(nextBlockState, level, blockPos, null);
       if (!(this.canPropagatePowerTo(nextBlockState)))
         return false;

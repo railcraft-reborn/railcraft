@@ -12,17 +12,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
@@ -30,7 +30,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
  *
  * @author LetterN (https://github.com/LetterN)
  */
-public class RollingRecipe implements IRecipe<CraftingInventory> {
+public class RollingRecipe implements Recipe<CraftingContainer> {
 
   private final ResourceLocation id;
   private final NonNullList<Ingredient> recipeItems;
@@ -62,7 +62,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
   }
 
   @Override
-  public boolean matches(CraftingInventory inventory, World world) {
+  public boolean matches(CraftingContainer inventory, Level world) {
     for (int i = 0; i <= inventory.getWidth() - 3; ++i) {
       for (int j = 0; j <= inventory.getHeight() - 3; ++j) {
         if (this.matches(inventory, i, j, true)) {
@@ -78,7 +78,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
     return false;
   }
 
-  private boolean matches(CraftingInventory inventory, int x, int y, boolean inverse) {
+  private boolean matches(CraftingContainer inventory, int x, int y, boolean inverse) {
     for (int i = 0; i < inventory.getWidth(); ++i) {
       for (int j = 0; j < inventory.getHeight(); ++j) {
         int k = i - x;
@@ -102,7 +102,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
   }
 
   @Override
-  public ItemStack assemble(CraftingInventory inventory) {
+  public ItemStack assemble(CraftingContainer inventory) {
     return this.getResultItem().copy();
   }
 
@@ -122,33 +122,33 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
   }
 
   @Override
-  public IRecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<?> getSerializer() {
     return RailcraftRecipeSerializers.ROLLING.get();
   }
 
   @Override
-  public IRecipeType<?> getType() {
+  public RecipeType<?> getType() {
     return RailcraftRecipeTypes.ROLLING;
   }
 
-  public static class RollingRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>>
-      implements IRecipeSerializer<RollingRecipe> {
+  public static class RollingRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>>
+      implements RecipeSerializer<RollingRecipe> {
 
     @Override
     public RollingRecipe fromJson(ResourceLocation resourceLoc, JsonObject jsonObject) {
-      Map<String, Ingredient> map = keyFromJson(JSONUtils.getAsJsonObject(jsonObject, "key"));
-      String[] astring = shrink(patternFromJson(JSONUtils.getAsJsonArray(jsonObject, "pattern")));
+      Map<String, Ingredient> map = keyFromJson(GsonHelper.getAsJsonObject(jsonObject, "key"));
+      String[] astring = shrink(patternFromJson(GsonHelper.getAsJsonArray(jsonObject, "pattern")));
 
-      int tickCost = JSONUtils.getAsInt(jsonObject, "tickCost", 100); // 5 seconds
+      int tickCost = GsonHelper.getAsInt(jsonObject, "tickCost", 100); // 5 seconds
       // I SAID, STRICT 3X3
       NonNullList<Ingredient> ingredients = dissolvePattern(astring, map, 3, 3);
-      ItemStack resultItemStack = itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
+      ItemStack resultItemStack = itemFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
       // 3x3 recipies only, attempting to register 4x4's will not work and we will never honor it.
       return new RollingRecipe(resourceLoc, tickCost, ingredients, resultItemStack);
     }
 
     @Override
-    public RollingRecipe fromNetwork(ResourceLocation resourceLoc, PacketBuffer packetBuffer) {
+    public RollingRecipe fromNetwork(ResourceLocation resourceLoc, FriendlyByteBuf packetBuffer) {
       NonNullList<Ingredient> ingredients = NonNullList.withSize(9, Ingredient.EMPTY);
       int tickCost = packetBuffer.readVarInt();
 
@@ -161,7 +161,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
     }
 
     @Override
-    public void toNetwork(PacketBuffer packetBuffer, RollingRecipe recipe) {
+    public void toNetwork(FriendlyByteBuf packetBuffer, RollingRecipe recipe) {
       packetBuffer.writeVarInt(recipe.tickCost);
       // format: [tickcost(int), ingredient, result]
       for (Ingredient ingredient : recipe.recipeItems) {
@@ -179,7 +179,7 @@ public class RollingRecipe implements IRecipe<CraftingInventory> {
         throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
       } else {
         for (int i = 0; i < astring.length; ++i) {
-          String s = JSONUtils.convertToString(jsondat.get(i), "pattern[" + i + "]");
+          String s = GsonHelper.convertToString(jsondat.get(i), "pattern[" + i + "]");
           if (s.length() > 3) {
             throw new JsonSyntaxException("Invalid pattern: too many columns, 3 is maximum");
           }

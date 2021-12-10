@@ -1,10 +1,10 @@
 package mods.railcraft.world.entity.cart;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.Pose;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraftforge.entity.PartEntity;
 
 /**
@@ -18,7 +18,7 @@ public class TunnelBorePartEntity extends PartEntity<TunnelBoreEntity> {
   public final float forwardOffset;
   public final float sideOffset;
 
-  private final EntitySize size;
+  private final EntityDimensions size;
 
   public TunnelBorePartEntity(TunnelBoreEntity parent, String partName, float width, float height,
       float forwardOffset) {
@@ -28,7 +28,7 @@ public class TunnelBorePartEntity extends PartEntity<TunnelBoreEntity> {
   public TunnelBorePartEntity(TunnelBoreEntity parent, String partName, float width, float height,
       float forwardOffset, float sideOffset) {
     super(parent);
-    this.size = EntitySize.scalable(width, height);
+    this.size = EntityDimensions.scalable(width, height);
     this.partName = partName;
     this.forwardOffset = forwardOffset;
     this.sideOffset = sideOffset;
@@ -36,7 +36,7 @@ public class TunnelBorePartEntity extends PartEntity<TunnelBoreEntity> {
   }
 
   @Override
-  public EntitySize getDimensions(Pose pose) {
+  public EntityDimensions getDimensions(Pose pose) {
     return this.size;
   }
 
@@ -56,10 +56,10 @@ public class TunnelBorePartEntity extends PartEntity<TunnelBoreEntity> {
   protected void defineSynchedData() {}
 
   @Override
-  protected void readAdditionalSaveData(CompoundNBT p_70037_1_) {}
+  protected void readAdditionalSaveData(CompoundTag p_70037_1_) {}
 
   @Override
-  protected void addAdditionalSaveData(CompoundNBT p_213281_1_) {}
+  protected void addAdditionalSaveData(CompoundTag p_213281_1_) {}
 
   /**
    * Returns true if other Entities should be prevented from moving through this Entity.

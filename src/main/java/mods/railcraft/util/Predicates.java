@@ -7,10 +7,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import com.google.common.collect.Lists;
 import mods.railcraft.util.collections.StackKey;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 
 /**
  * Created by CovertJaguar on 9/9/2016 for Railcraft.
@@ -59,15 +59,15 @@ public final class Predicates {
     return distinct(StackKey::make);
   }
 
-  public static Predicate<BlockState> realBlock(IBlockReader world, BlockPos pos) {
-    return state -> state != null && state.getBlock().isAir(state, world, pos);
+  public static Predicate<BlockState> realBlock(BlockGetter world, BlockPos pos) {
+    return state -> state != null && state.isAir();
   }
 
   public static <T> Predicate<T> alwaysTrue() {
-    return t -> true; // No need to put in a field
+    return __ -> true; // No need to put in a field
   }
 
   public static <T> Predicate<T> alwaysFalse() {
-    return t -> false;
+    return __ -> false;
   }
 }

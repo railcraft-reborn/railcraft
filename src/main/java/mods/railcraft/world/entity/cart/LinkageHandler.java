@@ -5,7 +5,7 @@ import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.Vec2D;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public final class LinkageHandler {
 
@@ -31,7 +31,7 @@ public final class LinkageHandler {
    * @param cart2 AbstractMinecartEntity
    * @return The optimal distance
    */
-  private float getOptimalDistance(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2) {
+  private float getOptimalDistance(AbstractMinecart cart1, AbstractMinecart cart2) {
     float dist = 0;
     if (cart1 instanceof ILinkableCart)
       dist += ((ILinkableCart) cart1).getOptimalDistance(cart2);
@@ -44,7 +44,7 @@ public final class LinkageHandler {
     return dist;
   }
 
-  private boolean canCartBeAdjustedBy(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2) {
+  private boolean canCartBeAdjustedBy(AbstractMinecart cart1, AbstractMinecart cart2) {
     if (cart1 == cart2)
       return false;
     if (cart1 instanceof ILinkableCart && !((ILinkableCart) cart1).canBeAdjusted(cart2))
@@ -59,7 +59,7 @@ public final class LinkageHandler {
    * @param cart1 AbstractMinecartEntity
    * @param cart2 AbstractMinecartEntity
    */
-  protected void adjustVelocity(AbstractMinecartEntity cart1, AbstractMinecartEntity cart2,
+  protected void adjustVelocity(AbstractMinecart cart1, AbstractMinecart cart2,
       RailcraftLinkageManager.LinkType linkType) {
     String timer = LINK_A_TIMER;
     if (linkType == RailcraftLinkageManager.LinkType.LINK_B)
@@ -168,7 +168,7 @@ public final class LinkageHandler {
    *
    * @param cart AbstractMinecartEntity
    */
-  private void adjustCart(AbstractMinecartEntity cart) {
+  private void adjustCart(AbstractMinecart cart) {
     if (isLaunched(cart))
       return;
 
@@ -216,10 +216,10 @@ public final class LinkageHandler {
 
   }
 
-  private boolean adjustLinkedCart(AbstractMinecartEntity cart, RailcraftLinkageManager.LinkType linkType) {
+  private boolean adjustLinkedCart(AbstractMinecart cart, RailcraftLinkageManager.LinkType linkType) {
     boolean linked = false;
     RailcraftLinkageManager lm = RailcraftLinkageManager.INSTANCE;
-    AbstractMinecartEntity link = lm.getLinkedCart(cart, linkType);
+    AbstractMinecart link = lm.getLinkedCart(cart, linkType);
     if (link != null) {
       // sanity check to ensure links are consistent
       if (!lm.areLinked(cart, link)) {
@@ -307,19 +307,19 @@ public final class LinkageHandler {
    *
    * @param event MinecartUpdateEvent
    */
-  public void handleTick(AbstractMinecartEntity cart) {
+  public void handleTick(AbstractMinecart cart) {
     // Physics done here
     adjustCart(cart);
 
     // savePosition(cart);
   }
 
-  public boolean isLaunched(AbstractMinecartEntity cart) {
+  public boolean isLaunched(AbstractMinecart cart) {
     int launched = cart.getPersistentData().getInt(CartConstants.TAG_LAUNCHED);
     return launched > 0;
   }
 
-  public boolean isOnElevator(AbstractMinecartEntity cart) {
+  public boolean isOnElevator(AbstractMinecart cart) {
     int elevator = cart.getPersistentData().getByte(CartConstants.TAG_ELEVATOR);
     return elevator > 0;
   }

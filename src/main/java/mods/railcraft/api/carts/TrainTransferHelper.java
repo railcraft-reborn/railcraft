@@ -9,8 +9,8 @@ package mods.railcraft.api.carts;
 import java.util.Optional;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -42,7 +42,7 @@ public interface TrainTransferHelper {
    *         pushed
    * @see mods.railcraft.api.carts.FluidMinecart
    */
-  default ItemStack pushStack(AbstractMinecartEntity requester, ItemStack stack) {
+  default ItemStack pushStack(AbstractMinecart requester, ItemStack stack) {
     return stack;
   }
 
@@ -54,7 +54,7 @@ public interface TrainTransferHelper {
    * @return the ItemStack pulled from the Train, or null if the request cannot be met
    * @see mods.railcraft.api.carts.IItemCart
    */
-  default ItemStack pullStack(AbstractMinecartEntity requester, Predicate<ItemStack> filter) {
+  default ItemStack pullStack(AbstractMinecart requester, Predicate<ItemStack> filter) {
     return ItemStack.EMPTY;
   }
 
@@ -64,14 +64,14 @@ public interface TrainTransferHelper {
    * @param requester the source AbstractMinecartEntity
    * @param stack the ItemStack to be offered
    */
-  default void offerOrDropItem(AbstractMinecartEntity requester, ItemStack stack) {}
+  default void offerOrDropItem(AbstractMinecart requester, ItemStack stack) {}
 
   /**
    * Returns an IItemHandlerModifiable with represents the entire train.
    *
    * @param cart a cart in the train
    */
-  default Optional<IItemHandlerModifiable> getTrainItemHandler(AbstractMinecartEntity cart) {
+  default Optional<IItemHandlerModifiable> getTrainItemHandler(AbstractMinecart cart) {
     return Optional.empty();
   }
 
@@ -89,7 +89,7 @@ public interface TrainTransferHelper {
    *         pushed
    * @see mods.railcraft.api.carts.FluidMinecart
    */
-  default @Nullable FluidStack pushFluid(AbstractMinecartEntity requester, FluidStack fluidStack) {
+  default @Nullable FluidStack pushFluid(AbstractMinecart requester, FluidStack fluidStack) {
     return fluidStack;
   }
 
@@ -101,7 +101,7 @@ public interface TrainTransferHelper {
    * @return the FluidStack pulled from the Train, or null if the request cannot be met
    * @see mods.railcraft.api.carts.FluidMinecart
    */
-  default @Nullable FluidStack pullFluid(AbstractMinecartEntity requester,
+  default @Nullable FluidStack pullFluid(AbstractMinecart requester,
       @Nullable FluidStack fluidStack) {
     return null;
   }
@@ -111,7 +111,7 @@ public interface TrainTransferHelper {
    *
    * @param cart a cart in the train
    */
-  default Optional<IFluidHandler> getTrainFluidHandler(AbstractMinecartEntity cart) {
+  default Optional<IFluidHandler> getTrainFluidHandler(AbstractMinecart cart) {
     return Optional.empty();
   }
 }

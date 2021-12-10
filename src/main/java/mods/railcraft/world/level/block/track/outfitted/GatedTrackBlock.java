@@ -2,31 +2,31 @@ package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.RailShape;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
@@ -45,19 +45,19 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   protected static final VoxelShape X_COLLISION_SHAPE =
       box(6.0D, 0.0D, 0.0D, 10.0D, 24.0D, 16.0D);
   protected static final VoxelShape Z_OCCLUSION_SHAPE =
-      VoxelShapes.or(
+      Shapes.or(
           box(0.0D, 5.0D, 7.0D, 2.0D, 16.0D, 9.0D),
           box(14.0D, 5.0D, 7.0D, 16.0D, 16.0D, 9.0D));
   protected static final VoxelShape X_OCCLUSION_SHAPE =
-      VoxelShapes.or(
+      Shapes.or(
           box(7.0D, 5.0D, 0.0D, 9.0D, 16.0D, 2.0D),
           box(7.0D, 5.0D, 14.0D, 9.0D, 16.0D, 16.0D));
   protected static final VoxelShape Z_OCCLUSION_SHAPE_LOW =
-      VoxelShapes.or(
+      Shapes.or(
           box(0.0D, 2.0D, 7.0D, 2.0D, 13.0D, 9.0D),
           box(14.0D, 2.0D, 7.0D, 16.0D, 13.0D, 9.0D));
   protected static final VoxelShape X_OCCLUSION_SHAPE_LOW =
-      VoxelShapes.or(
+      Shapes.or(
           box(7.0D, 2.0D, 0.0D, 9.0D, 13.0D, 2.0D),
           box(7.0D, 2.0D, 14.0D, 9.0D, 13.0D, 16.0D));
 
@@ -73,14 +73,14 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(OPEN, IN_WALL, ONE_WAY);
   }
 
   @Override
-  public VoxelShape getShape(BlockState blockState, IBlockReader level, BlockPos pos,
-      ISelectionContext context) {
+  public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos pos,
+      CollisionContext context) {
     if (blockState.getValue(IN_WALL)) {
       return getRailShapeRaw(blockState) == RailShape.EAST_WEST ? X_SHAPE_LOW : Z_SHAPE_LOW;
     } else {
@@ -88,10 +88,9 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     }
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public BlockState updateShape(BlockState blockState, Direction neighborDirection,
-      BlockState neighborState, IWorld level, BlockPos pos, BlockPos neighborPos) {
+      BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
     if (ReversibleOutfittedTrackBlock.getFacing(blockState).getClockWise()
         .getAxis() != neighborDirection.getAxis()) {
       return super.updateShape(blockState, neighborDirection, neighborState, level, pos,
@@ -103,10 +102,10 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public VoxelShape getCollisionShape(BlockState blockState, IBlockReader level,
-      BlockPos pos, ISelectionContext context) {
+  public VoxelShape getCollisionShape(BlockState blockState, BlockGetter level,
+      BlockPos pos, CollisionContext context) {
     if (blockState.getValue(OPEN)) {
-      return VoxelShapes.empty();
+      return Shapes.empty();
     } else {
       return getRailShapeRaw(blockState) == RailShape.NORTH_SOUTH
           ? Z_COLLISION_SHAPE
@@ -115,7 +114,7 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public VoxelShape getOcclusionShape(BlockState blockState, IBlockReader level,
+  public VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level,
       BlockPos pos) {
     if (blockState.getValue(IN_WALL)) {
       return getRailShapeRaw(blockState) == RailShape.EAST_WEST
@@ -129,8 +128,8 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public boolean isPathfindable(BlockState blockState, IBlockReader level,
-      BlockPos pos, PathType type) {
+  public boolean isPathfindable(BlockState blockState, BlockGetter level,
+      BlockPos pos, PathComputationType type) {
     switch (type) {
       case LAND:
         return blockState.getValue(OPEN);
@@ -144,9 +143,9 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public BlockState getStateForPlacement(BlockItemUseContext context) {
+  public BlockState getStateForPlacement(BlockPlaceContext context) {
     BlockState blockState = super.getStateForPlacement(context);
-    World level = context.getLevel();
+    Level level = context.getLevel();
     BlockPos pos = context.getClickedPos();
     RailShape railShape = getRailShapeRaw(blockState);
     boolean inWall = railShape == RailShape.NORTH_SOUTH
@@ -160,20 +159,20 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   private boolean isWall(BlockState blockState) {
-    return blockState.getBlock().is(BlockTags.WALLS);
+    return blockState.is(BlockTags.WALLS);
   }
 
   @Override
-  public int getPowerPropagation(BlockState blockState, World level, BlockPos pos) {
+  public int getPowerPropagation(BlockState blockState, Level level, BlockPos pos) {
     return 0;
   }
 
   @Override
-  public void onMinecartPass(BlockState blockState, World level, BlockPos pos,
-      AbstractMinecartEntity cart) {
+  public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
+      AbstractMinecart cart) {
     if (isOneWay(blockState) && isOpen(blockState)) {
       RailShape shape = getRailShapeRaw(blockState);
-      Vector3d deltaMovement = cart.getDeltaMovement();
+      Vec3 deltaMovement = cart.getDeltaMovement();
       if (shape == RailShape.NORTH_SOUTH) {
         double motion = Math.max(Math.abs(deltaMovement.z()), MOTION_MIN);
         cart.setDeltaMovement(deltaMovement.x(), deltaMovement.y(),
@@ -187,9 +186,9 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public ActionResultType use(BlockState blockState, World level, BlockPos pos,
-      PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
-    ActionResultType result = super.use(blockState, level, pos, player, hand, rayTraceResult);
+  public InteractionResult use(BlockState blockState, Level level, BlockPos pos,
+      Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
+    InteractionResult result = super.use(blockState, level, pos, player, hand, rayTraceResult);
     if (result.consumesAction()) {
       return result;
     }
@@ -197,16 +196,16 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     if (!level.isClientSide()) {
       boolean open = !isOpen(blockState);
       level.setBlockAndUpdate(pos, blockState.setValue(OPEN, open));
-      level.levelEvent(null, open ? Constants.WorldEvents.FENCE_GATE_OPEN_SOUND
-          : Constants.WorldEvents.FENCE_GATE_CLOSE_SOUND, pos, 0);
+      level.levelEvent(null, open ? LevelEvent.SOUND_OPEN_FENCE_GATE
+          : LevelEvent.SOUND_CLOSE_FENCE_GATE, pos, 0);
     }
 
-    return ActionResultType.sidedSuccess(level.isClientSide());
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @Override
-  public boolean crowbarWhack(BlockState blockState, World level, BlockPos pos, PlayerEntity player,
-      Hand hand, ItemStack itemStack) {
+  public boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos, Player player,
+      InteractionHand hand, ItemStack itemStack) {
     if (level.isClientSide()) {
       return true;
     }
@@ -219,16 +218,15 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public void neighborChanged(BlockState blockState, World level, BlockPos pos,
+  public void neighborChanged(BlockState blockState, Level level, BlockPos pos,
       Block neighborBlock, BlockPos neighborPos, boolean moved) {
     super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, moved);
     if (!level.isClientSide()) {
       boolean powered = isPowered(level.getBlockState(pos));
       if (powered != isOpen(blockState)) {
-        level.setBlock(pos, blockState.setValue(OPEN, powered),
-            Constants.BlockFlags.BLOCK_UPDATE);
-        level.levelEvent(null, powered ? Constants.WorldEvents.FENCE_GATE_OPEN_SOUND
-            : Constants.WorldEvents.FENCE_GATE_CLOSE_SOUND, pos, 0);
+        level.setBlock(pos, blockState.setValue(OPEN, powered), Block.UPDATE_CLIENTS);
+        level.levelEvent(null, powered ? LevelEvent.SOUND_OPEN_FENCE_GATE
+            : LevelEvent.SOUND_CLOSE_FENCE_GATE, pos, 0);
       }
     }
   }

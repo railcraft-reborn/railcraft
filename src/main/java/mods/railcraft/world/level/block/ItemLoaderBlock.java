@@ -1,9 +1,16 @@
 package mods.railcraft.world.level.block;
 
+import javax.annotation.Nullable;
 import mods.railcraft.world.level.block.entity.ItemLoaderBlockEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.world.IBlockReader;
+import mods.railcraft.world.level.block.entity.ManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ItemLoaderBlock extends ManipulatorBlock<ItemLoaderBlockEntity> {
 
@@ -19,7 +26,16 @@ public class ItemLoaderBlock extends ManipulatorBlock<ItemLoaderBlockEntity> {
   }
 
   @Override
-  public ItemLoaderBlockEntity createTileEntity(BlockState blockState, IBlockReader level) {
-    return new ItemLoaderBlockEntity();
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new ItemLoaderBlockEntity(blockPos, blockState);
+  }
+
+  @Nullable
+  @Override
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
+      BlockEntityType<T> type) {
+    return level.isClientSide() ? null
+        : createTickerHelper(type, RailcraftBlockEntityTypes.ITEM_LOADER.get(),
+            ManipulatorBlockEntity::serverTick);
   }
 }

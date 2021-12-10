@@ -10,28 +10,29 @@ import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.entity.cart.CartTools;
 import mods.railcraft.world.entity.cart.Train;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import mods.railcraft.world.level.block.entity.RailcraftTickableBlockEntity;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.common.MinecraftForge;
 
-public class LockingTrackBlockEntity extends RailcraftTickableBlockEntity
-    implements LockingTrack {
+public class LockingTrackBlockEntity extends RailcraftBlockEntity implements LockingTrack {
 
   public static final double START_BOOST = 0.04;
   public static final double BOOST_FACTOR = 0.06;
@@ -41,9 +42,9 @@ public class LockingTrackBlockEntity extends RailcraftTickableBlockEntity
   private LockingModeController lockingModeController;
 
   @Nullable
-  protected AbstractMinecartEntity currentCart;
+  protected AbstractMinecart currentCart;
   @Nullable
-  protected AbstractMinecartEntity prevCart;
+  protected AbstractMinecart prevCart;
   // Temporary variables to hold loaded data while we restore from NBT
   @Nullable
   private UUID prevCartId;
@@ -56,13 +57,9 @@ public class LockingTrackBlockEntity extends RailcraftTickableBlockEntity
   protected boolean locked;
   private int trainDelay;
 
-  public LockingTrackBlockEntity() {
-    super(RailcraftBlockEntityTypes.LOCKING_TRACK.get());
-  }
-
-  public LockingTrackBlockEntity(LockingMode lockingMode) {
-    super(RailcraftBlockEntityTypes.LOCKING_TRACK.get());
-    this.lockingModeController = lockingMode.create(this);
+  public LockingTrackBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.LOCKING_TRACK.get(), blockPos, blockState);
+    this.lockingModeController = LockingTrackBlock.getLockingMode(blockState).create(this);
   }
 
   public void setLockingMode(LockingMode lockingMode) {
@@ -72,51 +69,51 @@ public class LockingTrackBlockEntity extends RailcraftTickableBlockEntity
   }
 
   @Override
-  protected void load() {
+  public void onLoad() {
+    super.onLoad();
     this.prevCart = CartTools.getCartFromUUID(this.level, this.prevCartId);
     this.currentCart = CartTools.getCartFromUUID(this.level, this.currentCartId);
   }
 
-  @Override
-  public void tick() {
-    if (!this.level.isClientSide()) {
-      // flag determines whether we send an update to the client, only update when visible changes
-      // occur
-      boolean updateClient = false;
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      LockingTrackBlockEntity blockEntity) {
+    // flag determines whether we send an update to the client, only update when visible changes
+    // occur
+    boolean changed = false;
 
-      if (this.currentCart != null && !this.currentCart.isAlive()) {
-        this.releaseCurrentCart();
-        this.currentCart = null;
-        updateClient = true;
-      }
+    if (blockEntity.currentCart != null && !blockEntity.currentCart.isAlive()) {
+      blockEntity.releaseCurrentCart();
+      blockEntity.currentCart = null;
+      changed = true;
+    }
 
-      boolean lastLocked = this.locked;
-      this.calculateLocked();
-      if (lastLocked != this.locked) {
-        updateClient = true;
-      }
+    boolean lastLocked = blockEntity.locked;
+    blockEntity.calculateLocked();
+    if (lastLocked != blockEntity.locked) {
+      changed = true;
+    }
 
-      if (this.locked) {
-        this.lockCurrentCart();
-      } else {
-        this.releaseCurrentCart();
-      }
+    if (blockEntity.locked) {
+      blockEntity.lockCurrentCart();
+    } else {
+      blockEntity.releaseCurrentCart();
+    }
 
-      // Store our last found cart in prevCart
-      if (this.currentCart != null) {
-        this.prevCart = this.currentCart;
-      }
-      // reset currentCart so we know if onMinecartPass() actually found one
-      this.currentCart = null;
+    // Store our last found cart in prevCart
+    if (blockEntity.currentCart != null) {
+      blockEntity.prevCart = blockEntity.currentCart;
+    }
+    // reset currentCart so we know if onMinecartPass() actually found one
+    blockEntity.currentCart = null;
 
-      if (updateClient) {
-        this.syncToClient();
-      }
+    if (changed) {
+      blockEntity.setChanged();
+      blockEntity.syncToClient();
     }
   }
 
   // Called by block
-  public ActionResultType use(PlayerEntity player, Hand hand) {
+  public InteractionResult use(Player player, InteractionHand hand) {
     ItemStack itemStack = player.getItemInHand(hand);
     if (!itemStack.isEmpty() && itemStack.getItem() instanceof Crowbar) {
       Crowbar crowbar = (Crowbar) itemStack.getItem();
@@ -128,14 +125,14 @@ public class LockingTrackBlockEntity extends RailcraftTickableBlockEntity
         if (!this.level.isClientSide()) {
           this.setLockingMode(newLockingMode);
           player.displayClientMessage(
-              new TranslationTextComponent("locking_track.mode",
-                  newLockingMode.getDisplayName().copy().withStyle(TextFormatting.DARK_PURPLE)),
+              new TranslatableComponent("locking_track.mode",
+                  newLockingMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE)),
               true);
         }
-        return ActionResultType.sidedSuccess(this.level.isClientSide());
+        return InteractionResult.sidedSuccess(this.level.isClientSide());
       }
     }
-    return ActionResultType.PASS;
+    return InteractionResult.PASS;
   }
 
   @Override
@@ -175,7 +172,7 @@ public class LockingTrackBlockEntity extends RailcraftTickableBlockEntity
   }
 
   // Called by block
-  public void minecartPassed(AbstractMinecartEntity cart) {
+  public void minecartPassed(AbstractMinecart cart) {
     this.currentCart = cart;
     this.lockingModeController.passed(this.currentCart);
   }
@@ -197,7 +194,7 @@ public class LockingTrackBlockEntity extends RailcraftTickableBlockEntity
   }
 
   @Override
-  public boolean isCartLocked(AbstractMinecartEntity cart) {
+  public boolean isCartLocked(AbstractMinecart cart) {
     return this.locked && this.prevCart == cart;
   }
 
@@ -279,47 +276,47 @@ public class LockingTrackBlockEntity extends RailcraftTickableBlockEntity
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.put("lockingModeController", this.lockingModeController.serializeNBT());
-    data.putBoolean("locked", this.locked);
-    data.putBoolean("trainLeaving", this.trainLeaving);
-    data.putInt("trainDelay", this.trainDelay);
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.put("lockingModeController", this.lockingModeController.serializeNBT());
+    tag.putBoolean("locked", this.locked);
+    tag.putBoolean("trainLeaving", this.trainLeaving);
+    tag.putInt("trainDelay", this.trainDelay);
     if (this.prevCart != null) {
-      data.putUUID("prevCartId", this.prevCart.getUUID());
+      tag.putUUID("prevCartId", this.prevCart.getUUID());
     }
     if (this.currentCart != null) {
-      data.putUUID("currentCartId", this.currentCart.getUUID());
+      tag.putUUID("currentCartId", this.currentCart.getUUID());
     }
-    data.putUUID("id", this.id);
-    return data;
+    tag.putUUID("id", this.id);
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.lockingModeController = LockingTrackBlock.getLockingMode(state).create(this);
-    this.lockingModeController.deserializeNBT(data.getCompound("lockingModeController"));
-    this.locked = data.getBoolean("locked");
-    this.trainLeaving = data.getBoolean("trainLeaving");
-    this.trainDelay = data.getInt("trainDelay");
-    if (data.hasUUID("prevCartId")) {
-      this.prevCartId = data.getUUID("prevCartId");
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.lockingModeController =
+        LockingTrackBlock.getLockingMode(this.getBlockState()).create(this);
+    this.lockingModeController.deserializeNBT(tag.getCompound("lockingModeController"));
+    this.locked = tag.getBoolean("locked");
+    this.trainLeaving = tag.getBoolean("trainLeaving");
+    this.trainDelay = tag.getInt("trainDelay");
+    if (tag.hasUUID("prevCartId")) {
+      this.prevCartId = tag.getUUID("prevCartId");
     }
-    if (data.hasUUID("currentCartId")) {
-      this.currentCartId = data.getUUID("currentCartId");
+    if (tag.hasUUID("currentCartId")) {
+      this.currentCartId = tag.getUUID("currentCartId");
     }
-    this.id = data.getUUID("id");
+    this.id = tag.getUUID("id");
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeBoolean(this.locked);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.locked = data.readBoolean();
   }

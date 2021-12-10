@@ -1,10 +1,10 @@
 package mods.railcraft.advancements.criterion;
 
 import mods.railcraft.api.item.MinecartFactory;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.MinecartItem;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MinecartItem;
 
 final class CartItemPredicate extends ItemPredicate {
 

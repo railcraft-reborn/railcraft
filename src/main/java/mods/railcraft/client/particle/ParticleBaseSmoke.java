@@ -1,7 +1,7 @@
 package mods.railcraft.client.particle;
 
-import net.minecraft.client.particle.IParticleRenderType;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.multiplayer.ClientLevel;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -10,11 +10,11 @@ public abstract class ParticleBaseSmoke extends DimmableParticle {
 
   public static final float SMOKE_GRAVITY = -0.1F;
 
-  protected ParticleBaseSmoke(ClientWorld world, double x, double y, double z) {
+  protected ParticleBaseSmoke(ClientLevel world, double x, double y, double z) {
     this(world, x, y, z, 0.0D, 0.0D, 0.0D, 3.0F);
   }
 
-  protected ParticleBaseSmoke(ClientWorld world, double x, double y, double z, double dx, double dy,
+  protected ParticleBaseSmoke(ClientLevel world, double x, double y, double z, double dx, double dy,
       double dz, float scale) {
     super(world, x, y, z);
     this.xd *= 0.1;
@@ -28,7 +28,7 @@ public abstract class ParticleBaseSmoke extends DimmableParticle {
   }
 
   @Override
-  public IParticleRenderType getRenderType() {
-    return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+  public ParticleRenderType getRenderType() {
+    return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
   }
 }

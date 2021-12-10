@@ -10,14 +10,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 public final class CartUtil {
 
@@ -43,72 +43,72 @@ public final class CartUtil {
   // here in the API
   // for historic purposes and the fact that the EntitySearcher isn't part of the API.
 
-  public static boolean isMinecartOnRailAt(World world, BlockPos pos, float sensitivity) {
-    return isMinecartOnRailAt(world, pos, sensitivity, AbstractMinecartEntity.class);
+  public static boolean isMinecartOnRailAt(Level world, BlockPos pos, float sensitivity) {
+    return isMinecartOnRailAt(world, pos, sensitivity, AbstractMinecart.class);
   }
 
-  public static boolean isMinecartOnRailAt(World world, BlockPos pos, float sensitivity,
-      Class<? extends AbstractMinecartEntity> type) {
-    return AbstractRailBlock.isRail(world, pos) && isMinecartAt(world, pos, sensitivity, type);
+  public static boolean isMinecartOnRailAt(Level world, BlockPos pos, float sensitivity,
+      Class<? extends AbstractMinecart> type) {
+    return BaseRailBlock.isRail(world, pos) && isMinecartAt(world, pos, sensitivity, type);
   }
 
-  public static boolean isMinecartOnAnySide(World world, BlockPos pos, float sensitivity) {
-    return isMinecartOnAnySide(world, pos, sensitivity, AbstractMinecartEntity.class);
+  public static boolean isMinecartOnAnySide(Level world, BlockPos pos, float sensitivity) {
+    return isMinecartOnAnySide(world, pos, sensitivity, AbstractMinecart.class);
   }
 
-  public static boolean isMinecartOnAnySide(World world, BlockPos pos, float sensitivity,
-      Class<? extends AbstractMinecartEntity> type) {
+  public static boolean isMinecartOnAnySide(Level world, BlockPos pos, float sensitivity,
+      Class<? extends AbstractMinecart> type) {
     return Arrays.stream(Direction.values())
         .anyMatch(side -> !getMinecartsOnSide(world, pos, sensitivity, side, type).isEmpty());
   }
 
-  public static boolean isMinecartAt(World world, BlockPos pos, float sensitivity) {
-    return isMinecartAt(world, pos, sensitivity, AbstractMinecartEntity.class);
+  public static boolean isMinecartAt(Level world, BlockPos pos, float sensitivity) {
+    return isMinecartAt(world, pos, sensitivity, AbstractMinecart.class);
   }
 
-  public static boolean isMinecartAt(World world, BlockPos pos, float sensitivity,
-      Class<? extends AbstractMinecartEntity> type) {
+  public static boolean isMinecartAt(Level world, BlockPos pos, float sensitivity,
+      Class<? extends AbstractMinecart> type) {
     return !getMinecartsAt(world, pos, sensitivity, type).isEmpty();
   }
 
-  public static List<AbstractMinecartEntity> getMinecartsOnAllSides(World world, BlockPos pos,
+  public static List<AbstractMinecart> getMinecartsOnAllSides(Level world, BlockPos pos,
       float sensitivity) {
-    return getMinecartsOnAllSides(world, pos, sensitivity, AbstractMinecartEntity.class);
+    return getMinecartsOnAllSides(world, pos, sensitivity, AbstractMinecart.class);
   }
 
-  public static <T extends AbstractMinecartEntity> List<T> getMinecartsOnAllSides(World world,
+  public static <T extends AbstractMinecart> List<T> getMinecartsOnAllSides(Level world,
       BlockPos pos, float sensitivity, Class<T> type) {
     return Arrays.stream(Direction.values())
         .flatMap(side -> getMinecartsOnSide(world, pos, sensitivity, side, type).stream())
         .collect(Collectors.toList());
   }
 
-  public static boolean isMinecartOnSide(World world, BlockPos pos, float sensitivity,
+  public static boolean isMinecartOnSide(Level world, BlockPos pos, float sensitivity,
       Direction side) {
     return getMinecartOnSide(world, pos, sensitivity, side) != null;
   }
 
-  public static boolean isMinecartOnSide(World world, BlockPos pos, float sensitivity,
-      Direction side, Class<? extends AbstractMinecartEntity> type) {
+  public static boolean isMinecartOnSide(Level world, BlockPos pos, float sensitivity,
+      Direction side, Class<? extends AbstractMinecart> type) {
     return getMinecartOnSide(world, pos, sensitivity, side, type) != null;
   }
 
-  public static List<AbstractMinecartEntity> getMinecartsOnSide(World world, BlockPos pos,
+  public static List<AbstractMinecart> getMinecartsOnSide(Level world, BlockPos pos,
       float sensitivity, Direction side) {
-    return getMinecartsOnSide(world, pos, sensitivity, side, AbstractMinecartEntity.class);
+    return getMinecartsOnSide(world, pos, sensitivity, side, AbstractMinecart.class);
   }
 
-  public static <T extends AbstractMinecartEntity> List<T> getMinecartsOnSide(World world,
+  public static <T extends AbstractMinecart> List<T> getMinecartsOnSide(Level world,
       BlockPos pos, float sensitivity, Direction side, Class<T> type) {
     return getMinecartsAt(world, pos.relative(side), sensitivity, type);
   }
 
-  public static @Nullable AbstractMinecartEntity getMinecartOnSide(World world, BlockPos pos,
+  public static @Nullable AbstractMinecart getMinecartOnSide(Level world, BlockPos pos,
       float sensitivity, Direction side) {
-    return getMinecartOnSide(world, pos, sensitivity, side, AbstractMinecartEntity.class);
+    return getMinecartOnSide(world, pos, sensitivity, side, AbstractMinecart.class);
   }
 
-  public static @Nullable <T extends AbstractMinecartEntity> T getMinecartOnSide(World world,
+  public static @Nullable <T extends AbstractMinecart> T getMinecartOnSide(Level world,
       BlockPos pos, float sensitivity, Direction side, Class<T> type) {
     return getMinecartsOnSide(world, pos, sensitivity, side, type).stream().findAny().orElse(null);
   }
@@ -116,30 +116,30 @@ public final class CartUtil {
   /**
    * @param sensitivity Controls the size of the search box, ranges from (-inf, 0.49].
    */
-  public static List<AbstractMinecartEntity> getMinecartsAt(World world, BlockPos pos,
+  public static List<AbstractMinecart> getMinecartsAt(Level world, BlockPos pos,
       float sensitivity) {
-    return getMinecartsAt(world, pos, sensitivity, AbstractMinecartEntity.class);
+    return getMinecartsAt(world, pos, sensitivity, AbstractMinecart.class);
   }
 
-  public static <T extends AbstractMinecartEntity> List<T> getMinecartsAt(World world, BlockPos pos,
+  public static <T extends AbstractMinecart> List<T> getMinecartsAt(Level world, BlockPos pos,
       float sensitivity, Class<T> type) {
     sensitivity = Math.min(sensitivity, 0.49f);
     return world.getEntitiesOfClass(type,
-        new AxisAlignedBB(pos.getX() + sensitivity, pos.getY(), pos.getZ() + sensitivity,
+        new AABB(pos.getX() + sensitivity, pos.getY(), pos.getZ() + sensitivity,
             pos.getX() + 1 - sensitivity, pos.getY() + 1 - sensitivity,
             pos.getZ() + 1 - sensitivity),
-        EntityPredicates.ENTITY_STILL_ALIVE);
+        EntitySelector.ENTITY_STILL_ALIVE);
   }
 
-  public static List<AbstractMinecartEntity> getMinecartsIn(World world, BlockPos p1, BlockPos p2) {
-    return getMinecartsIn(world, p1, p2, AbstractMinecartEntity.class);
+  public static List<AbstractMinecart> getMinecartsIn(Level world, BlockPos p1, BlockPos p2) {
+    return getMinecartsIn(world, p1, p2, AbstractMinecart.class);
   }
 
-  public static <T extends AbstractMinecartEntity> List<T> getMinecartsIn(World world, BlockPos p1,
+  public static <T extends AbstractMinecart> List<T> getMinecartsIn(Level world, BlockPos p1,
       BlockPos p2, Class<T> type) {
     return world.getEntitiesOfClass(type,
-        new AxisAlignedBB(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ()),
-        EntityPredicates.ENTITY_STILL_ALIVE);
+        new AABB(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ()),
+        EntitySelector.ENTITY_STILL_ALIVE);
   }
 
   /**
@@ -149,15 +149,15 @@ public final class CartUtil {
    *
    * @return speed
    */
-  public static double getCartSpeedUncapped(Vector3d deltaMovement) {
+  public static double getCartSpeedUncapped(Vec3 deltaMovement) {
     return Math.sqrt(getCartSpeedUncappedSquared(deltaMovement));
   }
 
-  public static double getCartSpeedUncappedSquared(Vector3d deltaMovement) {
+  public static double getCartSpeedUncappedSquared(Vec3 deltaMovement) {
     return deltaMovement.x() * deltaMovement.x() + deltaMovement.z() * deltaMovement.z();
   }
 
-  public static boolean cartVelocityIsLessThan(Vector3d deltaMovement, float velocity) {
+  public static boolean cartVelocityIsLessThan(Vec3 deltaMovement, float velocity) {
     return Math.abs(deltaMovement.x()) < velocity
         && Math.abs(deltaMovement.z()) < velocity;
   }

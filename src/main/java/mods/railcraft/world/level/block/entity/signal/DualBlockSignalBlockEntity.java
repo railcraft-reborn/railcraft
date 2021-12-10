@@ -4,9 +4,10 @@ import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiverProvider;
 import mods.railcraft.api.signal.SingleSignalReceiver;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class DualBlockSignalBlockEntity extends BlockSignalBlockEntity
     implements SignalReceiverProvider, DualSignalBlockEntity {
@@ -14,13 +15,13 @@ public class DualBlockSignalBlockEntity extends BlockSignalBlockEntity
   private final SingleSignalReceiver signalReceiver = new SingleSignalReceiver(this,
       this::syncToClient, __ -> this.level.getLightEngine().checkBlock(this.getBlockPos()));
 
-  public DualBlockSignalBlockEntity() {
-    super(RailcraftBlockEntityTypes.DUAL_SIGNAL.get());
+  public DualBlockSignalBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.DUAL_BLOCK_SIGNAL.get(), blockPos, blockState);
   }
 
   @Override
-  public void load() {
-    super.load();
+  public void onLoad() {
+    super.onLoad();
     if (!this.level.isClientSide()) {
       this.signalReceiver.refresh();
     }
@@ -49,26 +50,25 @@ public class DualBlockSignalBlockEntity extends BlockSignalBlockEntity
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.put("signalReceiver", this.signalReceiver.serializeNBT());
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.put("signalReceiver", this.signalReceiver.serializeNBT());
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.signalReceiver.deserializeNBT(data.getCompound("signalReceiver"));
+  public void load( CompoundTag tag) {
+    super.load( tag);
+    this.signalReceiver.deserializeNBT(tag.getCompound("signalReceiver"));
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     this.signalReceiver.writeSyncData(data);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.signalReceiver.readSyncData(data);
   }

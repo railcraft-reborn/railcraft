@@ -7,17 +7,17 @@ import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CokeOvenRecipeBuilder;
 import mods.railcraft.world.item.crafting.RollingRecipeBuilder;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.data.ShapelessRecipeBuilder;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.tags.ITag;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -28,7 +28,7 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
   }
 
   @Override
-  protected void buildShapelessRecipes(Consumer<IFinishedRecipe> finishedRecipie) {
+  protected void buildCraftingRecipes(Consumer<FinishedRecipe> finishedRecipie) {
     /*
      * =====================================
      *        RAILCRAFT TOOLS
@@ -275,8 +275,8 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
         .save(finishedRecipie);
   }
 
-  private final void crowbarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie,
-      Item itemOut, ITag<Item> materialTag) {
+  private final void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
+      Item itemOut, Tag<Item> materialTag) {
     ShapedRecipeBuilder.shaped(itemOut)
       .define('I', materialTag)
       .define('D', Tags.Items.DYES_RED)
@@ -287,7 +287,7 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie);
   }
 
-  private final void circuitFromMaterial(Consumer<IFinishedRecipe> finishedRecipie,
+  private final void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
       Item itemOut, Item woolItem) {
     ShapedRecipeBuilder.shaped(itemOut)
       .define('W', woolItem)
@@ -303,8 +303,8 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie);
   }
 
-  private final void rebarFromMaterial(Consumer<IFinishedRecipe> finishedRecipie,
-      ITag<Item> materialTag, int count, String fancyname) {
+  private final void rebarFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
+      Tag<Item> materialTag, int count, String fancyname) {
     RollingRecipeBuilder.rolled(RailcraftItems.REBAR.get(), count)
       .define('I', materialTag)
       .pattern("  I")
@@ -313,7 +313,7 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie, fancyname);
   }
 
-  private final void railsFromMaterials(Consumer<IFinishedRecipe> finishedRecipie,
+  private final void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipie,
       Item itemOut, Item railType, Item railBedType) {
     ShapedRecipeBuilder.shaped(itemOut, 32)
         .define('I', railType)
@@ -329,8 +329,8 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
                 + ForgeRegistries.ITEMS.getKey(itemOut).getPath()));
   }
 
-  private final void compress(Consumer<IFinishedRecipe> finishedRecipie,
-      Item itemOut, ITag<Item> materialTag) {
+  private final void compress(Consumer<FinishedRecipe> finishedRecipie,
+      Item itemOut, Tag<Item> materialTag) {
     ShapedRecipeBuilder.shaped(itemOut)
       .define('#', materialTag)
       .pattern("###")
@@ -340,8 +340,8 @@ public class RailcraftRecipiesProvider extends RecipeProvider {
       .save(finishedRecipie);
   }
 
-  private final void decompress(Consumer<IFinishedRecipe> finishedRecipie,
-      Item itemOut, ITag<Item> materialTag) {
+  private final void decompress(Consumer<FinishedRecipe> finishedRecipie,
+      Item itemOut, Tag<Item> materialTag) {
     ShapelessRecipeBuilder.shapeless(itemOut, 9)
       .requires(materialTag)
       .unlockedBy("has_required_decompression_material", has(materialTag))

@@ -1,8 +1,8 @@
 package mods.railcraft.gui.widget;
 
 import mods.railcraft.world.inventory.RailcraftMenu;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info/)
@@ -37,11 +37,11 @@ public class Widget {
     return widgetId;
   }
 
-  public boolean hasServerSyncData(ServerPlayerEntity listener) {
+  public boolean hasServerSyncData(ServerPlayer listener) {
     return false;
   }
 
-  public void writeServerSyncData(ServerPlayerEntity listener, PacketBuffer data) {}
+  public void writeServerSyncData(ServerPlayer listener, FriendlyByteBuf data) {}
 
-  public void readServerSyncData(PacketBuffer data) {}
+  public void readServerSyncData(FriendlyByteBuf data) {}
 }

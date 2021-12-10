@@ -1,34 +1,34 @@
 package mods.railcraft.world.item.crafting;
 
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.FurnaceResultSlot;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.FurnaceResultSlot;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.level.Level;
 
-public class CokeOvenMenu extends Container {
+public class CokeOvenMenu extends AbstractContainerMenu {
 
-  private final World level;
-  private final IIntArray data;
-  private final IInventory cokeOvenInventory;
+  private final Level level;
+  private final ContainerData data;
+  private final Container cokeOvenInventory;
   private static final int INTERNAL_CONTAINER_SLOTS = 2;
 
-  public CokeOvenMenu(int id, PlayerInventory inventory) {
-    this(id, inventory, new Inventory(INTERNAL_CONTAINER_SLOTS), new IntArray(3));
+  public CokeOvenMenu(int id, Inventory inventory) {
+    this(id, inventory, new SimpleContainer(INTERNAL_CONTAINER_SLOTS), new SimpleContainerData(3));
   }
 
   /**
    * The Menu for the Coke Oven.
    */
-  public CokeOvenMenu(int containerID, PlayerInventory playerInventory,
-      IInventory cokeOvenStorageEntity, IIntArray dataAccess) {
+  public CokeOvenMenu(int containerID, Inventory playerInventory,
+      Container cokeOvenStorageEntity, ContainerData dataAccess) {
     super(RailcraftMenuTypes.COKE_OVEN.get(), containerID);
     checkContainerSize(cokeOvenStorageEntity, INTERNAL_CONTAINER_SLOTS);
     checkContainerDataCount(dataAccess, 3);
@@ -57,12 +57,12 @@ public class CokeOvenMenu extends Container {
 
 
   @Override
-  public boolean stillValid(PlayerEntity player) {
+  public boolean stillValid(Player player) {
     return this.cokeOvenInventory.stillValid(player);
   }
 
   @Override
-  public ItemStack quickMoveStack(PlayerEntity playerEntity, int slotID) {
+  public ItemStack quickMoveStack(Player playerEntity, int slotID) {
     Slot slot = this.slots.get(slotID);
     if (slot == null || !slot.hasItem()) {
       return ItemStack.EMPTY;
@@ -116,7 +116,7 @@ public class CokeOvenMenu extends Container {
   protected boolean canSmelt(ItemStack itemStack) {
     return this.level.getRecipeManager()
       .getRecipeFor(RailcraftRecipeTypes.COKE_OVEN_COOKING,
-          new Inventory(itemStack), this.level).isPresent();
+          new SimpleContainer(itemStack), this.level).isPresent();
   }
 
   /**

@@ -13,16 +13,16 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * Represents a Signal state.
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public enum SignalAspect implements IStringSerializable {
+public enum SignalAspect implements StringRepresentable {
 
   /**
    * The All Clear.
@@ -57,7 +57,7 @@ public enum SignalAspect implements IStringSerializable {
 
   private final String name;
   private final int blockLight;
-  private final ITextComponent displayName;
+  private final Component displayName;
 
   private static final int LAMP_LIGHT = 12;
   private static final int BLINK_DELAY_TICKS = 16;
@@ -68,7 +68,7 @@ public enum SignalAspect implements IStringSerializable {
   private SignalAspect(String name, int blockLight) {
     this.name = name;
     this.blockLight = blockLight;
-    this.displayName = new TranslationTextComponent("signal_aspect." + name);
+    this.displayName = new TranslatableComponent("signal_aspect." + name);
   }
 
   /**
@@ -78,7 +78,7 @@ public enum SignalAspect implements IStringSerializable {
     return this.blockLight;
   }
 
-  public ITextComponent getDisplayName() {
+  public Component getDisplayName() {
     return this.displayName;
   }
 

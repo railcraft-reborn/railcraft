@@ -1,15 +1,15 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
-import mods.railcraft.util.inventory.filters.StackFilters;
+import mods.railcraft.util.container.filters.StackFilters;
 import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.world.entity.player.Inventory;
 
 public class FluidManipulatorMenu extends ManipulatorMenu<FluidManipulatorBlockEntity> {
 
   private final FluidGaugeWidget fluidGauge;
 
-  public FluidManipulatorMenu(int id, PlayerInventory inventory,
+  public FluidManipulatorMenu(int id, Inventory inventory,
       FluidManipulatorBlockEntity manipulator) {
     super(RailcraftMenuTypes.FLUID_MANIPULATOR.get(), id, inventory, manipulator);
     this.addWidget(this.fluidGauge =

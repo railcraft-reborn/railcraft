@@ -4,22 +4,22 @@ import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.util.LevelUtil;
-import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.LocationPredicate;
-import net.minecraft.advancements.criterion.NBTPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.loot.ConditionArraySerializer;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.LocationPredicate;
+import net.minecraft.advancements.critereon.NbtPredicate;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 
-public class UseTrackKitTrigger extends AbstractCriterionTrigger<UseTrackKitTrigger.Instance> {
+public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.Instance> {
 
   private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "use_track_kit");
 
@@ -30,9 +30,9 @@ public class UseTrackKitTrigger extends AbstractCriterionTrigger<UseTrackKitTrig
 
   @Override
   public UseTrackKitTrigger.Instance createInstance(JsonObject json,
-      EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser parser) {
-    NBTPredicate nbt =
-        JsonTools.whenPresent(json, "blockEntityNbt", NBTPredicate::fromJson, NBTPredicate.ANY);
+      EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
+    NbtPredicate nbt =
+        JsonTools.whenPresent(json, "blockEntityNbt", NbtPredicate::fromJson, NbtPredicate.ANY);
     ItemPredicate used =
         JsonTools.whenPresent(json, "item", ItemPredicate::fromJson, ItemPredicate.ANY);
     LocationPredicate location = JsonTools.whenPresent(json,
@@ -43,19 +43,19 @@ public class UseTrackKitTrigger extends AbstractCriterionTrigger<UseTrackKitTrig
   /**
    * Invoked when the user explodes a cart.
    */
-  public void trigger(ServerPlayerEntity playerEntity, ServerWorld world,
+  public void trigger(ServerPlayer playerEntity, ServerLevel world,
       BlockPos blockPos, ItemStack stack) {
     this.trigger(playerEntity,
         (criterionInstance) -> criterionInstance.matches(playerEntity.getLevel(), blockPos, stack));
   }
 
-  public static class Instance extends CriterionInstance {
+  public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final NBTPredicate blockEntityNbt;
+    private final NbtPredicate blockEntityNbt;
     private final ItemPredicate item;
     private final LocationPredicate location;
 
-    private Instance(EntityPredicate.AndPredicate entityPredicate, NBTPredicate nbtPredicate,
+    private Instance(EntityPredicate.Composite entityPredicate, NbtPredicate nbtPredicate,
         ItemPredicate itemPredicate, LocationPredicate locationPredicate) {
       super(UseTrackKitTrigger.ID, entityPredicate);
       this.blockEntityNbt = nbtPredicate;
@@ -64,15 +64,15 @@ public class UseTrackKitTrigger extends AbstractCriterionTrigger<UseTrackKitTrig
     }
 
     public static UseTrackKitTrigger.Instance hasUsedTrackKit() {
-      return new UseTrackKitTrigger.Instance(EntityPredicate.AndPredicate.ANY, NBTPredicate.ANY,
+      return new UseTrackKitTrigger.Instance(EntityPredicate.Composite.ANY, NbtPredicate.ANY,
           ItemPredicate.ANY, LocationPredicate.ANY);
     }
 
-    public boolean matches(ServerWorld world, BlockPos blockPos, ItemStack stack) {
+    public boolean matches(ServerLevel world, BlockPos blockPos, ItemStack stack) {
       return item.matches(stack)
           && this.location.matches(world, blockPos.getX(), blockPos.getY(), blockPos.getZ())
           && LevelUtil.getBlockEntity(world, blockPos)
-              .map(te -> te.save(new CompoundNBT()))
+              .map(te -> te.save(new CompoundTag()))
               .map(blockEntityNbt::matches)
               .orElse(true); // some rails dont have TE
     }
@@ -83,7 +83,7 @@ public class UseTrackKitTrigger extends AbstractCriterionTrigger<UseTrackKitTrig
     }
 
     @Override
-    public JsonObject serializeToJson(ConditionArraySerializer serializer) {
+    public JsonObject serializeToJson(SerializationContext serializer) {
       JsonObject json = new JsonObject();
       json.add("blockEntityNbt", this.blockEntityNbt.serializeToJson());
       json.add("item", this.item.serializeToJson());

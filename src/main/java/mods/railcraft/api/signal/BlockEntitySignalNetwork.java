@@ -1,22 +1,46 @@
 package mods.railcraft.api.signal;
 
 import mods.railcraft.api.core.BlockEntityLike;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public abstract class BlockEntitySignalNetwork<T extends BlockEntityLike>
     extends AbstractSignalNetwork<T> {
 
-  private final TileEntity blockEntity;
+  private final BlockEntity blockEntity;
 
   public BlockEntitySignalNetwork(Class<T> peerType, int maxPeers, Runnable syncListener,
-      TileEntity blockEntity) {
+      BlockEntity blockEntity) {
     super(peerType, maxPeers, syncListener);
     this.blockEntity = blockEntity;
   }
 
-  public TileEntity getBlockEntity() {
+  @Override
+  public boolean addPeer(T peer) {
+    if (super.addPeer(peer)) {
+      this.blockEntity.setChanged();
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public boolean removePeer(BlockPos peerPos) {
+    if (this.peers.remove(peerPos)) {
+      this.blockEntity.setChanged();
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public void refresh() {
+    super.refresh();
+    this.blockEntity.setChanged();
+  }
+
+  public BlockEntity getBlockEntity() {
     return this.blockEntity;
   }
 
@@ -25,7 +49,7 @@ public abstract class BlockEntitySignalNetwork<T extends BlockEntityLike>
   }
 
   @Override
-  public World getLevel() {
+  public Level getLevel() {
     return this.blockEntity.getLevel();
   }
 }

@@ -16,10 +16,10 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 
 /**
  * This interface must be implement by any {@link net.minecraft.block.Block Block}
@@ -44,7 +44,7 @@ public interface IChargeBlock {
    *         network or an empty map. If an empty map is returned, the charge networks will ignore
    *         the block.
    */
-  default Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, IBlockReader world,
+  default Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, BlockGetter world,
       BlockPos pos) {
     return Collections.emptyMap();
   }
@@ -55,7 +55,7 @@ public interface IChargeBlock {
    * <p>Most blocks don't need to touch this, but Multi-blocks may want to redirect to the master
    * block.
    */
-  default @Nullable Charge.IAccess getMeterAccess(Charge network, BlockState state, World world,
+  default @Nullable Charge.IAccess getMeterAccess(Charge network, BlockState state, Level world,
       BlockPos pos) {
     return network.network(world).access(pos);
   }
@@ -70,7 +70,7 @@ public interface IChargeBlock {
    * <p>The block must set {@link net.minecraft.block.Block#setTickRandomly(boolean)} to true in the
    * constructor.
    */
-  default void registerNode(BlockState state, World world, BlockPos pos) {
+  default void registerNode(BlockState state, Level world, BlockPos pos) {
     EnumSet.allOf(Charge.class).forEach(n -> n.network(world).addNode(pos, state));
   }
 
@@ -80,7 +80,7 @@ public interface IChargeBlock {
    * <p>This function must be called from the following function:
    * {@link net.minecraft.block.Block#breakBlock(World, BlockPos, BlockState)}
    */
-  default void deregisterNode(World world, BlockPos pos) {
+  default void deregisterNode(Level world, BlockPos pos) {
     // FLATTENING make sure this not called during state changes
     EnumSet.allOf(Charge.class).forEach(n -> n.network(world).removeNode(pos));
   }

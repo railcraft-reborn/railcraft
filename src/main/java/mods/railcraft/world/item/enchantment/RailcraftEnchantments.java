@@ -1,11 +1,11 @@
 package mods.railcraft.world.item.enchantment;
 
 import mods.railcraft.Railcraft;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftEnchantments {
 
@@ -19,7 +19,7 @@ public class RailcraftEnchantments {
   public static final RegistryObject<Enchantment> IMPLOSION =
       ENCHANTMENTS.register("implosion",
           () -> new RailcraftDamageEnchantment(Enchantment.Rarity.RARE, 5, 8, 20,
-              CreeperEntity.class::isInstance, 2.5f));
+              Creeper.class::isInstance, 2.5f));
 
   public static final RegistryObject<DestructionEnchantment> DESTRUCTION =
       ENCHANTMENTS.register("destruction",

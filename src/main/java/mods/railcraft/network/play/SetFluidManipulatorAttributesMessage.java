@@ -4,10 +4,9 @@ import java.util.function.Supplier;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.ManipulatorBlockEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class SetFluidManipulatorAttributesMessage {
 
@@ -20,18 +19,18 @@ public class SetFluidManipulatorAttributesMessage {
     this.redstoneMode = redstoneMode;
   }
 
-  public void encode(PacketBuffer out) {
+  public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);
     out.writeEnum(this.redstoneMode);
   }
 
-  public static SetFluidManipulatorAttributesMessage decode(PacketBuffer in) {
+  public static SetFluidManipulatorAttributesMessage decode(FriendlyByteBuf in) {
     return new SetFluidManipulatorAttributesMessage(in.readBlockPos(),
         in.readEnum(ManipulatorBlockEntity.RedstoneMode.class));
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    ServerWorld level = context.get().getSender().getLevel();
+    var level = context.get().getSender().getLevel();
     LevelUtil.getBlockEntity(level, this.blockPos, FluidManipulatorBlockEntity.class)
         .ifPresent(manipulator -> manipulator.setRedstoneMode(this.redstoneMode));
     return true;

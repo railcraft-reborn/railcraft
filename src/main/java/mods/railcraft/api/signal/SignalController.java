@@ -1,6 +1,6 @@
 package mods.railcraft.api.signal;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 public interface SignalController extends SignalNetwork<SignalReceiverProvider> {
 

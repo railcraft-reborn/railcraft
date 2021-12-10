@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.material.fluid.tank;
 
 import java.util.function.Supplier;
-import net.minecraft.fluid.Fluid;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 /**

@@ -5,13 +5,13 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import org.apache.commons.lang3.ArrayUtils;
 import com.google.common.collect.ForwardingList;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * The EntitySearcher is a utility class for searching for entities in the world.
@@ -32,8 +32,8 @@ import net.minecraft.world.World;
  */
 public final class EntitySearcher {
 
-  public static SearchParameters<AbstractMinecartEntity> findMinecarts() {
-    return new SearchParameters<>(AbstractMinecartEntity.class);
+  public static SearchParameters<AbstractMinecart> findMinecarts() {
+    return new SearchParameters<>(AbstractMinecart.class);
   }
 
   public static <T extends Entity> SearchParameters<T> find(Class<T> entityClass) {
@@ -62,7 +62,7 @@ public final class EntitySearcher {
       this.entityClass = entityClass;
     }
 
-    public SearchResult<T> in(World world) {
+    public SearchResult<T> in(Level world) {
       if (box.isUndefined())
         throw new NullPointerException("Improperly defined EntitySearcher without a search box");
       return new SearchResult<>(
@@ -74,7 +74,7 @@ public final class EntitySearcher {
       return this;
     }
 
-    public SearchParameters<T> around(AxisAlignedBB area) {
+    public SearchParameters<T> around(AABB area) {
       box.fromAABB(area);
       return this;
     }

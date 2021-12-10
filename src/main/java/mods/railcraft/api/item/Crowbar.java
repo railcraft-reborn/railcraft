@@ -6,11 +6,11 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.item;
 
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -28,7 +28,7 @@ public interface Crowbar {
    * @param crowbar the crowbar
    * @param pos the block @return true if can whack a block
    */
-  boolean canWhack(PlayerEntity player, Hand hand, ItemStack crowbar, BlockPos pos);
+  boolean canWhack(Player player, InteractionHand hand, ItemStack crowbar, BlockPos pos);
 
   /**
    * Callback to do damage to the item.
@@ -37,7 +37,7 @@ public interface Crowbar {
    * @param crowbar the crowbar
    * @param pos the block
    */
-  void onWhack(PlayerEntity player, Hand hand, ItemStack crowbar, BlockPos pos);
+  void onWhack(Player player, InteractionHand hand, ItemStack crowbar, BlockPos pos);
 
   /**
    * Controls whether you can link a cart.
@@ -46,7 +46,7 @@ public interface Crowbar {
    * @param crowbar the crowbar
    * @param cart the cart @return true if can link a cart
    */
-  boolean canLink(PlayerEntity player, Hand hand, ItemStack crowbar, AbstractMinecartEntity cart);
+  boolean canLink(Player player, InteractionHand hand, ItemStack crowbar, AbstractMinecart cart);
 
   /**
    * Callback to do damage.
@@ -55,7 +55,7 @@ public interface Crowbar {
    * @param crowbar the crowbar
    * @param cart the cart
    */
-  void onLink(PlayerEntity player, Hand hand, ItemStack crowbar, AbstractMinecartEntity cart);
+  void onLink(Player player, InteractionHand hand, ItemStack crowbar, AbstractMinecart cart);
 
   /**
    * Controls whether you can boost a cart.
@@ -64,7 +64,7 @@ public interface Crowbar {
    * @param crowbar the crowbar
    * @param cart the cart @return true if can boost a cart
    */
-  boolean canBoost(PlayerEntity player, Hand hand, ItemStack crowbar, AbstractMinecartEntity cart);
+  boolean canBoost(Player player, InteractionHand hand, ItemStack crowbar, AbstractMinecart cart);
 
   /**
    * Callback to do damage, boosting a cart usually does more damage than normal usage.
@@ -73,5 +73,5 @@ public interface Crowbar {
    * @param crowbar the crowbar
    * @param cart the cart
    */
-  void onBoost(PlayerEntity player, Hand hand, ItemStack crowbar, AbstractMinecartEntity cart);
+  void onBoost(Player player, InteractionHand hand, ItemStack crowbar, AbstractMinecart cart);
 }

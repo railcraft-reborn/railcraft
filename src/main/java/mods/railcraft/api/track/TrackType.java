@@ -9,15 +9,15 @@ package mods.railcraft.api.track;
 
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
@@ -27,13 +27,13 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
  */
 public class TrackType extends ForgeRegistryEntry<TrackType> {
 
-  private final Supplier<? extends AbstractRailBlock> baseBlock;
+  private final Supplier<? extends BaseRailBlock> baseBlock;
   private final boolean highSpeed;
   private final boolean electric;
   private final int maxSupportDistance;
   private final EventHandler eventHandler;
 
-  public TrackType(Supplier<? extends AbstractRailBlock> baseBlock,
+  public TrackType(Supplier<? extends BaseRailBlock> baseBlock,
       boolean highSpeed, boolean electric, int maxSupportDistance, EventHandler eventHandler) {
     this.baseBlock = baseBlock;
     this.highSpeed = highSpeed;
@@ -42,7 +42,7 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
     this.eventHandler = eventHandler;
   }
 
-  public AbstractRailBlock getBaseBlock() {
+  public BaseRailBlock getBaseBlock() {
     return this.baseBlock.get();
   }
 
@@ -72,13 +72,13 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
 
   public static final class Builder {
 
-    private final Supplier<? extends AbstractRailBlock> baseBlock;
+    private final Supplier<? extends BaseRailBlock> baseBlock;
     private boolean highSpeed;
     private boolean electric;
     private int maxSupportDistance;
     private EventHandler eventHandler = new EventHandler() {};
 
-    public Builder(Supplier<? extends AbstractRailBlock> baseBlock) {
+    public Builder(Supplier<? extends BaseRailBlock> baseBlock) {
       this.baseBlock = baseBlock;
     }
 
@@ -120,11 +120,11 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
      * @param cart - The {@link AbstractMinecartEntity} that passed us.
      * @param pos - our position.
      */
-    default void minecartPass(World level, AbstractMinecartEntity cart, BlockPos pos) {}
+    default void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {}
 
     @Nullable
-    default RailShape getRailShapeOverride(IBlockReader level, BlockPos pos,
-        BlockState blockState, @Nullable AbstractMinecartEntity cart) {
+    default RailShape getRailShapeOverride(BlockGetter level, BlockPos pos,
+        BlockState blockState, @Nullable AbstractMinecart cart) {
       return null;
     }
 
@@ -137,7 +137,7 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
      * @param state The state of the track
      * @param entity Entity colliding with us
      */
-    default void entityInside(World level, BlockPos pos, BlockState state, Entity entity) {}
+    default void entityInside(Level level, BlockPos pos, BlockState state, Entity entity) {}
 
     /**
      * Returns the max speed of the rail at the specified position.
@@ -148,7 +148,7 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
      * @param pos Block's position in world
      * @return The max speed of the current rail.
      */
-    default double getMaxSpeed(World level, @Nullable AbstractMinecartEntity cart, BlockPos pos) {
+    default double getMaxSpeed(Level level, @Nullable AbstractMinecart cart, BlockPos pos) {
       return 0.4D;
     }
   }

@@ -17,28 +17,27 @@ import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.inventory.InventoryAdvanced;
-import mods.railcraft.util.inventory.filters.StackFilters;
+import mods.railcraft.util.container.AdvancedContainer;
+import mods.railcraft.util.container.filters.StackFilters;
 import mods.railcraft.world.level.block.ManipulatorBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
-    implements ITickableTileEntity, INamedContainerProvider {
+public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implements MenuProvider {
 
   public static final float STOP_VELOCITY = 0.02f;
   public static final int PAUSE_DELAY = 4;
@@ -46,18 +45,18 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
   private static final Set<RedstoneMode> SUPPORTED_REDSTONE_MODES =
       Collections.unmodifiableSet(EnumSet.allOf(RedstoneMode.class));
 
-  private final InventoryAdvanced cartFiltersInventory =
-      new InventoryAdvanced(2).callbackInv(this).phantom();
+  private final AdvancedContainer cartFiltersInventory =
+      new AdvancedContainer(2).callbackContainer(this).phantom();
   private RedstoneMode redstoneMode = RedstoneMode.COMPLETE;
   @Nullable
-  protected AbstractMinecartEntity currentCart;
+  protected AbstractMinecart currentCart;
   private boolean sendCartGateAction;
   private boolean processing;
   private int pause;
   protected int resetTimer;
 
-  public ManipulatorBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public ManipulatorBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
   public RedstoneMode getRedstoneMode() {
@@ -84,7 +83,7 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
   }
 
   @Nullable
-  public AbstractMinecartEntity getCart() {
+  public AbstractMinecart getCart() {
     return EntitySearcher.findMinecarts()
         .around(this.getBlockPos().relative(this.getFacing()))
         .outTo(-0.1F)
@@ -92,7 +91,7 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
         .any();
   }
 
-  public boolean canHandleCart(AbstractMinecartEntity cart) {
+  public boolean canHandleCart(AbstractMinecart cart) {
     if (this.isSendCartGateAction()) {
       return false;
     }
@@ -105,7 +104,7 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
     return true;
   }
 
-  protected void setCurrentCart(@Nullable AbstractMinecartEntity newCart) {
+  protected void setCurrentCart(@Nullable AbstractMinecart newCart) {
     if (newCart != this.currentCart) {
       this.reset();
       this.setPowered(false);
@@ -130,16 +129,16 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
     return this.redstoneMode == RedstoneMode.MANUAL;
   }
 
-  protected final void trySendCart(AbstractMinecartEntity cart) {
+  protected final void trySendCart(AbstractMinecart cart) {
     if (this.redstoneMode != RedstoneMode.MANUAL && !this.isPowered()
         && !this.hasWorkForCart(cart)) {
       sendCart(cart);
     }
   }
 
-  protected abstract boolean hasWorkForCart(AbstractMinecartEntity cart);
+  protected abstract boolean hasWorkForCart(AbstractMinecart cart);
 
-  protected void sendCart(AbstractMinecartEntity cart) {
+  protected void sendCart(AbstractMinecart cart) {
     if (this.isManualMode()) {
       return;
     }
@@ -166,7 +165,7 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
     }
   }
 
-  public final InventoryAdvanced getCartFilters() {
+  public final AdvancedContainer getCartFilters() {
     return this.cartFiltersInventory;
   }
 
@@ -186,136 +185,131 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
     this.resetTimer = ticks;
   }
 
-  protected void waitForReset(@Nullable AbstractMinecartEntity cart) {
+  protected void waitForReset(@Nullable AbstractMinecart cart) {
     this.sendCart(cart);
   }
 
   protected void onNoCart() {}
 
-  @Override
-  public final void tick() {
-    if (this.level.isClientSide()) {
-      return;
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      ManipulatorBlockEntity blockEntity) {
+    blockEntity.upkeep();
+
+    if (blockEntity.pause > 0) {
+      blockEntity.pause--;
     }
 
-    this.upkeep();
+    boolean lastProcessing = blockEntity.isProcessing();
 
-    if (this.pause > 0) {
-      this.pause--;
-    }
-
-    boolean lastProcessing = this.isProcessing();
-
-    this.setProcessing(false);
+    blockEntity.setProcessing(false);
 
     // Find cart to play with
-    AbstractMinecartEntity cart = this.getCart();
+    AbstractMinecart cart = blockEntity.getCart();
 
-    this.setCurrentCart(cart);
+    blockEntity.setCurrentCart(cart);
 
     // Wait for reset timer (used by loaders that trickle fill forever)
-    if (this.resetTimer > 0) {
-      this.resetTimer--;
+    if (blockEntity.resetTimer > 0) {
+      blockEntity.resetTimer--;
     }
 
-    if (this.resetTimer > 0) {
-      this.waitForReset(cart);
+    if (blockEntity.resetTimer > 0) {
+      blockEntity.waitForReset(cart);
       return;
     }
 
     // We are alone
     if (cart == null) {
-      this.onNoCart();
+      blockEntity.onNoCart();
       return;
     }
 
     // We only like some carts
-    if (!this.canHandleCart(cart)) {
-      this.sendCart(cart);
+    if (!blockEntity.canHandleCart(cart)) {
+      blockEntity.sendCart(cart);
       return;
     }
 
     // Time out
-    if (this.isPaused()) {
+    if (blockEntity.isPaused()) {
       return;
     }
 
     // Play time!
-    this.processCart(cart);
+    blockEntity.processCart(cart);
 
     // We did something!
-    if (this.isProcessing()) {
-      this.setPowered(false);
+    if (blockEntity.isProcessing()) {
+      blockEntity.setPowered(false);
     } else {
       // Are we done?
-      this.trySendCart(cart);
+      blockEntity.trySendCart(cart);
     }
 
     // Tell our twin
-    if (this.isProcessing() != lastProcessing) {
-      this.syncToClient();
+    if (blockEntity.isProcessing() != lastProcessing) {
+      blockEntity.syncToClient();
     }
   }
 
   protected void upkeep() {}
 
-  protected abstract void processCart(AbstractMinecartEntity cart);
+  protected abstract void processCart(AbstractMinecart cart);
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeEnum(this.redstoneMode);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.redstoneMode = data.readEnum(RedstoneMode.class);
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.putString("redstoneMode", this.redstoneMode.getSerializedName());
-    data.put("cartFilters", this.getCartFilters().serializeNBT());
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putString("redstoneMode", this.redstoneMode.getSerializedName());
+    tag.put("cartFilters", this.getCartFilters().serializeNBT());
   }
 
   @Override
-  public void load(BlockState blockState, CompoundNBT data) {
-    super.load(blockState, data);
-    this.setPowered(ManipulatorBlock.isPowered(blockState));
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.setPowered(ManipulatorBlock.isPowered(this.getBlockState()));
     this.redstoneMode =
-        RedstoneMode.getByName(data.getString("redstoneMode")).orElse(RedstoneMode.COMPLETE);
-    this.getCartFilters().deserializeNBT(data.getList("cartFilters", Constants.NBT.TAG_COMPOUND));
+        RedstoneMode.getByName(tag.getString("redstoneMode")).orElse(RedstoneMode.COMPLETE);
+    this.getCartFilters().deserializeNBT(tag.getList("cartFilters", Tag.TAG_COMPOUND));
   }
 
-  public enum TransferMode implements ButtonState<TransferMode>, IStringSerializable {
+  public enum TransferMode implements ButtonState<TransferMode>, StringRepresentable {
 
-    ALL("all", new StringTextComponent("\u27a7\u27a7\u27a7")),
-    EXCESS("excess", new StringTextComponent("#\u27a7\u27a7")),
-    STOCK("stock", new StringTextComponent("\u27a7\u27a7#")),
-    TRANSFER("transfer", new StringTextComponent("\u27a7#\u27a7"));
+    ALL("all", new TextComponent("\u27a7\u27a7\u27a7")),
+    EXCESS("excess", new TextComponent("#\u27a7\u27a7")),
+    STOCK("stock", new TextComponent("\u27a7\u27a7#")),
+    TRANSFER("transfer", new TextComponent("\u27a7#\u27a7"));
 
     private static final Map<String, TransferMode> byName = Arrays.stream(values())
         .collect(Collectors.toMap(TransferMode::getSerializedName, Function.identity()));
 
     private final String name;
-    private final ITextComponent label;
-    private final List<ITextProperties> tooltip;
+    private final Component label;
+    private final List<Component> tooltip;
 
-    private TransferMode(String name, ITextComponent label) {
+    private TransferMode(String name, Component label) {
       this.name = name;
       this.label = label;
       final String translationKey = "manipulator.transfer_mode." + name;
       this.tooltip = ImmutableList.of(
-          label.copy().withStyle(TextFormatting.WHITE),
-          new TranslationTextComponent(translationKey).withStyle(TextFormatting.DARK_GREEN),
-          new TranslationTextComponent(translationKey + ".description"));
+          label.copy().withStyle(ChatFormatting.WHITE),
+          new TranslatableComponent(translationKey).withStyle(ChatFormatting.DARK_GREEN),
+          new TranslatableComponent(translationKey + ".description"));
     }
 
     @Override
-    public ITextComponent getLabel() {
+    public Component getLabel() {
       return this.label;
     }
 
@@ -325,7 +319,7 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
     }
 
     @Override
-    public List<? extends ITextProperties> getTooltip() {
+    public List<Component> getTooltip() {
       return this.tooltip;
     }
 
@@ -344,32 +338,32 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
     }
   }
 
-  public enum RedstoneMode implements ButtonState<RedstoneMode>, IStringSerializable {
+  public enum RedstoneMode implements ButtonState<RedstoneMode>, StringRepresentable {
 
-    COMPLETE("complete", new StringTextComponent("\u2714")),
-    IMMEDIATE("immediate", new StringTextComponent("\u2762")),
-    MANUAL("manual", new StringTextComponent("\u2718")),
-    PARTIAL("partial", new StringTextComponent("\u27a7"));
+    COMPLETE("complete", new TextComponent("\u2714")),
+    IMMEDIATE("immediate", new TextComponent("\u2762")),
+    MANUAL("manual", new TextComponent("\u2718")),
+    PARTIAL("partial", new TextComponent("\u27a7"));
 
     private static final Map<String, RedstoneMode> byName = Arrays.stream(values())
         .collect(Collectors.toMap(RedstoneMode::getSerializedName, Function.identity()));
 
     private final String name;
-    private final ITextComponent label;
-    private final List<ITextProperties> tooltip;
+    private final Component label;
+    private final List<Component> tooltip;
 
-    private RedstoneMode(String name, ITextComponent label) {
+    private RedstoneMode(String name, Component label) {
       this.name = name;
       this.label = label;
       final String translationKey = "manipulator.redstone_mode." + name;
       this.tooltip = ImmutableList.of(
-          label.copy().withStyle(TextFormatting.WHITE),
-          new TranslationTextComponent(translationKey).withStyle(TextFormatting.DARK_GREEN),
-          new TranslationTextComponent(translationKey + ".description"));
+          label.copy().withStyle(ChatFormatting.WHITE),
+          new TranslatableComponent(translationKey).withStyle(ChatFormatting.DARK_GREEN),
+          new TranslatableComponent(translationKey + ".description"));
     }
 
     @Override
-    public ITextComponent getLabel() {
+    public Component getLabel() {
       return this.label;
     }
 
@@ -379,7 +373,7 @@ public abstract class ManipulatorBlockEntity extends InventoryBlockEntity
     }
 
     @Override
-    public List<? extends ITextProperties> getTooltip() {
+    public List<Component> getTooltip() {
       return this.tooltip;
     }
 

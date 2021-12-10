@@ -13,13 +13,13 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class RollingRecipeBuilder {
@@ -30,30 +30,30 @@ public class RollingRecipeBuilder {
   private final List<String> rows = Lists.newArrayList();
   private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
 
-  public RollingRecipeBuilder(IItemProvider resultItem, int resultCount, int recipieDelay) {
+  public RollingRecipeBuilder(ItemLike resultItem, int resultCount, int recipieDelay) {
     this.result = resultItem.asItem();
     this.count = resultCount;
     this.delay = recipieDelay;
   }
 
-  public static RollingRecipeBuilder rolled(IItemProvider resultItem) {
+  public static RollingRecipeBuilder rolled(ItemLike resultItem) {
     return rolled(resultItem, 1, 100);
   }
 
-  public static RollingRecipeBuilder rolled(IItemProvider resultItem, int resultCount) {
+  public static RollingRecipeBuilder rolled(ItemLike resultItem, int resultCount) {
     return rolled(resultItem, resultCount, 100);
   }
 
-  public static RollingRecipeBuilder rolled(IItemProvider resultItem,
+  public static RollingRecipeBuilder rolled(ItemLike resultItem,
       int resultCount, int recipieDelay) {
     return new RollingRecipeBuilder(resultItem, resultCount, recipieDelay);
   }
 
-  public RollingRecipeBuilder define(Character key, ITag<Item> itemTagValue) {
+  public RollingRecipeBuilder define(Character key, Tag<Item> itemTagValue) {
     return this.define(key, Ingredient.of(itemTagValue));
   }
 
-  public RollingRecipeBuilder define(Character key, IItemProvider itemValue) {
+  public RollingRecipeBuilder define(Character key, ItemLike itemValue) {
     return this.define(key, Ingredient.of(itemValue));
   }
 
@@ -89,7 +89,7 @@ public class RollingRecipeBuilder {
     }
   }
 
-  public void save(Consumer<IFinishedRecipe> finishedRecipie) {
+  public void save(Consumer<FinishedRecipe> finishedRecipie) {
     this.save(finishedRecipie, ForgeRegistries.ITEMS.getKey(this.result));
   }
 
@@ -97,7 +97,7 @@ public class RollingRecipeBuilder {
    * Saves the item for registration.
    * @param key Custom filename for multiple recipies creating a single item
    */
-  public void save(Consumer<IFinishedRecipe> finishedRecipie, String key) {
+  public void save(Consumer<FinishedRecipe> finishedRecipie, String key) {
     ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
     if ((new ResourceLocation(key)).equals(resourcelocation)) {
       throw new IllegalStateException("Shaped Recipe "
@@ -110,13 +110,13 @@ public class RollingRecipeBuilder {
   /**
    * Saves the item for registration.
    */
-  public void save(Consumer<IFinishedRecipe> finishedRecipie, ResourceLocation resourceLocation) {
+  public void save(Consumer<FinishedRecipe> finishedRecipie, ResourceLocation resourceLocation) {
     finishedRecipie.accept(
         new RollingRecipeBuilder.Result(resourceLocation, this.result, this.count,
           this.delay, this.rows, this.key));
   }
 
-  public class Result implements IFinishedRecipe {
+  public class Result implements FinishedRecipe {
 
     private final ResourceLocation id;
     private final Item resultItem;
@@ -160,7 +160,7 @@ public class RollingRecipeBuilder {
       jsonOut.add("tickCost", new JsonPrimitive(delay));
     }
 
-    public IRecipeSerializer<?> getType() {
+    public RecipeSerializer<?> getType() {
       return RailcraftRecipeSerializers.ROLLING.get();
     }
 

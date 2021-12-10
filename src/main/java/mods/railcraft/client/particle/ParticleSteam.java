@@ -2,23 +2,23 @@ package mods.railcraft.client.particle;
 
 import java.util.Random;
 
-import net.minecraft.client.particle.IAnimatedSprite;
-import net.minecraft.client.particle.IParticleFactory;
-import net.minecraft.client.particle.IParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.SpriteTexturedParticle;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particles.BasicParticleType;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.SimpleParticleType;
 
 /**
  * Steam particle
  * Does NOT use CampfireParticle as an extendor due to private constructor (which we need!)
  * @see net.minecraft.client.particle.CampfireParticle Campfire for Reference
  */
-public class ParticleSteam extends SpriteTexturedParticle {
+public class ParticleSteam extends TextureSheetParticle {
   private static final Random rand = new Random();
 
-  public ParticleSteam(ClientWorld world, double x, double y, double z, double dx, double dy,
+  public ParticleSteam(ClientLevel world, double x, double y, double z, double dx, double dy,
       double dz) {
     super(world, x, y, z, dx, dy, dz);
 
@@ -57,19 +57,19 @@ public class ParticleSteam extends SpriteTexturedParticle {
   }
 
   @Override
-  public IParticleRenderType getRenderType() {
-    return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+  public ParticleRenderType getRenderType() {
+    return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
   }
 
-  public static class SteamParticleFactory implements IParticleFactory<BasicParticleType> {
-    private final IAnimatedSprite spriteSet;
+  public static class SteamParticleFactory implements ParticleProvider<SimpleParticleType> {
+    private final SpriteSet spriteSet;
 
-    public SteamParticleFactory(IAnimatedSprite spriteSet) {
+    public SteamParticleFactory(SpriteSet spriteSet) {
       this.spriteSet = spriteSet;
     }
 
     @Override
-    public Particle createParticle(BasicParticleType typeIn, ClientWorld worldIn,
+    public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn,
         double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
       ParticleSteam steam = new ParticleSteam(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
       steam.pickSprite(this.spriteSet);

@@ -2,14 +2,14 @@ package mods.railcraft.client;
 
 import java.util.function.Supplier;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 
 class RenderLayers {
 
   static void register() {
-    RenderTypeLookup.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
+    ItemBlockRenderTypes.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
 
     cutout(RailcraftBlocks.FLUID_LOADER);
     cutout(RailcraftBlocks.FLUID_UNLOADER);
@@ -83,6 +83,6 @@ class RenderLayers {
   }
 
   private static void cutout(Block block) {
-    RenderTypeLookup.setRenderLayer(block, RenderType.cutout());
+    ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
   }
 }

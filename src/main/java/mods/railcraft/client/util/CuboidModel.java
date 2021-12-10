@@ -3,7 +3,7 @@ package mods.railcraft.client.util;
 import java.util.Arrays;
 import javax.annotation.Nullable;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 
 public class CuboidModel {
 

@@ -7,15 +7,7 @@
 
 package mods.railcraft.api.carts;
 
-import com.google.common.collect.Sets;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ToolType;
-import javax.annotation.Nullable;
-
-import java.util.Set;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * This interface it used to define an item that can be used as a bore head for the Tunnel Bore.
@@ -25,28 +17,11 @@ import java.util.Set;
 public interface TunnelBoreHead {
 
   /**
-   * Modify this set to allow bore heads to have other tool classes by default.
-   */
-  Set<ToolType> toolTypes = Sets.newHashSet(ToolType.PICKAXE, ToolType.AXE, ToolType.SHOVEL);
-
-  /**
    * Return the texture file used for this bore head.
    *
    * @return The texture file path
    */
   ResourceLocation getTextureLocation();
-
-  /**
-   * Return the harvest level of this bore head.
-   *
-   * This value is compared against the tool classes "pickaxe", "axe", and "shovel" to determine if
-   * the block is harvestable by the bore head.
-   *
-   * @return The harvest level
-   */
-  default int getHarvestLevel() {
-    return 0;
-  }
 
   /**
    * Return the dig speed modifier of this bore head.
@@ -57,23 +32,4 @@ public interface TunnelBoreHead {
    * @return The dig speed modifier
    */
   double getDigModifier();
-
-  /**
-   * Exists for ease of implementation.
-   *
-   * Call {@code IBoreHead.super.getHarvestLevel} to call this method in a subclass.
-   */
-  default int getHarvestLevel(ItemStack stack, ToolType toolType, @Nullable PlayerEntity player,
-      @Nullable BlockState blockState) {
-    return this.getToolTypes(stack).contains(toolType) ? this.getHarvestLevel() : -1;
-  }
-
-  /**
-   * Exists for ease of implementation.
-   *
-   * Call {@code IBoreHead.super.getToolClasses} to call this method in a subclass.
-   */
-  default Set<ToolType> getToolTypes(ItemStack stack) {
-    return toolTypes;
-  }
 }

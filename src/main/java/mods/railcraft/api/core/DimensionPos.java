@@ -8,14 +8,14 @@ package mods.railcraft.api.core;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTDynamicOps;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 /**
  * This immutable class represents a point in the Minecraft world, while taking into account the
@@ -30,7 +30,7 @@ public final class DimensionPos {
   /**
    * The dimension
    */
-  private final RegistryKey<World> dimension;
+  private final ResourceKey<Level> dimension;
 
   private final BlockPos blockPos;
 
@@ -42,7 +42,7 @@ public final class DimensionPos {
    * @param y World Coordinate
    * @param z World Coordinate
    */
-  public DimensionPos(RegistryKey<World> dimension, int x, int y, int z) {
+  public DimensionPos(ResourceKey<Level> dimension, int x, int y, int z) {
     this.dimension = dimension;
     this.blockPos = new BlockPos(x, y, z);
   }
@@ -53,12 +53,12 @@ public final class DimensionPos {
    * @param dimension Dimension ID
    * @param blockPos World Coordinates
    */
-  public DimensionPos(RegistryKey<World> dimension, BlockPos blockPos) {
+  public DimensionPos(ResourceKey<Level> dimension, BlockPos blockPos) {
     this.dimension = dimension;
     this.blockPos = blockPos;
   }
 
-  public static DimensionPos from(TileEntity blockEntity) {
+  public static DimensionPos from(BlockEntity blockEntity) {
     return new DimensionPos(blockEntity.getLevel().dimension(), blockEntity.getBlockPos());
   }
 
@@ -67,11 +67,11 @@ public final class DimensionPos {
         && getZ() >> 4 == otherCoord.getZ() >> 4;
   }
 
-  public boolean isEqual(RegistryKey<World> dim, int x, int y, int z) {
+  public boolean isEqual(ResourceKey<Level> dim, int x, int y, int z) {
     return getX() == x && getY() == y && getZ() == z && dimension.equals(dim);
   }
 
-  public boolean isEqual(RegistryKey<World> dim, BlockPos p) {
+  public boolean isEqual(ResourceKey<Level> dim, BlockPos p) {
     return getX() == p.getX() && getY() == p.getY() && getZ() == p.getZ() && dimension.equals(dim);
   }
 
@@ -117,7 +117,7 @@ public final class DimensionPos {
         + getY() + ", z=" + getZ() + '}';
   }
 
-  public RegistryKey<World> getDim() {
+  public ResourceKey<Level> getDim() {
     return dimension;
   }
 
@@ -137,24 +137,24 @@ public final class DimensionPos {
     return blockPos.getZ();
   }
 
-  public Vector3d getVector3d() {
-    return new Vector3d(this.getX(), this.getY(), this.getZ());
+  public Vec3 getVector3d() {
+    return new Vec3(this.getX(), this.getY(), this.getZ());
   }
 
-  public CompoundNBT writeTag() {
-    CompoundNBT tag = new CompoundNBT();
-    tag.put("blockPos", NBTUtil.writeBlockPos(this.blockPos));
-    World.RESOURCE_KEY_CODEC.encodeStart(NBTDynamicOps.INSTANCE, this.dimension)
+  public CompoundTag writeTag() {
+    CompoundTag tag = new CompoundTag();
+    tag.put("blockPos", NbtUtils.writeBlockPos(this.blockPos));
+    Level.RESOURCE_KEY_CODEC.encodeStart(NbtOps.INSTANCE, this.dimension)
         .resultOrPartial(logger::error)
         .ifPresent(dimensionTag -> tag.put("dimension", dimensionTag));
     return tag;
   }
 
-  public static DimensionPos readTag(CompoundNBT tag) {
-    RegistryKey<World> dimension = World.RESOURCE_KEY_CODEC
-        .parse(NBTDynamicOps.INSTANCE, tag.get("dimension"))
+  public static DimensionPos readTag(CompoundTag tag) {
+    ResourceKey<Level> dimension = Level.RESOURCE_KEY_CODEC
+        .parse(NbtOps.INSTANCE, tag.get("dimension"))
         .resultOrPartial(logger::error)
-        .orElse(World.OVERWORLD);
-    return new DimensionPos(dimension, NBTUtil.readBlockPos(tag.getCompound("blockPos")));
+        .orElse(Level.OVERWORLD);
+    return new DimensionPos(dimension, NbtUtils.readBlockPos(tag.getCompound("blockPos")));
   }
 }

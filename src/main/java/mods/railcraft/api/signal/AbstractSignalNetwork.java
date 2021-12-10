@@ -17,15 +17,13 @@ import java.util.Random;
 import javax.annotation.Nullable;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.Syncable;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.INBTSerializable;
 
 /**
@@ -35,7 +33,7 @@ import net.minecraftforge.common.util.INBTSerializable;
  * @param <T>
  */
 public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
-    implements SignalNetwork<T>, INBTSerializable<CompoundNBT>, Syncable {
+    implements SignalNetwork<T>, INBTSerializable<CompoundTag>, Syncable {
 
   protected static final Random random = new Random();
 
@@ -59,7 +57,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
     this.syncListener = syncListener;
   }
 
-  public abstract World getLevel();
+  public abstract Level getLevel();
 
   @Override
   public Optional<T> getPeer(BlockPos blockPos) {
@@ -70,7 +68,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
 
   @Nullable
   protected T getBlockEntity(BlockPos blockPos) {
-    TileEntity blockEntity = this.getLevel().getBlockEntity(blockPos);
+    var blockEntity = this.getLevel().getBlockEntity(blockPos);
     return this.peerType.isInstance(blockEntity) && !blockEntity.isRemoved()
         ? this.peerType.cast(blockEntity)
         : null;
@@ -86,7 +84,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
     if (this.peers.contains(peer.asBlockEntity().getBlockPos())) {
       return false;
     }
-    BlockPos peerPos = peer.asBlockEntity().getBlockPos();
+    var peerPos = peer.asBlockEntity().getBlockPos();
     this.peers.add(peerPos);
     if (this.maxPeers > -1 && this.peers.size() > this.maxPeers) {
       this.removePeer(this.peers.peek());
@@ -98,7 +96,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   @Override
   public void removed() {
     List<BlockPos> peers = new ArrayList<>(this.peers);
-    for (BlockPos peerPos : peers) {
+    for (var peerPos : peers) {
       this.removePeer(peerPos);
     }
   }
@@ -139,39 +137,39 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   }
 
   @Override
-  public CompoundNBT serializeNBT() {
-    CompoundNBT tag = new CompoundNBT();
-    ListNBT peersTag = new ListNBT();
-    for (BlockPos peer : this.peers) {
-      peersTag.add(NBTUtil.writeBlockPos(peer));
+  public CompoundTag serializeNBT() {
+    var tag = new CompoundTag();
+    var peersTag = new ListTag();
+    for (var peer : this.peers) {
+      peersTag.add(NbtUtils.writeBlockPos(peer));
     }
     tag.put("peers", peersTag);
     return tag;
   }
 
   @Override
-  public void deserializeNBT(CompoundNBT data) {
-    ListNBT peersTag = data.getList("peers", Constants.NBT.TAG_COMPOUND);
-    for (INBT peerTag : peersTag) {
-      this.peers.add(NBTUtil.readBlockPos((CompoundNBT) peerTag));
+  public void deserializeNBT(CompoundTag tag) {
+    var peersTag = tag.getList("peers", Tag.TAG_COMPOUND);
+    for (var peerTag : peersTag) {
+      this.peers.add(NbtUtils.readBlockPos((CompoundTag) peerTag));
     }
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     data.writeBoolean(this.linking);
     data.writeVarInt(this.peers.size());
-    for (BlockPos peerPos : this.peers) {
+    for (var peerPos : this.peers) {
       data.writeBlockPos(peerPos);
     }
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     this.linking = data.readBoolean();
-    int peersSize = data.readVarInt();
+    var peersSize = data.readVarInt();
     this.peers.clear();
-    for (int i = 0; i < peersSize; i++) {
+    for (var i = 0; i < peersSize; i++) {
       this.peers.add(data.readBlockPos());
     }
   }

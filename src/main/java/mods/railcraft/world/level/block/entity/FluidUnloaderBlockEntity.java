@@ -4,8 +4,10 @@ import java.util.stream.Stream;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.util.Predicates;
 import mods.railcraft.world.level.material.fluid.FluidTools;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -18,8 +20,8 @@ public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
       .filter(direction -> direction != Direction.UP)
       .toArray(Direction[]::new);
 
-  public FluidUnloaderBlockEntity() {
-    super(RailcraftBlockEntityTypes.FLUID_UNLOADER.get());
+  public FluidUnloaderBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.FLUID_UNLOADER.get(), blockPos, blockState);
   }
 
   @Override
@@ -36,7 +38,7 @@ public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
 
 
   @Override
-  protected void processCart(AbstractMinecartEntity cart) {
+  protected void processCart(AbstractMinecart cart) {
     IFluidHandler tankCart = getFluidHandler(cart, Direction.DOWN);
     if (tankCart != null) {
       FluidStack moved = FluidUtil.tryFluidTransfer(tank, tankCart,
@@ -46,7 +48,7 @@ public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
   }
 
   @Override
-  protected boolean hasWorkForCart(AbstractMinecartEntity cart) {
+  protected boolean hasWorkForCart(AbstractMinecart cart) {
     IFluidHandler cartFluidHandler = getFluidHandler(cart, Direction.DOWN);
     if (cartFluidHandler == null) {
       return false;

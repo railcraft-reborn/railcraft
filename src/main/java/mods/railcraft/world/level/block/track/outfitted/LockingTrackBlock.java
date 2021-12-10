@@ -1,27 +1,31 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.LevelUtil;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.phys.BlockHitResult;
 
-public class LockingTrackBlock extends OutfittedTrackBlock {
+public class LockingTrackBlock extends OutfittedTrackBlock implements EntityBlock {
 
   public static final EnumProperty<LockingMode> LOCKING_MODE =
       EnumProperty.create("locking_mode", LockingMode.class);
@@ -31,34 +35,35 @@ public class LockingTrackBlock extends OutfittedTrackBlock {
     super(trackType, properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
+        .setValue(WATERLOGGED, false)
         .setValue(POWERED, false)
         .setValue(LOCKING_MODE, LockingMode.LOCKDOWN));
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(POWERED, LOCKING_MODE);
   }
 
   @Override
-  public ActionResultType use(BlockState blockState, World level, BlockPos pos, PlayerEntity player,
-      Hand hand, BlockRayTraceResult rayTraceResult) {
+  public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player,
+      InteractionHand hand, BlockHitResult rayTraceResult) {
     return LevelUtil.getBlockEntity(level, pos, LockingTrackBlockEntity.class)
         .map(lockingTrack -> lockingTrack.use(player, hand))
         .orElseGet(() -> super.use(blockState, level, pos, player, hand, rayTraceResult));
   }
 
   @Override
-  public void onMinecartPass(BlockState blockState, World level, BlockPos pos,
-      AbstractMinecartEntity cart) {
+  public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
+      AbstractMinecart cart) {
     super.onMinecartPass(blockState, level, pos, cart);
     LevelUtil.getBlockEntity(level, pos, LockingTrackBlockEntity.class)
         .ifPresent(lockingTrack -> lockingTrack.minecartPassed(cart));
   }
 
   @Override
-  public void neighborChanged(BlockState blockState, World level, BlockPos pos,
+  public void neighborChanged(BlockState blockState, Level level, BlockPos pos,
       Block neighborBlock, BlockPos neighborPos, boolean moved) {
     if (!level.isClientSide()) {
       boolean powered = blockState.getValue(POWERED);
@@ -70,13 +75,25 @@ public class LockingTrackBlock extends OutfittedTrackBlock {
   }
 
   @Override
-  public boolean hasTileEntity(BlockState blockState) {
-    return true;
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new LockingTrackBlockEntity(blockPos, blockState);
   }
 
+  @Nullable
   @Override
-  public TileEntity createTileEntity(BlockState blockState, IBlockReader level) {
-    return new LockingTrackBlockEntity(getLockingMode(blockState));
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
+      BlockEntityType<T> type) {
+    return level.isClientSide() ? null
+        : createTickerHelper(type, RailcraftBlockEntityTypes.LOCKING_TRACK.get(),
+            LockingTrackBlockEntity::serverTick);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nullable
+  protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
+      BlockEntityType<A> type, BlockEntityType<E> expectedType,
+      BlockEntityTicker<? super E> ticker) {
+    return expectedType == type ? (BlockEntityTicker<A>) ticker : null;
   }
 
   public static LockingMode getLockingMode(BlockState blockState) {

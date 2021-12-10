@@ -1,11 +1,11 @@
 package mods.railcraft.client.gui.screen.inventory.widget;
 
 import java.util.List;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
 import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.gui.widget.GaugeWidget;
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.network.chat.Component;
 
 public class GaugeWidgetRenderer extends WidgetRenderer<GaugeWidget> {
 
@@ -14,7 +14,7 @@ public class GaugeWidgetRenderer extends WidgetRenderer<GaugeWidget> {
   }
 
   @Override
-  public void draw(RailcraftMenuScreen<?> gui, MatrixStack matrixStack, int guiX, int guiY,
+  public void draw(RailcraftMenuScreen<?> gui, PoseStack matrixStack, int guiX, int guiY,
       int mouseX, int mouseY) {
     int scale = Math.round((float) (this.widget.getMeasurement()
         * (double) (this.widget.isVertical() ? this.widget.h : this.widget.w)));
@@ -27,7 +27,7 @@ public class GaugeWidgetRenderer extends WidgetRenderer<GaugeWidget> {
   }
 
   @Override
-  public List<? extends ITextProperties> getTooltip() {
+  public List<Component> getTooltip() {
     return this.widget.getGauge().getTooltip();
   }
 }

@@ -13,11 +13,12 @@ import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.api.signal.SingleSignalReceiver;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
     implements SignalControllerProvider, SignalReceiverProvider {
@@ -32,18 +33,18 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
   private SignalAspect neighborSignalAspect;
 
-  public SignalInterlockBoxBlockEntity() {
-    super(RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get());
+  public SignalInterlockBoxBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get(), blockPos, blockState);
   }
 
   @Override
-  public void load() {
+  public void onLoad() {
+    super.onLoad();
     if (!this.level.isClientSide()) {
       this.findOrCreateInterlockController();
       this.signalReceiver.refresh();
       this.signalController.refresh();
     }
-    super.load();
   }
 
   @Override
@@ -57,26 +58,16 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void tick() {
-    super.tick();
-    if (this.level.isClientSide()) {
-      this.signalController.spawnTuningAuraParticles();
-      return;
-    }
-  }
-
-  @Override
   public void neighborSignalBoxChanged(AbstractSignalBoxBlockEntity neighborSignalBox,
       Direction neighborDirection, boolean removed) {
     this.findOrCreateInterlockController();
     this.neighborSignalAspect = SignalAspect.GREEN;
-    for (Direction direction : Direction.values()) {
-      TileEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
-      if (blockEntity instanceof AbstractSignalBoxBlockEntity) {
-        AbstractSignalBoxBlockEntity signalBox = (AbstractSignalBoxBlockEntity) blockEntity;
-        if (SignalBoxBlock.isAspectEmitter(signalBox.getBlockState()))
-          this.neighborSignalAspect = SignalAspect.mostRestrictive(this.neighborSignalAspect,
-              signalBox.getSignalAspect(direction.getOpposite()));
+    for (var direction : Direction.values()) {
+      var blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
+      if (blockEntity instanceof AbstractSignalBoxBlockEntity signalBox
+          && SignalBoxBlock.isAspectEmitter(signalBox.getBlockState())) {
+        this.neighborSignalAspect = SignalAspect.mostRestrictive(this.neighborSignalAspect,
+            signalBox.getSignalAspect(direction.getOpposite()));
       }
     }
   }
@@ -86,18 +77,16 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
       return;
     }
 
-    InterlockController lastInterlockController = this.interlockController;
+    var lastInterlockController = this.interlockController;
     this.interlockController = null;
 
-    for (Direction direction : Direction.values()) {
-      TileEntity blockEntity =
+    for (var direction : Direction.values()) {
+      var blockEntity =
           this.level.getBlockEntity(this.getBlockPos().relative(direction));
-      if (blockEntity instanceof SignalInterlockBoxBlockEntity) {
-        SignalInterlockBoxBlockEntity signalBox = (SignalInterlockBoxBlockEntity) blockEntity;
-        if (signalBox.interlockController != null) {
-          this.interlockController = signalBox.interlockController;
-          break;
-        }
+      if (blockEntity instanceof SignalInterlockBoxBlockEntity signalBox
+          && signalBox.interlockController != null) {
+        this.interlockController = signalBox.interlockController;
+        break;
       }
     }
 
@@ -135,29 +124,28 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.put("signalController", this.signalController.serializeNBT());
-    data.put("signalReceiver", this.signalReceiver.serializeNBT());
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.put("signalController", this.signalController.serializeNBT());
+    tag.put("signalReceiver", this.signalReceiver.serializeNBT());
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.signalController.deserializeNBT(data.getCompound("signalController"));
-    this.signalReceiver.deserializeNBT(data.getCompound("signalReceiver"));
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.signalController.deserializeNBT(tag.getCompound("signalController"));
+    this.signalReceiver.deserializeNBT(tag.getCompound("signalReceiver"));
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     this.signalController.writeSyncData(data);
     this.signalReceiver.writeSyncData(data);
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.signalController.readSyncData(data);
     this.signalReceiver.readSyncData(data);
@@ -209,7 +197,6 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
         if (this.activeSignalBox == null) {
           this.next();
         } else {
-          System.out.println("test");
           this.updateSignalAspect(signalBox);
         }
       }
@@ -225,8 +212,8 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
     private void updateSignalAspect(SignalInterlockBoxBlockEntity signalBox) {
       if (this.isActive(signalBox)) {
-        SignalAspect signalAspect = signalBox.signalReceiver.getPrimarySignalAspect();
-        for (SignalInterlockBoxBlockEntity box : this.peers) {
+        var signalAspect = signalBox.signalReceiver.getPrimarySignalAspect();
+        for (var box : this.peers) {
           signalAspect = SignalAspect.mostRestrictive(signalAspect, box.neighborSignalAspect);
         }
         signalBox.signalController.setSignalAspect(signalAspect);
@@ -238,5 +225,10 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
     private boolean isActive(SignalInterlockBoxBlockEntity signalBox) {
       return signalBox == this.activeSignalBox;
     }
+  }
+
+  public static void clientTick(Level level, BlockPos blockPos, BlockState blockState,
+      SignalInterlockBoxBlockEntity blockEntity) {
+    blockEntity.signalController.spawnTuningAuraParticles();
   }
 }

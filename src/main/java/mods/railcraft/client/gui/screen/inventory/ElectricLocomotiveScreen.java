@@ -11,17 +11,17 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
 public class ElectricLocomotiveScreen extends LocomotiveScreen<ElectricLocomotiveMenu> {
 
   private static final ResourceLocation TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/electric_locomotive.png");
 
-  public ElectricLocomotiveScreen(ElectricLocomotiveMenu menu, PlayerInventory playerInventory,
-      ITextComponent title) {
+  public ElectricLocomotiveScreen(ElectricLocomotiveMenu menu, Inventory playerInventory,
+      Component title) {
     super(menu, playerInventory, title, "electric");
   }
 

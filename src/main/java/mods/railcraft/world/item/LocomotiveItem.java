@@ -10,15 +10,15 @@ import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.client.emblem.Emblem;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.util.PlayerUtil;
-import mods.railcraft.util.inventory.InvTools;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import mods.railcraft.util.container.ContainerTools;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -45,33 +45,33 @@ public class LocomotiveItem extends CartItem implements Filter {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> info,
-      ITooltipFlag adv) {
+  public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> info,
+      TooltipFlag adv) {
     super.appendHoverText(stack, world, info, adv);
     GameProfile owner = getOwner(stack);
     if (owner.getName() != null
         && !RailcraftConstantsAPI.UNKNOWN_PLAYER.equalsIgnoreCase(owner.getName())) {
-      info.add(new TranslationTextComponent("gui.railcraft.locomotive.tips.item.owner",
+      info.add(new TranslatableComponent("gui.railcraft.locomotive.tips.item.owner",
           owner.getName()));
     }
 
     DyeColor primary = getPrimaryColor(stack);
-    info.add(new TranslationTextComponent("gui.railcraft.locomotive.tips.item.primary",
+    info.add(new TranslatableComponent("gui.railcraft.locomotive.tips.item.primary",
         primary.getName()));
 
     DyeColor secondary = getSecondaryColor(stack);
-    info.add(new TranslationTextComponent("gui.railcraft.locomotive.tips.item.secondary",
+    info.add(new TranslatableComponent("gui.railcraft.locomotive.tips.item.secondary",
         secondary.getName()));
 
     float whistle = getWhistlePitch(stack);
-    info.add(new TranslationTextComponent("gui.railcraft.locomotive.tips.item.whistle",
+    info.add(new TranslatableComponent("gui.railcraft.locomotive.tips.item.whistle",
         whistle < 0 ? "???" : String.format("%.2f", whistle)));
 
     String emblemIdent = getEmblem(stack);
     if (!Strings.isEmpty(emblemIdent) && EmblemToolsClient.packageManager != null) {
       Emblem emblem = EmblemToolsClient.packageManager.getEmblem(emblemIdent);
       if (emblem != null) {
-        info.add(new TranslationTextComponent("gui.railcraft.locomotive.tips.item.emblem",
+        info.add(new TranslatableComponent("gui.railcraft.locomotive.tips.item.emblem",
             emblem.displayName));
       }
     }
@@ -79,62 +79,62 @@ public class LocomotiveItem extends CartItem implements Filter {
 
   public static void setItemColorData(ItemStack stack, DyeColor primaryColor,
       DyeColor secondaryColor) {
-    CompoundNBT nbt = InvTools.getItemData(stack);
+    CompoundTag nbt = ContainerTools.getItemData(stack);
     nbt.putInt("primaryColor", primaryColor.getId());
     nbt.putInt("secondaryColor", secondaryColor.getId());
   }
 
   public static void setItemWhistleData(ItemStack stack, float whistlePitch) {
-    CompoundNBT nbt = InvTools.getItemData(stack);
+    CompoundTag nbt = ContainerTools.getItemData(stack);
     nbt.putFloat("whistlePitch", whistlePitch);
   }
 
   public static float getWhistlePitch(ItemStack stack) {
-    CompoundNBT nbt = stack.getTag();
-    if (nbt == null || !nbt.contains("whistlePitch", Constants.NBT.TAG_FLOAT))
+    CompoundTag nbt = stack.getTag();
+    if (nbt == null || !nbt.contains("whistlePitch", Tag.TAG_FLOAT))
       return -1;
     return nbt.getFloat("whistlePitch");
   }
 
   public static void setOwnerData(ItemStack stack, GameProfile owner) {
-    CompoundNBT nbt = InvTools.getItemData(stack);
+    CompoundTag nbt = ContainerTools.getItemData(stack);
     PlayerUtil.writeOwnerToNBT(nbt, owner);
   }
 
   public static GameProfile getOwner(ItemStack stack) {
-    CompoundNBT nbt = stack.getTag();
+    CompoundTag nbt = stack.getTag();
     if (nbt == null)
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
     return PlayerUtil.readOwnerFromNBT(nbt);
   }
 
   public static void setEmblem(ItemStack stack, String emblemIdentifier) {
-    CompoundNBT nbt = InvTools.getItemData(stack);
+    CompoundTag nbt = ContainerTools.getItemData(stack);
     nbt.putString("emblem", emblemIdentifier);
   }
 
   public static String getEmblem(ItemStack stack) {
-    CompoundNBT nbt = stack.getTag();
-    if (nbt == null || !nbt.contains("emblem", Constants.NBT.TAG_STRING))
+    CompoundTag nbt = stack.getTag();
+    if (nbt == null || !nbt.contains("emblem", Tag.TAG_STRING))
       return "";
     return nbt.getString("emblem");
   }
 
   public static void setModel(ItemStack stack, String modelTag) {
-    CompoundNBT nbt = InvTools.getItemData(stack);
+    CompoundTag nbt = ContainerTools.getItemData(stack);
     nbt.putString("model", modelTag);
   }
 
   public static String getModel(ItemStack stack) {
-    CompoundNBT nbt = stack.getTag();
-    if (nbt == null || !nbt.contains("model", Constants.NBT.TAG_STRING))
+    CompoundTag nbt = stack.getTag();
+    if (nbt == null || !nbt.contains("model", Tag.TAG_STRING))
       return "default";
     return nbt.getString("model");
   }
 
   public static DyeColor getPrimaryColor(ItemStack stack) {
-    CompoundNBT nbt = InvTools.getItemData(stack);
-    if (nbt.contains("primaryColor", Constants.NBT.TAG_INT)) {
+    CompoundTag nbt = ContainerTools.getItemData(stack);
+    if (nbt.contains("primaryColor", Tag.TAG_INT)) {
       return DyeColor.byId(nbt.getInt("primaryColor"));
     } else {
       return ((LocomotiveItem) stack.getItem()).defaultPrimary;
@@ -142,8 +142,8 @@ public class LocomotiveItem extends CartItem implements Filter {
   }
 
   public static DyeColor getSecondaryColor(ItemStack stack) {
-    CompoundNBT nbt = InvTools.getItemData(stack);
-    if (nbt.contains("secondaryColor", Constants.NBT.TAG_INT)) {
+    CompoundTag nbt = ContainerTools.getItemData(stack);
+    if (nbt.contains("secondaryColor", Tag.TAG_INT)) {
       return DyeColor.byId(nbt.getInt("secondaryColor"));
     } else {
       return ((LocomotiveItem) stack.getItem()).defaultSecondary;

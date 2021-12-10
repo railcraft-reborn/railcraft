@@ -3,10 +3,9 @@ package mods.railcraft.network.play;
 import java.util.function.Supplier;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class SetSignalCapacitorBoxAttributesMessage {
 
@@ -21,19 +20,19 @@ public class SetSignalCapacitorBoxAttributesMessage {
     this.mode = mode;
   }
 
-  public void encode(PacketBuffer out) {
+  public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);
     out.writeShort(this.ticksToPower);
     out.writeEnum(this.mode);
   }
 
-  public static SetSignalCapacitorBoxAttributesMessage decode(PacketBuffer in) {
+  public static SetSignalCapacitorBoxAttributesMessage decode(FriendlyByteBuf in) {
     return new SetSignalCapacitorBoxAttributesMessage(in.readBlockPos(), in.readShort(),
         in.readEnum(SignalCapacitorBoxBlockEntity.Mode.class));
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    ServerWorld level = context.get().getSender().getLevel();
+    var level = context.get().getSender().getLevel();
     LevelUtil.getBlockEntity(level, this.blockPos, SignalCapacitorBoxBlockEntity.class)
         .ifPresent(signalBox -> {
           signalBox.setTicksToPower(this.ticksToPower);

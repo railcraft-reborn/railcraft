@@ -7,9 +7,9 @@
 
 package mods.railcraft.api.charge;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Implemented by items like the Overalls to prevent Charge based damage.
@@ -42,7 +42,7 @@ public interface IChargeProtectionItem {
   default ZapResult zap(ItemStack stack, LivingEntity owner, float attackDamage) {
     ItemStack resultStack;
     if (owner.getRandom().nextInt(150) == 0 && stack.hurt(1, owner.getRandom(),
-          owner instanceof ServerPlayerEntity ? (ServerPlayerEntity) owner : null)) {
+          owner instanceof ServerPlayer ? (ServerPlayer) owner : null)) {
       resultStack = ItemStack.EMPTY;
     } else {
       resultStack = stack;

@@ -1,9 +1,9 @@
 package mods.railcraft.api.track;
 
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
 
-public enum ArrowDirection implements IStringSerializable {
+public enum ArrowDirection implements StringRepresentable {
 
   NORTH("north"), SOUTH("south"), EAST("east"), WEST("west"), NORTH_SOUTH("north_south"),
   EAST_WEST("east_west");

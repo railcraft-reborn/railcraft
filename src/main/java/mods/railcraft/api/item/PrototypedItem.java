@@ -1,7 +1,7 @@
 package mods.railcraft.api.item;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * This interface marks an item that can have another item "added" to its NBT. Filter Items and Tank
@@ -21,14 +21,14 @@ public interface PrototypedItem {
 
   default ItemStack setPrototype(ItemStack filter, ItemStack prototype) {
     filter = filter.copy();
-    CompoundNBT tag = new CompoundNBT();
+    CompoundTag tag = new CompoundTag();
     prototype.save(tag);
     filter.addTagElement("prototype", tag);
     return filter;
   }
 
   default ItemStack getPrototype(ItemStack stack) {
-    CompoundNBT tag = stack.getTagElement("prototype");
+    CompoundTag tag = stack.getTagElement("prototype");
     return tag == null ? ItemStack.EMPTY : ItemStack.of(tag);
   }
 }

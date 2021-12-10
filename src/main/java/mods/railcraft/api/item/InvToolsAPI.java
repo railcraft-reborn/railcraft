@@ -9,9 +9,9 @@ package mods.railcraft.api.item;
 
 import java.util.Optional;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 
 /**
  * Created by CovertJaguar on 6/7/2017 for Railcraft.
@@ -22,7 +22,7 @@ public final class InvToolsAPI {
 
   private InvToolsAPI() {}
 
-  public static Optional<CompoundNBT> getRailcraftData(ItemStack stack, boolean create) {
+  public static Optional<CompoundTag> getRailcraftData(ItemStack stack, boolean create) {
     if (stack.isEmpty())
       return Optional.empty();
     return Optional.ofNullable(create ? stack.getOrCreateTagElement(RailcraftConstantsAPI.MOD_ID)
@@ -35,7 +35,7 @@ public final class InvToolsAPI {
         .ifPresent(nbt -> nbt.remove(tag));
   }
 
-  public static void setRailcraftDataSubtag(ItemStack stack, String tag, INBT data) {
+  public static void setRailcraftDataSubtag(ItemStack stack, String tag, Tag data) {
     if (stack.isEmpty()) {
       return;
     }
@@ -43,16 +43,16 @@ public final class InvToolsAPI {
 
   }
 
-  public static Optional<CompoundNBT> getRailcraftDataSubtag(ItemStack stack, String tag) {
+  public static Optional<CompoundTag> getRailcraftDataSubtag(ItemStack stack, String tag) {
     return getRailcraftDataSubtag(stack, tag, false);
   }
 
-  public static Optional<CompoundNBT> getRailcraftDataSubtag(ItemStack stack, String tag,
+  public static Optional<CompoundTag> getRailcraftDataSubtag(ItemStack stack, String tag,
       boolean create) {
     return getRailcraftData(stack, create)
         .filter(nbt -> create || nbt.contains(tag))
         .map(nbt -> {
-          CompoundNBT subNBT = nbt.getCompound(tag);
+          CompoundTag subNBT = nbt.getCompound(tag);
           nbt.put(tag, subNBT);
           return subNBT;
         });

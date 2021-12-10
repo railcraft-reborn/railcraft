@@ -1,8 +1,8 @@
 package mods.railcraft.api.signal;
 
-import net.minecraft.util.INameable;
+import net.minecraft.world.Nameable;
 
-public interface Signal<T> extends INameable {
+public interface Signal<T> extends Nameable {
 
   TrackLocator getTrackLocator();
 

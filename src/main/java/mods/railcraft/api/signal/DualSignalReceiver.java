@@ -3,9 +3,9 @@ package mods.railcraft.api.signal;
 import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class DualSignalReceiver extends SingleSignalReceiver {
 
@@ -13,7 +13,7 @@ public class DualSignalReceiver extends SingleSignalReceiver {
 
   private final SignalClient secondarySignalClient;
 
-  public DualSignalReceiver(TileEntity blockEntity,
+  public DualSignalReceiver(BlockEntity blockEntity,
       Runnable syncListener, Consumer<SignalAspect> primarySignalAspectListener,
       Consumer<SignalAspect> secondarySignalAspectListener) {
     super(blockEntity, syncListener, primarySignalAspectListener);
@@ -66,26 +66,26 @@ public class DualSignalReceiver extends SingleSignalReceiver {
   }
 
   @Override
-  public CompoundNBT serializeNBT() {
-    CompoundNBT tag = super.serializeNBT();
+  public CompoundTag serializeNBT() {
+    CompoundTag tag = super.serializeNBT();
     tag.put("secondarySignalClient", this.secondarySignalClient.serializeNBT());
     return tag;
   }
 
   @Override
-  public void deserializeNBT(CompoundNBT tag) {
+  public void deserializeNBT(CompoundTag tag) {
     super.deserializeNBT(tag);
     this.secondarySignalClient.deserializeNBT(tag.getCompound("secondarySignalClient"));
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeEnum(this.secondarySignalClient.getSignalAspect());
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.secondarySignalClient.setSignalAspect(data.readEnum(SignalAspect.class));
   }

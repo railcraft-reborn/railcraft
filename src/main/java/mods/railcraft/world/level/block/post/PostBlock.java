@@ -3,45 +3,44 @@ package mods.railcraft.world.level.block.post;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.ToIntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VoxelShapeUtil;
-import mods.railcraft.world.level.block.signal.AbstractSignalBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.LeadItem;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
+import mods.railcraft.world.level.block.signal.SignalBlock;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.LeadItem;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class PostBlock extends Block implements IWaterLoggable {
+public class PostBlock extends Block implements SimpleWaterloggedBlock {
 
   public static final VoxelShape TOP_COLUMN_SHAPE =
       box(6.0D, 6.0D, 6.0D, 10.0D, 16.0D, 10.0D);
@@ -50,7 +49,7 @@ public class PostBlock extends Block implements IWaterLoggable {
   public static final VoxelShape FULL_COLUMN_SHAPE =
       box(6.0D, 0.0D, 6.0D, 10.0D, 16.0D, 10.0D);
   public static final VoxelShape PLATFORM_SHAPE =
-      VoxelShapes.or(
+      Shapes.or(
           box(6.0D, 0.0D, 6.0D, 10.0D, 16.0D, 10.0D),
           box(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D));
 
@@ -111,25 +110,26 @@ public class PostBlock extends Block implements IWaterLoggable {
   }
 
   @Override
-  protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(COLUMN, NORTH, SOUTH, EAST, WEST, WATERLOGGED);
   }
 
   @Override
-  public VoxelShape getShape(BlockState blockState, IBlockReader level, BlockPos blockPos,
-      ISelectionContext context) {
+  public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos blockPos,
+      CollisionContext context) {
     return this.shapes.get(blockState.getValue(COLUMN))[this.getShapeIndex(blockState)];
   }
 
   @Override
-  public VoxelShape getBlockSupportShape(BlockState blockState, IBlockReader level,
+  public VoxelShape getBlockSupportShape(BlockState blockState, BlockGetter level,
       BlockPos blockPos) {
     // Allow anything to be placed on us.
-    return VoxelShapes.block();
+    return Shapes.block();
   }
 
   public final int getShapeIndex(BlockState blockState) {
-    return this.stateToIndex.computeIntIfAbsent(blockState, this::computeShapeIndex);
+    return this.stateToIndex.computeIfAbsent(blockState,
+        (ToIntFunction<BlockState>) this::computeShapeIndex);
   }
 
   protected int computeShapeIndex(BlockState blockState) {
@@ -154,19 +154,19 @@ public class PostBlock extends Block implements IWaterLoggable {
   }
 
   @Override
-  public ActionResultType use(BlockState blockState, World level, BlockPos pos,
-      PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+  public InteractionResult use(BlockState blockState, Level level, BlockPos pos,
+      Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
       ItemStack itemStack = player.getItemInHand(hand);
-      return itemStack.getItem() == Items.LEAD ? ActionResultType.SUCCESS : ActionResultType.PASS;
+      return itemStack.getItem() == Items.LEAD ? InteractionResult.SUCCESS : InteractionResult.PASS;
     } else {
       return LeadItem.bindPlayerMobs(player, level, pos);
     }
   }
 
   @Override
-  public BlockState getStateForPlacement(BlockItemUseContext context) {
-    IBlockReader level = context.getLevel();
+  public BlockState getStateForPlacement(BlockPlaceContext context) {
+    BlockGetter level = context.getLevel();
     BlockPos blockPos = context.getClickedPos();
     FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
     BlockPos northPos = blockPos.north();
@@ -193,10 +193,9 @@ public class PostBlock extends Block implements IWaterLoggable {
 
   @Override
   public BlockState updateShape(BlockState blockState, Direction direction,
-      BlockState neighborState, IWorld level, BlockPos blockPos, BlockPos neighborPos) {
+      BlockState neighborState, LevelAccessor level, BlockPos blockPos, BlockPos neighborPos) {
     if (blockState.getValue(WATERLOGGED)) {
-      level.getLiquidTicks().scheduleTick(blockPos, Fluids.WATER,
-          Fluids.WATER.getTickDelay(level));
+      level.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
     }
 
     return direction.getAxis().getPlane() == Direction.Plane.HORIZONTAL
@@ -208,23 +207,21 @@ public class PostBlock extends Block implements IWaterLoggable {
   }
 
   public Connection getConnection(BlockState blockState, boolean sturdy, Direction direction) {
-    Block block = blockState.getBlock();
-
     if (blockState.is(RailcraftTags.Blocks.SIGNAL)) {
-      return AbstractSignalBlock.connectsToDirection(blockState, direction.getOpposite())
+      return SignalBlock.connectsToDirection(blockState, direction.getOpposite())
           ? Connection.DOUBLE
           : Connection.NONE;
     }
 
-    if (block.is(RailcraftTags.Blocks.POST) || !isExceptionForConnection(block) && sturdy) {
+    if (blockState.is(RailcraftTags.Blocks.POST)
+        || !isExceptionForConnection(blockState) && sturdy) {
       return Connection.DOUBLE;
     }
 
     return Connection.NONE;
   }
 
-  @SuppressWarnings("deprecation")
-  public Column getColumn(IBlockReader level, BlockPos blockPos) {
+  public Column getColumn(BlockGetter level, BlockPos blockPos) {
     BlockPos abovePos = blockPos.above();
     BlockState aboveState = level.getBlockState(abovePos);
     BlockPos belowPos = blockPos.below();
@@ -240,7 +237,7 @@ public class PostBlock extends Block implements IWaterLoggable {
       return Column.FULL;
     }
 
-    if (!aboveState.isAir(level, abovePos)) {
+    if (!aboveState.isAir()) {
       return Column.TOP;
     }
 
@@ -253,7 +250,7 @@ public class PostBlock extends Block implements IWaterLoggable {
 
   @Override
   public boolean propagatesSkylightDown(BlockState blockState,
-      IBlockReader level, BlockPos pos) {
+      BlockGetter level, BlockPos pos) {
     return !blockState.getValue(WATERLOGGED);
   }
 
@@ -266,8 +263,8 @@ public class PostBlock extends Block implements IWaterLoggable {
 
 
   @Override
-  public boolean isPathfindable(BlockState state, IBlockReader level, BlockPos pos,
-      PathType pathType) {
+  public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos,
+      PathComputationType pathType) {
     return false;
   }
 
@@ -304,11 +301,5 @@ public class PostBlock extends Block implements IWaterLoggable {
       default:
         return super.mirror(blockState, mirror);
     }
-  }
-
-  @Override
-  public boolean canCreatureSpawn(BlockState state, IBlockReader level, BlockPos pos,
-      EntitySpawnPlacementRegistry.PlacementType placementType, EntityType<?> entityType) {
-    return false;
   }
 }

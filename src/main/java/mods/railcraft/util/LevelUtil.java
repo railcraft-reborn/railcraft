@@ -5,19 +5,19 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -27,23 +27,23 @@ import net.minecraftforge.event.world.BlockEvent;
 public class LevelUtil {
 
   @Nullable
-  public static TileEntity getBlockEntityWeak(World level, BlockPos pos) {
+  public static BlockEntity getBlockEntityWeak(Level level, BlockPos pos) {
     return level.isLoaded(pos) ? level.getBlockEntity(pos) : null;
   }
 
-  public static Optional<TileEntity> getBlockEntity(World level, BlockPos pos) {
+  public static Optional<BlockEntity> getBlockEntity(Level level, BlockPos pos) {
     return Optional.ofNullable(level.getBlockEntity(pos));
   }
 
-  public static <T> Optional<T> getBlockEntity(IBlockReader reader, BlockPos pos,
+  public static <T> Optional<T> getBlockEntity(BlockGetter reader, BlockPos pos,
       Class<T> blockEntityType) {
     return getBlockEntity(reader, pos, blockEntityType, false);
   }
 
-  public static <T> Optional<T> getBlockEntity(IBlockReader level, BlockPos pos,
+  public static <T> Optional<T> getBlockEntity(BlockGetter level, BlockPos pos,
       Class<T> blockEntityType, boolean weak) {
-    if (!weak || !(level instanceof World) || ((World) level).isLoaded(pos)) {
-      TileEntity blockEntity = level.getBlockEntity(pos);
+    if (!weak || !(level instanceof Level) || ((Level) level).isLoaded(pos)) {
+      BlockEntity blockEntity = level.getBlockEntity(pos);
       if (blockEntityType.isInstance(blockEntity)) {
         return Optional.of(blockEntityType.cast(blockEntity));
       }
@@ -51,10 +51,10 @@ public class LevelUtil {
     return Optional.empty();
   }
 
-  public static boolean setBlockState(World world, BlockPos pos, BlockState blockState,
-      @Nullable PlayerEntity actor) {
+  public static boolean setBlockState(Level world, BlockPos pos, BlockState blockState,
+      @Nullable Player actor) {
     if (actor == null)
-      actor = RailcraftFakePlayer.get((ServerWorld) world, pos);
+      actor = RailcraftFakePlayer.get((ServerLevel) world, pos);
     BlockSnapshot snapshot = BlockSnapshot.create(world.dimension(), world, pos);
     boolean result = world.setBlockAndUpdate(pos, blockState);
     if (ForgeEventFactory.onBlockPlace(actor, snapshot, Direction.UP)) {
@@ -64,33 +64,32 @@ public class LevelUtil {
     return result;
   }
 
-  public static boolean setBlockStateWorldGen(World world, BlockPos pos, BlockState blockState) {
-    return world.setBlock(pos, blockState,
-        Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS);
+  public static boolean setBlockStateWorldGen(Level world, BlockPos pos, BlockState blockState) {
+    return world.setBlock(pos, blockState, Block.UPDATE_ALL);
   }
 
-  public static boolean setBlockState(World world, BlockPos pos, BlockState blockState,
+  public static boolean setBlockState(Level world, BlockPos pos, BlockState blockState,
       int update) {
     return world.setBlock(pos, blockState, update);
   }
 
-  public static boolean setAir(World world, BlockPos pos) {
+  public static boolean setAir(Level world, BlockPos pos) {
     return world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
   }
 
-  public static boolean destroyBlock(World world, BlockPos pos) {
+  public static boolean destroyBlock(Level world, BlockPos pos) {
     return world.destroyBlock(pos, world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
   }
 
-  public static boolean destroyBlock(World world, BlockPos pos, @Nullable PlayerEntity actor) {
+  public static boolean destroyBlock(Level world, BlockPos pos, @Nullable Player actor) {
     return destroyBlock(world, pos, actor,
         world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
   }
 
-  public static boolean destroyBlock(World world, BlockPos pos, @Nullable PlayerEntity actor,
+  public static boolean destroyBlock(Level world, BlockPos pos, @Nullable Player actor,
       boolean dropBlock) {
     if (actor == null)
-      actor = RailcraftFakePlayer.get((ServerWorld) world, pos);
+      actor = RailcraftFakePlayer.get((ServerLevel) world, pos);
 
     if (MinecraftForge.EVENT_BUS.post(
         new BlockEvent.BreakEvent(world, pos, world.getBlockState(pos), actor)))
@@ -99,52 +98,54 @@ public class LevelUtil {
     return world.destroyBlock(pos, dropBlock);
   }
 
-  public static boolean playerRemoveBlock(World world, BlockPos pos,
-      @Nullable PlayerEntity player) {
+  public static boolean playerRemoveBlock(Level world, BlockPos pos,
+      @Nullable Player player) {
     return playerRemoveBlock(world, pos, player,
         world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
   }
 
-  public static boolean playerRemoveBlock(World world, BlockPos pos, @Nullable PlayerEntity player,
+  public static boolean playerRemoveBlock(Level level, BlockPos pos, @Nullable Player player,
       boolean dropBlock) {
-    if (player == null)
-      player = RailcraftFakePlayer.get((ServerWorld) world, pos);
-    BlockState state = world.getBlockState(pos);
-    TileEntity te = world.getBlockEntity(pos);
+    if (player == null) {
+      player = RailcraftFakePlayer.get((ServerLevel) level, pos);
+    }
+    var blockState = level.getBlockState(pos);
+    var blockEntity = level.getBlockEntity(pos);
 
-    if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player)))
+    if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, blockState, player)))
       return false;
 
-    if (!state.getBlock().removedByPlayer(state, world, pos, player, dropBlock,
-        world.getFluidState(pos)))
+    if (!blockState.onDestroyedByPlayer(level, pos, player, dropBlock, level.getFluidState(pos))) {
       return false;
+    }
 
     if (dropBlock) {
-      state.getBlock().playerDestroy(world, player, pos, state, te, player.getMainHandItem());
+      blockState.getBlock().playerDestroy(level, player, pos, blockState, blockEntity,
+          player.getMainHandItem());
     }
     return true;
   }
 
   public static void neighborAction(BlockPos pos, Direction[] sides, Consumer<BlockPos> action) {
-    for (Direction side : sides) {
+    for (var side : sides) {
       action.accept(pos.relative(side));
     }
   }
 
-  public static void sendBlockUpdated(World world, BlockPos pos) {
+  public static void sendBlockUpdated(Level world, BlockPos pos) {
     sendBlockUpdated(world, pos, world.getBlockState(pos));
   }
 
-  public static void sendBlockUpdated(World world, BlockPos pos, BlockState state) {
+  public static void sendBlockUpdated(Level world, BlockPos pos, BlockState state) {
     sendBlockUpdated(world, pos, state, state);
   }
 
-  public static void sendBlockUpdated(World world, BlockPos pos, BlockState oldState,
+  public static void sendBlockUpdated(Level world, BlockPos pos, BlockState oldState,
       BlockState newState) {
-    world.sendBlockUpdated(pos, oldState, newState, Constants.BlockFlags.DEFAULT);
+    world.sendBlockUpdated(pos, oldState, newState, Block.UPDATE_LIMIT);
   }
 
-  public static @Nullable BlockPos findBlock(World world, BlockPos pos, int distance,
+  public static @Nullable BlockPos findBlock(Level world, BlockPos pos, int distance,
       Predicate<BlockState> matcher) {
     int x = pos.getX();
     int y = pos.getY();
@@ -152,7 +153,7 @@ public class LevelUtil {
     for (int yy = y - distance; yy < y + distance; yy++) {
       for (int xx = x - distance; xx < x + distance; xx++) {
         for (int zz = z - distance; zz < z + distance; zz++) {
-          BlockPos test = new BlockPos(xx, yy, zz);
+          var test = new BlockPos(xx, yy, zz);
           if (matcher.test(world.getBlockState(test)))
             return test;
         }

@@ -1,17 +1,17 @@
 package mods.railcraft.world.item;
 
 import mods.railcraft.api.item.MinecartFactory;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
 
 public class CartItem extends Item {
 
@@ -23,24 +23,24 @@ public class CartItem extends Item {
   }
 
   @Override
-  public ActionResultType useOn(ItemUseContext context) {
-    PlayerEntity player = context.getPlayer();
-    Hand hand = context.getHand();
-    World level = context.getLevel();
+  public InteractionResult useOn(UseOnContext context) {
+    Player player = context.getPlayer();
+    InteractionHand hand = context.getHand();
+    Level level = context.getLevel();
     BlockPos pos = context.getClickedPos();
     ItemStack itemStack = player.getItemInHand(hand);
-    if (!AbstractRailBlock.isRail(level, pos)) {
-      return ActionResultType.FAIL;
+    if (!BaseRailBlock.isRail(level, pos)) {
+      return InteractionResult.FAIL;
     }
     if (!level.isClientSide()) {
-      AbstractMinecartEntity minecart = this.minecartFactory.createMinecart(
-          itemStack, pos.getX(), pos.getY(), pos.getZ(), (ServerWorld) level);
+      AbstractMinecart minecart = this.minecartFactory.createMinecart(
+          itemStack, pos.getX(), pos.getY(), pos.getZ(), (ServerLevel) level);
       if (minecart != null) {
-        minecart.yRot = context.getHorizontalDirection().toYRot();
+        minecart.setYRot(context.getHorizontalDirection().toYRot());
         level.addFreshEntity(minecart);
         itemStack.shrink(1);
       }
     }
-    return ActionResultType.sidedSuccess(level.isClientSide());
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 }

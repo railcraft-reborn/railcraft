@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import mods.railcraft.api.signal.SignalAspect;
@@ -13,14 +12,13 @@ import mods.railcraft.util.collections.TimerBag;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.signal.SimpleTokenRing;
 import mods.railcraft.world.signal.TokenRingManager;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Created by CovertJaguar on 4/13/2015 for Railcraft.
@@ -28,7 +26,7 @@ import net.minecraft.world.server.ServerWorld;
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
-    implements SignalControllerProvider, TokenSignal, ITickableTileEntity {
+    implements SignalControllerProvider, TokenSignal {
 
   private final SimpleSignalController signalController =
       new SimpleSignalController(1, this::syncToClient, this, false,
@@ -40,16 +38,17 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   private final TimerBag<UUID> cartTimers = new TimerBag<>(8);
   private final TrackLocator trackLocator = new TrackLocator(this);
 
-  public TokenSignalBlockEntity() {
-    this(RailcraftBlockEntityTypes.TOKEN_SIGNAL.get());
+  public TokenSignalBlockEntity(BlockPos blockPos, BlockState blockState) {
+    this(RailcraftBlockEntityTypes.TOKEN_SIGNAL.get(), blockPos, blockState);
   }
 
-  public TokenSignalBlockEntity(TileEntityType<?> type) {
-    super(type);
+  public TokenSignalBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
+    super(type, blockPos, blockState);
   }
 
   @Override
-  public void load() {
+  public void onLoad() {
+    super.onLoad();
     if (!this.level.isClientSide()) {
       this.signalController.refresh();
     }
@@ -64,34 +63,34 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
     }
   }
 
-  @Override
-  public void tick() {
-    super.tick();
-    if (this.level.isClientSide()) {
-      this.signalController.spawnTuningAuraParticles();
-      return;
+  public static void clientTick(Level level, BlockPos blockPos, BlockState blockState,
+      TokenSignalBlockEntity blockEntity) {
+    blockEntity.signalController.spawnTuningAuraParticles();
+  }
+
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      TokenSignalBlockEntity blockEntity) {
+
+    var tokenRing = blockEntity.getSignalNetwork();
+    if (!Objects.equals(blockEntity.tokenRingCentroid, tokenRing.getCentroid())) {
+      blockEntity.tokenRingCentroid = tokenRing.getCentroid();
+      blockEntity.syncToClient();
     }
 
-    SimpleTokenRing tokenRing = this.getSignalNetwork();
-    if (!Objects.equals(this.tokenRingCentroid, tokenRing.getCentroid())) {
-      this.tokenRingCentroid = tokenRing.getCentroid();
-      this.syncToClient();
-    }
-
-    this.cartTimers.tick();
-    if (this.trackLocator.getTrackStatus() == TrackLocator.Status.VALID) {
-      BlockPos trackPos = this.trackLocator.getTrackPos();
+    blockEntity.cartTimers.tick();
+    if (blockEntity.trackLocator.getTrackStatus() == TrackLocator.Status.VALID) {
+      var trackPos = blockEntity.trackLocator.getTrackPos();
       if (trackPos != null) {
-        List<AbstractMinecartEntity> carts = EntitySearcher.findMinecarts()
+        var carts = EntitySearcher.findMinecarts()
             .around(trackPos)
-            .in(this.level);
-        carts.stream().filter(c -> !this.cartTimers.contains(c.getUUID()))
+            .in(level);
+        carts.stream().filter(c -> !blockEntity.cartTimers.contains(c.getUUID()))
             .forEach(tokenRing::markCart);
-        carts.forEach(c -> this.cartTimers.add(c.getUUID()));
+        carts.forEach(c -> blockEntity.cartTimers.add(c.getUUID()));
       }
     }
 
-    this.signalController.setSignalAspect(this.getSignalNetwork().getSignalAspect());
+    blockEntity.signalController.setSignalAspect(blockEntity.getSignalNetwork().getSignalAspect());
   }
 
   @Override
@@ -100,22 +99,22 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    data = super.save(data);
-    data.put("network", this.signalController.serializeNBT());
-    data.putUUID("tokenRingId", this.tokenRingId);
-    return data;
+  public CompoundTag save(CompoundTag tag) {
+    tag = super.save(tag);
+    tag.put("network", this.signalController.serializeNBT());
+    tag.putUUID("tokenRingId", this.tokenRingId);
+    return tag;
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.signalController.deserializeNBT(data.getCompound("network"));
-    this.tokenRingId = data.getUUID("tokenRingId");
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.signalController.deserializeNBT(tag.getCompound("network"));
+    this.tokenRingId = tag.getUUID("tokenRingId");
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     this.signalController.writeSyncData(data);
     data.writeBlockPos(this.getSignalNetwork().getCentroid());
@@ -123,7 +122,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.signalController.readSyncData(data);
     this.tokenRingCentroid = data.readBlockPos();
@@ -156,7 +155,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
     if (this.level.isClientSide()) {
       throw new IllegalStateException("Token ring is not available on the client.");
     }
-    return TokenRingManager.get((ServerWorld) this.level)
+    return TokenRingManager.get((ServerLevel) this.level)
         .getTokenRingNetwork(this.tokenRingId, this.getBlockPos());
   }
 

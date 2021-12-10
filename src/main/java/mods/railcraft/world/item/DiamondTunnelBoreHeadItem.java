@@ -1,8 +1,8 @@
 package mods.railcraft.world.item;
 
 import mods.railcraft.Railcraft;
-import net.minecraft.item.ItemTier;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Tiers;
 
 public class DiamondTunnelBoreHeadItem extends TunnelBoreHeadItem {
 
@@ -10,7 +10,7 @@ public class DiamondTunnelBoreHeadItem extends TunnelBoreHeadItem {
       "textures/entity/tunnel_bore/diamond_tunnel_bore.png");
 
   public DiamondTunnelBoreHeadItem(Properties properties) {
-    super(ItemTier.DIAMOND, properties);
+    super(Tiers.DIAMOND, properties);
   }
 
   @Override

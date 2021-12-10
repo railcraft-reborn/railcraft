@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.carts;
 
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**
  * This interface should be implemented by any minecart that wishes to change the default linkage
@@ -33,7 +33,7 @@ public interface ILinkableCart {
    * @param cart The cart that we are attempting to link with.
    * @return True if we can link with this cart.
    */
-  default boolean canLink(AbstractMinecartEntity cart) {
+  default boolean canLink(AbstractMinecart cart) {
     return isLinkable();
   }
 
@@ -58,7 +58,7 @@ public interface ILinkableCart {
    * @param cart The cart that you are attempting to link with.
    * @return The linkage distance
    */
-  default float getLinkageDistance(AbstractMinecartEntity cart) {
+  default float getLinkageDistance(AbstractMinecart cart) {
     return LinkageManager.LINKAGE_DISTANCE;
   }
 
@@ -71,7 +71,7 @@ public interface ILinkableCart {
    * @param cart The cart that you are linked with.
    * @return The optimal rest distance
    */
-  default float getOptimalDistance(AbstractMinecartEntity cart) {
+  default float getOptimalDistance(AbstractMinecart cart) {
     return LinkageManager.OPTIMAL_DISTANCE;
   }
 
@@ -82,7 +82,7 @@ public interface ILinkableCart {
    * @param cart The cart doing the adjusting.
    * @return Whether the cart can have its velocity adjusted.
    */
-  default boolean canBeAdjusted(AbstractMinecartEntity cart) {
+  default boolean canBeAdjusted(AbstractMinecart cart) {
     return isLinkable();
   }
 
@@ -91,12 +91,12 @@ public interface ILinkableCart {
    *
    * @param cart The cart we linked with.
    */
-  default void onLinkCreated(AbstractMinecartEntity cart) {}
+  default void onLinkCreated(AbstractMinecart cart) {}
 
   /**
    * Called when a link is broken (usually).
    *
    * @param cart The cart we were linked with.
    */
-  default void onLinkBroken(AbstractMinecartEntity cart) {}
+  default void onLinkBroken(AbstractMinecart cart) {}
 }

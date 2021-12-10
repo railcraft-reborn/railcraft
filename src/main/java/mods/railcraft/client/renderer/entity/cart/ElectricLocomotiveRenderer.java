@@ -9,30 +9,38 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.client.renderer.entity.cart;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.Railcraft;
+import mods.railcraft.client.model.ElectricLocomotiveLampModel;
 import mods.railcraft.client.model.ElectricLocomotiveModel;
-import mods.railcraft.client.model.SimpleModel;
+import mods.railcraft.client.model.RailcraftModelLayers;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.entity.cart.locomotive.LocomotiveEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
 public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
 
-  private static final ModelLamp LAMP = new ModelLamp();
+  private final ElectricLocomotiveLampModel lampModel;
   private final ResourceLocation lampTextureOn;
   private final ResourceLocation lampTextureOff;
 
-  public ElectricLocomotiveRenderer(EntityRendererManager dispatcher) {
-    super(dispatcher, "electric", new ElectricLocomotiveModel(),
-        new ElectricLocomotiveModel(0.125F));
+  public ElectricLocomotiveRenderer(EntityRendererProvider.Context context) {
+    super(context, "electric",
+        new ElectricLocomotiveModel(context.bakeLayer(RailcraftModelLayers.ELECTRIC_LOCOMOTIVE)),
+        new ElectricLocomotiveModel(
+            context.bakeLayer(RailcraftModelLayers.ELECTRIC_LOCOMOTIVE_SNOW)));
+
+    this.lampModel =
+        new ElectricLocomotiveLampModel(
+            context.bakeLayer(RailcraftModelLayers.ELECTRIC_LOCOMOTIVE_LAMP));
+
     this.lampTextureOn = new ResourceLocation(Railcraft.ID,
         "textures/entity/locomotive/" + modelTag + "/lamp_on.png");
     this.lampTextureOff = new ResourceLocation(Railcraft.ID,
@@ -41,34 +49,29 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
   }
 
   @Override
-  public void renderBody(LocomotiveEntity cart, float time, MatrixStack matrixStack,
-      IRenderTypeBuffer renderTypeBuffer, int packedLight, float red, float green, float blue,
+  public void renderBody(LocomotiveEntity cart, float time, PoseStack poseStack,
+      MultiBufferSource renderTypeBuffer, int packedLight, float red, float green, float blue,
       float alpha) {
-    super.renderBody(cart, time, matrixStack, renderTypeBuffer, packedLight, red, green, blue,
+    super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, red, green, blue,
         alpha);
-    matrixStack.pushPose();
+    poseStack.pushPose();
+    {
+      poseStack.scale(-1, -1, 1);
+      poseStack.translate(0.05F, 0.0F, 0.0F);
 
-    matrixStack.scale(-1, -1, 1);
-    matrixStack.translate(0.05F, 0.0F, 0.0F);
+      boolean bright = ((LocomotiveEntity) cart).getMode() == LocomotiveEntity.Mode.RUNNING;
 
-    boolean bright = ((LocomotiveEntity) cart).getMode() == LocomotiveEntity.Mode.RUNNING;
+      VertexConsumer vertexBuilder = bright
+          ? renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOn))
+          : renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOff));
 
-    IVertexBuilder vertexBuilder = bright
-        ? renderTypeBuffer.getBuffer(LAMP.renderType(lampTextureOn))
-        : renderTypeBuffer.getBuffer(LAMP.renderType(lampTextureOff));
+      this.lampModel.renderToBuffer(poseStack, vertexBuilder,
+          bright ? RenderUtil.FULL_LIGHT : packedLight, OverlayTexture.NO_OVERLAY,
+          red, green, blue, alpha);
 
-    LAMP.renderToBuffer(matrixStack, vertexBuilder, bright ? RenderUtil.FULL_LIGHT : packedLight,
-        OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
-
-    matrixStack.popPose();
-  }
-
-  private static class ModelLamp extends SimpleModel {
-
-    public ModelLamp() {
-      this.renderer.setTexSize(16, 16);
-      this.renderer.addBox("bulb", -22F, -17F, -9F, 1, 2, 2, 0.0F, 1, 1);
-      this.renderer.setPos(8F, 8F, 8F);
     }
+    poseStack.popPose();
   }
+
+
 }

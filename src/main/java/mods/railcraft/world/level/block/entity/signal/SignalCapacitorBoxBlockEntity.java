@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -14,14 +13,15 @@ import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity {
 
@@ -30,8 +30,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   private SignalAspect signalAspect = SignalAspect.OFF;
   private Mode mode = Mode.RISING_EDGE;
 
-  public SignalCapacitorBoxBlockEntity() {
-    super(RailcraftBlockEntityTypes.SIGNAL_CAPACITOR_BOX.get());
+  public SignalCapacitorBoxBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.SIGNAL_CAPACITOR_BOX.get(), blockPos, blockState);
   }
 
   public short getTicksToPower() {
@@ -40,6 +40,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
 
   public void setTicksToPower(short ticksToPower) {
     this.ticksToPower = ticksToPower;
+    this.setChanged();
   }
 
   public Mode getMode() {
@@ -48,23 +49,18 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
 
   public void setMode(Mode mode) {
     this.mode = mode;
+    this.setChanged();
   }
 
-  @Override
-  public void tick() {
-    if (this.level.isClientSide()) {
-      return;
-    }
-
-    if (this.ticksPowered-- > 0) {
-      if (this.mode == Mode.FALLING_EDGE) {
-        SignalAspect signalAspect = SignalAspect.GREEN;
-        boolean powered = PowerUtil.hasRepeaterSignal(this.level, getBlockPos());
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-          TileEntity blockEntity =
-              this.level.getBlockEntity(this.getBlockPos().relative(direction));
-          if (blockEntity instanceof AbstractSignalBoxBlockEntity) {
-            AbstractSignalBoxBlockEntity box = (AbstractSignalBoxBlockEntity) blockEntity;
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      SignalCapacitorBoxBlockEntity blockEntity) {
+    if (blockEntity.ticksPowered-- > 0) {
+      if (blockEntity.mode == Mode.FALLING_EDGE) {
+        var signalAspect = SignalAspect.GREEN;
+        var powered = PowerUtil.hasRepeaterSignal(level, blockPos);
+        for (var direction : Direction.Plane.HORIZONTAL) {
+          var neighbor = level.getBlockEntity(blockPos.relative(direction));
+          if (neighbor instanceof AbstractSignalBoxBlockEntity box) {
             if (box.getRedstoneSignal(direction.getOpposite()) > 0) {
               powered = true;
               signalAspect = SignalAspect.mostRestrictive(signalAspect,
@@ -73,18 +69,25 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
           }
         }
         if (powered) {
-          this.ticksPowered = this.ticksToPower;
-          if (this.signalAspect != signalAspect) {
-            this.signalAspect = signalAspect; // change to the most restrictive aspect found above.
-            this.updateNeighbors();
+          blockEntity.ticksPowered = blockEntity.ticksToPower;
+          if (blockEntity.signalAspect != signalAspect) {
+            // change to the most restrictive aspect found// above.
+            blockEntity.signalAspect = signalAspect;
+            blockEntity.setChanged();
           }
         }
       }
 
-      if (this.ticksPowered <= 0) {
-        this.updateNeighbors();
+      if (blockEntity.ticksPowered <= 0) {
+        blockEntity.setChanged();
       }
     }
+  }
+
+  @Override
+  public void setChanged() {
+    super.setChanged();
+    this.syncToClient();
   }
 
   @Override
@@ -92,12 +95,13 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     if (this.level.isClientSide()) {
       return;
     }
-    boolean powered = PowerUtil.hasRepeaterSignal(this.level, this.getBlockPos());
+    var powered = PowerUtil.hasRepeaterSignal(this.level, this.getBlockPos());
     if (this.ticksPowered <= 0 && powered) {
       this.ticksPowered = this.ticksToPower;
-      if (Objects.equals(this.mode, Mode.RISING_EDGE))
+      if (this.mode == Mode.RISING_EDGE) {
         this.signalAspect = SignalAspect.GREEN;
-      this.updateNeighbors();
+      }
+      this.setChanged();
     }
   }
 
@@ -109,20 +113,13 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
       if (this.mode == Mode.RISING_EDGE) {
         this.signalAspect = neighbor.getSignalAspect(direction);
       }
-      this.updateNeighbors();
+      this.setChanged();
     }
   }
 
   @Override
-  public void updateNeighbors() {
-    super.updateNeighbors();
-    this.syncToClient();
-    this.updateNeighborSignalBoxes(false);
-  }
-
-  @Override
   public int getRedstoneSignal(Direction direction) {
-    TileEntity blockEntity =
+    var blockEntity =
         this.level.getBlockEntity(this.getBlockPos().relative(direction.getOpposite()));
     return blockEntity instanceof AbstractSignalBoxBlockEntity || this.ticksPowered <= 0
         ? PowerUtil.NO_POWER
@@ -130,27 +127,26 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   }
 
   @Override
-  public CompoundNBT save(CompoundNBT data) {
-    super.save(data);
-    data.putShort("ticksPowered", this.ticksPowered);
-    data.putShort("ticksToPower", this.ticksToPower);
-    data.putString("signalAspect", this.signalAspect.getSerializedName());
-    data.putString("mode", this.mode.getSerializedName());
-    return data;
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putShort("ticksPowered", this.ticksPowered);
+    tag.putShort("ticksToPower", this.ticksToPower);
+    tag.putString("signalAspect", this.signalAspect.getSerializedName());
+    tag.putString("mode", this.mode.getSerializedName());
   }
 
   @Override
-  public void load(BlockState state, CompoundNBT data) {
-    super.load(state, data);
-    this.ticksPowered = data.getShort("ticksPowered");
-    this.ticksToPower = data.getShort("ticksToPower");
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.ticksPowered = tag.getShort("ticksPowered");
+    this.ticksToPower = tag.getShort("ticksToPower");
     this.signalAspect =
-        SignalAspect.getByName(data.getString("signalAspect")).orElse(SignalAspect.OFF);
-    this.mode = Mode.getByName(data.getString("mode")).orElse(Mode.RISING_EDGE);
+        SignalAspect.getByName(tag.getString("signalAspect")).orElse(SignalAspect.OFF);
+    this.mode = Mode.getByName(tag.getString("mode")).orElse(Mode.RISING_EDGE);
   }
 
   @Override
-  public void writeSyncData(PacketBuffer data) {
+  public void writeSyncData(FriendlyByteBuf data) {
     super.writeSyncData(data);
     data.writeBoolean(this.ticksPowered > 0);
     data.writeShort(this.ticksToPower);
@@ -159,7 +155,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   }
 
   @Override
-  public void readSyncData(PacketBuffer data) {
+  public void readSyncData(FriendlyByteBuf data) {
     super.readSyncData(data);
     this.ticksPowered = (short) (data.readBoolean() ? 1 : 0);
     this.ticksToPower = data.readShort();
@@ -172,27 +168,27 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     return this.ticksPowered > 0 ? this.signalAspect : SignalAspect.RED;
   }
 
-  public enum Mode implements ButtonState<Mode>, IStringSerializable {
+  public enum Mode implements ButtonState<Mode>, StringRepresentable {
 
     RISING_EDGE("rising_edge"),
     FALLING_EDGE("falling_edge");
 
     private final String name;
-    private final ITextComponent label;
-    private final List<? extends ITextComponent> tooltip;
+    private final Component label;
+    private final List<Component> tooltip;
 
     private static final Map<String, Mode> byName = Arrays.stream(values())
         .collect(Collectors.toMap(Mode::getSerializedName, Function.identity()));
 
     private Mode(String name) {
       this.name = name;
-      this.label = new TranslationTextComponent("signal_capacitor_box.mode." + name);
+      this.label = new TranslatableComponent("signal_capacitor_box.mode." + name);
       this.tooltip = Collections.singletonList(
-          new TranslationTextComponent("signal_capacitor_box.mode." + name + ".description"));
+          new TranslatableComponent("signal_capacitor_box.mode." + name + ".description"));
     }
 
     @Override
-    public ITextComponent getLabel() {
+    public Component getLabel() {
       return this.label;
     }
 
@@ -202,7 +198,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     }
 
     @Override
-    public List<? extends ITextComponent> getTooltip() {
+    public List<Component> getTooltip() {
       return this.tooltip;
     }
 
