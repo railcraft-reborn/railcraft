@@ -8,16 +8,21 @@ buildscript {
       name 'sponge'
       url 'https://repo.spongepowered.org/repository/maven-public'
     }
+    maven {
+      url 'https://plugins.gradle.org/m2/' // signing.
+    }
     mavenCentral()
   }
   dependencies {
     classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+    classpath 'net.covers1624:JarSignPlugin:1.1.4' // signing.
   }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'net.covers1624.signing'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
@@ -29,6 +34,19 @@ def ref = System.getenv("GITHUB_PR_NUMBER")
 
 def tag = nightly ? "NIGHTLY" : "CI"
 def suffix = "-${tag}" + (ref ? "-${ref}" : "")
+
+def signProps = [:]
+if (System.getenv("SECURE_SIGN")) {
+    println("Using Env variables for jar signing.")
+    signProps['keyStore'] = System.getenv("KEY_STORE")
+    signProps['storePass'] = System.getenv('KEY_STORE_PASS')
+    signProps['keyPass'] = System.getenv('KEY_STORE_KEY_PASS')
+} else if (project.hasProperty('keyStore')) {
+    println("Using Project properties for jar signing.")
+    signProps['keyStore'] = project.getProperty('keyStore')
+    signProps['storePass'] = project.getProperty('keyStorePass')
+    signProps['keyPass'] = project.getProperty('keyStoreKeyPass')
+}
 
 // does in fact follow the semantic versioning. (GAMEVER)-(MODMAJOR.MODMINOR.MODPATCH)-CIMETA-RUNID.RUNINT
 version = "${minecraft_version}-${mod_version}"
@@ -49,6 +67,9 @@ println('*************************************************************')
 println('Project Version: ' + version)
 if (isCI) {
   println("Running in Github Workflow ${tag}" + (ref ? " on a pull request ${ref}." : "."))
+}
+if (!signProps.isEmpty()) {
+  println("With .jar signing.")
 }
 println('Java: ' + System.getProperty('java.version'))
 println('JVM: ' + System.getProperty('java.vm.version'))
@@ -140,4 +161,19 @@ jar {
 
 mixin {
   add sourceSets.main, 'railcraft.refmap.json'
+}
+
+signing {
+  if (!signProps.isEmpty()){
+    jars {
+      sign jar
+      after 'reobfJar'
+
+      keyStore = signProps.keyStore
+      storePass = signProps.storePass
+
+      alias = "railcraft"
+      keyPass = signProps.keyPass
+    }
+  }
 }
