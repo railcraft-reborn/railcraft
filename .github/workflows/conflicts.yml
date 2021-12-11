@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - mc-1.16.5
+      - 1.18.x
 jobs:
   triage:
     runs-on: ubuntu-20.04

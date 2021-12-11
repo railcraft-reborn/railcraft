@@ -1,7 +1,7 @@
 # Railcraft - A Minecraft Mod
 
-[![Deploy Nightly](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/nightly.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/releases/tag/nightly)
-[![CI Suite](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/ci_suite.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/ci_suite.yml)
+[![Deploy Nightly](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/nightly_1-18-x.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/releases/tag/nightly)
+[![CI Suite](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/ci_suite_1-18-x.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/ci_suite_1-18-x.yml)
 
 Here you will find the source and issue tracker for the **Official Railcraft Project**.
 
@@ -45,24 +45,29 @@ Regarding new features/behavior changes, please submit a Suggestion Issue to the
 Also, as a bonus. If you submit a Pull Request that ends up being merged you are eligible to receive beta access. To redeem, contact CovertJaguar on IRC.
 
 Please adhere to the following guidlines when submitting pull requests:
+
 * Use the [Google style guide](https://github.com/google/styleguide)
 * Add `@Override` annotations where appropriate to make overrides explicitly clear
 * Rename semi-obfuscated variables (e.g. p_77624_1_) to meaningful names
 * Turn on compiler warnings; resolve all of them (raw types, resource leaks, unused imports, unused variables etc.)
 * Always use `this` keyword to make code as clear/readable as possible and to avoid ambiguous naming conflicts (which can go without notice)
-* Always use curly braces `{}` around if statements to make them clearer and easily expandable, e.g. 
+* Always use curly braces `{}` around if statements to make them clearer and easily expandable, e.g.
+
 ```java
 if(foo) {
   bar();
 }
 ```
-instead of 
+
+instead of
+
 ```java
 if(foo)
   bar();
 ```
 
 * Names of fields being used as constants should be all upper-case, with underscores separating words. The following are considered to be constants:
+
 1. All `static final` primitive types (Remember that all interface fields are inherently static final).
 2. All `static final` object reference types that are never followed by "`.`" (dot).
 3. All `static final` arrays that are never followed by "`[`" (opening square bracket).
@@ -82,7 +87,6 @@ Initial Setup from the Command Line:
 * For Eclipse, run `gradlew genEclipseRuns`
 * For IntelliJ, run `gradlew genIntellijRuns`
 * For VSCode, run `gradlew genVSCodeRuns`
-
 
 The [API](https://github.com/CovertJaguar/Railcraft-API) and [Localization](https://github.com/CovertJaguar/Railcraft-Localization) files reside in their own repositories and are pulled automatically into the main repo as git submodules. You will however need to run the following commands:
 
