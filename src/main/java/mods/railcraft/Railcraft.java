@@ -15,7 +15,7 @@ import mods.railcraft.data.RailcraftRecipiesProvider;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.network.play.LinkedCartsMessage;
-import mods.railcraft.particle.RailcraftParticles;
+import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.server.ServerDist;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
@@ -110,7 +110,7 @@ public class Railcraft {
     RailcraftMenuTypes.MENU_TYPES.register(modEventBus);
     RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);
     RailcraftEnchantments.ENCHANTMENTS.register(modEventBus);
-    RailcraftParticles.PARTICLE_TYPES.register(modEventBus);
+    RailcraftParticleTypes.PARTICLE_TYPES.register(modEventBus);
     RailcraftRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
   }
 

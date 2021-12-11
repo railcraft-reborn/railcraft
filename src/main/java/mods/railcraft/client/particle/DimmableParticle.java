@@ -5,8 +5,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 
 public abstract class DimmableParticle extends TextureSheetParticle {
 
-  protected DimmableParticle(
-      ClientLevel level, double x, double y, double z) {
+  protected DimmableParticle(ClientLevel level, double x, double y, double z) {
     super(level, x, y, z);
   }
 
@@ -16,14 +15,14 @@ public abstract class DimmableParticle extends TextureSheetParticle {
   }
 
   @Override
-  public int getLightColor(float par1) {
-    int var2 = super.getLightColor(par1);
-    float var3 = (float) this.age / (float) this.lifetime;
-    var3 *= var3;
-    var3 *= var3;
-    int var4 = var2 & 255;
-    int var5 = var2 >> 16 & 255;
-    var5 += (int) (var3 * 15.0F * 16.0F);
+  public int getLightColor(float partialTicks) {
+    int lightColor = super.getLightColor(partialTicks);
+    float progress = (float) this.age / (float) this.lifetime;
+    progress *= progress;
+    progress *= progress;
+    int var4 = lightColor & 255;
+    int var5 = lightColor >> 16 & 255;
+    var5 += (int) (progress * 15.0F * 16.0F);
 
     if (var5 > 240) {
       var5 = 240;

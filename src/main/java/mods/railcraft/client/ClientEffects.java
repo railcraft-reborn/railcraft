@@ -5,7 +5,9 @@ import java.util.Set;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.signal.SignalTools;
 import mods.railcraft.api.signal.TuningAuraHelper;
-import mods.railcraft.particle.RailcraftParticles;
+import mods.railcraft.client.renderer.blockentity.SignalAuraRenderUtil;
+import mods.railcraft.particle.RailcraftParticleTypes;
+import mods.railcraft.particle.TuningAuraParticleOptions;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.world.item.GogglesItem;
@@ -93,7 +95,8 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
 
   @Override
   public boolean isTuningAuraActive() {
-    return this.isGoggleAuraActive(GogglesItem.Aura.TUNING) || this.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING);
+    return this.isGoggleAuraActive(GogglesItem.Aura.TUNING)
+        || this.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING);
   }
 
   public boolean isGoggleAuraActive(GogglesItem.Aura aura) {
@@ -107,27 +110,27 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
 
   @Override
   public void spawnTuningAuraParticles(BlockEntity start, BlockEntity dest) {
-    // if (thinParticles(false))
-    // return;
-    // if (rand.nextInt(2) == 0) {
-    // BlockPos pos = start.getPos();
-    // double px = pos.getX() + getRandomParticleOffset();
-    // double py = pos.getY() + getRandomParticleOffset();
-    // double pz = pos.getZ() + getRandomParticleOffset();
-    //
-    // TESRSignals.ColorProfile colorProfile =
-    // TESRSignals.ColorProfile.COORD_RAINBOW;
-    // if (isGoggleAuraActive(GoggleAura.SIGNALLING))
-    // colorProfile = TESRSignals.ColorProfile.CONTROLLER_ASPECT;
-    //
-    // int color = colorProfile.getColor(start, start.getPos(), dest.getPos());
-    //
-    // Particle particle = new ParticleTuningAura(start.getWorld(), new Vector3d(px,
-    // py, pz),
-    // EffectManager.getEffectSource(start), EffectManager.getEffectSource(dest),
-    // color);
-    // spawnParticle(particle);
-    // }
+    if (this.thinParticles(false)) {
+      return;
+    }
+
+    if (this.rand.nextInt(2) == 0) {
+      var pos = start.getBlockPos();
+      var px = pos.getX() + getRandomParticleOffset();
+      var py = pos.getY() + getRandomParticleOffset();
+      var pz = pos.getZ() + getRandomParticleOffset();
+
+      var colorProfile = SignalAuraRenderUtil.ColorProfile.COORD_RAINBOW;
+      if (this.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
+        colorProfile = SignalAuraRenderUtil.ColorProfile.CONTROLLER_ASPECT;
+      }
+
+      int color = colorProfile.getColor(start, start.getBlockPos(), dest.getBlockPos());
+
+      this.minecraft.level.addParticle(
+          new TuningAuraParticleOptions(Vec3.atCenterOf(dest.getBlockPos()), color),
+          px, py, pz, 0.0D, 0.0D, 0.0D);
+    }
   }
 
   public void trailEffect(BlockPos start, BlockEntity dest, long colorSeed) {
@@ -213,12 +216,11 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   /**
-   * Creates a steam effect on the wheel-side of the trains. Yvel is between 0.02
-   * to 0.03
+   * Creates a steam effect on the wheel-side of the trains. Yvel is between 0.02 to 0.03
    *
-   * @param x  X Coordinate.
-   * @param y  Y Coordinate.
-   * @param z  Z Coordinate.
+   * @param x X Coordinate.
+   * @param y Y Coordinate.
+   * @param z Z Coordinate.
    * @param vx Velocity in the X coordinate
    * @param vy Velocity in the Y coordinate
    */
@@ -229,7 +231,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     SimpleParticleType steam = new SimpleParticleType(false) {
       @Override
       public SimpleParticleType getType() {
-        return RailcraftParticles.STEAM.get();
+        return RailcraftParticleTypes.STEAM.get();
       }
     };
     // vel Y 0.02-0.03
@@ -237,12 +239,12 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   /**
-   * Same as <code>steamEffect</code>, but moves the particle faster (as we're
-   * venting the pressure tank)
+   * Same as <code>steamEffect</code>, but moves the particle faster (as we're venting the pressure
+   * tank)
    *
-   * @param x  X Coordinate.
-   * @param y  Y Coordinate.
-   * @param z  Z Coordinate.
+   * @param x X Coordinate.
+   * @param y Y Coordinate.
+   * @param z Z Coordinate.
    * @param vx Velocity in the X coordinate
    * @param vy Velocity in the Y coordinate
    * @see mods.railcraft.client.ClientEffects#steamEffect() steamEffect
@@ -261,8 +263,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   /**
-   * Effect when the boiler is burning stuff to make steam. Spawns on the train's
-   * smokestack
+   * Effect when the boiler is burning stuff to make steam. Spawns on the train's smokestack
    *
    * @param x
    * @param y
@@ -276,7 +277,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
       SimpleParticleType spook = new SimpleParticleType(false) {
         @Override
         public SimpleParticleType getType() {
-          return RailcraftParticles.PUMPKIN.get();
+          return RailcraftParticleTypes.PUMPKIN.get();
         }
       };
       spawnParticle(spook, x, y, z, 0, 0.02, 0);
@@ -294,14 +295,16 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     SimpleParticleType spark = new SimpleParticleType(false) {
       @Override
       public SimpleParticleType getType() {
-        return RailcraftParticles.SPARK.get();
+        return RailcraftParticleTypes.SPARK.get();
       }
     };
 
-    spawnParticle(spark, source.x, source.y, source.z, rand.nextDouble() - 0.5D, rand.nextDouble() - 0.5D,
+    spawnParticle(spark, source.x, source.y, source.z, rand.nextDouble() - 0.5D,
+        rand.nextDouble() - 0.5D,
         rand.nextDouble() - 0.5D);
 
-    world.playLocalSound(source.x, source.y, source.z, RailcraftSoundEvents.ZAP.get(), SoundSource.BLOCKS, 0.2F,
+    world.playLocalSound(source.x, source.y, source.z, RailcraftSoundEvents.ZAP.get(),
+        SoundSource.BLOCKS, 0.2F,
         0.75F, false);
   }
 
@@ -314,18 +317,20 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
       return;
     }
 
-    world.playLocalSound(source.x, source.y, source.z, RailcraftSoundEvents.ZAP.get(), SoundSource.BLOCKS, 3F, 0.75F,
+    world.playLocalSound(source.x, source.y, source.z, RailcraftSoundEvents.ZAP.get(),
+        SoundSource.BLOCKS, 3F, 0.75F,
         false);
 
     SimpleParticleType spark = new SimpleParticleType(false) {
       @Override
       public SimpleParticleType getType() {
-        return RailcraftParticles.SPARK.get();
+        return RailcraftParticleTypes.SPARK.get();
       }
     };
 
     for (int i = 0; i < 20; i++) {
-      spawnParticle(spark, source.x, source.y, source.z, rand.nextDouble() - 0.5D, rand.nextDouble() - 0.5D,
+      spawnParticle(spark, source.x, source.y, source.z, rand.nextDouble() - 0.5D,
+          rand.nextDouble() - 0.5D,
           rand.nextDouble() - 0.5D);
     }
   }
@@ -341,13 +346,14 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
       return;
     }
 
-    worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), RailcraftSoundEvents.ZAP.get(), SoundSource.BLOCKS,
+    worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), RailcraftSoundEvents.ZAP.get(),
+        SoundSource.BLOCKS,
         0.1F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 
     SimpleParticleType spark = new SimpleParticleType(false) {
       @Override
       public SimpleParticleType getType() {
-        return RailcraftParticles.SPARK.get();
+        return RailcraftParticleTypes.SPARK.get();
       }
     };
 
@@ -363,7 +369,8 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
       // wrong for
       // tracks
       // atm.
-      Vec3 start = new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).add(normal.scale(0.5));
+      Vec3 start =
+          new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).add(normal.scale(0.5));
       switch (side.getAxis()) {
         case X:
           start = start.add(new Vec3(0.0, rand.nextDouble() - 0.5, rand.nextDouble() - 0.5));
@@ -378,8 +385,8 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
           break;
       }
       spawnParticle(
-        spark, start.x(), start.y(), start.z(),
-        vel.x(), vel.y(), vel.z());
+          spark, start.x(), start.y(), start.z(),
+          vel.x(), vel.y(), vel.z());
     }
   }
 
@@ -408,6 +415,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
 
   /**
    * Checks if you should NOT spawn a particle
+   * 
    * @param canDisable Can you disable it based on the user's particle setting?
    * @return true when you should not render it
    */
@@ -428,7 +436,9 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
     }
   }
 
-  protected void spawnParticle(ParticleOptions particle, double pX, double pY, double pZ, double vX, double vY, double vZ) {
-    minecraft.particleEngine.add(minecraft.particleEngine.createParticle(particle, pX, pY, pZ, vX, vY, vZ));
+  protected void spawnParticle(ParticleOptions particle, double pX, double pY, double pZ, double vX,
+      double vY, double vZ) {
+    minecraft.particleEngine
+        .add(minecraft.particleEngine.createParticle(particle, pX, pY, pZ, vX, vY, vZ));
   }
 }

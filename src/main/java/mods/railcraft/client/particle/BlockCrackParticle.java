@@ -5,11 +5,11 @@ import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.phys.Vec3;
 
-public class ParticleBlockCrack extends TerrainParticle {
+public class BlockCrackParticle extends TerrainParticle {
 
-  public ParticleBlockCrack(ClientLevel worldIn, double xCoordIn, double yCoordIn, double zCoordIn,
-      double xSpeedIn, double ySpeedIn, double zSpeedIn, BlockState state) {
-    super(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, state);
+  public BlockCrackParticle(ClientLevel level, double x, double y, double z,
+      double dx, double dy, double dz, BlockState blockState) {
+    super(level, x, y, z, dx, dy, dz, blockState);
   }
 
   public void setVelocity(Vec3 speed) {

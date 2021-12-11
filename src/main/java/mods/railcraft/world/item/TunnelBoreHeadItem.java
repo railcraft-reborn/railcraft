@@ -8,6 +8,8 @@ import mods.railcraft.api.carts.TunnelBoreHead;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
@@ -29,5 +31,10 @@ public abstract class TunnelBoreHeadItem extends TieredItem implements TunnelBor
   @Override
   public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
     return toolActions.contains(toolAction);
+  }
+
+  @Override
+  public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+    return TierSortingRegistry.isCorrectTierForDrops(this.getTier(), state);
   }
 }

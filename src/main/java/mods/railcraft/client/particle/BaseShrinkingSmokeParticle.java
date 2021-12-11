@@ -3,11 +3,11 @@ package mods.railcraft.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.Mth;
 
-public abstract class ParticleBaseSmokeShrinking extends ParticleBaseSmoke {
+public abstract class BaseShrinkingSmokeParticle extends BaseSmokeParticle {
 
-  protected ParticleBaseSmokeShrinking(ClientLevel world, double x, double y, double z, double dx,
+  protected BaseShrinkingSmokeParticle(ClientLevel level, double x, double y, double z, double dx,
       double dy, double dz, float scale) {
-    super(world, x, y, z, dx, dy, dz, scale);
+    super(level, x, y, z, dx, dy, dz, scale);
   }
 
   @Override

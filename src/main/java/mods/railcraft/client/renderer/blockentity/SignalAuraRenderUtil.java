@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import mods.railcraft.api.signal.BlockSignal;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalControllerProvider;
@@ -56,16 +54,17 @@ public class SignalAuraRenderUtil {
   }
 
   private static void renderSignalAura(
-      BlockEntity blockEntity, PoseStack matrixStack, MultiBufferSource renderTypeBuffer,
+      BlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource,
       Collection<BlockPos> endPoints, ColorSupplier colorProfile) {
     if (endPoints.isEmpty()) {
       return;
     }
 
-    matrixStack.pushPose();
+    poseStack.pushPose();
     {
-      VertexConsumer builder = renderTypeBuffer.getBuffer(RenderType.lines());
-      Matrix4f matrix = matrixStack.last().pose();
+      var consumer = bufferSource.getBuffer(RenderType.lines());
+      var matrix = poseStack.last().pose();
+      var normal = poseStack.last().normal();
 
       for (BlockPos target : endPoints) {
         int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), target);
@@ -73,19 +72,21 @@ public class SignalAuraRenderUtil {
         float c2 = (float) (color >> 8 & 255) / 255.0F;
         float c3 = (float) (color & 255) / 255.0F;
 
-        builder
+        consumer
             .vertex(matrix, 0.5F, 0.5F, 0.5F)
             .color(c1, c2, c3, 1.0F)
+            .normal(normal, 1.0F, 0.0F, 0.0F)
             .endVertex();
 
         float endX = 0.5F + target.getX() - blockEntity.getBlockPos().getX();
         float endY = 0.5F + target.getY() - blockEntity.getBlockPos().getY();
         float endZ = 0.5F + target.getZ() - blockEntity.getBlockPos().getZ();
 
-        builder.vertex(matrix, endX, endY, endZ).color(c1, c2, c3, 1.0F).endVertex();
+        consumer.vertex(matrix, endX, endY, endZ).color(c1, c2, c3, 1.0F)
+            .normal(normal, 1.0F, 0.0F, 0.0F).endVertex();
       }
     }
-    matrixStack.popPose();
+    poseStack.popPose();
   }
 
   @FunctionalInterface
@@ -96,6 +97,7 @@ public class SignalAuraRenderUtil {
 
   public enum ColorProfile implements ColorSupplier {
     COORD_RAINBOW {
+
       private final BlockPos[] coords = new BlockPos[2];
 
       @Override

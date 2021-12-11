@@ -4,16 +4,15 @@ import java.util.function.Consumer;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.network.play.PacketEffect;
-import mods.railcraft.util.effects.EffectManager;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Level;
 
 /**
  * Effects done on the logical server.
@@ -74,16 +73,15 @@ public final class HostEffects implements Charge.IHostZapEffect {
   }
 
   @Override
-  public void zapEffectDeath(Level world, Object source) {
+  public void zapEffectDeath(Level world, Vec3 pos) {
     if (world.isClientSide())
       return;
 
-    EffectManager.IEffectSource es = EffectManager.getEffectSource(source);
-    sendEffect(RemoteEffectType.ZAP_DEATH, world, es.getPosF(),
+    sendEffect(RemoteEffectType.ZAP_DEATH, world, pos,
         data -> {
-          data.writeDouble(es.getPosF().x());
-          data.writeDouble(es.getPosF().y());
-          data.writeDouble(es.getPosF().z());
+          data.writeDouble(pos.x());
+          data.writeDouble(pos.y());
+          data.writeDouble(pos.z());
         });
   }
 
