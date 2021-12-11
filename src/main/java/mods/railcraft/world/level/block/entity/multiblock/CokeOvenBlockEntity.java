@@ -7,14 +7,23 @@ import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.material.fluid.FluidTools;
+import mods.railcraft.world.level.material.fluid.RailcraftFluids;
+import mods.railcraft.world.level.material.fluid.TankManager;
+import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
+import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -25,12 +34,14 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity>
-    implements RecipeHolder, IFluidTank, Container {
+    implements RecipeHolder, Container {
 
   private static final Component MENU_TITLE =
       new TranslatableComponent("container.coke_oven");
@@ -39,12 +50,22 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
 
   // internal inventory, 3 total. 0 IN, 1 OUT
   protected NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
-  protected FluidStack fluid = FluidStack.EMPTY;
 
   private int recipieRequiredTime = 0;
   private int currentTick = 0;
 
-  // 0 - required time, 1 - current tick, 2 - fluid amount
+  // Is this performant enough? \/
+  protected final StandardTank fluidTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 6)
+      .setFilterFluid(RailcraftFluids.CREOSOTE)
+      .disableFill();
+  // same with this
+  private LazyOptional<TankManager> tankManager =
+      LazyOptional.of(() -> new TankManager(this.fluidTank));
+
+  @Nullable
+  private Recipe<?> cachedRecipie = null;
+
+  // 0 - required time, 1 - current tick
   protected final ContainerData dataAccess = new ContainerData() {
     public int get(int key) {
       switch (key) {
@@ -52,8 +73,6 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
           return CokeOvenBlockEntity.this.recipieRequiredTime;
         case 1:
           return CokeOvenBlockEntity.this.currentTick;
-        case 2:
-          return CokeOvenBlockEntity.this.fluid.getAmount();
         default:
           return 0;
       }
@@ -67,9 +86,6 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
         case 1:
           // unsettable
           break;
-        case 2:
-          // unsettable
-          break;
         default:
           break;
       }
@@ -77,7 +93,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     }
 
     public int getCount() {
-      return 3;
+      return 2;
     }
   };
 
@@ -89,6 +105,20 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     super(type, blockPos, blockState, RailcraftMultiblockPatterns.COKE_OVEN);
   }
 
+  public TankManager getTankManager() {
+    return this.tankManager.orElseThrow(() -> new IllegalStateException("Expected tank manager"));
+  }
+
+  @Override
+  public boolean tryToMakeParent(Direction facingDir) {
+    boolean returnValue = super.tryToMakeParent(facingDir);
+    // tank nonexistant? make new one.
+    if (returnValue && this.tankManager.equals(LazyOptional.empty())) {
+      this.tankManager = LazyOptional.of(() -> new TankManager(this.fluidTank));
+    }
+    return returnValue;
+  }
+
   @Override
   public void delink() {
     super.delink();
@@ -97,7 +127,20 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
       state.setValue(CokeOvenBricksBlock.PARENT, false);
       state.setValue(CokeOvenBricksBlock.LIT, false);
       this.level.setBlock(this.worldPosition, state, 3);
+
+      // this.fluidTank = LazyOptional.empty(); // remove the fluidtank ref
+      this.tankManager = LazyOptional.empty(); // ditto
     }
+  }
+
+  /// does not exist on TE's
+  public InteractionResult interact(Player player, InteractionHand hand) {
+    if (!this.isFormed()) {
+      return InteractionResult.PASS;
+    }
+    return FluidTools.interactWithFluidHandler(player, hand, this.getTankManager())
+        ? InteractionResult.SUCCESS
+        : InteractionResult.PASS;
   }
 
   @Override
@@ -120,12 +163,19 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   @Override
   public void onLoad() {
     super.onLoad();
-    if (this.isParent() && !this.getLevel().isClientSide()) {
+    if (this.getLevel().isClientSide()) {
+      return;
+    }
+    if (this.isParent()) {
       this.level.setBlock(this.worldPosition,
           this.level.getBlockState(this.worldPosition)
               .setValue(CokeOvenBricksBlock.PARENT, true),
           3);
+      return;
     }
+    // we set it during actual load (actual without the '"', thanks 1.18!)
+    this.tankManager = LazyOptional.of(() -> this.getParent().getTankManager());
+    // this.fluidTank = LazyOptional.empty();
   }
 
   @Override
@@ -135,7 +185,10 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     ContainerHelper.loadAllItems(tag, this.items);
     this.recipieRequiredTime = tag.getInt("recipieRequiredTime");
     this.currentTick = tag.getInt("currentTick");
-    this.fluid = FluidStack.loadFluidStackFromNBT(tag);
+
+    if (tag.contains("tankManager")) {
+      this.getTankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
+    }
   }
 
   @Override
@@ -144,7 +197,18 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     ContainerHelper.saveAllItems(tag, this.items);
     tag.putInt("recipieRequiredTime", this.recipieRequiredTime);
     tag.putInt("currentTick", this.currentTick);
-    this.fluid.writeToNBT(tag);
+
+    if (this.isParent()) {
+      tag.put("tankManager", this.getTankManager().serializeNBT());
+    }
+  }
+
+  @Override
+  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
+    if (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY == capability) {
+      return this.tankManager.cast();
+    }
+    return super.getCapability(capability, facing);
   }
 
   // TODO particles
@@ -160,6 +224,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
         level.setBlock(blockPos,
             blockState.setValue(CokeOvenBricksBlock.LIT, false), 3);
       }
+      blockEntity.setRecipeUsed(null);
       return;
     }
 
@@ -189,24 +254,37 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     ItemStack itemstack = blockEntity.items.get(0);
     if (itemstack.isEmpty()) {
       blockEntity.recipieRequiredTime = 0;
+      blockEntity.setRecipeUsed(null);
       return;
     }
 
-    Optional<CokeOvenRecipe> irecipe = level.getServer()
-        .getRecipeManager()
-        .getRecipeFor(RailcraftRecipeTypes.COKE_OVEN_COOKING, blockEntity, level);
+    @Nullable
+    Recipe<?> recipe = blockEntity.getRecipeUsed();
 
-    if (!irecipe.isPresent()) {
+    if (recipe == null) {
       blockEntity.recipieRequiredTime = 0;
-      return;
+      // check if it exists, else L
+      Optional<CokeOvenRecipe> irecipe = level.getServer()
+          .getRecipeManager()
+          .getRecipeFor(RailcraftRecipeTypes.COKE_OVEN_COOKING, blockEntity, level);
+
+      if (!irecipe.isPresent()) {
+        blockEntity.setRecipeUsed(null);
+        return;
+      }
+      blockEntity.setRecipeUsed(irecipe.get());
     }
-    CokeOvenRecipe cokeRecipe = irecipe.get();
+
+    CokeOvenRecipe cokeRecipe = CokeOvenRecipe.class.cast(recipe);
+
     if (!blockEntity.canWork(cokeRecipe)) {
       blockEntity.recipieRequiredTime = 0;
       return;
     }
+
     if (blockEntity.currentTick >= blockEntity.recipieRequiredTime) {
       if (blockEntity.recipieRequiredTime != 0) {
+        blockEntity.setRecipeUsed(null);
         blockEntity.bake(cokeRecipe);
       }
       blockEntity.recipieRequiredTime = blockEntity.getTickCost();
@@ -289,61 +367,14 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   }
 
   @Override
-  public void setRecipeUsed(Recipe<?> recipe) {
-    // unused
+  public void setRecipeUsed(@Nullable Recipe<?> recipe) {
+    this.cachedRecipie = recipe;
   }
 
   @Override
   @Nullable
   public Recipe<?> getRecipeUsed() {
-    // unused
-    return null;
-  }
-
-  @Override
-  public FluidStack getFluid() {
-    return this.fluid;
-  }
-
-  @Override
-  public int getFluidAmount() {
-    return this.fluid.getAmount();
-  }
-
-  @Override
-  public int getCapacity() {
-    return FLUID_STORAGE_MAX;
-  }
-
-  @Override
-  public boolean isFluidValid(FluidStack stack) {
-    return false;
-  }
-
-  @Override
-  public int fill(FluidStack resource, FluidAction action) {
-    return 0;
-  }
-
-  @Override
-  public FluidStack drain(int maxDrain, FluidAction action) {
-    int drained = maxDrain;
-    if (fluid.getAmount() < drained) {
-      drained = fluid.getAmount();
-    }
-    FluidStack stack = new FluidStack(fluid, drained);
-    if (action.execute() && drained > 0) {
-      fluid.shrink(drained);
-    }
-    return stack;
-  }
-
-  @Override
-  public FluidStack drain(FluidStack resource, FluidAction action) {
-    if (resource.isEmpty() || !resource.isFluidEqual(fluid)) {
-      return FluidStack.EMPTY;
-    }
-    return drain(resource.getAmount(), action);
+    return this.cachedRecipie;
   }
 
   protected boolean canWork(CokeOvenRecipe recipe) {
@@ -357,17 +388,18 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     if (resultSlot.isEmpty()) {
       return true;
     }
-    if (!resultSlot.sameItem(resultItemStack) && !this.fluid.isFluidEqual(resultFluidStack)) {
+    if (!resultSlot.sameItem(resultItemStack) && !this.fluidTank.isFluidValid(resultFluidStack)) {
       return false;
     }
     // respect stacks (and fluid count.)
     if ((resultSlot.getCount() + resultItemStack.getCount() <= this.getMaxStackSize())
         && resultSlot.getCount() + resultItemStack.getCount() <= resultSlot.getMaxStackSize()
-        && this.fluid.getAmount() + resultFluidStack.getAmount() <= FLUID_STORAGE_MAX) {
+        && this.fluidTank.getFluidAmount() + resultFluidStack.getAmount() <= FLUID_STORAGE_MAX
+    ) {
       return true;
     }
     return (resultSlot.getCount() + resultItemStack.getCount() <= resultItemStack.getMaxStackSize())
-        && (this.fluid.getAmount() + resultFluidStack.getAmount() <= FLUID_STORAGE_MAX);
+        && this.fluidTank.getFluidAmount() + resultFluidStack.getAmount() <= FLUID_STORAGE_MAX;
   }
 
   protected int getTickCost() {
@@ -392,16 +424,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
       resultStack.grow(resultItemStack.getCount());
     }
 
-    if (this.fluid.isEmpty()) {
-      this.fluid = resultFluidStack.copy();
-    } else if (this.fluid.isFluidEqual(resultFluidStack)) {
-      this.fluid.grow(resultFluidStack.getAmount());
-    }
-
-
-    if (!this.level.isClientSide) {
-      this.setRecipeUsed(cokeOvenRecipe);
-    }
+    this.fluidTank.internalFill(resultFluidStack.copy(), FluidAction.EXECUTE);
 
     ItemStack inputStack = this.items.get(0);
     inputStack.shrink(1);

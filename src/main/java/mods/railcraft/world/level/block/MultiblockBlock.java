@@ -17,16 +17,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 
-public abstract class MultiblockBlock extends BaseEntityBlock {
+public abstract class MultiblockBlock<T extends MultiblockBlockEntity<?>> extends BaseEntityBlock {
 
   public static final BooleanProperty PARENT = BooleanProperty.create("parent");
+  private final Class<T> blockEntityType;
 
   /**
    * Create a new multiblock TE.
    */
-  public MultiblockBlock(Properties properties) {
+  public MultiblockBlock(Class<T> blockEntityType, Properties properties) {
     super(properties);
+    this.blockEntityType = blockEntityType;
     // TODO: this MIGHT be causing stupid overhead (placing defaultstate is slow)
     this.registerDefaultState(this.addDefaultBlockState(this.stateDefinition.any()));
   }
@@ -58,12 +61,12 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
       return InteractionResult.SUCCESS;
     }
 
-    if (!(blockEntity instanceof MultiblockBlockEntity<?>)) {
+    // everything under here must be serverside.
+    if (!this.blockEntityType.isInstance(blockEntity)) {
       return InteractionResult.PASS;
     }
 
-    // everything under here must be serverside.
-    MultiblockBlockEntity<?> recast = (MultiblockBlockEntity<?>) blockEntity;
+    T recast = this.blockEntityType.cast(blockEntity);
 
     if (recast.getParent() == null) {
       boolean ttmpResult = recast.tryToMakeParent(rayTraceResult.getDirection());
@@ -79,7 +82,8 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
       }
       return InteractionResult.PASS;
     }
-    player.openMenu(recast);
+    NetworkHooks.openGui((ServerPlayer) player, recast, pos);
+    // player.openMenu(recast);
     return InteractionResult.sidedSuccess(level.isClientSide());
   }
 }

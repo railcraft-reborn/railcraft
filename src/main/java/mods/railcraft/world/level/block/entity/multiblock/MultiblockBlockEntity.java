@@ -22,7 +22,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     implements MenuProvider {
 
   private static final Logger logger =
-      LogManager.getLogger("Railcraft/MultiblockEntity");
+      LogManager.getLogger(MultiblockBlockEntity.class);
 
   private boolean formed = false;
   private BlockPos parentPos = BlockPos.ZERO;
@@ -39,7 +39,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
 
   /**
    * Try to make this tile (entity) a parent.
-   * 
+   *
    * @return true if ok, false if not.
    */
   public boolean tryToMakeParent(Direction facingDir) {
@@ -77,7 +77,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
 
   /**
    * Handles the pattern detection.
-   * 
+   *
    * @return true if pattern detection is ok, false if not.
    */
   public boolean isMultiblockPatternValid(BlockPos normal) {
@@ -86,7 +86,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
 
   /**
    * Gathers all of the block's tileentities. Required.
-   * 
+   *
    * @return List of TileEntity we gathered
    */
   @SuppressWarnings("unchecked")
@@ -105,7 +105,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
 
   /**
    * Sets this tilentity's parent, delinking first.
-   * 
+   *
    * @param parentPos - The position of the parent in the world.
    */
   public void setParent(BlockPos parentPos) {
@@ -120,7 +120,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
 
   /**
    * Is this a parent.
-   * 
+   *
    * @return TRUE if yes.
    */
   public boolean isParent() {

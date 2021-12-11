@@ -1,11 +1,13 @@
 package mods.railcraft.world.item.crafting;
 
+import mods.railcraft.gui.widget.FluidGaugeWidget;
+import mods.railcraft.world.inventory.RailcraftMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
+import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.FurnaceResultSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -13,15 +15,17 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.Level;
 
-public class CokeOvenMenu extends AbstractContainerMenu {
+public class CokeOvenMenu extends RailcraftMenu {
 
   private final Level level;
   private final ContainerData data;
-  private final Container cokeOvenInventory;
+  private final CokeOvenBlockEntity cokeOvenInventory;
   private static final int INTERNAL_CONTAINER_SLOTS = 2;
+  private final FluidGaugeWidget fluidGauge;
 
-  public CokeOvenMenu(int id, Inventory inventory) {
-    this(id, inventory, new SimpleContainer(INTERNAL_CONTAINER_SLOTS), new SimpleContainerData(3));
+  public CokeOvenMenu(int id, Inventory inventory,
+      CokeOvenBlockEntity cokeOvenStorageEntity) {
+    this(id, inventory, cokeOvenStorageEntity, new SimpleContainerData(2));
   }
 
   /**
@@ -29,12 +33,17 @@ public class CokeOvenMenu extends AbstractContainerMenu {
    */
   public CokeOvenMenu(int containerID, Inventory playerInventory,
       Container cokeOvenStorageEntity, ContainerData dataAccess) {
-    super(RailcraftMenuTypes.COKE_OVEN.get(), containerID);
+    super(RailcraftMenuTypes.COKE_OVEN.get(), containerID, playerInventory);
     checkContainerSize(cokeOvenStorageEntity, INTERNAL_CONTAINER_SLOTS);
-    checkContainerDataCount(dataAccess, 3);
-    this.cokeOvenInventory = cokeOvenStorageEntity;
+    checkContainerDataCount(dataAccess, 2);
+    this.cokeOvenInventory = (CokeOvenBlockEntity) cokeOvenStorageEntity;
     this.data = dataAccess;
     this.level = playerInventory.player.level;
+
+    // fluid widget
+    this.addWidget(
+        this.fluidGauge = new FluidGaugeWidget(this.cokeOvenInventory.getTankManager().get(0),
+          90, 22, 176, 0, 48, 47));
 
     // our inventory
     this.addSlot(new Slot(cokeOvenStorageEntity, 0, 16, 43));
@@ -42,19 +51,22 @@ public class CokeOvenMenu extends AbstractContainerMenu {
     // fluid slot
 
     // generic player inventory
-    for (int i = 0; i < 3; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+    for (int i = 0; i < 3; i++) {
+      for (int k = 0; k < 9; k++) {
+        this.addSlot(new Slot(playerInventory, k + i * 9 + 9, 8 + k * 18, 84 + i * 18));
       }
     }
 
-    for (int k = 0; k < 9; ++k) {
-      this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 142));
+    for (int j = 0; j < 9; j++) {
+      this.addSlot(new Slot(playerInventory, j, 8 + j * 18, 142));
     }
 
     this.addDataSlots(dataAccess);
   }
 
+  public FluidGaugeWidget getFluidGauge() {
+    return this.fluidGauge;
+  }
 
   @Override
   public boolean stillValid(Player player) {
@@ -71,6 +83,7 @@ public class CokeOvenMenu extends AbstractContainerMenu {
     ItemStack itemstack = slot.getItem();
     ItemStack itemstack1 = itemstack.copy();
     if (slotID == 1) {
+      itemstack1.getItem().onCraftedBy(itemstack1, this.level, playerEntity);
       if (!this.moveItemStackTo(itemstack1, 1, (36 + INTERNAL_CONTAINER_SLOTS), true)) {
         return ItemStack.EMPTY;
       }

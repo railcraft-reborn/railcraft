@@ -10,6 +10,7 @@ import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
 import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.ItemManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -47,7 +48,8 @@ public class RailcraftMenuTypes {
 
   public static final RegistryObject<MenuType<CokeOvenMenu>> COKE_OVEN =
       MENU_TYPES.register("coke_oven",
-          () -> new MenuType<>(CokeOvenMenu::new));
+          () -> new MenuType<CokeOvenMenu>(
+              blockEntityMenu(CokeOvenBlockEntity.class, CokeOvenMenu::new)));
 
   public static final RegistryObject<MenuType<ItemManipulatorMenu>> ITEM_MANIPULATOR =
       MENU_TYPES.register("item_manipulator",

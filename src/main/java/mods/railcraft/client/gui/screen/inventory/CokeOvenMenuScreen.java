@@ -1,16 +1,15 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeWidgetRenderer;
 import mods.railcraft.world.item.crafting.CokeOvenMenu;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 
-public class CokeOvenMenuScreen extends AbstractContainerScreen<CokeOvenMenu> {
+public class CokeOvenMenuScreen extends RailcraftMenuScreen<CokeOvenMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/coke_oven.png");
@@ -18,18 +17,12 @@ public class CokeOvenMenuScreen extends AbstractContainerScreen<CokeOvenMenu> {
   public CokeOvenMenuScreen(CokeOvenMenu menu, Inventory inventory,
       Component title) {
     super(menu, inventory, title);
-  }
-
-  @Override
-  public void render(PoseStack matrixStack, int x, int y, float partialTicks) {
-    this.renderBackground(matrixStack);
-    super.render(matrixStack, x, y, partialTicks);
-    this.renderTooltip(matrixStack, x, y);
+    this.registerWidgetRenderer(new FluidGaugeWidgetRenderer(menu.getFluidGauge()));
   }
 
   @Override
   protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-    RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
+    super.renderBg(matrixStack, partialTicks, mouseY, mouseY);
     final int x = this.leftPos;
     final int y = this.topPos;
     // initial draw
@@ -44,10 +37,10 @@ public class CokeOvenMenuScreen extends AbstractContainerScreen<CokeOvenMenu> {
     if (this.menu.isActualyBurning()) {
       this.blit(matrixStack, x + 17, y + 27, 176, 47, 14, 14);
     }
+  }
 
-    // fluid draw
-    // TODO: implement & cleanup railcraft gui code
-    // float fluidProg = this.menu.tankFillProgress();
-    // this.blit(matrixStack, x + 35, y + 44, 176, 61, Math.round(24.00F * fluidProg), 12);
+  @Override
+  public ResourceLocation getWidgetsTexture() {
+    return BACKGROUND_TEXTURE;
   }
 }
