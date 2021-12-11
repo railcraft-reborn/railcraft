@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "railcraft:raw_firestone"
+            "items": [
+              "railcraft:raw_firestone"
+            ]
           }
         ]
       }

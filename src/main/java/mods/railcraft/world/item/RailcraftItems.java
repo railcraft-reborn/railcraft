@@ -10,13 +10,16 @@ import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
+import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -926,8 +929,11 @@ public class RailcraftItems {
           () -> new Item(new Item.Properties().tab(TAB)));
 
   /* ===== BUCKETS ===== */
-
-  public static final RegistryObject<Item> CREOSOTE_BUCKET =
+  public static final RegistryObject<BucketItem> CREOSOTE_BUCKET =
       ITEMS.register("creosote_bucket",
-          () -> new Item(new Item.Properties().tab(TAB)));
+          () -> new BucketItem(RailcraftFluids.CREOSOTE,
+            new Item.Properties()
+              .craftRemainder(Items.BUCKET)
+              .stacksTo(1)
+              .tab(TAB)));
 }

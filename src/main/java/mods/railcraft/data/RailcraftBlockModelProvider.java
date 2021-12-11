@@ -163,6 +163,7 @@ public class RailcraftBlockModelProvider {
 
     this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
         TexturedModel.CUBE_TOP_BOTTOM);
+    this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
 
     // TODO cleanup, this is disgusting.
     final Block cokeBrick = RailcraftBlocks.COKE_OVEN_BRICKS.get();
@@ -306,6 +307,14 @@ public class RailcraftBlockModelProvider {
         createSimpleBlock(block, textureFactory.create(block, this.modelOutput)));
   }
 
+  private void createTrivialBlock(Block block) {
+    this.createTrivialBlock(block, block);
+  }
+
+  private void createTrivialBlock(Block block, Block block2) {
+    this.blockStateOutput.accept(createSimpleBlock(block,
+      ModelLocationUtils.getModelLocation(block2)));
+  }
   private static MultiVariantGenerator createSimpleBlock(Block block,
       ResourceLocation modelLocation) {
     return MultiVariantGenerator.multiVariant(block,

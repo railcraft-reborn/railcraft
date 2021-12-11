@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -33,6 +34,12 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
   protected BlockState addDefaultBlockState(BlockState defaultBlockState) {
     defaultBlockState.setValue(PARENT, Boolean.FALSE);
     return defaultBlockState;
+  }
+
+  // man
+  @Override
+  public RenderShape getRenderShape(BlockState blockState) {
+    return RenderShape.MODEL;
   }
 
   @Override

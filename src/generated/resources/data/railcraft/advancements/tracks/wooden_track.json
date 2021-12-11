@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "railcraft:strap_iron_track"
+            "items": [
+              "railcraft:strap_iron_track"
+            ]
           }
         ]
       }
