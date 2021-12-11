@@ -97,7 +97,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   @Override
   public AbstractMinecart getCart() {
     AABBFactory factory = AABBFactory.start()
-        .createBoxForTileAt(this.getBlockPos().below(2))
+        .at(this.getBlockPos().below(2))
         .raiseCeiling(1)
         .grow(-0.1F);
     AbstractMinecart cart = EntitySearcher.findMinecarts()

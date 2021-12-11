@@ -54,6 +54,12 @@ public class RailcraftBlocks {
   public static final DeferredRegister<Block> BLOCKS =
       DeferredRegister.create(ForgeRegistries.BLOCKS, Railcraft.ID);
 
+  public static final RegistryObject<Block> FEED_STATION =
+      BLOCKS.register("feed_station",
+          () -> new FeedStationBlock(
+              BlockBehaviour.Properties.of(Material.STONE, MaterialColor.WOOD)
+                  .sound(SoundType.WOOD)));
+
   public static final RegistryObject<Block> STEEL_ANVIL =
       BLOCKS.register("steel_anvil",
           () -> new AnvilBlock(

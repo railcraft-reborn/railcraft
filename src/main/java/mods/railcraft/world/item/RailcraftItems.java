@@ -52,6 +52,10 @@ public class RailcraftItems {
         }
       };
 
+  public static final RegistryObject<Item> FEED_STATION =
+      ITEMS.register("feed_station",
+          () -> new BlockItem(RailcraftBlocks.FEED_STATION.get(), new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> STEEL_ANVIL =
       ITEMS.register("steel_anvil",
           () -> new BlockItem(RailcraftBlocks.STEEL_ANVIL.get(), new Item.Properties().tab(TAB)));

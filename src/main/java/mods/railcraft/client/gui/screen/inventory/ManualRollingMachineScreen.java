@@ -21,22 +21,22 @@ public class ManualRollingMachineScreen extends AbstractContainerScreen<ManualRo
   }
 
   @Override
-  public void render(PoseStack matrixStack, int x, int y, float partialTicks) {
-    this.renderBackground(matrixStack);
-    super.render(matrixStack, x, y, partialTicks);
-    this.renderTooltip(matrixStack, x, y);
+  public void render(PoseStack poseStack, int x, int y, float partialTicks) {
+    this.renderBackground(poseStack);
+    super.render(poseStack, x, y, partialTicks);
+    this.renderTooltip(poseStack, x, y);
   }
 
   @Override
-  protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+  protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
     RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
     final int x = this.leftPos;
     final int y = this.topPos;
     // initial draw
-    this.blit(matrixStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
+    this.blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
     // prog bar
     float prog = this.menu.rollingProgress();
     // 24*0.1, basicaly 10% of 24. Rounded for safety!
-    this.blit(matrixStack, x + 89, y + 47, 176, 0, Math.round(24.00F * prog), 12);
+    this.blit(poseStack, x + 89, y + 47, 176, 0, Math.round(24.00F * prog), 12);
   }
 }

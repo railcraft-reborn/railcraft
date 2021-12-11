@@ -28,7 +28,7 @@ public class Widget {
     this.h = h;
   }
 
-  public void addToContainer(RailcraftMenu container) {
+  public void added(RailcraftMenu container) {
     this.container = container;
     widgetId = (byte) container.getWidgets().indexOf(this);
   }

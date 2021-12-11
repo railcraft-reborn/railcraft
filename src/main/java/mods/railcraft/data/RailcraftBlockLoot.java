@@ -21,6 +21,7 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
+    this.dropSelf(RailcraftBlocks.FEED_STATION.get());
 
     /* === tracks === */
     this.dropSelf(RailcraftBlocks.ABANDONED_TRACK.get());

@@ -1,12 +1,10 @@
 package mods.railcraft.data.models;
 
-import com.google.gson.JsonElement;
-
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
+import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
@@ -26,30 +24,30 @@ import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlo
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.Direction;
+import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.blockstates.Condition;
+import net.minecraft.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.data.models.blockstates.VariantProperties.Rotation;
 import net.minecraft.data.models.model.DelegatedModel;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.MultiPartGenerator;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.BlockStateGenerator;
-import net.minecraft.data.models.blockstates.Condition;
-import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 
 public class RailcraftBlockModelGenerators {
 
@@ -170,7 +168,8 @@ public class RailcraftBlockModelGenerators {
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
-    this.createCokeOvenBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
+    this.createCokeOvenBricks();
+    this.createFeedStation();
 
     this.createPost(RailcraftBlocks.BLACK_POST.get());
     this.createPost(RailcraftBlocks.RED_POST.get());
@@ -328,7 +327,8 @@ public class RailcraftBlockModelGenerators {
         createSimpleBlock(block, model).with(createHorizontalFacingDispatchAlt()));
   }
 
-  private void createCokeOvenBricks(Block block) {
+  private void createCokeOvenBricks() {
+    var block = RailcraftBlocks.COKE_OVEN_BRICKS.get();
     var bricksModel = TexturedModel.CUBE.create(block, this.modelOutput);
     var furnaceModel =
         ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_furnace",
@@ -356,6 +356,14 @@ public class RailcraftBlockModelGenerators {
                     .with(VariantProperties.MODEL, furnaceModel))
                 .select(true, true, Variant.variant()
                     .with(VariantProperties.MODEL, litFurnaceModel))));
+  }
+
+  private void createFeedStation() {
+    var block = RailcraftBlocks.FEED_STATION.get();
+    var mapping = TextureMapping.column(TextureMapping.getBlockTexture(block, "_side"),
+        TextureMapping.getBlockTexture(block, "_top"));
+    var model = ModelTemplates.CUBE_COLUMN.create(block, mapping, this.modelOutput);
+    this.blockStateOutput.accept(createSimpleBlock(block, model));
   }
 
   private static PropertyDispatch createHorizontalFacingDispatchAlt() {

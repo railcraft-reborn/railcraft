@@ -6,7 +6,7 @@ import java.util.Set;
 import mods.railcraft.util.container.CompositeContainerAdaptor;
 import mods.railcraft.util.container.ContainerAdaptor;
 import mods.railcraft.util.container.ContainerManipulator;
-import mods.railcraft.world.inventory.SlotOutput;
+import mods.railcraft.world.inventory.OutputSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.Slot;
@@ -40,7 +40,7 @@ public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
 
   @Override
   public Slot getBufferSlot(int id, int x, int y) {
-    return new SlotOutput(this, id, x, y);
+    return new OutputSlot(this, id, x, y);
   }
 
   @Override

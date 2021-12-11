@@ -6,9 +6,9 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class SlotWater extends SlotRailcraft {
+public class WaterSlot extends RailcraftSlot {
 
-  public SlotWater(Container iinventory, int slotIndex, int posX, int posY) {
+  public WaterSlot(Container iinventory, int slotIndex, int posX, int posY) {
     super(iinventory, slotIndex, posX, posY);
   }
 

@@ -30,23 +30,23 @@ public class TunnelBoreScreen extends RailcraftMenuScreen<TunnelBoreMenu> {
   }
 
   @Override
-  protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-    super.renderLabels(matrixStack, mouseX, mouseY);
-    this.font.draw(matrixStack, HEAD, 13, 24, IngameWindowScreen.TEXT_COLOR);
-    this.font.draw(matrixStack, FUEL, 62, 24, IngameWindowScreen.TEXT_COLOR);
-    this.font.draw(matrixStack, BALLAST, this.inventoryLabelX, 60, IngameWindowScreen.TEXT_COLOR);
-    this.font.draw(matrixStack, TRACK, this.inventoryLabelX, 96, IngameWindowScreen.TEXT_COLOR);
+  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    super.renderLabels(poseStack, mouseX, mouseY);
+    this.font.draw(poseStack, HEAD, 13, 24, IngameWindowScreen.TEXT_COLOR);
+    this.font.draw(poseStack, FUEL, 62, 24, IngameWindowScreen.TEXT_COLOR);
+    this.font.draw(poseStack, BALLAST, this.inventoryLabelX, 60, IngameWindowScreen.TEXT_COLOR);
+    this.font.draw(poseStack, TRACK, this.inventoryLabelX, 96, IngameWindowScreen.TEXT_COLOR);
   }
 
   @Override
-  protected void renderBg(PoseStack matrixStack, float f, int i, int j) {
-    super.renderBg(matrixStack, f, i, j);
+  protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
+    super.renderBg(poseStack, partialTicks, mouseX, mouseY);
     int centredX = (this.width - this.imageWidth) / 2;
     int centredY = (this.height - this.imageHeight) / 2;
 
     if (this.menu.getTunnelBore().getFuel() > 0) {
       int burnProgress = this.menu.getTunnelBore().getBurnProgressScaled(12);
-      this.blit(matrixStack, centredX + 44, (centredY + 48) - burnProgress, 176, 12 - burnProgress,
+      this.blit(poseStack, centredX + 44, (centredY + 48) - burnProgress, 176, 12 - burnProgress,
           14, burnProgress + 2);
     }
   }

@@ -30,6 +30,12 @@ public class RailcraftBlockEntityTypes {
   public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
       DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Railcraft.ID);
 
+  public static final RegistryObject<BlockEntityType<FeedStationBlockEntity>> FEED_STATION =
+      BLOCK_ENTITY_TYPES.register("feed_station",
+          () -> BlockEntityType.Builder
+              .of(FeedStationBlockEntity::new, RailcraftBlocks.FEED_STATION.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<FluidLoaderBlockEntity>> FLUID_LOADER =
       BLOCK_ENTITY_TYPES.register("fluid_loader",
           () -> BlockEntityType.Builder

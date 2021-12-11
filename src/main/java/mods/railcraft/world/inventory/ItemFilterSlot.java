@@ -8,11 +8,11 @@ import net.minecraft.world.item.ItemStack;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class SlotStackFilter extends SlotRailcraft {
+public class ItemFilterSlot extends RailcraftSlot {
 
   private final Predicate<ItemStack> filter;
 
-  public SlotStackFilter(Predicate<ItemStack> filter, Container iinventory, int slotIndex,
+  public ItemFilterSlot(Predicate<ItemStack> filter, Container iinventory, int slotIndex,
       int posX, int posY) {
     super(iinventory, slotIndex, posX, posY);
     this.filter = filter;

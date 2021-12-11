@@ -14,8 +14,8 @@ public class CreativeLocomotiveScreen
       new ResourceLocation(Railcraft.ID, "textures/gui/container/creative_locomotive.png");
 
   public CreativeLocomotiveScreen(LocomotiveMenu<CreativeLocomotive> menu,
-      Inventory playerInventory, Component title) {
-    super(menu, playerInventory, title, "creative");
+      Inventory inventory, Component title) {
+    super(menu, inventory, title, "creative");
   }
 
   @Override

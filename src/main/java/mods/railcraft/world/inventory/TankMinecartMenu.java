@@ -19,11 +19,11 @@ public class TankMinecartMenu extends RailcraftMenu {
     this.addWidget(this.fluidGuage =
         new FluidGaugeWidget(tankMinecart.getTankManager().get(0), 35, 23, 176, 0, 16, 47));
 
-    this.addSlot(new SlotFluidFilter(tankMinecart.getFilterInv(), 0, 80, 21));
-    this.addSlot(new SlotStackFilter(
+    this.addSlot(new FluidFilterSlot(tankMinecart.getFilterInv(), 0, 80, 21));
+    this.addSlot(new ItemFilterSlot(
         StackFilters.FLUID_CONTAINER, tankMinecart.getInvLiquids(), 0, 116, 21));
-    this.addSlot(new SlotOutput(tankMinecart.getInvLiquids(), 1, 116, 57));
-    this.addSlot(new SlotOutput(tankMinecart.getInvLiquids(), 2, 80, 57));
+    this.addSlot(new OutputSlot(tankMinecart.getInvLiquids(), 1, 116, 57));
+    this.addSlot(new OutputSlot(tankMinecart.getInvLiquids(), 2, 80, 57));
 
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 9; x++) {

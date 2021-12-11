@@ -3,7 +3,6 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -49,7 +48,7 @@ public class LockingTrackBlock extends OutfittedTrackBlock implements EntityBloc
   @Override
   public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player,
       InteractionHand hand, BlockHitResult rayTraceResult) {
-    return LevelUtil.getBlockEntity(level, pos, LockingTrackBlockEntity.class)
+    return  level.getBlockEntity(pos, RailcraftBlockEntityTypes.LOCKING_TRACK.get())
         .map(lockingTrack -> lockingTrack.use(player, hand))
         .orElseGet(() -> super.use(blockState, level, pos, player, hand, rayTraceResult));
   }
@@ -58,7 +57,7 @@ public class LockingTrackBlock extends OutfittedTrackBlock implements EntityBloc
   public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
       AbstractMinecart cart) {
     super.onMinecartPass(blockState, level, pos, cart);
-    LevelUtil.getBlockEntity(level, pos, LockingTrackBlockEntity.class)
+    level.getBlockEntity(pos, RailcraftBlockEntityTypes.LOCKING_TRACK.get())
         .ifPresent(lockingTrack -> lockingTrack.minecartPassed(cart));
   }
 

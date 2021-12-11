@@ -1,7 +1,7 @@
 package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
-import mods.railcraft.util.LevelUtil;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,7 +33,7 @@ public class SetSignalCapacitorBoxAttributesMessage {
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
     var level = context.get().getSender().getLevel();
-    LevelUtil.getBlockEntity(level, this.blockPos, SignalCapacitorBoxBlockEntity.class)
+    level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.SIGNAL_CAPACITOR_BOX.get())
         .ifPresent(signalBox -> {
           signalBox.setTicksToPower(this.ticksToPower);
           signalBox.setMode(this.mode);

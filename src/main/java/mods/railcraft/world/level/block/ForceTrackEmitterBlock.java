@@ -8,7 +8,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.IChargeBlock;
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.Optionals;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
@@ -133,10 +132,11 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements IChargeBl
   }
 
   @Override
-  public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos,
+  public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos,
       Rotation direction) {
-    if (!LevelUtil.getBlockEntity(world, pos, ForceTrackEmitterBlockEntity.class)
+    if (!level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .map(ForceTrackEmitterBlockEntity::getStateInstance)
+        .map(ForceTrackEmitterState.Instance::getState)
         .filter(ForceTrackEmitterState.RETRACTED::equals)
         .isPresent()) {
       return state;
@@ -159,22 +159,22 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements IChargeBl
 
   @SuppressWarnings("deprecation")
   @Override
-  public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block,
+  public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
       BlockPos changedPos, boolean something) {
-    super.neighborChanged(state, world, pos, block, changedPos, something);
-    LevelUtil.getBlockEntity(world, pos, ForceTrackEmitterBlockEntity.class)
+    super.neighborChanged(state, level, pos, block, changedPos, something);
+    level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .ifPresent(ForceTrackEmitterBlockEntity::checkSignal);
   }
 
   @Override
-  public void setPlacedBy(Level world, BlockPos pos, BlockState state,
+  public void setPlacedBy(Level level, BlockPos pos, BlockState state,
       @Nullable LivingEntity livingEntity, ItemStack itemStack) {
-    super.setPlacedBy(world, pos, state, livingEntity, itemStack);
+    super.setPlacedBy(level, pos, state, livingEntity, itemStack);
     DyeColor color = DyeColor.getColor(itemStack);
     if (color != null) {
       state.setValue(COLOR, color);
     }
-    LevelUtil.getBlockEntity(world, pos, ForceTrackEmitterBlockEntity.class)
+    level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .ifPresent(ForceTrackEmitterBlockEntity::checkSignal);
   }
 

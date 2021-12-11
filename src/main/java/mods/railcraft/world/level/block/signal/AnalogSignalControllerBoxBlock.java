@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.signal;
 
 import javax.annotation.Nullable;
 import mods.railcraft.client.ClientDist;
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -27,7 +26,7 @@ public class AnalogSignalControllerBoxBlock extends SignalBoxBlock implements En
   public InteractionResult use(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
-      LevelUtil.getBlockEntity(level, pos, AnalogSignalControllerBoxBlockEntity.class)
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get())
           .ifPresent(ClientDist::openAnalogSignalControllerBoxScreen);
       return InteractionResult.SUCCESS;
     }

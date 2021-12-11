@@ -2,8 +2,7 @@ package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.util.LevelUtil;
-import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -34,7 +33,7 @@ public class SetSignalControllerBoxAttributesMessage {
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
     var level = context.get().getSender().getLevel();
-    LevelUtil.getBlockEntity(level, this.blockPos, SignalControllerBoxBlockEntity.class)
+    level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get())
         .ifPresent(signalBox -> {
           signalBox.setDefaultAspect(this.defaultAspect);
           signalBox.setPoweredAspect(this.poweredAspect);

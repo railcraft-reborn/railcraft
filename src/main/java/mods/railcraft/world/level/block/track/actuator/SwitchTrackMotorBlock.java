@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.track.actuator;
 
 import mods.railcraft.client.ClientDist;
-import mods.railcraft.util.LevelUtil;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -23,7 +23,7 @@ public class SwitchTrackMotorBlock extends SwitchTrackActuatorBlock implements E
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
       Block neighborBlock, BlockPos neighborBlockPos, boolean moved) {
-    LevelUtil.getBlockEntity(level, blockPos, SwitchTrackMotorBlockEntity.class)
+    level.getBlockEntity(blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get())
         .ifPresent(SwitchTrackMotorBlockEntity::neighborChanged);
   }
 
@@ -31,7 +31,7 @@ public class SwitchTrackMotorBlock extends SwitchTrackActuatorBlock implements E
   public InteractionResult use(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
-      LevelUtil.getBlockEntity(level, pos, SwitchTrackMotorBlockEntity.class)
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get())
           .ifPresent(ClientDist::openSwitchTrackMotorScreen);
       return InteractionResult.SUCCESS;
     }

@@ -85,7 +85,7 @@ public final class EntitySearcher {
     }
 
     public SearchParameters<T> around(BlockPos pos) {
-      box.createBoxForTileAt(pos);
+      box.at(pos);
       return this;
     }
 
