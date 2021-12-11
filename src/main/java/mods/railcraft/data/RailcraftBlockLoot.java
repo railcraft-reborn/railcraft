@@ -7,7 +7,7 @@ import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 
-public class RailcraftBlockLootTable extends BlockLoot {
+public class RailcraftBlockLoot extends BlockLoot {
 
   @Override
   protected void addTables() {
@@ -17,6 +17,10 @@ public class RailcraftBlockLootTable extends BlockLoot {
     this.dropSelf(RailcraftBlocks.ITEM_UNLOADER.get());
     this.dropSelf(RailcraftBlocks.ADVANCED_ITEM_LOADER.get());
     this.dropSelf(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get());
+    this.dropSelf(RailcraftBlocks.STEEL_BLOCK.get());
+    this.dropSelf(RailcraftBlocks.STEEL_ANVIL.get());
+    this.dropSelf(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
+    this.dropSelf(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
     /* === tracks === */
     this.dropSelf(RailcraftBlocks.ABANDONED_TRACK.get());

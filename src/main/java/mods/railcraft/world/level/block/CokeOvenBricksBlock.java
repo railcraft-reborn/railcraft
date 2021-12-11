@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class CokeOvenBricksBlock extends MultiblockBlock {
+
   public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
   public CokeOvenBricksBlock(Properties properties) {
@@ -37,6 +39,11 @@ public class CokeOvenBricksBlock extends MultiblockBlock {
       StateDefinition.Builder<Block, BlockState> stateContainer) {
     super.createBlockStateDefinition(stateContainer);
     stateContainer.add(LIT);
+  }
+
+  @Override
+  public RenderShape getRenderShape(BlockState blockState) {
+    return RenderShape.MODEL;
   }
 
   @Override

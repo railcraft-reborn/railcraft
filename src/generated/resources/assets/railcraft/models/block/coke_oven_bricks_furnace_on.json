@@ -3,6 +3,6 @@
   "textures": {
     "top": "railcraft:block/coke_oven_bricks",
     "bottom": "railcraft:block/coke_oven_bricks",
-    "side": "railcraft:block/coke_oven_bricks_parent_on"
+    "side": "railcraft:block/coke_oven_bricks_furnace_on"
   }
 }

@@ -19,8 +19,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
+        "reversed": "false",
         "one_way": "true"
       },
       "apply": {
@@ -29,8 +29,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
+        "reversed": "true",
         "one_way": "true"
       },
       "apply": {
@@ -40,8 +40,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
+        "reversed": "false",
         "one_way": "true"
       },
       "apply": {
@@ -51,8 +51,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
+        "reversed": "true",
         "one_way": "true"
       },
       "apply": {
@@ -62,10 +62,10 @@
     },
     {
       "when": {
-        "reversed": "false",
-        "in_wall": "false",
         "shape": "north_south",
-        "open": "false"
+        "reversed": "false",
+        "open": "false",
+        "in_wall": "false"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate",
@@ -74,10 +74,10 @@
     },
     {
       "when": {
-        "reversed": "true",
-        "in_wall": "false",
         "shape": "north_south",
-        "open": "false"
+        "reversed": "true",
+        "open": "false",
+        "in_wall": "false"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate"
@@ -85,10 +85,10 @@
     },
     {
       "when": {
-        "reversed": "false",
-        "in_wall": "false",
         "shape": "east_west",
-        "open": "false"
+        "reversed": "false",
+        "open": "false",
+        "in_wall": "false"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate",
@@ -97,10 +97,10 @@
     },
     {
       "when": {
-        "reversed": "true",
-        "in_wall": "false",
         "shape": "east_west",
-        "open": "false"
+        "reversed": "true",
+        "open": "false",
+        "in_wall": "false"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate",
@@ -109,10 +109,10 @@
     },
     {
       "when": {
-        "reversed": "false",
-        "in_wall": "false",
         "shape": "north_south",
-        "open": "true"
+        "reversed": "false",
+        "open": "true",
+        "in_wall": "false"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_open",
@@ -121,10 +121,10 @@
     },
     {
       "when": {
-        "reversed": "true",
-        "in_wall": "false",
         "shape": "north_south",
-        "open": "true"
+        "reversed": "true",
+        "open": "true",
+        "in_wall": "false"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_open"
@@ -132,10 +132,10 @@
     },
     {
       "when": {
-        "reversed": "false",
-        "in_wall": "false",
         "shape": "east_west",
-        "open": "true"
+        "reversed": "false",
+        "open": "true",
+        "in_wall": "false"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_open",
@@ -144,10 +144,10 @@
     },
     {
       "when": {
-        "reversed": "true",
-        "in_wall": "false",
         "shape": "east_west",
-        "open": "true"
+        "reversed": "true",
+        "open": "true",
+        "in_wall": "false"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_open",
@@ -156,10 +156,10 @@
     },
     {
       "when": {
-        "reversed": "false",
-        "in_wall": "true",
         "shape": "north_south",
-        "open": "false"
+        "reversed": "false",
+        "open": "false",
+        "in_wall": "true"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall",
@@ -168,10 +168,10 @@
     },
     {
       "when": {
-        "reversed": "true",
-        "in_wall": "true",
         "shape": "north_south",
-        "open": "false"
+        "reversed": "true",
+        "open": "false",
+        "in_wall": "true"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall"
@@ -179,10 +179,10 @@
     },
     {
       "when": {
-        "reversed": "false",
-        "in_wall": "true",
         "shape": "east_west",
-        "open": "false"
+        "reversed": "false",
+        "open": "false",
+        "in_wall": "true"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall",
@@ -191,10 +191,10 @@
     },
     {
       "when": {
-        "reversed": "true",
-        "in_wall": "true",
         "shape": "east_west",
-        "open": "false"
+        "reversed": "true",
+        "open": "false",
+        "in_wall": "true"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall",
@@ -203,10 +203,10 @@
     },
     {
       "when": {
-        "reversed": "false",
-        "in_wall": "true",
         "shape": "north_south",
-        "open": "true"
+        "reversed": "false",
+        "open": "true",
+        "in_wall": "true"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall_open",
@@ -215,10 +215,10 @@
     },
     {
       "when": {
-        "reversed": "true",
-        "in_wall": "true",
         "shape": "north_south",
-        "open": "true"
+        "reversed": "true",
+        "open": "true",
+        "in_wall": "true"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall_open"
@@ -226,10 +226,10 @@
     },
     {
       "when": {
-        "reversed": "false",
-        "in_wall": "true",
         "shape": "east_west",
-        "open": "true"
+        "reversed": "false",
+        "open": "true",
+        "in_wall": "true"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall_open",
@@ -238,10 +238,10 @@
     },
     {
       "when": {
-        "reversed": "true",
-        "in_wall": "true",
         "shape": "east_west",
-        "open": "true"
+        "reversed": "true",
+        "open": "true",
+        "in_wall": "true"
       },
       "apply": {
         "model": "minecraft:block/oak_fence_gate_wall_open",

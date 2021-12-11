@@ -21,9 +21,6 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
 
   public static final BooleanProperty PARENT = BooleanProperty.create("parent");
 
-  /**
-   * Create a new multiblock TE.
-   */
   public MultiblockBlock(Properties properties) {
     super(properties);
     // TODO: this MIGHT be causing stupid overhead (placing defaultstate is slow)
@@ -36,10 +33,9 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
   }
 
   @Override
-  protected void createBlockStateDefinition(
-      StateDefinition.Builder<Block, BlockState> stateContainer) {
-    super.createBlockStateDefinition(stateContainer);
-    stateContainer.add(PARENT);
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    super.createBlockStateDefinition(builder);
+    builder.add(PARENT);
   }
 
   @Override

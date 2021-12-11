@@ -1,4 +1,4 @@
-package mods.railcraft.data;
+package mods.railcraft.data.models;
 
 import java.util.Optional;
 import mods.railcraft.Railcraft;
@@ -6,7 +6,7 @@ import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 
-public class Models {
+public class RailcraftModelTemplates {
 
   public static final ModelTemplate POST_COLUMN =
       create("template_post_full_column", "_full_column", TextureSlot.TEXTURE);
@@ -31,6 +31,8 @@ public class Models {
 
   public static final ResourceLocation BUFFER_STOP =
       new ResourceLocation(Railcraft.ID, "block/buffer_stop");
+
+  public static final ModelTemplate STEEL_ANVIL = create("template_steel_anvil", TextureSlot.TOP);
 
   private static ModelTemplate create(String name, TextureSlot... textureAliases) {
     return new ModelTemplate(Optional.of(new ResourceLocation(Railcraft.ID, "block/" + name)),

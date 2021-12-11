@@ -1,4 +1,4 @@
-package mods.railcraft.data;
+package mods.railcraft.data.models;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -11,11 +11,11 @@ import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.world.item.Item;
 import net.minecraft.resources.ResourceLocation;
 
-public class RailcraftItemModelProvider {
+public class RailcraftItemModelGenerators {
 
   private final BiConsumer<ResourceLocation, Supplier<JsonElement>> output;
 
-  public RailcraftItemModelProvider(BiConsumer<ResourceLocation, Supplier<JsonElement>> output) {
+  public RailcraftItemModelGenerators(BiConsumer<ResourceLocation, Supplier<JsonElement>> output) {
     this.output = output;
   }
 
@@ -43,6 +43,18 @@ public class RailcraftItemModelProvider {
 
     this.generateFlatItem(RailcraftItems.GOGGLES.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.OVERALLS.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_SHEARS.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_BOOTS.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_CHESTPLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_LEGGINGS.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_HELMET.get(), ModelTemplates.FLAT_ITEM);
+
+    this.generateFlatItem(RailcraftItems.CREOSOTE_BUCKET.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.TICKET.get(), ModelTemplates.FLAT_ITEM);
 

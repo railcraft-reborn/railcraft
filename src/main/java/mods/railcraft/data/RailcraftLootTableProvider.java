@@ -28,7 +28,7 @@ public class RailcraftLootTableProvider extends LootTableProvider {
   protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
     ImmutableList.Builder<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> builder =
         ImmutableList.builder();
-    builder.add(Pair.of(RailcraftBlockLootTable::new, LootContextParamSets.BLOCK));
+    builder.add(Pair.of(RailcraftBlockLoot::new, LootContextParamSets.BLOCK));
     return builder.build();
   }
 

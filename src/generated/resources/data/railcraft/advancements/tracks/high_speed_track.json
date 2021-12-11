@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "railcraft:high_speed_track"
+            "items": [
+              "railcraft:high_speed_track"
+            ]
           }
         ]
       }

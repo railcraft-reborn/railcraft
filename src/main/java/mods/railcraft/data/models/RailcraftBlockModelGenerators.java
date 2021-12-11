@@ -1,4 +1,4 @@
-package mods.railcraft.data;
+package mods.railcraft.data.models;
 
 import com.google.gson.JsonElement;
 
@@ -51,7 +51,7 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 
-public class RailcraftBlockModelProvider {
+public class RailcraftBlockModelGenerators {
 
   private final Consumer<BlockStateGenerator> blockStateOutput;
   private final BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput;
@@ -86,7 +86,7 @@ public class RailcraftBlockModelProvider {
   private final StraightTrackModels travelDetectorTrackModels;
   private final StraightTrackModels activeTravelDetectotTrackModels;
 
-  public RailcraftBlockModelProvider(Consumer<BlockStateGenerator> blockStateOutput,
+  public RailcraftBlockModelGenerators(Consumer<BlockStateGenerator> blockStateOutput,
       BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput,
       Consumer<Item> skippedAutoModelsOutput) {
     this.blockStateOutput = blockStateOutput;
@@ -164,47 +164,13 @@ public class RailcraftBlockModelProvider {
     this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
         TexturedModel.CUBE_TOP_BOTTOM);
 
-    // TODO cleanup, this is disgusting.
-    final Block cokeBrick = RailcraftBlocks.COKE_OVEN_BRICKS.get();
-    final ResourceLocation cokeDefaultState =
-        TexturedModel.CUBE.create(cokeBrick, this.modelOutput);
-    final ResourceLocation cokeParentState =
-        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(cokeBrick,
-          "_parent",
-          ((new TextureMapping()).put(
-            TextureSlot.SIDE,
-            TextureMapping.getBlockTexture(cokeBrick, "_parent"))
-              .put(TextureSlot.TOP, TextureMapping.getBlockTexture(cokeBrick))
-              .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(cokeBrick))
-          ),
-          this.modelOutput);
-    final ResourceLocation cokeParentStateOn =
-        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(cokeBrick,
-          "_parent_on",
-          ((new TextureMapping()).put(
-            TextureSlot.SIDE,
-            TextureMapping.getBlockTexture(cokeBrick, "_parent_on"))
-              .put(TextureSlot.TOP, TextureMapping.getBlockTexture(cokeBrick))
-              .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(cokeBrick))
-          ),
-          this.modelOutput);
+    this.createTrivialCube(RailcraftBlocks.STEEL_BLOCK.get());
 
-    this.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(cokeBrick).with(
-            PropertyDispatch.properties(CokeOvenBricksBlock.LIT,
-                CokeOvenBricksBlock.PARENT)
-            .select(false, false, Variant.variant()
-                .with(VariantProperties.MODEL, cokeDefaultState))
-            .select(true, false, Variant.variant()
-                .with(VariantProperties.MODEL, cokeDefaultState))
-            .select(false, true, Variant.variant()
-                .with(VariantProperties.MODEL, cokeParentState))
-            .select(true, true, Variant.variant()
-              .with(VariantProperties.MODEL, cokeParentStateOn))
-            ));
+    this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
+    this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
+    this.createSteelAnvil(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
-    // this.skipAutoItemBlock(RailcraftBlocks.ELEVATOR_TRACK.get());
-    // this.createSimpleFlatItemModel(RailcraftBlocks.ELEVATOR_TRACK.get(), "_off");
+    this.createCokeOvenBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
 
     this.createPost(RailcraftBlocks.BLACK_POST.get());
     this.createPost(RailcraftBlocks.RED_POST.get());
@@ -301,6 +267,10 @@ public class RailcraftBlockModelProvider {
     this.skippedAutoModelsOutput.accept(block.asItem());
   }
 
+  private void createTrivialCube(Block block) {
+    this.createTrivialBlock(block, TexturedModel.CUBE);
+  }
+
   private void createTrivialBlock(Block block, TexturedModel.Provider textureFactory) {
     this.blockStateOutput.accept(
         createSimpleBlock(block, textureFactory.create(block, this.modelOutput)));
@@ -352,11 +322,60 @@ public class RailcraftBlockModelProvider {
         this.modelOutput);
   }
 
+  private void createSteelAnvil(Block block) {
+    var model = RailcraftTexturedModel.STEEL_ANVIL.create(block, this.modelOutput);
+    this.blockStateOutput.accept(
+        createSimpleBlock(block, model).with(createHorizontalFacingDispatchAlt()));
+  }
+
+  private void createCokeOvenBricks(Block block) {
+    var bricksModel = TexturedModel.CUBE.create(block, this.modelOutput);
+    var furnaceModel =
+        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_furnace",
+            new TextureMapping()
+                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_furnace"))
+                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block))
+                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block)),
+            this.modelOutput);
+    var litFurnaceModel =
+        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_furnace_on",
+            new TextureMapping()
+                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_furnace_on"))
+                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block))
+                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block)),
+            this.modelOutput);
+
+    this.blockStateOutput.accept(
+        MultiVariantGenerator.multiVariant(block).with(
+            PropertyDispatch.properties(CokeOvenBricksBlock.LIT, CokeOvenBricksBlock.PARENT)
+                .select(false, false, Variant.variant()
+                    .with(VariantProperties.MODEL, bricksModel))
+                .select(true, false, Variant.variant()
+                    .with(VariantProperties.MODEL, bricksModel))
+                .select(false, true, Variant.variant()
+                    .with(VariantProperties.MODEL, furnaceModel))
+                .select(true, true, Variant.variant()
+                    .with(VariantProperties.MODEL, litFurnaceModel))));
+  }
+
+  private static PropertyDispatch createHorizontalFacingDispatchAlt() {
+    return PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+        .select(Direction.SOUTH, Variant.variant())
+        .select(Direction.WEST,
+            Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+        .select(Direction.NORTH,
+            Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+        .select(Direction.EAST,
+            Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+  }
+
   private void createElevatorTrack(Block block) {
-    ResourceLocation model =
-        Models.ELEVATOR_TRACK.create(block, TextureMapping.defaultTexture(block), this.modelOutput);
-    ResourceLocation activeModel = this.createSuffixedVariant(block, "_on", Models.ELEVATOR_TRACK,
-        TextureMapping::defaultTexture);
+    var model =
+        RailcraftModelTemplates.ELEVATOR_TRACK.create(block, TextureMapping.defaultTexture(block),
+            this.modelOutput);
+    var activeModel =
+        this.createSuffixedVariant(block, "_on", RailcraftModelTemplates.ELEVATOR_TRACK,
+            TextureMapping::defaultTexture);
 
     this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
         .with(PropertyDispatch
@@ -386,7 +405,7 @@ public class RailcraftBlockModelProvider {
 
   private void createFluidManipulator(Block block) {
     this.createManipulator(block);
-    ResourceLocation model =
+    var model =
         ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_inventory",
             new TextureMapping()
                 .put(TextureSlot.SIDE,
@@ -398,7 +417,7 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createManipulator(Block block) {
-    ResourceLocation model =
+    var model =
         ModelTemplates.CUBE_BOTTOM_TOP.create(block, TextureMapping.cubeBottomTop(block),
             this.modelOutput);
     this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block,
@@ -407,17 +426,17 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createDirectionalManipulator(Block block, DirectionProperty facingProperty) {
-    ResourceLocation horizontalModel =
+    var horizontalModel =
         ModelTemplates.CUBE_ORIENTABLE.create(block, TextureMapping.orientableCubeOnlyTop(block),
             this.modelOutput);
-    ResourceLocation upModel =
+    var upModel =
         ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_up",
             new TextureMapping()
                 .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_front"))
                 .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_top")),
             this.modelOutput);
-    ResourceLocation downModel =
+    var downModel =
         ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_down",
             new TextureMapping()
                 .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
@@ -456,21 +475,21 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createPost(Block block) {
-    TextureMapping textures = TextureMapping.defaultTexture(block);
-    ResourceLocation fullColumnModel = Models.POST_COLUMN.create(block,
-        textures, this.modelOutput);
-    ResourceLocation doubleConnectionModel = Models.POST_DOUBLE_CONNECTION.create(block,
-        textures, this.modelOutput);
-    ResourceLocation topColumnModel = Models.POST_TOP_COLUMN.create(block,
-        textures, this.modelOutput);
-    ResourceLocation middleColumnModel = Models.POST_SMALL_COLUMN.create(block,
-        textures, this.modelOutput);
-    ResourceLocation platformModel = Models.POST_PLATFORM.create(block,
-        textures, this.modelOutput);
-    ResourceLocation singleConnectionModel = Models.POST_SINGLE_CONNECTION.create(block,
-        textures, this.modelOutput);
-    ResourceLocation inventoryModel = Models.POST_INVENTORY.create(block,
-        textures, this.modelOutput);
+    var textures = TextureMapping.defaultTexture(block);
+    var fullColumnModel = RailcraftModelTemplates.POST_COLUMN.create(
+        block, textures, this.modelOutput);
+    var doubleConnectionModel = RailcraftModelTemplates.POST_DOUBLE_CONNECTION.create(
+        block, textures, this.modelOutput);
+    var topColumnModel = RailcraftModelTemplates.POST_TOP_COLUMN.create(
+        block, textures, this.modelOutput);
+    var middleColumnModel = RailcraftModelTemplates.POST_SMALL_COLUMN.create(
+        block, textures, this.modelOutput);
+    var platformModel = RailcraftModelTemplates.POST_PLATFORM.create(
+        block, textures, this.modelOutput);
+    var singleConnectionModel = RailcraftModelTemplates.POST_SINGLE_CONNECTION.create(
+        block, textures, this.modelOutput);
+    var inventoryModel =
+        RailcraftModelTemplates.POST_INVENTORY.create(block, textures, this.modelOutput);
     this.delegateItemModel(block, inventoryModel);
     this.blockStateOutput.accept(
         MultiPartGenerator.multiPart(block)
@@ -559,21 +578,21 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createAbandonedFlexTrack(Block block) {
-    TextureMapping texture0 =
+    var texture0 =
         TextureMapping.rail(TextureMapping.getBlockTexture(block, "_0"));
-    TextureMapping texture1 =
+    var texture1 =
         TextureMapping.rail(TextureMapping.getBlockTexture(block, "_1"));
-    TextureMapping cornerTextures =
+    var cornerTextures =
         TextureMapping.rail(TextureMapping.getBlockTexture(block, "_corner"));
-    ResourceLocation flatModel0 =
+    var flatModel0 =
         ModelTemplates.RAIL_FLAT.createWithSuffix(block, "_0", texture0, this.modelOutput);
-    ResourceLocation flatModel1 =
+    var flatModel1 =
         ModelTemplates.RAIL_FLAT.createWithSuffix(block, "_1", texture1, this.modelOutput);
-    ResourceLocation cornerModel =
+    var cornerModel =
         ModelTemplates.RAIL_CURVED.create(block, cornerTextures, this.modelOutput);
-    ResourceLocation raisedNorthEastModel =
+    var raisedNorthEastModel =
         ModelTemplates.RAIL_RAISED_NE.create(block, texture0, this.modelOutput);
-    ResourceLocation raisedSouthWestModel =
+    var raisedSouthWestModel =
         ModelTemplates.RAIL_RAISED_SW.create(block, texture0, this.modelOutput);
 
     this.createSimpleFlatItemModel(block, "_0");
@@ -656,7 +675,7 @@ public class RailcraftBlockModelProvider {
   private void createOutfittedTracks(Block block, Block lockingTrackBlock,
       Block bufferStopTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
       Block controlTrackBlock, Block gatedTrackBlock, Block detectorTrackBlock) {
-    StraightTrackModels outfittedTrackModels = this.createOutfittedTrackModels(block);
+    var outfittedTrackModels = this.createOutfittedTrackModels(block);
     this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.getFlatModel());
     this.createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.getFlatModel());
     this.createActiveOutfittedTrack(activatorTrackBlock, true, outfittedTrackModels,
@@ -672,7 +691,7 @@ public class RailcraftBlockModelProvider {
       Block lockingTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
       Block detectorTrackBlock) {
     this.createFlexTrack(block);
-    StraightTrackModels outfittedTrackModels = this.createOutfittedTrackModels(block);
+    var outfittedTrackModels = this.createOutfittedTrackModels(block);
     this.createTransitionTrack(transitionTrackBlock, outfittedTrackModels);
     this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.getFlatModel());
     this.createActiveOutfittedTrack(activatorTrackBlock, true, outfittedTrackModels,
@@ -683,16 +702,13 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createFlexTrack(Block block) {
-    TextureMapping textures = TextureMapping.rail(block);
-    TextureMapping cornerTextures =
-        TextureMapping.rail(TextureMapping.getBlockTexture(block, "_corner"));
-    ResourceLocation flatModel =
-        ModelTemplates.RAIL_FLAT.create(block, textures, this.modelOutput);
-    ResourceLocation cornerModel =
-        ModelTemplates.RAIL_CURVED.create(block, cornerTextures, this.modelOutput);
-    ResourceLocation raisedNorthEastModel =
+    var textures = TextureMapping.rail(block);
+    var cornerTextures = TextureMapping.rail(TextureMapping.getBlockTexture(block, "_corner"));
+    var flatModel = ModelTemplates.RAIL_FLAT.create(block, textures, this.modelOutput);
+    var cornerModel = ModelTemplates.RAIL_CURVED.create(block, cornerTextures, this.modelOutput);
+    var raisedNorthEastModel =
         ModelTemplates.RAIL_RAISED_NE.create(block, textures, this.modelOutput);
-    ResourceLocation raisedSouthWestModel =
+    var raisedSouthWestModel =
         ModelTemplates.RAIL_RAISED_SW.create(block, textures, this.modelOutput);
 
     this.createSimpleFlatItemModel(block);
@@ -728,13 +744,13 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createTurnoutTrack(Block block) {
-    ResourceLocation northModel = this.createSuffixedVariant(block, "_north",
+    var northModel = this.createSuffixedVariant(block, "_north",
         ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    ResourceLocation northSwitchedModel = this.createSuffixedVariant(block, "_north_switched",
+    var northSwitchedModel = this.createSuffixedVariant(block, "_north_switched",
         ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    ResourceLocation southModel = this.createSuffixedVariant(block, "_south",
+    var southModel = this.createSuffixedVariant(block, "_south",
         ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    ResourceLocation southSwitchedModel = this.createSuffixedVariant(block, "_south_switched",
+    var southSwitchedModel = this.createSuffixedVariant(block, "_south_switched",
         ModelTemplates.RAIL_FLAT, TextureMapping::rail);
 
     this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
@@ -790,13 +806,13 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createWyeTrack(Block block) {
-    ResourceLocation eastModel = this.createSuffixedVariant(block, "_east",
+    var eastModel = this.createSuffixedVariant(block, "_east",
         ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    ResourceLocation eastSwitchedModel = this.createSuffixedVariant(block, "_east_switched",
+    var eastSwitchedModel = this.createSuffixedVariant(block, "_east_switched",
         ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    ResourceLocation westModel = this.createSuffixedVariant(block, "_west",
+    var westModel = this.createSuffixedVariant(block, "_west",
         ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    ResourceLocation westSwitchedModel = this.createSuffixedVariant(block, "_west_switched",
+    var westSwitchedModel = this.createSuffixedVariant(block, "_west_switched",
         ModelTemplates.RAIL_FLAT, TextureMapping::rail);
 
     this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
@@ -828,7 +844,7 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createLockingTrack(Block block, ResourceLocation trackModel) {
-    MultiPartGenerator blockState = MultiPartGenerator.multiPart(block)
+    var blockState = MultiPartGenerator.multiPart(block)
         .with(
             Condition.condition()
                 .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
@@ -909,27 +925,27 @@ public class RailcraftBlockModelProvider {
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false), // North
             Variant.variant()
-                .with(VariantProperties.MODEL, Models.BUFFER_STOP))
+                .with(VariantProperties.MODEL, RailcraftModelTemplates.BUFFER_STOP))
         .with(
             Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true), // South
             Variant.variant()
-                .with(VariantProperties.MODEL, Models.BUFFER_STOP)
+                .with(VariantProperties.MODEL, RailcraftModelTemplates.BUFFER_STOP)
                 .with(VariantProperties.Y_ROT, Rotation.R180))
         .with(
             Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, false), // East
             Variant.variant()
-                .with(VariantProperties.MODEL, Models.BUFFER_STOP)
+                .with(VariantProperties.MODEL, RailcraftModelTemplates.BUFFER_STOP)
                 .with(VariantProperties.Y_ROT, Rotation.R90))
         .with(
             Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
                 .term(ReversibleOutfittedTrackBlock.REVERSED, true), // West
             Variant.variant()
-                .with(VariantProperties.MODEL, Models.BUFFER_STOP)
+                .with(VariantProperties.MODEL, RailcraftModelTemplates.BUFFER_STOP)
                 .with(VariantProperties.Y_ROT, Rotation.R270))
         .with(
             Condition.condition()
@@ -950,7 +966,7 @@ public class RailcraftBlockModelProvider {
       StraightTrackModels trackModels, StraightTrackModels trackKitModels,
       StraightTrackModels activeTrackKitModels) {
 
-    MultiPartGenerator blockState = MultiPartGenerator.multiPart(block)
+    var blockState = MultiPartGenerator.multiPart(block)
         .with(
             Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
@@ -1223,7 +1239,7 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createTransitionTrack(Block block, StraightTrackModels trackModels) {
-    MultiPartGenerator blockState = MultiPartGenerator.multiPart(block)
+    var blockState = MultiPartGenerator.multiPart(block)
         .with(
             Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
@@ -1365,16 +1381,16 @@ public class RailcraftBlockModelProvider {
   }
 
   private void createGatedTrack(Block block, StraightTrackModels trackModels) {
-    ResourceLocation closedGateModel =
+    var closedGateModel =
         ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE);
-    ResourceLocation openGateModel =
+    var openGateModel =
         ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_open");
-    ResourceLocation closedWallGateModel =
+    var closedWallGateModel =
         ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall");
-    ResourceLocation openWallGateModel =
+    var openWallGateModel =
         ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall_open");
 
-    MultiPartGenerator blockState = MultiPartGenerator.multiPart(block)
+    var blockState = MultiPartGenerator.multiPart(block)
         .with(
             Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),

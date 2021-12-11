@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/template_steel_anvil",
+  "textures": {
+    "top": "railcraft:block/chipped_steel_anvil_top"
+  }
+}

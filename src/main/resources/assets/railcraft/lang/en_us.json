@@ -17,6 +17,10 @@
 
     "__DESC.blocks": "======= Blocks =======",
 
+    "block.railcraft.steel_block": "Steel Block",
+    "block.railcraft.steel_anvil": "Steel Anvil",
+    "block.railcraft.chipped_steel_anvil": "Chipped Steel Anvil",
+    "block.railcraft.damaged_steel_anvil": "Damaged Steel Anvil",
     "block.railcraft.fluid_loader": "Fluid Loader",
     "block.railcraft.fluid_unloader": "Fluid Unloader",
     "block.railcraft.advanced_item_loader": "Advanced Item Loader",
@@ -118,6 +122,16 @@
 
     "__DESC.items": "======= Items =======",
 
+    "item.railcraft.steel_shears": "Steel Shears",
+    "item.railcraft.steel_sword": "Steel Sword",
+    "item.railcraft.steel_shovel": "Steel Shovel",
+    "item.railcraft.steel_pickaxe": "Steel Pickaxe",
+    "item.railcraft.steel_axe": "Steel Axe",
+    "item.railcraft.steel_hoe": "Steel Hoe",
+    "item.railcraft.steel_boots": "Steel Boots",
+    "item.railcraft.steel_chestplate": "Steel Chestplate",
+    "item.railcraft.steel_helmet": "Steel Helmet",
+    "item.railcraft.steel_leggings": "Steel Leggings",
     "item.railcraft.iron_tunnel_bore_head": "Iron Tunnel Bore Head",
     "item.railcraft.bronze_tunnel_bore_head": "Bronze Tunnel Bore Head",
     "item.railcraft.steel_tunnel_bore_head": "Steel Tunnel Bore Head",

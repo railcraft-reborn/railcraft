@@ -7,11 +7,11 @@ import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.RailcraftAdvancementProviders;
-import mods.railcraft.data.RailcraftBlockStateProvider;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.RailcraftRecipiesProvider;
+import mods.railcraft.data.models.RailcraftModelProvider;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.network.play.LinkedCartsMessage;
@@ -150,7 +150,7 @@ public class Railcraft {
     generator.addProvider(new RailcraftLootTableProvider(generator));
     generator.addProvider(new RailcraftAdvancementProviders(generator, fileHelper));
     generator.addProvider(new RailcraftRecipiesProvider(generator));
-    generator.addProvider(new RailcraftBlockStateProvider(generator));
+    generator.addProvider(new RailcraftModelProvider(generator));
   }
 
   @SubscribeEvent

@@ -1,4 +1,4 @@
-package mods.railcraft.data;
+package mods.railcraft.data.models;
 
 import java.nio.file.Path;
 import java.util.HashSet;
@@ -26,14 +26,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class RailcraftBlockStateProvider implements DataProvider {
+public class RailcraftModelProvider implements DataProvider {
 
   private static final Logger logger = LogManager.getLogger();
   private static final Gson gson =
       new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
   private final DataGenerator generator;
 
-  public RailcraftBlockStateProvider(DataGenerator generator) {
+  public RailcraftModelProvider(DataGenerator generator) {
     this.generator = generator;
   }
 
@@ -55,9 +55,9 @@ public class RailcraftBlockStateProvider implements DataProvider {
     };
 
     Set<Item> skippedAutoModels = new HashSet<>();
-    new RailcraftBlockModelProvider(blockStateConsumer, modelConsumer, skippedAutoModels::add)
+    new RailcraftBlockModelGenerators(blockStateConsumer, modelConsumer, skippedAutoModels::add)
         .run();
-    new RailcraftItemModelProvider(modelConsumer).run();
+    new RailcraftItemModelGenerators(modelConsumer).run();
 
 
     RailcraftBlocks.BLOCKS.getEntries().forEach((block) -> {
@@ -74,9 +74,9 @@ public class RailcraftBlockStateProvider implements DataProvider {
     Path outputFolder = this.generator.getOutputFolder();
 
     this.saveCollection(directoryCache, outputFolder, blockStates,
-        RailcraftBlockStateProvider::createBlockStatePath);
+        RailcraftModelProvider::createBlockStatePath);
     this.saveCollection(directoryCache, outputFolder, models,
-        RailcraftBlockStateProvider::createModelPath);
+        RailcraftModelProvider::createModelPath);
   }
 
   private <T> void saveCollection(HashCache p_240081_1_, Path p_240081_2_,

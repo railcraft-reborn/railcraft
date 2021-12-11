@@ -37,7 +37,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   public static final double START_BOOST = 0.04;
   public static final double BOOST_FACTOR = 0.06;
 
-  private UUID id = UUID.randomUUID();
+  private UUID lockId = UUID.randomUUID();
 
   private LockingModeController lockingModeController;
 
@@ -141,20 +141,16 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
     this.releaseCart(); // Release any carts still holding on
   }
 
-  public UUID getId() {
-    return this.id;
-  }
-
   private void lockCurrentCart() {
     if (this.currentCart != null) {
       HighSpeedTools.performHighSpeedChecks(this.level, this.getBlockPos(), this.currentCart);
       Train train = Train.get(this.currentCart).orElse(null);
       if (this.currentTrain != train && this.currentTrain != null) {
-        this.currentTrain.removeLock(this.id);
+        this.currentTrain.removeLock(this.lockId);
       }
       this.currentTrain = train;
       if (this.currentTrain != null) {
-        this.currentTrain.addLock(this.id);
+        this.currentTrain.addLock(this.lockId);
       }
       MinecraftForge.EVENT_BUS.post(
           new CartLockdownEvent.Lock(this.currentCart, this.getBlockPos()));
@@ -179,7 +175,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
 
   private void releaseCurrentCart() {
     if (this.currentTrain != null) {
-      this.currentTrain.removeLock(this.id);
+      this.currentTrain.removeLock(this.lockId);
     }
     if (this.currentCart != null) {
       MinecraftForge.EVENT_BUS
@@ -288,7 +284,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
     if (this.currentCart != null) {
       tag.putUUID("currentCartId", this.currentCart.getUUID());
     }
-    tag.putUUID("id", this.id);
+    tag.putUUID("lockId", this.lockId);
   }
 
   @Override
@@ -306,7 +302,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
     if (tag.hasUUID("currentCartId")) {
       this.currentCartId = tag.getUUID("currentCartId");
     }
-    this.id = tag.getUUID("id");
+    this.lockId = tag.getUUID("lockId");
   }
 
   @Override

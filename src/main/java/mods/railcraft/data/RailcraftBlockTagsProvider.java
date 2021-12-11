@@ -113,6 +113,10 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE.get());
+
+    this.tag(BlockTags.ANVIL)
+        .add(RailcraftBlocks.STEEL_ANVIL.get(), RailcraftBlocks.CHIPPED_STEEL_ANVIL.get(),
+            RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
   }
 
   @Override

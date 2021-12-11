@@ -12,11 +12,17 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -45,6 +51,75 @@ public class RailcraftItems {
           return new ItemStack(IRON_DETECTOR_TRACK.get());
         }
       };
+
+  public static final RegistryObject<Item> STEEL_ANVIL =
+      ITEMS.register("steel_anvil",
+          () -> new BlockItem(RailcraftBlocks.STEEL_ANVIL.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> CHIPPED_STEEL_ANVIL =
+      ITEMS.register("chipped_steel_anvil",
+          () -> new BlockItem(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> DAMAGED_STEEL_ANVIL =
+      ITEMS.register("damaged_steel_anvil",
+          () -> new BlockItem(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_BLOCK =
+      ITEMS.register("steel_block",
+          () -> new BlockItem(RailcraftBlocks.STEEL_BLOCK.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_SHEARS =
+      ITEMS.register("steel_shears",
+          () -> new ShearsItem(new Item.Properties()
+              .durability(500)
+              .tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_SWORD =
+      ITEMS.register("steel_sword",
+          () -> new SwordItem(RailcraftItemTier.STEEL, 3, -2.4F,
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_SHOVEL =
+      ITEMS.register("steel_shovel",
+          () -> new ShovelItem(RailcraftItemTier.STEEL, 1.5F, -3.0F,
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_PICKAXE =
+      ITEMS.register("steel_pickaxe",
+          () -> new PickaxeItem(RailcraftItemTier.STEEL, 1, -2.8F,
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_AXE =
+      ITEMS.register("steel_axe",
+          () -> new AxeItem(RailcraftItemTier.STEEL, 8.0F, -3F,
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_HOE =
+      ITEMS.register("steel_hoe",
+          () -> new HoeItem(RailcraftItemTier.STEEL, -2, -0.5F,
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_BOOTS =
+      ITEMS.register("steel_boots",
+          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, EquipmentSlot.FEET,
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_CHESTPLATE =
+      ITEMS.register("steel_chestplate",
+          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, EquipmentSlot.CHEST,
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_HELMET =
+      ITEMS.register("steel_helmet",
+          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, EquipmentSlot.HEAD,
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEEL_LEGGINGS =
+      ITEMS.register("steel_leggings",
+          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, EquipmentSlot.LEGS,
+              new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> IRON_TUNNEL_BORE_HEAD =
       ITEMS.register("iron_tunnel_bore_head",
