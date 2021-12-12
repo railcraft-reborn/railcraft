@@ -47,9 +47,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, IChargeBloc
   public TrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(false, properties);
     this.trackType = trackType;
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(WATERLOGGED, false));
+    this.registerDefaultState(this.buildDefaultState(this.stateDefinition.any()));
   }
 
   @Override
@@ -60,6 +58,12 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, IChargeBloc
   @Override
   public Property<RailShape> getShapeProperty() {
     return SHAPE;
+  }
+
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return blockState
+        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
+        .setValue(WATERLOGGED, false);
   }
 
   @Override

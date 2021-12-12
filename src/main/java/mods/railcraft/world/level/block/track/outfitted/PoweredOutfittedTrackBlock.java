@@ -22,10 +22,12 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
   public PoweredOutfittedTrackBlock(Supplier<? extends TrackType> trackType,
       Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(WATERLOGGED, false)
-        .setValue(POWERED, false));
+  }
+
+  @Override
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return super.buildDefaultState(blockState)
+        .setValue(POWERED, false);
   }
 
   @Override
@@ -48,6 +50,11 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
   @Override
   public void setPowered(BlockState blockState, Level level, BlockPos pos, boolean powered) {
     level.setBlockAndUpdate(pos, blockState.setValue(POWERED, powered));
+  }
+
+  @Override
+  public int getPowerPropagation(BlockState blockState, Level level, BlockPos blockPos) {
+    return 0;
   }
 
   @Override

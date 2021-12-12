@@ -25,6 +25,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.ABANDONED_GATED_TRACK);
     cutout(RailcraftBlocks.ABANDONED_DETECTOR_TRACK);
     cutout(RailcraftBlocks.ABANDONED_COUPLER_TRACK);
+    cutout(RailcraftBlocks.ABANDONED_EMBARKING_TRACK);
+    cutout(RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_LOCKING_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK);
@@ -34,6 +36,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.ELECTRIC_GATED_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_DETECTOR_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_COUPLER_TRACK);
+    cutout(RailcraftBlocks.ELECTRIC_EMBARKING_TRACK);
+    cutout(RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK);
@@ -54,6 +58,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.IRON_GATED_TRACK);
     cutout(RailcraftBlocks.IRON_DETECTOR_TRACK);
     cutout(RailcraftBlocks.IRON_COUPLER_TRACK);
+    cutout(RailcraftBlocks.IRON_EMBARKING_TRACK);
+    cutout(RailcraftBlocks.IRON_DISEMBARKING_TRACK);
     cutout(RailcraftBlocks.REINFORCED_TRACK);
     cutout(RailcraftBlocks.REINFORCED_LOCKING_TRACK);
     cutout(RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK);
@@ -63,6 +69,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.REINFORCED_GATED_TRACK);
     cutout(RailcraftBlocks.REINFORCED_DETECTOR_TRACK);
     cutout(RailcraftBlocks.REINFORCED_COUPLER_TRACK);
+    cutout(RailcraftBlocks.REINFORCED_EMBARKING_TRACK);
+    cutout(RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK);
@@ -72,6 +80,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.STRAP_IRON_GATED_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_COUPLER_TRACK);
+    cutout(RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK);
+    cutout(RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK);
     cutout(RailcraftBlocks.TURNOUT_TRACK);
     cutout(RailcraftBlocks.WYE_TRACK);
     cutout(RailcraftBlocks.FORCE_TRACK_EMITTER);

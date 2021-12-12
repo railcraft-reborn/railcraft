@@ -81,11 +81,10 @@ public final class CartTools {
   }
 
   public static void removePassengers(AbstractMinecart cart, double x, double y, double z) {
-    List<Entity> passengers = cart.getPassengers();
+    var passengers = cart.getPassengers();
     cart.ejectPassengers();
-    for (Entity entity : passengers) {
-      if (entity instanceof ServerPlayer) {
-        ServerPlayer player = ((ServerPlayer) entity);
+    for (var entity : passengers) {
+      if (entity instanceof ServerPlayer player) {
         player.setPos(x, y, z);
       } else
         entity.moveTo(x, y, z, entity.getYRot(), entity.getXRot());

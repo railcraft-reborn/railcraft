@@ -4,6 +4,7 @@ import mods.railcraft.RailcraftDist;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
 import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
+import mods.railcraft.client.gui.screen.EmbarkingTrackScreen;
 import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
 import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.SwitchTrackMotorScreen;
@@ -49,8 +50,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.GrassColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -239,5 +242,9 @@ public class ClientDist implements RailcraftDist {
 
   public static void openSwitchTrackMotorScreen(SwitchTrackMotorBlockEntity switchTrackMotor) {
     Minecraft.getInstance().setScreen(new SwitchTrackMotorScreen(switchTrackMotor));
+  }
+
+  public static void openEmbarkingTrackScreen(BlockState blockState, BlockPos blockPos) {
+    Minecraft.getInstance().setScreen(new EmbarkingTrackScreen(blockState, blockPos));
   }
 }
