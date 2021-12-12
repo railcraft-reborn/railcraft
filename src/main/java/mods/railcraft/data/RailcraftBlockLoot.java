@@ -39,6 +39,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftItems.GATED_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ABANDONED_COUPLER_TRACK.get(),
+        RailcraftItems.COUPLER_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
@@ -55,6 +57,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftItems.GATED_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ELECTRIC_COUPLER_TRACK.get(),
+        RailcraftItems.COUPLER_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.HIGH_SPEED_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
@@ -94,6 +98,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftItems.GATED_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.IRON_COUPLER_TRACK.get(),
+        RailcraftItems.COUPLER_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.REINFORCED_TRACK.get());
     this.dropOther(RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
@@ -110,6 +116,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftItems.GATED_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.REINFORCED_COUPLER_TRACK.get(),
+        RailcraftItems.COUPLER_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.STRAP_IRON_TRACK.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
@@ -126,6 +134,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftItems.GATED_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.STRAP_IRON_COUPLER_TRACK.get(),
+        RailcraftItems.COUPLER_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.ELEVATOR_TRACK.get());
     this.add(RailcraftBlocks.TURNOUT_TRACK.get(), noDrop());

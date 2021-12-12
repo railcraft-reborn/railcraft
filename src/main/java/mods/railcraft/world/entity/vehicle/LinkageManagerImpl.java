@@ -35,7 +35,7 @@ import net.minecraftforge.fml.loading.FMLLoader;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public enum RailcraftLinkageManager implements LinkageManager {
+public enum LinkageManagerImpl implements LinkageManager {
 
   INSTANCE;
 
@@ -47,10 +47,6 @@ public enum RailcraftLinkageManager implements LinkageManager {
   public static final String LINK_A_LOW = "rcLinkALow";
   public static final String LINK_B_HIGH = "rcLinkBHigh";
   public static final String LINK_B_LOW = "rcLinkBLow";
-
-  public static void printDebug(String msg, Object... args) {
-    logger.debug(msg, args);
-  }
 
   /**
    * Returns the linkage id of the cart and adds the cart the linkage cache.
@@ -98,7 +94,7 @@ public enum RailcraftLinkageManager implements LinkageManager {
         if (hasFreeLink(cart, link)) {
           cart.getPersistentData().putBoolean(link.autoLink, true);
           ret = true;
-          printDebug("Cart {}({}) Set To Auto Link on Link {} With First Collision.",
+          logger.debug("Cart {}({}) Set To Auto Link on Link {} With First Collision.",
               getLinkageId(cart),
               cart.getDisplayName(), link);
         }
@@ -122,7 +118,7 @@ public enum RailcraftLinkageManager implements LinkageManager {
   @Override
   public boolean tryAutoLink(AbstractMinecart cart1, AbstractMinecart cart2) {
     if ((hasAutoLink(cart1) || hasAutoLink(cart2)) && createLink(cart1, cart2)) {
-      printDebug("Automatically Linked Carts {}({}) and {}({}).", getLinkageId(cart1),
+      logger.debug("Automatically Linked Carts {}({}) and {}({}).", getLinkageId(cart1),
           cart1.getDisplayName(),
           getLinkageId(cart2), cart2.getDisplayName());
       return true;
@@ -437,7 +433,7 @@ public enum RailcraftLinkageManager implements LinkageManager {
       ((ILinkableCart) cart).onLinkBroken(other);
     }
 
-    printDebug("Cart {0}({1}) unidirectionally unlinked {2}({3}) at ({4}).", getLinkageId(cart),
+    logger.debug("Cart {0}({1}) unidirectionally unlinked {2}({3}) at ({4}).", getLinkageId(cart),
         cart.getDisplayName(),
         getLinkageId(other), other, linkType.name());
   }
@@ -469,7 +465,7 @@ public enum RailcraftLinkageManager implements LinkageManager {
       return Collections.emptyList();
     }
     return () -> new Iterator<AbstractMinecart>() {
-      private final RailcraftLinkageManager lm = INSTANCE;
+      private final LinkageManagerImpl lm = INSTANCE;
       private @Nullable AbstractMinecart last;
       private @Nullable AbstractMinecart next;
       private AbstractMinecart current = start;

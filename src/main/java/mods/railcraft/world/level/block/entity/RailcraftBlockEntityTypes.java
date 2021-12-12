@@ -16,6 +16,7 @@ import mods.railcraft.world.level.block.entity.signal.SignalInterlockBoxBlockEnt
 import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalSequencerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
+import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
@@ -201,5 +202,16 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.IRON_LOCKING_TRACK.get(),
                   RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
                   RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<CouplerTrackBlockEntity>> COUPLER_TRACK =
+      BLOCK_ENTITY_TYPES.register("coupler_track",
+          () -> BlockEntityType.Builder
+              .of(CouplerTrackBlockEntity::new,
+                  RailcraftBlocks.ABANDONED_COUPLER_TRACK.get(),
+                  RailcraftBlocks.ELECTRIC_COUPLER_TRACK.get(),
+                  RailcraftBlocks.IRON_COUPLER_TRACK.get(),
+                  RailcraftBlocks.REINFORCED_COUPLER_TRACK.get(),
+                  RailcraftBlocks.STRAP_IRON_COUPLER_TRACK.get())
               .build(null));
 }

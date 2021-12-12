@@ -71,8 +71,10 @@ public class FeedStationBlock extends BaseEntityBlock {
       Block neighborBlock, BlockPos neighborPos, boolean moved) {
     if (!level.isClientSide()) {
       var powered = blockState.getValue(POWERED);
-      if (powered != level.hasNeighborSignal(blockPos)) {
-        level.setBlock(blockPos, blockState.setValue(POWERED, powered), Block.UPDATE_CLIENTS);
+      var neighborSignal = level.hasNeighborSignal(blockPos);
+      if (powered != neighborSignal) {
+        level.setBlock(blockPos, blockState.setValue(POWERED, neighborSignal),
+            Block.UPDATE_CLIENTS);
       }
     }
   }

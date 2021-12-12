@@ -120,6 +120,6 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.CONTROL_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.GATED_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.DETECTOR_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
-
+    this.generateFlatItem(RailcraftItems.COUPLER_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
   }
 }

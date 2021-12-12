@@ -51,17 +51,17 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   @Override
   public ItemStack pushStack(AbstractMinecart requester, ItemStack stack) {
     Iterable<AbstractMinecart> carts =
-        RailcraftLinkageManager.INSTANCE.linkIterator(requester,
-            RailcraftLinkageManager.LinkType.LINK_A);
+        LinkageManagerImpl.INSTANCE.linkIterator(requester,
+            LinkageManagerImpl.LinkType.LINK_A);
     stack = _pushStack(requester, carts, stack);
     if (stack.isEmpty()) {
       return ItemStack.EMPTY;
     }
-    if (RailcraftLinkageManager.INSTANCE.hasLink(requester,
-        RailcraftLinkageManager.LinkType.LINK_B)) {
+    if (LinkageManagerImpl.INSTANCE.hasLink(requester,
+        LinkageManagerImpl.LinkType.LINK_B)) {
       carts =
-          RailcraftLinkageManager.INSTANCE.linkIterator(requester,
-              RailcraftLinkageManager.LinkType.LINK_B);
+          LinkageManagerImpl.INSTANCE.linkIterator(requester,
+              LinkageManagerImpl.LinkType.LINK_B);
       stack = _pushStack(requester, carts, stack);
     }
     return stack;
@@ -87,14 +87,14 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   @Override
   public ItemStack pullStack(AbstractMinecart requester, Predicate<ItemStack> filter) {
     Iterable<AbstractMinecart> carts =
-        RailcraftLinkageManager.INSTANCE.linkIterator(requester,
-            RailcraftLinkageManager.LinkType.LINK_A);
+        LinkageManagerImpl.INSTANCE.linkIterator(requester,
+            LinkageManagerImpl.LinkType.LINK_A);
     ItemStack stack = this._pullStack(requester, carts, filter);
     if (!stack.isEmpty()) {
       return stack;
     }
-    carts = RailcraftLinkageManager.INSTANCE.linkIterator(requester,
-        RailcraftLinkageManager.LinkType.LINK_B);
+    carts = LinkageManagerImpl.INSTANCE.linkIterator(requester,
+        LinkageManagerImpl.LinkType.LINK_B);
     return this._pullStack(requester, carts, filter);
   }
 
@@ -175,16 +175,16 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   @Override
   public FluidStack pushFluid(AbstractMinecart requester, FluidStack fluidStack) {
     Iterable<AbstractMinecart> carts =
-        RailcraftLinkageManager.INSTANCE.linkIterator(requester,
-            RailcraftLinkageManager.LinkType.LINK_A);
+        LinkageManagerImpl.INSTANCE.linkIterator(requester,
+            LinkageManagerImpl.LinkType.LINK_A);
     fluidStack = this._pushFluid(requester, carts, fluidStack);
     if (fluidStack == null)
       return null;
-    if (RailcraftLinkageManager.INSTANCE.hasLink(requester,
-        RailcraftLinkageManager.LinkType.LINK_B)) {
+    if (LinkageManagerImpl.INSTANCE.hasLink(requester,
+        LinkageManagerImpl.LinkType.LINK_B)) {
       carts =
-          RailcraftLinkageManager.INSTANCE.linkIterator(requester,
-              RailcraftLinkageManager.LinkType.LINK_B);
+          LinkageManagerImpl.INSTANCE.linkIterator(requester,
+              LinkageManagerImpl.LinkType.LINK_B);
       fluidStack = this._pushFluid(requester, carts, fluidStack);
     }
     return fluidStack;
@@ -216,14 +216,14 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
       return FluidStack.EMPTY;
     }
     Iterable<AbstractMinecart> carts =
-        RailcraftLinkageManager.INSTANCE.linkIterator(requester,
-            RailcraftLinkageManager.LinkType.LINK_A);
+        LinkageManagerImpl.INSTANCE.linkIterator(requester,
+            LinkageManagerImpl.LinkType.LINK_A);
     FluidStack pulled = this._pullFluid(requester, carts, fluidStack);
     if (!pulled.isEmpty()) {
       return pulled;
     }
-    carts = RailcraftLinkageManager.INSTANCE.linkIterator(requester,
-        RailcraftLinkageManager.LinkType.LINK_B);
+    carts = LinkageManagerImpl.INSTANCE.linkIterator(requester,
+        LinkageManagerImpl.LinkType.LINK_B);
     return this._pullFluid(requester, carts, fluidStack);
   }
 

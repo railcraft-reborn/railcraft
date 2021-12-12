@@ -20,7 +20,7 @@ import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.LinkageHandler;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
-import mods.railcraft.world.entity.vehicle.RailcraftLinkageManager;
+import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.entity.vehicle.RailcraftTrainTransferHelper;
 import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
@@ -68,7 +68,7 @@ public class Railcraft {
   private final LinkageHandler linkageHandler = new LinkageHandler();
 
   static {
-    CartUtil.linkageManager = RailcraftLinkageManager.INSTANCE;
+    CartUtil.linkageManager = LinkageManagerImpl.INSTANCE;
     CartUtil.transferHelper = RailcraftTrainTransferHelper.INSTANCE;
   }
 
@@ -170,8 +170,8 @@ public class Railcraft {
         var trainId = Train.getTrainUUID(cart);
         linkedCarts[i] = new LinkedCartsMessage.LinkedCart(
             cart.getId(), trainId,
-            RailcraftLinkageManager.INSTANCE.getLinkA(cart),
-            RailcraftLinkageManager.INSTANCE.getLinkB(cart));
+            LinkageManagerImpl.INSTANCE.getLinkA(cart),
+            LinkageManagerImpl.INSTANCE.getLinkB(cart));
       }
       NetworkChannel.GAME.getSimpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
           player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
@@ -215,7 +215,7 @@ public class Railcraft {
     if (event.getEntity()instanceof AbstractMinecart cart
         && !event.getEntity().level.isClientSide()) {
       Train.killTrain(cart);
-      RailcraftLinkageManager.INSTANCE.breakLinks(cart);
+      LinkageManagerImpl.INSTANCE.breakLinks(cart);
     }
   }
 }

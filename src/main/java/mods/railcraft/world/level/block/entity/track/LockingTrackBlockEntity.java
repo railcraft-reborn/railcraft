@@ -26,7 +26,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -114,13 +113,12 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
 
   // Called by block
   public InteractionResult use(Player player, InteractionHand hand) {
-    ItemStack itemStack = player.getItemInHand(hand);
+    var itemStack = player.getItemInHand(hand);
     if (!itemStack.isEmpty() && itemStack.getItem() instanceof Crowbar) {
-      Crowbar crowbar = (Crowbar) itemStack.getItem();
+      var crowbar = (Crowbar) itemStack.getItem();
       if (crowbar.canWhack(player, hand, itemStack, this.getBlockPos())) {
-        final LockingMode lockingMode = LockingTrackBlock.getLockingMode(this.getBlockState());
-        LockingMode newLockingMode =
-            player.isCrouching() ? lockingMode.previous() : lockingMode.next();
+        final var lockingMode = LockingTrackBlock.getLockingMode(this.getBlockState());
+        var newLockingMode = player.isCrouching() ? lockingMode.previous() : lockingMode.next();
         crowbar.onWhack(player, hand, itemStack, this.getBlockPos());
         if (!this.level.isClientSide()) {
           this.setLockingMode(newLockingMode);
