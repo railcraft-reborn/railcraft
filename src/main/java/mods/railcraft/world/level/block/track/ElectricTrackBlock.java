@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.charge.IChargeBlock;
+import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.track.TrackType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class ElectricTrackBlock extends TrackBlock implements IChargeBlock {
+public class ElectricTrackBlock extends TrackBlock implements ChargeBlock {
 
   private static final Map<Charge, ChargeSpec> CHARGE_SPECS =
       ChargeSpec.make(Charge.distribution, ConnectType.TRACK, 0.01);

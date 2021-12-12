@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "railcraft:block/reinforced_junction_track"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_flat",
+  "textures": {
+    "rail": "railcraft:block/high_speed_electric_junction_track"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "railcraft:block/high_speed_junction_track"
+    }
+  }
+}
