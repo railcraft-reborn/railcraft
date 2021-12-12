@@ -46,8 +46,6 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   private static final Component MENU_TITLE =
       new TranslatableComponent("container.coke_oven");
 
-  private static final int FLUID_STORAGE_MAX = 10000;
-
   // internal inventory, 3 total. 0 IN, 1 OUT
   protected NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
 
@@ -55,7 +53,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   private int currentTick = 0;
 
   // Is this performant enough? \/
-  protected final StandardTank fluidTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 6)
+  protected final StandardTank fluidTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 10)
       .setFilterFluid(RailcraftFluids.CREOSOTE)
       .disableFill();
   // same with this
@@ -368,6 +366,9 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
 
   @Override
   public void setRecipeUsed(@Nullable Recipe<?> recipe) {
+    if (this.cachedRecipie.equals(recipe)) {
+      return;
+    }
     this.cachedRecipie = recipe;
   }
 
@@ -388,18 +389,19 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     if (resultSlot.isEmpty()) {
       return true;
     }
-    if (!resultSlot.sameItem(resultItemStack) && !this.fluidTank.isFluidValid(resultFluidStack)) {
+    if (!resultSlot.sameItem(resultItemStack)
+        && !this.getTankManager().isFluidValid(resultFluidStack.getAmount(), resultFluidStack)) {
       return false;
     }
     // respect stacks (and fluid count.)
     if ((resultSlot.getCount() + resultItemStack.getCount() <= this.getMaxStackSize())
         && resultSlot.getCount() + resultItemStack.getCount() <= resultSlot.getMaxStackSize()
-        && this.fluidTank.getFluidAmount() + resultFluidStack.getAmount() <= FLUID_STORAGE_MAX
+        && !this.getTankManager().isFluidValid(resultFluidStack.getAmount(), resultFluidStack)
     ) {
       return true;
     }
     return (resultSlot.getCount() + resultItemStack.getCount() <= resultItemStack.getMaxStackSize())
-        && this.fluidTank.getFluidAmount() + resultFluidStack.getAmount() <= FLUID_STORAGE_MAX;
+    && !this.getTankManager().isFluidValid(resultFluidStack.getAmount(), resultFluidStack);
   }
 
   protected int getTickCost() {
@@ -424,7 +426,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
       resultStack.grow(resultItemStack.getCount());
     }
 
-    this.fluidTank.internalFill(resultFluidStack.copy(), FluidAction.EXECUTE);
+    this.getTankManager().fill(resultFluidStack.copy(), FluidAction.EXECUTE);
 
     ItemStack inputStack = this.items.get(0);
     inputStack.shrink(1);

@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class MultiblockPattern {
 
-  private static final Logger logger = LogManager.getLogger();
+  private static final Logger logger = LogManager.getLogger(MultiblockPattern.class);
   private final int sizeX;
   private final int sizeY;
   private final int sizeZ;
@@ -55,7 +55,7 @@ public class MultiblockPattern {
 
   /**
    * Gets BlockPos from the pattern.
-   * 
+   *
    * @param worldPos The target location
    * @param normal Used for offsetting
    * @return Iteratable list of the pattern's position
@@ -78,7 +78,7 @@ public class MultiblockPattern {
 
   /**
    * Verifies the pattern.
-   * 
+   *
    * @param worldPos The targeted block's {@link BlockPos}.
    * @param normal The normal/face that the user clicked on.
    * @param currentLevel The current game world. Must be serverside.
@@ -121,7 +121,7 @@ public class MultiblockPattern {
 
     /**
      * Defines a row (both X and Y) of the recipie's pattern.
-     * 
+     *
      * @param pattern A list (like [[b,b,b],[b,b,b],[b,b,b]]), this is a flat cut
      * @return this, for chaning functions.
      */
