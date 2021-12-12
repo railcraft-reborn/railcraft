@@ -215,8 +215,8 @@ public final class Train implements Iterable<AbstractMinecart> {
     getExisting(next).filter(t -> t != this).ifPresent(Train::kill);
     this.addTrainTag(next);
 
-    AbstractMinecart linkA = RailcraftLinkageManager.INSTANCE.getLinkedCartA(next);
-    AbstractMinecart linkB = RailcraftLinkageManager.INSTANCE.getLinkedCartB(next);
+    AbstractMinecart linkA = LinkageManagerImpl.INSTANCE.getLinkedCartA(next);
+    AbstractMinecart linkB = LinkageManagerImpl.INSTANCE.getLinkedCartB(next);
 
     if (linkA != null && linkA != prev && !this.contains(linkA)) {
       this.rebuild(next, linkA);

@@ -31,6 +31,7 @@ import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
@@ -55,6 +56,12 @@ public class RailcraftBlocks {
 
   public static final DeferredRegister<Block> BLOCKS =
       DeferredRegister.create(ForgeRegistries.BLOCKS, Railcraft.ID);
+
+  public static final RegistryObject<Block> FEED_STATION =
+      BLOCKS.register("feed_station",
+          () -> new FeedStationBlock(
+              BlockBehaviour.Properties.of(Material.STONE, MaterialColor.WOOD)
+                  .sound(SoundType.WOOD)));
 
   public static final RegistryObject<Block> STEEL_ANVIL =
       BLOCKS.register("steel_anvil",
@@ -296,6 +303,14 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
+  public static final RegistryObject<TrackBlock> ABANDONED_COUPLER_TRACK =
+      BLOCKS.register("abandoned_coupler_track",
+          () -> new CouplerTrackBlock(TrackTypes.ABANDONED,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
   public static final RegistryObject<TrackBlock> ELECTRIC_TRACK =
       BLOCKS.register("electric_track",
           () -> new TrackBlock(TrackTypes.ELECTRIC,
@@ -363,6 +378,14 @@ public class RailcraftBlocks {
           () -> new DetectorTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
                   .randomTicks()
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
+  public static final RegistryObject<TrackBlock> ELECTRIC_COUPLER_TRACK =
+      BLOCKS.register("electric_coupler_track",
+          () -> new CouplerTrackBlock(TrackTypes.ELECTRIC,
+              BlockBehaviour.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
@@ -532,6 +555,14 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
+  public static final RegistryObject<TrackBlock> IRON_COUPLER_TRACK =
+      BLOCKS.register("iron_coupler_track",
+          () -> new CouplerTrackBlock(TrackTypes.IRON,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
   public static final RegistryObject<TrackBlock> REINFORCED_TRACK =
       BLOCKS.register("reinforced_track",
           () -> new TrackBlock(TrackTypes.REINFORCED,
@@ -596,6 +627,14 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
+  public static final RegistryObject<TrackBlock> REINFORCED_COUPLER_TRACK =
+      BLOCKS.register("reinforced_coupler_track",
+          () -> new CouplerTrackBlock(TrackTypes.REINFORCED,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
   public static final RegistryObject<TrackBlock> STRAP_IRON_TRACK =
       BLOCKS.register("strap_iron_track",
           () -> new TrackBlock(TrackTypes.STRAP_IRON,
@@ -655,6 +694,14 @@ public class RailcraftBlocks {
   public static final RegistryObject<TrackBlock> STRAP_IRON_DETECTOR_TRACK =
       BLOCKS.register("strap_iron_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.STRAP_IRON,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
+  public static final RegistryObject<TrackBlock> STRAP_IRON_COUPLER_TRACK =
+      BLOCKS.register("strap_iron_coupler_track",
+          () -> new CouplerTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)

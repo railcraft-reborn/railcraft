@@ -1,5 +1,7 @@
 package mods.railcraft.world.entity.vehicle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.track.TrackUtil;
@@ -8,6 +10,8 @@ import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public final class LinkageHandler {
+
+  private static final Logger logger = LogManager.getLogger();
 
   public static final String LINK_A_TIMER = "linkA_timer";
   public static final String LINK_B_TIMER = "linkB_timer";
@@ -60,16 +64,16 @@ public final class LinkageHandler {
    * @param cart2 AbstractMinecartEntity
    */
   protected void adjustVelocity(AbstractMinecart cart1, AbstractMinecart cart2,
-      RailcraftLinkageManager.LinkType linkType) {
+      LinkageManagerImpl.LinkType linkType) {
     String timer = LINK_A_TIMER;
-    if (linkType == RailcraftLinkageManager.LinkType.LINK_B)
+    if (linkType == LinkageManagerImpl.LinkType.LINK_B)
       timer = LINK_B_TIMER;
     if (!cart1.level.dimension().equals(cart2.level.dimension())) {
       short count = cart1.getPersistentData().getShort(timer);
       count++;
       if (count > 200) {
-        RailcraftLinkageManager.INSTANCE.breakLink(cart1, cart2);
-        RailcraftLinkageManager.printDebug("Reason For Broken Link: Carts in different dimensions.");
+        logger.debug("Carts in different dimensions, breaking link.");
+        LinkageManagerImpl.INSTANCE.breakLink(cart1, cart2);
       }
       cart1.getPersistentData().putShort(timer, count);
       return;
@@ -78,8 +82,8 @@ public final class LinkageHandler {
 
     double dist = cart1.distanceTo(cart2);
     if (dist > MAX_DISTANCE) {
-      RailcraftLinkageManager.INSTANCE.breakLink(cart1, cart2);
-      RailcraftLinkageManager.printDebug("Reason For Broken Link: Max distance exceeded.");
+      logger.debug("Max distance exceeded, breaking link.");
+      LinkageManagerImpl.INSTANCE.breakLink(cart1, cart2);
       return;
     }
 
@@ -175,8 +179,8 @@ public final class LinkageHandler {
     if (isOnElevator(cart))
       return;
 
-    boolean linkedA = adjustLinkedCart(cart, RailcraftLinkageManager.LinkType.LINK_A);
-    boolean linkedB = adjustLinkedCart(cart, RailcraftLinkageManager.LinkType.LINK_B);
+    boolean linkedA = adjustLinkedCart(cart, LinkageManagerImpl.LinkType.LINK_A);
+    boolean linkedB = adjustLinkedCart(cart, LinkageManagerImpl.LinkType.LINK_B);
     boolean linked = linkedA || linkedB;
 
     // Centroid
@@ -216,9 +220,9 @@ public final class LinkageHandler {
 
   }
 
-  private boolean adjustLinkedCart(AbstractMinecart cart, RailcraftLinkageManager.LinkType linkType) {
+  private boolean adjustLinkedCart(AbstractMinecart cart, LinkageManagerImpl.LinkType linkType) {
     boolean linked = false;
-    RailcraftLinkageManager lm = RailcraftLinkageManager.INSTANCE;
+    LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
     AbstractMinecart link = lm.getLinkedCart(cart, linkType);
     if (link != null) {
       // sanity check to ensure links are consistent

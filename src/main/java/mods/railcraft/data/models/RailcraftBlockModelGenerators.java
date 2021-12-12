@@ -1,22 +1,23 @@
 package mods.railcraft.data.models;
 
-import com.google.gson.JsonElement;
-
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
+import javax.annotation.Nullable;
+import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
@@ -26,30 +27,31 @@ import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlo
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.Direction;
+import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.blockstates.Condition;
+import net.minecraft.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.data.models.blockstates.VariantProperties.Rotation;
 import net.minecraft.data.models.model.DelegatedModel;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.MultiPartGenerator;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.BlockStateGenerator;
-import net.minecraft.data.models.blockstates.Condition;
-import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 
 public class RailcraftBlockModelGenerators {
 
@@ -74,17 +76,24 @@ public class RailcraftBlockModelGenerators {
   private final ResourceLocation lockingTrackActiveTrainBoardingModel;
   private final ResourceLocation lockingTrackActiveTrainBoardingReversedModel;
 
-  private final StraightTrackModels transitionTrackModels;
-  private final StraightTrackModels activeTransitionTrackModels;
-  private final StraightTrackModels activatorTrackModels;
-  private final StraightTrackModels activeActivatorTrackModels;
-  private final StraightTrackModels boosterTrackModels;
-  private final StraightTrackModels activeBoosterTrackModels;
-  private final StraightTrackModels controlTrackModels;
-  private final StraightTrackModels detectorTrackModels;
-  private final StraightTrackModels activeDetectorTrackModels;
-  private final StraightTrackModels travelDetectorTrackModels;
-  private final StraightTrackModels activeTravelDetectotTrackModels;
+  private final StraightTrackModelSet transitionTrackModels;
+  private final StraightTrackModelSet activeTransitionTrackModels;
+  private final StraightTrackModelSet activatorTrackModels;
+  private final StraightTrackModelSet activeActivatorTrackModels;
+  private final StraightTrackModelSet boosterTrackModels;
+  private final StraightTrackModelSet activeBoosterTrackModels;
+  private final StraightTrackModelSet controlTrackModels;
+  private final StraightTrackModelSet detectorTrackModels;
+  private final StraightTrackModelSet activeDetectorTrackModels;
+  private final StraightTrackModelSet travelDetectorTrackModels;
+  private final StraightTrackModelSet activeTravelDetectorTrackModels;
+
+  private final StraightTrackModelSet couplerTrackCoupler;
+  private final StraightTrackModelSet activeCouplerTrackCoupler;
+  private final StraightTrackModelSet couplerTrackDecoupler;
+  private final StraightTrackModelSet activeCouplerTrackDecoupler;
+  private final StraightTrackModelSet couplerTrackAutoCoupler;
+  private final StraightTrackModelSet activeCouplerTrackAutoCoupler;
 
   public RailcraftBlockModelGenerators(Consumer<BlockStateGenerator> blockStateOutput,
       BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput,
@@ -126,21 +135,29 @@ public class RailcraftBlockModelGenerators {
     this.lockingTrackActiveTrainBoardingReversedModel =
         this.createActiveRail("locking_track_train_boarding_reversed");
 
-    this.transitionTrackModels = this.createTrackModels("transition_track");
-    this.activeTransitionTrackModels = this.createActiveTrackModels("transition_track");
+    this.transitionTrackModels = this.createTrackModelSet("transition_track");
+    this.activeTransitionTrackModels = this.createActiveTrackModelSet("transition_track");
 
-    this.activatorTrackModels = this.createTrackModels("activator_track");
-    this.activeActivatorTrackModels = this.createActiveTrackModels("activator_track");
+    this.activatorTrackModels = this.createTrackModelSet("activator_track");
+    this.activeActivatorTrackModels = this.createActiveTrackModelSet("activator_track");
 
-    this.boosterTrackModels = this.createTrackModels("booster_track");
-    this.activeBoosterTrackModels = this.createActiveTrackModels("booster_track");
+    this.boosterTrackModels = this.createTrackModelSet("booster_track");
+    this.activeBoosterTrackModels = this.createActiveTrackModelSet("booster_track");
 
-    this.controlTrackModels = this.createTrackModels("control_track");
+    this.controlTrackModels = this.createTrackModelSet("control_track");
 
-    this.detectorTrackModels = this.createTrackModels("detector_track");
-    this.activeDetectorTrackModels = this.createActiveTrackModels("detector_track");
-    this.travelDetectorTrackModels = this.createTrackModels("detector_track_travel");
-    this.activeTravelDetectotTrackModels = this.createActiveTrackModels("detector_track_travel");
+    this.detectorTrackModels = this.createTrackModelSet("detector_track");
+    this.activeDetectorTrackModels = this.createActiveTrackModelSet("detector_track");
+    this.travelDetectorTrackModels = this.createTrackModelSet("detector_track_travel");
+    this.activeTravelDetectorTrackModels = this.createActiveTrackModelSet("detector_track_travel");
+
+    this.couplerTrackCoupler = this.createTrackModelSet("coupler_track_coupler");
+    this.activeCouplerTrackCoupler = this.createActiveTrackModelSet("coupler_track_coupler");
+    this.couplerTrackDecoupler = this.createTrackModelSet("coupler_track_decoupler");
+    this.activeCouplerTrackDecoupler = this.createActiveTrackModelSet("coupler_track_decoupler");
+    this.couplerTrackAutoCoupler = this.createTrackModelSet("coupler_track_auto_coupler");
+    this.activeCouplerTrackAutoCoupler =
+        this.createActiveTrackModelSet("coupler_track_auto_coupler");
   }
 
   public void run() {
@@ -171,7 +188,8 @@ public class RailcraftBlockModelGenerators {
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
-    this.createCokeOvenBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
+    this.createCokeOvenBricks();
+    this.createFeedStation();
 
     this.createPost(RailcraftBlocks.BLACK_POST.get());
     this.createPost(RailcraftBlocks.RED_POST.get());
@@ -212,7 +230,8 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.ABANDONED_BOOSTER_TRACK.get(),
         RailcraftBlocks.ABANDONED_CONTROL_TRACK.get(),
         RailcraftBlocks.ABANDONED_GATED_TRACK.get(),
-        RailcraftBlocks.ABANDONED_DETECTOR_TRACK.get());
+        RailcraftBlocks.ABANDONED_DETECTOR_TRACK.get(),
+        RailcraftBlocks.ABANDONED_COUPLER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.ELECTRIC_TRACK.get(),
         RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
@@ -221,7 +240,8 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.ELECTRIC_BOOSTER_TRACK.get(),
         RailcraftBlocks.ELECTRIC_CONTROL_TRACK.get(),
         RailcraftBlocks.ELECTRIC_GATED_TRACK.get(),
-        RailcraftBlocks.ELECTRIC_DETECTOR_TRACK.get());
+        RailcraftBlocks.ELECTRIC_DETECTOR_TRACK.get(),
+        RailcraftBlocks.ELECTRIC_COUPLER_TRACK.get());
     this.createHighSpeedTracks(
         RailcraftBlocks.HIGH_SPEED_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
@@ -243,7 +263,8 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.IRON_BOOSTER_TRACK.get(),
         RailcraftBlocks.IRON_CONTROL_TRACK.get(),
         RailcraftBlocks.IRON_GATED_TRACK.get(),
-        RailcraftBlocks.IRON_DETECTOR_TRACK.get());
+        RailcraftBlocks.IRON_DETECTOR_TRACK.get(),
+        RailcraftBlocks.IRON_COUPLER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.REINFORCED_TRACK.get(),
         RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
@@ -252,7 +273,8 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.REINFORCED_BOOSTER_TRACK.get(),
         RailcraftBlocks.REINFORCED_CONTROL_TRACK.get(),
         RailcraftBlocks.REINFORCED_GATED_TRACK.get(),
-        RailcraftBlocks.REINFORCED_DETECTOR_TRACK.get());
+        RailcraftBlocks.REINFORCED_DETECTOR_TRACK.get(),
+        RailcraftBlocks.REINFORCED_COUPLER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.STRAP_IRON_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
@@ -261,7 +283,8 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_CONTROL_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_GATED_TRACK.get(),
-        RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK.get());
+        RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK.get(),
+        RailcraftBlocks.STRAP_IRON_COUPLER_TRACK.get());
   }
 
   private void skipAutoItemBlock(Block block) {
@@ -329,7 +352,8 @@ public class RailcraftBlockModelGenerators {
         createSimpleBlock(block, model).with(createHorizontalFacingDispatchAlt()));
   }
 
-  private void createCokeOvenBricks(Block block) {
+  private void createCokeOvenBricks() {
+    var block = RailcraftBlocks.COKE_OVEN_BRICKS.get();
     var bricksModel = TexturedModel.CUBE.create(block, this.modelOutput);
     var furnaceModel =
         ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_furnace",
@@ -357,6 +381,14 @@ public class RailcraftBlockModelGenerators {
                     .with(VariantProperties.MODEL, furnaceModel))
                 .select(true, true, Variant.variant()
                     .with(VariantProperties.MODEL, litFurnaceModel))));
+  }
+
+  private void createFeedStation() {
+    var block = RailcraftBlocks.FEED_STATION.get();
+    var mapping = TextureMapping.column(TextureMapping.getBlockTexture(block, "_side"),
+        TextureMapping.getBlockTexture(block, "_top"));
+    var model = ModelTemplates.CUBE_COLUMN.create(block, mapping, this.modelOutput);
+    this.blockStateOutput.accept(createSimpleBlock(block, model));
   }
 
   private static PropertyDispatch createHorizontalFacingDispatchAlt() {
@@ -572,10 +604,12 @@ public class RailcraftBlockModelGenerators {
 
   private void createAbandonedTracks(Block block, Block lockingTrackBlock,
       Block bufferStopTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
-      Block controlTrackBlock, Block gatedTrackBlock, Block detectorTrackBlock) {
+      Block controlTrackBlock, Block gatedTrackBlock, Block detectorTrackBlock,
+      Block couplerTrackBlock) {
     this.createAbandonedFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
-        boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock);
+        boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
+        couplerTrackBlock);
   }
 
   private void createAbandonedFlexTrack(Block block) {
@@ -667,16 +701,18 @@ public class RailcraftBlockModelGenerators {
 
   private void createTracks(Block block, Block lockingTrackBlock, Block bufferStopTrackBlock,
       Block activatorTrackBlock, Block boosterTrackBlock, Block controlTrackBlock,
-      Block gatedTrackBlock, Block detectorTrackBlock) {
+      Block gatedTrackBlock, Block detectorTrackBlock, Block couplerTrackBlock) {
     this.createFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
-        boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock);
+        boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
+        couplerTrackBlock);
   }
 
   private void createOutfittedTracks(Block block, Block lockingTrackBlock,
       Block bufferStopTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
-      Block controlTrackBlock, Block gatedTrackBlock, Block detectorTrackBlock) {
-    var outfittedTrackModels = this.createOutfittedTrackModels(block);
+      Block controlTrackBlock, Block gatedTrackBlock, Block detectorTrackBlock,
+      Block couplerTrackBlock) {
+    var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
     this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.getFlatModel());
     this.createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.getFlatModel());
     this.createActiveOutfittedTrack(activatorTrackBlock, true, outfittedTrackModels,
@@ -686,13 +722,14 @@ public class RailcraftBlockModelGenerators {
     this.createControlTrack(controlTrackBlock, outfittedTrackModels);
     this.createGatedTrack(gatedTrackBlock, outfittedTrackModels);
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
+    this.createCouplerTrack(couplerTrackBlock, outfittedTrackModels);
   }
 
   private void createHighSpeedTracks(Block block, Block transitionTrackBlock,
       Block lockingTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
       Block detectorTrackBlock) {
     this.createFlexTrack(block);
-    var outfittedTrackModels = this.createOutfittedTrackModels(block);
+    var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
     this.createTransitionTrack(transitionTrackBlock, outfittedTrackModels);
     this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.getFlatModel());
     this.createActiveOutfittedTrack(activatorTrackBlock, true, outfittedTrackModels,
@@ -845,7 +882,7 @@ public class RailcraftBlockModelGenerators {
   }
 
   private void createLockingTrack(Block block, ResourceLocation trackModel) {
-    var blockState = MultiPartGenerator.multiPart(block)
+    var generator = MultiPartGenerator.multiPart(block)
         .with(
             Condition.condition()
                 .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
@@ -860,26 +897,26 @@ public class RailcraftBlockModelGenerators {
 
     this.addLockingMode(LockingMode.LOCKDOWN, this.lockingTrackLockdownModel,
         this.lockingTrackActiveLockdownModel,
-        blockState);
+        generator);
     this.addLockingMode(LockingMode.TRAIN_LOCKDOWN, this.lockingTrackTrainLockdownModel,
-        this.lockingTrackActiveTrainLockdownModel, blockState);
+        this.lockingTrackActiveTrainLockdownModel, generator);
     this.addLockingMode(LockingMode.HOLDING, this.lockingTrackHoldingModel,
         this.lockingTrackActiveHoldingModel,
-        blockState);
+        generator);
     this.addLockingMode(LockingMode.TRAIN_HOLDING, this.lockingTrackTrainHoldingModel,
-        this.lockingTrackActiveTrainHoldingModel, blockState);
+        this.lockingTrackActiveTrainHoldingModel, generator);
     this.addLockingMode(LockingMode.BOARDING, this.lockingTrackBoardingModel,
         this.lockingTrackActiveBoardingModel,
-        blockState);
+        generator);
     this.addLockingMode(LockingMode.BOARDING_REVERSED, this.lockingTrackBoardingReversedModel,
-        this.lockingTrackActiveBoardingReversedModel, blockState);
+        this.lockingTrackActiveBoardingReversedModel, generator);
     this.addLockingMode(LockingMode.TRAIN_BOARDING, this.lockingTrackTrainBoardingModel,
-        this.lockingTrackActiveTrainBoardingModel, blockState);
+        this.lockingTrackActiveTrainBoardingModel, generator);
     this.addLockingMode(LockingMode.TRAIN_BOARDING_REVERSED,
         this.lockingTrackTrainBoardingReversedModel,
-        this.lockingTrackActiveTrainBoardingReversedModel, blockState);
+        this.lockingTrackActiveTrainBoardingReversedModel, generator);
 
-    this.blockStateOutput.accept(blockState);
+    this.blockStateOutput.accept(generator);
 
     this.createSimpleFlatItemModel(block.asItem());
   }
@@ -964,144 +1001,23 @@ public class RailcraftBlockModelGenerators {
   }
 
   private void createActiveOutfittedTrack(Block block, boolean allowedOnSlopes,
-      StraightTrackModels trackModels, StraightTrackModels trackKitModels,
-      StraightTrackModels activeTrackKitModels) {
-
-    var blockState = MultiPartGenerator.multiPart(block)
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getFlatModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(PoweredOutfittedTrackBlock.POWERED, false)
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackKitModels.getFlatModel()))
-        .with(
-            Condition.condition()
-                .term(PoweredOutfittedTrackBlock.POWERED, false)
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackKitModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(PoweredOutfittedTrackBlock.POWERED, true)
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, activeTrackKitModels.getFlatModel()))
-        .with(
-            Condition.condition()
-                .term(PoweredOutfittedTrackBlock.POWERED, true)
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, activeTrackKitModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
-
-    if (allowedOnSlopes) {
-      blockState
-          .with(
-              Condition.condition()
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel()))
-          .with(
-              Condition.condition()
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel()))
-          .with(
-              Condition.condition()
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel())
-                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-          .with(
-              Condition.condition()
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel())
-                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-          .with(
-              Condition.condition()
-                  .term(PoweredOutfittedTrackBlock.POWERED, false)
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, trackKitModels.getRaisedNorthEastModel()))
-          .with(
-              Condition.condition()
-                  .term(PoweredOutfittedTrackBlock.POWERED, false)
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, trackKitModels.getRaisedSouthWestModel()))
-          .with(
-              Condition.condition()
-                  .term(PoweredOutfittedTrackBlock.POWERED, false)
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, trackKitModels.getRaisedNorthEastModel())
-                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-          .with(
-              Condition.condition()
-                  .term(PoweredOutfittedTrackBlock.POWERED, false)
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, trackKitModels.getRaisedSouthWestModel())
-                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-          .with(
-              Condition.condition()
-                  .term(PoweredOutfittedTrackBlock.POWERED, true)
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, activeTrackKitModels.getRaisedNorthEastModel()))
-          .with(
-              Condition.condition()
-                  .term(PoweredOutfittedTrackBlock.POWERED, true)
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, activeTrackKitModels.getRaisedSouthWestModel()))
-          .with(
-              Condition.condition()
-                  .term(PoweredOutfittedTrackBlock.POWERED, true)
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, activeTrackKitModels.getRaisedNorthEastModel())
-                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-          .with(
-              Condition.condition()
-                  .term(PoweredOutfittedTrackBlock.POWERED, true)
-                  .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, activeTrackKitModels.getRaisedSouthWestModel())
-                  .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
-    }
-
-    this.blockStateOutput.accept(blockState);
-
+      StraightTrackModelSet trackModels,
+      StraightTrackModelSet trackKitModels,
+      StraightTrackModelSet activeTrackKitModels) {
+    var generator = MultiPartGenerator.multiPart(block);
+    trackModels.apply(generator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false);
+    trackKitModels.apply(generator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
+        condition -> condition.term(PoweredOutfittedTrackBlock.POWERED, false));
+    activeTrackKitModels.apply(generator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
+        condition -> condition.term(PoweredOutfittedTrackBlock.POWERED, true));
+    this.blockStateOutput.accept(generator);
     this.createSimpleFlatItemModel(block.asItem());
   }
 
-  private void createControlTrack(Block block, StraightTrackModels trackModels) {
-    this.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getFlatModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+  private void createControlTrack(Block block, StraightTrackModelSet trackModels) {
+    var generator = MultiPartGenerator.multiPart(block);
+    trackModels.apply(generator, OutfittedTrackBlock.SHAPE, true, false);
+    this.blockStateOutput.accept(generator
         .with(
             Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
@@ -1139,28 +1055,6 @@ public class RailcraftBlockModelGenerators {
             Variant.variant()
                 .with(VariantProperties.MODEL, this.controlTrackModels.getFlatModel())
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
         .with(
             Condition.condition()
                 .term(PoweredOutfittedTrackBlock.POWERED, false)
@@ -1239,52 +1133,17 @@ public class RailcraftBlockModelGenerators {
     this.createSimpleFlatItemModel(block.asItem());
   }
 
-  private void createTransitionTrack(Block block, StraightTrackModels trackModels) {
-    var blockState = MultiPartGenerator.multiPart(block)
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getFlatModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
-
-    this.addTransitionVariants(blockState, false, this.transitionTrackModels);
-    this.addTransitionVariants(blockState, true, this.activeTransitionTrackModels);
-
-    this.blockStateOutput.accept(blockState);
-
+  private void createTransitionTrack(Block block, StraightTrackModelSet trackModels) {
+    var generator = MultiPartGenerator.multiPart(block);
+    trackModels.apply(generator, OutfittedTrackBlock.SHAPE, true, false);
+    this.addTransitionVariants(generator, false, this.transitionTrackModels);
+    this.addTransitionVariants(generator, true, this.activeTransitionTrackModels);
+    this.blockStateOutput.accept(generator);
     this.createSimpleFlatItemModel(block.asItem());
   }
 
   private void addTransitionVariants(MultiPartGenerator blockState, boolean powered,
-      StraightTrackModels trackKitModels) {
+      StraightTrackModelSet trackKitModels) {
     blockState
         .with(
             Condition.condition()
@@ -1381,7 +1240,7 @@ public class RailcraftBlockModelGenerators {
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
   }
 
-  private void createGatedTrack(Block block, StraightTrackModels trackModels) {
+  private void createGatedTrack(Block block, StraightTrackModelSet trackModels) {
     var closedGateModel =
         ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE);
     var openGateModel =
@@ -1391,7 +1250,7 @@ public class RailcraftBlockModelGenerators {
     var openWallGateModel =
         ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall_open");
 
-    var blockState = MultiPartGenerator.multiPart(block)
+    var generator = MultiPartGenerator.multiPart(block)
         .with(
             Condition.condition()
                 .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
@@ -1435,12 +1294,12 @@ public class RailcraftBlockModelGenerators {
                 .with(VariantProperties.MODEL, this.controlTrackModels.getFlatModel())
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
 
-    this.addGateVariants(blockState, false, false, closedGateModel);
-    this.addGateVariants(blockState, true, false, openGateModel);
-    this.addGateVariants(blockState, false, true, closedWallGateModel);
-    this.addGateVariants(blockState, true, true, openWallGateModel);
+    this.addGateVariants(generator, false, false, closedGateModel);
+    this.addGateVariants(generator, true, false, openGateModel);
+    this.addGateVariants(generator, false, true, closedWallGateModel);
+    this.addGateVariants(generator, true, true, openWallGateModel);
 
-    this.blockStateOutput.accept(blockState);
+    this.blockStateOutput.accept(generator);
 
     this.createSimpleFlatItemModel(block.asItem());
   }
@@ -1485,338 +1344,65 @@ public class RailcraftBlockModelGenerators {
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
   }
 
-  private void createDetectorTrack(Block block, StraightTrackModels trackModels) {
-    this.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getFlatModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.detectorTrackModels.getFlatModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.detectorTrackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.detectorTrackModels.getRaisedNorthEastModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.detectorTrackModels.getRaisedSouthWestModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.detectorTrackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.detectorTrackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.activeDetectorTrackModels.getFlatModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.activeDetectorTrackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeDetectorTrackModels.getRaisedNorthEastModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeDetectorTrackModels.getRaisedSouthWestModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeDetectorTrackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeDetectorTrackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.travelDetectorTrackModels.getFlatModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.travelDetectorTrackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.travelDetectorTrackModels.getRaisedNorthEastModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.travelDetectorTrackModels.getRaisedSouthWestModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.travelDetectorTrackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.travelDetectorTrackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.activeTravelDetectotTrackModels.getFlatModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.activeTravelDetectotTrackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeTravelDetectotTrackModels.getRaisedNorthEastModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeTravelDetectotTrackModels.getRaisedSouthWestModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeTravelDetectotTrackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeTravelDetectotTrackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.travelDetectorTrackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.travelDetectorTrackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.travelDetectorTrackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.travelDetectorTrackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.travelDetectorTrackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.travelDetectorTrackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.activeTravelDetectotTrackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.activeTravelDetectotTrackModels.getFlatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_NORTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeTravelDetectotTrackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_SOUTH)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeTravelDetectotTrackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_EAST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeTravelDetectotTrackModels.getRaisedSouthWestModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.ASCENDING_WEST)
-                .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-                .term(DetectorTrackBlock.POWERED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    this.activeTravelDetectotTrackModels.getRaisedNorthEastModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
+  private void createDetectorTrack(Block block, StraightTrackModelSet trackModels) {
+    var generator = MultiPartGenerator.multiPart(block);
+    trackModels.apply(generator, DetectorTrackBlock.SHAPE, true, false);
+    this.detectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, false,
+        condition -> condition
+            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
+            .term(DetectorTrackBlock.POWERED, false));
+    this.activeDetectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, false,
+        condition -> condition
+            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
+            .term(DetectorTrackBlock.POWERED, true));
+    this.travelDetectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, false,
+        condition -> condition
+            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
+            .term(DetectorTrackBlock.POWERED, false));
+    this.activeTravelDetectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, false,
+        condition -> condition
+            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
+            .term(DetectorTrackBlock.POWERED, true));
+    this.travelDetectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, true,
+        condition -> condition
+            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
+            .term(DetectorTrackBlock.POWERED, false));
+    this.activeTravelDetectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, true,
+        condition -> condition
+            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
+            .term(DetectorTrackBlock.POWERED, true));
+    this.blockStateOutput.accept(generator);
+    this.createSimpleFlatItemModel(block.asItem());
+  }
 
+  private void createCouplerTrack(Block block, StraightTrackModelSet trackModels) {
+    var generator = MultiPartGenerator.multiPart(block);
+    trackModels.apply(generator, CouplerTrackBlock.SHAPE, true, false);
+    this.couplerTrackCoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
+        condition -> condition
+            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.COUPLER)
+            .term(CouplerTrackBlock.POWERED, false));
+    this.activeCouplerTrackCoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
+        condition -> condition
+            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.COUPLER)
+            .term(CouplerTrackBlock.POWERED, true));
+    this.couplerTrackDecoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
+        condition -> condition
+            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.DECOUPLER)
+            .term(CouplerTrackBlock.POWERED, false));
+    this.activeCouplerTrackDecoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
+        condition -> condition
+            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.DECOUPLER)
+            .term(CouplerTrackBlock.POWERED, true));
+    this.couplerTrackAutoCoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
+        condition -> condition
+            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.AUTO_COUPLER)
+            .term(CouplerTrackBlock.POWERED, false));
+    this.activeCouplerTrackAutoCoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
+        condition -> condition
+            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.AUTO_COUPLER)
+            .term(CouplerTrackBlock.POWERED, true));
+    this.blockStateOutput.accept(generator);
     this.createSimpleFlatItemModel(block.asItem());
   }
 
@@ -1828,12 +1414,12 @@ public class RailcraftBlockModelGenerators {
     return this.createVariant(name + "_on", ModelTemplates.RAIL_FLAT, TextureMapping::rail);
   }
 
-  private StraightTrackModels createOutfittedTrackModels(Block block) {
-    return this.createTrackModels(block.getRegistryName().getPath() + "_outfitted");
+  private StraightTrackModelSet createOutfittedTrackModelSet(Block block) {
+    return this.createTrackModelSet(block.getRegistryName().getPath() + "_outfitted");
   }
 
-  private StraightTrackModels createTrackModels(String name) {
-    return new StraightTrackModels()
+  private StraightTrackModelSet createTrackModelSet(String name) {
+    return new StraightTrackModelSet()
         .setFlatModel(this.createPassiveRail(name))
         .setRaisedNorthEastModel(
             this.createVariant(name, ModelTemplates.RAIL_RAISED_NE, TextureMapping::rail))
@@ -1841,8 +1427,8 @@ public class RailcraftBlockModelGenerators {
             this.createVariant(name, ModelTemplates.RAIL_RAISED_SW, TextureMapping::rail));
   }
 
-  private StraightTrackModels createActiveTrackModels(String name) {
-    return new StraightTrackModels()
+  private StraightTrackModelSet createActiveTrackModelSet(String name) {
+    return new StraightTrackModelSet()
         .setFlatModel(this.createActiveRail(name))
         .setRaisedNorthEastModel(this.createVariant(name + "_on",
             ModelTemplates.RAIL_RAISED_NE, TextureMapping::rail))
@@ -1850,7 +1436,7 @@ public class RailcraftBlockModelGenerators {
             ModelTemplates.RAIL_RAISED_SW, TextureMapping::rail));
   }
 
-  private class StraightTrackModels {
+  private class StraightTrackModelSet {
 
     private ResourceLocation flatModel;
     private ResourceLocation raisedNorthEastModel;
@@ -1860,7 +1446,7 @@ public class RailcraftBlockModelGenerators {
       return this.flatModel;
     }
 
-    private StraightTrackModels setFlatModel(ResourceLocation flatModel) {
+    private StraightTrackModelSet setFlatModel(ResourceLocation flatModel) {
       this.flatModel = flatModel;
       return this;
     }
@@ -1869,7 +1455,7 @@ public class RailcraftBlockModelGenerators {
       return this.raisedNorthEastModel;
     }
 
-    private StraightTrackModels setRaisedNorthEastModel(ResourceLocation raisedNorthEastModel) {
+    private StraightTrackModelSet setRaisedNorthEastModel(ResourceLocation raisedNorthEastModel) {
       this.raisedNorthEastModel = raisedNorthEastModel;
       return this;
     }
@@ -1878,9 +1464,72 @@ public class RailcraftBlockModelGenerators {
       return this.raisedSouthWestModel;
     }
 
-    private StraightTrackModels setRaisedSouthWestModel(ResourceLocation raisedSouthWestModel) {
+    private StraightTrackModelSet setRaisedSouthWestModel(ResourceLocation raisedSouthWestModel) {
       this.raisedSouthWestModel = raisedSouthWestModel;
       return this;
+    }
+
+    private void apply(MultiPartGenerator generator, Property<RailShape> shapeProperty,
+        boolean includeRaised, boolean reversed) {
+      this.apply(generator, shapeProperty, includeRaised, reversed, null);
+    }
+
+    private void apply(MultiPartGenerator generator, Property<RailShape> shapeProperty,
+        boolean includeRaised, boolean reversed,
+        @Nullable Consumer<Condition.TerminalCondition> conditionModifier) {
+      Supplier<Condition.TerminalCondition> condition = conditionModifier == null
+          ? Condition::condition
+          : () -> {
+            var c = Condition.condition();
+            conditionModifier.accept(c);
+            return c;
+          };
+      generator
+          .with(
+              condition.get().term(shapeProperty, RailShape.NORTH_SOUTH),
+              Variant.variant()
+                  .with(VariantProperties.MODEL, this.flatModel)
+                  .with(VariantProperties.Y_ROT,
+                      reversed ? VariantProperties.Rotation.R180 : VariantProperties.Rotation.R0))
+          .with(
+              condition.get().term(shapeProperty, RailShape.EAST_WEST),
+              Variant.variant()
+                  .with(VariantProperties.MODEL, this.flatModel)
+                  .with(VariantProperties.Y_ROT,
+                      reversed ? VariantProperties.Rotation.R270 : VariantProperties.Rotation.R90));
+
+      if (includeRaised) {
+        generator.with(
+            condition.get().term(shapeProperty, RailShape.ASCENDING_NORTH),
+            Variant.variant()
+                .with(VariantProperties.MODEL,
+                    reversed ? this.raisedSouthWestModel : this.raisedNorthEastModel)
+                .with(VariantProperties.Y_ROT,
+                    reversed ? VariantProperties.Rotation.R180 : VariantProperties.Rotation.R0))
+            .with(
+                condition.get().term(shapeProperty, RailShape.ASCENDING_SOUTH),
+                Variant.variant()
+                    .with(VariantProperties.MODEL,
+                        reversed ? this.raisedNorthEastModel : this.raisedSouthWestModel)
+                    .with(VariantProperties.Y_ROT,
+                        reversed ? VariantProperties.Rotation.R180 : VariantProperties.Rotation.R0))
+            .with(
+                condition.get().term(shapeProperty, RailShape.ASCENDING_EAST),
+                Variant.variant()
+                    .with(VariantProperties.MODEL,
+                        reversed ? this.raisedSouthWestModel : this.raisedNorthEastModel)
+                    .with(VariantProperties.Y_ROT,
+                        reversed ? VariantProperties.Rotation.R270
+                            : VariantProperties.Rotation.R90))
+            .with(
+                condition.get().term(shapeProperty, RailShape.ASCENDING_WEST),
+                Variant.variant()
+                    .with(VariantProperties.MODEL,
+                        reversed ? this.raisedNorthEastModel : this.raisedSouthWestModel)
+                    .with(VariantProperties.Y_ROT,
+                        reversed ? VariantProperties.Rotation.R270
+                            : VariantProperties.Rotation.R90));
+      }
     }
   }
 }

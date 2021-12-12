@@ -7,9 +7,9 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidAttributes;
 
-public class SlotWaterLimited extends SlotWater {
+public class LimitedWaterSlot extends WaterSlot {
 
-  public SlotWaterLimited(Container iinventory, int slotIndex, int posX, int posY) {
+  public LimitedWaterSlot(Container iinventory, int slotIndex, int posX, int posY) {
     super(iinventory, slotIndex, posX, posY);
     this.setStackLimit(4);
   }

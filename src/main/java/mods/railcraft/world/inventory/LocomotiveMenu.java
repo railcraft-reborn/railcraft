@@ -26,7 +26,7 @@ public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
       T locomotive, int guiHeight) {
     super(type, id, playerInv);
     this.locomotive = locomotive;
-    SlotRailcraft slotTicket = new SlotStackFilter(TicketItem.FILTER, locomotive,
+    RailcraftSlot slotTicket = new ItemFilterSlot(TicketItem.FILTER, locomotive,
         locomotive.getContainerSize() - 2, 116, guiHeight - 111).setStackLimit(1);
     slotTicket.setTooltip(
         Collections.singletonList(
@@ -34,7 +34,7 @@ public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
     this.addSlot(slotTicket);
     // TODO: make some way to clear this?
     this.addSlot(
-        new SlotUntouchable(locomotive, locomotive.getContainerSize() - 1, 134, guiHeight - 111));
+        new UnmodifiableSlot(locomotive, locomotive.getContainerSize() - 1, 134, guiHeight - 111));
 
     this.addPlayerSlots(playerInv, guiHeight);
   }

@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.signal;
 
 import javax.annotation.Nullable;
 import mods.railcraft.client.ClientDist;
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -27,7 +26,7 @@ public class BlockSignalRelayBoxBlock extends SignalBoxBlock implements EntityBl
   public InteractionResult use(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
-      LevelUtil.getBlockEntity(level, pos, BlockSignalRelayBoxBlockEntity.class)
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.BLOCK_SIGNAL_RELAY_BOX.get())
           .ifPresent(ClientDist::openActionSignalBoxScreen);
       return InteractionResult.SUCCESS;
     }
@@ -38,7 +37,7 @@ public class BlockSignalRelayBoxBlock extends SignalBoxBlock implements EntityBl
   public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
     return new BlockSignalRelayBoxBlockEntity(blockPos, blockState);
   }
-  
+
   @Nullable
   @Override
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,

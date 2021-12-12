@@ -1,7 +1,5 @@
 package mods.railcraft;
 
-import java.util.List;
-import java.util.UUID;
 import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.event.CartLinkEvent;
@@ -22,7 +20,7 @@ import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.LinkageHandler;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
-import mods.railcraft.world.entity.vehicle.RailcraftLinkageManager;
+import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.entity.vehicle.RailcraftTrainTransferHelper;
 import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
@@ -37,9 +35,6 @@ import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -48,10 +43,8 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -75,7 +68,7 @@ public class Railcraft {
   private final LinkageHandler linkageHandler = new LinkageHandler();
 
   static {
-    CartUtil.linkageManager = RailcraftLinkageManager.INSTANCE;
+    CartUtil.linkageManager = LinkageManagerImpl.INSTANCE;
     CartUtil.transferHelper = RailcraftTrainTransferHelper.INSTANCE;
   }
 
@@ -95,7 +88,7 @@ public class Railcraft {
 
     NetworkChannel.registerAll();
 
-    IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::handleCommonSetup);
@@ -105,7 +98,7 @@ public class Railcraft {
     RailcraftBlocks.BLOCKS.register(modEventBus);
     RailcraftItems.ITEMS.register(modEventBus);
     RailcraftBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
-    TrackTypes.trackTypes.register(modEventBus);
+    TrackTypes.TRACK_TYPES.register(modEventBus);
     RailcraftFluids.FLUIDS.register(modEventBus);
     RailcraftMenuTypes.MENU_TYPES.register(modEventBus);
     RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);
@@ -155,8 +148,7 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handleWorldTick(TickEvent.WorldTickEvent event) {
-    if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
-      ServerLevel level = (ServerLevel) event.world;
+    if (event.world instanceof ServerLevel level && event.phase == TickEvent.Phase.END) {
       TokenRingManager.get(level).tick(level);
       if (level.getServer().getTickCount() % 32 == 0) {
         Train.getManager(level).tick();
@@ -166,21 +158,20 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handlePlayerTick(PlayerTickEvent event) {
-    if ((event.player instanceof ServerPlayer) && (event.player.tickCount % 20) == 0) {
-      ServerPlayer player = (ServerPlayer) event.player;
-      List<AbstractMinecart> carts = EntitySearcher.findMinecarts()
+    if (event.player instanceof ServerPlayer player && event.player.tickCount % 20 == 0) {
+      var carts = EntitySearcher.findMinecarts()
           .around(player)
           .outTo(32F)
           .in(player.level);
 
-      LinkedCartsMessage.LinkedCart[] linkedCarts = new LinkedCartsMessage.LinkedCart[carts.size()];
+      var linkedCarts = new LinkedCartsMessage.LinkedCart[carts.size()];
       for (int i = 0; i < linkedCarts.length; i++) {
-        AbstractMinecart cart = carts.get(i);
-        UUID trainId = Train.getTrainUUID(cart);
+        var cart = carts.get(i);
+        var trainId = Train.getTrainUUID(cart);
         linkedCarts[i] = new LinkedCartsMessage.LinkedCart(
             cart.getId(), trainId,
-            RailcraftLinkageManager.INSTANCE.getLinkA(cart),
-            RailcraftLinkageManager.INSTANCE.getLinkB(cart));
+            LinkageManagerImpl.INSTANCE.getLinkA(cart),
+            LinkageManagerImpl.INSTANCE.getLinkB(cart));
       }
       NetworkChannel.GAME.getSimpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
           player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
@@ -200,13 +191,11 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handleMinecartInteract(PlayerInteractEvent.EntityInteract event) {
-    if (event.getTarget() instanceof AbstractMinecart) {
-      AbstractMinecart cart = (AbstractMinecart) event.getTarget();
-      Player player = event.getPlayer();
-      InteractionHand hand = event.getHand();
+    if (event.getTarget()instanceof AbstractMinecart cart) {
+      var player = event.getPlayer();
+      var hand = event.getHand();
       event.setCanceled(this.minecartHandler.handleInteract(cart, player));
-      InteractionResult crowbarActionResult =
-          this.crowbarHandler.handleInteract(cart, player, hand);
+      var crowbarActionResult = this.crowbarHandler.handleInteract(cart, player, hand);
       if (crowbarActionResult.consumesAction()) {
         event.setCanceled(true);
         event.setCancellationResult(crowbarActionResult);
@@ -216,19 +205,17 @@ public class Railcraft {
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public void handleEntityJoinWorld(EntityJoinWorldEvent event) {
-    if (event.getEntity() instanceof AbstractMinecart) {
-      event.setCanceled(this.minecartHandler.handleSpawn(event.getWorld(),
-          (AbstractMinecart) event.getEntity()));
+    if (event.getEntity()instanceof AbstractMinecart cart) {
+      event.setCanceled(this.minecartHandler.handleSpawn(event.getWorld(), cart));
     }
   }
 
   @SubscribeEvent
   public void handleEntityLeaveWorld(EntityLeaveWorldEvent event) {
-    if (event.getEntity() instanceof AbstractMinecart
+    if (event.getEntity()instanceof AbstractMinecart cart
         && !event.getEntity().level.isClientSide()) {
-      AbstractMinecart cart = (AbstractMinecart) event.getEntity();
       Train.killTrain(cart);
-      RailcraftLinkageManager.INSTANCE.breakLinks(cart);
+      LinkageManagerImpl.INSTANCE.breakLinks(cart);
     }
   }
 }

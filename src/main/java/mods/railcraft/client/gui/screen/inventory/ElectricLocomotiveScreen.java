@@ -25,9 +25,9 @@ public class ElectricLocomotiveScreen extends LocomotiveScreen<ElectricLocomotiv
   private static final ResourceLocation TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/electric_locomotive.png");
 
-  public ElectricLocomotiveScreen(ElectricLocomotiveMenu menu, Inventory playerInventory,
+  public ElectricLocomotiveScreen(ElectricLocomotiveMenu menu, Inventory inventory,
       Component title) {
-    super(menu, playerInventory, title, "electric");
+    super(menu, inventory, title, "electric");
 
     GaugeWidget wiget = (GaugeWidget)menu.getWidgets().get(0);
     this.registerWidgetRenderer(new GaugeWidgetRenderer(wiget) {

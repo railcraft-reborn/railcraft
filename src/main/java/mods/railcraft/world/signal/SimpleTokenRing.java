@@ -85,7 +85,7 @@ public class SimpleTokenRing implements TokenRing {
   public void tick() {
     if (!this.peers.isEmpty()) {
       BlockPos origin = this.peers.stream().findAny().orElse(BlockPos.ZERO);
-      AABBFactory aabbFactory = AABBFactory.start().createBoxForTileAt(origin);
+      AABBFactory aabbFactory = AABBFactory.start().at(origin);
       for (BlockPos pos : this.peers) {
         aabbFactory.expandToCoordinate(pos);
       }

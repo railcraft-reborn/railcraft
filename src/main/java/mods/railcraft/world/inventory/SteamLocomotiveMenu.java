@@ -23,13 +23,13 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
     this.addWidget(new GaugeWidget(
         this.getLocomotive().getBoiler().getTemperatureGauge(), 40, 25, 176, 61, 6, 43));
 
-    this.addSlot(new SlotWaterLimited(this.getLocomotive(), 0, 152, 20));
-    this.addSlot(new SlotOutput(this.getLocomotive(), 1, 152, 56));
-    this.addSlot(new SlotOutput(this.getLocomotive(), 2, 116, 56));
-    this.addSlot(new SlotRailcraft(this.getLocomotive(), 3, 116, 20)); // Burn
-    this.addSlot(new SlotRailcraft(this.getLocomotive(), 4, 80, 20)); // Fuel
-    this.addSlot(new SlotRailcraft(this.getLocomotive(), 5, 80, 38)); // Fuel
-    this.addSlot(new SlotRailcraft(this.getLocomotive(), 6, 80, 56)); // Fuel
+    this.addSlot(new LimitedWaterSlot(this.getLocomotive(), 0, 152, 20));
+    this.addSlot(new OutputSlot(this.getLocomotive(), 1, 152, 56));
+    this.addSlot(new OutputSlot(this.getLocomotive(), 2, 116, 56));
+    this.addSlot(new RailcraftSlot(this.getLocomotive(), 3, 116, 20)); // Burn
+    this.addSlot(new RailcraftSlot(this.getLocomotive(), 4, 80, 20)); // Fuel
+    this.addSlot(new RailcraftSlot(this.getLocomotive(), 5, 80, 38)); // Fuel
+    this.addSlot(new RailcraftSlot(this.getLocomotive(), 6, 80, 56)); // Fuel
 
     this.addDataSlot(new SimpleIntReferenceHolder(
         () -> (int) Math.round(locomotive.getBoiler().getBurnTime()),

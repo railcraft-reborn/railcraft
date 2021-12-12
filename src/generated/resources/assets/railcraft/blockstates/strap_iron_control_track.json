@@ -5,7 +5,8 @@
         "shape": "north_south"
       },
       "apply": {
-        "model": "railcraft:block/strap_iron_track_outfitted"
+        "model": "railcraft:block/strap_iron_track_outfitted",
+        "y": 0
       }
     },
     {
@@ -14,6 +15,42 @@
       },
       "apply": {
         "model": "railcraft:block/strap_iron_track_outfitted",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted_raised_sw",
         "y": 90
       }
     },
@@ -72,40 +109,6 @@
       "apply": {
         "model": "railcraft:block/control_track",
         "y": 270
-      }
-    },
-    {
-      "when": {
-        "shape": "ascending_north"
-      },
-      "apply": {
-        "model": "railcraft:block/strap_iron_track_outfitted_raised_ne"
-      }
-    },
-    {
-      "when": {
-        "shape": "ascending_south"
-      },
-      "apply": {
-        "model": "railcraft:block/strap_iron_track_outfitted_raised_sw"
-      }
-    },
-    {
-      "when": {
-        "shape": "ascending_east"
-      },
-      "apply": {
-        "model": "railcraft:block/strap_iron_track_outfitted_raised_ne",
-        "y": 90
-      }
-    },
-    {
-      "when": {
-        "shape": "ascending_west"
-      },
-      "apply": {
-        "model": "railcraft:block/strap_iron_track_outfitted_raised_sw",
-        "y": 90
       }
     },
     {

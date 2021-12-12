@@ -21,21 +21,21 @@ public class CokeOvenMenuScreen extends RailcraftMenuScreen<CokeOvenMenu> {
   }
 
   @Override
-  protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-    super.renderBg(matrixStack, partialTicks, mouseY, mouseY);
+  protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
+    super.renderBg(poseStack, partialTicks, mouseY, mouseY);
     final int x = this.leftPos;
     final int y = this.topPos;
     // initial draw
-    this.blit(matrixStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
+    this.blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
 
     // prog bar
     float prog = this.menu.getBurnProgress();
     // 24*0.1, basicaly 10% of 24. Rounded for safety!
     // first xy is pos to place, second is asset loc, third is how much to place
-    this.blit(matrixStack, x + 34, y + 44, 176, 61, Math.round(22.00F * prog), 15);
+    this.blit(poseStack, x + 34, y + 44, 176, 61, Math.round(22.00F * prog), 15);
     // FIRE DRAW
     if (this.menu.isActualyBurning()) {
-      this.blit(matrixStack, x + 17, y + 27, 176, 47, 14, 14);
+      this.blit(poseStack, x + 17, y + 27, 176, 47, 14, 14);
     }
   }
 

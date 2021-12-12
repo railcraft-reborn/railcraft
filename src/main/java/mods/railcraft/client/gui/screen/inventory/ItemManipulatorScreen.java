@@ -26,9 +26,9 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
 
   private MultiButton<ManipulatorBlockEntity.TransferMode> transferModeButton;
 
-  public ItemManipulatorScreen(ItemManipulatorMenu menu, Inventory playerInventory,
+  public ItemManipulatorScreen(ItemManipulatorMenu menu, Inventory inventory,
       Component title) {
-    super(menu, playerInventory, title);
+    super(menu, inventory, title);
   }
 
   @Override
@@ -49,10 +49,10 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
   }
 
   @Override
-  protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-    super.renderLabels(matrixStack, mouseX, mouseY);
-    this.font.draw(matrixStack, FILTERS_TEXT, 18, 16, IngameWindowScreen.TEXT_COLOR);
-    this.font.draw(matrixStack, BUFFER_TEXT, 126, 16, IngameWindowScreen.TEXT_COLOR);
+  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    super.renderLabels(poseStack, mouseX, mouseY);
+    this.font.draw(poseStack, FILTERS_TEXT, 18, 16, IngameWindowScreen.TEXT_COLOR);
+    this.font.draw(poseStack, BUFFER_TEXT, 126, 16, IngameWindowScreen.TEXT_COLOR);
   }
 
   @Override

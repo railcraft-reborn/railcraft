@@ -48,8 +48,8 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
   private int refreshTimer;
 
-  protected LocomotiveScreen(T menu, Inventory inv, Component title, String typeTag) {
-    super(menu, inv, title);
+  protected LocomotiveScreen(T menu, Inventory inventory, Component title, String typeTag) {
+    super(menu, inventory, title);
     this.typeTag = typeTag;
     this.imageHeight = LocomotiveMenu.DEFAULT_HEIGHT;
     this.inventoryLabelY = this.imageHeight - 94;

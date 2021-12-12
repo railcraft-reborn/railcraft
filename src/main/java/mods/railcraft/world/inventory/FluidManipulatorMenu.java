@@ -22,9 +22,9 @@ public class FluidManipulatorMenu extends ManipulatorMenu<FluidManipulatorBlockE
 
   @Override
   protected void addSlots(FluidManipulatorBlockEntity manipulator) {
-    this.addSlot(new SlotFluidFilter(manipulator.getFluidFilter(), 0, 116, 26));
-    this.addSlot(new SlotStackFilter(StackFilters.FLUID_CONTAINER, manipulator, 0, 152, 26));
-    this.addSlot(new SlotOutput(manipulator, 1, 152, 62));
-    this.addSlot(new SlotOutput(manipulator, 2, 116, 62));
+    this.addSlot(new FluidFilterSlot(manipulator.getFluidFilter(), 0, 116, 26));
+    this.addSlot(new ItemFilterSlot(StackFilters.FLUID_CONTAINER, manipulator, 0, 152, 26));
+    this.addSlot(new OutputSlot(manipulator, 1, 152, 62));
+    this.addSlot(new OutputSlot(manipulator, 2, 116, 62));
   }
 }

@@ -6,7 +6,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.world.inventory.RailcraftMenu;
-import mods.railcraft.world.inventory.SlotRailcraft;
+import mods.railcraft.world.inventory.RailcraftSlot;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -25,16 +25,15 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     this.widgetRenderers.add(renderer);
   }
 
-  protected RailcraftMenuScreen(T menu, Inventory inventory,
-      Component title) {
+  protected RailcraftMenuScreen(T menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
     this.inventory = inventory;
   }
 
   @Override
-  public void render(PoseStack poseStack, int mouseX, int mouseY, float par3) {
+  public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
     this.renderBackground(poseStack);
-    super.render(poseStack, mouseX, mouseY, par3);
+    super.render(poseStack, mouseX, mouseY, partialTicks);
     var left = this.leftPos;
     var top = this.topPos;
 
@@ -51,8 +50,8 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
       }
 
       for (Slot slot : this.menu.slots) {
-        if (slot instanceof SlotRailcraft && slot.getItem().isEmpty()) {
-          List<? extends FormattedText> tooltip = ((SlotRailcraft) slot).getTooltip();
+        if (slot instanceof RailcraftSlot && slot.getItem().isEmpty()) {
+          List<? extends FormattedText> tooltip = ((RailcraftSlot) slot).getTooltip();
           if (tooltip != null && this.isMouseOverSlot(slot, mouseX, mouseY)) {
             this.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY, this.font);
           }
@@ -66,7 +65,7 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
   public abstract ResourceLocation getWidgetsTexture();
 
   @Override
-  protected void renderBg(PoseStack poseStack, float f, int mouseX, int mouseY) {
+  protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     RenderSystem.setShaderTexture(0, this.getWidgetsTexture());
 
@@ -80,7 +79,7 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
 
     for (WidgetRenderer<?> element : this.widgetRenderers) {
       if (!element.widget.hidden) {
-        element.draw(this, poseStack, x, y, relativeMouseX, relativeMouseY);
+        element.render(this, poseStack, x, y, relativeMouseX, relativeMouseY);
       }
     }
   }
@@ -114,8 +113,8 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
   public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX,
       double deltaY) {
     Slot slot = this.getSlotUnderMouse();
-    if (button == GLFW.GLFW_MOUSE_BUTTON_1 && slot instanceof SlotRailcraft
-        && ((SlotRailcraft) slot).isPhantom())
+    if (button == GLFW.GLFW_MOUSE_BUTTON_1 && slot instanceof RailcraftSlot
+        && ((RailcraftSlot) slot).isPhantom())
       return true;
     return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
   }

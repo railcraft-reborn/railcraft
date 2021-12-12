@@ -14,10 +14,9 @@ public class FluidManipulatorScreen extends ManipulatorScreen<FluidManipulatorMe
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/fluid_manipulator.png");
 
-  public FluidManipulatorScreen(
-      FluidManipulatorMenu menu, Inventory playerInventory,
+  public FluidManipulatorScreen(FluidManipulatorMenu menu, Inventory inventory,
       Component title) {
-    super(menu, playerInventory, title);
+    super(menu, inventory, title);
     this.registerWidgetRenderer(new FluidGaugeWidgetRenderer(menu.getFluidGauge()));
   }
 

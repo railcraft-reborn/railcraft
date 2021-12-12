@@ -1,0 +1,454 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:block/electric_track_outfitted",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:block/electric_track_outfitted",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north"
+      },
+      "apply": {
+        "model": "railcraft:block/electric_track_outfitted_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south"
+      },
+      "apply": {
+        "model": "railcraft:block/electric_track_outfitted_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east"
+      },
+      "apply": {
+        "model": "railcraft:block/electric_track_outfitted_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west"
+      },
+      "apply": {
+        "model": "railcraft:block/electric_track_outfitted_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "north_south",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "east_west",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_north",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_south",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_east",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_west",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "north_south",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler_on",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "east_west",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler_on",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_north",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler_on_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_south",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler_on_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_east",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler_on_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_west",
+        "mode": "coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_coupler_on_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "north_south",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "east_west",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_north",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_south",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_east",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_west",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "north_south",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler_on",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "east_west",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler_on",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_north",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler_on_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_south",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler_on_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_east",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler_on_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_west",
+        "mode": "decoupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_decoupler_on_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "north_south",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "east_west",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_north",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_south",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_east",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_west",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "north_south",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler_on",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "east_west",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler_on",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_north",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler_on_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_south",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler_on_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_east",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler_on_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_west",
+        "mode": "auto_coupler"
+      },
+      "apply": {
+        "model": "railcraft:block/coupler_track_auto_coupler_on_raised_sw",
+        "y": 90
+      }
+    }
+  ]
+}

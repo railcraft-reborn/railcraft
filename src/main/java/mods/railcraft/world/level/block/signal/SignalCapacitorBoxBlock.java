@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.signal;
 
 import javax.annotation.Nullable;
 import mods.railcraft.client.ClientDist;
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -27,7 +26,7 @@ public class SignalCapacitorBoxBlock extends SignalBoxBlock implements EntityBlo
   public InteractionResult use(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
-      LevelUtil.getBlockEntity(level, pos, SignalCapacitorBoxBlockEntity.class)
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.SIGNAL_CAPACITOR_BOX.get())
           .ifPresent(ClientDist::openSignalCapacitorBoxScreen);
       return InteractionResult.SUCCESS;
     }

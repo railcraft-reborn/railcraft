@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.signal;
 
 import mods.railcraft.client.ClientDist;
-import mods.railcraft.util.LevelUtil;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -23,7 +23,7 @@ public class SignalReceiverBoxBlock extends SignalBoxBlock implements EntityBloc
   public InteractionResult use(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
-      LevelUtil.getBlockEntity(level, pos, SignalReceiverBoxBlockEntity.class)
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.SIGNAL_RECEIVER_BOX.get())
           .ifPresent(ClientDist::openActionSignalBoxScreen);
       return InteractionResult.SUCCESS;
     }

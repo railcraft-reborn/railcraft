@@ -3,9 +3,9 @@ package mods.railcraft.world.inventory;
 import mods.railcraft.util.container.filters.StackFilters;
 import net.minecraft.world.Container;
 
-public class SlotMinecartPhantom extends SlotStackFilter {
+public class PhantomMinecartSlot extends ItemFilterSlot {
 
-  public SlotMinecartPhantom(Container inventory, int index, int x, int y) {
+  public PhantomMinecartSlot(Container inventory, int index, int x, int y) {
     super(StackFilters.MINECART, inventory, index, x, y);
     this.setPhantom();
     this.setStackLimit(1);

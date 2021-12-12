@@ -21,9 +21,8 @@ public class FluidGaugeWidgetRenderer extends WidgetRenderer<FluidGaugeWidget> {
     return this.widget.tank.getTooltip();
   }
 
-  // TODO: test render
   @Override
-  public void draw(RailcraftMenuScreen<?> gui, PoseStack matrixStack, int guiX, int guiY,
+  public void render(RailcraftMenuScreen<?> screen, PoseStack poseStack, int centreX, int centreY,
       int mouseX, int mouseY) {
     if (this.widget.tank == null) {
       return;
@@ -54,21 +53,21 @@ public class FluidGaugeWidgetRenderer extends WidgetRenderer<FluidGaugeWidget> {
 
     for (var col = 0; col < this.widget.w / 16; col++) {
       for (var row = 0; row <= this.widget.h / 16; row++) {
-        blit(matrixStack, guiX + this.widget.x + col * 16, guiY + this.widget.y + row * 16 - 1,
+        blit(poseStack, centreX + this.widget.x + col * 16, centreY + this.widget.y + row * 16 - 1,
             this.getBlitOffset(), 16, 16, fluidIcon);
       }
     }
 
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderSystem.setShaderTexture(0, gui.getWidgetsTexture());
+    RenderSystem.setShaderTexture(0, screen.getWidgetsTexture());
 
     var mask = (int) Math.floor(this.widget.h * scale);
     if (mask == 0 && fluidStack.getAmount() > 0) {
       mask = 1;
     }
-    gui.blit(matrixStack, guiX + this.widget.x, guiY + this.widget.y - 1, this.widget.x,
+    screen.blit(poseStack, centreX + this.widget.x, centreY + this.widget.y - 1, this.widget.x,
         this.widget.y - 1, this.widget.w, this.widget.h - mask + 1);
-    gui.blit(matrixStack, guiX + this.widget.x, guiY + this.widget.y, this.widget.u, this.widget.v,
-        this.widget.w, this.widget.h);
+    screen.blit(poseStack, centreX + this.widget.x, centreY + this.widget.y, this.widget.u,
+        this.widget.v, this.widget.w, this.widget.h);
   }
 }

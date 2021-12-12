@@ -55,6 +55,10 @@ public class RailcraftItems {
         }
       };
 
+  public static final RegistryObject<Item> FEED_STATION =
+      ITEMS.register("feed_station",
+          () -> new BlockItem(RailcraftBlocks.FEED_STATION.get(), new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> STEEL_ANVIL =
       ITEMS.register("steel_anvil",
           () -> new BlockItem(RailcraftBlocks.STEEL_ANVIL.get(), new Item.Properties().tab(TAB)));
@@ -419,6 +423,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ABANDONED_DETECTOR_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> ABANDONED_COUPLER_TRACK =
+      ITEMS.register("abandoned_coupler_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_COUPLER_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> ELECTRIC_TRACK =
       ITEMS.register("electric_track",
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_TRACK.get(),
@@ -457,6 +466,11 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ELECTRIC_DETECTOR_TRACK =
       ITEMS.register("electric_detector_track",
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_DETECTOR_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ELECTRIC_COUPLER_TRACK =
+      ITEMS.register("electric_coupler_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_COUPLER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> HIGH_SPEED_TRACK =
@@ -554,6 +568,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.IRON_DETECTOR_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> IRON_COUPLER_TRACK =
+      ITEMS.register("iron_coupler_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_COUPLER_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> REINFORCED_TRACK =
       ITEMS.register("reinforced_track",
           () -> new BlockItem(RailcraftBlocks.REINFORCED_TRACK.get(),
@@ -594,6 +613,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.REINFORCED_DETECTOR_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> REINFORCED_COUPLER_TRACK =
+      ITEMS.register("reinforced_coupler_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_COUPLER_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> STRAP_IRON_TRACK =
       ITEMS.register("strap_iron_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_TRACK.get(),
@@ -632,6 +656,11 @@ public class RailcraftItems {
   public static final RegistryObject<Item> STRAP_IRON_DETECTOR_TRACK =
       ITEMS.register("strap_iron_detector_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> STRAP_IRON_COUPLER_TRACK =
+      ITEMS.register("strap_iron_coupler_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_COUPLER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> ELEVATOR_TRACK =
@@ -764,6 +793,17 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_DETECTOR_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_DETECTOR_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK)
+              .tab(TAB)));
+
+  public static final RegistryObject<Item> COUPLER_TRACK_KIT =
+      ITEMS.register("coupler_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .setAllowedOnSlopes(true)
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_COUPLER_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_COUPLER_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_COUPLER_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_COUPLER_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_COUPLER_TRACK)
               .tab(TAB)));
 
   public static final RegistryObject<Item> GOGGLES =
@@ -918,31 +958,6 @@ public class RailcraftItems {
   public static final RegistryObject<Item> BRONZE_NUGGET =
       ITEMS.register("bronze_nugget",
           () -> new Item(new Item.Properties().tab(TAB)));
-
-  // BLOCK
-  // public static final RegistryObject<BlockItem> STEEL_BLOCK =
-  // ITEMS.register("steel_block",
-  // () -> new BlockItem(new Item.Properties().tab(RC_TAB)));
-
-  // public static final RegistryObject<BlockItem> COPPER_BLOCK =
-  // ITEMS.register("copper_block",
-  // () -> new BlockItem(new Item.Properties().tab(RC_TAB)));
-
-  // public static final RegistryObject<BlockItem> TIN_BLOCK =
-  // ITEMS.register("tin_block",
-  // () -> new BlockItem(new Item.Properties().tab(RC_TAB)));
-
-  // public static final RegistryObject<BlockItem> ZINC_BLOCK =
-  // ITEMS.register("zinc_block",
-  // () -> new BlockItem(new Item.Properties().tab(RC_TAB)));
-
-  // public static final RegistryObject<BlockItem> BRASS_BLOCK =
-  // ITEMS.register("brass_block",
-  // () -> new BlockItem(new Item.Properties().tab(RC_TAB)));
-
-  // public static final RegistryObject<BlockItem> BRONZE_BLOCK =
-  // ITEMS.register("bronze_block",
-  // () -> new BlockItem(new Item.Properties().tab(RC_TAB)));
 
   // circuits
   public static final RegistryObject<Item> CONTROLLER_CIRCUIT =

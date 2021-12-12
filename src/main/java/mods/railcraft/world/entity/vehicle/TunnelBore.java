@@ -1090,7 +1090,7 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
   @Override
   public boolean canLink(AbstractMinecart cart) {
     Vec3 pos = getPositionAhead(-LENGTH / 2.0);
-    float dist = RailcraftLinkageManager.LINKAGE_DISTANCE * 2;
+    float dist = LinkageManagerImpl.LINKAGE_DISTANCE * 2;
     dist = dist * dist;
     return cart.distanceToSqr(pos.x, pos.y, pos.z) < dist;
   }
