@@ -39,12 +39,14 @@ import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.material.RailcraftMaterials;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
+import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -53,6 +55,36 @@ public class RailcraftBlocks {
 
   public static final DeferredRegister<Block> BLOCKS =
       DeferredRegister.create(ForgeRegistries.BLOCKS, Railcraft.ID);
+
+  public static final RegistryObject<Block> STEEL_ANVIL =
+      BLOCKS.register("steel_anvil",
+          () -> new AnvilBlock(
+              BlockBehaviour.Properties.of(Material.HEAVY_METAL, MaterialColor.METAL)
+                  .requiresCorrectToolForDrops()
+                  .strength(5.0F, 2000.0F)
+                  .sound(SoundType.ANVIL)));
+
+  public static final RegistryObject<Block> CHIPPED_STEEL_ANVIL =
+      BLOCKS.register("chipped_steel_anvil",
+          () -> new AnvilBlock(
+              BlockBehaviour.Properties.of(Material.HEAVY_METAL, MaterialColor.METAL)
+                  .requiresCorrectToolForDrops()
+                  .strength(5.0F, 2000.0F)
+                  .sound(SoundType.ANVIL)));
+
+  public static final RegistryObject<Block> DAMAGED_STEEL_ANVIL =
+      BLOCKS.register("damaged_steel_anvil",
+          () -> new AnvilBlock(
+              BlockBehaviour.Properties.of(Material.HEAVY_METAL, MaterialColor.METAL)
+                  .requiresCorrectToolForDrops()
+                  .strength(5.0F, 2000.0F)
+                  .sound(SoundType.ANVIL)));
+
+  public static final RegistryObject<Block> STEEL_BLOCK =
+      BLOCKS.register("steel_block",
+          () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(5.0F, 15.0F)
+              .sound(SoundType.METAL)));
 
   public static final RegistryObject<FluidLoaderBlock> FLUID_LOADER =
       BLOCKS.register("fluid_loader",

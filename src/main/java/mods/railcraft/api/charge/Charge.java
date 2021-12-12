@@ -9,13 +9,12 @@ package mods.railcraft.api.charge;
 
 import java.util.Optional;
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * The heart of the Charge system is here.
@@ -276,10 +275,10 @@ public enum Charge {
     /**
      * Spawns a lot of sparks from a point source.
      *
-     * @param source Can be a TileEntity, Entity, BlockPos, or Vector3d
+     * @param pos - the position of the sparks.
      * @throws IllegalArgumentException If source is of an unexpected type.
      */
-    default void zapEffectDeath(Level world, Object source) {}
+    default void zapEffectDeath(Level world, Vec3 pos) {}
   }
 
   /**

@@ -1,15 +1,14 @@
 {
     "required": true,
+    "minVersion": "0.7",
     "package": "mods.railcraft.mixin",
     "compatibilityLevel": "JAVA_17",
     "refmap": "railcraft.refmap.json",
     "mixins": [
         "AbstractMinecartMixin",
         "FenceBlockMixin",
-        "WallBlockMixin"
-    ],
-    "client": [
-
+        "WallBlockMixin",
+        "AnvilBlockMixin"
     ],
     "injectors": {
         "defaultRequire": 1

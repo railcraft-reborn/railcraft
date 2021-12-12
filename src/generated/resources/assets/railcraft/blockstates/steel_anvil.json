@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "railcraft:block/steel_anvil",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "railcraft:block/steel_anvil",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "railcraft:block/steel_anvil"
+    },
+    "facing=west": {
+      "model": "railcraft:block/steel_anvil",
+      "y": 90
+    }
+  }
+}

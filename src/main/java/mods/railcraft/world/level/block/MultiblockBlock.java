@@ -46,10 +46,9 @@ public abstract class MultiblockBlock<T extends MultiblockBlockEntity<?>> extend
   }
 
   @Override
-  protected void createBlockStateDefinition(
-      StateDefinition.Builder<Block, BlockState> stateContainer) {
-    super.createBlockStateDefinition(stateContainer);
-    stateContainer.add(PARENT);
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    super.createBlockStateDefinition(builder);
+    builder.add(PARENT);
   }
 
   @Override

@@ -17,9 +17,10 @@ import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.model.RailcraftLayerDefinitions;
-import mods.railcraft.client.particle.ParticlePumpkin;
-import mods.railcraft.client.particle.ParticleSpark;
-import mods.railcraft.client.particle.ParticleSteam;
+import mods.railcraft.client.particle.PumpkinParticle;
+import mods.railcraft.client.particle.SparkParticle;
+import mods.railcraft.client.particle.SteamParticle;
+import mods.railcraft.client.particle.TuningAuraParticle;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
@@ -31,7 +32,7 @@ import mods.railcraft.client.renderer.blockentity.SignalCapacitorBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalControllerBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalReceiverBoxRenderer;
 import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
-import mods.railcraft.particle.RailcraftParticles;
+import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
@@ -46,7 +47,6 @@ import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.GrassColor;
@@ -171,13 +171,15 @@ public class ClientDist implements RailcraftDist {
   }
 
   private void handleParticleRegistration(ParticleFactoryRegisterEvent event) {
-    final ParticleEngine particleEngine = this.minecraft.particleEngine;
-    particleEngine.register(RailcraftParticles.STEAM.get(),
-        ParticleSteam.SteamParticleFactory::new);
-    particleEngine.register(RailcraftParticles.SPARK.get(),
-        ParticleSpark.SparkParticleFactory::new);
-    particleEngine.register(RailcraftParticles.PUMPKIN.get(),
-        ParticlePumpkin.PumpkinParticleFactory::new);
+    var particleEngine = this.minecraft.particleEngine;
+    particleEngine.register(RailcraftParticleTypes.STEAM.get(),
+        SteamParticle.Provider::new);
+    particleEngine.register(RailcraftParticleTypes.SPARK.get(),
+        SparkParticle.Provider::new);
+    particleEngine.register(RailcraftParticleTypes.PUMPKIN.get(),
+        PumpkinParticle.Provider::new);
+    particleEngine.register(RailcraftParticleTypes.TUNING_AURA.get(),
+        TuningAuraParticle.Provider::new);
   }
 
   private void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {

@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/template_steel_anvil",
+  "textures": {
+    "top": "railcraft:block/steel_anvil_top"
+  }
+}

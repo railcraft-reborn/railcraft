@@ -104,7 +104,7 @@ public class GogglesItem extends ArmorItem {
     }
 
     public Aura getNext() {
-      return values()[this.ordinal() + 1 % values().length];
+      return values()[(this.ordinal() + 1) % values().length];
     }
 
     public static Optional<Aura> getByName(String name) {

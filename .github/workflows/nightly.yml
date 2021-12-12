@@ -1,5 +1,7 @@
 name: Deploy Nightly
 on:
+  branches:
+    - mc-1.16.5
   schedule:
     - cron: '0 0 * * *'
 
@@ -40,6 +42,6 @@ jobs:
           upload_url: https://uploads.github.com/repos/Sm0keySa1m0n/Railcraft/releases/50391151/assets{?name,label}
           release_id: 50391151
           asset_path: ./railcraft-nightly.zip
-          asset_name: railcraft-nightly-$$.zip
+          asset_name: railcraft-nightly-1.16.5-$$.zip
           asset_content_type: application/zip
           max_releases: 5

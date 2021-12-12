@@ -15,7 +15,9 @@ public enum RailcraftArmorMaterial implements ArmorMaterial {
   OVERALLS("railcraft:overalls", 5, new int[] {1, 2, 3, 1}, 15, SoundEvents.ARMOR_EQUIP_LEATHER,
       0.0F, 0.0F, () -> Ingredient.of(Blocks.BLUE_WOOL)),
   GOGGLES("railcraft:goggles", 20, new int[] {1, 2, 3, 1}, 15, SoundEvents.ARMOR_EQUIP_LEATHER,
-      0.0F, 0.0F, () -> Ingredient.of(RailcraftTags.Items.STEEL_INGOT));
+      0.0F, 0.0F, () -> Ingredient.of(RailcraftTags.Items.STEEL_INGOT)),
+  STEEL("railcraft:steel", 25, new int[] {2, 5, 6, 2}, 8, SoundEvents.ARMOR_EQUIP_IRON, 0.8F, 0.0F,
+      () -> Ingredient.of(RailcraftTags.Items.STEEL_INGOT));
 
   private static final int[] HEALTH_PER_SLOT = new int[] {13, 15, 16, 11};
   private final String name;
