@@ -13,7 +13,6 @@ import java.util.List;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.gui.screen.inventory.widget.GaugeWidgetRenderer;
-import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.gui.widget.GaugeWidget;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
 import net.minecraft.network.chat.Component;
@@ -33,9 +32,7 @@ public class ElectricLocomotiveScreen extends LocomotiveScreen<ElectricLocomotiv
     this.registerWidgetRenderer(new GaugeWidgetRenderer(wiget) {
       @Override
       public List<Component> getTooltip() {
-        Gauge theGauge = wiget.getGauge();
-        theGauge.refresh();
-        return theGauge.getTooltip();
+        return wiget.getGauge().getTooltip();
       }
     });
   }

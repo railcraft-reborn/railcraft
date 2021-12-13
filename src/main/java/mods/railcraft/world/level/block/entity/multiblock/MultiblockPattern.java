@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class MultiblockPattern {
 
-  private static final Logger logger = LogManager.getLogger(MultiblockPattern.class);
+  private static final Logger logger = LogManager.getLogger();
   private final int sizeX;
   private final int sizeY;
   private final int sizeZ;

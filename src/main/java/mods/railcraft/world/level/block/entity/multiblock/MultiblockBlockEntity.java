@@ -21,8 +21,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     extends RailcraftBlockEntity
     implements MenuProvider {
 
-  private static final Logger logger =
-      LogManager.getLogger(MultiblockBlockEntity.class);
+  private static final Logger logger = LogManager.getLogger();
 
   private boolean formed = false;
   private BlockPos parentPos = BlockPos.ZERO;
