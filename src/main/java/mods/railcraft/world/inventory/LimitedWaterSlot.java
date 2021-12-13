@@ -1,11 +1,9 @@
 package mods.railcraft.world.inventory;
 
-import javax.annotation.Nullable;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidAttributes;
 
 public class LimitedWaterSlot extends WaterSlot {
 
@@ -15,10 +13,10 @@ public class LimitedWaterSlot extends WaterSlot {
   }
 
   @Override
-  public boolean mayPlace(@Nullable ItemStack stack) {
+  public boolean mayPlace(ItemStack stack) {
     return FluidItemHelper.getFluidStackInContainer(stack)
         .filter(fluid -> fluid.getFluid() == Fluids.WATER)
-        .filter(fluid -> fluid.getAmount() <= FluidAttributes.BUCKET_VOLUME)
+        .filter(fluid -> fluid.getAmount() >= 1) // disallow tanks with water still in (0 units though)
         .isPresent();
   }
 }

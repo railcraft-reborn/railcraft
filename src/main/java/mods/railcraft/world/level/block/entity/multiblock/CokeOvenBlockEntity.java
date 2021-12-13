@@ -1,7 +1,10 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
 import java.util.Optional;
+
 import javax.annotation.Nullable;
+
+import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
@@ -36,7 +39,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
@@ -46,8 +51,11 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   private static final Component MENU_TITLE =
       new TranslatableComponent("container.coke_oven");
 
-  // internal inventory, 3 total. 0 IN, 1 OUT
-  protected NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
+  // internal inventory, 0 IN 1 OUT 2 BUCKET IN 3 BUCKET OUT
+  protected NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
+
+  private final ContainerMapper bucketIn = ContainerMapper.make(this, 2, 3);
+  private final ContainerMapper bucketOut = ContainerMapper.make(this, 3, 4);
 
   private int recipieRequiredTime = 0;
   private int currentTick = 0;
@@ -104,17 +112,11 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   }
 
   public TankManager getTankManager() {
-    return this.tankManager.orElseThrow(() -> new IllegalStateException("Expected tank manager"));
-  }
-
-  @Override
-  public boolean tryToMakeParent(Direction facingDir) {
-    boolean returnValue = super.tryToMakeParent(facingDir);
-    // tank nonexistant? make new one.
-    if (returnValue && this.tankManager.equals(LazyOptional.empty())) {
-      this.tankManager = LazyOptional.of(() -> new TankManager(this.fluidTank));
+    // gotta point it somewhere.
+    if (this.isParent() || !this.isFormed()) {
+      return this.tankManager.orElseThrow(() -> new IllegalStateException("Expected tank manager"));
     }
-    return returnValue;
+    return this.getParent().getTankManager();
   }
 
   @Override
@@ -125,9 +127,6 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
       state.setValue(CokeOvenBricksBlock.PARENT, false);
       state.setValue(CokeOvenBricksBlock.LIT, false);
       this.level.setBlock(this.worldPosition, state, 3);
-
-      // this.fluidTank = LazyOptional.empty(); // remove the fluidtank ref
-      this.tankManager = LazyOptional.empty(); // ditto
     }
   }
 
@@ -171,9 +170,6 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
           3);
       return;
     }
-    // we set it during actual load (actual without the '"', thanks 1.18!)
-    this.tankManager = LazyOptional.of(() -> this.getParent().getTankManager());
-    // this.fluidTank = LazyOptional.empty();
   }
 
   @Override
@@ -185,7 +181,10 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     this.currentTick = tag.getInt("currentTick");
 
     if (tag.contains("tankManager")) {
-      this.getTankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
+      // DO NOT USE GETTERS ON THESE ONES
+      this.tankManager.ifPresent(
+        consumer -> consumer.deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND))
+      );
     }
   }
 
@@ -197,7 +196,9 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     tag.putInt("currentTick", this.currentTick);
 
     if (this.isParent()) {
-      tag.put("tankManager", this.getTankManager().serializeNBT());
+      this.tankManager.ifPresent(
+        consumer -> tag.put("tankManager", consumer.serializeNBT())
+      );
     }
   }
 
@@ -212,6 +213,13 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   // TODO particles
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       CokeOvenBlockEntity blockEntity) {
+
+    if (!blockEntity.getTankManager().isEmpty()) {
+      if (FluidUtil.tryFillContainer(blockEntity.bucketIn.getItem(2), blockEntity.getTankManager(), FluidAttributes.BUCKET_VOLUME, null, true).success) {
+        // blockEntity.bucketIn.moveOneItemTo(blockEntity.bucketOut);
+      }
+    }
+
     if (!blockEntity.isFormed()) {
       if (blockState.getValue(CokeOvenBricksBlock.PARENT)) {
         level.setBlock(blockPos,
@@ -271,6 +279,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
         return;
       }
       blockEntity.setRecipeUsed(irecipe.get());
+      recipe = irecipe.get();
     }
 
     CokeOvenRecipe cokeRecipe = CokeOvenRecipe.class.cast(recipe);
@@ -285,7 +294,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
         blockEntity.setRecipeUsed(null);
         blockEntity.bake(cokeRecipe);
       }
-      blockEntity.recipieRequiredTime = blockEntity.getTickCost();
+      blockEntity.recipieRequiredTime = cokeRecipe.getTickCost();
       blockEntity.currentTick = 0;
       return;
     }
@@ -353,7 +362,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
 
   @Override
   public boolean canPlaceItem(int index, ItemStack itemStack) {
-    if (index == 1) { // 1 is OUTPUT, 0 is INPUT
+    if (index == 1 || index == 3) { // 0 is INPUT, 1 is OUTPUT, 2 is BUCKET IN, 3 is BUCKET OUT
       return false;
     }
     return true;
@@ -366,7 +375,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
 
   @Override
   public void setRecipeUsed(@Nullable Recipe<?> recipe) {
-    if (this.cachedRecipie.equals(recipe)) {
+    if (this.cachedRecipie == recipe) {
       return;
     }
     this.cachedRecipie = recipe;
@@ -386,29 +395,15 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     }
     ItemStack resultSlot = this.items.get(1);
     // empty? we can proceede to coke
-    if (resultSlot.isEmpty()) {
+    if (resultSlot.isEmpty() && this.getTankManager().isFluidValid(0, resultFluidStack)) {
       return true;
     }
-    if (!resultSlot.sameItem(resultItemStack)
-        && !this.getTankManager().isFluidValid(resultFluidStack.getAmount(), resultFluidStack)) {
+    if (!resultSlot.sameItem(resultItemStack) || !this.getTankManager().isFluidValid(0, resultFluidStack)) {
       return false;
     }
-    // respect stacks (and fluid count.)
-    if ((resultSlot.getCount() + resultItemStack.getCount() <= this.getMaxStackSize())
-        && resultSlot.getCount() + resultItemStack.getCount() <= resultSlot.getMaxStackSize()
-        && !this.getTankManager().isFluidValid(resultFluidStack.getAmount(), resultFluidStack)
-    ) {
-      return true;
-    }
-    return (resultSlot.getCount() + resultItemStack.getCount() <= resultItemStack.getMaxStackSize())
-    && !this.getTankManager().isFluidValid(resultFluidStack.getAmount(), resultFluidStack);
-  }
 
-  protected int getTickCost() {
-    return this.level.getServer()
-        .getRecipeManager()
-        .getRecipeFor(RailcraftRecipeTypes.COKE_OVEN_COOKING, this, this.level)
-        .map(CokeOvenRecipe::getTickCost).orElse(2400); // 2min base for coal coke
+    return (resultSlot.getCount() + resultItemStack.getCount() <= resultSlot.getMaxStackSize())
+    && this.getTankManager().isFluidValid(0, resultFluidStack);
   }
 
   private void bake(CokeOvenRecipe cokeOvenRecipe) {
@@ -426,7 +421,8 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
       resultStack.grow(resultItemStack.getCount());
     }
 
-    this.getTankManager().fill(resultFluidStack.copy(), FluidAction.EXECUTE);
+    this.getTankManager().get(0).internalFill(resultFluidStack.copy(), FluidAction.EXECUTE);
+    this.setChanged(); // tank/output changed pls save me
 
     ItemStack inputStack = this.items.get(0);
     inputStack.shrink(1);

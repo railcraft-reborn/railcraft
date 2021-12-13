@@ -1,6 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
+import mods.railcraft.world.inventory.OutputSlot;
 import mods.railcraft.world.inventory.RailcraftMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
@@ -20,7 +21,7 @@ public class CokeOvenMenu extends RailcraftMenu {
   private final Level level;
   private final ContainerData data;
   private final CokeOvenBlockEntity cokeOvenInventory;
-  private static final int INTERNAL_CONTAINER_SLOTS = 2;
+  private static final int INTERNAL_CONTAINER_SLOTS = 4;
   private final FluidGaugeWidget fluidGauge;
 
   public CokeOvenMenu(int id, Inventory inventory,
@@ -49,6 +50,8 @@ public class CokeOvenMenu extends RailcraftMenu {
     this.addSlot(new Slot(cokeOvenStorageEntity, 0, 16, 43));
     this.addSlot(new FurnaceResultSlot(playerInventory.player, cokeOvenStorageEntity, 1, 62, 43));
     // fluid slot
+    this.addSlot(new Slot(cokeOvenStorageEntity, 2, 149, 22));
+    this.addSlot(new OutputSlot(cokeOvenStorageEntity, 3, 149, 57));
 
     // generic player inventory
     for (int i = 0; i < 3; i++) {
@@ -83,14 +86,12 @@ public class CokeOvenMenu extends RailcraftMenu {
     ItemStack itemstack = slot.getItem();
     ItemStack itemstack1 = itemstack.copy();
     if (slotID == 1) {
-      itemstack1.getItem().onCraftedBy(itemstack1, this.level, playerEntity);
-      if (!this.moveItemStackTo(itemstack1, 1, (36 + INTERNAL_CONTAINER_SLOTS), true)) {
+      if (!this.moveItemStackTo(itemstack1, INTERNAL_CONTAINER_SLOTS, (36 + INTERNAL_CONTAINER_SLOTS), true)) {
         return ItemStack.EMPTY;
       }
-
       slot.onQuickCraft(itemstack1, itemstack);
-      slot.onTake(playerEntity, itemstack1);
     }
+    // not the input slot
     if (slotID > (INTERNAL_CONTAINER_SLOTS - 1)) {
       if (this.canSmelt(itemstack1)) {
         if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
