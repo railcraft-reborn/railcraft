@@ -30,10 +30,12 @@ public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
 
   public ForceTrackBlock(Properties properties) {
     super(TrackTypes.HIGH_SPEED, properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(WATERLOGGED, false)
-        .setValue(COLOR, ForceTrackEmitterBlock.DEFAULT_COLOR));
+  }
+
+  @Override
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return super.buildDefaultState(blockState)
+        .setValue(COLOR, ForceTrackEmitterBlock.DEFAULT_COLOR);
   }
 
   @Override

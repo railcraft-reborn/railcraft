@@ -1,12 +1,14 @@
 package mods.railcraft.world.level.block.track;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.charge.IChargeBlock;
+import mods.railcraft.api.charge.ChargeBlock;
+import mods.railcraft.api.item.SpikeMaulTarget;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TypedTrack;
 import mods.railcraft.util.TrackTools;
@@ -35,7 +37,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class TrackBlock extends BaseRailBlock implements TypedTrack, IChargeBlock {
+public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock, SpikeMaulTarget {
 
   public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE;
 
@@ -47,9 +49,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, IChargeBloc
   public TrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(false, properties);
     this.trackType = trackType;
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(WATERLOGGED, false));
+    this.registerDefaultState(this.buildDefaultState(this.stateDefinition.any()));
   }
 
   @Override
@@ -62,9 +62,20 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, IChargeBloc
     return SHAPE;
   }
 
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return blockState
+        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
+        .setValue(WATERLOGGED, false);
+  }
+
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(this.getShapeProperty(), WATERLOGGED);
+  }
+
+  @Override
+  public List<? extends Supplier<? extends Block>> getSpikeMaulVariants() {
+    return this.trackType.get().getSpikeMaulVariants();
   }
 
   @Override

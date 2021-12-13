@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.RailShape;
 
 public abstract class ReversiblePoweredOutfittedTrackBlock extends PoweredOutfittedTrackBlock {
 
@@ -23,10 +22,12 @@ public abstract class ReversiblePoweredOutfittedTrackBlock extends PoweredOutfit
   public ReversiblePoweredOutfittedTrackBlock(Supplier<? extends TrackType> trackType,
       Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(POWERED, false)
-        .setValue(REVERSED, false));
+  }
+
+  @Override
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return super.buildDefaultState(blockState)
+        .setValue(REVERSED, false);
   }
 
   @Override
@@ -44,15 +45,13 @@ public abstract class ReversiblePoweredOutfittedTrackBlock extends PoweredOutfit
 
   @Override
   public BlockState rotate(BlockState blockState, Rotation rotation) {
-    return rotation == Rotation.CLOCKWISE_180
-        ? blockState.setValue(REVERSED, !blockState.getValue(REVERSED))
-        : blockState;
+    return rotation == Rotation.CLOCKWISE_180 ? blockState.cycle(REVERSED) : blockState;
   }
 
   @Override
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    level.setBlockAndUpdate(pos, blockState.setValue(REVERSED, !blockState.getValue(REVERSED)));
+    level.setBlockAndUpdate(pos, blockState.cycle(REVERSED));
     return true;
   }
 

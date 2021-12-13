@@ -3,22 +3,17 @@ package mods.railcraft.world.item;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
-import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.item.SpikeMaulTarget;
-import mods.railcraft.api.track.TrackType;
-import mods.railcraft.api.track.TypedTrack;
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -43,9 +38,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.RailShape;
 
 public class SpikeMaulItem extends TieredItem {
 
@@ -62,46 +54,54 @@ public class SpikeMaulItem extends TieredItem {
         "Weapon modifier", attackSpeed, AttributeModifier.Operation.ADDITION));
     this.defaultModifiers = builder.build();
   }
-  
+
   @SuppressWarnings("deprecation")
   @Override
   public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
     return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers
         : super.getDefaultAttributeModifiers(slot);
- }
+  }
 
   @Override
   public InteractionResult useOn(UseOnContext context) {
-    Level level = context.getLevel();
-    BlockPos blockPos = context.getClickedPos();
+    var level = context.getLevel();
+    var blockPos = context.getClickedPos();
 
-    if (SpikeMaulTarget.spikeMaulTargets.isEmpty()) {
-      return InteractionResult.PASS;
-    }
-
-    BlockState existingBlockState = level.getBlockState(blockPos);
+    var existingBlockState = level.getBlockState(blockPos);
 
     if (!BaseRailBlock.isRail(existingBlockState)) {
       return InteractionResult.PASS;
     }
 
-    RailShape railShape = TrackBlock.getRailShapeRaw(existingBlockState);
+    var railShape = TrackBlock.getRailShapeRaw(existingBlockState);
     if (TrackShapeHelper.isAscending(railShape)) {
       return InteractionResult.PASS;
     }
 
-    Player player = context.getPlayer();
-    List<SpikeMaulTarget> list = SpikeMaulTarget.spikeMaulTargets;
-    if (player.isCrouching()) {
-      list = Lists.reverse(list);
+    List<? extends Supplier<? extends Block>> variants;
+    if (existingBlockState.getBlock() instanceof SpikeMaulTarget target) {
+      variants = target.getSpikeMaulVariants();
+    } else if (existingBlockState.is(Blocks.RAIL)) {
+      variants = TrackTypes.IRON.get().getSpikeMaulVariants();
+    } else {
+      return InteractionResult.PASS;
     }
-    Deque<SpikeMaulTarget> targets = new ArrayDeque<>(list);
-    SpikeMaulTarget first = targets.getFirst();
-    SpikeMaulTarget found = null;
-    SpikeMaulTarget each;
+
+    if (variants.isEmpty()) {
+      return InteractionResult.PASS;
+    }
+
+    var player = context.getPlayer();
+    if (player.isCrouching()) {
+      variants = Lists.reverse(variants);
+    }
+    Deque<? extends Supplier<? extends Block>> targets = new ArrayDeque<>(variants);
+    var first = targets.getFirst();
+    Supplier<? extends Block> found = null;
+    Supplier<? extends Block> each;
     do {
       each = targets.removeFirst();
-      if (each.matches(existingBlockState, level, blockPos)) {
+      if (existingBlockState.is(each.get())) {
         found = targets.isEmpty() ? first : targets.getFirst();
         break;
       }
@@ -115,16 +115,15 @@ public class SpikeMaulItem extends TieredItem {
       return InteractionResult.SUCCESS;
     }
 
-    LevelUtil.setAir(level, blockPos);
-    Charge.distribution.network(level).removeNode(blockPos);
-    if (!found.use(context)) {
+    if (!level.setBlockAndUpdate(blockPos,
+        found.get().getStateForPlacement(new BlockPlaceContext(context)))) {
       level.setBlockAndUpdate(blockPos, existingBlockState);
       return InteractionResult.FAIL;
     }
 
-    ItemStack heldStack = player.getItemInHand(context.getHand());
-    BlockState newBlockState = level.getBlockState(blockPos);
-    SoundType soundtype = newBlockState.getSoundType(level, blockPos, player);
+    var heldStack = player.getItemInHand(context.getHand());
+    var newBlockState = level.getBlockState(blockPos);
+    var soundtype = newBlockState.getSoundType(level, blockPos, player);
     level.playSound(player, blockPos,
         newBlockState.getSoundType(level, blockPos, player).getPlaceSound(),
         SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
@@ -153,38 +152,5 @@ public class SpikeMaulItem extends TieredItem {
       TooltipFlag advanced) {
     super.appendHoverText(stack, world, lines, advanced);
     lines.add(new TranslatableComponent("spike_maul.description"));
-  }
-
-  static {
-    SpikeMaulTarget.spikeMaulTargets.add(new FlexTarget());
-    SpikeMaulTarget.spikeMaulTargets
-        .add(new SpikeMaulTarget.Simple(RailcraftBlocks.TURNOUT_TRACK));
-    SpikeMaulTarget.spikeMaulTargets
-        .add(new SpikeMaulTarget.Simple(RailcraftBlocks.WYE_TRACK));
-    // ISpikeMaulTarget.spikeMaulTargets
-    // .add(new ISpikeMaulTarget.TrackKitTarget(TrackKits.JUNCTION::getTrackKit));
-  }
-
-  private static class FlexTarget implements SpikeMaulTarget {
-
-    @Override
-    public boolean matches(BlockState blockState, Level level, BlockPos blockPos) {
-      return (blockState.getBlock() instanceof TrackBlock
-          && !(blockState.getBlock() instanceof OutfittedTrackBlock))
-          || blockState.is(Blocks.RAIL);
-    }
-
-    @Override
-    public boolean use(UseOnContext context) {
-      Level level = context.getLevel();
-      BlockPos blockPos = context.getClickedPos();
-      Block block = level.getBlockState(blockPos).getBlock();
-      TrackType trackType = TrackTypes.IRON.get();
-      if (block instanceof TypedTrack) {
-        trackType = ((TypedTrack) block).getTrackType();
-      }
-      return level.setBlockAndUpdate(blockPos,
-          trackType.getBaseBlock().getStateForPlacement(new BlockPlaceContext(context)));
-    }
   }
 }

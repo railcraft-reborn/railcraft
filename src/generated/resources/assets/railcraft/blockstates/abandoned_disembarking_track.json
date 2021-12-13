@@ -1,0 +1,322 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:block/abandoned_track_outfitted",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:block/abandoned_track_outfitted",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_north"
+      },
+      "apply": {
+        "model": "railcraft:block/abandoned_track_outfitted_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_south"
+      },
+      "apply": {
+        "model": "railcraft:block/abandoned_track_outfitted_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_east"
+      },
+      "apply": {
+        "model": "railcraft:block/abandoned_track_outfitted_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "shape": "ascending_west"
+      },
+      "apply": {
+        "model": "railcraft:block/abandoned_track_outfitted_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "north_south",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "east_west",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_north",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_south",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_east",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_west",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "north_south",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left_on",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "east_west",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left_on",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_north",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left_on_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_south",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left_on_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_east",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left_on_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_west",
+        "mirrored": "false"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_left_on_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "north_south",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "east_west",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_north",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_south",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_east",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "ascending_west",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right_raised_sw",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "north_south",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right_on",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "east_west",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right_on",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_north",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right_on_raised_ne",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_south",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right_on_raised_sw",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_east",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right_on_raised_ne",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "ascending_west",
+        "mirrored": "true"
+      },
+      "apply": {
+        "model": "railcraft:block/disembarking_track_right_on_raised_sw",
+        "y": 90
+      }
+    }
+  ]
+}

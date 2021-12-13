@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Random;
 import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.charge.IChargeBlock;
+import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.util.Optionals;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
@@ -44,7 +44,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class ForceTrackEmitterBlock extends BaseEntityBlock implements IChargeBlock {
+public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlock {
 
   public static final DyeColor DEFAULT_COLOR = DyeColor.LIGHT_BLUE;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;

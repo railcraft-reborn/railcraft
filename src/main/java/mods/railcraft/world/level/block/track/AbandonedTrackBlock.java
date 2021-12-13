@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.RailShape;
 
 /**
  * Created by CovertJaguar on 8/2/2016 for Railcraft.
@@ -22,10 +21,12 @@ public class AbandonedTrackBlock extends TrackBlock {
 
   public AbandonedTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(GRASS, false)
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(WATERLOGGED, false));
+  }
+
+  @Override
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return super.buildDefaultState(blockState)
+        .setValue(GRASS, false);
   }
 
   @Override

@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class CouplerTrackBlock extends PoweredOutfittedTrackBlock {
@@ -24,11 +23,12 @@ public class CouplerTrackBlock extends PoweredOutfittedTrackBlock {
 
   public CouplerTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(WATERLOGGED, false)
-        .setValue(POWERED, false)
-        .setValue(MODE, CouplerTrackBlockEntity.Mode.COUPLER));
+  }
+  
+  @Override
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return super.buildDefaultState(blockState)
+        .setValue(MODE, CouplerTrackBlockEntity.Mode.COUPLER);
   }
 
   @Override

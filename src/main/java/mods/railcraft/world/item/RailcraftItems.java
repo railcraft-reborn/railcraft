@@ -428,6 +428,31 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ABANDONED_COUPLER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> ABANDONED_EMBARKING_TRACK =
+      ITEMS.register("abandoned_embarking_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_EMBARKING_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ABANDONED_DISEMBARKING_TRACK =
+      ITEMS.register("abandoned_disembarking_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ABANDONED_WYE_TRACK =
+      ITEMS.register("abandoned_wye_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_WYE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ABANDONED_TURNOUT_TRACK =
+      ITEMS.register("abandoned_turnout_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ABANDONED_JUNCTION_TRACK =
+      ITEMS.register("abandoned_junction_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> ELECTRIC_TRACK =
       ITEMS.register("electric_track",
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_TRACK.get(),
@@ -473,6 +498,31 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_COUPLER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> ELECTRIC_EMBARKING_TRACK =
+      ITEMS.register("electric_embarking_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_EMBARKING_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ELECTRIC_DISEMBARKING_TRACK =
+      ITEMS.register("electric_disembarking_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ELECTRIC_WYE_TRACK =
+      ITEMS.register("electric_wye_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_WYE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ELECTRIC_TURNOUT_TRACK =
+      ITEMS.register("electric_turnout_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ELECTRIC_JUNCTION_TRACK =
+      ITEMS.register("electric_junction_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> HIGH_SPEED_TRACK =
       ITEMS.register("high_speed_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
@@ -503,6 +553,21 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> HIGH_SPEED_WYE_TRACK =
+      ITEMS.register("high_speed_wye_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_TURNOUT_TRACK =
+      ITEMS.register("high_speed_turnout_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_JUNCTION_TRACK =
+      ITEMS.register("high_speed_junction_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TRACK =
       ITEMS.register("high_speed_electric_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
@@ -531,6 +596,21 @@ public class RailcraftItems {
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_DETECTOR_TRACK =
       ITEMS.register("high_speed_electric_detector_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_WYE_TRACK =
+      ITEMS.register("high_speed_electric_wye_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TURNOUT_TRACK =
+      ITEMS.register("high_speed_electric_turnout_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_JUNCTION_TRACK =
+      ITEMS.register("high_speed_electric_junction_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> IRON_LOCKING_TRACK =
@@ -571,6 +651,31 @@ public class RailcraftItems {
   public static final RegistryObject<Item> IRON_COUPLER_TRACK =
       ITEMS.register("iron_coupler_track",
           () -> new BlockItem(RailcraftBlocks.IRON_COUPLER_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> IRON_EMBARKING_TRACK =
+      ITEMS.register("iron_embarking_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_EMBARKING_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> IRON_DISEMBARKING_TRACK =
+      ITEMS.register("iron_disembarking_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_DISEMBARKING_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> IRON_WYE_TRACK =
+      ITEMS.register("iron_wye_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_WYE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> IRON_TURNOUT_TRACK =
+      ITEMS.register("iron_turnout_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> IRON_JUNCTION_TRACK =
+      ITEMS.register("iron_junction_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_JUNCTION_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> REINFORCED_TRACK =
@@ -618,6 +723,31 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.REINFORCED_COUPLER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> REINFORCED_EMBARKING_TRACK =
+      ITEMS.register("reinforced_embarking_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_EMBARKING_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> REINFORCED_DISEMBARKING_TRACK =
+      ITEMS.register("reinforced_disembarking_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> REINFORCED_WYE_TRACK =
+      ITEMS.register("reinforced_wye_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_WYE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> REINFORCED_TURNOUT_TRACK =
+      ITEMS.register("reinforced_turnout_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> REINFORCED_JUNCTION_TRACK =
+      ITEMS.register("reinforced_junction_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> STRAP_IRON_TRACK =
       ITEMS.register("strap_iron_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_TRACK.get(),
@@ -663,20 +793,35 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_COUPLER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> STRAP_IRON_EMBARKING_TRACK =
+      ITEMS.register("strap_iron_embarking_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> STRAP_IRON_DISEMBARKING_TRACK =
+      ITEMS.register("strap_iron_disembarking_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> STRAP_IRON_WYE_TRACK =
+      ITEMS.register("strap_iron_wye_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_WYE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> STRAP_IRON_TURNOUT_TRACK =
+      ITEMS.register("strap_iron_turnout_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> STRAP_IRON_JUNCTION_TRACK =
+      ITEMS.register("strap_iron_junction_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> ELEVATOR_TRACK =
       ITEMS.register("elevator_track",
           () -> new BlockItem(RailcraftBlocks.ELEVATOR_TRACK.get(),
               new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION)));
-
-  public static final RegistryObject<Item> WYE_TRACK =
-      ITEMS.register("wye_track",
-          () -> new BlockItem(RailcraftBlocks.WYE_TRACK.get(),
-              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
-
-  public static final RegistryObject<Item> TURNOUT_TRACK =
-      ITEMS.register("turnout_track",
-          () -> new BlockItem(RailcraftBlocks.TURNOUT_TRACK.get(),
-              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> IRON_CROWBAR =
       ITEMS.register("iron_crowbar",
@@ -804,6 +949,30 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_COUPLER_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_COUPLER_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_COUPLER_TRACK)
+              .tab(TAB)));
+
+  public static final RegistryObject<Item> EMBARKING_TRACK_KIT =
+      ITEMS.register("embarking_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .setAllowedOnSlopes(true)
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_EMBARKING_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_EMBARKING_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_EMBARKING_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_EMBARKING_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK)
+              .tab(TAB)));
+
+  public static final RegistryObject<Item> DISEMBARKING_TRACK_KIT =
+      ITEMS.register("disembarking_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .setAllowedOnSlopes(true)
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_DISEMBARKING_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED,
+                  RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK)
               .tab(TAB)));
 
   public static final RegistryObject<Item> GOGGLES =

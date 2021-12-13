@@ -157,13 +157,27 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<BlockEntityType<TurnoutTrackBlockEntity>> TURNOUT_TRACK =
       BLOCK_ENTITY_TYPES.register("turnout_track",
           () -> BlockEntityType.Builder
-              .of(TurnoutTrackBlockEntity::new, RailcraftBlocks.TURNOUT_TRACK.get())
+              .of(TurnoutTrackBlockEntity::new,
+                  RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
+                  RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
+                  RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get(),
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(),
+                  RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
+                  RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
+                  RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<WyeTrackBlockEntity>> WYE_TRACK =
       BLOCK_ENTITY_TYPES.register("wye_track",
           () -> BlockEntityType.Builder
-              .of(WyeTrackBlockEntity::new, RailcraftBlocks.WYE_TRACK.get())
+              .of(WyeTrackBlockEntity::new,
+                  RailcraftBlocks.ABANDONED_WYE_TRACK.get(),
+                  RailcraftBlocks.ELECTRIC_WYE_TRACK.get(),
+                  RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get(),
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(),
+                  RailcraftBlocks.IRON_WYE_TRACK.get(),
+                  RailcraftBlocks.REINFORCED_WYE_TRACK.get(),
+                  RailcraftBlocks.STRAP_IRON_WYE_TRACK.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<RitualBlockEntity>> RITUAL =

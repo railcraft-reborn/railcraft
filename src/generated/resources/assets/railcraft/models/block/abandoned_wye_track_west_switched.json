@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_flat",
+  "textures": {
+    "rail": "railcraft:block/abandoned_wye_track_west_switched"
+  }
+}

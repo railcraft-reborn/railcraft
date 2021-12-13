@@ -63,13 +63,14 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
   public GatedTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(POWERED, false)
-        .setValue(REVERSED, false)
+  }
+
+  @Override
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return super.buildDefaultState(blockState)
         .setValue(OPEN, false)
         .setValue(IN_WALL, false)
-        .setValue(ONE_WAY, false));
+        .setValue(ONE_WAY, false);
   }
 
   @Override

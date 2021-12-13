@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_flat",
+  "textures": {
+    "rail": "railcraft:block/iron_turnout_track_south_switched"
+  }
+}
