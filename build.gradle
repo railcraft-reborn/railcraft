@@ -48,11 +48,15 @@ if (System.getenv("SECURE_SIGN")) {
     signProps['keyPass'] = project.getProperty('keyStoreKeyPass')
 }
 
-// does in fact follow the semantic versioning. (GAMEVER)-(MODMAJOR.MODMINOR.MODPATCH)-CIMETA-RUNID.RUNINT
+// does in fact follow the semantic versioning. (GAMEVER)-(MAJOR.MINOR.PATCH)[-[NIGHTLY | CI]][-RUNID.RUNINT]-HASH
 version = "${minecraft_version}-${mod_version}"
 if(isCI) {
   version = version + suffix
 }
+if(isCI || nightly) {
+  version = version + "-" + System.getenv("GITHUB_SHA")
+}
+
 group = 'mods.railcraft'
 archivesBaseName = 'railcraft'
 
@@ -66,7 +70,7 @@ println('')
 println('*************************************************************')
 println('Project Version: ' + version)
 if (isCI) {
-  println("Running in Github Workflow ${tag}" + (ref ? " on a pull request ${ref}." : "."))
+  println("Running in Github Workflow ${tag}" + (ref ? " pull request ${ref}." : "."))
 }
 if (!signProps.isEmpty()) {
   println("With .jar signing.")
