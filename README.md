@@ -34,6 +34,10 @@ You must have read and performed the proper support procedure outlined [here](ht
 
 More information about issue Labels can be found [here](https://github.com/CovertJaguar/Railcraft/wiki/Issue-Labels).
 
+## Requirements
+
+Java 17 and git is required.
+
 ## Contributing
 
 The Official Railcraft Project welcomes contributions from anyone, provided they have signed the Contributor Licensing Agreement (CLA) found [here](https://cla-assistant.io/CovertJaguar/Railcraft).

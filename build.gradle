@@ -54,7 +54,7 @@ if(isCI) {
   version = version + suffix
 }
 if(isCI || nightly) {
-  version = version + "-" + System.getenv("GITHUB_SHA_TRIMMED")
+  version = version + "-" + 'git rev-parse --short HEAD'.execute().text.trim()
 }
 
 group = 'mods.railcraft'
@@ -153,6 +153,7 @@ jar {
     attributes([
       "Implementation-Title": project.name,
       "Implementation-Version": project.version,
+      "Implementation-Commit": 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
       "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
       "MixinConfigs": 'railcraft.mixins.json'
     ])
