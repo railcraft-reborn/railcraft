@@ -25,8 +25,8 @@ public class ManipulatorMenu<T extends ManipulatorBlockEntity> extends Railcraft
     this.addSlots(manipulator);
 
     if (hasCartFilter) {
-      this.addSlot(new SlotMinecartPhantom(this.manipulator.getCartFilters(), 0, 71, 26));
-      this.addSlot(new SlotMinecartPhantom(this.manipulator.getCartFilters(), 1, 89, 26));
+      this.addSlot(new PhantomMinecartSlot(this.manipulator.getCartFilters(), 0, 71, 26));
+      this.addSlot(new PhantomMinecartSlot(this.manipulator.getCartFilters(), 1, 89, 26));
     }
 
     if (inventory != null) {

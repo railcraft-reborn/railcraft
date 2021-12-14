@@ -21,8 +21,8 @@ public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
 
   private int refreshTimer;
 
-  protected ManipulatorScreen(T menu, Inventory playerInventory, Component title) {
-    super(menu, playerInventory, title);
+  protected ManipulatorScreen(T menu, Inventory inventory, Component title) {
+    super(menu, inventory, title);
   }
 
   @Override
@@ -59,10 +59,10 @@ public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
   }
 
   @Override
-  protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-    this.font.draw(matrixStack, this.title, this.titleLabelX, this.titleLabelY, 0x333333);
+  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    this.font.draw(poseStack, this.title, this.titleLabelX, this.titleLabelY, 0x333333);
     if (this.getMenu().hasCartFilter()) {
-      this.font.draw(matrixStack, CART_FILTER_TEXT, 75, 16, IngameWindowScreen.TEXT_COLOR);
+      this.font.draw(poseStack, CART_FILTER_TEXT, 75, 16, IngameWindowScreen.TEXT_COLOR);
     }
   }
 }

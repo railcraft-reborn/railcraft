@@ -25,21 +25,17 @@ public interface PoweredTrack {
   /**
    * Getter for a simple boolean variable for caching the power state.
    */
-  boolean isPowered(BlockState blockState, Level level, BlockPos pos);
+  boolean isPowered(BlockState blockState, Level level, BlockPos blockPos);
 
   /**
    * Setter for a simple boolean variable for caching the power state.
-   *
-   * <p>
-   * Note: It is suggested to send update to client if the new powered state is different.
-   * </p>
    */
-  void setPowered(BlockState blockState, Level level, BlockPos pos, boolean powered);
+  void setPowered(BlockState blockState, Level level, BlockPos blockPos, boolean powered);
 
   /**
    * The distance that a redstone signal will be passed along from track to track.
    */
-  int getPowerPropagation(BlockState blockState, Level level, BlockPos pos);
+  int getPowerPropagation(BlockState blockState, Level level, BlockPos blockPos);
 
   /**
    * Allows finer control of whether tracks can pass power.

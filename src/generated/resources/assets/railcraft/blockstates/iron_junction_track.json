@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "railcraft:block/iron_junction_track"
+    }
+  }
+}

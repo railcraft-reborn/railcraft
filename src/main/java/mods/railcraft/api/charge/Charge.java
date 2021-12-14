@@ -19,7 +19,7 @@ import net.minecraft.world.phys.Vec3;
 /**
  * The heart of the Charge system is here.
  *
- * <p>Any block that wants to interact with the Charge network should implement {@link IChargeBlock}
+ * <p>Any block that wants to interact with the Charge network should implement {@link ChargeBlock}
  * and ensure that they call the proper add/remove functions.
  *
  * <p>Everything else is done through {@link IAccess}.
@@ -51,7 +51,7 @@ import net.minecraft.world.phys.Vec3;
  * for several ticks, this may only be noticeable on grids of over several thousand blocks.
  *
  * <p>Every block on the grid has a generic loss over time. It various with the type of block, more
- * details on that in the {link {@link mods.railcraft.api.charge.IChargeBlock.ChargeSpec}}. The
+ * details on that in the {link {@link mods.railcraft.api.charge.ChargeBlock.ChargeSpec}}. The
  * value is calculated as the grid is constructed and removed from the grid every tick. Consider it
  * representative of resistive losses and current leakage. All large scale real life power systems
  * suffer from these loss effects and are often major concerns when designing these systems.

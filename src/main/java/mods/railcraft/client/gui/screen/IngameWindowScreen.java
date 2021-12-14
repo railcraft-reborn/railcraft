@@ -42,23 +42,23 @@ public class IngameWindowScreen extends Screen {
   }
 
   @Override
-  public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(matrixStack);
+  public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    this.renderBackground(poseStack);
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
     RenderSystem.setShaderTexture(0, this.backgroundTexture);
-    this.blit(matrixStack, centredX, centredY, 0, 0, this.windowWidth, this.windowHeight);
-    matrixStack.pushPose();
+    this.blit(poseStack, centredX, centredY, 0, 0, this.windowWidth, this.windowHeight);
+    poseStack.pushPose();
     {
-      matrixStack.translate(centredX, centredY, 0.0F);
-      this.drawCenteredString(matrixStack, this.title, this.windowWidth / 2, this.font.lineHeight);
-      this.renderContent(matrixStack, mouseX, mouseY, partialTicks);
+      poseStack.translate(centredX, centredY, 0.0F);
+      this.drawCenteredString(poseStack, this.title, this.windowWidth / 2, this.font.lineHeight);
+      this.renderContent(poseStack, mouseX, mouseY, partialTicks);
     }
-    matrixStack.popPose();
-    super.render(matrixStack, mouseX, mouseY, partialTicks);
+    poseStack.popPose();
+    super.render(poseStack, mouseX, mouseY, partialTicks);
   }
 
-  protected void renderContent(PoseStack matrixStack, int mouseX, int mouseY,
+  protected void renderContent(PoseStack poseStack, int mouseX, int mouseY,
       float partialTicks) {}
 
   @Override
@@ -81,8 +81,8 @@ public class IngameWindowScreen extends Screen {
     }
   }
 
-  public void drawCenteredString(PoseStack matrixStack, Component text, float x, float y) {
+  public void drawCenteredString(PoseStack poseStack, Component text, float x, float y) {
     FormattedCharSequence orderedText = text.getVisualOrderText();
-    this.font.draw(matrixStack, orderedText, x - this.font.width(orderedText) / 2, y, TEXT_COLOR);
+    this.font.draw(poseStack, orderedText, x - this.font.width(orderedText) / 2, y, TEXT_COLOR);
   }
 }

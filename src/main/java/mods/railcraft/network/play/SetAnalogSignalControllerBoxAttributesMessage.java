@@ -5,8 +5,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.util.LevelUtil;
-import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -45,7 +44,8 @@ public class SetAnalogSignalControllerBoxAttributesMessage {
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
     var level = context.get().getSender().getLevel();
-    LevelUtil.getBlockEntity(level, this.blockPos, AnalogSignalControllerBoxBlockEntity.class)
+    level
+        .getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get())
         .ifPresent(
             signalBox -> signalBox.setSignalAspectTriggerSignals(this.signalAspectTriggerSignals));
     return true;

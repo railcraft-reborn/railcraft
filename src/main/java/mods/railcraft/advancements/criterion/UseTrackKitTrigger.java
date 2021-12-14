@@ -4,20 +4,20 @@ import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.util.LevelUtil;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.NbtPredicate;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 
 public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.Instance> {
 
@@ -68,10 +68,10 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
           ItemPredicate.ANY, LocationPredicate.ANY);
     }
 
-    public boolean matches(ServerLevel world, BlockPos blockPos, ItemStack stack) {
+    public boolean matches(ServerLevel level, BlockPos blockPos, ItemStack stack) {
       return item.matches(stack)
-          && this.location.matches(world, blockPos.getX(), blockPos.getY(), blockPos.getZ())
-          && LevelUtil.getBlockEntity(world, blockPos)
+          && this.location.matches(level, blockPos.getX(), blockPos.getY(), blockPos.getZ())
+          && LevelUtil.getBlockEntity(level, blockPos)
               .map(te -> te.save(new CompoundTag()))
               .map(blockEntityNbt::matches)
               .orElse(true); // some rails dont have TE

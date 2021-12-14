@@ -7,17 +7,19 @@
 
 package mods.railcraft.api.track;
 
+import java.util.List;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
@@ -27,23 +29,30 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
  */
 public class TrackType extends ForgeRegistryEntry<TrackType> {
 
-  private final Supplier<? extends BaseRailBlock> baseBlock;
+  private final Supplier<? extends BaseRailBlock> flexBlock;
+  private final List<Supplier<? extends BaseRailBlock>> spikeMaulVariants;
   private final boolean highSpeed;
   private final boolean electric;
   private final int maxSupportDistance;
   private final EventHandler eventHandler;
 
-  public TrackType(Supplier<? extends BaseRailBlock> baseBlock,
+  public TrackType(Supplier<? extends BaseRailBlock> flexBlock,
+      List<Supplier<? extends BaseRailBlock>> spikeMaulVariants,
       boolean highSpeed, boolean electric, int maxSupportDistance, EventHandler eventHandler) {
-    this.baseBlock = baseBlock;
+    this.flexBlock = flexBlock;
+    this.spikeMaulVariants = spikeMaulVariants;
     this.highSpeed = highSpeed;
     this.electric = electric;
     this.maxSupportDistance = maxSupportDistance;
     this.eventHandler = eventHandler;
   }
 
-  public BaseRailBlock getBaseBlock() {
-    return this.baseBlock.get();
+  public BaseRailBlock getFlexBlock() {
+    return this.flexBlock.get();
+  }
+
+  public List<Supplier<? extends BaseRailBlock>> getSpikeMaulVariants() {
+    return this.spikeMaulVariants;
   }
 
   public boolean isHighSpeed() {
@@ -67,19 +76,27 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
   }
 
   public ItemStack getItemStack(int qty) {
-    return new ItemStack(this.getBaseBlock(), qty);
+    return new ItemStack(this.getFlexBlock(), qty);
   }
 
   public static final class Builder {
 
-    private final Supplier<? extends BaseRailBlock> baseBlock;
+    private final Supplier<? extends BaseRailBlock> flexBlock;
+    private final ImmutableList.Builder<Supplier<? extends BaseRailBlock>> spikeMaulVariants =
+        ImmutableList.builder();
     private boolean highSpeed;
     private boolean electric;
     private int maxSupportDistance;
     private EventHandler eventHandler = new EventHandler() {};
 
-    public Builder(Supplier<? extends BaseRailBlock> baseBlock) {
-      this.baseBlock = baseBlock;
+    public Builder(Supplier<? extends BaseRailBlock> flexBlock) {
+      this.flexBlock = flexBlock;
+      this.spikeMaulVariants.add(flexBlock);
+    }
+
+    public Builder addSpikeMaulVariant(Supplier<? extends BaseRailBlock> spikeMaulVariant) {
+      this.spikeMaulVariants.add(spikeMaulVariant);
+      return this;
     }
 
     public Builder setHighSpeed(boolean highSpeed) {
@@ -103,7 +120,7 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
     }
 
     public TrackType build() {
-      return new TrackType(this.baseBlock, this.highSpeed,
+      return new TrackType(this.flexBlock, this.spikeMaulVariants.build(), this.highSpeed,
           this.electric, this.maxSupportDistance, this.eventHandler);
     }
   }

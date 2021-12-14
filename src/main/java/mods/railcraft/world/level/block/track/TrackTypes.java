@@ -23,37 +23,49 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class TrackTypes {
 
-  public static final DeferredRegister<TrackType> trackTypes =
+  public static final DeferredRegister<TrackType> TRACK_TYPES =
       DeferredRegister.create(TrackType.class, Railcraft.ID);
 
   public static final Lazy<IForgeRegistry<TrackType>> registry =
-      Lazy.of(trackTypes.makeRegistry("track_type", RegistryBuilder::new));
+      Lazy.of(TRACK_TYPES.makeRegistry("track_type", RegistryBuilder::new));
 
   public static final RegistryObject<TrackType> ABANDONED =
-      trackTypes.register("abandoned",
+      TRACK_TYPES.register("abandoned",
           () -> new TrackType.Builder(RailcraftBlocks.ABANDONED_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.ABANDONED_TURNOUT_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.ABANDONED_WYE_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.ABANDONED_JUNCTION_TRACK)
               .setEventHandler(SpeedController.ABANDONED)
               .setMaxSupportDistance(2)
               .build());
 
   public static final RegistryObject<TrackType> ELECTRIC =
-      trackTypes.register("electric",
+      TRACK_TYPES.register("electric",
           () -> new TrackType.Builder(RailcraftBlocks.ELECTRIC_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.ELECTRIC_TURNOUT_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.ELECTRIC_WYE_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.ELECTRIC_JUNCTION_TRACK)
               .setEventHandler(
                   new CompositeHandler(CollisionHandler.ELECTRIC, SpeedController.IRON))
               .setElectric(true)
               .build());
 
   public static final RegistryObject<TrackType> HIGH_SPEED =
-      trackTypes.register("high_speed",
+      TRACK_TYPES.register("high_speed",
           () -> new TrackType.Builder(RailcraftBlocks.HIGH_SPEED_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_WYE_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK)
               .setEventHandler(SpeedController.HIGH_SPEED)
               .setHighSpeed(true)
               .build());
 
   public static final RegistryObject<TrackType> HIGH_SPEED_ELECTRIC =
-      trackTypes.register("high_speed_electric",
+      TRACK_TYPES.register("high_speed_electric",
           () -> new TrackType.Builder(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK)
               .setEventHandler(
                   new CompositeHandler(CollisionHandler.ELECTRIC, SpeedController.HIGH_SPEED))
               .setElectric(true)
@@ -61,20 +73,29 @@ public class TrackTypes {
               .build());
 
   public static final RegistryObject<TrackType> IRON =
-      trackTypes.register("iron",
+      TRACK_TYPES.register("iron",
           () -> new TrackType.Builder(() -> (BaseRailBlock) Blocks.RAIL)
+              .addSpikeMaulVariant(RailcraftBlocks.IRON_TURNOUT_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.IRON_WYE_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.IRON_JUNCTION_TRACK)
               .setEventHandler(SpeedController.IRON)
               .build());
 
   public static final RegistryObject<TrackType> REINFORCED =
-      trackTypes.register("reinforced",
+      TRACK_TYPES.register("reinforced",
           () -> new TrackType.Builder(RailcraftBlocks.REINFORCED_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.REINFORCED_TURNOUT_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.REINFORCED_WYE_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.REINFORCED_JUNCTION_TRACK)
               .setEventHandler(SpeedController.REINFORCED)
               .build());
 
   public static final RegistryObject<TrackType> STRAP_IRON =
-      trackTypes.register("strap_iron",
+      TRACK_TYPES.register("strap_iron",
           () -> new TrackType.Builder(RailcraftBlocks.STRAP_IRON_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.STRAP_IRON_WYE_TRACK)
+              .addSpikeMaulVariant(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK)
               .setEventHandler(SpeedController.STRAP_IRON)
               .build());
 

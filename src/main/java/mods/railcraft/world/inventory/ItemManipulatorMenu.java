@@ -14,7 +14,7 @@ public class ItemManipulatorMenu extends ManipulatorMenu<ItemManipulatorBlockEnt
   protected void addSlots(ItemManipulatorBlockEntity manipulator) {
     for (int i = 0; i < 3; i++) {
       for (int k = 0; k < 3; k++) {
-        this.addSlot(new SlotRailcraft(
+        this.addSlot(new RailcraftSlot(
             manipulator.getItemFilters(), k + i * 3, 8 + k * 18, 26 + i * 18).setPhantom());
       }
     }

@@ -4,20 +4,20 @@ import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.util.LevelUtil;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.NbtPredicate;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 
 public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrigger.Instance> {
 
@@ -67,14 +67,14 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
           NbtPredicate.ANY, ItemPredicate.ANY, LocationPredicate.ANY);
     }
 
-    public boolean matches(ItemStack item, ServerLevel world, BlockPos pos) {
+    public boolean matches(ItemStack item, ServerLevel level, BlockPos pos) {
       return LevelUtil
-          .getBlockEntity(world, pos)
+          .getBlockEntity(level, pos)
           .map(blockEntity -> blockEntity.save(new CompoundTag()))
           .map(this.nbt::matches)
           .orElse(false)
           && this.tool.matches(item)
-          && this.location.matches(world, pos.getX(), pos.getY(), pos.getZ());
+          && this.location.matches(level, pos.getX(), pos.getY(), pos.getZ());
     }
 
     @Override

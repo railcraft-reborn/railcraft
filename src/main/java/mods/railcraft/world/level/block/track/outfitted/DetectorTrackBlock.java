@@ -34,11 +34,13 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
 
   public DetectorTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(WATERLOGGED, false)
+  }
+  
+  @Override
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return super.buildDefaultState(blockState)
         .setValue(POWERED, false)
-        .setValue(MODE, Mode.BI_DIRECTIONAL));
+        .setValue(MODE, Mode.BI_DIRECTIONAL);
   }
 
   @Override

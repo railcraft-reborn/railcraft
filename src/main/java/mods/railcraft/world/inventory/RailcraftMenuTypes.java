@@ -8,6 +8,7 @@ import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import mods.railcraft.world.item.crafting.CokeOvenMenu;
 import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
+import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
 import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.ItemManipulatorBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -25,6 +26,11 @@ public class RailcraftMenuTypes {
 
   public static final DeferredRegister<MenuType<?>> MENU_TYPES =
       DeferredRegister.create(ForgeRegistries.CONTAINERS, Railcraft.ID);
+
+  public static final RegistryObject<MenuType<FeedStationMenu>> FEED_STATION =
+      MENU_TYPES.register("feed_station",
+          () -> new MenuType<>(
+              blockEntityMenu(FeedStationBlockEntity.class, FeedStationMenu::new)));
 
   public static final RegistryObject<MenuType<LocomotiveMenu<CreativeLocomotive>>> CREATIVE_LOCOMOTIVE =
       MENU_TYPES.register("creative_locomotive",

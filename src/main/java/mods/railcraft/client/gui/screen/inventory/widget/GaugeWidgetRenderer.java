@@ -14,15 +14,15 @@ public class GaugeWidgetRenderer extends WidgetRenderer<GaugeWidget> {
   }
 
   @Override
-  public void draw(RailcraftMenuScreen<?> gui, PoseStack matrixStack, int guiX, int guiY,
+  public void render(RailcraftMenuScreen<?> screen, PoseStack poseStack, int centreX, int centreY,
       int mouseX, int mouseY) {
     int scale = Math.round((float) (this.widget.getMeasurement()
         * (double) (this.widget.isVertical() ? this.widget.h : this.widget.w)));
     if (this.widget.isVertical())
-      this.blit(matrixStack, guiX + this.widget.x, guiY + this.widget.y + this.widget.h - scale,
+      this.blit(poseStack, centreX + this.widget.x, centreY + this.widget.y + this.widget.h - scale,
           this.widget.u, this.widget.v + this.widget.h - scale, this.widget.w, scale);
     else
-      this.blit(matrixStack, guiX + this.widget.x, guiY + this.widget.y, this.widget.u,
+      this.blit(poseStack, centreX + this.widget.x, centreY + this.widget.y, this.widget.u,
           this.widget.v, scale, this.widget.h);
   }
 

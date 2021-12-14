@@ -47,13 +47,13 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
   }
 
   @Override
-  protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-    super.renderBg(matrixStack, partialTicks, mouseY, mouseY);
+  protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
+    super.renderBg(poseStack, partialTicks, mouseY, mouseY);
     int x = (width - this.getXSize()) / 2;
     int y = (height - this.getYSize()) / 2;
     if (this.menu.getLocomotive().getBoiler().hasFuel()) {
       int scale = this.menu.getLocomotive().getBoiler().getBurnProgressScaled(12);
-      this.blit(matrixStack, x + 99, y + 33 - scale, 176, 59 - scale, 14, scale + 2);
+      this.blit(poseStack, x + 99, y + 33 - scale, 176, 59 - scale, 14, scale + 2);
     }
   }
 }

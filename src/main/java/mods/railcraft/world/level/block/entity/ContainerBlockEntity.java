@@ -1,9 +1,13 @@
 package mods.railcraft.world.level.block.entity;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import mods.railcraft.util.container.AdvancedContainer;
+import mods.railcraft.util.container.ContainerAdaptor;
 import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.util.container.ItemHandlerFactory;
 import net.minecraft.core.BlockPos;
@@ -42,6 +46,20 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
 
   protected void setContainerSize(int size) {
     this.container = new AdvancedContainer(size).callbackContainer(this);
+  }
+
+  protected Collection<ContainerAdaptor> getAdjacentContainers() {
+    List<ContainerAdaptor> containers = new ArrayList<>();
+    for (var direction : Direction.values()) {
+      var blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
+      if (blockEntity != null) {
+        blockEntity
+            .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite())
+            .map(ContainerAdaptor::of)
+            .ifPresent(containers::add);
+      }
+    }
+    return containers;
   }
 
   @Override

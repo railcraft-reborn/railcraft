@@ -35,10 +35,10 @@ import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.IDirectionalCart;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
-import mods.railcraft.world.entity.vehicle.RailcraftLinkageManager;
+import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
 import mods.railcraft.world.entity.vehicle.Train;
-import mods.railcraft.world.entity.vehicle.RailcraftLinkageManager.LinkType;
+import mods.railcraft.world.entity.vehicle.LinkageManagerImpl.LinkType;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
@@ -805,7 +805,7 @@ public abstract class Locomotive extends RailcraftMinecart
       return true;
     }
 
-    RailcraftLinkageManager lm = RailcraftLinkageManager.INSTANCE;
+    LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
 
     if (StreamSupport.stream(lm.linkIterator(this, LinkType.LINK_A).spliterator(), false)
         .anyMatch(linked -> !isExemptFromLinkLimits(linked))) {
@@ -821,7 +821,7 @@ public abstract class Locomotive extends RailcraftMinecart
 
   @Override
   public float getLinkageDistance(AbstractMinecart cart) {
-    return RailcraftLinkageManager.LINKAGE_DISTANCE;
+    return LinkageManagerImpl.LINKAGE_DISTANCE;
   }
 
   @Override

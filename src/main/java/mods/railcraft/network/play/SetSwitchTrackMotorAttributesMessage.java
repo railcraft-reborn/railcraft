@@ -4,9 +4,8 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Supplier;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
-import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -51,7 +50,7 @@ public class SetSwitchTrackMotorAttributesMessage {
   public boolean handle(Supplier<NetworkEvent.Context> context) {
     var level = context.get().getSender().getLevel();
     var senderProfile = context.get().getSender().getGameProfile();
-    LevelUtil.getBlockEntity(level, this.blockPos, SwitchTrackMotorBlockEntity.class)
+    level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get())
         .filter(signalBox -> signalBox.canAccess(senderProfile))
         .ifPresent(signalBox -> {
           signalBox.getActionSignalAspects().clear();

@@ -62,7 +62,7 @@ public class OutfittedTrackBlock extends TrackBlock {
   @Override
   public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player,
       boolean willHarvest, FluidState fluid) {
-    BlockState newState = TrackUtil.setShape(this.getTrackType().getBaseBlock(),
+    BlockState newState = TrackUtil.setShape(this.getTrackType().getFlexBlock(),
         TrackTools.getRailShapeRaw(state));
     boolean result = world.setBlockAndUpdate(pos, newState);
     // Below is ugly workaround for fluids!

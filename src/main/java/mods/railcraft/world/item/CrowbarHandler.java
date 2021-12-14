@@ -9,7 +9,7 @@ import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.season.Season;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.IDirectionalCart;
-import mods.railcraft.world.entity.vehicle.RailcraftLinkageManager;
+import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.entity.vehicle.SeasonalCart;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.Train;
@@ -77,12 +77,11 @@ public class CrowbarHandler {
     if (!linkable || ((ILinkableCart) cart).isLinkable()) {
       AbstractMinecart last = linkMap.remove(player);
       if (last != null && last.isAlive()) {
-        RailcraftLinkageManager lm = RailcraftLinkageManager.INSTANCE;
+        LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
         if (lm.areLinked(cart, last, false)) {
           lm.breakLink(cart, last);
           used = true;
           player.displayClientMessage(new TranslatableComponent("crowbar.link_broken"), true);
-          RailcraftLinkageManager.printDebug("Reason For Broken Link: User removed link.");
         } else {
           used = lm.createLink(last, cart);
           if (used) {

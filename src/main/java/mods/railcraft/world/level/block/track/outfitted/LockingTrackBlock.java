@@ -3,7 +3,6 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -19,37 +18,34 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class LockingTrackBlock extends OutfittedTrackBlock implements EntityBlock {
+public class LockingTrackBlock extends PoweredOutfittedTrackBlock implements EntityBlock {
 
   public static final EnumProperty<LockingMode> LOCKING_MODE =
       EnumProperty.create("locking_mode", LockingMode.class);
-  public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
   public LockingTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(WATERLOGGED, false)
-        .setValue(POWERED, false)
-        .setValue(LOCKING_MODE, LockingMode.LOCKDOWN));
+  }
+
+  @Override
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return super.buildDefaultState(blockState)
+        .setValue(LOCKING_MODE, LockingMode.LOCKDOWN);
   }
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
-    builder.add(POWERED, LOCKING_MODE);
+    builder.add(LOCKING_MODE);
   }
 
   @Override
   public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player,
       InteractionHand hand, BlockHitResult rayTraceResult) {
-    return LevelUtil.getBlockEntity(level, pos, LockingTrackBlockEntity.class)
+    return level.getBlockEntity(pos, RailcraftBlockEntityTypes.LOCKING_TRACK.get())
         .map(lockingTrack -> lockingTrack.use(player, hand))
         .orElseGet(() -> super.use(blockState, level, pos, player, hand, rayTraceResult));
   }
@@ -58,20 +54,8 @@ public class LockingTrackBlock extends OutfittedTrackBlock implements EntityBloc
   public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
       AbstractMinecart cart) {
     super.onMinecartPass(blockState, level, pos, cart);
-    LevelUtil.getBlockEntity(level, pos, LockingTrackBlockEntity.class)
+    level.getBlockEntity(pos, RailcraftBlockEntityTypes.LOCKING_TRACK.get())
         .ifPresent(lockingTrack -> lockingTrack.minecartPassed(cart));
-  }
-
-  @Override
-  public void neighborChanged(BlockState blockState, Level level, BlockPos pos,
-      Block neighborBlock, BlockPos neighborPos, boolean moved) {
-    if (!level.isClientSide()) {
-      boolean powered = blockState.getValue(POWERED);
-      boolean neighborSignal = level.hasNeighborSignal(pos);
-      if (powered != neighborSignal) {
-        level.setBlockAndUpdate(pos, blockState.setValue(POWERED, neighborSignal));
-      }
-    }
   }
 
   @Override
@@ -98,9 +82,5 @@ public class LockingTrackBlock extends OutfittedTrackBlock implements EntityBloc
 
   public static LockingMode getLockingMode(BlockState blockState) {
     return blockState.getValue(LOCKING_MODE);
-  }
-
-  public static boolean isPowered(BlockState blockState) {
-    return blockState.getValue(POWERED);
   }
 }

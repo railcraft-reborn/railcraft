@@ -15,21 +15,20 @@ public class WidgetRenderer<T extends Widget> extends GuiComponent {
     this.widget = widget;
   }
 
-  public final boolean isMouseOver(double mX, double mY) {
-    return mX >= this.widget.x - 1 && mX < this.widget.x + this.widget.w + 1
-        && mY >= this.widget.y - 1
-        && mY < this.widget.y + this.widget.h + 1;
+  public final boolean isMouseOver(double mouseX, double mouseY) {
+    return mouseX >= this.widget.x - 1 && mouseX < this.widget.x + this.widget.w + 1
+        && mouseY >= this.widget.y - 1
+        && mouseY < this.widget.y + this.widget.h + 1;
   }
 
-  public boolean mouseClicked(double mX, double mY, int button) {
+  public boolean mouseClicked(double mouseX, double mouseY, int button) {
     return false;
   }
 
-  public void draw(RailcraftMenuScreen<?> gui, PoseStack matrixStack, int guiX, int guiY,
+  public void render(RailcraftMenuScreen<?> screen, PoseStack poseStack, int centreX, int centreY,
       int mouseX, int mouseY) {
-    this.blit(matrixStack, guiX + this.widget.x, guiY + this.widget.y, this.widget.u, this.widget.v,
-        this.widget.w,
-        this.widget.h);
+    this.blit(poseStack, centreX + this.widget.x, centreY + this.widget.y, this.widget.u,
+        this.widget.v, this.widget.w, this.widget.h);
   }
 
   @Nullable

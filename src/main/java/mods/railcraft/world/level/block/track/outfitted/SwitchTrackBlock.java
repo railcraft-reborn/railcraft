@@ -26,10 +26,12 @@ public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
 
   public SwitchTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
-    this.registerDefaultState(this.stateDefinition.any()
-        .setValue(this.getShapeProperty(), RailShape.NORTH_SOUTH)
-        .setValue(REVERSED, false)
-        .setValue(SWITCHED, false));
+  }
+
+  @Override
+  protected BlockState buildDefaultState(BlockState blockState) {
+    return super.buildDefaultState(blockState)
+        .setValue(SWITCHED, false);
   }
 
   @Override

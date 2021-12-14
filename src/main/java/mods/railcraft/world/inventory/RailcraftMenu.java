@@ -26,9 +26,8 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   private final Predicate<Player> validator;
   private final List<Widget> widgets = new ArrayList<>();
 
-  protected RailcraftMenu(@Nullable MenuType<?> type, int id,
-      Inventory playerInventory) {
-    this(type, id, playerInventory.player, playerInventory::stillValid);
+  protected RailcraftMenu(@Nullable MenuType<?> type, int id, Inventory inventory) {
+    this(type, id, inventory.player, inventory::stillValid);
   }
 
   protected RailcraftMenu(@Nullable MenuType<?> type, int id, Player player,
@@ -47,24 +46,24 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     return this.widgets;
   }
 
-  protected final void addPlayerSlots(Inventory invPlayer) {
-    addPlayerSlots(invPlayer, 166);
+  protected final void addPlayerSlots(Inventory inventory) {
+    this.addPlayerSlots(inventory, 166);
   }
 
-  protected final void addPlayerSlots(Inventory invPlayer, int guiHeight) {
+  protected final void addPlayerSlots(Inventory inventory, int guiHeight) {
     for (int i = 0; i < 3; i++) {
       for (int k = 0; k < 9; k++) {
-        addSlot(new Slot(invPlayer, k + i * 9 + 9, 8 + k * 18, guiHeight - 82 + i * 18));
+        this.addSlot(new Slot(inventory, k + i * 9 + 9, 8 + k * 18, guiHeight - 82 + i * 18));
       }
     }
     for (int j = 0; j < 9; j++) {
-      addSlot(new Slot(invPlayer, j, 8 + j * 18, guiHeight - 24));
+      this.addSlot(new Slot(inventory, j, 8 + j * 18, guiHeight - 24));
     }
   }
 
   public void addWidget(Widget widget) {
-    widgets.add(widget);
-    widget.addToContainer(this);
+    this.widgets.add(widget);
+    widget.added(this);
   }
 
   @Override
@@ -80,13 +79,13 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   public void clicked(int slotId, int mouseButton, ClickType clickType,
       Player player) {
     Slot slot = slotId < 0 ? null : this.slots.get(slotId);
-    if (slot instanceof SlotRailcraft && ((SlotRailcraft) slot).isPhantom()) {
-      this.slotClickPhantom((SlotRailcraft) slot, mouseButton, clickType, player);
+    if (slot instanceof RailcraftSlot && ((RailcraftSlot) slot).isPhantom()) {
+      this.slotClickPhantom((RailcraftSlot) slot, mouseButton, clickType, player);
     }
     super.clicked(slotId, mouseButton, clickType, player);
   }
 
-  protected void slotClickPhantom(SlotRailcraft slot, int mouseButton,
+  protected void slotClickPhantom(RailcraftSlot slot, int mouseButton,
       ClickType clickType, Player player) {
 
     if (mouseButton == 2) {
@@ -116,7 +115,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     }
   }
 
-  protected void adjustPhantomSlot(SlotRailcraft slot, int mouseButton, ClickType clickType) {
+  protected void adjustPhantomSlot(RailcraftSlot slot, int mouseButton, ClickType clickType) {
     if (!slot.canAdjustPhantom()) {
       return;
     }
@@ -142,7 +141,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     }
   }
 
-  protected void fillPhantomSlot(SlotRailcraft slot, ItemStack stackHeld, int mouseButton) {
+  protected void fillPhantomSlot(RailcraftSlot slot, ItemStack stackHeld, int mouseButton) {
     if (!slot.canAdjustPhantom()) {
       return;
     }
@@ -200,8 +199,8 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   protected boolean tryShiftItem(ItemStack stackToShift, int numSlots) {
     for (int machineIndex = 0; machineIndex < numSlots - 9 * 4; machineIndex++) {
       Slot slot = this.slots.get(machineIndex);
-      if (slot instanceof SlotRailcraft) {
-        SlotRailcraft slotRailcraft = (SlotRailcraft) slot;
+      if (slot instanceof RailcraftSlot) {
+        RailcraftSlot slotRailcraft = (RailcraftSlot) slot;
         if (slotRailcraft.isPhantom()) {
           continue;
         }

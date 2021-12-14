@@ -80,7 +80,7 @@ public class AABBFactory {
     return this;
   }
 
-  public AABBFactory createBoxForTileAt(BlockPos pos) {
+  public AABBFactory at(BlockPos pos) {
     setBounds(
         pos.getX(),
         pos.getY(),
@@ -91,7 +91,7 @@ public class AABBFactory {
     return this;
   }
 
-  public AABBFactory createBoxForTileAt(BlockPos pos, double grow) {
+  public AABBFactory at(BlockPos pos, double grow) {
     setBounds(
         pos.getX() - grow,
         pos.getY() - grow,

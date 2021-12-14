@@ -297,7 +297,7 @@ public class ElevatorTrackBlock extends Block {
     if (cart.level.getBlockState(pos).getMaterial().isSolid())
       return false;
     Direction.Axis axis = state.getValue(FACING).getAxis();
-    AABBFactory factory = AABBFactory.start().createBoxForTileAt(pos).expandAxis(axis, 1.0);
+    AABBFactory factory = AABBFactory.start().at(pos).expandAxis(axis, 1.0);
     if (up) {
       factory.raiseCeiling(0.5);
       factory.raiseFloor(0.2);

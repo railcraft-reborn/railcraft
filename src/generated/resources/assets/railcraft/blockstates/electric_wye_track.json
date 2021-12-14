@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "reversed=false,shape=east_west,switched=false": {
+      "model": "railcraft:block/electric_wye_track_west"
+    },
+    "reversed=false,shape=east_west,switched=true": {
+      "model": "railcraft:block/electric_wye_track_west_switched"
+    },
+    "reversed=false,shape=north_south,switched=false": {
+      "model": "railcraft:block/electric_wye_track_east",
+      "y": 90
+    },
+    "reversed=false,shape=north_south,switched=true": {
+      "model": "railcraft:block/electric_wye_track_east_switched",
+      "y": 90
+    },
+    "reversed=true,shape=east_west,switched=false": {
+      "model": "railcraft:block/electric_wye_track_east"
+    },
+    "reversed=true,shape=east_west,switched=true": {
+      "model": "railcraft:block/electric_wye_track_east_switched"
+    },
+    "reversed=true,shape=north_south,switched=false": {
+      "model": "railcraft:block/electric_wye_track_west",
+      "y": 90
+    },
+    "reversed=true,shape=north_south,switched=true": {
+      "model": "railcraft:block/electric_wye_track_west_switched",
+      "y": 90
+    }
+  }
+}

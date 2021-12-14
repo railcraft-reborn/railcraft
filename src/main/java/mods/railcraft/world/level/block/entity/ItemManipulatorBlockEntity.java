@@ -1,7 +1,5 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +19,6 @@ import mods.railcraft.util.container.filters.StackFilters;
 import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,7 +29,6 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -144,20 +140,6 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   protected void reset() {
     super.reset();
     this.transferredItems.clear();
-  }
-
-  protected Collection<ContainerAdaptor> getAdjacentContainers() {
-    List<ContainerAdaptor> containers = new ArrayList<>();
-    for (Direction direction : Direction.values()) {
-      BlockEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
-      if (blockEntity != null) {
-        blockEntity
-            .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite())
-            .map(ContainerAdaptor::of)
-            .ifPresent(containers::add);
-      }
-    }
-    return containers;
   }
 
   @Override
@@ -287,7 +269,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   public void load(CompoundTag tag) {
-    super.load( tag);
+    super.load(tag);
     this.transferMode =
         TransferMode.getByName(tag.getString("transferMode")).orElse(TransferMode.ALL);
     this.getItemFilters().deserializeNBT(tag.getList("itemFilters", Tag.TAG_COMPOUND));
