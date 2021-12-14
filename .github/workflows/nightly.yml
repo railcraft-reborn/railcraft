@@ -22,13 +22,12 @@ jobs:
             ./.gradle/caches
             ./.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
       - name: Compile
         env:
           GRADLE_OPTS: -Dorg.gradle.daemon=false
           GITHUB_NIGHTLY: true
         run: |
+          echo "GITHUB_SHA_TRIMMED=`git rev-parse --short HEAD`" >> $GITHUB_ENV
           ./gradlew hideOfficialWarningUntilChanged
           ./gradlew build
       - name: Zip Files

@@ -28,8 +28,8 @@ jobs:
         env:
           GRADLE_OPTS: -Dorg.gradle.daemon=false
           GITHUB_PR_NUMBER: ${{github.event.pull_request.number}}
-          GITHUB_SHA_TRIMMED: ${GITHUB_SHA::7}
         run: |
+          echo "GITHUB_SHA_TRIMMED=`git rev-parse --short HEAD`" >> $GITHUB_ENV
           ./gradlew hideOfficialWarningUntilChanged
           ./gradlew build
           ./gradlew test
@@ -62,6 +62,7 @@ jobs:
         env:
           GRADLE_OPTS: -Dorg.gradle.daemon=false
         run: |
+          echo "GITHUB_SHA_TRIMMED=`git rev-parse --short HEAD`" >> $GITHUB_ENV
           ./gradlew hideOfficialWarningUntilChanged
           ./gradlew build
       - name: Upload Artifact
