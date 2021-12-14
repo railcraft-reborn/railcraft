@@ -54,7 +54,7 @@ if(isCI) {
   version = version + suffix
 }
 if(isCI || nightly) {
-  version = version + "-" + System.getenv("GITHUB_SHA")
+  version = version + "-" + System.getenv("GITHUB_SHA_TRIMMED")
 }
 
 group = 'mods.railcraft'
