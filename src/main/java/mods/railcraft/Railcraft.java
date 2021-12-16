@@ -1,6 +1,6 @@
 package mods.railcraft;
 
-import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
+import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.client.ClientDist;
@@ -19,8 +19,8 @@ import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.LinkageHandler;
-import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
+import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.entity.vehicle.RailcraftTrainTransferHelper;
 import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;

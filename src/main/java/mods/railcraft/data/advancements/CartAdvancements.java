@@ -3,11 +3,11 @@ package mods.railcraft.data.advancements;
 import java.util.function.Consumer;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.advancements.criterion.BedCartSleepTrigger;
-import mods.railcraft.advancements.criterion.CartLinkingTrigger;
-import mods.railcraft.advancements.criterion.JukeboxCartPlayMusicTrigger;
-import mods.railcraft.advancements.criterion.SetSeasonTrigger;
-import mods.railcraft.advancements.criterion.SurpriseTrigger;
+import mods.railcraft.advancements.BedCartSleepTrigger;
+import mods.railcraft.advancements.CartLinkingTrigger;
+import mods.railcraft.advancements.JukeboxCartPlayMusicTrigger;
+import mods.railcraft.advancements.SetSeasonTrigger;
+import mods.railcraft.advancements.SurpriseTrigger;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;

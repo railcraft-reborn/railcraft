@@ -25,7 +25,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   private final MultiblockPattern pattern;
 
   @Nullable
-  private Membership membership;
+  private Membership<T> membership;
 
   private final Map<BlockPos, T> members = new HashMap<>();
 
@@ -68,7 +68,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     }
 
     var pattern = this.resolvePattern();
-    if (this.isFormed() && !this.isMaster()) {
+    if (this.isFormed() && (!this.isMaster() || pattern.isPresent())) {
       return;
     }
 
@@ -86,11 +86,8 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
           logger.warn("Invalid block @ {}", entry.getKey());
           this.disband();
           return;
-        } else if (blockEntity.isFormed()) {
-          this.disband();
-          return;
         } else {
-          blockEntity.setIdentity(new Membership(entry.getCharValue(), this.getBlockPos()));
+          blockEntity.setMembership(new Membership<>(entry.getCharValue(), this.clazz.cast(this)));
           this.members.put(entry.getKey(), blockEntity);
         }
       }
@@ -98,10 +95,14 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   }
 
   private void disband() {
+    System.out.println(this.master);
+
     this.master = false;
     for (var entry : this.members.entrySet()) {
-      LevelUtil.getBlockEntity(this.level, entry.getKey(), this.clazz)
-          .ifPresent(blockEntity -> blockEntity.setIdentity(null));
+      if (entry.getValue() == this) {
+        System.out.println("yep");
+      }
+      entry.getValue().setMembership(null);
     }
     this.members.clear();
   }
@@ -121,23 +122,18 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     }
   }
 
-  /**
-   * Sets this tilentity's parent, delinking first.
-   * 
-   * @param parentPos - The position of the parent in the world.
-   */
-  public void setIdentity(Membership identity) {
-    this.membership = identity;
-    this.identityChanged();
+  protected void setMembership(Membership<T> membership) {
+    this.membership = membership;
+    this.membershipChanged();
     this.setChanged();
   }
 
-  protected abstract void identityChanged();
+  protected abstract void membershipChanged();
 
   /**
-   * Is this a parent.
+   * If this block is the master.
    * 
-   * @return TRUE if yes.
+   * @return <code>true</code> if this is the master.
    */
   public boolean isMaster() {
     return this.master;
@@ -147,27 +143,14 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     return this.membership != null;
   }
 
-  public Optional<Membership> getMembership() {
+  public Optional<Membership<T>> getMembership() {
     return Optional.ofNullable(this.membership);
   }
 
-  public Optional<T> getMaster() {
-    if (this.membership == null) {
-      return Optional.empty();
-    }
-
-    if (this.membership.masterPos().equals(this.getBlockPos())) {
-      return Optional.of(this.clazz.cast(this));
-    }
-
-    MultiblockBlockEntity<T> master =
-        LevelUtil.getBlockEntity(this.level, this.membership.masterPos(), this.clazz).orElse(null);
-    if (master == null || !master.members.containsKey(this.getBlockPos())) {
-      this.setIdentity(null);
-      return Optional.empty();
-    }
-
-    return Optional.of(this.clazz.cast(master));
+  @Override
+  public void setRemoved() {
+    super.setRemoved();
+    this.disband();
   }
 
   @Override
@@ -190,6 +173,6 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     tag.putBoolean("master", this.master);
   }
 
-  public record Membership(char marker, BlockPos masterPos) {
+  public record Membership<T extends MultiblockBlockEntity<T>> (char marker, T master) {
   }
 }

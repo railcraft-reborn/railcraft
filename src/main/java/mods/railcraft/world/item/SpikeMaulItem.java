@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
+import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.item.SpikeMaulTarget;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.level.block.track.TrackBlock;

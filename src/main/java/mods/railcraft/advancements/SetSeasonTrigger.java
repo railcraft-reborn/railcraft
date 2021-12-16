@@ -1,4 +1,4 @@
-package mods.railcraft.advancements.criterion;
+package mods.railcraft.advancements;
 
 import javax.annotation.Nullable;
 import com.google.gson.JsonObject;

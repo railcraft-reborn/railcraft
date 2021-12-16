@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block;
 
 import javax.annotation.Nullable;
+import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockListener;
 import net.minecraft.core.BlockPos;
@@ -44,15 +45,14 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
       return InteractionResult.SUCCESS;
     }
 
-    if (level.getBlockEntity(pos)instanceof MultiblockBlockEntity<?> blockEntity) {
-      return blockEntity.getMaster()
-          .map(master -> {
-            NetworkHooks.openGui((ServerPlayer) player, master, pos);
-            return InteractionResult.CONSUME;
-          })
-          .orElse(InteractionResult.PASS);
-    }
-
-    return InteractionResult.PASS;
+    return LevelUtil.getBlockEntity(level, pos, MultiblockBlockEntity.class)
+        .map(blockEntity -> (MultiblockBlockEntity<?>) blockEntity)
+        .flatMap(MultiblockBlockEntity::getMembership)
+        .map(MultiblockBlockEntity.Membership::master)
+        .map(master -> {
+          NetworkHooks.openGui((ServerPlayer) player, master, pos);
+          return InteractionResult.CONSUME;
+        })
+        .orElse(InteractionResult.PASS);
   }
 }

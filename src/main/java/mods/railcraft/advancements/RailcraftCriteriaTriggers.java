@@ -1,4 +1,4 @@
-package mods.railcraft.advancements.criterion;
+package mods.railcraft.advancements;
 
 import net.minecraft.advancements.CriteriaTriggers;
 

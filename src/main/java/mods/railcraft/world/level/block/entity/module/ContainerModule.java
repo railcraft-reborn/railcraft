@@ -29,7 +29,7 @@ public abstract class ContainerModule extends BaseModule implements ForwardingCo
 
   @Override
   public Container getContainer() {
-    return container;
+    return this.container;
   }
 
   @Override

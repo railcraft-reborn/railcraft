@@ -1,4 +1,4 @@
-package mods.railcraft.advancements.criterion;
+package mods.railcraft.advancements;
 
 import mods.railcraft.api.item.MinecartFactory;
 import net.minecraft.advancements.critereon.ItemPredicate;

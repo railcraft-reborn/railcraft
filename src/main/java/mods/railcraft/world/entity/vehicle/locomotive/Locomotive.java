@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
+import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.IPaintedCart;
 import mods.railcraft.api.carts.IRoutableCart;

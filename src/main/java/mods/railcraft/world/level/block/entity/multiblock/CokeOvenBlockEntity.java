@@ -65,9 +65,9 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   }
 
   @Override
-  protected void identityChanged() {
-    var identity = this.getMembership().orElse(null);
-    if (identity == null) {
+  protected void membershipChanged() {
+    var membership = this.getMembership().orElse(null);
+    if (membership == null) {
       this.level.setBlock(this.getBlockPos(),
           this.getBlockState()
               .setValue(CokeOvenBricksBlock.WINDOW, false)
@@ -75,7 +75,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
           Block.UPDATE_ALL);
     } else {
       this.level.setBlock(this.getBlockPos(),
-          this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW, identity.marker() == 'W'),
+          this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW, membership.marker() == 'W'),
           Block.UPDATE_ALL);
     }
   }
@@ -95,13 +95,15 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
 
     blockEntity.serverTick();
 
-    blockEntity.getMaster().ifPresent(master -> {
-      boolean lit = master.module.isProcessing();
-      if (lit != blockState.getValue(CokeOvenBricksBlock.LIT)) {
-        level.setBlockAndUpdate(blockPos,
-            blockState.setValue(CokeOvenBricksBlock.LIT, lit));
-      }
-    });
+    blockEntity.getMembership()
+        .map(Membership::master)
+        .ifPresent(master -> {
+          boolean lit = master.module.isProcessing();
+          if (lit != blockState.getValue(CokeOvenBricksBlock.LIT)) {
+            level.setBlockAndUpdate(blockPos,
+                blockState.setValue(CokeOvenBricksBlock.LIT, lit));
+          }
+        });
 
     if (blockEntity.isMaster()) {
       blockEntity.module.serverTick();

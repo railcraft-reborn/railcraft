@@ -3,7 +3,7 @@ package mods.railcraft.world.item;
 import java.util.Map;
 import java.util.function.Supplier;
 import com.google.common.collect.ImmutableMap;
-import mods.railcraft.advancements.criterion.RailcraftCriteriaTriggers;
+import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;

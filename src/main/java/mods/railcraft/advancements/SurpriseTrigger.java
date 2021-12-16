@@ -1,7 +1,6 @@
-package mods.railcraft.advancements.criterion;
+package mods.railcraft.advancements;
 
 import com.google.gson.JsonObject;
-
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonTools;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
@@ -13,9 +12,9 @@ import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.resources.ResourceLocation;
 
-public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrigger.Instance> {
+public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Instance> {
 
-  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "bed_cart_sleep");
+  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "surprise");
 
   @Override
   public ResourceLocation getId() {
@@ -23,19 +22,19 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
   }
 
   @Override
-  public BedCartSleepTrigger.Instance createInstance(JsonObject json,
+  public SurpriseTrigger.Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
     CartPredicate predicate =
         JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
-    return new BedCartSleepTrigger.Instance(entityPredicate, predicate);
+    return new SurpriseTrigger.Instance(entityPredicate, predicate);
   }
 
   /**
-   * Invoked when the user sleeps on a cart.
+   * Invoked when the user explodes a cart.
    */
-  public void trigger(ServerPlayer playerEntity, AbstractMinecart cartPredicate) {
+  public void trigger(ServerPlayer playerEntity, AbstractMinecart cart) {
     this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(playerEntity, cartPredicate));
+        (criterionInstance) -> criterionInstance.matches(playerEntity, cart));
   }
 
   public static class Instance extends AbstractCriterionTriggerInstance {
@@ -43,16 +42,16 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
     private final CartPredicate cartPredicate;
 
     private Instance(EntityPredicate.Composite entityPredicate, CartPredicate predicate) {
-      super(BedCartSleepTrigger.ID, entityPredicate);
+      super(SurpriseTrigger.ID, entityPredicate);
       this.cartPredicate = predicate;
     }
 
-    public static BedCartSleepTrigger.Instance hasSlept() {
-      return new BedCartSleepTrigger.Instance(EntityPredicate.Composite.ANY, CartPredicate.ANY);
+    public static SurpriseTrigger.Instance hasExplodedCart() {
+      return new SurpriseTrigger.Instance(EntityPredicate.Composite.ANY, CartPredicate.ANY);
     }
 
-    public boolean matches(ServerPlayer player, AbstractMinecart cartPredicate) {
-      return this.cartPredicate.test(player, cartPredicate) && player.isSleeping();
+    public boolean matches(ServerPlayer player, AbstractMinecart cart) {
+      return cartPredicate.test(player, cart);
     }
 
     @Override

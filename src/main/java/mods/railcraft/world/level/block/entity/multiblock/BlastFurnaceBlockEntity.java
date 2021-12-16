@@ -78,9 +78,9 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
   }
 
   @Override
-  protected void identityChanged() {
-    var identity = this.getMembership().orElse(null);
-    if (identity == null) {
+  protected void membershipChanged() {
+    var membership = this.getMembership().orElse(null);
+    if (membership == null) {
       this.level.setBlock(this.getBlockPos(),
           this.getBlockState()
               .setValue(CokeOvenBricksBlock.WINDOW, false)
@@ -88,7 +88,7 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
           Block.UPDATE_ALL);
     } else {
       this.level.setBlock(this.getBlockPos(),
-          this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW, identity.marker() == 'W'),
+          this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW, membership.marker() == 'W'),
           Block.UPDATE_ALL);
     }
   }
@@ -97,20 +97,22 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
       BlastFurnaceBlockEntity blockEntity) {
     blockEntity.serverTick();
 
-    blockEntity.getMaster().ifPresent(master -> {
-      boolean lit = master.logic.isProcessing();
-      if (lit != blockState.getValue(CokeOvenBricksBlock.LIT)) {
-        level.setBlockAndUpdate(blockPos,
-            blockState.setValue(CokeOvenBricksBlock.LIT, lit));
-      }
+    blockEntity.getMembership()
+        .map(Membership::master)
+        .ifPresent(master -> {
+          boolean lit = master.logic.isProcessing();
+          if (lit != blockState.getValue(CokeOvenBricksBlock.LIT)) {
+            level.setBlockAndUpdate(blockPos,
+                blockState.setValue(CokeOvenBricksBlock.LIT, lit));
+          }
 
-      if (blockEntity.fuelMoveTicks++ >= 128) {
-        blockEntity.fuelMoveTicks = 0;
-        CompositeContainerAdaptor.of(blockEntity.getAdjacentContainers())
-            .moveOneItemTo(master.fuelContainerMapper,
-                item -> master.logic.getItemBurnTime(item) > 0);
-      }
-    });
+          if (blockEntity.fuelMoveTicks++ >= 128) {
+            blockEntity.fuelMoveTicks = 0;
+            CompositeContainerAdaptor.of(blockEntity.getAdjacentContainers())
+                .moveOneItemTo(master.fuelContainerMapper,
+                    item -> master.logic.getItemBurnTime(item) > 0);
+          }
+        });
 
     if (blockEntity.isMaster()) {
       blockEntity.logic.serverTick();

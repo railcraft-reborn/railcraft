@@ -42,7 +42,7 @@ public class MultiblockPattern {
   }
 
   public int getRadius() {
-    return Mth.ceil(Ints.max(this.sizeX, this.sizeY, this.sizeZ) / 2.0F);
+    return Mth.ceil(Ints.max(this.sizeX, this.sizeY, this.sizeZ));
   }
 
   /**

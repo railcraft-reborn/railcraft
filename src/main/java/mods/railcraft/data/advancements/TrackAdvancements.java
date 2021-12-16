@@ -3,9 +3,9 @@ package mods.railcraft.data.advancements;
 import java.util.function.Consumer;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.advancements.criterion.MultiBlockFormedTrigger;
-import mods.railcraft.advancements.criterion.SpikeMaulUseTrigger;
-import mods.railcraft.advancements.criterion.UseTrackKitTrigger;
+import mods.railcraft.advancements.MultiBlockFormedTrigger;
+import mods.railcraft.advancements.SpikeMaulUseTrigger;
+import mods.railcraft.advancements.UseTrackKitTrigger;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.advancements.Advancement;
