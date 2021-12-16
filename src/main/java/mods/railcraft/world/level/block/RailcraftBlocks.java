@@ -43,8 +43,10 @@ import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.material.RailcraftMaterials;
+import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -999,6 +1001,12 @@ public class RailcraftBlocks {
               .sound(SoundType.STONE)
               .lightLevel(litBlockEmission(13))
               .strength(2F, 6.0F)));
+
+  public static final RegistryObject<LiquidBlock> CREOSOTE =
+      BLOCKS.register("creosote",
+          () -> new LiquidBlock(RailcraftFluids.CREOSOTE,
+            BlockBehaviour.Properties.of(Material.WATER)
+                .noCollission().strength(50.0F).noDrops()));
 
   public static final RegistryObject<Block> BLACK_POST =
       BLOCKS.register("black_post",

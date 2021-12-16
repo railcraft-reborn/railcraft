@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "railcraft:steel_ingot"
+      "railcraft:steel_ingot_block_ingot"
     ]
   },
   "criteria": {
-    "has_required_compression_material": {
+    "has_required_decompression_material": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:nuggets/steel"
+            "tag": "forge:blocks/steel"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "railcraft:steel_ingot"
+        "recipe": "railcraft:steel_ingot_block_ingot"
       }
     }
   },
   "requirements": [
     [
-      "has_required_compression_material",
+      "has_required_decompression_material",
       "has_the_recipe"
     ]
   ]

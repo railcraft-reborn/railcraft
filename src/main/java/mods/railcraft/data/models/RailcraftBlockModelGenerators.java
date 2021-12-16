@@ -199,6 +199,8 @@ public class RailcraftBlockModelGenerators {
     this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
         TexturedModel.CUBE_TOP_BOTTOM);
 
+    this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
+
     this.createTrivialCube(RailcraftBlocks.STEEL_BLOCK.get());
 
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
@@ -344,6 +346,15 @@ public class RailcraftBlockModelGenerators {
   private void createTrivialBlock(Block block, TexturedModel.Provider textureFactory) {
     this.blockStateOutput.accept(
         createSimpleBlock(block, textureFactory.create(block, this.modelOutput)));
+  }
+
+  private void createTrivialBlock(Block block) {
+    this.createTrivialBlock(block, block);
+  }
+
+  private void createTrivialBlock(Block block, Block block2) {
+    this.blockStateOutput.accept(createSimpleBlock(block,
+    ModelLocationUtils.getModelLocation(block2)));
   }
 
   private static MultiVariantGenerator createSimpleBlock(Block block,

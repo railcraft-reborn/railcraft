@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "railcraft:bronze_ingot"
+      "railcraft:copper_nugget_nugget"
     ]
   },
   "criteria": {
-    "has_required_compression_material": {
+    "has_required_decompression_material": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:nuggets/bronze"
+            "tag": "forge:ingots/copper"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "railcraft:bronze_ingot"
+        "recipe": "railcraft:copper_nugget_nugget"
       }
     }
   },
   "requirements": [
     [
-      "has_required_compression_material",
+      "has_required_decompression_material",
       "has_the_recipe"
     ]
   ]

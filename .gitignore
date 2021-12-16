@@ -1,12 +1,68 @@
+### https://raw.github.com/github/gitignore/cc542de017c606138a87ee4880e5f06b3a306def/Global/Linux.gitignore
+
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+
+### https://raw.github.com/github/gitignore/cc542de017c606138a87ee4880e5f06b3a306def/Global/Vim.gitignore
+
+# swap
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+# session
+Session.vim
+# temporary
+.netrwhist
+*~
+
+# dotenv
+.env
+
+### https://raw.github.com/github/gitignore/cc542de017c606138a87ee4880e5f06b3a306def/Global/Windows.gitignore
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows shortcuts
+*.lnk
+
+### https://raw.github.com/github/gitignore/cc542de017c606138a87ee4880e5f06b3a306def/Global/OSX.gitignore
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+#Sublime
+*.sublime-project
+*.sublime-workspace
+
 # eclipse
-bin
+eclipse
 *.launch
 .settings
 .metadata
 .classpath
 .project
 
-# idea
+# IntelliJ IDEA
 out
 *.ipr
 *.iws
@@ -19,12 +75,19 @@ build
 gradle/
 !gradle/wrapper
 
+#KDevelop and Kate
+*.kdev4*
+*.kate-swp
+
 # other
-eclipse
+bin
 run
 
 # Files from Forge MDK
 forge*changelog.txt
 
-# VScode
-.vscode
+#Visual studio stuff
+*.vscode/*
+
+#GitHub Atom
+.atom-build.json

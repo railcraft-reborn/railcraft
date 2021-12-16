@@ -7,6 +7,7 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
@@ -222,31 +223,37 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     /* === Item Compression === */
     this.compress(consumer, RailcraftItems.STEEL_INGOT.get(),
-        RailcraftTags.Items.STEEL_NUGGET);
+        RailcraftTags.Items.STEEL_NUGGET, "ingot");
     this.compress(consumer, RailcraftItems.TIN_INGOT.get(),
-        RailcraftTags.Items.TIN_NUGGET);
+        RailcraftTags.Items.TIN_NUGGET, "ingot");
     this.compress(consumer, RailcraftItems.COPPER_INGOT.get(),
-        RailcraftTags.Items.COPPER_NUGGET);
+        RailcraftTags.Items.COPPER_NUGGET, "ingot");
     this.compress(consumer, RailcraftItems.ZINC_INGOT.get(),
-        RailcraftTags.Items.ZINC_NUGGET);
+        RailcraftTags.Items.ZINC_NUGGET, "ingot");
     this.compress(consumer, RailcraftItems.BRASS_INGOT.get(),
-        RailcraftTags.Items.BRASS_NUGGET);
+        RailcraftTags.Items.BRASS_NUGGET, "ingot");
     this.compress(consumer, RailcraftItems.BRONZE_INGOT.get(),
-        RailcraftTags.Items.BRONZE_NUGGET);
+        RailcraftTags.Items.BRONZE_NUGGET, "ingot");
+
+    this.compress(consumer, RailcraftItems.STEEL_BLOCK.get(),
+        RailcraftTags.Items.STEEL_INGOT, "block");
 
     /* === Item Decompression === */
     this.decompress(consumer, RailcraftItems.STEEL_NUGGET.get(),
-        RailcraftTags.Items.STEEL_INGOT);
+        RailcraftTags.Items.STEEL_INGOT, "nugget");
     this.decompress(consumer, RailcraftItems.TIN_NUGGET.get(),
-        RailcraftTags.Items.TIN_INGOT);
+        RailcraftTags.Items.TIN_INGOT, "nugget");
     this.decompress(consumer, RailcraftItems.COPPER_NUGGET.get(),
-        RailcraftTags.Items.COPPER_INGOT);
+        RailcraftTags.Items.COPPER_INGOT, "nugget");
     this.decompress(consumer, RailcraftItems.ZINC_NUGGET.get(),
-        RailcraftTags.Items.ZINC_INGOT);
+        RailcraftTags.Items.ZINC_INGOT, "nugget");
     this.decompress(consumer, RailcraftItems.BRASS_NUGGET.get(),
-        RailcraftTags.Items.BRASS_INGOT);
+        RailcraftTags.Items.BRASS_INGOT, "nugget");
     this.decompress(consumer, RailcraftItems.BRONZE_NUGGET.get(),
-        RailcraftTags.Items.BRONZE_INGOT);
+        RailcraftTags.Items.BRONZE_INGOT, "nugget");
+
+    this.decompress(consumer, RailcraftItems.STEEL_INGOT.get(),
+        RailcraftTags.Items.STEEL_BLOCK, "block_ingot");
 
     CokeOvenRecipeBuilder
         .coking(Items.COAL, Ingredient.of(ItemTags.LOGS), 0.0F, 250)
@@ -367,27 +374,28 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy("has_railbed", has(railBedType))
         // this is deliberate as vanilla ones fail to properly register (rails.json already exists)
         .save(finishedRecipie,
-            new ResourceLocation(Railcraft.ID + ":"
-                + ForgeRegistries.ITEMS.getKey(itemOut).getPath()));
+            new ResourceLocation(Railcraft.ID, ForgeRegistries.ITEMS.getKey(itemOut).getPath()));
   }
 
   private final void compress(Consumer<FinishedRecipe> finishedRecipie,
-      Item itemOut, Tag<Item> materialTag) {
+      Item itemOut, Tag<Item> materialTag, String identifier) {
     ShapedRecipeBuilder.shaped(itemOut)
         .define('#', materialTag)
         .pattern("###")
         .pattern("###")
         .pattern("###")
         .unlockedBy("has_required_compression_material", has(materialTag))
-        .save(finishedRecipie);
+        .save(finishedRecipie, new ResourceLocation(Railcraft.ID,
+            RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
   }
 
   private final void decompress(Consumer<FinishedRecipe> finishedRecipie,
-      Item itemOut, Tag<Item> materialTag) {
+      Item itemOut, Tag<Item> materialTag, String identifier) {
     ShapelessRecipeBuilder.shapeless(itemOut, 9)
         .requires(materialTag)
         .unlockedBy("has_required_decompression_material", has(materialTag))
-        .save(finishedRecipie);
+        .save(finishedRecipie, new ResourceLocation(Railcraft.ID,
+            RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
   }
 
   @Override

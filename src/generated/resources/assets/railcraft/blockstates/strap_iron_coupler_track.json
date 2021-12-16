@@ -57,8 +57,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "north_south",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler",
@@ -68,8 +68,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "east_west",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler",
@@ -79,8 +79,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_north",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler_raised_ne",
@@ -90,8 +90,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_south",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler_raised_sw",
@@ -101,8 +101,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_east",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler_raised_ne",
@@ -112,8 +112,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_west",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler_raised_sw",
@@ -123,8 +123,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "north_south",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler_on",
@@ -134,8 +134,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "east_west",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler_on",
@@ -145,8 +145,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_north",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler_on_raised_ne",
@@ -156,8 +156,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_south",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler_on_raised_sw",
@@ -167,8 +167,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_east",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler_on_raised_ne",
@@ -178,8 +178,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_west",
-        "mode": "coupler"
+        "mode": "coupler",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_coupler_on_raised_sw",
@@ -189,8 +189,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "north_south",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler",
@@ -200,8 +200,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "east_west",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler",
@@ -211,8 +211,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_north",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler_raised_ne",
@@ -222,8 +222,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_south",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler_raised_sw",
@@ -233,8 +233,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_east",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler_raised_ne",
@@ -244,8 +244,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_west",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler_raised_sw",
@@ -255,8 +255,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "north_south",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler_on",
@@ -266,8 +266,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "east_west",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler_on",
@@ -277,8 +277,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_north",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler_on_raised_ne",
@@ -288,8 +288,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_south",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler_on_raised_sw",
@@ -299,8 +299,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_east",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler_on_raised_ne",
@@ -310,8 +310,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_west",
-        "mode": "decoupler"
+        "mode": "decoupler",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_decoupler_on_raised_sw",
@@ -321,8 +321,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "north_south",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler",
@@ -332,8 +332,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "east_west",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler",
@@ -343,8 +343,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_north",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler_raised_ne",
@@ -354,8 +354,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_south",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler_raised_sw",
@@ -365,8 +365,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_east",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler_raised_ne",
@@ -376,8 +376,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_west",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler_raised_sw",
@@ -387,8 +387,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "north_south",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler_on",
@@ -398,8 +398,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "east_west",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler_on",
@@ -409,8 +409,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_north",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler_on_raised_ne",
@@ -420,8 +420,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_south",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler_on_raised_sw",
@@ -431,8 +431,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_east",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler_on_raised_ne",
@@ -442,8 +442,8 @@
     {
       "when": {
         "powered": "true",
-        "shape": "ascending_west",
-        "mode": "auto_coupler"
+        "mode": "auto_coupler",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/coupler_track_auto_coupler_on_raised_sw",

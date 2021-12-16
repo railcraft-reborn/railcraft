@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "railcraft:bronze_nugget"
+      "railcraft:tin_nugget_nugget"
     ]
   },
   "criteria": {
@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/bronze"
+            "tag": "forge:ingots/tin"
           }
         ]
       }
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "railcraft:bronze_nugget"
+        "recipe": "railcraft:tin_nugget_nugget"
       }
     }
   },
