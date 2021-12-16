@@ -1,40 +1,58 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
-import java.util.Collection;
-import java.util.function.Supplier;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import javax.annotation.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.objects.Object2CharMap;
+import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
-    extends RailcraftBlockEntity
-    implements MenuProvider {
+    extends RailcraftBlockEntity implements MenuProvider {
 
-  private static final Logger logger =
-      LogManager.getLogger("Railcraft/MultiblockEntity");
+  private static final Logger logger = LogManager.getLogger();
 
-  private boolean formed = false;
-  private BlockPos parentPos = BlockPos.ZERO;
-  @Nullable
-  private BlockPos normal;
-  private T entityCache;
+  private final Class<T> clazz;
   private final MultiblockPattern pattern;
 
+  @Nullable
+  private Identity identity;
+
+  private final Map<BlockPos, T> slaves = new HashMap<>();
+
+  private boolean master;
+
+  private boolean pendingValidation;
+
   public MultiblockBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
-      MultiblockPattern pattern) {
+      Class<T> clazz, MultiblockPattern pattern) {
     super(type, blockPos, blockState);
+    this.clazz = clazz;
     this.pattern = pattern;
+  }
+
+  public MultiblockPattern getPattern() {
+    return this.pattern;
+  }
+
+  public void setPendingValidation() {
+    this.pendingValidation = true;
+  }
+
+  protected void serverTick() {
+    if (this.pendingValidation) {
+      this.pendingValidation = false;
+      this.tryToForm();
+    }
   }
 
   /**
@@ -42,65 +60,54 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    * 
    * @return true if ok, false if not.
    */
-  public boolean tryToMakeParent(Direction facingDir) {
+  public void tryToForm() {
     if (this.level.isClientSide()) {
-      logger.info("TryToMakeParent - Denied, clientside.");
-      return false;
-    }
-    if (this.isParent()) {
-      logger.info("TryToMakeParent - Denied, this is already a parent.");
-      return false;
-    }
-    if (facingDir.getStepY() != 0) {
-      logger.info("TryToMakeParent - Denied, face is either UP/DOWN.");
-      return false;
-    }
-    logger.info("TryToMakeParent - Trying to create THIS as a parent.");
-
-    // rotate 90 degrees, facing AWAY from the user
-    BlockPos normal = new BlockPos(facingDir.getClockWise().getClockWise().getNormal());
-    logger.debug("TryToMakeParent - Normal: " + normal.toShortString());
-    if (!this.isMultiblockPatternValid(normal)) {
-      logger.info("TryToMakeParent - Fail, pattern invalid.");
-      return false;
+      return;
     }
 
-    for (T tileEntity : this.getPatternEntities(normal)) {
-      tileEntity.setParent(this.worldPosition);
+    var pattern = this.resolvePattern();
+    if (this.isFormed() && !this.isMaster()) {
+      return;
     }
-    this.setParent(BlockPos.ZERO);
-    this.normal = normal; // ok you see, setparent delinks and sets default normal to nul
-    logger.info("TryToMakeParent - Success.");
 
-    return true;
+    pattern.ifPresentOrElse(resolvedPattern -> {
+      this.master = true;
+      this.slaves.clear();
+      for (var entry : resolvedPattern.object2CharEntrySet()) {
+
+        if (!this.isPatternEntity(entry.getCharValue())) {
+          continue;
+        }
+
+        LevelUtil.getBlockEntity(this.level, entry.getKey(), this.clazz)
+            .ifPresentOrElse(blockEntity -> {
+              blockEntity.setIdentity(new Identity(entry.getCharValue(), this.getBlockPos()));
+              this.slaves.put(entry.getKey(), blockEntity);
+            }, () -> logger.warn("Invalid block @ {}", entry.getKey()));
+      }
+    }, () -> {
+      this.master = false;
+      for (var entry : this.slaves.entrySet()) {
+        LevelUtil.getBlockEntity(this.level, entry.getKey(), this.clazz)
+            .ifPresent(blockEntity -> blockEntity.setIdentity(null));
+      }
+      this.slaves.clear();
+    });
   }
+
+  protected abstract boolean isPatternEntity(char marker);
 
   /**
    * Handles the pattern detection.
    * 
    * @return true if pattern detection is ok, false if not.
    */
-  public boolean isMultiblockPatternValid(BlockPos normal) {
-    return this.pattern.verifyPattern(this.getBlockPos(), normal, this.getLevel());
-  }
-
-  /**
-   * Gathers all of the block's tileentities. Required.
-   * 
-   * @return List of TileEntity we gathered
-   */
-  @SuppressWarnings("unchecked")
-  public Collection<T> getPatternEntities(BlockPos normal) {
-    Collection<T> teCollection = Lists.newArrayList();
-    for (BlockPos pos : this.pattern.getPatternPos(this.getBlockPos(), normal)) {
-      @Nullable
-      BlockEntity te = this.getLevel().getBlockEntity(pos);
-      if (te == null) {
-        continue; // might be air. multiblocks have air sometimes.
-      }
-      teCollection.add((T) te);
+  public Optional<Object2CharMap<BlockPos>> resolvePattern() {
+    if (this.level instanceof ServerLevel serverLevel) {
+      return this.pattern.verifyPattern(this.getBlockPos(), serverLevel);
+    } else {
+      throw new IllegalStateException("Resolving multiblock pattern on invalid side.");
     }
-    return teCollection;
   }
 
   /**
@@ -108,176 +115,70 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    * 
    * @param parentPos - The position of the parent in the world.
    */
-  public void setParent(BlockPos parentPos) {
-    logger.info(
-        "setParent - Setting (" + parentPos.toShortString() + ") as our parentPos.");
-    this.delink(); // iirc we should not have linked stuffed before
-    this.parentPos = parentPos;
-    // we do not precache the ref here, though i can.
-    this.formed = true;
+  public void setIdentity(Identity identity) {
+    this.identity = identity;
+    this.identityChanged();
     this.setChanged();
   }
+
+  protected abstract void identityChanged();
 
   /**
    * Is this a parent.
    * 
    * @return TRUE if yes.
    */
-  public boolean isParent() {
-    if (this.getLevel().isClientSide() || !this.formed) {
-      return false;
-    }
-    return this.parentPos.equals(BlockPos.ZERO);
-  }
-
-  /**
-   * Revalidate the cached parent TE.
-   */
-  private T stateWhileRevalidate(Supplier<T> getValidEntity) {
-    if (this.entityCache == null || this.entityCache.isRemoved()) {
-      this.entityCache = getValidEntity.get();
-    }
-    return this.entityCache;
-  }
-
-  /**
-   * Gets the parent of this multiblock, or null if not. Does delinking and cacheing.
-   */
-  @SuppressWarnings("unchecked")
-  @Nullable
-  public T getParent() {
-    if (!this.formed) {
-      if (this.entityCache != null) {
-        // this should NOT happen!
-        logger.warn("Multiblock has entityCache while it isn't formed.");
-        this.entityCache = null;
-      }
-      return null;
-    }
-    // us
-    if (this.isParent()) {
-      return this.stateWhileRevalidate(() -> (T) this);
-    }
-    // not us
-    return this.stateWhileRevalidate(() -> {
-      @Nullable
-      var parent = this.getLevel().getBlockEntity(this.parentPos);
-
-      if (parent == null || parent.getType() != this.getType()) {
-        logger.info(
-            "getParent - Parent does not exist OR not the same type. Type or Null: "
-                + ((parent == null) ? "null" : parent.toString()));
-        this.delink();
-        return null;
-      }
-      return (T) parent;
-    });
-  }
-
-  /**
-   * Delinks the parent softref, also makes us "unformed".
-   */
-  public void delink() {
-    logger.info(
-        "delink - Delink, last parent pos: (" + this.parentPos.toShortString() + ")");
-    // if parent pos == zero then drop item
-    this.formed = false;
-    this.parentPos = BlockPos.ZERO;
-    this.normal = null;
-    this.entityCache = null;
-    this.setChanged();
-  }
-
-  /**
-   * Check the link validity. 1. Checks if the parent exists 2. checks if the pattern is right (if
-   * parent) If any fails, delinking will happen
-   */
-  public boolean verifyLink() {
-    if (!this.formed) {
-      return false;
-    }
-    logger.info(
-        "verifyLink -Veryfing link. "
-            + "Parent: (" + this.parentPos.toShortString() + ")"
-            + "Us: (" + this.worldPosition.toShortString() + ")");
-    if (this.getParent() == null) {
-      this.delink();
-      logger.info("verifyLink - Parent didnt exist anymore.");
-      return false;
-    }
-    // we do not save normals if we arent the parent.
-    if (this.normal == null) {
-      return true;
-    }
-
-    if (this.getParent() == this && !this.isMultiblockPatternValid(this.normal)) {
-      logger.info("verifyLink - Parent is valid (it is us), however pattern broke.");
-
-      for (T tileEntity : this.getPatternEntities(this.normal)) {
-        tileEntity.delink();
-      }
-      return false;
-    }
-    return true;
+  public boolean isMaster() {
+    return this.master;
   }
 
   public boolean isFormed() {
-    return this.formed;
+    return this.identity != null;
   }
 
-  @Nullable
-  public BlockPos getNormal() {
-    return this.normal;
+  public Optional<Identity> getIdentity() {
+    return Optional.ofNullable(this.identity);
   }
 
-  @Override
-  public void setRemoved() {
-    if (this.getLevel().isClientSide()) {
-      super.setRemoved(); // run basic deltion
-      logger.warn("Clientside delink, ignored.");
-      return; // do not run deletion clientside.
+  public Optional<T> getMaster() {
+    if (this.identity == null) {
+      return Optional.empty();
     }
 
-    logger.warn("Serverside delink.");
-
-    @Nullable
-    MultiblockBlockEntity<T> theParent = this.getParent();
-    if (theParent == null) {
-      logger.warn("Multiblock has no parent, apparently.");
-      return;
+    if (this.identity.masterPos().equals(this.getBlockPos())) {
+      return Optional.of(this.clazz.cast(this));
     }
 
-    for (T tileEntity : theParent.getPatternEntities(theParent.getNormal())) {
-      tileEntity.delink();
+    MultiblockBlockEntity<T> master =
+        LevelUtil.getBlockEntity(this.level, this.identity.masterPos(), this.clazz).orElse(null);
+    if (master == null || !master.slaves.containsKey(this.getBlockPos())) {
+      this.setIdentity(null);
+      return Optional.empty();
     }
-    super.setRemoved(); // intentional, this MUST RUN LAST.
-    return;
+
+    return Optional.of(this.clazz.cast(master));
   }
 
   @Override
   public void onLoad() {
     super.onLoad();
-    this.verifyLink();
+    if (this.master) {
+      this.tryToForm();
+    }
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.formed = tag.getBoolean("formed");
-    this.parentPos = NbtUtils.readBlockPos(tag.getCompound("parentPos"));
-    this.normal = tag.contains("normal", Tag.TAG_COMPOUND)
-        ? NbtUtils.readBlockPos(tag.getCompound("normal"))
-        : null;
+    this.master = tag.getBoolean("master");
   }
 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putBoolean("formed", this.formed);
-    tag.put("parentPos", NbtUtils.writeBlockPos(this.parentPos));
-    // do not save the normal when it's null.
-    if (this.normal != null) {
-      tag.put("normal", NbtUtils.writeBlockPos(this.normal));
-    }
+    tag.putBoolean("master", this.master);
+  }
+
+  public record Identity(char marker, BlockPos masterPos) {
   }
 }

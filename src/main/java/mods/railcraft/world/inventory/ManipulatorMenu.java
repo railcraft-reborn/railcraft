@@ -18,7 +18,7 @@ public class ManipulatorMenu<T extends ManipulatorBlockEntity> extends Railcraft
 
   protected ManipulatorMenu(MenuType<?> type, int id, Inventory inventory, T manipulator,
       boolean hasCartFilter) {
-    super(type, id, inventory);
+    super(type, id, inventory.player, manipulator::stillValid);
     this.manipulator = manipulator;
     this.hasCartFilter = hasCartFilter;
 

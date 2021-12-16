@@ -1,16 +1,16 @@
 {
   "variants": {
-    "lit=false,parent=false": {
+    "lit=false,window=false": {
       "model": "railcraft:block/coke_oven_bricks"
     },
-    "lit=false,parent=true": {
-      "model": "railcraft:block/coke_oven_bricks_furnace"
+    "lit=false,window=true": {
+      "model": "railcraft:block/coke_oven_bricks_window"
     },
-    "lit=true,parent=false": {
+    "lit=true,window=false": {
       "model": "railcraft:block/coke_oven_bricks"
     },
-    "lit=true,parent=true": {
-      "model": "railcraft:block/coke_oven_bricks_furnace_on"
+    "lit=true,window=true": {
+      "model": "railcraft:block/coke_oven_bricks_window_lit"
     }
   }
 }

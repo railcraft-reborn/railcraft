@@ -1,16 +1,18 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
-
-import net.minecraft.advancements.critereon.BlockPredicate;
+import java.util.Map;
+import java.util.Optional;
+import com.google.common.collect.ImmutableMap;
+import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
+import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.chars.CharList;
+import it.unimi.dsi.fastutil.objects.Object2CharMap;
+import it.unimi.dsi.fastutil.objects.Object2CharOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Multiblock pattern. ONLY FOR CUBE-LIKE STRUCTURES!
@@ -20,103 +22,70 @@ import org.apache.logging.log4j.Logger;
  */
 public class MultiblockPattern {
 
-  private static final Logger logger = LogManager.getLogger();
   private final int sizeX;
   private final int sizeY;
   private final int sizeZ;
-  private final int offsetX;
-  private final int offsetY;
-  private final BlockPredicate[][][] pattern;
+  private final BlockPos masterOffset;
+  private final char[][][] pattern;
+  private final Char2ObjectMap<BlockPredicate> predicates;
 
-  private MultiblockPattern(BlockPredicate[][][] pattern, int offsetX, int offsetY) {
-    this.offsetX = offsetX;
-    this.offsetY = offsetY;
-    // Z Y X
-    this.sizeZ = pattern.length;
+  private MultiblockPattern(char[][][] pattern, BlockPos masterOffset,
+      Map<Character, BlockPredicate> predicates) {
+    this.masterOffset = masterOffset;
     this.pattern = pattern;
-
-    int highestY = 0;
-    int highestX = 0;
-    for (var blocksY : pattern) {
-      int yyLen = blocksY.length;
-      if (yyLen > highestY) {
-        highestY = yyLen;
-      }
-      for (var blocksX : blocksY) {
-        int xxLen = blocksX.length;
-        if (xxLen > highestX) {
-          highestX = xxLen;
-        }
-      }
-    }
-    this.sizeY = highestY;
-    this.sizeX = highestX;
+    this.sizeY = pattern.length;
+    this.sizeZ = pattern[0].length;
+    this.sizeX = pattern[0][0].length;
+    this.predicates = new Char2ObjectOpenHashMap<>(predicates);
   }
 
-  /**
-   * Gets BlockPos from the pattern.
-   * 
-   * @param worldPos The target location
-   * @param normal Used for offsetting
-   * @return Iteratable list of the pattern's position
-   */
-  public Iterable<BlockPos> getPatternPos(BlockPos worldPos, BlockPos normal) {
-    int boxX = this.sizeX - 1;
-    int boxY = this.sizeY - 1;
-    int boxZ = this.sizeZ - 1;
-    BlockPos originPos = worldPos.offset(
-        (normal.getX() == 0) ? this.offsetX : 0,
-        this.offsetY, // this.offsetY
-        (normal.getZ() == 0) ? this.offsetX : 0);
-
-    return BlockPos.betweenClosed(
-        originPos, originPos.offset(
-            (normal.getX() == 0) ? boxX : normal.getX() * boxX, // positive or negative, but never 0
-            boxY, // you CANNOT assemble multiblocks on the top.
-            (normal.getZ() == 0) ? boxZ : normal.getZ() * boxZ));
+  public int getArea() {
+    return this.sizeX * this.sizeY * this.sizeZ;
   }
 
   /**
    * Verifies the pattern.
    * 
-   * @param worldPos The targeted block's {@link BlockPos}.
+   * @param blockPos The targeted block's {@link BlockPos}.
    * @param normal The normal/face that the user clicked on.
-   * @param currentLevel The current game world. Must be serverside.
+   * @param level The current game world. Must be serverside.
    * @return TRUE if the pattern is valid, FALSE if not.
    */
-  public boolean verifyPattern(BlockPos worldPos, BlockPos normal, Level currentLevel) {
-    if (currentLevel.isClientSide()) {
-      return false;
-    }
-    logger.info("verifyPattern: Verifying pattern. Using [pattern name to be implemented soon].");
-    for (BlockPos pos : this.getPatternPos(worldPos, normal)) {
-      BlockPos denormalizedPos = pos.subtract(worldPos).offset(
-          // you may ask: what the fuck? and my answer: me too, what the fuck?
-          (normal.getX() == 0) ? -this.offsetX : (normal.getX() == -1) ? this.sizeX - 1 : 0,
-          1,
-          (normal.getZ() == 0) ? -this.offsetX : (normal.getZ() == -1) ? this.sizeZ - 1 : 0);
-      BlockPredicate predicate =
-          this.pattern[denormalizedPos.getZ()][denormalizedPos.getY()][denormalizedPos.getX()];
+  public Optional<Object2CharMap<BlockPos>> verifyPattern(BlockPos blockPos, ServerLevel level) {
+    var originPos = blockPos.subtract(this.masterOffset);
+    Object2CharMap<BlockPos> map =
+        new Object2CharOpenHashMap<>(this.sizeX * this.sizeY * this.sizeZ);
 
-      if (!predicate.matches((ServerLevel) currentLevel, pos)) {
-        logger.info("verifyPattern: Multiblock failed at POS: " + pos.toShortString());
-        return false;
+    for (var x = 0; x < this.sizeX; x++) {
+      for (var y = 0; y < this.sizeY; y++) {
+        for (var z = 0; z < this.sizeZ; z++) {
+          var marker = this.pattern[y][z][x];
+          var predicate = this.predicates.get(marker);
+          var pos = new BlockPos(x, y, z).offset(originPos);
+          if (!predicate.test(level, pos)) {
+            return Optional.empty();
+          }
+          map.put(pos, marker);
+        }
       }
     }
-    logger.info("verifyPattern: Pattern valid.");
-    return true;
+
+    return Optional.of(map);
+  }
+
+  public static Builder builder(BlockPos masterOffset) {
+    return new Builder(masterOffset);
   }
 
   public static class Builder {
-    private final List<List<List<BlockPredicate>>> pattern =
-        // Y Z X
-        Lists.newArrayList(Lists.newArrayList(Lists.newArrayList()));
-    private final int offsetX;
-    private final int offsetZ;
 
-    Builder(int offsetX, int offsetZ) {
-      this.offsetX = offsetX;
-      this.offsetZ = offsetZ;
+    private final Deque<List<CharList>> pattern = new ArrayDeque<>();
+    private final BlockPos masterOffset;
+    private final ImmutableMap.Builder<Character, BlockPredicate> predicates =
+        ImmutableMap.builder();
+
+    private Builder(BlockPos masterOffset) {
+      this.masterOffset = masterOffset;
     }
 
     /**
@@ -125,8 +94,13 @@ public class MultiblockPattern {
      * @param pattern A list (like [[b,b,b],[b,b,b],[b,b,b]]), this is a flat cut
      * @return this, for chaning functions.
      */
-    public Builder pattern(List<List<BlockPredicate>> pattern) {
-      this.pattern.add(pattern);
+    public Builder layer(List<CharList> pattern) {
+      this.pattern.push(pattern);
+      return this;
+    }
+
+    public Builder predicate(char ch, BlockPredicate predicate) {
+      this.predicates.put(ch, predicate);
       return this;
     }
 
@@ -134,14 +108,12 @@ public class MultiblockPattern {
      * "Build" the pattern, returning a new MultiblockPattern.
      */
     public MultiblockPattern build() {
-      // chaos! https://stackoverflow.com/questions/34744288/java-3d-arraylist-into-a-3d-array
-      BlockPredicate[][][] patternArray =
-          this.pattern.stream().map(u1 -> // Z
-          u1.stream().map(u2 -> // Y
-          u2.toArray(new BlockPredicate[0])) // X
-              .toArray(BlockPredicate[][]::new))
-              .toArray(BlockPredicate[][][]::new);
-      return new MultiblockPattern(patternArray, this.offsetX, this.offsetZ);
+      var patternArray = this.pattern.stream()
+          .map(layer -> layer.stream()
+              .map(CharList::toCharArray)
+              .toArray(char[][]::new))
+          .toArray(char[][][]::new);
+      return new MultiblockPattern(patternArray, this.masterOffset, this.predicates.build());
     }
   }
 }

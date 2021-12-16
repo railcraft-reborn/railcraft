@@ -68,17 +68,17 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
-    super.writeSyncData(data);
-    this.blockSignal.writeSyncData(data);
-    this.signalController.writeSyncData(data);
+  public void writeToBuf(FriendlyByteBuf data) {
+    super.writeToBuf(data);
+    this.blockSignal.writeToBuf(data);
+    this.signalController.writeToBuf(data);
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    super.readSyncData(data);
-    this.blockSignal.readSyncData(data);
-    this.signalController.readSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
+    this.blockSignal.readFromBuf(data);
+    this.signalController.readFromBuf(data);
   }
 
   @Override

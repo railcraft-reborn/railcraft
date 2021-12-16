@@ -6,12 +6,12 @@ import net.minecraft.world.item.ItemStack;
 
 public class OutputSlot extends Slot {
 
-  public OutputSlot(Container iinventory, int slotIndex, int posX, int posY) {
-    super(iinventory, slotIndex, posX, posY);
+  public OutputSlot(Container container, int slot, int x, int y) {
+    super(container, slot, x, y);
   }
 
   @Override
-  public boolean mayPlace(ItemStack itemstack) {
+  public boolean mayPlace(ItemStack item) {
     return false;
   }
 }

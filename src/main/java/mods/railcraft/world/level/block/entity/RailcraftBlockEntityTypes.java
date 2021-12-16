@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.multiblock.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
@@ -30,6 +31,12 @@ public class RailcraftBlockEntityTypes {
 
   public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
       DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Railcraft.ID);
+
+  public static final RegistryObject<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =
+      BLOCK_ENTITY_TYPES.register("blast_furnace",
+          () -> BlockEntityType.Builder
+              .of(BlastFurnaceBlockEntity::new, RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
+              .build(null));
 
   public static final RegistryObject<BlockEntityType<FeedStationBlockEntity>> FEED_STATION =
       BLOCK_ENTITY_TYPES.register("feed_station",

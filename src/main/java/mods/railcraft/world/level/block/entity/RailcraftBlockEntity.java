@@ -1,5 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nonnull;
@@ -8,9 +11,12 @@ import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.Ownable;
-import mods.railcraft.api.core.Syncable;
+import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.network.PacketBuilder;
+import mods.railcraft.util.container.ContainerAdaptor;
+import mods.railcraft.world.level.block.entity.module.ModuleDispatcher;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -23,9 +29,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public abstract class RailcraftBlockEntity extends BlockEntity
-    implements Syncable, Ownable, BlockEntityLike {
+    implements NetworkSerializable, Ownable, BlockEntityLike {
+
+  protected final ModuleDispatcher moduleDispatcher = new ModuleDispatcher();
 
   @Nullable
   private GameProfile owner;
@@ -46,7 +57,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   public final CompoundTag getUpdateTag() {
     CompoundTag nbt = super.getUpdateTag();
     FriendlyByteBuf packetBuffer = new FriendlyByteBuf(Unpooled.buffer());
-    this.writeSyncData(packetBuffer);
+    this.writeToBuf(packetBuffer);
     byte[] syncData = new byte[packetBuffer.readableBytes()];
     packetBuffer.readBytes(syncData);
     nbt.putByteArray("sync", syncData);
@@ -56,7 +67,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   @Override
   public final void handleUpdateTag(CompoundTag tag) {
     byte[] bytes = tag.getByteArray("sync");
-    this.readSyncData(new FriendlyByteBuf(Unpooled.wrappedBuffer(bytes)));
+    this.readFromBuf(new FriendlyByteBuf(Unpooled.wrappedBuffer(bytes)));
   }
 
   @Override
@@ -65,28 +76,31 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
+  public void writeToBuf(FriendlyByteBuf out) {
     if (this.owner == null) {
-      data.writeBoolean(true);
+      out.writeBoolean(true);
     } else {
-      data.writeBoolean(false);
-      data.writeUUID(this.owner.getId());
-      data.writeUtf(this.owner.getName(), 16);
+      out.writeBoolean(false);
+      out.writeUUID(this.owner.getId());
+      out.writeUtf(this.owner.getName(), 16);
     }
+
+    this.moduleDispatcher.writeToBuf(out);
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    if (data.readBoolean()) {
+  public void readFromBuf(FriendlyByteBuf in) {
+    if (in.readBoolean()) {
       this.owner = null;
     } else {
-      UUID ownerId = data.readUUID();
-      String ownerName = data.readUtf(16);
+      UUID ownerId = in.readUUID();
+      String ownerName = in.readUtf(16);
       this.owner = new GameProfile(ownerId, ownerName);
     }
+
+    this.moduleDispatcher.readFromBuf(in);
   }
 
-  @Override
   public void syncToClient() {
     PacketBuilder.instance().sendTileEntityPacket(this);
   }
@@ -111,17 +125,20 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   }
 
   @Override
-  public CompoundTag save(CompoundTag data) {
-    super.save(data);
+  public CompoundTag save(CompoundTag tag) {
+    super.save(tag);
     if (this.owner != null) {
       CompoundTag ownerTag = new CompoundTag();
       NbtUtils.writeGameProfile(ownerTag, this.owner);
-      data.put("owner", ownerTag);
+      tag.put("owner", ownerTag);
     }
     if (this.customName != null) {
-      data.putString("customName", Component.Serializer.toJson(this.customName));
+      tag.putString("customName", Component.Serializer.toJson(this.customName));
     }
-    return data;
+
+    tag.put("modules", this.moduleDispatcher.serializeNBT());
+
+    return tag;
   }
 
   @Override
@@ -133,6 +150,27 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     if (tag.contains("customName", Tag.TAG_STRING)) {
       this.customName = Component.Serializer.fromJson(tag.getString("customName"));
     }
+
+    this.moduleDispatcher.deserializeNBT(tag.getCompound("modules"));
+  }
+
+  @Override
+  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    return this.moduleDispatcher.getCapability(cap, side);
+  }
+
+  protected Collection<ContainerAdaptor> getAdjacentContainers() {
+    List<ContainerAdaptor> containers = new ArrayList<>();
+    for (var direction : Direction.values()) {
+      var blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
+      if (blockEntity != null) {
+        blockEntity
+            .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite())
+            .map(ContainerAdaptor::of)
+            .ifPresent(containers::add);
+      }
+    }
+    return containers;
   }
 
   public final int getX() {
@@ -171,9 +209,10 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     return this;
   }
 
-  public static boolean stillValid(BlockEntity tile, Player player) {
-    return !tile.isRemoved() && tile.getLevel().getBlockEntity(tile.getBlockPos()) == tile
-        && player.distanceToSqr(tile.getBlockPos().getX(), tile.getBlockPos().getY(),
-            tile.getBlockPos().getZ()) <= 64;
+  public static boolean stillValid(BlockEntity blockEntity, Player player) {
+    return !blockEntity.isRemoved()
+        && blockEntity.getLevel().getBlockEntity(blockEntity.getBlockPos()) == blockEntity
+        && player.distanceToSqr(blockEntity.getBlockPos().getX(), blockEntity.getBlockPos().getY(),
+            blockEntity.getBlockPos().getZ()) <= 64;
   }
 }

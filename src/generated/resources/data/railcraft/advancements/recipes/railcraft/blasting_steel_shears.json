@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "has_steel_shears": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:steel_shears"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_shears"
+    ]
+  ]
+}

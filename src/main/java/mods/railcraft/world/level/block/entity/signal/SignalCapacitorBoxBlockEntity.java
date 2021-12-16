@@ -146,8 +146,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
-    super.writeSyncData(data);
+  public void writeToBuf(FriendlyByteBuf data) {
+    super.writeToBuf(data);
     data.writeBoolean(this.ticksPowered > 0);
     data.writeShort(this.ticksToPower);
     data.writeEnum(this.signalAspect);
@@ -155,8 +155,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    super.readSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
     this.ticksPowered = (short) (data.readBoolean() ? 1 : 0);
     this.ticksToPower = data.readShort();
     this.signalAspect = data.readEnum(SignalAspect.class);

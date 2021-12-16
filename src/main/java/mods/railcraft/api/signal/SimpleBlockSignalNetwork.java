@@ -295,14 +295,14 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
-    super.writeSyncData(data);
+  public void writeToBuf(FriendlyByteBuf data) {
+    super.writeToBuf(data);
     data.writeEnum(this.signalAspect);
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    super.readSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
     this.signalAspect = data.readEnum(SignalAspect.class);
   }
 

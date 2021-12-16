@@ -6,11 +6,11 @@ import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
-import mods.railcraft.world.item.crafting.CokeOvenMenu;
-import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
 import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.ItemManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.multiblock.BlastFurnaceBlockEntity;
+import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,6 +26,11 @@ public class RailcraftMenuTypes {
 
   public static final DeferredRegister<MenuType<?>> MENU_TYPES =
       DeferredRegister.create(ForgeRegistries.CONTAINERS, Railcraft.ID);
+
+  public static final RegistryObject<MenuType<BlastFurnaceMenu>> BLAST_FURNACE =
+      MENU_TYPES.register("blast_furnace",
+          () -> new MenuType<>(
+              blockEntityMenu(BlastFurnaceBlockEntity.class, BlastFurnaceMenu::new)));
 
   public static final RegistryObject<MenuType<FeedStationMenu>> FEED_STATION =
       MENU_TYPES.register("feed_station",
@@ -53,7 +58,7 @@ public class RailcraftMenuTypes {
 
   public static final RegistryObject<MenuType<CokeOvenMenu>> COKE_OVEN =
       MENU_TYPES.register("coke_oven",
-          () -> new MenuType<>(CokeOvenMenu::new));
+          () -> new MenuType<>(blockEntityMenu(CokeOvenBlockEntity.class, CokeOvenMenu::new)));
 
   public static final RegistryObject<MenuType<ItemManipulatorMenu>> ITEM_MANIPULATOR =
       MENU_TYPES.register("item_manipulator",

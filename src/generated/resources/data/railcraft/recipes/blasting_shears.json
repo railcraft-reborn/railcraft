@@ -1,0 +1,13 @@
+{
+  "type": "railcraft:blasting",
+  "ingredient": {
+    "item": "minecraft:shears"
+  },
+  "result": {
+    "item": "railcraft:steel_ingot",
+    "count": 2
+  },
+  "experience": 0.0,
+  "cookingTime": 2560,
+  "slagOutput": 2
+}

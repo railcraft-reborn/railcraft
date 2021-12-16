@@ -11,8 +11,8 @@ public class TunnelBoreMenu extends RailcraftMenu {
 
   private final TunnelBore tunnelBore;
 
-  public TunnelBoreMenu(int id, Inventory playerInventory, TunnelBore tunnelBore) {
-    super(RailcraftMenuTypes.TUNNEL_BORE.get(), id, playerInventory);
+  public TunnelBoreMenu(int id, Inventory inventory, TunnelBore tunnelBore) {
+    super(RailcraftMenuTypes.TUNNEL_BORE.get(), id, inventory.player, tunnelBore::stillValid);
     this.tunnelBore = tunnelBore;
 
     this.addSlot(new ItemFilterSlot(StackFilters.of(TunnelBoreHead.class), tunnelBore, 0, 17, 36)
@@ -33,12 +33,12 @@ public class TunnelBoreMenu extends RailcraftMenu {
       this.addSlot(new RailcraftSlot(tunnelBore, i + 16, 8 + i * 18, 108));
     }
 
-    this.addPlayerSlots(playerInventory, IMAGE_HEIGHT);
+    this.addPlayerSlots(inventory, IMAGE_HEIGHT);
 
-    this.addDataSlot(new SimpleIntReferenceHolder(
+    this.addDataSlot(new SimpleDataSlot(
         tunnelBore::getBurnTime, tunnelBore::setBurnTime));
 
-    this.addDataSlot(new SimpleIntReferenceHolder(
+    this.addDataSlot(new SimpleDataSlot(
         tunnelBore::getFuel, tunnelBore::setFuel));
   }
 

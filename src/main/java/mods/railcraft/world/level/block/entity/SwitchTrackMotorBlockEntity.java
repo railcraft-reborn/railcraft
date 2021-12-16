@@ -86,18 +86,18 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
-    super.writeSyncData(data);
-    this.signalReceiver.writeSyncData(data);
+  public void writeToBuf(FriendlyByteBuf data) {
+    super.writeToBuf(data);
+    this.signalReceiver.writeToBuf(data);
     data.writeVarInt(this.actionSignalAspects.size());
     this.actionSignalAspects.forEach(data::writeEnum);
     data.writeBoolean(this.redstoneTriggered);
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    super.readSyncData(data);
-    this.signalReceiver.readSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
+    this.signalReceiver.readFromBuf(data);
     this.actionSignalAspects.clear();
     int size = data.readVarInt();
     for (int i = 0; i < size; i++) {

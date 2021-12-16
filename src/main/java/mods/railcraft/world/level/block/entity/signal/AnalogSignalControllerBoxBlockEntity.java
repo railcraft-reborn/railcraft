@@ -152,9 +152,9 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
-    super.writeSyncData(data);
-    this.signalController.writeSyncData(data);
+  public void writeToBuf(FriendlyByteBuf data) {
+    super.writeToBuf(data);
+    this.signalController.writeToBuf(data);
     data.writeVarInt(this.signalAspectTriggerSignals.size());
     for (var entry : this.signalAspectTriggerSignals.entrySet()) {
       data.writeEnum(entry.getKey());
@@ -163,9 +163,9 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    super.readSyncData(data);
-    this.signalController.readSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
+    this.signalController.readFromBuf(data);
     this.signalAspectTriggerSignals.clear();
     int size = data.readVarInt();
     for (int i = 0; i < size; i++) {

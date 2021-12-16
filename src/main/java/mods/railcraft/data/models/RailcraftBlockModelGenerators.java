@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AdvancedItemLoaderBlock;
-import mods.railcraft.world.level.block.CokeOvenBricksBlock;
+import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.post.Column;
@@ -205,7 +205,8 @@ public class RailcraftBlockModelGenerators {
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
-    this.createCokeOvenBricks();
+    this.createFurnaceMultiblockBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
+    this.createFurnaceMultiblockBricks(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
     this.createFeedStation();
 
     this.createPost(RailcraftBlocks.BLACK_POST.get());
@@ -397,35 +398,34 @@ public class RailcraftBlockModelGenerators {
         createSimpleBlock(block, model).with(createHorizontalFacingDispatchAlt()));
   }
 
-  private void createCokeOvenBricks() {
-    var block = RailcraftBlocks.COKE_OVEN_BRICKS.get();
+  private void createFurnaceMultiblockBricks(Block block) {
     var bricksModel = TexturedModel.CUBE.create(block, this.modelOutput);
-    var furnaceModel =
-        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_furnace",
+    var windowModel =
+        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_window",
             new TextureMapping()
-                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_furnace"))
+                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_window"))
                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block))
                 .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block)),
             this.modelOutput);
-    var litFurnaceModel =
-        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_furnace_on",
+    var litWindowModel =
+        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_window_lit",
             new TextureMapping()
-                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_furnace_on"))
+                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_window_lit"))
                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block))
                 .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block)),
             this.modelOutput);
 
     this.blockStateOutput.accept(
         MultiVariantGenerator.multiVariant(block).with(
-            PropertyDispatch.properties(CokeOvenBricksBlock.LIT, CokeOvenBricksBlock.PARENT)
+            PropertyDispatch.properties(FurnaceMultiblockBlock.LIT, FurnaceMultiblockBlock.WINDOW)
                 .select(false, false, Variant.variant()
                     .with(VariantProperties.MODEL, bricksModel))
                 .select(true, false, Variant.variant()
                     .with(VariantProperties.MODEL, bricksModel))
                 .select(false, true, Variant.variant()
-                    .with(VariantProperties.MODEL, furnaceModel))
+                    .with(VariantProperties.MODEL, windowModel))
                 .select(true, true, Variant.variant()
-                    .with(VariantProperties.MODEL, litFurnaceModel))));
+                    .with(VariantProperties.MODEL, litWindowModel))));
   }
 
   private void createFeedStation() {

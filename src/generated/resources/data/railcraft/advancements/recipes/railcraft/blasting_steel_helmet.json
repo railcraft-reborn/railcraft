@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "has_steel_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:steel_helmet"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_helmet"
+    ]
+  ]
+}

@@ -61,15 +61,15 @@ public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockE
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
-    super.writeSyncData(data);
+  public void writeToBuf(FriendlyByteBuf data) {
+    super.writeToBuf(data);
     data.writeVarInt(this.actionSignalAspects.size());
     this.actionSignalAspects.forEach(data::writeEnum);
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    super.readSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
     this.actionSignalAspects.clear();
     int size = data.readVarInt();
     for (int i = 0; i < size; i++) {

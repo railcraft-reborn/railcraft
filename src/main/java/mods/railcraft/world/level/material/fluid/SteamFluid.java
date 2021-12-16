@@ -83,9 +83,11 @@ public class SteamFluid extends Fluid {
         .builder(
             new ResourceLocation(Railcraft.ID, "block/steam_still"),
             new ResourceLocation(Railcraft.ID, "block/steam_still"))
-        .color(0xFFF5F5F5) // color is now ARGB
+        .color(0xFFF5F5F5)
         .gaseous()
-        .temperature(423) // in kelvin, 150c
+        .temperature(400) // in kelvin, 150c
+        .density(-1000)
+        .viscosity(500)
         .build(this);
   }
 }

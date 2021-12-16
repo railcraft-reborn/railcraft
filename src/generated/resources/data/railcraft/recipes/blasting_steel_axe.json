@@ -1,0 +1,13 @@
+{
+  "type": "railcraft:blasting",
+  "ingredient": {
+    "item": "railcraft:steel_axe"
+  },
+  "result": {
+    "item": "railcraft:steel_ingot",
+    "count": 2
+  },
+  "experience": 0.0,
+  "cookingTime": 1280,
+  "slagOutput": 0
+}

@@ -126,19 +126,19 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
-    super.writeSyncData(data);
+  public void writeToBuf(FriendlyByteBuf data) {
+    super.writeToBuf(data);
     data.writeEnum(this.defaultAspect);
     data.writeEnum(this.poweredAspect);
-    this.signalController.writeSyncData(data);
+    this.signalController.writeToBuf(data);
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    super.readSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
     this.defaultAspect = data.readEnum(SignalAspect.class);
     this.poweredAspect = data.readEnum(SignalAspect.class);
-    this.signalController.readSyncData(data);
+    this.signalController.readFromBuf(data);
   }
 
   public static void clientTick(Level level, BlockPos blockPos, BlockState blockState,

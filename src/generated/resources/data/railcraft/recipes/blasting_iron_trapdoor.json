@@ -1,0 +1,13 @@
+{
+  "type": "railcraft:blasting",
+  "ingredient": {
+    "item": "minecraft:iron_trapdoor"
+  },
+  "result": {
+    "item": "railcraft:steel_ingot",
+    "count": 6
+  },
+  "experience": 0.0,
+  "cookingTime": 7680,
+  "slagOutput": 6
+}

@@ -2,7 +2,7 @@ package mods.railcraft.network;
 
 import javax.annotation.Nullable;
 import io.netty.buffer.Unpooled;
-import mods.railcraft.api.core.Syncable;
+import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.network.play.SyncEntityMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
@@ -103,7 +103,7 @@ public final class PacketBuilder {
   // PacketDispatcher.sendToDimension(pkt, cart.world.provider.getDimension());
   // }
 
-  public <T extends Entity & Syncable> void sendEntitySync(T entity) {
+  public <T extends Entity & NetworkSerializable> void sendEntitySync(T entity) {
     SyncEntityMessage pkt = new SyncEntityMessage(entity);
     PacketDispatcher.sendToDimension(pkt, entity.level.dimension());
   }

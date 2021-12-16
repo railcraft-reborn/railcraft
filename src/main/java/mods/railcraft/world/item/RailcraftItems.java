@@ -8,6 +8,7 @@ import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
+import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -51,6 +52,15 @@ public class RailcraftItems {
           return new ItemStack(IRON_DETECTOR_TRACK.get());
         }
       };
+
+  public static final RegistryObject<Item> BLAST_FURNACE_BRICKS =
+      ITEMS.register("blast_furnace_bricks",
+          () -> new BlockItem(RailcraftBlocks.BLAST_FURNACE_BRICKS.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SLAG =
+      ITEMS.register("slag",
+          () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> FEED_STATION =
       ITEMS.register("feed_station",
@@ -1072,7 +1082,7 @@ public class RailcraftItems {
           () -> new Item(new Item.Properties().tab(TAB)) {
             @Override
             public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-              return 3200;
+              return recipeType == RailcraftRecipeTypes.BLASTING ? 3200 : 0;
             }
           });
 

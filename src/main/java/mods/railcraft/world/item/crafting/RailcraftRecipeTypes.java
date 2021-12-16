@@ -8,6 +8,9 @@ public class RailcraftRecipeTypes {
   public static final RecipeType<RollingRecipe> ROLLING =
       RecipeType.register(Railcraft.ID + ":rolling");
 
-  public static final RecipeType<CokeOvenRecipe> COKE_OVEN_COOKING =
-      RecipeType.register(Railcraft.ID + ":coke_oven_cooking");
+  public static final RecipeType<CokeOvenRecipe> COKING =
+      RecipeType.register(Railcraft.ID + ":coking");
+
+  public static final RecipeType<BlastFurnaceRecipe> BLASTING =
+      RecipeType.register(Railcraft.ID + ":blasting");
 }

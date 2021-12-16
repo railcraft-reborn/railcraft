@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "has_iron_door": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:iron_door"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_door"
+    ]
+  ]
+}

@@ -12,9 +12,9 @@ public class TankMinecartMenu extends RailcraftMenu {
 
   private final FluidGaugeWidget fluidGuage;
 
-  public TankMinecartMenu(int id, Inventory playerInventory,
+  public TankMinecartMenu(int id, Inventory inventory,
       TankMinecart tankMinecart) {
-    super(RailcraftMenuTypes.TANK_MINECART.get(), id, playerInventory);
+    super(RailcraftMenuTypes.TANK_MINECART.get(), id, inventory.player, tankMinecart::stillValid);
 
     this.addWidget(this.fluidGuage =
         new FluidGaugeWidget(tankMinecart.getTankManager().get(0), 35, 23, 176, 0, 16, 47));
@@ -27,12 +27,12 @@ public class TankMinecartMenu extends RailcraftMenu {
 
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 9; x++) {
-        this.addSlot(new Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
+        this.addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
       }
     }
 
     for (int x = 0; x < 9; x++) {
-      this.addSlot(new Slot(playerInventory, x, 8 + x * 18, 142));
+      this.addSlot(new Slot(inventory, x, 8 + x * 18, 142));
     }
   }
 

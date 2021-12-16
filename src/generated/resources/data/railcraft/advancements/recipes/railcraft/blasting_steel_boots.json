@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "has_steel_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:steel_boots"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_boots"
+    ]
+  ]
+}

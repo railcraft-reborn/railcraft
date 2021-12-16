@@ -114,17 +114,17 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
-    super.writeSyncData(data);
-    this.signalController.writeSyncData(data);
+  public void writeToBuf(FriendlyByteBuf data) {
+    super.writeToBuf(data);
+    this.signalController.writeToBuf(data);
     data.writeBlockPos(this.getSignalNetwork().getCentroid());
     data.writeUUID(this.tokenRingId);
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    super.readSyncData(data);
-    this.signalController.readSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
+    this.signalController.readFromBuf(data);
     this.tokenRingCentroid = data.readBlockPos();
     this.tokenRingId = data.readUUID();
   }

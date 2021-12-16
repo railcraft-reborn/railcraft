@@ -26,10 +26,6 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   private final Predicate<Player> validator;
   private final List<Widget> widgets = new ArrayList<>();
 
-  protected RailcraftMenu(@Nullable MenuType<?> type, int id, Inventory inventory) {
-    this(type, id, inventory.player, inventory::stillValid);
-  }
-
   protected RailcraftMenu(@Nullable MenuType<?> type, int id, Player player,
       Predicate<Player> validator) {
     super(type, id);

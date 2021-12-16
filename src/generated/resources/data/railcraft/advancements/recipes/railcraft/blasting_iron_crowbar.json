@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "has_iron_crowbar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:iron_crowbar"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_crowbar"
+    ]
+  ]
+}

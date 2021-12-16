@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "has_steel_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:steel_axe"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_axe"
+    ]
+  ]
+}

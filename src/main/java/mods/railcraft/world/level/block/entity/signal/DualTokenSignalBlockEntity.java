@@ -63,14 +63,14 @@ public class DualTokenSignalBlockEntity extends TokenSignalBlockEntity
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
-    super.writeSyncData(data);
-    this.signalReceiver.writeSyncData(data);
+  public void writeToBuf(FriendlyByteBuf data) {
+    super.writeToBuf(data);
+    this.signalReceiver.writeToBuf(data);
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    super.readSyncData(data);
-    this.signalReceiver.readSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
+    this.signalReceiver.readFromBuf(data);
   }
 }

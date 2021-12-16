@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
+import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.resources.ResourceLocation;

@@ -222,6 +222,7 @@ public class RailcraftBlockLoot extends BlockLoot {
     /* === machines === */
     this.dropSelf(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
     this.dropSelf(RailcraftBlocks.COKE_OVEN_BRICKS.get());
+    this.dropSelf(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
 
     /* === misc === */
     this.dropSelf(RailcraftBlocks.FIRESTONE.get());

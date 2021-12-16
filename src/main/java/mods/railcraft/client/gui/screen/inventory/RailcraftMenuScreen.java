@@ -9,7 +9,6 @@ import mods.railcraft.world.inventory.RailcraftMenu;
 import mods.railcraft.world.inventory.RailcraftSlot;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -39,19 +38,19 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
 
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-    if (this.inventory.getSelected().isEmpty()) {
-      for (WidgetRenderer<?> element : this.widgetRenderers) {
+    if (this.menu.getCarried().isEmpty()) {
+      for (var element : this.widgetRenderers) {
         if (!element.widget.hidden) {
-          List<? extends FormattedText> tooltip = element.getTooltip();
+          var tooltip = element.getTooltip();
           if (tooltip != null && element.isMouseOver(mouseX - left, mouseY - top)) {
             this.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY, this.font);
           }
         }
       }
 
-      for (Slot slot : this.menu.slots) {
-        if (slot instanceof RailcraftSlot && slot.getItem().isEmpty()) {
-          List<? extends FormattedText> tooltip = ((RailcraftSlot) slot).getTooltip();
+      for (var slot : this.menu.slots) {
+        if (slot instanceof RailcraftSlot railcraftSlot && slot.getItem().isEmpty()) {
+          var tooltip = railcraftSlot.getTooltip();
           if (tooltip != null && this.isMouseOverSlot(slot, mouseX, mouseY)) {
             this.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY, this.font);
           }

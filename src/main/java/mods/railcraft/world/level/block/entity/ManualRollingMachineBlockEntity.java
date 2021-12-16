@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.function.Consumer;
-import mods.railcraft.world.item.crafting.ManualRollingMachineMenu;
+import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;

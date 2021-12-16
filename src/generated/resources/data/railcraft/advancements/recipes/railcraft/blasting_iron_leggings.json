@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "has_iron_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:iron_leggings"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_leggings"
+    ]
+  ]
+}

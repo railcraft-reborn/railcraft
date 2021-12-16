@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block;
 
+import java.util.function.ToIntFunction;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.signal.AnalogSignalControllerBoxBlock;
@@ -46,6 +47,8 @@ import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.DeferredRegister;
@@ -56,6 +59,12 @@ public class RailcraftBlocks {
 
   public static final DeferredRegister<Block> BLOCKS =
       DeferredRegister.create(ForgeRegistries.BLOCKS, Railcraft.ID);
+
+  public static final RegistryObject<Block> BLAST_FURNACE_BRICKS =
+      BLOCKS.register("blast_furnace_bricks",
+          () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .lightLevel(litBlockEmission(13))
+              .sound(SoundType.STONE)));
 
   public static final RegistryObject<Block> FEED_STATION =
       BLOCKS.register("feed_station",
@@ -988,6 +997,7 @@ public class RailcraftBlocks {
       BLOCKS.register("coke_oven_bricks",
           () -> new CokeOvenBricksBlock(BlockBehaviour.Properties.of(Material.STONE)
               .sound(SoundType.STONE)
+              .lightLevel(litBlockEmission(13))
               .strength(2F, 6.0F)));
 
   public static final RegistryObject<Block> BLACK_POST =
@@ -1069,4 +1079,8 @@ public class RailcraftBlocks {
       BLOCKS.register("white_post",
           () -> new PostBlock(BlockBehaviour.Properties.of(Material.METAL)
               .sound(SoundType.METAL)));
+
+  private static ToIntFunction<BlockState> litBlockEmission(int light) {
+    return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;
+  }
 }

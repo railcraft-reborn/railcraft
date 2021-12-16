@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "has_steel_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:steel_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_hoe"
+    ]
+  ]
+}

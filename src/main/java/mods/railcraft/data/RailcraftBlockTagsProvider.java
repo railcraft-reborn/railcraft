@@ -143,7 +143,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTag(BlockTags.RAILS);
 
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .add(RailcraftBlocks.FIRESTONE.get(), RailcraftBlocks.COKE_OVEN_BRICKS.get());
+        .add(RailcraftBlocks.FIRESTONE.get(), RailcraftBlocks.COKE_OVEN_BRICKS.get(),
+            RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE.get());

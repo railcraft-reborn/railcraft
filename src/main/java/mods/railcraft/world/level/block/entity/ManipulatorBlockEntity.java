@@ -257,14 +257,14 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   protected abstract void processCart(AbstractMinecart cart);
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
-    super.writeSyncData(data);
+  public void writeToBuf(FriendlyByteBuf data) {
+    super.writeToBuf(data);
     data.writeEnum(this.redstoneMode);
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
-    super.readSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
     this.redstoneMode = data.readEnum(RedstoneMode.class);
   }
 

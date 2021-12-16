@@ -8,8 +8,8 @@ import mods.railcraft.data.RailcraftAdvancementProviders;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
-import mods.railcraft.data.RailcraftRecipiesProvider;
 import mods.railcraft.data.models.RailcraftModelProvider;
+import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.network.play.LinkedCartsMessage;
@@ -142,7 +142,7 @@ public class Railcraft {
     generator.addProvider(new RailcraftItemTagsProvider(generator, blockTags, fileHelper));
     generator.addProvider(new RailcraftLootTableProvider(generator));
     generator.addProvider(new RailcraftAdvancementProviders(generator, fileHelper));
-    generator.addProvider(new RailcraftRecipiesProvider(generator));
+    generator.addProvider(new RailcraftRecipeProvider(generator));
     generator.addProvider(new RailcraftModelProvider(generator));
   }
 

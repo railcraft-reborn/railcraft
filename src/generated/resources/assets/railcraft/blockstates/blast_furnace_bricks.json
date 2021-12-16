@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "lit=false,window=false": {
+      "model": "railcraft:block/blast_furnace_bricks"
+    },
+    "lit=false,window=true": {
+      "model": "railcraft:block/blast_furnace_bricks_window"
+    },
+    "lit=true,window=false": {
+      "model": "railcraft:block/blast_furnace_bricks"
+    },
+    "lit=true,window=true": {
+      "model": "railcraft:block/blast_furnace_bricks_window_lit"
+    }
+  }
+}

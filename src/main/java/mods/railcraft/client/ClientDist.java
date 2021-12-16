@@ -8,7 +8,8 @@ import mods.railcraft.client.gui.screen.EmbarkingTrackScreen;
 import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
 import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.SwitchTrackMotorScreen;
-import mods.railcraft.client.gui.screen.inventory.CokeOvenMenuScreen;
+import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
+import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.FeedStationScreen;
@@ -102,6 +103,8 @@ public class ClientDist implements RailcraftDist {
 
     // === Menu Screens ===
 
+    MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(),
+        BlastFurnaceScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FEED_STATION.get(),
         FeedStationScreen::new);
     MenuScreens.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
@@ -113,7 +116,7 @@ public class ClientDist implements RailcraftDist {
     MenuScreens.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
         ManualRollingMachineScreen::new);
     MenuScreens.register(RailcraftMenuTypes.COKE_OVEN.get(),
-        CokeOvenMenuScreen::new);
+        CokeOvenScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(),
         ItemManipulatorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(),

@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import mods.railcraft.api.core.Syncable;
+import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class SingleSignalReceiver
-    implements SignalReceiver, INBTSerializable<CompoundTag>, Syncable {
+    implements SignalReceiver, INBTSerializable<CompoundTag>, NetworkSerializable {
 
   private static final Logger logger = LogManager.getLogger();
 
@@ -76,16 +76,15 @@ public class SingleSignalReceiver
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
+  public void writeToBuf(FriendlyByteBuf data) {
     data.writeEnum(this.primarySignalClient.getSignalAspect());
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
+  public void readFromBuf(FriendlyByteBuf data) {
     this.primarySignalClient.setSignalAspect(data.readEnum(SignalAspect.class));
   }
 
-  @Override
   public void syncToClient() {
     this.syncListener.run();
   }

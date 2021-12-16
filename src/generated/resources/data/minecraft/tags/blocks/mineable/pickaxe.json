@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "railcraft:firestone",
-    "railcraft:coke_oven_bricks"
+    "railcraft:coke_oven_bricks",
+    "railcraft:blast_furnace_bricks"
   ]
 }

@@ -17,6 +17,7 @@
 
     "__DESC.blocks": "======= Blocks =======",
 
+    "block.railcraft.blast_furnace_bricks": "Blast Furnace Bricks",
     "block.railcraft.feed_station": "Feed Station",
     "block.railcraft.steel_block": "Steel Block",
     "block.railcraft.steel_anvil": "Steel Anvil",
@@ -157,6 +158,8 @@
 
     "__DESC.items": "======= Items =======",
 
+    "item.railcraft.slag": "Ground Blast Furnace Slag",
+    "item.railcraft.coal_coke": "Coal Coak",
     "item.railcraft.steel_shears": "Steel Shears",
     "item.railcraft.steel_sword": "Steel Sword",
     "item.railcraft.steel_shovel": "Steel Shovel",
@@ -373,6 +376,7 @@
 
     "container.manual_rolling_machine": "Manual Rolling Machine",
     "container.coke_oven": "Coke Oven",
+    "container.blast_furnace": "Blast Furnace",
 
     "signal_aspect.green": "Green",
     "signal_aspect.blink_yellow": "Blink Yellow",

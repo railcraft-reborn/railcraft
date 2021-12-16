@@ -1,0 +1,13 @@
+{
+  "type": "railcraft:blasting",
+  "ingredient": {
+    "item": "railcraft:steel_boots"
+  },
+  "result": {
+    "item": "railcraft:steel_ingot",
+    "count": 3
+  },
+  "experience": 0.0,
+  "cookingTime": 1920,
+  "slagOutput": 0
+}

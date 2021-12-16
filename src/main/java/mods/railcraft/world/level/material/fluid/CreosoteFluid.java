@@ -84,8 +84,10 @@ public class CreosoteFluid extends FlowingFluid {
         .builder(
             new ResourceLocation(Railcraft.ID, "block/steam_still"),
             new ResourceLocation(Railcraft.ID, "block/steam_still"))
-        .color(0xFFF5F5F5) // color is now ARGB
-        // .temperature(423) // TODO creosote temp, steal from imer engi.
+        .color(0xFFCCA303)
+        .temperature(320)
+        .density(800)
+        .viscosity(1500)
         .build(this);
   }
 
@@ -95,7 +97,8 @@ public class CreosoteFluid extends FlowingFluid {
   }
 
   @Override
-  protected void beforeDestroyingBlock(LevelAccessor world, BlockPos blockPos, BlockState blockState) {}
+  protected void beforeDestroyingBlock(LevelAccessor world, BlockPos blockPos,
+      BlockState blockState) {}
 
   @Override
   protected int getSlopeFindDistance(LevelReader world) {

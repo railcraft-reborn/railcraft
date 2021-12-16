@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.Random;
 import javax.annotation.Nullable;
 import mods.railcraft.api.core.BlockEntityLike;
-import mods.railcraft.api.core.Syncable;
+import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -33,7 +33,7 @@ import net.minecraftforge.common.util.INBTSerializable;
  * @param <T>
  */
 public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
-    implements SignalNetwork<T>, INBTSerializable<CompoundTag>, Syncable {
+    implements SignalNetwork<T>, INBTSerializable<CompoundTag>, NetworkSerializable {
 
   protected static final Random random = new Random();
 
@@ -156,7 +156,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   }
 
   @Override
-  public void writeSyncData(FriendlyByteBuf data) {
+  public void writeToBuf(FriendlyByteBuf data) {
     data.writeBoolean(this.linking);
     data.writeVarInt(this.peers.size());
     for (var peerPos : this.peers) {
@@ -165,7 +165,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   }
 
   @Override
-  public void readSyncData(FriendlyByteBuf data) {
+  public void readFromBuf(FriendlyByteBuf data) {
     this.linking = data.readBoolean();
     var peersSize = data.readVarInt();
     this.peers.clear();
@@ -174,7 +174,6 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
     }
   }
 
-  @Override
   public void syncToClient() {
     this.syncListener.run();
   }
