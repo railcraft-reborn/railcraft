@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.BlockPositionSource;
@@ -26,14 +25,14 @@ public class MultiblockListener implements GameEventListener {
 
   @Override
   public int getListenerRadius() {
-    return Mth.ceil(this.blockEntity.getPattern().getArea() / 2.0F);
+    return this.blockEntity.getPattern().getRadius();
   }
 
   @Override
   public boolean handleGameEvent(Level level, GameEvent event, Entity entity, BlockPos blockPos) {
     if (event == GameEvent.BLOCK_PLACE || event == GameEvent.BLOCK_DESTROY) {
       // Can't check immediately as these events are fired before the blocks are actually changed.
-      this.blockEntity.setPendingValidation();
+      this.blockEntity.enqueueEvaluation();
     }
     return false;
   }

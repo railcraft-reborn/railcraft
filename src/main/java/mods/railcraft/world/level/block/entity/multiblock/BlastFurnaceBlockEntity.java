@@ -73,13 +73,13 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
   }
 
   @Override
-  protected boolean isPatternEntity(char id) {
+  protected boolean isBlockEntity(char id) {
     return id == 'B' || id == 'W';
   }
 
   @Override
   protected void identityChanged() {
-    var identity = this.getIdentity().orElse(null);
+    var identity = this.getMembership().orElse(null);
     if (identity == null) {
       this.level.setBlock(this.getBlockPos(),
           this.getBlockState()

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.primitives.Ints;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.chars.CharList;
@@ -13,6 +14,7 @@ import it.unimi.dsi.fastutil.objects.Object2CharMap;
 import it.unimi.dsi.fastutil.objects.Object2CharOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 
 /**
  * Multiblock pattern. ONLY FOR CUBE-LIKE STRUCTURES!
@@ -39,8 +41,8 @@ public class MultiblockPattern {
     this.predicates = new Char2ObjectOpenHashMap<>(predicates);
   }
 
-  public int getArea() {
-    return this.sizeX * this.sizeY * this.sizeZ;
+  public int getRadius() {
+    return Mth.ceil(Ints.max(this.sizeX, this.sizeY, this.sizeZ) / 2.0F);
   }
 
   /**

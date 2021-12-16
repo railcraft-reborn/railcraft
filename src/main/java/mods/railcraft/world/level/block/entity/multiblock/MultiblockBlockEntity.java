@@ -25,13 +25,13 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   private final MultiblockPattern pattern;
 
   @Nullable
-  private Identity identity;
+  private Membership membership;
 
-  private final Map<BlockPos, T> slaves = new HashMap<>();
+  private final Map<BlockPos, T> members = new HashMap<>();
 
   private boolean master;
 
-  private boolean pendingValidation;
+  private boolean pendingEvaluation;
 
   public MultiblockBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Class<T> clazz, MultiblockPattern pattern) {
@@ -44,23 +44,25 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     return this.pattern;
   }
 
-  public void setPendingValidation() {
-    this.pendingValidation = true;
+  /**
+   * Enqueue structure evaluation for the next tick.
+   */
+  public void enqueueEvaluation() {
+    this.pendingEvaluation = true;
   }
 
   protected void serverTick() {
-    if (this.pendingValidation) {
-      this.pendingValidation = false;
-      this.tryToForm();
+    if (this.pendingEvaluation) {
+      this.pendingEvaluation = false;
+      this.evaluate();
     }
   }
 
   /**
-   * Try to make this tile (entity) a parent.
-   * 
-   * @return true if ok, false if not.
+   * Evaluate the structure pattern and form a multiblock if possible or disband any existing
+   * multiblock if the pattern fails to match.
    */
-  public void tryToForm() {
+  public void evaluate() {
     if (this.level.isClientSide()) {
       return;
     }
@@ -72,30 +74,39 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
 
     pattern.ifPresentOrElse(resolvedPattern -> {
       this.master = true;
-      this.slaves.clear();
+      this.members.clear();
       for (var entry : resolvedPattern.object2CharEntrySet()) {
-
-        if (!this.isPatternEntity(entry.getCharValue())) {
+        if (!this.isBlockEntity(entry.getCharValue())) {
           continue;
         }
 
-        LevelUtil.getBlockEntity(this.level, entry.getKey(), this.clazz)
-            .ifPresentOrElse(blockEntity -> {
-              blockEntity.setIdentity(new Identity(entry.getCharValue(), this.getBlockPos()));
-              this.slaves.put(entry.getKey(), blockEntity);
-            }, () -> logger.warn("Invalid block @ {}", entry.getKey()));
+        var blockEntity =
+            LevelUtil.getBlockEntity(this.level, entry.getKey(), this.clazz).orElse(null);
+        if (blockEntity == null) {
+          logger.warn("Invalid block @ {}", entry.getKey());
+          this.disband();
+          return;
+        } else if (blockEntity.isFormed()) {
+          this.disband();
+          return;
+        } else {
+          blockEntity.setIdentity(new Membership(entry.getCharValue(), this.getBlockPos()));
+          this.members.put(entry.getKey(), blockEntity);
+        }
       }
-    }, () -> {
-      this.master = false;
-      for (var entry : this.slaves.entrySet()) {
-        LevelUtil.getBlockEntity(this.level, entry.getKey(), this.clazz)
-            .ifPresent(blockEntity -> blockEntity.setIdentity(null));
-      }
-      this.slaves.clear();
-    });
+    }, this::disband);
   }
 
-  protected abstract boolean isPatternEntity(char marker);
+  private void disband() {
+    this.master = false;
+    for (var entry : this.members.entrySet()) {
+      LevelUtil.getBlockEntity(this.level, entry.getKey(), this.clazz)
+          .ifPresent(blockEntity -> blockEntity.setIdentity(null));
+    }
+    this.members.clear();
+  }
+
+  protected abstract boolean isBlockEntity(char marker);
 
   /**
    * Handles the pattern detection.
@@ -115,8 +126,8 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    * 
    * @param parentPos - The position of the parent in the world.
    */
-  public void setIdentity(Identity identity) {
-    this.identity = identity;
+  public void setIdentity(Membership identity) {
+    this.membership = identity;
     this.identityChanged();
     this.setChanged();
   }
@@ -133,25 +144,25 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   }
 
   public boolean isFormed() {
-    return this.identity != null;
+    return this.membership != null;
   }
 
-  public Optional<Identity> getIdentity() {
-    return Optional.ofNullable(this.identity);
+  public Optional<Membership> getMembership() {
+    return Optional.ofNullable(this.membership);
   }
 
   public Optional<T> getMaster() {
-    if (this.identity == null) {
+    if (this.membership == null) {
       return Optional.empty();
     }
 
-    if (this.identity.masterPos().equals(this.getBlockPos())) {
+    if (this.membership.masterPos().equals(this.getBlockPos())) {
       return Optional.of(this.clazz.cast(this));
     }
 
     MultiblockBlockEntity<T> master =
-        LevelUtil.getBlockEntity(this.level, this.identity.masterPos(), this.clazz).orElse(null);
-    if (master == null || !master.slaves.containsKey(this.getBlockPos())) {
+        LevelUtil.getBlockEntity(this.level, this.membership.masterPos(), this.clazz).orElse(null);
+    if (master == null || !master.members.containsKey(this.getBlockPos())) {
       this.setIdentity(null);
       return Optional.empty();
     }
@@ -163,7 +174,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   public void onLoad() {
     super.onLoad();
     if (this.master) {
-      this.tryToForm();
+      this.evaluate();
     }
   }
 
@@ -179,6 +190,6 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     tag.putBoolean("master", this.master);
   }
 
-  public record Identity(char marker, BlockPos masterPos) {
+  public record Membership(char marker, BlockPos masterPos) {
   }
 }

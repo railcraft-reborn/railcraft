@@ -51,19 +51,19 @@ if (System.getenv("SECURE_SIGN")) {
 // does in fact follow the semantic versioning. (GAMEVER)-(MAJOR.MINOR.PATCH)[-[NIGHTLY | CI]][-RUNID.RUNINT]-HASH
 version = "${minecraft_version}-${mod_version}"
 if(isCI) {
-  version = version + suffix
+    version = version + suffix
 }
 if(isCI || nightly) {
-  version = version + "-" + 'git rev-parse --short HEAD'.execute().text.trim()
+    version = version + "-" + 'git rev-parse --short HEAD'.execute().text.trim()
 }
 
 group = 'mods.railcraft'
 archivesBaseName = 'railcraft'
 
 java {
-  toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
-  }
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 println('')
@@ -80,105 +80,115 @@ println('JVM: ' + System.getProperty('java.vm.version'))
 println('*************************************************************')
 println('')
 
-minecraft {
-  mappings channel: 'official', version: "${project.minecraft_version}"
-
-  accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-  runs {
-    client {
-      workingDirectory project.file('run/client')
-
-      property 'forge.logging.console.level', 'debug'
-
-      args '--mixin', 'railcraft.mixins.json'
-
-      mods {
-        railcraft {
-          source sourceSets.main
-        }
-      }
+sourceSets {
+    api {
+    	// API has no resources
+        resources.srcDirs = []
     }
-
-    server {
-      workingDirectory project.file('run/server')
-
-      property 'forge.logging.console.level', 'debug'
-
-      args '--mixin', 'railcraft.mixins.json'
-
-      mods {
-        railcraft {
-          source sourceSets.main
+    main {
+    	compileClasspath += sourceSets.api.output
+        runtimeClasspath += sourceSets.api.output
+        resources {
+            srcDir 'src/generated/resources'
         }
-      }
     }
-
-    data {
-      workingDirectory project.file('run/data')
-
-      property 'forge.logging.console.level', 'debug'
-
-      args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-      mods {
-        railcraft {
-          source sourceSets.main
-        }
-      }
-    }
-  }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+minecraft {
+    mappings channel: 'official', version: "${project.minecraft_version}"
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        client {
+            workingDirectory project.file('run/client')
+
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mixin', 'railcraft.mixins.json'
+
+            mods {
+                railcraft {
+                    source sourceSets.main
+                    source sourceSets.api
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run/server')
+
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mixin', 'railcraft.mixins.json'
+
+            mods {
+                railcraft {
+                    source sourceSets.main
+                    source sourceSets.api
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run/data')
+
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                railcraft {
+                    source sourceSets.main
+                    source sourceSets.api
+                }
+            }
+        }
+    }
+}
 
 repositories {
-  maven {
-    name 'sponge'
-    url 'https://repo.spongepowered.org/repository/maven-public'
-  }
-  // TODO jei implementation
+    maven {
+        name 'sponge'
+        url 'https://repo.spongepowered.org/repository/maven-public'
+    }
 }
 
 dependencies {
-  minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
-  implementation group: 'org.spongepowered', name: 'mixin', version: "${project.mixin_version}"
-  annotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
-  testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.minecraft_version}-${project.forge_version}"
+    implementation group: 'org.spongepowered', name: 'mixin', version: "${project.mixin_version}"
+    annotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
+    testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
 }
 
 jar {
-  finalizedBy('reobfJar')
-  manifest {
-    attributes([
-      "Implementation-Title": project.name,
-      "Implementation-Version": project.version,
-      "Implementation-Commit": 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
-      "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-      "MixinConfigs": 'railcraft.mixins.json'
-    ])
-  }
-  exclude "**/*.bat"
-  exclude "**/*.psd"
-  exclude "**/*.exe"
-  exclude "**/*.db"  // windows thumbs.db cache
+    finalizedBy('reobfJar')
+    manifest {
+        attributes([
+            "Implementation-Title": project.name,
+            "Implementation-Version": project.version,
+            "Implementation-Commit": 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": 'railcraft.mixins.json'
+        ])
+    }
 }
 
 mixin {
-  add sourceSets.main, 'railcraft.refmap.json'
+    add sourceSets.main, 'railcraft.refmap.json'
 }
 
 signing {
-  if (!signProps.isEmpty()){
-    jars {
-      sign jar
-      after 'reobfJar'
+    if (!signProps.isEmpty()) {
+        jars {
+            sign jar
+            after 'reobfJar'
 
-      keyStore = signProps.keyStore
-      storePass = signProps.storePass
+            keyStore = signProps.keyStore
+            storePass = signProps.storePass
 
-      alias = "railcraft"
-      keyPass = signProps.keyPass
+            alias = "railcraft"
+            keyPass = signProps.keyPass
+        }
     }
-  }
 }
