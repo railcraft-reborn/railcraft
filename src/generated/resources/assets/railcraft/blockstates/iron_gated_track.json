@@ -19,9 +19,9 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
-        "one_way": "true"
+        "one_way": "true",
+        "reversed": "false"
       },
       "apply": {
         "model": "railcraft:block/control_track"
@@ -29,9 +29,9 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
-        "one_way": "true"
+        "one_way": "true",
+        "reversed": "true"
       },
       "apply": {
         "model": "railcraft:block/control_track",
@@ -40,9 +40,9 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
-        "one_way": "true"
+        "one_way": "true",
+        "reversed": "false"
       },
       "apply": {
         "model": "railcraft:block/control_track",
@@ -51,9 +51,9 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
-        "one_way": "true"
+        "one_way": "true",
+        "reversed": "true"
       },
       "apply": {
         "model": "railcraft:block/control_track",
@@ -62,9 +62,9 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
         "open": "false",
+        "reversed": "false",
         "in_wall": "false"
       },
       "apply": {
@@ -74,9 +74,9 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
         "open": "false",
+        "reversed": "true",
         "in_wall": "false"
       },
       "apply": {
@@ -85,9 +85,9 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
         "open": "false",
+        "reversed": "false",
         "in_wall": "false"
       },
       "apply": {
@@ -97,9 +97,9 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
         "open": "false",
+        "reversed": "true",
         "in_wall": "false"
       },
       "apply": {
@@ -109,9 +109,9 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
         "open": "true",
+        "reversed": "false",
         "in_wall": "false"
       },
       "apply": {
@@ -121,9 +121,9 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
         "open": "true",
+        "reversed": "true",
         "in_wall": "false"
       },
       "apply": {
@@ -132,9 +132,9 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
         "open": "true",
+        "reversed": "false",
         "in_wall": "false"
       },
       "apply": {
@@ -144,9 +144,9 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
         "open": "true",
+        "reversed": "true",
         "in_wall": "false"
       },
       "apply": {
@@ -156,9 +156,9 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
         "open": "false",
+        "reversed": "false",
         "in_wall": "true"
       },
       "apply": {
@@ -168,9 +168,9 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
         "open": "false",
+        "reversed": "true",
         "in_wall": "true"
       },
       "apply": {
@@ -179,9 +179,9 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
         "open": "false",
+        "reversed": "false",
         "in_wall": "true"
       },
       "apply": {
@@ -191,9 +191,9 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
         "open": "false",
+        "reversed": "true",
         "in_wall": "true"
       },
       "apply": {
@@ -203,9 +203,9 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
         "open": "true",
+        "reversed": "false",
         "in_wall": "true"
       },
       "apply": {
@@ -215,9 +215,9 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
         "open": "true",
+        "reversed": "true",
         "in_wall": "true"
       },
       "apply": {
@@ -226,9 +226,9 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
         "open": "true",
+        "reversed": "false",
         "in_wall": "true"
       },
       "apply": {
@@ -238,9 +238,9 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
         "open": "true",
+        "reversed": "true",
         "in_wall": "true"
       },
       "apply": {

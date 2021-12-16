@@ -42,6 +42,9 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
       .add(RailcraftItems.BRASS_NUGGET.get());
     this.tag(RailcraftTags.Items.BRONZE_NUGGET)
       .add(RailcraftItems.BRONZE_NUGGET.get());
+
+    this.tag(RailcraftTags.Items.STEEL_BLOCK)
+      .add(RailcraftItems.STEEL_BLOCK.get());
   }
 
   @Override

@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "railcraft:brass_ingot"
+      "railcraft:zinc_ingot_ingot"
     ]
   },
   "criteria": {
@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:nuggets/brass"
+            "tag": "forge:nuggets/zinc"
           }
         ]
       }
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "railcraft:brass_ingot"
+        "recipe": "railcraft:zinc_ingot_ingot"
       }
     }
   },
