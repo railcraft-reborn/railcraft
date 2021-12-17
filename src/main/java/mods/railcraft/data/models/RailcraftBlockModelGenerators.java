@@ -16,6 +16,7 @@ import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
+import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
@@ -239,6 +240,8 @@ public class RailcraftBlockModelGenerators {
 
     this.createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
 
+    this.createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
+
     this.createAbandonedTracks(
         RailcraftBlocks.ABANDONED_TRACK.get(),
         RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
@@ -354,7 +357,7 @@ public class RailcraftBlockModelGenerators {
 
   private void createTrivialBlock(Block block, Block block2) {
     this.blockStateOutput.accept(createSimpleBlock(block,
-    ModelLocationUtils.getModelLocation(block2)));
+        ModelLocationUtils.getModelLocation(block2)));
   }
 
   private static MultiVariantGenerator createSimpleBlock(Block block,
@@ -407,6 +410,19 @@ public class RailcraftBlockModelGenerators {
     var model = RailcraftTexturedModel.STEEL_ANVIL.create(block, this.modelOutput);
     this.blockStateOutput.accept(
         createSimpleBlock(block, model).with(createHorizontalFacingDispatchAlt()));
+  }
+
+  private void createForceTrack(Block block) {
+    var model = RailcraftModelTemplates.FORCE_TRACK.create(
+        block, TextureMapping.rail(block), this.modelOutput);
+    this.createSimpleFlatItemModel(block);
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.property(ForceTrackBlock.SHAPE)
+            .select(RailShape.NORTH_SOUTH,
+                Variant.variant().with(VariantProperties.MODEL, model))
+            .select(RailShape.EAST_WEST,
+                Variant.variant().with(VariantProperties.MODEL, model)
+                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
   }
 
   private void createFurnaceMultiblockBricks(Block block) {

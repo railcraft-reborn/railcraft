@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/template_force_track",
+  "textures": {
+    "rail": "railcraft:block/force_track"
+  }
+}

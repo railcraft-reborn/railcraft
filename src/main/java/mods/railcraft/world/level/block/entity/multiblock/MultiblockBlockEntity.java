@@ -27,9 +27,12 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   @Nullable
   private Membership<T> membership;
 
-  private final Map<BlockPos, T> members = new HashMap<>();
-
-  private boolean master;
+  /**
+   * Used by the master block to store all the members of the multiblock. <code>null</code> if this
+   * block is not the master block.
+   */
+  @Nullable
+  private Map<BlockPos, T> members;
 
   private boolean pendingEvaluation;
 
@@ -68,13 +71,13 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     }
 
     var pattern = this.resolvePattern();
-    if (this.isFormed() && (!this.isMaster() || pattern.isPresent())) {
+    if (this.isFormed() && (!this.isMaster() || pattern.isPresent())
+        || !this.isFormed() && pattern.isEmpty()) {
       return;
     }
 
     pattern.ifPresentOrElse(resolvedPattern -> {
-      this.master = true;
-      this.members.clear();
+      this.members = new HashMap<>();
       for (var entry : resolvedPattern.object2CharEntrySet()) {
         if (!this.isBlockEntity(entry.getCharValue())) {
           continue;
@@ -95,16 +98,15 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   }
 
   private void disband() {
-    System.out.println(this.master);
-
-    this.master = false;
-    for (var entry : this.members.entrySet()) {
-      if (entry.getValue() == this) {
-        System.out.println("yep");
-      }
-      entry.getValue().setMembership(null);
+    if (this.members == null) {
+      return;
     }
-    this.members.clear();
+    for (var entry : this.members.entrySet()) {
+      if (!entry.getValue().isRemoved()) {
+        entry.getValue().setMembership(null);
+      }
+    }
+    this.members = null;
   }
 
   protected abstract boolean isBlockEntity(char marker);
@@ -130,17 +132,12 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
 
   protected abstract void membershipChanged();
 
-  /**
-   * If this block is the master.
-   * 
-   * @return <code>true</code> if this is the master.
-   */
-  public boolean isMaster() {
-    return this.master;
-  }
-
   public boolean isFormed() {
     return this.membership != null;
+  }
+
+  public boolean isMaster() {
+    return this.membership != null && this.membership.master() == this;
   }
 
   public Optional<Membership<T>> getMembership() {
@@ -154,25 +151,18 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   }
 
   @Override
-  public void onLoad() {
-    super.onLoad();
-    if (this.master) {
-      this.evaluate();
-    }
-  }
-
-  @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.master = tag.getBoolean("master");
+    if (tag.getBoolean("master")) {
+      this.enqueueEvaluation();
+    }
   }
 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putBoolean("master", this.master);
+    tag.putBoolean("master", this.membership != null && this.membership.master() == this);
   }
 
-  public record Membership<T extends MultiblockBlockEntity<T>> (char marker, T master) {
-  }
+  public record Membership<T extends MultiblockBlockEntity<T>> (char marker, T master) {}
 }

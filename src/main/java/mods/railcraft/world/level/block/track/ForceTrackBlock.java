@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -26,7 +25,8 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
 
   public static final EnumProperty<DyeColor> COLOR = ForceTrackEmitterBlock.COLOR;
-  public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE_STRAIGHT;
+  public static final EnumProperty<RailShape> SHAPE =
+      EnumProperty.create("shape", RailShape.class, RailShape.NORTH_SOUTH, RailShape.EAST_WEST);
 
   public ForceTrackBlock(Properties properties) {
     super(TrackTypes.HIGH_SPEED, properties);
