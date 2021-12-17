@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.primitives.Ints;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.chars.CharList;
@@ -14,7 +13,6 @@ import it.unimi.dsi.fastutil.objects.Object2CharMap;
 import it.unimi.dsi.fastutil.objects.Object2CharOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 
 /**
  * Multiblock pattern. ONLY FOR CUBE-LIKE STRUCTURES!
@@ -41,19 +39,19 @@ public class MultiblockPattern {
     this.predicates = new Char2ObjectOpenHashMap<>(predicates);
   }
 
-  public int getRadius() {
-    return Mth.ceil(Ints.max(this.sizeX, this.sizeY, this.sizeZ));
+  public int getSizeX() {
+    return this.sizeX;
   }
 
-  /**
-   * Verifies the pattern.
-   * 
-   * @param blockPos The targeted block's {@link BlockPos}.
-   * @param normal The normal/face that the user clicked on.
-   * @param level The current game world. Must be serverside.
-   * @return TRUE if the pattern is valid, FALSE if not.
-   */
-  public Optional<Object2CharMap<BlockPos>> verifyPattern(BlockPos blockPos, ServerLevel level) {
+  public int getSizeY() {
+    return this.sizeY;
+  }
+
+  public int getSizeZ() {
+    return this.sizeZ;
+  }
+
+  public Optional<Object2CharMap<BlockPos>> resolve(BlockPos blockPos, ServerLevel level) {
     var originPos = blockPos.subtract(this.masterOffset);
     Object2CharMap<BlockPos> map =
         new Object2CharOpenHashMap<>(this.sizeX * this.sizeY * this.sizeZ);
@@ -107,7 +105,7 @@ public class MultiblockPattern {
     }
 
     /**
-     * "Build" the pattern, returning a new MultiblockPattern.
+     * Creates a new {@link MultiblockPattern}.
      */
     public MultiblockPattern build() {
       var patternArray = this.pattern.stream()

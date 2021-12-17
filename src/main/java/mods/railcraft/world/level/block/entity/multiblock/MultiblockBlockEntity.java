@@ -28,8 +28,8 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   private Membership<T> membership;
 
   /**
-   * Used by the master block to store all the members of the multiblock. <code>null</code> if this
-   * block is not the master block.
+   * Used by the master of a multiblock to store all of its members. <code>null</code> if this block
+   * is not the master of a formed multiblock.
    */
   @Nullable
   private Map<BlockPos, T> members;
@@ -97,6 +97,10 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     }, this::disband);
   }
 
+  /**
+   * Clear the {@link Membership} of every member of this multiblock and set {@link #members} to
+   * <code>null</code>. Does nothing if {@link #members} is already <code>null</code>.
+   */
   private void disband() {
     if (this.members == null) {
       return;
@@ -109,37 +113,70 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     this.members = null;
   }
 
+  /**
+   * Determine if the specified pattern marker is expected to be a block entity.
+   * 
+   * @param marker - the pattern marker
+   * @return <code>true</code> if it is, <code>false</code> otherwise
+   */
   protected abstract boolean isBlockEntity(char marker);
 
   /**
-   * Handles the pattern detection.
+   * Evaluate the multiblock pattern and resolve the position of each block.
    * 
-   * @return true if pattern detection is ok, false if not.
+   * @return an empty {@link Optional} if the pattern fails to resolve, otherwise an
+   *         {@link Optional} containing a map of block positions to their associated pattern
+   *         marker.
    */
   public Optional<Object2CharMap<BlockPos>> resolvePattern() {
     if (this.level instanceof ServerLevel serverLevel) {
-      return this.pattern.verifyPattern(this.getBlockPos(), serverLevel);
+      return this.pattern.resolve(this.getBlockPos(), serverLevel);
     } else {
       throw new IllegalStateException("Resolving multiblock pattern on invalid side.");
     }
   }
 
-  protected void setMembership(Membership<T> membership) {
+  /**
+   * Set this block's {@link Membership}.
+   * 
+   * @param membership - the {@link Membership} or <code>null</code> if it has none.
+   */
+  protected void setMembership(@Nullable Membership<T> membership) {
     this.membership = membership;
-    this.membershipChanged();
+    this.membershipChanged(membership);
     this.setChanged();
   }
 
-  protected abstract void membershipChanged();
+  /**
+   * Called upon membership change, e.g. if this block is now part of a formed multiblock or if a
+   * multiblock has been disbanded. <b>This should not be called if this block has been removed.</b>
+   */
+  protected abstract void membershipChanged(@Nullable Membership<T> membership);
 
+  /**
+   * Determine if this block is a member of a formed multiblock.
+   * 
+   * @return <code>true</code> if it is a memember, <code>false</code> otherwise
+   */
   public boolean isFormed() {
     return this.membership != null;
   }
 
+  /**
+   * Determine if this block is the master of a formed multiblock (if it is part of any).
+   * 
+   * @return <code>false</code> if this block is not part of a formed multiblock or if it is not the
+   *         master, <code>true</code> otherwise
+   */
   public boolean isMaster() {
     return this.membership != null && this.membership.master() == this;
   }
 
+  /**
+   * Retrieve this block's {@link Membership}.
+   * 
+   * @return an optional {@link Membership}
+   */
   public Optional<Membership<T>> getMembership() {
     return Optional.ofNullable(this.membership);
   }
@@ -164,5 +201,13 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     tag.putBoolean("master", this.membership != null && this.membership.master() == this);
   }
 
+  /**
+   * Contains information about a formed multiblock member such as its pattern marker and the master
+   * of the multiblock.
+   * 
+   * @author Sm0keySa1m0n
+   *
+   * @param <T> - the type of multiblock
+   */
   public record Membership<T extends MultiblockBlockEntity<T>> (char marker, T master) {}
 }

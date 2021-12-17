@@ -1,6 +1,8 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
+import com.google.common.primitives.Ints;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.BlockPositionSource;
@@ -12,10 +14,15 @@ public class MultiblockListener implements GameEventListener {
 
   private final MultiblockBlockEntity<?> blockEntity;
   private final PositionSource positionSource;
+  private final int radius;
 
   public MultiblockListener(MultiblockBlockEntity<?> blockEntity) {
     this.blockEntity = blockEntity;
     this.positionSource = new BlockPositionSource(blockEntity.getBlockPos());
+    var pattern = blockEntity.getPattern();
+    // We use the largest length for the radius as the listener needs to cover every block in the
+    // multiblock.
+    this.radius = Mth.ceil(Ints.max(pattern.getSizeX(), pattern.getSizeY(), pattern.getSizeZ()));
   }
 
   @Override
@@ -25,7 +32,7 @@ public class MultiblockListener implements GameEventListener {
 
   @Override
   public int getListenerRadius() {
-    return this.blockEntity.getPattern().getRadius();
+    return this.radius;
   }
 
   @Override

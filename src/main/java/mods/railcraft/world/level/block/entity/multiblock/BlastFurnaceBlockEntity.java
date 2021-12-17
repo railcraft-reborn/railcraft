@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
 import java.util.List;
+import javax.annotation.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.util.container.CompositeContainerAdaptor;
 import mods.railcraft.util.container.wrappers.ContainerMapper;
@@ -78,8 +79,7 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
   }
 
   @Override
-  protected void membershipChanged() {
-    var membership = this.getMembership().orElse(null);
+  protected void membershipChanged(@Nullable Membership<BlastFurnaceBlockEntity> membership) {
     if (membership == null) {
       this.level.setBlock(this.getBlockPos(),
           this.getBlockState()

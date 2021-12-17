@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
 import java.util.List;
+import javax.annotation.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
@@ -65,8 +66,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   }
 
   @Override
-  protected void membershipChanged() {
-    var membership = this.getMembership().orElse(null);
+  protected void membershipChanged(@Nullable Membership<CokeOvenBlockEntity> membership) {
     if (membership == null) {
       this.level.setBlock(this.getBlockPos(),
           this.getBlockState()
