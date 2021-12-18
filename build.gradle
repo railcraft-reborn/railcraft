@@ -130,11 +130,10 @@ minecraft {
             args '--mixin', 'railcraft.mixins.json'
 
             mods {
-                railcraft.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
-                // railcraft {
-                //     source sourceSets.main
-                //     source sourceSets.api
-                // }
+                railcraft {
+                    source sourceSets.main
+                    source sourceSets.api
+                }
             }
         }
 
@@ -146,11 +145,10 @@ minecraft {
             args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                railcraft.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
-                // railcraft {
-                //     source sourceSets.main
-                //     source sourceSets.api
-                // }
+                railcraft {
+                    source sourceSets.main
+                    source sourceSets.api
+                }
             }
         }
     }
@@ -206,17 +204,6 @@ signing {
 
             alias = "railcraft"
             keyPass = signProps.keyPass
-        }
-    }
-}
-
-task printSourceSetInformation(){
-    doLast{
-        sourceSets.each { srcSet ->
-            println "["+srcSet.name+"]"
-            print "-->Source directories: "+srcSet.allJava.srcDirs+"\n"
-            print "-->Output directories: "+srcSet.output.classesDirs.files+"\n"
-            println ""
         }
     }
 }
