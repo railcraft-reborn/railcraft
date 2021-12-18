@@ -1,17 +1,18 @@
 buildscript {
   repositories {
     maven {
-      name 'forge'
-      url 'https://files.minecraftforge.net/maven'
+      // Forge (this is the new url)
+      url 'https://maven.minecraftforge.net'
     }
+    mavenCentral()
     maven {
-      name 'sponge'
+      // Mixin
       url 'https://repo.spongepowered.org/repository/maven-public'
     }
     maven {
-      url 'https://plugins.gradle.org/m2/' // signing.
+      // Jar signing
+      url 'https://plugins.gradle.org/m2/'
     }
-    mavenCentral()
   }
   dependencies {
     classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
@@ -21,12 +22,13 @@ buildscript {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'net.covers1624.signing'
+
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'net.covers1624.signing'
 
-apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
+// apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
 def isCI = System.getenv("GITHUB_ACTION")
 def nightly = System.getenv("GITHUB_NIGHTLY")
@@ -86,12 +88,17 @@ sourceSets {
         resources.srcDirs = []
     }
     main {
-    	compileClasspath += sourceSets.api.output
+        compileClasspath += sourceSets.api.output
         runtimeClasspath += sourceSets.api.output
         resources {
             srcDir 'src/generated/resources'
         }
     }
+}
+
+configurations {
+	apiImplementation.extendsFrom(implementation)
+	apiRuntimeOnly.extendsFrom(runtimeOnly)
 }
 
 minecraft {
@@ -123,10 +130,11 @@ minecraft {
             args '--mixin', 'railcraft.mixins.json'
 
             mods {
-                railcraft {
-                    source sourceSets.main
-                    source sourceSets.api
-                }
+                railcraft.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
+                // railcraft {
+                //     source sourceSets.main
+                //     source sourceSets.api
+                // }
             }
         }
 
@@ -138,10 +146,11 @@ minecraft {
             args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                railcraft {
-                    source sourceSets.main
-                    source sourceSets.api
-                }
+                railcraft.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
+                // railcraft {
+                //     source sourceSets.main
+                //     source sourceSets.api
+                // }
             }
         }
     }
@@ -155,23 +164,31 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.minecraft_version}-${project.forge_version}"
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    // minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.minecraft_version}-${project.forge_version}"
     implementation group: 'org.spongepowered', name: 'mixin', version: "${project.mixin_version}"
     annotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
     testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
 }
 
+def fullHash = 'git rev-parse HEAD'.execute().text.trim();
+
 jar {
-    finalizedBy('reobfJar')
+    from sourceSets.main.output
+    from sourceSets.api.output
+
     manifest {
         attributes([
             "Implementation-Title": project.name,
             "Implementation-Version": project.version,
-            "Implementation-Commit": 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "Build-Commit": fullHash ? fullHash : "NOHASH", // this exists if you used git clone else its false (nonull)
+            "Build-GitSource": isCI ? tag : "LOCAL",
             "MixinConfigs": 'railcraft.mixins.json'
         ])
     }
+
+    finalizedBy('reobfJar')
 }
 
 mixin {
@@ -189,6 +206,17 @@ signing {
 
             alias = "railcraft"
             keyPass = signProps.keyPass
+        }
+    }
+}
+
+task printSourceSetInformation(){
+    doLast{
+        sourceSets.each { srcSet ->
+            println "["+srcSet.name+"]"
+            print "-->Source directories: "+srcSet.allJava.srcDirs+"\n"
+            print "-->Output directories: "+srcSet.output.classesDirs.files+"\n"
+            println ""
         }
     }
 }
