@@ -47,6 +47,7 @@ import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.OreBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -1007,6 +1008,34 @@ public class RailcraftBlocks {
           () -> new LiquidBlock(RailcraftFluids.CREOSOTE,
             BlockBehaviour.Properties.of(Material.WATER)
                 .noCollission().strength(50.0F).noDrops()));
+
+  /* == ORES == */
+
+  // UNUSED! ONLY FOR 1.16 BACKPORT
+  // public static final RegistryObject<OreBlock> COPPER_ORE =
+  //     BLOCKS.register("copper_ore",
+  //       () -> new OreBlock(
+  //         BlockBehaviour.Properties.of(Material.STONE)
+  //             .requiresCorrectToolForDrops()
+  //             .strength(3.0F, 3.0F)));
+
+  public static final RegistryObject<OreBlock> TIN_ORE =
+      BLOCKS.register("tin_ore",
+        () -> new OreBlock(
+          BlockBehaviour.Properties.of(Material.STONE)
+              .requiresCorrectToolForDrops()
+              .strength(3.0F, 3.0F)));
+
+  public static final RegistryObject<OreBlock> DEEPSLATE_TIN_ORE =
+      BLOCKS.register("deepslate_tin_ore",
+        () -> new OreBlock(
+          BlockBehaviour.Properties.copy(TIN_ORE.get())
+              .color(MaterialColor.DEEPSLATE)
+              .strength(4.5F, 3.0F)
+              .sound(SoundType.DEEPSLATE)));
+
+  // public static final Block GOLD_ORE = register("gold_ore", new OreBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+  // public static final Block DEEPSLATE_GOLD_ORE = register("deepslate_gold_ore", new OreBlock(BlockBehaviour.Properties.copy(GOLD_ORE).color(MaterialColor.DEEPSLATE).strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE)));
 
   public static final RegistryObject<Block> BLACK_POST =
       BLOCKS.register("black_post",

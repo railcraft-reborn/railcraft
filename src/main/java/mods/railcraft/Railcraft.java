@@ -1,5 +1,11 @@
 package mods.railcraft;
 
+import java.io.IOException;
+import java.util.jar.JarFile;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.event.CartLinkEvent;
@@ -10,6 +16,7 @@ import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
+import mods.railcraft.data.worldgen.RailcraftOrePlacements;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.network.play.LinkedCartsMessage;
@@ -36,18 +43,22 @@ import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.TickEvent.WorldTickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
@@ -72,6 +83,8 @@ public class Railcraft {
     CartUtil.transferHelper = RailcraftTrainTransferHelper.INSTANCE;
   }
 
+  public static final Logger logger = LogManager.getLogger();
+
   public Railcraft() {
     instance = this;
 
@@ -79,7 +92,7 @@ public class Railcraft {
     MinecraftForge.EVENT_BUS.register(this);
     // we have to register this all now; forge isn't dumb and will save server config in
     // the logical world's "serverconfig" dir
-    ModLoadingContext modLoadingContext = ModLoadingContext.get();
+    var modLoadingContext = ModLoadingContext.get();
     modLoadingContext.registerConfig(ModConfig.Type.CLIENT, RailcraftConfig.clientSpec);
     modLoadingContext.registerConfig(ModConfig.Type.COMMON, RailcraftConfig.commonSpec);
     modLoadingContext.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.serverSpec);
@@ -92,6 +105,7 @@ public class Railcraft {
 
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::handleCommonSetup);
+    modEventBus.addListener(this::handleConfigLoad);
     modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
 
     RailcraftEntityTypes.ENTITY_TYPES.register(modEventBus);
@@ -130,8 +144,42 @@ public class Railcraft {
     return instance;
   }
 
+  private void handleConfigLoad(ModConfigEvent.Loading event) {
+    if (event.getConfig().getModId() != ID) {
+      return;
+    }
+    RailcraftOrePlacements.TIN_ORE.handleConfigSpecLoad();
+  }
+
   private void handleCommonSetup(FMLCommonSetupEvent event) {
     event.enqueueWork(RailcraftCriteriaTriggers::register);
+
+    logger.info("Starting Railcraft");
+
+    try (var jar = new JarFile(this.getClass()
+        .getProtectionDomain()
+        .getCodeSource()
+        .getLocation()
+        .getPath())) {
+      var mf = jar.getManifest().getMainAttributes();
+      var gsource = mf.getValue("Build-GitSource");
+
+      if (gsource == "PR") {
+        logger.error("THIS RAILCRAFT BUILD IS FROM A PULL REQUEST!"
+          + "DO **NOT** POST ISSUES ABOUT THIS VERSION ON ISSUES TAB, INSTEAD REPORT ON THE PR ITSELF AT "
+          + "https://github.com/ hey configure this /pulls/id");
+        logger.error("RC Commit: " + mf.getValue("Build-Commit"));
+        logger.error("RC Source: PR");
+        jar.close();
+        return;
+      }
+      logger.info("RC Commit: " + mf.getValue("Build-Commit"));
+      logger.info("RC Source: " + (gsource != null ?  gsource : "Localy built."));
+      jar.close();
+    }
+    catch (IOException e){
+      logger.error("Railcraft manifest fetching failed! This must be in development.");
+    }
   }
 
   private void handleGatherData(GatherDataEvent event) {
@@ -146,8 +194,22 @@ public class Railcraft {
     generator.addProvider(new RailcraftModelProvider(generator));
   }
 
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
+  public void handleBiomeLoading(BiomeLoadingEvent event) {
+    if (!RailcraftConfig.common.enableOreGeneration.get()) {
+      return;
+    }
+    // BOILERPLATE! Will maybe turn into its own registry so we can iterate and such
+    if (event.getName() != null && RailcraftOrePlacements.TIN_ORE.bannedBiomesList().contains(event.getName().toString())) {
+      return;
+    }
+    event.getGeneration().addFeature(
+        GenerationStep.Decoration.UNDERGROUND_ORES,
+        RailcraftOrePlacements.TIN_ORE.placedFeature());
+  }
+
   @SubscribeEvent
-  public void handleWorldTick(TickEvent.WorldTickEvent event) {
+  public void handleWorldTick(WorldTickEvent event) {
     if (event.world instanceof ServerLevel level && event.phase == TickEvent.Phase.END) {
       TokenRingManager.get(level).tick(level);
       if (level.getServer().getTickCount() % 32 == 0) {

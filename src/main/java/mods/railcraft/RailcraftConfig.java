@@ -2,8 +2,14 @@ package mods.railcraft;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.Lists;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import mods.railcraft.data.worldgen.RailcraftOrePlacements;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -21,6 +27,8 @@ public class RailcraftConfig {
   public static final Common common;
   public static final ForgeConfigSpec serverSpec;
   public static final Server server;
+
+  public static final Logger logger = LogManager.getLogger();
 
   static {
     final Pair<Client, ForgeConfigSpec> specPair =
@@ -169,6 +177,8 @@ public class RailcraftConfig {
     public final IntValue halloween;
     public final IntValue harvest;
 
+    public final BooleanValue enableOreGeneration;
+
     Common(Builder builder) {
       builder.comment("General configuration settings")
           .push("common");
@@ -189,7 +199,26 @@ public class RailcraftConfig {
           .comment("Controls whether Harvest mode is (0) enabled, (1) forced, or (2) disabled")
           .defineInRange("harvest", 0, 0, 2);
 
+      {
+        /* == OREGEN == */
+        builder.comment("Ore generation. Any changes here will only be" +
+            "in effect on new chunks and the Biomes registry being regenerated.")
+          .push("oregen");
+
+        this.enableOreGeneration = builder
+            .comment("Enable ore generation?")
+            .define("enableOreGeneration", true);
+
+        generateOreConfig(builder);
+        builder.pop();
+      }
+
       builder.pop();
+    }
+
+    private static final void generateOreConfig(Builder builder) {
+      RailcraftOrePlacements.TIN_ORE.generateOreConfig(builder);
+      logger.warn("RC CFG HIT");
     }
   }
 
