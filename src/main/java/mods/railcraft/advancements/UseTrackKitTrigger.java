@@ -13,11 +13,11 @@ import net.minecraft.advancements.critereon.NbtPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.Instance> {
 
@@ -51,14 +51,14 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final NbtPredicate blockEntityNbt;
+    private final NbtPredicate nbt;
     private final ItemPredicate item;
     private final LocationPredicate location;
 
     private Instance(EntityPredicate.Composite entityPredicate, NbtPredicate nbtPredicate,
         ItemPredicate itemPredicate, LocationPredicate locationPredicate) {
       super(UseTrackKitTrigger.ID, entityPredicate);
-      this.blockEntityNbt = nbtPredicate;
+      this.nbt = nbtPredicate;
       this.item = itemPredicate;
       this.location = locationPredicate;
     }
@@ -72,9 +72,9 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
       return item.matches(stack)
           && this.location.matches(level, blockPos.getX(), blockPos.getY(), blockPos.getZ())
           && LevelUtil.getBlockEntity(level, blockPos)
-              .map(te -> te.save(new CompoundTag()))
-              .map(blockEntityNbt::matches)
-              .orElse(true); // some rails dont have TE
+              .map(BlockEntity::saveWithoutMetadata)
+              .map(this.nbt::matches)
+              .orElse(true); // some rails don't have a block entity
     }
 
     @Override
@@ -85,7 +85,7 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
     @Override
     public JsonObject serializeToJson(SerializationContext serializer) {
       JsonObject json = new JsonObject();
-      json.add("blockEntityNbt", this.blockEntityNbt.serializeToJson());
+      json.add("blockEntityNbt", this.nbt.serializeToJson());
       json.add("item", this.item.serializeToJson());
       json.add("location", this.location.serializeToJson());
       return json;

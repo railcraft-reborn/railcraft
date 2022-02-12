@@ -257,7 +257,7 @@ public enum StackFilters implements Predicate<ItemStack> {
 
       if (stack.hasCustomHoverName()) {
         return matches && stack.getDisplayName().getContents()
-            .equals(cart.getCartItem().getDisplayName().getContents());
+            .equals(cart.getPickResult().getDisplayName().getContents());
       }
 
       return matches;

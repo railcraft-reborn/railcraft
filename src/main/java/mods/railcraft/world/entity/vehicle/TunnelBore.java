@@ -130,7 +130,7 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
       Tags.Blocks.COBBLESTONE,
       Tags.Blocks.OBSIDIAN,
       Tags.Blocks.GRAVEL,
-      Tags.Blocks.DIRT,
+      BlockTags.DIRT,
       BlockTags.LEAVES,
       BlockTags.SAPLINGS,
       BlockTags.LOGS,

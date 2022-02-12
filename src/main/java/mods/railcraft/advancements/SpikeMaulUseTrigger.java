@@ -13,11 +13,11 @@ import net.minecraft.advancements.critereon.NbtPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrigger.Instance> {
 
@@ -68,9 +68,8 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
     }
 
     public boolean matches(ItemStack item, ServerLevel level, BlockPos pos) {
-      return LevelUtil
-          .getBlockEntity(level, pos)
-          .map(blockEntity -> blockEntity.save(new CompoundTag()))
+      return LevelUtil.getBlockEntity(level, pos)
+          .map(BlockEntity::saveWithoutMetadata)
           .map(this.nbt::matches)
           .orElse(false)
           && this.tool.matches(item)

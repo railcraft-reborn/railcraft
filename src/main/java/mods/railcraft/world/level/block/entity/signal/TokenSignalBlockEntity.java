@@ -99,11 +99,10 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public CompoundTag save(CompoundTag tag) {
-    tag = super.save(tag);
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
     tag.put("network", this.signalController.serializeNBT());
     tag.putUUID("tokenRingId", this.tokenRingId);
-    return tag;
   }
 
   @Override

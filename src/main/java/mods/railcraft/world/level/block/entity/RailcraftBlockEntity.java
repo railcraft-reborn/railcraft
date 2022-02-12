@@ -138,10 +138,10 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   }
 
   @Override
-  public CompoundTag save(CompoundTag tag) {
-    super.save(tag);
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
     if (this.owner != null) {
-      CompoundTag ownerTag = new CompoundTag();
+      var ownerTag = new CompoundTag();
       NbtUtils.writeGameProfile(ownerTag, this.owner);
       tag.put("owner", ownerTag);
     }
@@ -150,8 +150,6 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     }
 
     tag.put("modules", this.moduleDispatcher.serializeNBT());
-
-    return tag;
   }
 
   @Override
