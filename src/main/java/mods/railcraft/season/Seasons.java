@@ -19,7 +19,7 @@ public final class Seasons {
   public static final String POLAR_EXPRESS = "Polar Express";
 
   static {
-    if (RailcraftConfig.common.enableSeasons.get()) {
+    if (RailcraftConfig.common.seasonsEnabled.get()) {
       Calendar cal = Calendar.getInstance();
       int month = cal.get(Calendar.MONTH);
       int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -77,7 +77,7 @@ public final class Seasons {
     Season season =
         cart instanceof SeasonalCart ? ((SeasonalCart) cart).getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT) {
-      return (RailcraftConfig.client.enableGhostTrain.get() && HALLOWEEN)
+      return (RailcraftConfig.client.ghostTrainEnabled.get() && HALLOWEEN)
           || cart.hasCustomName() && GHOST_TRAIN.equals(cart.getCustomName().getContents());
     }
     return season == Season.HALLOWEEN;
@@ -92,7 +92,7 @@ public final class Seasons {
     Season season =
         cart instanceof SeasonalCart ? ((SeasonalCart) cart).getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT) {
-      return (RailcraftConfig.client.enablePolarExpress.get() && CHRISTMAS)
+      return (RailcraftConfig.client.polarExpressEnabled.get() && CHRISTMAS)
           || cart.hasCustomName() && POLAR_EXPRESS.equals(cart.getCustomName().getContents())
           || cart.level.getBiome(cart.blockPosition()).shouldSnow(cart.level, cart.blockPosition());
     }

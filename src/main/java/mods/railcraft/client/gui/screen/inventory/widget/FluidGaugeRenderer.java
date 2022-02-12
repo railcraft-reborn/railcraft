@@ -10,15 +10,15 @@ import mods.railcraft.gui.widget.FluidGaugeWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.InventoryMenu;
 
-public class FluidGaugeWidgetRenderer extends WidgetRenderer<FluidGaugeWidget> {
+public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
 
-  public FluidGaugeWidgetRenderer(FluidGaugeWidget widget) {
+  public FluidGaugeRenderer(FluidGaugeWidget widget) {
     super(widget);
   }
 
   @Override
   public List<Component> getTooltip() {
-    return this.widget.tank.getTooltip();
+    return this.widget.getTooltip();
   }
 
   @Override

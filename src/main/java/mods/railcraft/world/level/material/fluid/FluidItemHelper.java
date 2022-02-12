@@ -1,8 +1,7 @@
 package mods.railcraft.world.level.material.fluid;
 
-import java.util.Optional;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -52,7 +51,7 @@ public final class FluidItemHelper {
 
   public static boolean isRoomInContainer(ItemStack stack, Fluid fluid) {
     return FluidUtil.getFluidHandler(stack)
-        .filter(item -> item.fill(new FluidStack(fluid, 1),
+        .filter(item -> item.fill(new FluidStack(fluid, Integer.MAX_VALUE),
             IFluidHandler.FluidAction.SIMULATE) > 0)
         .isPresent();
   }
@@ -68,10 +67,6 @@ public final class FluidItemHelper {
           return true;
         })
         .isPresent();
-  }
-
-  public static Optional<FluidStack> getFluidStackInContainer(ItemStack stack) {
-    return FluidUtil.getFluidContained(stack);
   }
 
   private FluidItemHelper() {}

@@ -11,8 +11,8 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
-import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeWidgetRenderer;
-import mods.railcraft.client.gui.screen.inventory.widget.GaugeWidgetRenderer;
+import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
+import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
 import mods.railcraft.gui.widget.Widget;
@@ -33,10 +33,10 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
     this.inventoryLabelY = 110;
     for (Widget w : this.menu.getWidgets()) {
       if (w instanceof FluidGaugeWidget) {
-        this.registerWidgetRenderer(new FluidGaugeWidgetRenderer((FluidGaugeWidget) w));
+        this.registerWidgetRenderer(new FluidGaugeRenderer((FluidGaugeWidget) w));
       }
       if (w instanceof GaugeWidget) {
-        this.registerWidgetRenderer(new GaugeWidgetRenderer((GaugeWidget) w));
+        this.registerWidgetRenderer(new GaugeRenderer((GaugeWidget) w));
       }
     }
   }

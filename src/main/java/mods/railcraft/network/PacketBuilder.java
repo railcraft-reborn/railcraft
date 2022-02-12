@@ -77,9 +77,9 @@ public final class PacketBuilder {
   // }
   //
   public void sendGuiWidgetPacket(ServerPlayer player, int windowId, Widget widget) {
-    if (widget.hasServerSyncData(player)) {
+    if (widget.requiresSync(player)) {
       FriendlyByteBuf byteBuf = new FriendlyByteBuf(Unpooled.buffer());
-      widget.writeServerSyncData(player, byteBuf);
+      widget.writeToBuf(player, byteBuf);
       SyncWidgetMessage pkt = new SyncWidgetMessage(windowId, widget.getId(), byteBuf);
       PacketDispatcher.sendToPlayer(pkt, player);
     }

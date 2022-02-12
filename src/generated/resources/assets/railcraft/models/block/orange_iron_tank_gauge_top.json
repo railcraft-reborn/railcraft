@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "railcraft:block/orange_iron_tank_gauge_top",
+    "side": "railcraft:block/orange_iron_tank_gauge_side_top"
+  }
+}

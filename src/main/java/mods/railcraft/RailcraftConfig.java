@@ -2,8 +2,6 @@ package mods.railcraft;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.tuple.Pair;
-import com.google.common.collect.Lists;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -23,24 +21,17 @@ public class RailcraftConfig {
   public static final Server server;
 
   static {
-    final Pair<Client, ForgeConfigSpec> specPair =
-        new ForgeConfigSpec.Builder().configure(Client::new);
-    clientSpec = specPair.getRight();
-    client = specPair.getLeft();
-  }
+    final var commonPair = new ForgeConfigSpec.Builder().configure(Common::new);
+    commonSpec = commonPair.getRight();
+    common = commonPair.getLeft();
 
-  static {
-    final Pair<Common, ForgeConfigSpec> specPair =
-        new ForgeConfigSpec.Builder().configure(Common::new);
-    commonSpec = specPair.getRight();
-    common = specPair.getLeft();
-  }
+    final var clientPair = new ForgeConfigSpec.Builder().configure(Client::new);
+    clientSpec = clientPair.getRight();
+    client = clientPair.getLeft();
 
-  static {
-    final Pair<Server, ForgeConfigSpec> specPair =
-        new ForgeConfigSpec.Builder().configure(Server::new);
-    serverSpec = specPair.getRight();
-    server = specPair.getLeft();
+    final var serverPair = new ForgeConfigSpec.Builder().configure(Server::new);
+    serverSpec = serverPair.getRight();
+    server = serverPair.getLeft();
   }
 
   public static class Server {
@@ -62,8 +53,12 @@ public class RailcraftConfig {
     public final DoubleValue steamLocomotiveEfficiency;
     public final IntValue tankCartFluidTransferRate;
     public final IntValue tankCartFluidCapacity;
+    public final BooleanValue tankStackingEnabled;
+    public final IntValue maxTankSize;
+    public final IntValue tankCapacityPerBlock;
+    public final IntValue waterCollectionRate;
 
-    Server(Builder builder) {
+    private Server(Builder builder) {
       builder.comment("High Speed Track Configuration");
       builder.push("highSpeedTrack");
       {
@@ -73,7 +68,7 @@ public class RailcraftConfig {
             // .translation("forge.configgui.fullBoundingBoxLadders")
             .defineInRange("maxSpeed", 1.0D, 0.6D, 1.2D);
 
-        final List<String> defaultEntities = Lists.newArrayList(
+        final var defaultEntities = List.of(
             "minecraft:bat", "minecraft:blaze", "minecraft:cave_spider",
             "minecraft:chicken", "minecraft:parrot", "minecraft:rabbit",
             "minecraft:spider", "minecraft:vex", "minecraft:bee");
@@ -155,6 +150,25 @@ public class RailcraftConfig {
       this.tankCartFluidCapacity = builder
           .comment("Tank cart capacity in buckets, min=4, default=32, max=512")
           .defineInRange("tankCartFluidCapacity", 32, 4, 512);
+
+      this.tankStackingEnabled = builder
+          .comment("Change to false to disable the stacking of tanks.")
+          .define("tankStackingEnabled", false);
+
+      this.maxTankSize = builder
+          .comment(
+              "Allows you to set the max tank base dimension, valid values are 3, 5, 7, and 9.")
+          .defineInRange("maxTankSize", 9, 3, 9);
+
+      this.tankCapacityPerBlock = builder
+          .comment(
+              "Allows you to set how many buckets (1000 milliBuckets) of fluid each iron tank block can carry")
+          .defineInRange("tankCapacityPerBlock", 16, 1, 1600);
+
+      this.waterCollectionRate = builder
+          .comment(
+              "The base rate of water in milliBuckets that can be gathered from the local environment, applied every 16 ticks to every block that can see the sky")
+          .defineInRange("waterCollectionRate", 4, 0, 1000);
     }
 
     public int getTankCartFluidCapacity() {
@@ -164,18 +178,18 @@ public class RailcraftConfig {
 
   public static class Common {
 
-    public final BooleanValue enableSeasons;
+    public final BooleanValue seasonsEnabled;
     public final IntValue christmas;
     public final IntValue halloween;
     public final IntValue harvest;
 
-    Common(Builder builder) {
+    private Common(Builder builder) {
       builder.comment("General configuration settings")
           .push("common");
 
-      this.enableSeasons = builder
+      this.seasonsEnabled = builder
           .comment("Enable season-based item & train effects?")
-          .define("enableSeasons", true);
+          .define("seasonsEnabled", true);
 
       this.christmas = builder
           .comment("Controls whether Christmas mode is (0) enabled, (1) forced, or (2) disabled")
@@ -194,21 +208,22 @@ public class RailcraftConfig {
   }
 
   public static class Client {
-    public final BooleanValue enableGhostTrain;
-    public final BooleanValue enablePolarExpress;
+
+    public final BooleanValue ghostTrainEnabled;
+    public final BooleanValue polarExpressEnabled;
     public final IntValue locomotiveLightLevel;
 
-    Client(Builder builder) {
+    private Client(Builder builder) {
       builder.comment("Client only settings, mostly things related to rendering")
           .push("client");
 
-      this.enableGhostTrain = builder
+      this.ghostTrainEnabled = builder
           .comment("Change to false to disable Ghost Train rendering")
-          .define("enableGhostTrain", true);
+          .define("ghostTrainEnabled", true);
 
-      this.enablePolarExpress = builder
+      this.polarExpressEnabled = builder
           .comment("Change to false to disable Polar Express (snow) rendering")
-          .define("enablePolarExpress", true);
+          .define("polarExpressEnabled", true);
 
       this.locomotiveLightLevel = builder
           .comment("Change '14' to a number ranging from '0' to '15' to represent the dynamic"

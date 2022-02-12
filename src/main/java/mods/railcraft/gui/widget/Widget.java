@@ -37,11 +37,11 @@ public class Widget {
     return widgetId;
   }
 
-  public boolean hasServerSyncData(ServerPlayer listener) {
+  public boolean requiresSync(ServerPlayer player) {
     return false;
   }
 
-  public void writeServerSyncData(ServerPlayer listener, FriendlyByteBuf data) {}
+  public void writeToBuf(ServerPlayer player, FriendlyByteBuf out) {}
 
-  public void readServerSyncData(FriendlyByteBuf data) {}
+  public void readFromBuf(FriendlyByteBuf in) {}
 }

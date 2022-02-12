@@ -10,6 +10,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
@@ -176,7 +177,6 @@ public class RailcraftBlockModelGenerators {
     this.activeDisembarkingTrackLeft = this.createActiveTrackModelSet("disembarking_track_left");
     this.disembarkingTrackRight = this.createTrackModelSet("disembarking_track_right");
     this.activeDisembarkingTrackRight = this.createActiveTrackModelSet("disembarking_track_right");
-
   }
 
   public void run() {
@@ -211,6 +211,27 @@ public class RailcraftBlockModelGenerators {
     this.createFurnaceMultiblockBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
     this.createFurnaceMultiblockBricks(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
     this.createFeedStation();
+
+    this.createStrengthenedGlass(RailcraftBlocks.WHITE_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.ORANGE_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.LIGHT_BLUE_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.YELLOW_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.LIME_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.PINK_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.GRAY_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.LIGHT_GRAY_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.CYAN_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.PURPLE_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.BLUE_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.BROWN_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.GREEN_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.RED_IRON_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.BLACK_IRON_TANK_GAUGE.get());
+
+    this.createTankValve(RailcraftBlocks.WHITE_IRON_TANK_VALVE.get());
+
+    this.createTankWall(RailcraftBlocks.WHITE_IRON_TANK_WALL.get());
 
     this.createPost(RailcraftBlocks.BLACK_POST.get());
     this.createPost(RailcraftBlocks.RED_POST.get());
@@ -404,6 +425,66 @@ public class RailcraftBlockModelGenerators {
         new ResourceLocation(Railcraft.ID, "block/" + name + model.suffix.orElse("")),
         textureFactory.apply(new ResourceLocation(Railcraft.ID, "block/" + name)),
         this.modelOutput);
+  }
+
+  private void createTankValve(Block block) {
+    var verticalModel = TexturedModel.COLUMN.create(block, this.modelOutput);
+    var horizontalModel = ModelTemplates.CUBE.createWithSuffix(block, "_horizontal",
+        new TextureMapping()
+            .put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(block, "_horizontal_side"))
+            .put(TextureSlot.NORTH, TextureMapping.getBlockTexture(block, "_horizontal_front"))
+            .put(TextureSlot.SOUTH, TextureMapping.getBlockTexture(block, "_horizontal_front"))
+            .put(TextureSlot.EAST, TextureMapping.getBlockTexture(block, "_horizontal_side"))
+            .put(TextureSlot.WEST, TextureMapping.getBlockTexture(block, "_horizontal_side"))
+            .put(TextureSlot.UP, TextureMapping.getBlockTexture(block, "_horizontal_top"))
+            .put(TextureSlot.DOWN, TextureMapping.getBlockTexture(block, "_horizontal_top")),
+        this.modelOutput);
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.property(BlockStateProperties.AXIS)
+            .select(Direction.Axis.Y,
+                Variant.variant().with(VariantProperties.MODEL, verticalModel))
+            .select(Direction.Axis.Z,
+                Variant.variant().with(VariantProperties.MODEL, horizontalModel))
+            .select(Direction.Axis.X,
+                Variant.variant().with(VariantProperties.MODEL, horizontalModel)
+                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
+  }
+
+  private void createTankWall(Block block) {
+    this.blockStateOutput.accept(
+        createSimpleBlock(block, TexturedModel.COLUMN.create(block, this.modelOutput)));
+  }
+
+  private void createStrengthenedGlass(Block block) {
+    var endTexture = TextureMapping.getBlockTexture(block, "_top");
+    var singleModel =
+        ModelTemplates.CUBE_ALL.createWithSuffix(block, "_single", TextureMapping.cube(endTexture),
+            this.modelOutput);
+    var topModel = ModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_top", new TextureMapping()
+        .put(TextureSlot.END, endTexture)
+        .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_top")),
+        this.modelOutput);
+    var centerModel = ModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_center",
+        new TextureMapping()
+            .put(TextureSlot.END, endTexture)
+            .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_center")),
+        this.modelOutput);
+    var bottomModel = ModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_bottom",
+        new TextureMapping()
+            .put(TextureSlot.END, endTexture)
+            .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_bottom")),
+        this.modelOutput);
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.property(AbstractStrengthenedGlassBlock.TYPE)
+            .select(AbstractStrengthenedGlassBlock.Type.SINGLE,
+                Variant.variant().with(VariantProperties.MODEL, singleModel))
+            .select(AbstractStrengthenedGlassBlock.Type.TOP,
+                Variant.variant().with(VariantProperties.MODEL, topModel))
+            .select(AbstractStrengthenedGlassBlock.Type.CENTER,
+                Variant.variant().with(VariantProperties.MODEL, centerModel))
+            .select(AbstractStrengthenedGlassBlock.Type.BOTTOM,
+                Variant.variant().with(VariantProperties.MODEL, bottomModel))));
+    this.delegateItemModel(block, singleModel);
   }
 
   private void createSteelAnvil(Block block) {

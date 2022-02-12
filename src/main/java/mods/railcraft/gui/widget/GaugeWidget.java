@@ -47,20 +47,20 @@ public class GaugeWidget extends Widget {
   }
 
   @Override
-  public boolean hasServerSyncData(ServerPlayer listener) {
+  public boolean requiresSync(ServerPlayer listener) {
     float previousValue = this.previousValues.getOrDefault(listener, 0.0F);
     return previousValue != this.gauge.getServerValue();
   }
 
   @Override
-  public void writeServerSyncData(ServerPlayer listener, FriendlyByteBuf data) {
+  public void writeToBuf(ServerPlayer listener, FriendlyByteBuf data) {
     float value = this.gauge.getServerValue();
     data.writeFloat(value);
     this.previousValues.put(listener, value);
   }
 
   @Override
-  public void readServerSyncData(FriendlyByteBuf data) {
+  public void readFromBuf(FriendlyByteBuf data) {
     this.gauge.setClientValue(data.readFloat());
   }
 }

@@ -11,6 +11,23 @@ class RenderLayers {
   static void register() {
     ItemBlockRenderTypes.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
 
+    cutout(RailcraftBlocks.WHITE_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.ORANGE_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.LIGHT_BLUE_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.YELLOW_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.LIME_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.PINK_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.GRAY_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.LIGHT_GRAY_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.CYAN_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.PURPLE_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.BLUE_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.BROWN_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.GREEN_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.RED_IRON_TANK_GAUGE);
+    cutout(RailcraftBlocks.BLACK_IRON_TANK_GAUGE);
+
     cutout(RailcraftBlocks.FLUID_LOADER);
     cutout(RailcraftBlocks.FLUID_UNLOADER);
 

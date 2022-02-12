@@ -144,14 +144,76 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .add(RailcraftBlocks.FIRESTONE.get(), RailcraftBlocks.COKE_OVEN_BRICKS.get(),
-            RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
+            RailcraftBlocks.BLAST_FURNACE_BRICKS.get(),
+            RailcraftBlocks.WHITE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.ORANGE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.LIGHT_BLUE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.YELLOW_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.LIME_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.PINK_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.GRAY_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.LIGHT_GRAY_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.CYAN_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.PURPLE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.BLUE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.BROWN_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.GREEN_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.RED_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.BLACK_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.WHITE_IRON_TANK_VALVE.get(),
+            RailcraftBlocks.WHITE_IRON_TANK_WALL.get());
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE.get());
 
+    this.tag(BlockTags.NEEDS_STONE_TOOL)
+        .add(RailcraftBlocks.WHITE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.ORANGE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.LIGHT_BLUE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.YELLOW_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.LIME_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.PINK_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.GRAY_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.LIGHT_GRAY_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.CYAN_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.PURPLE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.BLUE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.BROWN_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.GREEN_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.RED_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.BLACK_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.WHITE_IRON_TANK_VALVE.get(),
+            RailcraftBlocks.WHITE_IRON_TANK_WALL.get());
+
     this.tag(BlockTags.ANVIL)
         .add(RailcraftBlocks.STEEL_ANVIL.get(), RailcraftBlocks.CHIPPED_STEEL_ANVIL.get(),
             RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
+
+    this.tag(RailcraftTags.Blocks.IRON_TANK_GAUGE)
+        .add(RailcraftBlocks.WHITE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.ORANGE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.LIGHT_BLUE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.YELLOW_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.LIME_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.PINK_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.GRAY_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.LIGHT_GRAY_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.CYAN_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.PURPLE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.BLUE_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.BROWN_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.GREEN_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.RED_IRON_TANK_GAUGE.get(),
+            RailcraftBlocks.BLACK_IRON_TANK_GAUGE.get());
+
+    this.tag(RailcraftTags.Blocks.IRON_TANK_VALVE)
+        .add(RailcraftBlocks.WHITE_IRON_TANK_VALVE.get());
+
+    this.tag(RailcraftTags.Blocks.IRON_TANK_WALL)
+        .add(RailcraftBlocks.WHITE_IRON_TANK_WALL.get());
   }
 
   @Override

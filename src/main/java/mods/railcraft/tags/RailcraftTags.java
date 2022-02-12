@@ -1,11 +1,11 @@
 package mods.railcraft.tags;
 
 import mods.railcraft.Railcraft;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.item.Item;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
@@ -80,7 +80,12 @@ public class RailcraftTags {
     public static final Tags.IOptionalNamedTag<Block> POST = tag("post");
     public static final Tags.IOptionalNamedTag<Block> SIGNAL = tag("signal");
 
-    public static final Tags.IOptionalNamedTag<Block> MINEABLE_WITH_CROWBAR = tag("mineable/crowbar");
+    public static final Tags.IOptionalNamedTag<Block> IRON_TANK_GAUGE = tag("iron_tank_gauge");
+    public static final Tags.IOptionalNamedTag<Block> IRON_TANK_VALVE = tag("iron_tank_valve");
+    public static final Tags.IOptionalNamedTag<Block> IRON_TANK_WALL = tag("iron_tank_wall");
+
+    public static final Tags.IOptionalNamedTag<Block> MINEABLE_WITH_CROWBAR =
+        tag("mineable/crowbar");
 
     private static IOptionalNamedTag<Block> tag(String name) {
       return BlockTags.createOptional(new ResourceLocation(Railcraft.ID, name));

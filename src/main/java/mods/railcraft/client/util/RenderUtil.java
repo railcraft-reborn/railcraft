@@ -15,6 +15,7 @@ public class RenderUtil {
 
   public static final int FULL_LIGHT = 0xF000F0;
   public static final float PIXEL = 0.0625F;
+  public static final float SCALED_PIXEL = PIXEL / 16.0F;
 
   private static final Minecraft minecraft = Minecraft.getInstance();
 

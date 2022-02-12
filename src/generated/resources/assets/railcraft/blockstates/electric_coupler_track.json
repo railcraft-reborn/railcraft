@@ -56,8 +56,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "false",
+        "mode": "coupler",
         "shape": "north_south"
       },
       "apply": {
@@ -67,8 +67,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "false",
+        "mode": "coupler",
         "shape": "east_west"
       },
       "apply": {
@@ -78,8 +78,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "false",
+        "mode": "coupler",
         "shape": "ascending_north"
       },
       "apply": {
@@ -89,8 +89,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "false",
+        "mode": "coupler",
         "shape": "ascending_south"
       },
       "apply": {
@@ -100,8 +100,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "false",
+        "mode": "coupler",
         "shape": "ascending_east"
       },
       "apply": {
@@ -111,8 +111,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "false",
+        "mode": "coupler",
         "shape": "ascending_west"
       },
       "apply": {
@@ -122,8 +122,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "true",
+        "mode": "coupler",
         "shape": "north_south"
       },
       "apply": {
@@ -133,8 +133,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "true",
+        "mode": "coupler",
         "shape": "east_west"
       },
       "apply": {
@@ -144,8 +144,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "true",
+        "mode": "coupler",
         "shape": "ascending_north"
       },
       "apply": {
@@ -155,8 +155,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "true",
+        "mode": "coupler",
         "shape": "ascending_south"
       },
       "apply": {
@@ -166,8 +166,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "true",
+        "mode": "coupler",
         "shape": "ascending_east"
       },
       "apply": {
@@ -177,8 +177,8 @@
     },
     {
       "when": {
-        "mode": "coupler",
         "powered": "true",
+        "mode": "coupler",
         "shape": "ascending_west"
       },
       "apply": {
@@ -188,8 +188,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "false",
+        "mode": "decoupler",
         "shape": "north_south"
       },
       "apply": {
@@ -199,8 +199,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "false",
+        "mode": "decoupler",
         "shape": "east_west"
       },
       "apply": {
@@ -210,8 +210,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "false",
+        "mode": "decoupler",
         "shape": "ascending_north"
       },
       "apply": {
@@ -221,8 +221,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "false",
+        "mode": "decoupler",
         "shape": "ascending_south"
       },
       "apply": {
@@ -232,8 +232,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "false",
+        "mode": "decoupler",
         "shape": "ascending_east"
       },
       "apply": {
@@ -243,8 +243,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "false",
+        "mode": "decoupler",
         "shape": "ascending_west"
       },
       "apply": {
@@ -254,8 +254,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "true",
+        "mode": "decoupler",
         "shape": "north_south"
       },
       "apply": {
@@ -265,8 +265,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "true",
+        "mode": "decoupler",
         "shape": "east_west"
       },
       "apply": {
@@ -276,8 +276,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "true",
+        "mode": "decoupler",
         "shape": "ascending_north"
       },
       "apply": {
@@ -287,8 +287,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "true",
+        "mode": "decoupler",
         "shape": "ascending_south"
       },
       "apply": {
@@ -298,8 +298,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "true",
+        "mode": "decoupler",
         "shape": "ascending_east"
       },
       "apply": {
@@ -309,8 +309,8 @@
     },
     {
       "when": {
-        "mode": "decoupler",
         "powered": "true",
+        "mode": "decoupler",
         "shape": "ascending_west"
       },
       "apply": {
@@ -320,8 +320,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "false",
+        "mode": "auto_coupler",
         "shape": "north_south"
       },
       "apply": {
@@ -331,8 +331,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "false",
+        "mode": "auto_coupler",
         "shape": "east_west"
       },
       "apply": {
@@ -342,8 +342,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "false",
+        "mode": "auto_coupler",
         "shape": "ascending_north"
       },
       "apply": {
@@ -353,8 +353,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "false",
+        "mode": "auto_coupler",
         "shape": "ascending_south"
       },
       "apply": {
@@ -364,8 +364,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "false",
+        "mode": "auto_coupler",
         "shape": "ascending_east"
       },
       "apply": {
@@ -375,8 +375,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "false",
+        "mode": "auto_coupler",
         "shape": "ascending_west"
       },
       "apply": {
@@ -386,8 +386,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "true",
+        "mode": "auto_coupler",
         "shape": "north_south"
       },
       "apply": {
@@ -397,8 +397,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "true",
+        "mode": "auto_coupler",
         "shape": "east_west"
       },
       "apply": {
@@ -408,8 +408,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "true",
+        "mode": "auto_coupler",
         "shape": "ascending_north"
       },
       "apply": {
@@ -419,8 +419,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "true",
+        "mode": "auto_coupler",
         "shape": "ascending_south"
       },
       "apply": {
@@ -430,8 +430,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "true",
+        "mode": "auto_coupler",
         "shape": "ascending_east"
       },
       "apply": {
@@ -441,8 +441,8 @@
     },
     {
       "when": {
-        "mode": "auto_coupler",
         "powered": "true",
+        "mode": "auto_coupler",
         "shape": "ascending_west"
       },
       "apply": {

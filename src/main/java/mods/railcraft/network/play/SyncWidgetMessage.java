@@ -42,7 +42,7 @@ public class SyncWidgetMessage {
     var menu = minecraft.player.containerMenu;
     if (menu instanceof RailcraftMenu railcraftMenu
         && menu.containerId == message.windowId) {
-      railcraftMenu.getWidgets().get(message.widgetId).readServerSyncData(message.payload);
+      railcraftMenu.getWidgets().get(message.widgetId).readFromBuf(message.payload);
     }
   }
 }

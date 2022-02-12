@@ -3,9 +3,9 @@ package mods.railcraft.world.level.block.entity;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.util.container.ModifiableContainerSlot;
-import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.ContainerIterator;
+import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.container.ModifiableContainerSlot;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
@@ -57,7 +58,12 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     this.tankManager.add(this.tank);
     this.tank.setValidator(
         fluidStack -> this.getFilterFluid().map(fluidStack::isFluidEqual).orElse(true));
-    this.tank.setUpdateCallback(__ -> this.syncToClient());
+    this.tank.setUpdateCallback(this::tankChanged);
+  }
+
+  protected void tankChanged(StandardTank tank) {
+    this.syncToClient();
+    this.setChanged();
   }
 
   public TankManager getTankManager() {
@@ -69,9 +75,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   public Optional<FluidStack> getFilterFluid() {
-    return this.fluidFilterContainer.getItem(0).isEmpty()
-        ? Optional.empty()
-        : FluidItemHelper.getFluidStackInContainer(this.fluidFilterContainer.getItem(0));
+    return FluidUtil.getFluidContained(this.fluidFilterContainer.getItem(0));
   }
 
   public FluidStack getFluidHandled() {
@@ -164,8 +168,8 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Override
-  public void load( CompoundTag tag) {
-    super.load( tag);
+  public void load(CompoundTag tag) {
+    super.load(tag);
     this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);
     this.tankManager.deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));

@@ -2,9 +2,7 @@ package mods.railcraft.client.renderer.blockentity;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.function.Function;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.util.CuboidModel;
@@ -19,7 +17,6 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -58,18 +55,17 @@ public abstract class AbstractSignalBoxRenderer
 
   @Override
   public void render(AbstractSignalBoxBlockEntity blockEntity, float partialTicks,
-      PoseStack poseStack, MultiBufferSource renderTypeBuffer, int packedLight,
+      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight,
       int packedOverlay) {
 
-    SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, poseStack, renderTypeBuffer);
+    SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, poseStack, bufferSource);
 
     if (blockEntity.hasCustomName()) {
       RenderUtil.renderBlockHoverText(blockEntity.getBlockPos(),
-          blockEntity.getCustomName(), poseStack, renderTypeBuffer, packedLight);
+          blockEntity.getCustomName(), poseStack, bufferSource, packedLight);
     }
 
-    Function<ResourceLocation, TextureAtlasSprite> spriteGetter =
-        Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
+    var spriteGetter = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
 
     this.model.setPackedLight(packedLight);
     this.model.setPackedOverlay(packedOverlay);
@@ -81,7 +77,7 @@ public abstract class AbstractSignalBoxRenderer
         .setSprite(spriteGetter.apply(BOTTOM_TEXTURE_LOCATION))
         .setSize(16));
 
-    for (Direction direction : Direction.Plane.HORIZONTAL) {
+    for (var direction : Direction.Plane.HORIZONTAL) {
       if (SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction)) {
         this.model.set(direction, this.model.new Face()
             .setSprite(spriteGetter.apply(CONNECTED_SIDE_TEXTURE_LOCATION))
@@ -93,16 +89,16 @@ public abstract class AbstractSignalBoxRenderer
       }
     }
 
-    VertexConsumer vertexBuilder =
-        renderTypeBuffer.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
-    CuboidModelRenderer.render(this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH,
+    var consumer =
+        bufferSource.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
+    CuboidModelRenderer.render(this.model, poseStack, consumer, 0xFFFFFFFF, FaceDisplay.BOTH,
         false);
 
-    for (Direction direction : Direction.Plane.HORIZONTAL) {
+    for (var direction : Direction.Plane.HORIZONTAL) {
       if (SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction)) {
         this.model.disable(direction);
       } else {
-        SignalAspect aspect = blockEntity.getSignalAspect(direction).getDisplayAspect();
+        var aspect = blockEntity.getSignalAspect(direction).getDisplayAspect();
         final int skyLight = LightTexture.sky(packedLight);
         final int facePackedLight = LightTexture.pack(aspect.getLampLight(), skyLight);
         this.model.set(direction, this.model.new Face()
@@ -114,6 +110,6 @@ public abstract class AbstractSignalBoxRenderer
     }
 
     CuboidModelRenderer.render(
-        this.model, poseStack, vertexBuilder, 0xFFFFFFFF, FaceDisplay.BOTH, false);
+        this.model, poseStack, consumer, 0xFFFFFFFF, FaceDisplay.BOTH, false);
   }
 }

@@ -1,9 +1,13 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import it.unimi.dsi.fastutil.objects.Object2CharMap;
@@ -11,6 +15,7 @@ import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,7 +27,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   private static final Logger logger = LogManager.getLogger();
 
   private final Class<T> clazz;
-  private final MultiblockPattern pattern;
+  private final Collection<MultiblockPattern> patterns;
 
   @Nullable
   private Membership<T> membership;
@@ -34,17 +39,28 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   @Nullable
   private Map<BlockPos, T> members;
 
+  /**
+   * Used by the master of a multiblock to store the current pattern.
+   */
+  @Nullable
+  private MultiblockPattern currentPattern;
+
   private boolean pendingEvaluation;
 
   public MultiblockBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Class<T> clazz, MultiblockPattern pattern) {
-    super(type, blockPos, blockState);
-    this.clazz = clazz;
-    this.pattern = pattern;
+    this(type, blockPos, blockState, clazz, Collections.singleton(pattern));
   }
 
-  public MultiblockPattern getPattern() {
-    return this.pattern;
+  public MultiblockBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
+      Class<T> clazz, Collection<MultiblockPattern> patterns) {
+    super(type, blockPos, blockState);
+    this.clazz = clazz;
+    this.patterns = Collections.unmodifiableCollection(patterns);
+  }
+
+  public Collection<MultiblockPattern> getPatterns() {
+    return this.patterns;
   }
 
   /**
@@ -76,8 +92,10 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
       return;
     }
 
-    pattern.ifPresentOrElse(resolvedPattern -> {
+    pattern.ifPresentOrElse(pair -> {
+      this.currentPattern = pair.getLeft();
       this.members = new HashMap<>();
+      var resolvedPattern = pair.getRight();
       for (var entry : resolvedPattern.object2CharEntrySet()) {
         if (!this.isBlockEntity(entry.getCharValue())) {
           continue;
@@ -86,7 +104,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
         var blockEntity =
             LevelUtil.getBlockEntity(this.level, entry.getKey(), this.clazz).orElse(null);
         if (blockEntity == null) {
-          logger.warn("Invalid block @ {}", entry.getKey());
+          logger.warn("Invalid block @ [{}]", entry.getKey());
           this.disband();
           return;
         } else {
@@ -102,6 +120,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    * <code>null</code>. Does nothing if {@link #members} is already <code>null</code>.
    */
   private void disband() {
+    this.currentPattern = null;
     if (this.members == null) {
       return;
     }
@@ -128,9 +147,13 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    *         {@link Optional} containing a map of block positions to their associated pattern
    *         marker.
    */
-  public Optional<Object2CharMap<BlockPos>> resolvePattern() {
+  public Optional<Pair<MultiblockPattern, Object2CharMap<BlockPos>>> resolvePattern() {
     if (this.level instanceof ServerLevel serverLevel) {
-      return this.pattern.resolve(this.getBlockPos(), serverLevel);
+      return this.patterns.stream()
+          .flatMap(pattern -> pattern.resolve(this.getBlockPos(), serverLevel)
+              .map(map -> Pair.of(pattern, map))
+              .stream())
+          .findAny();
     } else {
       throw new IllegalStateException("Resolving multiblock pattern on invalid side.");
     }
@@ -145,6 +168,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     this.membership = membership;
     this.membershipChanged(membership);
     this.setChanged();
+    this.syncToClient();
   }
 
   /**
@@ -181,6 +205,20 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     return Optional.ofNullable(this.membership);
   }
 
+  public Optional<MultiblockPattern> getCurrentPattern() {
+    return Optional.ofNullable(this.currentPattern);
+  }
+
+  public Optional<Collection<T>> getMembers() {
+    return Optional.ofNullable(this.members).map(Map::values);
+  }
+
+  public Stream<T> streamMembers() {
+    return Stream.ofNullable(this.members)
+        .map(Map::values)
+        .flatMap(Collection::stream);
+  }
+
   @Override
   public void setRemoved() {
     super.setRemoved();
@@ -199,6 +237,36 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
     tag.putBoolean("master", this.membership != null && this.membership.master() == this);
+  }
+
+  @Override
+  public void writeToBuf(FriendlyByteBuf out) {
+    super.writeToBuf(out);
+    if (this.membership == null) {
+      out.writeBoolean(true);
+    } else {
+      out.writeBoolean(false);
+      out.writeChar(this.membership.marker());
+      out.writeBlockPos(this.membership.master().getBlockPos());
+    }
+  }
+
+  @Override
+  public void readFromBuf(FriendlyByteBuf in) {
+    super.readFromBuf(in);
+    if (in.readBoolean()) {
+      this.membership = null;
+    } else {
+      var marker = in.readChar();
+      var masterPos = in.readBlockPos();
+      var master = LevelUtil.getBlockEntity(this.level, masterPos, this.clazz).orElse(null);
+      if (master == null) {
+        logger.error("Master block not found @ [{}]", masterPos.toShortString());
+        this.membership = null;
+      } else {
+        this.membership = new Membership<>(marker, master);
+      }
+    }
   }
 
   /**

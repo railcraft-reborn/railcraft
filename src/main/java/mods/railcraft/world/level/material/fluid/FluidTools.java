@@ -35,7 +35,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -66,6 +65,7 @@ public final class FluidTools {
 
   /**
    * Handles interaction with an item that can (or might) store fluids.
+   * 
    * @param player The Player
    * @param hand The Hand
    * @param fluidHandler A Fluidhandler
@@ -107,76 +107,77 @@ public final class FluidTools {
     }
   }
 
-  private static void sendToProcessing(Container inv) {
-    ContainerMapper.make(inv, 0, 1)
-      .moveOneItemTo(ContainerMapper.make(inv, 1, 1).ignoreItemChecks());
+  private static void sendToProcessing(Container container) {
+    ContainerMapper.make(container, 0, 1)
+        .moveOneItemTo(ContainerMapper.make(container, 1, 1).ignoreItemChecks());
   }
 
-  private static void sendToOutput(Container inv) {
-    ContainerMapper.make(inv, 1, 1)
-      .moveOneItemTo(ContainerMapper.make(inv, 2, 1).ignoreItemChecks());
+  private static void sendToOutput(Container container) {
+    ContainerMapper.make(container, 1, 1)
+        .moveOneItemTo(ContainerMapper.make(container, 2, 1).ignoreItemChecks());
   }
 
-  private static ProcessState tryFill(Container inv, StandardTank tank, ItemStack container) {
-    FluidActionResult filled =
-        FluidUtil.tryFillContainer(container, tank, FluidAttributes.BUCKET_VOLUME, null, true);
-    if (!filled.isSuccess()) {
-      sendToOutput(inv);
+  private static ProcessState tryFill(Container container, StandardTank tank, ItemStack itemStack) {
+    var result =
+        FluidUtil.tryFillContainer(itemStack, tank, FluidAttributes.BUCKET_VOLUME, null, true);
+    if (!result.isSuccess()) {
+      sendToOutput(container);
       return ProcessState.RESET;
     }
-    inv.setItem(1, ContainerTools.makeSafe(filled.getResult()));
+    container.setItem(1, ContainerTools.makeSafe(result.getResult()));
     return ProcessState.FILLING;
   }
 
-  private static ProcessState tryDrain(Container inv, StandardTank tank, ItemStack container) {
-    FluidActionResult drained =
-        FluidUtil.tryEmptyContainer(container, tank, FluidAttributes.BUCKET_VOLUME, null, true);
-    if (!drained.isSuccess()) {
-      sendToOutput(inv);
+  private static ProcessState tryDrain(Container container, StandardTank tank,
+      ItemStack itemStack) {
+    var result =
+        FluidUtil.tryEmptyContainer(itemStack, tank, FluidAttributes.BUCKET_VOLUME, null, true);
+    if (!result.isSuccess()) {
+      sendToOutput(container);
       return ProcessState.RESET;
     }
-    inv.setItem(1, ContainerTools.makeSafe(drained.getResult()));
+    container.setItem(1, ContainerTools.makeSafe(result.getResult()));
     return ProcessState.DRAINING;
   }
 
   /**
-   * Expects a three slot inventory, with input as slot 0, processing as slot 1,
-   * and output as slot 2. Will handle moving an item through all stages from
-   * input to output for either filling or draining.
+   * Expects a three slot inventory, with input as slot 0, processing as slot 1, and output as slot
+   * 2. Will handle moving an item through all stages from input to output for either filling or
+   * draining.
    */
-  public static ProcessState processContainer(Container inv, StandardTank tank,
+  public static ProcessState processContainer(Container container, StandardTank tank,
       ProcessType type, ProcessState state) {
-    ItemStack container = inv.getItem(1);
-    if (container.isEmpty() || !FluidUtil.getFluidHandler(container).isPresent()) {
-      sendToProcessing(inv);
+    var itemStack = container.getItem(1);
+    if (itemStack.isEmpty() || !FluidUtil.getFluidHandler(itemStack).isPresent()) {
+      sendToProcessing(container);
       return ProcessState.RESET;
     }
     if (state == ProcessState.RESET) {
       if (type == ProcessType.FILL_ONLY) {
-        return tryFill(inv, tank, container);
+        return tryFill(container, tank, itemStack);
       } else if (type == ProcessType.DRAIN_ONLY) {
-        return tryDrain(inv, tank, container);
+        return tryDrain(container, tank, itemStack);
       } else if (type == ProcessType.FILL_THEN_DRAIN) {
-        if (FluidUtil.tryFillContainer(container, tank,
+        if (FluidUtil.tryFillContainer(itemStack, tank,
             FluidAttributes.BUCKET_VOLUME, null, false).isSuccess()) {
-          return tryFill(inv, tank, container);
+          return tryFill(container, tank, itemStack);
         } else {
-          return tryDrain(inv, tank, container);
+          return tryDrain(container, tank, itemStack);
         }
       } else if (type == ProcessType.DRAIN_THEN_FILL) {
-        if (FluidUtil.tryEmptyContainer(container, tank,
-            FluidAttributes.BUCKET_VOLUME, null, false).isSuccess()) {
-          return tryDrain(inv, tank, container);
+        // TODO https://github.com/MinecraftForge/MinecraftForge/pull/8318
+        if (FluidUtil.getFluidContained(itemStack).isPresent() && !tank.isFull()) {
+          return tryDrain(container, tank, itemStack);
         } else {
-          return tryFill(inv, tank, container);
+          return tryFill(container, tank, itemStack);
         }
       }
     }
     if (state == ProcessState.FILLING) {
-      return tryFill(inv, tank, container);
+      return tryFill(container, tank, itemStack);
     }
     if (state == ProcessState.DRAINING) {
-      return tryDrain(inv, tank, container);
+      return tryDrain(container, tank, itemStack);
     }
     return state;
   }

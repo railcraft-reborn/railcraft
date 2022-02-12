@@ -7,9 +7,9 @@ import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.gui.widget.GaugeWidget;
 import net.minecraft.network.chat.Component;
 
-public class GaugeWidgetRenderer extends WidgetRenderer<GaugeWidget> {
+public class GaugeRenderer extends WidgetRenderer<GaugeWidget> {
 
-  public GaugeWidgetRenderer(GaugeWidget widget) {
+  public GaugeRenderer(GaugeWidget widget) {
     super(widget);
   }
 

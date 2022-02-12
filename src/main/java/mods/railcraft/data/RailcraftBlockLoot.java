@@ -23,6 +23,24 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.FEED_STATION.get());
+    this.dropSelf(RailcraftBlocks.WHITE_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.ORANGE_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.LIGHT_BLUE_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.YELLOW_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.LIME_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.PINK_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.GRAY_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.LIGHT_GRAY_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.CYAN_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.PURPLE_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.BLUE_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.BROWN_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.GREEN_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.RED_IRON_TANK_GAUGE.get());
+    this.dropSelf(RailcraftBlocks.BLACK_IRON_TANK_GAUGE.get());    
+    this.dropSelf(RailcraftBlocks.WHITE_IRON_TANK_VALVE.get());
+    this.dropSelf(RailcraftBlocks.WHITE_IRON_TANK_WALL.get());
 
     /* === tracks === */
     this.dropSelf(RailcraftBlocks.ABANDONED_TRACK.get());

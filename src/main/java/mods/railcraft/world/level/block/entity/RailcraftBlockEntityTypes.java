@@ -4,6 +4,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.multiblock.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
+import mods.railcraft.world.level.block.entity.multiblock.IronTankBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
@@ -31,6 +32,30 @@ public class RailcraftBlockEntityTypes {
 
   public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
       DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Railcraft.ID);
+
+  public static final RegistryObject<BlockEntityType<IronTankBlockEntity>> IRON_TANK =
+      BLOCK_ENTITY_TYPES.register("iron_tank",
+          () -> BlockEntityType.Builder
+              .of(IronTankBlockEntity::new,
+                  RailcraftBlocks.WHITE_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.ORANGE_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.LIGHT_BLUE_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.YELLOW_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.LIME_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.PINK_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.GRAY_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.LIGHT_GRAY_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.CYAN_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.PURPLE_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.BLUE_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.BROWN_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.GREEN_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.RED_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.BLACK_IRON_TANK_GAUGE.get(),
+                  RailcraftBlocks.WHITE_IRON_TANK_VALVE.get(),
+                  RailcraftBlocks.WHITE_IRON_TANK_WALL.get())
+              .build(null));
 
   public static final RegistryObject<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =
       BLOCK_ENTITY_TYPES.register("blast_furnace",

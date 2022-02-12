@@ -1,10 +1,10 @@
 package mods.railcraft.world.inventory;
 
-import mods.railcraft.world.level.material.fluid.FluidItemHelper;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 
 public class WaterSlot extends RailcraftSlot {
 
@@ -14,7 +14,7 @@ public class WaterSlot extends RailcraftSlot {
 
   @Override
   public boolean mayPlace(ItemStack stack) {
-    return FluidItemHelper.getFluidStackInContainer(stack)
+    return FluidUtil.getFluidContained(stack)
         .map(FluidStack::getFluid)
         .filter(fluid -> fluid == Fluids.WATER)
         .isPresent();

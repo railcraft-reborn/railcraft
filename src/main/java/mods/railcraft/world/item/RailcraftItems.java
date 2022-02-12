@@ -53,6 +53,96 @@ public class RailcraftItems {
         }
       };
 
+  public static final RegistryObject<Item> WHITE_IRON_TANK_GAUGE =
+      ITEMS.register("white_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.WHITE_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ORANGE_IRON_TANK_GAUGE =
+      ITEMS.register("orange_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.ORANGE_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> MAGENTA_IRON_TANK_GAUGE =
+      ITEMS.register("magenta_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> LIGHT_BLUE_IRON_TANK_GAUGE =
+      ITEMS.register("light_blue_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.LIGHT_BLUE_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> YELLOW_IRON_TANK_GAUGE =
+      ITEMS.register("yellow_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.YELLOW_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> LIME_IRON_TANK_GAUGE =
+      ITEMS.register("lime_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.LIME_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> PINK_IRON_TANK_GAUGE =
+      ITEMS.register("pink_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.PINK_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> GRAY_IRON_TANK_GAUGE =
+      ITEMS.register("gray_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.GRAY_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> LIGHT_GRAY_IRON_TANK_GAUGE =
+      ITEMS.register("light_gray_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.LIGHT_GRAY_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> CYAN_IRON_TANK_GAUGE =
+      ITEMS.register("cyan_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.CYAN_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> PURPLE_IRON_TANK_GAUGE =
+      ITEMS.register("purple_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.PURPLE_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BLUE_IRON_TANK_GAUGE =
+      ITEMS.register("blue_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.BLUE_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BROWN_IRON_TANK_GAUGE =
+      ITEMS.register("brown_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.BROWN_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> GREEN_IRON_TANK_GAUGE =
+      ITEMS.register("green_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.GREEN_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> RED_IRON_TANK_GAUGE =
+      ITEMS.register("red_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.RED_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BLACK_IRON_TANK_GAUGE =
+      ITEMS.register("black_iron_tank_gauge",
+          () -> new BlockItem(RailcraftBlocks.BLACK_IRON_TANK_GAUGE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> WHITE_IRON_TANK_VALVE =
+      ITEMS.register("white_iron_tank_valve",
+          () -> new BlockItem(RailcraftBlocks.WHITE_IRON_TANK_VALVE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> WHITE_IRON_TANK_WALL =
+      ITEMS.register("white_iron_tank_wall",
+          () -> new BlockItem(RailcraftBlocks.WHITE_IRON_TANK_WALL.get(),
+              new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> BLAST_FURNACE_BRICKS =
       ITEMS.register("blast_furnace_bricks",
           () -> new BlockItem(RailcraftBlocks.BLAST_FURNACE_BRICKS.get(),

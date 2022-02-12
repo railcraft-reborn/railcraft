@@ -57,8 +57,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "north_south",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "north_south"
       },
       "apply": {
         "model": "railcraft:block/control_track"
@@ -67,8 +67,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "east_west",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "east_west"
       },
       "apply": {
         "model": "railcraft:block/control_track",
@@ -83,8 +83,8 @@
             "shape": "north_south"
           },
           {
-            "shape": "north_south",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "north_south"
           }
         ]
       },
@@ -101,8 +101,8 @@
             "shape": "east_west"
           },
           {
-            "shape": "east_west",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "east_west"
           }
         ]
       },
@@ -114,8 +114,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_north",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_north"
       },
       "apply": {
         "model": "railcraft:block/control_track_raised_ne"
@@ -124,8 +124,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_south",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_south"
       },
       "apply": {
         "model": "railcraft:block/control_track_raised_sw"
@@ -134,8 +134,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_east",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_east"
       },
       "apply": {
         "model": "railcraft:block/control_track_raised_ne",
@@ -145,8 +145,8 @@
     {
       "when": {
         "powered": "false",
-        "shape": "ascending_west",
-        "reversed": "false"
+        "reversed": "false",
+        "shape": "ascending_west"
       },
       "apply": {
         "model": "railcraft:block/control_track_raised_sw",
@@ -161,8 +161,8 @@
             "shape": "ascending_north"
           },
           {
-            "shape": "ascending_north",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "ascending_north"
           }
         ]
       },
@@ -179,8 +179,8 @@
             "shape": "ascending_south"
           },
           {
-            "shape": "ascending_south",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "ascending_south"
           }
         ]
       },
@@ -197,8 +197,8 @@
             "shape": "ascending_east"
           },
           {
-            "shape": "ascending_east",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "ascending_east"
           }
         ]
       },
@@ -215,8 +215,8 @@
             "shape": "ascending_west"
           },
           {
-            "shape": "ascending_west",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "ascending_west"
           }
         ]
       },
