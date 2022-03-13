@@ -57,7 +57,7 @@ public class FeedStationBlockEntity extends ContainerBlockEntity implements Menu
           .at(blockPos)
           .raiseFloor(-1)
           .raiseCeiling(2)
-          .expandHorizontally(AREA)
+          .inflateHorizontally(AREA)
           .build();
       var animals = level.getEntitiesOfClass(Animal.class, box);
       for (var target : animals) {

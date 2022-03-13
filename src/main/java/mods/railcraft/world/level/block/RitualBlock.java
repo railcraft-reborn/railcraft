@@ -41,7 +41,7 @@ public class RitualBlock extends BaseEntityBlock {
   public static final VoxelShape SHAPE = Shapes.create(
       AABBFactory.start()
           .box()
-          .expandHorizontally(-0.3)
+          .inflateHorizontally(-0.3)
           .raiseCeiling(0.0625F * -9.0)
           .shiftY(0.0625F * 12.0)
           .build());

@@ -16,7 +16,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public interface ILinkableCart {
+public interface LinkageHandler {
 
   /**
    * To disable linking altogether, return false here.

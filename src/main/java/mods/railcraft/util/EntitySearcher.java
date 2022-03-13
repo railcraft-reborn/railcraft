@@ -62,50 +62,51 @@ public final class EntitySearcher {
       this.entityClass = entityClass;
     }
 
-    public SearchResult<T> in(Level world) {
-      if (box.isUndefined())
+    public SearchResult<T> search(Level level) {
+      if (this.box.isUndefined()) {
         throw new NullPointerException("Improperly defined EntitySearcher without a search box");
+      }
       return new SearchResult<>(
-          world.getEntitiesOfClass(entityClass, box.build(), filter::test));
+          level.getEntitiesOfClass(this.entityClass, this.box.build(), this.filter::test));
     }
 
     public SearchParameters<T> except(Entity entity) {
-      this.filter = filter.and(e -> e != entity);
+      this.filter = this.filter.and(e -> e != entity);
       return this;
     }
 
     public SearchParameters<T> around(AABB area) {
-      box.fromAABB(area);
+      this.box.fromAABB(area);
       return this;
     }
 
     public SearchParameters<T> around(AABBFactory factory) {
-      box = factory;
+      this.box = factory;
       return this;
     }
 
     public SearchParameters<T> around(BlockPos pos) {
-      box.at(pos);
+      this.box.at(pos);
       return this;
     }
 
     public SearchParameters<T> around(Entity entity) {
-      box.fromAABB(entity.getBoundingBox());
+      this.box.fromAABB(entity.getBoundingBox());
       return this;
     }
 
-    public SearchParameters<T> growFlat(double distance) {
-      box.growFlat(distance);
+    public SearchParameters<T> inflateHorizontally(double distance) {
+      this.box.inflateHorizontally(distance);
       return this;
     }
 
-    public SearchParameters<T> outTo(double distance) {
-      box.grow(distance);
+    public SearchParameters<T> inflate(double distance) {
+      this.box.inflate(distance);
       return this;
     }
 
     public SearchParameters<T> upTo(double distance) {
-      box.upTo(distance);
+      this.box.upTo(distance);
       return this;
     }
 
@@ -118,6 +119,7 @@ public final class EntitySearcher {
   }
 
   public static class SearchResult<T extends Entity> extends ForwardingList<T> {
+
     private final List<T> entities;
 
     private SearchResult(List<T> entities) {

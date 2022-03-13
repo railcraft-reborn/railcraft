@@ -152,7 +152,7 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
     }
 
     private static List<AbstractMinecart> findCarts(Level level, BlockPos blockPos) {
-      return EntitySearcher.findMinecarts().around(blockPos).upTo(-0.2F).in(level);
+      return EntitySearcher.findMinecarts().around(blockPos).upTo(-0.2F).search(level);
     }
   }
 }

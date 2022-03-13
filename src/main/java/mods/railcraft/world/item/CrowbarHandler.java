@@ -4,9 +4,8 @@ import java.util.Map;
 import com.google.common.collect.MapMaker;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
-import mods.railcraft.api.carts.ILinkableCart;
+import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.item.Crowbar;
-import mods.railcraft.season.Season;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.IDirectionalCart;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
@@ -15,14 +14,14 @@ import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info)
@@ -44,16 +43,17 @@ public class CrowbarHandler {
       return InteractionResult.PASS;
     }
 
-    if (player.level.isClientSide()) {
+    if (player.getLevel().isClientSide()) {
       return InteractionResult.SUCCESS;
     }
 
-    Crowbar crowbar = (Crowbar) stack.getItem();
+    var crowbar = (Crowbar) stack.getItem();
 
-    if ((stack.getItem() instanceof SeasonsCrowbarItem) && (cart instanceof SeasonalCart)
+    if ((stack.getItem() instanceof SeasonsCrowbarItem)
+        && cart instanceof SeasonalCart seasonalCart
         && RailcraftConfig.common.seasonsEnabled.get()) {
-      Season season = SeasonsCrowbarItem.getSeason(stack);
-      ((SeasonalCart) cart).setSeason(season);
+      var season = SeasonsCrowbarItem.getSeason(stack);
+      seasonalCart.setSeason(season);
       RailcraftCriteriaTriggers.SEASON_SET.trigger((ServerPlayer) player, cart, season);
       return InteractionResult.CONSUME;
     }
@@ -71,37 +71,34 @@ public class CrowbarHandler {
 
   private void linkCart(Player player, InteractionHand hand, ItemStack stack,
       AbstractMinecart cart, Crowbar crowbar) {
-    boolean used = false;
-    boolean linkable = cart instanceof ILinkableCart;
+    if (cart instanceof LinkageHandler handler && !handler.isLinkable()) {
+      return;
+    }
 
-    if (!linkable || ((ILinkableCart) cart).isLinkable()) {
-      AbstractMinecart last = linkMap.remove(player);
-      if (last != null && last.isAlive()) {
-        LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
-        if (lm.areLinked(cart, last, false)) {
-          lm.breakLink(cart, last);
-          used = true;
-          player.displayClientMessage(new TranslatableComponent("crowbar.link_broken"), true);
-        } else {
-          used = lm.createLink(last, cart);
-          if (used) {
-            if (!player.level.isClientSide()) {
-              RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayer) player, last, cart);
-            }
-            player.displayClientMessage(new TranslatableComponent("crowbar.link_created"), true);
-          }
-        }
-        if (!used) {
-          player.displayClientMessage(new TranslatableComponent("crowbar.link_failed"), true);
-        }
-      } else {
-        linkMap.put(player, cart);
-        player.displayClientMessage(new TranslatableComponent("crowbar.link_started"), true);
+    var last = linkMap.remove(player);
+    if (last == null || !last.isAlive()) {
+      linkMap.put(player, cart);
+      player.displayClientMessage(new TranslatableComponent("crowbar.link_started"), true);
+      return;
+    }
+
+    if (LinkageManagerImpl.INSTANCE.areLinked(cart, last, false)) {
+      LinkageManagerImpl.INSTANCE.breakLink(cart, last);
+      player.displayClientMessage(new TranslatableComponent("crowbar.link_broken"), true);
+    } else {
+      if (!LinkageManagerImpl.INSTANCE.createLink(last, cart)) {
+        player.displayClientMessage(new TranslatableComponent("crowbar.link_failed"), true);
+        return;
       }
+
+      if (!player.getLevel().isClientSide()) {
+        RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayer) player, last, cart);
+      }
+
+      player.displayClientMessage(new TranslatableComponent("crowbar.link_created"), true);
     }
-    if (used) {
-      crowbar.onLink(player, hand, stack, cart);
-    }
+
+    crowbar.onLink(player, hand, stack, cart);
   }
 
   private void boostCart(Player player, InteractionHand hand, ItemStack stack,

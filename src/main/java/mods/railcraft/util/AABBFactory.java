@@ -102,7 +102,7 @@ public class AABBFactory {
     return this;
   }
 
-  public AABBFactory grow(double distance) {
+  public AABBFactory inflate(double distance) {
     minX -= distance;
     minY -= distance;
     minZ -= distance;
@@ -118,7 +118,7 @@ public class AABBFactory {
     return this;
   }
 
-  public AABBFactory expandHorizontally(double distance) {
+  public AABBFactory inflateHorizontally(double distance) {
     minX -= distance;
     minZ -= distance;
     maxX += distance;
@@ -236,14 +236,6 @@ public class AABBFactory {
     minZ -= distance;
     maxX += distance;
     maxY += distance;
-    maxZ += distance;
-    return this;
-  }
-
-  public AABBFactory growFlat(double distance) {
-    minX -= distance;
-    minZ -= distance;
-    maxX += distance;
     maxZ += distance;
     return this;
   }

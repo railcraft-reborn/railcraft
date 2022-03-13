@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.track;
 import javax.annotation.Nullable;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.world.entity.vehicle.CartConstants;
+import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -206,7 +206,7 @@ public class ElevatorTrackBlock extends Block {
    *        is within the area of effect of the block
    */
   protected void minecartInteraction(Level level, AbstractMinecart cart, BlockPos pos) {
-    cart.getPersistentData().putByte(CartConstants.TAG_ELEVATOR, ELEVATOR_TIMER);
+    MinecartExtension.getOrThrow(cart).setElevatorRemainingTicks(ELEVATOR_TIMER);
     cart.setNoGravity(true);
     BlockState state = level.getBlockState(pos);
     keepMinecartConnected(pos, state, cart);
@@ -309,7 +309,7 @@ public class ElevatorTrackBlock extends Block {
     return EntitySearcher.findMinecarts()
         .around(factory.build())
         .except(cart)
-        .in(cart.level)
+        .search(cart.level)
         .isEmpty();
   }
 

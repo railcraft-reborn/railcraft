@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
-import mods.railcraft.api.carts.ILinkableCart;
+import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
@@ -74,7 +74,7 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
 
-public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
+public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
   public static final float SPEED = 0.03F;
   public static final float LENGTH = 6.2f;
@@ -452,10 +452,10 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
         double size = 0.8;
         AABB entitySearchBox = AABBFactory.start()
             .setBoundsToPoint(headPos)
-            .expandHorizontally(size)
+            .inflateHorizontally(size)
             .raiseCeiling(2).build();
         List<LivingEntity> entities = EntitySearcher.findLiving().and(RCEntitySelectors.KILLABLE)
-            .around(entitySearchBox).in(this.level);
+            .around(entitySearchBox).search(this.level);
         entities.forEach(e -> e.hurt(RailcraftDamageSource.BORE, 2));
 
         ItemStack head = getItem(0);

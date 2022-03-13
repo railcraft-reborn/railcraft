@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -9,10 +8,9 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
-import mods.railcraft.api.carts.ILinkableCart;
+import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.event.CartLinkEvent;
-import mods.railcraft.util.MathTools;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -39,13 +37,6 @@ public enum LinkageManagerImpl implements LinkageManager {
 
   private static final Logger logger = LogUtils.getLogger();
 
-  public static final String AUTO_LINK_A = "rcAutoLinkA";
-  public static final String AUTO_LINK_B = "rcAutoLinkB";
-  public static final String LINK_A_HIGH = "rcLinkAHigh";
-  public static final String LINK_A_LOW = "rcLinkALow";
-  public static final String LINK_B_HIGH = "rcLinkBHigh";
-  public static final String LINK_B_LOW = "rcLinkBLow";
-
   /**
    * Returns the linkage id of the cart and adds the cart the linkage cache.
    *
@@ -65,60 +56,62 @@ public enum LinkageManagerImpl implements LinkageManager {
    */
   private float getLinkageDistanceSq(AbstractMinecart cart1, AbstractMinecart cart2) {
     float dist = 0;
-    if (cart1 instanceof ILinkableCart) {
-      dist += ((ILinkableCart) cart1).getLinkageDistance(cart2);
+    if (cart1 instanceof LinkageHandler) {
+      dist += ((LinkageHandler) cart1).getLinkageDistance(cart2);
     } else {
       dist += LINKAGE_DISTANCE;
     }
-    if (cart2 instanceof ILinkableCart) {
-      dist += ((ILinkableCart) cart2).getLinkageDistance(cart1);
+    if (cart2 instanceof LinkageHandler) {
+      dist += ((LinkageHandler) cart2).getLinkageDistance(cart1);
     } else {
       dist += LINKAGE_DISTANCE;
     }
     return dist * dist;
   }
 
-  private void removeAutoLinks(AbstractMinecart cart) {
-    for (LinkType link : LinkType.VALUES) {
-      cart.getPersistentData().remove(link.autoLink);
-    }
-  }
-
   @Override
-  public boolean setAutoLink(AbstractMinecart cart, boolean autoLink) {
-    if (autoLink) {
-      boolean ret = false;
-      for (LinkType link : LinkType.VALUES) {
-        if (hasFreeLink(cart, link)) {
-          cart.getPersistentData().putBoolean(link.autoLink, true);
-          ret = true;
-          logger.debug("Cart {}({}) Set To Auto Link on Link {} With First Collision.",
-              getLinkageId(cart),
-              cart.getDisplayName(), link);
-        }
-      }
-      return ret;
-    } else {
-      removeAutoLinks(cart);
+  public boolean setAutoLink(AbstractMinecart minecart, boolean autoLink) {
+    var extension = MinecartExtension.getOrThrow(minecart);
+
+    if (!autoLink) {
+      extension.setAutoLinkEnabled(autoLink);
       return true;
     }
+
+    var result = false;
+    for (var link : Link.values()) {
+      if (extension.hasFreeLink(link)) {
+        extension.setAutoLinkEnabled(link, true);
+        result = true;
+        logger.debug("Cart {}({}) Set To Auto Link on Link {} With First Collision.",
+            this.getLinkageId(minecart), minecart.getDisplayName().getString(), link);
+      }
+    }
+    return result;
   }
 
   @Override
-  public boolean hasAutoLink(AbstractMinecart cart) {
-    if (!hasFreeLink(cart)) {
-      removeAutoLinks(cart);
+  public boolean hasAutoLink(AbstractMinecart minecart) {
+    var extension = MinecartExtension.getOrThrow(minecart);
+
+    if (!this.hasFreeLink(minecart)) {
+      extension.setAutoLinkEnabled(false);
     }
-    return cart.getPersistentData().getBoolean(AUTO_LINK_A)
-        || cart.getPersistentData().getBoolean(AUTO_LINK_B);
+
+    for (var link : Link.values()) {
+      if (extension.isAutoLinkEnabled(link)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
   public boolean tryAutoLink(AbstractMinecart cart1, AbstractMinecart cart2) {
-    if ((hasAutoLink(cart1) || hasAutoLink(cart2)) && createLink(cart1, cart2)) {
+    if ((this.hasAutoLink(cart1) || this.hasAutoLink(cart2)) && this.createLink(cart1, cart2)) {
       logger.debug("Automatically Linked Carts {}({}) and {}({}).", getLinkageId(cart1),
-          cart1.getDisplayName(),
-          getLinkageId(cart2), cart2.getDisplayName());
+          cart1.getDisplayName().getString(), this.getLinkageId(cart2),
+          cart2.getDisplayName().getString());
       return true;
     }
     return false;
@@ -136,27 +129,27 @@ public enum LinkageManagerImpl implements LinkageManager {
       return false;
     }
 
-    if (!hasFreeLink(cart1) || !hasFreeLink(cart2)) {
+    if (!this.hasFreeLink(cart1) || !this.hasFreeLink(cart2)) {
       return false;
     }
 
-    if (cart1 instanceof ILinkableCart) {
-      if (!((ILinkableCart) cart1).canLink(cart2)) {
+    if (cart1 instanceof LinkageHandler handler) {
+      if (!handler.canLink(cart2)) {
         return false;
       }
     }
 
-    if (cart2 instanceof ILinkableCart) {
-      if (!((ILinkableCart) cart2).canLink(cart1)) {
+    if (cart2 instanceof LinkageHandler handler) {
+      if (!handler.canLink(cart1)) {
         return false;
       }
     }
 
-    if (areLinked(cart1, cart2)) {
+    if (this.areLinked(cart1, cart2)) {
       return false;
     }
 
-    if (cart1.distanceToSqr(cart2) > getLinkageDistanceSq(cart1, cart2)) {
+    if (cart1.distanceToSqr(cart2) > this.getLinkageDistanceSq(cart1, cart2)) {
       return false;
     }
 
@@ -172,74 +165,29 @@ public enum LinkageManagerImpl implements LinkageManager {
    */
   @Override
   public boolean createLink(AbstractMinecart cart1, AbstractMinecart cart2) {
-    if (canLinkCarts(cart1, cart2)) {
-      setLinkUnidirectional(cart1, cart2);
-      setLinkUnidirectional(cart2, cart1);
-
-      if (cart1 instanceof ILinkableCart) {
-        ((ILinkableCart) cart1).onLinkCreated(cart2);
-      }
-      if (cart2 instanceof ILinkableCart) {
-        ((ILinkableCart) cart2).onLinkCreated(cart1);
-      }
-      MinecraftForge.EVENT_BUS.post(new CartLinkEvent.Link(cart1, cart2));
-      return true;
-    }
-    return false;
-  }
-
-  @Override
-  public boolean hasFreeLink(AbstractMinecart cart) {
-    return Arrays.stream(LinkType.VALUES).anyMatch(link -> hasFreeLink(cart, link));
-  }
-
-  public boolean hasFreeLink(AbstractMinecart cart, LinkType type) {
-    if (!hasLink(cart, type)) {
+    if (!this.canLinkCarts(cart1, cart2)) {
       return false;
     }
-    return MathTools.isNil(getLink(cart, type));
-  }
 
-  public boolean hasLink(AbstractMinecart cart, LinkType linkType) {
-    if (cart instanceof ILinkableCart) {
-      ILinkableCart linkable = (ILinkableCart) cart;
-      return linkable.isLinkable() && (linkType != LinkType.LINK_B || linkable.hasTwoLinks());
+    MinecartExtension.getOrThrow(cart1).link(cart2);
+    MinecartExtension.getOrThrow(cart2).link(cart1);
+
+    if (cart1 instanceof LinkageHandler handler) {
+      handler.onLinkCreated(cart2);
     }
+
+    if (cart2 instanceof LinkageHandler handler) {
+      handler.onLinkCreated(cart1);
+    }
+
+    MinecraftForge.EVENT_BUS.post(new CartLinkEvent.Link(cart1, cart2));
+
     return true;
   }
 
-  private boolean setLinkUnidirectional(AbstractMinecart from, AbstractMinecart to) {
-    for (LinkType link : LinkType.VALUES) {
-      if (hasFreeLink(from, link)) {
-        setLinkUnidirectional(from, to, link);
-        return true;
-      }
-    }
-    return false;
-  }
-
-  // Note: returns a nil uuid (0) if the link does not exist
-  public UUID getLink(AbstractMinecart cart, LinkType linkType) {
-    long high = cart.getPersistentData().getLong(linkType.tagHigh);
-    long low = cart.getPersistentData().getLong(linkType.tagLow);
-    return new UUID(high, low);
-  }
-
-  public UUID getLinkA(AbstractMinecart cart) {
-    return getLink(cart, LinkType.LINK_A);
-  }
-
-  public UUID getLinkB(AbstractMinecart cart) {
-    return getLink(cart, LinkType.LINK_B);
-  }
-
-  private void setLinkUnidirectional(AbstractMinecart source, AbstractMinecart target,
-      LinkType linkType) {
-    // hasFreeLink(source, linkType) checked
-    UUID id = getLinkageId(target);
-    source.getPersistentData().putLong(linkType.tagHigh, id.getMostSignificantBits());
-    source.getPersistentData().putLong(linkType.tagLow, id.getLeastSignificantBits());
-    source.getPersistentData().remove(linkType.autoLink); // So we don't need to worry outside
+  @Override
+  public boolean hasFreeLink(AbstractMinecart minecart) {
+    return MinecartExtension.getOrThrow(minecart).hasFreeLink();
   }
 
   /**
@@ -249,8 +197,9 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @return The linked cart or null
    */
   @Override
-  public @Nullable AbstractMinecart getLinkedCartA(AbstractMinecart cart) {
-    return getLinkedCart(cart, LinkType.LINK_A);
+  @Nullable
+  public AbstractMinecart getLinkedCartA(AbstractMinecart cart) {
+    return MinecartExtension.getOrThrow(cart).getLinkedMinecart(Link.FRONT).orElse(null);
   }
 
   /**
@@ -260,13 +209,9 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @return The linked cart or null
    */
   @Override
-  public @Nullable AbstractMinecart getLinkedCartB(AbstractMinecart cart) {
-    return getLinkedCart(cart, LinkType.LINK_B);
-  }
-
-  public @Nullable AbstractMinecart getLinkedCart(AbstractMinecart cart,
-      LinkType type) {
-    return CartTools.getCartFromUUID(cart.level, getLink(cart, type));
+  @Nullable
+  public AbstractMinecart getLinkedCartB(AbstractMinecart cart) {
+    return MinecartExtension.getOrThrow(cart).getLinkedMinecart(Link.BACK).orElse(null);
   }
 
   /**
@@ -278,7 +223,7 @@ public enum LinkageManagerImpl implements LinkageManager {
    */
   @Override
   public boolean areLinked(AbstractMinecart cart1, AbstractMinecart cart2) {
-    return areLinked(cart1, cart2, true);
+    return this.areLinked(cart1, cart2, true);
   }
 
   /**
@@ -297,18 +242,15 @@ public enum LinkageManagerImpl implements LinkageManager {
       return false;
     }
 
-    UUID id1 = getLinkageId(cart1);
-    UUID id2 = getLinkageId(cart2);
-    boolean cart1Linked = id2.equals(getLinkA(cart1)) || id2.equals(getLinkB(cart1));
-    boolean cart2Linked = id1.equals(getLinkA(cart2)) || id1.equals(getLinkB(cart2));
+    var cart1Linked = MinecartExtension.getOrThrow(cart1).isLinked(cart2);
+    var cart2Linked = MinecartExtension.getOrThrow(cart2).isLinked(cart1);
 
     if (cart1Linked != cart2Linked) {
-
       logger.warn(
           "Linking discrepancy between carts {}({}) and {}({}): The first cart reports {} for linked while the second one reports {}!",
-          getLinkageId(cart1), cart1.getDisplayName(), getLinkageId(cart2), cart2.getDisplayName(),
-          cart1Linked,
-          cart2Linked);
+          this.getLinkageId(cart1), cart1.getDisplayName().getString(), this.getLinkageId(cart2),
+          cart2.getDisplayName().getString(),
+          cart1Linked, cart2Linked);
     }
 
     if (strict) {
@@ -326,35 +268,32 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @return true if the repair was successful.
    */
   public boolean repairLink(AbstractMinecart cart1, AbstractMinecart cart2) {
-    boolean repaired =
-        repairLinkUnidirectional(cart1, cart2) && repairLinkUnidirectional(cart2, cart1);
+    var repaired =
+        this.repairLinkUnidirectional(cart1, cart2) && this.repairLinkUnidirectional(cart2, cart1);
     if (repaired) {
       Train.repairTrain(cart1, cart2);
     } else {
-      breakLink(cart1, cart2);
+      this.breakLink(cart1, cart2);
     }
     return repaired;
   }
 
   private boolean repairLinkUnidirectional(AbstractMinecart from, AbstractMinecart to) {
-    UUID link = getLinkageId(to);
-
-    return link.equals(getLinkA(from)) || link.equals(getLinkB(from))
-        || setLinkUnidirectional(from, to);
+    var fromExtension = MinecartExtension.getOrThrow(from);
+    return fromExtension.isLinked(to) || fromExtension.link(to);
   }
 
   @Override
   public void breakLink(AbstractMinecart one, AbstractMinecart two) {
-    LinkType linkOne = getLinkType(one, two);
-    LinkType linkTwo = getLinkType(two, one);
-
-    breakLinkInternal(one, two, linkOne, linkTwo);
+    var linkOne = MinecartExtension.getOrThrow(one).getLink(two).orElse(null);
+    var linkTwo = MinecartExtension.getOrThrow(two).getLink(one).orElse(null);
+    this.breakLinkInternal(one, two, linkOne, linkTwo);
   }
 
   @Override
   public void breakLinks(AbstractMinecart cart) {
-    breakLinkA(cart);
-    breakLinkB(cart);
+    this.breakLinkA(cart);
+    this.breakLinkB(cart);
   }
 
   /**
@@ -363,13 +302,13 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @param cart Cart
    */
   private void breakLinkA(AbstractMinecart cart) {
-    AbstractMinecart other = getLinkedCartA(cart);
+    var other = this.getLinkedCartA(cart);
     if (other == null) {
       return;
     }
 
-    LinkType otherLink = getLinkType(other, cart);
-    breakLinkInternal(cart, other, LinkType.LINK_A, otherLink);
+    var otherLink = MinecartExtension.getOrThrow(other).getLink(cart).orElse(null);
+    this.breakLinkInternal(cart, other, Link.FRONT, otherLink);
   }
 
   /**
@@ -378,13 +317,13 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @param cart Cart
    */
   private void breakLinkB(AbstractMinecart cart) {
-    AbstractMinecart other = getLinkedCartB(cart);
+    var other = this.getLinkedCartB(cart);
     if (other == null) {
       return;
     }
 
-    LinkType otherLink = getLinkType(other, cart);
-    breakLinkInternal(cart, other, LinkType.LINK_B, otherLink);
+    var otherLink = MinecartExtension.getOrThrow(other).getLink(cart).orElse(null);
+    this.breakLinkInternal(cart, other, Link.BACK, otherLink);
   }
 
   /**
@@ -398,47 +337,37 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @param linkTwo The link from two, calculated
    */
   private void breakLinkInternal(AbstractMinecart one, AbstractMinecart two,
-      @Nullable LinkType linkOne,
-      @Nullable LinkType linkTwo) {
+      @Nullable Link linkOne,
+      @Nullable Link linkTwo) {
     if ((linkOne == null) != (linkTwo == null)) {
       logger.warn(
           "Linking discrepancy between carts {}({}) and {}({}): The first cart reports {} for linked while the second one reports {}!",
-          getLinkageId(one), one.getDisplayName(), getLinkageId(two), two.getDisplayName(),
+          getLinkageId(one), one.getDisplayName().getString(), getLinkageId(two),
+          two.getDisplayName().getString(),
           linkOne == null,
           linkTwo == null);
     }
 
     if (linkOne != null) {
-      breakLinkUnidirectional(one, two, linkOne);
+      this.breakLinkUnidirectional(one, two, linkOne);
     }
     if (linkTwo != null) {
-      breakLinkUnidirectional(two, one, linkTwo);
+      this.breakLinkUnidirectional(two, one, linkTwo);
     }
 
     MinecraftForge.EVENT_BUS.post(new CartLinkEvent.Unlink(one, two));
   }
 
-  private @Nullable LinkType getLinkType(AbstractMinecart from, AbstractMinecart to) {
-    UUID linkTo = getLinkageId(to);
-    return Arrays.stream(LinkType.VALUES).filter(link -> linkTo.equals(getLink(from, link)))
-        .findFirst().orElse(null);
-  }
+  private void breakLinkUnidirectional(AbstractMinecart cart, AbstractMinecart other, Link link) {
+    MinecartExtension.getOrThrow(cart).removeLink(link);
 
-  private void breakLinkUnidirectional(AbstractMinecart cart, AbstractMinecart other,
-      LinkType linkType) {
-    removeLinkTags(cart, linkType);
-    if (cart instanceof ILinkableCart) {
-      ((ILinkableCart) cart).onLinkBroken(other);
+    if (cart instanceof LinkageHandler linkable) {
+      linkable.onLinkBroken(other);
     }
 
-    logger.debug("Cart {0}({1}) unidirectionally unlinked {2}({3}) at ({4}).", getLinkageId(cart),
-        cart.getDisplayName(),
-        getLinkageId(other), other, linkType.name());
-  }
-
-  private void removeLinkTags(AbstractMinecart cart, LinkType linkType) {
-    cart.getPersistentData().remove(linkType.tagHigh);
-    cart.getPersistentData().remove(linkType.tagLow);
+    logger.debug("Cart {}({}) unidirectionally unlinked {}({}) at ({}).", getLinkageId(cart),
+        cart.getDisplayName().getString(),
+        this.getLinkageId(other), other, link.name());
   }
 
   /**
@@ -457,15 +386,16 @@ public enum LinkageManagerImpl implements LinkageManager {
     return Train.streamCarts(cart);
   }
 
-  public Iterable<AbstractMinecart> linkIterator(final AbstractMinecart start,
-      final LinkType type) {
-    if (MathTools.isNil(getLink(start, type))) {
+  public Iterable<AbstractMinecart> linkIterator(AbstractMinecart start, Link link) {
+    if (MinecartExtension.getOrThrow(start).getLinkedMinecart(link).isEmpty()) {
       return Collections.emptyList();
     }
     return () -> new Iterator<AbstractMinecart>() {
-      private final LinkageManagerImpl lm = INSTANCE;
-      private @Nullable AbstractMinecart last;
-      private @Nullable AbstractMinecart next;
+
+      @Nullable
+      private AbstractMinecart last;
+      @Nullable
+      private AbstractMinecart next;
       private AbstractMinecart current = start;
 
       /**
@@ -473,58 +403,43 @@ public enum LinkageManagerImpl implements LinkageManager {
        *
        * @return The next minecart to be returned by the iterator, or null
        */
-      private @Nullable AbstractMinecart calculateNext() {
-        if (last == null) {
-          return lm.getLinkedCart(current, type);
+      @Nullable
+      private AbstractMinecart calculateNext() {
+        if (this.last == null) {
+          return MinecartExtension.getOrThrow(this.current).getLinkedMinecart(link).orElse(null);
         }
-        AbstractMinecart cartA = lm.getLinkedCartA(current);
-        if (cartA != null && cartA != last) {
+
+        var cartA = LinkageManagerImpl.this.getLinkedCartA(this.current);
+        if (cartA != null && cartA != this.last) {
           return cartA;
         }
 
-        AbstractMinecart cartB = lm.getLinkedCartB(current);
-        return cartB == last ? null : cartB;
+        var cartB = LinkageManagerImpl.this.getLinkedCartB(this.current);
+        return cartB == this.last ? null : cartB;
       }
 
       @Override
       public boolean hasNext() {
-        if (next == null) {
-          next = calculateNext();
+        if (this.next == null) {
+          this.next = this.calculateNext();
         }
-        return next != null;
+        return this.next != null;
       }
 
       @Override
       public AbstractMinecart next() {
-        if (next == null) {
-          next = calculateNext();
-
-          if (next == null) {
+        if (this.next == null) {
+          this.next = this.calculateNext();
+          if (this.next == null) {
             throw new NoSuchElementException();
           }
         }
 
-        last = current;
-        current = next;
-        next = null;
-        return current;
+        this.last = this.current;
+        this.current = this.next;
+        this.next = null;
+        return this.current;
       }
     };
-  }
-
-  public enum LinkType {
-    LINK_A(LINK_A_HIGH, LINK_A_LOW, AUTO_LINK_A),
-    LINK_B(LINK_B_HIGH, LINK_B_LOW, AUTO_LINK_B);
-
-    public static final LinkType[] VALUES = values();
-    public final String tagHigh;
-    public final String tagLow;
-    public final String autoLink;
-
-    LinkType(String tagHigh, String tagLow, String autoLink) {
-      this.tagHigh = tagHigh;
-      this.tagLow = tagLow;
-      this.autoLink = autoLink;
-    }
   }
 }

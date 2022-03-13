@@ -18,8 +18,8 @@ import mods.railcraft.server.ServerDist;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
-import mods.railcraft.world.entity.vehicle.LinkageHandler;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
+import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.entity.vehicle.RailcraftTrainTransferHelper;
 import mods.railcraft.world.entity.vehicle.Train;
@@ -35,11 +35,19 @@ import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
@@ -70,7 +78,6 @@ public class Railcraft {
 
   private final MinecartHandler minecartHandler = new MinecartHandler();
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
-  private final LinkageHandler linkageHandler = new LinkageHandler();
 
   static {
     CartUtil.linkageManager = LinkageManagerImpl.INSTANCE;
@@ -96,6 +103,7 @@ public class Railcraft {
 
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::handleCommonSetup);
+    modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
     modEventBus.addGenericListener(RecipeSerializer.class,
         (RegistryEvent.Register<RecipeSerializer<?>> event) -> {
@@ -115,10 +123,6 @@ public class Railcraft {
     RailcraftEnchantments.ENCHANTMENTS.register(modEventBus);
     RailcraftParticleTypes.PARTICLE_TYPES.register(modEventBus);
     RailcraftRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
-  }
-
-  public LinkageHandler getLinkageHandler() {
-    return this.linkageHandler;
   }
 
   public MinecartHandler getMinecartHandler() {
@@ -144,6 +148,10 @@ public class Railcraft {
     event.enqueueWork(RailcraftCriteriaTriggers::register);
   }
 
+  private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
+    event.register(MinecartExtension.class);
+  }
+
   private void handleGatherData(GatherDataEvent event) {
     var generator = event.getGenerator();
     var fileHelper = event.getExistingFileHelper();
@@ -154,6 +162,32 @@ public class Railcraft {
     generator.addProvider(new RailcraftAdvancementProviders(generator, fileHelper));
     generator.addProvider(new RailcraftRecipeProvider(generator));
     generator.addProvider(new RailcraftModelProvider(generator));
+  }
+
+  @SubscribeEvent
+  public void handleAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+    if (event.getObject() instanceof AbstractMinecart minecart) {
+      event.addCapability(MinecartExtension.KEY, new ICapabilitySerializable<CompoundTag>() {
+
+        private final LazyOptional<MinecartExtension> instance =
+            LazyOptional.of(() -> MinecartExtension.create(minecart));
+
+        @Override
+        public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+          return cap == MinecartExtension.CAPABILITY ? this.instance.cast() : LazyOptional.empty();
+        }
+
+        @Override
+        public CompoundTag serializeNBT() {
+          return this.instance.map(MinecartExtension::serializeNBT).orElseGet(CompoundTag::new);
+        }
+
+        @Override
+        public void deserializeNBT(CompoundTag tag) {
+          this.instance.ifPresent(cap -> cap.deserializeNBT(tag));
+        }
+      });
+    }
   }
 
   @SubscribeEvent
@@ -169,20 +203,14 @@ public class Railcraft {
   @SubscribeEvent
   public void handlePlayerTick(PlayerTickEvent event) {
     if (event.player instanceof ServerPlayer player && event.player.tickCount % 20 == 0) {
-      var carts = EntitySearcher.findMinecarts()
+      var linkedCarts = EntitySearcher.findMinecarts()
           .around(player)
-          .outTo(32F)
-          .in(player.level);
-
-      var linkedCarts = new LinkedCartsMessage.LinkedCart[carts.size()];
-      for (int i = 0; i < linkedCarts.length; i++) {
-        var cart = carts.get(i);
-        var trainId = Train.getTrainUUID(cart);
-        linkedCarts[i] = new LinkedCartsMessage.LinkedCart(
-            cart.getId(), trainId,
-            LinkageManagerImpl.INSTANCE.getLinkA(cart),
-            LinkageManagerImpl.INSTANCE.getLinkB(cart));
-      }
+          .inflate(32F)
+          .search(player.getLevel())
+          .stream()
+          .map(MinecartExtension::getOrThrow)
+          .map(LinkedCartsMessage.LinkedCart::new)
+          .toList();
       NetworkChannel.GAME.getSimpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
           player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
     }
@@ -223,7 +251,9 @@ public class Railcraft {
   @SubscribeEvent
   public void handleEntityLeaveWorld(EntityLeaveWorldEvent event) {
     if (event.getEntity() instanceof AbstractMinecart cart
-        && !event.getEntity().getLevel().isClientSide()) {
+        && !event.getEntity().getLevel().isClientSide()
+        && event.getEntity().getRemovalReason() != null
+        && event.getEntity().getRemovalReason().shouldDestroy()) {
       Train.killTrain(cart);
       LinkageManagerImpl.INSTANCE.breakLinks(cart);
     }

@@ -86,8 +86,8 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   public AbstractMinecart getCart() {
     return EntitySearcher.findMinecarts()
         .around(this.getBlockPos().relative(this.getFacing()))
-        .outTo(-0.1F)
-        .in(this.level)
+        .inflate(-0.1F)
+        .search(this.level)
         .any();
   }
 

@@ -83,7 +83,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
       if (trackPos != null) {
         var carts = EntitySearcher.findMinecarts()
             .around(trackPos)
-            .in(level);
+            .search(level);
         carts.stream().filter(c -> !blockEntity.cartTimers.contains(c.getUUID()))
             .forEach(tokenRing::markCart);
         carts.forEach(c -> blockEntity.cartTimers.add(c.getUUID()));

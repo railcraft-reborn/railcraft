@@ -72,8 +72,8 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     // determines which direction the carts actually take.
     List<AbstractMinecart> cartsOnTrack = EntitySearcher.findMinecarts()
         .around(blockPos)
-        .outTo(-0.3f)
-        .in(blockEntity.level);
+        .inflate(-0.3f)
+        .search(blockEntity.level);
     Set<UUID> uuidOnTrack = cartsOnTrack.stream()
         .map(Entity::getUUID)
         .collect(Collectors.toSet());

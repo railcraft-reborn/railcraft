@@ -127,9 +127,12 @@ public final class CartTools {
     }
     debug.add("Object: " + cartInfo);
     debug.add("UUID: " + cart.getUUID());
-    LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
-    debug.add("LinkA: " + lm.getLinkA(cart));
-    debug.add("LinkB: " + lm.getLinkB(cart));
+    debug.add("LinkA: " + MinecartExtension.getOrThrow(cart).getLinkedMinecart(Link.FRONT)
+        .map(AbstractMinecart::getUUID)
+        .orElse(null));
+    debug.add("LinkB: " + MinecartExtension.getOrThrow(cart).getLinkedMinecart(Link.BACK)
+        .map(AbstractMinecart::getUUID)
+        .orElse(null));
     debug.add(
         "Train: " + Train.get(cart).map(Train::getId).map(UUID::toString).orElse("NA on Client"));
     Train.get(cart).ifPresent(train -> {
@@ -147,19 +150,19 @@ public final class CartTools {
    * @param id Cart's persistent UUID
    * @return AbstractMinecartEntity
    */
-  public static @Nullable AbstractMinecart getCartFromUUID(@Nullable Level world,
+  @Nullable
+  public static AbstractMinecart getCartFromUUID(@Nullable Level level,
       @Nullable UUID id) {
-    if (world == null || id == null)
+    if (level == null || id == null) {
       return null;
-    if (world instanceof ServerLevel) {
-      Entity entity = ((ServerLevel) world).getEntity(id);
-      if (entity instanceof AbstractMinecart && entity.isAlive()) {
-        return (AbstractMinecart) entity;
-      }
-    } else {
-      return getClientCartFromUUID(world, id);
     }
-    return null;
+
+    if (level instanceof ServerLevel serverLevel) {
+      var entity = serverLevel.getEntity(id);
+      return entity instanceof AbstractMinecart cart && entity.isAlive() ? cart : null;
+    }
+
+    return getClientCartFromUUID(level, id);
   }
 
   private static AbstractMinecart getClientCartFromUUID(Level world, UUID id) {

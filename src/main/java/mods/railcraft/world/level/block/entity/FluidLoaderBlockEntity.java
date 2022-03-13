@@ -99,10 +99,10 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     AABBFactory factory = AABBFactory.start()
         .at(this.getBlockPos().below(2))
         .raiseCeiling(1)
-        .grow(-0.1F);
+        .inflate(-0.1F);
     AbstractMinecart cart = EntitySearcher.findMinecarts()
         .around(factory)
-        .in(this.level)
+        .search(this.level)
         .any();
     this.needsPipe = cart != null && this.getBlockPos().getY() - cart.position().y() > 1.0D;
     return cart;

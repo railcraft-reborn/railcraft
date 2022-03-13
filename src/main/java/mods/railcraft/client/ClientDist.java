@@ -65,7 +65,6 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -76,7 +75,7 @@ public class ClientDist implements RailcraftDist {
   private final ShuntingAuraRenderer shuntingAuraRenderer;
 
   public ClientDist() {
-    IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleClientSetup);
     modEventBus.addListener(this::handleItemColors);
     modEventBus.addListener(this::handleBlockColors);

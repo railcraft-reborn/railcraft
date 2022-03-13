@@ -8,6 +8,7 @@ import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.world.entity.vehicle.CartConstants;
+import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -52,15 +53,15 @@ public final class CartPredicate {
   }
 
   public boolean test(ServerPlayer player, AbstractMinecart cart) {
+    var extension = MinecartExtension.getOrThrow(cart);
+
     if (this.highSpeed != null && HighSpeedTools.isTravellingHighSpeed(cart) != this.highSpeed) {
       return false;
     }
-    if (this.launched != null
-        && Railcraft.getInstance().getLinkageHandler().isLaunched(cart) != this.launched) {
+    if (this.launched != null && extension.getLaunchState().isLaunched() != this.launched) {
       return false;
     }
-    if (this.elevator != null
-        && Railcraft.getInstance().getLinkageHandler().isOnElevator(cart) != this.elevator) {
+    if (this.elevator != null && extension.isOnElevator() != this.elevator) {
       return false;
     }
     if (this.derail != null
@@ -91,8 +92,8 @@ public final class CartPredicate {
   public JsonElement serializeToJson() {
     JsonObject json = new JsonObject();
     this.addOptionalBoolean(json, CartConstants.TAG_HIGH_SPEED, this.highSpeed);
-    this.addOptionalBoolean(json, CartConstants.TAG_LAUNCHED, this.launched);
-    this.addOptionalBoolean(json, CartConstants.TAG_ELEVATOR, this.elevator);
+    this.addOptionalBoolean(json, "launched", this.launched);
+    this.addOptionalBoolean(json, "on_elevator", this.elevator);
     this.addOptionalBoolean(json, CartConstants.TAG_DERAIL, this.derail);
     this.addOptionalBoolean(json, "canMount", this.canMount);
     this.addOptionalBoolean(json, "check_owner", this.checksOwner);
@@ -108,8 +109,8 @@ public final class CartPredicate {
     }
 
     Boolean highSpeed = JsonTools.nullableBoolean(element, CartConstants.TAG_HIGH_SPEED);
-    Boolean launched = JsonTools.nullableBoolean(element, CartConstants.TAG_LAUNCHED);
-    Boolean elevator = JsonTools.nullableBoolean(element, CartConstants.TAG_ELEVATOR);
+    Boolean launched = JsonTools.nullableBoolean(element, "launched");
+    Boolean elevator = JsonTools.nullableBoolean(element, "on_elevator");
     Boolean derail = JsonTools.nullableBoolean(element, CartConstants.TAG_DERAIL);
     Boolean canMount = JsonTools.nullableBoolean(element, "canMount");
     Boolean checksOwner = JsonTools.nullableBoolean(element, "check_owner");
