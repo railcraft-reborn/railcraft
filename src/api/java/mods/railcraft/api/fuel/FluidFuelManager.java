@@ -9,10 +9,6 @@ package mods.railcraft.api.fuel;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.logging.log4j.Level;
-import com.mojang.logging.LogUtils;
-import org.slf4j.Logger;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -21,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
  */
 public final class FluidFuelManager {
 
-  private static final Logger logger = LogUtils.getLogger(RailcraftConstantsAPI.MOD_ID);
   private static final Map<FluidStack, Integer> boilerFuel = new HashMap<>();
 
   public static void addFuel(Fluid fluid, int heatValuePerBucket) {
@@ -35,11 +30,6 @@ public final class FluidFuelManager {
    * @param heatValuePerBucket the amount of "heat" per bucket of fuel
    */
   public static void addFuel(FluidStack fluid, int heatValuePerBucket) {
-    if (fluid == null) {
-      logger.log(Level.WARN, "An invalid fluid type was provided during registration of fluid fuel",
-          new IllegalArgumentException("null fluid stack"));
-      return;
-    }
     FluidStack toSave = fluid.copy();
     toSave.setAmount(1); // hashcode uses this
     boilerFuel.put(toSave, heatValuePerBucket);

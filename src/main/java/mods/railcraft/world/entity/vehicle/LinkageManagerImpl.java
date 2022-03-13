@@ -7,16 +7,14 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import org.apache.logging.log4j.Level;
-import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.util.MathTools;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.loading.FMLLoader;
 
 /**
  * The LinkageManager contains all the functions needed to link and interacted with linked carts.
@@ -306,7 +304,7 @@ public enum LinkageManagerImpl implements LinkageManager {
 
     if (cart1Linked != cart2Linked) {
 
-      logger.log(FMLLoader.isProduction() ? Level.WARN : Level.DEBUG,
+      logger.warn(
           "Linking discrepancy between carts {}({}) and {}({}): The first cart reports {} for linked while the second one reports {}!",
           getLinkageId(cart1), cart1.getDisplayName(), getLinkageId(cart2), cart2.getDisplayName(),
           cart1Linked,
@@ -403,7 +401,7 @@ public enum LinkageManagerImpl implements LinkageManager {
       @Nullable LinkType linkOne,
       @Nullable LinkType linkTwo) {
     if ((linkOne == null) != (linkTwo == null)) {
-      logger.log(FMLLoader.isProduction() ? Level.WARN : Level.DEBUG,
+      logger.warn(
           "Linking discrepancy between carts {}({}) and {}({}): The first cart reports {} for linked while the second one reports {}!",
           getLinkageId(one), one.getDisplayName(), getLinkageId(two), two.getDisplayName(),
           linkOne == null,
