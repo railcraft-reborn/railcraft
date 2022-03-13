@@ -81,11 +81,11 @@ public class WaterCollectionModule extends BaseModule {
 
     public static State create(Level level, BlockPos pos) {
       if (level.canSeeSky(pos)) {
-        var biome = level.getBiome(pos);
+        var biome = level.getBiome(pos).value();
         var humidityMultiplier = biome.getDownfall();
 
         var precipitationMultiplier = 1.0D;
-        if (level.getBiome(pos).coldEnoughToSnow(pos)) {
+        if (biome.coldEnoughToSnow(pos)) {
           precipitationMultiplier = REFILL_PENALTY_FROZEN;
         } else if (level.isRainingAt(pos)) {
           precipitationMultiplier = REFILL_BOOST_RAIN;

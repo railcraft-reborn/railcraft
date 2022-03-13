@@ -8,8 +8,8 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.event.CartLinkEvent;
@@ -39,7 +39,7 @@ public enum LinkageManagerImpl implements LinkageManager {
 
   INSTANCE;
 
-  private static final Logger logger = LogManager.getLogger();
+  private static final Logger logger = LogUtils.getLogger();
 
   public static final String AUTO_LINK_A = "rcAutoLinkA";
   public static final String AUTO_LINK_B = "rcAutoLinkB";

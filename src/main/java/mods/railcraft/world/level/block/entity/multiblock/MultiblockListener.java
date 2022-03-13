@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.multiblock;
 
 import javax.annotation.Nullable;
 import com.google.common.primitives.Ints;
+import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -43,10 +44,7 @@ public class MultiblockListener implements GameEventListener {
   @Override
   public boolean handleGameEvent(Level level, GameEvent event, @Nullable Entity entity,
       BlockPos blockPos) {
-    if (event == GameEvent.BLOCK_PLACE
-        || (event == GameEvent.BLOCK_DESTROY && this.blockEntity.getCurrentPattern()
-            .map(pattern -> pattern.isWithinPattern(blockPos, this.blockEntity.getBlockPos()))
-            .orElse(false))) {
+    if (event == RailcraftGameEvents.NEIGHBOR_NOTIFY) {
       // Can't check immediately as these events are fired before the blocks are actually changed.
       this.blockEntity.enqueueEvaluation();
     }

@@ -27,21 +27,26 @@ import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
+import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -77,12 +82,11 @@ public class Railcraft {
 
     MinecraftForge.EVENT_BUS.register(this.minecartHandler);
     MinecraftForge.EVENT_BUS.register(this);
-    // we have to register this all now; forge isn't dumb and will save server config in
-    // the logical world's "serverconfig" dir
-    ModLoadingContext modLoadingContext = ModLoadingContext.get();
-    modLoadingContext.registerConfig(ModConfig.Type.CLIENT, RailcraftConfig.clientSpec);
-    modLoadingContext.registerConfig(ModConfig.Type.COMMON, RailcraftConfig.commonSpec);
-    modLoadingContext.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.serverSpec);
+
+    var context = ModLoadingContext.get();
+    context.registerConfig(ModConfig.Type.CLIENT, RailcraftConfig.clientSpec);
+    context.registerConfig(ModConfig.Type.COMMON, RailcraftConfig.commonSpec);
+    context.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.serverSpec);
 
     this.dist = DistExecutor.safeRunForDist(() -> ClientDist::new, () -> ServerDist::new);
 
@@ -93,6 +97,12 @@ public class Railcraft {
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
+    modEventBus.addGenericListener(RecipeSerializer.class,
+        (RegistryEvent.Register<RecipeSerializer<?>> event) -> {
+          // Static init as Minecraft now freezes its registries
+          RailcraftRecipeTypes.init();
+          RailcraftGameEvents.init();
+        });
 
     RailcraftEntityTypes.ENTITY_TYPES.register(modEventBus);
     RailcraftBlocks.BLOCKS.register(modEventBus);
@@ -191,7 +201,7 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handleMinecartInteract(PlayerInteractEvent.EntityInteract event) {
-    if (event.getTarget()instanceof AbstractMinecart cart) {
+    if (event.getTarget() instanceof AbstractMinecart cart) {
       var player = event.getPlayer();
       var hand = event.getHand();
       event.setCanceled(this.minecartHandler.handleInteract(cart, player));
@@ -205,17 +215,22 @@ public class Railcraft {
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public void handleEntityJoinWorld(EntityJoinWorldEvent event) {
-    if (event.getEntity()instanceof AbstractMinecart cart) {
+    if (event.getEntity() instanceof AbstractMinecart cart) {
       event.setCanceled(this.minecartHandler.handleSpawn(event.getWorld(), cart));
     }
   }
 
   @SubscribeEvent
   public void handleEntityLeaveWorld(EntityLeaveWorldEvent event) {
-    if (event.getEntity()instanceof AbstractMinecart cart
-        && !event.getEntity().level.isClientSide()) {
+    if (event.getEntity() instanceof AbstractMinecart cart
+        && !event.getEntity().getLevel().isClientSide()) {
       Train.killTrain(cart);
       LinkageManagerImpl.INSTANCE.breakLinks(cart);
     }
+  }
+
+  @SubscribeEvent
+  public void handleNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
+    event.getWorld().gameEvent(RailcraftGameEvents.NEIGHBOR_NOTIFY, event.getPos());
   }
 }

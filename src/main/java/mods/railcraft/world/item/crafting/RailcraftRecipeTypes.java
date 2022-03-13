@@ -13,4 +13,7 @@ public class RailcraftRecipeTypes {
 
   public static final RecipeType<BlastFurnaceRecipe> BLASTING =
       RecipeType.register(Railcraft.ID + ":blasting");
+
+  // Dummy method to force this class to be class loaded.
+  public static void init() {}
 }

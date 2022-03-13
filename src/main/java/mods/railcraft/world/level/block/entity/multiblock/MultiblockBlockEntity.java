@@ -8,8 +8,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.objects.Object2CharMap;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
@@ -24,11 +24,12 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     extends RailcraftBlockEntity implements MenuProvider {
 
-  private static final Logger logger = LogManager.getLogger();
+  private static final Logger logger = LogUtils.getLogger();
 
   private final Class<T> clazz;
   private final Collection<MultiblockPattern> patterns;
 
+  // Only present on the server
   @Nullable
   private Membership<T> membership;
 
@@ -46,6 +47,10 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   private MultiblockPattern currentPattern;
 
   private boolean pendingEvaluation;
+
+  // Only present on the client
+  @Nullable
+  private UnresolvedMembership unresolvedMembership;
 
   public MultiblockBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Class<T> clazz, MultiblockPattern pattern) {
@@ -193,7 +198,10 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    *         master, <code>true</code> otherwise
    */
   public boolean isMaster() {
-    return this.membership != null && this.membership.master() == this;
+    return this.level.isClientSide()
+        ? this.unresolvedMembership != null
+            && this.unresolvedMembership.masterPos().equals(this.worldPosition)
+        : this.membership != null && this.membership.master() == this;
   }
 
   /**
@@ -254,19 +262,8 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   @Override
   public void readFromBuf(FriendlyByteBuf in) {
     super.readFromBuf(in);
-    if (in.readBoolean()) {
-      this.membership = null;
-    } else {
-      var marker = in.readChar();
-      var masterPos = in.readBlockPos();
-      var master = LevelUtil.getBlockEntity(this.level, masterPos, this.clazz).orElse(null);
-      if (master == null) {
-        logger.error("Master block not found @ [{}]", masterPos.toShortString());
-        this.membership = null;
-      } else {
-        this.membership = new Membership<>(marker, master);
-      }
-    }
+    this.unresolvedMembership =
+        in.readBoolean() ? null : new UnresolvedMembership(in.readChar(), in.readBlockPos());
   }
 
   /**
@@ -278,4 +275,12 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    * @param <T> - the type of multiblock
    */
   public record Membership<T extends MultiblockBlockEntity<T>> (char marker, T master) {}
+
+  /**
+   * An unresolved version of {@link Membership} which contains the position of the master instead
+   * of its instance.
+   * 
+   * @author Sm0keySa1m0n
+   */
+  private record UnresolvedMembership(char marker, BlockPos masterPos) {}
 }

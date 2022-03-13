@@ -1,7 +1,7 @@
 package mods.railcraft.world.entity.vehicle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.track.TrackUtil;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public final class LinkageHandler {
 
-  private static final Logger logger = LogManager.getLogger();
+  private static final Logger logger = LogUtils.getLogger();
 
   public static final String LINK_A_TIMER = "linkA_timer";
   public static final String LINK_B_TIMER = "linkB_timer";

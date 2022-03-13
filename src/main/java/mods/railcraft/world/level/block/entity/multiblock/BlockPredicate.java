@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
@@ -18,8 +18,8 @@ public interface BlockPredicate {
     Objects.requireNonNull(other);
     return (level, blockPos) -> this.test(level, blockPos) || other.test(level, blockPos);
   }
-  
-  static BlockPredicate ofFluidTag(Tag<Fluid> tag) {
+
+  static BlockPredicate ofFluidTag(TagKey<Fluid> tag) {
     return (level, blockPos) -> level.getFluidState(blockPos).is(tag);
   }
 
@@ -31,7 +31,7 @@ public interface BlockPredicate {
     return (level, blockPos) -> level.getFluidState(blockPos).is(fluid.get());
   }
 
-  static BlockPredicate ofTag(Tag<Block> tag) {
+  static BlockPredicate ofTag(TagKey<Block> tag) {
     return (level, blockPos) -> level.getBlockState(blockPos).is(tag);
   }
 

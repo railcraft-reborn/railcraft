@@ -1,25 +1,23 @@
 package mods.railcraft.data.recipes;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
+import javax.annotation.Nullable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class RollingRecipeBuilder {
@@ -49,7 +47,7 @@ public class RollingRecipeBuilder {
     return new RollingRecipeBuilder(resultItem, resultCount, recipieDelay);
   }
 
-  public RollingRecipeBuilder define(Character key, Tag<Item> itemTagValue) {
+  public RollingRecipeBuilder define(Character key, TagKey<Item> itemTagValue) {
     return this.define(key, Ingredient.of(itemTagValue));
   }
 
@@ -59,6 +57,7 @@ public class RollingRecipeBuilder {
 
   /**
    * Define a key for the recipie.
+   * 
    * @param key A charachter used by the pattern
    * @param itemValue The ingredient, can be an {@link net.minecraft.tags.ITag ItemTag}
    * @return this, for chaning functions.
@@ -68,7 +67,7 @@ public class RollingRecipeBuilder {
       throw new IllegalArgumentException("Symbol '" + key + "' is already defined!");
     } else if (key == ' ') {
       throw new IllegalArgumentException(
-        "Symbol ' ' (whitespace) is reserved and cannot be defined");
+          "Symbol ' ' (whitespace) is reserved and cannot be defined");
     } else {
       this.key.put(key, itemValue);
       return this;
@@ -77,6 +76,7 @@ public class RollingRecipeBuilder {
 
   /**
    * Defines a row of the recipie's pattern.
+   * 
    * @param pattern Three char-patern using the keys from the define()
    * @return this, for chaning functions.
    */
@@ -95,13 +95,14 @@ public class RollingRecipeBuilder {
 
   /**
    * Saves the item for registration.
+   * 
    * @param key Custom filename for multiple recipies creating a single item
    */
   public void save(Consumer<FinishedRecipe> finishedRecipie, String key) {
     ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
     if ((new ResourceLocation(key)).equals(resourcelocation)) {
       throw new IllegalStateException("Shaped Recipe "
-        + key + " should remove its 'save' argument");
+          + key + " should remove its 'save' argument");
     } else {
       this.save(finishedRecipie, new ResourceLocation(key));
     }
@@ -113,7 +114,7 @@ public class RollingRecipeBuilder {
   public void save(Consumer<FinishedRecipe> finishedRecipie, ResourceLocation resourceLocation) {
     finishedRecipie.accept(
         new RollingRecipeBuilder.Result(resourceLocation, this.result, this.count,
-          this.delay, this.rows, this.key));
+            this.delay, this.rows, this.key));
   }
 
   public class Result implements FinishedRecipe {

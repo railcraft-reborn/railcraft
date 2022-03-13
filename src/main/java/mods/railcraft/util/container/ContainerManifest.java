@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import com.google.common.collect.ForwardingMap;
 import mods.railcraft.util.collections.StackKey;
-import mods.railcraft.util.container.filters.StackFilters;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -90,7 +89,7 @@ public final class ContainerManifest
       Collection<StackKey> keys) {
     var manifest = new ContainerManifest();
     for (var filterKey : keys) {
-      var filter = StackFilters.anyMatch(filterKey.get());
+      var filter = StackFilter.anyMatch(filterKey.get());
       containers.streamStacks()
           .filter(filter)
           .forEach(stack -> manifest.compute(filterKey, (k, v) -> compute(k, v, stack)));

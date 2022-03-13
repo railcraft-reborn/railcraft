@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 import com.google.common.collect.Iterators;
 import mods.railcraft.util.Predicates;
 import mods.railcraft.util.container.ContainerAdaptor;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
@@ -22,7 +22,7 @@ public class ContainerMapper extends AbstractContainerMapper {
   private final int start;
   private final int size;
   private int stackSizeLimit = -1;
-  private Predicate<ItemStack> filter = StackFilters.ALL;
+  private Predicate<ItemStack> filter = StackFilter.ALL;
 
   public static ContainerMapper make(Container container) {
     return new ContainerMapper(container, 0, container.getContainerSize());

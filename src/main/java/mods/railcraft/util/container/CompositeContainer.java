@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import mods.railcraft.util.container.filters.StackFilters;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -55,7 +54,7 @@ public interface CompositeContainer extends ContainerManipulator {
   @Override
   default ItemStack moveOneItemTo(ContainerManipulator dest, Predicate<ItemStack> filter) {
     return stream().map(src -> src.moveOneItemTo(dest, filter))
-        .filter(StackFilters.nonEmpty())
+        .filter(StackFilter.nonEmpty())
         .findFirst()
         .orElse(ItemStack.EMPTY);
   }
@@ -84,7 +83,7 @@ public interface CompositeContainer extends ContainerManipulator {
    * @return true if there are enough items that can be removed, false otherwise.
    */
   default boolean removeItems(int amount, ItemStack... filter) {
-    return removeItems(amount, StackFilters.anyOf(filter));
+    return removeItems(amount, StackFilter.anyOf(filter));
   }
 
   /**
@@ -107,7 +106,7 @@ public interface CompositeContainer extends ContainerManipulator {
   @Override
   default ItemStack removeStack(int maxAmount, Predicate<ItemStack> filter, boolean simulate) {
     return stream().map(inv -> inv.removeStack(maxAmount, filter, simulate))
-        .filter(StackFilters.nonEmpty())
+        .filter(StackFilter.nonEmpty())
         .findFirst()
         .orElse(ItemStack.EMPTY);
   }

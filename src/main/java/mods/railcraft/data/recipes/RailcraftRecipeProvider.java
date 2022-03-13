@@ -13,7 +13,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -325,7 +325,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private final void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
-      Item itemOut, Tag<Item> materialTag) {
+      Item itemOut, TagKey<Item> materialTag) {
     ShapedRecipeBuilder.shaped(itemOut)
         .define('I', materialTag)
         .define('D', Tags.Items.DYES_RED)
@@ -353,7 +353,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private final void rebarFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
-      Tag<Item> materialTag, int count, String fancyname) {
+      TagKey<Item> materialTag, int count, String fancyname) {
     RollingRecipeBuilder.rolled(RailcraftItems.REBAR.get(), count)
         .define('I', materialTag)
         .pattern("  I")
@@ -378,7 +378,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private final void compress(Consumer<FinishedRecipe> finishedRecipie,
-      Item itemOut, Tag<Item> materialTag, String identifier) {
+      Item itemOut, TagKey<Item> materialTag, String identifier) {
     ShapedRecipeBuilder.shaped(itemOut)
         .define('#', materialTag)
         .pattern("###")
@@ -390,7 +390,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private final void decompress(Consumer<FinishedRecipe> finishedRecipie,
-      Item itemOut, Tag<Item> materialTag, String identifier) {
+      Item itemOut, TagKey<Item> materialTag, String identifier) {
     ShapelessRecipeBuilder.shapeless(itemOut, 9)
         .requires(materialTag)
         .unlockedBy("has_required_decompression_material", has(materialTag))

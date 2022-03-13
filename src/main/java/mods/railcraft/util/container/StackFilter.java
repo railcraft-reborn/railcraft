@@ -1,4 +1,4 @@
-package mods.railcraft.util.container.filters;
+package mods.railcraft.util.container;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,9 +8,6 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.util.container.CompositeContainer;
-import mods.railcraft.util.container.ContainerManipulator;
-import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.BlockItem;
@@ -28,7 +25,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
  *
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public enum StackFilters implements Predicate<ItemStack> {
+public enum StackFilter implements Predicate<ItemStack> {
 
   ALL,
   FUEL {
@@ -53,10 +50,11 @@ public enum StackFilters implements Predicate<ItemStack> {
 
   },
   BALLAST {
+    @SuppressWarnings("deprecation")
     @Override
     protected boolean testType(ItemStack stack) {
-      return stack.getItem() instanceof BlockItem
-          && RailcraftTags.Blocks.BALLAST.contains(((BlockItem) stack.getItem()).getBlock());
+      return stack.getItem() instanceof BlockItem blockItem
+          && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST);
     }
   },
   // EMPTY_BUCKET {
@@ -102,9 +100,8 @@ public enum StackFilters implements Predicate<ItemStack> {
   },
   RAW_METAL {
     @Override
-    protected boolean testType(
-        ItemStack stack) {
-      return RailcraftTags.Items.METAL.contains(stack.getItem());
+    protected boolean testType(ItemStack stack) {
+      return stack.is(RailcraftTags.Items.METAL);
     }
   };
 

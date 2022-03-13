@@ -9,7 +9,7 @@ import mods.railcraft.api.carts.IItemCart;
 import mods.railcraft.api.carts.TrainTransferHelper;
 import mods.railcraft.util.collections.StackKey;
 import mods.railcraft.util.container.ContainerAdaptor;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.Containers;
@@ -112,7 +112,7 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
         for (StackKey stackKey : items) {
           ItemStack stack = stackKey.get();
           if (this.canProvidePulledItem(requester, cart, stack)) {
-            ItemStack toRemove = inv.findOne(StackFilters.of(stack));
+            ItemStack toRemove = inv.findOne(StackFilter.of(stack));
             if (!toRemove.isEmpty()) {
               result = toRemove;
               upTo = cart;

@@ -9,7 +9,6 @@ import mods.railcraft.world.level.block.entity.multiblock.TankBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.world.level.LightLayer;
 
 public class TankRenderer implements BlockEntityRenderer<TankBlockEntity> {
 

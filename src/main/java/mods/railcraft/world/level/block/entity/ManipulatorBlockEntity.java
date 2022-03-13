@@ -18,7 +18,7 @@ import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.level.block.ManipulatorBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -98,7 +98,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     ItemStack filterStack1 = this.getCartFilters().getItem(0);
     ItemStack filterStack2 = this.getCartFilters().getItem(1);
     if (!filterStack1.isEmpty() || !filterStack2.isEmpty()) {
-      Predicate<ItemStack> matcher = StackFilters.isCart(cart);
+      Predicate<ItemStack> matcher = StackFilter.isCart(cart);
       return matcher.test(filterStack1) || matcher.test(filterStack2);
     }
     return true;

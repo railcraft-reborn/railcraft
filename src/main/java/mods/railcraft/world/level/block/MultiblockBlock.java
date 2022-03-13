@@ -50,7 +50,7 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
         .flatMap(MultiblockBlockEntity::getMembership)
         .map(MultiblockBlockEntity.Membership::master)
         .map(master -> {
-          NetworkHooks.openGui((ServerPlayer) player, master, pos);
+          NetworkHooks.openGui((ServerPlayer) player, master, master.getBlockPos());
           return InteractionResult.CONSUME;
         })
         .orElse(InteractionResult.PASS);

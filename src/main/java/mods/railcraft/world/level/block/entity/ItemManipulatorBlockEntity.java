@@ -15,7 +15,7 @@ import mods.railcraft.util.container.ContainerAdaptor;
 import mods.railcraft.util.container.ContainerManifest;
 import mods.railcraft.util.container.ContainerManipulator;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
 import net.minecraft.core.BlockPos;
@@ -49,7 +49,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
       ContainerManipulator dest = tile.getDestination();
 
       return tile.getSource().streamStacks()
-          .filter(StackFilters.anyMatch(tile.getItemFilters()))
+          .filter(StackFilter.anyMatch(tile.getItemFilters()))
           .anyMatch(dest::willAccept);
     });
 
@@ -89,7 +89,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
       ContainerManifest remainingManifest = ContainerManifest.create(tile.getSource());
       remainingManifest.keySet()
-          .removeIf(stackKey -> StackFilters.anyMatch(tile.getItemFilters()).test(stackKey.get()));
+          .removeIf(stackKey -> StackFilter.anyMatch(tile.getItemFilters()).test(stackKey.get()));
 
       return remainingManifest.streamValueStacks().anyMatch(dest::willAccept);
     });
@@ -186,7 +186,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
         this.moveItem(
             manifestStream.filter(entry -> sourceManifest.count(entry.key()) > entry.count()));
         if (!isProcessing()) {
-          Predicate<ItemStack> canMove = StackFilters.anyMatch(filterManifest.keyStacks()).negate();
+          Predicate<ItemStack> canMove = StackFilter.anyMatch(filterManifest.keyStacks()).negate();
 
           ItemStack moved = getSource().moveOneItemTo(this.getDestination(), canMove);
           this.itemMoved(moved);
@@ -224,7 +224,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
         .map(StackKey::get)
         .collect(Collectors.toList());
     ItemStack moved =
-        this.getSource().moveOneItemTo(this.getDestination(), StackFilters.anyMatch(keys));
+        this.getSource().moveOneItemTo(this.getDestination(), StackFilter.anyMatch(keys));
     itemMoved(moved);
   }
 

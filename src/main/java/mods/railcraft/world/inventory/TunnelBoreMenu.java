@@ -1,7 +1,7 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.api.carts.TunnelBoreHead;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -15,7 +15,7 @@ public class TunnelBoreMenu extends RailcraftMenu {
     super(RailcraftMenuTypes.TUNNEL_BORE.get(), id, inventory.player, tunnelBore::stillValid);
     this.tunnelBore = tunnelBore;
 
-    this.addSlot(new ItemFilterSlot(StackFilters.of(TunnelBoreHead.class), tunnelBore, 0, 17, 36)
+    this.addSlot(new ItemFilterSlot(StackFilter.of(TunnelBoreHead.class), tunnelBore, 0, 17, 36)
         .setStackLimit(1));
 
     // Fuel

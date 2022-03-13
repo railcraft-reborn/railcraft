@@ -23,7 +23,7 @@ import mods.railcraft.util.container.ContainerIterator;
 import mods.railcraft.util.container.ContainerSlot;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.ModifiableContainerSlot;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -40,7 +40,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -124,7 +124,7 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
       Blocks.END_STONE);
 
   @SuppressWarnings("unchecked")
-  public static final Set<Tag<Block>> mineableTags = Sets.newHashSet(
+  public static final Set<TagKey<Block>> mineableTags = Sets.newHashSet(
       Tags.Blocks.ORES,
       Tags.Blocks.NETHERRACK,
       Tags.Blocks.COBBLESTONE,
@@ -140,7 +140,7 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
   public static final Set<Block> replaceableBlocks = Sets.newHashSet(Blocks.TORCH);
 
   @SuppressWarnings("unchecked")
-  public static final Set<Tag<Block>> replaceableTags = Sets.newHashSet(BlockTags.FLOWERS);
+  public static final Set<TagKey<Block>> replaceableTags = Sets.newHashSet(BlockTags.FLOWERS);
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =
       SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.BOOLEAN);
@@ -152,11 +152,11 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
       SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.ITEM_STACK);
 
   public final ContainerMapper invFuel =
-      ContainerMapper.make(this, 1, 6).withFilters(StackFilters.FUEL);
+      ContainerMapper.make(this, 1, 6).withFilters(StackFilter.FUEL);
   public final ContainerMapper invBallast =
-      ContainerMapper.make(this, 7, 9).withFilters(StackFilters.BALLAST);
+      ContainerMapper.make(this, 7, 9).withFilters(StackFilter.BALLAST);
   public final ContainerMapper invRails =
-      ContainerMapper.make(this, 16, 9).withFilters(StackFilters.TRACK);
+      ContainerMapper.make(this, 16, 9).withFilters(StackFilter.TRACK);
   // protected static final int WATCHER_ID_BURN_TIME = 22;
 
   protected int delay;
@@ -224,7 +224,7 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
     return RailcraftConfig.server.boreMinesAllBlocks.get()
         || mineableBlocks.contains(blockState.getBlock())
         || mineableStates.contains(blockState)
-        || mineableTags.stream().anyMatch(tag -> tag.contains(blockState.getBlock()));
+        || mineableTags.stream().anyMatch(blockState::is);
   }
 
   @Override
@@ -636,19 +636,20 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
   }
 
   protected void stockBallast() {
-    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(invBallast));
+    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilter.roomIn(invBallast));
     if (!stack.isEmpty()) {
       invBallast.addStack(stack);
     }
   }
 
+  @SuppressWarnings("deprecation")
   protected boolean placeBallast(BlockPos targetPos) {
     if (!Block.canSupportRigidBlock(this.level, targetPos)) {
       for (ModifiableContainerSlot slot : ContainerIterator.get(invBallast)) {
         ItemStack stack = slot.getStack();
         if (!stack.isEmpty()
-            && stack.getItem() instanceof BlockItem
-            && RailcraftTags.Blocks.BALLAST.contains(((BlockItem) stack.getItem()).getBlock())) {
+            && stack.getItem() instanceof BlockItem blockItem
+            && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)) {
           BlockPos.MutableBlockPos searchPos = targetPos.mutable();
           for (int i = 0; i < MAX_FILL_DEPTH; i++) {
             searchPos.move(Direction.DOWN);
@@ -680,7 +681,7 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
   }
 
   protected void stockTracks() {
-    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(invRails));
+    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilter.roomIn(invRails));
     if (!stack.isEmpty()) {
       invRails.addStack(stack);
     }
@@ -820,7 +821,7 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
               .withParameter(LootContextParams.KILLER_ENTITY, this)
               .withParameter(LootContextParams.ORIGIN, this.position()))
           .forEach(stack -> {
-            if (StackFilters.FUEL.test(stack)) {
+            if (StackFilter.FUEL.test(stack)) {
               stack = invFuel.addStack(stack);
             }
 
@@ -995,7 +996,7 @@ public class TunnelBore extends RailcraftMinecart implements ILinkableCart {
   }
 
   protected void stockFuel() {
-    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilters.roomIn(invFuel));
+    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilter.roomIn(invFuel));
     if (!stack.isEmpty()) {
       invFuel.addStack(stack);
     }

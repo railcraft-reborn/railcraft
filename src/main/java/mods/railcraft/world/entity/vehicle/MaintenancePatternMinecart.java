@@ -3,7 +3,7 @@ package mods.railcraft.world.entity.vehicle;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
@@ -66,7 +66,7 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
     if (!ContainerTools.isStackFull(stackStock) && stackStock.getCount() < getMaxStackSize())
       this.setItem(slotStock,
           ContainerTools.copy(stackReplace, stackStock.getCount() + CartUtil.transferHelper()
-              .pullStack(this, StackFilters.of(stackReplace)).getCount()));
+              .pullStack(this, StackFilter.of(stackReplace)).getCount()));
   }
 
   @Override
