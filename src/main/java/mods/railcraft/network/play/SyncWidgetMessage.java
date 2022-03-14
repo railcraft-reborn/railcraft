@@ -6,30 +6,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SyncWidgetMessage {
+public record SyncWidgetMessage(int windowId, byte widgetId, FriendlyByteBuf data) {
 
-  private byte windowId;
-  private byte widgetId;
-  private FriendlyByteBuf payload;
-
-  public SyncWidgetMessage() {}
-
-  public SyncWidgetMessage(int windowId, int widgetId, FriendlyByteBuf data) {
-    this.windowId = (byte) windowId;
-    this.widgetId = (byte) widgetId;
-    this.payload = data;
+  public void encode(FriendlyByteBuf out) {
+    out.writeVarInt(this.windowId);
+    out.writeByte(this.widgetId);
+    out.writeVarInt(this.data.readableBytes());
+    out.writeBytes(this.data);
+    this.data.release();
   }
 
-  public void encode(FriendlyByteBuf data) {
-    data.writeByte(this.windowId);
-    data.writeByte(this.widgetId);
-    data.writeVarInt(this.payload.readableBytes());
-    data.writeBytes(payload);
-  }
-
-  public static SyncWidgetMessage decode(FriendlyByteBuf data) {
-    return new SyncWidgetMessage(data.readByte(), data.readByte(),
-        new FriendlyByteBuf(data.readBytes(data.readVarInt())));
+  public static SyncWidgetMessage decode(FriendlyByteBuf in) {
+    return new SyncWidgetMessage(in.readVarInt(), in.readByte(),
+        new FriendlyByteBuf(in.readBytes(in.readVarInt())));
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> ctx) {
@@ -42,7 +31,8 @@ public class SyncWidgetMessage {
     var menu = minecraft.player.containerMenu;
     if (menu instanceof RailcraftMenu railcraftMenu
         && menu.containerId == message.windowId) {
-      railcraftMenu.getWidgets().get(message.widgetId).readFromBuf(message.payload);
+      railcraftMenu.getWidgets().get(message.widgetId).readFromBuf(message.data);
+      message.data.release();
     }
   }
 }

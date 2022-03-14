@@ -6,15 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetEmbarkingTrackAttributesMessage {
-
-  private final BlockPos blockPos;
-  private final int radius;
-
-  public SetEmbarkingTrackAttributesMessage(BlockPos blockPos, int radius) {
-    this.blockPos = blockPos;
-    this.radius = radius;
-  }
+public record SetEmbarkingTrackAttributesMessage(BlockPos blockPos, int radius) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);
@@ -25,12 +17,15 @@ public class SetEmbarkingTrackAttributesMessage {
     return new SetEmbarkingTrackAttributesMessage(in.readBlockPos(), in.readVarInt());
   }
 
-  public void handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().getLevel();
-    var blockState = level.getBlockState(this.blockPos);
-    if (blockState.getBlock() instanceof EmbarkingTrackBlock) {
-      level.setBlockAndUpdate(this.blockPos,
-          EmbarkingTrackBlock.setRadius(blockState, this.radius));
-    }
+  public boolean handle(Supplier<NetworkEvent.Context> context) {
+    context.get().enqueueWork(() -> {
+      var level = context.get().getSender().getLevel();
+      var blockState = level.getBlockState(this.blockPos);
+      if (blockState.getBlock() instanceof EmbarkingTrackBlock) {
+        level.setBlockAndUpdate(this.blockPos,
+            EmbarkingTrackBlock.setRadius(blockState, this.radius));
+      }
+    });
+    return true;
   }
 }

@@ -20,6 +20,7 @@ import mods.railcraft.world.level.block.entity.signal.SignalSequencerBoxBlockEnt
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
+import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
@@ -343,5 +344,16 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.IRON_COUPLER_TRACK.get(),
                   RailcraftBlocks.REINFORCED_COUPLER_TRACK.get(),
                   RailcraftBlocks.STRAP_IRON_COUPLER_TRACK.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<LauncherTrackBlockEntity>> LAUNCHER_TRACK =
+      BLOCK_ENTITY_TYPES.register("launcher_track",
+          () -> BlockEntityType.Builder
+              .of(LauncherTrackBlockEntity::new,
+                  RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get(),
+                  RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
+                  RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
+                  RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
+                  RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get())
               .build(null));
 }

@@ -80,6 +80,11 @@ public interface MinecartExtension extends INBTSerializable<CompoundTag> {
 
   void setLaunchState(LaunchState launchState);
 
+  default void launch() {
+    this.setLaunchState(LaunchState.LAUNCHING);
+    this.getMinecart().setCanUseRail(false);
+  }
+
   int getElevatorRemainingTicks();
 
   default boolean isOnElevator() {

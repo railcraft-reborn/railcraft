@@ -27,7 +27,7 @@ public class EmbarkingTrackScreen extends IngameWindowScreen {
   @Override
   protected void init() {
     super.init();
-    int centreX = (this.width - this.windowHeight) / 2;
+    int centreX = (this.width - this.windowWidth) / 2;
     int centreY = (this.height - this.windowHeight) / 2;
     this.addRenderableWidget(this.decrementButton =
         new Button(centreX + 53, centreY + 50, 30, 20, new TextComponent("-1"),
@@ -54,6 +54,6 @@ public class EmbarkingTrackScreen extends IngameWindowScreen {
   protected void renderContent(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
     this.drawCenteredString(poseStack,
         new TranslatableComponent("screen.embarking_track.radius", this.radius),
-        (this.width - this.windowHeight) / 2, 25);
+        this.windowWidth / 2, 25);
   }
 }

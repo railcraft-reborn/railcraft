@@ -2,16 +2,13 @@ package mods.railcraft.network;
 
 import javax.annotation.Nullable;
 import io.netty.buffer.Unpooled;
-import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.gui.widget.Widget;
-import mods.railcraft.network.play.SyncEntityMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
@@ -78,7 +75,7 @@ public final class PacketBuilder {
   //
   public void sendGuiWidgetPacket(ServerPlayer player, int windowId, Widget widget) {
     if (widget.requiresSync(player)) {
-      FriendlyByteBuf byteBuf = new FriendlyByteBuf(Unpooled.buffer());
+      var byteBuf = new FriendlyByteBuf(Unpooled.buffer());
       widget.writeToBuf(player, byteBuf);
       SyncWidgetMessage pkt = new SyncWidgetMessage(windowId, widget.getId(), byteBuf);
       PacketDispatcher.sendToPlayer(pkt, player);
@@ -102,9 +99,4 @@ public final class PacketBuilder {
   // PacketStopRecord pkt = new PacketStopRecord(cart);
   // PacketDispatcher.sendToDimension(pkt, cart.world.provider.getDimension());
   // }
-
-  public <T extends Entity & NetworkSerializable> void sendEntitySync(T entity) {
-    SyncEntityMessage pkt = new SyncEntityMessage(entity);
-    PacketDispatcher.sendToDimension(pkt, entity.level.dimension());
-  }
 }

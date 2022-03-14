@@ -8,16 +8,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetFluidManipulatorAttributesMessage {
-
-  private final BlockPos blockPos;
-  private final ManipulatorBlockEntity.RedstoneMode redstoneMode;
-
-  public SetFluidManipulatorAttributesMessage(BlockPos blockPos,
-      ManipulatorBlockEntity.RedstoneMode redstoneMode) {
-    this.blockPos = blockPos;
-    this.redstoneMode = redstoneMode;
-  }
+public record SetFluidManipulatorAttributesMessage(BlockPos blockPos,
+    ManipulatorBlockEntity.RedstoneMode redstoneMode) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);

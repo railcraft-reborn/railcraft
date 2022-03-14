@@ -57,6 +57,7 @@ public class RailcraftConfig {
     public final IntValue maxTankSize;
     public final IntValue tankCapacityPerBlock;
     public final IntValue waterCollectionRate;
+    public final IntValue maxLauncherTrackForce;
 
     private Server(Builder builder) {
       builder.comment("High Speed Track Configuration");
@@ -169,6 +170,10 @@ public class RailcraftConfig {
           .comment(
               "The base rate of water in milliBuckets that can be gathered from the local environment, applied every 16 ticks to every block that can see the sky")
           .defineInRange("waterCollectionRate", 4, 0, 1000);
+
+      this.maxLauncherTrackForce = builder
+          .comment("change the value to your desired max launch rail force")
+          .defineInRange("maxLauncherTrackForce", 30, 5, 50);
     }
 
     public int getTankCartFluidCapacity() {

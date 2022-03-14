@@ -12,13 +12,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraftforge.network.NetworkEvent;
 
-public class LinkedCartsMessage {
-
-  private final Collection<LinkedCart> linkedCarts;
-
-  public LinkedCartsMessage(Collection<LinkedCart> linkedCart) {
-    this.linkedCarts = linkedCart;
-  }
+public record LinkedCartsMessage(Collection<LinkedCart> linkedCarts) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeCollection(this.linkedCarts, (buf, cart) -> cart.encode(buf));
@@ -34,7 +28,7 @@ public class LinkedCartsMessage {
     return true;
   }
 
-  public static record LinkedCart(int entityId, @Nullable UUID trainId, int linkAId, int linkBId) {
+  public record LinkedCart(int entityId, @Nullable UUID trainId, int linkAId, int linkBId) {
 
     public LinkedCart(MinecartExtension extension) {
       this(extension.getMinecart().getId(), Train.getTrainUUID(extension.getMinecart()),

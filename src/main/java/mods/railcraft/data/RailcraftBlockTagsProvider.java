@@ -37,6 +37,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
             RailcraftBlocks.ABANDONED_WYE_TRACK.get(),
             RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get(),
+            RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get(),
             RailcraftBlocks.ELECTRIC_TRACK.get(),
             RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
             RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
@@ -50,6 +51,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
             RailcraftBlocks.ELECTRIC_WYE_TRACK.get(),
             RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
@@ -80,6 +82,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
             RailcraftBlocks.IRON_WYE_TRACK.get(),
             RailcraftBlocks.IRON_JUNCTION_TRACK.get(),
+            RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
             RailcraftBlocks.REINFORCED_TRACK.get(),
             RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
             RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
@@ -93,6 +96,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
             RailcraftBlocks.REINFORCED_WYE_TRACK.get(),
             RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get(),
+            RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
@@ -105,7 +109,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_WYE_TRACK.get(),
-            RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get());
+            RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get());
     this.tag(BlockTags.CLIMBABLE).add(RailcraftBlocks.ELEVATOR_TRACK.get());
     this.tag(RailcraftTags.Blocks.ASPECT_EMITTER)
         .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),

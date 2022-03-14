@@ -106,6 +106,9 @@ public class RailcraftBlockModelGenerators {
   private final StraightTrackModelSet disembarkingTrackRight;
   private final StraightTrackModelSet activeDisembarkingTrackRight;
 
+  private final StraightTrackModelSet launcherTrackModels;
+  private final StraightTrackModelSet activeLauncherTrackModels;
+
   public RailcraftBlockModelGenerators(Consumer<BlockStateGenerator> blockStateOutput,
       BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput,
       Consumer<Item> skippedAutoModelsOutput) {
@@ -177,6 +180,9 @@ public class RailcraftBlockModelGenerators {
     this.activeDisembarkingTrackLeft = this.createActiveTrackModelSet("disembarking_track_left");
     this.disembarkingTrackRight = this.createTrackModelSet("disembarking_track_right");
     this.activeDisembarkingTrackRight = this.createActiveTrackModelSet("disembarking_track_right");
+
+    this.launcherTrackModels = this.createTrackModelSet("launcher_track");
+    this.activeLauncherTrackModels = this.createActiveTrackModelSet("launcher_track");
   }
 
   public void run() {
@@ -407,7 +413,8 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK.get(),
         RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
         RailcraftBlocks.ABANDONED_WYE_TRACK.get(),
-        RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get());
+        RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get(),
+        RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.ELECTRIC_TRACK.get(),
         RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
@@ -422,7 +429,8 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK.get(),
         RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
         RailcraftBlocks.ELECTRIC_WYE_TRACK.get(),
-        RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get());
+        RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get(),
+        RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get());
     this.createHighSpeedTracks(
         RailcraftBlocks.HIGH_SPEED_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
@@ -456,7 +464,8 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.IRON_DISEMBARKING_TRACK.get(),
         RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
         RailcraftBlocks.IRON_WYE_TRACK.get(),
-        RailcraftBlocks.IRON_JUNCTION_TRACK.get());
+        RailcraftBlocks.IRON_JUNCTION_TRACK.get(),
+        RailcraftBlocks.IRON_LAUNCHER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.REINFORCED_TRACK.get(),
         RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
@@ -471,7 +480,8 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK.get(),
         RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
         RailcraftBlocks.REINFORCED_WYE_TRACK.get(),
-        RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get());
+        RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get(),
+        RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get());
     this.createTracks(
         RailcraftBlocks.STRAP_IRON_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
@@ -486,7 +496,8 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_WYE_TRACK.get(),
-        RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get());
+        RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get(),
+        RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get());
   }
 
   private void skipAutoItemBlock(Block block) {
@@ -898,12 +909,13 @@ public class RailcraftBlockModelGenerators {
       Block bufferStopTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
       Block controlTrackBlock, Block gatedTrackBlock, Block detectorTrackBlock,
       Block couplerTrackBlock, Block embarkingTrackBlock, Block disembarkingTrackBlock,
-      Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock) {
+      Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock,
+      Block launcherTrackBlock) {
     this.createAbandonedFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
         boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
         couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, turnoutTrackBlock,
-        wyeTrackBlock, junctionTrackBlock);
+        wyeTrackBlock, junctionTrackBlock, launcherTrackBlock);
   }
 
   private void createAbandonedFlexTrack(Block block) {
@@ -997,19 +1009,20 @@ public class RailcraftBlockModelGenerators {
       Block activatorTrackBlock, Block boosterTrackBlock, Block controlTrackBlock,
       Block gatedTrackBlock, Block detectorTrackBlock, Block couplerTrackBlock,
       Block embarkingTrackBlock, Block disembarkingTrackBlock, Block turnoutTrackBlock,
-      Block wyeTrackBlock, Block junctionTrackBlock) {
+      Block wyeTrackBlock, Block junctionTrackBlock, Block launcherTrackBlock) {
     this.createFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
         boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
         couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, turnoutTrackBlock,
-        wyeTrackBlock, junctionTrackBlock);
+        wyeTrackBlock, junctionTrackBlock, launcherTrackBlock);
   }
 
   private void createOutfittedTracks(Block block, Block lockingTrackBlock,
       Block bufferStopTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
       Block controlTrackBlock, Block gatedTrackBlock, Block detectorTrackBlock,
       Block couplerTrackBlock, Block embarkingTrackBlock, Block disembarkingTrackBlock,
-      Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock) {
+      Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock,
+      Block launcherTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
     this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.getFlatModel());
     this.createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.getFlatModel());
@@ -1026,6 +1039,8 @@ public class RailcraftBlockModelGenerators {
     this.createTurnoutTrack(turnoutTrackBlock);
     this.createWyeTrack(wyeTrackBlock);
     this.createJunctionTrack(junctionTrackBlock);
+    this.createActiveOutfittedTrack(launcherTrackBlock, false, outfittedTrackModels,
+        this.launcherTrackModels, this.activeLauncherTrackModels);
   }
 
   private void createHighSpeedTracks(Block block, Block transitionTrackBlock,

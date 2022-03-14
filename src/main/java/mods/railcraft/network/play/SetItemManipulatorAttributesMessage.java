@@ -8,19 +8,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetItemManipulatorAttributesMessage {
-
-  private final BlockPos blockPos;
-  private final ManipulatorBlockEntity.RedstoneMode redstoneMode;
-  private final ManipulatorBlockEntity.TransferMode transferMode;
-
-  public SetItemManipulatorAttributesMessage(BlockPos blockPos,
-      ManipulatorBlockEntity.RedstoneMode redstoneMode,
-      ManipulatorBlockEntity.TransferMode transferMode) {
-    this.blockPos = blockPos;
-    this.redstoneMode = redstoneMode;
-    this.transferMode = transferMode;
-  }
+public record SetItemManipulatorAttributesMessage(BlockPos blockPos,
+    ManipulatorBlockEntity.RedstoneMode redstoneMode,
+    ManipulatorBlockEntity.TransferMode transferMode) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);

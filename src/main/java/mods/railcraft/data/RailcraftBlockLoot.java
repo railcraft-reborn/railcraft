@@ -171,6 +171,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftBlocks.ABANDONED_TRACK.get());
     this.dropOther(RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get(),
         RailcraftBlocks.ABANDONED_TRACK.get());
+    this.dropOther(RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get(),
+        RailcraftItems.LAUNCHER_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
@@ -199,6 +201,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftBlocks.ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get(),
         RailcraftBlocks.ELECTRIC_TRACK.get());
+    this.dropOther(RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
+        RailcraftItems.LAUNCHER_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.HIGH_SPEED_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
@@ -259,6 +263,8 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropOther(RailcraftBlocks.IRON_TURNOUT_TRACK.get(), Blocks.RAIL);
     this.dropOther(RailcraftBlocks.IRON_WYE_TRACK.get(), Blocks.RAIL);
     this.dropOther(RailcraftBlocks.IRON_JUNCTION_TRACK.get(), Blocks.RAIL);
+    this.dropOther(RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
+        RailcraftItems.LAUNCHER_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.REINFORCED_TRACK.get());
     this.dropOther(RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
@@ -287,6 +293,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftBlocks.REINFORCED_TRACK.get());
     this.dropOther(RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get(),
         RailcraftBlocks.REINFORCED_TRACK.get());
+    this.dropOther(RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
+        RailcraftItems.LAUNCHER_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.STRAP_IRON_TRACK.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
@@ -315,6 +323,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftBlocks.STRAP_IRON_TRACK.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_TRACK.get());
+    this.dropOther(RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get(),
+        RailcraftItems.LAUNCHER_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.ELEVATOR_TRACK.get());
     this.add(RailcraftBlocks.FORCE_TRACK.get(), noDrop());

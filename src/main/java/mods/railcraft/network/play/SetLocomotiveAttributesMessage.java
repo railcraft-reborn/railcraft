@@ -5,22 +5,8 @@ import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetLocomotiveAttributesMessage {
-
-  private final int entityId;
-  private final Locomotive.Mode mode;
-  private final Locomotive.Speed speed;
-  private final Locomotive.Lock lock;
-  private final boolean reverse;
-
-  public SetLocomotiveAttributesMessage(int entityId, Locomotive.Mode mode,
-      Locomotive.Speed speed, Locomotive.Lock lock, boolean reverse) {
-    this.entityId = entityId;
-    this.mode = mode;
-    this.speed = speed;
-    this.lock = lock;
-    this.reverse = reverse;
-  }
+public record SetLocomotiveAttributesMessage(int entityId, Locomotive.Mode mode,
+    Locomotive.Speed speed, Locomotive.Lock lock, boolean reverse) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeVarInt(this.entityId);

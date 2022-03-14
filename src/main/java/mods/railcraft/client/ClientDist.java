@@ -5,6 +5,7 @@ import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
 import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.EmbarkingTrackScreen;
+import mods.railcraft.client.gui.screen.LauncherTrackScreen;
 import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
 import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.SwitchTrackMotorScreen;
@@ -47,6 +48,7 @@ import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
+import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
@@ -251,5 +253,9 @@ public class ClientDist implements RailcraftDist {
 
   public static void openEmbarkingTrackScreen(BlockState blockState, BlockPos blockPos) {
     Minecraft.getInstance().setScreen(new EmbarkingTrackScreen(blockState, blockPos));
+  }
+
+  public static void openLauncherTrackScreen(LauncherTrackBlockEntity track) {
+    Minecraft.getInstance().setScreen(new LauncherTrackScreen(track));
   }
 }

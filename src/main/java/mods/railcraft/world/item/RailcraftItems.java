@@ -1020,6 +1020,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> ABANDONED_LAUNCHER_TRACK =
+      ITEMS.register("abandoned_launcher_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> ELECTRIC_TRACK =
       ITEMS.register("electric_track",
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_TRACK.get(),
@@ -1088,6 +1093,11 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ELECTRIC_JUNCTION_TRACK =
       ITEMS.register("electric_junction_track",
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ELECTRIC_LAUNCHER_TRACK =
+      ITEMS.register("electric_launcher_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> HIGH_SPEED_TRACK =
@@ -1245,6 +1255,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.IRON_JUNCTION_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> IRON_LAUNCHER_TRACK =
+      ITEMS.register("iron_launcher_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> REINFORCED_TRACK =
       ITEMS.register("reinforced_track",
           () -> new BlockItem(RailcraftBlocks.REINFORCED_TRACK.get(),
@@ -1315,6 +1330,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> REINFORCED_LAUNCHER_TRACK =
+      ITEMS.register("reinforced_launcher_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> STRAP_IRON_TRACK =
       ITEMS.register("strap_iron_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_TRACK.get(),
@@ -1383,6 +1403,11 @@ public class RailcraftItems {
   public static final RegistryObject<Item> STRAP_IRON_JUNCTION_TRACK =
       ITEMS.register("strap_iron_junction_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> STRAP_IRON_LAUNCHER_TRACK =
+      ITEMS.register("strap_iron_launcher_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> ELEVATOR_TRACK =
@@ -1540,6 +1565,18 @@ public class RailcraftItems {
                   RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
                   RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK)
+              .tab(TAB)));
+
+  public static final RegistryObject<Item> LAUNCHER_TRACK_KIT =
+      ITEMS.register("launcher_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_LAUNCHER_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_LAUNCHER_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED,
+                  RailcraftBlocks.REINFORCED_LAUNCHER_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK)
               .tab(TAB)));
 
   public static final RegistryObject<Item> GOGGLES =
