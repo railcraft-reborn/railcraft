@@ -9,7 +9,6 @@ package mods.railcraft.api.carts;
 
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import javax.annotation.Nullable;
-import mods.railcraft.world.entity.vehicle.Link;
 import java.util.stream.Stream;
 
 /**

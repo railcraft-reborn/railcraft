@@ -2,6 +2,7 @@ package mods.railcraft.world.entity.vehicle;
 
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
+import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.track.TrackUtil;

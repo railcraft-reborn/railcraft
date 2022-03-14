@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
+import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.event.CartLinkEvent;

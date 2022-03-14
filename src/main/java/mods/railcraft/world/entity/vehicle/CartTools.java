@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;

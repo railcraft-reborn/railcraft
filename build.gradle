@@ -154,6 +154,10 @@ repositories {
     }
 }
 
+configurations {
+    apiImplementation.extendsFrom(implementation)
+}
+
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.minecraft_version}-${project.forge_version}"
     implementation group: 'org.spongepowered', name: 'mixin', version: "${project.mixin_version}"
@@ -162,7 +166,7 @@ dependencies {
 }
 
 jar {
-    finalizedBy('reobfJar')
+    from([sourceSets.api.output, sourceSets.main.output])
     manifest {
         attributes([
             "Implementation-Title": project.name,
@@ -172,6 +176,7 @@ jar {
             "MixinConfigs": 'railcraft.mixins.json'
         ])
     }
+    finalizedBy('reobfJar')
 }
 
 mixin {

@@ -1,4 +1,4 @@
-package mods.railcraft.world.entity.vehicle;
+package mods.railcraft.api.carts;
 
 import java.util.Arrays;
 import java.util.Map;

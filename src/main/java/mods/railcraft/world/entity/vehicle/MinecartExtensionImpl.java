@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.carts.Link;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

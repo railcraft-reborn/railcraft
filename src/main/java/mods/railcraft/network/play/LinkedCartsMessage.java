@@ -5,7 +5,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.entity.vehicle.Link;
+import mods.railcraft.api.carts.Link;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.Train;
 import net.minecraft.network.FriendlyByteBuf;

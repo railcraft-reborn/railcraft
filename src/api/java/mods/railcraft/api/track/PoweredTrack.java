@@ -7,10 +7,9 @@
 
 package mods.railcraft.api.track;
 
-import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Implementing this interface will allow your track to be powered via Redstone.

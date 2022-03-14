@@ -2,6 +2,7 @@ package mods.railcraft.world.entity.vehicle;
 
 import java.util.Optional;
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

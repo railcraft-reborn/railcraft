@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.api.carts.IItemCart;
+import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.carts.TrainTransferHelper;
 import mods.railcraft.util.collections.StackKey;
