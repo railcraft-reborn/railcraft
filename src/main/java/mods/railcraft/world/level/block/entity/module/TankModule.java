@@ -16,6 +16,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -43,6 +45,8 @@ public class TankModule extends ContainerModule implements ICapabilityProvider {
           return super.extractItem(slot, amount, simulate);
         }
       });
+
+  private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(this::getTank);
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
@@ -89,9 +93,15 @@ public class TankModule extends ContainerModule implements ICapabilityProvider {
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
-    return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-        ? this.itemHandler.cast()
-        : LazyOptional.empty();
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+      return this.itemHandler.cast();
+    }
+
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      return this.fluidHandler.cast();
+    }
+
+    return LazyOptional.empty();
   }
 
   @Override

@@ -10,9 +10,14 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.world.inventory.TankMenu;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.TankGaugeBlock;
+import mods.railcraft.world.level.block.TankValveBlock;
+import mods.railcraft.world.level.block.entity.ValveFluidHandler;
+import mods.railcraft.world.level.block.entity.module.FluidPushModule;
 import mods.railcraft.world.level.block.entity.module.TankModule;
+import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -28,14 +33,20 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.network.NetworkHooks;
 
 public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEntity> {
 
   private static final Component MENU_TITLE =
       new TranslatableComponent("container.railcraft.tank");
+
+  private static final int FLOW_RATE = FluidTools.BUCKET_VOLUME;
 
   private final TankModule module;
 
@@ -45,9 +56,16 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   private int maxY;
   private int maxZ;
 
+  private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
+
   public TankBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Collection<MultiblockPattern> patterns) {
     super(type, blockPos, blockState, TankBlockEntity.class, patterns);
+    this.moduleDispatcher.registerModule("fluid_push",
+        new FluidPushModule(this, () -> this.fluidHandler, FLOW_RATE,
+            blockEntity -> !(blockEntity instanceof TankBlockEntity tank)
+                || !tank.getMembership().equals(this.getMembership()),
+            Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST));
     this.module = this.moduleDispatcher.registerCapabilityModule("tank",
         new TankModule(this, this.getCapacityPerBlock()));
     this.module.getTank().setUpdateCallback(this::tankChanged);
@@ -127,6 +145,9 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     if (membership == null) {
       this.getModule().getTank().setFluid(FluidStack.EMPTY);
       this.lightChanged(BlockStateProperties.MIN_LEVEL);
+      this.fluidHandler = LazyOptional.empty();
+    } else if (this.getBlockState().getBlock() instanceof TankValveBlock) {
+      this.fluidHandler = LazyOptional.of(() -> new ValveFluidHandler(this, membership.master()));
     }
 
     if (this.getBlockState().getBlock() instanceof TankGaugeBlock block) {
@@ -138,6 +159,16 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
             this.getBlockState().setValue(AbstractStrengthenedGlassBlock.TYPE, type));
       }
     }
+  }
+
+  @Override
+  public <T> LazyOptional<T> getCapability(Capability<T> capability,
+      @Nullable Direction side) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      return this.fluidHandler.cast();
+    }
+
+    return super.getCapability(capability, side);
   }
 
   @Override

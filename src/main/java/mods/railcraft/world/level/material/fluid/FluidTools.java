@@ -73,7 +73,7 @@ public final class FluidTools {
    */
   public static boolean interactWithFluidHandler(Player player, InteractionHand hand,
       IFluidHandler fluidHandler) {
-    return player.level.isClientSide()
+    return player.getLevel().isClientSide()
         ? FluidItemHelper.isContainer(player.getItemInHand(hand))
         : FluidUtil.interactWithFluidHandler(player, hand, fluidHandler);
   }
@@ -206,10 +206,10 @@ public final class FluidTools {
   }
 
   public static Collection<IFluidHandler> findNeighbors(Level level, BlockPos centrePos,
-      Predicate<? super BlockEntity> filter, Direction... directions) {
+      Predicate<BlockEntity> filter, Direction... directions) {
     List<IFluidHandler> targets = new ArrayList<>();
-    for (Direction direction : directions) {
-      BlockEntity blockEntity = level.getBlockEntity(centrePos.relative(direction));
+    for (var direction : directions) {
+      var blockEntity = level.getBlockEntity(centrePos.relative(direction));
       if (blockEntity == null) {
         continue;
       }
