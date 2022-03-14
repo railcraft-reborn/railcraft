@@ -18,7 +18,7 @@ public class IronTankGaugeBlock extends TankGaugeBlock {
 
   @Override
   public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-    return new IronTankBlockEntity(blockPos, blockState, true);
+    return new IronTankBlockEntity(blockPos, blockState);
   }
 
   @Nullable

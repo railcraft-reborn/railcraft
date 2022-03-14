@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "railcraft:block/light_blue_strengthened_glass_top",
+    "side": "railcraft:block/light_blue_strengthened_glass_side_center"
+  }
+}

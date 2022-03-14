@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "railcraft:block/blue_iron_tank_wall_top",
+    "north": "railcraft:block/blue_iron_tank_valve_front",
+    "south": "railcraft:block/blue_iron_tank_valve_front",
+    "east": "railcraft:block/blue_iron_tank_wall_side",
+    "west": "railcraft:block/blue_iron_tank_wall_side",
+    "up": "railcraft:block/blue_iron_tank_wall_top",
+    "down": "railcraft:block/blue_iron_tank_wall_top"
+  }
+}

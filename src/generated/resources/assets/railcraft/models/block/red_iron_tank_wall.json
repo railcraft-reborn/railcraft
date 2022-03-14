@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "railcraft:block/red_iron_tank_wall_top",
+    "side": "railcraft:block/red_iron_tank_wall_side"
+  }
+}

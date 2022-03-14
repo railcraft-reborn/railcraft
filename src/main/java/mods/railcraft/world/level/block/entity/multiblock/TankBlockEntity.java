@@ -22,10 +22,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -34,39 +37,41 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   private static final Component MENU_TITLE =
       new TranslatableComponent("container.railcraft.tank");
 
-  private final boolean updateLighting;
   private final TankModule module;
 
-  private int lastLight;
+  private int lastLight = -1;
 
   private int maxX;
   private int maxY;
   private int maxZ;
 
   public TankBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
-      Collection<MultiblockPattern> patterns, boolean updateLighting) {
+      Collection<MultiblockPattern> patterns) {
     super(type, blockPos, blockState, TankBlockEntity.class, patterns);
-    this.updateLighting = updateLighting;
     this.module = this.moduleDispatcher.registerCapabilityModule("tank",
         new TankModule(this, this.getCapacityPerBlock()));
     this.module.getTank().setUpdateCallback(this::tankChanged);
   }
 
+  private void lightChanged(int light) {
+    if (this.getBlockState().getBlock() instanceof TankGaugeBlock) {
+      this.level.setBlock(this.getBlockPos(),
+          this.getBlockState().setValue(TankGaugeBlock.LEVEL, light), Block.UPDATE_CLIENTS);
+    }
+  }
+
   protected void tankChanged(StandardTank tank) {
-    if (this.level.isClientSide()) {
+    if (!this.hasLevel() || this.level.isClientSide()) {
       return;
     }
 
-    this.syncToClient();
     this.setChanged();
+    this.syncToClient();
+
     var light = tank.getFluidType().getAttributes().getLuminosity();
     if (light != this.lastLight) {
       this.lastLight = light;
-      this.streamMembers().forEach(member -> {
-        if (member.updateLighting) {
-          this.level.getLightEngine().checkBlock(member.getBlockPos());
-        }
-      });
+      this.streamMembers().forEach(member -> member.lightChanged(light));
     }
   }
 
@@ -118,6 +123,11 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
       this.maxZ = pattern.getZSize();
       this.syncToClient();
     });
+
+    if (membership == null) {
+      this.getModule().getTank().setFluid(FluidStack.EMPTY);
+      this.lightChanged(BlockStateProperties.MIN_LEVEL);
+    }
 
     if (this.getBlockState().getBlock() instanceof TankGaugeBlock block) {
       var type = membership == null
@@ -311,5 +321,11 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
     pattern.add(bottom);
     return pattern;
+  }
+
+  @FunctionalInterface
+  public interface LightCallback {
+
+    void lightChanged(BlockState blockState, Level level, BlockPos blockPos, int light);
   }
 }

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "railcraft:block/gray_strengthened_glass_bottom"
+    },
+    "type=center": {
+      "model": "railcraft:block/gray_strengthened_glass_center"
+    },
+    "type=single": {
+      "model": "railcraft:block/gray_strengthened_glass_single"
+    },
+    "type=top": {
+      "model": "railcraft:block/gray_strengthened_glass_top"
+    }
+  }
+}

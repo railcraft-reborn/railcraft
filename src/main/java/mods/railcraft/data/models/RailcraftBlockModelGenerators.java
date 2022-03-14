@@ -7,10 +7,10 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
+import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
@@ -212,6 +212,23 @@ public class RailcraftBlockModelGenerators {
     this.createFurnaceMultiblockBricks(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
     this.createFeedStation();
 
+    this.createStrengthenedGlass(RailcraftBlocks.WHITE_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.ORANGE_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.MAGENTA_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.LIGHT_BLUE_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.YELLOW_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.LIME_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.PINK_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.GRAY_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.LIGHT_GRAY_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.CYAN_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.PURPLE_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.BLUE_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.BROWN_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.GREEN_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.RED_STRENGTHENED_GLASS.get());
+    this.createStrengthenedGlass(RailcraftBlocks.BLACK_STRENGTHENED_GLASS.get());
+
     this.createStrengthenedGlass(RailcraftBlocks.WHITE_IRON_TANK_GAUGE.get());
     this.createStrengthenedGlass(RailcraftBlocks.ORANGE_IRON_TANK_GAUGE.get());
     this.createStrengthenedGlass(RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE.get());
@@ -229,9 +246,122 @@ public class RailcraftBlockModelGenerators {
     this.createStrengthenedGlass(RailcraftBlocks.RED_IRON_TANK_GAUGE.get());
     this.createStrengthenedGlass(RailcraftBlocks.BLACK_IRON_TANK_GAUGE.get());
 
-    this.createTankValve(RailcraftBlocks.WHITE_IRON_TANK_VALVE.get());
+    this.createTankValve(RailcraftBlocks.WHITE_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.WHITE_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.ORANGE_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.ORANGE_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.MAGENTA_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.MAGENTA_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.LIGHT_BLUE_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.LIGHT_BLUE_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.YELLOW_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.YELLOW_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.LIME_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.LIME_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.PINK_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.PINK_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.GRAY_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.GRAY_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.LIGHT_GRAY_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.LIGHT_GRAY_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.CYAN_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.CYAN_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.PURPLE_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.PURPLE_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.BLUE_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.BLUE_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.BROWN_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.BROWN_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.GREEN_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.GREEN_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.RED_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.RED_IRON_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.BLACK_IRON_TANK_VALVE.get(),
+        RailcraftBlocks.BLACK_IRON_TANK_WALL.get());
 
     this.createTankWall(RailcraftBlocks.WHITE_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.ORANGE_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.MAGENTA_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.LIGHT_BLUE_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.YELLOW_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.LIME_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.PINK_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.GRAY_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.LIGHT_GRAY_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.CYAN_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.PURPLE_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.BLUE_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.BROWN_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.GREEN_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.RED_IRON_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.BLACK_IRON_TANK_WALL.get());
+
+    this.createStrengthenedGlass(RailcraftBlocks.WHITE_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.ORANGE_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.MAGENTA_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.YELLOW_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.LIME_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.PINK_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.GRAY_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.CYAN_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.PURPLE_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.BLUE_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.BROWN_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.GREEN_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.RED_STEEL_TANK_GAUGE.get());
+    this.createStrengthenedGlass(RailcraftBlocks.BLACK_STEEL_TANK_GAUGE.get());
+
+    this.createTankValve(RailcraftBlocks.WHITE_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.WHITE_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.ORANGE_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.ORANGE_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.MAGENTA_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.MAGENTA_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.YELLOW_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.YELLOW_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.LIME_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.LIME_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.PINK_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.PINK_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.GRAY_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.GRAY_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.CYAN_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.CYAN_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.PURPLE_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.PURPLE_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.BLUE_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.BLUE_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.BROWN_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.BROWN_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.GREEN_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.GREEN_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.RED_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.RED_STEEL_TANK_WALL.get());
+    this.createTankValve(RailcraftBlocks.BLACK_STEEL_TANK_VALVE.get(),
+        RailcraftBlocks.BLACK_STEEL_TANK_WALL.get());
+
+    this.createTankWall(RailcraftBlocks.WHITE_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.ORANGE_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.MAGENTA_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.YELLOW_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.LIME_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.PINK_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.GRAY_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.CYAN_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.PURPLE_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.BLUE_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.BROWN_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.GREEN_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.RED_STEEL_TANK_WALL.get());
+    this.createTankWall(RailcraftBlocks.BLACK_STEEL_TANK_WALL.get());
 
     this.createPost(RailcraftBlocks.BLACK_POST.get());
     this.createPost(RailcraftBlocks.RED_POST.get());
@@ -427,17 +557,26 @@ public class RailcraftBlockModelGenerators {
         this.modelOutput);
   }
 
-  private void createTankValve(Block block) {
-    var verticalModel = TexturedModel.COLUMN.create(block, this.modelOutput);
+  private void createTankValve(Block block, Block wallBlock) {
+    var verticalModel = ModelTemplates.CUBE.create(block,
+        new TextureMapping()
+            .put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(wallBlock, "_top"))
+            .put(TextureSlot.NORTH, TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .put(TextureSlot.SOUTH, TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .put(TextureSlot.EAST, TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .put(TextureSlot.WEST, TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .put(TextureSlot.UP, TextureMapping.getBlockTexture(block, "_top"))
+            .put(TextureSlot.DOWN, TextureMapping.getBlockTexture(block, "_top")),
+        this.modelOutput);
     var horizontalModel = ModelTemplates.CUBE.createWithSuffix(block, "_horizontal",
         new TextureMapping()
-            .put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(block, "_horizontal_side"))
-            .put(TextureSlot.NORTH, TextureMapping.getBlockTexture(block, "_horizontal_front"))
-            .put(TextureSlot.SOUTH, TextureMapping.getBlockTexture(block, "_horizontal_front"))
-            .put(TextureSlot.EAST, TextureMapping.getBlockTexture(block, "_horizontal_side"))
-            .put(TextureSlot.WEST, TextureMapping.getBlockTexture(block, "_horizontal_side"))
-            .put(TextureSlot.UP, TextureMapping.getBlockTexture(block, "_horizontal_top"))
-            .put(TextureSlot.DOWN, TextureMapping.getBlockTexture(block, "_horizontal_top")),
+            .put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(wallBlock, "_top"))
+            .put(TextureSlot.NORTH, TextureMapping.getBlockTexture(block, "_front"))
+            .put(TextureSlot.SOUTH, TextureMapping.getBlockTexture(block, "_front"))
+            .put(TextureSlot.EAST, TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .put(TextureSlot.WEST, TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .put(TextureSlot.UP, TextureMapping.getBlockTexture(wallBlock, "_top"))
+            .put(TextureSlot.DOWN, TextureMapping.getBlockTexture(wallBlock, "_top")),
         this.modelOutput);
     this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
         .with(PropertyDispatch.property(BlockStateProperties.AXIS)

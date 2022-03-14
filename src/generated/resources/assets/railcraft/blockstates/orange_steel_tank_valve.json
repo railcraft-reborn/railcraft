@@ -1,0 +1,14 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "railcraft:block/orange_steel_tank_valve_horizontal",
+      "y": 90
+    },
+    "axis=y": {
+      "model": "railcraft:block/orange_steel_tank_valve"
+    },
+    "axis=z": {
+      "model": "railcraft:block/orange_steel_tank_valve_horizontal"
+    }
+  }
+}

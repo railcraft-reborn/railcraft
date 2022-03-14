@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "railcraft:white_steel_tank_gauge",
+    "railcraft:orange_steel_tank_gauge",
+    "railcraft:magenta_steel_tank_gauge",
+    "railcraft:light_blue_steel_tank_gauge",
+    "railcraft:yellow_steel_tank_gauge",
+    "railcraft:lime_steel_tank_gauge",
+    "railcraft:pink_steel_tank_gauge",
+    "railcraft:gray_steel_tank_gauge",
+    "railcraft:light_gray_steel_tank_gauge",
+    "railcraft:cyan_steel_tank_gauge",
+    "railcraft:purple_steel_tank_gauge",
+    "railcraft:blue_steel_tank_gauge",
+    "railcraft:brown_steel_tank_gauge",
+    "railcraft:green_steel_tank_gauge",
+    "railcraft:red_steel_tank_gauge",
+    "railcraft:black_steel_tank_gauge"
+  ]
+}

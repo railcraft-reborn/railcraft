@@ -49,6 +49,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LightBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -65,179 +66,1014 @@ public class RailcraftBlocks {
   public static final DeferredRegister<Block> BLOCKS =
       DeferredRegister.create(ForgeRegistries.BLOCKS, Railcraft.ID);
 
+
+  public static final RegistryObject<Block> WHITE_STRENGTHENED_GLASS =
+      BLOCKS.register("white_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> ORANGE_STRENGTHENED_GLASS =
+      BLOCKS.register("orange_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> MAGENTA_STRENGTHENED_GLASS =
+      BLOCKS.register("magenta_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> LIGHT_BLUE_STRENGTHENED_GLASS =
+      BLOCKS.register("light_blue_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> YELLOW_STRENGTHENED_GLASS =
+      BLOCKS.register("yellow_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> LIME_STRENGTHENED_GLASS =
+      BLOCKS.register("lime_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> PINK_STRENGTHENED_GLASS =
+      BLOCKS.register("pink_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> GRAY_STRENGTHENED_GLASS =
+      BLOCKS.register("gray_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> LIGHT_GRAY_STRENGTHENED_GLASS =
+      BLOCKS.register("light_gray_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> CYAN_STRENGTHENED_GLASS =
+      BLOCKS.register("cyan_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> PURPLE_STRENGTHENED_GLASS =
+      BLOCKS.register("purple_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> BLUE_STRENGTHENED_GLASS =
+      BLOCKS.register("blue_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> BROWN_STRENGTHENED_GLASS =
+      BLOCKS.register("brown_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> GREEN_STRENGTHENED_GLASS =
+      BLOCKS.register("green_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> RED_STRENGTHENED_GLASS =
+      BLOCKS.register("red_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
+  public static final RegistryObject<Block> BLACK_STRENGTHENED_GLASS =
+      BLOCKS.register("black_strengthened_glass",
+          () -> new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)));
+
   public static final RegistryObject<Block> WHITE_IRON_TANK_GAUGE =
       BLOCKS.register("white_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> ORANGE_IRON_TANK_GAUGE =
       BLOCKS.register("orange_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> MAGENTA_IRON_TANK_GAUGE =
       BLOCKS.register("magenta_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> LIGHT_BLUE_IRON_TANK_GAUGE =
       BLOCKS.register("light_blue_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> YELLOW_IRON_TANK_GAUGE =
       BLOCKS.register("yellow_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> LIME_IRON_TANK_GAUGE =
       BLOCKS.register("lime_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> PINK_IRON_TANK_GAUGE =
       BLOCKS.register("pink_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> GRAY_IRON_TANK_GAUGE =
       BLOCKS.register("gray_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
-
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> LIGHT_GRAY_IRON_TANK_GAUGE =
       BLOCKS.register("light_gray_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> CYAN_IRON_TANK_GAUGE =
       BLOCKS.register("cyan_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
-
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> PURPLE_IRON_TANK_GAUGE =
       BLOCKS.register("purple_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> BLUE_IRON_TANK_GAUGE =
       BLOCKS.register("blue_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> BROWN_IRON_TANK_GAUGE =
       BLOCKS.register("brown_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> GREEN_IRON_TANK_GAUGE =
       BLOCKS.register("green_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> RED_IRON_TANK_GAUGE =
       BLOCKS.register("red_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> BLACK_IRON_TANK_GAUGE =
       BLOCKS.register("black_iron_tank_gauge",
           () -> new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
               .sound(SoundType.GLASS)
               .noOcclusion()
+              .strength(1.0F, 5.0F)
               .isValidSpawn(RailcraftBlocks::never)
               .isRedstoneConductor(RailcraftBlocks::never)
               .isSuffocating(RailcraftBlocks::never)
-              .isViewBlocking(RailcraftBlocks::never)));
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
 
   public static final RegistryObject<Block> WHITE_IRON_TANK_VALVE =
       BLOCKS.register("white_iron_tank_valve",
           () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
               .sound(SoundType.METAL)
-              .noOcclusion()));
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> ORANGE_IRON_TANK_VALVE =
+      BLOCKS.register("orange_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> MAGENTA_IRON_TANK_VALVE =
+      BLOCKS.register("magenta_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> LIGHT_BLUE_IRON_TANK_VALVE =
+      BLOCKS.register("light_blue_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> YELLOW_IRON_TANK_VALVE =
+      BLOCKS.register("yellow_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> LIME_IRON_TANK_VALVE =
+      BLOCKS.register("lime_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> PINK_IRON_TANK_VALVE =
+      BLOCKS.register("pink_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> GRAY_IRON_TANK_VALVE =
+      BLOCKS.register("gray_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> LIGHT_GRAY_IRON_TANK_VALVE =
+      BLOCKS.register("light_gray_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> CYAN_IRON_TANK_VALVE =
+      BLOCKS.register("cyan_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> PURPLE_IRON_TANK_VALVE =
+      BLOCKS.register("purple_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> BLUE_IRON_TANK_VALVE =
+      BLOCKS.register("blue_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> BROWN_IRON_TANK_VALVE =
+      BLOCKS.register("brown_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> GREEN_IRON_TANK_VALVE =
+      BLOCKS.register("green_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> RED_IRON_TANK_VALVE =
+      BLOCKS.register("red_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> BLACK_IRON_TANK_VALVE =
+      BLOCKS.register("black_iron_tank_valve",
+          () -> new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
 
   public static final RegistryObject<Block> WHITE_IRON_TANK_WALL =
       BLOCKS.register("white_iron_tank_wall",
           () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
               .sound(SoundType.METAL)
-              .noOcclusion()));
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> ORANGE_IRON_TANK_WALL =
+      BLOCKS.register("orange_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> MAGENTA_IRON_TANK_WALL =
+      BLOCKS.register("magenta_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> LIGHT_BLUE_IRON_TANK_WALL =
+      BLOCKS.register("light_blue_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> YELLOW_IRON_TANK_WALL =
+      BLOCKS.register("yellow_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> LIME_IRON_TANK_WALL =
+      BLOCKS.register("lime_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> PINK_IRON_TANK_WALL =
+      BLOCKS.register("pink_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> GRAY_IRON_TANK_WALL =
+      BLOCKS.register("gray_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> LIGHT_GRAY_IRON_TANK_WALL =
+      BLOCKS.register("light_gray_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> CYAN_IRON_TANK_WALL =
+      BLOCKS.register("cyan_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> PURPLE_IRON_TANK_WALL =
+      BLOCKS.register("purple_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> BLUE_IRON_TANK_WALL =
+      BLOCKS.register("blue_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> BROWN_IRON_TANK_WALL =
+      BLOCKS.register("brown_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> GREEN_IRON_TANK_WALL =
+      BLOCKS.register("green_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> RED_IRON_TANK_WALL =
+      BLOCKS.register("red_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> BLACK_IRON_TANK_WALL =
+      BLOCKS.register("black_iron_tank_wall",
+          () -> new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(12)));
+
+  public static final RegistryObject<Block> WHITE_STEEL_TANK_GAUGE =
+      BLOCKS.register("white_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> ORANGE_STEEL_TANK_GAUGE =
+      BLOCKS.register("orange_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> MAGENTA_STEEL_TANK_GAUGE =
+      BLOCKS.register("magenta_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> LIGHT_BLUE_STEEL_TANK_GAUGE =
+      BLOCKS.register("light_blue_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> YELLOW_STEEL_TANK_GAUGE =
+      BLOCKS.register("yellow_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> LIME_STEEL_TANK_GAUGE =
+      BLOCKS.register("lime_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> PINK_STEEL_TANK_GAUGE =
+      BLOCKS.register("pink_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> GRAY_STEEL_TANK_GAUGE =
+      BLOCKS.register("gray_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> LIGHT_GRAY_STEEL_TANK_GAUGE =
+      BLOCKS.register("light_gray_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> CYAN_STEEL_TANK_GAUGE =
+      BLOCKS.register("cyan_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> PURPLE_STEEL_TANK_GAUGE =
+      BLOCKS.register("purple_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> BLUE_STEEL_TANK_GAUGE =
+      BLOCKS.register("blue_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> BROWN_STEEL_TANK_GAUGE =
+      BLOCKS.register("brown_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> GREEN_STEEL_TANK_GAUGE =
+      BLOCKS.register("green_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> RED_STEEL_TANK_GAUGE =
+      BLOCKS.register("red_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> BLACK_STEEL_TANK_GAUGE =
+      BLOCKS.register("black_steel_tank_gauge",
+          () -> new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .sound(SoundType.GLASS)
+              .noOcclusion()
+              .strength(1.0F, 5.0F)
+              .isValidSpawn(RailcraftBlocks::never)
+              .isRedstoneConductor(RailcraftBlocks::never)
+              .isSuffocating(RailcraftBlocks::never)
+              .isViewBlocking(RailcraftBlocks::never)
+              .lightLevel(LightBlock.LIGHT_EMISSION)));
+
+  public static final RegistryObject<Block> WHITE_STEEL_TANK_VALVE =
+      BLOCKS.register("white_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> ORANGE_STEEL_TANK_VALVE =
+      BLOCKS.register("orange_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> MAGENTA_STEEL_TANK_VALVE =
+      BLOCKS.register("magenta_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> LIGHT_BLUE_STEEL_TANK_VALVE =
+      BLOCKS.register("light_blue_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> YELLOW_STEEL_TANK_VALVE =
+      BLOCKS.register("yellow_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> LIME_STEEL_TANK_VALVE =
+      BLOCKS.register("lime_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> PINK_STEEL_TANK_VALVE =
+      BLOCKS.register("pink_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> GRAY_STEEL_TANK_VALVE =
+      BLOCKS.register("gray_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> LIGHT_GRAY_STEEL_TANK_VALVE =
+      BLOCKS.register("light_gray_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> CYAN_STEEL_TANK_VALVE =
+      BLOCKS.register("cyan_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> PURPLE_STEEL_TANK_VALVE =
+      BLOCKS.register("purple_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> BLUE_STEEL_TANK_VALVE =
+      BLOCKS.register("blue_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> BROWN_STEEL_TANK_VALVE =
+      BLOCKS.register("brown_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> GREEN_STEEL_TANK_VALVE =
+      BLOCKS.register("green_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> RED_STEEL_TANK_VALVE =
+      BLOCKS.register("red_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> BLACK_STEEL_TANK_VALVE =
+      BLOCKS.register("black_steel_tank_valve",
+          () -> new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> WHITE_STEEL_TANK_WALL =
+      BLOCKS.register("white_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> ORANGE_STEEL_TANK_WALL =
+      BLOCKS.register("orange_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> MAGENTA_STEEL_TANK_WALL =
+      BLOCKS.register("magenta_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> LIGHT_BLUE_STEEL_TANK_WALL =
+      BLOCKS.register("light_blue_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> YELLOW_STEEL_TANK_WALL =
+      BLOCKS.register("yellow_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> LIME_STEEL_TANK_WALL =
+      BLOCKS.register("lime_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> PINK_STEEL_TANK_WALL =
+      BLOCKS.register("pink_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> GRAY_STEEL_TANK_WALL =
+      BLOCKS.register("gray_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> LIGHT_GRAY_STEEL_TANK_WALL =
+      BLOCKS.register("light_gray_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> CYAN_STEEL_TANK_WALL =
+      BLOCKS.register("cyan_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> PURPLE_STEEL_TANK_WALL =
+      BLOCKS.register("purple_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> BLUE_STEEL_TANK_WALL =
+      BLOCKS.register("blue_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> BROWN_STEEL_TANK_WALL =
+      BLOCKS.register("brown_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> GREEN_STEEL_TANK_WALL =
+      BLOCKS.register("green_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> RED_STEEL_TANK_WALL =
+      BLOCKS.register("red_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
+
+  public static final RegistryObject<Block> BLACK_STEEL_TANK_WALL =
+      BLOCKS.register("black_steel_tank_wall",
+          () -> new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .noOcclusion()
+              .explosionResistance(15)));
 
   public static final RegistryObject<Block> BLAST_FURNACE_BRICKS =
       BLOCKS.register("blast_furnace_bricks",

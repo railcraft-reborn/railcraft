@@ -228,12 +228,6 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   }
 
   @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.disband();
-  }
-
-  @Override
   public void load(CompoundTag tag) {
     super.load(tag);
     if (tag.getBoolean("master")) {

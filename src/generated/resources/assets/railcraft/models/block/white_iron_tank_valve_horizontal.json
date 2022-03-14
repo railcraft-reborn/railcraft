@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "particle": "railcraft:block/white_iron_tank_valve_horizontal_side",
-    "north": "railcraft:block/white_iron_tank_valve_horizontal_front",
-    "south": "railcraft:block/white_iron_tank_valve_horizontal_front",
-    "east": "railcraft:block/white_iron_tank_valve_horizontal_side",
-    "west": "railcraft:block/white_iron_tank_valve_horizontal_side",
-    "up": "railcraft:block/white_iron_tank_valve_horizontal_top",
-    "down": "railcraft:block/white_iron_tank_valve_horizontal_top"
+    "particle": "railcraft:block/white_iron_tank_wall_top",
+    "north": "railcraft:block/white_iron_tank_valve_front",
+    "south": "railcraft:block/white_iron_tank_valve_front",
+    "east": "railcraft:block/white_iron_tank_wall_side",
+    "west": "railcraft:block/white_iron_tank_wall_side",
+    "up": "railcraft:block/white_iron_tank_wall_top",
+    "down": "railcraft:block/white_iron_tank_wall_top"
   }
 }

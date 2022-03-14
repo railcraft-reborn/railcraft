@@ -52,8 +52,7 @@ public class TankModule extends ContainerModule implements ICapabilityProvider {
     this(adapter, capacity, null);
   }
 
-  public TankModule(ModuleProvider provider, int capacity,
-      @Nullable Supplier<Fluid> filter) {
+  public TankModule(ModuleProvider provider, int capacity, @Nullable Supplier<Fluid> filter) {
     super(provider, 3);
     this.tank = new FilteredTank(capacity);
     if (filter != null) {

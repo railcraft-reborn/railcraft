@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "railcraft:white_steel_tank_wall",
+    "railcraft:orange_steel_tank_wall",
+    "railcraft:magenta_steel_tank_wall",
+    "railcraft:light_blue_steel_tank_wall",
+    "railcraft:yellow_steel_tank_wall",
+    "railcraft:lime_steel_tank_wall",
+    "railcraft:pink_steel_tank_wall",
+    "railcraft:gray_steel_tank_wall",
+    "railcraft:light_gray_steel_tank_wall",
+    "railcraft:cyan_steel_tank_wall",
+    "railcraft:purple_steel_tank_wall",
+    "railcraft:blue_steel_tank_wall",
+    "railcraft:brown_steel_tank_wall",
+    "railcraft:green_steel_tank_wall",
+    "railcraft:red_steel_tank_wall",
+    "railcraft:black_steel_tank_wall"
+  ]
+}

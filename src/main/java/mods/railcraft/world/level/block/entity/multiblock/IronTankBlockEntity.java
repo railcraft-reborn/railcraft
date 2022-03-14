@@ -17,12 +17,7 @@ public class IronTankBlockEntity extends TankBlockEntity {
           RailcraftTags.Blocks.IRON_TANK_VALVE);
 
   public IronTankBlockEntity(BlockPos blockPos, BlockState blockState) {
-    super(RailcraftBlockEntityTypes.IRON_TANK.get(), blockPos, blockState, PATTERNS, false);
-  }
-
-  public IronTankBlockEntity(BlockPos blockPos, BlockState blockState, boolean updateLighting) {
-    super(RailcraftBlockEntityTypes.IRON_TANK.get(), blockPos, blockState, PATTERNS,
-        updateLighting);
+    super(RailcraftBlockEntityTypes.IRON_TANK.get(), blockPos, blockState, PATTERNS);
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,

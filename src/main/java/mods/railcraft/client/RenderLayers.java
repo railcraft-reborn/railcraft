@@ -11,6 +11,23 @@ class RenderLayers {
   static void register() {
     ItemBlockRenderTypes.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
 
+    cutout(RailcraftBlocks.WHITE_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.ORANGE_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.MAGENTA_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.LIGHT_BLUE_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.YELLOW_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.LIME_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.PINK_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.GRAY_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.LIGHT_GRAY_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.CYAN_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.PURPLE_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.BLUE_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.BROWN_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.GREEN_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.RED_STRENGTHENED_GLASS);
+    cutout(RailcraftBlocks.BLACK_STRENGTHENED_GLASS);
+
     cutout(RailcraftBlocks.WHITE_IRON_TANK_GAUGE);
     cutout(RailcraftBlocks.ORANGE_IRON_TANK_GAUGE);
     cutout(RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE);
@@ -27,6 +44,23 @@ class RenderLayers {
     cutout(RailcraftBlocks.GREEN_IRON_TANK_GAUGE);
     cutout(RailcraftBlocks.RED_IRON_TANK_GAUGE);
     cutout(RailcraftBlocks.BLACK_IRON_TANK_GAUGE);
+
+    cutout(RailcraftBlocks.WHITE_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.ORANGE_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.MAGENTA_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.YELLOW_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.LIME_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.PINK_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.GRAY_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.CYAN_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.PURPLE_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.BLUE_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.BROWN_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.GREEN_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.RED_STEEL_TANK_GAUGE);
+    cutout(RailcraftBlocks.BLACK_STEEL_TANK_GAUGE);
 
     cutout(RailcraftBlocks.FLUID_LOADER);
     cutout(RailcraftBlocks.FLUID_UNLOADER);
