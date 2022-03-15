@@ -1,8 +1,5 @@
 package mods.railcraft;
 
-import java.io.IOException;
-import java.util.jar.JarFile;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,7 +44,6 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.event.TickEvent.WorldTickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -58,7 +54,6 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
@@ -105,7 +100,6 @@ public class Railcraft {
 
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::handleCommonSetup);
-    modEventBus.addListener(this::handleConfigLoad);
     modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
 
     RailcraftEntityTypes.ENTITY_TYPES.register(modEventBus);
@@ -144,42 +138,25 @@ public class Railcraft {
     return instance;
   }
 
-  private void handleConfigLoad(ModConfigEvent.Loading event) {
-    if (event.getConfig().getModId() != ID) {
-      return;
-    }
-    RailcraftOrePlacements.TIN_ORE.handleConfigSpecLoad();
-  }
-
   private void handleCommonSetup(FMLCommonSetupEvent event) {
     event.enqueueWork(RailcraftCriteriaTriggers::register);
 
     logger.info("Starting Railcraft");
 
-    try (var jar = new JarFile(this.getClass()
-        .getProtectionDomain()
-        .getCodeSource()
-        .getLocation()
-        .getPath())) {
-      var mf = jar.getManifest().getMainAttributes();
-      var gsource = mf.getValue("Build-GitSource");
+    var sauce = System.getProperty("GIT_SOURCE", "LOCAL");
+    var sha = System.getProperty("GIT_SHA", "NOHASH");
 
-      if (gsource == "PR") {
-        logger.error("THIS RAILCRAFT BUILD IS FROM A PULL REQUEST!"
-          + "DO **NOT** POST ISSUES ABOUT THIS VERSION ON ISSUES TAB, INSTEAD REPORT ON THE PR ITSELF AT "
-          + "https://github.com/ hey configure this /pulls/id");
-        logger.error("RC Commit: " + mf.getValue("Build-Commit"));
-        logger.error("RC Source: PR");
-        jar.close();
-        return;
-      }
-      logger.info("RC Commit: " + mf.getValue("Build-Commit"));
-      logger.info("RC Source: " + (gsource != null ?  gsource : "Localy built."));
-      jar.close();
+    if (sauce == "PR") {
+      logger.error("THIS RAILCRAFT BUILD IS FROM A PULL REQUEST!"
+        + "DO **NOT** POST ISSUES ABOUT THIS VERSION ON ISSUES TAB, INSTEAD REPORT ON THE PR ITSELF AT "
+        + "https://github.com/Sm0keySa1m0n/Railcraft/pull/");
+      logger.error("RC Commit: " + sha);
+      logger.error("RC Source: PR");
+      return;
     }
-    catch (IOException e){
-      logger.error("Railcraft manifest fetching failed! This must be in development.");
-    }
+
+    logger.info("RC Commit: " + sha);
+    logger.info("RC Source: " + sauce);
   }
 
   private void handleGatherData(GatherDataEvent event) {
@@ -209,7 +186,7 @@ public class Railcraft {
   }
 
   @SubscribeEvent
-  public void handleWorldTick(WorldTickEvent event) {
+  public void handleWorldTick(TickEvent.WorldTickEvent event) {
     if (event.world instanceof ServerLevel level && event.phase == TickEvent.Phase.END) {
       TokenRingManager.get(level).tick(level);
       if (level.getServer().getTickCount() % 32 == 0) {

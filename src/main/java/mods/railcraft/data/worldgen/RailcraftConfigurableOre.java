@@ -39,12 +39,12 @@ public class RailcraftConfigurableOre {
   /* === PLACED FEATURE VALUES === */
   private PlacedFeature placedFeature;
   public final ResourceLocation resourceLocation;
-  private PLACEMENT_TYPE placementType;
-  private List<Pair<RuleTest, ResourceLocation>> oreBlockTypes;
-  private int count;
-  private int maxGroupSize;
-  private int minY;
-  private int maxY;
+  private final PLACEMENT_TYPE placementType;
+  private final List<Pair<RuleTest, ResourceLocation>> oreBlockTypes;
+  private final int count;
+  private final int maxGroupSize;
+  private final int minY;
+  private final int maxY;
 
   /* === CONFIGURATION VALUES === */
   private EnumValue<PLACEMENT_TYPE> placementTypeConfig;
@@ -112,17 +112,6 @@ public class RailcraftConfigurableOre {
     builder.pop();
   }
 
-  /**
-   * Hook for reloading ore configs.
-   */
-  public void handleConfigSpecLoad() {
-    this.placementType = this.placementTypeConfig.get();
-    this.count = this.countConfig.get();
-    this.maxGroupSize = this.maxGroupSizeConfig.get();
-    this.minY = this.minYConfig.get();
-    this.maxY = this.maxYConfig.get();
-  }
-
   public List<? extends String> bannedBiomesList() {
     return this.biomeIgnoreList.get();
   }
@@ -146,16 +135,16 @@ public class RailcraftConfigurableOre {
 
       var oreFeature = FeatureUtils.register(
           resourceLocation.toString(),
-          Feature.ORE.configured(new OreConfiguration(oreConfigurationTarget, this.count)));
+          Feature.ORE.configured(new OreConfiguration(oreConfigurationTarget, this.countConfig.get())));
 
-      var heightRange = HeightRangePlacement.uniform(VerticalAnchor.absolute(this.minY), VerticalAnchor.absolute(this.maxY));
+      var heightRange = HeightRangePlacement.uniform(VerticalAnchor.absolute(this.minYConfig.get()), VerticalAnchor.absolute(this.maxYConfig.get()));
 
       this.placedFeature = PlacementUtils.register(
           resourceLocation.toString(),
           oreFeature.placed(
-            placementType == PLACEMENT_TYPE.COMMON
-                ? commonOrePlacement(this.maxGroupSize, heightRange)
-                : rareOrePlacement(this.maxGroupSize, heightRange)
+            this.placementTypeConfig.get() == PLACEMENT_TYPE.COMMON
+                ? commonOrePlacement(this.maxGroupSizeConfig.get(), heightRange)
+                : rareOrePlacement(this.maxGroupSizeConfig.get(), heightRange)
           ));
     }
 
