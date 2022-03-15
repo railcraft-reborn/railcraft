@@ -11,6 +11,7 @@ import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.ItemManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
+import mods.railcraft.world.level.block.entity.multiblock.TankBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,6 +27,10 @@ public class RailcraftMenuTypes {
 
   public static final DeferredRegister<MenuType<?>> MENU_TYPES =
       DeferredRegister.create(ForgeRegistries.CONTAINERS, Railcraft.ID);
+
+  public static final RegistryObject<MenuType<TankMenu>> TANK =
+      MENU_TYPES.register("tank",
+          () -> new MenuType<>(blockEntityMenu(TankBlockEntity.class, TankMenu::new)));
 
   public static final RegistryObject<MenuType<BlastFurnaceMenu>> BLAST_FURNACE =
       MENU_TYPES.register("blast_furnace",

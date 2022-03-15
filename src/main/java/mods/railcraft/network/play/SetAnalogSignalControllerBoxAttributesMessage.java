@@ -10,16 +10,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetAnalogSignalControllerBoxAttributesMessage {
-
-  private final BlockPos blockPos;
-  private final Map<SignalAspect, BitSet> signalAspectTriggerSignals;
-
-  public SetAnalogSignalControllerBoxAttributesMessage(BlockPos blockPos,
-      Map<SignalAspect, BitSet> signalAspectTriggerSignals) {
-    this.blockPos = blockPos;
-    this.signalAspectTriggerSignals = signalAspectTriggerSignals;
-  }
+public record SetAnalogSignalControllerBoxAttributesMessage(BlockPos blockPos,
+    Map<SignalAspect, BitSet> signalAspectTriggerSignals) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);

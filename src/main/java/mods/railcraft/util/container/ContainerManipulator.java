@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.base.Predicates;
 import mods.railcraft.util.collections.StackKey;
-import mods.railcraft.util.container.filters.StackFilters;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -116,7 +115,7 @@ public interface ContainerManipulator {
    * @return An ItemStack
    */
   default ItemStack removeOneItem() {
-    return removeOneItem(StackFilters.ALL);
+    return removeOneItem(StackFilter.ALL);
   }
 
   /**
@@ -126,7 +125,7 @@ public interface ContainerManipulator {
    * @return An ItemStack
    */
   default ItemStack removeOneItem(ItemStack... filter) {
-    return removeOneItem(StackFilters.anyOf(filter));
+    return removeOneItem(StackFilter.anyOf(filter));
   }
 
   /**
@@ -158,7 +157,7 @@ public interface ContainerManipulator {
   }
 
   default int countStacks() {
-    return countStacks(StackFilters.ALL);
+    return countStacks(StackFilter.ALL);
   }
 
   default int countStacks(Predicate<ItemStack> filter) {
@@ -172,7 +171,7 @@ public interface ContainerManipulator {
    * @return true is exists
    */
   default boolean contains(ItemStack... items) {
-    return contains(StackFilters.anyOf(items));
+    return contains(StackFilter.anyOf(items));
   }
 
   /**
@@ -191,7 +190,7 @@ public interface ContainerManipulator {
    * @return the number of items in the inventory
    */
   default int countItems() {
-    return countItems(StackFilters.ALL);
+    return countItems(StackFilter.ALL);
   }
 
   /**
@@ -201,7 +200,7 @@ public interface ContainerManipulator {
    * @return the number of items in the inventory
    */
   default int countItems(ItemStack... filters) {
-    return countItems(StackFilters.anyOf(filters));
+    return countItems(StackFilter.anyOf(filters));
   }
 
   default boolean hasItems() {

@@ -1,6 +1,6 @@
 package mods.railcraft.world.inventory;
 
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +22,6 @@ public class FeedSlot extends Slot {
   }
 
   public static boolean canPlaceItem(ItemStack stack) {
-    return StackFilters.FEED.test(stack);
+    return StackFilter.FEED.test(stack);
   }
 }

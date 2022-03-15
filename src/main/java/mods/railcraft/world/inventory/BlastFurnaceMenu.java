@@ -21,7 +21,7 @@ public final class BlastFurnaceMenu extends CrafterMenu {
     this.addSlot(new OutputSlot(this.logic, BlastFurnaceModule.SLOT_OUTPUT, 116, 21));
     this.addSlot(new OutputSlot(this.logic, BlastFurnaceModule.SLOT_SLAG, 116, 53));
 
-    this.addPlayerSlots(inventory);
+    this.addInventorySlots(inventory);
 
     this.addDataSlot(new SimpleDataSlot(logic::getBurnTime, logic::setBurnTime));
     this.addDataSlot(

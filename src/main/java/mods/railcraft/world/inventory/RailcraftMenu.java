@@ -42,7 +42,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     return this.widgets;
   }
 
-  protected final void addPlayerSlots(Inventory inventory) {
+  protected final void addInventorySlots(Inventory inventory) {
     this.addPlayerSlots(inventory, 166);
   }
 

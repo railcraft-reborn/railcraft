@@ -1,23 +1,21 @@
 package mods.railcraft.advancements;
 
-import com.google.gson.JsonObject;
-
 import javax.annotation.Nullable;
-
+import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate.Composite;
 import net.minecraft.advancements.critereon.NbtPredicate;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SerializationContext;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class MultiBlockFormedTrigger extends
@@ -33,7 +31,7 @@ public class MultiBlockFormedTrigger extends
 
   @Override
   protected MultiBlockFormedTrigger.Instance createInstance(JsonObject json,
-      Composite andPredicate, DeserializationContext parser) {
+      EntityPredicate.Composite andPredicate, DeserializationContext parser) {
 
     BlockEntityType<?> type = json.has("type")
         ? ForgeRegistries.BLOCK_ENTITIES.getValue(
@@ -48,20 +46,21 @@ public class MultiBlockFormedTrigger extends
   /**
    * Invoked when the user forms a multiblock.
    */
-  public void trigger(ServerPlayer playerEntity, RailcraftBlockEntity tile) {
-    this.trigger(playerEntity, (criterionInstance) -> criterionInstance.matches(tile));
+  public void trigger(ServerPlayer playerEntity, RailcraftBlockEntity blockEntity) {
+    this.trigger(playerEntity, (criterionInstance) -> criterionInstance.matches(blockEntity));
   }
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final @Nullable BlockEntityType<?> type;
-    private final NbtPredicate nbt;
+    @Nullable
+    private final BlockEntityType<?> type;
+    private final NbtPredicate predicate;
 
-    private Instance(Composite entityPredicate,
-        @Nullable BlockEntityType<?> type, NbtPredicate nbtPredicate) {
+    private Instance(EntityPredicate.Composite entityPredicate,
+        @Nullable BlockEntityType<?> type, NbtPredicate predicate) {
       super(MultiBlockFormedTrigger.ID, entityPredicate);
       this.type = type;
-      this.nbt = nbtPredicate;
+      this.predicate = predicate;
     }
 
     public static MultiBlockFormedTrigger.Instance formedMultiBlock(
@@ -74,9 +73,9 @@ public class MultiBlockFormedTrigger extends
       return new MultiBlockFormedTrigger.Instance(Composite.ANY, tileEntityType, nbtPredicate);
     }
 
-    public boolean matches(RailcraftBlockEntity tile) {
-      return Conditions.check(this.type, tile.getType())
-          && nbt.matches(tile.save(new CompoundTag()));
+    public boolean matches(RailcraftBlockEntity blockEntity) {
+      return Conditions.check(this.type, blockEntity.getType())
+          && this.predicate.matches(blockEntity.saveWithoutMetadata());
     }
 
     @Override
@@ -90,7 +89,7 @@ public class MultiBlockFormedTrigger extends
       if (this.type != null) {
         json.addProperty("type", this.type.getRegistryName().toString());
       }
-      json.add("nbt", this.nbt.serializeToJson());
+      json.add("nbt", this.predicate.serializeToJson());
       return json;
     }
   }

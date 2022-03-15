@@ -1,7 +1,7 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,7 +21,7 @@ public class TankMinecartMenu extends RailcraftMenu {
 
     this.addSlot(new FluidFilterSlot(tankMinecart.getFilterInv(), 0, 80, 21));
     this.addSlot(new ItemFilterSlot(
-        StackFilters.FLUID_CONTAINER, tankMinecart.getInvLiquids(), 0, 116, 21));
+        StackFilter.FLUID_CONTAINER, tankMinecart.getInvLiquids(), 0, 116, 21));
     this.addSlot(new OutputSlot(tankMinecart.getInvLiquids(), 1, 116, 57));
     this.addSlot(new OutputSlot(tankMinecart.getInvLiquids(), 2, 80, 57));
 

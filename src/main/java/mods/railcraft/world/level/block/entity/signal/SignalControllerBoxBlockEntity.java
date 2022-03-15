@@ -109,12 +109,11 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public CompoundTag save(CompoundTag data) {
-    super.save(data);
-    data.putString("defaultAspect", this.defaultAspect.getSerializedName());
-    data.putString("poweredAspect", this.poweredAspect.getSerializedName());
-    data.put("signalController", this.signalController.serializeNBT());
-    return data;
+  public void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putString("defaultAspect", this.defaultAspect.getSerializedName());
+    tag.putString("poweredAspect", this.poweredAspect.getSerializedName());
+    tag.put("signalController", this.signalController.serializeNBT());
   }
 
   @Override

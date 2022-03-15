@@ -15,9 +15,10 @@ import org.apache.commons.lang3.StringUtils;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
-import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.IPaintedCart;
 import mods.railcraft.api.carts.IRoutableCart;
+import mods.railcraft.api.carts.Link;
+import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -34,11 +35,10 @@ import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.IDirectionalCart;
-import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
+import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
 import mods.railcraft.world.entity.vehicle.Train;
-import mods.railcraft.world.entity.vehicle.LinkageManagerImpl.LinkType;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
@@ -77,7 +77,7 @@ import net.minecraft.world.phys.Vec3;
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class Locomotive extends RailcraftMinecart
-    implements IDirectionalCart, ILinkableCart, Lockable,
+    implements IDirectionalCart, LinkageHandler, Lockable,
     IPaintedCart, IRoutableCart {
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =
@@ -313,8 +313,8 @@ public abstract class Locomotive extends RailcraftMinecart
   }
 
   /**
-   * Alternative to {@link Locomotive#setDestination(String destination)} (void return), sets
-   * the destination based on the ticket the user has.
+   * Alternative to {@link Locomotive#setDestination(String destination)} (void return), sets the
+   * destination based on the ticket the user has.
    */
   public boolean setDestination(ItemStack ticket) {
     if (ticket.getItem() instanceof TicketItem) {
@@ -363,8 +363,7 @@ public abstract class Locomotive extends RailcraftMinecart
   }
 
   /**
-   * Determines if the specified {@link Mode} is allowed in the {@link Locomotive}'s current
-   * state.
+   * Determines if the specified {@link Mode} is allowed in the {@link Locomotive}'s current state.
    *
    * @param mode - the {@link Mode} to check
    * @return {@code true} if the specified mode is allowed
@@ -805,13 +804,13 @@ public abstract class Locomotive extends RailcraftMinecart
       return true;
     }
 
-    LinkageManagerImpl lm = LinkageManagerImpl.INSTANCE;
-
-    if (StreamSupport.stream(lm.linkIterator(this, LinkType.LINK_A).spliterator(), false)
+    if (StreamSupport
+        .stream(LinkageManagerImpl.INSTANCE.linkIterator(this, Link.FRONT).spliterator(), false)
         .anyMatch(linked -> !isExemptFromLinkLimits(linked))) {
       return false;
     }
-    return StreamSupport.stream(lm.linkIterator(this, LinkType.LINK_B).spliterator(), false)
+    return StreamSupport
+        .stream(LinkageManagerImpl.INSTANCE.linkIterator(this, Link.BACK).spliterator(), false)
         .allMatch(this::isExemptFromLinkLimits);
   }
 

@@ -2,7 +2,7 @@
   "__comment": "Designed by CovertJaguar with Cubik Studio - https://cubik.studio",
   "parent": "block/block",
   "textures": {
-    "particle": "railcraft:entity/signal_box/top",
+    "particle": "#up",
     "down": "railcraft:entity/signal_box/bottom",
     "up": "railcraft:block/signal_box_side_inventory",
     "north": "railcraft:block/signal_box_side_inventory",

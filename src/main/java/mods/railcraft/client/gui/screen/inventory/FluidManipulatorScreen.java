@@ -1,7 +1,7 @@
 package mods.railcraft.client.gui.screen.inventory;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeWidgetRenderer;
+import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetFluidManipulatorAttributesMessage;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;
@@ -17,7 +17,7 @@ public class FluidManipulatorScreen extends ManipulatorScreen<FluidManipulatorMe
   public FluidManipulatorScreen(FluidManipulatorMenu menu, Inventory inventory,
       Component title) {
     super(menu, inventory, title);
-    this.registerWidgetRenderer(new FluidGaugeWidgetRenderer(menu.getFluidGauge()));
+    this.registerWidgetRenderer(new FluidGaugeRenderer(menu.getFluidGauge()));
   }
 
   @Override

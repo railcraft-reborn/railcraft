@@ -3,7 +3,7 @@ package mods.railcraft.util;
 import java.util.function.Consumer;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.network.play.PacketEffect;
+import mods.railcraft.network.play.EffectMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
@@ -115,17 +115,17 @@ public final class HostEffects implements Charge.IHostZapEffect {
 
   private void sendEffect(RemoteEffectType type, Level world, BlockPos pos,
       Consumer<FriendlyByteBuf> writer) {
-    preparePacket(type, writer).sendPacket(world, pos);
+    preparePacket(type, writer).send(world, pos);
   }
 
   private void sendEffect(RemoteEffectType type, Level world, Vec3 pos,
       Consumer<FriendlyByteBuf> writer) {
-    preparePacket(type, writer).sendPacket(world, pos);
+    preparePacket(type, writer).send(world, pos);
   }
 
-  private PacketEffect preparePacket(RemoteEffectType type, Consumer<FriendlyByteBuf> writer) {
+  private EffectMessage preparePacket(RemoteEffectType type, Consumer<FriendlyByteBuf> writer) {
     FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
     writer.accept(buf);
-    return new PacketEffect(type, buf);
+    return new EffectMessage(type, buf);
   }
 }

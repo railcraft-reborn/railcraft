@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.mixin.AbstractMinecartMixin;
 import mods.railcraft.util.EntitySearcher;
@@ -61,12 +60,11 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       return;
     }
 
-    LinkageManager lm = LinkageManagerImpl.INSTANCE;
-    AbstractMinecart link = lm.getLinkedCartA(cart);
+    var link = LinkageManagerImpl.INSTANCE.getLinkedCartA(cart);
     if (link != null && (link == other || link.hasPassenger(other))) {
       return;
     }
-    link = lm.getLinkedCartB(cart);
+    link = LinkageManagerImpl.INSTANCE.getLinkedCartB(cart);
     if (link != null && (link == other || link.hasPassenger(other))) {
       return;
     }
@@ -96,7 +94,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     if (MiscTools.RANDOM.nextFloat() < 0.001f) {
       List<AbstractMinecart> carts = EntitySearcher.findMinecarts().around(cart)
           .and(EntitySelector.ENTITY_STILL_ALIVE, RCEntitySelectors.NON_MECHANICAL)
-          .in(cart.level);
+          .search(cart.level);
       if (carts.size() >= 12) {
         primeToExplode(cart);
       }
@@ -266,6 +264,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
    */
   public void handleTick(AbstractMinecart cart) {
     CompoundTag data = cart.getPersistentData();
+    var extension = MinecartExtension.getOrThrow(cart);
 
     // Fix flip
     float distance = MathTools.getDistanceBetweenAngles(cart.getYRot(), cart.yRotO);
@@ -285,19 +284,19 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       data.putBoolean("ghost", false);
     }
 
-    int launched = data.getInt(CartConstants.TAG_LAUNCHED);
+    var launchState = extension.getLaunchState();
     if (BaseRailBlock.isRail(cart.level, cart.blockPosition())) {
       cart.fallDistance = 0;
       if (cart.isVehicle()) {
         cart.getPassengers().forEach(p -> p.fallDistance = 0);
       }
-      if (launched > 1) {
+      if (launchState == LaunchState.LAUNCHED) {
         this.land(cart);
       }
-    } else if (launched == 1) {
-      data.putInt(CartConstants.TAG_LAUNCHED, 2);
+    } else if (launchState == LaunchState.LAUNCHING) {
+      extension.setLaunchState(LaunchState.LAUNCHED);
       cart.setCanUseRail(true);
-    } else if (launched > 1 && cart.isOnGround()) {
+    } else if (launchState == LaunchState.LAUNCHED && cart.isOnGround()) {
       this.land(cart);
     }
 
@@ -307,13 +306,12 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       data.putInt(CartConstants.TAG_PREVENT_MOUNT, mountPrevention);
     }
 
-    byte elevator = data.getByte(CartConstants.TAG_ELEVATOR);
-    if (elevator < ElevatorTrackBlock.ELEVATOR_TIMER) {
+    var elevatorRemainingTicks = extension.getElevatorRemainingTicks();
+    if (elevatorRemainingTicks < ElevatorTrackBlock.ELEVATOR_TIMER) {
       cart.setNoGravity(false);
     }
-    if (elevator > 0) {
-      elevator--;
-      data.putByte(CartConstants.TAG_ELEVATOR, elevator);
+    if (elevatorRemainingTicks > 0) {
+      extension.setElevatorRemainingTicks(--elevatorRemainingTicks);
     }
 
     byte derail = data.getByte(CartConstants.TAG_DERAIL);
@@ -334,7 +332,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     if (data.getBoolean(CartConstants.TAG_HIGH_SPEED)) {
       if (CartTools.cartVelocityIsLessThan(cart, HighSpeedTools.SPEED_EXPLODE)) {
         data.putBoolean(CartConstants.TAG_HIGH_SPEED, false);
-      } else if (data.getInt(CartConstants.TAG_LAUNCHED) == 0) {
+      } else if (launchState == LaunchState.LANDED) {
         HighSpeedTools.checkSafetyAndExplode(cart.level, cart.blockPosition(), cart);
       }
     }
@@ -349,7 +347,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
   }
 
   private void land(AbstractMinecart cart) {
-    cart.getPersistentData().putInt(CartConstants.TAG_LAUNCHED, 0);
+    MinecartExtension.getOrThrow(cart).setLaunchState(LaunchState.LANDED);
     cart.setMaxSpeedAirLateral(AbstractMinecart.DEFAULT_MAX_SPEED_AIR_LATERAL);
     cart.setMaxSpeedAirVertical(AbstractMinecart.DEFAULT_MAX_SPEED_AIR_VERTICAL);
     cart.setDragAir(AbstractMinecart.DEFAULT_AIR_DRAG);

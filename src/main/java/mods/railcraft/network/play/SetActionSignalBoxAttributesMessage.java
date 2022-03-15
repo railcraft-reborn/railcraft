@@ -11,18 +11,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetActionSignalBoxAttributesMessage {
-
-  private final BlockPos blockPos;
-  private final Set<SignalAspect> actionSignalAspects;
-  private final LockableSignalBoxBlockEntity.Lock lock;
-
-  public SetActionSignalBoxAttributesMessage(BlockPos blockPos,
-      Set<SignalAspect> actionSignalAspects, LockableSignalBoxBlockEntity.Lock lock) {
-    this.blockPos = blockPos;
-    this.actionSignalAspects = actionSignalAspects;
-    this.lock = lock;
-  }
+public record SetActionSignalBoxAttributesMessage(BlockPos blockPos,
+    Set<SignalAspect> actionSignalAspects, LockableSignalBoxBlockEntity.Lock lock) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);

@@ -176,9 +176,7 @@ dependencies {
 // }
 
 jar {
-    from sourceSets.main.output
-    from sourceSets.api.output
-
+    from([sourceSets.api.output, sourceSets.main.output])
     manifest {
         attributes([
             "Implementation-Title": project.name,
@@ -187,7 +185,6 @@ jar {
             "MixinConfigs": 'railcraft.mixins.json'
         ])
     }
-
     finalizedBy('reobfJar')
 }
 

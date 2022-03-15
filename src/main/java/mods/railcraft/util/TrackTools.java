@@ -43,11 +43,12 @@ public final class TrackTools {
     return isRail(stack.getItem());
   }
 
+  @SuppressWarnings("deprecation")
   public static boolean isRail(Item item) {
     return item instanceof TrackPlacer
         || (item instanceof BlockItem blockItem
             && blockItem.getBlock() instanceof BaseRailBlock
-            && BlockTags.RAILS.contains(blockItem.getBlock()));
+            && blockItem.getBlock().builtInRegistryHolder().is(BlockTags.RAILS));
   }
 
   public static RailShape getTrackDirection(BlockGetter world, BlockPos pos,

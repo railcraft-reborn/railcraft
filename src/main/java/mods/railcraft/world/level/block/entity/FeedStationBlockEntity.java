@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.container.CompositeContainerAdaptor;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.inventory.FeedStationMenu;
 import mods.railcraft.world.level.block.FeedStationBlock;
 import net.minecraft.core.BlockPos;
@@ -41,7 +41,7 @@ public class FeedStationBlockEntity extends ContainerBlockEntity implements Menu
     if (blockEntity.processingTicks++ >= (MIN_FEED_INTERVAL / 4)
         && (feed.isEmpty() || feed.getCount() < feed.getMaxStackSize())) {
       var chests = CompositeContainerAdaptor.of(blockEntity.getAdjacentContainers());
-      chests.moveOneItemTo(blockEntity, StackFilters.FEED);
+      chests.moveOneItemTo(blockEntity, StackFilter.FEED);
       blockEntity.setChanged();
     }
 
@@ -57,7 +57,7 @@ public class FeedStationBlockEntity extends ContainerBlockEntity implements Menu
           .at(blockPos)
           .raiseFloor(-1)
           .raiseCeiling(2)
-          .expandHorizontally(AREA)
+          .inflateHorizontally(AREA)
           .build();
       var animals = level.getEntitiesOfClass(Animal.class, box);
       for (var target : animals) {

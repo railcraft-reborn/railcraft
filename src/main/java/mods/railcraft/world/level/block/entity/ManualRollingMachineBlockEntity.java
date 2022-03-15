@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
 
   private static final Component MENU_TITLE =
-      new TranslatableComponent("container.manual_rolling_machine");
+      new TranslatableComponent("container.railcraft.manual_rolling_machine");
 
   private int recipieRequiredTime = 12222222;
   private int currentTick = 0;

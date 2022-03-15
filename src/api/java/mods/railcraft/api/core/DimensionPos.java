@@ -6,8 +6,8 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.core;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.NbtUtils;
@@ -25,7 +25,7 @@ import net.minecraft.world.level.Level;
  */
 public final class DimensionPos {
 
-  private static final Logger logger = LogManager.getLogger();
+  private static final Logger logger = LogUtils.getLogger();
 
   /**
    * The dimension

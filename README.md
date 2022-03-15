@@ -84,20 +84,13 @@ Examples of non-constants:
 
 ## Building
 
-The Railcraft Project follows standard Forge conventions for setting up and building a project, with a couple additional details (details to come).
+Railcraft follows standard Forge conventions for setting up and building a project.
 
-Initial Setup from the Command Line:
+Initial setup from a terminal:
 
 * For Eclipse, run `gradlew genEclipseRuns`
 * For IntelliJ, run `gradlew genIntellijRuns`
 * For VSCode, run `gradlew genVSCodeRuns`
-
-The [API](https://github.com/CovertJaguar/Railcraft-API) and [Localization](https://github.com/CovertJaguar/Railcraft-Localization) files reside in their own repositories and are pulled automatically into the main repo as git submodules. You will however need to run the following commands:
-
-```sh
-git submodule init
-git submodule update
-```
 
 To build, run:
 
@@ -105,11 +98,13 @@ To build, run:
 gradlew build
 ```
 
-More information [here](https://mcforge.readthedocs.io/en/1.16.x/gettingstarted).
+More information [here](https://mcforge.readthedocs.io/en/1.18.x/gettingstarted/).
 
 ## License
 
 Railcraft is licensed under a custom usage license tailored specifically for the project. It can be read [here](https://github.com/CovertJaguar/Railcraft/blob/master/LICENSE.md).
+
+**Note: The API is licensed under the MIT license which can be found in `src\api\java\mods\railcraft\api\LICENSE.txt`**
 
 * Key things to keep in mind:
 * You may **NOT** create works using the Railcraft code (source or binary) without CovertJaguar's explicit permission except in the cases listed in this license.

@@ -39,10 +39,10 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
     if (this.menu.getCarried().isEmpty()) {
-      for (var element : this.widgetRenderers) {
-        if (!element.widget.hidden) {
-          var tooltip = element.getTooltip();
-          if (tooltip != null && element.isMouseOver(mouseX - left, mouseY - top)) {
+      for (var renderer : this.widgetRenderers) {
+        if (!renderer.widget.hidden) {
+          var tooltip = renderer.getTooltip();
+          if (tooltip != null && renderer.isMouseOver(mouseX - left, mouseY - top)) {
             this.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY, this.font);
           }
         }
@@ -76,9 +76,9 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     int relativeMouseX = mouseX - this.leftPos;
     int relativeMouseY = mouseY - this.topPos;
 
-    for (WidgetRenderer<?> element : this.widgetRenderers) {
-      if (!element.widget.hidden) {
-        element.render(this, poseStack, x, y, relativeMouseX, relativeMouseY);
+    for (var renderer : this.widgetRenderers) {
+      if (!renderer.widget.hidden) {
+        renderer.render(this, poseStack, x, y, relativeMouseX, relativeMouseY);
       }
     }
   }

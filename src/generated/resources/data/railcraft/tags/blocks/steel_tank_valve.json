@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "railcraft:white_steel_tank_valve",
+    "railcraft:orange_steel_tank_valve",
+    "railcraft:magenta_steel_tank_valve",
+    "railcraft:light_blue_steel_tank_valve",
+    "railcraft:yellow_steel_tank_valve",
+    "railcraft:lime_steel_tank_valve",
+    "railcraft:pink_steel_tank_valve",
+    "railcraft:gray_steel_tank_valve",
+    "railcraft:light_gray_steel_tank_valve",
+    "railcraft:cyan_steel_tank_valve",
+    "railcraft:purple_steel_tank_valve",
+    "railcraft:blue_steel_tank_valve",
+    "railcraft:brown_steel_tank_valve",
+    "railcraft:green_steel_tank_valve",
+    "railcraft:red_steel_tank_valve",
+    "railcraft:black_steel_tank_valve"
+  ]
+}

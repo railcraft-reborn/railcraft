@@ -18,8 +18,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.MapMaker;
 import mods.railcraft.util.CompositeFluidHandler;
@@ -47,7 +47,7 @@ public final class Train implements Iterable<AbstractMinecart> {
 
   public static final String TRAIN_NBT = "rcTrain";
 
-  private static final Logger logger = LogManager.getLogger();
+  private static final Logger logger = LogUtils.getLogger();
 
   private static final Map<ServerLevel, Manager> managers = new MapMaker().weakKeys().makeMap();
 
@@ -521,7 +521,7 @@ public final class Train implements Iterable<AbstractMinecart> {
 
     private static final String ID = "railcraft.trains";
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogUtils.getLogger();
 
     final Map<UUID, Train> trains = new ForwardingMap<UUID, Train>() {
       private final Map<UUID, Train> trains = new HashMap<>();

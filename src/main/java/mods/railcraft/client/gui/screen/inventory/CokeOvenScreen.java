@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
-import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeWidgetRenderer;
+import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +16,7 @@ public class CokeOvenScreen extends RailcraftMenuScreen<CokeOvenMenu> {
   public CokeOvenScreen(CokeOvenMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
 
-    this.registerWidgetRenderer(new FluidGaugeWidgetRenderer(this.menu.getFluidGauge()));
+    this.registerWidgetRenderer(new FluidGaugeRenderer(this.menu.getFluidGauge()));
   }
 
   @Override

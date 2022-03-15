@@ -1,13 +1,13 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
 import java.util.List;
+import javax.annotation.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.module.CokeOvenModule;
-import mods.railcraft.world.level.block.entity.module.ModuleProvider;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity> {
 
   private static final Component MENU_TITLE =
-      new TranslatableComponent("container.coke_oven");
+      new TranslatableComponent("container.railcraft.coke_oven");
 
   private static final MultiblockPattern PATTERN = Util.make(() -> {
     final var bricks = BlockPredicate.of(RailcraftBlocks.COKE_OVEN_BRICKS);
@@ -33,7 +33,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
         CharList.of('B', 'B', 'B'),
         CharList.of('B', 'B', 'B'));
 
-    return MultiblockPattern.builder(new BlockPos(2, 1, 2))
+    return MultiblockPattern.builder(2, 1, 2)
         .layer(topAndBottom)
         .layer(List.of(
             CharList.of('B', 'W', 'B'),
@@ -52,7 +52,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     super(RailcraftBlockEntityTypes.COKE_OVEN.get(), blockPos, blockState,
         CokeOvenBlockEntity.class, PATTERN);
     this.module = this.moduleDispatcher.registerCapabilityModule("coke_oven",
-        new CokeOvenModule(ModuleProvider.of(this)));
+        new CokeOvenModule(this));
   }
 
   public CokeOvenModule getLogic() {
@@ -65,8 +65,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   }
 
   @Override
-  protected void membershipChanged() {
-    var membership = this.getMembership().orElse(null);
+  protected void membershipChanged(@Nullable Membership<CokeOvenBlockEntity> membership) {
     if (membership == null) {
       this.level.setBlock(this.getBlockPos(),
           this.getBlockState()
@@ -94,6 +93,8 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
       CokeOvenBlockEntity blockEntity) {
 
     blockEntity.serverTick();
+
+    blockEntity.moduleDispatcher.serverTick();
 
     blockEntity.getMembership()
         .map(Membership::master)

@@ -167,19 +167,11 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe>
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    if (!super.canPlaceItem(slot, stack)) {
-      return false;
-    }
-    switch (slot) {
-      case SLOT_OUTPUT:
-      case SLOT_SLAG:
-        return false;
-      case SLOT_FUEL:
-        return this.getItemBurnTime(stack) > 0;
-      case SLOT_INPUT:
-        return true;
-    }
-    return false;
+    return super.canPlaceItem(slot, stack) && switch (slot) {
+      case SLOT_INPUT -> true;
+      case SLOT_FUEL -> this.getItemBurnTime(stack) > 0;
+      default -> false;
+    };
   }
 
   @Override

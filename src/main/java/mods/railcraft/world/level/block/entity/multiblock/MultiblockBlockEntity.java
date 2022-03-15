@@ -1,16 +1,21 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.objects.Object2CharMap;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,29 +24,48 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     extends RailcraftBlockEntity implements MenuProvider {
 
-  private static final Logger logger = LogManager.getLogger();
+  private static final Logger logger = LogUtils.getLogger();
 
   private final Class<T> clazz;
-  private final MultiblockPattern pattern;
+  private final Collection<MultiblockPattern> patterns;
 
+  // Only present on the server
   @Nullable
   private Membership<T> membership;
 
-  private final Map<BlockPos, T> members = new HashMap<>();
+  /**
+   * Used by the master of a multiblock to store all of its members. <code>null</code> if this block
+   * is not the master of a formed multiblock.
+   */
+  @Nullable
+  private Map<BlockPos, T> members;
 
-  private boolean master;
+  /**
+   * Used by the master of a multiblock to store the current pattern.
+   */
+  @Nullable
+  private MultiblockPattern currentPattern;
 
   private boolean pendingEvaluation;
 
+  // Only present on the client
+  @Nullable
+  private UnresolvedMembership unresolvedMembership;
+
   public MultiblockBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Class<T> clazz, MultiblockPattern pattern) {
-    super(type, blockPos, blockState);
-    this.clazz = clazz;
-    this.pattern = pattern;
+    this(type, blockPos, blockState, clazz, Collections.singleton(pattern));
   }
 
-  public MultiblockPattern getPattern() {
-    return this.pattern;
+  public MultiblockBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
+      Class<T> clazz, Collection<MultiblockPattern> patterns) {
+    super(type, blockPos, blockState);
+    this.clazz = clazz;
+    this.patterns = Collections.unmodifiableCollection(patterns);
+  }
+
+  public Collection<MultiblockPattern> getPatterns() {
+    return this.patterns;
   }
 
   /**
@@ -68,13 +92,15 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     }
 
     var pattern = this.resolvePattern();
-    if (this.isFormed() && (!this.isMaster() || pattern.isPresent())) {
+    if (this.isFormed() && (!this.isMaster() || pattern.isPresent())
+        || !this.isFormed() && pattern.isEmpty()) {
       return;
     }
 
-    pattern.ifPresentOrElse(resolvedPattern -> {
-      this.master = true;
-      this.members.clear();
+    pattern.ifPresentOrElse(pair -> {
+      this.currentPattern = pair.getLeft();
+      this.members = new HashMap<>();
+      var resolvedPattern = pair.getRight();
       for (var entry : resolvedPattern.object2CharEntrySet()) {
         if (!this.isBlockEntity(entry.getCharValue())) {
           continue;
@@ -83,7 +109,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
         var blockEntity =
             LevelUtil.getBlockEntity(this.level, entry.getKey(), this.clazz).orElse(null);
         if (blockEntity == null) {
-          logger.warn("Invalid block @ {}", entry.getKey());
+          logger.warn("Invalid block @ [{}]", entry.getKey());
           this.disband();
           return;
         } else {
@@ -94,85 +120,161 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     }, this::disband);
   }
 
+  /**
+   * Clear the {@link Membership} of every member of this multiblock and set {@link #members} to
+   * <code>null</code>. Does nothing if {@link #members} is already <code>null</code>.
+   */
   private void disband() {
-    System.out.println(this.master);
-
-    this.master = false;
-    for (var entry : this.members.entrySet()) {
-      if (entry.getValue() == this) {
-        System.out.println("yep");
-      }
-      entry.getValue().setMembership(null);
+    this.currentPattern = null;
+    if (this.members == null) {
+      return;
     }
-    this.members.clear();
+    for (var entry : this.members.entrySet()) {
+      if (!entry.getValue().isRemoved()) {
+        entry.getValue().setMembership(null);
+      }
+    }
+    this.members = null;
   }
 
+  /**
+   * Determine if the specified pattern marker is expected to be a block entity.
+   * 
+   * @param marker - the pattern marker
+   * @return <code>true</code> if it is, <code>false</code> otherwise
+   */
   protected abstract boolean isBlockEntity(char marker);
 
   /**
-   * Handles the pattern detection.
+   * Evaluate the multiblock pattern and resolve the position of each block.
    * 
-   * @return true if pattern detection is ok, false if not.
+   * @return an empty {@link Optional} if the pattern fails to resolve, otherwise an
+   *         {@link Optional} containing a map of block positions to their associated pattern
+   *         marker.
    */
-  public Optional<Object2CharMap<BlockPos>> resolvePattern() {
+  public Optional<Pair<MultiblockPattern, Object2CharMap<BlockPos>>> resolvePattern() {
     if (this.level instanceof ServerLevel serverLevel) {
-      return this.pattern.verifyPattern(this.getBlockPos(), serverLevel);
+      return this.patterns.stream()
+          .flatMap(pattern -> pattern.resolve(this.getBlockPos(), serverLevel)
+              .map(map -> Pair.of(pattern, map))
+              .stream())
+          .findAny();
     } else {
       throw new IllegalStateException("Resolving multiblock pattern on invalid side.");
     }
   }
 
-  protected void setMembership(Membership<T> membership) {
+  /**
+   * Set this block's {@link Membership}.
+   * 
+   * @param membership - the {@link Membership} or <code>null</code> if it has none.
+   */
+  protected void setMembership(@Nullable Membership<T> membership) {
     this.membership = membership;
-    this.membershipChanged();
+    this.membershipChanged(membership);
     this.setChanged();
+    this.syncToClient();
   }
-
-  protected abstract void membershipChanged();
 
   /**
-   * If this block is the master.
-   * 
-   * @return <code>true</code> if this is the master.
+   * Called upon membership change, e.g. if this block is now part of a formed multiblock or if a
+   * multiblock has been disbanded. <b>This should not be called if this block has been removed.</b>
    */
-  public boolean isMaster() {
-    return this.master;
-  }
+  protected abstract void membershipChanged(@Nullable Membership<T> membership);
 
+  /**
+   * Determine if this block is a member of a formed multiblock.
+   * 
+   * @return <code>true</code> if it is a memember, <code>false</code> otherwise
+   */
   public boolean isFormed() {
     return this.membership != null;
   }
 
+  /**
+   * Determine if this block is the master of a formed multiblock (if it is part of any).
+   * 
+   * @return <code>false</code> if this block is not part of a formed multiblock or if it is not the
+   *         master, <code>true</code> otherwise
+   */
+  public boolean isMaster() {
+    return this.level.isClientSide()
+        ? this.unresolvedMembership != null
+            && this.unresolvedMembership.masterPos().equals(this.worldPosition)
+        : this.membership != null && this.membership.master() == this;
+  }
+
+  /**
+   * Retrieve this block's {@link Membership}.
+   * 
+   * @return an optional {@link Membership}
+   */
   public Optional<Membership<T>> getMembership() {
     return Optional.ofNullable(this.membership);
   }
 
-  @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.disband();
+  public Optional<MultiblockPattern> getCurrentPattern() {
+    return Optional.ofNullable(this.currentPattern);
   }
 
-  @Override
-  public void onLoad() {
-    super.onLoad();
-    if (this.master) {
-      this.evaluate();
-    }
+  public Optional<Collection<T>> getMembers() {
+    return Optional.ofNullable(this.members).map(Map::values);
+  }
+
+  public Stream<T> streamMembers() {
+    return Stream.ofNullable(this.members)
+        .map(Map::values)
+        .flatMap(Collection::stream);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.master = tag.getBoolean("master");
+    if (tag.getBoolean("master")) {
+      this.enqueueEvaluation();
+    }
   }
 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putBoolean("master", this.master);
+    tag.putBoolean("master", this.membership != null && this.membership.master() == this);
   }
 
-  public record Membership<T extends MultiblockBlockEntity<T>> (char marker, T master) {
+  @Override
+  public void writeToBuf(FriendlyByteBuf out) {
+    super.writeToBuf(out);
+    if (this.membership == null) {
+      out.writeBoolean(true);
+    } else {
+      out.writeBoolean(false);
+      out.writeChar(this.membership.marker());
+      out.writeBlockPos(this.membership.master().getBlockPos());
+    }
   }
+
+  @Override
+  public void readFromBuf(FriendlyByteBuf in) {
+    super.readFromBuf(in);
+    this.unresolvedMembership =
+        in.readBoolean() ? null : new UnresolvedMembership(in.readChar(), in.readBlockPos());
+  }
+
+  /**
+   * Contains information about a formed multiblock member such as its pattern marker and the master
+   * of the multiblock.
+   * 
+   * @author Sm0keySa1m0n
+   *
+   * @param <T> - the type of multiblock
+   */
+  public record Membership<T extends MultiblockBlockEntity<T>> (char marker, T master) {}
+
+  /**
+   * An unresolved version of {@link Membership} which contains the position of the master instead
+   * of its instance.
+   * 
+   * @author Sm0keySa1m0n
+   */
+  private record UnresolvedMembership(char marker, BlockPos masterPos) {}
 }

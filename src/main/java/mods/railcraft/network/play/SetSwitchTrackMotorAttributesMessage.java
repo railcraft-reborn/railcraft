@@ -10,21 +10,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetSwitchTrackMotorAttributesMessage {
-
-  private final BlockPos blockPos;
-  private final Set<SignalAspect> actionSignalAspects;
-  private final boolean redstoneTriggered;
-  private final LockableSwitchTrackActuatorBlockEntity.Lock lock;
-
-  public SetSwitchTrackMotorAttributesMessage(BlockPos blockPos,
-      Set<SignalAspect> actionSignalAspects, boolean redstoneTriggered,
-      LockableSwitchTrackActuatorBlockEntity.Lock lock) {
-    this.blockPos = blockPos;
-    this.actionSignalAspects = actionSignalAspects;
-    this.redstoneTriggered = redstoneTriggered;
-    this.lock = lock;
-  }
+public record SetSwitchTrackMotorAttributesMessage(BlockPos blockPos,
+    Set<SignalAspect> actionSignalAspects, boolean redstoneTriggered,
+    LockableSwitchTrackActuatorBlockEntity.Lock lock) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);

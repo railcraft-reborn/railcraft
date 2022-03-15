@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "shape=east_west": {
+      "model": "railcraft:block/force_track",
+      "y": 90
+    },
+    "shape=north_south": {
+      "model": "railcraft:block/force_track"
+    }
+  }
+}

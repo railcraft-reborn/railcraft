@@ -7,18 +7,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetSignalControllerBoxAttributesMessage {
-
-  private final BlockPos blockPos;
-  private final SignalAspect defaultAspect;
-  private final SignalAspect poweredAspect;
-
-  public SetSignalControllerBoxAttributesMessage(BlockPos blockPos, SignalAspect defaultAspect,
-      SignalAspect poweredAspect) {
-    this.blockPos = blockPos;
-    this.defaultAspect = defaultAspect;
-    this.poweredAspect = poweredAspect;
-  }
+public record SetSignalControllerBoxAttributesMessage(BlockPos blockPos, SignalAspect defaultAspect,
+    SignalAspect poweredAspect) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);

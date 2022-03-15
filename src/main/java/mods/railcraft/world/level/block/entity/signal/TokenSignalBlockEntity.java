@@ -83,7 +83,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
       if (trackPos != null) {
         var carts = EntitySearcher.findMinecarts()
             .around(trackPos)
-            .in(level);
+            .search(level);
         carts.stream().filter(c -> !blockEntity.cartTimers.contains(c.getUUID()))
             .forEach(tokenRing::markCart);
         carts.forEach(c -> blockEntity.cartTimers.add(c.getUUID()));
@@ -99,11 +99,10 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public CompoundTag save(CompoundTag tag) {
-    tag = super.save(tag);
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
     tag.put("network", this.signalController.serializeNBT());
     tag.putUUID("tokenRingId", this.tokenRingId);
-    return tag;
   }
 
   @Override

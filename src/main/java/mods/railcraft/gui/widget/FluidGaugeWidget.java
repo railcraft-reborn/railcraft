@@ -1,8 +1,10 @@
 package mods.railcraft.gui.widget;
 
+import java.util.List;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fluids.FluidStack;
 
 
@@ -20,8 +22,12 @@ public class FluidGaugeWidget extends Widget {
     this.tank = tank;
   }
 
+  public List<Component> getTooltip() {
+    return this.tank.getTooltip();
+  }
+
   @Override
-  public boolean hasServerSyncData(ServerPlayer listener) {
+  public boolean requiresSync(ServerPlayer player) {
     syncCounter++;
     return (syncCounter % 16) == 0
         || (!this.lastSyncedFluidStack.isEmpty()
@@ -29,8 +35,8 @@ public class FluidGaugeWidget extends Widget {
   }
 
   @Override
-  public void writeServerSyncData(ServerPlayer listener, FriendlyByteBuf data) {
-    super.writeServerSyncData(listener, data);
+  public void writeToBuf(ServerPlayer player, FriendlyByteBuf data) {
+    super.writeToBuf(player, data);
     FluidStack fluidStack = tank.getFluid();
     this.lastSyncedFluidStack = fluidStack.isEmpty() ? FluidStack.EMPTY : fluidStack.copy();
     data.writeInt(tank.getCapacity());
@@ -38,8 +44,8 @@ public class FluidGaugeWidget extends Widget {
   }
 
   @Override
-  public void readServerSyncData(FriendlyByteBuf data) {
-    super.readServerSyncData(data);
+  public void readFromBuf(FriendlyByteBuf data) {
+    super.readFromBuf(data);
     tank.setCapacity(data.readInt());
     tank.setFluid(data.readFluidStack());
   }

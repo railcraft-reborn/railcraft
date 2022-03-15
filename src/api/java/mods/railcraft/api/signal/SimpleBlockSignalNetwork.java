@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackScanner;
 import net.minecraft.core.BlockPos;
@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSignal>
     implements BlockSignalNetwork {
 
-  private static final Logger logger = LogManager.getLogger();
+  private static final Logger logger = LogUtils.getLogger();
 
   public static final int SIGNAL_VALIDATION_INTERVAL = 4 * 60 * 20;
   private final Set<BlockPos> signalsToRevalidate = new HashSet<>();

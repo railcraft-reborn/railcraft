@@ -23,7 +23,7 @@ public class CokeOvenMenu extends CrafterMenu {
     this.addSlot(new OutputSlot(logic, 2, 149, 57));
     this.addSlot(new EmptyFluidContainerSlot(logic, 3, 149, 22));
 
-    this.addPlayerSlots(inventory);
+    this.addInventorySlots(inventory);
   }
 
   public CokeOvenBlockEntity getCokeOven() {

@@ -28,11 +28,11 @@ public class RailcraftSlot extends Slot {
 
   @Override
   public boolean mayPlace(ItemStack stack) {
-    return this.enabled.getAsBoolean() && this.container.canPlaceItem(getSlotIndex(), stack);
+    return this.enabled.getAsBoolean() && this.container.canPlaceItem(this.getSlotIndex(), stack);
   }
 
-  public RailcraftSlot setEnableCheck(BooleanSupplier isEnabled) {
-    this.enabled = isEnabled;
+  public RailcraftSlot setEnableCheck(BooleanSupplier enabled) {
+    this.enabled = enabled;
     return this;
   }
 

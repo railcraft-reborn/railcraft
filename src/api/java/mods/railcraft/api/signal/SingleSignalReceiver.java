@@ -2,8 +2,8 @@ package mods.railcraft.api.signal;
 
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +16,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 public class SingleSignalReceiver
     implements SignalReceiver, INBTSerializable<CompoundTag>, NetworkSerializable {
 
-  private static final Logger logger = LogManager.getLogger();
+  private static final Logger logger = LogUtils.getLogger();
 
   protected final BlockEntity blockEntity;
   private final Runnable syncListener;

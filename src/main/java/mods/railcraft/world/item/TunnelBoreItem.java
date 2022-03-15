@@ -25,7 +25,7 @@ public class TunnelBoreItem extends Item {
     if (BaseRailBlock.isRail(existingState)) {
       if (!level.isClientSide() && EntitySearcher.findMinecarts()
           .around(pos)
-          .in(level)
+          .search(level)
           .isEmpty()) {
         var trackShape = TrackTools.getTrackDirection(level, pos, existingState);
         if (TrackShapeHelper.isLevelStraight(trackShape)) {

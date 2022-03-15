@@ -7,18 +7,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetSignalCapacitorBoxAttributesMessage {
-
-  private final BlockPos blockPos;
-  private final short ticksToPower;
-  private final SignalCapacitorBoxBlockEntity.Mode mode;
-
-  public SetSignalCapacitorBoxAttributesMessage(BlockPos blockPos, short ticksToPower,
-      SignalCapacitorBoxBlockEntity.Mode mode) {
-    this.blockPos = blockPos;
-    this.ticksToPower = ticksToPower;
-    this.mode = mode;
-  }
+public record SetSignalCapacitorBoxAttributesMessage(BlockPos blockPos, short ticksToPower,
+    SignalCapacitorBoxBlockEntity.Mode mode) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);

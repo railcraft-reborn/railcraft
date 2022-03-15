@@ -2,18 +2,18 @@
 package mods.railcraft.network;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.network.play.EffectMessage;
 import mods.railcraft.network.play.LinkedCartsMessage;
-import mods.railcraft.network.play.PacketEffect;
 import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetEmbarkingTrackAttributesMessage;
 import mods.railcraft.network.play.SetFluidManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
+import mods.railcraft.network.play.SetLauncherTrackAttributesMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
-import mods.railcraft.network.play.SyncEntityMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -29,16 +29,17 @@ public enum NetworkChannel {
     @Override
     public void registerMessages(SimpleChannel simpleChannel) {
       simpleChannel
-          .messageBuilder(SyncEntityMessage.class, 0x00, NetworkDirection.PLAY_TO_CLIENT)
-          .encoder(SyncEntityMessage::encode)
-          .decoder(SyncEntityMessage::decode)
-          .consumer(SyncEntityMessage::handle)
+          .messageBuilder(SetLauncherTrackAttributesMessage.class, 0x00,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetLauncherTrackAttributesMessage::encode)
+          .decoder(SetLauncherTrackAttributesMessage::decode)
+          .consumer(SetLauncherTrackAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(PacketEffect.class, 0x01, NetworkDirection.PLAY_TO_CLIENT)
-          .encoder(PacketEffect::encode)
-          .decoder(PacketEffect::decode)
-          .consumer(PacketEffect::handle)
+          .messageBuilder(EffectMessage.class, 0x01, NetworkDirection.PLAY_TO_CLIENT)
+          .encoder(EffectMessage::encode)
+          .decoder(EffectMessage::decode)
+          .consumer(EffectMessage::handle)
           .add();
       simpleChannel.messageBuilder(SyncWidgetMessage.class, 0x02, NetworkDirection.PLAY_TO_CLIENT)
           .encoder(SyncWidgetMessage::encode)

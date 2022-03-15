@@ -4,19 +4,22 @@ import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.phys.BlockHitResult;
 
-public class CouplerTrackBlock extends PoweredOutfittedTrackBlock {
+public class CouplerTrackBlock extends PoweredOutfittedTrackBlock implements EntityBlock {
 
   public static final EnumProperty<CouplerTrackBlockEntity.Mode> MODE =
       EnumProperty.create("mode", CouplerTrackBlockEntity.Mode.class);
@@ -24,7 +27,7 @@ public class CouplerTrackBlock extends PoweredOutfittedTrackBlock {
   public CouplerTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
   }
-  
+
   @Override
   protected BlockState buildDefaultState(BlockState blockState) {
     return super.buildDefaultState(blockState)
@@ -38,11 +41,23 @@ public class CouplerTrackBlock extends PoweredOutfittedTrackBlock {
   }
 
   @Override
-  public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player,
-      InteractionHand hand, BlockHitResult rayTraceResult) {
-    return level.getBlockEntity(pos, RailcraftBlockEntityTypes.COUPLER_TRACK.get())
-        .map(track -> track.use(player, hand))
-        .orElseGet(() -> super.use(blockState, level, pos, player, hand, rayTraceResult));
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new CouplerTrackBlockEntity(blockPos, blockState);
+  }
+
+  @Override
+  protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos blockPos,
+      Player player, InteractionHand hand, ItemStack itemStack) {
+    final var mode = CouplerTrackBlock.getMode(blockState);
+    var newMode = player.isCrouching() ? mode.previous() : mode.next();
+    if (!level.isClientSide()) {
+      level.setBlockAndUpdate(blockPos, blockState.setValue(CouplerTrackBlock.MODE, newMode));
+      player.displayClientMessage(
+          new TranslatableComponent("coupler_track.mode",
+              newMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE)),
+          true);
+    }
+    return true;
   }
 
   @Override
@@ -60,9 +75,5 @@ public class CouplerTrackBlock extends PoweredOutfittedTrackBlock {
 
   public static CouplerTrackBlockEntity.Mode getMode(BlockState blockState) {
     return blockState.getValue(MODE);
-  }
-
-  public static void setMode(BlockState blockState, CouplerTrackBlockEntity.Mode mode) {
-    blockState.setValue(MODE, mode);
   }
 }

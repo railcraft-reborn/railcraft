@@ -1,0 +1,62 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:block/launcher_track",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "false",
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:block/launcher_track",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "north_south"
+      },
+      "apply": {
+        "model": "railcraft:block/launcher_track_on",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "powered": "true",
+        "shape": "east_west"
+      },
+      "apply": {
+        "model": "railcraft:block/launcher_track_on",
+        "y": 90
+      }
+    }
+  ]
+}

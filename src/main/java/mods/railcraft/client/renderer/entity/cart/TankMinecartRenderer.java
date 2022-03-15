@@ -7,12 +7,10 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.client.model.CubeModel;
 import mods.railcraft.client.model.LowSidesMinecartModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
-import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -23,7 +21,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart> {
 
@@ -60,56 +57,61 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
     }
   }
 
-  private void renderTank(TankMinecart cart, float partialTicks, PoseStack matrixStack,
+  private void renderTank(TankMinecart cart, float partialTicks, PoseStack poseStack,
       MultiBufferSource renderTypeBuffer, int packedLight, float red,
       float green, float blue, float alpha) {
-    StandardTank tank = cart.getTankManager().get(0);
+    var tank = cart.getTankManager().get(0);
     if (tank != null) {
-      FluidStack fluidStack = tank.getFluid();
+      var fluidStack = tank.getFluid();
       float capacity = tank.getCapacity();
       if (capacity > 0 && fluidStack != null && fluidStack.getAmount() > 0) {
-        matrixStack.pushPose();
+        poseStack.pushPose();
         {
-          float level = Math.min(fluidStack.getAmount() / capacity, capacity);
-          int stage = fluidStack.getFluid().getAttributes().isGaseous(fluidStack)
-              ? FluidRenderer.STAGES - 1
-              : Math.min(FluidRenderer.STAGES - 1, (int) (level * (FluidRenderer.STAGES - 1)));
+          var level = fluidStack.getAmount() / capacity;
+          var fluidMaxY = fluidStack.getFluid().getAttributes().isGaseous(fluidStack)
+              ? 1.0F
+              : Math.min(1.0F, level);
 
-          CuboidModel fluidModel =
-              FluidRenderer.getFluidModel(fluidStack, stage, FluidRenderer.FluidType.STILL);
+          var fluidModel = FluidRenderer.getFluidModel(fluidStack,
+              1.0F - (RenderUtil.SCALED_PIXEL * 2.0F),
+              fluidMaxY - (RenderUtil.SCALED_PIXEL * 2.0F),
+              1.0F - (RenderUtil.SCALED_PIXEL * 2.0F),
+              FluidRenderer.FluidType.STILL);
+
+          poseStack.translate(RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL,
+              RenderUtil.SCALED_PIXEL);
+
           if (fluidModel != null) {
             fluidModel.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
             fluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-            VertexConsumer builder = renderTypeBuffer.getBuffer(Sheets.cutoutBlockSheet());
-            CuboidModelRenderer.render(fluidModel, matrixStack, builder,
+            var builder = renderTypeBuffer.getBuffer(Sheets.cutoutBlockSheet());
+            CuboidModelRenderer.render(fluidModel, poseStack, builder,
                 RenderUtil.getColorARGB(fluidStack, level),
                 CuboidModelRenderer.FaceDisplay.FRONT, true);
           }
         }
-        matrixStack.popPose();
+        poseStack.popPose();
 
         if (cart.isFilling()) {
-          matrixStack.pushPose();
+          poseStack.pushPose();
           {
-            float scale = 6F / 16F;
-            matrixStack.translate(0.5F, 0F, 0.5F);
-            matrixStack.scale(scale, 1F, scale);
-            matrixStack.translate(-0.5F, 0F, -0.5F);
+            final var size = 0.3F;
+            poseStack.translate(0.5F - size / 2.0F, 0F, 0.5F - size / 2.0F);
 
-            CuboidModel fillingFluidModel =
-                FluidRenderer.getFluidModel(fluidStack, FluidRenderer.STAGES,
+            var fillingFluidModel =
+                FluidRenderer.getFluidModel(fluidStack, size, 1.0F - RenderUtil.SCALED_PIXEL, size,
                     FluidRenderer.FluidType.FLOWING);
             if (fillingFluidModel != null) {
-              fillingFluidModel
-                  .setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
+              fillingFluidModel.setPackedLight(
+                  RenderUtil.calculateGlowLight(packedLight, fluidStack));
               fillingFluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
               VertexConsumer builder = renderTypeBuffer.getBuffer(Sheets.cutoutBlockSheet());
-              CuboidModelRenderer.render(fillingFluidModel, matrixStack, builder,
-                  RenderUtil.getColorARGB(fluidStack, scale),
+              CuboidModelRenderer.render(fillingFluidModel, poseStack, builder,
+                  RenderUtil.getColorARGB(fluidStack, 1.0F),
                   CuboidModelRenderer.FaceDisplay.FRONT, true);
             }
           }
-          matrixStack.popPose();
+          poseStack.popPose();
         }
 
       }

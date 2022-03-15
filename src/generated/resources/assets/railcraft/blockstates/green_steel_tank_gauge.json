@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "railcraft:block/green_steel_tank_gauge_bottom"
+    },
+    "type=center": {
+      "model": "railcraft:block/green_steel_tank_gauge_center"
+    },
+    "type=single": {
+      "model": "railcraft:block/green_steel_tank_gauge_single"
+    },
+    "type=top": {
+      "model": "railcraft:block/green_steel_tank_gauge_top"
+    }
+  }
+}

@@ -38,12 +38,13 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 /**
  * The electric locomotive.
+ * 
  * @author CovertJaguar (https://www.railcraft.info/)
  */
 public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
   // as of 2021 all of the numbers have been increased due to RF/FE usage
-  private static final int ACTUAL_FUEL_GAIN_PER_REQUEST = 20; //the original value
+  private static final int ACTUAL_FUEL_GAIN_PER_REQUEST = 20; // the original value
   private static final int FUEL_PER_REQUEST = 1;
   // multiplied by 4 because rf
   private static final int CHARGE_USE_PER_REQUEST =
@@ -182,15 +183,14 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   @Override
   public void readAdditionalSaveData(CompoundTag data) {
     super.readAdditionalSaveData(data);
-    this.cartBattery.ifPresent(cell ->
-        RailcraftNBTUtil.loadEnergyCell(data.getCompound("battery"), cell));
+    this.cartBattery
+        .ifPresent(cell -> RailcraftNBTUtil.loadEnergyCell(data.getCompound("battery"), cell));
   }
 
   @Override
   public void addAdditionalSaveData(CompoundTag data) {
     super.addAdditionalSaveData(data);
-    this.cartBattery.ifPresent(cell ->
-        data.put("battery", RailcraftNBTUtil.saveEnergyCell(cell)));
+    this.cartBattery.ifPresent(cell -> data.put("battery", RailcraftNBTUtil.saveEnergyCell(cell)));
   }
 
   @Override
@@ -199,16 +199,15 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
     CompoundTag tag = itemStack.getTag();
 
     if (tag.contains("batteryEnergy")) {
-      this.cartBattery.ifPresent(cell ->
-          cell.receiveEnergy(tag.getInt("batteryEnergy"), false));
+      this.cartBattery.ifPresent(cell -> cell.receiveEnergy(tag.getInt("batteryEnergy"), false));
     }
   }
 
   @Override
-  public ItemStack getCartItem() {
-    ItemStack itemStack = super.getCartItem();
+  public ItemStack getPickResult() {
+    ItemStack itemStack = super.getPickResult();
     this.cartBattery.ifPresent(cell -> {
-      ContainerTools.getItemData(itemStack).putInt("batteryEnergy",  cell.getEnergyStored());
+      ContainerTools.getItemData(itemStack).putInt("batteryEnergy", cell.getEnergyStored());
     });
     return itemStack;
   }

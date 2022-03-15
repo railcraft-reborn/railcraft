@@ -215,7 +215,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
       } else if (this.trainLeaving) {
         if (EntitySearcher.findMinecarts()
             .around(this.getBlockPos())
-            .in(this.level)
+            .search(this.level)
             .stream()
             .anyMatch(cart -> Train.areInSameTrain(cart, this.prevCart))) {
           this.trainDelay = TrackTools.TRAIN_LOCKDOWN_DELAY;

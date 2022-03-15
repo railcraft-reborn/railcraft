@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
 import java.util.List;
+import javax.annotation.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.util.container.CompositeContainerAdaptor;
 import mods.railcraft.util.container.wrappers.ContainerMapper;
@@ -9,7 +10,6 @@ import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.module.BlastFurnaceModule;
-import mods.railcraft.world.level.block.entity.module.ModuleProvider;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceBlockEntity> {
 
   private static final Component MENU_TITLE =
-      new TranslatableComponent("container.blast_furnace");
+      new TranslatableComponent("container.railcraft.blast_furnace");
 
   private static final MultiblockPattern PATTERN = Util.make(() -> {
     final var bricks = BlockPredicate.of(RailcraftBlocks.BLAST_FURNACE_BRICKS);
@@ -36,7 +36,7 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
         CharList.of('B', 'A', 'B'),
         CharList.of('B', 'B', 'B'));
 
-    return MultiblockPattern.builder(new BlockPos(2, 1, 2))
+    return MultiblockPattern.builder(2, 1, 2)
         .layer(List.of(
             CharList.of('B', 'B', 'B'),
             CharList.of('B', 'B', 'B'),
@@ -63,7 +63,7 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
     super(RailcraftBlockEntityTypes.BLAST_FURNACE.get(), blockPos, blockState,
         BlastFurnaceBlockEntity.class, PATTERN);
     this.logic = this.moduleDispatcher.registerCapabilityModule("blast_furnace",
-        new BlastFurnaceModule(ModuleProvider.of(this)));
+        new BlastFurnaceModule(this));
     this.fuelContainerMapper = ContainerMapper.make(
         this.logic, BlastFurnaceModule.SLOT_FUEL, 1);
   }
@@ -78,8 +78,7 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
   }
 
   @Override
-  protected void membershipChanged() {
-    var membership = this.getMembership().orElse(null);
+  protected void membershipChanged(@Nullable Membership<BlastFurnaceBlockEntity> membership) {
     if (membership == null) {
       this.level.setBlock(this.getBlockPos(),
           this.getBlockState()
@@ -96,6 +95,8 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       BlastFurnaceBlockEntity blockEntity) {
     blockEntity.serverTick();
+
+    blockEntity.moduleDispatcher.serverTick();
 
     blockEntity.getMembership()
         .map(Membership::master)

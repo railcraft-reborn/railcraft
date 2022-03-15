@@ -6,10 +6,12 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.api.carts.IItemCart;
+import mods.railcraft.api.carts.Link;
+import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.carts.TrainTransferHelper;
 import mods.railcraft.util.collections.StackKey;
 import mods.railcraft.util.container.ContainerAdaptor;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.Containers;
@@ -52,16 +54,13 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   public ItemStack pushStack(AbstractMinecart requester, ItemStack stack) {
     Iterable<AbstractMinecart> carts =
         LinkageManagerImpl.INSTANCE.linkIterator(requester,
-            LinkageManagerImpl.LinkType.LINK_A);
+            Link.FRONT);
     stack = _pushStack(requester, carts, stack);
     if (stack.isEmpty()) {
       return ItemStack.EMPTY;
     }
-    if (LinkageManagerImpl.INSTANCE.hasLink(requester,
-        LinkageManagerImpl.LinkType.LINK_B)) {
-      carts =
-          LinkageManagerImpl.INSTANCE.linkIterator(requester,
-              LinkageManagerImpl.LinkType.LINK_B);
+    if (LinkageManager.hasLink(requester, Link.BACK)) {
+      carts = LinkageManagerImpl.INSTANCE.linkIterator(requester, Link.BACK);
       stack = _pushStack(requester, carts, stack);
     }
     return stack;
@@ -88,13 +87,13 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   public ItemStack pullStack(AbstractMinecart requester, Predicate<ItemStack> filter) {
     Iterable<AbstractMinecart> carts =
         LinkageManagerImpl.INSTANCE.linkIterator(requester,
-            LinkageManagerImpl.LinkType.LINK_A);
+            Link.FRONT);
     ItemStack stack = this._pullStack(requester, carts, filter);
     if (!stack.isEmpty()) {
       return stack;
     }
     carts = LinkageManagerImpl.INSTANCE.linkIterator(requester,
-        LinkageManagerImpl.LinkType.LINK_B);
+        Link.BACK);
     return this._pullStack(requester, carts, filter);
   }
 
@@ -112,7 +111,7 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
         for (StackKey stackKey : items) {
           ItemStack stack = stackKey.get();
           if (this.canProvidePulledItem(requester, cart, stack)) {
-            ItemStack toRemove = inv.findOne(StackFilters.of(stack));
+            ItemStack toRemove = inv.findOne(StackFilter.of(stack));
             if (!toRemove.isEmpty()) {
               result = toRemove;
               upTo = cart;
@@ -176,15 +175,12 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   public FluidStack pushFluid(AbstractMinecart requester, FluidStack fluidStack) {
     Iterable<AbstractMinecart> carts =
         LinkageManagerImpl.INSTANCE.linkIterator(requester,
-            LinkageManagerImpl.LinkType.LINK_A);
+            Link.FRONT);
     fluidStack = this._pushFluid(requester, carts, fluidStack);
     if (fluidStack == null)
       return null;
-    if (LinkageManagerImpl.INSTANCE.hasLink(requester,
-        LinkageManagerImpl.LinkType.LINK_B)) {
-      carts =
-          LinkageManagerImpl.INSTANCE.linkIterator(requester,
-              LinkageManagerImpl.LinkType.LINK_B);
+    if (LinkageManager.hasLink(requester, Link.BACK)) {
+      carts = LinkageManagerImpl.INSTANCE.linkIterator(requester, Link.BACK);
       fluidStack = this._pushFluid(requester, carts, fluidStack);
     }
     return fluidStack;
@@ -215,15 +211,13 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
     if (fluidStack.isEmpty()) {
       return FluidStack.EMPTY;
     }
-    Iterable<AbstractMinecart> carts =
-        LinkageManagerImpl.INSTANCE.linkIterator(requester,
-            LinkageManagerImpl.LinkType.LINK_A);
+    var carts = LinkageManagerImpl.INSTANCE.linkIterator(requester, Link.FRONT);
     FluidStack pulled = this._pullFluid(requester, carts, fluidStack);
     if (!pulled.isEmpty()) {
       return pulled;
     }
     carts = LinkageManagerImpl.INSTANCE.linkIterator(requester,
-        LinkageManagerImpl.LinkType.LINK_B);
+        Link.BACK);
     return this._pullFluid(requester, carts, fluidStack);
   }
 

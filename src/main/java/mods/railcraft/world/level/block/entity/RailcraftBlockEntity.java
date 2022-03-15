@@ -10,11 +10,13 @@ import javax.annotation.Nullable;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.BlockEntityLike;
-import mods.railcraft.api.core.Ownable;
 import mods.railcraft.api.core.NetworkSerializable;
+import mods.railcraft.api.core.Ownable;
 import mods.railcraft.network.PacketBuilder;
 import mods.railcraft.util.container.ContainerAdaptor;
+import mods.railcraft.world.level.block.entity.module.Module;
 import mods.railcraft.world.level.block.entity.module.ModuleDispatcher;
+import mods.railcraft.world.level.block.entity.module.ModuleProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +36,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public abstract class RailcraftBlockEntity extends BlockEntity
-    implements NetworkSerializable, Ownable, BlockEntityLike {
+    implements NetworkSerializable, Ownable, BlockEntityLike, ModuleProvider {
 
   protected final ModuleDispatcher moduleDispatcher = new ModuleDispatcher();
 
@@ -101,8 +103,19 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     this.moduleDispatcher.readFromBuf(in);
   }
 
+  @Override
   public void syncToClient() {
     PacketBuilder.instance().sendTileEntityPacket(this);
+  }
+
+  @Override
+  public <T extends Module> Optional<T> getModule(Class<T> type) {
+    return this.moduleDispatcher.getModule(type);
+  }
+
+  @Override
+  public boolean stillValid(Player player) {
+    return stillValid(this, player);
   }
 
   public final void setOwner(@Nullable GameProfile profile) {
@@ -125,10 +138,10 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   }
 
   @Override
-  public CompoundTag save(CompoundTag tag) {
-    super.save(tag);
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
     if (this.owner != null) {
-      CompoundTag ownerTag = new CompoundTag();
+      var ownerTag = new CompoundTag();
       NbtUtils.writeGameProfile(ownerTag, this.owner);
       tag.put("owner", ownerTag);
     }
@@ -137,8 +150,6 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     }
 
     tag.put("modules", this.moduleDispatcher.serializeNBT());
-
-    return tag;
   }
 
   @Override

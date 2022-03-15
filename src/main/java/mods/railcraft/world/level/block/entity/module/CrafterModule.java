@@ -36,7 +36,7 @@ public abstract class CrafterModule extends ContainerModule {
   }
 
   protected void reset() {
-    this.setDuration(0);
+    // this.setDuration(0);
     this.setProgress(0);
     this.setProcessing(false);
     this.provider.syncToClient();
@@ -108,10 +108,11 @@ public abstract class CrafterModule extends ContainerModule {
     if (this.doProcessStep()) {
       this.progress += PROGRESS_STEP;
       this.duration = this.calculateDuration();
-      if (this.progress < this.duration)
+      if (this.progress < this.duration) {
         return;
+      }
 
-      this.progress = duration;
+      this.progress = this.duration;
       this.setFinished();
       if (this.craftAndPush()) {
         this.reset();

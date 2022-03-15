@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.material.fluid.tank;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -36,7 +37,7 @@ public class StandardTank extends FluidTank {
   private boolean disableDrain;
   private boolean disableFill;
 
-  private final List<Component> tooltip = new ArrayList<>();
+  private List<Component> tooltip;
 
   public StandardTank(int capacity) {
     super(capacity);
@@ -72,10 +73,11 @@ public class StandardTank extends FluidTank {
 
   /**
    * Internal drain function which IGNORES disableDrain made by us.
+   * 
    * @param resource FluidStack representing the Fluid and maximum amount of fluid to be drained.
    * @param action If SIMULATE, fill will only be simulated.
-   * @return FluidStack representing the Fluid and amount that
-   *     was (or would have been, if simulated) drained.
+   * @return FluidStack representing the Fluid and amount that was (or would have been, if
+   *         simulated) drained.
    * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain() Forge FluidTank#drain()
    */
   public FluidStack internalDrain(FluidStack resource, FluidAction action) {
@@ -87,8 +89,8 @@ public class StandardTank extends FluidTank {
    *
    * @param maxDrain Maximum amount of fluid to drain.
    * @param action If SIMULATE, fill will only be simulated.
-   * @return FluidStack representing the Fluid and amount that was
-   *     (or would have been, if simulated) drained.
+   * @return FluidStack representing the Fluid and amount that was (or would have been, if
+   *         simulated) drained.
    * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain() Forge FluidTank#drain()
    */
   public FluidStack internalDrain(int maxDrain, FluidAction action) {
@@ -99,8 +101,8 @@ public class StandardTank extends FluidTank {
    * Disables draning of our tank. Blocks drain() from draining.
    *
    * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#drain() Drain Function
-   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalDrain()
-   *    Bypassed Drain Function
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalDrain() Bypassed Drain
+   *      Function
    */
   public StandardTank disableDrain() {
     this.disableDrain = true;
@@ -111,8 +113,8 @@ public class StandardTank extends FluidTank {
    * Disables filling of our tank.
    *
    * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#fill() Fill Function
-   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalFill()
-   *    Bypassed Fill Function
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalFill() Bypassed Fill
+   *      Function
    */
   public StandardTank disableFill() {
     this.disableFill = true;
@@ -186,21 +188,22 @@ public class StandardTank extends FluidTank {
   }
 
   protected void refreshTooltip() {
-    this.tooltip.clear();
+    List<Component> tooltip = new ArrayList<>();
     int amount = getFluidAmount();
     FluidStack fluidStack = getFluid();
 
-    if (fluidStack.isEmpty() && filter != null) {
-      fluidStack = filter.get();
+    if (fluidStack.isEmpty() && this.filter != null) {
+      fluidStack = this.filter.get();
     }
 
     if (!fluidStack.isEmpty()) {
-      this.tooltip.add(getFluidNameToolTip(fluidStack));
+      tooltip.add(this.getFluidNameToolTip(fluidStack));
     }
 
-    this.tooltip.add(
-        new TextComponent(String.format(Locale.ENGLISH, "%,d / %,d", amount, getCapacity()))
+    tooltip.add(new TextComponent(String.format(Locale.ENGLISH, "%,d / %,d", amount, getCapacity()))
         .withStyle(ChatFormatting.GRAY));
+
+    this.tooltip = Collections.unmodifiableList(tooltip);
   }
 
   protected Component getFluidNameToolTip(FluidStack fluidStack) {

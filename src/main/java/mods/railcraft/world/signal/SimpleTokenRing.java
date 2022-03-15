@@ -89,10 +89,10 @@ public class SimpleTokenRing implements TokenRing {
       for (BlockPos pos : this.peers) {
         aabbFactory.expandToCoordinate(pos);
       }
-      aabbFactory.grow(16).clampToWorld();
+      aabbFactory.inflate(16).clampToWorld();
       List<AbstractMinecart> carts = EntitySearcher.findMinecarts()
           .around(aabbFactory.build())
-          .in(this.level);
+          .search(this.level);
       this.trackedCarts.retainAll(carts.stream().map(Entity::getUUID).collect(Collectors.toSet()));
     }
   }

@@ -1,11 +1,10 @@
 package mods.railcraft.world.inventory;
 
-import javax.annotation.Nullable;
-import mods.railcraft.world.level.material.fluid.FluidItemHelper;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidUtil;
 
 public class LimitedWaterSlot extends WaterSlot {
 
@@ -15,8 +14,8 @@ public class LimitedWaterSlot extends WaterSlot {
   }
 
   @Override
-  public boolean mayPlace(@Nullable ItemStack stack) {
-    return FluidItemHelper.getFluidStackInContainer(stack)
+  public boolean mayPlace(ItemStack stack) {
+    return FluidUtil.getFluidContained(stack)
         .filter(fluid -> fluid.getFluid() == Fluids.WATER)
         .filter(fluid -> fluid.getAmount() <= FluidAttributes.BUCKET_VOLUME)
         .isPresent();

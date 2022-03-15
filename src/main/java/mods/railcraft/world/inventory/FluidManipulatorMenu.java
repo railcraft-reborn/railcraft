@@ -1,7 +1,7 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
-import mods.railcraft.util.container.filters.StackFilters;
+import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -23,7 +23,7 @@ public class FluidManipulatorMenu extends ManipulatorMenu<FluidManipulatorBlockE
   @Override
   protected void addSlots(FluidManipulatorBlockEntity manipulator) {
     this.addSlot(new FluidFilterSlot(manipulator.getFluidFilter(), 0, 116, 26));
-    this.addSlot(new ItemFilterSlot(StackFilters.FLUID_CONTAINER, manipulator, 0, 152, 26));
+    this.addSlot(new ItemFilterSlot(StackFilter.FLUID_CONTAINER, manipulator, 0, 152, 26));
     this.addSlot(new OutputSlot(manipulator, 1, 152, 62));
     this.addSlot(new OutputSlot(manipulator, 2, 116, 62));
   }
