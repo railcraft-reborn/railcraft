@@ -3,13 +3,10 @@ package mods.railcraft.advancements;
 import javax.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.util.JsonTools;
-import mods.railcraft.world.entity.vehicle.CartConstants;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
-import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,35 +15,36 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 /**
  * A utility for testing carts or so.
  */
-public final class CartPredicate {
+public final class MinecartPredicate {
 
-  public static final CartPredicate ANY = new CartPredicate(null, null, null, null, null, null,
-      MinMaxBounds.Doubles.ANY, EntityPredicate.ANY);
+  public static final MinecartPredicate ANY =
+      new MinecartPredicate(null, null, null, null, null, null,
+          MinMaxBounds.Doubles.ANY, EntityPredicate.ANY);
 
   @Nullable
   private final Boolean highSpeed;
   @Nullable
   private final Boolean launched;
   @Nullable
-  private final Boolean elevator;
+  private final Boolean onElevator;
   @Nullable
-  private final Boolean derail;
+  private final Boolean derailed;
   @Nullable
-  private final Boolean canMount;
+  private final Boolean mountable;
   @Nullable
   private final Boolean checksOwner;
 
   private final MinMaxBounds.Doubles speed;
   private final EntityPredicate parent;
 
-  public CartPredicate(@Nullable Boolean highSpeed, @Nullable Boolean launched,
-      @Nullable Boolean elevator, @Nullable Boolean derail, @Nullable Boolean canMount,
+  public MinecartPredicate(@Nullable Boolean highSpeed, @Nullable Boolean launched,
+      @Nullable Boolean elevator, @Nullable Boolean derailed, @Nullable Boolean mountable,
       @Nullable Boolean checkOwner, MinMaxBounds.Doubles speed, EntityPredicate parent) {
     this.highSpeed = highSpeed;
     this.launched = launched;
-    this.elevator = elevator;
-    this.derail = derail;
-    this.canMount = canMount;
+    this.onElevator = elevator;
+    this.derailed = derailed;
+    this.mountable = mountable;
     this.checksOwner = checkOwner;
     this.speed = speed;
     this.parent = parent;
@@ -55,21 +53,19 @@ public final class CartPredicate {
   public boolean test(ServerPlayer player, AbstractMinecart cart) {
     var extension = MinecartExtension.getOrThrow(cart);
 
-    if (this.highSpeed != null && HighSpeedTools.isTravellingHighSpeed(cart) != this.highSpeed) {
+    if (this.highSpeed != null && extension.isHighSpeed() != this.highSpeed) {
       return false;
     }
-    if (this.launched != null && extension.getLaunchState().isLaunched() != this.launched) {
+    if (this.launched != null && extension.isLaunched() != this.launched) {
       return false;
     }
-    if (this.elevator != null && extension.isOnElevator() != this.elevator) {
+    if (this.onElevator != null && extension.isOnElevator() != this.onElevator) {
       return false;
     }
-    if (this.derail != null
-        && Railcraft.getInstance().getMinecartHandler().isDerailed(cart) != this.derail) {
+    if (this.derailed != null && extension.isDerailed() != this.derailed) {
       return false;
     }
-    if (this.canMount != null
-        && Railcraft.getInstance().getMinecartHandler().canMount(cart) != this.canMount) {
+    if (this.mountable != null && extension.isMountable() != this.mountable) {
       return false;
     }
     if (this.checksOwner != null && cart instanceof Ownable
@@ -91,33 +87,34 @@ public final class CartPredicate {
 
   public JsonElement serializeToJson() {
     JsonObject json = new JsonObject();
-    this.addOptionalBoolean(json, CartConstants.TAG_HIGH_SPEED, this.highSpeed);
+    this.addOptionalBoolean(json, "high_speed", this.highSpeed);
     this.addOptionalBoolean(json, "launched", this.launched);
-    this.addOptionalBoolean(json, "on_elevator", this.elevator);
-    this.addOptionalBoolean(json, CartConstants.TAG_DERAIL, this.derail);
-    this.addOptionalBoolean(json, "canMount", this.canMount);
+    this.addOptionalBoolean(json, "on_elevator", this.onElevator);
+    this.addOptionalBoolean(json, "derailed", this.derailed);
+    this.addOptionalBoolean(json, "mountable", this.mountable);
     this.addOptionalBoolean(json, "check_owner", this.checksOwner);
     json.add("speed", this.speed.serializeToJson());
     json.add("parent", this.parent.serializeToJson());
     return json;
   }
 
-  public static CartPredicate deserialize(@Nullable JsonObject element) {
+  public static MinecartPredicate deserialize(@Nullable JsonObject element) {
     if (element == null || element.isJsonNull()
         || (element.isJsonObject() && element.getAsJsonObject().size() < 1)) {
-      return CartPredicate.ANY;
+      return MinecartPredicate.ANY;
     }
 
-    Boolean highSpeed = JsonTools.nullableBoolean(element, CartConstants.TAG_HIGH_SPEED);
+    Boolean highSpeed = JsonTools.nullableBoolean(element, "high_speed");
     Boolean launched = JsonTools.nullableBoolean(element, "launched");
     Boolean elevator = JsonTools.nullableBoolean(element, "on_elevator");
-    Boolean derail = JsonTools.nullableBoolean(element, CartConstants.TAG_DERAIL);
+    Boolean derail = JsonTools.nullableBoolean(element, "derailed");
     Boolean canMount = JsonTools.nullableBoolean(element, "canMount");
     Boolean checksOwner = JsonTools.nullableBoolean(element, "check_owner");
     MinMaxBounds.Doubles speed = MinMaxBounds.Doubles.fromJson(element.get("speed"));
     EntityPredicate parent = EntityPredicate.fromJson(element.get("parent"));
 
-    return new CartPredicate(highSpeed, launched, elevator, derail, canMount, checksOwner, speed,
+    return new MinecartPredicate(highSpeed, launched, elevator, derail, canMount, checksOwner,
+        speed,
         parent);
   }
 }

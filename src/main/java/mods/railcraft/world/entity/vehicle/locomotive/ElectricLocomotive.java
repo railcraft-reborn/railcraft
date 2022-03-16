@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.RailcraftNBTUtil;
+import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;

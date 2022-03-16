@@ -37,8 +37,8 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
   @Override
   public CartRidingTrigger.Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
-    CartPredicate predicate =
-        JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
+    MinecartPredicate predicate =
+        JsonTools.whenPresent(json, "cart", MinecartPredicate::deserialize, MinecartPredicate.ANY);
     return new CartRidingTrigger.Instance(entityPredicate, predicate);
   }
 
@@ -82,15 +82,15 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final CartPredicate cartPredicate;
+    private final MinecartPredicate cartPredicate;
 
-    private Instance(EntityPredicate.Composite entityPredicate, CartPredicate predicate) {
+    private Instance(EntityPredicate.Composite entityPredicate, MinecartPredicate predicate) {
       super(CartRidingTrigger.ID, entityPredicate);
       this.cartPredicate = predicate;
     }
 
     public static CartRidingTrigger.Instance hasRidden() {
-      return new CartRidingTrigger.Instance(EntityPredicate.Composite.ANY, CartPredicate.ANY);
+      return new CartRidingTrigger.Instance(EntityPredicate.Composite.ANY, MinecartPredicate.ANY);
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {

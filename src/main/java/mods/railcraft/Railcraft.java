@@ -51,7 +51,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -238,13 +237,6 @@ public class Railcraft {
         event.setCanceled(true);
         event.setCancellationResult(crowbarActionResult);
       }
-    }
-  }
-
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public void handleEntityJoinWorld(EntityJoinWorldEvent event) {
-    if (event.getEntity() instanceof AbstractMinecart cart) {
-      event.setCanceled(this.minecartHandler.handleSpawn(event.getWorld(), cart));
     }
   }
 

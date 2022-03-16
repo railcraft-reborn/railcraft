@@ -12,7 +12,6 @@ import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.TankGaugeBlock;
 import mods.railcraft.world.level.block.TankValveBlock;
 import mods.railcraft.world.level.block.entity.ValveFluidHandler;
-import mods.railcraft.world.level.block.entity.module.FluidPushModule;
 import mods.railcraft.world.level.block.entity.module.TankModule;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
@@ -61,14 +60,23 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   public TankBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Collection<MultiblockPattern> patterns) {
     super(type, blockPos, blockState, TankBlockEntity.class, patterns);
-    this.moduleDispatcher.registerModule("fluid_push",
-        new FluidPushModule(this, () -> this.fluidHandler, FLOW_RATE,
-            blockEntity -> !(blockEntity instanceof TankBlockEntity tank)
-                || !tank.getMembership().equals(this.getMembership()),
-            Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST));
     this.module = this.moduleDispatcher.registerCapabilityModule("tank",
         new TankModule(this, this.getCapacityPerBlock()));
     this.module.getTank().setUpdateCallback(this::tankChanged);
+  }
+
+  @Override
+  protected void serverTick() {
+    super.serverTick();
+    this.fluidHandler.ifPresent(fluidHandler -> {
+      var neighbors = FluidTools.findNeighbors(this.getLevel(), this.getBlockPos(),
+          blockEntity -> !(blockEntity instanceof TankBlockEntity tank)
+              || !tank.getMembership().equals(this.getMembership()),
+          Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+      for (var neighbor : neighbors) {
+        FluidUtil.tryFluidTransfer(neighbor, fluidHandler, FLOW_RATE, true);
+      }
+    });
   }
 
   private void lightChanged(int light) {
@@ -195,7 +203,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
         .or(BlockPredicate.ofTag(gaugeBlock))
         .or(BlockPredicate.ofTag(valveBlock));
 
-    ImmutableList.Builder<MultiblockPattern> patterns = ImmutableList.builder();
+    var patterns = ImmutableList.<MultiblockPattern>builder();
 
     // 3x3
 

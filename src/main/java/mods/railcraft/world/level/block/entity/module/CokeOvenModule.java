@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.entity.module;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
+import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
@@ -65,7 +65,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe> implements ICa
   @Override
   protected boolean craftAndPush() {
     boolean crafted = false;
-    for (int ii = 0; ii < this.multiplier; ii++) {
+    for (int i = 0; i < this.multiplier; i++) {
       crafted |= this.craftAndPushImp();
     }
     return crafted;

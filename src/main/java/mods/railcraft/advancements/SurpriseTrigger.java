@@ -24,8 +24,8 @@ public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Inst
   @Override
   public SurpriseTrigger.Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
-    CartPredicate predicate =
-        JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
+    MinecartPredicate predicate =
+        JsonTools.whenPresent(json, "cart", MinecartPredicate::deserialize, MinecartPredicate.ANY);
     return new SurpriseTrigger.Instance(entityPredicate, predicate);
   }
 
@@ -39,15 +39,15 @@ public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Inst
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final CartPredicate cartPredicate;
+    private final MinecartPredicate cartPredicate;
 
-    private Instance(EntityPredicate.Composite entityPredicate, CartPredicate predicate) {
+    private Instance(EntityPredicate.Composite entityPredicate, MinecartPredicate predicate) {
       super(SurpriseTrigger.ID, entityPredicate);
       this.cartPredicate = predicate;
     }
 
     public static SurpriseTrigger.Instance hasExplodedCart() {
-      return new SurpriseTrigger.Instance(EntityPredicate.Composite.ANY, CartPredicate.ANY);
+      return new SurpriseTrigger.Instance(EntityPredicate.Composite.ANY, MinecartPredicate.ANY);
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {

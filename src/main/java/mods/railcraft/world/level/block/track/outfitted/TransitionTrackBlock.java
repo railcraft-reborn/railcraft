@@ -5,8 +5,8 @@ import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
-import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +14,6 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
 
 public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
@@ -38,22 +37,22 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
       AbstractMinecart cart) {
     super.onMinecartPass(blockState, level, pos, cart);
-    final boolean reversed = isReversed(blockState);
-    final RailShape railShape = getRailShapeRaw(blockState);
+    final var reversed = isReversed(blockState);
+    final var railShape = getRailShapeRaw(blockState);
 
     if (!isPowered(blockState)) {
       return;
     }
 
-    final Vec3 deltaMovement = cart.getDeltaMovement();
-    final double speed = CartUtil.getCartSpeedUncapped(deltaMovement);
+    final var deltaMovement = cart.getDeltaMovement();
+    final var speed = CartUtil.getCartSpeedUncapped(deltaMovement);
 
     if (speed <= BOOST_THRESHOLD) {
       CartTools.startBoost(cart, pos, railShape, START_BOOST);
       return;
     }
 
-    final boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(cart);
+    final var highSpeed = MinecartExtension.getOrThrow(cart).isHighSpeed();
     if (TrackShapeHelper.isNorthSouth(railShape)) {
       if (reversed ^ deltaMovement.z() < 0) {
         boostCartSpeed(cart, speed);

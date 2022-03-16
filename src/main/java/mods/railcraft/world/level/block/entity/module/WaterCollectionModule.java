@@ -2,8 +2,6 @@ package mods.railcraft.world.level.block.entity.module;
 
 import mods.railcraft.RailcraftConfig;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
@@ -53,20 +51,6 @@ public class WaterCollectionModule extends BaseModule {
       }
     }
   }
-
-  @Override
-  public void writeToBuf(FriendlyByteBuf out) {}
-
-  @Override
-  public void readFromBuf(FriendlyByteBuf in) {}
-
-  @Override
-  public CompoundTag serializeNBT() {
-    return new CompoundTag();
-  }
-
-  @Override
-  public void deserializeNBT(CompoundTag nbt) {}
 
   public record State(boolean skyVisible, double temperaturePenalty,
       double humidityMultiplier, double precipitationMultiplier) {

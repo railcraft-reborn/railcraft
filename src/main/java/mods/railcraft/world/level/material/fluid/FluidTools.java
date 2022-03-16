@@ -10,8 +10,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
+import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -124,7 +123,7 @@ public final class FluidTools {
       sendToOutput(container);
       return ProcessState.RESET;
     }
-    container.setItem(1, ContainerTools.makeSafe(result.getResult()));
+    container.setItem(1, result.getResult());
     return ProcessState.FILLING;
   }
 
@@ -136,7 +135,7 @@ public final class FluidTools {
       sendToOutput(container);
       return ProcessState.RESET;
     }
-    container.setItem(1, ContainerTools.makeSafe(result.getResult()));
+    container.setItem(1, result.getResult());
     return ProcessState.DRAINING;
   }
 

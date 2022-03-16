@@ -25,10 +25,10 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
   @Override
   public CartLinkingTrigger.Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
-    CartPredicate owned =
-        JsonTools.whenPresent(json, "owned", CartPredicate::deserialize, CartPredicate.ANY);
-    CartPredicate other =
-        JsonTools.whenPresent(json, "other", CartPredicate::deserialize, CartPredicate.ANY);
+    MinecartPredicate owned =
+        JsonTools.whenPresent(json, "owned", MinecartPredicate::deserialize, MinecartPredicate.ANY);
+    MinecartPredicate other =
+        JsonTools.whenPresent(json, "other", MinecartPredicate::deserialize, MinecartPredicate.ANY);
     return new CartLinkingTrigger.Instance(entityPredicate, owned, other);
   }
 
@@ -43,11 +43,11 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final CartPredicate owned;
-    private final CartPredicate other;
+    private final MinecartPredicate owned;
+    private final MinecartPredicate other;
 
     private Instance(EntityPredicate.Composite entityPredicate,
-        CartPredicate owned, CartPredicate other) {
+        MinecartPredicate owned, MinecartPredicate other) {
       super(CartLinkingTrigger.ID, entityPredicate);
       this.owned = owned;
       this.other = other;
@@ -55,7 +55,7 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
 
     public static CartLinkingTrigger.Instance hasLinked() {
       return new CartLinkingTrigger.Instance(EntityPredicate.Composite.ANY,
-          CartPredicate.ANY, CartPredicate.ANY);
+          MinecartPredicate.ANY, MinecartPredicate.ANY);
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart owned,

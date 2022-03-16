@@ -32,8 +32,8 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
         // || this element down here returns a json **object**, not an element, so you cannot
         // \/ use getAsString
         (element) -> Season.getByName(element.get("value").getAsString()).orElse(null), null);
-    CartPredicate cartPredicate =
-        JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
+    MinecartPredicate cartPredicate =
+        JsonTools.whenPresent(json, "cart", MinecartPredicate::deserialize, MinecartPredicate.ANY);
     return new SetSeasonTrigger.Instance(entityPredicate, season, cartPredicate);
   }
 
@@ -50,10 +50,10 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
 
     @Nullable
     private final Season season;
-    private final CartPredicate cartPredicate;
+    private final MinecartPredicate cartPredicate;
 
     private Instance(EntityPredicate.Composite entityPredicate, @Nullable Season season,
-        CartPredicate predicate) {
+        MinecartPredicate predicate) {
       super(SetSeasonTrigger.ID, entityPredicate);
       this.season = season;
       this.cartPredicate = predicate;
@@ -61,7 +61,7 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
 
     public static SetSeasonTrigger.Instance onSeasonSet() {
       return new SetSeasonTrigger.Instance(EntityPredicate.Composite.ANY,
-          null, CartPredicate.ANY);
+          null, MinecartPredicate.ANY);
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart, Season target) {

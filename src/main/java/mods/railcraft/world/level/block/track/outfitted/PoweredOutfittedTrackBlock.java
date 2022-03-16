@@ -161,9 +161,8 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
       int dist, int maxDist, RailShape prevOrientation) {
     BlockState nextBlockState = level.getBlockState(blockPos);
     if (BaseRailBlock.isRail(nextBlockState)
-        && nextBlockState.getBlock() instanceof PoweredTrack) {
-      PoweredTrack nextBlock = (PoweredTrack) nextBlockState.getBlock();
-      RailShape nextOrientation = ((BaseRailBlock) nextBlockState.getBlock())
+        && nextBlockState.getBlock() instanceof PoweredTrack nextBlock) {
+      var nextOrientation = ((BaseRailBlock) nextBlockState.getBlock())
           .getRailDirection(nextBlockState, level, blockPos, null);
       if (!(this.canPropagatePowerTo(nextBlockState)))
         return false;

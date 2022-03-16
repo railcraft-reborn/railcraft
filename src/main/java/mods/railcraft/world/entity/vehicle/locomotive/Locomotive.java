@@ -37,12 +37,12 @@ import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.IDirectionalCart;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
+import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
 import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
-import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -541,8 +541,7 @@ public abstract class Locomotive extends RailcraftMinecart
       }
       switch (speed) {
         case MAX:
-          boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(this);
-          if (highSpeed) {
+          if (MinecartExtension.getOrThrow(this).isHighSpeed()) {
             force *= HS_FORCE_BONUS;
           }
           break;
@@ -640,7 +639,7 @@ public abstract class Locomotive extends RailcraftMinecart
         return;
       }
       if (Train.streamCarts(this).noneMatch(t -> t.hasPassenger(entity))
-          && (isVelocityHigherThan(0.2f) || HighSpeedTools.isTravellingHighSpeed(this))
+          && (isVelocityHigherThan(0.2f) || MinecartExtension.getOrThrow(this).isHighSpeed())
           && RCEntitySelectors.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
         if (RailcraftConfig.server.locomotiveDamageMobs.get()) {

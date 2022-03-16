@@ -1,12 +1,9 @@
 package mods.railcraft.util.container;
 
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.function.Supplier;
 import javax.annotation.Nullable;
-import com.google.common.collect.Iterators;
-import mods.railcraft.util.Optionals;
-import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import mods.railcraft.util.container.manipulator.VanillaContainerManipulator;
+import mods.railcraft.world.level.block.entity.module.ModuleProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.Container;
@@ -14,18 +11,14 @@ import net.minecraft.world.ContainerListener;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.INBTSerializable;
 
 /**
- * Creates a standalone instance of {@link Container}
- * <p/>
- * Useful for hiding parts of a container from outsiders.
- *
- * @author CovertJaguar <https://www.railcraft.info>
+ * An extension of {@link SimpleContainer} with callback support, implementation of
+ * {@link ContainerManipulator} and maintains item indices when persisting.
+ * 
+ * @author Sm0keySa1m0n
  */
-public class AdvancedContainer extends SimpleContainer
-    implements CompositeContainer, INBTSerializable<ListTag> {
+public class AdvancedContainer extends SimpleContainer implements VanillaContainerManipulator {
 
   public static final AdvancedContainer EMPTY = new AdvancedContainer(0);
 
@@ -37,16 +30,17 @@ public class AdvancedContainer extends SimpleContainer
     super(size);
   }
 
-  public AdvancedContainer callbackContainer(Container callback) {
-    return callback(new CallbackInv(callback));
+  @Override
+  public Container getContainer() {
+    return this;
   }
 
-  public AdvancedContainer callbackBlockEntity(RailcraftBlockEntity callback) {
-    return callback(new CallbackTile(() -> callback));
+  public AdvancedContainer callback(Container container) {
+    return this.callback(new ContainerCallback(container));
   }
 
-  public AdvancedContainer callbackBlockEntity(Supplier<RailcraftBlockEntity> callback) {
-    return callback(new CallbackTile(callback));
+  public AdvancedContainer callback(ModuleProvider moduleProvider) {
+    return this.callback(new ModuleProviderCallback(moduleProvider));
   }
 
   public AdvancedContainer callback(Callback callback) {
@@ -60,11 +54,6 @@ public class AdvancedContainer extends SimpleContainer
     return this;
   }
 
-  @Override
-  public int slotCount() {
-    return getContainerSize();
-  }
-
   public void setMaxStackSize(int maxStackSize) {
     this.maxStackSize = maxStackSize;
   }
@@ -75,8 +64,8 @@ public class AdvancedContainer extends SimpleContainer
   }
 
   @Override
-  public boolean stillValid(Player PlayerEntity) {
-    return this.callback == null || callback.stillValid(PlayerEntity);
+  public boolean stillValid(Player player) {
+    return this.callback == null || this.callback.stillValid(player);
   }
 
   @Override
@@ -94,94 +83,81 @@ public class AdvancedContainer extends SimpleContainer
   }
 
   @Override
-  public ListTag serializeNBT() {
-    return ContainerTools.writeInventory(this);
+  public void fromTag(ListTag tag) {
+    for (int i = 0; i < tag.size(); ++i) {
+      var slotTag = tag.getCompound(i);
+      this.setItem(slotTag.getInt("index"), ItemStack.of(slotTag));
+    }
   }
 
   @Override
-  public void deserializeNBT(ListTag tag) {
-    for (byte i = 0; i < tag.size(); i++) {
-      CompoundTag slotTag = tag.getCompound(i);
-      int slot = slotTag.getByte(ContainerTools.TAG_SLOT);
-      if (slot >= 0 && slot < this.getContainerSize()) {
-        this.setItem(slot, ItemStack.of(slotTag));
-      }
+  public ListTag createTag() {
+    var tag = new ListTag();
+    for (int i = 0; i < this.getContainerSize(); ++i) {
+      var slotTag = new CompoundTag();
+      slotTag.putInt("index", i);
+      this.getItem(i).save(slotTag);
+      tag.add(slotTag);
     }
+    return tag;
   }
 
-  public abstract static class Callback implements ContainerListener {
+  public interface Callback extends ContainerListener {
 
-    public boolean stillValid(Player player) {
+    default boolean stillValid(Player player) {
       return true;
     }
 
-    public void startOpen(Player player) {}
+    default void startOpen(Player player) {}
 
-    public void stopOpen(Player player) {}
-
-    public String getName() {
-      return "Standalone";
-    }
-
-    public boolean hasCustomName() {
-      return false;
-    }
+    default void stopOpen(Player player) {}
   }
 
-  public static class CallbackInv extends Callback {
+  public static class ContainerCallback implements Callback {
 
-    private final Container inv;
+    private final Container container;
 
-    public CallbackInv(Container inv) {
-      this.inv = inv;
+    public ContainerCallback(Container container) {
+      this.container = container;
     }
 
     @Override
     public boolean stillValid(Player player) {
-      return inv.stillValid(player);
+      return this.container.stillValid(player);
     }
 
     @Override
     public void startOpen(Player player) {
-      inv.startOpen(player);
+      this.container.startOpen(player);
     }
 
     @Override
     public void stopOpen(Player player) {
-      inv.stopOpen(player);
+      this.container.stopOpen(player);
     }
 
     @Override
-    public void containerChanged(Container invBasic) {
-      inv.setChanged();
+    public void containerChanged(Container container) {
+      this.container.setChanged();
     }
   }
 
-  public static class CallbackTile extends Callback {
+  public static class ModuleProviderCallback implements Callback {
 
-    private final Supplier<RailcraftBlockEntity> tile;
+    private final ModuleProvider moduleProvider;
 
-    public CallbackTile(Supplier<RailcraftBlockEntity> tile) {
-      this.tile = tile;
-    }
-
-    public Optional<RailcraftBlockEntity> tile() {
-      return Optional.ofNullable(tile.get());
+    public ModuleProviderCallback(ModuleProvider moduleProvider) {
+      this.moduleProvider = moduleProvider;
     }
 
     @Override
     public boolean stillValid(Player player) {
-      return Optionals.test(tile(), t -> RailcraftBlockEntity.stillValid(t, player));
+      return this.moduleProvider.stillValid(player);
     }
 
     @Override
-    public void containerChanged(Container invBasic) {
-      tile().ifPresent(BlockEntity::setChanged);
+    public void containerChanged(Container container) {
+      this.moduleProvider.save();
     }
-  }
-
-  @Override
-  public Iterator<ContainerAdaptor> adaptors() {
-    return Iterators.singletonIterator(ContainerAdaptor.of(this));
   }
 }

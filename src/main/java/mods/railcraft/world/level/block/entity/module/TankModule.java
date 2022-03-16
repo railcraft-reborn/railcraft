@@ -122,12 +122,14 @@ public class TankModule extends ContainerModule implements ICapabilityProvider {
 
   @Override
   public void writeToBuf(FriendlyByteBuf out) {
+    super.writeToBuf(out);
     out.writeVarInt(this.tank.getCapacity());
     out.writeFluidStack(this.tank.getFluid());
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf in) {
+    super.readFromBuf(in);
     this.tank.setCapacity(in.readVarInt());
     this.tank.setFluid(in.readFluidStack());
   }

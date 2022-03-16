@@ -75,8 +75,8 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   public void clicked(int slotId, int mouseButton, ClickType clickType,
       Player player) {
     Slot slot = slotId < 0 ? null : this.slots.get(slotId);
-    if (slot instanceof RailcraftSlot && ((RailcraftSlot) slot).isPhantom()) {
-      this.slotClickPhantom((RailcraftSlot) slot, mouseButton, clickType, player);
+    if (slot instanceof RailcraftSlot railcraftSlot && railcraftSlot.isPhantom()) {
+      this.slotClickPhantom(railcraftSlot, mouseButton, clickType, player);
     }
     super.clicked(slotId, mouseButton, clickType, player);
   }
@@ -130,7 +130,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
       stackSize = slot.getMaxStackSize();
     }
 
-    ContainerTools.setSize(stackSlot, stackSize);
+    stackSlot.setCount(stackSize);
 
     if (stackSlot.isEmpty()) {
       slot.set(ItemStack.EMPTY);
@@ -145,8 +145,8 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     if (stackSize > slot.getMaxStackSize()) {
       stackSize = slot.getMaxStackSize();
     }
-    ItemStack phantomStack = stackHeld.copy();
-    ContainerTools.setSize(phantomStack, stackSize);
+    var phantomStack = stackHeld.copy();
+    phantomStack.setCount(stackSize);
 
     slot.set(phantomStack);
   }
@@ -161,13 +161,13 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
           int resultingStackSize = stackInSlot.getCount() + stackToShift.getCount();
           int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
           if (resultingStackSize <= max) {
-            ContainerTools.setSize(stackToShift, 0);
-            ContainerTools.setSize(stackInSlot, resultingStackSize);
+            stackToShift.setCount(0);
+            stackInSlot.setCount(resultingStackSize);
             slot.setChanged();
             changed = true;
           } else if (stackInSlot.getCount() < max) {
-            ContainerTools.decSize(stackToShift, max - stackInSlot.getCount());
-            ContainerTools.setSize(stackInSlot, max);
+            stackToShift.shrink(max - stackInSlot.getCount());
+            stackInSlot.setCount(max);
             slot.setChanged();
             changed = true;
           }
@@ -181,8 +181,8 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
         if (stackInSlot.isEmpty()) {
           int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
           stackInSlot = stackToShift.copy();
-          ContainerTools.setSize(stackInSlot, Math.min(stackToShift.getCount(), max));
-          ContainerTools.decSize(stackToShift, stackInSlot.getCount());
+          stackInSlot.setCount(Math.min(stackToShift.getCount(), max));
+          stackToShift.shrink(stackInSlot.getCount());
           slot.set(stackInSlot);
           slot.setChanged();
           changed = true;

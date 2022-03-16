@@ -34,13 +34,14 @@ public abstract class ContainerModule extends BaseModule implements ForwardingCo
 
   @Override
   public CompoundTag serializeNBT() {
-    var tag = new CompoundTag();
-    tag.put("container", this.container.serializeNBT());
+    var tag = super.serializeNBT();
+    tag.put("container", this.container.createTag());
     return tag;
   }
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
-    this.container.deserializeNBT(tag.getList("container", Tag.TAG_COMPOUND));
+    super.deserializeNBT(tag);
+    this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
   }
 }

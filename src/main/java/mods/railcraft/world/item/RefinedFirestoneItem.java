@@ -68,7 +68,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
         newStack.setHoverName(stack.getHoverName());
     } else
       newStack = stack.copy();
-    ContainerTools.setSize(newStack, 1);
+    newStack.setCount(1);
     return newStack.hurt(1, MiscTools.RANDOM, null) ? ItemStack.EMPTY : newStack;
   }
 

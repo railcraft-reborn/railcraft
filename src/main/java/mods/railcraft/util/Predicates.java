@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import com.google.common.collect.Lists;
-import mods.railcraft.util.collections.StackKey;
+import mods.railcraft.util.collections.ItemStackKey;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.BlockPos;
@@ -56,7 +56,7 @@ public final class Predicates {
   }
 
   public static Predicate<ItemStack> distinctStack() {
-    return distinct(StackKey::make);
+    return distinct(ItemStackKey::make);
   }
 
   public static Predicate<BlockState> realBlock(BlockGetter world, BlockPos pos) {

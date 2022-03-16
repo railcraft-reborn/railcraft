@@ -10,11 +10,11 @@ public final class BlastFurnaceMenu extends CrafterMenu {
   private final BlastFurnaceBlockEntity blastFurnace;
 
   public BlastFurnaceMenu(int id, Inventory inventory, BlastFurnaceBlockEntity blastFurnace) {
-    super(RailcraftMenuTypes.BLAST_FURNACE.get(), id, inventory.player, blastFurnace.getLogic());
+    super(RailcraftMenuTypes.BLAST_FURNACE.get(), id, inventory.player, blastFurnace.getBlastFurnaceModule());
 
     this.blastFurnace = blastFurnace;
 
-    var logic = blastFurnace.getLogic();
+    var logic = blastFurnace.getBlastFurnaceModule();
     this.addSlot(new Slot(this.logic, BlastFurnaceModule.SLOT_INPUT, 56, 17));
     this.addSlot(new ItemFilterSlot(item -> logic.getItemBurnTime(item) > 0, this.logic,
         BlastFurnaceModule.SLOT_FUEL, 56, 53));

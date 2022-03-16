@@ -6,7 +6,7 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.client.ClientEffects;
 import mods.railcraft.sounds.RailcraftSoundEvents;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
+import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;

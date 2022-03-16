@@ -33,8 +33,8 @@ public class JukeboxCartPlayMusicTrigger
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
     ResourceLocation sound = JsonTools.whenPresent(json, "music",
         (element) -> new ResourceLocation(element.getAsString()), null);
-    CartPredicate cart =
-        JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
+    MinecartPredicate cart =
+        JsonTools.whenPresent(json, "cart", MinecartPredicate::deserialize, MinecartPredicate.ANY);
     return new JukeboxCartPlayMusicTrigger.Instance(entityPredicate, sound, cart);
   }
 
@@ -51,10 +51,10 @@ public class JukeboxCartPlayMusicTrigger
 
     @Nullable
     private final ResourceLocation music;
-    private final CartPredicate cart;
+    private final MinecartPredicate cart;
 
     private Instance(EntityPredicate.Composite entityPredicate,
-        @Nullable ResourceLocation music, CartPredicate cart) {
+        @Nullable ResourceLocation music, MinecartPredicate cart) {
       super(JukeboxCartPlayMusicTrigger.ID, entityPredicate);
       this.music = music;
       this.cart = cart;
@@ -62,12 +62,12 @@ public class JukeboxCartPlayMusicTrigger
 
     public static JukeboxCartPlayMusicTrigger.Instance hasPlayedAnyMusic() {
       return new JukeboxCartPlayMusicTrigger.Instance(EntityPredicate.Composite.ANY,
-          null, CartPredicate.ANY);
+          null, MinecartPredicate.ANY);
     }
 
     public static JukeboxCartPlayMusicTrigger.Instance hasPlayedMusic(ResourceLocation music) {
       return new JukeboxCartPlayMusicTrigger.Instance(EntityPredicate.Composite.ANY,
-          music, CartPredicate.ANY);
+          music, MinecartPredicate.ANY);
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart,

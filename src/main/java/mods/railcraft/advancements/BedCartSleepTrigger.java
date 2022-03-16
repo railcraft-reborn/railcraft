@@ -25,8 +25,8 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
   @Override
   public BedCartSleepTrigger.Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
-    CartPredicate predicate =
-        JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
+    MinecartPredicate predicate =
+        JsonTools.whenPresent(json, "cart", MinecartPredicate::deserialize, MinecartPredicate.ANY);
     return new BedCartSleepTrigger.Instance(entityPredicate, predicate);
   }
 
@@ -40,15 +40,15 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final CartPredicate cartPredicate;
+    private final MinecartPredicate cartPredicate;
 
-    private Instance(EntityPredicate.Composite entityPredicate, CartPredicate predicate) {
+    private Instance(EntityPredicate.Composite entityPredicate, MinecartPredicate predicate) {
       super(BedCartSleepTrigger.ID, entityPredicate);
       this.cartPredicate = predicate;
     }
 
     public static BedCartSleepTrigger.Instance hasSlept() {
-      return new BedCartSleepTrigger.Instance(EntityPredicate.Composite.ANY, CartPredicate.ANY);
+      return new BedCartSleepTrigger.Instance(EntityPredicate.Composite.ANY, MinecartPredicate.ANY);
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cartPredicate) {

@@ -4,14 +4,14 @@ import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraft.nbt.Tag;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -19,7 +19,8 @@ import net.minecraft.nbt.Tag;
 public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
     implements WorldlyContainer {
 
-  protected final AdvancedContainer patternInventory = new AdvancedContainer(6).callbackContainer(this);
+  protected final AdvancedContainer patternContainer =
+      new AdvancedContainer(6).callback((Container) this);
 
   protected MaintenancePatternMinecart(EntityType<?> type, Level world) {
     super(type, world);
@@ -31,7 +32,7 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
   }
 
   public Container getPattern() {
-    return patternInventory;
+    return this.patternContainer;
   }
 
   @Override
@@ -50,7 +51,7 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
   }
 
   protected void stockItems(int slotReplace, int slotStock) {
-    ItemStack stackReplace = this.patternInventory.getItem(slotReplace);
+    ItemStack stackReplace = this.patternContainer.getItem(slotReplace);
 
     ItemStack stackStock = getItem(slotStock);
 
@@ -72,13 +73,12 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
   @Override
   protected void addAdditionalSaveData(CompoundTag data) {
     super.addAdditionalSaveData(data);
-    data.put("patternInventory", this.patternInventory.serializeNBT());
+    data.put("pattern", this.patternContainer.createTag());
   }
 
   @Override
   protected void readAdditionalSaveData(CompoundTag data) {
     super.readAdditionalSaveData(data);
-    this.patternInventory.deserializeNBT(
-        data.getList("patternInventory", Tag.TAG_COMPOUND));
+    this.patternContainer.fromTag(data.getList("pattern", Tag.TAG_COMPOUND));
   }
 }

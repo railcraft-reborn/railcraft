@@ -3,9 +3,7 @@ package mods.railcraft.world.level.block.entity;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
-import mods.railcraft.util.container.CompositeContainerAdaptor;
-import mods.railcraft.util.container.ContainerAdaptor;
-import mods.railcraft.util.container.ContainerManipulator;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.inventory.OutputSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -29,12 +27,12 @@ public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
   }
 
   @Override
-  public ContainerManipulator getSource() {
+  public ContainerManipulator<?> getSource() {
     return this.cart;
   }
 
   @Override
-  public ContainerManipulator getDestination() {
+  public ContainerManipulator<?> getDestination() {
     return this.chests;
   }
 
@@ -55,14 +53,14 @@ public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
         && cart
             .getCapability(
                 CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, this.getFacing().getOpposite())
-            .map(ContainerAdaptor::of)
-            .map(ContainerAdaptor::hasItems)
+            .map(ContainerManipulator::of)
+            .map(ContainerManipulator::hasItems)
             .orElse(false);
   }
 
   private void clearContainer() {
     if (this.bufferContainer.hasItems()) {
-      this.bufferContainer.moveOneItemTo(CompositeContainerAdaptor.of(this.getAdjacentContainers()));
+      this.bufferContainer.moveOneItemTo(this.getAdjacentContainers());
     }
   }
 }

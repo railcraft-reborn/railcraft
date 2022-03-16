@@ -1,24 +1,21 @@
-package mods.railcraft.util.container.wrappers;
+package mods.railcraft.util.container;
 
-import java.util.Iterator;
 import java.util.function.Predicate;
-import com.google.common.collect.Iterators;
 import mods.railcraft.util.Predicates;
-import mods.railcraft.util.container.ContainerAdaptor;
-import mods.railcraft.util.container.StackFilter;
+import mods.railcraft.util.container.manipulator.VanillaContainerManipulator;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Wrapper class used to specify part of an existing inventory to be treated as a complete
- * inventory. Used primarily to map a side of an ISidedInventory, but it is also helpful for complex
- * inventories such as the Tunnel Bore.
+ * Wraps a {@link Container}, treating a specific portion of it as a separate {@link Container}.
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class ContainerMapper extends AbstractContainerMapper {
+public class ContainerMapper implements Container, VanillaContainerManipulator {
 
   private final Container container;
+  private boolean checkItems = true;
   private final int start;
   private final int size;
   private int stackSizeLimit = -1;
@@ -41,7 +38,6 @@ public class ContainerMapper extends AbstractContainerMapper {
    *        container
    */
   public ContainerMapper(Container container, int start, int size) {
-    super(container);
     this.container = container;
     this.start = start;
     this.size = size;
@@ -68,11 +64,6 @@ public class ContainerMapper extends AbstractContainerMapper {
   public ContainerMapper withStackSizeLimit(int limit) {
     stackSizeLimit = limit;
     return this;
-  }
-
-  @Override
-  public Iterator<ContainerAdaptor> adaptors() {
-    return Iterators.singletonIterator(ContainerAdaptor.of(this));
   }
 
   @Override
@@ -106,7 +97,51 @@ public class ContainerMapper extends AbstractContainerMapper {
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
     validSlot(slot);
-    return !checkItems() || (filter.test(stack) && container.canPlaceItem(start + slot, stack));
+    return !this.checkItems || (filter.test(stack) && container.canPlaceItem(start + slot, stack));
+  }
+
+  @Override
+  public Container getContainer() {
+    return this;
+  }
+
+  @Override
+  public ItemStack removeItemNoUpdate(int slot) {
+    return this.container.removeItemNoUpdate(slot);
+  }
+
+  @Override
+  public void setChanged() {
+    this.container.setChanged();
+  }
+
+  @Override
+  public boolean stillValid(Player player) {
+    return this.container.stillValid(player);
+  }
+
+  @Override
+  public void startOpen(Player player) {
+    this.container.startOpen(player);
+  }
+
+  @Override
+  public void stopOpen(Player player) {
+    this.container.stopOpen(player);
+  }
+
+  @Override
+  public void clearContent() {
+    this.container.clearContent();
+  }
+
+  public boolean checkItems() {
+    return this.checkItems;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return this.container.isEmpty();
   }
 
   public boolean containsSlot(int absoluteIndex) {

@@ -77,14 +77,9 @@ public interface MinecartExtension extends INBTSerializable<CompoundTag> {
     }
   }
 
-  LaunchState getLaunchState();
+  boolean isLaunched();
 
-  void setLaunchState(LaunchState launchState);
-
-  default void launch() {
-    this.setLaunchState(LaunchState.LAUNCHING);
-    this.getMinecart().setCanUseRail(false);
-  }
+  void launch();
 
   int getElevatorRemainingTicks();
 
@@ -93,6 +88,28 @@ public interface MinecartExtension extends INBTSerializable<CompoundTag> {
   }
 
   void setElevatorRemainingTicks(int elevatorRemainingTicks);
+
+  int getPreventMountRemainingTicks();
+
+  default boolean isMountable() {
+    return this.getPreventMountRemainingTicks() <= 0;
+  }
+
+  void setPreventMountRemainingTicks(int preventMountRemainingTicks);
+
+  int getDerailedRemainingTicks();
+
+  default boolean isDerailed() {
+    return this.getDerailedRemainingTicks() > 0;
+  }
+
+  void setDerailedRemainingTicks(int derailedRemainingTicks);
+
+  void primeExplosion();
+
+  boolean isHighSpeed();
+
+  void setHighSpeed(boolean highSpeed);
 
   AbstractMinecart getMinecart();
 

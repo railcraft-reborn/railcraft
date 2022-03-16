@@ -4,7 +4,8 @@ import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
+import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
@@ -35,10 +36,10 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe>
   public static final int SLOT_OUTPUT = 2;
   public static final int SLOT_SLAG = 3;
   private static final int FUEL_PER_TICK = 5;
-  public final ContainerMapper invFuel = ContainerMapper.make(this, SLOT_FUEL, 1);
-  private final ContainerMapper invOutput =
+  private final ContainerMapper fuelContainer = ContainerMapper.make(this, SLOT_FUEL, 1);
+  private final ContainerMapper outputContainer =
       new ContainerMapper(this, SLOT_OUTPUT, 1).ignoreItemChecks();
-  private final ContainerMapper invSlag =
+  private final ContainerMapper slagContainer =
       new ContainerMapper(this, SLOT_SLAG, 1).ignoreItemChecks();
 
   private final LazyOptional<IItemHandler> itemHandler =
@@ -65,6 +66,10 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe>
 
   public BlastFurnaceModule(ModuleProvider provider) {
     super(provider, 4, SLOT_INPUT);
+  }
+
+  public ContainerManipulator<?> getFuelContainer() {
+    return this.fuelContainer;
   }
 
   public int getCurrentItemBurnTime() {
@@ -101,19 +106,19 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe>
     Objects.requireNonNull(this.recipe);
     var nextResult = this.recipe.getResultItem();
 
-    if (!this.invOutput.canFit(nextResult)) {
+    if (!this.outputContainer.canFit(nextResult)) {
       return false;
     }
 
     ItemStack nextSlag = RailcraftItems.SLAG.get().getDefaultInstance();
     nextSlag.setCount(this.recipe.getSlagOutput());
 
-    if (!this.invSlag.canFit(nextSlag)) {
+    if (!this.slagContainer.canFit(nextSlag)) {
       return false;
     }
 
-    this.invOutput.addStack(nextResult);
-    this.invSlag.addStack(nextSlag);
+    this.outputContainer.addStack(nextResult);
+    this.slagContainer.addStack(nextSlag);
     this.removeItem(SLOT_INPUT, 1);
 
     this.setProgress(0);
@@ -166,12 +171,16 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe>
   }
 
   @Override
-  public boolean canPlaceItem(int slot, ItemStack stack) {
-    return super.canPlaceItem(slot, stack) && switch (slot) {
+  public boolean canPlaceItem(int slot, ItemStack itemStack) {
+    return super.canPlaceItem(slot, itemStack) && switch (slot) {
       case SLOT_INPUT -> true;
-      case SLOT_FUEL -> this.getItemBurnTime(stack) > 0;
+      case SLOT_FUEL -> this.isFuel(itemStack);
       default -> false;
     };
+  }
+
+  public boolean isFuel(ItemStack itemStack) {
+    return this.getItemBurnTime(itemStack) > 0;
   }
 
   @Override

@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block;
 
 import javax.annotation.Nullable;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import mods.railcraft.world.level.block.entity.multiblock.IronTankBlockEntity;
+import mods.railcraft.world.level.block.entity.multiblock.SteelTankBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.TankBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -19,7 +19,7 @@ public class SteelTankWallBlock extends BaseTankBlock {
 
   @Override
   public TankBlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-    return new IronTankBlockEntity(blockPos, blockState);
+    return new SteelTankBlockEntity(blockPos, blockState);
   }
 
   @Nullable
@@ -27,7 +27,7 @@ public class SteelTankWallBlock extends BaseTankBlock {
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
       BlockEntityType<T> type) {
     return level.isClientSide() ? null
-        : createTickerHelper(type, RailcraftBlockEntityTypes.IRON_TANK.get(),
-            IronTankBlockEntity::serverTick);
+        : createTickerHelper(type, RailcraftBlockEntityTypes.STEEL_TANK.get(),
+            SteelTankBlockEntity::serverTick);
   }
 }

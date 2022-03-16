@@ -3,9 +3,7 @@ package mods.railcraft.world.level.block.entity;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.util.container.ContainerIterator;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.ModifiableContainerSlot;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -17,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
@@ -44,7 +43,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   protected static final int CAPACITY = FluidTools.BUCKET_VOLUME * 32;
 
   protected final AdvancedContainer fluidFilterContainer =
-      new AdvancedContainer(1).callbackContainer(this).phantom();
+      new AdvancedContainer(1).callback((Container) this).phantom();
   protected final TankManager tankManager = new TankManager();
   private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> this.tankManager);
   protected final StandardTank tank = new FilteredTank(CAPACITY);
@@ -109,10 +108,11 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   protected void upkeep() {
     super.upkeep();
 
-    ContainerIterator<ModifiableContainerSlot> it = ContainerIterator.get(this);
-    it.slot(SLOT_INPUT).validate(this.level, this.getBlockPos());
-    it.slot(SLOT_PROCESSING).validate(this.level, this.getBlockPos(), FluidItemHelper::isContainer);
-    it.slot(SLOT_OUTPUT).validate(this.level, this.getBlockPos(), FluidItemHelper::isContainer);
+    ContainerTools.dropIfInvalid(this.level, this.getBlockPos(), this, SLOT_INPUT);
+    ContainerTools.drop(this.level, this.getBlockPos(), this, SLOT_PROCESSING,
+        FluidItemHelper::isContainer);
+    ContainerTools.drop(this.level, this.getBlockPos(), this, SLOT_OUTPUT,
+        FluidItemHelper::isContainer);
 
     if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {
       this.fluidProcessingTimer = 0;
@@ -164,7 +164,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     super.saveAdditional(tag);
     tag.putString("processState", this.processState.getSerializedName());
     tag.put("tankManager", this.tankManager.serializeNBT());
-    tag.put("invFilter", this.getFluidFilter().serializeNBT());
+    tag.put("invFilter", this.getFluidFilter().createTag());
   }
 
   @Override
@@ -173,7 +173,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);
     this.tankManager.deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
-    this.getFluidFilter().deserializeNBT(tag.getList("invFilter", Tag.TAG_COMPOUND));
+    this.getFluidFilter().fromTag(tag.getList("invFilter", Tag.TAG_COMPOUND));
   }
 
   @Override

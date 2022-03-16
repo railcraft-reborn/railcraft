@@ -7,7 +7,7 @@ import mods.railcraft.api.carts.IItemCart;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
+import mods.railcraft.util.container.ContainerMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

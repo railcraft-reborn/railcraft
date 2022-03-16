@@ -1,20 +1,19 @@
 package mods.railcraft.world.level.block.track.behaivor;
 
 import javax.annotation.Nullable;
-
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.world.entity.vehicle.CartConstants;
 import mods.railcraft.world.entity.vehicle.CartTools;
-import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.core.Direction;
+import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Created by CovertJaguar on 8/2/2016 for Railcraft.
@@ -74,20 +73,21 @@ public final class HighSpeedTools {
 
   public static void performHighSpeedChecks(Level world, BlockPos pos,
       AbstractMinecart cart) {
-    boolean highSpeed = isTravellingHighSpeed(cart);
-    Vec3 currentMotion = cart.getDeltaMovement();
+    var extension = MinecartExtension.getOrThrow(cart);
+    var highSpeed = extension.isHighSpeed();
+    var currentMotion = cart.getDeltaMovement();
     if (highSpeed) {
       checkSafetyAndExplode(world, pos, cart);
     } else if (isTrackSafeForHighSpeed(world, pos, cart)) {
       if (Math.abs(currentMotion.x()) > SPEED_CUTOFF) {
         double motionX = Math.copySign(SPEED_CUTOFF, currentMotion.x());
         cart.setDeltaMovement(motionX, currentMotion.y(), currentMotion.z());
-        setTravellingHighSpeed(cart, true);
+        extension.setHighSpeed(true);
       }
       if (Math.abs(currentMotion.z()) > SPEED_CUTOFF) {
         double motionZ = Math.copySign(SPEED_CUTOFF, currentMotion.z());
         cart.setDeltaMovement(currentMotion.x(), currentMotion.y(), motionZ);
-        setTravellingHighSpeed(cart, true);
+        extension.setHighSpeed(true);
       }
     } else {
       limitSpeed(cart);
@@ -128,13 +128,5 @@ public final class HighSpeedTools {
     }
 
     return maxSpeed;
-  }
-
-  public static void setTravellingHighSpeed(AbstractMinecart cart, boolean flag) {
-    cart.getPersistentData().putBoolean(CartConstants.TAG_HIGH_SPEED, flag);
-  }
-
-  public static boolean isTravellingHighSpeed(AbstractMinecart cart) {
-    return cart.getPersistentData().getBoolean(CartConstants.TAG_HIGH_SPEED);
   }
 }

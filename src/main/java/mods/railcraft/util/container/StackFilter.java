@@ -8,6 +8,7 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.TrackTools;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.BlockItem;
@@ -154,8 +155,8 @@ public enum StackFilter implements Predicate<ItemStack> {
    * Matches against the provided Inventory. If the Item class extends IFilterItem then it will pass
    * the check to the item.
    */
-  public static Predicate<ItemStack> anyMatch(final ContainerManipulator inv) {
-    return stack -> inv.streamStacks().anyMatch(f -> ContainerTools.matchesFilter(f, stack));
+  public static Predicate<ItemStack> anyMatch(final ContainerManipulator<?> inv) {
+    return stack -> inv.streamItems().anyMatch(f -> ContainerTools.matchesFilter(f, stack));
   }
 
   /**
@@ -211,7 +212,7 @@ public enum StackFilter implements Predicate<ItemStack> {
     };
   }
 
-  public static Predicate<ItemStack> ofSize(final int size) {
+  public static Predicate<ItemStack> ofSize(int size) {
     return stack -> stack.getCount() == size;
   }
 
@@ -221,20 +222,6 @@ public enum StackFilter implements Predicate<ItemStack> {
 
   public static Predicate<ItemStack> nonEmpty() {
     return stack -> !stack.isEmpty();
-  }
-
-  /**
-   * Matches if the Inventory contains the given ItemStack.
-   */
-  public static Predicate<ItemStack> containedIn(final CompositeContainer inv) {
-    return inv::contains;
-  }
-
-  /**
-   * Matches if the Inventory has room and accepts the given ItemStack.
-   */
-  public static Predicate<ItemStack> roomIn(final CompositeContainer inv) {
-    return inv::canFit;
   }
 
   /**
