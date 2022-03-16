@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import mods.railcraft.Railcraft;
+import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +37,7 @@ public class RailcraftConfigurableOre {
   }
 
   /* === PLACED FEATURE VALUES === */
-  private PlacedFeature placedFeature;
+  private Holder<PlacedFeature> placedFeature;
   public final ResourceLocation resourceLocation;
   private final PLACEMENT_TYPE placementType;
   private final List<Pair<RuleTest, ResourceLocation>> oreBlockTypes;
@@ -65,7 +65,7 @@ public class RailcraftConfigurableOre {
    * @param minY
    * @param maxY
    */
-  public RailcraftConfigurableOre(String id, List<Pair<RuleTest, ResourceLocation>> oreBlockTypes,
+  public RailcraftConfigurableOre(ResourceLocation id, List<Pair<RuleTest, ResourceLocation>> oreBlockTypes,
       PLACEMENT_TYPE placementType, int count, int maxGroupSize, // pls confirm if its max vein count, count one is chunk max i think
       int minY, int maxY) {
 
@@ -75,7 +75,7 @@ public class RailcraftConfigurableOre {
     this.maxGroupSize = maxGroupSize;
     this.minY = minY;
     this.maxY = maxY;
-    this.resourceLocation = new ResourceLocation(Railcraft.ID, id);
+    this.resourceLocation = id;
   }
 
   /**
@@ -123,30 +123,33 @@ public class RailcraftConfigurableOre {
    * <p/>
    * TODO: check if sideness can break this
    */
-  public PlacedFeature placedFeature() {
-    if (this.placedFeature == null) {
-      List<OreConfiguration.TargetBlockState> oreConfigurationTarget = new ArrayList<>();
-
-      this.oreBlockTypes.forEach(things -> {
-        oreConfigurationTarget.add(OreConfiguration.target(
-          things.getLeft(),
-          ForgeRegistries.BLOCKS.getValue(things.getRight()).defaultBlockState()));
-      });
-
-      var oreFeature = FeatureUtils.register(
-          resourceLocation.toString(),
-          Feature.ORE.configured(new OreConfiguration(oreConfigurationTarget, this.countConfig.get())));
-
-      var heightRange = HeightRangePlacement.uniform(VerticalAnchor.absolute(this.minYConfig.get()), VerticalAnchor.absolute(this.maxYConfig.get()));
-
-      this.placedFeature = PlacementUtils.register(
-          resourceLocation.toString(),
-          oreFeature.placed(
-            this.placementTypeConfig.get() == PLACEMENT_TYPE.COMMON
-                ? commonOrePlacement(this.maxGroupSizeConfig.get(), heightRange)
-                : rareOrePlacement(this.maxGroupSizeConfig.get(), heightRange)
-          ));
+  public Holder<PlacedFeature> placedFeature() {
+    if (this.placedFeature != null) {
+      return this.placedFeature;
     }
+
+    List<OreConfiguration.TargetBlockState> oreConfigurationTarget = new ArrayList<>();
+
+    this.oreBlockTypes.forEach(things -> {
+      oreConfigurationTarget.add(OreConfiguration.target(
+        things.getLeft(),
+        ForgeRegistries.BLOCKS.getValue(things.getRight()).defaultBlockState()));
+    });
+
+    var oreFeature = FeatureUtils.register(
+        resourceLocation.toString(),
+        Feature.ORE,
+        new OreConfiguration(oreConfigurationTarget, this.countConfig.get()));
+
+    var heightRange = HeightRangePlacement.uniform(VerticalAnchor.absolute(this.minYConfig.get()), VerticalAnchor.absolute(this.maxYConfig.get()));
+
+    this.placedFeature = PlacementUtils.register(
+        resourceLocation.toString(),
+        oreFeature,
+        this.placementTypeConfig.get() == PLACEMENT_TYPE.COMMON
+              ? commonOrePlacement(this.maxGroupSizeConfig.get(), heightRange)
+              : rareOrePlacement(this.maxGroupSizeConfig.get(), heightRange)
+        );
 
     return this.placedFeature;
   }

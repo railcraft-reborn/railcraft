@@ -157,13 +157,14 @@ public class Railcraft {
 
     logger.info("Starting Railcraft");
 
-    var sauce = System.getProperty("GIT_SOURCE", "LOCAL");
-    var sha = System.getProperty("GIT_SHA", "NOHASH");
+    var sauce = "@SOURCE@";
+    var sha = "@SHA@";
+    var prNum = "@PR_NUM@";
 
-    if (sauce == "PR") {
+    if (prNum != "@PR_NUM@") {
       logger.error("THIS RAILCRAFT BUILD IS FROM A PULL REQUEST!"
         + "DO **NOT** POST ISSUES ABOUT THIS VERSION ON ISSUES TAB, INSTEAD REPORT ON THE PR ITSELF AT "
-        + "https://github.com/Sm0keySa1m0n/Railcraft/pull/");
+        + "https://github.com/Sm0keySa1m0n/Railcraft/pull/" + prNum);
       logger.error("RC Commit: " + sha);
       logger.error("RC Source: PR");
       return;

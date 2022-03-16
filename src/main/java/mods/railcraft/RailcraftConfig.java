@@ -3,9 +3,6 @@ package mods.railcraft;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -239,7 +236,6 @@ public class RailcraftConfig {
 
     private static final void generateOreConfig(Builder builder) {
       RailcraftOrePlacements.TIN_ORE.generateOreConfig(builder);
-      logger.warn("RC CFG HIT");
     }
   }
 

@@ -18,6 +18,7 @@ buildscript {
     classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     classpath 'net.covers1624:JarSignPlugin:1.1.4' // signing.
+    classpath group: 'com.github.hexomod', name: 'ReplaceTokenPreprocessor', version: '0.3' // replacing vars (so we know if we got built officialy or on git)
   }
 }
 
@@ -27,6 +28,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'net.covers1624.signing'
+apply plugin: "com.github.hexomod.replace.token.preprocessor"
 
 def isCI = System.getenv("GITHUB_ACTION")
 def nightly = System.getenv("GITHUB_NIGHTLY")
@@ -166,14 +168,17 @@ dependencies {
     testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
 }
 
-
-// import org.apache.tools.ant.filters.ReplaceTokens
-
-// processResources{
-//     filter(ReplaceTokens, tokens: [
-//         GIT_SHA: 'git rev-parse HEAD'.execute().text.trim(),
-//         GIT_SOURCE: isCI ? tag : "LOCAL"])
+// tasks.withType(JavaCompile).configureEach {
+//     dependsOn macroPreprocessor
 // }
+
+replaceTokenPreprocessorSettings {
+    verbose true
+    extension = ".java"
+    replace '@SOURCE@': tag
+    replace '@SHA@': 'git rev-parse HEAD'.execute().text.trim()
+    replace '@PR_NUM@': ref
+}
 
 jar {
     from([sourceSets.api.output, sourceSets.main.output])

@@ -143,6 +143,12 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.RED_STEEL_TANK_WALL.get());
     this.dropSelf(RailcraftBlocks.BLACK_STEEL_TANK_WALL.get());
 
+
+    /* === ore === */
+
+    this.dropSelf(RailcraftBlocks.TIN_ORE.get());
+    this.dropSelf(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
+
     /* === tracks === */
     this.dropSelf(RailcraftBlocks.ABANDONED_TRACK.get());
     this.dropOther(RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
