@@ -55,6 +55,9 @@ public class RailcraftTags {
     public static final TagKey<Item> ZINC_BLOCK = forgeTag("blocks/zinc");
     public static final TagKey<Item> BRASS_BLOCK = forgeTag("blocks/brass");
 
+    public static final TagKey<Item> STEEL_PLATES = forgeTag("plates/steel");
+    public static final TagKey<Item> IRON_PLATES = forgeTag("plates/iron");
+
     private static TagKey<Item> tag(String name) {
       return ItemTags.create(new ResourceLocation(Railcraft.ID, name));
     }

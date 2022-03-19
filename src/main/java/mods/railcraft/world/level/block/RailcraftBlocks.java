@@ -2065,14 +2065,6 @@ public class RailcraftBlocks {
 
   /* == ORES == */
 
-  // UNUSED! ONLY FOR 1.16 BACKPORT
-  // public static final RegistryObject<OreBlock> COPPER_ORE =
-  //     BLOCKS.register("copper_ore",
-  //       () -> new OreBlock(
-  //         BlockBehaviour.Properties.of(Material.STONE)
-  //             .requiresCorrectToolForDrops()
-  //             .strength(3.0F, 3.0F)));
-
   public static final RegistryObject<OreBlock> TIN_ORE =
       BLOCKS.register("tin_ore",
         () -> new OreBlock(
@@ -2088,8 +2080,6 @@ public class RailcraftBlocks {
               .strength(4.5F, 3.0F)
               .sound(SoundType.DEEPSLATE)));
 
-  // public static final Block GOLD_ORE = register("gold_ore", new OreBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-  // public static final Block DEEPSLATE_GOLD_ORE = register("deepslate_gold_ore", new OreBlock(BlockBehaviour.Properties.copy(GOLD_ORE).color(MaterialColor.DEEPSLATE).strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE)));
 
   public static final RegistryObject<Block> BLACK_POST =
       BLOCKS.register("black_post",

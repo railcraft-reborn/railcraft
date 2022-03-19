@@ -228,13 +228,14 @@ public class RailcraftConfig {
             .define("enableOreGeneration", true);
 
         generateOreConfig(builder);
+
         builder.pop();
       }
 
       builder.pop();
     }
 
-    private static final void generateOreConfig(Builder builder) {
+    private void generateOreConfig(Builder builder) {
       RailcraftOrePlacements.TIN_ORE.generateOreConfig(builder);
     }
   }

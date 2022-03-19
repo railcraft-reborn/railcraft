@@ -8,7 +8,6 @@ import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
-import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -752,6 +751,18 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ITEM_UNLOADER =
       ITEMS.register("item_unloader",
           () -> new BlockItem(RailcraftBlocks.ITEM_UNLOADER.get(), new Item.Properties().tab(TAB)));
+
+  /* == ORES == */
+
+  public static final RegistryObject<Item> TIN_ORE =
+      ITEMS.register("tin_ore",
+          () -> new BlockItem(RailcraftBlocks.TIN_ORE.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> DEEPSLATE_TIN_ORE =
+      ITEMS.register("deepslate_tin_ore",
+          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_TIN_ORE.get(),
+              new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> IRON_SPIKE_MAUL =
       ITEMS.register("iron_spike_maul",
@@ -1679,16 +1690,16 @@ public class RailcraftItems {
           () -> new Item(new Item.Properties().tab(TAB)) {
             @Override
             public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-              return recipeType == RailcraftRecipeTypes.BLASTING ? 3200 : 0;
+              return 3200; // this 2x coal not blasting only https://ftb.fandom.com/wiki/Coal_Coke_(Railcraft)
             }
           });
 
-  public static final RegistryObject<Item> STEEL_INGOT =
-      ITEMS.register("steel_ingot",
+  public static final RegistryObject<Item> STEEL_PLATE =
+      ITEMS.register("steel_plate",
           () -> new Item(new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> COPPER_INGOT =
-      ITEMS.register("copper_ingot",
+  public static final RegistryObject<Item> STEEL_INGOT =
+      ITEMS.register("steel_ingot",
           () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TIN_INGOT =
@@ -1710,10 +1721,6 @@ public class RailcraftItems {
   // NUGGET
   public static final RegistryObject<Item> STEEL_NUGGET =
       ITEMS.register("steel_nugget",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> COPPER_NUGGET =
-      ITEMS.register("copper_nugget",
           () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TIN_NUGGET =

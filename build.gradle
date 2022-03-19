@@ -174,7 +174,7 @@ dependencies {
 
 replaceTokenPreprocessorSettings {
     verbose true
-    extension = ".java"
+    extension = "Railcraft.java"
     replace '@SOURCE@': tag
     replace '@SHA@': 'git rev-parse HEAD'.execute().text.trim()
     replace '@PR_NUM@': ref

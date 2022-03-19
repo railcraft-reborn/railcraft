@@ -19,8 +19,6 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
   protected void addTags() {
     this.tag(RailcraftTags.Items.STEEL_INGOT)
       .add(RailcraftItems.STEEL_INGOT.get());
-    this.tag(RailcraftTags.Items.COPPER_INGOT)
-      .add(RailcraftItems.COPPER_INGOT.get());
     this.tag(RailcraftTags.Items.TIN_INGOT)
       .add(RailcraftItems.TIN_INGOT.get());
     this.tag(RailcraftTags.Items.ZINC_INGOT)
@@ -32,8 +30,6 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
     this.tag(RailcraftTags.Items.STEEL_NUGGET)
       .add(RailcraftItems.STEEL_NUGGET.get());
-    this.tag(RailcraftTags.Items.COPPER_NUGGET)
-      .add(RailcraftItems.COPPER_NUGGET.get());
     this.tag(RailcraftTags.Items.TIN_NUGGET)
       .add(RailcraftItems.TIN_NUGGET.get());
     this.tag(RailcraftTags.Items.ZINC_NUGGET)
@@ -45,6 +41,9 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
     this.tag(RailcraftTags.Items.STEEL_BLOCK)
       .add(RailcraftItems.STEEL_BLOCK.get());
+
+    this.tag(RailcraftTags.Items.STEEL_PLATES)
+      .add(RailcraftItems.STEEL_PLATE.get());
   }
 
   @Override
