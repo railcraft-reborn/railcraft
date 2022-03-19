@@ -1698,6 +1698,10 @@ public class RailcraftItems {
       ITEMS.register("steel_plate",
           () -> new Item(new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> IRON_PLATE =
+      ITEMS.register("iron_plate",
+          () -> new Item(new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> STEEL_INGOT =
       ITEMS.register("steel_ingot",
           () -> new Item(new Item.Properties().tab(TAB)));

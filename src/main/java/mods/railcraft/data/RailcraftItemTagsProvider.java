@@ -44,6 +44,8 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
     this.tag(RailcraftTags.Items.STEEL_PLATES)
       .add(RailcraftItems.STEEL_PLATE.get());
+    this.tag(RailcraftTags.Items.IRON_PLATES)
+      .add(RailcraftItems.IRON_PLATE.get());
   }
 
   @Override

@@ -1,0 +1,18 @@
+{
+  "type": "railcraft:rolling",
+  "pattern": [
+    "PP ",
+    "PP ",
+    "   "
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "result": {
+    "item": "railcraft:steel_plate",
+    "count": 4
+  },
+  "tickCost": 100
+}

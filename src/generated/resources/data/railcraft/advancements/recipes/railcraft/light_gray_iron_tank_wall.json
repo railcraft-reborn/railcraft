@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "railcraft:light_gray_iron_tank_wall"
+    ]
+  },
+  "criteria": {
+    "has_steel_plate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:plates/iron"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "railcraft:light_gray_iron_tank_wall"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_plate",
+      "has_the_recipe"
+    ]
+  ]
+}

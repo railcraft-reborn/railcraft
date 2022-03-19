@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "railcraft:copper_ingot_ingot"
+      "railcraft:gray_steel_tank_wall"
     ]
   },
   "criteria": {
-    "has_required_compression_material": {
+    "has_steel_plate": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:nuggets/copper"
+            "tag": "forge:plates/steel"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "railcraft:copper_ingot_ingot"
+        "recipe": "railcraft:gray_steel_tank_wall"
       }
     }
   },
   "requirements": [
     [
-      "has_required_compression_material",
+      "has_steel_plate",
       "has_the_recipe"
     ]
   ]
