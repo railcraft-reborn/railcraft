@@ -4,10 +4,8 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
-import mods.railcraft.util.container.ContainerIterator;
+import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.ModifiableContainerSlot;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TankMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
@@ -121,11 +119,10 @@ public class TankMinecart extends FilteredMinecart
       return;
     }
 
-    ContainerIterator<ModifiableContainerSlot> it = ContainerIterator.get(this);
-    it.slot(SLOT_INPUT).validate(this.level, this.blockPosition());
-    it.slot(SLOT_PROCESSING).validate(this.level, this.blockPosition(),
+    ContainerTools.dropIfInvalid(this.level, this.blockPosition(), this, SLOT_INPUT);
+    ContainerTools.drop(this.level, this.blockPosition(), this, SLOT_PROCESSING,
         FluidItemHelper::isContainer);
-    it.slot(SLOT_OUTPUT).validate(this.level, this.blockPosition(),
+    ContainerTools.drop(this.level, this.blockPosition(), this, SLOT_OUTPUT,
         FluidItemHelper::isContainer);
 
     if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {

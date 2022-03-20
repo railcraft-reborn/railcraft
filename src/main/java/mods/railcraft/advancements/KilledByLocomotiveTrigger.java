@@ -29,8 +29,8 @@ public class KilledByLocomotiveTrigger
   @Override
   public KilledByLocomotiveTrigger.Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
-    CartPredicate predicate =
-        JsonTools.whenPresent(json, "cart", CartPredicate::deserialize, CartPredicate.ANY);
+    MinecartPredicate predicate =
+        JsonTools.whenPresent(json, "cart", MinecartPredicate::deserialize, MinecartPredicate.ANY);
     return new KilledByLocomotiveTrigger.Instance(entityPredicate, predicate);
   }
 
@@ -45,9 +45,9 @@ public class KilledByLocomotiveTrigger
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final CartPredicate cart;
+    private final MinecartPredicate cart;
 
-    private Instance(EntityPredicate.Composite entityPredicate, CartPredicate cart) {
+    private Instance(EntityPredicate.Composite entityPredicate, MinecartPredicate cart) {
       super(KilledByLocomotiveTrigger.ID, entityPredicate);
       this.cart = cart;
     }

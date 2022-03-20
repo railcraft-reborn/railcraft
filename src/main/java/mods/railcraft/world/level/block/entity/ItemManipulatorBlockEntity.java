@@ -8,20 +8,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-import mods.railcraft.util.collections.StackKey;
+import mods.railcraft.util.collections.ItemStackKey;
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.util.container.CompositeContainerAdaptor;
-import mods.railcraft.util.container.ContainerAdaptor;
 import mods.railcraft.util.container.ContainerManifest;
-import mods.railcraft.util.container.ContainerManipulator;
+import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
+import mods.railcraft.util.container.manipulator.CompositeContainerManipulator;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import mods.railcraft.util.container.manipulator.SlotAccessor;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -42,13 +43,13 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   protected static final Map<TransferMode, Predicate<ItemManipulatorBlockEntity>> modeHasWork =
       new EnumMap<>(TransferMode.class);
   protected static final int[] SLOTS = ContainerTools.buildSlotArray(0, 9);
-  protected ContainerManipulator cart;
+  protected ContainerManipulator<?> cart;
 
   static {
     modeHasWork.put(TransferMode.ALL, tile -> {
-      ContainerManipulator dest = tile.getDestination();
+      var dest = tile.getDestination();
 
-      return tile.getSource().streamStacks()
+      return tile.getSource().streamItems()
           .filter(StackFilter.anyMatch(tile.getItemFilters()))
           .anyMatch(dest::willAccept);
     });
@@ -57,7 +58,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
       ContainerManifest filterManifest = ContainerManifest.create(tile.getItemFilters());
       ContainerManifest sourceManifest =
           ContainerManifest.create(tile.getSource(), filterManifest.keySet());
-      ContainerManipulator dest = tile.getDestination();
+      var dest = tile.getDestination();
 
       return sourceManifest.values().stream()
           .filter(entry -> dest.willAcceptAny(entry.stacks()))
@@ -66,7 +67,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     });
 
     modeHasWork.put(TransferMode.STOCK, tile -> {
-      ContainerManipulator dest = tile.getDestination();
+      var dest = tile.getDestination();
       ContainerManifest filterManifest = ContainerManifest.create(tile.getItemFilters());
       ContainerManifest sourceManifest =
           ContainerManifest.create(tile.getSource(), filterManifest.keySet());
@@ -78,7 +79,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     });
 
     modeHasWork.put(TransferMode.EXCESS, tile -> {
-      ContainerManipulator dest = tile.getDestination();
+      var dest = tile.getDestination();
       ContainerManifest filterManifest = ContainerManifest.create(tile.getItemFilters());
       ContainerManifest sourceManifest =
           ContainerManifest.create(tile.getSource(), filterManifest.keySet());
@@ -95,11 +96,11 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     });
   }
 
-  protected final CompositeContainerAdaptor chests = CompositeContainerAdaptor.create();
-  protected final Multiset<StackKey> transferredItems = HashMultiset.create();
+  protected CompositeContainerManipulator<? extends SlotAccessor> chests = Stream::empty;
+  protected final Multiset<ItemStackKey> transferredItems = HashMultiset.create();
   protected final ContainerMapper bufferContainer;
   private final AdvancedContainer filtersContainer =
-      new AdvancedContainer(9).callbackContainer(this).phantom();
+      new AdvancedContainer(9).callback((Container) this).phantom();
   private TransferMode transferMode = TransferMode.ALL;
 
   protected ItemManipulatorBlockEntity(BlockEntityType<?> type, BlockPos blockPos,
@@ -109,9 +110,9 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     this.bufferContainer = ContainerMapper.make(this.getContainer()).ignoreItemChecks();
   }
 
-  public abstract ContainerManipulator getSource();
+  public abstract ContainerManipulator<?> getSource();
 
-  public abstract ContainerManipulator getDestination();
+  public abstract ContainerManipulator<?> getDestination();
 
   public TransferMode getTransferMode() {
     return this.transferMode;
@@ -144,12 +145,11 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   protected void processCart(AbstractMinecart cart) {
-    this.chests.clear();
-    this.chests.add(this.bufferContainer);
-    this.chests.addAll(this.getAdjacentContainers());
+    this.chests =
+        CompositeContainerManipulator.of(this.bufferContainer, this.getAdjacentContainers());
 
-    ContainerAdaptor cartInv = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-        this.getFacing().getOpposite()).map(ContainerAdaptor::of).orElse(null);
+    var cartInv = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+        this.getFacing().getOpposite()).map(ContainerManipulator::of).orElse(null);
     if (cartInv == null) {
       sendCart(cart);
       return;
@@ -198,9 +198,11 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   protected boolean hasWorkForCart(AbstractMinecart cart) {
-    ContainerManipulator cartInv =
-        cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-            this.getFacing().getOpposite()).map(ContainerAdaptor::of).orElse(null);
+    var cartInv = cart
+        .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+            this.getFacing().getOpposite())
+        .map(ContainerManipulator::of)
+        .orElse(null);
     if (cartInv == null || cartInv.slotCount() <= 0) {
       return false;
     }
@@ -221,7 +223,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
   protected void moveItem(Stream<ContainerManifest.ManifestEntry> stream) {
     List<ItemStack> keys = stream.map(ContainerManifest.ManifestEntry::key)
-        .map(StackKey::get)
+        .map(ItemStackKey::get)
         .collect(Collectors.toList());
     ItemStack moved =
         this.getSource().moveOneItemTo(this.getDestination(), StackFilter.anyMatch(keys));
@@ -231,15 +233,15 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   protected final void itemMoved(ItemStack moved) {
     if (!moved.isEmpty()) {
       this.setProcessing(true);
-      this.transferredItems.add(StackKey.make(moved));
+      this.transferredItems.add(ItemStackKey.make(moved));
     }
   }
 
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
     return cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-        this.getFacing().getOpposite()).map(ContainerAdaptor::of)
-        .map(inventory -> inventory.slotCount() > 0).orElse(false)
+        this.getFacing().getOpposite())
+        .map(inventory -> inventory.getSlots() > 0).orElse(false)
         && super.canHandleCart(cart);
   }
 
@@ -264,7 +266,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
     tag.putString("transferMode", this.transferMode.getSerializedName());
-    tag.put("itemFilters", this.getItemFilters().serializeNBT());
+    tag.put("itemFilters", this.getItemFilters().createTag());
   }
 
   @Override
@@ -272,6 +274,6 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     super.load(tag);
     this.transferMode =
         TransferMode.getByName(tag.getString("transferMode")).orElse(TransferMode.ALL);
-    this.getItemFilters().deserializeNBT(tag.getList("itemFilters", Tag.TAG_COMPOUND));
+    this.getItemFilters().fromTag(tag.getList("itemFilters", Tag.TAG_COMPOUND));
   }
 }

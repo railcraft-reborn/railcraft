@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.util.MiscTools;
-import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,7 +36,7 @@ public final class CartTools {
     if (!cart.isAlive()) {
       return;
     }
-    HighSpeedTools.setTravellingHighSpeed(cart, false);
+    MinecartExtension.getOrThrow(cart).setHighSpeed(false);
     cart.setDeltaMovement(0, cart.getDeltaMovement().y(), 0);
 
     if (cart.level.isClientSide()) {

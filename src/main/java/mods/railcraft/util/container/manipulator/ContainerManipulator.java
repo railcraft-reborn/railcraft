@@ -1,15 +1,21 @@
-package mods.railcraft.util.container;
+package mods.railcraft.util.container.manipulator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.base.Predicates;
-import mods.railcraft.util.collections.StackKey;
+import mods.railcraft.util.collections.ItemStackKey;
+import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.container.StackFilter;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 /**
  * This interface defines the standard inventory operations.
@@ -22,7 +28,19 @@ import net.minecraft.world.item.ItemStack;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public interface ContainerManipulator {
+public interface ContainerManipulator<T extends SlotAccessor> {
+
+  static ContainerManipulator<SlotAccessor> of(IItemHandler itemHandler) {
+    return new ItemHandlerManipulator.Standard(itemHandler);
+  }
+
+  /**
+   * Only use this on inventories we control.
+   */
+  static ContainerManipulator<ModifiableSlotAccessor> of(IItemHandlerModifiable itemHandler) {
+    return new ItemHandlerManipulator.Modifiable(itemHandler);
+  }
+
   /**
    * Returns the number of slots the inventory contains.
    */
@@ -35,28 +53,67 @@ public interface ContainerManipulator {
    *
    * @return The remainder
    */
-  ItemStack addStack(ItemStack stack, boolean simulate);
+  default ItemStack addStack(ItemStack stack, boolean simulate) {
+    if (stack.isEmpty()) {
+      return ItemStack.EMPTY;
+    }
+    var newStack = stack.copy();
+    List<SlotAccessor> filledSlots = new ArrayList<>();
+    List<SlotAccessor> emptySlots = new ArrayList<>();
+    this.stream().forEach(slot -> {
+      if (slot.isValid(newStack)) {
+        if (slot.getItem().isEmpty()) {
+          emptySlots.add(slot);
+        } else {
+          filledSlots.add(slot);
+        }
+      }
+    });
+
+    int injected = 0;
+    injected = ManipulatorUtil.tryPut(filledSlots, newStack, injected, simulate);
+    injected = ManipulatorUtil.tryPut(emptySlots, newStack, injected, simulate);
+    newStack.shrink(injected);
+    return newStack.isEmpty() ? ItemStack.EMPTY : newStack;
+  }
 
   /**
    * Removes up to maxAmount items in one slot matching the filter.
    */
-  ItemStack removeStack(int maxAmount, Predicate<ItemStack> filter, boolean simulate);
+  default ItemStack removeStack(int maxAmount, Predicate<ItemStack> filter, boolean simulate) {
+    return this.stream()
+        .filter(slot -> slot.hasItem() && slot.canRemoveItem() && slot.matches(filter))
+        .map(slot -> slot.shrink(maxAmount, simulate))
+        .findFirst()
+        .orElse(ItemStack.EMPTY);
+  }
 
-  /**
-   * Attempts to remove as many items from across the entire inventory as possible up to maxAmount.
-   *
-   * If the stacks come from multiple slots, each stack will have its own list entry.
-   */
-  List<ItemStack> extractItems(int maxAmount, Predicate<ItemStack> filter, boolean simulate);
+  default List<ItemStack> extractItems(int maxAmount, Predicate<ItemStack> filter,
+      boolean simulate) {
+    var amountNeeded = new AtomicInteger(maxAmount);
+    return this.stream()
+        .takeWhile(__ -> amountNeeded.getPlain() > 0)
+        .filter(slot -> slot.hasItem() && slot.canRemoveItem() && slot.matches(filter))
+        .map(slot -> slot.shrink(amountNeeded.getPlain(), simulate))
+        .filter(item -> !item.isEmpty())
+        .peek(item -> amountNeeded.addAndGet(-item.getCount()))
+        .toList();
+  }
 
-  /**
-   * Moves a single item matching the filter from this inventory to another.
-   */
-  ItemStack moveOneItemTo(ContainerManipulator dest, Predicate<ItemStack> filter);
+  default ItemStack moveOneItemTo(ContainerManipulator<?> dest, Predicate<ItemStack> filter) {
+    return this.stream()
+        .filter(slot -> slot.hasItem() && slot.canRemoveItem() && slot.matches(filter))
+        .filter(slot -> dest.addStack(ContainerTools.copyOne(slot.getItem())).isEmpty())
+        .map(T::shrink)
+        .findFirst()
+        .orElse(ItemStack.EMPTY);
+  }
 
-  Stream<? extends ContainerSlot> streamSlots();
+  Stream<T> stream();
 
-  Stream<ItemStack> streamStacks();
+  default Stream<ItemStack> streamItems() {
+    return this.stream().filter(SlotAccessor::hasItem).map(SlotAccessor::getItem);
+  }
 
   /**
    * Checks if inventory will accept the ItemStack.
@@ -65,10 +122,11 @@ public interface ContainerManipulator {
    * @return true if room for stack
    */
   default boolean willAccept(ItemStack stack) {
-    if (stack.isEmpty())
+    if (stack.isEmpty()) {
       return false;
-    ItemStack newStack = ContainerTools.copyOne(stack);
-    return streamSlots().anyMatch(slot -> slot.canPutStackInSlot(newStack));
+    }
+    var newStack = ContainerTools.copyOne(stack);
+    return this.stream().anyMatch(slot -> slot.isValid(newStack));
   }
 
   /**
@@ -88,7 +146,7 @@ public interface ContainerManipulator {
    * @return true if room for stack
    */
   default boolean canFit(ItemStack stack) {
-    return addStack(stack, true).isEmpty();
+    return this.addStack(stack, true).isEmpty();
   }
 
   /**
@@ -142,8 +200,8 @@ public interface ContainerManipulator {
    * @param dest the destination inventory
    * @return null if nothing was moved, the stack moved otherwise
    */
-  default ItemStack moveOneItemTo(ContainerManipulator dest) {
-    return moveOneItemTo(dest, Predicates.alwaysTrue());
+  default ItemStack moveOneItemTo(ContainerManipulator<?> dest) {
+    return this.moveOneItemTo(dest, Predicates.alwaysTrue());
   }
 
   /**
@@ -153,7 +211,7 @@ public interface ContainerManipulator {
    * @return true is exists
    */
   default boolean contains(Predicate<ItemStack> filter) {
-    return streamStacks().anyMatch(filter);
+    return streamItems().anyMatch(filter);
   }
 
   default int countStacks() {
@@ -161,7 +219,7 @@ public interface ContainerManipulator {
   }
 
   default int countStacks(Predicate<ItemStack> filter) {
-    return (int) streamStacks().filter(filter).count();
+    return (int) streamItems().filter(filter).count();
   }
 
   /**
@@ -181,7 +239,7 @@ public interface ContainerManipulator {
    * @return the number of items in the inventory
    */
   default int countItems(Predicate<ItemStack> filter) {
-    return streamStacks().filter(filter).mapToInt(ItemStack::getCount).sum();
+    return streamItems().filter(filter).mapToInt(ItemStack::getCount).sum();
   }
 
   /**
@@ -204,7 +262,7 @@ public interface ContainerManipulator {
   }
 
   default boolean hasItems() {
-    return streamStacks().findAny().isPresent();
+    return streamItems().findAny().isPresent();
   }
 
   default boolean hasNoItems() {
@@ -212,7 +270,7 @@ public interface ContainerManipulator {
   }
 
   default boolean isFull() {
-    return streamSlots().allMatch(ContainerSlot::hasStack);
+    return this.stream().allMatch(SlotAccessor::hasItem);
   }
 
   default boolean hasEmptySlot() {
@@ -220,7 +278,7 @@ public interface ContainerManipulator {
   }
 
   default int countMaxItemStackSize() {
-    return streamStacks().mapToInt(ItemStack::getMaxStackSize).sum();
+    return streamItems().mapToInt(ItemStack::getMaxStackSize).sum();
   }
 
   /**
@@ -230,8 +288,8 @@ public interface ContainerManipulator {
    * @param filter EnumItemType to match against
    * @return A Set of ItemStacks
    */
-  default Set<StackKey> findAll(Predicate<ItemStack> filter) {
-    return streamStacks().filter(filter).map(StackKey::make).collect(Collectors.toSet());
+  default Set<ItemStackKey> findAll(Predicate<ItemStack> filter) {
+    return streamItems().filter(filter).map(ItemStackKey::make).collect(Collectors.toSet());
   }
 
   /**

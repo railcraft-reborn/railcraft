@@ -30,18 +30,18 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
 
   public ContainerBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     super(type, blockPos, blockState);
-    this.container = new AdvancedContainer(0).callbackContainer(this);
+    this.container = new AdvancedContainer(0).callback((Container) this);
 
   }
 
   protected ContainerBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       int size) {
     super(type, blockPos, blockState);
-    this.container = new AdvancedContainer(size).callbackContainer(this);
+    this.container = new AdvancedContainer(size).callback((Container) this);
   }
 
   protected void setContainerSize(int size) {
-    this.container = new AdvancedContainer(size).callbackContainer(this);
+    this.container = new AdvancedContainer(size).callback((Container) this);
   }
 
   @Override
@@ -69,12 +69,12 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    tag.put("inventory", this.container.serializeNBT());
+    tag.put("container", this.container.createTag());
   }
 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    this.container.deserializeNBT(tag.getList("inventory", Tag.TAG_COMPOUND));
+    this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
   }
 }

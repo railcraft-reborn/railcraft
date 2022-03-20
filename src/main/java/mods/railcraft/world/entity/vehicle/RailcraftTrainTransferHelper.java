@@ -9,14 +9,14 @@ import mods.railcraft.api.carts.IItemCart;
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.carts.TrainTransferHelper;
-import mods.railcraft.util.collections.StackKey;
-import mods.railcraft.util.container.ContainerAdaptor;
+import mods.railcraft.util.collections.ItemStackKey;
 import mods.railcraft.util.container.StackFilter;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.level.material.fluid.FluidTools;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.Containers;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -69,8 +69,8 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
   private ItemStack _pushStack(AbstractMinecart requester,
       Iterable<AbstractMinecart> carts, ItemStack stack) {
     for (AbstractMinecart cart : carts) {
-      ContainerAdaptor adaptor = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-          .map(ContainerAdaptor::of)
+      var adaptor = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+          .map(ContainerManipulator::of)
           .orElse(null);
       if (adaptor != null && this.canAcceptPushedItem(requester, cart, stack)) {
         stack = adaptor.addStack(stack);
@@ -101,14 +101,14 @@ public enum RailcraftTrainTransferHelper implements TrainTransferHelper {
       Iterable<AbstractMinecart> carts, Predicate<ItemStack> filter) {
     ItemStack result = ItemStack.EMPTY;
     AbstractMinecart upTo = null;
-    ContainerAdaptor targetInv = null;
-    for (AbstractMinecart cart : carts) {
-      ContainerAdaptor inv = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-          .map(ContainerAdaptor::of)
+    ContainerManipulator<?> targetInv = null;
+    for (var cart : carts) {
+      var inv = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+          .map(ContainerManipulator::of)
           .orElse(null);
       if (inv != null) {
-        Set<StackKey> items = inv.findAll(filter);
-        for (StackKey stackKey : items) {
+        Set<ItemStackKey> items = inv.findAll(filter);
+        for (ItemStackKey stackKey : items) {
           ItemStack stack = stackKey.get();
           if (this.canProvidePulledItem(requester, cart, stack)) {
             ItemStack toRemove = inv.findOne(StackFilter.of(stack));

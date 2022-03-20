@@ -7,7 +7,6 @@ import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.Vec2D;
-import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public final class LinkagePhysicsUtil {
@@ -94,7 +93,7 @@ public final class LinkagePhysicsUtil {
     // stretch *= 2;
     // }
 
-    boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(cart1);
+    boolean highSpeed = MinecartExtension.getOrThrow(cart1).isHighSpeed();
 
     double stiffness = highSpeed ? HS_STIFFNESS : STIFFNESS;
     double springX = stiffness * stretch * unit.getX();

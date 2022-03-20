@@ -3,14 +3,13 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
 
 public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
@@ -33,7 +32,7 @@ public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
   public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
       AbstractMinecart cart) {
     super.onMinecartPass(blockState, level, pos, cart);
-    TrackType trackType = this.getTrackType();
+    var trackType = this.getTrackType();
     if (TrackTypes.REINFORCED.get() == trackType) {
       this.minecartPassStandard(blockState, level, pos, cart, BOOST_FACTOR_REINFORCED);
     } else if (trackType.isHighSpeed()) {
@@ -45,9 +44,9 @@ public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
 
   private void minecartPassStandard(BlockState blockState, Level level, BlockPos pos,
       AbstractMinecart cart, double boostFactor) {
-    RailShape dir = getRailShapeRaw(blockState);
-    Vec3 motion = cart.getDeltaMovement();
-    double speed = Math.sqrt(motion.x() * motion.x() + motion.z() * motion.z());
+    var dir = getRailShapeRaw(blockState);
+    var motion = cart.getDeltaMovement();
+    var speed = Math.sqrt(motion.x() * motion.x() + motion.z() * motion.z());
     if (this.isPowered(blockState, level, pos)) {
       if (speed > BOOST_THRESHOLD) {
         cart.setDeltaMovement(
@@ -55,12 +54,13 @@ public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
       } else {
         CartTools.startBoost(cart, pos, dir, START_BOOST);
       }
+      return;
+    }
+
+    if (speed < STALL_THRESHOLD) {
+      cart.setDeltaMovement(Vec3.ZERO);
     } else {
-      if (speed < STALL_THRESHOLD) {
-        cart.setDeltaMovement(Vec3.ZERO);
-      } else {
-        cart.setDeltaMovement(motion.multiply(SLOW_FACTOR, 0.0D, SLOW_FACTOR));
-      }
+      cart.setDeltaMovement(motion.multiply(SLOW_FACTOR, 0.0D, SLOW_FACTOR));
     }
   }
 
@@ -68,8 +68,8 @@ public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
       AbstractMinecart cart) {
     Vec3 motion = cart.getDeltaMovement();
     if (this.isPowered(blockState, level, pos)) {
-      double speed = Math.sqrt(motion.x() * motion.x() + motion.z() * motion.z());
-      RailShape dir = getRailShapeRaw(blockState);
+      var speed = Math.sqrt(motion.x() * motion.x() + motion.z() * motion.z());
+      var dir = getRailShapeRaw(blockState);
       if (speed > BOOST_THRESHOLD) {
         cart.setDeltaMovement(
             motion.add((motion.x() / speed) * BOOST_FACTOR_HS, 0,
@@ -77,22 +77,23 @@ public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
       } else {
         CartTools.startBoost(cart, pos, dir, START_BOOST);
       }
-    } else {
-      boolean highSpeed = HighSpeedTools.isTravellingHighSpeed(cart);
-      if (highSpeed) {
-        if (cart instanceof Locomotive) {
-          ((Locomotive) cart).forceIdle(20);
-        }
-        cart.setDeltaMovement(motion.multiply(SLOW_FACTOR_HS, 0.0D, SLOW_FACTOR_HS));
+      return;
+    }
 
-      } else {
-        if (Math.abs(motion.x()) > 0) {
-          cart.setDeltaMovement(Math.copySign(0.38f, motion.x()), motion.y(), motion.z());
-        }
-        if (Math.abs(motion.z()) > 0) {
-          cart.setDeltaMovement(motion.x(), motion.y(), Math.copySign(0.38f, motion.z()));
-        }
+    if (MinecartExtension.getOrThrow(cart).isHighSpeed()) {
+      if (cart instanceof Locomotive locomotive) {
+        locomotive.forceIdle(20);
       }
+      cart.setDeltaMovement(motion.multiply(SLOW_FACTOR_HS, 0.0D, SLOW_FACTOR_HS));
+      return;
+    }
+
+    if (Math.abs(motion.x()) > 0) {
+      cart.setDeltaMovement(Math.copySign(0.38f, motion.x()), motion.y(), motion.z());
+    }
+
+    if (Math.abs(motion.z()) > 0) {
+      cart.setDeltaMovement(motion.x(), motion.y(), Math.copySign(0.38f, motion.z()));
     }
   }
 

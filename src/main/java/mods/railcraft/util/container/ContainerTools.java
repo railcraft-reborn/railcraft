@@ -2,96 +2,44 @@ package mods.railcraft.util.container;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import javax.annotation.Nullable;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.InvToolsAPI;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
-import net.minecraft.core.Direction;
+import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Level;
 
 public abstract class ContainerTools {
-
-  public static final String TAG_SLOT = "Slot";
 
   public static void requiresNotEmpty(ItemStack stack) {
     if (stack.isEmpty())
       throw new IllegalStateException("Item cannot be empty.");
   }
 
-  public static ItemStack setSize(ItemStack stack, int size) {
-    if (stack.isEmpty())
-      return ItemStack.EMPTY;
-    stack.setCount(size);
-    return stack;
-  }
-
-  public static ItemStack incSize(@Nullable ItemStack stack, int size) {
-    if (stack.isEmpty())
-      return ItemStack.EMPTY;
-    stack.grow(size);
-    return stack;
-  }
-
-  public static ItemStack decSize(@Nullable ItemStack stack, int size) {
-    if (stack.isEmpty())
-      return ItemStack.EMPTY;
-    stack.shrink(size);
-    return stack;
-  }
-
-  public static ItemStack inc(@Nullable ItemStack stack) {
-    if (stack.isEmpty())
-      return ItemStack.EMPTY;
-    stack.grow(1);
-    return stack;
-  }
-
-  public static ItemStack dec(@Nullable ItemStack stack) {
-    if (stack.isEmpty())
-      return ItemStack.EMPTY;
-    stack.shrink(1);
-    return stack;
-  }
-
-  public static String toString(@Nullable ItemStack stack) {
-    if (stack.isEmpty())
-      return "ItemStack.EMPTY";
-    return stack.toString();
-  }
-
-  public static ItemStack makeSafe(@Nullable ItemStack stack) {
-    if (stack.isEmpty())
-      return ItemStack.EMPTY;
-    return stack;
-  }
-
-  public static ItemStack copy(@Nullable ItemStack stack) {
-    return stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-  }
-
-  public static ItemStack copy(@Nullable ItemStack stack, int newSize) {
-    ItemStack ret = copy(stack);
-    if (!ret.isEmpty())
-      ret.setCount(Math.min(newSize, ret.getMaxStackSize()));
-    return ret;
+  public static ItemStack copy(ItemStack itemStack, int newSize) {
+    var copy = itemStack.copy();
+    if (!copy.isEmpty()) {
+      copy.setCount(Math.min(newSize, copy.getMaxStackSize()));
+    }
+    return copy;
   }
 
   public static ItemStack copyOne(ItemStack stack) {
@@ -157,36 +105,22 @@ public abstract class ContainerTools {
     }
   }
 
-  public static void dropItem(ItemStack stack, Level world, BlockPos pos) {
+  public static void dropIfInvalid(Level level, BlockPos blockPos, Container container, int index) {
+    drop(level, blockPos, container, index, item -> container.canPlaceItem(index, item));
+  }
+
+  public static void drop(Level level, BlockPos blockPos, Container container, int index,
+      Predicate<ItemStack> predicate) {
+    var item = container.getItem(index);
+    if (!item.isEmpty() && !predicate.test(item)) {
+      container.setItem(index, ItemStack.EMPTY);
+      ContainerTools.dropItem(item, level, blockPos);
+    }
+  }
+
+  public static void dropItem(ItemStack stack, Level level, BlockPos pos) {
     Containers.dropItemStack(
-        world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
-  }
-
-  static int tryPut(List<ContainerSlot> slots, ItemStack stack, int injected, boolean simulate) {
-    if (injected >= stack.getCount())
-      return injected;
-    for (ContainerSlot slot : slots) {
-      int amountToInsert = stack.getCount() - injected;
-      ItemStack remainder = slot.addToSlot(copy(stack, amountToInsert), simulate);
-      if (remainder.isEmpty())
-        return stack.getCount();
-      injected += amountToInsert - remainder.getCount();
-      if (injected >= stack.getCount())
-        return injected;
-    }
-    return injected;
-  }
-
-  static boolean tryRemove(CompositeContainer comp, int amount, Predicate<ItemStack> filter,
-      boolean simulate) {
-    int amountNeeded = amount;
-    for (ContainerAdaptor inv : comp.iterable()) {
-      List<ItemStack> stacks = inv.extractItems(amountNeeded, filter, simulate);
-      amountNeeded -= stacks.stream().mapToInt(ItemStack::getCount).sum();
-      if (amountNeeded <= 0)
-        return true;
-    }
-    return false;
+        level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
   }
 
   public static boolean isItem(ItemStack stack, @Nullable Item item) {
@@ -295,7 +229,7 @@ public abstract class ContainerTools {
       if (!itemStack.isEmpty()) {
         CompoundTag slotTag = new CompoundTag();
         slotTag.putByte("index", i);
-        writeItem(itemStack, slotTag);
+        itemStack.save(slotTag);
         tag.add(slotTag);
       }
     }
@@ -311,16 +245,6 @@ public abstract class ContainerTools {
         inventory.setItem(slot, itemStack);
       }
     }
-  }
-
-  public static void writeItem(ItemStack itemStack, CompoundTag tag) {
-    if (itemStack.isEmpty()) {
-      return;
-    }
-    if (itemStack.getCount() > 127) {
-      setSize(itemStack, 127);
-    }
-    itemStack.save(tag);
   }
 
   public static boolean isStackEqualToBlock(ItemStack stack, @Nullable Block block) {
@@ -355,9 +279,9 @@ public abstract class ContainerTools {
     return null;
   }
 
-  public static double calculateFullness(ContainerManipulator manipulator) {
-    return manipulator.streamSlots()
-        .mapToDouble(slot -> slot.getStack().getCount() / (double) slot.getMaxStackSize()).average()
+  public static double calculateFullness(ContainerManipulator<?> manipulator) {
+    return manipulator.stream()
+        .mapToDouble(slot -> slot.getItem().getCount() / (double) slot.maxStackSize()).average()
         .orElse(0.0);
   }
 

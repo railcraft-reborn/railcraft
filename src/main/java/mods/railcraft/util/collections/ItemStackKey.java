@@ -18,13 +18,7 @@ import net.minecraft.nbt.CompoundTag;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class StackKey {
-
-  private final ItemStack stack;
-
-  public StackKey(ItemStack stack) {
-    this.stack = ContainerTools.copyOne(stack);
-  }
+public record ItemStackKey(ItemStack stack) {
 
   @Override
   public boolean equals(Object obj) {
@@ -34,7 +28,7 @@ public class StackKey {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final StackKey other = (StackKey) obj;
+    final ItemStackKey other = (ItemStackKey) obj;
     return ContainerTools.isItemEqual(stack, other.stack);
   }
 
@@ -53,7 +47,7 @@ public class StackKey {
     return stack.copy();
   }
 
-  public static StackKey make(ItemStack stack) {
-    return new StackKey(stack);
+  public static ItemStackKey make(ItemStack stack) {
+    return new ItemStackKey(stack);
   }
 }

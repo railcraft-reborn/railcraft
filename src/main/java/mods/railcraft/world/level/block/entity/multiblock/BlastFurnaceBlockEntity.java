@@ -3,10 +3,8 @@ package mods.railcraft.world.level.block.entity.multiblock;
 import java.util.List;
 import javax.annotation.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
-import mods.railcraft.util.container.CompositeContainerAdaptor;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
-import mods.railcraft.world.level.block.CokeOvenBricksBlock;
+import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.module.BlastFurnaceModule;
@@ -53,23 +51,19 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
         .build();
   });
 
-  private final BlastFurnaceModule logic;
-
-  private final ContainerMapper fuelContainerMapper;
+  private final BlastFurnaceModule blastFurnaceModule;
 
   private int fuelMoveTicks;
 
   public BlastFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.BLAST_FURNACE.get(), blockPos, blockState,
         BlastFurnaceBlockEntity.class, PATTERN);
-    this.logic = this.moduleDispatcher.registerCapabilityModule("blast_furnace",
+    this.blastFurnaceModule = this.moduleDispatcher.registerCapabilityModule("blast_furnace",
         new BlastFurnaceModule(this));
-    this.fuelContainerMapper = ContainerMapper.make(
-        this.logic, BlastFurnaceModule.SLOT_FUEL, 1);
   }
 
-  public BlastFurnaceModule getLogic() {
-    return this.logic;
+  public BlastFurnaceModule getBlastFurnaceModule() {
+    return this.blastFurnaceModule;
   }
 
   @Override
@@ -82,12 +76,12 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
     if (membership == null) {
       this.level.setBlock(this.getBlockPos(),
           this.getBlockState()
-              .setValue(CokeOvenBricksBlock.WINDOW, false)
-              .setValue(CokeOvenBricksBlock.LIT, false),
+              .setValue(FurnaceMultiblockBlock.WINDOW, false)
+              .setValue(FurnaceMultiblockBlock.LIT, false),
           Block.UPDATE_ALL);
     } else {
       this.level.setBlock(this.getBlockPos(),
-          this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW, membership.marker() == 'W'),
+          this.getBlockState().setValue(FurnaceMultiblockBlock.WINDOW, membership.marker() == 'W'),
           Block.UPDATE_ALL);
     }
   }
@@ -101,22 +95,22 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
     blockEntity.getMembership()
         .map(Membership::master)
         .ifPresent(master -> {
-          boolean lit = master.logic.isProcessing();
-          if (lit != blockState.getValue(CokeOvenBricksBlock.LIT)) {
+          var lit = master.blastFurnaceModule.isBurning();
+          if (lit != blockState.getValue(FurnaceMultiblockBlock.LIT)) {
             level.setBlockAndUpdate(blockPos,
-                blockState.setValue(CokeOvenBricksBlock.LIT, lit));
+                blockState.setValue(FurnaceMultiblockBlock.LIT, lit));
           }
 
           if (blockEntity.fuelMoveTicks++ >= 128) {
             blockEntity.fuelMoveTicks = 0;
-            CompositeContainerAdaptor.of(blockEntity.getAdjacentContainers())
-                .moveOneItemTo(master.fuelContainerMapper,
-                    item -> master.logic.getItemBurnTime(item) > 0);
+            blockEntity.getAdjacentContainers().moveOneItemTo(
+                master.getBlastFurnaceModule().getFuelContainer(),
+                master.blastFurnaceModule::isFuel);
           }
         });
 
     if (blockEntity.isMaster()) {
-      blockEntity.logic.serverTick();
+      blockEntity.blastFurnaceModule.serverTick();
     }
   }
 

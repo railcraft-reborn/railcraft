@@ -46,7 +46,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   @Nullable
   private MultiblockPattern currentPattern;
 
-  private boolean pendingEvaluation;
+  private boolean evaluationPending;
 
   // Only present on the client
   @Nullable
@@ -72,12 +72,12 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    * Enqueue structure evaluation for the next tick.
    */
   public void enqueueEvaluation() {
-    this.pendingEvaluation = true;
+    this.evaluationPending = true;
   }
 
   protected void serverTick() {
-    if (this.pendingEvaluation) {
-      this.pendingEvaluation = false;
+    if (this.evaluationPending) {
+      this.evaluationPending = false;
       this.evaluate();
     }
   }

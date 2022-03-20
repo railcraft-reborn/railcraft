@@ -19,12 +19,10 @@ import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.util.container.ContainerIterator;
-import mods.railcraft.util.container.ContainerSlot;
+import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.ModifiableContainerSlot;
 import mods.railcraft.util.container.StackFilter;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
+import mods.railcraft.util.container.manipulator.SlotAccessor;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TunnelBoreMenu;
@@ -153,9 +151,9 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
   public final ContainerMapper invFuel =
       ContainerMapper.make(this, 1, 6).withFilters(StackFilter.FUEL);
-  public final ContainerMapper invBallast =
+  public final ContainerMapper ballastContainer =
       ContainerMapper.make(this, 7, 9).withFilters(StackFilter.BALLAST);
-  public final ContainerMapper invRails =
+  public final ContainerMapper trackContainer =
       ContainerMapper.make(this, 16, 9).withFilters(StackFilter.TRACK);
   // protected static final int WATCHER_ID_BURN_TIME = 22;
 
@@ -199,7 +197,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
         new TunnelBorePart(this, "tail2", 1.6F, 1.4F, -2.2F),
     };
     hasInit = true;
-    invMappers = Arrays.asList(invFuel, invBallast, invRails);
+    invMappers = Arrays.asList(invFuel, ballastContainer, trackContainer);
   }
 
   @Override
@@ -636,54 +634,56 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   }
 
   protected void stockBallast() {
-    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilter.roomIn(invBallast));
+    var stack =
+        CartUtil.transferHelper().pullStack(this, this.ballastContainer::canFit);
     if (!stack.isEmpty()) {
-      invBallast.addStack(stack);
+      this.ballastContainer.addStack(stack);
     }
   }
 
   @SuppressWarnings("deprecation")
   protected boolean placeBallast(BlockPos targetPos) {
     if (!Block.canSupportRigidBlock(this.level, targetPos)) {
-      for (ModifiableContainerSlot slot : ContainerIterator.get(invBallast)) {
-        ItemStack stack = slot.getStack();
-        if (!stack.isEmpty()
-            && stack.getItem() instanceof BlockItem blockItem
-            && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)) {
-          BlockPos.MutableBlockPos searchPos = targetPos.mutable();
-          for (int i = 0; i < MAX_FILL_DEPTH; i++) {
-            searchPos.move(Direction.DOWN);
-            if (Block.canSupportRigidBlock(this.level, searchPos)) {
-              // Fill ballast
-              BlockState state =
-                  ContainerTools.getBlockStateFromStack(stack, this.level, targetPos);
-              if (state != null) {
-                slot.decreaseStack();
-                this.level.setBlockAndUpdate(targetPos, state);
-                return true;
-              }
-            } else {
-              BlockState state = this.level.getBlockState(searchPos);
-              if (!state.isAir() && !state.getMaterial().isLiquid()) {
-                // Break other blocks first
-                LevelUtil.playerRemoveBlock(this.level, searchPos.immutable(),
-                    CartTools.getFakePlayer(this),
-                    this.level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
-                        && !RailcraftConfig.server.boreDestorysBlocks.get());
+      return this.ballastContainer.stream()
+          .filter(slot -> slot.hasItem()
+              && slot.getItem().getItem() instanceof BlockItem blockItem
+              && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST))
+          .findFirst()
+          .map(slot -> {
+            var searchPos = targetPos.mutable();
+            for (int i = 0; i < MAX_FILL_DEPTH; i++) {
+              searchPos.move(Direction.DOWN);
+              if (Block.canSupportRigidBlock(this.level, searchPos)) {
+                // Fill ballast
+                var state =
+                    ContainerTools.getBlockStateFromStack(slot.getItem(), this.level, targetPos);
+                if (state != null) {
+                  slot.shrink();
+                  this.level.setBlockAndUpdate(targetPos, state);
+                  return true;
+                }
+              } else {
+                BlockState state = this.level.getBlockState(searchPos);
+                if (!state.isAir() && !state.getMaterial().isLiquid()) {
+                  // Break other blocks first
+                  LevelUtil.playerRemoveBlock(this.level, searchPos.immutable(),
+                      CartTools.getFakePlayer(this),
+                      this.level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
+                          && !RailcraftConfig.server.boreDestorysBlocks.get());
+                }
               }
             }
-          }
-          return false;
-        }
-      }
+            return false;
+          })
+          .orElse(false);
     }
     return false;
   }
 
   protected void stockTracks() {
-    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilter.roomIn(invRails));
+    var stack = CartUtil.transferHelper().pullStack(this, this.trackContainer::canFit);
     if (!stack.isEmpty()) {
-      invRails.addStack(stack);
+      this.trackContainer.addStack(stack);
     }
   }
 
@@ -696,16 +696,17 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
     if (oldState.isAir()
         && Block.canSupportRigidBlock(this.level, targetPos.below())) {
-      for (ContainerSlot slot : ContainerIterator.get(invRails)) {
-        ItemStack stack = slot.getStack();
-        if (!stack.isEmpty()) {
-          boolean placed = TrackUtil.placeRailAt(stack, (ServerLevel) this.level, targetPos, shape);
-          if (placed) {
-            slot.decreaseStack();
-          }
-          return placed;
-        }
-      }
+      return this.trackContainer.stream()
+          .filter(SlotAccessor::hasItem)
+          .peek(slot -> {
+            var placed =
+                TrackUtil.placeRailAt(slot.getItem(), (ServerLevel) this.level, targetPos, shape);
+            if (placed) {
+              slot.shrink();
+            }
+          })
+          .findFirst()
+          .isPresent();
     }
     return false;
   }
@@ -826,7 +827,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
             }
 
             if (!stack.isEmpty() && ContainerTools.isStackEqualToBlock(stack, Blocks.GRAVEL)) {
-              stack = invBallast.addStack(stack);
+              stack = ballastContainer.addStack(stack);
             }
 
             if (!stack.isEmpty()) {
@@ -996,7 +997,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   }
 
   protected void stockFuel() {
-    ItemStack stack = CartUtil.transferHelper().pullStack(this, StackFilter.roomIn(invFuel));
+    ItemStack stack = CartUtil.transferHelper().pullStack(this, this.invFuel::canFit);
     if (!stack.isEmpty()) {
       invFuel.addStack(stack);
     }
@@ -1068,19 +1069,18 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
   @Override
   public void setChanged() {
-    if (!isActive()) {
-      setDelay(STANDARD_DELAY);
+    if (!this.isActive()) {
+      this.setDelay(STANDARD_DELAY);
     }
   }
 
   public final Direction getFacing() {
-    return entityData.get(FACING);
+    return this.entityData.get(FACING);
   }
 
   protected final void setFacing(Direction facing) {
-    entityData.set(FACING, facing);
-
-    setYaw();
+    this.entityData.set(FACING, facing);
+    this.setYaw();
   }
 
   @Override

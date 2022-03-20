@@ -1,17 +1,14 @@
 package mods.railcraft.world.damagesource;
 
 import mods.railcraft.util.MiscTools;
-import mods.railcraft.util.container.ContainerTools;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -63,16 +60,16 @@ public class RailcraftDamageSource extends DamageSource {
     @SubscribeEvent
     public void modifyDrops(LivingDropsEvent event) {
       if (event.getSource() == STEAM)
-        for (ItemEntity entityItem : event.getDrops()) {
-          ItemStack drop = entityItem.getItem();
-          Level level = event.getEntityLiving().level;
-          ItemStack cooked = level.getRecipeManager()
+        for (var entityItem : event.getDrops()) {
+          var drop = entityItem.getItem();
+          var level = event.getEntityLiving().getLevel();
+          var cooked = level.getRecipeManager()
               .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
               .map(SmeltingRecipe::getResultItem)
               .orElse(ItemStack.EMPTY);
           if (!cooked.isEmpty() && MiscTools.RANDOM.nextDouble() < 0.5) {
             cooked = cooked.copy();
-            ContainerTools.setSize(cooked, drop.getCount());
+            cooked.setCount(drop.getCount());
             entityItem.setItem(cooked);
           }
         }

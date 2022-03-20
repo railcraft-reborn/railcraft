@@ -12,7 +12,6 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -46,17 +45,17 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
         .build();
   });
 
-  private final CokeOvenModule module;
+  private final CokeOvenModule cokeOvenModule;
 
   public CokeOvenBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.COKE_OVEN.get(), blockPos, blockState,
         CokeOvenBlockEntity.class, PATTERN);
-    this.module = this.moduleDispatcher.registerCapabilityModule("coke_oven",
+    this.cokeOvenModule = this.moduleDispatcher.registerCapabilityModule("coke_oven",
         new CokeOvenModule(this));
   }
 
-  public CokeOvenModule getLogic() {
-    return this.module;
+  public CokeOvenModule getCokeOvenModule() {
+    return this.cokeOvenModule;
   }
 
   @Override
@@ -99,7 +98,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     blockEntity.getMembership()
         .map(Membership::master)
         .ifPresent(master -> {
-          boolean lit = master.module.isProcessing();
+          var lit = master.cokeOvenModule.isProcessing();
           if (lit != blockState.getValue(CokeOvenBricksBlock.LIT)) {
             level.setBlockAndUpdate(blockPos,
                 blockState.setValue(CokeOvenBricksBlock.LIT, lit));
@@ -107,17 +106,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
         });
 
     if (blockEntity.isMaster()) {
-      blockEntity.module.serverTick();
+      blockEntity.cokeOvenModule.serverTick();
     }
-  }
-
-  @Override
-  public void setRemoved() {
-    if (this.getLevel().isClientSide()) {
-      super.setRemoved();
-      return; // do not run deletion clientside.
-    }
-    Containers.dropContents(this.getLevel(), this.getBlockPos(), this.module);
-    super.setRemoved(); // at this point, the block itself is null
   }
 }

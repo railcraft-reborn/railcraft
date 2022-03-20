@@ -5,6 +5,8 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.multiblock.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.IronTankBlockEntity;
+import mods.railcraft.world.level.block.entity.multiblock.SteamTurbineBlockEntity;
+import mods.railcraft.world.level.block.entity.multiblock.SteelTankBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
@@ -88,10 +90,10 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.BLACK_IRON_TANK_WALL.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<IronTankBlockEntity>> STEEL_TANK =
+  public static final RegistryObject<BlockEntityType<SteelTankBlockEntity>> STEEL_TANK =
       BLOCK_ENTITY_TYPES.register("steel_tank",
           () -> BlockEntityType.Builder
-              .of(IronTankBlockEntity::new,
+              .of(SteelTankBlockEntity::new,
                   RailcraftBlocks.WHITE_STEEL_TANK_GAUGE.get(),
                   RailcraftBlocks.ORANGE_STEEL_TANK_GAUGE.get(),
                   RailcraftBlocks.MAGENTA_STEEL_TANK_GAUGE.get(),
@@ -140,6 +142,12 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.GREEN_STEEL_TANK_WALL.get(),
                   RailcraftBlocks.RED_STEEL_TANK_WALL.get(),
                   RailcraftBlocks.BLACK_STEEL_TANK_WALL.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<SteamTurbineBlockEntity>> STEAM_TURBINE =
+      BLOCK_ENTITY_TYPES.register("steam_turbine",
+          () -> BlockEntityType.Builder
+              .of(SteamTurbineBlockEntity::new, RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =

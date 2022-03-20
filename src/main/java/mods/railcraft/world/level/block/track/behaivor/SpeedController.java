@@ -1,23 +1,20 @@
 package mods.railcraft.world.level.block.track.behaivor;
 
 import javax.annotation.Nullable;
-
-import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.util.TrackTools;
-import mods.railcraft.world.entity.vehicle.CartConstants;
+import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.Train;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info)
@@ -38,7 +35,8 @@ public enum SpeedController implements TrackType.EventHandler {
         return true;
       }
       return Train.streamCarts(cart)
-          .anyMatch(Railcraft.getInstance().getMinecartHandler()::isDerailed);
+          .map(MinecartExtension::getOrThrow)
+          .anyMatch(MinecartExtension::isDerailed);
     }
 
     @Override
@@ -47,29 +45,33 @@ public enum SpeedController implements TrackType.EventHandler {
     // behavior.
     public RailShape getRailShapeOverride(BlockGetter level, BlockPos pos, BlockState state,
         @Nullable AbstractMinecart cart) {
-      if (cart != null && !cart.level.isClientSide()) {
-        RailShape shape = TrackTools.getRailShapeRaw(state);
-        if (TrackShapeHelper.isLevelStraight(shape) && isDerailing(cart)) {
-          cart.getPersistentData().putByte(CartConstants.TAG_DERAIL, (byte) 100);
-          Vec3 motion = cart.getDeltaMovement();
-          if (Math.abs(motion.x()) > Math.abs(motion.z())) {
-            cart.setDeltaMovement(motion.x(), motion.y(), motion.x());
-          } else {
-            cart.setDeltaMovement(motion.z(), motion.y(), motion.z());
-          }
-
-          // TODO make derail ( is this not good enough? -CJ )
-          switch (shape) {
-            case NORTH_SOUTH:
-              return RailShape.EAST_WEST;
-            case EAST_WEST:
-              return RailShape.NORTH_SOUTH;
-            default:
-              break;
-          }
-        }
+      if (cart == null || cart.getLevel().isClientSide()) {
+        return null;
       }
-      return null;
+
+      var shape = TrackTools.getRailShapeRaw(state);
+      if (!TrackShapeHelper.isLevelStraight(shape)) {
+        return null;
+      }
+
+      if (!this.isDerailing(cart)) {
+        return null;
+      }
+
+      MinecartExtension.getOrThrow(cart).setDerailedRemainingTicks(100);
+      var motion = cart.getDeltaMovement();
+      if (Math.abs(motion.x()) > Math.abs(motion.z())) {
+        cart.setDeltaMovement(motion.x(), motion.y(), motion.x());
+      } else {
+        cart.setDeltaMovement(motion.z(), motion.y(), motion.z());
+      }
+
+      // TODO make derail ( is this not good enough? -CJ )
+      return switch (shape) {
+        case NORTH_SOUTH -> RailShape.EAST_WEST;
+        case EAST_WEST -> RailShape.NORTH_SOUTH;
+        default -> null;
+      };
     }
   },
   HIGH_SPEED {

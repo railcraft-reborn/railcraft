@@ -1,9 +1,8 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.StackFilter;
-import mods.railcraft.util.container.wrappers.ContainerMapper;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
@@ -93,7 +92,7 @@ public class SteamLocomotive extends BaseSteamLocomotive
     // fuelInventory.moveOneItemTo(invWaterOutput,
     // (ItemStack item) -> (ForgeHooks.getBurnTime(item) > 0));
     ItemStack stack =
-        CartUtil.transferHelper().pullStack(this, StackFilter.roomIn(extraFuelInventory));
+        CartUtil.transferHelper().pullStack(this, this.extraFuelInventory::canFit);
     if (!stack.isEmpty()) {
       extraFuelInventory.addStack(stack);
     }

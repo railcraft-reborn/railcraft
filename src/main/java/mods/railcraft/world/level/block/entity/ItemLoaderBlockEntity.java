@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
-import mods.railcraft.util.container.ContainerManipulator;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,12 +12,12 @@ public class ItemLoaderBlockEntity extends ItemManipulatorBlockEntity {
   }
 
   @Override
-  public ContainerManipulator getSource() {
+  public ContainerManipulator<?> getSource() {
     return this.chests;
   }
 
   @Override
-  public ContainerManipulator getDestination() {
+  public ContainerManipulator<?> getDestination() {
     return this.cart;
   }
 

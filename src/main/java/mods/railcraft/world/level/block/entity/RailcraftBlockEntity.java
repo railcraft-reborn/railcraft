@@ -1,8 +1,5 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nonnull;
@@ -13,7 +10,6 @@ import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.network.PacketBuilder;
-import mods.railcraft.util.container.ContainerAdaptor;
 import mods.railcraft.world.level.block.entity.module.Module;
 import mods.railcraft.world.level.block.entity.module.ModuleDispatcher;
 import mods.railcraft.world.level.block.entity.module.ModuleProvider;
@@ -33,7 +29,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 public abstract class RailcraftBlockEntity extends BlockEntity
     implements NetworkSerializable, Ownable, BlockEntityLike, ModuleProvider {
@@ -109,6 +104,11 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   }
 
   @Override
+  public void save() {
+    this.setChanged();
+  }
+
+  @Override
   public <T extends Module> Optional<T> getModule(Class<T> type) {
     return this.moduleDispatcher.getModule(type);
   }
@@ -168,20 +168,6 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
     return this.moduleDispatcher.getCapability(cap, side);
-  }
-
-  protected Collection<ContainerAdaptor> getAdjacentContainers() {
-    List<ContainerAdaptor> containers = new ArrayList<>();
-    for (var direction : Direction.values()) {
-      var blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
-      if (blockEntity != null) {
-        blockEntity
-            .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite())
-            .map(ContainerAdaptor::of)
-            .ifPresent(containers::add);
-      }
-    }
-    return containers;
   }
 
   public final int getX() {

@@ -20,10 +20,6 @@ public enum LaunchState implements StringRepresentable {
     this.name = name;
   }
 
-  public boolean isLaunched() {
-    return this == LAUNCHED;
-  }
-
   public String getName() {
     return this.name;
   }

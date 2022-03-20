@@ -10,11 +10,11 @@ public class CokeOvenMenu extends CrafterMenu {
   private final FluidGaugeWidget fluidGauge;
 
   public CokeOvenMenu(int id, Inventory inventory, CokeOvenBlockEntity cokeOven) {
-    super(RailcraftMenuTypes.COKE_OVEN.get(), id, inventory.player, cokeOven.getLogic());
+    super(RailcraftMenuTypes.COKE_OVEN.get(), id, inventory.player, cokeOven.getCokeOvenModule());
 
     this.cokeOven = cokeOven;
 
-    var logic = cokeOven.getLogic();
+    var logic = cokeOven.getCokeOvenModule();
 
     this.addWidget(this.fluidGauge = new FluidGaugeWidget(logic.getTank(), 90, 24, 176, 0, 48, 47));
 

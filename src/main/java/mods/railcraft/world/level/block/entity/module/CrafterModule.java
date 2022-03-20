@@ -139,11 +139,13 @@ public abstract class CrafterModule extends ContainerModule {
 
   @Override
   public void writeToBuf(FriendlyByteBuf out) {
+    super.writeToBuf(out);
     out.writeBoolean(this.processing);
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf in) {
+    super.readFromBuf(in);
     this.processing = in.readBoolean();
   }
 }

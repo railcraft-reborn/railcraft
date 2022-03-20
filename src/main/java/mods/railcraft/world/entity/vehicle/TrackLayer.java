@@ -102,7 +102,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    ItemStack trackReplace = patternInventory.getItem(SLOT_REPLACE);
+    ItemStack trackReplace = patternContainer.getItem(SLOT_REPLACE);
     return ContainerTools.isItemEqual(stack, trackReplace);
   }
 

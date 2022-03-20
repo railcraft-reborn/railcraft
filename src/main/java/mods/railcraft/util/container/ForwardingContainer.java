@@ -1,9 +1,8 @@
 package mods.railcraft.util.container;
 
-import java.util.Iterator;
-import com.google.common.collect.Iterators;
-import net.minecraft.world.entity.player.Player;
+import mods.railcraft.util.container.manipulator.VanillaContainerManipulator;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -11,19 +10,15 @@ import net.minecraft.world.item.ItemStack;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface ForwardingContainer extends Container, CompositeContainer {
+public interface ForwardingContainer extends Container, VanillaContainerManipulator {
 
   /**
    * Gets the container to delegate to.
    *
    * @return the delegate
    */
-  Container getContainer();
-
   @Override
-  default Iterator<ContainerAdaptor> adaptors() {
-    return Iterators.singletonIterator(ContainerAdaptor.of(this));
-  }
+  Container getContainer();
 
   /**
    * {@inheritDoc}

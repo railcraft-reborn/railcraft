@@ -13,9 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Implementing this interface will allow your track to be powered via Redstone.
- * <p/>
- * And so long as you inherit from <code>PoweredOutfittedTrackBlock</code> all the code for updating the
- * power state is already in place (including propagation).
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */

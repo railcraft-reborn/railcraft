@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import com.google.common.collect.ForwardingMap;
-import mods.railcraft.util.collections.StackKey;
+import mods.railcraft.util.collections.ItemStackKey;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -19,18 +20,18 @@ import net.minecraft.world.item.ItemStack;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public final class ContainerManifest
-    extends ForwardingMap<StackKey, ContainerManifest.ManifestEntry> {
+    extends ForwardingMap<ItemStackKey, ContainerManifest.ManifestEntry> {
 
-  private final Map<StackKey, ManifestEntry> entries = new HashMap<>();
+  private final Map<ItemStackKey, ManifestEntry> entries = new HashMap<>();
 
   private ContainerManifest() {}
 
   @Override
-  protected Map<StackKey, ManifestEntry> delegate() {
+  protected Map<ItemStackKey, ManifestEntry> delegate() {
     return this.entries;
   }
 
-  public int count(StackKey key) {
+  public int count(ItemStackKey key) {
     var entry = get(key);
     if (entry == null) {
       return 0;
@@ -43,14 +44,14 @@ public final class ContainerManifest
   }
 
   public Stream<ItemStack> streamKeyStacks() {
-    return this.entries.keySet().stream().map(StackKey::get);
+    return this.entries.keySet().stream().map(ItemStackKey::get);
   }
 
   public List<ItemStack> keyStacks() {
     return streamKeyStacks().collect(Collectors.toList());
   }
 
-  private static ManifestEntry compute(StackKey key,
+  private static ManifestEntry compute(ItemStackKey key,
       @Nullable ContainerManifest.ManifestEntry entry, ItemStack stack) {
     if (entry == null) {
       entry = new ManifestEntry(key);
@@ -67,10 +68,10 @@ public final class ContainerManifest
    * @return A {@code Multiset} that lists how many of each item is in the inventories
    */
 
-  public static ContainerManifest create(ContainerManipulator containers) {
+  public static ContainerManifest create(ContainerManipulator<?> containers) {
     var manifest = new ContainerManifest();
-    containers.streamStacks().forEach(stack -> {
-      var key = StackKey.make(stack);
+    containers.streamItems().forEach(stack -> {
+      var key = ItemStackKey.make(stack);
       manifest.compute(key, (k, v) -> compute(k, v, stack));
     });
     return manifest;
@@ -85,12 +86,12 @@ public final class ContainerManifest
    * @return A {@code Multiset} that lists how many of each item is in the inventories
    */
 
-  public static ContainerManifest create(ContainerManipulator containers,
-      Collection<StackKey> keys) {
+  public static ContainerManifest create(ContainerManipulator<?> containers,
+      Collection<ItemStackKey> keys) {
     var manifest = new ContainerManifest();
     for (var filterKey : keys) {
       var filter = StackFilter.anyMatch(filterKey.get());
-      containers.streamStacks()
+      containers.streamItems()
           .filter(filter)
           .forEach(stack -> manifest.compute(filterKey, (k, v) -> compute(k, v, stack)));
     }
@@ -99,14 +100,14 @@ public final class ContainerManifest
 
   public static class ManifestEntry {
 
-    private final StackKey key;
+    private final ItemStackKey key;
     final List<ItemStack> stacks = new ArrayList<>();
 
-    public ManifestEntry(StackKey key) {
+    public ManifestEntry(ItemStackKey key) {
       this.key = key;
     }
 
-    public StackKey key() {
+    public ItemStackKey key() {
       return key;
     }
 

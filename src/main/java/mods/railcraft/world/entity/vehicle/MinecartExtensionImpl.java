@@ -8,14 +8,17 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.Link;
+import mods.railcraft.util.MathTools;
+import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.phys.Vec3;
 
 class MinecartExtensionImpl implements MinecartExtension {
 
@@ -32,7 +35,13 @@ class MinecartExtensionImpl implements MinecartExtension {
   private final Map<Link, Boolean> autoLinkEnabled = new EnumMap<>(Link.class);
 
   private LaunchState launchState = LaunchState.LANDED;
+
   private int elevatorRemainingTicks;
+  private int preventMountRemainingTicks;
+  private int derailedRemainingTicks;
+
+  private boolean explosionPending;
+  private boolean highSpeed;
 
   public MinecartExtensionImpl(AbstractMinecart minecart) {
     this.minecart = minecart;
@@ -83,13 +92,14 @@ class MinecartExtensionImpl implements MinecartExtension {
   }
 
   @Override
-  public LaunchState getLaunchState() {
-    return this.launchState;
+  public boolean isLaunched() {
+    return this.launchState == LaunchState.LAUNCHED;
   }
 
   @Override
-  public void setLaunchState(LaunchState launchState) {
-    this.launchState = launchState;
+  public void launch() {
+    this.launchState = LaunchState.LAUNCHING;
+    this.minecart.setCanUseRail(false);
   }
 
   @Override
@@ -100,6 +110,41 @@ class MinecartExtensionImpl implements MinecartExtension {
   @Override
   public void setElevatorRemainingTicks(int elevatorRemainingTicks) {
     this.elevatorRemainingTicks = elevatorRemainingTicks;
+  }
+
+  @Override
+  public int getPreventMountRemainingTicks() {
+    return this.preventMountRemainingTicks;
+  }
+
+  @Override
+  public void setPreventMountRemainingTicks(int preventMountRemainingTicks) {
+    this.preventMountRemainingTicks = preventMountRemainingTicks;
+  }
+
+  @Override
+  public int getDerailedRemainingTicks() {
+    return this.derailedRemainingTicks;
+  }
+
+  @Override
+  public void setDerailedRemainingTicks(int derailedRemainingTicks) {
+    this.derailedRemainingTicks = derailedRemainingTicks;
+  }
+
+  @Override
+  public void primeExplosion() {
+    this.explosionPending = true;
+  }
+
+  @Override
+  public boolean isHighSpeed() {
+    return this.highSpeed;
+  }
+
+  @Override
+  public void setHighSpeed(boolean highSpeed) {
+    this.highSpeed = highSpeed;
   }
 
   @Override
@@ -135,6 +180,10 @@ class MinecartExtensionImpl implements MinecartExtension {
 
     tag.putString("launchState", this.launchState.getName());
     tag.putInt("elevatorRemainingTicks", this.elevatorRemainingTicks);
+    tag.putInt("preventMountRemainingTicks", this.preventMountRemainingTicks);
+    tag.putInt("derailedRemainingTicks", this.derailedRemainingTicks);
+    tag.putBoolean("explosionPending", this.explosionPending);
+    tag.putBoolean("highSpeed", this.highSpeed);
 
     return tag;
   }
@@ -164,28 +213,93 @@ class MinecartExtensionImpl implements MinecartExtension {
     this.launchState =
         LaunchState.getByName(tag.getString("launchState")).orElse(LaunchState.LANDED);
     this.elevatorRemainingTicks = tag.getInt("elevatorRemainingTicks");
+    this.preventMountRemainingTicks = tag.getInt("preventMountRemainingTicks");
+    this.derailedRemainingTicks = tag.getInt("derailedRemainingTicks");
+    this.explosionPending = tag.getBoolean("explosionPending");
+    this.highSpeed = tag.getBoolean("highSpeed");
+
   }
 
   @Override
   public void tick() {
     if (!this.getLevel().isClientSide()) {
       this.adjustCart();
-      Railcraft.getInstance().getMinecartHandler().handleTick(this.minecart);
+
+      if (this.preventMountRemainingTicks > 0) {
+        this.preventMountRemainingTicks--;
+      }
+
+      if (this.elevatorRemainingTicks < ElevatorTrackBlock.ELEVATOR_TIMER) {
+        this.minecart.setNoGravity(false);
+      }
+
+      if (this.elevatorRemainingTicks > 0) {
+        this.elevatorRemainingTicks--;
+      }
+
+      if (this.derailedRemainingTicks > 0) {
+        this.derailedRemainingTicks--;
+      }
+
+      if (this.explosionPending) {
+        this.explosionPending = false;
+        CartTools.explodeCart(this.getMinecart());
+      }
+
+      if (this.highSpeed) {
+        if (CartTools.cartVelocityIsLessThan(this.getMinecart(), HighSpeedTools.SPEED_EXPLODE)) {
+          this.highSpeed = false;
+        } else if (launchState == LaunchState.LANDED) {
+          HighSpeedTools.checkSafetyAndExplode(this.getLevel(), this.minecart.blockPosition(),
+              this.getMinecart());
+        }
+      }
+
+      // Fix flip
+      var distance =
+          MathTools.getDistanceBetweenAngles(this.minecart.getYRot(), this.minecart.yRotO);
+      var cutoff = 120F;
+      if (distance < -cutoff || distance >= cutoff) {
+        this.minecart.setYRot(this.minecart.getYRot() + 180.0F);
+        this.minecart.flipped = !this.minecart.flipped;
+        this.minecart.setYRot(this.minecart.getYRot() % 360.0F);
+      }
+
+      if (BaseRailBlock.isRail(this.getLevel(), this.minecart.blockPosition())) {
+        this.minecart.fallDistance = 0;
+        if (this.minecart.isVehicle()) {
+          this.minecart.getPassengers().forEach(p -> p.fallDistance = 0);
+        }
+        if (this.launchState == LaunchState.LAUNCHED) {
+          this.land();
+        }
+      } else if (this.launchState == LaunchState.LAUNCHING) {
+        this.launchState = LaunchState.LAUNCHED;
+        this.minecart.setCanUseRail(true);
+      } else if (this.launchState == LaunchState.LAUNCHED && this.minecart.isOnGround()) {
+        this.land();
+      }
+
+      Vec3 motion = this.minecart.getDeltaMovement();
+
+      double motionX = Math.copySign(Math.min(Math.abs(motion.x()), 9.5), motion.x());
+      double motionY = Math.copySign(Math.min(Math.abs(motion.y()), 9.5), motion.y());
+      double motionZ = Math.copySign(Math.min(Math.abs(motion.z()), 9.5), motion.z());
+
+      this.minecart.setDeltaMovement(motionX, motionY, motionZ);
     }
   }
 
   /**
-   * This function inspects the links and determines if any physics adjustments need to be made.
-   *
-   * @param cart AbstractMinecartEntity
+   * Inspects the links and determines if any physics adjustments need to be made.
    */
   private void adjustCart() {
-    if (this.getLaunchState().isLaunched() || this.isOnElevator()) {
+    if (this.isLaunched() || this.isOnElevator()) {
       return;
     }
 
-    var linkedA = this.adjustLinkedCart(this.minecart, Link.FRONT);
-    var linkedB = this.adjustLinkedCart(this.minecart, Link.BACK);
+    var linkedA = this.adjustLinkedCart(Link.FRONT);
+    var linkedB = this.adjustLinkedCart(Link.BACK);
     var linked = linkedA || linkedB;
 
     // Centroid
@@ -207,7 +321,7 @@ class MinecartExtensionImpl implements MinecartExtension {
     // cart.motionZ += pushZ;
 
     // Drag
-    if (linked && !HighSpeedTools.isTravellingHighSpeed(this.minecart)) {
+    if (linked && !this.isHighSpeed()) {
       this.minecart.setDeltaMovement(
           this.minecart.getDeltaMovement().multiply(LINK_DRAG, 1.0D, LINK_DRAG));
     }
@@ -226,22 +340,29 @@ class MinecartExtensionImpl implements MinecartExtension {
 
   }
 
-  private boolean adjustLinkedCart(AbstractMinecart cart, Link linkType) {
-    return MinecartExtension.getOrThrow(cart).getLinkedMinecart(linkType)
+  private boolean adjustLinkedCart(Link linkType) {
+    return this.getLinkedMinecart(linkType)
         .map(MinecartExtension::getOrThrow)
         .map(link -> {
           // sanity check to ensure links are consistent
-          if (!LinkageManagerImpl.INSTANCE.areLinked(cart, link.getMinecart())) {
+          if (!LinkageManagerImpl.INSTANCE.areLinked(this.minecart, link.getMinecart())) {
             // TODO something should happen here
             // boolean success = lm.repairLink(cart, link);
           }
-          if (!link.getLaunchState().isLaunched() && !link.isOnElevator()) {
-            LinkagePhysicsUtil.adjustVelocity(cart, link.getMinecart(), linkType);
+          if (!link.isLaunched() && !link.isOnElevator()) {
+            LinkagePhysicsUtil.adjustVelocity(this.minecart, link.getMinecart(), linkType);
             // adjustCartFromHistory(cart, link);
             return true;
           }
           return false;
         })
         .orElse(false);
+  }
+
+  private void land() {
+    this.launchState = LaunchState.LANDED;
+    this.minecart.setMaxSpeedAirLateral(AbstractMinecart.DEFAULT_MAX_SPEED_AIR_LATERAL);
+    this.minecart.setMaxSpeedAirVertical(AbstractMinecart.DEFAULT_MAX_SPEED_AIR_VERTICAL);
+    this.minecart.setDragAir(AbstractMinecart.DEFAULT_AIR_DRAG);
   }
 }

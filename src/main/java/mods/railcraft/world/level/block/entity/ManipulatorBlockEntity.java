@@ -30,6 +30,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
@@ -46,7 +47,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
       Collections.unmodifiableSet(EnumSet.allOf(RedstoneMode.class));
 
   private final AdvancedContainer cartFiltersInventory =
-      new AdvancedContainer(2).callbackContainer(this).phantom();
+      new AdvancedContainer(2).callback((Container) this).phantom();
   private RedstoneMode redstoneMode = RedstoneMode.COMPLETE;
   @Nullable
   protected AbstractMinecart currentCart;
@@ -272,7 +273,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
     tag.putString("redstoneMode", this.redstoneMode.getSerializedName());
-    tag.put("cartFilters", this.getCartFilters().serializeNBT());
+    tag.put("cartFilters", this.getCartFilters().createTag());
   }
 
   @Override
@@ -281,7 +282,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     this.setPowered(ManipulatorBlock.isPowered(this.getBlockState()));
     this.redstoneMode =
         RedstoneMode.getByName(tag.getString("redstoneMode")).orElse(RedstoneMode.COMPLETE);
-    this.getCartFilters().deserializeNBT(tag.getList("cartFilters", Tag.TAG_COMPOUND));
+    this.getCartFilters().fromTag(tag.getList("cartFilters", Tag.TAG_COMPOUND));
   }
 
   public enum TransferMode implements ButtonState<TransferMode>, StringRepresentable {

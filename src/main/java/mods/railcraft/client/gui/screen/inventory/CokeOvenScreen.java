@@ -25,7 +25,7 @@ public class CokeOvenScreen extends RailcraftMenuScreen<CokeOvenMenu> {
     int x = (this.width - this.imageWidth) / 2;
     int y = (this.height - this.imageHeight) / 2;
 
-    var logic = this.menu.getCokeOven().getLogic();
+    var logic = this.menu.getCokeOven().getCokeOvenModule();
     if (logic.getProgress() > 0) {
       var progressPercent = logic.getProgressPercent();
       int burnProgress = (int) ((1.0 - progressPercent) * 12);

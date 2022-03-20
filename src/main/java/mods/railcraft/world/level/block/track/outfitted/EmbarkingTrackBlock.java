@@ -8,8 +8,8 @@ import mods.railcraft.api.track.TrackType;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.HostEffects;
-import mods.railcraft.world.entity.vehicle.CartConstants;
 import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -75,8 +75,9 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
   public void onMinecartPass(BlockState blockState, Level level, BlockPos blockPos,
       AbstractMinecart cart) {
     super.onMinecartPass(blockState, level, blockPos, cart);
+    var extension = MinecartExtension.getOrThrow(cart);
     if (isPowered(blockState) && cart.canBeRidden() && !cart.isVehicle()
-        && cart.getPersistentData().getInt(CartConstants.TAG_PREVENT_MOUNT) <= 0) {
+        && extension.isMountable()) {
       int radius = getRadius(blockState);
       var box = AABBFactory.start().at(blockPos).build();
       box = box.inflate(radius, radius, radius);
