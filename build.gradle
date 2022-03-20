@@ -10,7 +10,7 @@ buildscript {
       url 'https://repo.spongepowered.org/repository/maven-public'
     }
     maven {
-      // Jar signing
+      // Jar signing & toke preprocessor
       url 'https://plugins.gradle.org/m2/'
     }
   }
@@ -18,7 +18,7 @@ buildscript {
     classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     classpath 'net.covers1624:JarSignPlugin:1.1.4' // signing.
-    classpath group: 'com.github.hexomod', name: 'ReplaceTokenPreprocessor', version: '0.3' // replacing vars (so we know if we got built officialy or on git)
+    classpath "com.github.hexomod:ReplaceTokenPreprocessor:0.4" // replacing vars (so we know if we got built officialy or on git)
   }
 }
 
@@ -168,13 +168,15 @@ dependencies {
     testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
 }
 
-// tasks.withType(JavaCompile).configureEach {
-//     dependsOn macroPreprocessor
-// }
-
-replaceTokenPreprocessorSettings {
+macroPreprocessorSettings  {
     verbose true
-    extension = "Railcraft.java"
+
+    extension = ".java"
+
+    resources {
+      enable = false
+    }
+
     replace '@SOURCE@': tag
     replace '@SHA@': 'git rev-parse HEAD'.execute().text.trim()
     replace '@PR_NUM@': ref

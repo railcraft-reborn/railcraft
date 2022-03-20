@@ -24,14 +24,25 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+      - name: Create datagen assets
+        continue-on-error: true
+        run: ./gradlew runData
+
       - name: Compile and run tests
         env:
           GRADLE_OPTS: -Dorg.gradle.daemon=false
           GITHUB_PR_NUMBER: ${{github.event.pull_request.number}}
         run: |
-          ./gradlew hideOfficialWarningUntilChanged
-          ./gradlew build
-          ./gradlew test
+          ./gradlew runGameTestServer
+
+      - name: Upload build failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-data
+          path: run/gametest
+
       - name: Cleanup Gradle Cache
         # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
         # Restoring these files from a GitHub Actions cache might cause problems for future builds.
@@ -64,7 +75,7 @@ jobs:
           ./gradlew hideOfficialWarningUntilChanged
           ./gradlew build
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Railcraft JAR
           path: build/libs
