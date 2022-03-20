@@ -68,6 +68,11 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+      - name: Create datagen assets
+        continue-on-error: true
+        run: ./gradlew runData
+
       - name: Compile
         env:
           GRADLE_OPTS: -Dorg.gradle.daemon=false

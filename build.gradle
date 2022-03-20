@@ -168,19 +168,19 @@ dependencies {
     testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
 }
 
-macroPreprocessorSettings  {
-    verbose true
+// macroPreprocessorSettings  {
+//     verbose true
 
-    extension = ".java"
+//     extension = ".java"
 
-    resources {
-      enable = false
-    }
-
-    replace '@SOURCE@': tag
-    replace '@SHA@': 'git rev-parse HEAD'.execute().text.trim()
-    replace '@PR_NUM@': ref
-}
+//     resources {
+//       enable = false
+//     }
+      // TODO fix me
+//     replace '@SOURCE@': tag
+//     replace '@SHA@': 'git rev-parse HEAD'.execute().text.trim()
+//     replace '@PR_NUM@': ref
+// }
 
 jar {
     from([sourceSets.api.output, sourceSets.main.output])
