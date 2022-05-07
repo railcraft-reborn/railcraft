@@ -77,7 +77,6 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
 
   protected void serverTick() {
     if (this.evaluationPending) {
-      this.evaluationPending = false;
       this.evaluate();
     }
   }
@@ -88,6 +87,13 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    */
   public void evaluate() {
     if (this.level.isClientSide()) {
+      return;
+    }
+
+    this.evaluationPending = false;
+
+    if (this.isFormed() && !this.isMaster()) {
+      this.membership.master.evaluate();
       return;
     }
 
