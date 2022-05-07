@@ -1122,10 +1122,10 @@ public class RailcraftBlockModelGenerators {
             .select(RailShape.NORTH_SOUTH, false, false, true, Variant.variant() // North
                 .with(VariantProperties.MODEL, northSwitchedModel))
             .select(RailShape.NORTH_SOUTH, true, false, false, Variant.variant() // South
-                .with(VariantProperties.MODEL, southModel)
+                .with(VariantProperties.MODEL, northModel)
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
             .select(RailShape.NORTH_SOUTH, true, false, true, Variant.variant() // South
-                .with(VariantProperties.MODEL, southSwitchedModel)
+                .with(VariantProperties.MODEL, northSwitchedModel)
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
             .select(RailShape.NORTH_SOUTH, false, true, false, Variant.variant() // North
                 .with(VariantProperties.MODEL, southModel)

@@ -20,8 +20,8 @@
     },
     {
       "when": {
-        "powered": "false",
-        "shape": "north_south"
+        "shape": "north_south",
+        "powered": "false"
       },
       "apply": {
         "model": "railcraft:block/launcher_track",
@@ -30,8 +30,8 @@
     },
     {
       "when": {
-        "powered": "false",
-        "shape": "east_west"
+        "shape": "east_west",
+        "powered": "false"
       },
       "apply": {
         "model": "railcraft:block/launcher_track",
@@ -40,8 +40,8 @@
     },
     {
       "when": {
-        "powered": "true",
-        "shape": "north_south"
+        "shape": "north_south",
+        "powered": "true"
       },
       "apply": {
         "model": "railcraft:block/launcher_track_on",
@@ -50,8 +50,8 @@
     },
     {
       "when": {
-        "powered": "true",
-        "shape": "east_west"
+        "shape": "east_west",
+        "powered": "true"
       },
       "apply": {
         "model": "railcraft:block/launcher_track_on",

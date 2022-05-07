@@ -8,7 +8,10 @@ import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -59,11 +62,16 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
       BlockPos neighborPos, boolean moved) {
-    if (!level.isClientSide()) {
-      level.setBlockAndUpdate(pos,
-          blockState.setValue(MIRRORED, this.determineMirrored(level, pos, getFacing(blockState))));
-    }
+    level.setBlockAndUpdate(pos,
+        blockState.setValue(MIRRORED, this.determineMirrored(level, pos, getFacing(blockState))));
     super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, moved);
+  }
+
+  @Override
+  protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos,
+      Player player, InteractionHand hand, ItemStack itemStack) {
+    level.setBlockAndUpdate(pos, blockState.cycle(REVERSED).cycle(MIRRORED));
+    return true;
   }
 
   @Override

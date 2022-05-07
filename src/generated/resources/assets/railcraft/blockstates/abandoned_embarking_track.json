@@ -56,8 +56,8 @@
     },
     {
       "when": {
-        "powered": "false",
-        "shape": "north_south"
+        "shape": "north_south",
+        "powered": "false"
       },
       "apply": {
         "model": "railcraft:block/embarking_track",
@@ -66,8 +66,8 @@
     },
     {
       "when": {
-        "powered": "false",
-        "shape": "east_west"
+        "shape": "east_west",
+        "powered": "false"
       },
       "apply": {
         "model": "railcraft:block/embarking_track",
@@ -76,8 +76,8 @@
     },
     {
       "when": {
-        "powered": "false",
-        "shape": "ascending_north"
+        "shape": "ascending_north",
+        "powered": "false"
       },
       "apply": {
         "model": "railcraft:block/embarking_track_raised_ne",
@@ -86,8 +86,8 @@
     },
     {
       "when": {
-        "powered": "false",
-        "shape": "ascending_south"
+        "shape": "ascending_south",
+        "powered": "false"
       },
       "apply": {
         "model": "railcraft:block/embarking_track_raised_sw",
@@ -96,8 +96,8 @@
     },
     {
       "when": {
-        "powered": "false",
-        "shape": "ascending_east"
+        "shape": "ascending_east",
+        "powered": "false"
       },
       "apply": {
         "model": "railcraft:block/embarking_track_raised_ne",
@@ -106,8 +106,8 @@
     },
     {
       "when": {
-        "powered": "false",
-        "shape": "ascending_west"
+        "shape": "ascending_west",
+        "powered": "false"
       },
       "apply": {
         "model": "railcraft:block/embarking_track_raised_sw",
@@ -116,8 +116,8 @@
     },
     {
       "when": {
-        "powered": "true",
-        "shape": "north_south"
+        "shape": "north_south",
+        "powered": "true"
       },
       "apply": {
         "model": "railcraft:block/embarking_track_on",
@@ -126,8 +126,8 @@
     },
     {
       "when": {
-        "powered": "true",
-        "shape": "east_west"
+        "shape": "east_west",
+        "powered": "true"
       },
       "apply": {
         "model": "railcraft:block/embarking_track_on",
@@ -136,8 +136,8 @@
     },
     {
       "when": {
-        "powered": "true",
-        "shape": "ascending_north"
+        "shape": "ascending_north",
+        "powered": "true"
       },
       "apply": {
         "model": "railcraft:block/embarking_track_on_raised_ne",
@@ -146,8 +146,8 @@
     },
     {
       "when": {
-        "powered": "true",
-        "shape": "ascending_south"
+        "shape": "ascending_south",
+        "powered": "true"
       },
       "apply": {
         "model": "railcraft:block/embarking_track_on_raised_sw",
@@ -156,8 +156,8 @@
     },
     {
       "when": {
-        "powered": "true",
-        "shape": "ascending_east"
+        "shape": "ascending_east",
+        "powered": "true"
       },
       "apply": {
         "model": "railcraft:block/embarking_track_on_raised_ne",
@@ -166,8 +166,8 @@
     },
     {
       "when": {
-        "powered": "true",
-        "shape": "ascending_west"
+        "shape": "ascending_west",
+        "powered": "true"
       },
       "apply": {
         "model": "railcraft:block/embarking_track_on_raised_sw",
