@@ -18,11 +18,11 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftEntityTypes {
 
-  public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
+  public static final DeferredRegister<EntityType<?>> deferredRegister =
       DeferredRegister.create(ForgeRegistries.ENTITIES, Railcraft.ID);
 
   public static final RegistryObject<EntityType<TankMinecart>> TANK_MINECART =
-      ENTITY_TYPES.register("tank_minecart",
+      deferredRegister.register("tank_minecart",
           () -> create("tank_minecart",
               EntityType.Builder
                   .<TankMinecart>of(TankMinecart::new, MobCategory.MISC)
@@ -31,7 +31,7 @@ public class RailcraftEntityTypes {
                   .sized(0.98F, 0.7F)));
 
   public static final RegistryObject<EntityType<TrackRemover>> TRACK_REMOVER =
-      ENTITY_TYPES.register("track_remover",
+      deferredRegister.register("track_remover",
           () -> create("track_remover",
               EntityType.Builder
                   .<TrackRemover>of(TrackRemover::new,
@@ -41,7 +41,7 @@ public class RailcraftEntityTypes {
                   .sized(0.98F, 0.7F)));
 
   public static final RegistryObject<EntityType<TrackLayer>> TRACK_LAYER =
-      ENTITY_TYPES.register("track_layer",
+      deferredRegister.register("track_layer",
           () -> create("track_layer",
               EntityType.Builder
                   .<TrackLayer>of(TrackLayer::new,
@@ -51,7 +51,7 @@ public class RailcraftEntityTypes {
                   .sized(0.98F, 0.7F)));
 
   public static final RegistryObject<EntityType<TunnelBore>> TUNNEL_BORE =
-      ENTITY_TYPES.register("tunnel_bore",
+      deferredRegister.register("tunnel_bore",
           () -> create("tunnel_bore",
               EntityType.Builder
                   .<TunnelBore>of(TunnelBore::new, MobCategory.MISC)
@@ -60,7 +60,7 @@ public class RailcraftEntityTypes {
                   .sized(TunnelBore.LENGTH, TunnelBore.HEIGHT)));
 
   public static final RegistryObject<EntityType<CreativeLocomotive>> CREATIVE_LOCOMOTIVE =
-      ENTITY_TYPES.register("creative_locomotive",
+      deferredRegister.register("creative_locomotive",
           () -> create("creative_locomotive",
               EntityType.Builder
                   .<CreativeLocomotive>of(CreativeLocomotive::new,
@@ -70,7 +70,7 @@ public class RailcraftEntityTypes {
                   .sized(0.98F, 1F)));
 
   public static final RegistryObject<EntityType<ElectricLocomotive>> ELECTRIC_LOCOMOTIVE =
-      ENTITY_TYPES.register("electric_locomotive",
+      deferredRegister.register("electric_locomotive",
           () -> create("electric_locomotive",
               EntityType.Builder
                   .<ElectricLocomotive>of(ElectricLocomotive::new,
@@ -80,7 +80,7 @@ public class RailcraftEntityTypes {
                   .sized(0.98F, 1F)));
 
   public static final RegistryObject<EntityType<SteamLocomotive>> STEAM_LOCOMOTIVE =
-      ENTITY_TYPES.register("steam_locomotive",
+      deferredRegister.register("steam_locomotive",
           () -> create("steam_locomotive",
               EntityType.Builder
                   .<SteamLocomotive>of(SteamLocomotive::new,
@@ -90,7 +90,7 @@ public class RailcraftEntityTypes {
                   .sized(0.98F, 1F)));
 
   public static final RegistryObject<EntityType<FirestoneItemEntity>> FIRESTONE =
-      ENTITY_TYPES.register("firestone",
+      deferredRegister.register("firestone",
           () -> create("firestone", EntityType.Builder.<FirestoneItemEntity>of(
               FirestoneItemEntity::new, MobCategory.MISC)
               .setTrackingRange(64)

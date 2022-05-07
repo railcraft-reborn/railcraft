@@ -59,7 +59,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe> implements ICa
 
   @Override
   protected RecipeType<CokeOvenRecipe> getRecipeType() {
-    return RailcraftRecipeTypes.COKING;
+    return RailcraftRecipeTypes.COKING.get();
   }
 
   @Override

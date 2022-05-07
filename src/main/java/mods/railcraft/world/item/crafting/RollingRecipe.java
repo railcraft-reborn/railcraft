@@ -39,6 +39,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
   /**
    * Creates a new recipie.
+   * 
    * @param resourceLocation -
    * @param tickCost - The time cost of the recipie
    * @param ingredients - Ingredients list of the object
@@ -128,7 +129,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
   @Override
   public RecipeType<?> getType() {
-    return RailcraftRecipeTypes.ROLLING;
+    return RailcraftRecipeTypes.ROLLING.get();
   }
 
   public static class RollingRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>>
@@ -194,9 +195,9 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
     /**
      * see vanilla crafting table.
+     * 
      * @param jsondat -
-     * @return
-     * {@see net.minecraft.item.crafting.ShapedRecipe keyFromJson}
+     * @return {@see net.minecraft.item.crafting.ShapedRecipe keyFromJson}
      */
     private static Map<String, Ingredient> keyFromJson(JsonObject jsondat) {
       Map<String, Ingredient> map = Maps.newHashMap();

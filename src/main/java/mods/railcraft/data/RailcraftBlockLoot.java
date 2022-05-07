@@ -378,7 +378,7 @@ public class RailcraftBlockLoot extends BlockLoot {
 
   @Override
   protected Iterable<Block> getKnownBlocks() {
-    return RailcraftBlocks.BLOCKS.getEntries().stream()
+    return RailcraftBlocks.deferredRegister.getEntries().stream()
         .map(RegistryObject::get)
         .collect(Collectors.toSet());
   }

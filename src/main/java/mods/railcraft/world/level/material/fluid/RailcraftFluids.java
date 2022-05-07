@@ -9,14 +9,14 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftFluids {
 
-  public static final DeferredRegister<Fluid> FLUIDS =
+  public static final DeferredRegister<Fluid> deferredRegister =
       DeferredRegister.create(ForgeRegistries.FLUIDS, Railcraft.ID);
 
-  public static final RegistryObject<Fluid> STEAM = FLUIDS.register("steam", SteamFluid::new);
+  public static final RegistryObject<Fluid> STEAM = deferredRegister.register("steam", SteamFluid::new);
 
   public static final RegistryObject<FlowingFluid> CREOSOTE =
-      FLUIDS.register("creosote", CreosoteFluid.Source::new);
+      deferredRegister.register("creosote", CreosoteFluid.Source::new);
 
   public static final RegistryObject<FlowingFluid> FLOWING_CREOSOTE =
-      FLUIDS.register("flowing_creosote", CreosoteFluid.Flowing::new);
+      deferredRegister.register("flowing_creosote", CreosoteFluid.Flowing::new);
 }

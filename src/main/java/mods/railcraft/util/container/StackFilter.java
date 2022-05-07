@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.util.Predicates;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
@@ -28,111 +29,65 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
  */
 public enum StackFilter implements Predicate<ItemStack> {
 
-  ALL,
-  FUEL {
-    @Override
-    protected boolean testType(ItemStack stack) {
-      return ForgeHooks.getBurnTime(stack, null) > 0;
-    }
+  ALL(Predicates.alwaysTrue()),
+  FUEL(itemStack -> ForgeHooks.getBurnTime(itemStack, null) > 0),
+  TRACK(itemStack -> TrackTools.isRail(itemStack)),
+  MINECART(itemStack -> itemStack.getItem() instanceof MinecartItem
+      || itemStack.getItem() instanceof MinecartFactory),
+  @SuppressWarnings("deprecation")
+  BALLAST(itemStack -> itemStack.getItem() instanceof BlockItem blockItem
+      && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),
+  FLUID_CONTAINER(itemStack -> itemStack
+      .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+      .isPresent()),
+  FEED(itemStack -> itemStack.getItem().getFoodProperties(itemStack, null) != null
+      || itemStack.getItem() == Items.WHEAT
+      || itemStack.getItem() instanceof BlockItem blockItem
+          && blockItem.getBlock() instanceof StemBlock),
+  CARGO(itemStack -> (RailcraftConfig.server.chestAllowFluids.get()
+      || !FluidItemHelper.isContainer(itemStack))
+      && !RailcraftConfig.server.cargoBlacklist.get()
+          .contains(itemStack.getItem().getRegistryName().toString())),
+  RAW_METAL(itemStack -> itemStack.is(RailcraftTags.Items.METAL));
 
-  },
-  TRACK {
-    @Override
-    protected boolean testType(ItemStack stack) {
-      return TrackTools.isRail(stack);
-    }
+  private final Predicate<ItemStack> predicate;
 
-  },
-  MINECART {
-    @Override
-    protected boolean testType(ItemStack stack) {
-      return stack.getItem() instanceof MinecartItem || stack.getItem() instanceof MinecartFactory;
-    }
+  private StackFilter(Predicate<ItemStack> predicate) {
+    this.predicate = predicate;
+  }
 
-  },
-  BALLAST {
-    @SuppressWarnings("deprecation")
-    @Override
-    protected boolean testType(ItemStack stack) {
-      return stack.getItem() instanceof BlockItem blockItem
-          && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST);
-    }
-  },
-  // EMPTY_BUCKET {
-  // @Override
-  // protected boolean testType(ItemStack stack) {
-  // if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null))
-  // return true;
-  // if (InvTools.isItem(stack, Items.BUCKET))
-  // return true;
-  // UniversalBucket uBucket = ForgeModContainer.getInstance().universalBucket;
-  // FluidStack fluidStack;
-  // return uBucket != null && of(UniversalBucket.class).test(stack) && (fluidStack =
-  // uBucket.getFluid(stack)) != null && fluidStack.amount <= 0;
-  // }
-  //
-  // },
-  FLUID_CONTAINER {
-    @Override
-    protected boolean testType(
-        ItemStack stack) {
-      return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
-    }
-  },
-  FEED {
-    @Override
-    protected boolean testType(
-        ItemStack stack) {
-      return stack.getItem().getFoodProperties() != null || stack.getItem() == Items.WHEAT
-          || stack.getItem() instanceof BlockItem
-              && ((BlockItem) stack.getItem()).getBlock() instanceof StemBlock;
-    }
-
-  },
-  CARGO {
-    @Override
-    protected boolean testType(
-        ItemStack stack) {
-      return (RailcraftConfig.server.chestAllowFluids.get() || !FluidItemHelper.isContainer(stack))
-          && !RailcraftConfig.server.cargoBlacklist.get()
-              .contains(stack.getItem().getRegistryName().toString());
-    }
-
-  },
-  RAW_METAL {
-    @Override
-    protected boolean testType(ItemStack stack) {
-      return stack.is(RailcraftTags.Items.METAL);
-    }
-  };
+  @Override
+  public boolean test(ItemStack itemStack) {
+    return !itemStack.isEmpty() && this.predicate.test(itemStack);
+  }
 
   /**
    * Matches against the provided ItemStack.
    */
-  public static Predicate<ItemStack> of(final ItemStack stack) {
-    return stack1 -> ContainerTools.isItemEqual(stack1, stack);
+  public static Predicate<ItemStack> of(ItemStack itemStack) {
+    return stack1 -> ContainerTools.isItemEqual(stack1, itemStack);
   }
 
   /**
    * Matches against the provided class/interface.
    */
   public static Predicate<ItemStack> of(final Class<?> itemClass) {
-    return stack -> !stack.isEmpty()
-        && itemClass.isAssignableFrom(stack.getItem().getClass());
+    return itemStack -> !itemStack.isEmpty()
+        && itemClass.isAssignableFrom(itemStack.getItem().getClass());
   }
 
   /**
    * Matches against the provided Item.
    */
   public static Predicate<ItemStack> of(final Item item) {
-    return stack -> !stack.isEmpty() && stack.getItem() == item;
+    return itemStack -> !itemStack.isEmpty() && itemStack.getItem() == item;
   }
 
   /**
    * Matches against the provided Item.
    */
   public static Predicate<ItemStack> of(final Block block) {
-    return stack -> !stack.isEmpty() && stack.getItem() == block.asItem();
+    return itemStack -> !itemStack.isEmpty() && itemStack.getItem() == block.asItem();
   }
 
   /**
@@ -148,7 +103,7 @@ public enum StackFilter implements Predicate<ItemStack> {
    * pass the check to the item.
    */
   public static Predicate<ItemStack> anyMatch(final Collection<ItemStack> filters) {
-    return stack -> filters.stream().anyMatch(f -> ContainerTools.matchesFilter(f, stack));
+    return itemStack -> filters.stream().anyMatch(f -> ContainerTools.matchesFilter(f, itemStack));
   }
 
   /**
@@ -156,7 +111,7 @@ public enum StackFilter implements Predicate<ItemStack> {
    * the check to the item.
    */
   public static Predicate<ItemStack> anyMatch(final ContainerManipulator<?> inv) {
-    return stack -> inv.streamItems().anyMatch(f -> ContainerTools.matchesFilter(f, stack));
+    return itemStack -> inv.streamItems().anyMatch(f -> ContainerTools.matchesFilter(f, itemStack));
   }
 
   /**
@@ -176,8 +131,8 @@ public enum StackFilter implements Predicate<ItemStack> {
    * If no ItemStacks are provided to match against, it returns true.
    */
   public static Predicate<ItemStack> anyOf(final Collection<ItemStack> stacks) {
-    return stack -> stacks.isEmpty() || stacks.stream().allMatch(ItemStack::isEmpty)
-        || ContainerTools.isItemEqual(stack, stacks);
+    return itemStack -> stacks.isEmpty() || stacks.stream().allMatch(ItemStack::isEmpty)
+        || ContainerTools.isItemEqual(itemStack, stacks);
   }
 
   public static Predicate<ItemStack> none() {
@@ -203,33 +158,33 @@ public enum StackFilter implements Predicate<ItemStack> {
    * empty/nulled.
    */
   public static Predicate<ItemStack> noneOf(final Collection<ItemStack> stacks) {
-    return stack -> {
-      if (stack.isEmpty()) {
+    return itemStack -> {
+      if (itemStack.isEmpty()) {
         return false;
       }
       return stacks.stream().filter(toTest -> !toTest.isEmpty())
-          .noneMatch(filter -> ContainerTools.isItemEqual(stack, filter));
+          .noneMatch(filter -> ContainerTools.isItemEqual(itemStack, filter));
     };
   }
 
   public static Predicate<ItemStack> ofSize(int size) {
-    return stack -> stack.getCount() == size;
+    return itemStack -> itemStack.getCount() == size;
   }
 
   public static Predicate<ItemStack> singleton() {
-    return stack -> stack.getCount() == 1;
+    return itemStack -> itemStack.getCount() == 1;
   }
 
   public static Predicate<ItemStack> nonEmpty() {
-    return stack -> !stack.isEmpty();
+    return itemStack -> !itemStack.isEmpty();
   }
 
   /**
    * Matches if the ItemStack matches the given cart.
    */
   public static Predicate<ItemStack> isCart(@Nullable final AbstractMinecart cart) {
-    return stack -> {
-      if (stack.isEmpty()) {
+    return itemStack -> {
+      if (itemStack.isEmpty()) {
         return false;
       }
       if (cart == null) {
@@ -237,23 +192,14 @@ public enum StackFilter implements Predicate<ItemStack> {
       }
 
       ItemStack cartItem = cart.getPickResult();
-      boolean matches = !stack.isEmpty() && cartItem.sameItem(stack);
+      boolean matches = !itemStack.isEmpty() && cartItem.sameItem(itemStack);
 
-      if (stack.hasCustomHoverName()) {
-        return matches && stack.getDisplayName().getContents()
+      if (itemStack.hasCustomHoverName()) {
+        return matches && itemStack.getDisplayName().getContents()
             .equals(cart.getPickResult().getDisplayName().getContents());
       }
 
       return matches;
     };
-  }
-
-  protected boolean testType(ItemStack stack) {
-    return true;
-  }
-
-  @Override
-  public boolean test(ItemStack stack) {
-    return !stack.isEmpty() && this.testType(stack);
   }
 }

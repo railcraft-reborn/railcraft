@@ -44,7 +44,7 @@ public class MultiblockListener implements GameEventListener {
   @Override
   public boolean handleGameEvent(Level level, GameEvent event, @Nullable Entity entity,
       BlockPos blockPos) {
-    if (event == RailcraftGameEvents.NEIGHBOR_NOTIFY) {
+    if (event == RailcraftGameEvents.NEIGHBOR_NOTIFY.get()) {
       // Can't check immediately as these events are fired before the blocks are actually changed.
       this.blockEntity.enqueueEvaluation();
     }

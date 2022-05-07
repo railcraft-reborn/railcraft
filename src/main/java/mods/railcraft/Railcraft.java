@@ -41,14 +41,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
@@ -104,24 +102,20 @@ public class Railcraft {
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
-    modEventBus.addGenericListener(RecipeSerializer.class,
-        (RegistryEvent.Register<RecipeSerializer<?>> event) -> {
-          // Static init as Minecraft now freezes its registries
-          RailcraftRecipeTypes.init();
-          RailcraftGameEvents.init();
-        });
 
-    RailcraftEntityTypes.ENTITY_TYPES.register(modEventBus);
-    RailcraftBlocks.BLOCKS.register(modEventBus);
-    RailcraftItems.ITEMS.register(modEventBus);
-    RailcraftBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
-    TrackTypes.TRACK_TYPES.register(modEventBus);
-    RailcraftFluids.FLUIDS.register(modEventBus);
-    RailcraftMenuTypes.MENU_TYPES.register(modEventBus);
-    RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);
-    RailcraftEnchantments.ENCHANTMENTS.register(modEventBus);
-    RailcraftParticleTypes.PARTICLE_TYPES.register(modEventBus);
-    RailcraftRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+    RailcraftEntityTypes.deferredRegister.register(modEventBus);
+    RailcraftBlocks.deferredRegister.register(modEventBus);
+    RailcraftItems.deferredRegister.register(modEventBus);
+    RailcraftBlockEntityTypes.deferredRegister.register(modEventBus);
+    TrackTypes.deferredRegister.register(modEventBus);
+    RailcraftFluids.deferredRegister.register(modEventBus);
+    RailcraftMenuTypes.deferredRegister.register(modEventBus);
+    RailcraftSoundEvents.deferredRegister.register(modEventBus);
+    RailcraftEnchantments.deferredRegister.register(modEventBus);
+    RailcraftParticleTypes.deferredRegister.register(modEventBus);
+    RailcraftRecipeSerializers.deferredRegister.register(modEventBus);
+    RailcraftRecipeTypes.deferredRegister.register(modEventBus);
+    RailcraftGameEvents.deferredRegister.register(modEventBus);
   }
 
   public MinecartHandler getMinecartHandler() {
@@ -253,6 +247,6 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handleNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
-    event.getWorld().gameEvent(RailcraftGameEvents.NEIGHBOR_NOTIFY, event.getPos());
+    event.getWorld().gameEvent(RailcraftGameEvents.NEIGHBOR_NOTIFY.get(), event.getPos());
   }
 }

@@ -17,21 +17,22 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class RailcraftParticleTypes {
 
-  public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =
+  public static final DeferredRegister<ParticleType<?>> deferredRegister =
       DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Railcraft.ID);
 
   public static final RegistryObject<SimpleParticleType> STEAM =
-      PARTICLE_TYPES.register("steam", () -> new SimpleParticleType(false));
+      deferredRegister.register("steam", () -> new SimpleParticleType(false));
 
   public static final RegistryObject<SimpleParticleType> SPARK =
-      PARTICLE_TYPES.register("spark", () -> new SimpleParticleType(false));
+      deferredRegister.register("spark", () -> new SimpleParticleType(false));
 
   public static final RegistryObject<SimpleParticleType> PUMPKIN =
-      PARTICLE_TYPES.register("pumpkin", () -> new SimpleParticleType(false));
+      deferredRegister.register("pumpkin", () -> new SimpleParticleType(false));
 
   public static final RegistryObject<ParticleType<TuningAuraParticleOptions>> TUNING_AURA =
-      PARTICLE_TYPES.register("tuning_aura",
-          () -> create(TuningAuraParticleOptions.DESERIALIZER, __ -> TuningAuraParticleOptions.CODEC));
+      deferredRegister.register("tuning_aura",
+          () -> create(TuningAuraParticleOptions.DESERIALIZER,
+              __ -> TuningAuraParticleOptions.CODEC));
 
   private static <T extends ParticleOptions> ParticleType<T> create(
       @SuppressWarnings("deprecation") ParticleOptions.Deserializer<T> deserializer,

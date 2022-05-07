@@ -92,7 +92,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe>
 
   @Override
   protected RecipeType<BlastFurnaceRecipe> getRecipeType() {
-    return RailcraftRecipeTypes.BLASTING;
+    return RailcraftRecipeTypes.BLASTING.get();
   }
 
   @Override
@@ -131,7 +131,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe>
 
   public int getItemBurnTime(ItemStack itemStack) {
     return vanillaFuel.getOrDefault(itemStack.getItem().delegate,
-        itemStack.getBurnTime(RailcraftRecipeTypes.BLASTING));
+        itemStack.getBurnTime(RailcraftRecipeTypes.BLASTING.get()));
   }
 
   void loadFuel() {
