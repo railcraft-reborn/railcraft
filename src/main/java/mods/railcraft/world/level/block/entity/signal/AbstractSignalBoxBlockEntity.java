@@ -26,16 +26,18 @@ public abstract class AbstractSignalBoxBlockEntity extends RailcraftBlockEntity 
 
   public abstract SignalAspect getSignalAspect(Direction direction);
 
-  @Override
-  public void setChanged() {
-    super.setChanged();
-    this.updateNeighborSignalBoxes(false);
+  public void blockRemoved() {
+    this.updateNeighborSignalBoxes(true);
   }
 
   @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.updateNeighborSignalBoxes(true);
+  public void setChanged() {
+    if (this.level == null) {
+      return;
+    }
+    this.level.blockEntityChanged(this.getBlockPos());
+    this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
+    this.updateNeighborSignalBoxes(false);
   }
 
   protected void neighborSignalBoxChanged(AbstractSignalBoxBlockEntity neighborSignalBox,

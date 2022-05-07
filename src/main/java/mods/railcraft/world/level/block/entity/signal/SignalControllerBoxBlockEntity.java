@@ -54,9 +54,9 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.signalController.removed();
+  public void blockRemoved() {
+    super.blockRemoved();
+    this.signalController.destroy();
   }
 
   @Override

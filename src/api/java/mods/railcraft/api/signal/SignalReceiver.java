@@ -10,5 +10,5 @@ public interface SignalReceiver {
 
   void refresh();
 
-  void removed();
+  void destroy();
 }

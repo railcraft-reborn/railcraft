@@ -31,10 +31,8 @@ public class DualDistantSignalBlockEntity extends AbstractSignalBlockEntity
     }
   }
 
-  @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.signalReceiver.removed();
+  public void blockRemoved() {
+    this.signalReceiver.destroy();
   }
 
   @Override
@@ -65,7 +63,7 @@ public class DualDistantSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public void load( CompoundTag tag) {
+  public void load(CompoundTag tag) {
     super.load(tag);
     this.signalReceiver.deserializeNBT(tag.getCompound("signalReceiver"));
   }

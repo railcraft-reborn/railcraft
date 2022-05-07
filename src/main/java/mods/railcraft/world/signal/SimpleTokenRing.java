@@ -186,5 +186,5 @@ public class SimpleTokenRing implements TokenRing {
   public void refresh() {}
 
   @Override
-  public void removed() {}
+  public void destroy() {}
 }

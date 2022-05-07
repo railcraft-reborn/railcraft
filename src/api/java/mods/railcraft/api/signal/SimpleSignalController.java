@@ -52,7 +52,7 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
   @Override
   public boolean removePeer(BlockPos peerPos) {
     if (super.removePeer(peerPos)) {
-      SignalReceiverProvider signalReceiverProvider = this.getBlockEntity(peerPos);
+      var signalReceiverProvider = this.getBlockEntity(peerPos);
       if (signalReceiverProvider != null) {
         signalReceiverProvider.getSignalReceiver().unlinked(this);
       }

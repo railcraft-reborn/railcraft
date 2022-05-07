@@ -54,10 +54,8 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
     }
   }
 
-  @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.signalController.removed();
+  public void blockRemoved() {
+    this.signalController.destroy();
     if (!this.level.isClientSide()) {
       this.getSignalNetwork().removePeer(this.getBlockPos());
     }

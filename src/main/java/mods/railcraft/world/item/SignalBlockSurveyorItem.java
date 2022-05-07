@@ -3,7 +3,6 @@ package mods.railcraft.world.item;
 import java.util.Objects;
 import mods.railcraft.api.core.DimensionPos;
 import mods.railcraft.api.signal.Signal;
-import mods.railcraft.api.signal.SignalNetwork;
 import mods.railcraft.api.signal.TrackLocator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -28,13 +27,12 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
     Level level = context.getLevel();
     BlockPos pos = context.getClickedPos();
     BlockEntity blockEntity = level.getBlockEntity(pos);
-    if (blockEntity instanceof Signal) {
+    if (blockEntity instanceof Signal<?> signal) {
       if (level.isClientSide()) {
         return InteractionResult.SUCCESS;
       }
 
-      Signal<?> signal = (Signal<?>) blockEntity;
-      SignalNetwork<?> signalNetwork = signal.getSignalNetwork();
+      var signalNetwork = signal.getSignalNetwork();
 
       if (this.checkAbandonPairing(stack, player, (ServerLevel) level,
           signalNetwork::stopLinking)) {
@@ -43,8 +41,8 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
         return InteractionResult.SUCCESS;
       }
 
-      DimensionPos signalPos = this.getPeerPos(stack);
-      TrackLocator.Status trackStatus = signal.getTrackLocator().getTrackStatus();
+      var signalPos = this.getPeerPos(stack);
+      var trackStatus = signal.getTrackLocator().getTrackStatus();
       if (trackStatus == TrackLocator.Status.INVALID) {
         player.displayClientMessage(new TranslatableComponent("signal_surveyor.invalid_track",
             signal.getDisplayName().getString()), true);

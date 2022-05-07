@@ -59,7 +59,7 @@ public class SingleSignalReceiver
   }
 
   @Override
-  public void removed() {
+  public void destroy() {
     this.primarySignalClient.unlink();
   }
 

@@ -16,6 +16,17 @@ public class DualTokenSignalBlock extends DualSignalBlock {
     super(properties);
   }
 
+  @SuppressWarnings("deprecation")
+  @Override
+  public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState,
+      boolean moved) {
+    if (!blockState.is(newState.getBlock())) {
+      level.getBlockEntity(blockPos, RailcraftBlockEntityTypes.DUAL_TOKEN_SIGNAL.get())
+          .ifPresent(DualTokenSignalBlockEntity::blockRemoved);
+    }
+    super.onRemove(blockState, level, blockPos, newState, moved);
+  }
+
   @Override
   public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
     return new DualTokenSignalBlockEntity(blockPos, blockState);

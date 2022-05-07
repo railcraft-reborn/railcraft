@@ -28,10 +28,10 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.signalController.removed();
-    this.blockSignal.removed();
+  public void blockRemoved() {
+    super.blockRemoved();
+    this.signalController.destroy();
+    this.blockSignal.destroy();
   }
 
   @Override

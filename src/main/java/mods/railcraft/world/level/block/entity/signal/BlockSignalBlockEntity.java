@@ -31,11 +31,9 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
     super(type, blockPos, blockState);
   }
 
-  @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.signalController.removed();
-    this.blockSignal.removed();
+  public void blockRemoved() {
+    this.signalController.destroy();
+    this.blockSignal.destroy();
   }
 
   @Override

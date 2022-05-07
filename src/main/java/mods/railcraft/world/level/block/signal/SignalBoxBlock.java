@@ -70,6 +70,17 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
         .ifPresent(AbstractSignalBoxBlockEntity::neighborChanged);
   }
 
+  @SuppressWarnings("deprecation")
+  @Override
+  public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState,
+      boolean moved) {
+    if (!blockState.is(newState.getBlock())) {
+      LevelUtil.getBlockEntity(level, blockPos, AbstractSignalBoxBlockEntity.class)
+          .ifPresent(AbstractSignalBoxBlockEntity::blockRemoved);
+    }
+    super.onRemove(blockState, level, blockPos, newState, moved);
+  }
+
   @Override
   public boolean isSignalSource(BlockState blockState) {
     return true;
