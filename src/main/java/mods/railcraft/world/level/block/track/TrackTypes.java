@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
@@ -121,7 +122,8 @@ public class TrackTypes {
     }
 
     @Override
-    public void entityInside(Level level, BlockPos pos, BlockState blockState, Entity entity) {
+    public void entityInside(ServerLevel level, BlockPos pos, BlockState blockState,
+        Entity entity) {
       this.collisionHandler.entityInside(level, pos, blockState, entity);
     }
 

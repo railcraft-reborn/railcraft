@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
@@ -26,8 +27,8 @@ import net.minecraft.world.level.block.state.properties.RailShape;
  */
 public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implements Magnifiable {
 
-  private static final double BASE_DRAW = 22;
-  private static final double CHARGE_PER_TRACK = 2;
+  private static final int BASE_DRAW = 22;
+  private static final int CHARGE_PER_TRACK = 2;
   private int trackCount;
   private ForceTrackEmitterState.Instance stateInstance;
   /**
@@ -67,8 +68,9 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     if (!blockEntity.isPowered()) {
       blockEntity.stateInstance.uncharged().ifPresent(blockEntity::loadState);
     } else {
-      double draw = getMaintenanceCost(blockEntity.getTrackCount());
-      if (Charge.distribution.network(level)
+      var draw = getMaintenanceCost(blockEntity.getTrackCount());
+      if (Charge.distribution
+          .network((ServerLevel) level)
           .access(blockPos)
           .useCharge(draw, false)) {
         blockEntity.stateInstance.charged().ifPresent(blockEntity::loadState);
@@ -101,7 +103,7 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     return false;
   }
 
-  public static double getMaintenanceCost(int tracks) {
+  public static int getMaintenanceCost(int tracks) {
     return BASE_DRAW + CHARGE_PER_TRACK * tracks;
   }
 

@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
  *
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public interface IChargeProtectionItem {
+public interface ChargeProtectionItem {
 
   /**
    * Called to determine if the item can currently provide protection against Charge damage.

@@ -51,7 +51,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
   private static final Map<Charge, ChargeSpec> CHARGE_SPECS =
-      ChargeSpec.make(Charge.distribution, ConnectType.BLOCK, 0.1);
+      ChargeSpec.make(Charge.distribution, ConnectType.BLOCK, 0.1F);
 
   public ForceTrackEmitterBlock(Properties properties) {
     super(properties);
@@ -151,10 +151,12 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
 
   @SuppressWarnings("deprecation")
   @Override
-  public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState,
-      boolean something) {
-    super.onPlace(state, worldIn, pos, oldState, something);
-    registerNode(state, worldIn, pos);
+  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
+      boolean moved) {
+    super.onPlace(state, level, pos, oldState, moved);
+    if (!state.is(oldState.getBlock()) && level instanceof ServerLevel serverLevel) {
+      this.registerNode(state, serverLevel, pos);
+    }
   }
 
   @SuppressWarnings("deprecation")
@@ -180,10 +182,12 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
 
   @SuppressWarnings("deprecation")
   @Override
-  public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState,
-      boolean something) {
-    super.onRemove(state, worldIn, pos, newState, something);
-    deregisterNode(worldIn, pos);
+  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
+      boolean moved) {
+    super.onRemove(state, level, pos, newState, moved);
+    if (!state.is(newState.getBlock()) && level instanceof ServerLevel serverLevel) {
+      this.deregisterNode(serverLevel, pos);
+    }
   }
 
   @Override

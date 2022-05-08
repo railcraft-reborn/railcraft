@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ElectricTrackBlock extends TrackBlock implements ChargeBlock {
 
   private static final Map<Charge, ChargeSpec> CHARGE_SPECS =
-      ChargeSpec.make(Charge.distribution, ConnectType.TRACK, 0.01);
+      ChargeSpec.make(Charge.distribution, ConnectType.TRACK, 0.01F);
 
   public ElectricTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
@@ -33,28 +33,31 @@ public class ElectricTrackBlock extends TrackBlock implements ChargeBlock {
 
   @SuppressWarnings("deprecation")
   @Override
-  public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
-    super.randomTick(state, worldIn, pos, random);
-    registerNode(state, worldIn, pos);
+  public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+    super.randomTick(state, level, pos, random);
+    this.registerNode(state, level, pos);
   }
 
   @Override
-  public void onPlace(BlockState state, Level worldIn, BlockPos pos,
-      BlockState oldState, boolean something) {
-    super.onPlace(state, worldIn, pos, state, something);
-    registerNode(state, worldIn, pos);
+  public void onPlace(BlockState state, Level level, BlockPos pos,
+      BlockState oldState, boolean moved) {
+    super.onPlace(state, level, pos, oldState, moved);
+    if (!state.is(oldState.getBlock()) && level instanceof ServerLevel serverLevel) {
+      this.registerNode(state, serverLevel, pos);
+    }
   }
 
   @Override
-  public void onRemove(
-      BlockState state, Level worldIn, BlockPos pos, BlockState newState,
-      boolean p_196243_5_) {
-    super.onRemove(state, worldIn, pos, state, p_196243_5_);
-    Charge.distribution.network(worldIn).removeNode(pos);
+  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
+      boolean moved) {
+    super.onRemove(state, level, pos, newState, moved);
+    if (!state.is(newState.getBlock()) && level instanceof ServerLevel serverLevel) {
+      Charge.distribution.network(serverLevel).removeNode(pos);
+    }
   }
 
   @Override
-  public Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, BlockGetter world,
+  public Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, BlockGetter level,
       BlockPos pos) {
     return CHARGE_SPECS;
   }

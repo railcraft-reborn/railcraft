@@ -58,6 +58,8 @@ public class RailcraftConfig {
     public final IntValue tankCapacityPerBlock;
     public final IntValue waterCollectionRate;
     public final IntValue maxLauncherTrackForce;
+    public final DoubleValue lossMultiplier;
+
 
     private Server(Builder builder) {
       builder.comment("High Speed Track Configuration");
@@ -174,6 +176,14 @@ public class RailcraftConfig {
       this.maxLauncherTrackForce = builder
           .comment("change the value to your desired max launch rail force")
           .defineInRange("maxLauncherTrackForce", 30, 5, 50);
+
+      builder.push("charge");
+      {
+        this.lossMultiplier = builder
+            .comment("adjust the losses for the Charge network")
+            .defineInRange("lossMultiplier", 1.0D, 0.2D, 10.0D);
+      }
+      builder.pop();
     }
 
     public int getTankCartFluidCapacity() {

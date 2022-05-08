@@ -33,7 +33,7 @@ import net.minecraft.world.phys.Vec3;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer {
+public enum ClientEffects implements TuningAuraHelper, Charge.ZapEffectRenderer {
 
   INSTANCE;
 
@@ -45,7 +45,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
 
   private ClientEffects() {
     SignalTools.effectManager = this;
-    Charge.internalSetEffects(this);
+    Charge._setEffects(this);
   }
 
   public void readTeleport(FriendlyByteBuf data) {
