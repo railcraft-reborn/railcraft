@@ -46,7 +46,7 @@ import net.minecraftforge.energy.IEnergyStorage;
  *
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public interface ChargeStorageBlock extends IEnergyStorage {
+public interface ChargeStorage extends IEnergyStorage {
 
   enum State {
     /**
@@ -99,6 +99,15 @@ public interface ChargeStorageBlock extends IEnergyStorage {
   }
 
   /**
+   * True if and only if {@code getCharge()< getCapacity()}.
+   *
+   * @return {@code getCharge()< getCapacity()}
+   */
+  default boolean isFull() {
+    return this.getEnergyStored() >= this.getMaxEnergyStored();
+  }
+
+  /**
    * Gets the current state of the battery.
    *
    * @return The battery's state.
@@ -119,7 +128,7 @@ public interface ChargeStorageBlock extends IEnergyStorage {
   default void setState(State state) {}
 
   /**
-   * Creates a new battery Spec.
+   * Storage spec.
    * 
    * @param initialState The initial state of the battery.
    * @param capacity The capacity of the battery.

@@ -147,7 +147,7 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<BlockEntityType<SteamTurbineBlockEntity>> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
           () -> BlockEntityType.Builder
-              .of(SteamTurbineBlockEntity::new, RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
+              .of(SteamTurbineBlockEntity::new, RailcraftBlocks.STEAM_TURBINE.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =

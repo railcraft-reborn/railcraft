@@ -3,13 +3,11 @@ package mods.railcraft.world.level.block.entity.module;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
@@ -17,16 +15,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.registries.IRegistryDelegate;
 
-public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe>
-    implements ICapabilityProvider {
+public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe> {
 
   private static final Map<IRegistryDelegate<Item>, Integer> vanillaFuel =
       Map.of(Items.CHARCOAL.delegate, 1600);
@@ -183,12 +177,8 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe>
     return this.getItemBurnTime(itemStack) > 0;
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability,
-      @Nullable Direction direction) {
-    return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-        ? this.itemHandler.cast()
-        : LazyOptional.empty();
+  public LazyOptional<IItemHandler> getItemHandler() {
+    return this.itemHandler;
   }
 
   @Override

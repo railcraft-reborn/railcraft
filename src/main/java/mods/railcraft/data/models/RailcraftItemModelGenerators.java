@@ -25,6 +25,8 @@ public class RailcraftItemModelGenerators {
   }
 
   public void run() {
+    this.generateFlatItem(RailcraftItems.TURBINE_ROTOR.get(), ModelTemplates.FLAT_ITEM);
+
     this.generateFlatItem(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get(), ModelTemplates.FLAT_ITEM);

@@ -3,9 +3,11 @@ package mods.railcraft;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.event.CartLinkEvent;
+import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.RailcraftAdvancementProviders;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
+import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftModelProvider;
@@ -77,8 +79,11 @@ public class Railcraft {
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
 
   static {
-    CartUtil.linkageManager = LinkageManagerImpl.INSTANCE;
-    CartUtil.transferHelper = RailcraftTrainTransferHelper.INSTANCE;
+    CartUtil._setLinkageManager(LinkageManagerImpl.INSTANCE);
+    CartUtil._setTransferHelper(RailcraftTrainTransferHelper.INSTANCE);
+    for (var value : ChargeProviderImpl.values()) {
+      value.getCharge()._setProvider(value);
+    }
   }
 
   public Railcraft() {
@@ -151,6 +156,7 @@ public class Railcraft {
     var blockTags = new RailcraftBlockTagsProvider(generator, fileHelper);
     generator.addProvider(blockTags);
     generator.addProvider(new RailcraftItemTagsProvider(generator, blockTags, fileHelper));
+    generator.addProvider(new RailcraftFluidTagsProvider(generator, fileHelper));
     generator.addProvider(new RailcraftLootTableProvider(generator));
     generator.addProvider(new RailcraftAdvancementProviders(generator, fileHelper));
     generator.addProvider(new RailcraftRecipeProvider(generator));

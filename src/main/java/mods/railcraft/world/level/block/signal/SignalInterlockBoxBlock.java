@@ -5,6 +5,7 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.SignalInterlockBoxBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -27,7 +28,8 @@ public class SignalInterlockBoxBlock extends SelfAttachableSignalBoxBlock implem
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
       BlockEntityType<T> type) {
     return level.isClientSide()
-        ? createTickerHelper(type, RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get(),
+        ? BaseEntityBlock.createTickerHelper(type,
+            RailcraftBlockEntityTypes.SIGNAL_INTERLOCK_BOX.get(),
             SignalInterlockBoxBlockEntity::clientTick)
         : null;
   }

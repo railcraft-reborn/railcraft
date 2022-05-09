@@ -5,6 +5,7 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.multiblock.SteelTankBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,7 +27,7 @@ public class SteelTankGaugeBlock extends TankGaugeBlock {
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
       BlockEntityType<T> type) {
     return level.isClientSide() ? null
-        : createTickerHelper(type, RailcraftBlockEntityTypes.STEEL_TANK.get(),
+        : BaseEntityBlock.createTickerHelper(type, RailcraftBlockEntityTypes.STEEL_TANK.get(),
             SteelTankBlockEntity::serverTick);
   }
 }

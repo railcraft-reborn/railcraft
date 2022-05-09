@@ -12,9 +12,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public interface TuningAuraHelper {
+public interface TuningAuraProvider {
 
   boolean isTuningAuraActive();
 
-  void spawnTuningAuraParticles(BlockEntity start, BlockEntity dest);
+  void spawnTuningAura(BlockEntity start, BlockEntity dest);
 }

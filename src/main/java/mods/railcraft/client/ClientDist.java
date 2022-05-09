@@ -1,7 +1,9 @@
 package mods.railcraft.client;
 
 import mods.railcraft.RailcraftDist;
+import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.api.signal.SignalTools;
 import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
 import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.EmbarkingTrackScreen;
@@ -18,6 +20,7 @@ import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
+import mods.railcraft.client.gui.screen.inventory.SteamTurbineScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TankScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
@@ -73,6 +76,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class ClientDist implements RailcraftDist {
 
+  static {
+    SignalTools._setTuningAuraProvider(ClientEffects.INSTANCE);
+    Charge._setZapEffectProvider(ClientEffects.INSTANCE);
+  }
+
   private final Minecraft minecraft;
   private final ShuntingAuraRenderer shuntingAuraRenderer;
 
@@ -105,6 +113,8 @@ public class ClientDist implements RailcraftDist {
 
     // === Menu Screens ===
 
+    MenuScreens.register(RailcraftMenuTypes.STEAM_TURBINE.get(),
+        SteamTurbineScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK.get(),
         TankScreen::new);
     MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(),

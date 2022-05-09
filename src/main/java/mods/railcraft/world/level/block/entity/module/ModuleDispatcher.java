@@ -1,31 +1,17 @@
 package mods.railcraft.world.level.block.entity.module;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import mods.railcraft.api.core.NetworkSerializable;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
 
-public class ModuleDispatcher
-    implements NetworkSerializable, INBTSerializable<CompoundTag>, ICapabilityProvider {
+public class ModuleDispatcher implements NetworkSerializable, INBTSerializable<CompoundTag> {
 
   private final Map<String, Module> moduleByName = new HashMap<>();
   private final Map<Class<?>, Module> moduleByType = new HashMap<>();
-  private final List<ICapabilityProvider> capabilityProviders = new ArrayList<>();
-
-  public <T extends Module & ICapabilityProvider> T registerCapabilityModule(String name,
-      T module) {
-    this.capabilityProviders.add(module);
-    return this.registerModule(name, module);
-  }
 
   public <T extends Module> T registerModule(String name, T module) {
     if (this.moduleByName.put(name, module) != null) {
@@ -89,14 +75,5 @@ public class ModuleDispatcher
         module.deserializeNBT(moduleTag);
       }
     });
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    return this.capabilityProviders.stream()
-        .map(provider -> provider.getCapability(cap, side))
-        .filter(LazyOptional::isPresent)
-        .findFirst()
-        .orElse(LazyOptional.empty());
   }
 }

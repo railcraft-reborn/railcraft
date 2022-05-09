@@ -3,16 +3,16 @@ package mods.railcraft.world.level.block.entity.multiblock;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.chars.CharList;
-import it.unimi.dsi.fastutil.objects.Object2CharMap;
-import it.unimi.dsi.fastutil.objects.Object2CharOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
@@ -43,9 +43,9 @@ public class MultiblockPattern {
     this.predicates = new Char2ObjectOpenHashMap<>(predicates);
     this.entityCheckBounds = entityCheckBounds;
 
-    for (var x = 0; x < this.xSize; x++) {
-      for (var y = 0; y < this.ySize; y++) {
-        for (var z = 0; z < this.zSize; z++) {
+    for (var y = 0; y < this.ySize; y++) {
+      for (var z = 0; z < this.zSize; z++) {
+        for (var x = 0; x < this.xSize; x++) {
           var marker = this.pattern[y][z][x];
           if (!this.predicates.containsKey(marker)) {
             throw new IllegalStateException("No predicate exists for marker: " + marker);
@@ -53,6 +53,15 @@ public class MultiblockPattern {
         }
       }
     }
+  }
+
+  public MultiblockPattern rotateClockwise() {
+    var masterOffset =
+        new Vec3i(-this.masterOffset.getZ(), this.masterOffset.getY(), this.masterOffset.getX());
+    var pattern = rotatePatternClockwise(this.pattern);
+    var entityCheckBounds =
+        this.entityCheckBounds == null ? null : rotateBoundingBoxClockwise(this.entityCheckBounds);
+    return new MultiblockPattern(pattern, masterOffset, this.predicates, entityCheckBounds);
   }
 
   public int getXSize() {
@@ -88,18 +97,18 @@ public class MultiblockPattern {
             .isEmpty();
   }
 
-  public Optional<Object2CharMap<BlockPos>> resolve(BlockPos blockPos, ServerLevel level) {
+  public Optional<Map<BlockPos, Element>> resolve(BlockPos blockPos, ServerLevel level) {
     if (!this.checkForEntities(blockPos, level)) {
       return Optional.empty();
     }
 
     var originPos = blockPos.subtract(this.masterOffset);
-    Object2CharMap<BlockPos> map = new Object2CharOpenHashMap<>(this.getArea());
+    Map<BlockPos, Element> map = new HashMap<>(this.getArea());
 
     for (var x = 0; x < this.xSize; x++) {
       for (var y = 0; y < this.ySize; y++) {
         for (var z = 0; z < this.zSize; z++) {
-          if (!this.resolveBlock(originPos, x, y, z, level, map::put)) {
+          if (!this.resolveElement(originPos, x, y, z, level, map::put)) {
             return Optional.empty();
           }
         }
@@ -109,20 +118,39 @@ public class MultiblockPattern {
     return Optional.of(map);
   }
 
-  private boolean resolveBlock(BlockPos originPos, int x, int y, int z,
-      ServerLevel level, ResolvedBlockConsumer consumer) {
+  private boolean resolveElement(BlockPos originPos, int x, int y, int z,
+      ServerLevel level, BiConsumer<BlockPos, Element> consumer) {
     var marker = this.pattern[y][z][x];
     var predicate = this.predicates.get(marker);
     var pos = originPos.offset(x, y, z);
     if (!predicate.test(level, pos)) {
       return false;
     }
-    consumer.accept(pos, marker);
+    consumer.accept(pos, new Element(new BlockPos(x, y, z), marker));
     return true;
   }
 
-  private interface ResolvedBlockConsumer {
-    void accept(BlockPos blockPos, char marker);
+  public record Element(BlockPos relativePos, char marker) {}
+
+  private static AABB rotateBoundingBoxClockwise(AABB boundingBox) {
+    return new AABB(
+        -boundingBox.minZ, boundingBox.minY, boundingBox.minX,
+        -boundingBox.maxZ, boundingBox.maxY, boundingBox.maxX);
+  }
+
+  private static char[][][] rotatePatternClockwise(char[][][] pattern) {
+    final int ySize = pattern.length;
+    final int zSize = pattern[0].length;
+    final int xSize = pattern[0][0].length;
+    var ret = new char[ySize][xSize][zSize];
+    for (int y = 0; y < ySize; y++) {
+      for (int z = 0; z < zSize; z++) {
+        for (int x = 0; x < xSize; x++) {
+          ret[y][x][zSize - 1 - z] = pattern[y][z][x];
+        }
+      }
+    }
+    return ret;
   }
 
   public static Builder builder(int xOffset, int yOffset, int zOffset) {

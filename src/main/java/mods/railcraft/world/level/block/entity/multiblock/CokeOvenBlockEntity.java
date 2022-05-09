@@ -10,14 +10,19 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.module.CokeOvenModule;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity> {
 
@@ -50,7 +55,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   public CokeOvenBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.COKE_OVEN.get(), blockPos, blockState,
         CokeOvenBlockEntity.class, PATTERN);
-    this.cokeOvenModule = this.moduleDispatcher.registerCapabilityModule("coke_oven",
+    this.cokeOvenModule = this.moduleDispatcher.registerModule("coke_oven",
         new CokeOvenModule(this));
   }
 
@@ -59,8 +64,16 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   }
 
   @Override
-  protected boolean isBlockEntity(char id) {
-    return id == 'B' || id == 'W';
+  public <T> LazyOptional<T> getCapability(Capability<T> capability,
+      @Nullable Direction direction) {
+    return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.isFormed()
+        ? this.cokeOvenModule.getItemHandler().cast()
+        : LazyOptional.empty();
+  }
+
+  @Override
+  protected boolean isBlockEntity(MultiblockPattern.Element element) {
+    return element.marker() == 'B' || element.marker() == 'W';
   }
 
   @Override
@@ -71,9 +84,11 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
               .setValue(CokeOvenBricksBlock.WINDOW, false)
               .setValue(CokeOvenBricksBlock.LIT, false),
           Block.UPDATE_ALL);
+      Containers.dropContents(this.level, this.getBlockPos(), this.cokeOvenModule);
     } else {
       this.level.setBlock(this.getBlockPos(),
-          this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW, membership.marker() == 'W'),
+          this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW,
+              membership.patternElement().marker() == 'W'),
           Block.UPDATE_ALL);
     }
   }

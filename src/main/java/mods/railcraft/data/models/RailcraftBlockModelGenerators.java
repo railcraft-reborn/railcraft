@@ -1,5 +1,6 @@
 package mods.railcraft.data.models;
 
+import java.util.EnumMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -11,6 +12,7 @@ import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
@@ -202,6 +204,8 @@ public class RailcraftBlockModelGenerators {
     this.skipAutoItemBlock(RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
     this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_LEVER.get());
     this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
+
+    this.createSteamTurbine(RailcraftBlocks.STEAM_TURBINE.get());
 
     this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
         TexturedModel.CUBE_TOP_BOTTOM);
@@ -737,6 +741,54 @@ public class RailcraftBlockModelGenerators {
             })));
 
     this.createSimpleFlatItemModel(block);
+  }
+
+  private void createSteamTurbine(Block block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    this.delegateItemModel(block,
+        this.createSteamTurbineModel(block, sideTexture, "_inventory", false));
+
+    var noneVariant = Variant.variant()
+        .with(VariantProperties.MODEL,
+            ModelTemplates.CUBE_ALL.createWithSuffix(block, "_side",
+                new TextureMapping().put(TextureSlot.ALL, sideTexture),
+                this.modelOutput));
+
+    var models =
+        new EnumMap<SteamTurbineBlock.Type, ResourceLocation>(SteamTurbineBlock.Type.class);
+    for (var type : SteamTurbineBlock.Type.values()) {
+      if (type == SteamTurbineBlock.Type.NONE) {
+        continue;
+      }
+      models.put(type,
+          this.createSteamTurbineModel(block, sideTexture, "_" + type.getSerializedName(),
+              type != SteamTurbineBlock.Type.WINDOW));
+    }
+
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.properties(SteamTurbineBlock.TYPE, SteamTurbineBlock.ROTATED)
+            .generate((type, rotated) -> type == SteamTurbineBlock.Type.NONE
+                ? noneVariant
+                : Variant.variant()
+                    .with(VariantProperties.MODEL, models.get(type))
+                    .with(VariantProperties.Y_ROT, rotated
+                        ? VariantProperties.Rotation.R90
+                        : VariantProperties.Rotation.R0))));
+  }
+
+  private ResourceLocation createSteamTurbineModel(Block block, ResourceLocation sideTexture,
+      String suffix, boolean rotated) {
+    var frontTexture = TextureMapping.getBlockTexture(block, suffix);
+    return RailcraftModelTemplates.MIRRORED_CUBE.createWithOverride(block, suffix,
+        new TextureMapping()
+            .put(TextureSlot.PARTICLE, sideTexture)
+            .put(TextureSlot.NORTH, rotated ? sideTexture : frontTexture)
+            .put(TextureSlot.SOUTH, rotated ? sideTexture : frontTexture)
+            .put(TextureSlot.EAST, rotated ? frontTexture : sideTexture)
+            .put(TextureSlot.WEST, rotated ? frontTexture : sideTexture)
+            .put(TextureSlot.UP, sideTexture)
+            .put(TextureSlot.DOWN, sideTexture),
+        this.modelOutput);
   }
 
   private void createFluidManipulator(Block block) {

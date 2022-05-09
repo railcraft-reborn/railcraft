@@ -7,18 +7,12 @@ import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
 import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
@@ -27,7 +21,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class TankModule extends ContainerModule implements ICapabilityProvider {
+public class TankModule extends ContainerModule {
 
   public static final int TANK_INDEX = 0;
   public static final int SLOT_INPUT = 0;
@@ -45,8 +39,6 @@ public class TankModule extends ContainerModule implements ICapabilityProvider {
           return super.extractItem(slot, amount, simulate);
         }
       });
-
-  private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(this::getTank);
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
@@ -91,17 +83,8 @@ public class TankModule extends ContainerModule implements ICapabilityProvider {
     return false;
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return this.itemHandler.cast();
-    }
-
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return this.fluidHandler.cast();
-    }
-
-    return LazyOptional.empty();
+  public LazyOptional<IItemHandler> getItemHandler() {
+    return this.itemHandler;
   }
 
   @Override

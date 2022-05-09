@@ -37,7 +37,7 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeProtectionItem;
-import mods.railcraft.api.charge.ChargeStorageBlock;
+import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import net.minecraft.core.BlockPos;
@@ -143,10 +143,10 @@ public class ChargeNetworkImpl implements Charge.Network {
     var oldNode = this.nodes.put(pos.immutable(), node);
 
     // update the battery in the save data tracker
-    if (node.chargeBattery.isPresent()) {
-      chargeSavedData.initBattery(node.chargeBattery.get());
+    if (node.chargeBattery != null) {
+      this.chargeSavedData.initBattery(node.chargeBattery);
     } else {
-      chargeSavedData.removeBattery(pos);
+      this.chargeSavedData.removeBattery(pos);
     }
 
     // clean up any preexisting node
@@ -175,8 +175,8 @@ public class ChargeNetworkImpl implements Charge.Network {
 
   @Override
   public boolean addNode(BlockPos pos, BlockState state) {
-    var chargeSpec = getChargeSpec(state, pos);
-    if (chargeSpec != null && needsNode(pos, chargeSpec)) {
+    var chargeSpec = this.getChargeSpec(state, pos);
+    if (chargeSpec != null && this.needsNode(pos, chargeSpec)) {
       pos = pos.immutable();
       logger.debug("Registering Node: {}->{}", pos, chargeSpec);
       this.queue.put(pos, new ChargeNode(pos, chargeSpec));
@@ -185,13 +185,13 @@ public class ChargeNetworkImpl implements Charge.Network {
     return false;
   }
 
-  private boolean needsNode(BlockPos pos, ChargeBlock.ChargeSpec chargeSpec) {
+  private boolean needsNode(BlockPos pos, ChargeBlock.Spec chargeSpec) {
     var node = this.nodes.get(pos);
     return node == null || !node.isValid() || !Objects.equals(node.chargeSpec, chargeSpec);
   }
 
   @Nullable
-  private ChargeBlock.ChargeSpec getChargeSpec(BlockState state, BlockPos pos) {
+  private ChargeBlock.Spec getChargeSpec(BlockState state, BlockPos pos) {
     if (this.level == null) {
       return null;
     }
@@ -253,20 +253,20 @@ public class ChargeNetworkImpl implements Charge.Network {
         totalLosses += chargeNode.chargeSpec.losses();
       }
       chargeNode.chargeGrid = this;
-      batteries.removeIf(b -> b.getBlockPos().equals(chargeNode.pos));
-      if (chargeNode.chargeBattery.isPresent()) {
-        batteries.removeIf(b -> b.getBlockPos().equals(chargeNode.pos));
-        batteries.add(chargeNode.chargeBattery.get());
+      this.batteries.removeIf(b -> b.getBlockPos().equals(chargeNode.pos));
+      if (chargeNode.chargeBattery != null) {
+        this.batteries.removeIf(b -> b.getBlockPos().equals(chargeNode.pos));
+        this.batteries.add(chargeNode.chargeBattery);
         sortBatteries();
       } else {
-        chargeSavedData.removeBattery(chargeNode.pos);
+        ChargeNetworkImpl.this.chargeSavedData.removeBattery(chargeNode.pos);
       }
       return added;
     }
 
     private void sortBatteries() {
-      batteries.sort(Comparator.comparing(ChargeStorageBlock::getState)
-          .thenComparing(Comparator.comparing(ChargeStorageBlock::getEfficiency).reversed()));
+      this.batteries.sort(Comparator.comparing(ChargeStorage::getState)
+          .thenComparing(Comparator.comparing(ChargeStorage::getEfficiency).reversed()));
     }
 
     @Override
@@ -323,14 +323,14 @@ public class ChargeNetworkImpl implements Charge.Network {
 
       // balance the charge in all the rechargeable batteries in the grid
       var rechargeable =
-          this.batteries(ChargeStorageBlock.State.RECHARGEABLE).collect(Collectors.toSet());
+          this.batteries(ChargeStorage.State.RECHARGEABLE).collect(Collectors.toSet());
 
-      var capacity = rechargeable.stream().mapToInt(ChargeStorageBlock::getMaxEnergyStored).sum();
+      var capacity = rechargeable.stream().mapToInt(ChargeStorage::getMaxEnergyStored).sum();
       if (capacity > 0) {
-        var charge = rechargeable.stream().mapToInt(ChargeStorageBlock::getEnergyStored).sum();
+        var charge = rechargeable.stream().mapToInt(ChargeStorage::getEnergyStored).sum();
         final var neededCharge = capacity - charge;
         if (neededCharge > 0) {
-          charge += this.removeCharge(this.batteries(ChargeStorageBlock.State.SOURCE).toList(),
+          charge += this.removeCharge(this.batteries(ChargeStorage.State.SOURCE).toList(),
               neededCharge, false);
         }
         final var chargeLevel = charge / (float) capacity;
@@ -348,38 +348,38 @@ public class ChargeNetworkImpl implements Charge.Network {
       chargeUsedThisTick = 0;
     }
 
-    private Stream<ChargeStorageBlockImpl> batteries(ChargeStorageBlock.State... state) {
-      List<ChargeStorageBlock.State> list = Arrays.asList(state);
+    private Stream<ChargeStorageBlockImpl> batteries(ChargeStorage.State... state) {
+      List<ChargeStorage.State> list = Arrays.asList(state);
       return batteries.stream().filter(b -> list.contains(b.getState()));
     }
 
     private Stream<ChargeStorageBlockImpl> activeBatteries() {
-      return batteries.stream().filter(b -> b.getState() != ChargeStorageBlock.State.DISABLED);
+      return batteries.stream().filter(b -> b.getState() != ChargeStorage.State.DISABLED);
     }
 
     public int getCharge() {
-      return activeBatteries().mapToInt(ChargeStorageBlock::getEnergyStored).sum();
+      return activeBatteries().mapToInt(ChargeStorage::getEnergyStored).sum();
     }
 
     public int getCapacity() {
-      return activeBatteries().mapToInt(ChargeStorageBlock::getMaxEnergyStored).sum();
+      return activeBatteries().mapToInt(ChargeStorage::getMaxEnergyStored).sum();
     }
 
     public int getAvailableCharge() {
-      return activeBatteries().mapToInt(ChargeStorageBlock::getAvailableCharge).sum();
+      return activeBatteries().mapToInt(ChargeStorage::getAvailableCharge).sum();
     }
 
     public int getPotentialDraw() {
-      return activeBatteries().mapToInt(ChargeStorageBlock::getPotentialDraw).sum();
+      return activeBatteries().mapToInt(ChargeStorage::getPotentialDraw).sum();
     }
 
     public int getMaxDraw() {
-      return activeBatteries().mapToInt(ChargeStorageBlock::getMaxDraw).sum();
+      return activeBatteries().mapToInt(ChargeStorage::getMaxDraw).sum();
     }
 
     public float getEfficiency() {
       return (float) this.activeBatteries()
-          .mapToDouble(ChargeStorageBlock::getEfficiency)
+          .mapToDouble(ChargeStorage::getEfficiency)
           .average()
           .orElse(1.0);
     }
@@ -396,21 +396,23 @@ public class ChargeNetworkImpl implements Charge.Network {
       return totalLosses * RailcraftConfig.server.lossMultiplier.get().floatValue();
     }
 
-    public double getAverageUsagePerTick() {
-      return averageUsagePerTick;
+    public float getAverageUsagePerTick() {
+      return this.averageUsagePerTick;
     }
 
-    public double getUtilization() {
-      if (isInfinite())
-        return 0.0;
-      double potentialDraw = getPotentialDraw();
-      if (potentialDraw <= 0.0)
-        return 1.0;
-      return Math.min(getAverageUsagePerTick() / potentialDraw, 1.0);
+    public float getUtilization() {
+      if (this.isInfinite()) {
+        return 0.0F;
+      }
+      var potentialDraw = this.getPotentialDraw();
+      if (potentialDraw <= 0.0F) {
+        return 1.0F;
+      }
+      return Math.min(this.averageUsagePerTick / potentialDraw, 1.0F);
     }
 
     public boolean isInfinite() {
-      return batteries.stream().anyMatch(b -> b.getState() == ChargeStorageBlock.State.INFINITE);
+      return batteries.stream().anyMatch(b -> b.getState() == ChargeStorage.State.INFINITE);
     }
 
     public boolean isActive() {
@@ -540,22 +542,23 @@ public class ChargeNetworkImpl implements Charge.Network {
   }
 
   public class ChargeNode implements Charge.Access {
-    protected final Optional<ChargeStorageBlockImpl> chargeBattery;
+
+    protected final ChargeStorageBlockImpl chargeBattery;
     private final BlockPos pos;
-    private final ChargeBlock.ChargeSpec chargeSpec;
+    private final ChargeBlock.Spec chargeSpec;
     private ChargeGrid chargeGrid = NULL_GRID;
     private boolean invalid;
     private Optional<UsageRecorder> usageRecorder = Optional.empty();
     private final Collection<ChargeListener> listeners = new LinkedHashSet<>();
 
-    private ChargeNode(BlockPos pos, ChargeBlock.ChargeSpec chargeSpec) {
+    private ChargeNode(BlockPos pos, ChargeBlock.Spec chargeSpec) {
       this.pos = pos.immutable();
       this.chargeSpec = chargeSpec;
-      this.chargeBattery = chargeSpec.batterySpec() == null ? Optional.empty()
-          : Optional.of(new ChargeStorageBlockImpl(this.pos, chargeSpec.batterySpec()));
+      this.chargeBattery = chargeSpec.storageSpec() == null ? null
+          : new ChargeStorageBlockImpl(this.pos, chargeSpec.storageSpec());
     }
 
-    public ChargeBlock.ChargeSpec getChargeSpec() {
+    public ChargeBlock.Spec getChargeSpec() {
       return chargeSpec;
     }
 
@@ -710,7 +713,7 @@ public class ChargeNetworkImpl implements Charge.Network {
                 ? RailcraftDamageSource.ELECTRIC
                 : RailcraftDamageSource.TRACK_ELECTRIC, remainingDamage)) {
           this.removeCharge(chargeCost, false);
-          Charge.hostEffects().zapEffectDeath(entity.getLevel(), entity.position());
+          Charge.serverZapEffectProvider().zapEffectDeath(entity.getLevel(), entity.position());
         }
       }
     }
@@ -750,7 +753,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     @Override
     public Optional<ChargeStorageBlockImpl> storage() {
-      return chargeBattery;
+      return Optional.ofNullable(this.chargeBattery);
     }
 
     @Override
@@ -761,8 +764,9 @@ public class ChargeNetworkImpl implements Charge.Network {
     @Override
     public String toString() {
       String string = String.format("ChargeNode{%s}|%s", pos, chargeSpec.toString());
-      if (chargeBattery.isPresent())
-        string += "|State: " + chargeBattery.get().getState();
+      if (this.chargeBattery != null) {
+        string += "|State: " + this.chargeBattery.getState();
+      }
       return string;
     }
   }
@@ -770,7 +774,7 @@ public class ChargeNetworkImpl implements Charge.Network {
   public class NullNode extends ChargeNode {
     public NullNode() {
       super(new BlockPos(0, 0, 0),
-          new ChargeBlock.ChargeSpec(ChargeBlock.ConnectType.BLOCK, 0));
+          new ChargeBlock.Spec(ChargeBlock.ConnectType.BLOCK, 0));
     }
 
     @Override

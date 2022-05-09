@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "railcraft:steam_turbine",
     "railcraft:white_iron_tank_valve",
     "railcraft:orange_iron_tank_valve",
     "railcraft:magenta_iron_tank_valve",

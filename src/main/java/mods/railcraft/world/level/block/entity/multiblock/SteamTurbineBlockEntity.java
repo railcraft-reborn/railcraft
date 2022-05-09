@@ -1,88 +1,170 @@
 package mods.railcraft.world.level.block.entity.multiblock;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
+import mods.railcraft.api.charge.Charge;
+import mods.railcraft.util.EnergyUtil;
+import mods.railcraft.world.inventory.SteamTurbineMenu;
+import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.block.entity.module.SteamTurbineModule;
+import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineBlockEntity> {
 
-  private static final Collection<MultiblockPattern> PATTERNS;
+  private static final int WATER_OUTPUT_RATE = 4;
+  private static final int ENERGY_OUTPUT_RATE = 900;
 
-  static {
-    var topAndBottom = List.of(
-        CharList.of('O', 'O', 'O', 'O', 'O'),
-        CharList.of('O', 'O', 'O', 'O', 'O'),
-        CharList.of('O', 'O', 'O', 'O', 'O'),
-        CharList.of('O', 'O', 'O', 'O', 'O'));
-    var topAndBottomSmall = List.of(
-        CharList.of('O', 'O', 'O', 'O'),
-        CharList.of('O', 'O', 'O', 'O'),
-        CharList.of('O', 'O', 'O', 'O'),
-        CharList.of('O', 'O', 'O', 'O'),
-        CharList.of('O', 'O', 'O', 'O'));
-    PATTERNS = List.of(
-        MultiblockPattern.builder(BlockPos.ZERO)
-            .layer(topAndBottomSmall)
-            .layer(List.of(
-                CharList.of('O', 'O', 'O', 'O'),
-                CharList.of('O', 'B', 'B', 'O'),
-                CharList.of('O', 'B', 'B', 'O'),
-                CharList.of('O', 'B', 'B', 'O'),
-                CharList.of('O', 'O', 'O', 'O')))
-            .layer(List.of(
-                CharList.of('O', 'O', 'O', 'O'),
-                CharList.of('O', 'B', 'B', 'O'),
-                CharList.of('O', 'W', 'W', 'O'),
-                CharList.of('O', 'B', 'B', 'O'),
-                CharList.of('O', 'O', 'O', 'O')))
-            .layer(topAndBottomSmall)
-            .build(),
-        MultiblockPattern.builder(BlockPos.ZERO)
-            .layer(topAndBottom)
-            .layer(List.of(
-                CharList.of('O', 'O', 'O', 'O', 'O'),
-                CharList.of('O', 'B', 'B', 'B', 'O'),
-                CharList.of('O', 'B', 'B', 'B', 'O'),
-                CharList.of('O', 'O', 'O', 'O', 'O')))
-            .layer(List.of(
-                CharList.of('O', 'O', 'O', 'O', 'O'),
-                CharList.of('O', 'B', 'W', 'B', 'O'),
-                CharList.of('O', 'B', 'W', 'B', 'O'),
-                CharList.of('O', 'O', 'O', 'O', 'O')))
-            .layer(topAndBottom)
-            .build());
-  }
+  private static final Component MENU_TITLE =
+      new TranslatableComponent("container.railcraft.steam_turbine");
+
+  private static final BlockPredicate BLOCK_PREDICATE =
+      BlockPredicate.of(RailcraftBlocks.STEAM_TURBINE);
+
+  private static final MultiblockPattern pattern = MultiblockPattern.builder(BlockPos.ZERO)
+      .layer(List.of(
+          CharList.of('A', 'W', 'B'),
+          CharList.of('B', 'W', 'A')))
+      .layer(List.of(
+          CharList.of('C', 'X', 'D'),
+          CharList.of('D', 'X', 'C')))
+      .predicate('A', BLOCK_PREDICATE)
+      .predicate('B', BLOCK_PREDICATE)
+      .predicate('C', BLOCK_PREDICATE)
+      .predicate('D', BLOCK_PREDICATE)
+      .predicate('X', BLOCK_PREDICATE)
+      .predicate('W', BLOCK_PREDICATE)
+      .build();
+
+  private static final MultiblockPattern rotatedPattern = pattern.rotateClockwise();
+
+  private static final List<MultiblockPattern> patterns = List.of(pattern, rotatedPattern);
+
+  private final SteamTurbineModule module;
+
+  // Used by renderer
+  private float lastGaugeValue;
 
   public SteamTurbineBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.STEAM_TURBINE.get(), blockPos, blockState,
-        SteamTurbineBlockEntity.class, PATTERNS);
+        SteamTurbineBlockEntity.class, patterns);
+    this.module = this.moduleDispatcher.registerModule("steam_turbine",
+        new SteamTurbineModule(this, Charge.distribution));
+  }
+
+  public SteamTurbineModule getSteamTurbineModule() {
+    return this.module;
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       SteamTurbineBlockEntity blockEntity) {
     blockEntity.serverTick();
     blockEntity.moduleDispatcher.serverTick();
+
+    if (blockEntity.isFormed()) {
+      Predicate<BlockEntity> filter = other -> !(other instanceof SteamTurbineBlockEntity tank)
+          || !tank.getMembership().equals(blockEntity.getMembership());
+
+      blockEntity.module.getEnergyStorage()
+          .ifPresent(energyStorage -> EnergyUtil.pushToSides(level, blockPos, energyStorage,
+              ENERGY_OUTPUT_RATE, filter, Direction.values()));
+
+      blockEntity.module.getFluidHandler().ifPresent(fluidHandler -> {
+        var neighbors = FluidTools.findNeighbors(level, blockPos, filter,
+            Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+        for (var neighbor : neighbors) {
+          FluidUtil.tryFluidTransfer(neighbor, fluidHandler, WATER_OUTPUT_RATE, true);
+        }
+      });
+    }
+  }
+
+  public float getGaugeValue() {
+    return this.lastGaugeValue = this.module.readGauge(this.lastGaugeValue);
   }
 
   @Override
-  public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
-    return null;
+  public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+    return new SteamTurbineMenu(id, inventory, this);
   }
 
   @Override
-  protected boolean isBlockEntity(char marker) {
+  public Component getDisplayName() {
+    return MENU_TITLE;
+  }
+
+  @Override
+  public <T> LazyOptional<T> getCapability(Capability<T> capability,
+      @Nullable Direction side) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      return this.getMembership()
+          .map(Membership::master)
+          .map(SteamTurbineBlockEntity::getSteamTurbineModule)
+          .map(SteamTurbineModule::getFluidHandler)
+          .<LazyOptional<T>>map(LazyOptional::cast)
+          .orElse(LazyOptional.empty());
+    }
+
+    if (capability == CapabilityEnergy.ENERGY) {
+      return this.getMembership()
+          .map(Membership::master)
+          .map(SteamTurbineBlockEntity::getSteamTurbineModule)
+          .map(SteamTurbineModule::getEnergyStorage)
+          .<LazyOptional<T>>map(LazyOptional::cast)
+          .orElse(LazyOptional.empty());
+    }
+
+    return super.getCapability(capability, side);
+  }
+
+  @Override
+  protected boolean isBlockEntity(MultiblockPattern.Element element) {
     return true;
   }
 
   @Override
-  protected void membershipChanged(Membership<SteamTurbineBlockEntity> membership) {
+  protected void membershipChanged(@Nullable Membership<SteamTurbineBlockEntity> membership) {
+    if (membership == null) {
+      this.level.setBlockAndUpdate(this.getBlockPos(),
+          this.getBlockState().setValue(SteamTurbineBlock.TYPE, SteamTurbineBlock.Type.NONE));
+      Containers.dropContents(this.level, this.getBlockPos(), this.module.getRotorContainer());
+      return;
+    }
 
+    var type = switch (membership.patternElement().marker()) {
+      case 'A' -> SteamTurbineBlock.Type.TOP_LEFT;
+      case 'B' -> SteamTurbineBlock.Type.TOP_RIGHT;
+      case 'C' -> SteamTurbineBlock.Type.BOTTOM_LEFT;
+      case 'D' -> SteamTurbineBlock.Type.BOTTOM_RIGHT;
+      case 'W' -> SteamTurbineBlock.Type.WINDOW;
+      case 'X' -> SteamTurbineBlock.Type.NONE;
+      default -> throw new IllegalArgumentException(
+          "Unexpected value: " + membership.patternElement());
+    };
+
+    this.level.setBlockAndUpdate(this.getBlockPos(),
+        this.getBlockState()
+            .setValue(SteamTurbineBlock.TYPE, type)
+            .setValue(SteamTurbineBlock.ROTATED,
+                membership.master().getCurrentPattern().get() == rotatedPattern));
   }
 }

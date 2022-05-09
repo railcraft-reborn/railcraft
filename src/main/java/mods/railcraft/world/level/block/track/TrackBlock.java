@@ -42,8 +42,8 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
 
   public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE;
 
-  private static final Map<Charge, ChargeSpec> CHARGE_SPECS =
-      ChargeSpec.make(Charge.distribution, ConnectType.TRACK, 0.01F);
+  private static final Map<Charge, Spec> CHARGE_SPECS =
+      Spec.make(Charge.distribution, ConnectType.TRACK, 0.01F);
 
   private final Supplier<? extends TrackType> trackType;
 
@@ -82,7 +82,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   @Override
   public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
     if (this.getTrackType().isElectric()) {
-      Charge.effects().throwSparks(stateIn, worldIn, pos, rand, 75);
+      Charge.zapEffectProvider().throwSparks(stateIn, worldIn, pos, rand, 75);
     }
   }
 
@@ -90,14 +90,14 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   public void onPlace(BlockState blockState, Level level, BlockPos pos, BlockState oldBlockState,
       boolean moved) {
     super.onPlace(blockState, level, pos, oldBlockState, moved);
-    if (!blockState.is(oldBlockState.getBlock()) && level instanceof ServerLevel serverLevel) {
+    if (!blockState.is(oldBlockState.getBlock())) {
       if (!TrackSupportTools.isSupported(level, pos, this.getTrackType().getMaxSupportDistance())) {
         level.destroyBlock(pos, true);
         return;
       }
 
       if (this.getTrackType().isElectric()) {
-        this.registerNode(blockState, serverLevel, pos);
+        this.registerNode(blockState, (ServerLevel) level, pos);
       }
     }
   }
@@ -106,13 +106,13 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newBlockState,
       boolean moved) {
     super.onRemove(blockState, level, pos, newBlockState, moved);
-    if (!blockState.is(newBlockState.getBlock()) && level instanceof ServerLevel serverLevel) {
-      Charge.distribution.network(serverLevel).removeNode(pos);
+    if (!blockState.is(newBlockState.getBlock())) {
+      this.deregisterNode((ServerLevel) level, pos);
     }
   }
 
   @Override
-  public Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, BlockGetter level, BlockPos pos) {
+  public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level, BlockPos pos) {
     return this.getTrackType().isElectric() ? CHARGE_SPECS : Collections.emptyMap();
   }
 

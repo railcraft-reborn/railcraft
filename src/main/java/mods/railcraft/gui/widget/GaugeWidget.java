@@ -62,5 +62,6 @@ public class GaugeWidget extends Widget {
   @Override
   public void readFromBuf(FriendlyByteBuf data) {
     this.gauge.setClientValue(data.readFloat());
+    this.gauge.refresh();
   }
 }

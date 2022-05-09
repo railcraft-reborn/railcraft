@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -68,16 +69,9 @@ public class LockingTrackBlock extends PoweredOutfittedTrackBlock implements Ent
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
       BlockEntityType<T> type) {
     return level.isClientSide() ? null
-        : createTickerHelper(type, RailcraftBlockEntityTypes.LOCKING_TRACK.get(),
+        : BaseEntityBlock.createTickerHelper(type,
+            RailcraftBlockEntityTypes.LOCKING_TRACK.get(),
             LockingTrackBlockEntity::serverTick);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Nullable
-  protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
-      BlockEntityType<A> type, BlockEntityType<E> expectedType,
-      BlockEntityTicker<? super E> ticker) {
-    return expectedType == type ? (BlockEntityTicker<A>) ticker : null;
   }
 
   public static LockingMode getLockingMode(BlockState blockState) {

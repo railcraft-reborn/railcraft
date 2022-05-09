@@ -1075,6 +1075,12 @@ public class RailcraftBlocks {
               .noOcclusion()
               .explosionResistance(15)));
 
+  public static final RegistryObject<Block> STEAM_TURBINE =
+      deferredRegister.register("steam_turbine",
+          () -> new SteamTurbineBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .randomTicks()
+              .sound(SoundType.METAL)));
+
   public static final RegistryObject<Block> BLAST_FURNACE_BRICKS =
       deferredRegister.register("blast_furnace_bricks",
           () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of(Material.STONE)

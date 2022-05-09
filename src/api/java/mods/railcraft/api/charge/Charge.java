@@ -7,6 +7,7 @@
 
 package mods.railcraft.api.charge;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import org.jetbrains.annotations.ApiStatus;
@@ -60,20 +61,20 @@ import net.minecraft.world.phys.Vec3;
  *
  * <p>
  * Every block on the grid has a generic loss over time. It various with the type of block, more
- * details on that in the {link {@link mods.railcraft.api.charge.ChargeBlock.ChargeSpec}}. The value
+ * details on that in the {link {@link mods.railcraft.api.charge.ChargeBlock.Spec}}. The value
  * is calculated as the grid is constructed and removed from the grid every tick. Consider it
  * representative of resistive losses and current leakage. All large scale real life power systems
  * suffer from these loss effects and are often major concerns when designing these systems.
  *
  * <p>
  * When a consumer asks to remove Charge from the grid, it goes to the list of batteries and tries
- * to remove from each in turn. The batteries are sorted based on their
- * {@link ChargeStorageBlock.State}. The order batteries are drawn from is as such:
- * source->rechargeable->disposable. Additionally they are further sorted based on efficiency. Each
- * battery has an efficiency value associated with it. This efficiency value defines how expensive
- * it is to extract charge from the battery. Generators have perfect efficiency and are more
- * efficient than batteries which are more efficient than transformers. To get a more efficient
- * grid, add more generators or high efficiency batteries.
+ * to remove from each in turn. The batteries are sorted based on their {@link ChargeStorage.State}.
+ * The order batteries are drawn from is as such: source->rechargeable->disposable. Additionally
+ * they are further sorted based on efficiency. Each battery has an efficiency value associated with
+ * it. This efficiency value defines how expensive it is to extract charge from the battery.
+ * Generators have perfect efficiency and are more efficient than batteries which are more efficient
+ * than transformers. To get a more efficient grid, add more generators or high efficiency
+ * batteries.
  *
  * <p>
  * Charge is added to the grid by grabbing a source battery and adding Charge to the battery
@@ -118,33 +119,34 @@ public enum Charge implements StringRepresentable {
    * <p>
    * This is the only network currently implemented and currently covers all use cases.
    */
-  distribution("distribution"),
+  distribution("distribution");
   /**
    * The transmission network is the charge network used by low maintenance transmission lines and
    * transformers, consumers should not access this network directly.
    *
    * <h3>Not currently implemented.</h3>
    */
-  transmission("transmission"),
+  // transmission("transmission"),
   /**
    * The rail network is the charge network used by tracks and the carts on them.
    *
    * <h3>Not currently implemented.</h3>
    */
-  rail("rail"),
+
+  // rail("rail"),
   /**
    * The catenary network is the charge network used by catenaries and the carts below them.
    *
    * <h3>Not currently implemented.</h3>
    */
-  catenary("catenary");
+  // catenary("catenary");
 
-  private static ZapEffectRenderer effects = new ZapEffectRenderer() {};
-  private static HostZapEffect hostEffects = new HostZapEffect() {};
+  private static ZapEffectProvider zapEffectProvider;
+  private static ServerZapEffectProvider serverZapEffectProvider;
 
   private final String name;
 
-  private Provider provider = new Provider() {};
+  private Provider provider;
 
   private Charge(String name) {
     this.name = name;
@@ -162,40 +164,50 @@ public enum Charge implements StringRepresentable {
 
   @ApiStatus.Internal
   public void _setProvider(Provider provider) {
+    if (this.provider != null) {
+      throw new IllegalStateException("provider already set.");
+    }
     this.provider = provider;
   }
 
   /**
    * This is how you get access to the meat of the charge network.
-   *
-   * @throws mods.railcraft.api.core.ClientAccessException if you call it from the client thread.
    */
   public Charge.Network network(ServerLevel level) {
+    Objects.requireNonNull(this.provider);
     return this.provider.network(level);
   }
 
   /**
    * Entry point for rendering charge related effects.
    */
-  public static ZapEffectRenderer effects() {
-    return effects;
+  public static ZapEffectProvider zapEffectProvider() {
+    Objects.requireNonNull(zapEffectProvider);
+    return zapEffectProvider;
   }
 
   @ApiStatus.Internal
-  public static void _setEffects(ZapEffectRenderer effects) {
-    Charge.effects = effects;
+  public static void _setZapEffectProvider(ZapEffectProvider zapEffectProvider) {
+    if (Charge.zapEffectProvider != null) {
+      throw new IllegalStateException("zapEffectProvider already set.");
+    }
+    Charge.zapEffectProvider = zapEffectProvider;
   }
 
   /**
    * Entry point for charge related effects sent from the server thread.
    */
-  public static HostZapEffect hostEffects() {
-    return hostEffects;
+  public static ServerZapEffectProvider serverZapEffectProvider() {
+    Objects.requireNonNull(serverZapEffectProvider);
+    return serverZapEffectProvider;
   }
 
   @ApiStatus.Internal
-  public static void _setHostEffects(HostZapEffect hostEffects) {
-    Charge.hostEffects = hostEffects;
+  public static void _setHostZapEffectProvider(ServerZapEffectProvider serverZapEffectProvider) {
+    if (Charge.serverZapEffectProvider != null) {
+      throw new IllegalStateException("serverZapEffectProvider already set.");
+    }
+    Charge.serverZapEffectProvider = serverZapEffectProvider;
   }
 
   public interface Provider {
@@ -204,9 +216,7 @@ public enum Charge implements StringRepresentable {
      * The network is the primary means of interfacing with charge. There is one network per game
      * world/dimentions.
      */
-    default Network network(ServerLevel level) {
-      return new Network() {};
-    }
+    Network network(ServerLevel level);
   }
 
   /**
@@ -217,31 +227,23 @@ public enum Charge implements StringRepresentable {
   public interface Network {
 
     /**
-     * Queues the node to be added to the network. If you pass a null chargeDef, nothing will
-     * happen.
-     *
+     * Queues the node to be added to the network.
+     * 
      * @return true if the network changed.
      */
-    default boolean addNode(BlockPos pos, BlockState state) {
-      return false;
-    }
+    boolean addNode(BlockPos blockPos, BlockState blockState);
 
     /**
      * Queues the node to be removed to the network.
      */
-    default void removeNode(BlockPos pos) {
-      return;
-    }
+    void removeNode(BlockPos blockPos);
 
     /**
      * Get a grid access point for the position.
      *
      * @return A grid access point, may be a dummy object if there is no valid grid at the location.
      */
-    default Access access(BlockPos pos) {
-      return new Access() {};
-    }
-
+    Access access(BlockPos blockPos);
   }
 
   /**
@@ -297,7 +299,7 @@ public enum Charge implements StringRepresentable {
      *
      * @return The storage object.
      */
-    default Optional<? extends ChargeStorageBlock> storage() {
+    default Optional<? extends ChargeStorage> storage() {
       return Optional.empty();
     }
 
@@ -323,7 +325,7 @@ public enum Charge implements StringRepresentable {
     BLOCK, TRACK
   }
 
-  public interface HostZapEffect {
+  public interface ServerZapEffectProvider {
     /**
      * Spawns a lot of sparks from a point source.
      *
@@ -336,7 +338,7 @@ public enum Charge implements StringRepresentable {
   /**
    * Interface used by clientparticles.
    */
-  public interface ZapEffectRenderer {
+  public interface ZapEffectProvider {
     /**
      * Helper method that most blocks can use for spark effects. It has a chance of calling
      * {@link #zapEffectSurface(BlockState, World, BlockPos)}.

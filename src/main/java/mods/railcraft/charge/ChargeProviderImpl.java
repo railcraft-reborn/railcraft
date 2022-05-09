@@ -16,13 +16,16 @@ public enum ChargeProviderImpl implements Charge.Provider {
 
   DISTRIBUTION(Charge.distribution);
 
-  private final Charge type;
+  private final Charge charge;
 
   private final Map<ServerLevel, ChargeNetworkImpl> networks = new MapMaker().weakKeys().makeMap();
 
-  private ChargeProviderImpl(Charge type) {
-    this.type = type;
-    type._setProvider(this);
+  private ChargeProviderImpl(Charge charge) {
+    this.charge = charge;
+  }
+  
+  public Charge getCharge() {
+    return this.charge;
   }
 
   @SubscribeEvent
@@ -34,6 +37,6 @@ public enum ChargeProviderImpl implements Charge.Provider {
 
   @Override
   public ChargeNetworkImpl network(ServerLevel level) {
-    return this.networks.computeIfAbsent(level, __ -> new ChargeNetworkImpl(this.type, level));
+    return this.networks.computeIfAbsent(level, __ -> new ChargeNetworkImpl(this.charge, level));
   }
 }

@@ -1,6 +1,6 @@
 package mods.railcraft.charge;
 
-import mods.railcraft.api.charge.ChargeStorageBlock;
+import mods.railcraft.api.charge.ChargeStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraftforge.energy.EnergyStorage;
@@ -10,7 +10,7 @@ import net.minecraftforge.energy.EnergyStorage;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStorageBlock {
+public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStorage {
 
   private final BlockPos pos;
   private final Spec batterySpec;

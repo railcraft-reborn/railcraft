@@ -11,10 +11,9 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,7 +44,7 @@ public interface ChargeBlock {
    *         network or an empty map. If an empty map is returned, the charge networks will ignore
    *         the block.
    */
-  default Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, BlockGetter world,
+  default Map<Charge, ChargeBlock.Spec> getChargeSpecs(BlockState state, ServerLevel level,
       BlockPos pos) {
     return Collections.emptyMap();
   }
@@ -103,28 +102,27 @@ public interface ChargeBlock {
    * @param losses - the cost of connecting this block to the charge network due to resistance
    *        losses, etc. Transformers are typically 0.5. Batteries 0.2-0.3. Wires 0.025. Tracks
    *        0.01. Generators 0. Consumers 0.1.
-   * @param batterySpec - the battery specification for our block. Batteries are optional.
+   * @param storageSpec - the storage specification for our block. Storage is optional.
    */
-  record ChargeSpec(ConnectType connectType, float losses,
-      @Nullable ChargeStorageBlock.Spec batterySpec) {
+  record Spec(ConnectType connectType, float losses,
+      @Nullable ChargeStorage.Spec storageSpec) {
 
     /**
      * Helper method for ChargeSpec map construction.
      */
-    public static Map<Charge, ChargeSpec> make(Charge network, ConnectType connectType,
-        float losses) {
-      return Map.of(network, new ChargeSpec(connectType, losses));
+    public static Map<Charge, Spec> make(Charge network, ConnectType connectType, float losses) {
+      return Map.of(network, new Spec(connectType, losses));
     }
 
     /**
      * Helper method for ChargeSpec map construction.
      */
-    public static Map<Charge, ChargeSpec> make(Charge network, ConnectType connectType,
-        float losses, @Nullable ChargeStorageBlock.Spec batterySpec) {
-      return Map.of(network, new ChargeSpec(connectType, losses, batterySpec));
+    public static Map<Charge, Spec> make(Charge network, ConnectType connectType,
+        float losses, @Nullable ChargeStorage.Spec storageSpec) {
+      return Map.of(network, new Spec(connectType, losses, storageSpec));
     }
 
-    public ChargeSpec(ConnectType connectType, float losses) {
+    public Spec(ConnectType connectType, float losses) {
       this(connectType, losses, null);
     }
   }

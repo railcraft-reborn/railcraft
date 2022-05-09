@@ -53,6 +53,14 @@ public class RailcraftItems {
         }
       };
 
+  public static final RegistryObject<Item> TURBINE_ROTOR =
+      deferredRegister.register("turbine_rotor",
+          () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> STEAM_TURBINE =
+      deferredRegister.register("steam_turbine",
+          () -> new BlockItem(RailcraftBlocks.STEAM_TURBINE.get(), new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> WHITE_STRENGTHENED_GLASS =
       deferredRegister.register("white_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.WHITE_STRENGTHENED_GLASS.get(),

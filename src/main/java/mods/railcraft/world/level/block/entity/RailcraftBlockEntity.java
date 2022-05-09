@@ -14,7 +14,6 @@ import mods.railcraft.world.level.block.entity.module.Module;
 import mods.railcraft.world.level.block.entity.module.ModuleDispatcher;
 import mods.railcraft.world.level.block.entity.module.ModuleProvider;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -27,8 +26,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 
 public abstract class RailcraftBlockEntity extends BlockEntity
     implements NetworkSerializable, Ownable, BlockEntityLike, ModuleProvider {
@@ -163,11 +160,6 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     }
 
     this.moduleDispatcher.deserializeNBT(tag.getCompound("modules"));
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    return this.moduleDispatcher.getCapability(cap, side);
   }
 
   public final int getX() {

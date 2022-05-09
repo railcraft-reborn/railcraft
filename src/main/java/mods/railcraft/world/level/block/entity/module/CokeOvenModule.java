@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.entity.module;
 
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
@@ -10,20 +9,16 @@ import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class CokeOvenModule extends CookingModule<CokeOvenRecipe> implements ICapabilityProvider {
+public class CokeOvenModule extends CookingModule<CokeOvenRecipe> {
 
   public static final int SLOT_INPUT = 0;
   public static final int SLOT_OUTPUT = 1;
@@ -134,12 +129,8 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe> implements ICa
     }
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability,
-      @Nullable Direction direction) {
-    return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-        ? this.itemHandler.cast()
-        : LazyOptional.empty();
+  public LazyOptional<IItemHandler> getItemHandler() {
+    return this.itemHandler;
   }
 
   @Override

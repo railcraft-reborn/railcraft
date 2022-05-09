@@ -8,6 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RailcraftModelTemplates {
 
+  public static final ModelTemplate MIRRORED_CUBE =
+      create("template_mirrored_cube", TextureSlot.PARTICLE, TextureSlot.NORTH, TextureSlot.SOUTH,
+          TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN);
+
   public static final ModelTemplate POST_COLUMN =
       create("template_post_full_column", "_full_column", TextureSlot.TEXTURE);
   public static final ModelTemplate POST_TOP_COLUMN =

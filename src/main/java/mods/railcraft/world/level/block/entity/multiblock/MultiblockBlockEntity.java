@@ -6,11 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
-import it.unimi.dsi.fastutil.objects.Object2CharMap;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -107,8 +106,8 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
       this.currentPattern = pair.getLeft();
       this.members = new HashMap<>();
       var resolvedPattern = pair.getRight();
-      for (var entry : resolvedPattern.object2CharEntrySet()) {
-        if (!this.isBlockEntity(entry.getCharValue())) {
+      for (var entry : resolvedPattern.entrySet()) {
+        if (!this.isBlockEntity(entry.getValue())) {
           continue;
         }
 
@@ -119,7 +118,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
           this.disband();
           return;
         } else {
-          blockEntity.setMembership(new Membership<>(entry.getCharValue(), this.clazz.cast(this)));
+          blockEntity.setMembership(new Membership<>(entry.getValue(), this.clazz.cast(this)));
           this.members.put(entry.getKey(), blockEntity);
         }
       }
@@ -144,12 +143,12 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   }
 
   /**
-   * Determine if the specified pattern marker is expected to be a block entity.
+   * Determine if the specified pattern element is expected to be a block entity.
    * 
-   * @param marker - the pattern marker
+   * @param element - the pattern element
    * @return <code>true</code> if it is, <code>false</code> otherwise
    */
-  protected abstract boolean isBlockEntity(char marker);
+  protected abstract boolean isBlockEntity(MultiblockPattern.Element element);
 
   /**
    * Evaluate the multiblock pattern and resolve the position of each block.
@@ -158,7 +157,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    *         {@link Optional} containing a map of block positions to their associated pattern
    *         marker.
    */
-  public Optional<Pair<MultiblockPattern, Object2CharMap<BlockPos>>> resolvePattern() {
+  public Optional<Pair<MultiblockPattern, Map<BlockPos, MultiblockPattern.Element>>> resolvePattern() {
     if (this.level instanceof ServerLevel serverLevel) {
       return this.patterns.stream()
           .flatMap(pattern -> pattern.resolve(this.getBlockPos(), serverLevel)
@@ -216,11 +215,21 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    * @return an optional {@link Membership}
    */
   public Optional<Membership<T>> getMembership() {
+    if (this.level.isClientSide()) {
+      throw new IllegalStateException("getMembership is server-side only.");
+    }
     return Optional.ofNullable(this.membership);
   }
 
   public Optional<MultiblockPattern> getCurrentPattern() {
     return Optional.ofNullable(this.currentPattern);
+  }
+
+  public Optional<UnresolvedMembership> getUnresolvedMembership() {
+    if (!this.level.isClientSide()) {
+      throw new IllegalStateException("getUnresolvedMembership is client-side only.");
+    }
+    return Optional.ofNullable(this.unresolvedMembership);
   }
 
   public Optional<Collection<T>> getMembers() {
@@ -254,7 +263,8 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
       out.writeBoolean(true);
     } else {
       out.writeBoolean(false);
-      out.writeChar(this.membership.marker());
+      out.writeBlockPos(this.membership.patternElement().relativePos());
+      out.writeChar(this.membership.patternElement().marker());
       out.writeBlockPos(this.membership.master().getBlockPos());
     }
   }
@@ -262,8 +272,10 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   @Override
   public void readFromBuf(FriendlyByteBuf in) {
     super.readFromBuf(in);
-    this.unresolvedMembership =
-        in.readBoolean() ? null : new UnresolvedMembership(in.readChar(), in.readBlockPos());
+    this.unresolvedMembership = in.readBoolean() ? null
+        : new UnresolvedMembership(
+            new MultiblockPattern.Element(in.readBlockPos(), in.readChar()),
+            in.readBlockPos());
   }
 
   /**
@@ -274,7 +286,8 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    *
    * @param <T> - the type of multiblock
    */
-  public record Membership<T extends MultiblockBlockEntity<T>> (char marker, T master) {}
+  public record Membership<T extends MultiblockBlockEntity<T>> (
+      MultiblockPattern.Element patternElement, T master) {}
 
   /**
    * An unresolved version of {@link Membership} which contains the position of the master instead
@@ -282,5 +295,6 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    * 
    * @author Sm0keySa1m0n
    */
-  private record UnresolvedMembership(char marker, BlockPos masterPos) {}
+  public record UnresolvedMembership(MultiblockPattern.Element patternElement,
+      BlockPos masterPos) {}
 }

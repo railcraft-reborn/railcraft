@@ -60,7 +60,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   public TankBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Collection<MultiblockPattern> patterns) {
     super(type, blockPos, blockState, TankBlockEntity.class, patterns);
-    this.module = this.moduleDispatcher.registerCapabilityModule("tank",
+    this.module = this.moduleDispatcher.registerModule("tank",
         new TankModule(this, this.getCapacityPerBlock()));
     this.module.getTank().setUpdateCallback(this::tankChanged);
   }
@@ -136,8 +136,8 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   }
 
   @Override
-  protected boolean isBlockEntity(char marker) {
-    return marker == 'W' || marker == 'B';
+  protected boolean isBlockEntity(MultiblockPattern.Element element) {
+    return element.marker() == 'W' || element.marker() == 'B';
   }
 
   @Override

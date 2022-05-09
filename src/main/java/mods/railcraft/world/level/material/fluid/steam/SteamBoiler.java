@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.material.fluid.steam;
 
-import java.util.Collections;
 import java.util.List;
 import com.google.common.primitives.Floats;
 import mods.railcraft.RailcraftConfig;
@@ -101,7 +100,6 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
   public void setTemperature(float temperature) {
     this.temperature =
         Floats.constrainToRange(temperature, SteamConstants.COLD_TEMP, this.getMaxTemperature());
-    this.temperatureGauge.refresh();
   }
 
   public float getTemperaturePercent() {
@@ -287,7 +285,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
     @Override
     public void refresh() {
-      this.tooltip = Collections.singletonList(
+      this.tooltip = List.of(
           new TextComponent(String.format("%.0f°", SteamBoiler.this.getTemperature())));
     }
 

@@ -3,10 +3,12 @@ package mods.railcraft.tags;
 import mods.railcraft.Railcraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 
 public class RailcraftTags {
 
@@ -92,6 +94,15 @@ public class RailcraftTags {
 
     private static TagKey<Block> tag(String name) {
       return BlockTags.create(new ResourceLocation(Railcraft.ID, name));
+    }
+  }
+
+  public static class Fluids {
+
+    public static final TagKey<Fluid> STEAM = forgeTag("steam");
+
+    private static TagKey<Fluid> forgeTag(String name) {
+      return FluidTags.create(new ResourceLocation("forge", name));
     }
   }
 }

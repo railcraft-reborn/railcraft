@@ -2,6 +2,7 @@ package mods.railcraft.util;
 
 import static net.minecraftforge.energy.CapabilityEnergy.ENERGY;
 import java.util.Arrays;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -58,14 +59,16 @@ public class EnergyUtil {
   }
 
   public static int pushToSides(Level level, BlockPos blockPos, IEnergyStorage energyStorage,
-      int pushPerSide, Direction... sides) {
+      int pushPerSide, Predicate<BlockEntity> filter, Direction... sides) {
     return Arrays.stream(sides)
-        .mapToInt(side -> pushToSide(level, blockPos, energyStorage, pushPerSide, side)).sum();
+        .mapToInt(side -> pushToSide(level, blockPos, energyStorage, pushPerSide, side, filter))
+        .sum();
   }
 
   private static int pushToSide(Level level, BlockPos blockPos, IEnergyStorage energyStorage,
-      int pushPerSide, Direction side) {
+      int pushPerSide, Direction side, Predicate<BlockEntity> filter) {
     return LevelUtil.getBlockEntity(level, blockPos.relative(side))
+        .filter(filter)
         .flatMap(target -> target.getCapability(ENERGY, side.getOpposite()).resolve())
         .filter(IEnergyStorage::canReceive)
         .map(receiver -> {

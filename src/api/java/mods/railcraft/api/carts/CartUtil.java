@@ -8,35 +8,48 @@ package mods.railcraft.api.carts;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import org.jetbrains.annotations.ApiStatus;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public final class CartUtil {
 
-  public static LinkageManager linkageManager = new LinkageManager() {};
-  public static TrainTransferHelper transferHelper = new TrainTransferHelper() {};
+  private static LinkageManager linkageManager;
+  private static TrainTransferHelper transferHelper;
 
   public static TrainTransferHelper transferHelper() {
+    Objects.requireNonNull(transferHelper);
     return transferHelper;
   }
 
-  /**
-   * Returns an instance of ILinkageManager.
-   * <p/>
-   * Will return null if Railcraft is not installed.
-   *
-   * @return an instance of ILinkageManager
-   */
+  @ApiStatus.Internal
+  public static void _setTransferHelper(TrainTransferHelper transferHelper) {
+    if (CartUtil.transferHelper != null) {
+      throw new IllegalStateException("transferHelper already set.");
+    }
+    CartUtil.transferHelper = transferHelper;
+  }
+
   public static LinkageManager linkageManager() {
+    Objects.requireNonNull(linkageManager);
     return linkageManager;
+  }
+
+  @ApiStatus.Internal
+  public static void _setLinkageManager(LinkageManager linkageManager) {
+    if (CartUtil.linkageManager != null) {
+      throw new IllegalStateException("linkageManager already set.");
+    }
+    CartUtil.linkageManager = linkageManager;
   }
 
   // Most of these functions have been replaced internally by the EntitySearcher, but they remain

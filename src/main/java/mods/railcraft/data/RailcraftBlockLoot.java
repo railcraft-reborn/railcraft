@@ -12,6 +12,7 @@ public class RailcraftBlockLoot extends BlockLoot {
 
   @Override
   protected void addTables() {
+    this.dropSelf(RailcraftBlocks.STEAM_TURBINE.get());
     this.dropSelf(RailcraftBlocks.FLUID_LOADER.get());
     this.dropSelf(RailcraftBlocks.FLUID_UNLOADER.get());
     this.dropSelf(RailcraftBlocks.ITEM_LOADER.get());
