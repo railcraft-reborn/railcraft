@@ -83,22 +83,25 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
     blockEntity.serverTick();
     blockEntity.moduleDispatcher.serverTick();
 
-    if (blockEntity.isFormed()) {
-      Predicate<BlockEntity> filter = other -> !(other instanceof SteamTurbineBlockEntity tank)
-          || !tank.getMembership().equals(blockEntity.getMembership());
+    blockEntity.getMembership()
+        .map(Membership::master)
+        .map(SteamTurbineBlockEntity::getSteamTurbineModule)
+        .ifPresent(master -> {
+          Predicate<BlockEntity> filter = other -> !(other instanceof SteamTurbineBlockEntity tank)
+              || !tank.getMembership().equals(blockEntity.getMembership());
 
-      blockEntity.module.getEnergyStorage()
-          .ifPresent(energyStorage -> EnergyUtil.pushToSides(level, blockPos, energyStorage,
-              ENERGY_OUTPUT_RATE, filter, Direction.values()));
+          master.getEnergyStorage()
+              .ifPresent(energyStorage -> EnergyUtil.pushToSides(level, blockPos, energyStorage,
+                  ENERGY_OUTPUT_RATE, filter, Direction.values()));
 
-      blockEntity.module.getFluidHandler().ifPresent(fluidHandler -> {
-        var neighbors = FluidTools.findNeighbors(level, blockPos, filter,
-            Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
-        for (var neighbor : neighbors) {
-          FluidUtil.tryFluidTransfer(neighbor, fluidHandler, WATER_OUTPUT_RATE, true);
-        }
-      });
-    }
+          master.getFluidHandler().ifPresent(fluidHandler -> {
+            var neighbors = FluidTools.findNeighbors(level, blockPos, filter,
+                Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+            for (var neighbor : neighbors) {
+              FluidUtil.tryFluidTransfer(neighbor, fluidHandler, WATER_OUTPUT_RATE, true);
+            }
+          });
+        });
   }
 
   public float getGaugeValue() {

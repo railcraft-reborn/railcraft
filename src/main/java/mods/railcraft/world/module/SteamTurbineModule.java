@@ -47,10 +47,12 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     this.rotorContainer.listener(this.provider);
     this.steamTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 4)
         .setFilterTag(RailcraftTags.Fluids.STEAM)
-        .disableDrain();
+        .disableDrain()
+        .setChangeListener(provider::setChanged);
     this.waterTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 4)
         .setFilterTag(FluidTags.WATER)
-        .disableFill();
+        .disableFill()
+        .setChangeListener(provider::setChanged);
   }
 
   public LazyOptional<IFluidHandler> getFluidHandler() {
@@ -63,7 +65,7 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     var addedEnergy = false;
     if (this.energy < CHARGE_OUTPUT) {
       var steam = this.steamTank.internalDrain(STEAM_USAGE, FluidAction.SIMULATE);
-      if (steam != null && steam.getAmount() >= STEAM_USAGE) {
+      if (steam.getAmount() >= STEAM_USAGE) {
         var rotorStack = this.rotorContainer.getItem(0);
         if (rotorStack.is(RailcraftItems.TURBINE_ROTOR.get())) {
           addedEnergy = true;
