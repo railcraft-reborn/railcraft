@@ -1,8 +1,6 @@
 package mods.railcraft.world.inventory;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.WaterCollectionGaugeWidget;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
@@ -33,10 +31,10 @@ public class TankMenu extends RailcraftMenu {
   private FluidGaugeWidget createGauge(TankBlockEntity blockEntity, int x, int y, int u, int v,
       int w, int h) {
     var tank = blockEntity.getModule().getTank();
-    List<WaterCollectionModule<?>> modules = blockEntity.getMembers().stream()
+    var modules = blockEntity.getMembers().stream()
         .flatMap(Collection::stream)
         .flatMap(member -> member.getModule(WaterCollectionModule.class).stream())
-        .collect(Collectors.toList());
+        .toList();
     return modules.isEmpty()
         ? new FluidGaugeWidget(tank, x, y, u, v, w, h)
         : new WaterCollectionGaugeWidget(modules, tank, x, y, u, v, w, h);

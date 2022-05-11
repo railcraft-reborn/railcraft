@@ -15,12 +15,11 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
 
-  private final Collection<WaterCollectionModule<?>> modules;
+  private final Collection<WaterCollectionModule> modules;
 
   private List<Component> tooltip;
 
-  public WaterCollectionGaugeWidget(Collection<WaterCollectionModule<?>> modules,
-      StandardTank tank,
+  public WaterCollectionGaugeWidget(Collection<WaterCollectionModule> modules, StandardTank tank,
       int x, int y, int u, int v, int w, int h) {
     super(tank, x, y, u, v, w, h);
     this.modules = modules;

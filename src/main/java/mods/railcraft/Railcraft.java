@@ -3,7 +3,7 @@ package mods.railcraft;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.event.CartLinkEvent;
-import mods.railcraft.api.fuel.FluidFuelManager;
+import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.RailcraftAdvancementProviders;
@@ -13,6 +13,7 @@ import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
+import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.network.play.LinkedCartsMessage;
@@ -24,8 +25,8 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
-import mods.railcraft.world.entity.vehicle.RailcraftTrainTransferHelper;
 import mods.railcraft.world.entity.vehicle.Train;
+import mods.railcraft.world.entity.vehicle.TrainTransferHelperImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftItems;
@@ -80,8 +81,9 @@ public class Railcraft {
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
 
   static {
+    FuelUtil._setFuelManager(FuelManagerImpl.INSTANCE);
     CartUtil._setLinkageManager(LinkageManagerImpl.INSTANCE);
-    CartUtil._setTransferHelper(RailcraftTrainTransferHelper.INSTANCE);
+    CartUtil._setTransferHelper(TrainTransferHelperImpl.INSTANCE);
     for (var value : ChargeProviderImpl.values()) {
       value.getCharge()._setProvider(value);
     }
@@ -145,7 +147,7 @@ public class Railcraft {
 
   private void handleCommonSetup(FMLCommonSetupEvent event) {
     event.enqueueWork(RailcraftCriteriaTriggers::register);
-    FluidFuelManager.addFuel(RailcraftFluids.CREOSOTE.get(), 4800);
+    FuelUtil.fuelManager().addFuel(RailcraftFluids.CREOSOTE.get(), 4800);
   }
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {

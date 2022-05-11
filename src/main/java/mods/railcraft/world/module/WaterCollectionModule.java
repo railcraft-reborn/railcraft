@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class WaterCollectionModule<T extends ModuleProvider> extends BaseModule<T> {
+public class WaterCollectionModule extends BaseModule<ModuleProvider> {
 
   private static final int REFILL_INTERVAL = 20;
   private static final float REFILL_PENALTY_FROZEN = 0.5F;
@@ -25,7 +25,7 @@ public class WaterCollectionModule<T extends ModuleProvider> extends BaseModule<
   private State state;
   private int refillTicks;
 
-  public WaterCollectionModule(T provider, IFluidTank tank) {
+  public WaterCollectionModule(ModuleProvider provider, IFluidTank tank) {
     super(provider);
     this.tank = tank;
   }

@@ -1,6 +1,6 @@
 package mods.railcraft.world.module;
 
-import mods.railcraft.api.fuel.FluidFuelManager;
+import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.world.level.block.entity.steamboiler.FluidFueledSteamBoilerBlockEntity;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
@@ -17,7 +17,7 @@ public class FluidFueledSteamBoilerModule
 
   protected final StandardTank fuelTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 16)
       .setValidator(fluidStack -> !fluidStack.isEmpty()
-          && FluidFuelManager.getFuelValue(fluidStack.getFluid()) > 0);
+          && FuelUtil.fuelManager().getFuelValue(fluidStack.getFluid()) > 0);
 
   private FluidTools.ProcessState fuelProcessState = FluidTools.ProcessState.RESET;
 
@@ -54,7 +54,7 @@ public class FluidFueledSteamBoilerModule
         return false;
       }
       if (fluid.getFluid().is(FluidTags.WATER)
-          || FluidFuelManager.getFuelValue(fluid.getFluid()) > 0) {
+          || FuelUtil.fuelManager().getFuelValue(fluid.getFluid()) > 0) {
         return true;
       }
     }
