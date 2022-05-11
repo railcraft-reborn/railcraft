@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "railcraft:block/solid_fueled_firebox_end",
+    "side": "railcraft:block/solid_fueled_firebox_side_lit"
+  }
+}

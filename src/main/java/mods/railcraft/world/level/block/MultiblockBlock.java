@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 
 public abstract class MultiblockBlock extends BaseEntityBlock {
 
@@ -32,7 +31,7 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
   @Nullable
   @Override
   public <T extends BlockEntity> GameEventListener getListener(Level level, T blockEntity) {
-    return blockEntity instanceof MultiblockBlockEntity<?> multiblock
+    return blockEntity instanceof MultiblockBlockEntity<?, ?> multiblock
         ? new MultiblockListener(multiblock)
         : null;
   }
@@ -46,13 +45,10 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
     }
 
     return LevelUtil.getBlockEntity(level, pos, MultiblockBlockEntity.class)
-        .map(blockEntity -> (MultiblockBlockEntity<?>) blockEntity)
+        .map(blockEntity -> (MultiblockBlockEntity<?, ?>) blockEntity)
         .flatMap(MultiblockBlockEntity::getMembership)
         .map(MultiblockBlockEntity.Membership::master)
-        .map(master -> {
-          NetworkHooks.openGui((ServerPlayer) player, master, master.getBlockPos());
-          return InteractionResult.CONSUME;
-        })
+        .map(master -> master.use((ServerPlayer) player, hand))
         .orElse(InteractionResult.PASS);
   }
 }

@@ -10,9 +10,9 @@ import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.network.PacketBuilder;
-import mods.railcraft.world.level.block.entity.module.Module;
-import mods.railcraft.world.level.block.entity.module.ModuleDispatcher;
-import mods.railcraft.world.level.block.entity.module.ModuleProvider;
+import mods.railcraft.world.module.Module;
+import mods.railcraft.world.module.ModuleDispatcher;
+import mods.railcraft.world.module.ModuleProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -23,6 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -93,6 +94,11 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     }
 
     this.moduleDispatcher.readFromBuf(in);
+  }
+
+  @Override
+  public Level getLevel() {
+    return super.getLevel();
   }
 
   @Override

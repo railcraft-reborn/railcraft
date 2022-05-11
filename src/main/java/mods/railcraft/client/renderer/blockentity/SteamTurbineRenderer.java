@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.renderer.RailcraftRenderTypes;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
-import mods.railcraft.world.level.block.entity.multiblock.SteamTurbineBlockEntity;
+import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;

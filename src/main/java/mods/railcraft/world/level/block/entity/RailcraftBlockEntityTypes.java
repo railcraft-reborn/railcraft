@@ -2,11 +2,10 @@ package mods.railcraft.world.level.block.entity;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.entity.multiblock.BlastFurnaceBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.IronTankBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.SteamTurbineBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.SteelTankBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.ItemLoaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.ItemUnloaderBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
@@ -20,6 +19,11 @@ import mods.railcraft.world.level.block.entity.signal.SignalInterlockBoxBlockEnt
 import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalSequencerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
+import mods.railcraft.world.level.block.entity.steamboiler.FluidFueledSteamBoilerBlockEntity;
+import mods.railcraft.world.level.block.entity.steamboiler.SolidFueledSteamBoilerBlockEntity;
+import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
+import mods.railcraft.world.level.block.entity.tank.IronTankBlockEntity;
+import mods.railcraft.world.level.block.entity.tank.SteelTankBlockEntity;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
@@ -142,6 +146,28 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.GREEN_STEEL_TANK_WALL.get(),
                   RailcraftBlocks.RED_STEEL_TANK_WALL.get(),
                   RailcraftBlocks.BLACK_STEEL_TANK_WALL.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<SteamBoilerBlockEntity>> STEAM_BOILER =
+      deferredRegister.register("steam_boiler",
+          () -> BlockEntityType.Builder
+              .of(SteamBoilerBlockEntity::new,
+                  RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
+                  RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<SolidFueledSteamBoilerBlockEntity>> SOLID_FUELED_STEAM_BOILER =
+      deferredRegister.register("solid_fueled_steam_boiler",
+          () -> BlockEntityType.Builder
+              .of(SolidFueledSteamBoilerBlockEntity::new,
+                  RailcraftBlocks.SOLID_FUELED_FIREBOX.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<FluidFueledSteamBoilerBlockEntity>> FLUID_FUELED_STEAM_BOILER =
+      deferredRegister.register("fluid_fueled_steam_boiler",
+          () -> BlockEntityType.Builder
+              .of(FluidFueledSteamBoilerBlockEntity::new,
+                  RailcraftBlocks.FLUID_FUELED_FIREBOX.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<SteamTurbineBlockEntity>> STEAM_TURBINE =

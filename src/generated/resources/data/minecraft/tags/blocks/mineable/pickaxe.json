@@ -2,6 +2,10 @@
   "replace": false,
   "values": [
     "railcraft:firestone",
+    "railcraft:low_pressure_steam_boiler_tank",
+    "railcraft:high_pressure_steam_boiler_tank",
+    "railcraft:solid_fueled_firebox",
+    "railcraft:fluid_fueled_firebox",
     "railcraft:steam_turbine",
     "railcraft:coke_oven_bricks",
     "railcraft:blast_furnace_bricks",

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.world.level.block.entity.multiblock.TankBlockEntity;
+import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;

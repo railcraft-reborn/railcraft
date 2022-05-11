@@ -12,6 +12,11 @@ public class RailcraftBlockLoot extends BlockLoot {
 
   @Override
   protected void addTables() {
+    this.dropSelf(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get());
+    this.dropSelf(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
+    this.dropSelf(RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
+    this.dropSelf(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
+
     this.dropSelf(RailcraftBlocks.STEAM_TURBINE.get());
     this.dropSelf(RailcraftBlocks.FLUID_LOADER.get());
     this.dropSelf(RailcraftBlocks.FLUID_UNLOADER.get());

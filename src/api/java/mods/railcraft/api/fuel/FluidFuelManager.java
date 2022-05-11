@@ -7,21 +7,20 @@
 
 package mods.railcraft.api.fuel;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import mods.railcraft.RailcraftConfig;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class FluidFuelManager {
 
-  private static final Map<FluidStack, Integer> boilerFuel = new HashMap<>();
-
-  public static void addFuel(Fluid fluid, int heatValuePerBucket) {
-    addFuel(new FluidStack(fluid, 1), heatValuePerBucket);
-  }
+  private static final Map<IRegistryDelegate<Fluid>, Integer> boilerFuel =
+      new ConcurrentHashMap<>();
 
   /**
    * Register the amount of heat in a bucket of liquid fuel.
@@ -29,26 +28,16 @@ public final class FluidFuelManager {
    * @param fluid the fluid
    * @param heatValuePerBucket the amount of "heat" per bucket of fuel
    */
-  public static void addFuel(FluidStack fluid, int heatValuePerBucket) {
-    FluidStack toSave = fluid.copy();
-    toSave.setAmount(1); // hashcode uses this
-    boilerFuel.put(toSave, heatValuePerBucket);
+  public static void addFuel(Fluid fluid, int heatValuePerBucket) {
+    boilerFuel.put(fluid.delegate, heatValuePerBucket);
   }
 
-  @Deprecated // Use fluid stack aware version
-  public static int getFuelValue(Fluid fluid) {
-    FluidStack key = new FluidStack(fluid, 1);
-    return boilerFuel.getOrDefault(key, 0);
+  public static float getFuelValue(Fluid fluid) {
+    return RailcraftConfig.server.fuelMultiplier.get().floatValue()
+        * boilerFuel.getOrDefault(fluid.delegate, 0);
   }
 
-  public static int getFuelValue(FluidStack fluid) {
-    FluidStack key = fluid.copy();
-    key.setAmount(1); // hashcode
-    return boilerFuel.getOrDefault(key, 0);
-  }
-
-  public static double getFuelValueForSize(FluidStack fluid) {
-    int amount = fluid.getAmount();
-    return getFuelValue(fluid) * amount / 1000D;
+  public static float getFuelValueForSize(FluidStack fluid) {
+    return getFuelValue(fluid.getFluid()) * fluid.getAmount() / 1000.0F;
   }
 }

@@ -3,6 +3,7 @@ package mods.railcraft;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.event.CartLinkEvent;
+import mods.railcraft.api.fuel.FluidFuelManager;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.RailcraftAdvancementProviders;
@@ -144,6 +145,7 @@ public class Railcraft {
 
   private void handleCommonSetup(FMLCommonSetupEvent event) {
     event.enqueueWork(RailcraftCriteriaTriggers::register);
+    FluidFuelManager.addFuel(RailcraftFluids.CREOSOTE.get(), 4800);
   }
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {

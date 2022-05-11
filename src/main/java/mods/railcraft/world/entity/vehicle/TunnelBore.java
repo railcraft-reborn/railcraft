@@ -150,11 +150,11 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
       SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.ITEM_STACK);
 
   public final ContainerMapper invFuel =
-      ContainerMapper.make(this, 1, 6).withFilters(StackFilter.FUEL);
+      ContainerMapper.make(this, 1, 6).addFilters(StackFilter.FUEL);
   public final ContainerMapper ballastContainer =
-      ContainerMapper.make(this, 7, 9).withFilters(StackFilter.BALLAST);
+      ContainerMapper.make(this, 7, 9).addFilters(StackFilter.BALLAST);
   public final ContainerMapper trackContainer =
-      ContainerMapper.make(this, 16, 9).withFilters(StackFilter.TRACK);
+      ContainerMapper.make(this, 16, 9).addFilters(StackFilter.TRACK);
   // protected static final int WATCHER_ID_BURN_TIME = 22;
 
   protected int delay;

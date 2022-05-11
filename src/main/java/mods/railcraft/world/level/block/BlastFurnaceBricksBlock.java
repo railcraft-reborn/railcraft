@@ -1,8 +1,8 @@
 package mods.railcraft.world.level.block;
 
 import javax.annotation.Nullable;
+import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import mods.railcraft.world.level.block.entity.multiblock.BlastFurnaceBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

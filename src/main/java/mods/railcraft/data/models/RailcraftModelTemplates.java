@@ -12,6 +12,27 @@ public class RailcraftModelTemplates {
       create("template_mirrored_cube", TextureSlot.PARTICLE, TextureSlot.NORTH, TextureSlot.SOUTH,
           TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN);
 
+
+  public static final ModelTemplate STEAM_BOILER_TANK_NE =
+      create("template_steam_boiler_tank_ne", "_ne", TextureSlot.END, TextureSlot.SIDE);
+  public static final ModelTemplate STEAM_BOILER_TANK_NEW =
+      create("template_steam_boiler_tank_new", "_new", TextureSlot.END, TextureSlot.SIDE);
+  public static final ModelTemplate STEAM_BOILER_TANK_NSE =
+      create("template_steam_boiler_tank_nse", "_nse", TextureSlot.END, TextureSlot.SIDE);
+  public static final ModelTemplate STEAM_BOILER_TANK_NSW =
+      create("template_steam_boiler_tank_nsw", "_nsw", TextureSlot.END, TextureSlot.SIDE);
+  public static final ModelTemplate STEAM_BOILER_TANK_NW =
+      create("template_steam_boiler_tank_nw", "_nw", TextureSlot.END, TextureSlot.SIDE);
+  public static final ModelTemplate STEAM_BOILER_TANK_SE =
+      create("template_steam_boiler_tank_se", "_se", TextureSlot.END, TextureSlot.SIDE);
+  public static final ModelTemplate STEAM_BOILER_TANK_SEW =
+      create("template_steam_boiler_tank_sew", "_sew", TextureSlot.END, TextureSlot.SIDE);
+  public static final ModelTemplate STEAM_BOILER_TANK_SW =
+      create("template_steam_boiler_tank_sw", "_sw", TextureSlot.END, TextureSlot.SIDE);
+
+  public static final ModelTemplate STEAM_BOILER_TANK =
+      create("template_steam_boiler_tank", TextureSlot.END, TextureSlot.SIDE);
+
   public static final ModelTemplate POST_COLUMN =
       create("template_post_full_column", "_full_column", TextureSlot.TEXTURE);
   public static final ModelTemplate POST_TOP_COLUMN =

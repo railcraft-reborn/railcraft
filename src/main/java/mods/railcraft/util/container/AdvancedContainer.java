@@ -3,7 +3,7 @@ package mods.railcraft.util.container;
 import javax.annotation.Nullable;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.util.container.manipulator.VanillaContainerManipulator;
-import mods.railcraft.world.level.block.entity.module.ModuleProvider;
+import mods.railcraft.world.module.ModuleProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.Container;
@@ -20,10 +20,8 @@ import net.minecraft.world.item.ItemStack;
  */
 public class AdvancedContainer extends SimpleContainer implements VanillaContainerManipulator {
 
-  public static final AdvancedContainer EMPTY = new AdvancedContainer(0);
-
   @Nullable
-  private Callback callback;
+  private Listener listener;
   private int maxStackSize = 64;
 
   public AdvancedContainer(int size) {
@@ -35,16 +33,16 @@ public class AdvancedContainer extends SimpleContainer implements VanillaContain
     return this;
   }
 
-  public AdvancedContainer callback(Container container) {
-    return this.callback(new ContainerCallback(container));
+  public AdvancedContainer listener(Container container) {
+    return this.listener(new ContainerCallback(container));
   }
 
-  public AdvancedContainer callback(ModuleProvider moduleProvider) {
-    return this.callback(new ModuleProviderCallback(moduleProvider));
+  public AdvancedContainer listener(ModuleProvider moduleProvider) {
+    return this.listener(new ModuleProviderCallback(moduleProvider));
   }
 
-  public AdvancedContainer callback(Callback callback) {
-    this.callback = callback;
+  public AdvancedContainer listener(Listener callback) {
+    this.listener = callback;
     this.addListener(callback);
     return this;
   }
@@ -65,20 +63,20 @@ public class AdvancedContainer extends SimpleContainer implements VanillaContain
 
   @Override
   public boolean stillValid(Player player) {
-    return this.callback == null || this.callback.stillValid(player);
+    return this.listener == null || this.listener.stillValid(player);
   }
 
   @Override
   public void startOpen(Player player) {
-    if (this.callback != null) {
-      this.callback.startOpen(player);
+    if (this.listener != null) {
+      this.listener.startOpen(player);
     }
   }
 
   @Override
   public void stopOpen(Player player) {
-    if (this.callback != null) {
-      this.callback.stopOpen(player);
+    if (this.listener != null) {
+      this.listener.stopOpen(player);
     }
   }
 
@@ -102,7 +100,7 @@ public class AdvancedContainer extends SimpleContainer implements VanillaContain
     return tag;
   }
 
-  public interface Callback extends ContainerListener {
+  public interface Listener extends ContainerListener {
 
     default boolean stillValid(Player player) {
       return true;
@@ -113,7 +111,7 @@ public class AdvancedContainer extends SimpleContainer implements VanillaContain
     default void stopOpen(Player player) {}
   }
 
-  public static class ContainerCallback implements Callback {
+  public static class ContainerCallback implements Listener {
 
     private final Container container;
 
@@ -142,7 +140,7 @@ public class AdvancedContainer extends SimpleContainer implements VanillaContain
     }
   }
 
-  public static class ModuleProviderCallback implements Callback {
+  public static class ModuleProviderCallback implements Listener {
 
     private final ModuleProvider moduleProvider;
 

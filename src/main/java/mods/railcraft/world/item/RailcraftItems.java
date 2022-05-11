@@ -11,10 +11,12 @@ import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
+import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.HoeItem;
@@ -52,6 +54,26 @@ public class RailcraftItems {
           return new ItemStack(IRON_DETECTOR_TRACK.get());
         }
       };
+
+  public static final RegistryObject<Item> LOW_PRESSURE_STEAM_BOILER_TANK =
+      deferredRegister.register("low_pressure_steam_boiler_tank",
+          () -> new BlockItem(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> HIGH_PRESSURE_STEAM_BOILER_TANK =
+      deferredRegister.register("high_pressure_steam_boiler_tank",
+          () -> new BlockItem(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SOLID_FUELED_FIREBOX =
+      deferredRegister.register("solid_fueled_firebox",
+          () -> new BlockItem(RailcraftBlocks.SOLID_FUELED_FIREBOX.get(),
+              new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> FLUID_FUELED_FIREBOX =
+      deferredRegister.register("fluid_fueled_firebox",
+          () -> new BlockItem(RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
+              new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TURBINE_ROTOR =
       deferredRegister.register("turbine_rotor",
@@ -1803,5 +1825,5 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> CREOSOTE_BUCKET =
       deferredRegister.register("creosote_bucket",
-          () -> new Item(new Item.Properties().tab(TAB)));
+          () -> new BucketItem(RailcraftFluids.CREOSOTE, new Item.Properties().tab(TAB)));
 }

@@ -16,9 +16,11 @@ import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.FeedStationScreen;
+import mods.railcraft.client.gui.screen.inventory.FluidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
+import mods.railcraft.client.gui.screen.inventory.SolidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamTurbineScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
@@ -113,6 +115,10 @@ public class ClientDist implements RailcraftDist {
 
     // === Menu Screens ===
 
+    MenuScreens.register(RailcraftMenuTypes.SOLID_FUELED_STEAM_BOILER.get(),
+        SolidFueledSteamBoilerScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.FLUID_FUELED_STEAM_BOILER.get(),
+        FluidFueledSteamBoilerScreen::new);
     MenuScreens.register(RailcraftMenuTypes.STEAM_TURBINE.get(),
         SteamTurbineScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK.get(),

@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
+    "railcraft:low_pressure_steam_boiler_tank",
+    "railcraft:high_pressure_steam_boiler_tank",
+    "railcraft:fluid_fueled_firebox",
     "railcraft:steam_turbine",
     "railcraft:white_iron_tank_valve",
     "railcraft:orange_iron_tank_valve",

@@ -11,22 +11,27 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.util.LevelUtil;
+import mods.railcraft.world.level.block.MultiblockBlock;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.network.NetworkHooks;
 
-public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
+public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M>, M>
     extends RailcraftBlockEntity implements MenuProvider {
 
   private static final Logger logger = LogUtils.getLogger();
 
   private final Class<T> clazz;
-  private final Collection<MultiblockPattern> patterns;
+  private final Collection<MultiblockPattern<M>> patterns;
 
   // Only present on the server
   @Nullable
@@ -43,7 +48,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    * Used by the master of a multiblock to store the current pattern.
    */
   @Nullable
-  private MultiblockPattern currentPattern;
+  private MultiblockPattern<M> currentPattern;
 
   private boolean evaluationPending;
 
@@ -52,18 +57,18 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
   private UnresolvedMembership unresolvedMembership;
 
   public MultiblockBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
-      Class<T> clazz, MultiblockPattern pattern) {
+      Class<T> clazz, MultiblockPattern<M> pattern) {
     this(type, blockPos, blockState, clazz, Collections.singleton(pattern));
   }
 
   public MultiblockBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
-      Class<T> clazz, Collection<MultiblockPattern> patterns) {
+      Class<T> clazz, Collection<MultiblockPattern<M>> patterns) {
     super(type, blockPos, blockState);
     this.clazz = clazz;
     this.patterns = Collections.unmodifiableCollection(patterns);
   }
 
-  public Collection<MultiblockPattern> getPatterns() {
+  public Collection<MultiblockPattern<M>> getPatterns() {
     return this.patterns;
   }
 
@@ -78,6 +83,19 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     if (this.evaluationPending) {
       this.evaluate();
     }
+  }
+
+  /**
+   * Invoked from {@link MultiblockBlock} on master blocks.
+   * 
+   * @param player - the player interacting with the block
+   * @param hand - the hand used to interact
+   * 
+   * @return the result
+   */
+  public InteractionResult use(ServerPlayer player, InteractionHand hand) {
+    NetworkHooks.openGui(player, this, this.getBlockPos());
+    return InteractionResult.CONSUME;
   }
 
   /**
@@ -157,7 +175,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    *         {@link Optional} containing a map of block positions to their associated pattern
    *         marker.
    */
-  public Optional<Pair<MultiblockPattern, Map<BlockPos, MultiblockPattern.Element>>> resolvePattern() {
+  public Optional<Pair<MultiblockPattern<M>, Map<BlockPos, MultiblockPattern.Element>>> resolvePattern() {
     if (this.level instanceof ServerLevel serverLevel) {
       return this.patterns.stream()
           .flatMap(pattern -> pattern.resolve(this.getBlockPos(), serverLevel)
@@ -221,7 +239,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
     return Optional.ofNullable(this.membership);
   }
 
-  public Optional<MultiblockPattern> getCurrentPattern() {
+  public Optional<MultiblockPattern<M>> getCurrentPattern() {
     return Optional.ofNullable(this.currentPattern);
   }
 
@@ -286,7 +304,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T>>
    *
    * @param <T> - the type of multiblock
    */
-  public record Membership<T extends MultiblockBlockEntity<T>> (
+  public record Membership<T extends MultiblockBlockEntity<T, ?>> (
       MultiblockPattern.Element patternElement, T master) {}
 
   /**

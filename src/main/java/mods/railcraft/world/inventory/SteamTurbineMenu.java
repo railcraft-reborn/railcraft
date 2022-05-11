@@ -7,7 +7,7 @@ import mods.railcraft.gui.widget.ChargeNetworkIndicator;
 import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.level.block.entity.multiblock.SteamTurbineBlockEntity;
+import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;

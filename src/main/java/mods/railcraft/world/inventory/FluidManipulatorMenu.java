@@ -2,7 +2,7 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.util.container.StackFilter;
-import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 
 public class FluidManipulatorMenu extends ManipulatorMenu<FluidManipulatorBlockEntity> {

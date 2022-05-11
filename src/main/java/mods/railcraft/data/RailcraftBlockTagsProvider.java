@@ -149,6 +149,10 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .add(RailcraftBlocks.FIRESTONE.get(),
+            RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
+            RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
+            RailcraftBlocks.SOLID_FUELED_FIREBOX.get(),
+            RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
             RailcraftBlocks.STEAM_TURBINE.get(),
             RailcraftBlocks.COKE_OVEN_BRICKS.get(),
             RailcraftBlocks.BLAST_FURNACE_BRICKS.get(),
@@ -221,7 +225,10 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.FIRESTONE.get());
 
     this.tag(BlockTags.NEEDS_STONE_TOOL)
-        .add(RailcraftBlocks.STEAM_TURBINE.get(),
+        .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
+            RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
+            RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
+            RailcraftBlocks.STEAM_TURBINE.get(),
             RailcraftBlocks.WHITE_IRON_TANK_VALVE.get(),
             RailcraftBlocks.ORANGE_IRON_TANK_VALVE.get(),
             RailcraftBlocks.MAGENTA_IRON_TANK_VALVE.get(),

@@ -17,6 +17,10 @@
 
     "__DESC.blocks": "======= Blocks =======",
 
+    "block.railcraft.low_pressure_steam_boiler_tank": "Low Pressure Steam Boiler Tank",
+    "block.railcraft.high_pressure_steam_boiler_tank": "High Pressure Steam Boiler Tank",
+    "block.railcraft.solid_fueled_firebox": "Solid Fueled Firebox",
+    "block.railcraft.fluid_fueled_firebox": "Fluid Fueled Firebox",
     "block.railcraft.steam_turbine": "Steam Turbine Housing",
     "block.railcraft.white_strengthened_glass": "White Strengthened Glass",
     "block.railcraft.orange_strengthened_glass": "Orange Strengthened Glass",
@@ -505,6 +509,8 @@
     "container.railcraft.blast_furnace": "Blast Furnace",
     "container.railcraft.tank": "Tank",
     "container.railcraft.steam_turbine": "Steam Turbine",
+    "container.railcraft.solid_fueled_steam_boiler": "Solid Fueled Steam Boiler",
+    "container.railcraft.fluid_fueled_steam_boiler": "Fluid Fueled Steam Boiler",
 
     "signal_aspect.green": "Green",
     "signal_aspect.blink_yellow": "Blink Yellow",

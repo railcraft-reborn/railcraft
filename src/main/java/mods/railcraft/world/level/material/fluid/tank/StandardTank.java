@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import net.minecraft.ChatFormatting;
@@ -41,6 +42,12 @@ public class StandardTank extends FluidTank {
 
   public StandardTank(int capacity) {
     super(capacity);
+  }
+
+  @Override
+  public StandardTank setValidator(Predicate<FluidStack> validator) {
+    super.setValidator(validator);
+    return this;
   }
 
   @Override

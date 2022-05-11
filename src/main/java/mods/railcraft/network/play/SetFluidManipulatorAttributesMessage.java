@@ -2,8 +2,8 @@ package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
 import mods.railcraft.util.LevelUtil;
-import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
-import mods.railcraft.world.level.block.entity.ManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;

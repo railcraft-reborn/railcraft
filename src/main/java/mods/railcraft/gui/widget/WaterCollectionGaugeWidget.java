@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.world.level.block.entity.module.WaterCollectionModule;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
+import mods.railcraft.world.module.WaterCollectionModule;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -15,11 +15,12 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
 
-  private final Collection<WaterCollectionModule> modules;
+  private final Collection<WaterCollectionModule<?>> modules;
 
   private List<Component> tooltip;
 
-  public WaterCollectionGaugeWidget(Collection<WaterCollectionModule> modules, StandardTank tank,
+  public WaterCollectionGaugeWidget(Collection<WaterCollectionModule<?>> modules,
+      StandardTank tank,
       int x, int y, int u, int v, int w, int h) {
     super(tank, x, y, u, v, w, h);
     this.modules = modules;

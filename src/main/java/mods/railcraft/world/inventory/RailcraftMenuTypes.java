@@ -6,13 +6,14 @@ import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
+import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
+import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
-import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
-import mods.railcraft.world.level.block.entity.ItemManipulatorBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.BlastFurnaceBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.CokeOvenBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.SteamTurbineBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.TankBlockEntity;
+import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
+import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -28,6 +29,17 @@ public class RailcraftMenuTypes {
 
   public static final DeferredRegister<MenuType<?>> deferredRegister =
       DeferredRegister.create(ForgeRegistries.CONTAINERS, Railcraft.ID);
+
+  public static final RegistryObject<MenuType<SolidFueledSteamBoilerMenu>> SOLID_FUELED_STEAM_BOILER =
+      deferredRegister.register("solid_fueled_steam_boiler",
+          () -> new MenuType<>(
+              blockEntityMenu(SteamBoilerBlockEntity.class, SolidFueledSteamBoilerMenu::new)));
+
+  public static final RegistryObject<MenuType<FluidFueledSteamBoilerMenu>> FLUID_FUELED_STEAM_BOILER =
+      deferredRegister.register("fluid_fueled_steam_boiler",
+          () -> new MenuType<>(
+              blockEntityMenu(SteamBoilerBlockEntity.class, FluidFueledSteamBoilerMenu::new)));
+
 
   public static final RegistryObject<MenuType<SteamTurbineMenu>> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",

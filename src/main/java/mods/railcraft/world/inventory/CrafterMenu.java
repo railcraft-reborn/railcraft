@@ -1,6 +1,6 @@
 package mods.railcraft.world.inventory;
 
-import mods.railcraft.world.level.block.entity.module.CrafterModule;
+import mods.railcraft.world.module.CrafterModule;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 
@@ -11,13 +11,13 @@ import net.minecraft.world.inventory.MenuType;
  */
 public class CrafterMenu extends RailcraftMenu {
 
-  protected final CrafterModule logic;
+  protected final CrafterModule<?> module;
 
-  public CrafterMenu(MenuType<?> type, int id, Player player, CrafterModule logic) {
-    super(type, id, player, logic::stillValid);
-    this.logic = logic;
+  public CrafterMenu(MenuType<?> type, int id, Player player, CrafterModule<?> module) {
+    super(type, id, player, module::stillValid);
+    this.module = module;
 
-    this.addDataSlot(new SimpleDataSlot(this.logic::getProgress, this.logic::setProgress));
-    this.addDataSlot(new SimpleDataSlot(this.logic::getDuration, this.logic::setDuration));
+    this.addDataSlot(new SimpleDataSlot(this.module::getProgress, this.module::setProgress));
+    this.addDataSlot(new SimpleDataSlot(this.module::getDuration, this.module::setDuration));
   }
 }

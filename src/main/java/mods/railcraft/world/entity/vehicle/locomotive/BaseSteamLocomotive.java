@@ -1,7 +1,6 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
 import javax.annotation.Nullable;
-
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.client.ClientEffects;
@@ -11,28 +10,27 @@ import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.level.material.fluid.TankManager;
-import mods.railcraft.world.level.material.fluid.steam.IBoilerContainer;
 import mods.railcraft.world.level.material.fluid.steam.SteamBoiler;
 import mods.railcraft.world.level.material.fluid.steam.SteamConstants;
 import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -40,10 +38,10 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
  * The steam locomotive.
+ * 
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public abstract class BaseSteamLocomotive extends Locomotive
-    implements FluidMinecart, IBoilerContainer {
+public abstract class BaseSteamLocomotive extends Locomotive implements FluidMinecart {
 
   public static final int SLOT_WATER_INPUT = 0;
   public static final int SLOT_WATER_PROCESSING = 1;
@@ -61,7 +59,7 @@ public abstract class BaseSteamLocomotive extends Locomotive
     @Override
     public int fill(FluidStack resource, FluidAction doFill) {
       // handles boiler explotion
-      return super.fill(onFillWater(resource), doFill);
+      return super.fill(BaseSteamLocomotive.this.checkFill(resource), doFill);
     }
   }.setFilterFluid(() -> Fluids.WATER);
 
@@ -216,15 +214,8 @@ public abstract class BaseSteamLocomotive extends Locomotive
     this.steamTank.internalDrain(4, FluidAction.EXECUTE);
   }
 
-  @Override
-  @Nullable
   public SteamBoiler getBoiler() {
     return this.boiler;
-  }
-
-  @Override
-  public float getTemperature() {
-    return this.boiler.getTemperature();
   }
 
   @Override
@@ -279,9 +270,8 @@ public abstract class BaseSteamLocomotive extends Locomotive
   @Override
   public void setFilling(boolean filling) {}
 
-  @Override
-  public void steamExplosion(FluidStack resource) {
-    this.explode();
+  private FluidStack checkFill(FluidStack resource) {
+    return this.boiler.checkFill(resource, this::explode);
   }
 }
 

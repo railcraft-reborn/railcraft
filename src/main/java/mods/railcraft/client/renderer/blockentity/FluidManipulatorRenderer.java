@@ -6,7 +6,7 @@ import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.world.level.block.entity.FluidManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;

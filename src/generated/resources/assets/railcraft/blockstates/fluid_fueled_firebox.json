@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "railcraft:block/fluid_fueled_firebox"
+    },
+    "lit=true": {
+      "model": "railcraft:block/fluid_fueled_firebox_lit"
+    }
+  }
+}

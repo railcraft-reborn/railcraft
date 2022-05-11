@@ -18,7 +18,7 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
   private static final EntityDataAccessor<ItemStack> FILTER =
       SynchedEntityData.defineId(FilteredMinecart.class, EntityDataSerializers.ITEM_STACK);
   private final AdvancedContainer filterContainer =
-      new AdvancedContainer(1).callback((Container) this).phantom();
+      new AdvancedContainer(1).listener((Container) this).phantom();
 
   protected FilteredMinecart(EntityType<?> type, Level level) {
     super(type, level);

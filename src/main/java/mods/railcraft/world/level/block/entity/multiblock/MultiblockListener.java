@@ -13,11 +13,11 @@ import net.minecraft.world.level.gameevent.PositionSource;
 
 public class MultiblockListener implements GameEventListener {
 
-  private final MultiblockBlockEntity<?> blockEntity;
+  private final MultiblockBlockEntity<?, ?> blockEntity;
   private final PositionSource positionSource;
   private final int radius;
 
-  public MultiblockListener(MultiblockBlockEntity<?> blockEntity) {
+  public MultiblockListener(MultiblockBlockEntity<?, ?> blockEntity) {
     this.blockEntity = blockEntity;
     this.positionSource = new BlockPositionSource(blockEntity.getBlockPos());
 

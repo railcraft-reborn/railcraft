@@ -2,6 +2,12 @@ package mods.railcraft.world.level.block;
 
 import java.util.function.ToIntFunction;
 import mods.railcraft.Railcraft;
+import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
+import mods.railcraft.world.level.block.manipulator.AdvancedItemUnloaderBlock;
+import mods.railcraft.world.level.block.manipulator.FluidLoaderBlock;
+import mods.railcraft.world.level.block.manipulator.FluidUnloaderBlock;
+import mods.railcraft.world.level.block.manipulator.ItemLoaderBlock;
+import mods.railcraft.world.level.block.manipulator.ItemUnloaderBlock;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.signal.AnalogSignalControllerBoxBlock;
 import mods.railcraft.world.level.block.signal.BlockSignalBlock;
@@ -19,6 +25,15 @@ import mods.railcraft.world.level.block.signal.SignalInterlockBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalReceiverBoxBlock;
 import mods.railcraft.world.level.block.signal.SingleSignalBlock;
 import mods.railcraft.world.level.block.signal.TokenSignalBlock;
+import mods.railcraft.world.level.block.steamboiler.FluidFueledFireboxBlock;
+import mods.railcraft.world.level.block.steamboiler.SolidFueledFireboxBlock;
+import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
+import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
+import mods.railcraft.world.level.block.tank.IronTankValveBlock;
+import mods.railcraft.world.level.block.tank.IronTankWallBlock;
+import mods.railcraft.world.level.block.tank.SteelTankGaugeBlock;
+import mods.railcraft.world.level.block.tank.SteelTankValveBlock;
+import mods.railcraft.world.level.block.tank.SteelTankWallBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
@@ -1074,6 +1089,30 @@ public class RailcraftBlocks {
               .sound(SoundType.METAL)
               .noOcclusion()
               .explosionResistance(15)));
+
+  public static final RegistryObject<Block> LOW_PRESSURE_STEAM_BOILER_TANK =
+      deferredRegister.register("low_pressure_steam_boiler_tank",
+          () -> new SteamBoilerTankBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .noOcclusion()
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> HIGH_PRESSURE_STEAM_BOILER_TANK =
+      deferredRegister.register("high_pressure_steam_boiler_tank",
+          () -> new SteamBoilerTankBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .noOcclusion()
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<Block> SOLID_FUELED_FIREBOX =
+      deferredRegister.register("solid_fueled_firebox",
+          () -> new SolidFueledFireboxBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .lightLevel(litBlockEmission(13))
+              .sound(SoundType.STONE)));
+
+  public static final RegistryObject<Block> FLUID_FUELED_FIREBOX =
+      deferredRegister.register("fluid_fueled_firebox",
+          () -> new FluidFueledFireboxBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .lightLevel(litBlockEmission(13))
+              .sound(SoundType.METAL)));
 
   public static final RegistryObject<Block> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",

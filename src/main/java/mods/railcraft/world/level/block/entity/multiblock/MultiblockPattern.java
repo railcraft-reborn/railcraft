@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
@@ -22,7 +22,7 @@ import net.minecraft.world.phys.AABB;
 /**
  * Multiblock pattern.
  */
-public class MultiblockPattern {
+public class MultiblockPattern<T> {
 
   private final int xSize;
   private final int ySize;
@@ -33,8 +33,12 @@ public class MultiblockPattern {
   @Nullable
   private final AABB entityCheckBounds;
 
+  @Nullable
+  private final T metadata;
+
   private MultiblockPattern(char[][][] pattern, Vec3i masterOffset,
-      Map<Character, BlockPredicate> predicates, @Nullable AABB entityCheckBounds) {
+      Map<Character, BlockPredicate> predicates, @Nullable AABB entityCheckBounds,
+      @Nullable T metadata) {
     this.masterOffset = masterOffset;
     this.pattern = pattern;
     this.ySize = pattern.length;
@@ -42,6 +46,7 @@ public class MultiblockPattern {
     this.xSize = pattern[0][0].length;
     this.predicates = new Char2ObjectOpenHashMap<>(predicates);
     this.entityCheckBounds = entityCheckBounds;
+    this.metadata = metadata;
 
     for (var y = 0; y < this.ySize; y++) {
       for (var z = 0; z < this.zSize; z++) {
@@ -55,13 +60,14 @@ public class MultiblockPattern {
     }
   }
 
-  public MultiblockPattern rotateClockwise() {
+  public MultiblockPattern<T> rotateClockwise() {
     var masterOffset =
         new Vec3i(-this.masterOffset.getZ(), this.masterOffset.getY(), this.masterOffset.getX());
     var pattern = rotatePatternClockwise(this.pattern);
     var entityCheckBounds =
         this.entityCheckBounds == null ? null : rotateBoundingBoxClockwise(this.entityCheckBounds);
-    return new MultiblockPattern(pattern, masterOffset, this.predicates, entityCheckBounds);
+    return new MultiblockPattern<>(pattern, masterOffset, this.predicates, entityCheckBounds,
+        this.metadata);
   }
 
   public int getXSize() {
@@ -78,6 +84,24 @@ public class MultiblockPattern {
 
   public int getArea() {
     return this.xSize * this.ySize * this.zSize;
+  }
+
+  public T getMetadata() {
+    return this.metadata;
+  }
+
+  public boolean isValidPosition(BlockPos relativePos) {
+    return relativePos.getX() >= 0 && relativePos.getX() < this.xSize
+        && relativePos.getY() >= 0 && relativePos.getY() < this.ySize
+        && relativePos.getZ() >= 0 && relativePos.getZ() < this.zSize;
+  }
+  
+  public char getMarkerOrDefault(BlockPos relativePos, char defaultMarker) {
+    return this.isValidPosition(relativePos) ? this.getMarker(relativePos) : defaultMarker;
+  }
+
+  public char getMarker(BlockPos relativePos) {
+    return this.pattern[relativePos.getY()][relativePos.getZ()][relativePos.getX()];
   }
 
   public boolean isWithinPattern(BlockPos blockPos, BlockPos masterPos) {
@@ -153,15 +177,15 @@ public class MultiblockPattern {
     return ret;
   }
 
-  public static Builder builder(int xOffset, int yOffset, int zOffset) {
+  public static <T> Builder<T> builder(int xOffset, int yOffset, int zOffset) {
     return builder(new Vec3i(xOffset, yOffset, zOffset));
   }
 
-  public static Builder builder(Vec3i masterOffset) {
-    return new Builder(masterOffset);
+  public static <T> Builder<T> builder(Vec3i masterOffset) {
+    return new Builder<>(masterOffset);
   }
 
-  public static class Builder {
+  public static class Builder<T> {
 
     private final Vec3i masterOffset;
     private Deque<List<CharList>> pattern = new ArrayDeque<>();
@@ -169,6 +193,8 @@ public class MultiblockPattern {
         ImmutableMap.builder();
     @Nullable
     private AABB entityCheckBounds;
+    @Nullable
+    private T metadata;
 
     private Builder(Vec3i masterOffset) {
       this.masterOffset = masterOffset;
@@ -180,7 +206,7 @@ public class MultiblockPattern {
      * @param layer - a {@link List} of horizontal rows of blocks.
      * @return the builder
      */
-    public Builder layer(List<CharList> layer) {
+    public Builder<T> layer(List<CharList> layer) {
       this.pattern.push(layer);
       return this;
     }
@@ -191,7 +217,7 @@ public class MultiblockPattern {
      * @param pattern - the pattern to set
      * @return the builder
      */
-    public Builder pattern(Collection<List<CharList>> pattern) {
+    public Builder<T> pattern(Collection<List<CharList>> pattern) {
       this.pattern = new ArrayDeque<>(pattern);
       return this;
     }
@@ -203,7 +229,7 @@ public class MultiblockPattern {
      * @param predicate - the predicate
      * @return the builder
      */
-    public Builder predicate(char marker, BlockPredicate predicate) {
+    public Builder<T> predicate(char marker, BlockPredicate predicate) {
       this.predicates.put(marker, predicate);
       return this;
     }
@@ -215,8 +241,13 @@ public class MultiblockPattern {
      * @param entityCheckBounds - the bounds to check for entities in
      * @return the builder
      */
-    public Builder entityCheckBounds(AABB entityCheckBounds) {
+    public Builder<T> entityCheckBounds(AABB entityCheckBounds) {
       this.entityCheckBounds = entityCheckBounds;
+      return this;
+    }
+
+    public Builder<T> metadata(T metadata) {
+      this.metadata = metadata;
       return this;
     }
 
@@ -225,14 +256,14 @@ public class MultiblockPattern {
      * 
      * @return the created {@link MultiblockPattern}
      */
-    public MultiblockPattern build() {
+    public MultiblockPattern<T> build() {
       var patternArray = this.pattern.stream()
           .map(layer -> layer.stream()
               .map(CharList::toCharArray)
               .toArray(char[][]::new))
           .toArray(char[][][]::new);
-      return new MultiblockPattern(patternArray, this.masterOffset, this.predicates.build(),
-          this.entityCheckBounds);
+      return new MultiblockPattern<>(patternArray, this.masterOffset, this.predicates.build(),
+          this.entityCheckBounds, this.metadata);
     }
   }
 }
