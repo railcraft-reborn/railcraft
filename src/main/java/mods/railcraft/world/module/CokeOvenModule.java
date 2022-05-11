@@ -49,7 +49,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
-    this.tank = new StandardTank(TANK_CAPACITY).setUpdateCallback(__ -> this.setChanged());
+    this.tank = new StandardTank(TANK_CAPACITY).setChangeListener(this::setChanged);
   }
 
   @Override

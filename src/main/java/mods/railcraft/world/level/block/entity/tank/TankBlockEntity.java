@@ -15,7 +15,6 @@ import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
 import mods.railcraft.world.level.block.tank.TankGaugeBlock;
 import mods.railcraft.world.level.block.tank.TankValveBlock;
 import mods.railcraft.world.level.material.fluid.FluidTools;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import mods.railcraft.world.module.TankModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -63,7 +62,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
       Collection<MultiblockPattern<Void>> patterns) {
     super(type, blockPos, blockState, TankBlockEntity.class, patterns);
     this.module = this.moduleDispatcher.registerModule("tank", new TankModule(this, 0));
-    this.module.getTank().setUpdateCallback(this::tankChanged);
+    this.module.getTank().setChangeListener(this::tankChanged);
   }
 
   @Override
@@ -87,7 +86,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
   }
 
-  protected void tankChanged(StandardTank tank) {
+  protected void tankChanged() {
     if (!this.hasLevel() || this.level.isClientSide()) {
       return;
     }
@@ -95,7 +94,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     this.setChanged();
     this.syncToClient();
 
-    var light = tank.getFluidType().getAttributes().getLuminosity();
+    var light = this.module.getTank().getFluidType().getAttributes().getLuminosity();
     if (light != this.lastLight) {
       this.lastLight = light;
       this.streamMembers().forEach(member -> member.lightChanged(light));

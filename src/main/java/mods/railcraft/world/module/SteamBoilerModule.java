@@ -69,8 +69,8 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   public SteamBoilerModule(T provider, int containerSize) {
     super(provider, containerSize);
 
-    this.waterTank.setUpdateCallback(__ -> provider.setChanged());
-    this.steamTank.setUpdateCallback(__ -> provider.setChanged());
+    this.waterTank.setChangeListener(provider::setChanged);
+    this.steamTank.setChangeListener(provider::setChanged);
 
     this.tankManager.add(this.waterTank);
     this.tankManager.add(this.steamTank);

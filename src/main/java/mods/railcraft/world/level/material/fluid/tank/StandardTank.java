@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -33,7 +32,7 @@ public class StandardTank extends FluidTank {
   protected Supplier<FluidStack> filter;
 
   @Nullable
-  private Consumer<StandardTank> updateCallback;
+  private Runnable changeListener;
 
   private boolean disableDrain;
   private boolean disableFill;
@@ -135,8 +134,8 @@ public class StandardTank extends FluidTank {
     this.hidden = hidden;
   }
 
-  public StandardTank setUpdateCallback(@Nullable Consumer<StandardTank> callback) {
-    this.updateCallback = callback;
+  public StandardTank setChangeListener(@Nullable Runnable changeListener) {
+    this.changeListener = changeListener;
     return this;
   }
 
@@ -185,8 +184,8 @@ public class StandardTank extends FluidTank {
   @Override
   protected void onContentsChanged() {
     this.refreshTooltip();
-    if (updateCallback != null) {
-      updateCallback.accept(this);
+    if (this.changeListener != null) {
+      this.changeListener.run();
     }
   }
 

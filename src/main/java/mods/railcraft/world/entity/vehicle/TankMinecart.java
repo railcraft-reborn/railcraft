@@ -54,7 +54,7 @@ public class TankMinecart extends FilteredMinecart
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 3);
   private final StandardTank tank =
       (StandardTank) new FilteredTank(RailcraftConfig.server.getTankCartFluidCapacity())
-          .setUpdateCallback(tank -> this.fluidChanged(tank.getFluid()))
+          .setChangeListener(this::tankChanged)
           .setValidator(fluidStack -> this.getFilterFluid()
               .map(fluidStack::isFluidEqual)
               .orElse(true));
@@ -78,8 +78,8 @@ public class TankMinecart extends FilteredMinecart
     this.entityData.define(FILLING, false);
   }
 
-  private void fluidChanged(FluidStack fluidStack) {
-    this.entityData.set(FLUID_STACK_TAG, fluidStack.writeToNBT(new CompoundTag()));
+  private void tankChanged() {
+    this.entityData.set(FLUID_STACK_TAG, this.tank.getFluid().writeToNBT(new CompoundTag()));
   }
 
   @Override

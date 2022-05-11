@@ -25,7 +25,7 @@ public class FluidFueledSteamBoilerModule
     super(provider, 3);
     this.tankManager.add(this.fuelTank);
 
-    this.fuelTank.setUpdateCallback(__ -> provider.setChanged());
+    this.fuelTank.setChangeListener(provider::setChanged);
 
     this.boiler.setFuelProvider(new FluidFuelProvider(this.fuelTank));
   }
