@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class ChargeModule<T extends ModuleProvider> extends BaseModule<T> {
+public class ChargeModule<T extends BlockModuleProvider> extends BaseModule<T> {
 
   private final Charge network;
 
@@ -29,8 +29,8 @@ public class ChargeModule<T extends ModuleProvider> extends BaseModule<T> {
 
   public Charge.Access access() {
     return this.network
-        .network((ServerLevel) this.provider.getLevel())
-        .access(this.provider.getBlockPos());
+        .network((ServerLevel) this.provider.level())
+        .access(this.provider.blockPos());
   }
 
   @Override

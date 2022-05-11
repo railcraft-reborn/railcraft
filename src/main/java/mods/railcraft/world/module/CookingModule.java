@@ -28,12 +28,12 @@ public abstract class CookingModule<R extends AbstractCookingRecipe, T extends M
     var input = this.getItem(this.inputSlot);
     if (!ItemStack.matches(input, this.lastInput)) {
       this.lastInput = input.copy();
-      this.recipe = this.provider.getLevel().getRecipeManager()
-          .getRecipeFor(this.getRecipeType(), this, this.provider.getLevel())
+      this.recipe = this.provider.level().getRecipeManager()
+          .getRecipeFor(this.getRecipeType(), this, this.provider.level())
           .orElse(null);
       if (this.recipe == null && !input.isEmpty()) {
         this.setItem(this.inputSlot, ItemStack.EMPTY);
-        this.dropItem(input);
+        this.provider.dropItem(input);
       }
     }
   }

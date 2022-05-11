@@ -10,9 +10,9 @@ import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.network.PacketBuilder;
+import mods.railcraft.world.module.BlockModuleProvider;
 import mods.railcraft.world.module.Module;
 import mods.railcraft.world.module.ModuleDispatcher;
-import mods.railcraft.world.module.ModuleProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class RailcraftBlockEntity extends BlockEntity
-    implements NetworkSerializable, Ownable, BlockEntityLike, ModuleProvider {
+    implements NetworkSerializable, Ownable, BlockEntityLike, BlockModuleProvider {
 
   protected final ModuleDispatcher moduleDispatcher = new ModuleDispatcher();
 
@@ -42,6 +42,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   public RailcraftBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     super(type, blockPos, blockState);
   }
+
 
   @Override
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -97,8 +98,13 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   }
 
   @Override
-  public Level getLevel() {
-    return super.getLevel();
+  public BlockPos blockPos() {
+    return this.getBlockPos();
+  }
+
+  @Override
+  public Level level() {
+    return this.getLevel();
   }
 
   @Override

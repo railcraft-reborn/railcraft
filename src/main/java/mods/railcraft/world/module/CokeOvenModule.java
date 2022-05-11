@@ -89,13 +89,13 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     var topSlot = this.getItem(SLOT_LIQUID_INPUT);
     if (!topSlot.isEmpty() && !FluidItemHelper.isContainer(topSlot)) {
       this.setItem(SLOT_LIQUID_INPUT, ItemStack.EMPTY);
-      this.dropItem(topSlot);
+      this.provider.dropItem(topSlot);
     }
 
     var bottomSlot = this.getItem(SLOT_OUTPUT_FLUID);
     if (!bottomSlot.isEmpty() && !FluidItemHelper.isContainer(bottomSlot)) {
       this.setItem(SLOT_OUTPUT_FLUID, ItemStack.EMPTY);
-      this.dropItem(bottomSlot);
+      this.provider.dropItem(bottomSlot);
     }
 
     if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {

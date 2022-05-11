@@ -64,12 +64,12 @@ public abstract class CrafterModule<T extends ModuleProvider> extends ContainerM
   protected abstract int calculateDuration();
 
   protected final void setFinished() {
-    this.finishedAt = this.provider.getLevel().getGameTime();
+    this.finishedAt = this.provider.level().getGameTime();
   }
 
   protected final boolean isFinished() {
     return this.processing
-        && this.provider.getLevel().getGameTime() > this.finishedAt + PROGRESS_STEP + 5;
+        && this.provider.level().getGameTime() > this.finishedAt + PROGRESS_STEP + 5;
   }
 
   public final float getProgressPercent() {

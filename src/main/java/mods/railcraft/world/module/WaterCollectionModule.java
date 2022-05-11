@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public class WaterCollectionModule extends BaseModule<ModuleProvider> {
+public class WaterCollectionModule extends BaseModule<BlockModuleProvider> {
 
   private static final int REFILL_INTERVAL = 20;
   private static final float REFILL_PENALTY_FROZEN = 0.5F;
@@ -25,7 +25,7 @@ public class WaterCollectionModule extends BaseModule<ModuleProvider> {
   private State state;
   private int refillTicks;
 
-  public WaterCollectionModule(ModuleProvider provider, IFluidTank tank) {
+  public WaterCollectionModule(BlockModuleProvider provider, IFluidTank tank) {
     super(provider);
     this.tank = tank;
   }
@@ -36,10 +36,10 @@ public class WaterCollectionModule extends BaseModule<ModuleProvider> {
 
   @Override
   public void serverTick() {
-    var level = this.provider.getLevel();
+    var level = this.provider.level();
     if (this.refillTicks++ >= REFILL_INTERVAL) {
       this.refillTicks = 0;
-      var above = this.provider.getBlockPos().above();
+      var above = this.provider.blockPos().above();
       this.state = State.create(level, above);
       var rate = this.state.calculateRate();
       if (rate > 0) {

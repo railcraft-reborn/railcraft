@@ -1,11 +1,9 @@
 package mods.railcraft.world.module;
 
 import java.util.Optional;
-import java.util.function.Predicate;
-import mods.railcraft.util.container.manipulator.CompositeContainerManipulator;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -30,15 +28,7 @@ public interface ModuleProvider {
 
   boolean stillValid(Player player);
 
-  BlockPos getBlockPos();
+  Level level();
 
-  Level getLevel();
-
-  default CompositeContainerManipulator<?> getAdjacentContainers() {
-    return CompositeContainerManipulator.findAdjacent(this.getLevel(), this.getBlockPos());
-  }
-
-  default CompositeContainerManipulator<?> getAdjacentContainers(Predicate<BlockEntity> filter) {
-    return CompositeContainerManipulator.findAdjacent(this.getLevel(), this.getBlockPos(), filter);
-  }
+  void dropItem(ItemStack itemStack);
 }

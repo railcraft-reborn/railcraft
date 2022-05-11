@@ -1,13 +1,11 @@
 package mods.railcraft.world.module;
 
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.ForwardingContainer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 public abstract class ContainerModule<T extends ModuleProvider> extends BaseModule<T>
     implements ForwardingContainer {
@@ -17,10 +15,6 @@ public abstract class ContainerModule<T extends ModuleProvider> extends BaseModu
   protected ContainerModule(T provider, int size) {
     super(provider);
     this.container = new AdvancedContainer(size).listener(provider);
-  }
-
-  protected final void dropItem(ItemStack stack) {
-    ContainerTools.dropItem(stack, this.provider.getLevel(), this.provider.getBlockPos());
   }
 
   @Override

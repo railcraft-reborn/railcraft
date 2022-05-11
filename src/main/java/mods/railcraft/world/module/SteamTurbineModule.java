@@ -1,6 +1,7 @@
 package mods.railcraft.world.module;
 
 import mods.railcraft.api.charge.Charge;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.world.item.RailcraftItems;
@@ -12,6 +13,7 @@ import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
@@ -45,10 +47,10 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     super(provider, network);
     this.rotorContainer.listener(this.provider);
     this.steamTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 4)
-        .setFilterFluid(RailcraftFluids.STEAM)
+        .setFilterTag(RailcraftTags.Fluids.STEAM)
         .disableDrain();
     this.waterTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 4)
-        .setFilterFluid(() -> Fluids.WATER)
+        .setFilterTag(FluidTags.WATER)
         .disableFill();
   }
 
