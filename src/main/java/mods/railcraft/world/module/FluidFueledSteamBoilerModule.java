@@ -16,6 +16,7 @@ public class FluidFueledSteamBoilerModule
     extends SteamBoilerModule<FluidFueledSteamBoilerBlockEntity> {
 
   protected final StandardTank fuelTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 16)
+      .disableDrain()
       .setValidator(fluidStack -> !fluidStack.isEmpty()
           && FuelUtil.fuelManager().getFuelValue(fluidStack.getFluid()) > 0);
 

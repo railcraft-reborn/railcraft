@@ -11,7 +11,6 @@ import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -37,8 +36,6 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   private final AdvancedContainer rotorContainer = new AdvancedContainer(1);
   private float operatingRatio;
   private int energy;
-
-  private int syncTicks;
 
   private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(FluidHandler::new);
 
@@ -80,11 +77,6 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     var thisTick = addedEnergy ? 1.0F : 0.0F;
     this.operatingRatio = (thisTick - this.operatingRatio) * 0.05F + this.operatingRatio;
 
-    if (this.syncTicks++ >= 4) {
-      this.syncTicks = 0;
-      this.provider.syncToClient();
-    }
-
     var chargeStorage = this.storage();
     if (!chargeStorage.isFull()) {
       chargeStorage.receiveEnergy(this.energy, false);
@@ -105,20 +97,6 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     return rotorStack.isEmpty()
         || !rotorStack.is(RailcraftItems.TURBINE_ROTOR.get())
         || rotorStack.getDamageValue() / (float) rotorStack.getMaxDamage() > 0.75F;
-  }
-
-  public float readGauge(float previousValue) {
-    return (previousValue * 14.0F + this.operatingRatio) / 15.0F;
-  }
-
-  @Override
-  public void writeToBuf(FriendlyByteBuf out) {
-    out.writeFloat(this.operatingRatio);
-  }
-
-  @Override
-  public void readFromBuf(FriendlyByteBuf in) {
-    this.operatingRatio = in.readFloat();
   }
 
   @Override

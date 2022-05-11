@@ -196,6 +196,9 @@ public class Railcraft {
   @SubscribeEvent
   public void handleWorldTick(TickEvent.WorldTickEvent event) {
     if (event.world instanceof ServerLevel level && event.phase == TickEvent.Phase.END) {
+      for (var provider : ChargeProviderImpl.values()) {
+        provider.network(level).tick();
+      }
       TokenRingManager.get(level).tick(level);
       if (level.getServer().getTickCount() % 32 == 0) {
         Train.getManager(level).tick();

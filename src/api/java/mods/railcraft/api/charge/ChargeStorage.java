@@ -99,9 +99,9 @@ public interface ChargeStorage extends IEnergyStorage {
   }
 
   /**
-   * True if and only if {@code getCharge()< getCapacity()}.
+   * True if and only if {@code this.getEnergyStored() >= this.getMaxEnergyStored()}.
    *
-   * @return {@code getCharge()< getCapacity()}
+   * @return {@code this.getEnergyStored() >= this.getMaxEnergyStored()}
    */
   default boolean isFull() {
     return this.getEnergyStored() >= this.getMaxEnergyStored();

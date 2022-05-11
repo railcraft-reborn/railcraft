@@ -29,7 +29,7 @@ public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlo
     float zOffset = RenderUtil.SCALED_PIXEL; // offset to prevent z-fighting
 
     // average the value over time to smooth the needle
-    float value = blockEntity.getGaugeValue();
+    float value = blockEntity.getAndSmoothGaugeValue();
 
     // set the needle angle between 45° (= 0%) and 135° (= 100%)
     float angle = (90 * value + 45) * Mth.DEG_TO_RAD;
@@ -77,8 +77,6 @@ public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlo
       poseStack.translate(xx + rx * 0.5 + fx * zOffset, 0.5,
           zz + rz * 0.5 + fz * zOffset);
       
-//      poseStack.translate(5, 0, 0);
-
       var matrix = poseStack.last().pose();
 
       float cosA = Mth.cos(angle);

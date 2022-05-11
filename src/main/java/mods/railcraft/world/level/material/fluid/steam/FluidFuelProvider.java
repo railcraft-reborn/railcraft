@@ -25,14 +25,14 @@ public class FluidFuelProvider implements FuelProvider {
 
   @Override
   public float consumeFuel() {
-    var fuel = this.fuelTank.drain(FluidTools.BUCKET_VOLUME, FluidAction.SIMULATE);
+    var fuel = this.fuelTank.internalDrain(FluidTools.BUCKET_VOLUME, FluidAction.SIMULATE);
     if (fuel.isEmpty()) {
       return 0.0F;
     }
 
     var heatValue = FuelUtil.fuelManager().getFuelValueForSize(fuel);
     if (heatValue > 0.0F) {
-      this.fuelTank.drain(FluidTools.BUCKET_VOLUME, FluidAction.EXECUTE);
+      this.fuelTank.internalDrain(FluidTools.BUCKET_VOLUME, FluidAction.EXECUTE);
     }
     return heatValue;
   }

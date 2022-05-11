@@ -4,8 +4,6 @@ import java.util.Map;
 import com.google.common.collect.MapMaker;
 import mods.railcraft.api.charge.Charge;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * Created by CovertJaguar on 7/26/2016 for Railcraft.
@@ -23,16 +21,9 @@ public enum ChargeProviderImpl implements Charge.Provider {
   private ChargeProviderImpl(Charge charge) {
     this.charge = charge;
   }
-  
+
   public Charge getCharge() {
     return this.charge;
-  }
-
-  @SubscribeEvent
-  public void tick(TickEvent.WorldTickEvent event) {
-    if (event.world instanceof ServerLevel level && event.phase == TickEvent.Phase.END) {
-      this.network(level).tick();
-    }
   }
 
   @Override

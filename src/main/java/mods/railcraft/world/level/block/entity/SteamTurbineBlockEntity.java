@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.util.EnergyUtil;
 import mods.railcraft.world.inventory.SteamTurbineMenu;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -16,6 +17,7 @@ import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.module.SteamTurbineModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Containers;
@@ -66,6 +68,9 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
 
   // Used by renderer
   private float lastGaugeValue;
+  private float masterOperatingRatio;
+
+  private int syncTicks;
 
   public SteamTurbineBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.STEAM_TURBINE.get(), blockPos, blockState,
@@ -83,10 +88,13 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
     blockEntity.serverTick();
     blockEntity.moduleDispatcher.serverTick();
 
+    blockEntity.masterOperatingRatio = 0;
     blockEntity.getMembership()
         .map(Membership::master)
         .map(SteamTurbineBlockEntity::getSteamTurbineModule)
         .ifPresent(master -> {
+          blockEntity.masterOperatingRatio = master.getOperatingRatio();
+
           Predicate<BlockEntity> filter = other -> !(other instanceof SteamTurbineBlockEntity tank)
               || !tank.getMembership().equals(blockEntity.getMembership());
 
@@ -102,10 +110,15 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
             }
           });
         });
+
+    if (blockEntity.syncTicks++ >= 4) {
+      blockEntity.syncTicks = 0;
+      blockEntity.syncToClient();
+    }
   }
 
-  public float getGaugeValue() {
-    return this.lastGaugeValue = this.module.readGauge(this.lastGaugeValue);
+  public float getAndSmoothGaugeValue() {
+    return this.lastGaugeValue = (this.lastGaugeValue * 14.0F + this.masterOperatingRatio) / 15.0F;
   }
 
   @Override
@@ -116,6 +129,18 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   @Override
   public Component getDisplayName() {
     return MENU_TITLE;
+  }
+
+  @Override
+  public void writeToBuf(FriendlyByteBuf out) {
+    super.writeToBuf(out);
+    out.writeFloat(this.masterOperatingRatio);
+  }
+
+  @Override
+  public void readFromBuf(FriendlyByteBuf in) {
+    super.readFromBuf(in);
+    this.masterOperatingRatio = in.readFloat();
   }
 
   @Override
@@ -150,10 +175,16 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   @Override
   protected void membershipChanged(@Nullable Membership<SteamTurbineBlockEntity> membership) {
     if (membership == null) {
+      this.module.storage().setState(ChargeStorage.State.DISABLED);
+
       this.level.setBlockAndUpdate(this.getBlockPos(),
           this.getBlockState().setValue(SteamTurbineBlock.TYPE, SteamTurbineBlock.Type.NONE));
       Containers.dropContents(this.level, this.getBlockPos(), this.module.getRotorContainer());
       return;
+    }
+
+    if (membership.master() == this) {
+      this.module.storage().setState(ChargeStorage.State.SOURCE);
     }
 
     var type = switch (membership.patternElement().marker()) {
