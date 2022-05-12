@@ -102,8 +102,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
   @Override
   public boolean removePeer(BlockPos peerPos) {
     if (super.removePeer(peerPos)) {
-      new Exception().printStackTrace();
-      BlockSignal blockSignalProvider = this.getBlockEntity(peerPos);
+      var blockSignalProvider = this.getBlockEntity(peerPos);
       if (blockSignalProvider != null) {
         blockSignalProvider.getSignalNetwork().removePeer(this.getBlockPos());
       }

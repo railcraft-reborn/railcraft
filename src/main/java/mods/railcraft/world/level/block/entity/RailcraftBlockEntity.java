@@ -81,6 +81,13 @@ public abstract class RailcraftBlockEntity extends BlockEntity
       out.writeUtf(this.owner.getName(), 16);
     }
 
+    if (this.customName == null) {
+      out.writeBoolean(true);
+    } else {
+      out.writeBoolean(false);
+      out.writeComponent(this.customName);
+    }
+
     this.moduleDispatcher.writeToBuf(out);
   }
 
@@ -93,6 +100,8 @@ public abstract class RailcraftBlockEntity extends BlockEntity
       String ownerName = in.readUtf(16);
       this.owner = new GameProfile(ownerId, ownerName);
     }
+
+    this.customName = in.readBoolean() ? null : in.readComponent();
 
     this.moduleDispatcher.readFromBuf(in);
   }
@@ -191,8 +200,15 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     return this.customName != null;
   }
 
-  public void setCustomName(@Nullable Component name) {
+  @Override
+  @Nullable
+  public Component getCustomName() {
+    return this.customName;
+  }
+
+  protected void setCustomName(@Nullable Component name) {
     this.customName = name;
+    this.syncToClient();
   }
 
   @Override

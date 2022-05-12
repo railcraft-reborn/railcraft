@@ -72,8 +72,6 @@ public class RailcraftTags {
     public static final TagKey<Block> MAGIC_ORE = tag("magic_ore");
     public static final TagKey<Block> SWITCH_TRACK_ACTUATOR =
         tag("switch_track_actuator");
-    public static final TagKey<Block> SIGNAL_INTERLOCK_BOX =
-        tag("signal_interlock_box");
     public static final TagKey<Block> ASPECT_RECEIVER =
         tag("aspect_receiver");
     public static final TagKey<Block> ASPECT_EMITTER =

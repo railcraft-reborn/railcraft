@@ -280,6 +280,8 @@
 
     "__DESC.items": "======= Items =======",
 
+    "item.railcraft.signal_label": "Signal Label",
+    "item.railcraft.signal_lamp": "Signal Lamp",
     "item.railcraft.turbine_rotor": "Turbine Rotor",
     "item.railcraft.slag": "Ground Blast Furnace Slag",
     "item.railcraft.coal_coke": "Coal Coke",
@@ -465,6 +467,8 @@
     "screen.embarking_track.radius": "Radius: %s",
 
     "screen.launcher_track.launch_force": "Launch Force: %s",
+
+    "signal_label.description": "§oRight-click while sneaking to name a signal/signal box.§r",
 
     "goggles.aura.worldspike": "Worldspike",
     "goggles.aura.none": "None",

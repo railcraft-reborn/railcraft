@@ -13,7 +13,7 @@ import mods.railcraft.api.core.Ownable;
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface BlockSignal
-    extends Signal<BlockSignal>, BlockEntityLike, Ownable {
+    extends SurveyableSignal<BlockSignal>, BlockEntityLike, Ownable {
 
   @Override
   default TrackLocator getTrackLocator() {

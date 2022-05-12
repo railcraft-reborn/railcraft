@@ -75,6 +75,10 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
               new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> SIGNAL_LABEL =
+      deferredRegister.register("signal_label",
+          () -> new SignalLabelItem(new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> TURBINE_ROTOR =
       deferredRegister.register("turbine_rotor",
           () -> new Item(new Item.Properties().tab(TAB)));
@@ -1819,6 +1823,10 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> STONE_RAILBED =
       deferredRegister.register("stone_railbed",
+          () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SIGNAL_LAMP =
+      deferredRegister.register("signal_lamp",
           () -> new Item(new Item.Properties().tab(TAB)));
 
   /* ===== BUCKETS ===== */

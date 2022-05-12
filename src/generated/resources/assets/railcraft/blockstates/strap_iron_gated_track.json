@@ -19,8 +19,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
+        "reversed": "false",
         "one_way": "true"
       },
       "apply": {
@@ -29,8 +29,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
+        "reversed": "true",
         "one_way": "true"
       },
       "apply": {
@@ -40,8 +40,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
+        "reversed": "false",
         "one_way": "true"
       },
       "apply": {
@@ -51,8 +51,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
+        "reversed": "true",
         "one_way": "true"
       },
       "apply": {
@@ -62,8 +62,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
+        "reversed": "false",
         "in_wall": "false",
         "open": "false"
       },
@@ -74,8 +74,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
+        "reversed": "true",
         "in_wall": "false",
         "open": "false"
       },
@@ -85,8 +85,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
+        "reversed": "false",
         "in_wall": "false",
         "open": "false"
       },
@@ -97,8 +97,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
+        "reversed": "true",
         "in_wall": "false",
         "open": "false"
       },
@@ -109,8 +109,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
+        "reversed": "false",
         "in_wall": "false",
         "open": "true"
       },
@@ -121,8 +121,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
+        "reversed": "true",
         "in_wall": "false",
         "open": "true"
       },
@@ -132,8 +132,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
+        "reversed": "false",
         "in_wall": "false",
         "open": "true"
       },
@@ -144,8 +144,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
+        "reversed": "true",
         "in_wall": "false",
         "open": "true"
       },
@@ -156,8 +156,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
+        "reversed": "false",
         "in_wall": "true",
         "open": "false"
       },
@@ -168,8 +168,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
+        "reversed": "true",
         "in_wall": "true",
         "open": "false"
       },
@@ -179,8 +179,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
+        "reversed": "false",
         "in_wall": "true",
         "open": "false"
       },
@@ -191,8 +191,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
+        "reversed": "true",
         "in_wall": "true",
         "open": "false"
       },
@@ -203,8 +203,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "north_south",
+        "reversed": "false",
         "in_wall": "true",
         "open": "true"
       },
@@ -215,8 +215,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "north_south",
+        "reversed": "true",
         "in_wall": "true",
         "open": "true"
       },
@@ -226,8 +226,8 @@
     },
     {
       "when": {
-        "reversed": "false",
         "shape": "east_west",
+        "reversed": "false",
         "in_wall": "true",
         "open": "true"
       },
@@ -238,8 +238,8 @@
     },
     {
       "when": {
-        "reversed": "true",
         "shape": "east_west",
+        "reversed": "true",
         "in_wall": "true",
         "open": "true"
       },

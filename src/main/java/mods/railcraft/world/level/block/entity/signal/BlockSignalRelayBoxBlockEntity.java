@@ -44,6 +44,7 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   private void signalAspectChanged(SignalAspect signalAspect) {
     this.signalController.setSignalAspect(signalAspect);
     this.updateNeighborSignalBoxes(false);
+    this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
   }
 
   @Override

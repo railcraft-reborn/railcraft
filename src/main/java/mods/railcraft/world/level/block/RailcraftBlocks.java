@@ -17,12 +17,12 @@ import mods.railcraft.world.level.block.signal.DualBlockSignalBlock;
 import mods.railcraft.world.level.block.signal.DualDistantSignalBlock;
 import mods.railcraft.world.level.block.signal.DualSignalBlock;
 import mods.railcraft.world.level.block.signal.DualTokenSignalBlock;
-import mods.railcraft.world.level.block.signal.SelfAttachableSignalBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalCapacitorBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalControllerBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalInterlockBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalReceiverBoxBlock;
+import mods.railcraft.world.level.block.signal.SignalSequencerBoxBlock;
 import mods.railcraft.world.level.block.signal.SingleSignalBlock;
 import mods.railcraft.world.level.block.signal.TokenSignalBlock;
 import mods.railcraft.world.level.block.steamboiler.FluidFueledFireboxBlock;
@@ -1218,7 +1218,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<SignalBoxBlock> SIGNAL_SEQUENCER_BOX =
       deferredRegister.register("signal_sequencer_box",
-          () -> new SelfAttachableSignalBoxBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+          () -> new SignalSequencerBoxBlock(BlockBehaviour.Properties.of(Material.DECORATION)
               .strength(8.0F, 50.0F)
               .sound(SoundType.METAL)
               .noOcclusion()));
