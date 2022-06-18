@@ -17,14 +17,14 @@ import net.minecraft.world.phys.Vec3;
 /**
  * Effects done on the logical server.
  */
-public final class HostEffects implements Charge.IHostZapEffect {
+public final class HostEffects implements Charge.ServerZapEffectProvider {
 
   public static final HostEffects INSTANCE = new HostEffects();
 
   public static void init() {} // classloading
 
   private HostEffects() {
-    Charge.internalSetHostEffects(this);
+    Charge._setHostZapEffectProvider(this);
   }
 
   public void teleportEffect(Entity entity, Vec3 destination) {

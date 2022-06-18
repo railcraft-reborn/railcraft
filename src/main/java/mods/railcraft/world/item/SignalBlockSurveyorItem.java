@@ -2,8 +2,7 @@ package mods.railcraft.world.item;
 
 import java.util.Objects;
 import mods.railcraft.api.core.DimensionPos;
-import mods.railcraft.api.signal.Signal;
-import mods.railcraft.api.signal.SignalNetwork;
+import mods.railcraft.api.signal.SurveyableSignal;
 import mods.railcraft.api.signal.TrackLocator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -28,13 +27,12 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
     Level level = context.getLevel();
     BlockPos pos = context.getClickedPos();
     BlockEntity blockEntity = level.getBlockEntity(pos);
-    if (blockEntity instanceof Signal) {
+    if (blockEntity instanceof SurveyableSignal<?> signal) {
       if (level.isClientSide()) {
         return InteractionResult.SUCCESS;
       }
 
-      Signal<?> signal = (Signal<?>) blockEntity;
-      SignalNetwork<?> signalNetwork = signal.getSignalNetwork();
+      var signalNetwork = signal.getSignalNetwork();
 
       if (this.checkAbandonPairing(stack, player, (ServerLevel) level,
           signalNetwork::stopLinking)) {
@@ -43,8 +41,8 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
         return InteractionResult.SUCCESS;
       }
 
-      DimensionPos signalPos = this.getPeerPos(stack);
-      TrackLocator.Status trackStatus = signal.getTrackLocator().getTrackStatus();
+      var signalPos = this.getPeerPos(stack);
+      var trackStatus = signal.getTrackLocator().getTrackStatus();
       if (trackStatus == TrackLocator.Status.INVALID) {
         player.displayClientMessage(new TranslatableComponent("signal_surveyor.invalid_track",
             signal.getDisplayName().getString()), true);
@@ -54,8 +52,8 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
         signalNetwork.startLinking();
       } else if (!Objects.equals(pos, signalPos.getPos())) {
         blockEntity = level.getBlockEntity(signalPos.getPos());
-        if (blockEntity instanceof Signal) {
-          Signal<?> otherSignal = (Signal<?>) blockEntity;
+        if (blockEntity instanceof SurveyableSignal) {
+          SurveyableSignal<?> otherSignal = (SurveyableSignal<?>) blockEntity;
           if (this.tryLinking(signal, otherSignal)) {
             signal.getSignalNetwork().stopLinking();
             otherSignal.getSignalNetwork().stopLinking();
@@ -89,7 +87,7 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
     return InteractionResult.PASS;
   }
 
-  private <T, T2> boolean tryLinking(Signal<T> signal1, Signal<T2> signal2) {
+  private <T, T2> boolean tryLinking(SurveyableSignal<T> signal1, SurveyableSignal<T2> signal2) {
     return signal1.getSignalType().isInstance(signal2)
         && signal2.getSignalType().isInstance(signal1)
         && signal1.getSignalNetwork().addPeer(signal1.getSignalType().cast(signal2))

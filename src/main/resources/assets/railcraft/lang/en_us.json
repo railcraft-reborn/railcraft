@@ -17,6 +17,11 @@
 
     "__DESC.blocks": "======= Blocks =======",
 
+    "block.railcraft.low_pressure_steam_boiler_tank": "Low Pressure Steam Boiler Tank",
+    "block.railcraft.high_pressure_steam_boiler_tank": "High Pressure Steam Boiler Tank",
+    "block.railcraft.solid_fueled_firebox": "Solid Fueled Firebox",
+    "block.railcraft.fluid_fueled_firebox": "Fluid Fueled Firebox",
+    "block.railcraft.steam_turbine": "Steam Turbine Housing",
     "block.railcraft.white_strengthened_glass": "White Strengthened Glass",
     "block.railcraft.orange_strengthened_glass": "Orange Strengthened Glass",
     "block.railcraft.magenta_strengthened_glass": "Magenta Strengthened Glass",
@@ -275,6 +280,9 @@
 
     "__DESC.items": "======= Items =======",
 
+    "item.railcraft.signal_label": "Signal Label",
+    "item.railcraft.signal_lamp": "Signal Lamp",
+    "item.railcraft.turbine_rotor": "Turbine Rotor",
     "item.railcraft.slag": "Ground Blast Furnace Slag",
     "item.railcraft.coal_coke": "Coal Coke",
     "item.railcraft.steel_shears": "Steel Shears",
@@ -419,6 +427,10 @@
     "gui.railcraft.locomotive.tips.item.secondary": "Secondary descriptor. Edit me",
     "gui.railcraft.locomotive.tips.item.whistle": "There is currently no whistle installed.",
 
+    "screen.steam_turbine.rotor": "Rotor:",
+    "screen.steam_turbine.output": "Output:",
+    "screen.steam_turbine.usage": "Usage:",
+
     "screen.railcraft.locomotive.steam.mode.description.idle": "Locomotive reduces fuel usage, but retains its heat. If the train is held by a track, it behaves as if idle.",
     "screen.railcraft.locomotive.steam.mode.description.running": "Makes the locomotive move.",
     "screen.railcraft.locomotive.steam.mode.description.shutdown": "Shuts off the locomotive. Halts all movement and begins the cool-down process.",
@@ -455,6 +467,8 @@
     "screen.embarking_track.radius": "Radius: %s",
 
     "screen.launcher_track.launch_force": "Launch Force: %s",
+
+    "signal_label.description": "§oRight-click while sneaking to name a signal/signal box.§r",
 
     "goggles.aura.worldspike": "Worldspike",
     "goggles.aura.none": "None",
@@ -498,6 +512,9 @@
     "container.railcraft.coke_oven": "Coke Oven",
     "container.railcraft.blast_furnace": "Blast Furnace",
     "container.railcraft.tank": "Tank",
+    "container.railcraft.steam_turbine": "Steam Turbine",
+    "container.railcraft.solid_fueled_steam_boiler": "Solid Fueled Steam Boiler",
+    "container.railcraft.fluid_fueled_steam_boiler": "Fluid Fueled Steam Boiler",
 
     "signal_aspect.green": "Green",
     "signal_aspect.blink_yellow": "Blink Yellow",

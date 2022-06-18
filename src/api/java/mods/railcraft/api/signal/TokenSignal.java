@@ -13,7 +13,7 @@ import net.minecraft.core.BlockPos;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public interface TokenSignal extends BlockEntityLike, Signal<TokenSignal> {
+public interface TokenSignal extends BlockEntityLike, SurveyableSignal<TokenSignal> {
 
   BlockPos getTokenRingCentroid();
 

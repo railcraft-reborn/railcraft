@@ -64,5 +64,5 @@ public interface SignalNetwork<T> {
 
   void refresh();
 
-  void removed();
+  void destroy();
 }

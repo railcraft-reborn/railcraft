@@ -9,7 +9,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -18,7 +17,7 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
   private static final EntityDataAccessor<ItemStack> FILTER =
       SynchedEntityData.defineId(FilteredMinecart.class, EntityDataSerializers.ITEM_STACK);
   private final AdvancedContainer filterContainer =
-      new AdvancedContainer(1).callback((Container) this).phantom();
+      new AdvancedContainer(1).listener((Container) this).phantom();
 
   protected FilteredMinecart(EntityType<?> type, Level level) {
     super(type, level);
@@ -50,11 +49,9 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
   }
 
   public ItemStack getFilteredCartItem(ItemStack filterStack) {
-    ItemStack cartStack = this.getItem().getDefaultInstance();
+    ItemStack cartStack = this.getPickResult();
     return cartStack.isEmpty() ? ItemStack.EMPTY : addFilterToCartItem(cartStack, filterStack);
   }
-
-  protected abstract Item getItem();
 
   @Override
   public ItemStack getCartItem() {

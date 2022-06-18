@@ -20,7 +20,8 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
   public BlastFurnaceRecipe(ResourceLocation id, String group,
       Ingredient ingredient, ItemStack result, float experience, int cookingTime, int slagOutput) {
-    super(RailcraftRecipeTypes.BLASTING, id, group, ingredient, result, experience, cookingTime);
+    super(RailcraftRecipeTypes.BLASTING.get(), id, group, ingredient, result, experience,
+        cookingTime);
     this.slagOutput = slagOutput;
   }
 

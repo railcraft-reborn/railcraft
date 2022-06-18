@@ -48,10 +48,10 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.signalController.removed();
-    this.signalReceiver.removed();
+  public void blockRemoved() {
+    super.blockRemoved();
+    this.signalController.destroy();
+    this.signalReceiver.destroy();
     if (this.interlockController != null) {
       this.interlockController.remove(this);
     }

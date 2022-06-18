@@ -30,18 +30,18 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
 
   public ContainerBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     super(type, blockPos, blockState);
-    this.container = new AdvancedContainer(0).callback((Container) this);
+    this.container = new AdvancedContainer(0).listener((Container) this);
 
   }
 
   protected ContainerBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       int size) {
     super(type, blockPos, blockState);
-    this.container = new AdvancedContainer(size).callback((Container) this);
+    this.container = new AdvancedContainer(size).listener((Container) this);
   }
 
   protected void setContainerSize(int size) {
-    this.container = new AdvancedContainer(size).callback((Container) this);
+    this.container = new AdvancedContainer(size).listener((Container) this);
   }
 
   @Override

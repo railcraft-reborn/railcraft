@@ -13,11 +13,11 @@ import net.minecraft.world.level.gameevent.PositionSource;
 
 public class MultiblockListener implements GameEventListener {
 
-  private final MultiblockBlockEntity<?> blockEntity;
+  private final MultiblockBlockEntity<?, ?> blockEntity;
   private final PositionSource positionSource;
   private final int radius;
 
-  public MultiblockListener(MultiblockBlockEntity<?> blockEntity) {
+  public MultiblockListener(MultiblockBlockEntity<?, ?> blockEntity) {
     this.blockEntity = blockEntity;
     this.positionSource = new BlockPositionSource(blockEntity.getBlockPos());
 
@@ -44,7 +44,7 @@ public class MultiblockListener implements GameEventListener {
   @Override
   public boolean handleGameEvent(Level level, GameEvent event, @Nullable Entity entity,
       BlockPos blockPos) {
-    if (event == RailcraftGameEvents.NEIGHBOR_NOTIFY) {
+    if (event == RailcraftGameEvents.NEIGHBOR_NOTIFY.get()) {
       // Can't check immediately as these events are fired before the blocks are actually changed.
       this.blockEntity.enqueueEvaluation();
     }

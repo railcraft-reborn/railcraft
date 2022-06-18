@@ -50,8 +50,8 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
-  private static final Map<Charge, ChargeSpec> CHARGE_SPECS =
-      ChargeSpec.make(Charge.distribution, ConnectType.BLOCK, 0.1);
+  private static final Map<Charge, Spec> CHARGE_SPECS =
+      Spec.make(Charge.distribution, ConnectType.BLOCK, 0.1F);
 
   public ForceTrackEmitterBlock(Properties properties) {
     super(properties);
@@ -72,7 +72,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   }
 
   @Override
-  public Map<Charge, ChargeSpec> getChargeSpecs(BlockState state, BlockGetter world,
+  public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level,
       BlockPos pos) {
     return CHARGE_SPECS;
   }
@@ -120,15 +120,16 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
 
   @Override
   public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
-    if (stateIn.getValue(POWERED))
-      Charge.effects().throwSparks(stateIn, worldIn, pos, rand, 10);
+    if (stateIn.getValue(POWERED)) {
+      Charge.zapEffectProvider().throwSparks(stateIn, worldIn, pos, rand, 10);
+    }
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
-    super.randomTick(state, worldIn, pos, rand);
-    registerNode(state, worldIn, pos);
+  public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+    super.tick(state, worldIn, pos, rand);
+    this.registerNode(state, worldIn, pos);
   }
 
   @Override
@@ -151,10 +152,12 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
 
   @SuppressWarnings("deprecation")
   @Override
-  public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState,
-      boolean something) {
-    super.onPlace(state, worldIn, pos, oldState, something);
-    registerNode(state, worldIn, pos);
+  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
+      boolean moved) {
+    super.onPlace(state, level, pos, oldState, moved);
+    if (!state.is(oldState.getBlock())) {
+      this.registerNode(state, (ServerLevel) level, pos);
+    }
   }
 
   @SuppressWarnings("deprecation")
@@ -180,10 +183,12 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
 
   @SuppressWarnings("deprecation")
   @Override
-  public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState,
-      boolean something) {
-    super.onRemove(state, worldIn, pos, newState, something);
-    deregisterNode(worldIn, pos);
+  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
+      boolean moved) {
+    super.onRemove(state, level, pos, newState, moved);
+    if (!state.is(newState.getBlock())) {
+      this.deregisterNode((ServerLevel) level, pos);
+    }
   }
 
   @Override

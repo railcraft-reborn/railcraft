@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -43,7 +44,8 @@ public class SignalControllerBoxBlock extends SignalBoxBlock implements EntityBl
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
       BlockEntityType<T> type) {
     return level.isClientSide()
-        ? createTickerHelper(type, RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get(),
+        ? BaseEntityBlock.createTickerHelper(type,
+            RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get(),
             SignalControllerBoxBlockEntity::clientTick)
         : null;
   }

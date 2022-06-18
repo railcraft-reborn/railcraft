@@ -7,10 +7,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import com.google.common.collect.Lists;
 import mods.railcraft.util.collections.ItemStackKey;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Created by CovertJaguar on 9/9/2016 for Railcraft.

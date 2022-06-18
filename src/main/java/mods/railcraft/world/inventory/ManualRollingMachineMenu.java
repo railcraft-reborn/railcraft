@@ -124,7 +124,7 @@ public class ManualRollingMachineMenu extends AbstractContainerMenu {
       ItemStack itemstack = ItemStack.EMPTY;
       Optional<RollingRecipe> optional = this.level.getServer()
           .getRecipeManager()
-          .getRecipeFor(RailcraftRecipeTypes.ROLLING, this.craftSlots, this.level);
+          .getRecipeFor(RailcraftRecipeTypes.ROLLING.get(), this.craftSlots, this.level);
 
       this.setData(0, 10000); // nuke the clock
       this.setData(2, 0);

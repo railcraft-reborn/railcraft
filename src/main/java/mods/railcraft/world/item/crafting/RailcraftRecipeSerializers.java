@@ -13,15 +13,15 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class RailcraftRecipeSerializers {
 
-  public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
+  public static final DeferredRegister<RecipeSerializer<?>> deferredRegister =
       DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Railcraft.ID);
 
   public static final RegistryObject<RecipeSerializer<?>> ROLLING =
-      RECIPE_SERIALIZERS.register("rolling", RollingRecipe.RollingRecipeSerializer::new);
+      deferredRegister.register("rolling", RollingRecipe.RollingRecipeSerializer::new);
 
   public static final RegistryObject<RecipeSerializer<?>> COKING =
-      RECIPE_SERIALIZERS.register("coking", CokeOvenRecipe.Serializer::new);
+      deferredRegister.register("coking", CokeOvenRecipe.Serializer::new);
 
   public static final RegistryObject<RecipeSerializer<?>> BLASTING =
-      RECIPE_SERIALIZERS.register("blasting", BlastFurnaceRecipe.Serializer::new);
+      deferredRegister.register("blasting", BlastFurnaceRecipe.Serializer::new);
 }

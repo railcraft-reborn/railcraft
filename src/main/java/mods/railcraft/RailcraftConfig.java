@@ -56,7 +56,6 @@ public class RailcraftConfig {
     public final BooleanValue boreDestorysBlocks;
     public final BooleanValue boreMinesAllBlocks;
     public final BooleanValue cartsBreakOnDrop;
-    public final DoubleValue fuelPerSteamMultiplier;
     public final DoubleValue steamLocomotiveEfficiency;
     public final IntValue tankCartFluidTransferRate;
     public final IntValue tankCartFluidCapacity;
@@ -65,6 +64,10 @@ public class RailcraftConfig {
     public final IntValue tankCapacityPerBlock;
     public final IntValue waterCollectionRate;
     public final IntValue maxLauncherTrackForce;
+    public final DoubleValue lossMultiplier;
+
+    public final DoubleValue fuelMultiplier;
+    public final DoubleValue fuelPerSteamMultiplier;
 
     private Server(Builder builder) {
       builder.comment("High Speed Track Configuration");
@@ -142,10 +145,6 @@ public class RailcraftConfig {
           .comment("Change to \"true\" to restore vanilla behavior")
           .define("cartsBreakOnDrop", false);
 
-      this.fuelPerSteamMultiplier = builder
-          .comment("Adjust the amount of fuel used to create steam.")
-          .defineInRange("fuelPerSteamMultiplier", 1.0F, 0.2F, 6.0F);
-
       this.steamLocomotiveEfficiency = builder
           .comment("Adjust the multiplier used when calculating fuel use.")
           .defineInRange("steamLocomotiveEfficiency", 3.0F, 0.2F, 12F);
@@ -181,6 +180,25 @@ public class RailcraftConfig {
       this.maxLauncherTrackForce = builder
           .comment("change the value to your desired max launch rail force")
           .defineInRange("maxLauncherTrackForce", 30, 5, 50);
+
+      builder.push("charge");
+      {
+        this.lossMultiplier = builder
+            .comment("adjust the losses for the Charge network")
+            .defineInRange("lossMultiplier", 1.0D, 0.2D, 10.0D);
+      }
+      builder.pop();
+
+      builder.push("steam");
+      {
+        this.fuelMultiplier = builder
+            .comment("adjust the heat value of Fuel in a Boiler")
+            .defineInRange("fuelMultiplier", 1.0F, 0.2F, 10F);
+        this.fuelPerSteamMultiplier = builder
+            .comment("Adjust the amount of fuel used to create steam.")
+            .defineInRange("fuelPerSteamMultiplier", 1.0F, 0.2F, 6.0F);
+      }
+      builder.pop();
     }
 
     public int getTankCartFluidCapacity() {

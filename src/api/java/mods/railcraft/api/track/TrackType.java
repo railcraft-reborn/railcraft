@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
@@ -154,7 +155,7 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
      * @param state The state of the track
      * @param entity Entity colliding with us
      */
-    default void entityInside(Level level, BlockPos pos, BlockState state, Entity entity) {}
+    default void entityInside(ServerLevel level, BlockPos pos, BlockState state, Entity entity) {}
 
     /**
      * Returns the max speed of the rail at the specified position.

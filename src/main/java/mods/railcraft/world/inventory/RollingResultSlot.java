@@ -53,7 +53,8 @@ public class RollingResultSlot extends Slot {
 
   public void takeCraftingItems(Player playerEntity) {
     NonNullList<ItemStack> recipieRemaningItems =
-        playerEntity.level.getRecipeManager().getRemainingItemsFor(RailcraftRecipeTypes.ROLLING,
+        playerEntity.level.getRecipeManager().getRemainingItemsFor(
+            RailcraftRecipeTypes.ROLLING.get(),
             this.craftSlots, playerEntity.level);
     for (int i = 0; i < recipieRemaningItems.size(); ++i) {
       ItemStack itemstack = this.craftSlots.getItem(i);

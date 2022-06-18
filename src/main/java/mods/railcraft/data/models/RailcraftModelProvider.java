@@ -60,7 +60,7 @@ public class RailcraftModelProvider implements DataProvider {
     new RailcraftItemModelGenerators(modelConsumer).run();
 
 
-    RailcraftBlocks.BLOCKS.getEntries().forEach((block) -> {
+    RailcraftBlocks.deferredRegister.getEntries().forEach((block) -> {
       Item item = Item.BY_BLOCK.get(block.get());
       if (item != null && !skippedAutoModels.contains(item)) {
         ResourceLocation itemModel = ModelLocationUtils.getModelLocation(item);

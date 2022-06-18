@@ -66,20 +66,20 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
 
   @Override
   public boolean addPeer(BlockSignal peer) {
-    BlockSignalNetwork blockSignal = peer.getSignalNetwork();
+    var blockSignal = peer.getSignalNetwork();
     if (blockSignal == this) {
       return false;
     }
 
-    TrackLocator.Status trackStatus = this.trackLocator.getTrackStatus();
-    TrackLocator.Status otherTrackStatus = blockSignal.getTrackLocator().getTrackStatus();
+    var trackStatus = this.trackLocator.getTrackStatus();
+    var otherTrackStatus = blockSignal.getTrackLocator().getTrackStatus();
     if (trackStatus == TrackLocator.Status.INVALID
         || otherTrackStatus == TrackLocator.Status.INVALID) {
       return false;
     }
 
-    BlockPos trackPos = this.trackLocator.getTrackPos();
-    BlockPos peerTrackPos = blockSignal.getTrackLocator().getTrackPos();
+    var trackPos = this.trackLocator.getTrackPos();
+    var peerTrackPos = blockSignal.getTrackLocator().getTrackPos();
 
     assert trackPos != null;
     assert peerTrackPos != null;
@@ -102,7 +102,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
   @Override
   public boolean removePeer(BlockPos peerPos) {
     if (super.removePeer(peerPos)) {
-      BlockSignal blockSignalProvider = this.getBlockEntity(peerPos);
+      var blockSignalProvider = this.getBlockEntity(peerPos);
       if (blockSignalProvider != null) {
         blockSignalProvider.getSignalNetwork().removePeer(this.getBlockPos());
       }

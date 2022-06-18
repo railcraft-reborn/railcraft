@@ -29,9 +29,9 @@ public class DualTokenSignalBlockEntity extends TokenSignalBlockEntity
   }
 
   @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.signalReceiver.removed();
+  public void blockRemoved() {
+    super.blockRemoved();
+    this.signalReceiver.destroy();
   }
 
   @Override

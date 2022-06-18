@@ -94,7 +94,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   }
 
   @Override
-  public void removed() {
+  public void destroy() {
     List<BlockPos> peers = new ArrayList<>(this.peers);
     for (var peerPos : peers) {
       this.removePeer(peerPos);

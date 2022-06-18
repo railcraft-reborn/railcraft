@@ -9,6 +9,7 @@ import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.track.LockingTrack;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
 
 public enum ForceTrackEmitterState implements StringRepresentable {
@@ -35,7 +36,7 @@ public enum ForceTrackEmitterState implements StringRepresentable {
     public Instance load(ForceTrackEmitterBlockEntity emitter) {
       var pos = emitter.getBlockPos().above();
       var blockState = emitter.getLevel().getBlockState(pos);
-      if (blockState.getBlock()instanceof LockingTrack lockingTrack) {
+      if (blockState.getBlock() instanceof LockingTrack lockingTrack) {
         lockingTrack.releaseCart();
       }
 
@@ -66,7 +67,8 @@ public enum ForceTrackEmitterState implements StringRepresentable {
 
     @Override
     public Optional<ForceTrackEmitterState> charged() {
-      if (!Charge.distribution.network(emitter.getLevel())
+      if (!Charge.distribution
+          .network((ServerLevel) emitter.getLevel())
           .access(emitter.getBlockPos())
           .hasCapacity(
               ForceTrackEmitterBlockEntity.getMaintenanceCost(emitter.getTrackCount() + 1))) {

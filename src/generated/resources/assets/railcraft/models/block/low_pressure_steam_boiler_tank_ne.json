@@ -1,0 +1,7 @@
+{
+  "parent": "railcraft:block/template_steam_boiler_tank_ne",
+  "textures": {
+    "end": "railcraft:block/low_pressure_steam_boiler_tank_end",
+    "side": "railcraft:block/low_pressure_steam_boiler_tank_side"
+  }
+}

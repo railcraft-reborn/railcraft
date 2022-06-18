@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "rotated=false,type=bottom_left": {
+      "model": "railcraft:block/steam_turbine_bottom_left",
+      "y": 0
+    },
+    "rotated=false,type=bottom_right": {
+      "model": "railcraft:block/steam_turbine_bottom_right",
+      "y": 0
+    },
+    "rotated=false,type=none": {
+      "model": "railcraft:block/steam_turbine_side"
+    },
+    "rotated=false,type=top_left": {
+      "model": "railcraft:block/steam_turbine_top_left",
+      "y": 0
+    },
+    "rotated=false,type=top_right": {
+      "model": "railcraft:block/steam_turbine_top_right",
+      "y": 0
+    },
+    "rotated=false,type=window": {
+      "model": "railcraft:block/steam_turbine_window",
+      "y": 0
+    },
+    "rotated=true,type=bottom_left": {
+      "model": "railcraft:block/steam_turbine_bottom_left",
+      "y": 90
+    },
+    "rotated=true,type=bottom_right": {
+      "model": "railcraft:block/steam_turbine_bottom_right",
+      "y": 90
+    },
+    "rotated=true,type=none": {
+      "model": "railcraft:block/steam_turbine_side"
+    },
+    "rotated=true,type=top_left": {
+      "model": "railcraft:block/steam_turbine_top_left",
+      "y": 90
+    },
+    "rotated=true,type=top_right": {
+      "model": "railcraft:block/steam_turbine_top_right",
+      "y": 90
+    },
+    "rotated=true,type=window": {
+      "model": "railcraft:block/steam_turbine_window",
+      "y": 90
+    }
+  }
+}

@@ -1,12 +1,10 @@
 package mods.railcraft.api.signal;
 
+import mods.railcraft.api.core.BlockEntityLike;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;
 
-public interface Signal<T> extends Nameable {
+public interface Signal extends BlockEntityLike, Nameable {
 
-  TrackLocator getTrackLocator();
-
-  SignalNetwork<T> getSignalNetwork();
-
-  Class<T> getSignalType();
+  void setCustomName(Component name);
 }

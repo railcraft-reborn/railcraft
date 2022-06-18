@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.EnumSet;
 import java.util.Set;
+import javax.annotation.Nullable;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
 import mods.railcraft.api.signal.SignalReceiverProvider;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBlockEntity
@@ -56,6 +58,11 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   public void setRedstoneTriggered(boolean redstoneTriggered) {
     this.redstoneTriggered = redstoneTriggered;
     this.updateSwitched();
+  }
+
+  @Override
+  public void setCustomName(@Nullable Component name) {
+    super.setCustomName(name);
   }
 
   @Override

@@ -105,14 +105,12 @@ public class SteamLocomotive extends BaseSteamLocomotive
     }
   }
 
-  @Override
   public boolean needsFuel() {
-    FluidStack water = waterTank.getFluid();
-    if (water == null || water.getAmount() < waterTank.getCapacity() / 3) {
+    var water = this.waterTank.getFluid();
+    if (water.isEmpty() || water.getAmount() < this.waterTank.getCapacity() / 3) {
       return true;
     }
-    int numItems = this.fuelContainer
-        .countItems(item -> ForgeHooks.getBurnTime(item, null) > 0);
+    int numItems = this.fuelContainer.countItems(item -> ForgeHooks.getBurnTime(item, null) > 0);
     if (numItems == 0) {
       return true;
     }

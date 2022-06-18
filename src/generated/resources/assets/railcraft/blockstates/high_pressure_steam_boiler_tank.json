@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "connection_type=all": {
+      "model": "railcraft:block/high_pressure_steam_boiler_tank_all"
+    },
+    "connection_type=none": {
+      "model": "railcraft:block/high_pressure_steam_boiler_tank"
+    },
+    "connection_type=north_east": {
+      "model": "railcraft:block/high_pressure_steam_boiler_tank_ne"
+    },
+    "connection_type=north_east_west": {
+      "model": "railcraft:block/high_pressure_steam_boiler_tank_new"
+    },
+    "connection_type=north_south_east": {
+      "model": "railcraft:block/high_pressure_steam_boiler_tank_nse"
+    },
+    "connection_type=north_south_west": {
+      "model": "railcraft:block/high_pressure_steam_boiler_tank_nsw"
+    },
+    "connection_type=north_west": {
+      "model": "railcraft:block/high_pressure_steam_boiler_tank_nw"
+    },
+    "connection_type=south_east": {
+      "model": "railcraft:block/high_pressure_steam_boiler_tank_se"
+    },
+    "connection_type=south_east_west": {
+      "model": "railcraft:block/high_pressure_steam_boiler_tank_sew"
+    },
+    "connection_type=south_west": {
+      "model": "railcraft:block/high_pressure_steam_boiler_tank_sw"
+    }
+  }
+}

@@ -3,8 +3,7 @@ package mods.railcraft.client;
 import java.util.Random;
 import java.util.Set;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.signal.SignalTools;
-import mods.railcraft.api.signal.TuningAuraHelper;
+import mods.railcraft.api.signal.TuningAuraProvider;
 import mods.railcraft.client.renderer.blockentity.SignalAuraRenderUtil;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.particle.TuningAuraParticleOptions;
@@ -33,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer {
+public enum ClientEffects implements TuningAuraProvider, Charge.ZapEffectProvider {
 
   INSTANCE;
 
@@ -42,11 +41,6 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
 
   private final Minecraft minecraft = Minecraft.getInstance();
   private final Random rand = new Random();
-
-  private ClientEffects() {
-    SignalTools.effectManager = this;
-    Charge.internalSetEffects(this);
-  }
 
   public void readTeleport(FriendlyByteBuf data) {
     Level world = this.minecraft.level;
@@ -109,7 +103,7 @@ public enum ClientEffects implements TuningAuraHelper, Charge.IZapEffectRenderer
   }
 
   @Override
-  public void spawnTuningAuraParticles(BlockEntity start, BlockEntity dest) {
+  public void spawnTuningAura(BlockEntity start, BlockEntity dest) {
     if (this.thinParticles(false)) {
       return;
     }

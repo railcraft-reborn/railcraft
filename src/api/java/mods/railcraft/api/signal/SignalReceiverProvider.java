@@ -6,9 +6,7 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.signal;
 
-import mods.railcraft.api.core.BlockEntityLike;
-
-public interface SignalReceiverProvider extends BlockEntityLike {
+public interface SignalReceiverProvider extends Signal {
 
   SignalReceiver getSignalReceiver();
 }

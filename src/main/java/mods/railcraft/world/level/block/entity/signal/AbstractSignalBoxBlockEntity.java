@@ -1,9 +1,11 @@
 package mods.railcraft.world.level.block.entity.signal;
 
+import javax.annotation.Nullable;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,20 +24,27 @@ public abstract class AbstractSignalBoxBlockEntity extends RailcraftBlockEntity 
     this.updateNeighborSignalBoxes(false);
   }
 
+  @Override
+  public void setCustomName(@Nullable Component name) {
+    super.setCustomName(name);
+  }
+
   public void neighborChanged() {}
 
   public abstract SignalAspect getSignalAspect(Direction direction);
 
-  @Override
-  public void setChanged() {
-    super.setChanged();
-    this.updateNeighborSignalBoxes(false);
+  public void blockRemoved() {
+    this.updateNeighborSignalBoxes(true);
   }
 
   @Override
-  public void setRemoved() {
-    super.setRemoved();
-    this.updateNeighborSignalBoxes(true);
+  public void setChanged() {
+    if (this.level == null) {
+      return;
+    }
+    this.level.blockEntityChanged(this.getBlockPos());
+    this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
+    this.updateNeighborSignalBoxes(false);
   }
 
   protected void neighborSignalBoxChanged(AbstractSignalBoxBlockEntity neighborSignalBox,

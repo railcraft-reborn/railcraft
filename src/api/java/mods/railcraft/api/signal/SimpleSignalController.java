@@ -52,7 +52,7 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
   @Override
   public boolean removePeer(BlockPos peerPos) {
     if (super.removePeer(peerPos)) {
-      SignalReceiverProvider signalReceiverProvider = this.getBlockEntity(peerPos);
+      var signalReceiverProvider = this.getBlockEntity(peerPos);
       if (signalReceiverProvider != null) {
         signalReceiverProvider.getSignalReceiver().unlinked(this);
       }
@@ -109,10 +109,10 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
   }
 
   public void spawnTuningAuraParticles() {
-    if (SignalTools.effectManager != null && SignalTools.effectManager.isTuningAuraActive()) {
-      this.stream()
-          .forEach(peer -> SignalTools.effectManager.spawnTuningAuraParticles(this.getBlockEntity(),
-              peer.asBlockEntity()));
+    var provider = SignalTools.tuningAuraProvider();
+    if (provider.isTuningAuraActive()) {
+      this.stream().forEach(peer -> provider.spawnTuningAura(
+          this.getBlockEntity(), peer.asBlockEntity()));
     }
   }
 

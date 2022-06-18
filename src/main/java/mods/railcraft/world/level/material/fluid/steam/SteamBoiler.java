@@ -1,11 +1,10 @@
 package mods.railcraft.world.level.material.fluid.steam;
 
-import java.util.Collections;
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.primitives.Floats;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.gui.widget.Gauge;
-import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.material.fluid.FuelProvider;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
@@ -40,12 +39,13 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
   private double efficiencyModifier = 1;
   private int ticksPerCycle = 16;
-  private RailcraftBlockEntity tile;
+  @Nullable
+  private Runnable changeListener;
   private FuelProvider fuelProvider;
 
-  public SteamBoiler(StandardTank waterTank, StandardTank tankSteam) {
+  public SteamBoiler(StandardTank waterTank, StandardTank steamTank) {
     this.waterTank = waterTank;
-    this.steamTank = tankSteam;
+    this.steamTank = steamTank;
   }
 
   public IFluidTank getWaterTank() {
@@ -56,13 +56,34 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     return this.steamTank;
   }
 
+  /**
+   * Callback for adding water.
+   * 
+   * @param resource The fluidstack (should be water).
+   */
+  public FluidStack checkFill(FluidStack resource, Runnable explosionCallback) {
+    if (resource.isEmpty()) {
+      return FluidStack.EMPTY;
+    }
+
+    if (this.isSuperHeated()) {
+      var water = this.waterTank.getFluid();
+      if (water.isEmpty()) {
+        explosionCallback.run();
+        return FluidStack.EMPTY;
+      }
+    }
+
+    return resource;
+  }
+
   public SteamBoiler setFuelProvider(FuelProvider fuelProvider) {
     this.fuelProvider = fuelProvider;
     return this;
   }
 
-  public SteamBoiler setTile(RailcraftBlockEntity tile) {
-    this.tile = tile;
+  public SteamBoiler setChangeListener(@Nullable Runnable changeListener) {
+    this.changeListener = changeListener;
     return this;
   }
 
@@ -101,7 +122,6 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
   public void setTemperature(float temperature) {
     this.temperature =
         Floats.constrainToRange(temperature, SteamConstants.COLD_TEMP, this.getMaxTemperature());
-    this.temperatureGauge.refresh();
   }
 
   public float getTemperaturePercent() {
@@ -201,9 +221,11 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
       this.burning = this.getBurnTime() >= fuelNeeded;
       if (this.burning) {
         this.setBurnTime(this.getBurnTime() - fuelNeeded);
+      } else {
+        this.setBurnTime(0);
       }
-      if (this.tile != null && this.burning != wasBurning) {
-        this.tile.syncToClient();
+      if (this.changeListener != null && this.burning != wasBurning) {
+        this.changeListener.run();
       }
       this.convertSteam(numTanks);
     }
@@ -225,7 +247,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     }
     this.partialConversions -= waterCost;
 
-    FluidStack water = this.waterTank.drain(waterCost, FluidAction.SIMULATE);
+    FluidStack water = this.waterTank.internalDrain(waterCost, FluidAction.SIMULATE);
     if (water.isEmpty()) {
       return 0;
     }
@@ -276,7 +298,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     return this.burnTime;
   }
 
-  public double setBurnTime(float burnTime) {
+  public float setBurnTime(float burnTime) {
     this.burnTime = burnTime;
     return burnTime;
   }
@@ -287,7 +309,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
     @Override
     public void refresh() {
-      this.tooltip = Collections.singletonList(
+      this.tooltip = List.of(
           new TextComponent(String.format("%.0f°", SteamBoiler.this.getTemperature())));
     }
 

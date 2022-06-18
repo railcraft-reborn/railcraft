@@ -1,8 +1,8 @@
 package mods.railcraft.world.inventory;
 
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 
@@ -12,11 +12,12 @@ public class WaterSlot extends RailcraftSlot {
     super(iinventory, slotIndex, posX, posY);
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public boolean mayPlace(ItemStack stack) {
     return FluidUtil.getFluidContained(stack)
         .map(FluidStack::getFluid)
-        .filter(fluid -> fluid == Fluids.WATER)
+        .filter(fluid -> fluid.is(FluidTags.WATER))
         .isPresent();
   }
 }

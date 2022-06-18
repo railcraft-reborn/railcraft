@@ -3,17 +3,14 @@ package mods.railcraft.world.inventory;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.network.FriendlyByteBuf;
 
 public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
 
   public static final int HEIGHT = 205;
 
-  public SteamLocomotiveMenu(int id, Inventory playerInventory,
-      SteamLocomotive locomotive) {
-    super(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), id, playerInventory, locomotive, HEIGHT);
+  public SteamLocomotiveMenu(int id, Inventory inventory,  SteamLocomotive locomotive) {
+    super(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), id, inventory, locomotive, HEIGHT);
 
     this.addWidget(
         new FluidGaugeWidget(this.getLocomotive().getTankManager().get(0), 53, 23, 176, 0, 16, 47));
@@ -38,15 +35,5 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
     this.addDataSlot(new SimpleDataSlot(
         () -> (int) Math.round(locomotive.getBoiler().getCurrentItemBurnTime()),
         this.getLocomotive().getBoiler()::setCurrentItemBurnTime));
-  }
-
-  public static SteamLocomotiveMenu create(int id, Inventory playerInventory,
-      FriendlyByteBuf data) {
-    int entityId = data.readVarInt();
-    Entity entity = playerInventory.player.level.getEntity(entityId);
-    if (entity instanceof SteamLocomotive) {
-      return new SteamLocomotiveMenu(id, playerInventory, (SteamLocomotive) entity);
-    }
-    throw new IllegalStateException("Cannot find locomotive with ID: " + entityId);
   }
 }

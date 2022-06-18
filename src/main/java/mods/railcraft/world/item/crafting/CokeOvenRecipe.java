@@ -23,7 +23,7 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
   public CokeOvenRecipe(ResourceLocation id, String group,
       Ingredient ingredient, ItemStack result, float experience, int cookingTime,
       int creosoteOutput) {
-    super(RailcraftRecipeTypes.COKING, id, group, ingredient, result, experience,
+    super(RailcraftRecipeTypes.COKING.get(), id, group, ingredient, result, experience,
         cookingTime);
     this.creosote = new FluidStack(RailcraftFluids.CREOSOTE.get(), creosoteOutput);
   }

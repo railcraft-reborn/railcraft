@@ -6,14 +6,18 @@ import org.apache.logging.log4j.Logger;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.event.CartLinkEvent;
+import mods.railcraft.api.fuel.FuelUtil;
+import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.client.ClientDist;
 import mods.railcraft.data.RailcraftAdvancementProviders;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
+import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.worldgen.RailcraftOrePlacements;
+import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.network.play.LinkedCartsMessage;
@@ -25,8 +29,8 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
-import mods.railcraft.world.entity.vehicle.RailcraftTrainTransferHelper;
 import mods.railcraft.world.entity.vehicle.Train;
+import mods.railcraft.world.entity.vehicle.TrainTransferHelperImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftItems;
@@ -53,7 +57,6 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
@@ -85,8 +88,12 @@ public class Railcraft {
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
 
   static {
-    CartUtil.linkageManager = LinkageManagerImpl.INSTANCE;
-    CartUtil.transferHelper = RailcraftTrainTransferHelper.INSTANCE;
+    FuelUtil._setFuelManager(FuelManagerImpl.INSTANCE);
+    CartUtil._setLinkageManager(LinkageManagerImpl.INSTANCE);
+    CartUtil._setTransferHelper(TrainTransferHelperImpl.INSTANCE);
+    for (var value : ChargeProviderImpl.values()) {
+      value.getCharge()._setProvider(value);
+    }
   }
 
   public static final Logger logger = LogManager.getLogger();
@@ -112,24 +119,20 @@ public class Railcraft {
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
-    modEventBus.addGenericListener(RecipeSerializer.class,
-        (RegistryEvent.Register<RecipeSerializer<?>> event) -> {
-          // Static init as Minecraft now freezes its registries
-          RailcraftRecipeTypes.init();
-          RailcraftGameEvents.init();
-        });
 
-    RailcraftEntityTypes.ENTITY_TYPES.register(modEventBus);
-    RailcraftBlocks.BLOCKS.register(modEventBus);
-    RailcraftItems.ITEMS.register(modEventBus);
-    RailcraftBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
-    TrackTypes.TRACK_TYPES.register(modEventBus);
-    RailcraftFluids.FLUIDS.register(modEventBus);
-    RailcraftMenuTypes.MENU_TYPES.register(modEventBus);
-    RailcraftSoundEvents.SOUND_EVENTS.register(modEventBus);
-    RailcraftEnchantments.ENCHANTMENTS.register(modEventBus);
-    RailcraftParticleTypes.PARTICLE_TYPES.register(modEventBus);
-    RailcraftRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+    RailcraftEntityTypes.deferredRegister.register(modEventBus);
+    RailcraftBlocks.deferredRegister.register(modEventBus);
+    RailcraftItems.deferredRegister.register(modEventBus);
+    RailcraftBlockEntityTypes.deferredRegister.register(modEventBus);
+    TrackTypes.deferredRegister.register(modEventBus);
+    RailcraftFluids.deferredRegister.register(modEventBus);
+    RailcraftMenuTypes.deferredRegister.register(modEventBus);
+    RailcraftSoundEvents.deferredRegister.register(modEventBus);
+    RailcraftEnchantments.deferredRegister.register(modEventBus);
+    RailcraftParticleTypes.deferredRegister.register(modEventBus);
+    RailcraftRecipeSerializers.deferredRegister.register(modEventBus);
+    RailcraftRecipeTypes.deferredRegister.register(modEventBus);
+    RailcraftGameEvents.deferredRegister.register(modEventBus);
   }
 
   public MinecartHandler getMinecartHandler() {
@@ -153,24 +156,7 @@ public class Railcraft {
 
   private void handleCommonSetup(FMLCommonSetupEvent event) {
     event.enqueueWork(RailcraftCriteriaTriggers::register);
-
-    logger.info("Starting Railcraft");
-
-    var sauce = "@SOURCE@";
-    var sha = "@SHA@";
-    var prNum = "@PR_NUM@";
-
-    if (prNum != "@PR_NUM@") {
-      logger.error("THIS RAILCRAFT BUILD IS FROM A PULL REQUEST!"
-        + "DO **NOT** POST ISSUES ABOUT THIS VERSION ON ISSUES TAB, INSTEAD REPORT ON THE PR ITSELF AT "
-        + "https://github.com/Sm0keySa1m0n/Railcraft/pull/" + prNum);
-      logger.error("RC Commit: " + sha);
-      logger.error("RC Source: PR");
-      return;
-    }
-
-    logger.info("RC Commit: " + sha);
-    logger.info("RC Source: " + sauce);
+    FuelUtil.fuelManager().addFuel(RailcraftFluids.CREOSOTE.get(), 4800);
   }
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
@@ -183,6 +169,7 @@ public class Railcraft {
     var blockTags = new RailcraftBlockTagsProvider(generator, fileHelper);
     generator.addProvider(blockTags);
     generator.addProvider(new RailcraftItemTagsProvider(generator, blockTags, fileHelper));
+    generator.addProvider(new RailcraftFluidTagsProvider(generator, fileHelper));
     generator.addProvider(new RailcraftLootTableProvider(generator));
     generator.addProvider(new RailcraftAdvancementProviders(generator, fileHelper));
     generator.addProvider(new RailcraftRecipeProvider(generator));
@@ -232,6 +219,9 @@ public class Railcraft {
   @SubscribeEvent
   public void handleWorldTick(TickEvent.WorldTickEvent event) {
     if (event.world instanceof ServerLevel level && event.phase == TickEvent.Phase.END) {
+      for (var provider : ChargeProviderImpl.values()) {
+        provider.network(level).tick();
+      }
       TokenRingManager.get(level).tick(level);
       if (level.getServer().getTickCount() % 32 == 0) {
         Train.getManager(level).tick();
@@ -293,6 +283,6 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handleNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
-    event.getWorld().gameEvent(RailcraftGameEvents.NEIGHBOR_NOTIFY, event.getPos());
+    event.getWorld().gameEvent(RailcraftGameEvents.NEIGHBOR_NOTIFY.get(), event.getPos());
   }
 }

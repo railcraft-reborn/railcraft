@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.track;
 
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.track.TrackType;
@@ -7,6 +8,10 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.behaivor.CollisionHandler;
 import mods.railcraft.world.level.block.track.behaivor.SpeedController;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
@@ -15,7 +20,6 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
@@ -23,14 +27,17 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class TrackTypes {
 
-  public static final DeferredRegister<TrackType> TRACK_TYPES =
-      DeferredRegister.create(TrackType.class, Railcraft.ID);
+  public static final ResourceKey<Registry<TrackType>> REGISTRY_KEY =
+      ResourceKey.createRegistryKey(new ResourceLocation(Railcraft.ID, "track_type"));
 
-  public static final Lazy<IForgeRegistry<TrackType>> registry =
-      Lazy.of(TRACK_TYPES.makeRegistry("track_type", RegistryBuilder::new));
+  public static final DeferredRegister<TrackType> deferredRegister =
+      DeferredRegister.create(REGISTRY_KEY, Railcraft.ID);
+
+  public static final Supplier<IForgeRegistry<TrackType>> registry =
+      deferredRegister.makeRegistry(TrackType.class, RegistryBuilder::new);
 
   public static final RegistryObject<TrackType> ABANDONED =
-      TRACK_TYPES.register("abandoned",
+      deferredRegister.register("abandoned",
           () -> new TrackType.Builder(RailcraftBlocks.ABANDONED_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.ABANDONED_TURNOUT_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.ABANDONED_WYE_TRACK)
@@ -40,7 +47,7 @@ public class TrackTypes {
               .build());
 
   public static final RegistryObject<TrackType> ELECTRIC =
-      TRACK_TYPES.register("electric",
+      deferredRegister.register("electric",
           () -> new TrackType.Builder(RailcraftBlocks.ELECTRIC_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.ELECTRIC_TURNOUT_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.ELECTRIC_WYE_TRACK)
@@ -51,7 +58,7 @@ public class TrackTypes {
               .build());
 
   public static final RegistryObject<TrackType> HIGH_SPEED =
-      TRACK_TYPES.register("high_speed",
+      deferredRegister.register("high_speed",
           () -> new TrackType.Builder(RailcraftBlocks.HIGH_SPEED_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_WYE_TRACK)
@@ -61,7 +68,7 @@ public class TrackTypes {
               .build());
 
   public static final RegistryObject<TrackType> HIGH_SPEED_ELECTRIC =
-      TRACK_TYPES.register("high_speed_electric",
+      deferredRegister.register("high_speed_electric",
           () -> new TrackType.Builder(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK)
@@ -73,7 +80,7 @@ public class TrackTypes {
               .build());
 
   public static final RegistryObject<TrackType> IRON =
-      TRACK_TYPES.register("iron",
+      deferredRegister.register("iron",
           () -> new TrackType.Builder(() -> (BaseRailBlock) Blocks.RAIL)
               .addSpikeMaulVariant(RailcraftBlocks.IRON_TURNOUT_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.IRON_WYE_TRACK)
@@ -82,7 +89,7 @@ public class TrackTypes {
               .build());
 
   public static final RegistryObject<TrackType> REINFORCED =
-      TRACK_TYPES.register("reinforced",
+      deferredRegister.register("reinforced",
           () -> new TrackType.Builder(RailcraftBlocks.REINFORCED_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.REINFORCED_TURNOUT_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.REINFORCED_WYE_TRACK)
@@ -91,7 +98,7 @@ public class TrackTypes {
               .build());
 
   public static final RegistryObject<TrackType> STRAP_IRON =
-      TRACK_TYPES.register("strap_iron",
+      deferredRegister.register("strap_iron",
           () -> new TrackType.Builder(RailcraftBlocks.STRAP_IRON_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.STRAP_IRON_WYE_TRACK)
@@ -115,7 +122,8 @@ public class TrackTypes {
     }
 
     @Override
-    public void entityInside(Level level, BlockPos pos, BlockState blockState, Entity entity) {
+    public void entityInside(ServerLevel level, BlockPos pos, BlockState blockState,
+        Entity entity) {
       this.collisionHandler.entityInside(level, pos, blockState, entity);
     }
 

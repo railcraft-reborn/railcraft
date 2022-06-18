@@ -14,6 +14,7 @@ import mods.railcraft.api.track.TypedTrack;
 import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.behaivor.TrackSupportTools;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
@@ -41,8 +42,8 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
 
   public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE;
 
-  private static final Map<Charge, ChargeSpec> CHARGE_SPECS =
-      ChargeSpec.make(Charge.distribution, ConnectType.TRACK, 0.01);
+  private static final Map<Charge, Spec> CHARGE_SPECS =
+      Spec.make(Charge.distribution, ConnectType.TRACK, 0.01F);
 
   private final Supplier<? extends TrackType> trackType;
 
@@ -81,7 +82,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   @Override
   public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
     if (this.getTrackType().isElectric()) {
-      Charge.effects().throwSparks(stateIn, worldIn, pos, rand, 75);
+      Charge.zapEffectProvider().throwSparks(stateIn, worldIn, pos, rand, 75);
     }
   }
 
@@ -89,15 +90,15 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   public void onPlace(BlockState blockState, Level level, BlockPos pos, BlockState oldBlockState,
       boolean moved) {
     super.onPlace(blockState, level, pos, oldBlockState, moved);
+    if (!blockState.is(oldBlockState.getBlock())) {
+      if (!TrackSupportTools.isSupported(level, pos, this.getTrackType().getMaxSupportDistance())) {
+        level.destroyBlock(pos, true);
+        return;
+      }
 
-    if (!level.isClientSide() && !TrackSupportTools.isSupported(level, pos,
-        this.getTrackType().getMaxSupportDistance())) {
-      level.destroyBlock(pos, true);
-      return;
-    }
-
-    if (this.getTrackType().isElectric()) {
-      this.registerNode(blockState, level, pos);
+      if (this.getTrackType().isElectric()) {
+        this.registerNode(blockState, (ServerLevel) level, pos);
+      }
     }
   }
 
@@ -105,12 +106,13 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newBlockState,
       boolean moved) {
     super.onRemove(blockState, level, pos, newBlockState, moved);
-    Charge.distribution.network(level).removeNode(pos);
+    if (!blockState.is(newBlockState.getBlock())) {
+      this.deregisterNode((ServerLevel) level, pos);
+    }
   }
 
   @Override
-  public Map<Charge, ChargeSpec> getChargeSpecs(
-      BlockState state, BlockGetter level, BlockPos pos) {
+  public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level, BlockPos pos) {
     return this.getTrackType().isElectric() ? CHARGE_SPECS : Collections.emptyMap();
   }
 
@@ -188,11 +190,10 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
-    if (world.isClientSide()) {
-      return;
+  public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    if (level instanceof ServerLevel serverLevel) {
+      this.getTrackType().getEventHandler().entityInside(serverLevel, pos, state, entity);
     }
-    this.getTrackType().getEventHandler().entityInside(world, pos, state, entity);
   }
 
   @Override

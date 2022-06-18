@@ -60,8 +60,8 @@ public class DualSignalReceiver extends SingleSignalReceiver {
   }
 
   @Override
-  public void removed() {
-    super.removed();
+  public void destroy() {
+    super.destroy();
     this.secondarySignalClient.unlink();
   }
 

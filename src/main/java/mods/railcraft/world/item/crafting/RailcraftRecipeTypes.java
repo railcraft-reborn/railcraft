@@ -1,19 +1,33 @@
 package mods.railcraft.world.item.crafting;
 
 import mods.railcraft.Railcraft;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftRecipeTypes {
 
-  public static final RecipeType<RollingRecipe> ROLLING =
-      RecipeType.register(Railcraft.ID + ":rolling");
+  public static final DeferredRegister<RecipeType<?>> deferredRegister =
+      DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, Railcraft.ID);
 
-  public static final RecipeType<CokeOvenRecipe> COKING =
-      RecipeType.register(Railcraft.ID + ":coking");
+  public static final RegistryObject<RecipeType<RollingRecipe>> ROLLING =
+      register("rolling");
 
-  public static final RecipeType<BlastFurnaceRecipe> BLASTING =
-      RecipeType.register(Railcraft.ID + ":blasting");
+  public static final RegistryObject<RecipeType<CokeOvenRecipe>> COKING =
+      register("coking");
 
-  // Dummy method to force this class to be class loaded.
-  public static void init() {}
+  public static final RegistryObject<RecipeType<BlastFurnaceRecipe>> BLASTING =
+      register("blasting");
+
+  private static <T extends Recipe<?>> RegistryObject<RecipeType<T>> register(String name) {
+    return deferredRegister.register(name, () -> new RecipeType<T>() {
+      @Override
+      public String toString() {
+        return Railcraft.ID + ResourceLocation.NAMESPACE_SEPARATOR + name;
+      }
+    });
+  }
 }

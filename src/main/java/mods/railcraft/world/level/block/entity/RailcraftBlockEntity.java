@@ -10,11 +10,10 @@ import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.network.PacketBuilder;
-import mods.railcraft.world.level.block.entity.module.Module;
-import mods.railcraft.world.level.block.entity.module.ModuleDispatcher;
-import mods.railcraft.world.level.block.entity.module.ModuleProvider;
+import mods.railcraft.world.module.BlockModuleProvider;
+import mods.railcraft.world.module.Module;
+import mods.railcraft.world.module.ModuleDispatcher;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -24,14 +23,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 
 public abstract class RailcraftBlockEntity extends BlockEntity
-    implements NetworkSerializable, Ownable, BlockEntityLike, ModuleProvider {
+    implements NetworkSerializable, Ownable, BlockEntityLike, BlockModuleProvider {
 
   protected final ModuleDispatcher moduleDispatcher = new ModuleDispatcher();
 
@@ -44,6 +42,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   public RailcraftBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     super(type, blockPos, blockState);
   }
+
 
   @Override
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -82,6 +81,13 @@ public abstract class RailcraftBlockEntity extends BlockEntity
       out.writeUtf(this.owner.getName(), 16);
     }
 
+    if (this.customName == null) {
+      out.writeBoolean(true);
+    } else {
+      out.writeBoolean(false);
+      out.writeComponent(this.customName);
+    }
+
     this.moduleDispatcher.writeToBuf(out);
   }
 
@@ -95,7 +101,19 @@ public abstract class RailcraftBlockEntity extends BlockEntity
       this.owner = new GameProfile(ownerId, ownerName);
     }
 
+    this.customName = in.readBoolean() ? null : in.readComponent();
+
     this.moduleDispatcher.readFromBuf(in);
+  }
+
+  @Override
+  public BlockPos blockPos() {
+    return this.getBlockPos();
+  }
+
+  @Override
+  public Level level() {
+    return this.getLevel();
   }
 
   @Override
@@ -165,11 +183,6 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     this.moduleDispatcher.deserializeNBT(tag.getCompound("modules"));
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    return this.moduleDispatcher.getCapability(cap, side);
-  }
-
   public final int getX() {
     return this.getBlockPos().getX();
   }
@@ -187,8 +200,15 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     return this.customName != null;
   }
 
-  public void setCustomName(@Nullable Component name) {
+  @Override
+  @Nullable
+  public Component getCustomName() {
+    return this.customName;
+  }
+
+  protected void setCustomName(@Nullable Component name) {
     this.customName = name;
+    this.syncToClient();
   }
 
   @Override

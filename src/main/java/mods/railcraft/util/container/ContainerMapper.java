@@ -52,8 +52,8 @@ public class ContainerMapper implements Container, VanillaContainerManipulator {
   }
 
   @SafeVarargs
-  public final ContainerMapper withFilters(Predicate<ItemStack>... filters) {
-    this.filter = Predicates.and(filter, filters);
+  public final ContainerMapper addFilters(Predicate<ItemStack>... filters) {
+    this.filter = Predicates.and(this.filter, filters);
     return this;
   }
 

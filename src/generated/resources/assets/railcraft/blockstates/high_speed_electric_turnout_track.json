@@ -23,11 +23,11 @@
       "y": 270
     },
     "mirrored=false,reversed=true,shape=north_south,switched=false": {
-      "model": "railcraft:block/high_speed_electric_turnout_track_south",
+      "model": "railcraft:block/high_speed_electric_turnout_track_north",
       "y": 180
     },
     "mirrored=false,reversed=true,shape=north_south,switched=true": {
-      "model": "railcraft:block/high_speed_electric_turnout_track_south_switched",
+      "model": "railcraft:block/high_speed_electric_turnout_track_north_switched",
       "y": 180
     },
     "mirrored=true,reversed=false,shape=east_west,switched=false": {

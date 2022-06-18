@@ -1,5 +1,6 @@
 package mods.railcraft.data.models;
 
+import java.util.EnumMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -8,13 +9,16 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
-import mods.railcraft.world.level.block.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
+import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
+import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
+import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
@@ -202,6 +206,14 @@ public class RailcraftBlockModelGenerators {
     this.skipAutoItemBlock(RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
     this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_LEVER.get());
     this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
+
+    this.createSteamBoilerTank(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get());
+    this.createSteamBoilerTank(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
+
+    this.createFirebox(RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
+    this.createFirebox(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
+
+    this.createSteamTurbine(RailcraftBlocks.STEAM_TURBINE.get());
 
     this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
         TexturedModel.CUBE_TOP_BOTTOM);
@@ -739,6 +751,136 @@ public class RailcraftBlockModelGenerators {
     this.createSimpleFlatItemModel(block);
   }
 
+  private void createFirebox(Block block) {
+    var endTexture = TextureMapping.getBlockTexture(block, "_end");
+    var model = ModelTemplates.CUBE_COLUMN.create(block,
+        new TextureMapping()
+            .put(TextureSlot.END, endTexture)
+            .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side")),
+        this.modelOutput);
+
+    var litModel = ModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_lit",
+        new TextureMapping()
+            .put(TextureSlot.END, endTexture)
+            .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_lit")),
+        this.modelOutput);
+
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.property(FireboxBlock.LIT)
+            .select(false, Variant.variant()
+                .with(VariantProperties.MODEL, model))
+            .select(true, Variant.variant()
+                .with(VariantProperties.MODEL, litModel))));
+  }
+
+  private void createSteamBoilerTank(Block block) {
+    var textureMapping = new TextureMapping()
+        .put(TextureSlot.END, TextureMapping.getBlockTexture(block, "_end"))
+        .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"));
+
+    var model =
+        RailcraftModelTemplates.STEAM_BOILER_TANK.create(block, textureMapping, this.modelOutput);
+
+    var allModel = ModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_all", textureMapping,
+        this.modelOutput);
+
+    var northEastModel =
+        RailcraftModelTemplates.STEAM_BOILER_TANK_NE.create(block, textureMapping,
+            this.modelOutput);
+    var northEastWestModel =
+        RailcraftModelTemplates.STEAM_BOILER_TANK_NEW.create(block, textureMapping,
+            this.modelOutput);
+    var northSouthEastModel =
+        RailcraftModelTemplates.STEAM_BOILER_TANK_NSE.create(block, textureMapping,
+            this.modelOutput);
+    var northSouthWestModel =
+        RailcraftModelTemplates.STEAM_BOILER_TANK_NSW.create(block, textureMapping,
+            this.modelOutput);
+    var northWestModel =
+        RailcraftModelTemplates.STEAM_BOILER_TANK_NW.create(block, textureMapping,
+            this.modelOutput);
+    var southEastModel =
+        RailcraftModelTemplates.STEAM_BOILER_TANK_SE.create(block, textureMapping,
+            this.modelOutput);
+    var southEastWestModel =
+        RailcraftModelTemplates.STEAM_BOILER_TANK_SEW.create(block, textureMapping,
+            this.modelOutput);
+    var southWestModel =
+        RailcraftModelTemplates.STEAM_BOILER_TANK_SW.create(block, textureMapping,
+            this.modelOutput);
+
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.property(SteamBoilerTankBlock.CONNECTION_TYPE)
+            .select(SteamBoilerTankBlock.ConnectionType.NONE, Variant.variant()
+                .with(VariantProperties.MODEL, model))
+            .select(SteamBoilerTankBlock.ConnectionType.ALL, Variant.variant()
+                .with(VariantProperties.MODEL, allModel))
+            .select(SteamBoilerTankBlock.ConnectionType.NORTH_EAST, Variant.variant()
+                .with(VariantProperties.MODEL, northEastModel))
+            .select(SteamBoilerTankBlock.ConnectionType.SOUTH_EAST, Variant.variant()
+                .with(VariantProperties.MODEL, southEastModel))
+            .select(SteamBoilerTankBlock.ConnectionType.SOUTH_WEST, Variant.variant()
+                .with(VariantProperties.MODEL, southWestModel))
+            .select(SteamBoilerTankBlock.ConnectionType.NORTH_WEST, Variant.variant()
+                .with(VariantProperties.MODEL, northWestModel))
+            .select(SteamBoilerTankBlock.ConnectionType.NORTH_SOUTH_EAST, Variant.variant()
+                .with(VariantProperties.MODEL, northSouthEastModel))
+            .select(SteamBoilerTankBlock.ConnectionType.SOUTH_EAST_WEST, Variant.variant()
+                .with(VariantProperties.MODEL, southEastWestModel))
+            .select(SteamBoilerTankBlock.ConnectionType.NORTH_EAST_WEST, Variant.variant()
+                .with(VariantProperties.MODEL, northEastWestModel))
+            .select(SteamBoilerTankBlock.ConnectionType.NORTH_SOUTH_WEST, Variant.variant()
+                .with(VariantProperties.MODEL, northSouthWestModel))));
+  }
+
+  private void createSteamTurbine(Block block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    this.delegateItemModel(block,
+        this.createSteamTurbineModel(block, sideTexture, "_inventory", false));
+
+    var noneVariant = Variant.variant()
+        .with(VariantProperties.MODEL,
+            ModelTemplates.CUBE_ALL.createWithSuffix(block, "_side",
+                new TextureMapping().put(TextureSlot.ALL, sideTexture),
+                this.modelOutput));
+
+    var models =
+        new EnumMap<SteamTurbineBlock.Type, ResourceLocation>(SteamTurbineBlock.Type.class);
+    for (var type : SteamTurbineBlock.Type.values()) {
+      if (type == SteamTurbineBlock.Type.NONE) {
+        continue;
+      }
+      models.put(type,
+          this.createSteamTurbineModel(block, sideTexture, "_" + type.getSerializedName(),
+              type != SteamTurbineBlock.Type.WINDOW));
+    }
+
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.properties(SteamTurbineBlock.TYPE, SteamTurbineBlock.ROTATED)
+            .generate((type, rotated) -> type == SteamTurbineBlock.Type.NONE
+                ? noneVariant
+                : Variant.variant()
+                    .with(VariantProperties.MODEL, models.get(type))
+                    .with(VariantProperties.Y_ROT, rotated
+                        ? VariantProperties.Rotation.R90
+                        : VariantProperties.Rotation.R0))));
+  }
+
+  private ResourceLocation createSteamTurbineModel(Block block, ResourceLocation sideTexture,
+      String suffix, boolean rotated) {
+    var frontTexture = TextureMapping.getBlockTexture(block, suffix);
+    return RailcraftModelTemplates.MIRRORED_CUBE.createWithOverride(block, suffix,
+        new TextureMapping()
+            .put(TextureSlot.PARTICLE, sideTexture)
+            .put(TextureSlot.NORTH, rotated ? sideTexture : frontTexture)
+            .put(TextureSlot.SOUTH, rotated ? sideTexture : frontTexture)
+            .put(TextureSlot.EAST, rotated ? frontTexture : sideTexture)
+            .put(TextureSlot.WEST, rotated ? frontTexture : sideTexture)
+            .put(TextureSlot.UP, sideTexture)
+            .put(TextureSlot.DOWN, sideTexture),
+        this.modelOutput);
+  }
+
   private void createFluidManipulator(Block block) {
     this.createManipulator(block);
     var model =
@@ -1122,10 +1264,10 @@ public class RailcraftBlockModelGenerators {
             .select(RailShape.NORTH_SOUTH, false, false, true, Variant.variant() // North
                 .with(VariantProperties.MODEL, northSwitchedModel))
             .select(RailShape.NORTH_SOUTH, true, false, false, Variant.variant() // South
-                .with(VariantProperties.MODEL, southModel)
+                .with(VariantProperties.MODEL, northModel)
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
             .select(RailShape.NORTH_SOUTH, true, false, true, Variant.variant() // South
-                .with(VariantProperties.MODEL, southSwitchedModel)
+                .with(VariantProperties.MODEL, northSwitchedModel)
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
             .select(RailShape.NORTH_SOUTH, false, true, false, Variant.variant() // North
                 .with(VariantProperties.MODEL, southModel)

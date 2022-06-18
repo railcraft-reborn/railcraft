@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -50,15 +51,8 @@ public class WyeTrackBlock extends SwitchTrackBlock implements EntityBlock {
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
       BlockEntityType<T> type) {
     return level.isClientSide() ? null
-        : createTickerHelper(type, RailcraftBlockEntityTypes.WYE_TRACK.get(),
+        : BaseEntityBlock.createTickerHelper(type,
+            RailcraftBlockEntityTypes.WYE_TRACK.get(),
             WyeTrackBlockEntity::serverTick);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Nullable
-  protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
-      BlockEntityType<A> type, BlockEntityType<E> expectedType,
-      BlockEntityTicker<? super E> ticker) {
-    return expectedType == type ? (BlockEntityTicker<A>) ticker : null;
   }
 }

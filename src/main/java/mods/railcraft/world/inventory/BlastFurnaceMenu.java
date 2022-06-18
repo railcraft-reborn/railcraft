@@ -1,7 +1,7 @@
 package mods.railcraft.world.inventory;
 
-import mods.railcraft.world.level.block.entity.module.BlastFurnaceModule;
-import mods.railcraft.world.level.block.entity.multiblock.BlastFurnaceBlockEntity;
+import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
+import mods.railcraft.world.module.BlastFurnaceModule;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
@@ -15,11 +15,11 @@ public final class BlastFurnaceMenu extends CrafterMenu {
     this.blastFurnace = blastFurnace;
 
     var logic = blastFurnace.getBlastFurnaceModule();
-    this.addSlot(new Slot(this.logic, BlastFurnaceModule.SLOT_INPUT, 56, 17));
-    this.addSlot(new ItemFilterSlot(item -> logic.getItemBurnTime(item) > 0, this.logic,
+    this.addSlot(new Slot(this.module, BlastFurnaceModule.SLOT_INPUT, 56, 17));
+    this.addSlot(new ItemFilterSlot(item -> logic.getItemBurnTime(item) > 0, this.module,
         BlastFurnaceModule.SLOT_FUEL, 56, 53));
-    this.addSlot(new OutputSlot(this.logic, BlastFurnaceModule.SLOT_OUTPUT, 116, 21));
-    this.addSlot(new OutputSlot(this.logic, BlastFurnaceModule.SLOT_SLAG, 116, 53));
+    this.addSlot(new OutputSlot(this.module, BlastFurnaceModule.SLOT_OUTPUT, 116, 21));
+    this.addSlot(new OutputSlot(this.module, BlastFurnaceModule.SLOT_SLAG, 116, 53));
 
     this.addInventorySlots(inventory);
 

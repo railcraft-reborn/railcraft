@@ -30,7 +30,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
@@ -54,7 +53,7 @@ public class TankMinecart extends FilteredMinecart
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 3);
   private final StandardTank tank =
       (StandardTank) new FilteredTank(RailcraftConfig.server.getTankCartFluidCapacity())
-          .setUpdateCallback(tank -> this.fluidChanged(tank.getFluid()))
+          .setChangeListener(this::tankChanged)
           .setValidator(fluidStack -> this.getFilterFluid()
               .map(fluidStack::isFluidEqual)
               .orElse(true));
@@ -78,8 +77,8 @@ public class TankMinecart extends FilteredMinecart
     this.entityData.define(FILLING, false);
   }
 
-  private void fluidChanged(FluidStack fluidStack) {
-    this.entityData.set(FLUID_STACK_TAG, fluidStack.writeToNBT(new CompoundTag()));
+  private void tankChanged() {
+    this.entityData.set(FLUID_STACK_TAG, this.tank.getFluid().writeToNBT(new CompoundTag()));
   }
 
   @Override
@@ -216,8 +215,8 @@ public class TankMinecart extends FilteredMinecart
   }
 
   @Override
-  protected Item getItem() {
-    return RailcraftItems.TANK_MINECART.get();
+  public ItemStack getPickResult() {
+    return RailcraftItems.TANK_MINECART.get().getDefaultInstance();
   }
 
   @Override

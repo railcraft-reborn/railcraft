@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftSoundEvents {
 
-  public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
+  public static final DeferredRegister<SoundEvent> deferredRegister =
       DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Railcraft.ID);
 
   public static final RegistryObject<SoundEvent> STEAM_WHISTLE =
@@ -26,6 +26,6 @@ public class RailcraftSoundEvents {
 
   private static RegistryObject<SoundEvent> register(String name) {
     ResourceLocation registryName = new ResourceLocation(Railcraft.ID, name);
-    return SOUND_EVENTS.register(name, () -> new SoundEvent(registryName));
+    return deferredRegister.register(name, () -> new SoundEvent(registryName));
   }
 }

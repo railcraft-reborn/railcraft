@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block.signal;
 
-import javax.annotation.Nullable;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
@@ -14,9 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CrossCollisionBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -68,6 +64,17 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
       Block neighborBlock, BlockPos neighborPos, boolean p_220069_6_) {
     LevelUtil.getBlockEntity(level, pos, AbstractSignalBoxBlockEntity.class)
         .ifPresent(AbstractSignalBoxBlockEntity::neighborChanged);
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState,
+      boolean moved) {
+    if (!blockState.is(newState.getBlock())) {
+      LevelUtil.getBlockEntity(level, blockPos, AbstractSignalBoxBlockEntity.class)
+          .ifPresent(AbstractSignalBoxBlockEntity::blockRemoved);
+    }
+    super.onRemove(blockState, level, blockPos, newState, moved);
   }
 
   @Override
@@ -140,13 +147,5 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
 
   public static boolean isAspectReceiver(BlockState blockState) {
     return blockState.is(RailcraftTags.Blocks.ASPECT_RECEIVER);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Nullable
-  protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
-      BlockEntityType<A> type, BlockEntityType<E> expectedType,
-      BlockEntityTicker<? super E> ticker) {
-    return expectedType == type ? (BlockEntityTicker<A>) ticker : null;
   }
 }

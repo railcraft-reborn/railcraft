@@ -8,10 +8,14 @@ import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -59,11 +63,16 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
       BlockPos neighborPos, boolean moved) {
-    if (!level.isClientSide()) {
-      level.setBlockAndUpdate(pos,
-          blockState.setValue(MIRRORED, this.determineMirrored(level, pos, getFacing(blockState))));
-    }
+    level.setBlockAndUpdate(pos,
+        blockState.setValue(MIRRORED, this.determineMirrored(level, pos, getFacing(blockState))));
     super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, moved);
+  }
+
+  @Override
+  protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos,
+      Player player, InteractionHand hand, ItemStack itemStack) {
+    level.setBlockAndUpdate(pos, blockState.cycle(REVERSED).cycle(MIRRORED));
+    return true;
   }
 
   @Override
@@ -97,16 +106,9 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
       BlockEntityType<T> type) {
     return level.isClientSide() ? null
-        : createTickerHelper(type, RailcraftBlockEntityTypes.TURNOUT_TRACK.get(),
+        : BaseEntityBlock.createTickerHelper(type,
+            RailcraftBlockEntityTypes.TURNOUT_TRACK.get(),
             TurnoutTrackBlockEntity::serverTick);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Nullable
-  protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
-      BlockEntityType<A> type, BlockEntityType<E> expectedType,
-      BlockEntityTicker<? super E> ticker) {
-    return expectedType == type ? (BlockEntityTicker<A>) ticker : null;
   }
 
   public static boolean isMirrored(BlockState blockState) {

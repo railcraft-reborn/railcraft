@@ -108,16 +108,18 @@ public class TankManager extends ForwardingList<StandardTank>
   public FluidStack drain(FluidStack resource, FluidAction doDrain) {
     return this.tanks.stream()
         .map(tank -> tank.drain(resource, doDrain))
+        .filter(fluid -> !fluid.isEmpty())
         .findFirst()
-        .orElse(null);
+        .orElse(FluidStack.EMPTY);
   }
 
   @Override
   public FluidStack drain(int maxDrain, FluidAction doDrain) {
     return this.tanks.stream()
         .map(tank -> tank.drain(maxDrain, doDrain))
+        .filter(fluid -> !fluid.isEmpty())
         .findFirst()
-        .orElse(null);
+        .orElse(FluidStack.EMPTY);
   }
 
   public FluidStack drain(int tankIndex, FluidStack resource, FluidAction doDrain) {

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.world.inventory.ManipulatorMenu;
-import mods.railcraft.world.level.block.entity.ManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
