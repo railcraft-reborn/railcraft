@@ -2110,14 +2110,14 @@ public class RailcraftBlocks {
   /* == ORES == */
 
   public static final RegistryObject<OreBlock> TIN_ORE =
-      BLOCKS.register("tin_ore",
+      deferredRegister.register("tin_ore",
         () -> new OreBlock(
           BlockBehaviour.Properties.of(Material.STONE)
               .requiresCorrectToolForDrops()
               .strength(3.0F, 3.0F)));
 
   public static final RegistryObject<OreBlock> DEEPSLATE_TIN_ORE =
-      BLOCKS.register("deepslate_tin_ore",
+      deferredRegister.register("deepslate_tin_ore",
         () -> new OreBlock(
           BlockBehaviour.Properties.copy(TIN_ORE.get())
               .color(MaterialColor.DEEPSLATE)

@@ -787,16 +787,15 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ITEM_UNLOADER.get(), new Item.Properties().tab(TAB)));
 
   /* == ORES == */
-
   public static final RegistryObject<Item> TIN_ORE =
-      ITEMS.register("tin_ore",
+      deferredRegister.register("tin_ore",
           () -> new BlockItem(RailcraftBlocks.TIN_ORE.get(),
-              new Item.Properties().tab(TAB)));
+          new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> DEEPSLATE_TIN_ORE =
-      ITEMS.register("deepslate_tin_ore",
+      deferredRegister.register("deepslate_tin_ore",
           () -> new BlockItem(RailcraftBlocks.DEEPSLATE_TIN_ORE.get(),
-              new Item.Properties().tab(TAB)));
+          new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> IRON_SPIKE_MAUL =
       deferredRegister.register("iron_spike_maul",
@@ -1729,15 +1728,15 @@ public class RailcraftItems {
           });
 
   public static final RegistryObject<Item> STEEL_PLATE =
-      ITEMS.register("steel_plate",
+      deferredRegister.register("steel_plate",
           () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> IRON_PLATE =
-      ITEMS.register("iron_plate",
+      deferredRegister.register("iron_plate",
           () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> STEEL_INGOT =
-      ITEMS.register("steel_ingot",
+      deferredRegister.register("steel_ingot",
           () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TIN_INGOT =
