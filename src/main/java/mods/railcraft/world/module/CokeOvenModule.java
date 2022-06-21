@@ -49,7 +49,9 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
-    this.tank = new StandardTank(TANK_CAPACITY).setChangeListener(this::setChanged);
+    this.tank = new StandardTank(TANK_CAPACITY)
+        .disableFill()
+        .setChangeListener(this::setChanged);
   }
 
   @Override
@@ -71,12 +73,12 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     var output = this.recipe.getResultItem();
     var fluidOutput = this.recipe.getCreosote();
     if (this.outputContainer.canFit(output)
-        && (fluidOutput.isEmpty() || this.tank.fill(fluidOutput,
+        && (fluidOutput.isEmpty() || this.tank.internalFill(fluidOutput,
             IFluidHandler.FluidAction.SIMULATE) >= fluidOutput.getAmount())) {
       this.removeItem(SLOT_INPUT, 1);
 
       this.outputContainer.addStack(output);
-      this.tank.fill(fluidOutput, IFluidHandler.FluidAction.EXECUTE);
+      this.tank.internalFill(fluidOutput, IFluidHandler.FluidAction.EXECUTE);
       return true;
     }
     return false;
