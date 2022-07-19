@@ -1,19 +1,20 @@
 package mods.railcraft.world.level.material.fluid.tank;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.client.RenderProperties;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 /**
  * Our fancy type of tank. Use this preferably over forge's default one
@@ -71,7 +72,7 @@ public class StandardTank extends FluidTank {
    * @param resource FluidStack representing the Fluid and maximum amount of fluid to be
    * @param action If SIMULATE, fill will only be simulated.
    * @return Amount of resource that was (or would have been, if simulated) filled.
-   * @see net.minecraftforge.fluids.capability.templates.FluidTank#fill() Forge FluidTank#fill()
+   * @see net.minecraftforge.fluids.capability.templates.FluidTank#fill(FluidStack, FluidAction) Forge FluidTank#fill()
    */
   public int internalFill(FluidStack resource, FluidAction action) {
     return super.fill(resource, action);
@@ -79,12 +80,12 @@ public class StandardTank extends FluidTank {
 
   /**
    * Internal drain function which IGNORES disableDrain made by us.
-   * 
+   *
    * @param resource FluidStack representing the Fluid and maximum amount of fluid to be drained.
    * @param action If SIMULATE, fill will only be simulated.
    * @return FluidStack representing the Fluid and amount that was (or would have been, if
    *         simulated) drained.
-   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain() Forge FluidTank#drain()
+   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain(FluidStack, FluidAction)  Forge FluidTank#drain()
    */
   public FluidStack internalDrain(FluidStack resource, FluidAction action) {
     return super.drain(resource, action);
@@ -97,7 +98,7 @@ public class StandardTank extends FluidTank {
    * @param action If SIMULATE, fill will only be simulated.
    * @return FluidStack representing the Fluid and amount that was (or would have been, if
    *         simulated) drained.
-   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain() Forge FluidTank#drain()
+   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain(int, FluidAction) () Forge FluidTank#drain()
    */
   public FluidStack internalDrain(int maxDrain, FluidAction action) {
     return super.drain(maxDrain, action);
@@ -152,7 +153,7 @@ public class StandardTank extends FluidTank {
     if (f == null) {
       return DEFAULT_COLOR;
     }
-    return f.getAttributes().getColor(getFluid());
+    return RenderProperties.get(f).getColorTint(getFluid());
   }
 
   public boolean isFull() {
@@ -206,14 +207,15 @@ public class StandardTank extends FluidTank {
       tooltip.add(this.getFluidNameToolTip(fluidStack));
     }
 
-    tooltip.add(new TextComponent(String.format(Locale.ENGLISH, "%,d / %,d", amount, getCapacity()))
+    tooltip.add(Component.literal(String.format(Locale.ENGLISH, "%,d / %,d", amount, getCapacity()))
         .withStyle(ChatFormatting.GRAY));
 
     this.tooltip = Collections.unmodifiableList(tooltip);
   }
 
   protected Component getFluidNameToolTip(FluidStack fluidStack) {
-    Rarity rarity = fluidStack.getFluid().getAttributes().getRarity(fluidStack);
+    var fluidType = fluidStack.getFluid().getFluidType();
+    var rarity = fluidType.getRarity();
     if (rarity == null) {
       rarity = Rarity.COMMON;
     }

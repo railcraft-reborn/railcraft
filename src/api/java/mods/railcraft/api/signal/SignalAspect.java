@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * Represents a Signal state.
@@ -68,7 +67,7 @@ public enum SignalAspect implements StringRepresentable {
   private SignalAspect(String name, int blockLight) {
     this.name = name;
     this.blockLight = blockLight;
-    this.displayName = new TranslatableComponent("signal_aspect." + name);
+    this.displayName = Component.translatable("signal_aspect." + name);
   }
 
   /**

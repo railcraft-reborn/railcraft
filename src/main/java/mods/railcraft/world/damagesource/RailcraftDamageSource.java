@@ -2,7 +2,6 @@ package mods.railcraft.world.damagesource;
 
 import mods.railcraft.util.MiscTools;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,7 +49,7 @@ public class RailcraftDamageSource extends DamageSource {
   public Component getLocalizedDeathMessage(LivingEntity entity) {
     String locTag =
         "death.railcraft." + this.msgId + "." + (MiscTools.RANDOM.nextInt(this.numMessages) + 1);
-    return new TranslatableComponent(locTag, entity.getName());
+    return Component.translatable(locTag, entity.getName());
   }
 
   public static final EventHandler EVENT_HANDLER = new EventHandler();

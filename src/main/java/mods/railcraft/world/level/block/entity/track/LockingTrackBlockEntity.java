@@ -1,7 +1,5 @@
 package mods.railcraft.world.level.block.entity.track;
 
-import java.util.UUID;
-import javax.annotation.Nullable;
 import mods.railcraft.api.event.CartLockdownEvent;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.api.track.LockingTrack;
@@ -21,7 +19,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -30,6 +28,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.common.MinecraftForge;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class LockingTrackBlockEntity extends RailcraftBlockEntity implements LockingTrack {
 
@@ -123,7 +124,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
         if (!this.level.isClientSide()) {
           this.setLockingMode(newLockingMode);
           player.displayClientMessage(
-              new TranslatableComponent("locking_track.mode",
+              Component.translatable("locking_track.mode",
                   newLockingMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE)),
               true);
         }

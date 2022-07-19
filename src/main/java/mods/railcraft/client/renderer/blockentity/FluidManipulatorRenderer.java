@@ -43,7 +43,7 @@ public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
 
       float capacity = tank.getCapacity();
       var level = Math.min(fluidStack.getAmount() / capacity , 1.0F);
-      var fluidMaxY = fluidStack.getFluid().getAttributes().isGaseous(fluidStack)
+      var fluidMaxY = fluidStack.getFluid().getFluidType().isLighterThanAir()
           ? 1.0F
           : level;
 

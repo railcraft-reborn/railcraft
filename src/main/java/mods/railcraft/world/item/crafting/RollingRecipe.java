@@ -2,28 +2,22 @@ package mods.railcraft.world.item.crafting;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
  * Rolling recipe class.
@@ -39,7 +33,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
   /**
    * Creates a new recipie.
-   * 
+   *
    * @param resourceLocation -
    * @param tickCost - The time cost of the recipie
    * @param ingredients - Ingredients list of the object
@@ -132,8 +126,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
     return RailcraftRecipeTypes.ROLLING.get();
   }
 
-  public static class RollingRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>>
-      implements RecipeSerializer<RollingRecipe> {
+  public static class RollingRecipeSerializer implements RecipeSerializer<RollingRecipe> {
 
     @Override
     public RollingRecipe fromJson(ResourceLocation resourceLoc, JsonObject jsonObject) {
@@ -195,7 +188,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
     /**
      * see vanilla crafting table.
-     * 
+     *
      * @param jsondat -
      * @return {@see net.minecraft.item.crafting.ShapedRecipe keyFromJson}
      */

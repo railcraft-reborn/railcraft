@@ -1,6 +1,5 @@
 package mods.railcraft.client.renderer.entity.cart;
 
-import org.apache.commons.lang3.StringUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import mods.railcraft.api.carts.IRoutableCart;
@@ -9,10 +8,11 @@ import mods.railcraft.world.entity.vehicle.IDirectionalCart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.StringUtils;
 
 public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
     extends EntityRenderer<T> {
@@ -86,7 +86,7 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
     if (cart instanceof IRoutableCart) {
       String dest = ((IRoutableCart) cart).getDestination();
       if (!StringUtils.isBlank(dest))
-        this.renderNameTag(cart, new TextComponent(dest), poseStack, bufferSource,
+        this.renderNameTag(cart, Component.literal(dest), poseStack, bufferSource,
             packedLight);
     }
 

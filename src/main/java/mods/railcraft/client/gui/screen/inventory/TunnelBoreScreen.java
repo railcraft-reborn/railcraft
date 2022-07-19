@@ -4,10 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.world.inventory.TunnelBoreMenu;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 public class TunnelBoreScreen extends RailcraftMenuScreen<TunnelBoreMenu> {
 
@@ -15,13 +14,13 @@ public class TunnelBoreScreen extends RailcraftMenuScreen<TunnelBoreMenu> {
       new ResourceLocation(Railcraft.ID, "textures/gui/container/tunnel_bore.png");
 
   private static final Component HEAD =
-      new TranslatableComponent("screen.tunnel_bore.head");
+      Component.translatable("screen.tunnel_bore.head");
   private static final Component FUEL =
-      new TranslatableComponent("screen.tunnel_bore.fuel");
+      Component.translatable("screen.tunnel_bore.fuel");
   private static final Component BALLAST =
-      new TranslatableComponent("screen.tunnel_bore.ballast");
+      Component.translatable("screen.tunnel_bore.ballast");
   private static final Component TRACK =
-      new TranslatableComponent("screen.tunnel_bore.track");
+      Component.translatable("screen.tunnel_bore.track");
 
   public TunnelBoreScreen(TunnelBoreMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);

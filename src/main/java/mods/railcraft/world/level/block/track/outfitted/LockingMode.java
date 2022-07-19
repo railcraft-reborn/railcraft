@@ -1,17 +1,17 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
+import mods.railcraft.world.level.block.entity.track.BoardingLockingProfile;
+import mods.railcraft.world.level.block.entity.track.EmptyLockingProfile;
+import mods.railcraft.world.level.block.entity.track.HoldingLockingProfile;
+import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import mods.railcraft.world.level.block.entity.track.BoardingLockingProfile;
-import mods.railcraft.world.level.block.entity.track.EmptyLockingProfile;
-import mods.railcraft.world.level.block.entity.track.HoldingLockingProfile;
-import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
-import net.minecraft.util.StringRepresentable;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 public enum LockingMode implements StringRepresentable {
 
@@ -40,7 +40,7 @@ public enum LockingMode implements StringRepresentable {
   private LockingMode(String name, LockType lockType,
       Function<? super LockingTrackBlockEntity, ? extends LockingModeController> factory) {
     this.name = name;
-    this.displayName = new TranslatableComponent("locking_track.mode." + name);
+    this.displayName = Component.translatable("locking_track.mode." + name);
     this.lockType = lockType;
     this.factory = factory;
   }

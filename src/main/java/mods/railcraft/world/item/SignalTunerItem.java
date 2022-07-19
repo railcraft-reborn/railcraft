@@ -1,12 +1,11 @@
 package mods.railcraft.world.item;
 
-import java.util.Objects;
 import mods.railcraft.api.core.DimensionPos;
 import mods.railcraft.api.signal.SignalController;
 import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.SignalReceiverProvider;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +14,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.Objects;
 
 public class SignalTunerItem extends PairingToolItem {
 
@@ -37,7 +38,7 @@ public class SignalTunerItem extends PairingToolItem {
               ((SignalControllerProvider) blockEntity).getSignalController().stopLinking();
             }
           })) {
-        player.displayClientMessage(new TranslatableComponent("signal_tuner.abandoned"), true);
+        player.displayClientMessage(Component.translatable("signal_tuner.abandoned"), true);
         return InteractionResult.SUCCESS;
       }
 
@@ -55,7 +56,7 @@ public class SignalTunerItem extends PairingToolItem {
                 signalController.getSignalController().addPeer(signalReceiver);
                 signalController.getSignalController().stopLinking();
                 player.displayClientMessage(
-                    new TranslatableComponent("signal_tuner.success",
+                    Component.translatable("signal_tuner.success",
                         previousBlockEntity.getBlockState().getBlock().getName(),
                         blockState.getBlock().getName()),
                     true);
@@ -64,12 +65,12 @@ public class SignalTunerItem extends PairingToolItem {
               }
             } else if (level.isLoaded(previousTarget.getPos())) {
               player.displayClientMessage(
-                  new TranslatableComponent("signal_tuner.lost"),
+                  Component.translatable("signal_tuner.lost"),
                   true);
               this.clearPeerPos(itemStack);
             } else {
               player.displayClientMessage(
-                  new TranslatableComponent("signal_tuner.unloaded"),
+                  Component.translatable("signal_tuner.unloaded"),
                   true);
               this.clearPeerPos(itemStack);
             }
@@ -79,14 +80,14 @@ public class SignalTunerItem extends PairingToolItem {
               ((SignalControllerProvider) blockEntity).getSignalController();
           if (previousTarget == null || !Objects.equals(pos, previousTarget.getPos())) {
             player.displayClientMessage(
-                new TranslatableComponent("signal_tuner.begin",
+                Component.translatable("signal_tuner.begin",
                     blockState.getBlock().getName()),
                 true);
             this.setPeerPos(itemStack, DimensionPos.from(blockEntity));
             controller.startLinking();
           } else {
             player.displayClientMessage(
-                new TranslatableComponent("signal_tuner.abandoned",
+                Component.translatable("signal_tuner.abandoned",
                     blockState.getBlock().getName()),
                 true);
             controller.stopLinking();

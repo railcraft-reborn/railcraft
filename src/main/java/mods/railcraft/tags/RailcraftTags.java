@@ -98,6 +98,7 @@ public class RailcraftTags {
   public static class Fluids {
 
     public static final TagKey<Fluid> STEAM = forgeTag("steam");
+    public static final TagKey<Fluid> GASEOUS = forgeTag("gaseous");
 
     private static TagKey<Fluid> forgeTag(String name) {
       return FluidTags.create(new ResourceLocation("forge", name));

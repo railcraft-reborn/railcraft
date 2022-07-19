@@ -6,8 +6,7 @@ import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 public class SignalCapacitorBoxScreen extends IngameWindowScreen {
 
@@ -24,16 +23,16 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
     this.addRenderableWidget(
-        new Button(centredX + 13, centredY + 38, 30, 20, new TextComponent("-10"),
+        new Button(centredX + 13, centredY + 38, 30, 20, Component.literal("-10"),
             __ -> this.incrementTicksToPower(-200)));
     this.addRenderableWidget(
-        new Button(centredX + 53, centredY + 38, 30, 20, new TextComponent("-1"),
+        new Button(centredX + 53, centredY + 38, 30, 20, Component.literal("-1"),
             __ -> this.incrementTicksToPower(-20)));
     this.addRenderableWidget(
-        new Button(centredX + 93, centredY + 38, 30, 20, new TextComponent("+1"),
+        new Button(centredX + 93, centredY + 38, 30, 20, Component.literal("+1"),
             __ -> this.incrementTicksToPower(20)));
     this.addRenderableWidget(
-        new Button(centredX + 133, centredY + 38, 30, 20, new TextComponent("+10"),
+        new Button(centredX + 133, centredY + 38, 30, 20, Component.literal("+10"),
             __ -> this.incrementTicksToPower(200)));
     this.addRenderableWidget(
         this.modeButton = new MultiButton<>(centredX + 23, centredY + 65, 130, 15,
@@ -45,7 +44,7 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
   protected void renderContent(PoseStack matrixStack, int mouseX, int mouseY,
       float partialTicks) {
     this.drawCenteredString(matrixStack,
-        new TranslatableComponent("screen.signal_capacitor_box.duration",
+        Component.translatable("screen.signal_capacitor_box.duration",
             this.signalBox.getTicksToPower() / 20),
         this.windowWidth / 2, 25);
   }

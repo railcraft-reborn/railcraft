@@ -1,9 +1,5 @@
 package mods.railcraft.world.level.block.entity.tank;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.RailcraftConfig;
@@ -20,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
@@ -41,10 +36,15 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEntity, Void> {
 
   private static final Component MENU_TITLE =
-      new TranslatableComponent("container.railcraft.tank");
+      Component.translatable("container.railcraft.tank");
 
   private static final int FLOW_RATE = FluidTools.BUCKET_VOLUME;
 
@@ -94,7 +94,9 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     this.setChanged();
     this.syncToClient();
 
-    var light = this.module.getTank().getFluidType().getAttributes().getLuminosity();
+    var fluidStack = this.module.getTank().getFluid();
+    var fluidType = this.module.getTank().getFluidType().getFluidType();
+    var light = fluidType.getLightLevel(fluidStack);
     if (light != this.lastLight) {
       this.lastLight = light;
       this.streamMembers().forEach(member -> member.lightChanged(light));

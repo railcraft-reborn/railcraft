@@ -1,6 +1,5 @@
 package mods.railcraft.world.item;
 
-import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
@@ -13,29 +12,23 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import javax.annotation.Nullable;
+
 public class RailcraftItems {
 
-  public static final DeferredRegister<Item> deferredRegister =
+  private static final DeferredRegister<Item> deferredRegister =
       DeferredRegister.create(ForgeRegistries.ITEMS, Railcraft.ID);
+
+  public static void register(IEventBus modEventBus) {
+    deferredRegister.register(modEventBus);
+  }
 
   /**
    * Railcraft's creative tab.

@@ -1,7 +1,5 @@
 package mods.railcraft.world.item;
 
-import java.util.Map;
-import java.util.function.Supplier;
 import com.google.common.collect.ImmutableMap;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.track.TrackType;
@@ -10,7 +8,7 @@ import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +26,9 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class TrackKitItem extends Item {
 
@@ -68,22 +69,22 @@ public class TrackKitItem extends Item {
     RailShape shape = TrackTools.getRailShapeRaw(level, blockPos);
 
     if (!TrackShapeHelper.isStraight(shape)) {
-      player.displayClientMessage(new TranslatableComponent("track_kit.corners_unsupported"),
+      player.displayClientMessage(Component.translatable("track_kit.corners_unsupported"),
           true);
       return InteractionResult.PASS;
     }
 
     if (shape.isAscending() && !this.allowedOnSlopes) {
-      player.displayClientMessage(new TranslatableComponent("track_kit.slopes_unsupported"),
+      player.displayClientMessage(Component.translatable("track_kit.slopes_unsupported"),
           true);
       return InteractionResult.PASS;
     }
 
     BaseRailBlock outfittedBlock =
-        this.outfittedBlocks.getOrDefault(trackType.getRegistryName(), () -> null).get();
+        this.outfittedBlocks.getOrDefault(TrackTypes.registry.get().getKey(trackType), () -> null).get();
     if (outfittedBlock == null) {
       player.displayClientMessage(
-          new TranslatableComponent("track_kit.invalid_track_type"), true);
+          Component.translatable("track_kit.invalid_track_type"), true);
       return InteractionResult.PASS;
     }
 

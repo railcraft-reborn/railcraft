@@ -1,16 +1,16 @@
 package mods.railcraft.world.level.block.entity.track;
 
-import javax.annotation.Nullable;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nullable;
 
 public class CouplerTrackBlockEntity extends BlockEntity {
 
@@ -57,7 +57,7 @@ public class CouplerTrackBlockEntity extends BlockEntity {
 
     private Mode(String name, int powerPropagation) {
       this.name = name;
-      this.displayName = new TranslatableComponent("coupler_track.mode." + name);
+      this.displayName = Component.translatable("coupler_track.mode." + name);
       this.powerPropagation = powerPropagation;
     }
 

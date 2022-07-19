@@ -1,21 +1,24 @@
 package mods.railcraft.world.level.material.fluid;
 
 import mods.railcraft.Railcraft;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.IFluidTypeRenderProperties;
+import net.minecraftforge.fluids.FluidType;
+
+import java.util.function.Consumer;
 
 public class SteamFluid extends Fluid {
 
@@ -78,16 +81,37 @@ public class SteamFluid extends Fluid {
   }
 
   @Override
-  protected FluidAttributes createAttributes() {
-    return FluidAttributes
-        .builder(
-            new ResourceLocation(Railcraft.ID, "block/steam_still"),
-            new ResourceLocation(Railcraft.ID, "block/steam_still"))
-        .color(0xFFF5F5F5)
-        .gaseous()
-        .temperature(400) // in kelvin, 150c
-        .density(-1000)
-        .viscosity(500)
-        .build(this);
+  public FluidType getFluidType() {
+    return RailcraftFluids.STEAM_TYPE.get();
+  }
+
+  public static FluidType createFluidType() {
+    var properties = FluidType.Properties.create()
+      .temperature(400) // in kelvin, 150c
+      .density(-1000)
+      .viscosity(500);
+    return new FluidType(properties) {
+      @Override
+      public void initializeClient(Consumer<IFluidTypeRenderProperties> consumer) {
+        consumer.accept(new IFluidTypeRenderProperties() {
+          private static final ResourceLocation STILL_TEXTURE =
+            new ResourceLocation(Railcraft.ID, "block/steam_still");
+          @Override
+          public int getColorTint() {
+            return 0xFFF5F5F5;
+          }
+
+          @Override
+          public ResourceLocation getStillTexture() {
+            return STILL_TEXTURE;
+          }
+
+          @Override
+          public ResourceLocation getFlowingTexture() {
+            return STILL_TEXTURE;
+          }
+        });
+      }
+    };
   }
 }

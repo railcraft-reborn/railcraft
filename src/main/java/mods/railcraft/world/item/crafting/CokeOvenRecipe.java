@@ -14,7 +14,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class CokeOvenRecipe extends AbstractCookingRecipe {
 
@@ -46,8 +45,7 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
     return RailcraftRecipeSerializers.COKING.get();
   }
 
-  public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>>
-      implements RecipeSerializer<CokeOvenRecipe> {
+  public static class Serializer implements RecipeSerializer<CokeOvenRecipe> {
 
     @Override
     public CokeOvenRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {
@@ -84,7 +82,7 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
       out.writeFloat(recipe.experience);
     }
 
-    public static final ItemStack itemFromJson(JsonObject json) {
+    public static ItemStack itemFromJson(JsonObject json) {
       if (!json.has("item")) {
         throw new JsonParseException("No item key found");
       }

@@ -1,7 +1,5 @@
 package mods.railcraft.world.level.block.track;
 
-import java.util.function.Supplier;
-import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -20,21 +18,29 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
+
+import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 public class TrackTypes {
 
   public static final ResourceKey<Registry<TrackType>> REGISTRY_KEY =
       ResourceKey.createRegistryKey(new ResourceLocation(Railcraft.ID, "track_type"));
 
-  public static final DeferredRegister<TrackType> deferredRegister =
+  private static final DeferredRegister<TrackType> deferredRegister =
       DeferredRegister.create(REGISTRY_KEY, Railcraft.ID);
 
   public static final Supplier<IForgeRegistry<TrackType>> registry =
-      deferredRegister.makeRegistry(TrackType.class, RegistryBuilder::new);
+      deferredRegister.makeRegistry(RegistryBuilder::new);
+
+  public static void register(IEventBus modEventBus) {
+    deferredRegister.register(modEventBus);
+  }
 
   public static final RegistryObject<TrackType> ABANDONED =
       deferredRegister.register("abandoned",

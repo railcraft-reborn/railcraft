@@ -54,7 +54,7 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
   }
 
   @Override
-  public ItemStack getCartItem() {
+  public ItemStack getPickResult() {
     ItemStack stack = this.getFilteredCartItem(this.getFilterItem());
     if (!stack.isEmpty() && this.hasCustomName()) {
       stack.setHoverName(this.getDisplayName());

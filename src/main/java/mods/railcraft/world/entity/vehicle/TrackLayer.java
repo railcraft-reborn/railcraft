@@ -10,7 +10,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,8 +36,13 @@ public class TrackLayer extends MaintenancePatternMinecart {
   }
 
   @Override
-  public ItemStack getCartItem() {
+  public ItemStack getPickResult() {
     return RailcraftItems.TRACK_LAYER.get().getDefaultInstance();
+  }
+
+  @Override
+  protected Item getDropItem() {
+    return RailcraftItems.TRACK_LAYER.get();
   }
 
   @Override

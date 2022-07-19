@@ -1,11 +1,5 @@
 package mods.railcraft.world.level.block.track;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.function.Supplier;
-import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.item.SpikeMaulTarget;
@@ -15,6 +9,7 @@ import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.behaivor.TrackSupportTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
@@ -32,6 +27,13 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.function.Supplier;
 
 /**
  * Created by CovertJaguar on 8/29/2016 for Railcraft.
@@ -80,7 +82,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+  public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
     if (this.getTrackType().isElectric()) {
       Charge.zapEffectProvider().throwSparks(stateIn, worldIn, pos, rand, 75);
     }

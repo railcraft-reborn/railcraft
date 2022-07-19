@@ -1,16 +1,16 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
-import javax.annotation.Nullable;
 import mods.railcraft.api.signal.Signal;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class SignalLabelItem extends Item {
 
@@ -38,6 +38,6 @@ public class SignalLabelItem extends Item {
   @Override
   public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> lines,
       TooltipFlag tooltipFlag) {
-    lines.add(new TranslatableComponent("signal_label.description"));
+    lines.add(Component.translatable("signal_label.description"));
   }
 }

@@ -1,8 +1,5 @@
 package mods.railcraft.world.level.block;
 
-import java.util.Map;
-import java.util.Random;
-import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -11,6 +8,7 @@ import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.module.SteamTurbineModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -22,6 +20,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
+
+import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.Random;
 
 public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
 
@@ -71,13 +73,13 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
   }
 
   @Override
-  public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+  public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
     Charge.zapEffectProvider().throwSparks(state, level, pos, rand, 50);
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, Random random) {
+  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
     super.tick(blockState, level, blockPos, random);
     this.registerNode(blockState, level, blockPos);
   }

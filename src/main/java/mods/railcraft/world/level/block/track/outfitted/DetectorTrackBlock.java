@@ -1,9 +1,5 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
-import java.util.List;
-import java.util.Random;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.PowerUtil;
@@ -12,6 +8,7 @@ import mods.railcraft.world.entity.vehicle.CartConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +23,12 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockStateMatchTest;
+
+import java.util.List;
+import java.util.Random;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class DetectorTrackBlock extends OutfittedTrackBlock {
 
@@ -35,7 +38,7 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
   public DetectorTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
     super(trackType, properties);
   }
-  
+
   @Override
   protected BlockState buildDefaultState(BlockState blockState) {
     return super.buildDefaultState(blockState)
@@ -50,7 +53,7 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
   }
 
   @Override
-  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, Random random) {
+  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
     blockState.getValue(MODE).updatePowerState(blockState, level, blockPos);
   }
 

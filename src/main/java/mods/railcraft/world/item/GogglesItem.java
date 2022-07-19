@@ -1,16 +1,8 @@
 package mods.railcraft.world.item;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,6 +12,14 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -45,11 +45,11 @@ public class GogglesItem extends ArmorItem {
   public void appendHoverText(ItemStack itemStack, @Nullable Level level,
       List<Component> lines, TooltipFlag adv) {
     lines.add(getDescriptionText(getAura(itemStack).getDisplayName()));
-    lines.add(new TranslatableComponent("goggles.description"));
+    lines.add(Component.translatable("goggles.description"));
   }
 
   public static Component getDescriptionText(Component displayName) {
-    return new TranslatableComponent("goggles.aura",
+    return Component.translatable("goggles.aura",
         displayName.copy().withStyle(ChatFormatting.DARK_PURPLE));
   }
 
@@ -87,7 +87,7 @@ public class GogglesItem extends ArmorItem {
 
     private Aura(String name) {
       this.name = name;
-      this.displayName = new TranslatableComponent("goggles.aura." + name);
+      this.displayName = Component.translatable("goggles.aura." + name);
     }
 
     public Component getDisplayName() {

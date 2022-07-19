@@ -1,20 +1,22 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.HashSet;
-import java.util.Set;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class TrackRemover extends MaintenanceMinecart {
 
@@ -81,7 +83,12 @@ public class TrackRemover extends MaintenanceMinecart {
   }
 
   @Override
-  public ItemStack getCartItem() {
+  public ItemStack getPickResult() {
     return RailcraftItems.TRACK_REMOVER.get().getDefaultInstance();
+  }
+
+  @Override
+  protected Item getDropItem() {
+    return RailcraftItems.TRACK_REMOVER.get();
   }
 }

@@ -56,8 +56,9 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
             Mth.sin(roll) * roll * damage / 10.0F * (float) bore.getHurtDir()));
       }
 
-      float light = bore.getBrightness();
-      light = light + ((1.0f - light) * 0.4f);
+
+      //float light = bore.getBrightness();
+      //light = light + ((1.0f - light) * 0.4f);
 
       boolean ghostTrain = Seasons.isGhostTrain(bore);
       float colorIntensity = ghostTrain ? 0.5F : 1.0F;

@@ -3,13 +3,14 @@ package mods.railcraft.world.item.enchantment;
 import mods.railcraft.Railcraft;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftEnchantments {
 
-  public static final DeferredRegister<Enchantment> deferredRegister =
+  private static final DeferredRegister<Enchantment> deferredRegister =
       DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, Railcraft.ID);
 
   public static final RegistryObject<Enchantment> WRECKING =
@@ -28,4 +29,8 @@ public class RailcraftEnchantments {
   public static final RegistryObject<Enchantment> SMACK =
       deferredRegister.register("smack",
           () -> new SmackEnchantment(Enchantment.Rarity.VERY_RARE));
+
+  public static void register(IEventBus modEventBus) {
+    deferredRegister.register(modEventBus);
+  }
 }

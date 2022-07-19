@@ -6,8 +6,7 @@ import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetLauncherTrackAttributesMessage;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
 public class LauncherTrackScreen extends IngameWindowScreen {
@@ -24,16 +23,16 @@ public class LauncherTrackScreen extends IngameWindowScreen {
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
     this.addRenderableWidget(
-        new Button(centredX + 13, centredY + 50, 30, 20, new TextComponent("-10"),
+        new Button(centredX + 13, centredY + 50, 30, 20, Component.literal("-10"),
             __ -> this.incrementForce(-10)));
     this.addRenderableWidget(
-        new Button(centredX + 53, centredY + 50, 30, 20, new TextComponent("-1"),
+        new Button(centredX + 53, centredY + 50, 30, 20, Component.literal("-1"),
             __ -> this.incrementForce(-1)));
     this.addRenderableWidget(
-        new Button(centredX + 93, centredY + 50, 30, 20, new TextComponent("+1"),
+        new Button(centredX + 93, centredY + 50, 30, 20, Component.literal("+1"),
             __ -> this.incrementForce(1)));
     this.addRenderableWidget(
-        new Button(centredX + 133, centredY + 50, 30, 20, new TextComponent("+10"),
+        new Button(centredX + 133, centredY + 50, 30, 20, Component.literal("+10"),
             __ -> this.incrementForce(10)));
   }
 
@@ -41,7 +40,7 @@ public class LauncherTrackScreen extends IngameWindowScreen {
   protected void renderContent(PoseStack matrixStack, int mouseX, int mouseY,
       float partialTicks) {
     this.drawCenteredString(matrixStack,
-        new TranslatableComponent("screen.launcher_track.launch_force",
+        Component.translatable("screen.launcher_track.launch_force",
             this.track.getLaunchForce()),
         this.windowWidth / 2, 25);
   }

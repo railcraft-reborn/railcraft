@@ -1,17 +1,16 @@
 package mods.railcraft.gui.widget;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import mods.railcraft.world.module.WaterCollectionModule;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
 
@@ -56,21 +55,21 @@ public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
     var baseRate = RailcraftConfig.server.waterCollectionRate.get();
 
     this.tooltip.addAll(this.tank.getTooltip());
-    this.tooltip.add(TextComponent.EMPTY);
-    this.tooltip.add(new TranslatableComponent("gui.railcraft.tank.sky", count).withStyle(
+    this.tooltip.add(Component.empty());
+    this.tooltip.add(Component.translatable("gui.railcraft.tank.sky", count).withStyle(
         ChatFormatting.DARK_GRAY));
-    this.tooltip.add(new TranslatableComponent("gui.railcraft.tank.base",
+    this.tooltip.add(Component.translatable("gui.railcraft.tank.base",
         baseRate * count)
             .withStyle(ChatFormatting.DARK_GRAY));
-    this.tooltip.add(new TranslatableComponent("gui.railcraft.tank.humidity", humidityMultiplier)
+    this.tooltip.add(Component.translatable("gui.railcraft.tank.humidity", humidityMultiplier)
         .withStyle(ChatFormatting.DARK_GRAY));
     this.tooltip
-        .add(new TranslatableComponent("gui.railcraft.tank.precipitation",
+        .add(Component.translatable("gui.railcraft.tank.precipitation",
             precipitationMultiplier).withStyle(ChatFormatting.DARK_GRAY));
     this.tooltip
-        .add(new TranslatableComponent("gui.railcraft.tank.temp", -temperaturePenalty).withStyle(
+        .add(Component.translatable("gui.railcraft.tank.temp", -temperaturePenalty).withStyle(
             ChatFormatting.DARK_GRAY));
-    this.tooltip.add(new TranslatableComponent("gui.railcraft.tank.final",
+    this.tooltip.add(Component.translatable("gui.railcraft.tank.final",
         (baseRate
             * count
             * humidityMultiplier

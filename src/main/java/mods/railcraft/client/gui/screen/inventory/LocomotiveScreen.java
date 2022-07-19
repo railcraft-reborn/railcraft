@@ -9,11 +9,6 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.client.gui.screen.inventory;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
@@ -27,9 +22,13 @@ import mods.railcraft.world.entity.vehicle.locomotive.Locomotive.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     extends RailcraftMenuScreen<T> {
@@ -59,14 +58,14 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     final Locomotive.Lock lock = this.lockButton.getState();
     switch (lock) {
       case LOCKED:
-        this.lockButtonTooltip = new TranslatableComponent("screen.locomotive.lock.locked",
+        this.lockButtonTooltip = Component.translatable("screen.locomotive.lock.locked",
             this.menu.getLocomotive().getOwnerOrThrow().getName());
         break;
       case UNLOCKED:
-        this.lockButtonTooltip = new TranslatableComponent("screen.locomotive.lock.unlocked");
+        this.lockButtonTooltip = Component.translatable("screen.locomotive.lock.unlocked");
         break;
       case PRIVATE:
-        this.lockButtonTooltip = new TranslatableComponent("screen.locomotive.lock.private",
+        this.lockButtonTooltip = Component.translatable("screen.locomotive.lock.private",
             this.menu.getLocomotive().getOwnerOrThrow().getName());
         break;
       default:
@@ -84,11 +83,11 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     // Mode buttons
     for (var mode : this.getMenu().getLocomotive().getSupportedModes()) {
       var button = new RailcraftButton(0, centreY + this.getYSize() - 129, 55, 16,
-          new TranslatableComponent(
+          Component.translatable(
               "screen.locomotive.mode." + mode.getSerializedName()),
           b -> this.setMode(mode),
           (btn, matrixStack, mouseX, mouseY) -> this.renderComponentTooltip(
-              matrixStack, Collections.singletonList(new TranslatableComponent(
+              matrixStack, Collections.singletonList(Component.translatable(
                   "screen.locomotive." + typeTag + ".mode.desription."
                       + mode.getSerializedName())),
               mouseX, mouseY, this.font),
@@ -100,7 +99,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     // Reverse button
     this.addRenderableWidget(this.reverseButton =
         new ToggleButton(centreX + 4, centreY + this.getYSize() - 112, 12, 16,
-            new TextComponent("R"), __ -> this.toggleReverse(),
+            Component.literal("R"), __ -> this.toggleReverse(),
             ButtonTexture.SMALL_BUTTON, this.getMenu().getLocomotive().isReverse()));
 
     // Speed buttons
@@ -108,7 +107,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       var label =
           IntStream.range(0, speed.getLevel()).mapToObj(i -> ">").collect(Collectors.joining());
       var button = new RailcraftButton(0, centreY + this.getYSize() - 112,
-          7 + speed.getLevel() * 5, 16, new TextComponent(label), b -> this.setSpeed(speed),
+          7 + speed.getLevel() * 5, 16, Component.literal(label), b -> this.setSpeed(speed),
           ButtonTexture.SMALL_BUTTON);
       button.active = this.menu.getLocomotive().getSpeed() == speed;
       this.speedButtons.put(speed, button);

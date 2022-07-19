@@ -1,7 +1,5 @@
 package mods.railcraft.data.advancements;
 
-import java.util.function.Consumer;
-
 import mods.railcraft.Railcraft;
 import mods.railcraft.advancements.MultiBlockFormedTrigger;
 import mods.railcraft.advancements.SpikeMaulUseTrigger;
@@ -10,12 +8,12 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.TickTrigger;
-import net.minecraft.world.item.Items;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.Items;
+
+import java.util.function.Consumer;
 
 public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
 
@@ -25,19 +23,19 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement rcRoot = Advancement.Builder.advancement()
         .display(
             RailcraftItems.REINFORCED_TRACK.get(),
-            new TranslatableComponent("advancements.railcraft.tracks.root.name"),
-            new TranslatableComponent("advancements.railcraft.tracks.root.desc"),
+            Component.translatable("advancements.railcraft.tracks.root.name"),
+            Component.translatable("advancements.railcraft.tracks.root.desc"),
             new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
             FrameType.TASK,
             false, false, false)
-        .addCriterion("default_unlock", new TickTrigger.TriggerInstance(EntityPredicate.Composite.ANY))
+        //.addCriterion("default_unlock", new TickTrigger.TriggerInstance(EntityPredicate.Composite.ANY))
         .save(consumer, Railcraft.ID + ":tracks/root");
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.RAW_FIRESTONE.get(),
-            new TranslatableComponent("advancements.railcraft.tracks.firestone.name"),
-            new TranslatableComponent("advancements.railcraft.tracks.firestone.desc"),
+            Component.translatable("advancements.railcraft.tracks.firestone.name"),
+            Component.translatable("advancements.railcraft.tracks.firestone.desc"),
             null,
             FrameType.CHALLENGE,
             true, true, false)
@@ -64,9 +62,9 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.COKE_OVEN_BRICKS.get(),
-            new TranslatableComponent(
+            Component.translatable(
                 "advancements.railcraft.tracks.coke_oven.name"),
-            new TranslatableComponent(
+            Component.translatable(
                 "advancements.railcraft.tracks.coke_oven.desc"),
             null,
             FrameType.TASK,
@@ -79,9 +77,9 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement rollingTable = Advancement.Builder.advancement()
         .display(
             RailcraftItems.MANUAL_ROLLING_MACHINE.get(),
-            new TranslatableComponent(
+            Component.translatable(
                 "advancements.railcraft.tracks.manual_rolling_machine.name"),
-            new TranslatableComponent(
+            Component.translatable(
                 "advancements.railcraft.tracks.manual_rolling_machine.desc"),
             null,
             FrameType.GOAL,
@@ -109,8 +107,8 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement basicTrack = Advancement.Builder.advancement()
         .display(
             Items.RAIL,
-            new TranslatableComponent("advancements.railcraft.tracks.regular_track.name"),
-            new TranslatableComponent("advancements.railcraft.tracks.regular_track.desc"),
+            Component.translatable("advancements.railcraft.tracks.regular_track.name"),
+            Component.translatable("advancements.railcraft.tracks.regular_track.desc"),
             null,
             FrameType.TASK,
             true, false, false)
@@ -122,8 +120,8 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.RAW_FIRESTONE.get(),
-            new TranslatableComponent("advancements.railcraft.tracks.track_kit.name"),
-            new TranslatableComponent("advancements.railcraft.tracks.track_kit.desc"),
+            Component.translatable("advancements.railcraft.tracks.track_kit.name"),
+            Component.translatable("advancements.railcraft.tracks.track_kit.desc"),
             null,
             FrameType.GOAL,
             true, true, false)
@@ -134,8 +132,8 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.IRON_SPIKE_MAUL.get(),
-            new TranslatableComponent("advancements.railcraft.tracks.junctions.name"),
-            new TranslatableComponent("advancements.railcraft.tracks.junctions.desc"),
+            Component.translatable("advancements.railcraft.tracks.junctions.name"),
+            Component.translatable("advancements.railcraft.tracks.junctions.desc"),
             null,
             FrameType.GOAL,
             true, false, false)
@@ -146,8 +144,8 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.HIGH_SPEED_TRACK.get(),
-            new TranslatableComponent("advancements.railcraft.tracks.high_speed_track.name"),
-            new TranslatableComponent("advancements.railcraft.tracks.high_speed_track.desc"),
+            Component.translatable("advancements.railcraft.tracks.high_speed_track.name"),
+            Component.translatable("advancements.railcraft.tracks.high_speed_track.desc"),
             null,
             FrameType.CHALLENGE,
             true, true, false)
@@ -159,9 +157,9 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.STRAP_IRON_TRACK.get(),
-            new TranslatableComponent(
+            Component.translatable(
                 "advancements.railcraft.tracks.wooden_track.name"),
-            new TranslatableComponent(
+            Component.translatable(
                 "advancements.railcraft.tracks.wooden_track.desc"),
             null,
             FrameType.TASK,

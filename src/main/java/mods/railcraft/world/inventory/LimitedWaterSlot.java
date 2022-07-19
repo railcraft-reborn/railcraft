@@ -3,7 +3,7 @@ package mods.railcraft.world.inventory;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.FluidUtil;
 
 public class LimitedWaterSlot extends WaterSlot {
@@ -17,7 +17,7 @@ public class LimitedWaterSlot extends WaterSlot {
   public boolean mayPlace(ItemStack stack) {
     return FluidUtil.getFluidContained(stack)
         .filter(fluid -> fluid.getFluid() == Fluids.WATER)
-        .filter(fluid -> fluid.getAmount() <= FluidAttributes.BUCKET_VOLUME)
+        .filter(fluid -> fluid.getAmount() <= FluidType.BUCKET_VOLUME)
         .isPresent();
   }
 }

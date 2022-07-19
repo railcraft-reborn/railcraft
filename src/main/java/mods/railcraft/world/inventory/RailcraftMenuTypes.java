@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,8 +28,12 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftMenuTypes {
 
-  public static final DeferredRegister<MenuType<?>> deferredRegister =
+  private static final DeferredRegister<MenuType<?>> deferredRegister =
       DeferredRegister.create(ForgeRegistries.CONTAINERS, Railcraft.ID);
+
+  public static void register(IEventBus modEventBus) {
+    deferredRegister.register(modEventBus);
+  }
 
   public static final RegistryObject<MenuType<SolidFueledSteamBoilerMenu>> SOLID_FUELED_STEAM_BOILER =
       deferredRegister.register("solid_fueled_steam_boiler",

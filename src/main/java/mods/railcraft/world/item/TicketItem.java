@@ -1,8 +1,5 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
-import java.util.function.Predicate;
-import javax.annotation.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.util.PlayerUtil;
@@ -11,12 +8,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -56,17 +55,17 @@ public class TicketItem extends Item {
     if (stack.hasTag()) {
       GameProfile owner = getOwner(stack);
       if (owner.getId() != null) {
-        list.add(new TranslatableComponent("gui.railcraft.routing.ticket.tips.issuer"));
+        list.add(Component.translatable("gui.railcraft.routing.ticket.tips.issuer"));
         list.add(PlayerUtil.getUsername(world, owner).copy().withStyle(ChatFormatting.GRAY));
       }
 
       String dest = getDestination(stack);
       if (!"".equals(dest)) {
-        list.add(new TranslatableComponent("gui.railcraft.routing.ticket.tips.dest"));
-        list.add(new TextComponent(dest).withStyle(ChatFormatting.GRAY));
+        list.add(Component.translatable("gui.railcraft.routing.ticket.tips.dest"));
+        list.add(Component.literal(dest).withStyle(ChatFormatting.GRAY));
       }
     } else
-      list.add(new TranslatableComponent("gui.railcraft.routing.ticket.tips.blank"));
+      list.add(Component.translatable("gui.railcraft.routing.ticket.tips.blank"));
   }
 
   public static boolean isNBTValid(@Nullable CompoundTag nbt) {

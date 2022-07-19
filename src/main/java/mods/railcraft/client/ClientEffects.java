@@ -1,7 +1,5 @@
 package mods.railcraft.client;
 
-import java.util.Random;
-import java.util.Set;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.signal.TuningAuraProvider;
 import mods.railcraft.client.renderer.blockentity.SignalAuraRenderUtil;
@@ -28,6 +26,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.Random;
+import java.util.Set;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -409,25 +410,23 @@ public enum ClientEffects implements TuningAuraProvider, Charge.ZapEffectProvide
 
   /**
    * Checks if you should NOT spawn a particle
-   * 
+   *
    * @param canDisable Can you disable it based on the user's particle setting?
    * @return true when you should not render it
    */
   private boolean thinParticles(boolean canDisable) {
-    ParticleStatus particleSetting = minecraft.options.particles;
-    switch (particleSetting) {
-      case ALL:
+    ParticleStatus particleSetting = minecraft.options.particles().get();
+    return switch (particleSetting) {
+      case ALL ->
         // "yes"
-        return false;
-      case DECREASED:
+        false;
+      case DECREASED ->
         // if we cannot disable it, get a prob80, else get a prob50
-        return !((!canDisable && (rand.nextGaussian() > 0.20)) || (rand.nextGaussian() > 0.5));
-      case MINIMAL:
+        !((!canDisable && (rand.nextGaussian() > 0.20)) || (rand.nextGaussian() > 0.5));
+      case MINIMAL ->
         // if we cannot disable it, get a prob50, else just dont.
-        return !(!canDisable && (rand.nextGaussian() > 0.5));
-      default:
-        return true;
-    }
+        !(!canDisable && (rand.nextGaussian() > 0.5));
+    };
   }
 
   protected void spawnParticle(ParticleOptions particle, double pX, double pY, double pZ, double vX,

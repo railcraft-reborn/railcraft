@@ -1,14 +1,16 @@
 package mods.railcraft.particle;
 
-import java.util.function.Function;
 import com.mojang.serialization.Codec;
 import mods.railcraft.Railcraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Function;
 
 /**
  * Railcraft particle types.
@@ -17,7 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class RailcraftParticleTypes {
 
-  public static final DeferredRegister<ParticleType<?>> deferredRegister =
+  private static final DeferredRegister<ParticleType<?>> deferredRegister =
       DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Railcraft.ID);
 
   public static final RegistryObject<SimpleParticleType> STEAM =
@@ -33,6 +35,10 @@ public class RailcraftParticleTypes {
       deferredRegister.register("tuning_aura",
           () -> create(TuningAuraParticleOptions.DESERIALIZER,
               __ -> TuningAuraParticleOptions.CODEC));
+
+  public static void register(IEventBus modEventBus) {
+    deferredRegister.register(modEventBus);
+  }
 
   private static <T extends ParticleOptions> ParticleType<T> create(
       @SuppressWarnings("deprecation") ParticleOptions.Deserializer<T> deserializer,

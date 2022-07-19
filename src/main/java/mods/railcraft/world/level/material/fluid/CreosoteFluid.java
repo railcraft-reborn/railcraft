@@ -17,7 +17,10 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.client.IFluidTypeRenderProperties;
+import net.minecraftforge.fluids.FluidType;
+
+import java.util.function.Consumer;
 
 public abstract class CreosoteFluid extends FlowingFluid {
 
@@ -82,15 +85,37 @@ public abstract class CreosoteFluid extends FlowingFluid {
   }
 
   @Override
-  protected FluidAttributes createAttributes() {
-    return FluidAttributes
-        .builder(
-            new ResourceLocation("block/water_still"), // vanilla textures, greyscale
-            new ResourceLocation("block/water_flow"))
-        .color(0xFF6A6200) // color is now ARGB 6a6200
-        .density(1100)
-        .viscosity(3000)
-        .build(this);
+  public FluidType getFluidType() {
+    return RailcraftFluids.CREOSOTE_TYPE.get();
+  }
+
+  public static FluidType createFluidType() {
+    var properties = FluidType.Properties.create()
+      .density(1100)
+      .viscosity(3000);
+    return new FluidType(properties) {
+      @Override
+      public void initializeClient(Consumer<IFluidTypeRenderProperties> consumer) {
+        consumer.accept(new IFluidTypeRenderProperties() {
+          private static final ResourceLocation STILL_TEXTURE = new ResourceLocation("block/water_still");
+          private static final ResourceLocation FLOW_TEXURE = new ResourceLocation("block/water_flow");
+          @Override
+          public int getColorTint() {
+            return 0xFF6A6200; // color is now ARGB 6a6200
+          }
+
+          @Override
+          public ResourceLocation getStillTexture() {
+            return STILL_TEXTURE;
+          }
+
+          @Override
+          public ResourceLocation getFlowingTexture() {
+            return FLOW_TEXURE;
+          }
+        });
+      }
+    };
   }
 
   @Override

@@ -6,8 +6,7 @@ import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 public class SignalControllerBoxScreen extends IngameWindowScreen {
 
@@ -28,16 +27,16 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
     this.addRenderableWidget(
-        new Button(centredX + 10, centredY + 25, 30, 20, new TextComponent("<"),
+        new Button(centredX + 10, centredY + 25, 30, 20, Component.literal("<"),
             __ -> this.defaultAspect = this.defaultAspect.getPrevious()));
     this.addRenderableWidget(
-        new Button(centredX + 135, centredY + 25, 30, 20, new TextComponent(">"),
+        new Button(centredX + 135, centredY + 25, 30, 20, Component.literal(">"),
             __ -> this.defaultAspect = this.defaultAspect.getNext()));
     this.addRenderableWidget(
-        new Button(centredX + 10, centredY + 60, 30, 20, new TextComponent("<"),
+        new Button(centredX + 10, centredY + 60, 30, 20, Component.literal("<"),
             __ -> this.poweredAspect = this.poweredAspect.getPrevious()));
     this.addRenderableWidget(
-        new Button(centredX + 135, centredY + 60, 30, 20, new TextComponent(">"),
+        new Button(centredX + 135, centredY + 60, 30, 20, Component.literal(">"),
             __ -> this.poweredAspect = this.poweredAspect.getNext()));
   }
 
@@ -45,12 +44,12 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
   protected void renderContent(PoseStack matrixStack, int mouseX, int mouseY,
       float partialTicks) {
     this.drawCenteredString(matrixStack,
-        new TranslatableComponent("screen.signal_controller_box.default_aspect"),
+        Component.translatable("screen.signal_controller_box.default_aspect"),
         this.windowWidth / 2, 25);
     this.drawCenteredString(matrixStack, this.defaultAspect.getDisplayName(),
         this.windowWidth / 2, 35);
     this.drawCenteredString(matrixStack,
-        new TranslatableComponent("screen.signal_controller_box.powered_aspect"),
+        Component.translatable("screen.signal_controller_box.powered_aspect"),
         this.windowWidth / 2, 60);
     this.drawCenteredString(matrixStack, this.poweredAspect.getDisplayName(),
         this.windowWidth / 2, 70);

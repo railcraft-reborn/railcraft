@@ -1,17 +1,5 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-import javax.annotation.Nullable;
-import org.apache.commons.lang3.StringUtils;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
@@ -33,13 +21,7 @@ import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.collections.Streams;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
-import mods.railcraft.world.entity.vehicle.CartTools;
-import mods.railcraft.world.entity.vehicle.IDirectionalCart;
-import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
-import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
-import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
-import mods.railcraft.world.entity.vehicle.Train;
+import mods.railcraft.world.entity.vehicle.*;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
@@ -47,7 +29,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -70,10 +51,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Locmotive class, for trains that does the push/pulling.
- * 
+ *
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class Locomotive extends RailcraftMinecart
@@ -198,6 +187,11 @@ public abstract class Locomotive extends RailcraftMinecart
    * Returns the cart's actual item.
    */
   protected abstract Item getItem();
+
+  @Override
+  protected Item getDropItem() {
+    return getItem();
+  }
 
   @Override
   public ItemStack getPickResult() {
@@ -374,7 +368,7 @@ public abstract class Locomotive extends RailcraftMinecart
 
   /**
    * Get the train's max speed, accelerate speed, and breaking/reverse speed.
-   * 
+   *
    * @see Speed
    */
   public Speed getSpeed() {
@@ -383,7 +377,7 @@ public abstract class Locomotive extends RailcraftMinecart
 
   /**
    * Sets the train's speed level.
-   * 
+   *
    * @see Speed
    */
   public void setSpeed(Speed speed) {
@@ -402,7 +396,7 @@ public abstract class Locomotive extends RailcraftMinecart
 
   /**
    * Shifts the train speed up.
-   * 
+   *
    * @see Speed
    */
   public void increaseSpeed() {
@@ -411,7 +405,7 @@ public abstract class Locomotive extends RailcraftMinecart
 
   /**
    * Shifts the train speed down.
-   * 
+   *
    * @see Speed
    */
   public void decreaseSpeed() {
@@ -956,7 +950,7 @@ public abstract class Locomotive extends RailcraftMinecart
 
     @Override
     public Component getLabel() {
-      return TextComponent.EMPTY;
+      return Component.empty();
     }
 
     @Override

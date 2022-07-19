@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.List;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -8,23 +7,24 @@ import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.util.TrackTools;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.util.StringRepresentable;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -149,7 +149,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     private Mode(String name, float speed) {
       this.name = name;
       this.speed = speed;
-      this.label = new TranslatableComponent("gui.railcraft.cart.maintenance.mode." + name);
+      this.label = Component.translatable("gui.railcraft.cart.maintenance.mode." + name);
     }
 
     public float getSpeed() {

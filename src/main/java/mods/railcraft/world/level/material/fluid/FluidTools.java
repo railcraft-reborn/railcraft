@@ -1,21 +1,11 @@
 package mods.railcraft.world.level.material.fluid;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
@@ -34,13 +24,18 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info)
@@ -56,15 +51,15 @@ public final class FluidTools {
 
   public static Component toString(FluidStack fluidStack) {
     if (fluidStack.isEmpty()) {
-      return new TextComponent("Empty");
+      return Component.literal("Empty");
     }
-    return new TextComponent(fluidStack.getAmount() + "x")
+    return Component.literal(fluidStack.getAmount() + "x")
         .append(fluidStack.getDisplayName());
   }
 
   /**
    * Handles interaction with an item that can (or might) store fluids.
-   * 
+   *
    * @param player The Player
    * @param hand The Hand
    * @param fluidHandler A Fluidhandler
@@ -118,7 +113,7 @@ public final class FluidTools {
 
   private static ProcessState tryFill(Container container, StandardTank tank, ItemStack itemStack) {
     var result =
-        FluidUtil.tryFillContainer(itemStack, tank, FluidAttributes.BUCKET_VOLUME, null, true);
+        FluidUtil.tryFillContainer(itemStack, tank, FluidType.BUCKET_VOLUME, null, true);
     if (!result.isSuccess()) {
       sendToOutput(container);
       return ProcessState.RESET;
@@ -130,7 +125,7 @@ public final class FluidTools {
   private static ProcessState tryDrain(Container container, StandardTank tank,
       ItemStack itemStack) {
     var result =
-        FluidUtil.tryEmptyContainer(itemStack, tank, FluidAttributes.BUCKET_VOLUME, null, true);
+        FluidUtil.tryEmptyContainer(itemStack, tank, FluidType.BUCKET_VOLUME, null, true);
     if (!result.isSuccess()) {
       sendToOutput(container);
       return ProcessState.RESET;
@@ -158,7 +153,7 @@ public final class FluidTools {
         return tryDrain(container, tank, itemStack);
       } else if (type == ProcessType.FILL_THEN_DRAIN) {
         if (FluidUtil.tryFillContainer(itemStack, tank,
-            FluidAttributes.BUCKET_VOLUME, null, false).isSuccess()) {
+          FluidType.BUCKET_VOLUME, null, false).isSuccess()) {
           return tryFill(container, tank, itemStack);
         } else {
           return tryDrain(container, tank, itemStack);

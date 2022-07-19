@@ -9,10 +9,9 @@ import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
 import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu> {
 
@@ -20,9 +19,9 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
       new ResourceLocation(Railcraft.ID, "textures/gui/container/item_manipulator.png");
 
   private final static Component FILTERS_TEXT =
-      new TranslatableComponent("screen.item_manipulator.filters");
+      Component.translatable("screen.item_manipulator.filters");
   private final static Component BUFFER_TEXT =
-      new TranslatableComponent("screen.item_manipulator.buffer");
+      Component.translatable("screen.item_manipulator.buffer");
 
   private MultiButton<ManipulatorBlockEntity.TransferMode> transferModeButton;
 

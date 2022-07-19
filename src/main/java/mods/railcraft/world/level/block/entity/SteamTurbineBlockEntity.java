@@ -1,8 +1,5 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.List;
-import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -19,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -32,6 +28,10 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineBlockEntity, Void> {
 
@@ -39,7 +39,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   private static final int ENERGY_OUTPUT_RATE = 900;
 
   private static final Component MENU_TITLE =
-      new TranslatableComponent("container.railcraft.steam_turbine");
+      Component.translatable("container.railcraft.steam_turbine");
 
   private static final BlockPredicate BLOCK_PREDICATE =
       BlockPredicate.of(RailcraftBlocks.STEAM_TURBINE);

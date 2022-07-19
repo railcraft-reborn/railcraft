@@ -1,7 +1,5 @@
 package mods.railcraft.world.level.material.fluid.steam;
 
-import java.util.List;
-import org.jetbrains.annotations.Nullable;
 import com.google.common.primitives.Floats;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.gui.widget.Gauge;
@@ -10,15 +8,17 @@ import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * The boiler itself. Used to simulate turning water into steam.
- * 
+ *
  * @author CovertJaguar (https://www.railcraft.info/)
  */
 public class SteamBoiler implements INBTSerializable<CompoundTag> {
@@ -58,7 +58,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
   /**
    * Callback for adding water.
-   * 
+   *
    * @param resource The fluidstack (should be water).
    */
   public FluidStack checkFill(FluidStack resource, Runnable explosionCallback) {
@@ -310,7 +310,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     @Override
     public void refresh() {
       this.tooltip = List.of(
-          new TextComponent(String.format("%.0f°", SteamBoiler.this.getTemperature())));
+          Component.literal(String.format("%.0f°", SteamBoiler.this.getTemperature())));
     }
 
     @Override

@@ -1,7 +1,5 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.List;
-import javax.annotation.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
@@ -14,7 +12,6 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -26,10 +23,13 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity, Void> {
 
   private static final Component MENU_TITLE =
-      new TranslatableComponent("container.railcraft.coke_oven");
+      Component.translatable("container.railcraft.coke_oven");
 
   private static final MultiblockPattern<Void> PATTERN = Util.make(() -> {
     final var bricks = BlockPredicate.of(RailcraftBlocks.COKE_OVEN_BRICKS);

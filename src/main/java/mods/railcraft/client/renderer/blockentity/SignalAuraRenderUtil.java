@@ -1,8 +1,5 @@
 package mods.railcraft.client.renderer.blockentity;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.BlockSignal;
 import mods.railcraft.api.signal.SignalAspect;
@@ -15,6 +12,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class SignalAuraRenderUtil {
 

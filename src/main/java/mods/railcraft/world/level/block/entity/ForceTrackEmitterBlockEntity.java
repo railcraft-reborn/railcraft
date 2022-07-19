@@ -11,7 +11,7 @@ import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 
 /**
  * .
- * 
+ *
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implements Magnifiable {
@@ -193,7 +193,7 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   @Override
   public void onMagnify(Player viewer) {
     viewer.displayClientMessage(
-        new TranslatableComponent("gui.railcraft.force.track.emitter.info",
+        Component.translatable("gui.railcraft.force.track.emitter.info",
             this.getTrackCount()),
         true);
   }

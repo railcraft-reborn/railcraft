@@ -5,7 +5,6 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.client.gui.screen.inventory.widget.AnalogGaugeRenderer;
 import mods.railcraft.world.inventory.SteamTurbineMenu;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -31,11 +30,11 @@ public class SteamTurbineScreen extends RailcraftMenuScreen<SteamTurbineMenu> {
   @Override
   protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
     super.renderLabels(poseStack, mouseX, mouseY);
-    this.font.draw(poseStack, new TranslatableComponent("screen.steam_turbine.rotor"), 20,
+    this.font.draw(poseStack, Component.translatable("screen.steam_turbine.rotor"), 20,
         29, 0x404040);
     this.font.draw(poseStack,
-        new TranslatableComponent("screen.steam_turbine.output"), 93, 24, 0x404040);
+        Component.translatable("screen.steam_turbine.output"), 93, 24, 0x404040);
     this.font.draw(poseStack,
-        new TranslatableComponent("screen.steam_turbine.usage"), 95, 43, 0x404040);
+        Component.translatable("screen.steam_turbine.usage"), 95, 43, 0x404040);
   }
 }

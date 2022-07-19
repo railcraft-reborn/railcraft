@@ -1,86 +1,58 @@
 package mods.railcraft.world.level.block;
 
-import java.util.function.ToIntFunction;
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
-import mods.railcraft.world.level.block.manipulator.AdvancedItemUnloaderBlock;
-import mods.railcraft.world.level.block.manipulator.FluidLoaderBlock;
-import mods.railcraft.world.level.block.manipulator.FluidUnloaderBlock;
-import mods.railcraft.world.level.block.manipulator.ItemLoaderBlock;
-import mods.railcraft.world.level.block.manipulator.ItemUnloaderBlock;
+import mods.railcraft.world.level.block.manipulator.*;
 import mods.railcraft.world.level.block.post.PostBlock;
-import mods.railcraft.world.level.block.signal.AnalogSignalControllerBoxBlock;
-import mods.railcraft.world.level.block.signal.BlockSignalBlock;
-import mods.railcraft.world.level.block.signal.BlockSignalRelayBoxBlock;
-import mods.railcraft.world.level.block.signal.DistantSignalBlock;
-import mods.railcraft.world.level.block.signal.DualBlockSignalBlock;
-import mods.railcraft.world.level.block.signal.DualDistantSignalBlock;
-import mods.railcraft.world.level.block.signal.DualSignalBlock;
-import mods.railcraft.world.level.block.signal.DualTokenSignalBlock;
-import mods.railcraft.world.level.block.signal.SignalBoxBlock;
-import mods.railcraft.world.level.block.signal.SignalCapacitorBoxBlock;
-import mods.railcraft.world.level.block.signal.SignalControllerBoxBlock;
-import mods.railcraft.world.level.block.signal.SignalInterlockBoxBlock;
-import mods.railcraft.world.level.block.signal.SignalReceiverBoxBlock;
-import mods.railcraft.world.level.block.signal.SignalSequencerBoxBlock;
-import mods.railcraft.world.level.block.signal.SingleSignalBlock;
-import mods.railcraft.world.level.block.signal.TokenSignalBlock;
+import mods.railcraft.world.level.block.signal.*;
 import mods.railcraft.world.level.block.steamboiler.FluidFueledFireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SolidFueledFireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
-import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
-import mods.railcraft.world.level.block.tank.IronTankValveBlock;
-import mods.railcraft.world.level.block.tank.IronTankWallBlock;
-import mods.railcraft.world.level.block.tank.SteelTankGaugeBlock;
-import mods.railcraft.world.level.block.tank.SteelTankValveBlock;
-import mods.railcraft.world.level.block.tank.SteelTankWallBlock;
-import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
-import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
-import mods.railcraft.world.level.block.track.ForceTrackBlock;
-import mods.railcraft.world.level.block.track.TrackBlock;
-import mods.railcraft.world.level.block.track.TrackConstants;
-import mods.railcraft.world.level.block.track.TrackTypes;
+import mods.railcraft.world.level.block.tank.*;
+import mods.railcraft.world.level.block.track.*;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackLeverBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackMotorBlock;
-import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.LauncherTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.*;
 import mods.railcraft.world.level.material.RailcraftMaterials;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.AnvilBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LightBlock;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
+
 public class RailcraftBlocks {
 
-  public static final DeferredRegister<Block> deferredRegister =
+  private static final DeferredRegister<Block> deferredRegister =
       DeferredRegister.create(ForgeRegistries.BLOCKS, Railcraft.ID);
+  private static final Set<Block> REGISTERED_BLOCKS = new HashSet<>();
+
+  public static void register(IEventBus modEventBus) {
+    deferredRegister.register(modEventBus);
+  }
+
+  public static Set<Block> getRegisteredBlocks() {
+    if(REGISTERED_BLOCKS.isEmpty()) {
+      deferredRegister.getEntries()
+        .stream()
+        .map(RegistryObject::get)
+        .collect(Collectors.toCollection(() -> REGISTERED_BLOCKS));
+    }
+    return REGISTERED_BLOCKS;
+  }
 
   public static final RegistryObject<Block> WHITE_STRENGTHENED_GLASS =
       deferredRegister.register("white_strengthened_glass",
@@ -2104,7 +2076,7 @@ public class RailcraftBlocks {
       deferredRegister.register("creosote",
           () -> new LiquidBlock(RailcraftFluids.CREOSOTE,
               BlockBehaviour.Properties.of(Material.WATER)
-                  .noCollission().strength(50.0F).noDrops()));
+                  .noCollission().strength(50.0F).noLootTable()));
 
   public static final RegistryObject<Block> BLACK_POST =
       deferredRegister.register("black_post",

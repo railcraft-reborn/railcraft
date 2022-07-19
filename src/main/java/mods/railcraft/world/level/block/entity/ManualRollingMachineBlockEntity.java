@@ -1,10 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.function.Consumer;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -16,10 +14,12 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.function.Consumer;
+
 public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
 
   private static final Component MENU_TITLE =
-      new TranslatableComponent("container.railcraft.manual_rolling_machine");
+      Component.translatable("container.railcraft.manual_rolling_machine");
 
   private int recipieRequiredTime = 12222222;
   private int currentTick = 0;
@@ -30,34 +30,26 @@ public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
   // 3. shouldFire - 1 == true
   protected final ContainerData data = new ContainerData() {
     public int get(int key) {
-      switch (key) {
-        case 0:
-          return ManualRollingMachineBlockEntity.this.recipieRequiredTime;
-        case 1:
-          return ManualRollingMachineBlockEntity.this.currentTick;
-        case 2:
-          return ManualRollingMachineBlockEntity.this.shouldFire ? 1 : 0;
-        default:
-          return 0;
-      }
+      return switch (key) {
+        case 0 -> ManualRollingMachineBlockEntity.this.recipieRequiredTime;
+        case 1 -> ManualRollingMachineBlockEntity.this.currentTick;
+        case 2 -> ManualRollingMachineBlockEntity.this.shouldFire ? 1 : 0;
+        default -> 0;
+      };
     }
 
     public void set(int key, int value) {
       switch (key) {
-        case 0:
-          ManualRollingMachineBlockEntity.this.recipieRequiredTime = value;
-          break;
-        case 1:
-          break;
-        case 2:
+        case 0 -> ManualRollingMachineBlockEntity.this.recipieRequiredTime = value;
+        case 2 -> {
           if (value != 1) {
             ManualRollingMachineBlockEntity.this.resetProgress();
             break;
           }
           ManualRollingMachineBlockEntity.this.shouldFire = true;
-          break;
-        default:
-          break;
+        }
+        default -> {
+        }
       }
     }
 

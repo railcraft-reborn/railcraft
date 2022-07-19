@@ -1,8 +1,5 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
-import javax.annotation.Nullable;
-import org.apache.logging.log4j.util.Strings;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.item.Filter;
@@ -14,11 +11,14 @@ import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.apache.logging.log4j.util.Strings;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -27,15 +27,16 @@ public class LocomotiveItem extends CartItem implements Filter {
 
   private final DyeColor defaultPrimary;
   private final DyeColor defaultSecondary;
-  protected final ItemStack sample;
+  //protected final ItemStack sample;
 
   public LocomotiveItem(MinecartFactory minecartPlacer, DyeColor primary, DyeColor secondary,
       Properties properties) {
     super(minecartPlacer, properties);
     this.defaultPrimary = primary;
     this.defaultSecondary = secondary;
-    this.sample = new ItemStack(this, 1);
-    setItemColorData(sample, primary, secondary);
+
+    //this.sample = new ItemStack(this, 1);
+    //setItemColorData(sample, primary, secondary);
   }
 
   @Override
@@ -51,27 +52,27 @@ public class LocomotiveItem extends CartItem implements Filter {
     GameProfile owner = getOwner(stack);
     if (owner.getName() != null
         && !RailcraftConstantsAPI.UNKNOWN_PLAYER.equalsIgnoreCase(owner.getName())) {
-      info.add(new TranslatableComponent("gui.railcraft.locomotive.tips.item.owner",
+      info.add(Component.translatable("gui.railcraft.locomotive.tips.item.owner",
           owner.getName()));
     }
 
     DyeColor primary = getPrimaryColor(stack);
-    info.add(new TranslatableComponent("gui.railcraft.locomotive.tips.item.primary",
+    info.add(Component.translatable("gui.railcraft.locomotive.tips.item.primary",
         primary.getName()));
 
     DyeColor secondary = getSecondaryColor(stack);
-    info.add(new TranslatableComponent("gui.railcraft.locomotive.tips.item.secondary",
+    info.add(Component.translatable("gui.railcraft.locomotive.tips.item.secondary",
         secondary.getName()));
 
     float whistle = getWhistlePitch(stack);
-    info.add(new TranslatableComponent("gui.railcraft.locomotive.tips.item.whistle",
+    info.add(Component.translatable("gui.railcraft.locomotive.tips.item.whistle",
         whistle < 0 ? "???" : String.format("%.2f", whistle)));
 
     String emblemIdent = getEmblem(stack);
     if (!Strings.isEmpty(emblemIdent) && EmblemToolsClient.packageManager != null) {
       Emblem emblem = EmblemToolsClient.packageManager.getEmblem(emblemIdent);
       if (emblem != null) {
-        info.add(new TranslatableComponent("gui.railcraft.locomotive.tips.item.emblem",
+        info.add(Component.translatable("gui.railcraft.locomotive.tips.item.emblem",
             emblem.displayName));
       }
     }

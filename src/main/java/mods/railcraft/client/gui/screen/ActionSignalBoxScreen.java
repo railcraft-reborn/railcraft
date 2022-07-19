@@ -1,9 +1,5 @@
 package mods.railcraft.client.gui.screen;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Set;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -15,7 +11,11 @@ import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity
 import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEntity;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Set;
 
 public class ActionSignalBoxScreen extends IngameWindowScreen {
 
@@ -81,12 +81,12 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
     switch (lock) {
       case LOCKED:
         this.lockButtonTooltip =
-            new TranslatableComponent("screen.action_signal_box.lock.locked",
+            Component.translatable("screen.action_signal_box.lock.locked",
                 this.signalBox.getOwnerOrThrow().getName());
         break;
       case UNLOCKED:
         this.lockButtonTooltip =
-            new TranslatableComponent("screen.action_signal_box.lock.unlocked");
+            Component.translatable("screen.action_signal_box.lock.unlocked");
         break;
       default:
         break;

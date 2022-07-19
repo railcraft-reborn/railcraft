@@ -1,11 +1,11 @@
 package mods.railcraft.gui.widget;
 
-import java.util.ArrayList;
-import java.util.List;
 import mods.railcraft.util.HumanReadableNumberFormatter;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.energy.IEnergyStorage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * @author CovertJaguar (https://www.railcraft.info/)
@@ -28,8 +28,8 @@ public class ChargeBatteryIndicator implements Gauge {
     int current = Math.min(this.charge, capacity);
     float chargeLevel = capacity <= 0.0F ? 0.0F : (current / capacity) * 100.0F;
     this.tooltip.clear();
-    this.tooltip.add(new TextComponent(String.format("%.0f%%", chargeLevel)));
-    this.tooltip.add(new TextComponent(
+    this.tooltip.add(Component.literal(String.format("%.0f%%", chargeLevel)));
+    this.tooltip.add(Component.literal(
         HumanReadableNumberFormatter.format(current)
         + " / "
         + HumanReadableNumberFormatter.format(capacity)

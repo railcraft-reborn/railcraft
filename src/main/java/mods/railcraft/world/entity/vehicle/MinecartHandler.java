@@ -1,7 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.List;
-import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
@@ -20,6 +18,10 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.IMinecartCollisionHandler;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class MinecartHandler implements IMinecartCollisionHandler {
 
@@ -199,7 +201,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       }
 
       if (!other.isAlive() || RailcraftConfig.server.highSpeedTrackIgnoredEntities.get()
-          .contains(other.getType().getRegistryName().toString())) {
+          .contains(ForgeRegistries.ENTITIES.getKey(other.getType()).toString())) {
         return;
       }
 

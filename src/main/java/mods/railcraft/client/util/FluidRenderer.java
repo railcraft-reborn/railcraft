@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.client.RenderProperties;
 import net.minecraftforge.fluids.FluidStack;
 
 /**
@@ -36,9 +37,9 @@ public class FluidRenderer {
     Fluid fluid = fluidStack.getFluid();
     ResourceLocation spriteLocation;
     if (type == FluidType.STILL) {
-      spriteLocation = fluid.getAttributes().getStillTexture(fluidStack);
+      spriteLocation = RenderProperties.get(fluid).getStillTexture(fluidStack);
     } else {
-      spriteLocation = fluid.getAttributes().getFlowingTexture(fluidStack);
+      spriteLocation = RenderProperties.get(fluid).getFlowingTexture(fluidStack);
     }
     return minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(spriteLocation);
   }

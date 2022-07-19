@@ -1,12 +1,11 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
-import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -18,6 +17,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+
+import java.util.function.Supplier;
 
 public class CouplerTrackBlock extends PoweredOutfittedTrackBlock implements EntityBlock {
 
@@ -53,7 +54,7 @@ public class CouplerTrackBlock extends PoweredOutfittedTrackBlock implements Ent
     if (!level.isClientSide()) {
       level.setBlockAndUpdate(blockPos, blockState.setValue(CouplerTrackBlock.MODE, newMode));
       player.displayClientMessage(
-          new TranslatableComponent("coupler_track.mode",
+          Component.translatable("coupler_track.mode",
               newMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE)),
           true);
     }

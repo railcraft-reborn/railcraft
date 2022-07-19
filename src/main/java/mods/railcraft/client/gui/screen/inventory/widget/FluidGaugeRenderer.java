@@ -1,14 +1,17 @@
 package mods.railcraft.client.gui.screen.inventory.widget;
 
-import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
 import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.client.util.FluidRenderer;
+import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraftforge.client.RenderProperties;
+
+import java.util.List;
 
 public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
 
@@ -42,7 +45,7 @@ public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
     var scale = Math.min(fluidStack.getAmount(), this.widget.tank.getCapacity())
         / (float) this.widget.tank.getCapacity();
 
-    var color = fluidStack.getFluid().getAttributes().getColor(fluidStack);
+    var color = RenderUtil.getColorARGB(fluidStack);
     var alpha = (float) (color >> 24 & 255) / 255.0F;
     var red = (float) (color >> 16 & 255) / 255.0F;
     var green = (float) (color >> 8 & 255) / 255.0F;

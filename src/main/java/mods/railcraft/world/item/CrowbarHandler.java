@@ -1,20 +1,13 @@
 package mods.railcraft.world.item;
 
-import java.util.Map;
 import com.google.common.collect.MapMaker;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.item.Crowbar;
-import mods.railcraft.world.entity.vehicle.CartTools;
-import mods.railcraft.world.entity.vehicle.IDirectionalCart;
-import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
-import mods.railcraft.world.entity.vehicle.SeasonalCart;
-import mods.railcraft.world.entity.vehicle.TrackRemover;
-import mods.railcraft.world.entity.vehicle.Train;
-import mods.railcraft.world.entity.vehicle.TunnelBore;
+import mods.railcraft.world.entity.vehicle.*;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,6 +15,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+
+import java.util.Map;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info)
@@ -78,16 +73,16 @@ public class CrowbarHandler {
     var last = linkMap.remove(player);
     if (last == null || !last.isAlive()) {
       linkMap.put(player, cart);
-      player.displayClientMessage(new TranslatableComponent("crowbar.link_started"), true);
+      player.displayClientMessage(Component.translatable("crowbar.link_started"), true);
       return;
     }
 
     if (LinkageManagerImpl.INSTANCE.areLinked(cart, last, false)) {
       LinkageManagerImpl.INSTANCE.breakLink(cart, last);
-      player.displayClientMessage(new TranslatableComponent("crowbar.link_broken"), true);
+      player.displayClientMessage(Component.translatable("crowbar.link_broken"), true);
     } else {
       if (!LinkageManagerImpl.INSTANCE.createLink(last, cart)) {
-        player.displayClientMessage(new TranslatableComponent("crowbar.link_failed"), true);
+        player.displayClientMessage(Component.translatable("crowbar.link_failed"), true);
         return;
       }
 
@@ -95,7 +90,7 @@ public class CrowbarHandler {
         RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayer) player, last, cart);
       }
 
-      player.displayClientMessage(new TranslatableComponent("crowbar.link_created"), true);
+      player.displayClientMessage(Component.translatable("crowbar.link_created"), true);
     }
 
     crowbar.onLink(player, hand, stack, cart);

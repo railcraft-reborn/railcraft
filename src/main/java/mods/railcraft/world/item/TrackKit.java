@@ -1,22 +1,21 @@
 package mods.railcraft.world.item;
 
+import com.google.common.collect.ImmutableMap;
+import mods.railcraft.api.track.TrackType;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraftforge.registries.RegistryObject;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
-import com.google.common.collect.ImmutableMap;
-import mods.railcraft.api.track.TrackType;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.minecraftforge.registries.RegistryObject;
 
-public class TrackKit extends ForgeRegistryEntry<TrackKit> {
+public class TrackKit {
 
-  private final Map<ResourceLocation, Supplier<? extends BaseRailBlock>> outfittedTrackBlocks;
+  private final Map<TrackType, Supplier<? extends BaseRailBlock>> outfittedTrackBlocks;
   private final boolean supportsSlopes;
 
   private TrackKit(
-      Map<ResourceLocation, Supplier<? extends BaseRailBlock>> outfittedTrackBlocks,
+      Map<TrackType, Supplier<? extends BaseRailBlock>> outfittedTrackBlocks,
       boolean supportsSlopes) {
     this.outfittedTrackBlocks = outfittedTrackBlocks;
     this.supportsSlopes = supportsSlopes;
@@ -27,25 +26,25 @@ public class TrackKit extends ForgeRegistryEntry<TrackKit> {
   }
 
   public Optional<? extends BaseRailBlock> getOutfittedBlock(TrackType trackType) {
-    return Optional.ofNullable(this.outfittedTrackBlocks.get(trackType.getRegistryName()))
+    return Optional.ofNullable(this.outfittedTrackBlocks.get(trackType))
         .map(Supplier::get);
   }
 
   public static class Builder {
 
-    private final ImmutableMap.Builder<ResourceLocation, Supplier<? extends BaseRailBlock>> outfittedBlocks =
+    private final ImmutableMap.Builder<TrackType, Supplier<? extends BaseRailBlock>> outfittedBlocks =
         ImmutableMap.builder();
     private boolean supportsSlopes;
 
     public Builder addOutfittedBlock(
         RegistryObject<? extends TrackType> trackType,
         Supplier<? extends BaseRailBlock> block) {
-      return this.addOutfittedBlock(trackType.getId(), block);
+      return this.addOutfittedBlock(trackType, block);
     }
 
-    public Builder addOutfittedBlock(ResourceLocation trackTypeId,
+    public Builder addOutfittedBlock(TrackType trackType,
         Supplier<? extends BaseRailBlock> block) {
-      this.outfittedBlocks.put(trackTypeId, block);
+      this.outfittedBlocks.put(trackType, block);
       return this;
     }
 

@@ -1,17 +1,19 @@
 package mods.railcraft.fuel;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.fuel.FuelManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.IRegistryDelegate;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public enum FuelManagerImpl implements FuelManager {
 
   INSTANCE;
 
-  private static final Map<IRegistryDelegate<Fluid>, Integer> boilerFuel =
+  private static final Map<ResourceLocation, Integer> boilerFuel =
       new ConcurrentHashMap<>();
 
   /**
@@ -22,12 +24,14 @@ public enum FuelManagerImpl implements FuelManager {
    */
   @Override
   public void addFuel(Fluid fluid, int heatValuePerBucket) {
-    boilerFuel.put(fluid.delegate, heatValuePerBucket);
+    var resourceLocation = ForgeRegistries.FLUIDS.getKey(fluid);
+    boilerFuel.put(resourceLocation, heatValuePerBucket);
   }
 
   @Override
   public float getFuelValue(Fluid fluid) {
+    var resourceLocation = ForgeRegistries.FLUIDS.getKey(fluid);
     return RailcraftConfig.server.fuelMultiplier.get().floatValue()
-        * boilerFuel.getOrDefault(fluid.delegate, 0);
+        * boilerFuel.getOrDefault(resourceLocation, 0);
   }
 }

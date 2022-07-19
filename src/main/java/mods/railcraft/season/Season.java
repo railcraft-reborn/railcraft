@@ -1,13 +1,13 @@
 package mods.railcraft.season;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import net.minecraft.util.StringRepresentable;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 public enum Season implements StringRepresentable {
 
@@ -24,7 +24,7 @@ public enum Season implements StringRepresentable {
 
   private Season(String name) {
     this.name = name;
-    this.displayName = new TranslatableComponent("season." + name);
+    this.displayName = Component.translatable("season." + name);
   }
 
   public Component getDisplayName() {

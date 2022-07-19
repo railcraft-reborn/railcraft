@@ -12,7 +12,6 @@ import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
@@ -39,8 +38,7 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
     return RailcraftRecipeSerializers.BLASTING.get();
   }
 
-  public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>>
-      implements RecipeSerializer<BlastFurnaceRecipe> {
+  public static class Serializer implements RecipeSerializer<BlastFurnaceRecipe> {
 
     @Override
     public BlastFurnaceRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {

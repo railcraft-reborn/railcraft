@@ -1,7 +1,5 @@
 package mods.railcraft.world.inventory;
 
-import java.util.Collections;
-import java.util.List;
 import mods.railcraft.gui.widget.AnalogGaugeWidget;
 import mods.railcraft.gui.widget.ChargeNetworkIndicator;
 import mods.railcraft.gui.widget.Gauge;
@@ -9,9 +7,11 @@ import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.util.Collections;
+import java.util.List;
 
 public class SteamTurbineMenu extends RailcraftMenu {
 
@@ -38,7 +38,7 @@ public class SteamTurbineMenu extends RailcraftMenu {
       @Override
       public void refresh() {
         this.tooltip =
-            List.of(new TextComponent(String.format("%.0f%%", this.clientValue * 100.0)));
+            List.of(Component.literal(String.format("%.0f%%", this.clientValue * 100.0)));
       }
 
       @Override

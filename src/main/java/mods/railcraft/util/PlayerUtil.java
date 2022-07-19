@@ -1,8 +1,5 @@
 package mods.railcraft.util;
 
-import java.util.UUID;
-import javax.annotation.Nullable;
-import org.apache.logging.log4j.util.Strings;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
@@ -11,13 +8,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.apache.logging.log4j.util.Strings;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -78,7 +78,7 @@ public final class PlayerUtil {
         return player.getDisplayName();
     }
     String username = gameProfile.getName();
-    return new TextComponent(
+    return Component.literal(
         Strings.isEmpty(username) ? RailcraftConstantsAPI.UNKNOWN_PLAYER : username);
   }
 
@@ -88,7 +88,7 @@ public final class PlayerUtil {
       if (player != null)
         return player.getDisplayName();
     }
-    return new TextComponent(RailcraftConstantsAPI.UNKNOWN_PLAYER);
+    return Component.literal(RailcraftConstantsAPI.UNKNOWN_PLAYER);
   }
 
   public static boolean isOwnerOrOp(GameProfile owner, Player player) {

@@ -21,14 +21,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
  * Created by CovertJaguar on 8/10/2016 for Railcraft.
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class TrackType extends ForgeRegistryEntry<TrackType> {
+public class TrackType /*extends ForgeRegistryEntry<TrackType>*/ {
 
   private final Supplier<? extends BaseRailBlock> flexBlock;
   private final List<Supplier<? extends BaseRailBlock>> spikeMaulVariants;
@@ -135,7 +134,7 @@ public class TrackType extends ForgeRegistryEntry<TrackType> {
      * Invokes after a minecart has passed over us
      *
      * @param level - the level.
-     * @param cart - The {@link AbstractMinecartEntity} that passed us.
+     * @param cart - The {@link AbstractMinecart} that passed us.
      * @param pos - our position.
      */
     default void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {}

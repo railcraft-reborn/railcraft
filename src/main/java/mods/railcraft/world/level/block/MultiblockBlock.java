@@ -1,10 +1,10 @@
 package mods.railcraft.world.level.block;
 
-import javax.annotation.Nullable;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockListener;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,6 +16,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.phys.BlockHitResult;
+
+import javax.annotation.Nullable;
 
 public abstract class MultiblockBlock extends BaseEntityBlock {
 
@@ -30,7 +32,7 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
 
   @Nullable
   @Override
-  public <T extends BlockEntity> GameEventListener getListener(Level level, T blockEntity) {
+  public <T extends BlockEntity> GameEventListener getListener(ServerLevel level, T blockEntity) {
     return blockEntity instanceof MultiblockBlockEntity<?, ?> multiblock
         ? new MultiblockListener(multiblock)
         : null;

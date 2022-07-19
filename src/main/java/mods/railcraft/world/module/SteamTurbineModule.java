@@ -12,7 +12,9 @@ import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.LazyOptional;
@@ -122,7 +124,7 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
 
   public static ItemStack useRotor(ItemStack stack) {
     return MiscTools.RANDOM.nextInt(ROTOR_DAMAGE_CHANCE) == 0
-        && stack.hurt(1, MiscTools.RANDOM, null) ? ItemStack.EMPTY : stack;
+        && stack.hurt(1, RandomSource.create(), null) ? ItemStack.EMPTY : stack;
   }
 
   public class FluidHandler implements IFluidHandler {

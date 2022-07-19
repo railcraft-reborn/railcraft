@@ -1,7 +1,5 @@
 package mods.railcraft.data.recipes;
 
-import java.util.function.Consumer;
-import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.Advancement;
@@ -13,6 +11,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 public class BlastFurnaceRecipeBuilder implements RecipeBuilder {
 
@@ -112,7 +114,7 @@ public class BlastFurnaceRecipeBuilder implements RecipeBuilder {
 
       json.add("ingredient", this.ingredient.toJson());
       var resultJson = new JsonObject();
-      resultJson.addProperty("item", this.result.getRegistryName().toString());
+      resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(this.result).toString());
       if (this.count > 1) {
         resultJson.addProperty("count", this.count);
       }

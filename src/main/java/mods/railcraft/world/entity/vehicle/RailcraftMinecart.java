@@ -1,8 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Nullable;
 import mods.railcraft.api.carts.IItemCart;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.TrackShapeHelper;
@@ -29,13 +26,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.network.NetworkHooks;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Basetype of RC minecarts. It also contains some generic code that most carts will find useful.
  *
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public abstract class RailcraftMinecart extends AbstractMinecartContainer
-    implements SeasonalCart, IItemCart {
+public abstract class RailcraftMinecart extends AbstractMinecartContainer implements SeasonalCart, IItemCart {
 
   private static final EntityDataAccessor<Byte> SEASON =
       SynchedEntityData.defineId(RailcraftMinecart.class, EntityDataSerializers.BYTE);
@@ -45,13 +45,12 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   protected @Nullable Direction verticalTravelDirection;
   protected List<ContainerMapper> invMappers = new ArrayList<>();
 
-  protected RailcraftMinecart(EntityType<?> type, Level world) {
-    super(type, world);
+  protected RailcraftMinecart(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
-  protected RailcraftMinecart(EntityType<?> type, double x, double y, double z,
-      Level world) {
-    super(type, x, y, z, world);
+  protected RailcraftMinecart(EntityType<?> type, double x, double y, double z, Level level) {
+    super(type, x, y, z, level);
   }
 
   @Override

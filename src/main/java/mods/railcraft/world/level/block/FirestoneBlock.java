@@ -1,16 +1,18 @@
 package mods.railcraft.world.level.block;
 
-import java.util.Random;
 import mods.railcraft.client.ClientEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.Random;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -22,7 +24,7 @@ public class FirestoneBlock extends Block {
   }
 
   @Override
-  public void animateTick(BlockState blockState, Level level, BlockPos pos, Random rand) {
+  public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource rand) {
     super.animateTick(blockState, level, pos, rand);
     BlockPos start = new BlockPos(pos.getX() - 10 + rand.nextInt(20), pos.getY(),
         pos.getZ() - 10 + rand.nextInt(20));
@@ -34,7 +36,7 @@ public class FirestoneBlock extends Block {
   }
 
   private void spawnBurningFaceParticles(Level level, BlockPos pos) {
-    Random random = level.getRandom();
+    var random = level.getRandom();
     double pixel = 0.0625D;
 
     BlockState state = level.getBlockState(pos);

@@ -1,18 +1,15 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
-import java.util.Objects;
-import javax.annotation.Nullable;
 import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
@@ -28,6 +25,10 @@ import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -69,7 +70,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
     } else
       newStack = stack.copy();
     newStack.setCount(1);
-    return newStack.hurt(1, MiscTools.RANDOM, null) ? ItemStack.EMPTY : newStack;
+    return newStack.hurt(1, RandomSource.create(), null) ? ItemStack.EMPTY : newStack;
   }
 
   @Override
@@ -80,7 +81,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
   @Override
   public void appendHoverText(
       ItemStack stack, @Nullable Level world, List<Component> info, TooltipFlag adv) {
-    info.add(new TranslatableComponent(stack.getDamageValue() >= stack.getMaxDamage() - 5
+    info.add(Component.translatable(stack.getDamageValue() >= stack.getMaxDamage() - 5
         ? "item.railcraft.firestone.empty"
         : "item.railcraft.firestone.charged"));
   }

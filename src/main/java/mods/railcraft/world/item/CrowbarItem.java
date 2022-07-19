@@ -1,16 +1,11 @@
 package mods.railcraft.world.item;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.annotation.Nullable;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -25,13 +20,13 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ButtonBlock;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.LeverBlock;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class CrowbarItem extends DiggerItem implements Crowbar {
 
@@ -180,7 +175,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> info,
       TooltipFlag adv) {
-    info.add(new TranslatableComponent("crowbar.description"));
+    info.add(Component.translatable("crowbar.description"));
   }
 
   private void removeExtraBlocks(Level world, int level, BlockPos pos, BlockState state,

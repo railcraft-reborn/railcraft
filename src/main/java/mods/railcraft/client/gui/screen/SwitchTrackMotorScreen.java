@@ -1,9 +1,5 @@
 package mods.railcraft.client.gui.screen;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Set;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -15,7 +11,11 @@ import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockE
 import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Set;
 
 public class SwitchTrackMotorScreen extends IngameWindowScreen {
 
@@ -52,7 +52,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
 
     this.addRenderableWidget(
         this.redstoneTriggeredButton = new ToggleButton(centreX + 34, centreY + 80, 110, 20,
-            new TranslatableComponent("screen.switch_track_motor.redstone_triggered"),
+          Component.translatable("screen.switch_track_motor.redstone_triggered"),
             button -> ((ToggleButton) button).setToggled(this.toggleRedstoneTriggered()),
             ButtonTexture.LARGE_BUTTON,
             this.switchTrackMotor.isRedstoneTriggered()));
@@ -92,12 +92,12 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
     switch (lock) {
       case LOCKED:
         this.lockButtonTooltip =
-            new TranslatableComponent("screen.action_signal_box.lock.locked",
+            Component.translatable("screen.action_signal_box.lock.locked",
                 this.switchTrackMotor.getOwnerOrThrow().getName());
         break;
       case UNLOCKED:
         this.lockButtonTooltip =
-            new TranslatableComponent("screen.action_signal_box.lock.unlocked");
+          Component.translatable("screen.action_signal_box.lock.unlocked");
         break;
       default:
         break;

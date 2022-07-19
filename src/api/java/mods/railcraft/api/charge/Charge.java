@@ -10,6 +10,8 @@ package mods.railcraft.api.charge;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.ApiStatus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -228,7 +230,7 @@ public enum Charge implements StringRepresentable {
 
     /**
      * Queues the node to be added to the network.
-     * 
+     *
      * @return true if the network changed.
      */
     boolean addNode(BlockPos blockPos, BlockState blockState);
@@ -350,7 +352,7 @@ public enum Charge implements StringRepresentable {
      *        {@code rand.nextInt(chance) == 0} Most blocks use 50, tracks use 75. Lower numbers
      *        means more frequent sparks.
      */
-    default void throwSparks(BlockState state, Level world, BlockPos pos, Random rand,
+    default void throwSparks(BlockState state, Level world, BlockPos pos, RandomSource rand,
         int chance) {}
 
     /**

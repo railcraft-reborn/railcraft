@@ -1,16 +1,5 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -28,8 +17,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -38,6 +25,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implements MenuProvider {
 
@@ -288,10 +281,10 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
 
   public enum TransferMode implements ButtonState<TransferMode>, StringRepresentable {
 
-    ALL("all", new TextComponent("\u27a7\u27a7\u27a7")),
-    EXCESS("excess", new TextComponent("#\u27a7\u27a7")),
-    STOCK("stock", new TextComponent("\u27a7\u27a7#")),
-    TRANSFER("transfer", new TextComponent("\u27a7#\u27a7"));
+    ALL("all", Component.literal("\u27a7\u27a7\u27a7")),
+    EXCESS("excess", Component.literal("#\u27a7\u27a7")),
+    STOCK("stock", Component.literal("\u27a7\u27a7#")),
+    TRANSFER("transfer", Component.literal("\u27a7#\u27a7"));
 
     private static final Map<String, TransferMode> byName = Arrays.stream(values())
         .collect(Collectors.toMap(TransferMode::getSerializedName, Function.identity()));
@@ -306,8 +299,8 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
       final String translationKey = "manipulator.transfer_mode." + name;
       this.tooltip = ImmutableList.of(
           label.copy().withStyle(ChatFormatting.WHITE),
-          new TranslatableComponent(translationKey).withStyle(ChatFormatting.DARK_GREEN),
-          new TranslatableComponent(translationKey + ".description"));
+          Component.translatable(translationKey).withStyle(ChatFormatting.DARK_GREEN),
+          Component.translatable(translationKey + ".description"));
     }
 
     @Override
@@ -342,10 +335,10 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
 
   public enum RedstoneMode implements ButtonState<RedstoneMode>, StringRepresentable {
 
-    COMPLETE("complete", new TextComponent("\u2714")),
-    IMMEDIATE("immediate", new TextComponent("\u2762")),
-    MANUAL("manual", new TextComponent("\u2718")),
-    PARTIAL("partial", new TextComponent("\u27a7"));
+    COMPLETE("complete", Component.literal("\u2714")),
+    IMMEDIATE("immediate", Component.literal("\u2762")),
+    MANUAL("manual", Component.literal("\u2718")),
+    PARTIAL("partial", Component.literal("\u27a7"));
 
     private static final Map<String, RedstoneMode> byName = Arrays.stream(values())
         .collect(Collectors.toMap(RedstoneMode::getSerializedName, Function.identity()));
@@ -360,8 +353,8 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
       final String translationKey = "manipulator.redstone_mode." + name;
       this.tooltip = ImmutableList.of(
           label.copy().withStyle(ChatFormatting.WHITE),
-          new TranslatableComponent(translationKey).withStyle(ChatFormatting.DARK_GREEN),
-          new TranslatableComponent(translationKey + ".description"));
+          Component.translatable(translationKey).withStyle(ChatFormatting.DARK_GREEN),
+          Component.translatable(translationKey + ".description"));
     }
 
     @Override

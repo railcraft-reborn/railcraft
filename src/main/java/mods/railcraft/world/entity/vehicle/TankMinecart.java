@@ -1,7 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.Optional;
-import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.util.container.ContainerMapper;
@@ -20,16 +18,13 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
@@ -38,8 +33,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-public class TankMinecart extends FilteredMinecart
-    implements WorldlyContainer, FluidMinecart {
+import javax.annotation.Nullable;
+import java.util.Optional;
+
+public class TankMinecart extends FilteredMinecart implements WorldlyContainer, FluidMinecart {
 
   // Can't use FluidStack directly because its equals method doesn't consider amount so will never
   // sync if the amount is changed.
@@ -69,7 +66,6 @@ public class TankMinecart extends FilteredMinecart
   public TankMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
     super(itemStack, RailcraftEntityTypes.TANK_MINECART.get(), x, y, z, level);
   }
-
   @Override
   protected void defineSynchedData() {
     super.defineSynchedData();
@@ -217,6 +213,11 @@ public class TankMinecart extends FilteredMinecart
   @Override
   public ItemStack getPickResult() {
     return RailcraftItems.TANK_MINECART.get().getDefaultInstance();
+  }
+
+  @Override
+  protected Item getDropItem() {
+    return RailcraftItems.TANK_MINECART.get();
   }
 
   @Override

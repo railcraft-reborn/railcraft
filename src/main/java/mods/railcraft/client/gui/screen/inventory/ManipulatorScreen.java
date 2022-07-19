@@ -5,9 +5,8 @@ import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.world.inventory.ManipulatorMenu;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Inventory;
 
 public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
     extends RailcraftMenuScreen<T> {
@@ -15,7 +14,7 @@ public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
   private static final int REFRESH_INTERVAL_TICKS = 20;
 
   private static final Component CART_FILTER_TEXT =
-      new TranslatableComponent("screen.manipulator.cart_filters");
+      Component.translatable("screen.manipulator.cart_filters");
 
   private MultiButton<ManipulatorBlockEntity.RedstoneMode> redstoneModeButton;
 

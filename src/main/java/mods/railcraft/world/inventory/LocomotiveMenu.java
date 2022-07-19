@@ -1,14 +1,15 @@
 package mods.railcraft.world.inventory;
 
-import java.util.Collections;
-import javax.annotation.Nullable;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.item.TicketItem;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
 
 public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
 
@@ -30,7 +31,7 @@ public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
         locomotive.getContainerSize() - 2, 116, guiHeight - 111).setStackLimit(1);
     slotTicket.setTooltip(
         Collections.singletonList(
-            new TranslatableComponent("gui.railcraft.locomotive.tips.slot.ticket")));
+            Component.translatable("gui.railcraft.locomotive.tips.slot.ticket")));
     this.addSlot(slotTicket);
     // TODO: make some way to clear this?
     this.addSlot(

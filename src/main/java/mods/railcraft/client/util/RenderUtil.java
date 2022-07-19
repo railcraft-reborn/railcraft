@@ -1,14 +1,15 @@
 package mods.railcraft.client.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import com.mojang.math.Matrix4f;
-import net.minecraft.network.chat.Component;
+import net.minecraftforge.client.RenderProperties;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RenderUtil {
@@ -24,7 +25,7 @@ public class RenderUtil {
       return -1;
     }
     int color = getColorARGB(fluidStack);
-    if (fluidStack.getFluid().getAttributes().isGaseous(fluidStack)) {
+    if (fluidStack.getFluid().getFluidType().isLighterThanAir()) {
       // TODO: We probably want to factor in the fluid's alpha value somehow
       return getColorARGB(getRed(color), getGreen(color), getBlue(color),
           Math.min(1, fluidScale + 0.2F));
@@ -33,7 +34,7 @@ public class RenderUtil {
   }
 
   public static int getColorARGB(FluidStack fluidStack) {
-    return fluidStack.getFluid().getAttributes().getColor(fluidStack);
+    return RenderProperties.get(fluidStack.getFluid()).getColorTint(fluidStack);
   }
 
   public static int getColorARGB(float red, float green, float blue, float alpha) {
@@ -56,7 +57,7 @@ public class RenderUtil {
 
   public static int calculateGlowLight(int combinedLight, FluidStack fluid) {
     return fluid.isEmpty() ? combinedLight
-        : calculateGlowLight(combinedLight, fluid.getFluid().getAttributes().getLuminosity(fluid));
+        : calculateGlowLight(combinedLight, fluid.getFluid().getFluidType().getLightLevel(fluid));
   }
 
   public static int calculateGlowLight(int combinedLight, int glow) {

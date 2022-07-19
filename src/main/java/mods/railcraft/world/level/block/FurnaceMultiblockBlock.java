@@ -1,17 +1,19 @@
 package mods.railcraft.world.level.block;
 
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+
+import java.util.Random;
 
 public abstract class FurnaceMultiblockBlock extends MultiblockBlock {
 
@@ -32,7 +34,7 @@ public abstract class FurnaceMultiblockBlock extends MultiblockBlock {
   }
 
   @Override
-  public void animateTick(BlockState blockState, Level level, BlockPos blockPos, Random random) {
+  public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource random) {
     if (blockState.getValue(LIT) && blockState.getValue(WINDOW)) {
       var x = blockPos.getX() + 0.5D;
       var y = blockPos.getY() + 0.4D;

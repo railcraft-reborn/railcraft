@@ -1,17 +1,19 @@
 package mods.railcraft.world.level.block;
 
-import java.util.Random;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Random;
+
 /**
  * Base implementation of {@link ChargeBlock}.
- * 
+ *
  * @author Sm0keySa1m0n
  */
 public abstract class BaseChargeBlock extends Block implements ChargeBlock {
@@ -21,13 +23,13 @@ public abstract class BaseChargeBlock extends Block implements ChargeBlock {
   }
 
   @Override
-  public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+  public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
     Charge.zapEffectProvider().throwSparks(state, level, pos, rand, 50);
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, Random random) {
+  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
     super.tick(blockState, level, blockPos, random);
     this.registerNode(blockState, level, blockPos);
   }

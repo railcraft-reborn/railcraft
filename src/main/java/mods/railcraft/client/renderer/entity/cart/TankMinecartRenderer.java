@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidType;
 
 public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart> {
 
@@ -68,7 +69,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
         poseStack.pushPose();
         {
           var level = fluidStack.getAmount() / capacity;
-          var fluidMaxY = fluidStack.getFluid().getAttributes().isGaseous(fluidStack)
+          var fluidMaxY =  fluidStack.getFluid().getFluidType().isLighterThanAir()
               ? 1.0F
               : Math.min(1.0F, level);
 

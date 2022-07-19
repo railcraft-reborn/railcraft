@@ -1,5 +1,24 @@
 package mods.railcraft.data.models;
 
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.mojang.logging.LogUtils;
+import mods.railcraft.world.level.block.RailcraftBlocks;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.HashCache;
+import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.model.DelegatedModel;
+import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
+
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Map;
@@ -8,36 +27,17 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import com.mojang.logging.LogUtils;
-import org.slf4j.Logger;
-import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.data.models.model.DelegatedModel;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.HashCache;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.models.blockstates.BlockStateGenerator;
-import net.minecraft.data.models.model.ModelLocationUtils;
-import net.minecraft.world.item.Item;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class RailcraftModelProvider implements DataProvider {
 
   private static final Logger logger = LogUtils.getLogger();
-  private static final Gson gson =
-      new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
   private final DataGenerator generator;
 
   public RailcraftModelProvider(DataGenerator generator) {
     this.generator = generator;
   }
 
-  public void run(HashCache directoryCache) {
+  public void run(CachedOutput cachedOutput) {
     Map<Block, BlockStateGenerator> blockStates = Maps.newHashMap();
     Consumer<BlockStateGenerator> blockStateConsumer = (blockState) -> {
       Block block = blockState.getBlock();
@@ -60,32 +60,30 @@ public class RailcraftModelProvider implements DataProvider {
     new RailcraftItemModelGenerators(modelConsumer).run();
 
 
-    RailcraftBlocks.deferredRegister.getEntries().forEach((block) -> {
-      Item item = Item.BY_BLOCK.get(block.get());
+    RailcraftBlocks.getRegisteredBlocks().forEach((block) -> {
+      Item item = Item.BY_BLOCK.get(block);
       if (item != null && !skippedAutoModels.contains(item)) {
         ResourceLocation itemModel = ModelLocationUtils.getModelLocation(item);
         if (!models.containsKey(itemModel)) {
           models.put(itemModel,
-              new DelegatedModel(ModelLocationUtils.getModelLocation(block.get())));
+              new DelegatedModel(ModelLocationUtils.getModelLocation(block)));
         }
       }
     });
 
     Path outputFolder = this.generator.getOutputFolder();
 
-    this.saveCollection(directoryCache, outputFolder, blockStates,
-        RailcraftModelProvider::createBlockStatePath);
-    this.saveCollection(directoryCache, outputFolder, models,
-        RailcraftModelProvider::createModelPath);
+    this.saveCollection(cachedOutput, outputFolder, blockStates, RailcraftModelProvider::createBlockStatePath);
+    this.saveCollection(cachedOutput, outputFolder, models, RailcraftModelProvider::createModelPath);
   }
 
-  private <T> void saveCollection(HashCache p_240081_1_, Path p_240081_2_,
+  private <T> void saveCollection(CachedOutput cachedOutput, Path p_240081_2_,
       Map<T, ? extends Supplier<JsonElement>> p_240081_3_, BiFunction<Path, T, Path> p_240081_4_) {
     p_240081_3_.forEach((p_240088_3_, p_240088_4_) -> {
       Path path = p_240081_4_.apply(p_240081_2_, p_240088_3_);
 
       try {
-        DataProvider.save(gson, p_240081_1_, p_240088_4_.get(), path);
+        DataProvider.saveStable(cachedOutput, p_240088_4_.get(), path);
       } catch (Exception exception) {
         logger.error("Couldn't save {}", path, exception);
       }

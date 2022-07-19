@@ -1,10 +1,5 @@
 package mods.railcraft.world.item;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
-import java.util.function.Supplier;
-import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Lists;
@@ -16,7 +11,6 @@ import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -38,6 +32,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+
+import javax.annotation.Nullable;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class SpikeMaulItem extends TieredItem {
 
@@ -151,6 +151,6 @@ public class SpikeMaulItem extends TieredItem {
   public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> lines,
       TooltipFlag advanced) {
     super.appendHoverText(stack, world, lines, advanced);
-    lines.add(new TranslatableComponent("spike_maul.description"));
+    lines.add(Component.translatable("spike_maul.description"));
   }
 }

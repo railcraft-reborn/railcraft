@@ -1,10 +1,5 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -14,10 +9,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     implements Lockable {
@@ -88,7 +88,7 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
 
     @Override
     public Component getLabel() {
-      return TextComponent.EMPTY;
+      return Component.empty();
     }
 
     @Override

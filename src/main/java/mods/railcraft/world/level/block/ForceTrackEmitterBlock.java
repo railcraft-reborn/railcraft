@@ -1,11 +1,5 @@
 package mods.railcraft.world.level.block;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
-import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.util.Optionals;
@@ -17,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,6 +38,9 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlock {
 
@@ -119,7 +117,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   }
 
   @Override
-  public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+  public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
     if (stateIn.getValue(POWERED)) {
       Charge.zapEffectProvider().throwSparks(stateIn, worldIn, pos, rand, 10);
     }
@@ -127,7 +125,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
 
   @SuppressWarnings("deprecation")
   @Override
-  public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+  public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
     super.tick(state, worldIn, pos, rand);
     this.registerNode(state, worldIn, pos);
   }

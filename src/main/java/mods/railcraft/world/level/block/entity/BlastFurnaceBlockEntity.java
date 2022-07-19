@@ -1,7 +1,5 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.List;
-import javax.annotation.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
@@ -14,7 +12,6 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
@@ -27,10 +24,13 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceBlockEntity, Void> {
 
   private static final Component MENU_TITLE =
-      new TranslatableComponent("container.railcraft.blast_furnace");
+      Component.translatable("container.railcraft.blast_furnace");
 
   private static final MultiblockPattern<Void> PATTERN = Util.make(() -> {
     final var bricks = BlockPredicate.of(RailcraftBlocks.BLAST_FURNACE_BRICKS);

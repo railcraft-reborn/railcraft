@@ -1,11 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.BiFunction;
-import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
@@ -13,12 +7,7 @@ import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.AABBFactory;
-import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.LevelUtil;
-import mods.railcraft.util.MiscTools;
-import mods.railcraft.util.RCEntitySelectors;
-import mods.railcraft.util.TrackTools;
+import mods.railcraft.util.*;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
@@ -49,6 +38,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -71,6 +61,13 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
+
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.BiFunction;
 
 public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
@@ -201,7 +198,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   }
 
   @Override
-  public ItemStack getCartItem() {
+  public ItemStack getPickResult() {
     return RailcraftItems.TUNNEL_BORE.get().getDefaultInstance();
   }
 
@@ -490,6 +487,11 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
     return SPEED;
   }
 
+  @Override
+  protected Item getDropItem() {
+    return RailcraftItems.TUNNEL_BORE.get();
+  }
+
   private void updateFuel() {
     if (!this.level.isClientSide()) {
       if (isMinecartPowered()) {
@@ -775,7 +777,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
   /**
    * Mines the block forward, returns true if it's clear. Now 1.17 compliant!
-   * 
+   *
    * @return true if the target block is clear
    */
   protected boolean mineBlock(BlockPos targetPos, RailShape preferredShape) {
