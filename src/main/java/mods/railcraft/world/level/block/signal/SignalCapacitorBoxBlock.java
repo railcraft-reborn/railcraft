@@ -17,8 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class SignalCapacitorBoxBlock extends SignalBoxBlock implements EntityBlock {
 
   public SignalCapacitorBoxBlock(Properties properties) {

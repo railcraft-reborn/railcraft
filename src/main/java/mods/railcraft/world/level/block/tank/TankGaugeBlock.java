@@ -24,9 +24,6 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
-import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock.Type;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public abstract class TankGaugeBlock extends AbstractStrengthenedGlassBlock implements EntityBlock {
 
   public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL;

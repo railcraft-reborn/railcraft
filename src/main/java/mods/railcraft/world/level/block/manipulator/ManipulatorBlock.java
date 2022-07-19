@@ -23,8 +23,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends BaseEntityBlock {
 
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;

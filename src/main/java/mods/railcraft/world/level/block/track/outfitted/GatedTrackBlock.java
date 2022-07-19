@@ -28,8 +28,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
   public static final BooleanProperty OPEN = BlockStateProperties.OPEN;

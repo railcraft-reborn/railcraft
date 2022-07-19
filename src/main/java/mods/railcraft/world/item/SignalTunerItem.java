@@ -17,8 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class SignalTunerItem extends PairingToolItem {
 
   public SignalTunerItem(Properties properties) {

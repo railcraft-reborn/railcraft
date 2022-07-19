@@ -41,8 +41,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity.Membership;
-
 public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEntity, Void> {
 
   private static final Component MENU_TITLE =

@@ -5,8 +5,6 @@ import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 
-import net.minecraft.world.item.Item.Properties;
-
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */

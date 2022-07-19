@@ -17,8 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class WyeTrackBlock extends SwitchTrackBlock implements EntityBlock {
 
   public WyeTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {

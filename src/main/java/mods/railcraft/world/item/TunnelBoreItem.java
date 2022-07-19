@@ -11,8 +11,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class TunnelBoreItem extends Item {
 
   public TunnelBoreItem(Properties properties) {

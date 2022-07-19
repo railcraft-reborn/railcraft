@@ -20,8 +20,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 import java.util.function.Supplier;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class CouplerTrackBlock extends PoweredOutfittedTrackBlock implements EntityBlock {
 
   public static final EnumProperty<CouplerTrackBlockEntity.Mode> MODE =

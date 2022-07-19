@@ -2,9 +2,6 @@ package mods.railcraft.client.gui.widget.button;
 
 import net.minecraft.network.chat.Component;
 
-import net.minecraft.client.gui.components.Button.OnPress;
-import net.minecraft.client.gui.components.Button.OnTooltip;
-
 public class ToggleButton extends RailcraftButton {
 
   private boolean toggled;

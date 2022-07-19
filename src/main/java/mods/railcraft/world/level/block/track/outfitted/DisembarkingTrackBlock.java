@@ -16,8 +16,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class DisembarkingTrackBlock extends PoweredOutfittedTrackBlock {
 
   private static final int TIME_TILL_NEXT_MOUNT = 40;

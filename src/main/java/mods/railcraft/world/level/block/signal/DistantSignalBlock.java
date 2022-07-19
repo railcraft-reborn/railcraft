@@ -7,8 +7,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class DistantSignalBlock extends SingleSignalBlock {
 
   public DistantSignalBlock(Properties properties) {

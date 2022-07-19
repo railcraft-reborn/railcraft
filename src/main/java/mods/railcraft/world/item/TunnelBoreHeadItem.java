@@ -13,8 +13,6 @@ import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
-import net.minecraft.world.item.Item.Properties;
-
 public abstract class TunnelBoreHeadItem extends TieredItem implements TunnelBoreHead {
 
   private static final Set<ToolAction> toolActions =

@@ -21,8 +21,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 
-import mods.railcraft.client.util.CuboidModel.Face;
-
 public abstract class AbstractSignalBoxRenderer
     implements BlockEntityRenderer<AbstractSignalBoxBlockEntity> {
 

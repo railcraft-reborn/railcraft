@@ -10,8 +10,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public abstract class TankValveBlock extends BaseTankBlock {
 
   public static final Property<Direction.Axis> AXIS = BlockStateProperties.AXIS;

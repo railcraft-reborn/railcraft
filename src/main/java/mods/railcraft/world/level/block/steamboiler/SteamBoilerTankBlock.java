@@ -11,8 +11,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class SteamBoilerTankBlock extends SteamBoilerBlock {
 
   public static final Property<ConnectionType> CONNECTION_TYPE =

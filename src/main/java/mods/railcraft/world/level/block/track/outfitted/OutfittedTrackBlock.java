@@ -26,8 +26,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.IFluidBlock;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class OutfittedTrackBlock extends TrackBlock {
 
   public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE_STRAIGHT;

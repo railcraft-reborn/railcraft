@@ -30,8 +30,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.world.entity.Entity.RemovalReason;
-
 /**
  * Basetype of RC minecarts. It also contains some generic code that most carts will find useful.
  *

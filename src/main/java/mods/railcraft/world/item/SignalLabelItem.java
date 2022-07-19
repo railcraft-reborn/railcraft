@@ -12,8 +12,6 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class SignalLabelItem extends Item {
 
   public SignalLabelItem(Properties properties) {

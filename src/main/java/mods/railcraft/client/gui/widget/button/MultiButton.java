@@ -5,9 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.gui.button.ButtonState;
 import net.minecraft.network.chat.Component;
 
-import net.minecraft.client.gui.components.Button.OnPress;
-import net.minecraft.client.gui.components.Button.OnTooltip;
-
 /**
  * @author CovertJaguar <https://railcraft.info/wiki/info:license>
  */

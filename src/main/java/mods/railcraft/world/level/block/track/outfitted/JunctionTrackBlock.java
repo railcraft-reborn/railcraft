@@ -10,8 +10,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class JunctionTrackBlock extends OutfittedTrackBlock {
 
   public JunctionTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {

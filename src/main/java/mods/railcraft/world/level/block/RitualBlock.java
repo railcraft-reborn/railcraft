@@ -32,8 +32,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */

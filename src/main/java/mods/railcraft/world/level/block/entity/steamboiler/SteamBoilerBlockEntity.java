@@ -37,8 +37,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity.Membership;
-
 /**
  * @author CovertJaguar <http://www.railcraft.info>
  */

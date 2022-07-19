@@ -3,8 +3,6 @@ package mods.railcraft.world.level.block.entity.tank;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-
 public class ValveFluidHandler implements IFluidHandler {
 
   private final TankBlockEntity blockEntity;

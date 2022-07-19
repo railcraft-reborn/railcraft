@@ -3,8 +3,6 @@ package mods.railcraft.world.item;
 import mods.railcraft.Railcraft;
 import net.minecraft.resources.ResourceLocation;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class SteelTunnelBoreHeadItem extends TunnelBoreHeadItem {
 
   private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Railcraft.ID,

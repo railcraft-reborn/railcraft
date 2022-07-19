@@ -23,14 +23,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockStateMatchTest;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class DetectorTrackBlock extends OutfittedTrackBlock {
 
