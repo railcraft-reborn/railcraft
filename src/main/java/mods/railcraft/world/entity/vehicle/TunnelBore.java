@@ -59,7 +59,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -68,6 +68,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
+
+import net.minecraft.world.entity.Entity.RemovalReason;
 
 public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
@@ -1012,8 +1014,8 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
       if (!stack.isEmpty()) {
         burn = ForgeHooks.getBurnTime(stack, null);
         if (burn > 0) {
-          if (stack.getItem().hasContainerItem(stack)) {
-            invFuel.setItem(slot, stack.getItem().getContainerItem(stack));
+          if (stack.getItem().hasCraftingRemainingItem(stack)) {
+            invFuel.setItem(slot, stack.getItem().getCraftingRemainingItem(stack));
           } else {
             invFuel.removeItem(slot, 1);
           }

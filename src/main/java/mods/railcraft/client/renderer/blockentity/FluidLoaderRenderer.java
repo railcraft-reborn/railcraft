@@ -14,6 +14,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 
+import mods.railcraft.client.util.CuboidModel.Face;
+
 public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlockEntity> {
 
   private static final float PIPE_OFFSET = 5 * RenderUtil.PIXEL;

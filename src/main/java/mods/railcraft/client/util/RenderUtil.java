@@ -9,7 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.client.RenderProperties;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RenderUtil {
@@ -34,7 +34,7 @@ public class RenderUtil {
   }
 
   public static int getColorARGB(FluidStack fluidStack) {
-    return RenderProperties.get(fluidStack.getFluid()).getColorTint(fluidStack);
+    return IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor(fluidStack);
   }
 
   public static int getColorARGB(float red, float green, float blue, float alpha) {

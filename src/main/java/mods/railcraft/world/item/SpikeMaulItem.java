@@ -39,6 +39,8 @@ import java.util.Deque;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class SpikeMaulItem extends TieredItem {
 
   private final float attackDamage;

@@ -16,6 +16,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class ReversibleOutfittedTrackBlock extends OutfittedTrackBlock {
 
   public static final BooleanProperty REVERSED = BooleanProperty.create("reversed");

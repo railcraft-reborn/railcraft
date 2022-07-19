@@ -22,7 +22,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftBlockEntityTypes {
 
   private static final DeferredRegister<BlockEntityType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Railcraft.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

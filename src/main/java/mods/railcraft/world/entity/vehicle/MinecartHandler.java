@@ -201,7 +201,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       }
 
       if (!other.isAlive() || RailcraftConfig.server.highSpeedTrackIgnoredEntities.get()
-          .contains(ForgeRegistries.ENTITIES.getKey(other.getType()).toString())) {
+          .contains(ForgeRegistries.ENTITY_TYPES.getKey(other.getType()).toString())) {
         return;
       }
 

@@ -30,6 +30,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 /**
  * Implementation of the iron ladder blocks. Iron ladders act much like normal (wooden) ladders.
  * Climbing down iron ladders is a bit faster than climbing down normal ladders. Additionally,

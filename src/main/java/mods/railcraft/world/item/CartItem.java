@@ -13,6 +13,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class CartItem extends Item {
 
   private final MinecartFactory minecartFactory;

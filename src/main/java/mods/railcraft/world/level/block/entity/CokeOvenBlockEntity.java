@@ -26,6 +26,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity.Membership;
+
 public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity, Void> {
 
   private static final Component MENU_TITLE =

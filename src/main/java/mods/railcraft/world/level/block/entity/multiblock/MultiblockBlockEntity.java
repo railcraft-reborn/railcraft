@@ -94,7 +94,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
    * @return the result
    */
   public InteractionResult use(ServerPlayer player, InteractionHand hand) {
-    NetworkHooks.openGui(player, this, this.getBlockPos());
+    NetworkHooks.openScreen(player, this, this.getBlockPos());
     return InteractionResult.CONSUME;
   }
 

@@ -83,7 +83,7 @@ public class RailcraftDataSerializers {
     };
 
   private static final DeferredRegister<EntityDataSerializer<?>> deferredRegister =
-    DeferredRegister.create(ForgeRegistries.Keys.DATA_SERIALIZERS, Railcraft.ID);
+    DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Railcraft.ID);
 
   // We can't use deferred register because we need access to the type parameters of the
   // IDataSerializers

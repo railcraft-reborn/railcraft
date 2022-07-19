@@ -5,6 +5,8 @@ import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 
+import net.minecraft.world.item.Item.Properties;
+
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
@@ -28,7 +30,7 @@ public class CrackedFirestoneItem extends RefinedFirestoneItem {
   }
 
   @Override
-  public ItemStack getContainerItem(ItemStack stack) {
+  public ItemStack getCraftingRemainingItem(ItemStack stack) {
     double damageLevel = (double) stack.getDamageValue() / (double) stack.getMaxDamage();
     if (MiscTools.RANDOM.nextDouble() < damageLevel * 0.0001) {
       return RailcraftItems.RAW_FIRESTONE.get().getDefaultInstance();

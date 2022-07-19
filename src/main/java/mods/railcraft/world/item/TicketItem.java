@@ -17,6 +17,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
+import net.minecraft.world.item.Item.Properties;
+
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */

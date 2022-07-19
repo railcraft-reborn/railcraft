@@ -63,12 +63,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -146,7 +141,7 @@ public class ClientDist implements RailcraftDist {
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
   }
 
-  private void handleBlockColors(ColorHandlerEvent.Block event) {
+  private void handleBlockColors(RegisterColorHandlersEvent.Block event) {
     BlockColors blockColors = event.getBlockColors();
     blockColors.register(
         (state, worldIn, pos,
@@ -165,7 +160,7 @@ public class ClientDist implements RailcraftDist {
         RailcraftBlocks.ABANDONED_TRACK.get());
   }
 
-  private void handleItemColors(ColorHandlerEvent.Item event) {
+  private void handleItemColors(RegisterColorHandlersEvent.Item event) {
     event.getItemColors().register(
         (stack, tintIndex) -> {
           switch (tintIndex) {
@@ -199,7 +194,7 @@ public class ClientDist implements RailcraftDist {
     }
   }
 
-  private void handleParticleRegistration(ParticleFactoryRegisterEvent event) {
+  private void handleParticleRegistration(RegisterParticleProvidersEvent event) {
     var particleEngine = this.minecraft.particleEngine;
     particleEngine.register(RailcraftParticleTypes.STEAM.get(),
         SteamParticle.Provider::new);
@@ -233,12 +228,12 @@ public class ClientDist implements RailcraftDist {
   }
 
   @SubscribeEvent
-  public void handleRenderWorldLast(RenderLevelLastEvent event) {
+  public void handleRenderWorldLast(RenderLevelStageEvent event) {
     this.shuntingAuraRenderer.render(event.getPartialTick(), event.getPoseStack());
   }
 
   @SubscribeEvent
-  public void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggedOutEvent event) {
+  public void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
     this.shuntingAuraRenderer.clearCarts();
   }
 

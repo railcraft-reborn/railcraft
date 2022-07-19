@@ -33,87 +33,87 @@ public enum NetworkChannel {
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetLauncherTrackAttributesMessage::encode)
           .decoder(SetLauncherTrackAttributesMessage::decode)
-          .consumer(SetLauncherTrackAttributesMessage::handle)
+          .consumerMainThread(SetLauncherTrackAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(EffectMessage.class, 0x01, NetworkDirection.PLAY_TO_CLIENT)
           .encoder(EffectMessage::encode)
           .decoder(EffectMessage::decode)
-          .consumer(EffectMessage::handle)
+          .consumerMainThread(EffectMessage::handle)
           .add();
       simpleChannel.messageBuilder(SyncWidgetMessage.class, 0x02, NetworkDirection.PLAY_TO_CLIENT)
           .encoder(SyncWidgetMessage::encode)
           .decoder(SyncWidgetMessage::decode)
-          .consumer(SyncWidgetMessage::handle)
+          .consumerMainThread(SyncWidgetMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetLocomotiveAttributesMessage.class, 0x03,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetLocomotiveAttributesMessage::encode)
           .decoder(SetLocomotiveAttributesMessage::decode)
-          .consumer(SetLocomotiveAttributesMessage::handle)
+          .consumerMainThread(SetLocomotiveAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetSignalControllerBoxAttributesMessage.class, 0x04,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSignalControllerBoxAttributesMessage::encode)
           .decoder(SetSignalControllerBoxAttributesMessage::decode)
-          .consumer(SetSignalControllerBoxAttributesMessage::handle)
+          .consumerMainThread(SetSignalControllerBoxAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetAnalogSignalControllerBoxAttributesMessage.class, 0x05,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetAnalogSignalControllerBoxAttributesMessage::encode)
           .decoder(SetAnalogSignalControllerBoxAttributesMessage::decode)
-          .consumer(SetAnalogSignalControllerBoxAttributesMessage::handle)
+          .consumerMainThread(SetAnalogSignalControllerBoxAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetSignalCapacitorBoxAttributesMessage.class, 0x06,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSignalCapacitorBoxAttributesMessage::encode)
           .decoder(SetSignalCapacitorBoxAttributesMessage::decode)
-          .consumer(SetSignalCapacitorBoxAttributesMessage::handle)
+          .consumerMainThread(SetSignalCapacitorBoxAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(LinkedCartsMessage.class, 0x07, NetworkDirection.PLAY_TO_CLIENT)
           .encoder(LinkedCartsMessage::encode)
           .decoder(LinkedCartsMessage::decode)
-          .consumer(LinkedCartsMessage::handle)
+          .consumerMainThread(LinkedCartsMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetActionSignalBoxAttributesMessage.class, 0x08,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetActionSignalBoxAttributesMessage::encode)
           .decoder(SetActionSignalBoxAttributesMessage::decode)
-          .consumer(SetActionSignalBoxAttributesMessage::handle)
+          .consumerMainThread(SetActionSignalBoxAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetSwitchTrackMotorAttributesMessage.class, 0x09,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSwitchTrackMotorAttributesMessage::encode)
           .decoder(SetSwitchTrackMotorAttributesMessage::decode)
-          .consumer(SetSwitchTrackMotorAttributesMessage::handle)
+          .consumerMainThread(SetSwitchTrackMotorAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetItemManipulatorAttributesMessage.class, 0x0A,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetItemManipulatorAttributesMessage::encode)
           .decoder(SetItemManipulatorAttributesMessage::decode)
-          .consumer(SetItemManipulatorAttributesMessage::handle)
+          .consumerMainThread(SetItemManipulatorAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetFluidManipulatorAttributesMessage.class, 0x0B,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetFluidManipulatorAttributesMessage::encode)
           .decoder(SetFluidManipulatorAttributesMessage::decode)
-          .consumer(SetFluidManipulatorAttributesMessage::handle)
+          .consumerMainThread(SetFluidManipulatorAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetEmbarkingTrackAttributesMessage.class, 0x0C,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetEmbarkingTrackAttributesMessage::encode)
           .decoder(SetEmbarkingTrackAttributesMessage::decode)
-          .consumer(SetEmbarkingTrackAttributesMessage::handle)
+          .consumerMainThread(SetEmbarkingTrackAttributesMessage::handle)
           .add();
     }
   };

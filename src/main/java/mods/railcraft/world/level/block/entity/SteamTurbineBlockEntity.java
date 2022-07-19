@@ -33,6 +33,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
+import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity.Membership;
+
 public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineBlockEntity, Void> {
 
   private static final int WATER_OUTPUT_RATE = 4;

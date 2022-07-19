@@ -9,6 +9,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import java.util.Arrays;
+
 /**
  * Created by CovertJaguar on 5/12/2016 for Railcraft.
  *

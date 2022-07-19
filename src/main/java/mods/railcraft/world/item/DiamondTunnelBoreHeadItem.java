@@ -4,6 +4,8 @@ import mods.railcraft.Railcraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Tiers;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class DiamondTunnelBoreHeadItem extends TunnelBoreHeadItem {
 
   public static final ResourceLocation TEXTURE = new ResourceLocation(Railcraft.ID,

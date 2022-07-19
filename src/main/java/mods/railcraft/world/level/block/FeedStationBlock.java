@@ -22,6 +22,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class FeedStationBlock extends BaseEntityBlock {
 
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -48,7 +50,7 @@ public class FeedStationBlock extends BaseEntityBlock {
       return InteractionResult.SUCCESS;
     }
     level.getBlockEntity(pos, RailcraftBlockEntityTypes.FEED_STATION.get())
-        .ifPresent(blockEntity -> NetworkHooks.openGui((ServerPlayer) player, blockEntity, pos));
+        .ifPresent(blockEntity -> NetworkHooks.openScreen((ServerPlayer) player, blockEntity, pos));
     return InteractionResult.CONSUME;
   }
 

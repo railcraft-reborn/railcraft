@@ -14,6 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Random;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */

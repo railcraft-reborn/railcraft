@@ -20,7 +20,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftEntityTypes {
 
   private static final DeferredRegister<EntityType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.ENTITIES, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Railcraft.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

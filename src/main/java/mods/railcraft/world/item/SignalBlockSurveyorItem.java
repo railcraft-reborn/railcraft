@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Objects;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class SignalBlockSurveyorItem extends PairingToolItem {
 
   public SignalBlockSurveyorItem(Properties properties) {

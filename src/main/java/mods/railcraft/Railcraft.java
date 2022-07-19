@@ -45,9 +45,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -56,7 +56,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.network.NetworkDirection;
 
 @Mod(Railcraft.ID)
@@ -186,8 +186,8 @@ public class Railcraft {
   }
 
   @SubscribeEvent
-  public void handleWorldTick(TickEvent.WorldTickEvent event) {
-    if (event.world instanceof ServerLevel level && event.phase == TickEvent.Phase.END) {
+  public void handleWorldTick(TickEvent.LevelTickEvent event) {
+    if (event.level instanceof ServerLevel level && event.phase == TickEvent.Phase.END) {
       for (var provider : ChargeProviderImpl.values()) {
         provider.network(level).tick();
       }
@@ -228,7 +228,7 @@ public class Railcraft {
   @SubscribeEvent
   public void handleMinecartInteract(PlayerInteractEvent.EntityInteract event) {
     if (event.getTarget() instanceof AbstractMinecart cart) {
-      var player = event.getPlayer();
+      var player = event.getEntity();
       var hand = event.getHand();
       event.setCanceled(this.minecartHandler.handleInteract(cart, player));
       var crowbarActionResult = this.crowbarHandler.handleInteract(cart, player, hand);
@@ -240,7 +240,7 @@ public class Railcraft {
   }
 
   @SubscribeEvent
-  public void handleEntityLeaveWorld(EntityLeaveWorldEvent event) {
+  public void handleEntityLeaveWorld(EntityLeaveLevelEvent event) {
     if (event.getEntity() instanceof AbstractMinecart cart
         && !event.getEntity().getLevel().isClientSide()
         && event.getEntity().getRemovalReason() != null
@@ -252,6 +252,6 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handleNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
-    event.getWorld().gameEvent(null, RailcraftGameEvents.NEIGHBOR_NOTIFY.get(), event.getPos());
+    event.getLevel().gameEvent(null, RailcraftGameEvents.NEIGHBOR_NOTIFY.get(), event.getPos());
   }
 }

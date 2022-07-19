@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 import java.util.Random;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public abstract class FurnaceMultiblockBlock extends MultiblockBlock {
 
   public static final BooleanProperty LIT = BlockStateProperties.LIT;

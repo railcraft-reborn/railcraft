@@ -36,6 +36,8 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
+import net.minecraft.world.entity.Entity.RemovalReason;
+
 public class TankMinecart extends FilteredMinecart implements WorldlyContainer, FluidMinecart {
 
   // Can't use FluidStack directly because its equals method doesn't consider amount so will never

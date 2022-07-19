@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 
+import mods.railcraft.client.util.CuboidModel.Face;
+
 public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
     implements BlockEntityRenderer<T> {
 

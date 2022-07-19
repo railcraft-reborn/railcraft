@@ -13,6 +13,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public abstract class FireboxBlock extends SteamBoilerBlock {
 
   public static final Property<Boolean> LIT = BlockStateProperties.LIT;

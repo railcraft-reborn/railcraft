@@ -10,6 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import net.minecraft.world.item.Item.Properties;
+
 /**
  * Created by CovertJaguar on 6/7/2016 for Railcraft.
  *

@@ -35,6 +35,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import mods.railcraft.api.charge.ChargeBlock.ConnectType;
+import mods.railcraft.api.charge.ChargeBlock.Spec;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 /**
  * Created by CovertJaguar on 8/29/2016 for Railcraft.
  *

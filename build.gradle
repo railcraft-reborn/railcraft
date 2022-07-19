@@ -26,8 +26,6 @@ apply plugin: 'net.covers1624.signing'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
-
 def isCI = System.getenv("GITHUB_ACTION")
 def nightly = System.getenv("GITHUB_NIGHTLY")
 def ref = System.getenv("GITHUB_PR_NUMBER")

@@ -10,6 +10,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
+import net.minecraft.client.gui.components.Button.OnPress;
+import net.minecraft.client.gui.components.Button.OnTooltip;
+
 public class RailcraftButton extends Button {
 
   private static final ResourceLocation WIDGETS_LOCATION =

@@ -30,7 +30,7 @@ public class MultiBlockFormedTrigger extends
       EntityPredicate.Composite andPredicate, DeserializationContext parser) {
 
     BlockEntityType<?> type = json.has("type")
-        ? ForgeRegistries.BLOCK_ENTITIES.getValue(
+        ? ForgeRegistries.BLOCK_ENTITY_TYPES.getValue(
             new ResourceLocation(json.get("type").getAsString()))
         : null;
     NbtPredicate nbt =
@@ -83,7 +83,7 @@ public class MultiBlockFormedTrigger extends
     public JsonObject serializeToJson(SerializationContext serializer) {
       JsonObject json = new JsonObject();
       if (this.type != null) {
-        json.addProperty("type", ForgeRegistries.BLOCK_ENTITIES.getKey(this.type).toString());
+        json.addProperty("type", ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(this.type).toString());
       }
       json.add("nbt", this.predicate.serializeToJson());
       return json;

@@ -22,6 +22,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+
 public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     extends ContainerModule<T> {
 

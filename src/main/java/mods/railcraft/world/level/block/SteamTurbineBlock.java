@@ -25,6 +25,9 @@ import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Random;
 
+import mods.railcraft.api.charge.ChargeBlock.Spec;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
 
   public static final Property<Type> TYPE = EnumProperty.create("type", Type.class);

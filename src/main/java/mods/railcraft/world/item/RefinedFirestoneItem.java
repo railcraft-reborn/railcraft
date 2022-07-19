@@ -30,6 +30,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
+import net.minecraft.world.item.Item.Properties;
+
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
@@ -55,12 +57,12 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  public boolean hasContainerItem(ItemStack stack) {
+  public boolean hasCraftingRemainingItem(ItemStack stack) {
     return true;
   }
 
   @Override
-  public ItemStack getContainerItem(ItemStack stack) {
+  public ItemStack getCraftingRemainingItem(ItemStack stack) {
     ItemStack newStack;
     double damageLevel = (double) stack.getDamageValue() / (double) stack.getMaxDamage();
     if (MiscTools.RANDOM.nextDouble() < damageLevel * 0.0001) {

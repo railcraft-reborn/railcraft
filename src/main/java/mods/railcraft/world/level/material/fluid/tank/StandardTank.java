@@ -1,10 +1,11 @@
 package mods.railcraft.world.level.material.fluid.tank;
 
+import mods.railcraft.client.util.RenderUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.client.RenderProperties;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.Nullable;
@@ -153,7 +154,7 @@ public class StandardTank extends FluidTank {
     if (f == null) {
       return DEFAULT_COLOR;
     }
-    return RenderProperties.get(f).getColorTint(getFluid());
+    return RenderUtil.getColorARGB(getFluid());
   }
 
   public boolean isFull() {

@@ -15,7 +15,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.IFluidTypeRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
 
 import java.util.function.Consumer;
@@ -92,12 +92,12 @@ public class SteamFluid extends Fluid {
       .viscosity(500);
     return new FluidType(properties) {
       @Override
-      public void initializeClient(Consumer<IFluidTypeRenderProperties> consumer) {
-        consumer.accept(new IFluidTypeRenderProperties() {
+      public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+        consumer.accept(new IClientFluidTypeExtensions() {
           private static final ResourceLocation STILL_TEXTURE =
             new ResourceLocation(Railcraft.ID, "block/steam_still");
           @Override
-          public int getColorTint() {
+          public int getTintColor() {
             return 0xFFF5F5F5;
           }
 

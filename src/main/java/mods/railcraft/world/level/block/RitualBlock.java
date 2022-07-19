@@ -30,7 +30,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.IBlockRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -97,8 +99,8 @@ public class RitualBlock extends BaseEntityBlock {
   }
 
   @Override
-  public void initializeClient(Consumer<IBlockRenderProperties> consumer) {
-    consumer.accept(new IBlockRenderProperties() {
+  public void initializeClient(Consumer<IClientBlockExtensions> consumer) {
+    consumer.accept(new IClientBlockExtensions() {
       @Override
       public boolean addDestroyEffects(BlockState state, Level level, BlockPos pos,
           ParticleEngine particleEngine) {

@@ -61,7 +61,7 @@ public class RailcraftDamageSource extends DamageSource {
       if (event.getSource() == STEAM)
         for (var entityItem : event.getDrops()) {
           var drop = entityItem.getItem();
-          var level = event.getEntityLiving().getLevel();
+          var level = event.getEntity().getLevel();
           var cooked = level.getRecipeManager()
               .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
               .map(SmeltingRecipe::getResultItem)

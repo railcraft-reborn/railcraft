@@ -28,6 +28,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class CrowbarItem extends DiggerItem implements Crowbar {
 
   private static final int BOOST_DAMAGE = 1;

@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
     implements PoweredTrack {
 

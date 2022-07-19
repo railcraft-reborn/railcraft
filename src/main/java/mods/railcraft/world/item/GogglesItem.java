@@ -21,6 +21,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import net.minecraft.world.item.Item.Properties;
+
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */

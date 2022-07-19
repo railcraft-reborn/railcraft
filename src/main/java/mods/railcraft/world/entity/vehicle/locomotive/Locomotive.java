@@ -60,6 +60,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import net.minecraft.world.entity.Entity.RemovalReason;
+
 /**
  * Locmotive class, for trains that does the push/pulling.
  *

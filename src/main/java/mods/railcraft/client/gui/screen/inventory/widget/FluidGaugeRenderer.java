@@ -9,7 +9,6 @@ import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.client.RenderProperties;
 
 import java.util.List;
 

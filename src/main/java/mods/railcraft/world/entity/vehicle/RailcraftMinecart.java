@@ -30,6 +30,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.world.entity.Entity.RemovalReason;
+
 /**
  * Basetype of RC minecarts. It also contains some generic code that most carts will find useful.
  *
@@ -85,7 +87,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer implem
   public InteractionResult interact(Player player, InteractionHand hand) {
     if (!player.level.isClientSide()) {
       if (this.hasMenu()) {
-        NetworkHooks.openGui((ServerPlayer) player, this,
+        NetworkHooks.openScreen((ServerPlayer) player, this,
             data -> data.writeVarInt(this.getId()));
       }
       PiglinAi.angerNearbyPiglins(player, true);

@@ -22,6 +22,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class LockingTrackBlock extends PoweredOutfittedTrackBlock implements EntityBlock {
 
   public static final EnumProperty<LockingMode> LOCKING_MODE =

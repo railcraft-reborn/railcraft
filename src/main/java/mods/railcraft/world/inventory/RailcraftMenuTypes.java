@@ -29,7 +29,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftMenuTypes {
 
   private static final DeferredRegister<MenuType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.CONTAINERS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.MENU_TYPES, Railcraft.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class ControlTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
   private static final double BOOST_AMOUNT = 0.02;

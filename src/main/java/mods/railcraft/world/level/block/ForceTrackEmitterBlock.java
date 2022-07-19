@@ -42,6 +42,10 @@ import net.minecraft.world.phys.HitResult;
 import javax.annotation.Nullable;
 import java.util.*;
 
+import mods.railcraft.api.charge.ChargeBlock.ConnectType;
+import mods.railcraft.api.charge.ChargeBlock.Spec;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlock {
 
   public static final DyeColor DEFAULT_COLOR = DyeColor.LIGHT_BLUE;

@@ -7,6 +7,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class SolidFueledFireboxBlock extends FireboxBlock {
 
   public SolidFueledFireboxBlock(Properties properties) {

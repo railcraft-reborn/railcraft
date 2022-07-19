@@ -6,6 +6,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
 
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+
 public class CompositeFluidHandler implements IFluidHandler {
 
   protected final IFluidHandler[] fluidHandlers;

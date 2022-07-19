@@ -10,6 +10,8 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.enchantment.DamageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 
+import net.minecraft.world.item.enchantment.Enchantment.Rarity;
+
 public class RailcraftDamageEnchantment extends RailcraftToolEnchantment {
 
   private final int baseEnchantability, levelEnchantability, thresholdEnchantability;

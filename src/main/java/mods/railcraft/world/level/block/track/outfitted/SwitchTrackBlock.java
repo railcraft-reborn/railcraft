@@ -18,6 +18,8 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.storage.loot.LootContext;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
 
   public static final BooleanProperty SWITCHED = BooleanProperty.create("switched");

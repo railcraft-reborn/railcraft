@@ -5,6 +5,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraftforge.energy.EnergyStorage;
 
+import mods.railcraft.api.charge.ChargeStorage.Spec;
+import mods.railcraft.api.charge.ChargeStorage.State;
+
 /**
  * Created by CovertJaguar on 10/29/2018 for Railcraft.
  *

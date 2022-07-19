@@ -30,6 +30,8 @@ import java.util.Random;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class DetectorTrackBlock extends OutfittedTrackBlock {
 
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;

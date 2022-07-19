@@ -20,6 +20,8 @@ import org.apache.logging.log4j.util.Strings;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import net.minecraft.world.item.Item.Properties;
+
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
