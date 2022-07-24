@@ -1,21 +1,18 @@
 package mods.railcraft.world.level.material.fluid.tank;
 
-import mods.railcraft.client.util.RenderUtil;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.client.util.RenderUtil;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 /**
  * Our fancy type of tank. Use this preferably over forge's default one
@@ -217,10 +214,7 @@ public class StandardTank extends FluidTank {
   protected Component getFluidNameToolTip(FluidStack fluidStack) {
     var fluidType = fluidStack.getFluid().getFluidType();
     var rarity = fluidType.getRarity();
-    if (rarity == null) {
-      rarity = Rarity.COMMON;
-    }
-    return fluidStack.getDisplayName().copy().withStyle(rarity.color);
+    return fluidStack.getDisplayName().copy().withStyle(rarity.getStyleModifier());
   }
 
   public boolean isHidden() {

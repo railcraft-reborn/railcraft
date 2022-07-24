@@ -5,10 +5,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.stream.Collectors;
 
 public class RailcraftBlockLoot extends BlockLoot {
 
@@ -386,6 +383,6 @@ public class RailcraftBlockLoot extends BlockLoot {
 
   @Override
   protected Iterable<Block> getKnownBlocks() {
-    return RailcraftBlocks.getRegisteredBlocks();
+    return RailcraftBlocks.entries().stream().map(RegistryObject::get).toList();
   }
 }

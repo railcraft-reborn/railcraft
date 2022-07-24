@@ -21,7 +21,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidType;
 
 public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart> {
 

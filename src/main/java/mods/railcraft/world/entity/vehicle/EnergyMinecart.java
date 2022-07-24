@@ -1,8 +1,9 @@
 package mods.railcraft.world.entity.vehicle;
 
+import javax.annotation.Nullable;
+import org.apache.commons.lang3.NotImplementedException;
 import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
@@ -16,9 +17,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
-import org.apache.commons.lang3.NotImplementedException;
-
-import javax.annotation.Nullable;
 
 public class EnergyMinecart extends RailcraftMinecart {
 

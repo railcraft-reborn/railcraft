@@ -1,5 +1,9 @@
 package mods.railcraft.util.container;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.function.Predicate;
+import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.tags.RailcraftTags;
@@ -8,17 +12,16 @@ import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.function.Predicate;
 
 /**
  * A collection of helper methods for creating {@code Predicate<ItemStack>} objects.

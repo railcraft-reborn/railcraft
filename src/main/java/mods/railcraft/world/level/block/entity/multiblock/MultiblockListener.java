@@ -2,16 +2,11 @@ package mods.railcraft.world.level.block.entity.multiblock;
 
 import com.google.common.primitives.Ints;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.BlockPositionSource;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.level.gameevent.PositionSource;
-
-import javax.annotation.Nullable;
 
 public class MultiblockListener implements GameEventListener {
 

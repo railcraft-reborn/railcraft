@@ -1,11 +1,18 @@
 package mods.railcraft.world.item;
 
+import java.util.Map;
 import com.google.common.collect.MapMaker;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.item.Crowbar;
-import mods.railcraft.world.entity.vehicle.*;
+import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.DirectionalCart;
+import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
+import mods.railcraft.world.entity.vehicle.SeasonalCart;
+import mods.railcraft.world.entity.vehicle.TrackRemover;
+import mods.railcraft.world.entity.vehicle.Train;
+import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,9 +21,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-
-import java.util.Map;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info)
@@ -104,13 +108,12 @@ public class CrowbarHandler {
       // NOOP
     } else if (cart instanceof TunnelBore) {
       // NOOP
-    } else if (cart instanceof IDirectionalCart) {
-      ((IDirectionalCart) cart).reverse();
-    } else if (cart instanceof TrackRemover) {
-      TrackRemover trackRemover = (TrackRemover) cart;
+    } else if (cart instanceof DirectionalCart directional) {
+      directional.reverse();
+    } else if (cart instanceof TrackRemover trackRemover) {
       trackRemover.setMode(trackRemover.getMode().getNext());
     } else {
-      int lvl = EnchantmentHelper.getItemEnchantmentLevel(RailcraftEnchantments.SMACK.get(), stack);
+      int lvl = stack.getEnchantmentLevel(RailcraftEnchantments.SMACK.get());
       if (lvl == 0) {
         CartTools.smackCart(cart, player, SMACK_VELOCITY);
       }
@@ -118,7 +121,7 @@ public class CrowbarHandler {
       Train.get(cart).ifPresent(train -> {
         float smackVelocity = SMACK_VELOCITY * (float) Math.pow(1.7, lvl);
         smackVelocity /= (float) Math.pow(train.size(), 1D / (1 + lvl));
-        for (AbstractMinecart each : train) {
+        for (var each : train) {
           CartTools.smackCart(cart, each, player, smackVelocity);
         }
       });

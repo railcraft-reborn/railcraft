@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,13 +25,12 @@ public class TrackLayer extends MaintenancePatternMinecart {
   public static final int SLOT_REPLACE = 0;
   public static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
 
-  public TrackLayer(EntityType<?> type, Level world) {
-    super(type, world);
+  public TrackLayer(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
-  public TrackLayer(ItemStack itemStack, double x, double y, double z,
-      ServerLevel world) {
-    super(RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, world);
+  public TrackLayer(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
+    super(RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, level);
   }
 
   @Override

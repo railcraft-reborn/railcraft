@@ -1,7 +1,12 @@
 package mods.railcraft.data.advancements;
 
+import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
-import mods.railcraft.advancements.*;
+import mods.railcraft.advancements.BedCartSleepTrigger;
+import mods.railcraft.advancements.CartLinkingTrigger;
+import mods.railcraft.advancements.JukeboxCartPlayMusicTrigger;
+import mods.railcraft.advancements.SetSeasonTrigger;
+import mods.railcraft.advancements.SurpriseTrigger;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
@@ -10,8 +15,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
-import java.util.function.Consumer;
-
 public class CartAdvancements implements Consumer<Consumer<Advancement>> {
 
   @Override
@@ -19,7 +22,7 @@ public class CartAdvancements implements Consumer<Consumer<Advancement>> {
 
     // the three bool: show toast, announce to chat, hidden
 
-    Advancement rcRoot = Advancement.Builder.advancement()
+    var rcRoot = Advancement.Builder.advancement()
         .display(
             RailcraftItems.DIAMOND_CROWBAR.get(),
             Component.translatable("advancements.railcraft.carts.root.name"),

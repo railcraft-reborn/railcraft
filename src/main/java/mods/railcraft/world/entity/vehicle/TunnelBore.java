@@ -1,5 +1,11 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.BiFunction;
+import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
@@ -7,7 +13,12 @@ import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.*;
+import mods.railcraft.util.AABBFactory;
+import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.util.LevelUtil;
+import mods.railcraft.util.MiscTools;
+import mods.railcraft.util.RCEntitySelectors;
+import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
@@ -40,7 +51,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -61,15 +71,6 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
-
-import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.BiFunction;
-
-import net.minecraft.world.entity.Entity.RemovalReason;
 
 public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
@@ -865,12 +866,11 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
     double hardness = layerAction(targetPos, dir, 0F, this::getBlockHardness, (s, r) -> s + r);
     hardness *= HARDNESS_MULTIPLIER;
 
-    ItemStack boreSlot = getItem(0);
-    if (!boreSlot.isEmpty() && boreSlot.getItem() instanceof TunnelBoreHead) {
-      TunnelBoreHead head = (TunnelBoreHead) boreSlot.getItem();
+    var boreSlot = this.getItem(0);
+    if (!boreSlot.isEmpty() && boreSlot.getItem() instanceof TunnelBoreHead head) {
       double dig = head.getDigModifier();
       hardness /= dig;
-      int e = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, boreSlot);
+      int e = boreSlot.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
       hardness /= (e * e * 0.2d + 1);
     }
 

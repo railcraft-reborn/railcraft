@@ -1,5 +1,10 @@
 package mods.railcraft.world.level.block;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.util.Optionals;
@@ -38,9 +43,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlock {
 

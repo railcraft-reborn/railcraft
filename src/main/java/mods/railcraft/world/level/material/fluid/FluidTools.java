@@ -1,5 +1,14 @@
 package mods.railcraft.world.level.material.fluid;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
@@ -31,11 +40,6 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
-
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info)

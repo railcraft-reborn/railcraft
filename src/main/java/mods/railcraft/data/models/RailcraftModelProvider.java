@@ -1,24 +1,5 @@
 package mods.railcraft.data.models;
 
-import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.mojang.logging.LogUtils;
-import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
-import net.minecraft.data.models.blockstates.BlockStateGenerator;
-import net.minecraft.data.models.model.DelegatedModel;
-import net.minecraft.data.models.model.ModelLocationUtils;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.slf4j.Logger;
-
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Map;
@@ -27,6 +8,21 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import org.slf4j.Logger;
+import com.google.common.collect.Maps;
+import com.google.gson.JsonElement;
+import com.mojang.logging.LogUtils;
+import mods.railcraft.world.level.block.RailcraftBlocks;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.model.DelegatedModel;
+import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class RailcraftModelProvider implements DataProvider {
 
@@ -60,10 +56,11 @@ public class RailcraftModelProvider implements DataProvider {
     new RailcraftItemModelGenerators(modelConsumer).run();
 
 
-    RailcraftBlocks.getRegisteredBlocks().forEach((block) -> {
-      Item item = Item.BY_BLOCK.get(block);
+    RailcraftBlocks.entries().forEach(entry -> {
+      var block = entry.get();
+      var item = Item.BY_BLOCK.get(block);
       if (item != null && !skippedAutoModels.contains(item)) {
-        ResourceLocation itemModel = ModelLocationUtils.getModelLocation(item);
+        var itemModel = ModelLocationUtils.getModelLocation(item);
         if (!models.containsKey(itemModel)) {
           models.put(itemModel,
               new DelegatedModel(ModelLocationUtils.getModelLocation(block)));
@@ -73,8 +70,10 @@ public class RailcraftModelProvider implements DataProvider {
 
     Path outputFolder = this.generator.getOutputFolder();
 
-    this.saveCollection(cachedOutput, outputFolder, blockStates, RailcraftModelProvider::createBlockStatePath);
-    this.saveCollection(cachedOutput, outputFolder, models, RailcraftModelProvider::createModelPath);
+    this.saveCollection(cachedOutput, outputFolder, blockStates,
+        RailcraftModelProvider::createBlockStatePath);
+    this.saveCollection(cachedOutput, outputFolder, models,
+        RailcraftModelProvider::createModelPath);
   }
 
   private <T> void saveCollection(CachedOutput cachedOutput, Path p_240081_2_,

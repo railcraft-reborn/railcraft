@@ -1,12 +1,15 @@
 package mods.railcraft;
 
+import java.util.ArrayList;
+import java.util.List;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.Builder;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
 public class RailcraftConfig {
 

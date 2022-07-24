@@ -56,14 +56,18 @@ import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEn
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -142,18 +146,17 @@ public class ClientDist implements RailcraftDist {
   }
 
   private void handleBlockColors(RegisterColorHandlersEvent.Block event) {
-    BlockColors blockColors = event.getBlockColors();
-    blockColors.register(
+    event.register(
         (state, worldIn, pos,
             tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
-    blockColors.register(
+    event.register(
         (state, worldIn, pos,
             tintIndex) -> state.getValue(ForceTrackBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK.get());
 
-    blockColors.register(
+    event.register(
         (state, level, pos, tintIndex) -> level != null && pos != null
             ? BiomeColors.getAverageGrassColor(level, pos)
             : GrassColor.get(0.5D, 1.0D),
@@ -161,7 +164,7 @@ public class ClientDist implements RailcraftDist {
   }
 
   private void handleItemColors(RegisterColorHandlersEvent.Item event) {
-    event.getItemColors().register(
+    event.register(
         (stack, tintIndex) -> {
           switch (tintIndex) {
             case 0:
@@ -195,14 +198,13 @@ public class ClientDist implements RailcraftDist {
   }
 
   private void handleParticleRegistration(RegisterParticleProvidersEvent event) {
-    var particleEngine = this.minecraft.particleEngine;
-    particleEngine.register(RailcraftParticleTypes.STEAM.get(),
+    event.register(RailcraftParticleTypes.STEAM.get(),
         SteamParticle.Provider::new);
-    particleEngine.register(RailcraftParticleTypes.SPARK.get(),
+    event.register(RailcraftParticleTypes.SPARK.get(),
         SparkParticle.Provider::new);
-    particleEngine.register(RailcraftParticleTypes.PUMPKIN.get(),
+    event.register(RailcraftParticleTypes.PUMPKIN.get(),
         PumpkinParticle.Provider::new);
-    particleEngine.register(RailcraftParticleTypes.TUNING_AURA.get(),
+    event.register(RailcraftParticleTypes.TUNING_AURA.get(),
         TuningAuraParticle.Provider::new);
   }
 

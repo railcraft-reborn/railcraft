@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.season.Seasons;
-import mods.railcraft.world.entity.vehicle.IDirectionalCart;
+import mods.railcraft.world.entity.vehicle.DirectionalCart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -73,8 +73,8 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
       pitch = -pitch;
     }
 
-    if (cart instanceof IDirectionalCart) {
-      ((IDirectionalCart) cart).setRenderYaw(yaw);
+    if (cart instanceof DirectionalCart) {
+      ((DirectionalCart) cart).setRenderYaw(yaw);
     }
     poseStack.translate(0.0D, 0.375D, 0.0D);
 

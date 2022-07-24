@@ -1,5 +1,17 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import javax.annotation.Nullable;
+import org.apache.commons.lang3.StringUtils;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
@@ -21,7 +33,13 @@ import mods.railcraft.util.RCEntitySelectors;
 import mods.railcraft.util.collections.Streams;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
-import mods.railcraft.world.entity.vehicle.*;
+import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.DirectionalCart;
+import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
+import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
+import mods.railcraft.world.entity.vehicle.MinecartExtension;
+import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
+import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
@@ -51,14 +69,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Locmotive class, for trains that does the push/pulling.
@@ -66,7 +76,7 @@ import java.util.stream.StreamSupport;
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class Locomotive extends RailcraftMinecart
-    implements IDirectionalCart, LinkageHandler, Lockable,
+    implements DirectionalCart, LinkageHandler, Lockable,
     IPaintedCart, IRoutableCart {
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =

@@ -1,5 +1,9 @@
 package mods.railcraft.world.item;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.annotation.Nullable;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
@@ -17,16 +21,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
-
-import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class CrowbarItem extends DiggerItem implements Crowbar {
 
@@ -97,8 +100,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
       if (entityLiving instanceof Player) {
         Player player = (Player) entityLiving;
         if (!player.isShiftKeyDown()) {
-          int level = EnchantmentHelper
-              .getItemEnchantmentLevel(RailcraftEnchantments.DESTRUCTION.get(), stack) * 2 + 1;
+          int level = stack.getEnchantmentLevel(RailcraftEnchantments.DESTRUCTION.get()) * 2 + 1;
           if (level > 1)
             checkBlock(world, level, pos, player);
         }

@@ -1,6 +1,14 @@
 package mods.railcraft.world.entity.vehicle;
 
-import mods.railcraft.api.carts.*;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Predicate;
+import javax.annotation.Nullable;
+import mods.railcraft.api.carts.FluidMinecart;
+import mods.railcraft.api.carts.IItemCart;
+import mods.railcraft.api.carts.Link;
+import mods.railcraft.api.carts.LinkageManager;
+import mods.railcraft.api.carts.TrainTransferHelper;
 import mods.railcraft.util.collections.ItemStackKey;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
@@ -15,11 +23,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-
-import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
 
 /**
  * Utility class for simplifying moving items and fluids through a train.

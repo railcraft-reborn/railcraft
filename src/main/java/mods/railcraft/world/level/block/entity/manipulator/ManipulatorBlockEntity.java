@@ -1,5 +1,16 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -25,12 +36,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implements MenuProvider {
 

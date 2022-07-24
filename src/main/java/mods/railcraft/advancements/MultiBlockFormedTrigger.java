@@ -1,24 +1,28 @@
 package mods.railcraft.advancements;
 
+import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonTools;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate.Composite;
+import net.minecraft.advancements.critereon.NbtPredicate;
+import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
-
 public class MultiBlockFormedTrigger extends
     SimpleCriterionTrigger<MultiBlockFormedTrigger.Instance> {
 
   private static final ResourceLocation ID =
-      new ResourceLocation(Railcraft.ID + ":multiblock_formed");
+      new ResourceLocation(Railcraft.ID, "multiblock_formed");
 
   @Override
   public ResourceLocation getId() {

@@ -1,5 +1,8 @@
 package mods.railcraft.world.module;
 
+import java.util.Objects;
+import java.util.function.IntSupplier;
+import javax.annotation.Nonnull;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.item.RailcraftItems;
@@ -9,26 +12,15 @@ import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryManager;
-
-import javax.annotation.Nonnull;
-import java.util.Map;
-import java.util.Objects;
 
 public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastFurnaceBlockEntity> {
-
-  private static final Map<IForgeRegistry<Item>, Integer> vanillaFuel =
-    Map.of(getForgeRegistry(Items.CHARCOAL), 1600);
-
+  
   public static final int SLOT_INPUT = 0;
   public static final int SLOT_FUEL = 1;
   public static final int SLOT_OUTPUT = 2;
@@ -128,12 +120,15 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   }
 
   public int getItemBurnTime(ItemStack itemStack) {
-    return vanillaFuel.getOrDefault(getForgeRegistry(itemStack.getItem()),
-        itemStack.getBurnTime(RailcraftRecipeTypes.BLASTING.get()));
+    return getVanillaBurnTimeOr(itemStack,
+        () -> itemStack.getBurnTime(RailcraftRecipeTypes.BLASTING.get()));
   }
 
-  private static IForgeRegistry<Item> getForgeRegistry(Item item) {
-    return RegistryManager.ACTIVE.getRegistry(ForgeRegistries.ITEMS.getKey(item));
+  private static int getVanillaBurnTimeOr(ItemStack itemStack, IntSupplier defaultTime) {
+    if (itemStack.is(Items.CHARCOAL)) {
+      return 1600;
+    }
+    return defaultTime.getAsInt();
   }
 
   void loadFuel() {

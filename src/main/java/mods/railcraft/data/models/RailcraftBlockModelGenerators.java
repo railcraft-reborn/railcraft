@@ -1,5 +1,11 @@
 package mods.railcraft.data.models;
 
+import java.util.EnumMap;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
@@ -16,11 +22,34 @@ import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.*;
+import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.LockingMode;
+import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import net.minecraft.core.Direction;
-import net.minecraft.data.models.blockstates.*;
+import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.blockstates.Condition;
+import net.minecraft.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
+import net.minecraft.data.models.blockstates.Variant;
+import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.data.models.blockstates.VariantProperties.Rotation;
-import net.minecraft.data.models.model.*;
+import net.minecraft.data.models.model.DelegatedModel;
+import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.data.models.model.ModelTemplate;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -31,13 +60,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import javax.annotation.Nullable;
-import java.util.EnumMap;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class RailcraftBlockModelGenerators {
 
