@@ -3,14 +3,14 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
+
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.client.gui.screen.EmbarkingTrackScreen;
+import mods.railcraft.client.Screen;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.HostEffects;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -67,7 +67,7 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos blockPos,
       Player player, InteractionHand hand, ItemStack itemStack) {
     if (level.isClientSide()) {
-      Minecraft.getInstance().setScreen(new EmbarkingTrackScreen(blockState, blockPos));
+      Screen.openEmbarkingTrackScreen(blockState, blockPos);
     }
     return true;
   }

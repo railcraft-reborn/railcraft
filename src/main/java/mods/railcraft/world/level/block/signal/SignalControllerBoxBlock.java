@@ -2,10 +2,9 @@ package mods.railcraft.world.level.block.signal;
 
 import javax.annotation.Nullable;
 
-import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
+import mods.railcraft.client.Screen;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,7 +29,7 @@ public class SignalControllerBoxBlock extends SignalBoxBlock implements EntityBl
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get())
-          .ifPresent(signalBox -> Minecraft.getInstance().setScreen(new SignalControllerBoxScreen(signalBox)));
+          .ifPresent(Screen::openSignalControllerBoxScreen);
       return InteractionResult.SUCCESS;
     }
     return InteractionResult.CONSUME;
