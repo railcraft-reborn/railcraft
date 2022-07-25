@@ -5,20 +5,12 @@ import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.charge.ChargeProviderImpl;
-import mods.railcraft.client.ClientDist;
-import mods.railcraft.data.RailcraftAdvancementProviders;
-import mods.railcraft.data.RailcraftBlockTagsProvider;
-import mods.railcraft.data.RailcraftFluidTagsProvider;
-import mods.railcraft.data.RailcraftItemTagsProvider;
-import mods.railcraft.data.RailcraftLootTableProvider;
-import mods.railcraft.data.models.RailcraftModelProvider;
-import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
-import mods.railcraft.server.ServerDist;
+import mods.railcraft.setup.ClientSetup;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -50,7 +42,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
@@ -59,7 +50,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -71,10 +61,6 @@ import net.minecraftforge.network.NetworkDirection;
 public class Railcraft {
 
   public static final String ID = "railcraft";
-
-  private static Railcraft instance;
-
-  private final RailcraftDist dist;
 
   private final MinecartHandler minecartHandler = new MinecartHandler();
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
@@ -89,7 +75,6 @@ public class Railcraft {
   }
 
   public Railcraft() {
-    instance = this;
 
     MinecraftForge.EVENT_BUS.register(this.minecartHandler);
     MinecraftForge.EVENT_BUS.register(this);
@@ -99,14 +84,11 @@ public class Railcraft {
     context.registerConfig(ModConfig.Type.COMMON, RailcraftConfig.commonSpec);
     context.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.serverSpec);
 
-    this.dist = DistExecutor.safeRunForDist(() -> ClientDist::new, () -> ServerDist::new);
-
     NetworkChannel.registerAll();
 
     var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-    modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::handleCommonSetup);
+    modEventBus.addListener(ClientSetup::init);
     modEventBus.addListener(this::handleRegisterCapabilities);
     //modEventBus.addGenericListener(DataSerializerEntry.class, RailcraftDataSerializers::register);
 
@@ -130,21 +112,6 @@ public class Railcraft {
     return this.minecartHandler;
   }
 
-  public RailcraftDist getDist() {
-    return this.dist;
-  }
-
-  public ClientDist getClientDist() {
-    if (this.dist instanceof ClientDist) {
-      return (ClientDist) this.dist;
-    }
-    throw new IllegalStateException("Accessing client dist from wrong side");
-  }
-
-  public static Railcraft getInstance() {
-    return instance;
-  }
-
   private void handleCommonSetup(FMLCommonSetupEvent event) {
     event.enqueueWork(RailcraftCriteriaTriggers::register);
     FuelUtil.fuelManager().addFuel(RailcraftFluids.CREOSOTE.get(), 4800);
@@ -152,19 +119,6 @@ public class Railcraft {
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
     event.register(MinecartExtension.class);
-  }
-
-  private void handleGatherData(GatherDataEvent event) {
-    var generator = event.getGenerator();
-    var fileHelper = event.getExistingFileHelper();
-    var blockTags = new RailcraftBlockTagsProvider(generator, fileHelper);
-    generator.addProvider(event.includeServer(), blockTags);
-    generator.addProvider(event.includeServer(), new RailcraftItemTagsProvider(generator, blockTags, fileHelper));
-    generator.addProvider(event.includeServer(), new RailcraftFluidTagsProvider(generator, fileHelper));
-    generator.addProvider(event.includeServer(), new RailcraftLootTableProvider(generator));
-    generator.addProvider(event.includeServer(), new RailcraftAdvancementProviders(generator, fileHelper));
-    generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(generator));
-    generator.addProvider(event.includeClient(), new RailcraftModelProvider(generator));
   }
 
   @SubscribeEvent

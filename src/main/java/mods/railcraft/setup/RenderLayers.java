@@ -1,4 +1,4 @@
-package mods.railcraft.client;
+package mods.railcraft.setup;
 
 import java.util.function.Supplier;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 class RenderLayers {
 
   static void register() {
+    //TODO: Set these values from JSON
     ItemBlockRenderTypes.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
 
     cutout(RailcraftBlocks.WHITE_STRENGTHENED_GLASS);

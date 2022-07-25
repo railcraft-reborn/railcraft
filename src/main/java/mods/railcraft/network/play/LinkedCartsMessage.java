@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.Link;
+import mods.railcraft.setup.ClientEvent;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.Train;
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,8 +24,7 @@ public record LinkedCartsMessage(Collection<LinkedCart> linkedCarts) {
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    Railcraft.getInstance().getClientDist().getShuntingAuraRenderer()
-        .setLinkedCarts(this.linkedCarts);
+    ClientEvent.getShuntingAuraRenderer().setLinkedCarts(this.linkedCarts);
     return true;
   }
 

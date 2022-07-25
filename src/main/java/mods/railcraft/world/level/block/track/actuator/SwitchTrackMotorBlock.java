@@ -1,8 +1,9 @@
 package mods.railcraft.world.level.block.track.actuator;
 
-import mods.railcraft.client.ClientDist;
+import mods.railcraft.client.gui.screen.SwitchTrackMotorScreen;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,7 +33,7 @@ public class SwitchTrackMotorBlock extends SwitchTrackActuatorBlock implements E
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get())
-          .ifPresent(ClientDist::openSwitchTrackMotorScreen);
+          .ifPresent(switchTrackMotor -> Minecraft.getInstance().setScreen(new SwitchTrackMotorScreen(switchTrackMotor)));
       return InteractionResult.SUCCESS;
     }
     return InteractionResult.CONSUME;
