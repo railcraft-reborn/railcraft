@@ -324,8 +324,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     return new ResourceLocation(Railcraft.ID, "blasting_" + tag);
   }
 
-  private final void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
-      Item itemOut, TagKey<Item> materialTag) {
+  private void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
+                                   Item itemOut, TagKey<Item> materialTag) {
     ShapedRecipeBuilder.shaped(itemOut)
         .define('I', materialTag)
         .define('D', Tags.Items.DYES_RED)
@@ -336,8 +336,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipie);
   }
 
-  private final void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
-      Item itemOut, Item woolItem) {
+  private void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
+                                   Item itemOut, Item woolItem) {
     ShapedRecipeBuilder.shaped(itemOut)
         .define('W', woolItem)
         .define('R', Items.REPEATER)
@@ -352,8 +352,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipie);
   }
 
-  private final void rebarFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
-      TagKey<Item> materialTag, int count, String fancyname) {
+  private void rebarFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
+                                 TagKey<Item> materialTag, int count, String fancyname) {
     RollingRecipeBuilder.rolled(RailcraftItems.REBAR.get(), count)
         .define('I', materialTag)
         .pattern("  I")
@@ -362,8 +362,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipie, fancyname);
   }
 
-  private final void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipie,
-      Item itemOut, Item railType, Item railBedType) {
+  private void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipie,
+                                  Item itemOut, Item railType, Item railBedType) {
     ShapedRecipeBuilder.shaped(itemOut, 32)
         .define('I', railType)
         .define('B', railBedType)
@@ -377,8 +377,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             new ResourceLocation(Railcraft.ID, ForgeRegistries.ITEMS.getKey(itemOut).getPath()));
   }
 
-  private final void compress(Consumer<FinishedRecipe> finishedRecipie,
-      Item itemOut, TagKey<Item> materialTag, String identifier) {
+  private void compress(Consumer<FinishedRecipe> finishedRecipie,
+                        Item itemOut, TagKey<Item> materialTag, String identifier) {
     ShapedRecipeBuilder.shaped(itemOut)
         .define('#', materialTag)
         .pattern("###")
@@ -389,8 +389,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
   }
 
-  private final void decompress(Consumer<FinishedRecipe> finishedRecipie,
-      Item itemOut, TagKey<Item> materialTag, String identifier) {
+  private void decompress(Consumer<FinishedRecipe> finishedRecipie,
+                          Item itemOut, TagKey<Item> materialTag, String identifier) {
     ShapelessRecipeBuilder.shapeless(itemOut, 9)
         .requires(materialTag)
         .unlockedBy("has_required_decompression_material", has(materialTag))
