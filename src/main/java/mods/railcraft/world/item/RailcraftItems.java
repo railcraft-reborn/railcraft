@@ -60,6 +60,14 @@ public class RailcraftItems {
         }
       };
 
+  public static final CreativeModeTab DECORATIVE_TAB =
+    new CreativeModeTab(Railcraft.ID + "_decorative_blocks") {
+      @Override
+      public ItemStack makeIcon() {
+        return new ItemStack(BLACK_STRENGTHENED_GLASS.get());
+      }
+    };
+
   public static final RegistryObject<Item> LOW_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("low_pressure_steam_boiler_tank",
           () -> new BlockItem(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
@@ -95,82 +103,82 @@ public class RailcraftItems {
   public static final RegistryObject<Item> WHITE_STRENGTHENED_GLASS =
       deferredRegister.register("white_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.WHITE_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> ORANGE_STRENGTHENED_GLASS =
       deferredRegister.register("orange_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.ORANGE_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> MAGENTA_STRENGTHENED_GLASS =
       deferredRegister.register("magenta_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.MAGENTA_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> LIGHT_BLUE_STRENGTHENED_GLASS =
       deferredRegister.register("light_blue_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.LIGHT_BLUE_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> YELLOW_STRENGTHENED_GLASS =
       deferredRegister.register("yellow_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.YELLOW_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> LIME_STRENGTHENED_GLASS =
       deferredRegister.register("lime_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.LIME_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> PINK_STRENGTHENED_GLASS =
       deferredRegister.register("pink_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.PINK_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> GRAY_STRENGTHENED_GLASS =
       deferredRegister.register("gray_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.GRAY_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> LIGHT_GRAY_STRENGTHENED_GLASS =
       deferredRegister.register("light_gray_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.LIGHT_GRAY_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> CYAN_STRENGTHENED_GLASS =
       deferredRegister.register("cyan_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.CYAN_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> PURPLE_STRENGTHENED_GLASS =
       deferredRegister.register("purple_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.PURPLE_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> BLUE_STRENGTHENED_GLASS =
       deferredRegister.register("blue_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.BLUE_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> BROWN_STRENGTHENED_GLASS =
       deferredRegister.register("brown_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.BROWN_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> GREEN_STRENGTHENED_GLASS =
       deferredRegister.register("green_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.GREEN_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> RED_STRENGTHENED_GLASS =
       deferredRegister.register("red_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.RED_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> BLACK_STRENGTHENED_GLASS =
       deferredRegister.register("black_strengthened_glass",
           () -> new BlockItem(RailcraftBlocks.BLACK_STRENGTHENED_GLASS.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> WHITE_IRON_TANK_GAUGE =
       deferredRegister.register("white_iron_tank_gauge",
@@ -1635,82 +1643,82 @@ public class RailcraftItems {
   public static final RegistryObject<Item> BLACK_POST =
       deferredRegister.register("black_post",
           () -> new BlockItem(RailcraftBlocks.BLACK_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> RED_POST =
       deferredRegister.register("red_post",
           () -> new BlockItem(RailcraftBlocks.RED_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> GREEN_POST =
       deferredRegister.register("green_post",
           () -> new BlockItem(RailcraftBlocks.GREEN_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> BROWN_POST =
       deferredRegister.register("brown_post",
           () -> new BlockItem(RailcraftBlocks.BROWN_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> BLUE_POST =
       deferredRegister.register("blue_post",
           () -> new BlockItem(RailcraftBlocks.BLUE_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> PURPLE_POST =
       deferredRegister.register("purple_post",
           () -> new BlockItem(RailcraftBlocks.PURPLE_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> CYAN_POST =
       deferredRegister.register("cyan_post",
           () -> new BlockItem(RailcraftBlocks.CYAN_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> LIGHT_GRAY_POST =
       deferredRegister.register("light_gray_post",
           () -> new BlockItem(RailcraftBlocks.LIGHT_GRAY_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> GRAY_POST =
       deferredRegister.register("gray_post",
           () -> new BlockItem(RailcraftBlocks.GRAY_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> PINK_POST =
       deferredRegister.register("pink_post",
           () -> new BlockItem(RailcraftBlocks.PINK_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> LIME_POST =
       deferredRegister.register("lime_post",
           () -> new BlockItem(RailcraftBlocks.LIME_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> YELLOW_POST =
       deferredRegister.register("yellow_post",
           () -> new BlockItem(RailcraftBlocks.YELLOW_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> LIGHT_BLUE_POST =
       deferredRegister.register("light_blue_post",
           () -> new BlockItem(RailcraftBlocks.LIGHT_BLUE_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> MAGENTA_POST =
       deferredRegister.register("magenta_post",
           () -> new BlockItem(RailcraftBlocks.MAGENTA_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> ORANGE_POST =
       deferredRegister.register("orange_post",
           () -> new BlockItem(RailcraftBlocks.ORANGE_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   public static final RegistryObject<Item> WHITE_POST =
       deferredRegister.register("white_post",
           () -> new BlockItem(RailcraftBlocks.WHITE_POST.get(),
-              new Item.Properties().tab(TAB)));
+              new Item.Properties().tab(DECORATIVE_TAB)));
 
   /* ===== CRAFTING MATERIALS ===== */
   public static final RegistryObject<Item> COAL_COKE =
