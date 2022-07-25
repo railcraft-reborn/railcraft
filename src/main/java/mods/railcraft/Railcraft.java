@@ -23,8 +23,10 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -58,6 +60,12 @@ public class Railcraft {
     modEventBus.addListener(ModSetup::init);
     modEventBus.addListener(ClientSetup::init);
     modEventBus.addListener(this::handleRegisterCapabilities);
+
+    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+      MinecraftForge.EVENT_BUS.addListener(ClientSetup::handleClientTick);
+      MinecraftForge.EVENT_BUS.addListener(ClientSetup::handleRenderWorldLast);
+      MinecraftForge.EVENT_BUS.addListener(ClientSetup::handleClientLoggedOut);
+    });
 
     RailcraftEntityTypes.register(modEventBus);
     RailcraftBlocks.register(modEventBus);

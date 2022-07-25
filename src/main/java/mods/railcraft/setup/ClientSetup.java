@@ -1,6 +1,10 @@
 package mods.railcraft.setup;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.api.signal.SignalTools;
+import mods.railcraft.client.ClientEffects;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
@@ -21,6 +25,7 @@ import mods.railcraft.client.particle.PumpkinParticle;
 import mods.railcraft.client.particle.SparkParticle;
 import mods.railcraft.client.particle.SteamParticle;
 import mods.railcraft.client.particle.TuningAuraParticle;
+import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
 import mods.railcraft.client.renderer.blockentity.BlockSignalRelayBoxRenderer;
@@ -38,15 +43,19 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -156,5 +165,32 @@ public class ClientSetup {
   @SubscribeEvent
   public static void handleRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
     RailcraftLayerDefinitions.createRoots(event::registerLayerDefinition);
+  }
+
+  // Forge EventBus
+  public static void handleClientTick(TickEvent.ClientTickEvent event) {
+    if (event.phase == TickEvent.Phase.START
+      && (Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused())) {
+      SignalAspect.tickBlinkState();
+    }
+  }
+
+  private static ShuntingAuraRenderer SHUNTING_AURA_RENDERER;
+  static {
+    SHUNTING_AURA_RENDERER = new ShuntingAuraRenderer();
+    SignalTools._setTuningAuraProvider(ClientEffects.INSTANCE);
+    Charge._setZapEffectProvider(ClientEffects.INSTANCE);
+  }
+
+  public static ShuntingAuraRenderer getShuntingAuraRenderer() {
+    return SHUNTING_AURA_RENDERER;
+  }
+
+  public static void handleRenderWorldLast(RenderLevelStageEvent event) {
+    SHUNTING_AURA_RENDERER.render(event.getPartialTick(), event.getPoseStack());
+  }
+
+  public static void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
+    SHUNTING_AURA_RENDERER.clearCarts();
   }
 }
