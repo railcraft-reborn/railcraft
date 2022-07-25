@@ -1,5 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
@@ -30,6 +33,7 @@ import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -48,110 +52,31 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<BlockEntityType<IronTankBlockEntity>> IRON_TANK =
       deferredRegister.register("iron_tank",
           () -> BlockEntityType.Builder
-              .of(IronTankBlockEntity::new,
-                  RailcraftBlocks.WHITE_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.ORANGE_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.LIGHT_BLUE_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.YELLOW_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.LIME_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.PINK_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.GRAY_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.LIGHT_GRAY_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.CYAN_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.PURPLE_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.BLUE_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.BROWN_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.GREEN_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.RED_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.BLACK_IRON_TANK_GAUGE.get(),
-                  RailcraftBlocks.WHITE_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.ORANGE_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.MAGENTA_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.LIGHT_BLUE_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.YELLOW_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.LIME_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.PINK_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.GRAY_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.LIGHT_GRAY_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.CYAN_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.PURPLE_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.BLUE_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.BROWN_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.GREEN_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.RED_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.BLACK_IRON_TANK_VALVE.get(),
-                  RailcraftBlocks.WHITE_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.ORANGE_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.MAGENTA_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.LIGHT_BLUE_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.YELLOW_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.LIME_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.PINK_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.GRAY_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.LIGHT_GRAY_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.CYAN_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.PURPLE_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.BLUE_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.BROWN_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.GREEN_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.RED_IRON_TANK_WALL.get(),
-                  RailcraftBlocks.BLACK_IRON_TANK_WALL.get())
+            .of(IronTankBlockEntity::new,
+                join(
+                  RailcraftBlocks.IRON_TANK_GAUGE.getBlocks(),
+                  RailcraftBlocks.IRON_TANK_VALVE.getBlocks(),
+                  RailcraftBlocks.IRON_TANK_WALL.getBlocks()))
               .build(null));
 
   public static final RegistryObject<BlockEntityType<SteelTankBlockEntity>> STEEL_TANK =
       deferredRegister.register("steel_tank",
           () -> BlockEntityType.Builder
               .of(SteelTankBlockEntity::new,
-                  RailcraftBlocks.WHITE_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.ORANGE_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.MAGENTA_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.YELLOW_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.LIME_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.PINK_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.GRAY_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.CYAN_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.PURPLE_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.BLUE_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.BROWN_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.GREEN_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.RED_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.BLACK_STEEL_TANK_GAUGE.get(),
-                  RailcraftBlocks.WHITE_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.ORANGE_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.MAGENTA_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.YELLOW_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.LIME_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.PINK_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.GRAY_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.CYAN_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.PURPLE_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.BLUE_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.BROWN_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.GREEN_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.RED_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.BLACK_STEEL_TANK_VALVE.get(),
-                  RailcraftBlocks.WHITE_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.ORANGE_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.MAGENTA_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.YELLOW_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.LIME_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.PINK_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.GRAY_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.CYAN_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.PURPLE_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.BLUE_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.BROWN_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.GREEN_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.RED_STEEL_TANK_WALL.get(),
-                  RailcraftBlocks.BLACK_STEEL_TANK_WALL.get())
+                  join(
+                    RailcraftBlocks.STEEL_TANK_GAUGE.getBlocks(),
+                    RailcraftBlocks.STEEL_TANK_VALVE.getBlocks(),
+                    RailcraftBlocks.STEEL_TANK_WALL.getBlocks()))
               .build(null));
+
+  //TODO: It can probably be done another way
+  private static<T extends Block> Block[] join(T[]... lists) {
+    List<Block> results = new ArrayList<>();
+    for (var item : lists) {
+      results.addAll(List.of(item));
+    }
+    return results.toArray(Block[]::new);
+  }
 
   public static final RegistryObject<BlockEntityType<SteamBoilerBlockEntity>> STEAM_BOILER =
       deferredRegister.register("steam_boiler",

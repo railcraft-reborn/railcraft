@@ -3,6 +3,7 @@ package mods.railcraft.data;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.RegistryObject;
@@ -29,124 +30,17 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.FEED_STATION.get());
 
-    this.dropSelf(RailcraftBlocks.WHITE_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.ORANGE_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.MAGENTA_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_BLUE_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.YELLOW_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.LIME_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.PINK_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.GRAY_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_GRAY_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.CYAN_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.PURPLE_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.BLUE_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.BROWN_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.GREEN_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.RED_STRENGTHENED_GLASS.get());
-    this.dropSelf(RailcraftBlocks.BLACK_STRENGTHENED_GLASS.get());
+    for (DyeColor dyeColor : DyeColor.values()) {
+      this.dropSelf(RailcraftBlocks.STRENGTHENED_GLASS.get(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.POST.get(dyeColor).get());
 
-    this.dropSelf(RailcraftBlocks.WHITE_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.ORANGE_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.MAGENTA_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_BLUE_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.YELLOW_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.LIME_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.PINK_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.GRAY_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_GRAY_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.CYAN_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.PURPLE_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.BLUE_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.BROWN_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.GREEN_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.RED_IRON_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.BLACK_IRON_TANK_GAUGE.get());
-
-    this.dropSelf(RailcraftBlocks.WHITE_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.ORANGE_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.MAGENTA_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_BLUE_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.YELLOW_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.LIME_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.PINK_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.GRAY_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_GRAY_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.CYAN_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.PURPLE_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.BLUE_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.BROWN_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.GREEN_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.RED_IRON_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.BLACK_IRON_TANK_VALVE.get());
-
-    this.dropSelf(RailcraftBlocks.WHITE_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.ORANGE_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.MAGENTA_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_BLUE_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.YELLOW_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.LIME_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.PINK_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.GRAY_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_GRAY_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.CYAN_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.PURPLE_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.BLUE_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.BROWN_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.GREEN_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.RED_IRON_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.BLACK_IRON_TANK_WALL.get());
-
-    this.dropSelf(RailcraftBlocks.WHITE_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.ORANGE_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.MAGENTA_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.YELLOW_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.LIME_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.PINK_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.GRAY_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.CYAN_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.PURPLE_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.BLUE_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.BROWN_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.GREEN_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.RED_STEEL_TANK_GAUGE.get());
-    this.dropSelf(RailcraftBlocks.BLACK_STEEL_TANK_GAUGE.get());
-
-    this.dropSelf(RailcraftBlocks.WHITE_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.ORANGE_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.MAGENTA_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.YELLOW_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.LIME_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.PINK_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.GRAY_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.CYAN_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.PURPLE_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.BLUE_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.BROWN_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.GREEN_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.RED_STEEL_TANK_VALVE.get());
-    this.dropSelf(RailcraftBlocks.BLACK_STEEL_TANK_VALVE.get());
-
-    this.dropSelf(RailcraftBlocks.WHITE_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.ORANGE_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.MAGENTA_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_BLUE_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.YELLOW_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.LIME_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.PINK_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.GRAY_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_GRAY_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.CYAN_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.PURPLE_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.BLUE_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.BROWN_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.GREEN_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.RED_STEEL_TANK_WALL.get());
-    this.dropSelf(RailcraftBlocks.BLACK_STEEL_TANK_WALL.get());
+      this.dropSelf(RailcraftBlocks.IRON_TANK_GAUGE.get(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.IRON_TANK_VALVE.get(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.IRON_TANK_WALL.get(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.STEEL_TANK_GAUGE.get(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.STEEL_TANK_VALVE.get(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.STEEL_TANK_WALL.get(dyeColor).get());
+    }
 
     /* === tracks === */
     this.dropSelf(RailcraftBlocks.ABANDONED_TRACK.get());
@@ -362,23 +256,6 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.FIRESTONE.get());
     // TODO: implement this ritual thingy
     this.add(RailcraftBlocks.RITUAL.get(), noDrop());
-
-    this.dropSelf(RailcraftBlocks.BLACK_POST.get());
-    this.dropSelf(RailcraftBlocks.RED_POST.get());
-    this.dropSelf(RailcraftBlocks.GREEN_POST.get());
-    this.dropSelf(RailcraftBlocks.BROWN_POST.get());
-    this.dropSelf(RailcraftBlocks.BLUE_POST.get());
-    this.dropSelf(RailcraftBlocks.PURPLE_POST.get());
-    this.dropSelf(RailcraftBlocks.CYAN_POST.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_GRAY_POST.get());
-    this.dropSelf(RailcraftBlocks.GRAY_POST.get());
-    this.dropSelf(RailcraftBlocks.PINK_POST.get());
-    this.dropSelf(RailcraftBlocks.LIME_POST.get());
-    this.dropSelf(RailcraftBlocks.YELLOW_POST.get());
-    this.dropSelf(RailcraftBlocks.LIGHT_BLUE_POST.get());
-    this.dropSelf(RailcraftBlocks.MAGENTA_POST.get());
-    this.dropSelf(RailcraftBlocks.ORANGE_POST.get());
-    this.dropSelf(RailcraftBlocks.WHITE_POST.get());
   }
 
   @Override
