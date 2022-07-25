@@ -1734,9 +1734,6 @@ public class RailcraftItems {
       deferredRegister.register("steel_ingot",
           () -> new Item(new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> COPPER_INGOT =
-      deferredRegister.register("copper_ingot",
-          () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TIN_INGOT =
       deferredRegister.register("tin_ingot",

@@ -23,7 +23,6 @@ public class RailcraftTags {
     // ======================================================
     // [forge:ingots/[INGOT NAME]]
     public static final TagKey<Item> STEEL_INGOT = forgeTag("ingots/steel");
-    public static final TagKey<Item> COPPER_INGOT = forgeTag("ingots/copper");
     public static final TagKey<Item> TIN_INGOT = forgeTag("ingots/tin");
     public static final TagKey<Item> LEAD_INGOT = forgeTag("ingots/lead");
     public static final TagKey<Item> SILVER_INGOT = forgeTag("ingots/silver");

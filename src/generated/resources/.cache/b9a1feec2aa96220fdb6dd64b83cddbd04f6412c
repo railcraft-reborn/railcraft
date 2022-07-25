@@ -1,8 +1,7 @@
-// 1.19	2022-07-25T11:58:11.968915698	Railcraft Item Tags
+// 1.19	2022-07-25T13:00:25.355623486	Railcraft Item Tags
 f34843bfb7b650f383c4d01e491bd1059bfad784 data/forge/tags/items/blocks/steel.json
 75ab00fcba7527628f8180d4da1258f38eaf7993 data/forge/tags/items/ingots/brass.json
 a0ce7d34162c16575f232fefea706bfee9997e5f data/forge/tags/items/ingots/bronze.json
-1b9f6d3f252ebcaef19d6be4598c69e6c9cb00ec data/forge/tags/items/ingots/copper.json
 73086904c5958ecf1a6bc0470a37749acdf03a51 data/forge/tags/items/ingots/steel.json
 43f588354afc1316ef5dbfe18cfa1bfdc6c6ca1f data/forge/tags/items/ingots/tin.json
 e0e8b9e8910af571f523b10ab0b8985f9dc14fa1 data/forge/tags/items/ingots/zinc.json

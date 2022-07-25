@@ -19,8 +19,6 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
   protected void addTags() {
     this.tag(RailcraftTags.Items.STEEL_INGOT)
       .add(RailcraftItems.STEEL_INGOT.get());
-    this.tag(RailcraftTags.Items.COPPER_INGOT)
-      .add(RailcraftItems.COPPER_INGOT.get());
     this.tag(RailcraftTags.Items.TIN_INGOT)
       .add(RailcraftItems.TIN_INGOT.get());
     this.tag(RailcraftTags.Items.ZINC_INGOT)

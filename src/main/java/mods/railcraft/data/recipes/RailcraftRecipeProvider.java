@@ -177,7 +177,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(consumer);
     RollingRecipeBuilder.rolled(RailcraftItems.ELECTRIC_RAIL.get(), 6)
         .define('S', RailcraftItems.STANDARD_RAIL.get())
-        .define('C', RailcraftTags.Items.COPPER_INGOT)
+        .define('C', Tags.Items.INGOTS_COPPER)
         .pattern("SCS")
         .pattern("SCS")
         .pattern("SCS")
@@ -226,7 +226,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftTags.Items.STEEL_NUGGET, "ingot");
     this.compress(consumer, RailcraftItems.TIN_INGOT.get(),
         RailcraftTags.Items.TIN_NUGGET, "ingot");
-    this.compress(consumer, RailcraftItems.COPPER_INGOT.get(),
+    this.compress(consumer, Items.COPPER_INGOT,
         RailcraftTags.Items.COPPER_NUGGET, "ingot");
     this.compress(consumer, RailcraftItems.ZINC_INGOT.get(),
         RailcraftTags.Items.ZINC_NUGGET, "ingot");
@@ -244,7 +244,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     this.decompress(consumer, RailcraftItems.TIN_NUGGET.get(),
         RailcraftTags.Items.TIN_INGOT, "nugget");
     this.decompress(consumer, RailcraftItems.COPPER_NUGGET.get(),
-        RailcraftTags.Items.COPPER_INGOT, "nugget");
+        Tags.Items.INGOTS_COPPER, "nugget");
     this.decompress(consumer, RailcraftItems.ZINC_NUGGET.get(),
         RailcraftTags.Items.ZINC_INGOT, "nugget");
     this.decompress(consumer, RailcraftItems.BRASS_NUGGET.get(),
