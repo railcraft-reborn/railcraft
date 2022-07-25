@@ -116,15 +116,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     /*
      * ===================================== RAILCRAFT BLOCKS =====================================
      */
-    ShapedRecipeBuilder.shaped(RailcraftItems.COKE_OVEN_BRICKS.get())
-        .define('B', Items.BRICK)
-        .define('S', Tags.Items.SAND)
-        .pattern("SBS")
-        .pattern("BSB")
-        .pattern("SBS")
-        .unlockedBy("has_brick", has(Items.BRICK))
-        .unlockedBy("has_snad", has(Tags.Items.SAND)) // intentional
-        .save(consumer);
+    RecipeBlocks.registerBlocks(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS

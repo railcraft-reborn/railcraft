@@ -13,7 +13,7 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_snad": {
+    "has_sand": {
       "conditions": {
         "items": [
           {
@@ -33,7 +33,7 @@
   "requirements": [
     [
       "has_brick",
-      "has_snad",
+      "has_sand",
       "has_the_recipe"
     ]
   ],

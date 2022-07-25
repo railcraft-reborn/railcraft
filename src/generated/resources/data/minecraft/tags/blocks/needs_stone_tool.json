@@ -1,9 +1,5 @@
 {
   "values": [
-    "railcraft:low_pressure_steam_boiler_tank",
-    "railcraft:high_pressure_steam_boiler_tank",
-    "railcraft:fluid_fueled_firebox",
-    "railcraft:steam_turbine",
     "railcraft:white_iron_tank_valve",
     "railcraft:orange_iron_tank_valve",
     "railcraft:magenta_iron_tank_valve",
@@ -67,6 +63,10 @@
     "railcraft:brown_steel_tank_wall",
     "railcraft:green_steel_tank_wall",
     "railcraft:red_steel_tank_wall",
-    "railcraft:black_steel_tank_wall"
+    "railcraft:black_steel_tank_wall",
+    "railcraft:low_pressure_steam_boiler_tank",
+    "railcraft:high_pressure_steam_boiler_tank",
+    "railcraft:fluid_fueled_firebox",
+    "railcraft:steam_turbine"
   ]
 }

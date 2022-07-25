@@ -1,20 +1,20 @@
 {
   "values": [
-    "railcraft:black_post",
-    "railcraft:red_post",
-    "railcraft:green_post",
-    "railcraft:brown_post",
-    "railcraft:blue_post",
-    "railcraft:purple_post",
-    "railcraft:cyan_post",
-    "railcraft:light_gray_post",
-    "railcraft:gray_post",
-    "railcraft:pink_post",
-    "railcraft:lime_post",
-    "railcraft:yellow_post",
-    "railcraft:light_blue_post",
-    "railcraft:magenta_post",
+    "railcraft:white_post",
     "railcraft:orange_post",
-    "railcraft:white_post"
+    "railcraft:magenta_post",
+    "railcraft:light_blue_post",
+    "railcraft:yellow_post",
+    "railcraft:lime_post",
+    "railcraft:pink_post",
+    "railcraft:gray_post",
+    "railcraft:light_gray_post",
+    "railcraft:cyan_post",
+    "railcraft:purple_post",
+    "railcraft:blue_post",
+    "railcraft:brown_post",
+    "railcraft:green_post",
+    "railcraft:red_post",
+    "railcraft:black_post"
   ]
 }
