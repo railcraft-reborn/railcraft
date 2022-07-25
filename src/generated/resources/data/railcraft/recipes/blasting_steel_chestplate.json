@@ -1,13 +1,13 @@
 {
   "type": "railcraft:blasting",
+  "cookingTime": 3840,
+  "experience": 0.0,
   "ingredient": {
     "item": "railcraft:steel_chestplate"
   },
   "result": {
-    "item": "railcraft:steel_ingot",
-    "count": 6
+    "count": 6,
+    "item": "railcraft:steel_ingot"
   },
-  "experience": 0.0,
-  "cookingTime": 3840,
   "slagOutput": 0
 }

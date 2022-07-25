@@ -6,7 +6,7 @@
     }
   ],
   "result": {
-    "item": "railcraft:steel_nugget",
-    "count": 9
+    "count": 9,
+    "item": "railcraft:steel_nugget"
   }
 }

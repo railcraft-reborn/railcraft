@@ -1,21 +1,21 @@
 {
   "type": "railcraft:rolling",
+  "key": {
+    "O": {
+      "tag": "forge:dusts/redstone"
+    },
+    "S": {
+      "tag": "forge:ingots/steel"
+    }
+  },
   "pattern": [
     "SOS",
     "SOS",
     "SOS"
   ],
-  "key": {
-    "S": {
-      "tag": "forge:ingots/steel"
-    },
-    "O": {
-      "tag": "forge:dusts/redstone"
-    }
-  },
   "result": {
-    "item": "railcraft:high_speed_rail",
-    "count": 8
+    "count": 8,
+    "item": "railcraft:high_speed_rail"
   },
   "tickCost": 100
 }

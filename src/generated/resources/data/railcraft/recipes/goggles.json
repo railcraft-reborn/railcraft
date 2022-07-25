@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "railcraft:receiver_circuit"
+    },
+    "G": {
+      "tag": "forge:glass_panes"
+    },
+    "L": {
+      "tag": "forge:leather"
+    },
+    "S": {
+      "tag": "forge:ingots/steel"
+    }
+  },
   "pattern": [
     "GCG",
     "S S",
     "LLL"
   ],
-  "key": {
-    "S": {
-      "tag": "forge:ingots/steel"
-    },
-    "G": {
-      "tag": "forge:glass_panes"
-    },
-    "C": {
-      "item": "railcraft:receiver_circuit"
-    },
-    "L": {
-      "tag": "forge:leather"
-    }
-  },
   "result": {
     "item": "railcraft:goggles"
   }

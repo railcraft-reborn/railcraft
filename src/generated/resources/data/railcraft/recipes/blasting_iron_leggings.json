@@ -1,13 +1,13 @@
 {
   "type": "railcraft:blasting",
+  "cookingTime": 8960,
+  "experience": 0.0,
   "ingredient": {
     "item": "minecraft:iron_leggings"
   },
   "result": {
-    "item": "railcraft:steel_ingot",
-    "count": 7
+    "count": 7,
+    "item": "railcraft:steel_ingot"
   },
-  "experience": 0.0,
-  "cookingTime": 8960,
   "slagOutput": 7
 }

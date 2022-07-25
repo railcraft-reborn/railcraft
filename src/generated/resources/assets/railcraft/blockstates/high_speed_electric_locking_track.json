@@ -1,356 +1,356 @@
 {
   "multipart": [
     {
-      "when": {
-        "shape": "north_south"
-      },
       "apply": {
         "model": "railcraft:block/high_speed_electric_track_outfitted"
+      },
+      "when": {
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west"
-      },
       "apply": {
         "model": "railcraft:block/high_speed_electric_track_outfitted",
         "y": 90
+      },
+      "when": {
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "false",
-        "locking_mode": "lockdown"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_lockdown"
+      },
+      "when": {
+        "locking_mode": "lockdown",
+        "powered": "false",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "true",
-        "locking_mode": "lockdown"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_lockdown_on"
+      },
+      "when": {
+        "locking_mode": "lockdown",
+        "powered": "true",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "false",
-        "locking_mode": "lockdown"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_lockdown",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "lockdown",
+        "powered": "false",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "true",
-        "locking_mode": "lockdown"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_lockdown_on",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "lockdown",
+        "powered": "true",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "false",
-        "locking_mode": "train_lockdown"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_lockdown"
+      },
+      "when": {
+        "locking_mode": "train_lockdown",
+        "powered": "false",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "true",
-        "locking_mode": "train_lockdown"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_lockdown_on"
+      },
+      "when": {
+        "locking_mode": "train_lockdown",
+        "powered": "true",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "false",
-        "locking_mode": "train_lockdown"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_lockdown",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "train_lockdown",
+        "powered": "false",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "true",
-        "locking_mode": "train_lockdown"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_lockdown_on",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "train_lockdown",
+        "powered": "true",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "false",
-        "locking_mode": "holding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_holding"
+      },
+      "when": {
+        "locking_mode": "holding",
+        "powered": "false",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "true",
-        "locking_mode": "holding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_holding_on"
+      },
+      "when": {
+        "locking_mode": "holding",
+        "powered": "true",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "false",
-        "locking_mode": "holding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_holding",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "holding",
+        "powered": "false",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "true",
-        "locking_mode": "holding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_holding_on",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "holding",
+        "powered": "true",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "false",
-        "locking_mode": "train_holding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_holding"
+      },
+      "when": {
+        "locking_mode": "train_holding",
+        "powered": "false",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "true",
-        "locking_mode": "train_holding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_holding_on"
+      },
+      "when": {
+        "locking_mode": "train_holding",
+        "powered": "true",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "false",
-        "locking_mode": "train_holding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_holding",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "train_holding",
+        "powered": "false",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "true",
-        "locking_mode": "train_holding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_holding_on",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "train_holding",
+        "powered": "true",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "false",
-        "locking_mode": "boarding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_boarding"
+      },
+      "when": {
+        "locking_mode": "boarding",
+        "powered": "false",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "true",
-        "locking_mode": "boarding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_boarding_on"
+      },
+      "when": {
+        "locking_mode": "boarding",
+        "powered": "true",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "false",
-        "locking_mode": "boarding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_boarding",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "boarding",
+        "powered": "false",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "true",
-        "locking_mode": "boarding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_boarding_on",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "boarding",
+        "powered": "true",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "false",
-        "locking_mode": "boarding_reversed"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_boarding_reversed"
+      },
+      "when": {
+        "locking_mode": "boarding_reversed",
+        "powered": "false",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "true",
-        "locking_mode": "boarding_reversed"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_boarding_reversed_on"
+      },
+      "when": {
+        "locking_mode": "boarding_reversed",
+        "powered": "true",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "false",
-        "locking_mode": "boarding_reversed"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_boarding_reversed",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "boarding_reversed",
+        "powered": "false",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "true",
-        "locking_mode": "boarding_reversed"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_boarding_reversed_on",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "boarding_reversed",
+        "powered": "true",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "false",
-        "locking_mode": "train_boarding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_boarding"
+      },
+      "when": {
+        "locking_mode": "train_boarding",
+        "powered": "false",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "true",
-        "locking_mode": "train_boarding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_boarding_on"
+      },
+      "when": {
+        "locking_mode": "train_boarding",
+        "powered": "true",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "false",
-        "locking_mode": "train_boarding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_boarding",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "train_boarding",
+        "powered": "false",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "true",
-        "locking_mode": "train_boarding"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_boarding_on",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "train_boarding",
+        "powered": "true",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "false",
-        "locking_mode": "train_boarding_reversed"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_boarding_reversed"
+      },
+      "when": {
+        "locking_mode": "train_boarding_reversed",
+        "powered": "false",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "powered": "true",
-        "locking_mode": "train_boarding_reversed"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_boarding_reversed_on"
+      },
+      "when": {
+        "locking_mode": "train_boarding_reversed",
+        "powered": "true",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "false",
-        "locking_mode": "train_boarding_reversed"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_boarding_reversed",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "train_boarding_reversed",
+        "powered": "false",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "powered": "true",
-        "locking_mode": "train_boarding_reversed"
-      },
       "apply": {
         "model": "railcraft:block/locking_track_train_boarding_reversed_on",
         "y": 90
+      },
+      "when": {
+        "locking_mode": "train_boarding_reversed",
+        "powered": "true",
+        "shape": "east_west"
       }
     }
   ]

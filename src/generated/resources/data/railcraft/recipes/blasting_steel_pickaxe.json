@@ -1,13 +1,13 @@
 {
   "type": "railcraft:blasting",
+  "cookingTime": 1280,
+  "experience": 0.0,
   "ingredient": {
     "item": "railcraft:steel_pickaxe"
   },
   "result": {
-    "item": "railcraft:steel_ingot",
-    "count": 2
+    "count": 2,
+    "item": "railcraft:steel_ingot"
   },
-  "experience": 0.0,
-  "cookingTime": 1280,
   "slagOutput": 0
 }

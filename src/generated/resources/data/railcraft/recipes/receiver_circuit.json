@@ -1,19 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " RW",
-    "BGS",
-    "WSL"
-  ],
   "key": {
-    "W": {
-      "item": "minecraft:green_wool"
-    },
-    "R": {
-      "item": "minecraft:repeater"
-    },
-    "S": {
-      "tag": "forge:dusts/redstone"
+    "B": {
+      "tag": "forge:slimeballs"
     },
     "G": {
       "tag": "forge:ingots/gold"
@@ -21,10 +10,21 @@
     "L": {
       "tag": "forge:gems/lapis"
     },
-    "B": {
-      "tag": "forge:slimeballs"
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "S": {
+      "tag": "forge:dusts/redstone"
+    },
+    "W": {
+      "item": "minecraft:green_wool"
     }
   },
+  "pattern": [
+    " RW",
+    "BGS",
+    "WSL"
+  ],
   "result": {
     "item": "railcraft:receiver_circuit"
   }

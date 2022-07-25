@@ -1,17 +1,14 @@
 {
   "multipart": [
     {
-      "when": {
-        "grass": "true"
-      },
       "apply": {
         "model": "minecraft:block/grass"
+      },
+      "when": {
+        "grass": "true"
       }
     },
     {
-      "when": {
-        "shape": "north_south"
-      },
       "apply": [
         {
           "model": "railcraft:block/abandoned_track_0"
@@ -19,12 +16,12 @@
         {
           "model": "railcraft:block/abandoned_track_1"
         }
-      ]
+      ],
+      "when": {
+        "shape": "north_south"
+      }
     },
     {
-      "when": {
-        "shape": "east_west"
-      },
       "apply": [
         {
           "model": "railcraft:block/abandoned_track_0",
@@ -34,75 +31,78 @@
           "model": "railcraft:block/abandoned_track_1",
           "y": 90
         }
-      ]
+      ],
+      "when": {
+        "shape": "east_west"
+      }
     },
     {
-      "when": {
-        "shape": "ascending_east"
-      },
       "apply": {
         "model": "railcraft:block/abandoned_track_raised_ne",
         "y": 90
+      },
+      "when": {
+        "shape": "ascending_east"
       }
     },
     {
-      "when": {
-        "shape": "ascending_west"
-      },
       "apply": {
         "model": "railcraft:block/abandoned_track_raised_sw",
         "y": 90
+      },
+      "when": {
+        "shape": "ascending_west"
       }
     },
     {
-      "when": {
-        "shape": "ascending_north"
-      },
       "apply": {
         "model": "railcraft:block/abandoned_track_raised_ne"
+      },
+      "when": {
+        "shape": "ascending_north"
       }
     },
     {
-      "when": {
-        "shape": "ascending_south"
-      },
       "apply": {
         "model": "railcraft:block/abandoned_track_raised_sw"
+      },
+      "when": {
+        "shape": "ascending_south"
       }
     },
     {
-      "when": {
-        "shape": "south_east"
-      },
       "apply": {
         "model": "railcraft:block/abandoned_track_corner"
+      },
+      "when": {
+        "shape": "south_east"
       }
     },
     {
-      "when": {
-        "shape": "south_west"
-      },
       "apply": {
         "model": "railcraft:block/abandoned_track_corner",
         "y": 90
+      },
+      "when": {
+        "shape": "south_west"
       }
     },
     {
-      "when": {
-        "shape": "north_west"
-      },
       "apply": {
         "model": "railcraft:block/abandoned_track_corner",
         "y": 180
+      },
+      "when": {
+        "shape": "north_west"
       }
     },
     {
-      "when": {
-        "shape": "north_east"
-      },
       "apply": {
         "model": "railcraft:block/abandoned_track_corner",
         "y": 270
+      },
+      "when": {
+        "shape": "north_east"
       }
     }
   ]

@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "railcraft:signal_capacitor_box",
     "railcraft:signal_receiver_box",

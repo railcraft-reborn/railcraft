@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "SBS",
-    "BSB",
-    "SBS"
-  ],
   "key": {
     "B": {
       "item": "minecraft:brick"
@@ -13,6 +8,11 @@
       "tag": "forge:sand"
     }
   },
+  "pattern": [
+    "SBS",
+    "BSB",
+    "SBS"
+  ],
   "result": {
     "item": "railcraft:coke_oven_bricks"
   }

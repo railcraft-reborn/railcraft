@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "top": "railcraft:block/coke_oven_bricks",
     "bottom": "railcraft:block/coke_oven_bricks",
-    "side": "railcraft:block/coke_oven_bricks_window_lit"
+    "side": "railcraft:block/coke_oven_bricks_window_lit",
+    "top": "railcraft:block/coke_oven_bricks"
   }
 }

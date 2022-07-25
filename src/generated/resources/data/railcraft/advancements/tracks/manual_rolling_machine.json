@@ -1,23 +1,7 @@
 {
   "parent": "railcraft:tracks/root",
-  "display": {
-    "icon": {
-      "item": "railcraft:manual_rolling_machine"
-    },
-    "title": {
-      "translate": "advancements.railcraft.tracks.manual_rolling_machine.name"
-    },
-    "description": {
-      "translate": "advancements.railcraft.tracks.manual_rolling_machine.desc"
-    },
-    "frame": "goal",
-    "show_toast": true,
-    "announce_to_chat": false,
-    "hidden": false
-  },
   "criteria": {
     "has_rolling_table": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -26,7 +10,23 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.railcraft.tracks.manual_rolling_machine.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "railcraft:manual_rolling_machine"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.railcraft.tracks.manual_rolling_machine.name"
     }
   },
   "requirements": [

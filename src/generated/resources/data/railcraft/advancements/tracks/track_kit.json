@@ -1,24 +1,24 @@
 {
   "parent": "railcraft:tracks/regular_track",
+  "criteria": {
+    "has_raw_firestone": {
+      "conditions": {},
+      "trigger": "railcraft:use_track_kit"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "railcraft:raw_firestone"
-    },
-    "title": {
-      "translate": "advancements.railcraft.tracks.track_kit.name"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancements.railcraft.tracks.track_kit.desc"
     },
     "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "railcraft:raw_firestone"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "has_raw_firestone": {
-      "trigger": "railcraft:use_track_kit",
-      "conditions": {}
+    "title": {
+      "translate": "advancements.railcraft.tracks.track_kit.name"
     }
   },
   "requirements": [

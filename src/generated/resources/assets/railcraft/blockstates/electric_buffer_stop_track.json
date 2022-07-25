@@ -1,59 +1,59 @@
 {
   "multipart": [
     {
-      "when": {
-        "shape": "north_south",
-        "reversed": "false"
-      },
       "apply": {
         "model": "railcraft:block/buffer_stop"
+      },
+      "when": {
+        "reversed": "false",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "north_south",
-        "reversed": "true"
-      },
       "apply": {
         "model": "railcraft:block/buffer_stop",
         "y": 180
+      },
+      "when": {
+        "reversed": "true",
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "reversed": "false"
-      },
       "apply": {
         "model": "railcraft:block/buffer_stop",
         "y": 90
+      },
+      "when": {
+        "reversed": "false",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "east_west",
-        "reversed": "true"
-      },
       "apply": {
         "model": "railcraft:block/buffer_stop",
         "y": 270
+      },
+      "when": {
+        "reversed": "true",
+        "shape": "east_west"
       }
     },
     {
-      "when": {
-        "shape": "north_south"
-      },
       "apply": {
         "model": "railcraft:block/electric_track_outfitted"
+      },
+      "when": {
+        "shape": "north_south"
       }
     },
     {
-      "when": {
-        "shape": "east_west"
-      },
       "apply": {
         "model": "railcraft:block/electric_track_outfitted",
         "y": 90
+      },
+      "when": {
+        "shape": "east_west"
       }
     }
   ]

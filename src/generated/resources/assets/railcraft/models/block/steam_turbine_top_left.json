@@ -1,12 +1,12 @@
 {
   "parent": "railcraft:block/template_mirrored_cube",
   "textures": {
-    "particle": "railcraft:block/steam_turbine_side",
-    "north": "railcraft:block/steam_turbine_side",
-    "south": "railcraft:block/steam_turbine_side",
+    "down": "railcraft:block/steam_turbine_side",
     "east": "railcraft:block/steam_turbine_top_left",
-    "west": "railcraft:block/steam_turbine_top_left",
+    "north": "railcraft:block/steam_turbine_side",
+    "particle": "railcraft:block/steam_turbine_side",
+    "south": "railcraft:block/steam_turbine_side",
     "up": "railcraft:block/steam_turbine_side",
-    "down": "railcraft:block/steam_turbine_side"
+    "west": "railcraft:block/steam_turbine_top_left"
   }
 }

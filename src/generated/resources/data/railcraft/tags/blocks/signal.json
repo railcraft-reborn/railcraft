@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "railcraft:block_signal",
     "railcraft:distant_signal",

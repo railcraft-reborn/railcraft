@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "railcraft:stone_railbed"
+    },
+    "I": {
+      "item": "railcraft:reinforced_rail"
+    }
+  },
   "pattern": [
     "I I",
     "IBI",
     "I I"
   ],
-  "key": {
-    "I": {
-      "item": "railcraft:reinforced_rail"
-    },
-    "B": {
-      "item": "railcraft:stone_railbed"
-    }
-  },
   "result": {
-    "item": "railcraft:reinforced_track",
-    "count": 32
+    "count": 32,
+    "item": "railcraft:reinforced_track"
   }
 }

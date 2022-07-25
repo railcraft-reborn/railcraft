@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "particle": "railcraft:block/yellow_iron_tank_wall_top",
-    "north": "railcraft:block/yellow_iron_tank_wall_side",
-    "south": "railcraft:block/yellow_iron_tank_wall_side",
+    "down": "railcraft:block/yellow_iron_tank_valve_top",
     "east": "railcraft:block/yellow_iron_tank_wall_side",
-    "west": "railcraft:block/yellow_iron_tank_wall_side",
+    "north": "railcraft:block/yellow_iron_tank_wall_side",
+    "particle": "railcraft:block/yellow_iron_tank_wall_top",
+    "south": "railcraft:block/yellow_iron_tank_wall_side",
     "up": "railcraft:block/yellow_iron_tank_valve_top",
-    "down": "railcraft:block/yellow_iron_tank_valve_top"
+    "west": "railcraft:block/yellow_iron_tank_wall_side"
   }
 }

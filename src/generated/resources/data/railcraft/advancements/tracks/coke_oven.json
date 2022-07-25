@@ -1,26 +1,26 @@
 {
   "parent": "railcraft:tracks/root",
+  "criteria": {
+    "has_coke_oven": {
+      "conditions": {
+        "type": "railcraft:coke_oven"
+      },
+      "trigger": "railcraft:multiblock_formed"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "railcraft:coke_oven_bricks"
-    },
-    "title": {
-      "translate": "advancements.railcraft.tracks.coke_oven.name"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancements.railcraft.tracks.coke_oven.desc"
     },
     "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "railcraft:coke_oven_bricks"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "has_coke_oven": {
-      "trigger": "railcraft:multiblock_formed",
-      "conditions": {
-        "type": "railcraft:coke_oven"
-      }
+    "title": {
+      "translate": "advancements.railcraft.tracks.coke_oven.name"
     }
   },
   "requirements": [

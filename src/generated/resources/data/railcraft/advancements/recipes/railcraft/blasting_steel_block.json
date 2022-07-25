@@ -1,14 +1,14 @@
 {
   "criteria": {
     "has_iron_block": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "forge:storage_blocks/iron"
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [

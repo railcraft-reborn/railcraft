@@ -1,13 +1,13 @@
 {
   "type": "railcraft:blasting",
+  "cookingTime": 10240,
+  "experience": 0.0,
   "ingredient": {
     "item": "minecraft:iron_chestplate"
   },
   "result": {
-    "item": "railcraft:steel_ingot",
-    "count": 8
+    "count": 8,
+    "item": "railcraft:steel_ingot"
   },
-  "experience": 0.0,
-  "cookingTime": 10240,
   "slagOutput": 8
 }

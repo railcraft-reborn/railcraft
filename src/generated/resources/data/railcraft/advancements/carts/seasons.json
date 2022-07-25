@@ -1,27 +1,27 @@
 {
   "parent": "railcraft:carts/root",
+  "criteria": {
+    "on_season_set": {
+      "conditions": {
+        "cart": {}
+      },
+      "trigger": "railcraft:set_season"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "railcraft:seasons_crowbar",
-      "nbt": "{Damage:0}"
-    },
-    "title": {
-      "translate": "advancements.railcraft.carts.seasons.name"
-    },
+    "announce_to_chat": false,
     "description": {
       "translate": "advancements.railcraft.carts.seasons.desc"
     },
     "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "railcraft:seasons_crowbar",
+      "nbt": "{Damage:0}"
+    },
     "show_toast": true,
-    "announce_to_chat": false,
-    "hidden": false
-  },
-  "criteria": {
-    "on_season_set": {
-      "trigger": "railcraft:set_season",
-      "conditions": {
-        "cart": {}
-      }
+    "title": {
+      "translate": "advancements.railcraft.carts.seasons.name"
     }
   },
   "requirements": [

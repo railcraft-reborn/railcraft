@@ -1,28 +1,28 @@
 {
   "parent": "railcraft:carts/root",
+  "criteria": {
+    "linked_carts": {
+      "conditions": {
+        "other": {},
+        "owned": {}
+      },
+      "trigger": "railcraft:cart_linking"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "railcraft:steel_crowbar",
-      "nbt": "{Damage:0}"
-    },
-    "title": {
-      "translate": "advancements.railcraft.carts.link_carts.name"
-    },
+    "announce_to_chat": false,
     "description": {
       "translate": "advancements.railcraft.carts.link_carts.desc"
     },
     "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "railcraft:steel_crowbar",
+      "nbt": "{Damage:0}"
+    },
     "show_toast": true,
-    "announce_to_chat": false,
-    "hidden": false
-  },
-  "criteria": {
-    "linked_carts": {
-      "trigger": "railcraft:cart_linking",
-      "conditions": {
-        "owned": {},
-        "other": {}
-      }
+    "title": {
+      "translate": "advancements.railcraft.carts.link_carts.name"
     }
   },
   "requirements": [

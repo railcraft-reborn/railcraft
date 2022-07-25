@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "top": "railcraft:block/advanced_item_unloader_top",
     "bottom": "railcraft:block/advanced_item_unloader_front",
-    "side": "railcraft:block/advanced_item_unloader_side"
+    "side": "railcraft:block/advanced_item_unloader_side",
+    "top": "railcraft:block/advanced_item_unloader_top"
   }
 }

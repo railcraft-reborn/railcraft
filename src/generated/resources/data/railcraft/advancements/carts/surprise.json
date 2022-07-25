@@ -1,26 +1,26 @@
 {
   "parent": "railcraft:carts/locomotive",
+  "criteria": {
+    "has_exploded_track": {
+      "conditions": {
+        "cart": {}
+      },
+      "trigger": "railcraft:surprise"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "minecraft:minecart"
-    },
-    "title": {
-      "translate": "advancements.railcraft.carts.surprise.name"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancements.railcraft.carts.surprise.desc"
     },
     "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:minecart"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "has_exploded_track": {
-      "trigger": "railcraft:surprise",
-      "conditions": {
-        "cart": {}
-      }
+    "title": {
+      "translate": "advancements.railcraft.carts.surprise.name"
     }
   },
   "requirements": [
