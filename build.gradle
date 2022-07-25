@@ -150,6 +150,10 @@ repositories {
         name 'sponge'
         url 'https://repo.spongepowered.org/repository/maven-public'
     }
+    maven {
+        name 'JEI'
+        url 'https://dvs1.progwml6.com/files/maven'
+    }
 }
 
 configurations {
@@ -158,6 +162,7 @@ configurations {
 
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.minecraft_version}-${project.forge_version}"
+    runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
     implementation group: 'org.spongepowered', name: 'mixin', version: "${project.mixin_version}"
     annotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
     testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
