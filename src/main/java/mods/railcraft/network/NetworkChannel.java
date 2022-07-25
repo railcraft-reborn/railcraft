@@ -131,7 +131,7 @@ public enum NetworkChannel {
    */
   private final SimpleChannel simpleChannel;
 
-  private NetworkChannel(ResourceLocation channelName) {
+  NetworkChannel(ResourceLocation channelName) {
     this.simpleChannel = NetworkRegistry.ChannelBuilder
         .named(channelName)
         .clientAcceptedVersions(NETWORK_VERSION::equals)

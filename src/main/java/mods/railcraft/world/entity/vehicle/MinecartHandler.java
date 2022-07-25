@@ -256,9 +256,6 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         return true;
       }
     }
-    if (!player.hasLineOfSight(cart)) {
-      return true;
-    }
-    return false;
+    return !player.hasLineOfSight(cart);
   }
 }
