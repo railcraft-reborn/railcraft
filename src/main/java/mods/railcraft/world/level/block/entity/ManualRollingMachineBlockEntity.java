@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
-import mods.railcraft.client.Translations;
+import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

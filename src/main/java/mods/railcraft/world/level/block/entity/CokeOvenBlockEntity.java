@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import it.unimi.dsi.fastutil.chars.CharList;
-import mods.railcraft.client.Translations;
+import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;

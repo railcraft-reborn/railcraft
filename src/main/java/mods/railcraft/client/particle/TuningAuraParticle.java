@@ -1,6 +1,6 @@
 package mods.railcraft.client.particle;
 
-import mods.railcraft.client.ClientEffects;
+import mods.railcraft.api.signal.SignalTools;
 import mods.railcraft.particle.TuningAuraParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -56,7 +56,7 @@ public class TuningAuraParticle extends DimmableParticle {
    */
   @Override
   public void tick() {
-    if (!ClientEffects.INSTANCE.isTuningAuraActive()) {
+    if (!SignalTools.tuningAuraProvider().isTuningAuraActive()) {
       this.remove();
       return;
     }

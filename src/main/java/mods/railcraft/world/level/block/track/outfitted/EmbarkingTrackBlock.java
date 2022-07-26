@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.client.Screen;
+import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.util.AABBFactory;
 import mods.railcraft.util.HostEffects;
 import mods.railcraft.world.entity.vehicle.CartTools;
@@ -67,7 +67,7 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos blockPos,
       Player player, InteractionHand hand, ItemStack itemStack) {
     if (level.isClientSide()) {
-      Screen.openEmbarkingTrackScreen(blockState, blockPos);
+      ScreenFactories.openEmbarkingTrackScreen(blockState, blockPos);
     }
     return true;
   }

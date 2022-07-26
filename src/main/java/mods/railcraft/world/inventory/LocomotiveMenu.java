@@ -1,6 +1,6 @@
 package mods.railcraft.world.inventory;
 
-import mods.railcraft.client.Translations;
+import mods.railcraft.Translations;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.item.TicketItem;

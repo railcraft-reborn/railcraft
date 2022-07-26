@@ -9,12 +9,10 @@ package mods.railcraft.api.charge;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
-
-import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.ApiStatus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;

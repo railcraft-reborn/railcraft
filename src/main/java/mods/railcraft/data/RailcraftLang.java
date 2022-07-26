@@ -3,8 +3,8 @@ package mods.railcraft.data;
 import java.util.HashMap;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.client.Translations;
-import mods.railcraft.util.ColorMap;
+import mods.railcraft.Translations;
+import mods.railcraft.util.ColorVariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -360,7 +360,7 @@ public class RailcraftLang extends LanguageProvider {
     add(RailcraftBlocks.ELEVATOR_TRACK.get(), "Elevator Track");
   }
 
-  private <T extends Block> void colorBlock(ColorMap<T> blocks, String name) {
+  private <T extends Block> void colorBlock(ColorVariantRegistrar<T> blocks, String name) {
     blocks.forEach((color, block) -> {
       add(block.get(), colorTranslations.get(color) + " " + name);
     });

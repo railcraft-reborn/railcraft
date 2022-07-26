@@ -233,19 +233,19 @@ public class RailcraftBlockModelGenerators {
     this.createFeedStation();
 
     for (DyeColor dyeColor : DyeColor.values()) {
-      this.createStrengthenedGlass(RailcraftBlocks.STRENGTHENED_GLASS.get(dyeColor).get());
-      this.createStrengthenedGlass(RailcraftBlocks.IRON_TANK_GAUGE.get(dyeColor).get());
-      this.createStrengthenedGlass(RailcraftBlocks.STEEL_TANK_GAUGE.get(dyeColor).get());
+      this.createStrengthenedGlass(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
+      this.createStrengthenedGlass(RailcraftBlocks.IRON_TANK_GAUGE.variantFor(dyeColor).get());
+      this.createStrengthenedGlass(RailcraftBlocks.STEEL_TANK_GAUGE.variantFor(dyeColor).get());
 
-      this.createTankValve(RailcraftBlocks.IRON_TANK_VALVE.get(dyeColor).get(),
-        RailcraftBlocks.IRON_TANK_WALL.get(dyeColor).get());
-      this.createTankValve(RailcraftBlocks.STEEL_TANK_VALVE.get(dyeColor).get(),
-        RailcraftBlocks.STEEL_TANK_WALL.get(dyeColor).get());
+      this.createTankValve(RailcraftBlocks.IRON_TANK_VALVE.variantFor(dyeColor).get(),
+        RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
+      this.createTankValve(RailcraftBlocks.STEEL_TANK_VALVE.variantFor(dyeColor).get(),
+        RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
 
-      this.createTankWall(RailcraftBlocks.IRON_TANK_WALL.get(dyeColor).get());
-      this.createTankWall(RailcraftBlocks.STEEL_TANK_WALL.get(dyeColor).get());
+      this.createTankWall(RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
+      this.createTankWall(RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
 
-      this.createPost(RailcraftBlocks.POST.get(dyeColor).get());
+      this.createPost(RailcraftBlocks.POST.variantFor(dyeColor).get());
     }
 
     this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());

@@ -1,10 +1,10 @@
 package mods.railcraft.world.item;
 
 import com.mojang.authlib.GameProfile;
+import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;
-import mods.railcraft.client.Translations;
 import mods.railcraft.client.emblem.Emblem;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.util.PlayerUtil;

@@ -1,8 +1,8 @@
 package mods.railcraft.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import mods.railcraft.Translations;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.client.Translations;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;

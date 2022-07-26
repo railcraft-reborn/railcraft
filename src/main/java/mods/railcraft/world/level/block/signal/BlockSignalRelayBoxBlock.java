@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.signal;
 
 import javax.annotation.Nullable;
 
-import mods.railcraft.client.Screen;
+import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,7 @@ public class BlockSignalRelayBoxBlock extends SignalBoxBlock implements EntityBl
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.BLOCK_SIGNAL_RELAY_BOX.get())
-          .ifPresent(Screen::openActionSignalBoxScreen);
+          .ifPresent(ScreenFactories::openActionSignalBoxScreen);
       return InteractionResult.SUCCESS;
     }
     return InteractionResult.CONSUME;

@@ -17,13 +17,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class Screen {
+public class ScreenFactories {
+
   public static void openSignalControllerBoxScreen(SignalControllerBoxBlockEntity signalBox) {
     Minecraft.getInstance().setScreen(new SignalControllerBoxScreen(signalBox));
   }
 
   public static void openAnalogSignalControllerBoxScreen(
-    AnalogSignalControllerBoxBlockEntity signalBox) {
+      AnalogSignalControllerBoxBlockEntity signalBox) {
     Minecraft.getInstance().setScreen(new AnalogSignalControllerBoxScreen(signalBox));
   }
 

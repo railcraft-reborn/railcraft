@@ -1,9 +1,9 @@
 package mods.railcraft.world.level.block.entity;
 
 import it.unimi.dsi.fastutil.chars.CharList;
+import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
-import mods.railcraft.client.Translations;
 import mods.railcraft.util.EnergyUtil;
 import mods.railcraft.world.inventory.SteamTurbineMenu;
 import mods.railcraft.world.level.block.RailcraftBlocks;

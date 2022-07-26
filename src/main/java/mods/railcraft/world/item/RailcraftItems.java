@@ -1,10 +1,9 @@
 package mods.railcraft.world.item;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Function;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.ColorMap;
+import mods.railcraft.util.ColorVariantRegistrar;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
@@ -31,6 +30,7 @@ import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -64,36 +64,43 @@ public class RailcraftItems {
       };
 
   public static final CreativeModeTab DECORATIVE_TAB =
-    new CreativeModeTab(Railcraft.ID + "_decorative_blocks") {
-      @Override
-      public ItemStack makeIcon() {
-        return new ItemStack(STRENGTHENED_GLASS.get(DyeColor.BLACK).get());
-      }
-    };
+      new CreativeModeTab(Railcraft.ID + "_decorative_blocks") {
+        @Override
+        public ItemStack makeIcon() {
+          return new ItemStack(STRENGTHENED_GLASS.variantFor(DyeColor.BLACK).get());
+        }
+      };
 
-  private static final List<Runnable> LATE_REGISTRATION = new ArrayList<>();
-  public static final ColorMap<BlockItem> STRENGTHENED_GLASS = new ColorMap<>(deferredRegister, LATE_REGISTRATION);
-  public static final ColorMap<BlockItem> POST = new ColorMap<>(deferredRegister, LATE_REGISTRATION);
-  public static final ColorMap<BlockItem> IRON_TANK_GAUGE = new ColorMap<>(deferredRegister, LATE_REGISTRATION);
-  public static final ColorMap<BlockItem> IRON_TANK_VALVE = new ColorMap<>(deferredRegister, LATE_REGISTRATION);
-  public static final ColorMap<BlockItem> IRON_TANK_WALL = new ColorMap<>(deferredRegister, LATE_REGISTRATION);
-  public static final ColorMap<BlockItem> STEEL_TANK_GAUGE = new ColorMap<>(deferredRegister, LATE_REGISTRATION);
-  public static final ColorMap<BlockItem> STEEL_TANK_VALVE = new ColorMap<>(deferredRegister, LATE_REGISTRATION);
-  public static final ColorMap<BlockItem> STEEL_TANK_WALL = new ColorMap<>(deferredRegister, LATE_REGISTRATION);
+  public static final ColorVariantRegistrar<BlockItem> STRENGTHENED_GLASS =
+      new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<BlockItem> POST =
+      new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<BlockItem> IRON_TANK_GAUGE =
+      new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<BlockItem> IRON_TANK_VALVE =
+      new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<BlockItem> IRON_TANK_WALL =
+      new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<BlockItem> STEEL_TANK_GAUGE =
+      new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<BlockItem> STEEL_TANK_VALVE =
+      new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<BlockItem> STEEL_TANK_WALL =
+      new ColorVariantRegistrar<>(deferredRegister);
 
   static {
-    STRENGTHENED_GLASS.registerItemsFromBlocks(RailcraftBlocks.STRENGTHENED_GLASS, DECORATIVE_TAB);
-    POST.registerItemsFromBlocks(RailcraftBlocks.POST, DECORATIVE_TAB);
+    var decorativeTabFactory = blockItemFactory(DECORATIVE_TAB);
+    STRENGTHENED_GLASS.registerUsing(RailcraftBlocks.STRENGTHENED_GLASS, decorativeTabFactory);
+    POST.registerUsing(RailcraftBlocks.POST, decorativeTabFactory);
 
-    IRON_TANK_GAUGE.registerItemsFromBlocks(RailcraftBlocks.IRON_TANK_GAUGE, TAB);
-    IRON_TANK_VALVE.registerItemsFromBlocks(RailcraftBlocks.IRON_TANK_VALVE, TAB);
-    IRON_TANK_WALL.registerItemsFromBlocks(RailcraftBlocks.IRON_TANK_WALL, TAB);
+    var tabFactory = blockItemFactory(TAB);
+    IRON_TANK_GAUGE.registerUsing(RailcraftBlocks.IRON_TANK_GAUGE, tabFactory);
+    IRON_TANK_VALVE.registerUsing(RailcraftBlocks.IRON_TANK_VALVE, tabFactory);
+    IRON_TANK_WALL.registerUsing(RailcraftBlocks.IRON_TANK_WALL, tabFactory);
 
-    STEEL_TANK_GAUGE.registerItemsFromBlocks(RailcraftBlocks.STEEL_TANK_GAUGE, TAB);
-    STEEL_TANK_VALVE.registerItemsFromBlocks(RailcraftBlocks.STEEL_TANK_VALVE, TAB);
-    STEEL_TANK_WALL.registerItemsFromBlocks(RailcraftBlocks.STEEL_TANK_WALL, TAB);
-
-    LATE_REGISTRATION.forEach(Runnable::run);
+    STEEL_TANK_GAUGE.registerUsing(RailcraftBlocks.STEEL_TANK_GAUGE, tabFactory);
+    STEEL_TANK_VALVE.registerUsing(RailcraftBlocks.STEEL_TANK_VALVE, tabFactory);
+    STEEL_TANK_WALL.registerUsing(RailcraftBlocks.STEEL_TANK_WALL, tabFactory);
   }
 
   public static final RegistryObject<Item> LOW_PRESSURE_STEAM_BOILER_TANK =
@@ -1233,4 +1240,10 @@ public class RailcraftItems {
   public static final RegistryObject<Item> CREOSOTE_BUCKET =
       deferredRegister.register("creosote_bucket",
           () -> new BucketItem(RailcraftFluids.CREOSOTE, new Item.Properties().tab(TAB)));
+
+
+  private static <B extends Block> Function<Block, BlockItem> blockItemFactory(
+      CreativeModeTab tab) {
+    return block -> new BlockItem(block, new Item.Properties().tab(tab));
+  }
 }

@@ -31,15 +31,15 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.FEED_STATION.get());
 
     for (DyeColor dyeColor : DyeColor.values()) {
-      this.dropSelf(RailcraftBlocks.STRENGTHENED_GLASS.get(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.POST.get(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.POST.variantFor(dyeColor).get());
 
-      this.dropSelf(RailcraftBlocks.IRON_TANK_GAUGE.get(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.IRON_TANK_VALVE.get(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.IRON_TANK_WALL.get(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.STEEL_TANK_GAUGE.get(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.STEEL_TANK_VALVE.get(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.STEEL_TANK_WALL.get(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.IRON_TANK_GAUGE.variantFor(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.IRON_TANK_VALVE.variantFor(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.STEEL_TANK_GAUGE.variantFor(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.STEEL_TANK_VALVE.variantFor(dyeColor).get());
+      this.dropSelf(RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
     }
 
     /* === tracks === */

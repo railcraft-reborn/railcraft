@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
-import mods.railcraft.client.Translations;
+import mods.railcraft.Translations;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.network.NetworkChannel;

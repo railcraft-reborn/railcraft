@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
-import mods.railcraft.client.Translations;
+import mods.railcraft.Translations;
 import mods.railcraft.client.gui.screen.inventory.widget.AnalogGaugeRenderer;
 import mods.railcraft.world.inventory.SteamTurbineMenu;
 import net.minecraft.network.chat.Component;

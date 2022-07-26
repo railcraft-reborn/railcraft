@@ -1,4 +1,4 @@
-package mods.railcraft.setup;
+package mods.railcraft.client;
 
 import java.util.function.Supplier;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -10,13 +10,13 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 class RenderLayers {
 
   static void register() {
-    //TODO: Set these values from JSON
+    // TODO: Set these values from JSON
     ItemBlockRenderTypes.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
 
-    for (DyeColor dyeColor : DyeColor.values()) {
-      cutout(RailcraftBlocks.STRENGTHENED_GLASS.get(dyeColor));
-      cutout(RailcraftBlocks.IRON_TANK_GAUGE.get(dyeColor));
-      cutout(RailcraftBlocks.STEEL_TANK_GAUGE.get(dyeColor));
+    for (var dyeColor : DyeColor.values()) {
+      cutout(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor));
+      cutout(RailcraftBlocks.IRON_TANK_GAUGE.variantFor(dyeColor));
+      cutout(RailcraftBlocks.STEEL_TANK_GAUGE.variantFor(dyeColor));
     }
 
     cutout(RailcraftBlocks.FLUID_LOADER);

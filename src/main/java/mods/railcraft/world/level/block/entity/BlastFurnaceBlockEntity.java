@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import it.unimi.dsi.fastutil.chars.CharList;
-import mods.railcraft.client.Translations;
+import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;

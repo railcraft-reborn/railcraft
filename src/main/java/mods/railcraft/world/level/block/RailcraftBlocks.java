@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.Collection;
 import java.util.function.ToIntFunction;
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.ColorMap;
+import mods.railcraft.util.ColorVariantRegistrar;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemUnloaderBlock;
 import mods.railcraft.world.level.block.manipulator.FluidLoaderBlock;
@@ -93,26 +93,26 @@ public class RailcraftBlocks {
     return deferredRegister.getEntries();
   }
 
-  public static final ColorMap<StrengthenedGlassBlock> STRENGTHENED_GLASS = new ColorMap<>(deferredRegister);
-  public static final ColorMap<IronTankGaugeBlock> IRON_TANK_GAUGE = new ColorMap<>(deferredRegister);
-  public static final ColorMap<IronTankValveBlock> IRON_TANK_VALVE = new ColorMap<>(deferredRegister);
-  public static final ColorMap<IronTankWallBlock> IRON_TANK_WALL = new ColorMap<>(deferredRegister);
-  public static final ColorMap<SteelTankGaugeBlock> STEEL_TANK_GAUGE = new ColorMap<>(deferredRegister);
-  public static final ColorMap<SteelTankValveBlock> STEEL_TANK_VALVE = new ColorMap<>(deferredRegister);
-  public static final ColorMap<SteelTankWallBlock> STEEL_TANK_WALL = new ColorMap<>(deferredRegister);
-  public static final ColorMap<PostBlock> POST = new ColorMap<>(deferredRegister);
+  public static final ColorVariantRegistrar<StrengthenedGlassBlock> STRENGTHENED_GLASS = new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<IronTankGaugeBlock> IRON_TANK_GAUGE = new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<IronTankValveBlock> IRON_TANK_VALVE = new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<IronTankWallBlock> IRON_TANK_WALL = new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<SteelTankGaugeBlock> STEEL_TANK_GAUGE = new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<SteelTankValveBlock> STEEL_TANK_VALVE = new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<SteelTankWallBlock> STEEL_TANK_WALL = new ColorVariantRegistrar<>(deferredRegister);
+  public static final ColorVariantRegistrar<PostBlock> POST = new ColorVariantRegistrar<>(deferredRegister);
 
   static {
-    STRENGTHENED_GLASS.registerBlocks("strengthened_glass", RailcraftBlocks::buildStrengthenedGlass);
-    IRON_TANK_GAUGE.registerBlocks("iron_tank_gauge", RailcraftBlocks::buildIronTankGauge);
-    IRON_TANK_VALVE.registerBlocks("iron_tank_valve", RailcraftBlocks::buildIronTankValve);
-    IRON_TANK_WALL.registerBlocks("iron_tank_wall", RailcraftBlocks::buildIronTankWall);
+    STRENGTHENED_GLASS.register("strengthened_glass", RailcraftBlocks::buildStrengthenedGlass);
+    IRON_TANK_GAUGE.register("iron_tank_gauge", RailcraftBlocks::buildIronTankGauge);
+    IRON_TANK_VALVE.register("iron_tank_valve", RailcraftBlocks::buildIronTankValve);
+    IRON_TANK_WALL.register("iron_tank_wall", RailcraftBlocks::buildIronTankWall);
 
-    STEEL_TANK_GAUGE.registerBlocks("steel_tank_gauge", RailcraftBlocks::buildSteelTankGauge);
-    STEEL_TANK_VALVE.registerBlocks("steel_tank_valve", RailcraftBlocks::buildSteelTankValve);
-    STEEL_TANK_WALL.registerBlocks("steel_tank_wall", RailcraftBlocks::buildSteelTankWall);
+    STEEL_TANK_GAUGE.register("steel_tank_gauge", RailcraftBlocks::buildSteelTankGauge);
+    STEEL_TANK_VALVE.register("steel_tank_valve", RailcraftBlocks::buildSteelTankValve);
+    STEEL_TANK_WALL.register("steel_tank_wall", RailcraftBlocks::buildSteelTankWall);
 
-    POST.registerBlocks("post", RailcraftBlocks::buildPost);
+    POST.register("post", RailcraftBlocks::buildPost);
   }
 
   private static StrengthenedGlassBlock buildStrengthenedGlass() {

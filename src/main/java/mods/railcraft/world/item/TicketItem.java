@@ -1,8 +1,8 @@
 package mods.railcraft.world.item;
 
 import com.mojang.authlib.GameProfile;
+import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.client.Translations;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.ChatFormatting;

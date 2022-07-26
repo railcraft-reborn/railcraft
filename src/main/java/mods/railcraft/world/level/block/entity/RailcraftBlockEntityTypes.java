@@ -1,8 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.Collection;
+import java.util.stream.Stream;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
@@ -52,31 +51,22 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<BlockEntityType<IronTankBlockEntity>> IRON_TANK =
       deferredRegister.register("iron_tank",
           () -> BlockEntityType.Builder
-            .of(IronTankBlockEntity::new,
-                join(
-                  RailcraftBlocks.IRON_TANK_GAUGE.getBlocks(),
-                  RailcraftBlocks.IRON_TANK_VALVE.getBlocks(),
-                  RailcraftBlocks.IRON_TANK_WALL.getBlocks()))
+              .of(IronTankBlockEntity::new,
+                  toArray(
+                      RailcraftBlocks.IRON_TANK_GAUGE.registryObjects(),
+                      RailcraftBlocks.IRON_TANK_VALVE.registryObjects(),
+                      RailcraftBlocks.IRON_TANK_WALL.registryObjects()))
               .build(null));
 
   public static final RegistryObject<BlockEntityType<SteelTankBlockEntity>> STEEL_TANK =
       deferredRegister.register("steel_tank",
           () -> BlockEntityType.Builder
               .of(SteelTankBlockEntity::new,
-                  join(
-                    RailcraftBlocks.STEEL_TANK_GAUGE.getBlocks(),
-                    RailcraftBlocks.STEEL_TANK_VALVE.getBlocks(),
-                    RailcraftBlocks.STEEL_TANK_WALL.getBlocks()))
+                  toArray(
+                      RailcraftBlocks.STEEL_TANK_GAUGE.registryObjects(),
+                      RailcraftBlocks.STEEL_TANK_VALVE.registryObjects(),
+                      RailcraftBlocks.STEEL_TANK_WALL.registryObjects()))
               .build(null));
-
-  //TODO: It can probably be done another way
-  private static<T extends Block> Block[] join(T[]... lists) {
-    List<Block> results = new ArrayList<>();
-    for (var item : lists) {
-      results.addAll(List.of(item));
-    }
-    return results.toArray(Block[]::new);
-  }
 
   public static final RegistryObject<BlockEntityType<SteamBoilerBlockEntity>> STEAM_BOILER =
       deferredRegister.register("steam_boiler",
@@ -320,4 +310,13 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
                   RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get())
               .build(null));
+
+  @SafeVarargs
+  private static Block[] toArray(
+      Collection<? extends RegistryObject<? extends Block>>... collections) {
+    return Stream.of(collections)
+        .flatMap(Collection::stream)
+        .map(RegistryObject::get)
+        .toArray(Block[]::new);
+  }
 }

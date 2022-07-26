@@ -1,10 +1,8 @@
-package mods.railcraft.setup;
+package mods.railcraft.client;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalTools;
-import mods.railcraft.client.ClientEffects;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
@@ -48,91 +46,122 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.GrassColor;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod.EventBusSubscriber(modid = Railcraft.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ClientSetup {
+public class ClientManager {
 
-  public static void init(FMLClientSetupEvent event) {
+  private static ClientManager instance;
+
+  private final Minecraft minecraft;
+
+  private final ShuntingAuraRenderer shuntingAuraRenderer;
+
+  public ClientManager() {
+    instance = this;
+
+    SignalTools._setTuningAuraProvider(ClientEffects.INSTANCE);
+    Charge._setZapEffectProvider(ClientEffects.INSTANCE);
+
+    var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    modEventBus.addListener(this::handleClientSetup);
+    modEventBus.addListener(this::handleItemColors);
+    modEventBus.addListener(this::handleBlockColors);
+    modEventBus.addListener(this::handleTextureStitch);
+    modEventBus.addListener(this::handleParticleRegistration);
+    modEventBus.addListener(this::handleRegisterRenderers);
+    modEventBus.addListener(this::handleRegisterLayerDefinitions);
+
+    MinecraftForge.EVENT_BUS.register(this);
+
+    this.minecraft = Minecraft.getInstance();
+    this.shuntingAuraRenderer = new ShuntingAuraRenderer();
+  }
+
+  public ShuntingAuraRenderer getShuntingAuraRenderer() {
+    return this.shuntingAuraRenderer;
+  }
+
+  // ================================================================================
+  // Mod Events
+  // ================================================================================
+
+  private void handleClientSetup(FMLClientSetupEvent event) {
     RenderLayers.register();
 
     // === Menu Screens ===
 
     MenuScreens.register(RailcraftMenuTypes.SOLID_FUELED_STEAM_BOILER.get(),
-      SolidFueledSteamBoilerScreen::new);
+        SolidFueledSteamBoilerScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FLUID_FUELED_STEAM_BOILER.get(),
-      FluidFueledSteamBoilerScreen::new);
+        FluidFueledSteamBoilerScreen::new);
     MenuScreens.register(RailcraftMenuTypes.STEAM_TURBINE.get(),
-      SteamTurbineScreen::new);
+        SteamTurbineScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK.get(),
-      TankScreen::new);
+        TankScreen::new);
     MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(),
-      BlastFurnaceScreen::new);
+        BlastFurnaceScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FEED_STATION.get(),
-      FeedStationScreen::new);
+        FeedStationScreen::new);
     MenuScreens.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
-      CreativeLocomotiveScreen::new);
+        CreativeLocomotiveScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
-      ElectricLocomotiveScreen::new);
+        ElectricLocomotiveScreen::new);
     MenuScreens.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(),
-      SteamLocomotiveScreen::new);
+        SteamLocomotiveScreen::new);
     MenuScreens.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
-      ManualRollingMachineScreen::new);
+        ManualRollingMachineScreen::new);
     MenuScreens.register(RailcraftMenuTypes.COKE_OVEN.get(),
-      CokeOvenScreen::new);
+        CokeOvenScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(),
-      ItemManipulatorScreen::new);
+        ItemManipulatorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(),
-      FluidManipulatorScreen::new);
+        FluidManipulatorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(),
-      TankMinecartScreen::new);
+        TankMinecartScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
   }
 
-  @SubscribeEvent
-  public static void handleItemColors(RegisterColorHandlersEvent.Item event) {
+  private void handleItemColors(RegisterColorHandlersEvent.Item event) {
     event.register(
-      (stack, tintIndex) -> switch (tintIndex) {
-        case 0 -> LocomotiveItem.getPrimaryColor(stack).getMaterialColor().col;
-        case 1 -> LocomotiveItem.getSecondaryColor(stack).getMaterialColor().col;
-        default -> 0xFFFFFFFF;
-      },
-      RailcraftItems.CREATIVE_LOCOMOTIVE.get(),
-      RailcraftItems.STEAM_LOCOMOTIVE.get(),
-      RailcraftItems.ELECTRIC_LOCOMOTIVE.get());
+        (stack, tintIndex) -> switch (tintIndex) {
+          case 0 -> LocomotiveItem.getPrimaryColor(stack).getMaterialColor().col;
+          case 1 -> LocomotiveItem.getSecondaryColor(stack).getMaterialColor().col;
+          default -> 0xFFFFFFFF;
+        },
+        RailcraftItems.CREATIVE_LOCOMOTIVE.get(),
+        RailcraftItems.STEAM_LOCOMOTIVE.get(),
+        RailcraftItems.ELECTRIC_LOCOMOTIVE.get());
   }
 
-  @SubscribeEvent
-  public static void handleBlockColors(RegisterColorHandlersEvent.Block event) {
+  private void handleBlockColors(RegisterColorHandlersEvent.Block event) {
     event.register(
-      (state, worldIn, pos,
-       tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR).getMaterialColor().col,
-      RailcraftBlocks.FORCE_TRACK_EMITTER.get());
+        (state, level, pos,
+            tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR).getMaterialColor().col,
+        RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
     event.register(
-      (state, worldIn, pos,
-       tintIndex) -> state.getValue(ForceTrackBlock.COLOR).getMaterialColor().col,
-      RailcraftBlocks.FORCE_TRACK.get());
+        (state, level, pos,
+            tintIndex) -> state.getValue(ForceTrackBlock.COLOR).getMaterialColor().col,
+        RailcraftBlocks.FORCE_TRACK.get());
 
     event.register(
-      (state, level, pos, tintIndex) -> level != null && pos != null
-        ? BiomeColors.getAverageGrassColor(level, pos)
-        : GrassColor.get(0.5D, 1.0D),
-      RailcraftBlocks.ABANDONED_TRACK.get());
+        (state, level, pos, tintIndex) -> level != null && pos != null
+            ? BiomeColors.getAverageGrassColor(level, pos)
+            : GrassColor.get(0.5D, 1.0D),
+        RailcraftBlocks.ABANDONED_TRACK.get());
   }
 
-  @SubscribeEvent
-  public static void handleTextureStitch(TextureStitchEvent.Pre event) {
+  private void handleTextureStitch(TextureStitchEvent.Pre event) {
     if (event.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS)) {
       AbstractSignalRenderer.ASPECT_TEXTURE_LOCATIONS.values().forEach(event::addSprite);
       AbstractSignalBoxRenderer.ASPECT_TEXTURE_LOCATIONS.values().forEach(event::addSprite);
@@ -149,48 +178,49 @@ public class ClientSetup {
     }
   }
 
-  @SubscribeEvent
-  public static void handleParticleRegistration(RegisterParticleProvidersEvent event) {
+  private void handleParticleRegistration(RegisterParticleProvidersEvent event) {
     event.register(RailcraftParticleTypes.STEAM.get(), SteamParticle.Provider::new);
     event.register(RailcraftParticleTypes.SPARK.get(), SparkParticle.Provider::new);
     event.register(RailcraftParticleTypes.PUMPKIN.get(), PumpkinParticle.Provider::new);
     event.register(RailcraftParticleTypes.TUNING_AURA.get(), TuningAuraParticle.Provider::new);
   }
 
-  @SubscribeEvent
-  public static void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+  private void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
     RailcraftEntityRenderers.register(event);
     RailcraftBlockEntityRenderers.register(event);
   }
-  @SubscribeEvent
-  public static void handleRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+
+  private void handleRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
     RailcraftLayerDefinitions.createRoots(event::registerLayerDefinition);
   }
 
-  // Forge EventBus
-  public static void handleClientTick(TickEvent.ClientTickEvent event) {
+  // ================================================================================
+  // Forge Events
+  // ================================================================================
+
+  @SubscribeEvent
+  public void handleClientTick(TickEvent.ClientTickEvent event) {
     if (event.phase == TickEvent.Phase.START
-      && (Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused())) {
+        && (this.minecraft.level != null && !this.minecraft.isPaused())) {
       SignalAspect.tickBlinkState();
     }
   }
 
-  private static ShuntingAuraRenderer SHUNTING_AURA_RENDERER;
-  static {
-    SHUNTING_AURA_RENDERER = new ShuntingAuraRenderer();
-    SignalTools._setTuningAuraProvider(ClientEffects.INSTANCE);
-    Charge._setZapEffectProvider(ClientEffects.INSTANCE);
+  @SubscribeEvent
+  public void handleRenderWorldLast(RenderLevelStageEvent event) {
+    this.shuntingAuraRenderer.render(event.getPartialTick(), event.getPoseStack());
   }
 
-  public static ShuntingAuraRenderer getShuntingAuraRenderer() {
-    return SHUNTING_AURA_RENDERER;
+  @SubscribeEvent
+  public void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
+    this.shuntingAuraRenderer.clearCarts();
   }
 
-  public static void handleRenderWorldLast(RenderLevelStageEvent event) {
-    SHUNTING_AURA_RENDERER.render(event.getPartialTick(), event.getPoseStack());
-  }
+  // ================================================================================
+  // Static Methods
+  // ================================================================================
 
-  public static void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
-    SHUNTING_AURA_RENDERER.clearCarts();
+  public static ClientManager instance() {
+    return instance;
   }
 }

@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity.steamboiler;
 
-import mods.railcraft.client.Translations;
+import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.SolidFueledSteamBoilerMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.module.SolidFueledSteamBoilerModule;

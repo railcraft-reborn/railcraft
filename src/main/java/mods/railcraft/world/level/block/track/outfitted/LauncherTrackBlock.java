@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.client.Screen;
+import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -32,7 +32,7 @@ public class LauncherTrackBlock extends PoweredOutfittedTrackBlock implements En
       Player player, InteractionHand hand, ItemStack itemStack) {
     if (level.isClientSide()) {
       level.getBlockEntity(blockPos, RailcraftBlockEntityTypes.LAUNCHER_TRACK.get())
-          .ifPresent(Screen::openLauncherTrackScreen);
+          .ifPresent(ScreenFactories::openLauncherTrackScreen);
     }
     return true;
   }
