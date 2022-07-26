@@ -224,6 +224,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftTags.Items.BRASS_NUGGET, "ingot");
     this.compress(consumer, RailcraftItems.BRONZE_INGOT.get(),
         RailcraftTags.Items.BRONZE_NUGGET, "ingot");
+    this.compress(consumer, RailcraftItems.NICKEL_INGOT.get(),
+      RailcraftTags.Items.NICKEL_NUGGET, "ingot");
+    this.compress(consumer, RailcraftItems.INVAR_INGOT.get(),
+      RailcraftTags.Items.INVAR_NUGGET, "ingot");
 
     this.compress(consumer, RailcraftItems.STEEL_BLOCK.get(),
         RailcraftTags.Items.STEEL_INGOT, "block");
@@ -239,6 +243,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftTags.Items.BRASS_INGOT, "nugget");
     this.decompress(consumer, RailcraftItems.BRONZE_NUGGET.get(),
         RailcraftTags.Items.BRONZE_INGOT, "nugget");
+    this.decompress(consumer, RailcraftItems.NICKEL_NUGGET.get(),
+      RailcraftTags.Items.NICKEL_INGOT, "nugget");
+    this.decompress(consumer, RailcraftItems.INVAR_NUGGET.get(),
+      RailcraftTags.Items.INVAR_INGOT, "nugget");
 
     this.decompress(consumer, RailcraftItems.STEEL_INGOT.get(),
         RailcraftTags.Items.STEEL_BLOCK, "block_ingot");
@@ -364,24 +372,24 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             new ResourceLocation(Railcraft.ID, ForgeRegistries.ITEMS.getKey(itemOut).getPath()));
   }
 
-  private void compress(Consumer<FinishedRecipe> finishedRecipie,
+  private void compress(Consumer<FinishedRecipe> finishedRecipe,
                         Item itemOut, TagKey<Item> materialTag, String identifier) {
     ShapedRecipeBuilder.shaped(itemOut)
+        .pattern("###")
+        .pattern("###")
+        .pattern("###")
         .define('#', materialTag)
-        .pattern("###")
-        .pattern("###")
-        .pattern("###")
-        .unlockedBy("has_required_compression_material", has(materialTag))
-        .save(finishedRecipie, new ResourceLocation(Railcraft.ID,
+        .unlockedBy("has_material", has(materialTag))
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
             RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
   }
 
-  private void decompress(Consumer<FinishedRecipe> finishedRecipie,
+  private void decompress(Consumer<FinishedRecipe> finishedRecipe,
                           Item itemOut, TagKey<Item> materialTag, String identifier) {
     ShapelessRecipeBuilder.shapeless(itemOut, 9)
         .requires(materialTag)
-        .unlockedBy("has_required_decompression_material", has(materialTag))
-        .save(finishedRecipie, new ResourceLocation(Railcraft.ID,
+        .unlockedBy("has_material", has(materialTag))
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
             RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
   }
 

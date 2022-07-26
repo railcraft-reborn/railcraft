@@ -96,6 +96,10 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.TIN_NUGGET.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.ZINC_INGOT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.ZINC_NUGGET.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.NICKEL_INGOT.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.NICKEL_NUGGET.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.INVAR_INGOT.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.INVAR_NUGGET.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.STEEL_PLATE.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.IRON_PLATE.get(), ModelTemplates.FLAT_ITEM);

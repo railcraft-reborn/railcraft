@@ -1,4 +1,4 @@
-// 1.19	2022-07-26T17:34:13.12780971	Railcraft Block State Definitions
+// 1.19	2022-07-26T17:53:54.680360977	Railcraft Block State Definitions
 a083f898ae06e89152e61c30096caa3ff297f306 assets/railcraft/blockstates/abandoned_activator_track.json
 d6506fb0bdeaddc35eebb1ae33ba1b32448b2e1c assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -1031,6 +1031,8 @@ d564e9cd640507fc5bb8ce065aa9d0b86145c6d9 assets/railcraft/models/item/high_speed
 0f6fa8a274b48fe8c9ac773e8ab53c1cc86a382c assets/railcraft/models/item/high_speed_transition_track.json
 966bb0a8225bc23164c598ee34a4d2afa8e0e68b assets/railcraft/models/item/high_speed_turnout_track.json
 102dcb1d4aabe494b496b726346e8bfaadd1331a assets/railcraft/models/item/high_speed_wye_track.json
+fb60be56129a0a831eaa9389c1d9071d00ed0828 assets/railcraft/models/item/invar_ingot.json
+fc4d69034f51f16d352549d6b1ccc09b0f72f262 assets/railcraft/models/item/invar_nugget.json
 1f7c1966737f495c2913f511f53c7706ba947f2b assets/railcraft/models/item/iron_activator_track.json
 2fffb62f584d282f1f548db6bfbf4af0bc58ee50 assets/railcraft/models/item/iron_booster_track.json
 77d6a5134fa3f9aa82b60a269d1b66d6eee4a383 assets/railcraft/models/item/iron_buffer_stop_track.json
@@ -1087,6 +1089,8 @@ ce93280b1e8888f9d45681ce4b6112014c37d393 assets/railcraft/models/item/magenta_po
 e23da8a0dd30b59618331a9ffca8c40014fd6bc8 assets/railcraft/models/item/magenta_steel_tank_wall.json
 b809be67021d845136d11f9e1fb4703bd08c6bdf assets/railcraft/models/item/magenta_strengthened_glass.json
 f29d9239731520f11819b6bf85a35c7d1927712a assets/railcraft/models/item/manual_rolling_machine.json
+0606694dde3714aebbf57664d70673779b997171 assets/railcraft/models/item/nickel_ingot.json
+92b7799ed88f47ea41fdeb8ac9409937da28eba3 assets/railcraft/models/item/nickel_nugget.json
 e025030f123b32143b5e0502fc863297c090fcfb assets/railcraft/models/item/orange_iron_tank_gauge.json
 c081ecc44c4db92a72a179854736ed16d9c3a9fd assets/railcraft/models/item/orange_iron_tank_valve.json
 34de4b91c3c733ddd1110490ee4a07922e2e9e79 assets/railcraft/models/item/orange_iron_tank_wall.json

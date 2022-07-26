@@ -9,6 +9,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
@@ -63,7 +64,7 @@ public abstract class CustomRecipeProvider extends RecipeProvider {
       .define('b', ingredient)
       .define('c', Items.LEVER)
       .unlockedBy(getHasName(ingredient), has(ingredient))
-      .save(consumer, Railcraft.ID + ":" + name.substring(name.indexOf('_') + 1));
+      .save(consumer, new ResourceLocation(Railcraft.ID, name.substring(name.indexOf('_') + 1)));
 
     for (var dyeColor : DyeColor.values()) {
       ShapedRecipeBuilder.shaped(colorItems.variantFor(dyeColor).get(), 8)

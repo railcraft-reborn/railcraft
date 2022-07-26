@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_required_decompression_material": {
+    "has_material": {
       "conditions": {
         "items": [
           {
@@ -20,7 +20,7 @@
   },
   "requirements": [
     [
-      "has_required_decompression_material",
+      "has_material",
       "has_the_recipe"
     ]
   ],
