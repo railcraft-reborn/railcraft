@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:iron_bars"
+    },
+    "b": {
+      "item": "railcraft:iron_plate"
+    },
+    "c": {
+      "item": "minecraft:lever"
+    }
+  },
+  "pattern": [
+    "aba",
+    "bcb",
+    "aba"
+  ],
+  "result": {
+    "count": 8,
+    "item": "railcraft:white_iron_tank_valve"
+  }
+}

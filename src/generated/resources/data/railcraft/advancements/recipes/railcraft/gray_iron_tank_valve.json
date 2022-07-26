@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:gray_iron_tank_valve"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_white_iron_tank_valve": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:white_iron_tank_valve"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_white_iron_tank_valve",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:gray_iron_tank_valve"
+    ]
+  }
+}

@@ -6,6 +6,9 @@ import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class RailcraftItemTagsProvider extends ItemTagsProvider {
@@ -46,6 +49,20 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
       .add(RailcraftItems.STEEL_PLATE.get());
     this.tag(RailcraftTags.Items.IRON_PLATE)
       .add(RailcraftItems.IRON_PLATE.get());
+
+    this.tag(RailcraftTags.Items.IRON_TANK_WALL)
+      .add(RailcraftItems.IRON_TANK_WALL.resolveValues().toArray(Item[]::new));
+    this.tag(RailcraftTags.Items.IRON_TANK_GAUGE)
+      .add(RailcraftItems.IRON_TANK_GAUGE.resolveValues().toArray(Item[]::new));
+    this.tag(RailcraftTags.Items.IRON_TANK_VALVE)
+      .add(RailcraftItems.IRON_TANK_VALVE.resolveValues().toArray(Item[]::new));
+
+    this.tag(RailcraftTags.Items.STEEL_TANK_WALL)
+      .add(RailcraftItems.STEEL_TANK_WALL.resolveValues().toArray(Item[]::new));
+    this.tag(RailcraftTags.Items.STEEL_TANK_GAUGE)
+      .add(RailcraftItems.STEEL_TANK_GAUGE.resolveValues().toArray(Item[]::new));
+    this.tag(RailcraftTags.Items.STEEL_TANK_VALVE)
+      .add(RailcraftItems.STEEL_TANK_VALVE.resolveValues().toArray(Item[]::new));
   }
 
   @Override

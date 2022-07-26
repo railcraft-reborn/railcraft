@@ -57,6 +57,14 @@ public class RailcraftTags {
     public static final TagKey<Item> STEEL_PLATE = forgeTag("plates/steel");
     public static final TagKey<Item> IRON_PLATE = forgeTag("plates/iron");
 
+    public static final TagKey<Item> IRON_TANK_GAUGE = tag("iron_tank_gauge");
+    public static final TagKey<Item> IRON_TANK_VALVE = tag("iron_tank_valve");
+    public static final TagKey<Item> IRON_TANK_WALL = tag("iron_tank_wall");
+
+    public static final TagKey<Item> STEEL_TANK_GAUGE = tag("steel_tank_gauge");
+    public static final TagKey<Item> STEEL_TANK_VALVE = tag("steel_tank_valve");
+    public static final TagKey<Item> STEEL_TANK_WALL = tag("steel_tank_wall");
+
     private static TagKey<Item> tag(String name) {
       return ItemTags.create(new ResourceLocation(Railcraft.ID, name));
     }

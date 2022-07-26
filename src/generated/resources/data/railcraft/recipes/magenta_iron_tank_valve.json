@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "railcraft:iron_tank_valve"
+    },
+    "b": {
+      "item": "minecraft:magenta_dye"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "result": {
+    "count": 8,
+    "item": "railcraft:magenta_iron_tank_valve"
+  }
+}

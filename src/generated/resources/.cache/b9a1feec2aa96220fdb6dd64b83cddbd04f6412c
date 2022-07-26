@@ -1,4 +1,4 @@
-// 1.19	2022-07-26T11:35:30.396813677	Railcraft Item Tags
+// 1.19	2022-07-26T14:28:03.522233231	Railcraft Item Tags
 f34843bfb7b650f383c4d01e491bd1059bfad784 data/forge/tags/items/blocks/steel.json
 75ab00fcba7527628f8180d4da1258f38eaf7993 data/forge/tags/items/ingots/brass.json
 a0ce7d34162c16575f232fefea706bfee9997e5f data/forge/tags/items/ingots/bronze.json
@@ -12,3 +12,9 @@ d7508b44d29858b83d1e638039e714f27c55ed4d data/forge/tags/items/nuggets/tin.json
 03a440b41fdd236f8c6f52f1e0f73424f859282b data/forge/tags/items/nuggets/zinc.json
 356fbed3870772bc3a2399c46c98831c77f71ae6 data/forge/tags/items/plates/iron.json
 b1fe6bdc870219686421c34b2da9aa2ca0d430eb data/forge/tags/items/plates/steel.json
+e428d6ae724c5108f98185295926eb14c6510c44 data/railcraft/tags/items/iron_tank_gauge.json
+ad43ddea7185867f695a872b9110aff36104b44d data/railcraft/tags/items/iron_tank_valve.json
+c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/items/iron_tank_wall.json
+36dd475b78cc6cfda74baa55b8a7ba9919242524 data/railcraft/tags/items/steel_tank_gauge.json
+8bd3423ee85f552fd410fd0a24e26456019b1185 data/railcraft/tags/items/steel_tank_valve.json
+39074036a3b8c8bbad74fcad7dce1c559f82f107 data/railcraft/tags/items/steel_tank_wall.json
