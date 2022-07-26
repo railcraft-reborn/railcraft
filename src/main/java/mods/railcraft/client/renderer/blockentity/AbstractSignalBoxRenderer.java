@@ -1,6 +1,5 @@
 package mods.railcraft.client.renderer.blockentity;
 
-import java.util.EnumMap;
 import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
@@ -11,7 +10,6 @@ import mods.railcraft.client.util.CuboidModelRenderer.FaceDisplay;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,17 +22,11 @@ import net.minecraft.world.inventory.InventoryMenu;
 public abstract class AbstractSignalBoxRenderer
     implements BlockEntityRenderer<AbstractSignalBoxBlockEntity> {
 
-  public static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS =
-      Util.make(new EnumMap<>(SignalAspect.class), map -> {
-        map.put(SignalAspect.OFF,
-            new ResourceLocation(Railcraft.ID, "entity/signal_box/off_aspect"));
-        map.put(SignalAspect.RED,
-            new ResourceLocation(Railcraft.ID, "entity/signal_box/red_aspect"));
-        map.put(SignalAspect.YELLOW,
-            new ResourceLocation(Railcraft.ID, "entity/signal_box/yellow_aspect"));
-        map.put(SignalAspect.GREEN,
-            new ResourceLocation(Railcraft.ID, "entity/signal_box/green_aspect"));
-      });
+  public static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS = Map.of(
+      SignalAspect.OFF, new ResourceLocation(Railcraft.ID, "entity/signal_box/off_aspect"),
+      SignalAspect.RED, new ResourceLocation(Railcraft.ID, "entity/signal_box/red_aspect"),
+      SignalAspect.YELLOW, new ResourceLocation(Railcraft.ID, "entity/signal_box/yellow_aspect"),
+      SignalAspect.GREEN, new ResourceLocation(Railcraft.ID, "entity/signal_box/green_aspect"));
 
   public static final ResourceLocation SIDE_TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "entity/signal_box/side");

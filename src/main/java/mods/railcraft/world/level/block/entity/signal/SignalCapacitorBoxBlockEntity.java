@@ -177,7 +177,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     private final List<Component> tooltip;
 
     private static final Map<String, Mode> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(Mode::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(Mode::getSerializedName, Function.identity()));
 
     private Mode(String name) {
       this.name = name;

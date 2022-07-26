@@ -872,7 +872,7 @@ public abstract class Locomotive extends RailcraftMinecart
     RUNNING("running");
 
     private static final Map<String, Mode> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(Mode::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(Mode::getSerializedName, Function.identity()));
 
     private final String name;
 
@@ -901,7 +901,7 @@ public abstract class Locomotive extends RailcraftMinecart
     MAX("max", 4, 0, -1);
 
     private static final Map<String, Speed> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(Speed::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(Speed::getSerializedName, Function.identity()));
 
     private final String name;
     private final int shiftUp;
@@ -948,7 +948,7 @@ public abstract class Locomotive extends RailcraftMinecart
     PRIVATE("private", new SimpleTexturePosition(240, 48, 16, 16));
 
     private static final Map<String, Lock> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(Lock::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(Lock::getSerializedName, Function.identity()));
 
     private final String name;
     private final TexturePosition texture;

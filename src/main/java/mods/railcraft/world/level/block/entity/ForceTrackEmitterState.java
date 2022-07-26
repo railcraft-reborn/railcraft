@@ -140,7 +140,8 @@ public enum ForceTrackEmitterState implements StringRepresentable {
   private static final int MAX_TRACKS = 64;
 
   private static final Map<String, ForceTrackEmitterState> byName = Arrays.stream(values())
-      .collect(Collectors.toMap(ForceTrackEmitterState::getSerializedName, Function.identity()));
+      .collect(Collectors.toUnmodifiableMap(
+          ForceTrackEmitterState::getSerializedName, Function.identity()));
 
   private final String name;
   private final boolean visuallyPowered;

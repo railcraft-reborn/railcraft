@@ -1,20 +1,20 @@
 package mods.railcraft.fuel;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMaps;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.fuel.FuelManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 public enum FuelManagerImpl implements FuelManager {
 
   INSTANCE;
 
-  private static final Map<ResourceLocation, Integer> boilerFuel =
-      new ConcurrentHashMap<>();
+  private static final Object2IntMap<ResourceLocation> boilerFuel =
+      Object2IntMaps.synchronize(new Object2IntOpenHashMap<>());
 
   /**
    * Register the amount of heat in a bucket of liquid fuel.

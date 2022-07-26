@@ -26,7 +26,7 @@ public enum LockingMode implements StringRepresentable {
       BoardingLockingProfile::reversed);
 
   private static final Map<String, LockingMode> byName = Arrays.stream(values())
-      .collect(Collectors.toMap(LockingMode::getSerializedName, Function.identity()));
+      .collect(Collectors.toUnmodifiableMap(LockingMode::getSerializedName, Function.identity()));
 
   private final String name;
   private final Component displayName;

@@ -11,8 +11,8 @@ public enum LaunchState implements StringRepresentable {
 
   LAUNCHING("launching"), LAUNCHED("launched"), LANDED("landed");
 
-  private static final Map<String, LaunchState> byName =
-      Arrays.stream(values()).collect(Collectors.toMap(LaunchState::getName, Function.identity()));
+  private static final Map<String, LaunchState> byName = Arrays.stream(values())
+      .collect(Collectors.toUnmodifiableMap(LaunchState::getName, Function.identity()));
 
   private final String name;
 

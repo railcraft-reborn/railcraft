@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block.signal;
 
-import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.ToIntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -9,7 +8,6 @@ import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.VoxelShapeUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -47,13 +45,11 @@ public abstract class SignalBlock extends BaseEntityBlock implements SimpleWater
   public static final BooleanProperty WEST = PipeBlock.WEST;
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-  public static final Map<Direction, BooleanProperty> propertyByDirection =
-      Util.make(new EnumMap<>(Direction.class), (map) -> {
-        map.put(Direction.NORTH, NORTH);
-        map.put(Direction.EAST, EAST);
-        map.put(Direction.SOUTH, SOUTH);
-        map.put(Direction.WEST, WEST);
-      });
+  public static final Map<Direction, BooleanProperty> propertyByDirection = Map.of(
+      Direction.NORTH, NORTH,
+      Direction.EAST, EAST,
+      Direction.SOUTH, SOUTH,
+      Direction.WEST, WEST);
 
   private final VoxelShape[] shapes;
   protected final Object2IntMap<BlockState> stateToIndex = new Object2IntOpenHashMap<>();
@@ -94,7 +90,7 @@ public abstract class SignalBlock extends BaseEntityBlock implements SimpleWater
 
   protected int computeShapeIndex(BlockState blockState) {
     int i = 0;
-    for (Map.Entry<Direction, BooleanProperty> entry : propertyByDirection.entrySet()) {
+    for (var entry : propertyByDirection.entrySet()) {
       if (blockState.getValue(entry.getValue())) {
         i |= VoxelShapeUtil.indexFor(entry.getKey());
       }

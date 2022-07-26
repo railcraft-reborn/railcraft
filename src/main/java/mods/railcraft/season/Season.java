@@ -17,7 +17,7 @@ public enum Season implements StringRepresentable {
   NONE("none");
 
   private static final Map<String, Season> byName = Arrays.stream(values())
-      .collect(Collectors.toMap(Season::getSerializedName, Function.identity()));
+      .collect(Collectors.toUnmodifiableMap(Season::getSerializedName, Function.identity()));
 
   private final String name;
   private final Component displayName;

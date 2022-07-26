@@ -401,7 +401,7 @@ public final class Train implements Iterable<AbstractMinecart> {
     STOPPED("stopped"), IDLE("idle"), NORMAL("normal");
 
     private static final Map<String, State> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(State::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(State::getSerializedName, Function.identity()));
 
     private final String name;
 
