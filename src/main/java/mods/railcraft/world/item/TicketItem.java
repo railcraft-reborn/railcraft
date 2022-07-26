@@ -2,6 +2,7 @@ package mods.railcraft.world.item;
 
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.client.Translations;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.ChatFormatting;
@@ -50,22 +51,22 @@ public class TicketItem extends Item {
    * allows items to add custom lines of information to the mouse over description
    */
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> list,
-      TooltipFlag par4) {
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list,
+      TooltipFlag flag) {
     if (stack.hasTag()) {
       GameProfile owner = getOwner(stack);
       if (owner.getId() != null) {
-        list.add(Component.translatable("gui.railcraft.routing.ticket.tips.issuer"));
-        list.add(PlayerUtil.getUsername(world, owner).copy().withStyle(ChatFormatting.GRAY));
+        list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER));
+        list.add(PlayerUtil.getUsername(level, owner).copy().withStyle(ChatFormatting.GRAY));
       }
 
       String dest = getDestination(stack);
-      if (!"".equals(dest)) {
-        list.add(Component.translatable("gui.railcraft.routing.ticket.tips.dest"));
+      if (!dest.isEmpty()) {
+        list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST));
         list.add(Component.literal(dest).withStyle(ChatFormatting.GRAY));
       }
     } else
-      list.add(Component.translatable("gui.railcraft.routing.ticket.tips.blank"));
+      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_BLANK));
   }
 
   public static boolean isNBTValid(@Nullable CompoundTag nbt) {

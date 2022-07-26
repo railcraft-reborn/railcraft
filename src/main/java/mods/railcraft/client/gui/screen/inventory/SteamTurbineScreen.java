@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
+import mods.railcraft.client.Translations;
 import mods.railcraft.client.gui.screen.inventory.widget.AnalogGaugeRenderer;
 import mods.railcraft.world.inventory.SteamTurbineMenu;
 import net.minecraft.network.chat.Component;
@@ -30,11 +31,11 @@ public class SteamTurbineScreen extends RailcraftMenuScreen<SteamTurbineMenu> {
   @Override
   protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
     super.renderLabels(poseStack, mouseX, mouseY);
-    this.font.draw(poseStack, Component.translatable("screen.steam_turbine.rotor"), 20,
+    this.font.draw(poseStack, Component.translatable(Translations.Screen.STEAM_TURBINE_ROTOR), 20,
         29, 0x404040);
     this.font.draw(poseStack,
-        Component.translatable("screen.steam_turbine.output"), 93, 24, 0x404040);
+        Component.translatable(Translations.Screen.STEAM_TURBINE_OUTPUT), 93, 24, 0x404040);
     this.font.draw(poseStack,
-        Component.translatable("screen.steam_turbine.usage"), 95, 43, 0x404040);
+        Component.translatable(Translations.Screen.STEAM_TURBINE_USAGE), 95, 43, 0x404040);
   }
 }

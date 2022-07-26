@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.RailcraftConfig;
+import mods.railcraft.client.Translations;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetLauncherTrackAttributesMessage;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
@@ -40,7 +41,7 @@ public class LauncherTrackScreen extends IngameWindowScreen {
   protected void renderContent(PoseStack matrixStack, int mouseX, int mouseY,
       float partialTicks) {
     this.drawCenteredString(matrixStack,
-        Component.translatable("screen.launcher_track.launch_force",
+        Component.translatable(Translations.Screen.LAUNCHER_TRACK_LAUNCH_FORCE,
             this.track.getLaunchForce()),
         this.windowWidth / 2, 25);
   }

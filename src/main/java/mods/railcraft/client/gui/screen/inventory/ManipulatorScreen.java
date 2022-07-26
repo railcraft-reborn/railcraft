@@ -1,6 +1,7 @@
 package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import mods.railcraft.client.Translations;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.world.inventory.ManipulatorMenu;
@@ -14,7 +15,7 @@ public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
   private static final int REFRESH_INTERVAL_TICKS = 20;
 
   private static final Component CART_FILTER_TEXT =
-      Component.translatable("screen.manipulator.cart_filters");
+      Component.translatable(Translations.Screen.CART_FILTERS);
 
   private MultiButton<ManipulatorBlockEntity.RedstoneMode> redstoneModeButton;
 

@@ -1,6 +1,7 @@
 package mods.railcraft.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import mods.railcraft.client.Translations;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetEmbarkingTrackAttributesMessage;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
@@ -52,7 +53,7 @@ public class EmbarkingTrackScreen extends IngameWindowScreen {
   @Override
   protected void renderContent(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
     this.drawCenteredString(poseStack,
-        Component.translatable("screen.embarking_track.radius", this.radius),
+        Component.translatable(Translations.Screen.EMBARKING_TRACK_RADIUS, this.radius),
         this.windowWidth / 2, 25);
   }
 }

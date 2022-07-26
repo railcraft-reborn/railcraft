@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
+import mods.railcraft.client.Translations;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.network.NetworkChannel;
@@ -19,9 +20,9 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
       new ResourceLocation(Railcraft.ID, "textures/gui/container/item_manipulator.png");
 
   private final static Component FILTERS_TEXT =
-      Component.translatable("screen.item_manipulator.filters");
+      Component.translatable(Translations.Screen.ITEM_MANIPULATOR_FILTERS);
   private final static Component BUFFER_TEXT =
-      Component.translatable("screen.item_manipulator.buffer");
+      Component.translatable(Translations.Screen.ITEM_MANIPULATOR_BUFFER);
 
   private MultiButton<ManipulatorBlockEntity.TransferMode> transferModeButton;
 

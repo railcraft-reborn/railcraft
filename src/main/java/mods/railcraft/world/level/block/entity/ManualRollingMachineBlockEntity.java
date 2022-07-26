@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
+import mods.railcraft.client.Translations;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -17,9 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.function.Consumer;
 
 public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
-
-  private static final Component MENU_TITLE =
-      Component.translatable("container.railcraft.manual_rolling_machine");
 
   private int recipieRequiredTime = 12222222;
   private int currentTick = 0;
@@ -160,7 +158,7 @@ public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
 
   @Override
   protected Component getDefaultName() {
-    return MENU_TITLE;
+    return Component.translatable(Translations.Container.MANUAL_ROLLING_MACHINE);
   }
 
   @Override

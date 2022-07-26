@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import it.unimi.dsi.fastutil.chars.CharList;
+import mods.railcraft.client.Translations;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -27,9 +28,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity, Void> {
-
-  private static final Component MENU_TITLE =
-      Component.translatable("container.railcraft.coke_oven");
 
   private static final MultiblockPattern<Void> PATTERN = Util.make(() -> {
     final var bricks = BlockPredicate.of(RailcraftBlocks.COKE_OVEN_BRICKS);
@@ -102,7 +100,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
 
   @Override
   public Component getDisplayName() {
-    return MENU_TITLE;
+    return Component.translatable(Translations.Container.COKE_OVEN);
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,

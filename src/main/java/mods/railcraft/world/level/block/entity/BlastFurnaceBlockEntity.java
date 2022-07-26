@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import it.unimi.dsi.fastutil.chars.CharList;
+import mods.railcraft.client.Translations;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -28,9 +29,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceBlockEntity, Void> {
-
-  private static final Component MENU_TITLE =
-      Component.translatable("container.railcraft.blast_furnace");
 
   private static final MultiblockPattern<Void> PATTERN = Util.make(() -> {
     final var bricks = BlockPredicate.of(RailcraftBlocks.BLAST_FURNACE_BRICKS);
@@ -134,6 +132,6 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
 
   @Override
   public Component getDisplayName() {
-    return MENU_TITLE;
+    return Component.translatable(Translations.Container.BLAST_FURNACE);
   }
 }

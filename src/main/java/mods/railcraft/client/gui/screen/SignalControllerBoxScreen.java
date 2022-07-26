@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.client.Translations;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
@@ -44,12 +45,12 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
   protected void renderContent(PoseStack matrixStack, int mouseX, int mouseY,
       float partialTicks) {
     this.drawCenteredString(matrixStack,
-        Component.translatable("screen.signal_controller_box.default_aspect"),
+        Component.translatable(Translations.Screen.SINGAL_CONTROLLER_BOX_DEFAULT),
         this.windowWidth / 2, 25);
     this.drawCenteredString(matrixStack, this.defaultAspect.getDisplayName(),
         this.windowWidth / 2, 35);
     this.drawCenteredString(matrixStack,
-        Component.translatable("screen.signal_controller_box.powered_aspect"),
+        Component.translatable(Translations.Screen.SINGAL_CONTROLLER_BOX_POWERED),
         this.windowWidth / 2, 60);
     this.drawCenteredString(matrixStack, this.poweredAspect.getDisplayName(),
         this.windowWidth / 2, 70);

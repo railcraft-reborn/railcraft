@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.client.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.ToggleButton;
@@ -79,17 +80,11 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   private void updateLockButtonTooltip() {
     final LockableSignalBoxBlockEntity.Lock lock = this.lockButton.getState();
     switch (lock) {
-      case LOCKED:
-        this.lockButtonTooltip =
-            Component.translatable("screen.action_signal_box.lock.locked",
-                this.signalBox.getOwnerOrThrow().getName());
-        break;
-      case UNLOCKED:
-        this.lockButtonTooltip =
-            Component.translatable("screen.action_signal_box.lock.unlocked");
-        break;
-      default:
-        break;
+      case LOCKED -> this.lockButtonTooltip =
+        Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
+          this.signalBox.getOwnerOrThrow().getName());
+      case UNLOCKED -> this.lockButtonTooltip =
+        Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }
   }
 

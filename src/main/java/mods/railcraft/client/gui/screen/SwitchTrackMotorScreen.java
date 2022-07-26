@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.client.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.ToggleButton;
@@ -52,7 +53,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
 
     this.addRenderableWidget(
         this.redstoneTriggeredButton = new ToggleButton(centreX + 34, centreY + 80, 110, 20,
-          Component.translatable("screen.switch_track_motor.redstone_triggered"),
+          Component.translatable(Translations.Screen.SWITCH_TRACK_MOTOR_REDSTONE),
             button -> ((ToggleButton) button).setToggled(this.toggleRedstoneTriggered()),
             ButtonTexture.LARGE_BUTTON,
             this.switchTrackMotor.isRedstoneTriggered()));
@@ -90,17 +91,11 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
   private void updateLockButtonTooltip() {
     final LockableSwitchTrackActuatorBlockEntity.Lock lock = this.lockButton.getState();
     switch (lock) {
-      case LOCKED:
-        this.lockButtonTooltip =
-            Component.translatable("screen.action_signal_box.lock.locked",
-                this.switchTrackMotor.getOwnerOrThrow().getName());
-        break;
-      case UNLOCKED:
-        this.lockButtonTooltip =
-          Component.translatable("screen.action_signal_box.lock.unlocked");
-        break;
-      default:
-        break;
+      case LOCKED -> this.lockButtonTooltip =
+        Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
+          this.switchTrackMotor.getOwnerOrThrow().getName());
+      case UNLOCKED -> this.lockButtonTooltip =
+        Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }
   }
 

@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;
+import mods.railcraft.client.Translations;
 import mods.railcraft.client.emblem.Emblem;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.util.PlayerUtil;
@@ -52,20 +53,20 @@ public class LocomotiveItem extends CartItem implements Filter {
     GameProfile owner = getOwner(stack);
     if (owner.getName() != null
         && !RailcraftConstantsAPI.UNKNOWN_PLAYER.equalsIgnoreCase(owner.getName())) {
-      info.add(Component.translatable("gui.railcraft.locomotive.tips.item.owner",
+      info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_OWNER,
           owner.getName()));
     }
 
     DyeColor primary = getPrimaryColor(stack);
-    info.add(Component.translatable("gui.railcraft.locomotive.tips.item.primary",
+    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY,
         primary.getName()));
 
     DyeColor secondary = getSecondaryColor(stack);
-    info.add(Component.translatable("gui.railcraft.locomotive.tips.item.secondary",
+    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY,
         secondary.getName()));
 
     float whistle = getWhistlePitch(stack);
-    info.add(Component.translatable("gui.railcraft.locomotive.tips.item.whistle",
+    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE,
         whistle < 0 ? "???" : String.format("%.2f", whistle)));
 
     String emblemIdent = getEmblem(stack);

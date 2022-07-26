@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
+import mods.railcraft.client.Translations;
 import mods.railcraft.util.EnergyUtil;
 import mods.railcraft.world.inventory.SteamTurbineMenu;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -37,9 +38,6 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
 
   private static final int WATER_OUTPUT_RATE = 4;
   private static final int ENERGY_OUTPUT_RATE = 900;
-
-  private static final Component MENU_TITLE =
-      Component.translatable("container.railcraft.steam_turbine");
 
   private static final BlockPredicate BLOCK_PREDICATE =
       BlockPredicate.of(RailcraftBlocks.STEAM_TURBINE);
@@ -128,7 +126,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
 
   @Override
   public Component getDisplayName() {
-    return MENU_TITLE;
+    return Component.translatable(Translations.Container.STEAM_TURBINE);
   }
 
   @Override

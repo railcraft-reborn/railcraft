@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity.steamboiler;
 
+import mods.railcraft.client.Translations;
 import mods.railcraft.world.inventory.SolidFueledSteamBoilerMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.module.SolidFueledSteamBoilerModule;
@@ -11,9 +12,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SolidFueledSteamBoilerBlockEntity extends SteamBoilerBlockEntity {
-
-  private static final Component MENU_TITLE =
-      Component.translatable("container.railcraft.solid_fueled_steam_boiler");
 
   public SolidFueledSteamBoilerBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.SOLID_FUELED_STEAM_BOILER.get(), blockPos, blockState);
@@ -28,6 +26,6 @@ public class SolidFueledSteamBoilerBlockEntity extends SteamBoilerBlockEntity {
 
   @Override
   public Component getDisplayName() {
-    return MENU_TITLE;
+    return Component.translatable(Translations.Container.SOLID_FUELED_STEAM_BOILER);
   }
 }

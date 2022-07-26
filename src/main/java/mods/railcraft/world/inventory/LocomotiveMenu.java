@@ -1,5 +1,6 @@
 package mods.railcraft.world.inventory;
 
+import mods.railcraft.client.Translations;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.item.TicketItem;
@@ -31,7 +32,7 @@ public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
         locomotive.getContainerSize() - 2, 116, guiHeight - 111).setStackLimit(1);
     slotTicket.setTooltip(
         Collections.singletonList(
-            Component.translatable("gui.railcraft.locomotive.tips.slot.ticket")));
+            Component.translatable(Translations.Tips.LOCOMOTIVE_SLOT_TICKET)));
     this.addSlot(slotTicket);
     // TODO: make some way to clear this?
     this.addSlot(

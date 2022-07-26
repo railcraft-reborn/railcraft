@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity.tank;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.RailcraftConfig;
+import mods.railcraft.client.Translations;
 import mods.railcraft.world.inventory.TankMenu;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
@@ -42,9 +43,6 @@ import java.util.Collection;
 import java.util.List;
 
 public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEntity, Void> {
-
-  private static final Component MENU_TITLE =
-      Component.translatable("container.railcraft.tank");
 
   private static final int FLOW_RATE = FluidTools.BUCKET_VOLUME;
 
@@ -110,7 +108,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
 
   @Override
   public Component getDisplayName() {
-    return MENU_TITLE;
+    return Component.translatable(Translations.Container.TANK);
   }
 
   public TankModule getModule() {

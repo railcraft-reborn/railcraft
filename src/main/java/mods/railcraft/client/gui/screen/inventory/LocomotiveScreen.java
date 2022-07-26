@@ -10,6 +10,7 @@
 package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import mods.railcraft.client.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
@@ -49,7 +50,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
   protected LocomotiveScreen(T menu, Inventory inventory, Component title, String typeTag) {
     super(menu, inventory, title);
-    this.typeTag = typeTag;
+    this.typeTag = typeTag;//TODO: Change to an ENUM
     this.imageHeight = LocomotiveMenu.DEFAULT_HEIGHT;
     this.inventoryLabelY = this.imageHeight - 94;
   }
@@ -57,19 +58,11 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   private void updateLockButtonTooltip() {
     final Locomotive.Lock lock = this.lockButton.getState();
     switch (lock) {
-      case LOCKED:
-        this.lockButtonTooltip = Component.translatable("screen.locomotive.lock.locked",
-            this.menu.getLocomotive().getOwnerOrThrow().getName());
-        break;
-      case UNLOCKED:
-        this.lockButtonTooltip = Component.translatable("screen.locomotive.lock.unlocked");
-        break;
-      case PRIVATE:
-        this.lockButtonTooltip = Component.translatable("screen.locomotive.lock.private",
-            this.menu.getLocomotive().getOwnerOrThrow().getName());
-        break;
-      default:
-        break;
+      case LOCKED -> this.lockButtonTooltip = Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_LOCKED,
+        this.menu.getLocomotive().getOwnerOrThrow().getName());
+      case UNLOCKED -> this.lockButtonTooltip = Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_UNLOCKED);
+      case PRIVATE -> this.lockButtonTooltip = Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_PRIVATE,
+        this.menu.getLocomotive().getOwnerOrThrow().getName());
     }
   }
 
@@ -82,13 +75,17 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
     // Mode buttons
     for (var mode : this.getMenu().getLocomotive().getSupportedModes()) {
+      var text = switch (mode) {
+        case IDLE -> Translations.Screen.LOCOMOTIVE_MODE_IDLE;
+        case SHUTDOWN -> Translations.Screen.LOCOMOTIVE_MODE_SHUTDOWN;
+        case RUNNING -> Translations.Screen.LOCOMOTIVE_MODE_RUNNING;
+      };
       var button = new RailcraftButton(0, centreY + this.getYSize() - 129, 55, 16,
-          Component.translatable(
-              "screen.locomotive.mode." + mode.getSerializedName()),
+          Component.translatable(text),
           b -> this.setMode(mode),
           (btn, matrixStack, mouseX, mouseY) -> this.renderComponentTooltip(
               matrixStack, Collections.singletonList(Component.translatable(
-                  "screen.locomotive." + typeTag + ".mode.desription."
+                  "screen.locomotive." + typeTag + ".mode.description."
                       + mode.getSerializedName())),
               mouseX, mouseY, this.font),
           ButtonTexture.SMALL_BUTTON);
