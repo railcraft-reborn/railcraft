@@ -117,10 +117,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
      * ===================================== RAILCRAFT BLOCKS =====================================
      */
     RecipeBlocks.registerBlocks(consumer);
+    RecipeBlocks.compressItem(consumer);
+    RecipeBlocks.decompressItem(consumer);
 
     /*
-     * ===================================== RAILCRAFT CRAFTING COMPONENTS
-     * =====================================
+     * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
      */
     this.circuitFromMaterial(consumer, RailcraftItems.CONTROLLER_CIRCUIT.get(),
         Items.RED_WOOL);
@@ -211,45 +212,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
     this.railsFromMaterials(consumer, RailcraftItems.HIGH_SPEED_TRACK.get(),
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-
-
-    /* === Item Compression === */
-    this.compress(consumer, RailcraftItems.STEEL_INGOT.get(),
-        RailcraftTags.Items.STEEL_NUGGET, "ingot");
-    this.compress(consumer, RailcraftItems.TIN_INGOT.get(),
-        RailcraftTags.Items.TIN_NUGGET, "ingot");
-    this.compress(consumer, RailcraftItems.ZINC_INGOT.get(),
-        RailcraftTags.Items.ZINC_NUGGET, "ingot");
-    this.compress(consumer, RailcraftItems.BRASS_INGOT.get(),
-        RailcraftTags.Items.BRASS_NUGGET, "ingot");
-    this.compress(consumer, RailcraftItems.BRONZE_INGOT.get(),
-        RailcraftTags.Items.BRONZE_NUGGET, "ingot");
-    this.compress(consumer, RailcraftItems.NICKEL_INGOT.get(),
-      RailcraftTags.Items.NICKEL_NUGGET, "ingot");
-    this.compress(consumer, RailcraftItems.INVAR_INGOT.get(),
-      RailcraftTags.Items.INVAR_NUGGET, "ingot");
-
-    this.compress(consumer, RailcraftItems.STEEL_BLOCK.get(),
-        RailcraftTags.Items.STEEL_INGOT, "block");
-
-    /* === Item Decompression === */
-    this.decompress(consumer, RailcraftItems.STEEL_NUGGET.get(),
-        RailcraftTags.Items.STEEL_INGOT, "nugget");
-    this.decompress(consumer, RailcraftItems.TIN_NUGGET.get(),
-        RailcraftTags.Items.TIN_INGOT, "nugget");
-    this.decompress(consumer, RailcraftItems.ZINC_NUGGET.get(),
-        RailcraftTags.Items.ZINC_INGOT, "nugget");
-    this.decompress(consumer, RailcraftItems.BRASS_NUGGET.get(),
-        RailcraftTags.Items.BRASS_INGOT, "nugget");
-    this.decompress(consumer, RailcraftItems.BRONZE_NUGGET.get(),
-        RailcraftTags.Items.BRONZE_INGOT, "nugget");
-    this.decompress(consumer, RailcraftItems.NICKEL_NUGGET.get(),
-      RailcraftTags.Items.NICKEL_INGOT, "nugget");
-    this.decompress(consumer, RailcraftItems.INVAR_NUGGET.get(),
-      RailcraftTags.Items.INVAR_INGOT, "nugget");
-
-    this.decompress(consumer, RailcraftItems.STEEL_INGOT.get(),
-        RailcraftTags.Items.STEEL_BLOCK, "block_ingot");
 
     CokeOvenRecipeBuilder
         .coking(Items.COAL, Ingredient.of(ItemTags.LOGS), 0.0F, 250)
@@ -372,26 +334,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             new ResourceLocation(Railcraft.ID, ForgeRegistries.ITEMS.getKey(itemOut).getPath()));
   }
 
-  private void compress(Consumer<FinishedRecipe> finishedRecipe,
-                        Item itemOut, TagKey<Item> materialTag, String identifier) {
-    ShapedRecipeBuilder.shaped(itemOut)
-        .pattern("###")
-        .pattern("###")
-        .pattern("###")
-        .define('#', materialTag)
-        .unlockedBy("has_material", has(materialTag))
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
-            RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
-  }
 
-  private void decompress(Consumer<FinishedRecipe> finishedRecipe,
-                          Item itemOut, TagKey<Item> materialTag, String identifier) {
-    ShapelessRecipeBuilder.shapeless(itemOut, 9)
-        .requires(materialTag)
-        .unlockedBy("has_material", has(materialTag))
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
-            RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
-  }
 
   @Override
   public String getName() {
