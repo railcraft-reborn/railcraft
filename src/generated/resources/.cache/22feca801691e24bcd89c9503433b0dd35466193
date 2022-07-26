@@ -1,7 +1,6 @@
-// 1.19	2022-07-25T13:00:25.358179058	Railcraft Recipes
+// 1.19	2022-07-26T11:25:38.741640103	Railcraft Recipes
 2a0b4bcc535c496c926130b8305a601d49e53ec8 data/minecraft/advancements/recipes/misc/coal.json
 8f130b2a31ddd34d98e31897f3fd3d21fcf11014 data/minecraft/recipes/coal.json
-ce7655eaecfa6888bbd641574902dbeede8e6c26 data/railcraft/advancements/recipes/misc/copper_ingot_ingot.json
 fad3e911f3e85bcd49b2a1f1274e4f0aeaa1edba data/railcraft/advancements/recipes/railcraft/blasting_bucket.json
 10ad9b1417beb920dc8250647135307a19e5e950 data/railcraft/advancements/recipes/railcraft/blasting_iron_axe.json
 4920deeb7e40788c21f287affa5ad9b878295ceb data/railcraft/advancements/recipes/railcraft/blasting_iron_boots.json
@@ -35,7 +34,6 @@ f694dbb8aa67271dc2a3dbe54a0336906ef620b1 data/railcraft/advancements/recipes/rai
 f609cb520b389ad7a33247475a22bafbb3694e12 data/railcraft/advancements/recipes/railcraft/coal_coke.json
 53b2420f72f0eb15dba1f62b08271f1ffb33080a data/railcraft/advancements/recipes/railcraft/coke_oven_bricks.json
 e92915bb716142a2e0122b5f65e298cc85e83eef data/railcraft/advancements/recipes/railcraft/controller_circuit.json
-06f3f9f55344c2444af381064b28e9d4f9c3d053 data/railcraft/advancements/recipes/railcraft/copper_nugget_nugget.json
 f0e70624aec09439e6078d48407489840d5d60e1 data/railcraft/advancements/recipes/railcraft/diamond_crowbar.json
 af0ff8a09bead6622d2772d736ac9bbef040aa2a data/railcraft/advancements/recipes/railcraft/firestone_cracked_fixing.json
 64b34a8247d4cc775e3beafa53e3537591c28765 data/railcraft/advancements/recipes/railcraft/firestone_lava_refinement.json
@@ -99,8 +97,6 @@ ffa38d88d169594ee6c0753af426b8edc6a2f490 data/railcraft/recipes/bronze_ingot_ing
 098e796c81c6fb6a295135ad936f1f064c9a0e23 data/railcraft/recipes/coal_coke.json
 a468e20aed14c278cc9facb2f39ee09d5d650389 data/railcraft/recipes/coke_oven_bricks.json
 cf28d76f8497e6c8255cbe55e72dd3c2161318cf data/railcraft/recipes/controller_circuit.json
-7efa720596678e21cfebcaa22b46f459acd4676b data/railcraft/recipes/copper_ingot_ingot.json
-57b13a852730d3eec843dad2f1b21c810c2f904f data/railcraft/recipes/copper_nugget_nugget.json
 df0494bd07acf2f899761767c00a867613d26cc4 data/railcraft/recipes/diamond_crowbar.json
 a88fa03fd7ff2aa048a41bd1c9bc864e81de8715 data/railcraft/recipes/electric_rail.json
 fe816d83c1ae61d7d881654a5fcdd0a769a505b5 data/railcraft/recipes/electric_track.json

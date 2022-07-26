@@ -1126,6 +1126,14 @@ public class RailcraftItems {
             }
           });
 
+  public static final RegistryObject<Item> STEEL_PLATE =
+    deferredRegister.register("steel_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> IRON_PLATE =
+    deferredRegister.register("iron_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> STEEL_INGOT =
       deferredRegister.register("steel_ingot",
           () -> new Item(new Item.Properties().tab(TAB)));
@@ -1150,10 +1158,6 @@ public class RailcraftItems {
   // NUGGET
   public static final RegistryObject<Item> STEEL_NUGGET =
       deferredRegister.register("steel_nugget",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> COPPER_NUGGET =
-      deferredRegister.register("copper_nugget",
           () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TIN_NUGGET =

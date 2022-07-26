@@ -1,4 +1,4 @@
-// 1.19	2022-07-25T13:00:25.36167868	Railcraft Block State Definitions
+// 1.19	2022-07-26T11:35:30.350130276	Railcraft Block State Definitions
 a083f898ae06e89152e61c30096caa3ff297f306 assets/railcraft/blockstates/abandoned_activator_track.json
 d6506fb0bdeaddc35eebb1ae33ba1b32448b2e1c assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -955,7 +955,6 @@ e70f4283c5dd1dc6d4bf26223f5fcf798cce0065 assets/railcraft/models/item/brown_stre
 cc3d72fefc8eaa8035f16c8dad6e9cfa132f1e58 assets/railcraft/models/item/coke_oven_bricks.json
 44b4a84edfa58899d608812a5f1033723c59221d assets/railcraft/models/item/control_track_kit.json
 2fcf6ed374d4197663af5966155721339540d39b assets/railcraft/models/item/controller_circuit.json
-90add1311274089e8c516c955dc0e41fee91184a assets/railcraft/models/item/copper_nugget.json
 ecf7136385d997fdafee99a1442647d0d776a9cd assets/railcraft/models/item/coupler_track_kit.json
 d6fb06bb3298177bc3fccaebea9c063a9d53dc4b assets/railcraft/models/item/creosote_bucket.json
 dff112dfe71db9573920e18ec96226843bbd67a0 assets/railcraft/models/item/cyan_iron_tank_gauge.json
@@ -1045,6 +1044,7 @@ e72d7180da8869d737c331473858fb8ef3d10b10 assets/railcraft/models/item/iron_detec
 85f056616802b265fe944a032dd137531079356e assets/railcraft/models/item/iron_junction_track.json
 35430c02bd1ddc1da78f409689b343730f686831 assets/railcraft/models/item/iron_launcher_track.json
 e96b14500c6ba307981e9ac3863b9ec995a0e258 assets/railcraft/models/item/iron_locking_track.json
+6a86c82b89c4e32e355805a91dd0936a0650cc79 assets/railcraft/models/item/iron_plate.json
 8d5d5ec0f77b50b19ee4f34b7d43734e9b369e1f assets/railcraft/models/item/iron_spike_maul.json
 d2dc2209b3bd6e11fca5cce18740e005f8e633ec assets/railcraft/models/item/iron_tunnel_bore_head.json
 8ecdd6f172f9ec0fc5164ba4e6fb02991888c566 assets/railcraft/models/item/iron_turnout_track.json
@@ -1160,6 +1160,7 @@ c05b8d44ca4522223a237c4538e9d365876a7e60 assets/railcraft/models/item/steel_axe.
 8ac9251598f1796fc5452e15ea5ed4cb1473d87b assets/railcraft/models/item/steel_leggings.json
 a7418aaf67f5fb320f11e0f8aa0e5ff77887cd29 assets/railcraft/models/item/steel_nugget.json
 83e4fcca84dbcf291de5787191524a0e5790ed1f assets/railcraft/models/item/steel_pickaxe.json
+e05352a7be422140c9cfe58bf15662ec3d905f94 assets/railcraft/models/item/steel_plate.json
 80f58913efa5a263f3f79a585e6834cf443f98e0 assets/railcraft/models/item/steel_shears.json
 6f8a1ea0c424502556ecbd99cc4e7d1354da687f assets/railcraft/models/item/steel_shovel.json
 26b748c54119118b9ef49ed737939256642ac27e assets/railcraft/models/item/steel_spike_maul.json

@@ -34,7 +34,6 @@ public class RailcraftTags {
 
     // nuggets
     public static final TagKey<Item> STEEL_NUGGET = forgeTag("nuggets/steel");
-    public static final TagKey<Item> COPPER_NUGGET = forgeTag("nuggets/copper");
     public static final TagKey<Item> TIN_NUGGET = forgeTag("nuggets/tin");
     public static final TagKey<Item> LEAD_NUGGET = forgeTag("nuggets/lead");
     public static final TagKey<Item> SILVER_NUGGET = forgeTag("nuggets/silver");
@@ -46,7 +45,6 @@ public class RailcraftTags {
 
     // blocks
     public static final TagKey<Item> STEEL_BLOCK = forgeTag("blocks/steel");
-    public static final TagKey<Item> COPPER_BLOCK = forgeTag("blocks/copper");
     public static final TagKey<Item> TIN_BLOCK = forgeTag("blocks/tin");
     public static final TagKey<Item> LEAD_BLOCK = forgeTag("blocks/lead");
     public static final TagKey<Item> SILVER_BLOCK = forgeTag("blocks/silver");
@@ -55,6 +53,9 @@ public class RailcraftTags {
     public static final TagKey<Item> INVAR_BLOCK = forgeTag("blocks/invar");
     public static final TagKey<Item> ZINC_BLOCK = forgeTag("blocks/zinc");
     public static final TagKey<Item> BRASS_BLOCK = forgeTag("blocks/brass");
+
+    public static final TagKey<Item> STEEL_PLATE = forgeTag("plates/steel");
+    public static final TagKey<Item> IRON_PLATE = forgeTag("plates/iron");
 
     private static TagKey<Item> tag(String name) {
       return ItemTags.create(new ResourceLocation(Railcraft.ID, name));
