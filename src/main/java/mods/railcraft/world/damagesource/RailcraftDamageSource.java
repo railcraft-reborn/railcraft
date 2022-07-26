@@ -1,6 +1,5 @@
 package mods.railcraft.world.damagesource;
 
-import mods.railcraft.util.MiscTools;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -48,7 +47,7 @@ public class RailcraftDamageSource extends DamageSource {
   @Override
   public Component getLocalizedDeathMessage(LivingEntity entity) {
     String locTag =
-        "death.railcraft." + this.msgId + "." + (MiscTools.RANDOM.nextInt(this.numMessages) + 1);
+        "death.railcraft." + this.msgId + "." + (entity.getRandom().nextInt(this.numMessages) + 1);
     return Component.translatable(locTag, entity.getName());
   }
 
@@ -66,7 +65,7 @@ public class RailcraftDamageSource extends DamageSource {
               .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
               .map(SmeltingRecipe::getResultItem)
               .orElse(ItemStack.EMPTY);
-          if (!cooked.isEmpty() && MiscTools.RANDOM.nextDouble() < 0.5) {
+          if (!cooked.isEmpty() && level.getRandom().nextDouble() < 0.5) {
             cooked = cooked.copy();
             cooked.setCount(drop.getCount());
             entityItem.setItem(cooked);

@@ -3,11 +3,10 @@ package mods.railcraft.advancements;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.track.TrackType;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.Conditions;
-import mods.railcraft.util.JsonTools;
-import mods.railcraft.util.TrackTools;
+import mods.railcraft.util.JsonUtil;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.world.item.ItemStack;
@@ -15,10 +14,10 @@ import net.minecraft.world.item.ItemStack;
 final class TrackItemPredicate extends ItemPredicate {
 
   static final Function<JsonObject, ItemPredicate> DESERIALIZER = (json) -> {
-    Boolean highSpeed = JsonTools.nullableBoolean(json, "high_speed");
-    Boolean electric = JsonTools.nullableBoolean(json, "electric");
-    TrackType type = JsonTools.getFromRegistryWhenPresent(json, "track_type",
-        TrackTypes.registry.get(), null);
+    var highSpeed = JsonUtil.getAsBoolean(json, "high_speed").orElse(null);
+    var electric = JsonUtil.getAsBoolean(json, "electric").orElse(null);
+    var type = JsonUtil.getFromRegistry(json, "track_type", TrackTypes.registry.get())
+        .orElse(null);
     return new TrackItemPredicate(highSpeed, electric, type);
   };
 
@@ -35,16 +34,16 @@ final class TrackItemPredicate extends ItemPredicate {
 
   @Override
   public boolean matches(ItemStack stack) {
-    TrackType type = TrackUtil.getTrackType(stack);
-    if (!Conditions.check(highSpeed, type.isHighSpeed())) {
+    var type = TrackUtil.getTrackType(stack);
+    if (!Conditions.check(this.highSpeed, type.isHighSpeed())) {
       return false;
     }
-    if (!Conditions.check(electric, type.isElectric())) {
+    if (!Conditions.check(this.electric, type.isElectric())) {
       return false;
     }
     if (!Conditions.check(this.type, type)) {
       return false;
     }
-    return TrackTools.isRail(stack);
+    return TrackUtil.isRail(stack);
   }
 }

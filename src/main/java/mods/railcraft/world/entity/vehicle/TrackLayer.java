@@ -1,6 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
-import mods.railcraft.util.TrackShapeHelper;
+import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
@@ -64,7 +64,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
     if (travelDirection == Direction.EAST || travelDirection == Direction.WEST)
       trackShape = RailShape.EAST_WEST;
     if (!isValidReplacementBlock(pos) && isValidReplacementBlock(pos.above())
-        && TrackShapeHelper.isStraight(trackShape))
+        && RailShapeUtil.isStraight(trackShape))
       pos = pos.above();
     if (isValidReplacementBlock(pos) && isValidReplacementBlock(pos.below())) {
       pos = pos.below();

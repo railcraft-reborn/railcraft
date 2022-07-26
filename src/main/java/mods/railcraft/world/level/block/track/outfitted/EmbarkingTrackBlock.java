@@ -6,9 +6,9 @@ import java.util.function.Supplier;
 
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.api.track.TrackType;
+import mods.railcraft.charge.HostEffects;
 import mods.railcraft.client.ScreenFactories;
-import mods.railcraft.util.AABBFactory;
-import mods.railcraft.util.HostEffects;
+import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.core.BlockPos;
@@ -80,7 +80,7 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
     if (isPowered(blockState) && cart.canBeRidden() && !cart.isVehicle()
         && extension.isMountable()) {
       int radius = getRadius(blockState);
-      var box = AABBFactory.start().at(blockPos).build();
+      var box = BoxBuilder.create().at(blockPos).build();
       box = box.inflate(radius, radius, radius);
       var entities = level.getEntitiesOfClass(LivingEntity.class, box);
 

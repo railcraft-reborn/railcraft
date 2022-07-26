@@ -5,37 +5,36 @@ import net.minecraft.network.FriendlyByteBuf;
 
 public enum RemoteEffectType {
 
-  TELEPORT() {
+  TELEPORT {
     @Override
     public void handle(ClientEffects effects, FriendlyByteBuf input) {
       effects.readTeleport(input);
     }
   },
-  FIRE_SPARK() {
+  FIRE_SPARK {
     @Override
     public void handle(ClientEffects effects, FriendlyByteBuf input) {
       effects.readFireSpark(input);
     }
   },
-  FORCE_SPAWN() {
+  FORCE_SPAWN {
     @Override
     public void handle(ClientEffects effects, FriendlyByteBuf input) {
       effects.readForceSpawn(input);
     }
   },
-  ZAP_DEATH() {
+  ZAP_DEATH {
     @Override
     public void handle(ClientEffects effects, FriendlyByteBuf input) {
       effects.readZapDeath(input);
     }
   },
-  BLOCK_PARTICLE() {
+  BLOCK_PARTICLE {
     @Override
     public void handle(ClientEffects effects, FriendlyByteBuf input) {
       effects.readBlockParticle(input);
     }
-  },
-  ;
+  };
 
   public static final RemoteEffectType[] VALUES = values();
 

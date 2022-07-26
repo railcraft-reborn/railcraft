@@ -38,7 +38,7 @@ import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeProtectionItem;
 import mods.railcraft.api.charge.ChargeStorage;
-import mods.railcraft.util.RCEntitySelectors;
+import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -681,7 +681,7 @@ public class ChargeNetworkImpl implements Charge.Network {
         return;
       }
       // logical server
-      if (!RCEntitySelectors.KILLABLE.test(entity)) {
+      if (!ModEntitySelector.KILLABLE.test(entity)) {
         return;
       }
 

@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
-import mods.railcraft.util.AABBFactory;
+import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.RefinedFirestoneItem;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -39,7 +39,7 @@ public class RitualBlock extends BaseEntityBlock {
 
   public static final BooleanProperty CRACKED = BooleanProperty.create("cracked");
   public static final VoxelShape SHAPE = Shapes.create(
-      AABBFactory.start()
+      BoxBuilder.create()
           .box()
           .inflateHorizontally(-0.3)
           .raiseCeiling(0.0625F * -9.0)

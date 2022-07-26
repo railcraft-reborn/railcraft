@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.core.Ownable;
-import mods.railcraft.util.JsonTools;
+import mods.railcraft.util.JsonUtil;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -104,12 +104,12 @@ public final class MinecartPredicate {
       return MinecartPredicate.ANY;
     }
 
-    Boolean highSpeed = JsonTools.nullableBoolean(element, "high_speed");
-    Boolean launched = JsonTools.nullableBoolean(element, "launched");
-    Boolean elevator = JsonTools.nullableBoolean(element, "on_elevator");
-    Boolean derail = JsonTools.nullableBoolean(element, "derailed");
-    Boolean canMount = JsonTools.nullableBoolean(element, "canMount");
-    Boolean checksOwner = JsonTools.nullableBoolean(element, "check_owner");
+    Boolean highSpeed = JsonUtil.getAsBoolean(element, "high_speed").orElse(null);
+    Boolean launched = JsonUtil.getAsBoolean(element, "launched").orElse(null);
+    Boolean elevator = JsonUtil.getAsBoolean(element, "on_elevator").orElse(null);
+    Boolean derail = JsonUtil.getAsBoolean(element, "derailed").orElse(null);
+    Boolean canMount = JsonUtil.getAsBoolean(element, "canMount").orElse(null);
+    Boolean checksOwner = JsonUtil.getAsBoolean(element, "check_owner").orElse(null);
     MinMaxBounds.Doubles speed = MinMaxBounds.Doubles.fromJson(element.get("speed"));
     EntityPredicate parent = EntityPredicate.fromJson(element.get("parent"));
 

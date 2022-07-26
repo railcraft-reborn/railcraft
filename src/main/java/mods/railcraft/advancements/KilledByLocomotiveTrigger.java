@@ -2,7 +2,7 @@ package mods.railcraft.advancements;
 
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.JsonTools;
+import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -29,8 +29,9 @@ public class KilledByLocomotiveTrigger
   @Override
   public KilledByLocomotiveTrigger.Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
-    MinecartPredicate predicate =
-        JsonTools.whenPresent(json, "cart", MinecartPredicate::deserialize, MinecartPredicate.ANY);
+    var predicate = JsonUtil.getAsJsonObject(json, "cart")
+        .map(MinecartPredicate::deserialize)
+        .orElse(MinecartPredicate.ANY);
     return new KilledByLocomotiveTrigger.Instance(entityPredicate, predicate);
   }
 

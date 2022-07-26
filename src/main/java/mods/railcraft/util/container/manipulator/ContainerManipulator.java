@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.base.Predicates;
-import mods.railcraft.util.collections.ItemStackKey;
+import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
 import net.minecraft.util.Mth;

@@ -12,7 +12,7 @@ import net.minecraft.world.entity.EntitySelector;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public enum RCEntitySelectors implements Predicate<Entity> {
+public enum ModEntitySelector implements Predicate<Entity> {
 
   LIVING {
     private final Predicate<Entity> predicate =

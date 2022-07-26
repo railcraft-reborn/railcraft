@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
-import mods.railcraft.util.AABBFactory;
+import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.Predicates;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
@@ -97,7 +97,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   @Nullable
   @Override
   public AbstractMinecart getCart() {
-    AABBFactory factory = AABBFactory.start()
+    BoxBuilder factory = BoxBuilder.create()
         .at(this.getBlockPos().below(2))
         .raiseCeiling(1)
         .inflate(-0.1F);

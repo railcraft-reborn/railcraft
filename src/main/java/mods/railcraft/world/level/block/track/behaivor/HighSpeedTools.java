@@ -2,8 +2,8 @@ package mods.railcraft.world.level.block.track.behaivor;
 
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.util.TrackTools;
+import mods.railcraft.api.track.RailShapeUtil;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.core.BlockPos;
@@ -12,7 +12,6 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -38,18 +37,18 @@ public final class HighSpeedTools {
     if (!isHighSpeedTrackAt(world, pos)) {
       return false;
     }
-    RailShape dir = TrackTools.getTrackDirection(world, pos, cart);
-    if (!TrackShapeHelper.isStraight(dir)) {
+    var railShape = TrackUtil.getTrackDirection(world, pos, cart);
+    if (!RailShapeUtil.isStraight(railShape)) {
       return false;
     }
-    if (TrackShapeHelper.isNorthSouth(dir)) {
+    if (RailShapeUtil.isNorthSouth(railShape)) {
       BlockPos north = pos.north();
       BlockPos south = pos.south();
       return (isTrackHighSpeedCapable(world, north) || isTrackHighSpeedCapable(world, north.above())
           || isTrackHighSpeedCapable(world, north.below()))
           && (isTrackHighSpeedCapable(world, south) || isTrackHighSpeedCapable(world, south.above())
               || isTrackHighSpeedCapable(world, south.below()));
-    } else if (TrackShapeHelper.isEastWest(dir)) {
+    } else if (RailShapeUtil.isEastWest(railShape)) {
       BlockPos east = pos.east();
       BlockPos west = pos.west();
       return (isTrackHighSpeedCapable(world, east) || isTrackHighSpeedCapable(world, east.above())
@@ -95,7 +94,7 @@ public final class HighSpeedTools {
   }
 
   public static boolean isHighSpeedTrackAt(BlockGetter world, BlockPos pos) {
-    return TrackTools.getTrackTypeAt(world, pos).isHighSpeed();
+    return TrackUtil.getTrackTypeAt(world, pos).isHighSpeed();
   }
 
   public static double speedForNextTrack(Level world, BlockPos pos, int dist,
@@ -115,8 +114,8 @@ public final class HighSpeedTools {
           }
         }
         if (foundTrack) {
-          RailShape dir = TrackTools.getTrackDirection(world, nextPos, cart);
-          if (dir.isAscending()) {
+          var railShape = TrackUtil.getTrackDirection(world, nextPos, cart);
+          if (railShape.isAscending()) {
             return SPEED_SLOPE;
           }
           maxSpeed = speedForNextTrack(world, nextPos, dist + 1, cart);

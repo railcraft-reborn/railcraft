@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.track.LockingTrack;
-import mods.railcraft.util.TrackTools;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
@@ -86,7 +86,7 @@ public enum ForceTrackEmitterState implements StringRepresentable {
         }
 
         var blockState = emitter.getLevel().getBlockState(toPlace);
-        var direction = TrackTools.getAxisAlignedDirection(facing);
+        var direction = TrackUtil.getAxisAlignedDirection(facing);
         if (!emitter.placeTrack(toPlace, blockState, direction)) {
           return Optional.of(EXTENDED);
         }

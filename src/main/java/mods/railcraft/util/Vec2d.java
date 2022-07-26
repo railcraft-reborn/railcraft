@@ -1,8 +1,8 @@
 package mods.railcraft.util;
 
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.core.Vec3i;
 
 /**
  * A mutable 2D Vector class that supports a broader range of math operations than Minecraft's
@@ -13,13 +13,7 @@ import net.minecraft.core.Vec3i;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class Vec2D {
-
-  public static final float DEGREES_45 = (float) (0.25 * Math.PI);
-  public static final float DEGREES_90 = (float) (0.5 * Math.PI);
-  public static final float DEGREES_135 = (float) (0.75 * Math.PI);
-  public static final float DEGREES_180 = (float) (Math.PI);
-  public static final float DEGREES_270 = (float) (1.5 * Math.PI);
+public class Vec2d {
 
   private double x;
 
@@ -33,48 +27,48 @@ public class Vec2D {
     return this.y;
   }
 
-  public Vec2D() {}
+  public Vec2d() {}
 
-  public Vec2D(final Vec3i p) {
+  public Vec2d(Vec3i p) {
     this(p.getX(), p.getZ());
   }
 
-  public Vec2D(final Vec3 p) {
+  public Vec2d(Vec3 p) {
     this(p.x, p.z);
   }
 
-  public Vec2D(final Entity p) {
+  public Vec2d(Entity p) {
     this(p.getX(), p.getZ());
   }
 
-  public Vec2D(double x, double y) {
+  public Vec2d(double x, double y) {
     this.x = x;
     this.y = y;
   }
 
-  public static Vec2D fromPolar(double angle, float magnitude) {
-    Vec2D v = new Vec2D();
+  public static Vec2d fromPolar(double angle, float magnitude) {
+    Vec2d v = new Vec2d();
     v.setFromPolar(angle, magnitude);
     return v;
   }
 
-  public static Vec2D add(final Vec2D a, final Vec2D b) {
-    return new Vec2D(a.getX() + b.getX(), a.getY() + b.getY());
+  public static Vec2d add(final Vec2d a, final Vec2d b) {
+    return new Vec2d(a.getX() + b.getX(), a.getY() + b.getY());
   }
 
-  public static Vec2D subtract(final Vec2D a, final Vec2D b) {
-    return new Vec2D(a.getX() - b.getX(), a.getY() - b.getY());
+  public static Vec2d subtract(final Vec2d a, final Vec2d b) {
+    return new Vec2d(a.getX() - b.getX(), a.getY() - b.getY());
   }
 
-  public static Vec2D unit(final Vec2D a, final Vec2D b) {
-    Vec2D unit = subtract(a, b);
+  public static Vec2d unit(final Vec2d a, final Vec2d b) {
+    Vec2d unit = subtract(a, b);
     unit.normalize();
     return unit;
   }
 
   @Override
-  public Vec2D clone() {
-    return new Vec2D(x, y);
+  public Vec2d clone() {
+    return new Vec2d(x, y);
   }
 
   public void setLocation(double x, double y) {
@@ -100,8 +94,8 @@ public class Vec2D {
     }
   }
 
-  public Vec2D unitVector() {
-    Vec2D v = clone();
+  public Vec2d unitVector() {
+    Vec2d v = clone();
     v.normalize();
     return v;
   }
@@ -146,7 +140,7 @@ public class Vec2D {
     y = -ox;
   }
 
-  public void subtract(final Vec2D p) {
+  public void subtract(final Vec2d p) {
     x -= p.getX();
     y -= p.getY();
   }
@@ -161,7 +155,7 @@ public class Vec2D {
     this.y -= (int) y;
   }
 
-  public void add(final Vec2D p) {
+  public void add(final Vec2d p) {
     x += p.getX();
     y += p.getY();
   }
@@ -187,7 +181,7 @@ public class Vec2D {
   /**
    * Finds the dot product of two vectors.
    */
-  public double dotProduct(final Vec2D v) {
+  public double dotProduct(final Vec2d v) {
     return x * v.getX() + y * v.getY();
   }
 
@@ -195,7 +189,7 @@ public class Vec2D {
    * Finds the absolute angle between two vectors using the Law of Cosines:<br>
    * <b>V . W = |V||W|cos(a)</b>
    */
-  public double angleBetween(final Vec2D v) {
+  public double angleBetween(final Vec2d v) {
     double a = dotProduct(v);
     double magnitude = magnitude() * v.magnitude();
     if (magnitude == 0) {
@@ -213,11 +207,11 @@ public class Vec2D {
     return Math.acos(a);
   }
 
-  public double angleTo(Vec2D a) {
+  public double angleTo(Vec2d a) {
     return Math.atan2(a.getY() - y, a.getX() - x);
   }
 
-  public double angleFrom(Vec2D a) {
+  public double angleFrom(Vec2d a) {
     return Math.atan2(y - a.getY(), x - a.getX());
   }
 
@@ -226,7 +220,7 @@ public class Vec2D {
     y *= scale;
   }
 
-  public void addScale(float scale, Vec2D v) {
+  public void addScale(float scale, Vec2d v) {
     setLocation(x + v.getX() * scale, y + v.getY() * scale);
   }
 }

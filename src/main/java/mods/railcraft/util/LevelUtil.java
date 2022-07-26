@@ -35,20 +35,11 @@ public class LevelUtil {
     return Optional.ofNullable(level.getBlockEntity(pos));
   }
 
-  public static <T> Optional<T> getBlockEntity(BlockGetter reader, BlockPos pos,
+  public static <T> Optional<T> getBlockEntity(BlockGetter getter, BlockPos pos,
       Class<T> blockEntityType) {
-    return getBlockEntity(reader, pos, blockEntityType, false);
-  }
-
-  public static <T> Optional<T> getBlockEntity(BlockGetter level, BlockPos pos,
-      Class<T> blockEntityType, boolean weak) {
-    if (!weak || !(level instanceof Level) || ((Level) level).isLoaded(pos)) {
-      BlockEntity blockEntity = level.getBlockEntity(pos);
-      if (blockEntityType.isInstance(blockEntity)) {
-        return Optional.of(blockEntityType.cast(blockEntity));
-      }
-    }
-    return Optional.empty();
+    return Optional.ofNullable(getter.getBlockEntity(pos))
+        .filter(blockEntityType::isInstance)
+        .map(blockEntityType::cast);
   }
 
   public static boolean setBlockState(Level world, BlockPos pos, BlockState blockState,

@@ -1,9 +1,9 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
+import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.PowerUtil;
-import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.entity.vehicle.CartConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -133,7 +133,7 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
         return;
       }
       RailShape shape = getRailShapeRaw(blockState);
-      Predicate<AbstractMinecart> travelling = TrackShapeHelper.isEastWest(shape)
+      Predicate<AbstractMinecart> travelling = RailShapeUtil.isEastWest(shape)
           ? cart -> reversed ? cart.getDeltaMovement().x() < 0.0D
               : cart.getDeltaMovement().x() > 0.0D
           : cart -> reversed ? cart.getDeltaMovement().z() > 0.0D

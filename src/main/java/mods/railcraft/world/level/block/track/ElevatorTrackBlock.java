@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.track;
 
 import javax.annotation.Nullable;
-import mods.railcraft.util.AABBFactory;
+import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.core.BlockPos;
@@ -297,7 +297,7 @@ public class ElevatorTrackBlock extends Block {
     if (cart.level.getBlockState(pos).getMaterial().isSolid())
       return false;
     Direction.Axis axis = state.getValue(FACING).getAxis();
-    AABBFactory factory = AABBFactory.start().at(pos).expandAxis(axis, 1.0);
+    BoxBuilder factory = BoxBuilder.create().at(pos).expandAxis(axis, 1.0);
     if (up) {
       factory.raiseCeiling(0.5);
       factory.raiseFloor(0.2);

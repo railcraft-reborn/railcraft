@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
-import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -60,8 +59,8 @@ public class OutfittedTrackBlock extends TrackBlock {
   @Override
   public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player,
       boolean willHarvest, FluidState fluid) {
-    BlockState newState = TrackUtil.setShape(this.getTrackType().getFlexBlock(),
-        TrackTools.getRailShapeRaw(state));
+    var newState = TrackUtil.setShape(this.getTrackType().getFlexBlock(),
+        TrackUtil.getRailShapeRaw(state));
     boolean result = world.setBlockAndUpdate(pos, newState);
     // Below is ugly workaround for fluids!
     if (Arrays.stream(Direction.values())

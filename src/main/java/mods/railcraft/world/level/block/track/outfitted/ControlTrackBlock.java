@@ -1,8 +1,8 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
+import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -32,7 +32,7 @@ public class ControlTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     final Vec3 deltaMovement = cart.getDeltaMovement();
     final boolean powered = isPowered(blockState);
     final boolean reversed = isReversed(blockState);
-    if (TrackShapeHelper.isNorthSouth(trackShape)) {
+    if (RailShapeUtil.isNorthSouth(trackShape)) {
       if (deltaMovement.z() <= 0) {
         if (isPowered(blockState) ^ !reversed) {
           cart.setDeltaMovement(deltaMovement.subtract(0.0D, 0.0D, BOOST_AMOUNT));

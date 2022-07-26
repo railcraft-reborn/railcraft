@@ -1,30 +1,21 @@
 package mods.railcraft.util;
 
-import java.util.Arrays;
-import java.util.Random;
 import javax.annotation.Nullable;
-import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.entity.LivingEntity;
+import com.mojang.math.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public final class MiscTools {
+public final class RayTraceUtil {
 
-  public static final Random RANDOM = new Random();
-
-  public static String cleanTag(String tag) {
-    return tag.replaceAll("[Rr]ailcraft\\p{Punct}", "").replaceFirst("^tile\\.", "")
-        .replaceFirst("^item\\.", "");
-  }
+  private RayTraceUtil() {}
 
   /**
    * Same as {@link net.minecraft.block.Block#rayTrace(BlockPos, Vector3d, Vector3d, AxisAlignedBB)}
@@ -88,32 +79,10 @@ public final class MiscTools {
    * @return a side value 0-5
    */
   public static @Nullable Direction getCurrentMousedOverSide(Player player) {
-    HitResult mouseOver = rayTracePlayerLook(player);
-    if (mouseOver instanceof BlockHitResult)
-      return ((BlockHitResult) mouseOver).getDirection();
+    var hitResult = rayTracePlayerLook(player);
+    if (hitResult instanceof BlockHitResult blockHitResult) {
+      return blockHitResult.getDirection();
+    }
     return null;
   }
-
-  /**
-   * Returns the side closest to the player. Used in placement logic for blocks.
-   *
-   * @return a side
-   */
-  public static Direction getSideFacingPlayer(LivingEntity entity) {
-    return Direction.orderedByNearest(entity)[0];
-  }
-
-  public static @Nullable Direction getSideFacingTrack(Level world, BlockPos pos) {
-    return Arrays.stream(Direction.values())
-        .filter(dir -> BaseRailBlock.isRail(world, pos.relative(dir)))
-        .findFirst()
-        .orElse(null);
-  }
-
-  public static boolean areCoordinatesOnSide(BlockPos start, BlockPos end, Direction side) {
-    return start.relative(side).equals(end);
-  }
-
-  private MiscTools() {}
-
 }

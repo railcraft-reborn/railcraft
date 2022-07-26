@@ -1,8 +1,8 @@
 package mods.railcraft.world.item;
 
+import mods.railcraft.api.track.RailShapeUtil;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -27,8 +27,8 @@ public class TunnelBoreItem extends Item {
           .around(pos)
           .search(level)
           .isEmpty()) {
-        var trackShape = TrackTools.getTrackDirection(level, pos, existingState);
-        if (TrackShapeHelper.isLevelStraight(trackShape)) {
+        var trackShape = TrackUtil.getTrackDirection(level, pos, existingState);
+        if (RailShapeUtil.isLevelStraight(trackShape)) {
           var playerFacing = context.getHorizontalDirection().getOpposite();
 
           if (trackShape == RailShape.NORTH_SOUTH) {

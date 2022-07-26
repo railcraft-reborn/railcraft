@@ -1,11 +1,12 @@
 package mods.railcraft.world.level.block.entity.track;
 
+import java.util.UUID;
+import javax.annotation.Nullable;
 import mods.railcraft.api.event.CartLockdownEvent;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.api.track.LockingTrack;
+import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
@@ -29,10 +30,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.common.MinecraftForge;
 
-import javax.annotation.Nullable;
-import java.util.UUID;
-
 public class LockingTrackBlockEntity extends RailcraftBlockEntity implements LockingTrack {
+
+  public static final int TRAIN_LOCKDOWN_DELAY = 200;
 
   public static final double START_BOOST = 0.04;
   public static final double BOOST_FACTOR = 0.06;
@@ -156,7 +156,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
       this.lockingModeController.locked(this.currentCart);
       this.currentCart.setDeltaMovement(0.0D, this.currentCart.getDeltaMovement().y(), 0.0D);
       RailShape railShape = TrackBlock.getRailShapeRaw(this.getBlockState());
-      if (TrackShapeHelper.isNorthSouth(railShape)) {
+      if (RailShapeUtil.isNorthSouth(railShape)) {
         this.currentCart.setPos(this.currentCart.getX(), this.currentCart.getY(),
             this.getBlockPos().getZ() + 0.5D);
       } else {
@@ -208,7 +208,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
       if (this.currentCart != null) {
         if (Train.areInSameTrain(this.currentCart, this.prevCart)) {
           // reset trainDelay
-          this.trainDelay = TrackTools.TRAIN_LOCKDOWN_DELAY;
+          this.trainDelay = TRAIN_LOCKDOWN_DELAY;
         } else {
           // We've encountered a new train, force the delay to 0 so we return false
           this.trainDelay = 0;
@@ -219,7 +219,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
             .search(this.level)
             .stream()
             .anyMatch(cart -> Train.areInSameTrain(cart, this.prevCart))) {
-          this.trainDelay = TrackTools.TRAIN_LOCKDOWN_DELAY;
+          this.trainDelay = TRAIN_LOCKDOWN_DELAY;
         }
       }
 

@@ -1,10 +1,12 @@
 package mods.railcraft.world.item;
 
+import java.util.Map;
+import java.util.function.Supplier;
 import com.google.common.collect.ImmutableMap;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
+import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.util.TrackTools;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.core.BlockPos;
@@ -24,11 +26,7 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.Map;
-import java.util.function.Supplier;
 
 public class TrackKitItem extends Item {
 
@@ -66,9 +64,9 @@ public class TrackKitItem extends Item {
       return InteractionResult.PASS;
     }
 
-    RailShape shape = TrackTools.getRailShapeRaw(level, blockPos);
+    var shape = TrackUtil.getRailShapeRaw(level, blockPos);
 
-    if (!TrackShapeHelper.isStraight(shape)) {
+    if (!RailShapeUtil.isStraight(shape)) {
       player.displayClientMessage(Component.translatable("track_kit.corners_unsupported"),
           true);
       return InteractionResult.PASS;

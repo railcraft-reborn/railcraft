@@ -7,7 +7,7 @@
  license page at https://railcraft.info/wiki/info:license.
  -----------------------------------------------------------------------------*/
 
-package mods.railcraft.util.collections;
+package mods.railcraft.util;
 
 import net.minecraft.world.item.ItemStack;
 import mods.railcraft.util.container.ContainerTools;
@@ -43,8 +43,8 @@ public record ItemStackKey(ItemStack stack) {
     return hash;
   }
 
-  public ItemStack get() {
-    return stack.copy();
+  public ItemStack copyStack() {
+    return this.stack.copy();
   }
 
   public static ItemStackKey make(ItemStack stack) {

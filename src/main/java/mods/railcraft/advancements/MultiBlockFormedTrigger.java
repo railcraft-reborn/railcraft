@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.Conditions;
-import mods.railcraft.util.JsonTools;
+import mods.railcraft.util.JsonUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -32,14 +32,11 @@ public class MultiBlockFormedTrigger extends
   @Override
   protected MultiBlockFormedTrigger.Instance createInstance(JsonObject json,
       EntityPredicate.Composite andPredicate, DeserializationContext parser) {
-
-    BlockEntityType<?> type = json.has("type")
-        ? ForgeRegistries.BLOCK_ENTITY_TYPES.getValue(
-            new ResourceLocation(json.get("type").getAsString()))
-        : null;
-    NbtPredicate nbt =
-        JsonTools.whenPresent(json, "nbt", NbtPredicate::fromJson, NbtPredicate.ANY);
-
+    var type = JsonUtil.getFromRegistry(json, "type", ForgeRegistries.BLOCK_ENTITY_TYPES)
+        .orElse(null);
+    var nbt = JsonUtil.getAsJsonObject(json, "nbt")
+        .map(NbtPredicate::fromJson)
+        .orElse(NbtPredicate.ANY);
     return new MultiBlockFormedTrigger.Instance(andPredicate, type, nbt);
   }
 

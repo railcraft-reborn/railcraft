@@ -8,7 +8,7 @@ import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.api.signal.TokenSignal;
 import mods.railcraft.api.signal.TrackLocator;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.collections.TimerBag;
+import mods.railcraft.util.TimerBag;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.signal.SimpleTokenRing;
 import mods.railcraft.world.signal.TokenRingManager;

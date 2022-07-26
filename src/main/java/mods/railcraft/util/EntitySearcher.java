@@ -55,8 +55,8 @@ public final class EntitySearcher {
   public static class SearchParameters<T extends Entity> {
 
     private final Class<T> entityClass;
-    private AABBFactory box = AABBFactory.start();
-    private Predicate<T> filter = RCEntitySelectors.LIVING::test;
+    private BoxBuilder box = BoxBuilder.create();
+    private Predicate<T> filter = ModEntitySelector.LIVING::test;
 
     public SearchParameters(Class<T> entityClass) {
       this.entityClass = entityClass;
@@ -80,7 +80,7 @@ public final class EntitySearcher {
       return this;
     }
 
-    public SearchParameters<T> around(AABBFactory factory) {
+    public SearchParameters<T> around(BoxBuilder factory) {
       this.box = factory;
       return this;
     }

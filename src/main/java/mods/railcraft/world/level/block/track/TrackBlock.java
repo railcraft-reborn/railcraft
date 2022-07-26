@@ -1,11 +1,16 @@
 package mods.railcraft.world.level.block.track;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.item.SpikeMaulTarget;
 import mods.railcraft.api.track.TrackType;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.track.TypedTrack;
-import mods.railcraft.util.TrackTools;
 import mods.railcraft.world.level.block.track.behaivor.TrackSupportTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -27,12 +32,6 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * Created by CovertJaguar on 8/29/2016 for Railcraft.
@@ -123,21 +122,21 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
 
   protected boolean isRailValid(BlockState state, Level world, BlockPos pos,
       int maxSupportedDistance) {
-    RailShape dir = TrackTools.getRailShapeRaw(state);
+    var railShape = TrackUtil.getRailShapeRaw(state);
     if (!TrackSupportTools.isSupported(world, pos, maxSupportedDistance)) {
       return false;
     }
     if (maxSupportedDistance == 0) {
-      if (dir == RailShape.ASCENDING_EAST && !canSupportRigidBlock(world, pos.east())) {
+      if (railShape == RailShape.ASCENDING_EAST && !canSupportRigidBlock(world, pos.east())) {
         return false;
       }
-      if (dir == RailShape.ASCENDING_WEST && !canSupportRigidBlock(world, pos.west())) {
+      if (railShape == RailShape.ASCENDING_WEST && !canSupportRigidBlock(world, pos.west())) {
         return false;
       }
-      if (dir == RailShape.ASCENDING_NORTH && !canSupportRigidBlock(world, pos.north())) {
+      if (railShape == RailShape.ASCENDING_NORTH && !canSupportRigidBlock(world, pos.north())) {
         return false;
       }
-      if (dir == RailShape.ASCENDING_SOUTH && !canSupportRigidBlock(world, pos.south())) {
+      if (railShape == RailShape.ASCENDING_SOUTH && !canSupportRigidBlock(world, pos.south())) {
         return false;
       }
     }
@@ -155,7 +154,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
       return;
     }
     this.updateState(blockState, level, pos, neighborBlock);
-    TrackTools.traverseConnectedTracks(level, pos, (w, p) -> {
+    TrackUtil.traverseConnectedTracks(level, pos, (w, p) -> {
       BlockState s = w.getBlockState(p);
       Block b = s.getBlock();
       if (!BaseRailBlock.isRail(s)) {

@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
-import mods.railcraft.util.AABBFactory;
+import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.inventory.FeedStationMenu;
 import mods.railcraft.world.level.block.FeedStationBlock;
@@ -51,7 +51,7 @@ public class FeedStationBlockEntity extends ContainerBlockEntity implements Menu
 
     if (!powered && !feed.isEmpty() && blockEntity.feedTime <= 0) {
       blockEntity.feedTime = MIN_FEED_INTERVAL + level.getRandom().nextInt(FEED_VARIANCE);
-      var box = AABBFactory.start()
+      var box = BoxBuilder.create()
           .at(blockPos)
           .raiseFloor(-1)
           .raiseCeiling(2)

@@ -6,9 +6,9 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.item.MinecartFactory;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.Predicates;
-import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -32,7 +32,7 @@ public enum StackFilter implements Predicate<ItemStack> {
 
   ALL(Predicates.alwaysTrue()),
   FUEL(itemStack -> ForgeHooks.getBurnTime(itemStack, null) > 0),
-  TRACK(itemStack -> TrackTools.isRail(itemStack)),
+  TRACK(TrackUtil::isRail),
   MINECART(itemStack -> itemStack.getItem() instanceof MinecartItem
       || itemStack.getItem() instanceof MinecartFactory),
   @SuppressWarnings("deprecation")

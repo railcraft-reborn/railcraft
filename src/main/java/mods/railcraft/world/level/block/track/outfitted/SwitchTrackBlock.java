@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.util.TrackTools;
+import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -57,16 +57,19 @@ public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
   }
 
   protected void updateAdjacentBlocks(BlockState blockState, Level level, BlockPos pos) {
-    final RailShape railShape = TrackTools.getRailShapeRaw(blockState);
-    if (railShape == RailShape.NORTH_SOUTH) {
-      BlockPos offset =
-          BaseRailBlock.isRail(level, pos.west()) ? pos.west() : pos.east();
-      if (BaseRailBlock.isRail(level, offset)) {
-        RailShape otherDir = TrackTools.getTrackDirection(level, offset);
-        if (otherDir == RailShape.NORTH_SOUTH) {
-          TrackTools.setRailShape(level, offset, RailShape.EAST_WEST);
-        }
-      }
+    var railShape = TrackUtil.getRailShapeRaw(blockState);
+    if (railShape != RailShape.NORTH_SOUTH) {
+      return;
+    }
+
+    var offset = BaseRailBlock.isRail(level, pos.west()) ? pos.west() : pos.east();
+    if (!BaseRailBlock.isRail(level, offset)) {
+      return;
+    }
+
+    var otherShape = TrackUtil.getTrackDirection(level, offset);
+    if (otherShape == RailShape.NORTH_SOUTH) {
+      TrackUtil.setRailShape(level, offset, RailShape.EAST_WEST);
     }
   }
 

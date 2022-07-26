@@ -1,9 +1,12 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Nullable;
 import mods.railcraft.api.carts.IItemCart;
+import mods.railcraft.api.track.RailShapeUtil;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.season.Season;
-import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.util.TrackTools;
 import mods.railcraft.util.container.ContainerMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,16 +29,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.network.NetworkHooks;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Basetype of RC minecarts. It also contains some generic code that most carts will find useful.
  *
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public abstract class RailcraftMinecart extends AbstractMinecartContainer implements SeasonalCart, IItemCart {
+public abstract class RailcraftMinecart extends AbstractMinecartContainer
+    implements SeasonalCart, IItemCart {
 
   private static final EntityDataAccessor<Byte> SEASON =
       SynchedEntityData.defineId(RailcraftMinecart.class, EntityDataSerializers.BYTE);
@@ -127,10 +127,10 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer implem
   }
 
   protected void updateTravelDirection(BlockPos pos, BlockState state) {
-    RailShape shape = TrackTools.getTrackDirection(level, pos, state);
+    var shape = TrackUtil.getTrackDirection(this.level, pos, state);
 
     @Nullable
-    Direction facing = determineTravelDirection(shape);
+    Direction facing = this.determineTravelDirection(shape);
     @Nullable
     Direction previousEnumFacing = travelDirectionHistory[1];
 
@@ -144,7 +144,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer implem
 
   @Nullable
   private Direction determineTravelDirection(RailShape shape) {
-    if (TrackShapeHelper.isStraight(shape)) {
+    if (RailShapeUtil.isStraight(shape)) {
       if (getX() - xo > 0) {
         return Direction.EAST;
       }

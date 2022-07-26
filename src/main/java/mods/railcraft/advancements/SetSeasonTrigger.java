@@ -4,15 +4,15 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.season.Season;
-import mods.railcraft.util.JsonTools;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.Instance> {
 
@@ -26,14 +26,12 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
   @Override
   public Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
-
-    @Nullable
-    Season season = JsonTools.whenPresent(json, "season",
-        // || this element down here returns a json **object**, not an element, so you cannot
-        // \/ use getAsString
-        (element) -> Season.getByName(element.get("value").getAsString()).orElse(null), null);
-    MinecartPredicate cartPredicate =
-        JsonTools.whenPresent(json, "cart", MinecartPredicate::deserialize, MinecartPredicate.ANY);
+    var season = JsonUtil.getAsString(json, "season")
+        .flatMap(Season::getByName)
+        .orElse(null);
+    var cartPredicate = JsonUtil.getAsJsonObject(json, "cart")
+        .map(MinecartPredicate::deserialize)
+        .orElse(MinecartPredicate.ANY);
     return new SetSeasonTrigger.Instance(entityPredicate, season, cartPredicate);
   }
 
@@ -78,9 +76,7 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
     public JsonObject serializeToJson(SerializationContext serializer) {
       JsonObject json = new JsonObject();
       if (this.season != null) {
-        JsonObject season = new JsonObject();
-        season.addProperty("value", this.season.getSerializedName());
-        json.add("season", season);
+        json.addProperty("season", this.season.getSerializedName());
       }
       json.add("cart", this.cartPredicate.serializeToJson());
       return json;
