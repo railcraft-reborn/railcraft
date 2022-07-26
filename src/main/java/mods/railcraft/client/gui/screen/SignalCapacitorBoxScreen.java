@@ -72,8 +72,8 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    NetworkChannel.GAME.getSimpleChannel()
-        .sendToServer(new SetSignalCapacitorBoxAttributesMessage(this.signalBox.getBlockPos(),
+    NetworkChannel.GAME.sendToServer(
+        new SetSignalCapacitorBoxAttributesMessage(this.signalBox.getBlockPos(),
             this.signalBox.getTicksToPower(), this.modeButton.getState()));
   }
 }

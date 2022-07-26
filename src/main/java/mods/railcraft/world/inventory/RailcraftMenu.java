@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
+import io.netty.buffer.Unpooled;
 import mods.railcraft.gui.widget.Widget;
-import mods.railcraft.network.PacketBuilder;
+import mods.railcraft.network.NetworkChannel;
+import mods.railcraft.network.play.SyncWidgetMessage;
 import mods.railcraft.util.container.ContainerTools;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -65,9 +68,21 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   @Override
   public final void broadcastChanges() {
     super.broadcastChanges();
-    if (!this.player.level.isClientSide()) {
-      this.widgets.forEach(widget -> PacketBuilder.instance()
-          .sendGuiWidgetPacket((ServerPlayer) this.player, this.containerId, widget));
+    if (this.player instanceof ServerPlayer serverPlayer) {
+      this.widgets.forEach(widget -> this.sendWidgetPacket(serverPlayer, widget));
+    }
+  }
+
+  private void sendWidgetPacket(ServerPlayer player, Widget widget) {
+    if (widget.requiresSync(player)) {
+      var byteBuf = new FriendlyByteBuf(Unpooled.buffer());
+      try {
+        widget.writeToBuf(player, byteBuf);
+        var message = new SyncWidgetMessage(this.containerId, widget.getId(), byteBuf);
+        NetworkChannel.GAME.sendTo(message, player);
+      } finally {
+        byteBuf.release();
+      }
     }
   }
 

@@ -15,13 +15,17 @@ import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 /**
- * Instance handlig all of railcraft network IOs.
+ * Holds {@link SimpleChannel} instances for each network channel type.
  */
 public enum NetworkChannel {
 
@@ -121,17 +125,17 @@ public enum NetworkChannel {
   /**
    * Network protocol version.
    */
-  private static final String NETWORK_VERSION = "0.0.1.0";
+  private static final String NETWORK_VERSION = "1";
   /**
    * Prevents re-registering messages.
    */
-  private static boolean loaded;
+  private static boolean registered;
   /**
    * Simple channel.
    */
   private final SimpleChannel simpleChannel;
 
-  NetworkChannel(ResourceLocation channelName) {
+  private NetworkChannel(ResourceLocation channelName) {
     this.simpleChannel = NetworkRegistry.ChannelBuilder
         .named(channelName)
         .clientAcceptedVersions(NETWORK_VERSION::equals)
@@ -142,16 +146,40 @@ public enum NetworkChannel {
 
   protected abstract void registerMessages(SimpleChannel simpleChannel);
 
-  public SimpleChannel getSimpleChannel() {
+  public SimpleChannel simpleChannel() {
     return this.simpleChannel;
   }
 
+  // ================================================================================
+  // Send Helper Methods
+  // ================================================================================
+
+  public void sendToServer(Object packet) {
+    this.simpleChannel.sendToServer(packet);
+  }
+
+  public void sendTo(Object packet, ServerPlayer player) {
+    this.simpleChannel.send(PacketDistributor.PLAYER.with(() -> player), packet);
+  }
+
+  public void sendToAll(Object packet) {
+    this.simpleChannel.send(PacketDistributor.ALL.noArg(), packet);
+  }
+
+  public void sendToAllAround(Object packet, PacketDistributor.TargetPoint zone) {
+    this.simpleChannel.send(PacketDistributor.NEAR.with(() -> zone), packet);
+  }
+
+  public void sendToDimension(Object packet, ResourceKey<Level> dimensionId) {
+    this.simpleChannel.send(PacketDistributor.DIMENSION.with(() -> dimensionId), packet);
+  }
+
   public static void registerAll() {
-    if (!loaded) {
-      for (var channel : NetworkChannel.values()) {
+    if (!registered) {
+      for (var channel : values()) {
         channel.registerMessages(channel.simpleChannel);
       }
-      loaded = true;
+      registered = true;
     }
   }
 }

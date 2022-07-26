@@ -175,7 +175,7 @@ public class Railcraft {
           .map(MinecartExtension::getOrThrow)
           .map(LinkedCartsMessage.LinkedCart::new)
           .toList();
-      NetworkChannel.GAME.getSimpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
+      NetworkChannel.GAME.simpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
           player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
     }
   }

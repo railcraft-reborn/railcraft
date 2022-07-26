@@ -117,7 +117,7 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
         this.parseRegex(this.textFields.get(entry.getKey()).getValue(), entry.getValue());
       }
       this.signalBox.setSignalAspectTriggerSignals(this.signalAspectTriggerSignals);
-      NetworkChannel.GAME.getSimpleChannel().sendToServer(
+      NetworkChannel.GAME.sendToServer(
           new SetAnalogSignalControllerBoxAttributesMessage(this.signalBox.getBlockPos(),
               this.signalAspectTriggerSignals));
     }

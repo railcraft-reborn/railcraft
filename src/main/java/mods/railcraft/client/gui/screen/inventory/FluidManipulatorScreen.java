@@ -22,7 +22,7 @@ public class FluidManipulatorScreen extends ManipulatorScreen<FluidManipulatorMe
 
   @Override
   protected void sendAttributes() {
-    NetworkChannel.GAME.getSimpleChannel().sendToServer(new SetFluidManipulatorAttributesMessage(
+    NetworkChannel.GAME.sendToServer(new SetFluidManipulatorAttributesMessage(
         this.menu.getManipulator().getBlockPos(), this.menu.getManipulator().getRedstoneMode()));
   }
 

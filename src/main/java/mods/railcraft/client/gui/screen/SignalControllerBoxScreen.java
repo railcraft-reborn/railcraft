@@ -61,7 +61,7 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
     if (this.minecraft.level != null) {
       this.signalBox.setDefaultAspect(this.defaultAspect);
       this.signalBox.setPoweredAspect(this.poweredAspect);
-      NetworkChannel.GAME.getSimpleChannel().sendToServer(
+      NetworkChannel.GAME.sendToServer(
           new SetSignalControllerBoxAttributesMessage(this.signalBox.getBlockPos(),
               this.defaultAspect, this.poweredAspect));
     }

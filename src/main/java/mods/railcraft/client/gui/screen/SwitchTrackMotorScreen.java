@@ -53,7 +53,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
 
     this.addRenderableWidget(
         this.redstoneTriggeredButton = new ToggleButton(centreX + 34, centreY + 80, 110, 20,
-          Component.translatable(Translations.Screen.SWITCH_TRACK_MOTOR_REDSTONE),
+            Component.translatable(Translations.Screen.SWITCH_TRACK_MOTOR_REDSTONE),
             button -> ((ToggleButton) button).setToggled(this.toggleRedstoneTriggered()),
             ButtonTexture.LARGE_BUTTON,
             this.switchTrackMotor.isRedstoneTriggered()));
@@ -92,10 +92,10 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
     final LockableSwitchTrackActuatorBlockEntity.Lock lock = this.lockButton.getState();
     switch (lock) {
       case LOCKED -> this.lockButtonTooltip =
-        Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
-          this.switchTrackMotor.getOwnerOrThrow().getName());
+          Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
+              this.switchTrackMotor.getOwnerOrThrow().getName());
       case UNLOCKED -> this.lockButtonTooltip =
-        Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
+          Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }
   }
 
@@ -149,7 +149,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
     if (!this.switchTrackMotor.canAccess(this.minecraft.getUser().getGameProfile())) {
       return;
     }
-    NetworkChannel.GAME.getSimpleChannel().sendToServer(
+    NetworkChannel.GAME.sendToServer(
         new SetSwitchTrackMotorAttributesMessage(this.switchTrackMotor.getBlockPos(),
             this.switchTrackMotor.getActionSignalAspects(),
             this.switchTrackMotor.isRedstoneTriggered(),

@@ -57,7 +57,7 @@ public class LauncherTrackScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    NetworkChannel.GAME.getSimpleChannel().sendToServer(
+    NetworkChannel.GAME.sendToServer(
         new SetLauncherTrackAttributesMessage(this.track.getBlockPos(),
             this.track.getLaunchForce()));
   }

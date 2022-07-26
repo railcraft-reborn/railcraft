@@ -64,7 +64,7 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
   @Override
   protected void sendAttributes() {
     ItemManipulatorBlockEntity manipulator = this.menu.getManipulator();
-    NetworkChannel.GAME.getSimpleChannel().sendToServer(
+    NetworkChannel.GAME.sendToServer(
         new SetItemManipulatorAttributesMessage(manipulator.getBlockPos(),
             manipulator.getRedstoneMode(), manipulator.getTransferMode()));
   }
