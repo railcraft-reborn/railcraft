@@ -1,12 +1,19 @@
 package mods.railcraft.data.recipes;
 
+import java.util.HashMap;
 import java.util.function.Consumer;
 
+import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 
@@ -45,6 +52,7 @@ public class RecipeBlocks extends CustomRecipeProvider {
       RailcraftTags.Items.STEEL_TANK_VALVE);
 
     //TODO: TANK_GAUGE I don't know the recipe
+    strengthenedGlass(consumer);
   }
 
   public static void decompressItem(Consumer<FinishedRecipe> consumer) {
@@ -85,6 +93,37 @@ public class RecipeBlocks extends CustomRecipeProvider {
 
     compress(consumer, RailcraftItems.STEEL_BLOCK.get(),
       RailcraftTags.Items.STEEL_INGOT, "block");
+  }
+
+  private static void strengthenedGlass(Consumer<FinishedRecipe> consumer) {
+    var ingredients = new HashMap<String, TagKey<Item>>();
+    ingredients.put("tin", RailcraftTags.Items.TIN_INGOT);
+    ingredients.put("nickel", RailcraftTags.Items.NICKEL_INGOT);
+    ingredients.put("invar", RailcraftTags.Items.INVAR_INGOT);
+    ingredients.put("brass", RailcraftTags.Items.BRASS_INGOT);
+    ingredients.put("iron", Tags.Items.INGOTS_IRON);
+
+    var colorItems = RailcraftItems.STRENGTHENED_GLASS;
+    var tagItem = RailcraftTags.Items.STRENGTHENED_GLASS;
+
+    var result = colorItems.variantFor(DyeColor.WHITE).get();
+    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+
+    for (var ingredient : ingredients.entrySet()) {
+      var recipeName = name.substring(name.indexOf('_') + 1) + "_" + ingredient.getKey();
+      ShapedRecipeBuilder.shaped(result, 6)
+        .pattern("aba")
+        .pattern("aca")
+        .pattern("ada")
+        .define('a', Tags.Items.GLASS)
+        .define('b', ingredient.getValue())
+        .define('c', RailcraftItems.SALTPETER_DUST.get())
+        .define('d', Items.WATER_BUCKET)
+        .unlockedBy(getHasName(RailcraftItems.SALTPETER_DUST.get()), has(RailcraftItems.SALTPETER_DUST.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID, recipeName));
+    }
+
+    coloredBlockVariant(consumer, colorItems, tagItem);
   }
 
 }

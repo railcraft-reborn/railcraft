@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.ColorVariantRegistrar;
-import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -38,16 +37,7 @@ public abstract class CustomRecipeProvider extends RecipeProvider {
       .unlockedBy(getHasName(ingredient), has(ingredient))
       .save(consumer, Railcraft.ID + ":" + name.substring(name.indexOf('_') + 1));
 
-    for (var dyeColor : DyeColor.values()) {
-      ShapedRecipeBuilder.shaped(colorItems.variantFor(dyeColor).get(), 8)
-        .pattern("aaa")
-        .pattern("aba")
-        .pattern("aaa")
-        .define('a', tagItem)
-        .define('b', DyeItem.byColor(dyeColor))
-        .unlockedBy(getHasName(result), has(result))
-        .save(consumer);
-    }
+    coloredBlockVariant(consumer, colorItems, tagItem);
   }
 
   protected static void tankValve(Consumer<FinishedRecipe> consumer,
@@ -66,16 +56,7 @@ public abstract class CustomRecipeProvider extends RecipeProvider {
       .unlockedBy(getHasName(ingredient), has(ingredient))
       .save(consumer, new ResourceLocation(Railcraft.ID, name.substring(name.indexOf('_') + 1)));
 
-    for (var dyeColor : DyeColor.values()) {
-      ShapedRecipeBuilder.shaped(colorItems.variantFor(dyeColor).get(), 8)
-        .pattern("aaa")
-        .pattern("aba")
-        .pattern("aaa")
-        .define('a', tagItem)
-        .define('b', DyeItem.byColor(dyeColor))
-        .unlockedBy(getHasName(result), has(result))
-        .save(consumer);
-    }
+    coloredBlockVariant(consumer, colorItems, tagItem);
   }
 
   protected static void compress(Consumer<FinishedRecipe> finishedRecipe,
@@ -103,4 +84,19 @@ public abstract class CustomRecipeProvider extends RecipeProvider {
         RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
   }
 
+  protected static void coloredBlockVariant(Consumer<FinishedRecipe> consumer,
+                                          ColorVariantRegistrar<BlockItem> colorItems,
+                                          TagKey<Item> tagItem) {
+    var base = colorItems.variantFor(DyeColor.WHITE).get();
+    for (var dyeColor : DyeColor.values()) {
+      ShapedRecipeBuilder.shaped(colorItems.variantFor(dyeColor).get(), 8)
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', tagItem)
+        .define('b', DyeItem.byColor(dyeColor))
+        .unlockedBy(getHasName(base), has(base))
+        .save(consumer);
+    }
+  }
 }

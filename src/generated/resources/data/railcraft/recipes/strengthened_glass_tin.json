@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:glass"
+    },
+    "b": {
+      "tag": "forge:ingots/tin"
+    },
+    "c": {
+      "item": "railcraft:saltpeter_dust"
+    },
+    "d": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "pattern": [
+    "aba",
+    "aca",
+    "ada"
+  ],
+  "result": {
+    "count": 6,
+    "item": "railcraft:white_strengthened_glass"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:lime_strengthened_glass"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_white_strengthened_glass": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:white_strengthened_glass"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_white_strengthened_glass",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:lime_strengthened_glass"
+    ]
+  }
+}
