@@ -30,8 +30,6 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
     this.tag(RailcraftTags.Items.STEEL_NUGGET)
       .add(RailcraftItems.STEEL_NUGGET.get());
-    this.tag(RailcraftTags.Items.COPPER_NUGGET)
-      .add(RailcraftItems.COPPER_NUGGET.get());
     this.tag(RailcraftTags.Items.TIN_NUGGET)
       .add(RailcraftItems.TIN_NUGGET.get());
     this.tag(RailcraftTags.Items.ZINC_NUGGET)

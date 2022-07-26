@@ -153,7 +153,6 @@ public class RailcraftLang extends LanguageProvider {
     add(RailcraftItems.BRASS_INGOT.get(), "Brass Ingot");
     add(RailcraftItems.BRONZE_INGOT.get(), "Bronze Ingot");
     add(RailcraftItems.STEEL_NUGGET.get(), "Steel Nugget");
-    add(RailcraftItems.COPPER_NUGGET.get(), "Copper Nugget");
     add(RailcraftItems.TIN_NUGGET.get(), "Tin Nugget");
     add(RailcraftItems.ZINC_NUGGET.get(), "Zinc Nugget");
     add(RailcraftItems.BRASS_NUGGET.get(), "Brass Nugget");

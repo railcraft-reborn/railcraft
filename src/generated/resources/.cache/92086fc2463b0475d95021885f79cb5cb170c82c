@@ -1,4 +1,4 @@
-// 1.19	2022-07-25T13:00:25.36167868	Railcraft Block State Definitions
+// 1.19	2022-07-26T11:25:38.713351379	Railcraft Block State Definitions
 a083f898ae06e89152e61c30096caa3ff297f306 assets/railcraft/blockstates/abandoned_activator_track.json
 d6506fb0bdeaddc35eebb1ae33ba1b32448b2e1c assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -955,7 +955,6 @@ e70f4283c5dd1dc6d4bf26223f5fcf798cce0065 assets/railcraft/models/item/brown_stre
 cc3d72fefc8eaa8035f16c8dad6e9cfa132f1e58 assets/railcraft/models/item/coke_oven_bricks.json
 44b4a84edfa58899d608812a5f1033723c59221d assets/railcraft/models/item/control_track_kit.json
 2fcf6ed374d4197663af5966155721339540d39b assets/railcraft/models/item/controller_circuit.json
-90add1311274089e8c516c955dc0e41fee91184a assets/railcraft/models/item/copper_nugget.json
 ecf7136385d997fdafee99a1442647d0d776a9cd assets/railcraft/models/item/coupler_track_kit.json
 d6fb06bb3298177bc3fccaebea9c063a9d53dc4b assets/railcraft/models/item/creosote_bucket.json
 dff112dfe71db9573920e18ec96226843bbd67a0 assets/railcraft/models/item/cyan_iron_tank_gauge.json
