@@ -49,6 +49,8 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
       .add(RailcraftItems.STEEL_PLATE.get());
     this.tag(RailcraftTags.Items.IRON_PLATE)
       .add(RailcraftItems.IRON_PLATE.get());
+    this.tag(RailcraftTags.Items.SALTPETER_DUST)
+      .add(RailcraftItems.SALTPETER_DUST.get());
 
     this.tag(RailcraftTags.Items.IRON_TANK_WALL)
       .add(RailcraftItems.IRON_TANK_WALL.resolveValues().toArray(Item[]::new));

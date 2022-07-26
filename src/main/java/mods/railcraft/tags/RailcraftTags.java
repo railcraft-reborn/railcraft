@@ -56,6 +56,7 @@ public class RailcraftTags {
 
     public static final TagKey<Item> STEEL_PLATE = forgeTag("plates/steel");
     public static final TagKey<Item> IRON_PLATE = forgeTag("plates/iron");
+    public static final TagKey<Item> SALTPETER_DUST = forgeTag("dusts/salt");
 
     public static final TagKey<Item> IRON_TANK_GAUGE = tag("iron_tank_gauge");
     public static final TagKey<Item> IRON_TANK_VALVE = tag("iron_tank_valve");

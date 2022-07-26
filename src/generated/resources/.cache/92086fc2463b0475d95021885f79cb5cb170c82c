@@ -1,4 +1,4 @@
-// 1.19	2022-07-26T11:35:30.350130276	Railcraft Block State Definitions
+// 1.19	2022-07-26T17:34:13.12780971	Railcraft Block State Definitions
 a083f898ae06e89152e61c30096caa3ff297f306 assets/railcraft/blockstates/abandoned_activator_track.json
 d6506fb0bdeaddc35eebb1ae33ba1b32448b2e1c assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -1138,6 +1138,7 @@ c49f829b04c8a0191c590e8516336992f61d17ef assets/railcraft/models/item/reinforced
 f80e1c180e5b504bdb6dad0e64a963831c26b92e assets/railcraft/models/item/reinforced_track.json
 fbf64503e81d2779a23aca643b36268d0b85bef1 assets/railcraft/models/item/reinforced_turnout_track.json
 eaa05d69d9ce71a8309c6908a8416d9b09131209 assets/railcraft/models/item/reinforced_wye_track.json
+3b04c08465f407f302890dc95847399e57b73acf assets/railcraft/models/item/saltpeter_dust.json
 ec0fd04fb906c68d11d61e5f868cfb7118f56b75 assets/railcraft/models/item/seasons_crowbar.json
 7090f3d13d11fef57764d5be581705beb57a1cb0 assets/railcraft/models/item/signal_block_surveyor.json
 c90139e1b7938664701a8ec938d8b51d6f5dc30a assets/railcraft/models/item/signal_circuit.json

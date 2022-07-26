@@ -102,6 +102,7 @@ public class RailcraftItemModelGenerators {
 
     this.generateFlatItem(RailcraftItems.COAL_COKE.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.SLAG.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.SALTPETER_DUST.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.REBAR.get(), ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
 

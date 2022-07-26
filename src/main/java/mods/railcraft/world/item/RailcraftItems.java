@@ -1155,6 +1155,10 @@ public class RailcraftItems {
       deferredRegister.register("bronze_ingot",
           () -> new Item(new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> SALTPETER_DUST =
+    deferredRegister.register("saltpeter_dust",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
   // NUGGET
   public static final RegistryObject<Item> STEEL_NUGGET =
       deferredRegister.register("steel_nugget",

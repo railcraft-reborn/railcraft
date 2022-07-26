@@ -159,6 +159,7 @@ public class RailcraftLang extends LanguageProvider {
     add(RailcraftItems.BRONZE_NUGGET.get(), "Bronze Nugget");
     add(RailcraftItems.STEEL_PLATE.get(), "Steel Plate");
     add(RailcraftItems.IRON_PLATE.get(), "Iron Plate");
+    add(RailcraftItems.SALTPETER_DUST.get(), "Saltpeter Dust");
     add(RailcraftItems.CONTROLLER_CIRCUIT.get(), "Controller Circuit");
     add(RailcraftItems.RECEIVER_CIRCUIT.get(), "Receiver Circuit");
     add(RailcraftItems.SIGNAL_CIRCUIT.get(), "Signal Circuit");
