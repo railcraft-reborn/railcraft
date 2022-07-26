@@ -7,7 +7,7 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_tie": {
+    "has_wooden_tie": {
       "conditions": {
         "items": [
           {
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_tie",
+      "has_wooden_tie",
       "has_the_recipe"
     ]
   ],

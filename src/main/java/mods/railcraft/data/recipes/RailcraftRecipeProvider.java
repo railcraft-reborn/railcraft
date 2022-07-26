@@ -188,17 +188,17 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern(" R ")
         .pattern("SSS")
         .pattern("   ")
-        .unlockedBy("has_rebar", has(RailcraftItems.REBAR.get()))
+        .unlockedBy(getHasName(RailcraftItems.REBAR.get()), has(RailcraftItems.REBAR.get()))
         .save(consumer);
 
     ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAILBED.get())
         .requires(RailcraftItems.WOODEN_TIE.get(), 4)
-        .unlockedBy("has_tie", has(RailcraftItems.WOODEN_TIE.get()))
+        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()), has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
 
     ShapelessRecipeBuilder.shapeless(RailcraftItems.STONE_RAILBED.get())
         .requires(RailcraftItems.STONE_TIE.get(), 4)
-        .unlockedBy("has_tie", has(RailcraftItems.WOODEN_TIE.get()))
+      .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()), has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
 
     // this.railsFromMaterials(finishedRecipie, RailcraftItems.IRON_.get(),
@@ -250,7 +250,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     CokeOvenRecipeBuilder
         .coking(RailcraftItems.COAL_COKE.get(), Ingredient.of(Items.COAL), 0.0F, 500)
-        .unlockedBy("has_coal", has(Items.COAL))
+        .unlockedBy(getHasName(Items.COAL), has(Items.COAL))
         .save(consumer);
 
     new BlastFurnaceRecipeBuilder(RailcraftBlocks.STEEL_BLOCK.get(), 1,
@@ -258,11 +258,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME * 9,
         9)
             .unlockedBy("has_iron_block", has(Tags.Items.STORAGE_BLOCKS_IRON))
-            .save(consumer, getBlastingRecipeName("steel_block"));
+            .save(consumer, getRailcraftBlastingRecipeName(RailcraftItems.STEEL_BLOCK.get()));
     BlastFurnaceRecipeBuilder
         .smelting(RailcraftItems.STEEL_INGOT.get(), Ingredient.of(Tags.Items.INGOTS_IRON), 1)
         .unlockedBy("has_iron_ingots", has(Tags.Items.INGOTS_IRON))
-        .save(consumer, getBlastingRecipeName("iron_ingots"));
+        .save(consumer, getRailcraftBlastingRecipeName(Items.IRON_INGOT));
 
     blastFurnaceSmelting(consumer, Items.BUCKET, 3);
     blastFurnaceSmelting(consumer, Items.IRON_HELMET, 5);
@@ -292,23 +292,22 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void blastFurnaceSmelting(Consumer<FinishedRecipe> consumer, ItemLike item,
       int multiplier) {
-    var name = ForgeRegistries.ITEMS.getKey(item.asItem()).getPath();
     BlastFurnaceRecipeBuilder
         .smelting(RailcraftItems.STEEL_INGOT.get(), Ingredient.of(item), multiplier)
-        .unlockedBy("has_" + name, has(item))
-        .save(consumer, getBlastingRecipeName(name));
+        .unlockedBy(getHasName(item), has(item))
+        .save(consumer, getRailcraftBlastingRecipeName(item));
   }
 
   private static void blastFurnaceRecycling(Consumer<FinishedRecipe> consumer, ItemLike item,
       int multiplier) {
-    var name = ForgeRegistries.ITEMS.getKey(item.asItem()).getPath();
     BlastFurnaceRecipeBuilder
         .recycling(RailcraftItems.STEEL_INGOT.get(), Ingredient.of(item), multiplier)
-        .unlockedBy("has_" + name, has(item))
-        .save(consumer, getBlastingRecipeName(name));
+        .unlockedBy(getHasName(item), has(item))
+        .save(consumer, getRailcraftBlastingRecipeName(item));
   }
 
-  private static ResourceLocation getBlastingRecipeName(String tag) {
+  private static ResourceLocation getRailcraftBlastingRecipeName(ItemLike item) {
+    var tag = ForgeRegistries.ITEMS.getKey(item.asItem()).getPath();
     return new ResourceLocation(Railcraft.ID, "blasting_" + tag);
   }
 
@@ -336,7 +335,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern(" RW")
         .pattern("BGS")
         .pattern("WSL")
-        .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+        .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
         .save(finishedRecipie);
   }
 
