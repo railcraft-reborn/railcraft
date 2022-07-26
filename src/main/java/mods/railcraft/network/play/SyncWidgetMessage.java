@@ -22,7 +22,7 @@ public record SyncWidgetMessage(int windowId, byte widgetId, FriendlyByteBuf dat
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-    ctx.get().enqueueWork(() -> processOnClient(this));
+    processOnClient(this);
     return true;
   }
 

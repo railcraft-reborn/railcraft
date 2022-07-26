@@ -82,7 +82,7 @@ public enum NetworkChannel {
           .messageBuilder(LinkedCartsMessage.class, 0x07, NetworkDirection.PLAY_TO_CLIENT)
           .encoder(LinkedCartsMessage::encode)
           .decoder(LinkedCartsMessage::decode)
-          .consumerMainThread(LinkedCartsMessage::handle)
+          .consumerNetworkThread(LinkedCartsMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetActionSignalBoxAttributesMessage.class, 0x08,

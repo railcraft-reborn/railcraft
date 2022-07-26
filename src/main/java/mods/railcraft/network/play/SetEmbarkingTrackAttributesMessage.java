@@ -18,14 +18,12 @@ public record SetEmbarkingTrackAttributesMessage(BlockPos blockPos, int radius) 
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    context.get().enqueueWork(() -> {
-      var level = context.get().getSender().getLevel();
-      var blockState = level.getBlockState(this.blockPos);
-      if (blockState.getBlock() instanceof EmbarkingTrackBlock) {
-        level.setBlockAndUpdate(this.blockPos,
-            EmbarkingTrackBlock.setRadius(blockState, this.radius));
-      }
-    });
+    var level = context.get().getSender().getLevel();
+    var blockState = level.getBlockState(this.blockPos);
+    if (blockState.getBlock() instanceof EmbarkingTrackBlock) {
+      level.setBlockAndUpdate(this.blockPos,
+          EmbarkingTrackBlock.setRadius(blockState, this.radius));
+    }
     return true;
   }
 }

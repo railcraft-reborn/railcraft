@@ -24,23 +24,21 @@ public record SetLocomotiveAttributesMessage(int entityId, Locomotive.Mode mode,
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-    ctx.get().enqueueWork(() -> {
-      var player = ctx.get().getSender();
-      var entity = player.level.getEntity(this.entityId);
-      if (entity instanceof Locomotive loco && loco.canControl(player)) {
-        loco.setMode(this.mode);
-        loco.setSpeed(this.speed);
-        if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.getGameProfile())) {
-          loco.setLock(this.lock);
-          if (this.lock == Locomotive.Lock.UNLOCKED) {
-            loco.setOwner(null);
-          } else {
-            loco.setOwner(player.getGameProfile());
-          }
+    var player = ctx.get().getSender();
+    var entity = player.getLevel().getEntity(this.entityId);
+    if (entity instanceof Locomotive loco && loco.canControl(player)) {
+      loco.setMode(this.mode);
+      loco.setSpeed(this.speed);
+      if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.getGameProfile())) {
+        loco.setLock(this.lock);
+        if (this.lock == Locomotive.Lock.UNLOCKED) {
+          loco.setOwner(null);
+        } else {
+          loco.setOwner(player.getGameProfile());
         }
-        loco.setReverse(this.reverse);
       }
-    });
+      loco.setReverse(this.reverse);
+    }
     return true;
   }
 }

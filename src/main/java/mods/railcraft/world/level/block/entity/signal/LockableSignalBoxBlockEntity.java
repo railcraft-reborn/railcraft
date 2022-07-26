@@ -80,7 +80,7 @@ public abstract class LockableSignalBoxBlockEntity extends AbstractSignalBoxBloc
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON);
 
     private static final Map<String, Lock> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(Lock::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(Lock::getSerializedName, Function.identity()));
 
     private final String name;
     private final TexturePosition texture;
