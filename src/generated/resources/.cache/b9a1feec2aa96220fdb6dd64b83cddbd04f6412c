@@ -1,4 +1,4 @@
-// 1.19	2022-07-26T17:53:54.67717716	Railcraft Item Tags
+// 1.19	2022-07-26T18:28:21.738801278	Railcraft Item Tags
 f34843bfb7b650f383c4d01e491bd1059bfad784 data/forge/tags/items/blocks/steel.json
 bbf7f6d0c00803b6e02d423b443d154ae326e93b data/forge/tags/items/dusts/salt.json
 75ab00fcba7527628f8180d4da1258f38eaf7993 data/forge/tags/items/ingots/brass.json
@@ -23,3 +23,4 @@ c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/items/iron_tank_wal
 36dd475b78cc6cfda74baa55b8a7ba9919242524 data/railcraft/tags/items/steel_tank_gauge.json
 8bd3423ee85f552fd410fd0a24e26456019b1185 data/railcraft/tags/items/steel_tank_valve.json
 39074036a3b8c8bbad74fcad7dce1c559f82f107 data/railcraft/tags/items/steel_tank_wall.json
+3a7becb38c8d1c2314b0c3b33165fbb0a8abea1e data/railcraft/tags/items/strengthened_glass.json

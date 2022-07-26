@@ -73,6 +73,9 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
       .add(RailcraftItems.STEEL_TANK_GAUGE.resolveValues().toArray(Item[]::new));
     this.tag(RailcraftTags.Items.STEEL_TANK_VALVE)
       .add(RailcraftItems.STEEL_TANK_VALVE.resolveValues().toArray(Item[]::new));
+
+    this.tag(RailcraftTags.Items.STRENGTHENED_GLASS)
+      .add(RailcraftItems.STRENGTHENED_GLASS.resolveValues().toArray(Item[]::new));
   }
 
   @Override
