@@ -1119,6 +1119,14 @@ public class RailcraftItems {
             }
           });
 
+  public static final RegistryObject<Item> STEEL_PLATE =
+    deferredRegister.register("steel_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> IRON_PLATE =
+    deferredRegister.register("iron_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> STEEL_INGOT =
       deferredRegister.register("steel_ingot",
           () -> new Item(new Item.Properties().tab(TAB)));
