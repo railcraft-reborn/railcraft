@@ -2,21 +2,25 @@ package mods.railcraft.util;
 
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.stream.Stream;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Created by CovertJaguar on 12/5/2018 for Railcraft.
+ * Created by CovertJaguar on 8/28/2016 for Railcraft.
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class Optionals {
+public class FunctionalUtil {
 
   /**
-   * This function exists to hide a lot of the awkward boilerplate required to test an optional
-   * object against a {@link java.util.function.Predicate}.
+   * Helper function to use when casting Streams.
+   *
+   * Works as both a mapper and a filter.
+   *
+   * Put it in a {@link Stream#flatMap(Function)} call.
    */
-  public static <T> boolean test(Optional<T> obj, Predicate<T> action) {
-    return obj.filter(action).isPresent();
+  public static <T, U> Function<T, Stream<U>> ofType(Class<U> clazz) {
+    return t -> clazz.isInstance(t) ? Stream.of(clazz.cast(t)) : Stream.empty();
   }
 
   /**
@@ -35,7 +39,7 @@ public class Optionals {
    * If the Optional cannot be cast to the given class, it will return null resulting in the map
    * returning an empty Optional.
    */
-  public static <T, U> Function<T, U> toType(Class<U> clazz) {
+  public static <T, U> Function<T, @Nullable U> ofTypeOrNull(Class<U> clazz) {
     return t -> clazz.isInstance(t) ? clazz.cast(t) : null;
   }
 

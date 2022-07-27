@@ -9,7 +9,7 @@ import mods.railcraft.api.carts.IItemCart;
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.carts.TrainTransferHelper;
-import mods.railcraft.util.collections.ItemStackKey;
+import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -109,7 +109,7 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
       if (inv != null) {
         Set<ItemStackKey> items = inv.findAll(filter);
         for (ItemStackKey stackKey : items) {
-          ItemStack stack = stackKey.get();
+          ItemStack stack = stackKey.copyStack();
           if (this.canProvidePulledItem(requester, cart, stack)) {
             ItemStack toRemove = inv.findOne(StackFilter.of(stack));
             if (!toRemove.isEmpty()) {

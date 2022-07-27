@@ -1,8 +1,9 @@
 package mods.railcraft.charge;
 
-import java.util.HashMap;
-import java.util.Map;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.api.charge.Charge;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -16,8 +17,11 @@ import net.minecraft.world.level.saveddata.SavedData;
  */
 public final class ChargeSavedData extends SavedData {
 
+  private static final int ABSENT_VALUE = -1;
+
   private static final String DATA_TAG_PREFIX = "railcraft.charge.";
-  private final Map<BlockPos, Integer> chargeLevels = new HashMap<>();
+  private final Object2IntMap<BlockPos> chargeLevels =
+      Util.make(new Object2IntOpenHashMap<>(), map -> map.defaultReturnValue(ABSENT_VALUE));
 
   public static ChargeSavedData getFor(Charge network, ServerLevel level) {
     return level.getDataStorage().computeIfAbsent(tag -> {
@@ -31,10 +35,10 @@ public final class ChargeSavedData extends SavedData {
   @Override
   public CompoundTag save(CompoundTag tag) {
     var batteriesTag = new ListTag();
-    for (var entry : this.chargeLevels.entrySet()) {
+    for (var entry : this.chargeLevels.object2IntEntrySet()) {
       var entryTag = new CompoundTag();
       entryTag.put("pos", NbtUtils.writeBlockPos(entry.getKey()));
-      entryTag.putInt("value", entry.getValue());
+      entryTag.putInt("value", entry.getIntValue());
       batteriesTag.add(entryTag);
     }
     tag.put("batteries", batteriesTag);
@@ -53,9 +57,8 @@ public final class ChargeSavedData extends SavedData {
   }
 
   public void initBattery(ChargeStorageBlockImpl battery) {
-    battery.setEnergyStored(
-        this.chargeLevels.computeIfAbsent(battery.getBlockPos(),
-            blockPos -> battery.getInitialCharge()));
+    battery.setEnergyStored(this.chargeLevels.computeIfAbsent(battery.getBlockPos(),
+        __ -> battery.getInitialCharge()));
     this.setDirty();
   }
 
@@ -65,7 +68,7 @@ public final class ChargeSavedData extends SavedData {
   }
 
   public void removeBattery(BlockPos pos) {
-    if (this.chargeLevels.remove(pos) != null) {
+    if (this.chargeLevels.removeInt(pos) != ABSENT_VALUE) {
       this.setDirty();
     }
   }

@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.core.RailcraftFakePlayer;
-import mods.railcraft.util.MiscTools;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,7 +44,7 @@ public final class CartTools {
     removePassengers(cart, cart.getX(), cart.getY() + 1.5D, cart.getZ());
     cart.level.explode(cart, cart.getX(), cart.getY(), cart.getZ(), 3F,
         Explosion.BlockInteraction.DESTROY);
-    if (MiscTools.RANDOM.nextInt(2) == 0) {
+    if (cart.level.getRandom().nextInt(2) == 0) {
       cart.kill();
     }
   }

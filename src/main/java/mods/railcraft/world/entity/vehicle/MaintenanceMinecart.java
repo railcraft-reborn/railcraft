@@ -1,12 +1,12 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.List;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.network.RailcraftDataSerializers;
-import mods.railcraft.util.TrackTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,8 +23,6 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.List;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -132,7 +130,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     for (ItemStack stack : drops) {
       CartUtil.transferHelper().offerOrDropItem(this, stack);
     }
-    RailShape trackShape = TrackTools.getRailShapeRaw(state);
+    var trackShape = TrackUtil.getRailShapeRaw(state);
     this.level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
     return trackShape;
   }

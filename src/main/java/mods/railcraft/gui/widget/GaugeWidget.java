@@ -1,9 +1,9 @@
 package mods.railcraft.gui.widget;
 
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.server.level.ServerPlayer;
+import it.unimi.dsi.fastutil.objects.Object2FloatMap;
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -12,7 +12,7 @@ public class GaugeWidget extends Widget {
 
   private final Gauge gauge;
   private final boolean vertical;
-  private final Map<ServerPlayer, Float> previousValues = new HashMap<>();
+  private final Object2FloatMap<ServerPlayer> previousValues = new Object2FloatOpenHashMap<>();
   private boolean first = true;
   private float measurement;
 

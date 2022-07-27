@@ -29,6 +29,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
+import mods.railcraft.world.level.material.fluid.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.core.Direction;
@@ -96,6 +97,7 @@ public class Railcraft {
     RailcraftBlockEntityTypes.register(modEventBus);
     TrackTypes.register(modEventBus);
     RailcraftFluids.register(modEventBus);
+    RailcraftFluidTypes.register(modEventBus);
     RailcraftMenuTypes.register(modEventBus);
     RailcraftSoundEvents.register(modEventBus);
     RailcraftEnchantments.register(modEventBus);
@@ -175,7 +177,7 @@ public class Railcraft {
           .map(MinecartExtension::getOrThrow)
           .map(LinkedCartsMessage.LinkedCart::new)
           .toList();
-      NetworkChannel.GAME.getSimpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
+      NetworkChannel.GAME.simpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
           player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
     }
   }

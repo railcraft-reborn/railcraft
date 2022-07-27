@@ -129,7 +129,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
     if (!this.signalBox.canAccess(this.minecraft.getUser().getGameProfile())) {
       return;
     }
-    NetworkChannel.GAME.getSimpleChannel().sendToServer(
+    NetworkChannel.GAME.sendToServer(
         new SetActionSignalBoxAttributesMessage(this.signalBox.getBlockPos(),
             this.signalBox.getActionSignalAspects(),
             this.lockButton.getState()));

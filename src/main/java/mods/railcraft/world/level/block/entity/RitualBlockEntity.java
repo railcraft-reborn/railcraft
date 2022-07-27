@@ -5,7 +5,7 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
-import mods.railcraft.util.HostEffects;
+import mods.railcraft.charge.HostEffects;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.Util;

@@ -2,8 +2,8 @@ package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.util.TrackShapeHelper;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -53,7 +53,7 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     }
 
     final var highSpeed = MinecartExtension.getOrThrow(cart).isHighSpeed();
-    if (TrackShapeHelper.isNorthSouth(railShape)) {
+    if (RailShapeUtil.isNorthSouth(railShape)) {
       if (reversed ^ deltaMovement.z() < 0) {
         boostCartSpeed(cart, speed);
       } else {

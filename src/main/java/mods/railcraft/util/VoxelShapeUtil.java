@@ -16,10 +16,10 @@ public class VoxelShapeUtil {
 
   public static VoxelShape[] makeShapes(VoxelShape mainShape,
       Map<Direction, VoxelShape> connectionShapes) {
-    VoxelShape[] shapes = new VoxelShape[64];
+    var shapes = new VoxelShape[64];
     for (int i = 0; i < 64; ++i) {
-      VoxelShape shape = mainShape;
-      for (Map.Entry<Direction, VoxelShape> entry : connectionShapes.entrySet()) {
+      var shape = mainShape;
+      for (var entry : connectionShapes.entrySet()) {
         if ((i & indexFor(entry.getKey())) != 0) {
           shape = Shapes.or(shape, entry.getValue());
         }
@@ -39,7 +39,7 @@ public class VoxelShapeUtil {
       double minZ, double maxX, double maxY, double maxZ, Direction... directions) {
     Map<Direction, VoxelShape> connectionShapes = new EnumMap<>(Direction.class);
     for (int i = 0; i < directions.length; ++i) {
-      Direction direction = directions[i];
+      var direction = directions[i];
       connectionShapes.put(direction, Block.box(
           Math.min(minX, 8.0D + direction.getStepX() * 8.0D),
           Math.min(minY, 8.0D + direction.getStepY() * 8.0D),

@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.TokenRing;
 import mods.railcraft.api.signal.TokenSignal;
-import mods.railcraft.util.AABBFactory;
+import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.MathTools;
+import mods.railcraft.util.MathUtil;
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -85,7 +85,7 @@ public class SimpleTokenRing implements TokenRing {
   public void tick() {
     if (!this.peers.isEmpty()) {
       BlockPos origin = this.peers.stream().findAny().orElse(BlockPos.ZERO);
-      AABBFactory aabbFactory = AABBFactory.start().at(origin);
+      BoxBuilder aabbFactory = BoxBuilder.create().at(origin);
       for (BlockPos pos : this.peers) {
         aabbFactory.expandToCoordinate(pos);
       }
@@ -103,7 +103,7 @@ public class SimpleTokenRing implements TokenRing {
 
   void loadSignals(Collection<BlockPos> signals) {
     this.peers.addAll(signals);
-    this.centroid = MathTools.centroid(signals);
+    this.centroid = MathUtil.centroid(signals);
   }
 
   void loadCarts(Collection<UUID> carts) {
@@ -119,7 +119,7 @@ public class SimpleTokenRing implements TokenRing {
 
   private void signalsChanged() {
     this.manager.setDirty();
-    this.centroid = MathTools.centroid(this.peers);
+    this.centroid = MathUtil.centroid(this.peers);
   }
 
   public void markCart(AbstractMinecart cart) {

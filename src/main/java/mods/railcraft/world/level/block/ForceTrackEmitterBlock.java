@@ -3,11 +3,9 @@ package mods.railcraft.world.level.block;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
-import mods.railcraft.util.Optionals;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterState;
@@ -79,21 +77,24 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
 
   @SuppressWarnings("deprecation")
   @Override
-  public InteractionResult use(BlockState state, Level worldIn, BlockPos pos,
+  public InteractionResult use(BlockState state, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
-    if (super.use(state, worldIn, pos, player, hand, rayTraceResult).consumesAction())
+    if (super.use(state, level, pos, player, hand, rayTraceResult).consumesAction()) {
       return InteractionResult.CONSUME;
-    if (player.isShiftKeyDown())
+    }
+    if (player.isShiftKeyDown()) {
       return InteractionResult.FAIL;
+    }
     ItemStack heldItem = player.getItemInHand(hand);
-    if (heldItem.isEmpty() || hand == InteractionHand.OFF_HAND)
+    if (heldItem.isEmpty() || hand == InteractionHand.OFF_HAND) {
       return InteractionResult.FAIL;
-    BlockEntity blockEntity = worldIn.getBlockEntity(pos);
-    if (blockEntity instanceof ForceTrackEmitterBlockEntity) {
-      ForceTrackEmitterBlockEntity t = (ForceTrackEmitterBlockEntity) blockEntity;
-      if (Optionals.test(Optional.ofNullable(DyeColor.getColor(heldItem)), t::setColor)) {
-        if (!player.isCreative())
+    }
+    if (level.getBlockEntity(pos) instanceof ForceTrackEmitterBlockEntity t) {
+      var color = DyeColor.getColor(heldItem);
+      if (color != null && t.setColor(color)) {
+        if (!player.isCreative()) {
           player.setItemInHand(hand, ContainerTools.depleteItem(heldItem));
+        }
         return InteractionResult.SUCCESS;
       }
     }

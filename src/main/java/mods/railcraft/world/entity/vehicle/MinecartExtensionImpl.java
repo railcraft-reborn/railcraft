@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import mods.railcraft.api.carts.Link;
-import mods.railcraft.util.MathTools;
+import mods.railcraft.util.MathUtil;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import net.minecraft.nbt.CompoundTag;
@@ -257,7 +257,7 @@ class MinecartExtensionImpl implements MinecartExtension {
 
       // Fix flip
       var distance =
-          MathTools.getDistanceBetweenAngles(this.minecart.getYRot(), this.minecart.yRotO);
+          MathUtil.getDistanceBetweenAngles(this.minecart.getYRot(), this.minecart.yRotO);
       var cutoff = 120F;
       if (distance < -cutoff || distance >= cutoff) {
         this.minecart.setYRot(this.minecart.getYRot() + 180.0F);

@@ -2,7 +2,6 @@ package mods.railcraft.world.module;
 
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
@@ -12,7 +11,6 @@ import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
@@ -121,9 +119,10 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     this.operatingRatio = tag.getFloat("operatingRatio");
   }
 
-  public static ItemStack useRotor(ItemStack stack) {
-    return MiscTools.RANDOM.nextInt(ROTOR_DAMAGE_CHANCE) == 0
-        && stack.hurt(1, RandomSource.create(), null) ? ItemStack.EMPTY : stack;
+  public ItemStack useRotor(ItemStack stack) {
+    var random = this.provider.level().getRandom();
+    return random.nextInt(ROTOR_DAMAGE_CHANCE) == 0
+        && stack.hurt(1, random, null) ? ItemStack.EMPTY : stack;
   }
 
   public class FluidHandler implements IFluidHandler {

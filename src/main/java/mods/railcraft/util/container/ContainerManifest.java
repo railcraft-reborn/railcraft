@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import com.google.common.collect.ForwardingMap;
-import mods.railcraft.util.collections.ItemStackKey;
+import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import net.minecraft.world.item.ItemStack;
 
@@ -44,7 +44,7 @@ public final class ContainerManifest
   }
 
   public Stream<ItemStack> streamKeyStacks() {
-    return this.entries.keySet().stream().map(ItemStackKey::get);
+    return this.entries.keySet().stream().map(ItemStackKey::copyStack);
   }
 
   public List<ItemStack> keyStacks() {
@@ -90,7 +90,7 @@ public final class ContainerManifest
       Collection<ItemStackKey> keys) {
     var manifest = new ContainerManifest();
     for (var filterKey : keys) {
-      var filter = StackFilter.anyMatch(filterKey.get());
+      var filter = StackFilter.anyMatch(filterKey.stack());
       containers.streamItems()
           .filter(filter)
           .forEach(stack -> manifest.compute(filterKey, (k, v) -> compute(k, v, stack)));

@@ -3,10 +3,9 @@ package mods.railcraft.world.level.block.track.behaivor;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.util.MiscTools;
-import mods.railcraft.util.TrackShapeHelper;
-import mods.railcraft.util.TrackTools;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.Train;
 import net.minecraft.core.BlockPos;
@@ -31,7 +30,7 @@ public enum SpeedController implements TrackType.EventHandler {
 
     private boolean isDerailing(AbstractMinecart cart) {
       if (CartUtil.getCartSpeedUncapped(cart.getDeltaMovement()) > 0.35F
-          && MiscTools.RANDOM.nextInt(500) == 250) {
+          && cart.getLevel().getRandom().nextInt(500) == 250) {
         return true;
       }
       return Train.streamCarts(cart)
@@ -49,8 +48,8 @@ public enum SpeedController implements TrackType.EventHandler {
         return null;
       }
 
-      var shape = TrackTools.getRailShapeRaw(state);
-      if (!TrackShapeHelper.isLevelStraight(shape)) {
+      var shape = TrackUtil.getRailShapeRaw(state);
+      if (!RailShapeUtil.isLevelStraight(shape)) {
         return null;
       }
 
@@ -84,7 +83,7 @@ public enum SpeedController implements TrackType.EventHandler {
     @Override
     public double getMaxSpeed(Level level, @Nullable AbstractMinecart cart,
         BlockPos pos) {
-      return TrackTools.getTrackDirection(level, pos, cart).isAscending()
+      return TrackUtil.getTrackDirection(level, pos, cart).isAscending()
           ? HighSpeedTools.SPEED_SLOPE
           : HighSpeedTools.speedForNextTrack(level, pos, 0, cart);
     }
@@ -94,9 +93,9 @@ public enum SpeedController implements TrackType.EventHandler {
     @Override
     public double getMaxSpeed(Level level, @Nullable AbstractMinecart cart,
         BlockPos pos) {
-      final RailShape shape = TrackTools.getTrackDirection(level, pos, cart);
+      var shape = TrackUtil.getTrackDirection(level, pos, cart);
       // 0.4f vanilla, this gets 10% more so 1.1*(ourspeed)
-      return TrackShapeHelper.isTurn(shape) || TrackShapeHelper.isAscending(shape) ? 0.4F : 0.44F;
+      return RailShapeUtil.isTurn(shape) || RailShapeUtil.isAscending(shape) ? 0.4F : 0.44F;
     }
   },
 

@@ -3,7 +3,8 @@ package mods.railcraft.world.item;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.ColorVariantRegistrar;
+import mods.railcraft.Translations;
+import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
@@ -48,15 +49,16 @@ public class RailcraftItems {
   /**
    * Railcraft's creative tab.
    */
-  public static final CreativeModeTab TAB = new CreativeModeTab(Railcraft.ID) {
-    @Override
-    public ItemStack makeIcon() {
-      return new ItemStack(IRON_CROWBAR.get());
-    }
-  };
+  public static final CreativeModeTab TAB =
+      new CreativeModeTab(Translations.Tab.RAILCRAFT) {
+        @Override
+        public ItemStack makeIcon() {
+          return new ItemStack(IRON_CROWBAR.get());
+        }
+      };
 
   public static final CreativeModeTab OUTFITTED_TRACKS_TAB =
-      new CreativeModeTab(Railcraft.ID + "_outfitted_tracks") {
+      new CreativeModeTab(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS) {
         @Override
         public ItemStack makeIcon() {
           return new ItemStack(IRON_DETECTOR_TRACK.get());
@@ -64,29 +66,29 @@ public class RailcraftItems {
       };
 
   public static final CreativeModeTab DECORATIVE_TAB =
-      new CreativeModeTab(Railcraft.ID + "_decorative_blocks") {
+      new CreativeModeTab(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS) {
         @Override
         public ItemStack makeIcon() {
           return new ItemStack(STRENGTHENED_GLASS.variantFor(DyeColor.BLACK).get());
         }
       };
 
-  public static final ColorVariantRegistrar<BlockItem> STRENGTHENED_GLASS =
-      new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<BlockItem> POST =
-      new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<BlockItem> IRON_TANK_GAUGE =
-      new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<BlockItem> IRON_TANK_VALVE =
-      new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<BlockItem> IRON_TANK_WALL =
-      new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<BlockItem> STEEL_TANK_GAUGE =
-      new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<BlockItem> STEEL_TANK_VALVE =
-      new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<BlockItem> STEEL_TANK_WALL =
-      new ColorVariantRegistrar<>(deferredRegister);
+  public static final VariantRegistrar<DyeColor, BlockItem> STRENGTHENED_GLASS =
+      VariantRegistrar.from(DyeColor.class, deferredRegister);
+  public static final VariantRegistrar<DyeColor, BlockItem> POST =
+      VariantRegistrar.from(DyeColor.class, deferredRegister);
+  public static final VariantRegistrar<DyeColor, BlockItem> IRON_TANK_GAUGE =
+      VariantRegistrar.from(DyeColor.class, deferredRegister);
+  public static final VariantRegistrar<DyeColor, BlockItem> IRON_TANK_VALVE =
+      VariantRegistrar.from(DyeColor.class, deferredRegister);
+  public static final VariantRegistrar<DyeColor, BlockItem> IRON_TANK_WALL =
+      VariantRegistrar.from(DyeColor.class, deferredRegister);
+  public static final VariantRegistrar<DyeColor, BlockItem> STEEL_TANK_GAUGE =
+      VariantRegistrar.from(DyeColor.class, deferredRegister);
+  public static final VariantRegistrar<DyeColor, BlockItem> STEEL_TANK_VALVE =
+      VariantRegistrar.from(DyeColor.class, deferredRegister);
+  public static final VariantRegistrar<DyeColor, BlockItem> STEEL_TANK_WALL =
+      VariantRegistrar.from(DyeColor.class, deferredRegister);
 
   static {
     var decorativeTabFactory = blockItemFactory(DECORATIVE_TAB);
@@ -1127,12 +1129,12 @@ public class RailcraftItems {
           });
 
   public static final RegistryObject<Item> STEEL_PLATE =
-    deferredRegister.register("steel_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
+      deferredRegister.register("steel_plate",
+          () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> IRON_PLATE =
-    deferredRegister.register("iron_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
+      deferredRegister.register("iron_plate",
+          () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> STEEL_INGOT =
       deferredRegister.register("steel_ingot",

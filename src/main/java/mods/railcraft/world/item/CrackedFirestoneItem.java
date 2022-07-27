@@ -1,6 +1,6 @@
 package mods.railcraft.world.item;
 
-import mods.railcraft.util.MiscTools;
+import java.util.concurrent.ThreadLocalRandom;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -10,11 +10,11 @@ import net.minecraft.world.item.ItemStack;
  */
 public class CrackedFirestoneItem extends RefinedFirestoneItem {
 
-  public static int HEAT = 100;
+  public static final int HEAT = 100;
 
   public CrackedFirestoneItem(Properties properties) {
     super(properties);
-    heat = HEAT;
+    this.heat = HEAT;
   }
 
   public static ItemStack getItemCharged() {
@@ -30,7 +30,7 @@ public class CrackedFirestoneItem extends RefinedFirestoneItem {
   @Override
   public ItemStack getCraftingRemainingItem(ItemStack stack) {
     double damageLevel = (double) stack.getDamageValue() / (double) stack.getMaxDamage();
-    if (MiscTools.RANDOM.nextDouble() < damageLevel * 0.0001) {
+    if (ThreadLocalRandom.current().nextDouble() < damageLevel * 0.0001) {
       return RailcraftItems.RAW_FIRESTONE.get().getDefaultInstance();
     }
     ItemStack newStack = ContainerTools.copyOne(stack);

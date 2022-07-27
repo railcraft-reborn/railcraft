@@ -292,7 +292,8 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     TRANSFER("transfer", Component.literal("\u27a7#\u27a7"));
 
     private static final Map<String, TransferMode> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(TransferMode::getSerializedName, Function.identity()));
+        .collect(
+            Collectors.toUnmodifiableMap(TransferMode::getSerializedName, Function.identity()));
 
     private final String name;
     private final Component label;
@@ -346,7 +347,8 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     PARTIAL("partial", Component.literal("\u27a7"));
 
     private static final Map<String, RedstoneMode> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(RedstoneMode::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(
+            RedstoneMode::getSerializedName, Function.identity()));
 
     private final String name;
     private final Component label;

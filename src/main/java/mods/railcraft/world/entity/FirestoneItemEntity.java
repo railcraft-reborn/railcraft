@@ -1,29 +1,28 @@
 package mods.railcraft.world.entity;
 
 import mods.railcraft.util.LevelUtil;
-import mods.railcraft.util.MiscTools;
 import mods.railcraft.util.PlayerUtil;
-import mods.railcraft.world.item.FirestoneItem;
 import mods.railcraft.world.item.CrackedFirestoneItem;
-import mods.railcraft.world.level.block.RitualBlock;
+import mods.railcraft.world.item.FirestoneItem;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.RitualBlock;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
 public class FirestoneItemEntity extends ItemEntity {
 
-  private int clock = MiscTools.RANDOM.nextInt(100);
+  private int clock;
   private boolean refined;
 
   public FirestoneItemEntity(EntityType<? extends FirestoneItemEntity> type, Level world) {

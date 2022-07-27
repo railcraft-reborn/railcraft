@@ -2,7 +2,7 @@ package mods.railcraft.advancements;
 
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.JsonTools;
+import mods.railcraft.util.JsonUtil;
 import mods.railcraft.util.LevelUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -31,13 +31,16 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
   @Override
   public SpikeMaulUseTrigger.Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
-    NbtPredicate nbt =
-        JsonTools.whenPresent(json, "nbt", NbtPredicate::fromJson, NbtPredicate.ANY);
-    ItemPredicate tool =
-        JsonTools.whenPresent(json, "tool", ItemPredicate::fromJson, ItemPredicate.ANY);
-    LocationPredicate locationPredicate = JsonTools.whenPresent(json, "location",
-        LocationPredicate::fromJson, LocationPredicate.ANY);
-    return new SpikeMaulUseTrigger.Instance(entityPredicate, nbt, tool, locationPredicate);
+    var tag = JsonUtil.getAsJsonObject(json, "nbt")
+        .map(NbtPredicate::fromJson)
+        .orElse(NbtPredicate.ANY);
+    var tool = JsonUtil.getAsJsonObject(json, "tool")
+        .map(ItemPredicate::fromJson)
+        .orElse(ItemPredicate.ANY);
+    var locationPredicate = JsonUtil.getAsJsonObject(json, "location")
+        .map(LocationPredicate::fromJson)
+        .orElse(LocationPredicate.ANY);
+    return new SpikeMaulUseTrigger.Instance(entityPredicate, tag, tool, locationPredicate);
   }
 
   /**

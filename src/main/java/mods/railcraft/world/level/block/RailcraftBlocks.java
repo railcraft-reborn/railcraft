@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.Collection;
 import java.util.function.ToIntFunction;
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.ColorVariantRegistrar;
+import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemUnloaderBlock;
 import mods.railcraft.world.level.block.manipulator.FluidLoaderBlock;
@@ -64,6 +64,7 @@ import mods.railcraft.world.level.material.RailcraftMaterials;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
@@ -93,96 +94,98 @@ public class RailcraftBlocks {
     return deferredRegister.getEntries();
   }
 
-  public static final ColorVariantRegistrar<StrengthenedGlassBlock> STRENGTHENED_GLASS = new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<IronTankGaugeBlock> IRON_TANK_GAUGE = new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<IronTankValveBlock> IRON_TANK_VALVE = new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<IronTankWallBlock> IRON_TANK_WALL = new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<SteelTankGaugeBlock> STEEL_TANK_GAUGE = new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<SteelTankValveBlock> STEEL_TANK_VALVE = new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<SteelTankWallBlock> STEEL_TANK_WALL = new ColorVariantRegistrar<>(deferredRegister);
-  public static final ColorVariantRegistrar<PostBlock> POST = new ColorVariantRegistrar<>(deferredRegister);
-
-  static {
-    STRENGTHENED_GLASS.register("strengthened_glass", RailcraftBlocks::buildStrengthenedGlass);
-    IRON_TANK_GAUGE.register("iron_tank_gauge", RailcraftBlocks::buildIronTankGauge);
-    IRON_TANK_VALVE.register("iron_tank_valve", RailcraftBlocks::buildIronTankValve);
-    IRON_TANK_WALL.register("iron_tank_wall", RailcraftBlocks::buildIronTankWall);
-
-    STEEL_TANK_GAUGE.register("steel_tank_gauge", RailcraftBlocks::buildSteelTankGauge);
-    STEEL_TANK_VALVE.register("steel_tank_valve", RailcraftBlocks::buildSteelTankValve);
-    STEEL_TANK_WALL.register("steel_tank_wall", RailcraftBlocks::buildSteelTankWall);
-
-    POST.register("post", RailcraftBlocks::buildPost);
-  }
+  public static final VariantRegistrar<DyeColor, StrengthenedGlassBlock> STRENGTHENED_GLASS =
+      VariantRegistrar.<DyeColor, StrengthenedGlassBlock>from(DyeColor.class, deferredRegister)
+          .register("strengthened_glass", RailcraftBlocks::buildStrengthenedGlass);
+  public static final VariantRegistrar<DyeColor, IronTankGaugeBlock> IRON_TANK_GAUGE =
+      VariantRegistrar.<DyeColor, IronTankGaugeBlock>from(DyeColor.class, deferredRegister)
+          .register("iron_tank_gauge", RailcraftBlocks::buildIronTankGauge);
+  public static final VariantRegistrar<DyeColor, IronTankValveBlock> IRON_TANK_VALVE =
+      VariantRegistrar.<DyeColor, IronTankValveBlock>from(DyeColor.class, deferredRegister)
+          .register("iron_tank_valve", RailcraftBlocks::buildIronTankValve);
+  public static final VariantRegistrar<DyeColor, IronTankWallBlock> IRON_TANK_WALL =
+      VariantRegistrar.<DyeColor, IronTankWallBlock>from(DyeColor.class, deferredRegister)
+          .register("iron_tank_wall", RailcraftBlocks::buildIronTankWall);
+  public static final VariantRegistrar<DyeColor, SteelTankGaugeBlock> STEEL_TANK_GAUGE =
+      VariantRegistrar.<DyeColor, SteelTankGaugeBlock>from(DyeColor.class, deferredRegister)
+          .register("steel_tank_gauge", RailcraftBlocks::buildSteelTankGauge);
+  public static final VariantRegistrar<DyeColor, SteelTankValveBlock> STEEL_TANK_VALVE =
+      VariantRegistrar.<DyeColor, SteelTankValveBlock>from(DyeColor.class, deferredRegister)
+          .register("steel_tank_valve", RailcraftBlocks::buildSteelTankValve);
+  public static final VariantRegistrar<DyeColor, SteelTankWallBlock> STEEL_TANK_WALL =
+      VariantRegistrar.<DyeColor, SteelTankWallBlock>from(DyeColor.class, deferredRegister)
+          .register("steel_tank_wall", RailcraftBlocks::buildSteelTankWall);
+  public static final VariantRegistrar<DyeColor, PostBlock> POST =
+      VariantRegistrar.<DyeColor, PostBlock>from(DyeColor.class, deferredRegister)
+          .register("post", RailcraftBlocks::buildPost);
 
   private static StrengthenedGlassBlock buildStrengthenedGlass() {
     return new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
-      .sound(SoundType.GLASS)
-      .noOcclusion()
-      .strength(1.0F, 5.0F)
-      .isValidSpawn(RailcraftBlocks::never)
-      .isRedstoneConductor(RailcraftBlocks::never)
-      .isSuffocating(RailcraftBlocks::never)
-      .isViewBlocking(RailcraftBlocks::never));
+        .sound(SoundType.GLASS)
+        .noOcclusion()
+        .strength(1.0F, 5.0F)
+        .isValidSpawn(RailcraftBlocks::never)
+        .isRedstoneConductor(RailcraftBlocks::never)
+        .isSuffocating(RailcraftBlocks::never)
+        .isViewBlocking(RailcraftBlocks::never));
   }
 
   private static IronTankGaugeBlock buildIronTankGauge() {
     return new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
-      .sound(SoundType.GLASS)
-      .noOcclusion()
-      .strength(1.0F, 5.0F)
-      .isValidSpawn(RailcraftBlocks::never)
-      .isRedstoneConductor(RailcraftBlocks::never)
-      .isSuffocating(RailcraftBlocks::never)
-      .isViewBlocking(RailcraftBlocks::never)
-      .lightLevel(LightBlock.LIGHT_EMISSION));
+        .sound(SoundType.GLASS)
+        .noOcclusion()
+        .strength(1.0F, 5.0F)
+        .isValidSpawn(RailcraftBlocks::never)
+        .isRedstoneConductor(RailcraftBlocks::never)
+        .isSuffocating(RailcraftBlocks::never)
+        .isViewBlocking(RailcraftBlocks::never)
+        .lightLevel(LightBlock.LIGHT_EMISSION));
   }
 
   private static IronTankValveBlock buildIronTankValve() {
     return new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
-      .sound(SoundType.METAL)
-      .noOcclusion()
-      .explosionResistance(12));
+        .sound(SoundType.METAL)
+        .noOcclusion()
+        .explosionResistance(12));
   }
 
   private static IronTankWallBlock buildIronTankWall() {
     return new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
-      .sound(SoundType.METAL)
-      .noOcclusion()
-      .explosionResistance(12));
+        .sound(SoundType.METAL)
+        .noOcclusion()
+        .explosionResistance(12));
   }
 
   private static SteelTankGaugeBlock buildSteelTankGauge() {
     return new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
-      .sound(SoundType.GLASS)
-      .noOcclusion()
-      .strength(1.0F, 5.0F)
-      .isValidSpawn(RailcraftBlocks::never)
-      .isRedstoneConductor(RailcraftBlocks::never)
-      .isSuffocating(RailcraftBlocks::never)
-      .isViewBlocking(RailcraftBlocks::never)
-      .lightLevel(LightBlock.LIGHT_EMISSION));
+        .sound(SoundType.GLASS)
+        .noOcclusion()
+        .strength(1.0F, 5.0F)
+        .isValidSpawn(RailcraftBlocks::never)
+        .isRedstoneConductor(RailcraftBlocks::never)
+        .isSuffocating(RailcraftBlocks::never)
+        .isViewBlocking(RailcraftBlocks::never)
+        .lightLevel(LightBlock.LIGHT_EMISSION));
   }
 
   private static SteelTankValveBlock buildSteelTankValve() {
     return new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
-      .sound(SoundType.METAL)
-      .noOcclusion()
-      .explosionResistance(15));
+        .sound(SoundType.METAL)
+        .noOcclusion()
+        .explosionResistance(15));
   }
 
   private static SteelTankWallBlock buildSteelTankWall() {
     return new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
-      .sound(SoundType.METAL)
-      .noOcclusion()
-      .explosionResistance(15));
+        .sound(SoundType.METAL)
+        .noOcclusion()
+        .explosionResistance(15));
   }
 
   private static PostBlock buildPost() {
     return new PostBlock(BlockBehaviour.Properties.of(Material.METAL)
-      .sound(SoundType.METAL));
+        .sound(SoundType.METAL));
   }
-
 
   public static final RegistryObject<Block> LOW_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("low_pressure_steam_boiler_tank",

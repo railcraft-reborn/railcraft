@@ -9,7 +9,7 @@ import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.api.core.Ownable;
-import mods.railcraft.network.PacketBuilder;
+import mods.railcraft.network.NetworkUtil;
 import mods.railcraft.world.module.BlockModuleProvider;
 import mods.railcraft.world.module.Module;
 import mods.railcraft.world.module.ModuleDispatcher;
@@ -118,7 +118,12 @@ public abstract class RailcraftBlockEntity extends BlockEntity
 
   @Override
   public void syncToClient() {
-    PacketBuilder.instance().sendTileEntityPacket(this);
+    if (this.level instanceof ServerLevel level) {
+      var packet = this.getUpdatePacket();
+      if (packet != null) {
+        NetworkUtil.sendToTrackingChunk(packet, level, this.getBlockPos());
+      }
+    }
   }
 
   @Override

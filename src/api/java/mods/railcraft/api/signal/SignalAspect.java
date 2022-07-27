@@ -52,7 +52,7 @@ public enum SignalAspect implements StringRepresentable {
   private static final SignalAspect[] VALUES = values();
 
   private static final Map<String, SignalAspect> byName = Arrays.stream(VALUES)
-      .collect(Collectors.toMap(SignalAspect::getSerializedName, Function.identity()));
+      .collect(Collectors.toUnmodifiableMap(SignalAspect::getSerializedName, Function.identity()));
 
   private final String name;
   private final int blockLight;

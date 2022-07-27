@@ -53,8 +53,8 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
   }
 
   @Override
-  public void load( CompoundTag tag) {
-    super.load( tag);
+  public void load(CompoundTag tag) {
+    super.load(tag);
     this.lock = Lock.getByName(tag.getString("lock")).orElse(Lock.UNLOCKED);
   }
 
@@ -76,7 +76,7 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON);
 
     private static final Map<String, Lock> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(Lock::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(Lock::getSerializedName, Function.identity()));
 
     private final String name;
     private final TexturePosition texture;

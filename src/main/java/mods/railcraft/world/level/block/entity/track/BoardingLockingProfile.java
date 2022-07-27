@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.track;
 
 import mods.railcraft.api.carts.CartUtil;
-import mods.railcraft.util.TrackShapeHelper;
+import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -26,7 +26,7 @@ public class BoardingLockingProfile implements LockingModeController {
   public void released(AbstractMinecart cart) {
     RailShape railShape = TrackBlock.getRailShapeRaw(this.lockingTrack.getBlockState());
     cart.setDeltaMovement(this.applyBoost(
-        TrackShapeHelper.isNorthSouth(railShape) ? Direction.Axis.Z : Direction.Axis.X,
+        RailShapeUtil.isNorthSouth(railShape) ? Direction.Axis.Z : Direction.Axis.X,
         cart.getDeltaMovement()));
   }
 

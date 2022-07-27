@@ -3,7 +3,7 @@ package mods.railcraft.advancements;
 import com.google.gson.JsonObject;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.JsonTools;
+import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -25,10 +25,12 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
   @Override
   public CartLinkingTrigger.Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
-    MinecartPredicate owned =
-        JsonTools.whenPresent(json, "owned", MinecartPredicate::deserialize, MinecartPredicate.ANY);
-    MinecartPredicate other =
-        JsonTools.whenPresent(json, "other", MinecartPredicate::deserialize, MinecartPredicate.ANY);
+    var owned = JsonUtil.getAsJsonObject(json, "owned")
+        .map(MinecartPredicate::deserialize)
+        .orElse(MinecartPredicate.ANY);
+    var other = JsonUtil.getAsJsonObject(json, "other")
+        .map(MinecartPredicate::deserialize)
+        .orElse(MinecartPredicate.ANY);
     return new CartLinkingTrigger.Instance(entityPredicate, owned, other);
   }
 

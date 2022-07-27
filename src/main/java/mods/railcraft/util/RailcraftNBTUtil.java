@@ -46,11 +46,12 @@ public final class RailcraftNBTUtil {
    * Loads energy data from a CompoundNBT.
    */
   public static void loadEnergyCell(CompoundTag loadData, IEnergyStorage storageMedium) {
-    if (!(storageMedium instanceof EnergyStorage)) {
-      throw new IllegalArgumentException(
-          "Can not deserialize to an instance that isn't the default implementation");
+    if (storageMedium instanceof EnergyStorage energyStorage) {
+      energyStorage.receiveEnergy(loadData.getInt("energy"), false);
+      return;
     }
-    ((EnergyStorage)storageMedium).receiveEnergy(loadData.getInt("energy"), false);
+    throw new IllegalArgumentException(
+        "Can not deserialize to an instance that isn't the default implementation");
   }
 
   /**

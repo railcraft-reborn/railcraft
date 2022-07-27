@@ -8,7 +8,7 @@ import java.util.Arrays;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class Annotations {
+public class ReflectionUtil {
 
   public static boolean isAnnotated(Class<? extends Annotation> annotation, Object obj) {
     return obj.getClass().isAnnotationPresent(annotation);

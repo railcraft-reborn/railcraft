@@ -27,10 +27,10 @@ import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.season.Seasons;
-import mods.railcraft.util.MathTools;
+import mods.railcraft.util.FunctionalUtil;
+import mods.railcraft.util.MathUtil;
 import mods.railcraft.util.PlayerUtil;
-import mods.railcraft.util.RCEntitySelectors;
-import mods.railcraft.util.collections.Streams;
+import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.vehicle.CartTools;
@@ -489,8 +489,8 @@ public abstract class Locomotive extends RailcraftMinecart
 
     if (this.level.isClientSide()) {
       if (Seasons.isPolarExpress(this)
-          && (!MathTools.nearZero(this.getDeltaMovement().x())
-              || !MathTools.nearZero(this.getDeltaMovement().z()))) {
+          && (!MathUtil.nearZero(this.getDeltaMovement().x())
+              || !MathUtil.nearZero(this.getDeltaMovement().z()))) {
         ClientEffects.INSTANCE.snowEffect(
             this.getX(), this.getBoundingBox().minY - this.getY(), this.getZ());
       }
@@ -644,7 +644,7 @@ public abstract class Locomotive extends RailcraftMinecart
       }
       if (Train.streamCarts(this).noneMatch(t -> t.hasPassenger(entity))
           && (isVelocityHigherThan(0.2f) || MinecartExtension.getOrThrow(this).isHighSpeed())
-          && RCEntitySelectors.KILLABLE.test(entity)) {
+          && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
         if (RailcraftConfig.server.locomotiveDamageMobs.get()) {
           living.hurt(RailcraftDamageSource.TRAIN, getDamageToRoadKill(living));
@@ -772,7 +772,7 @@ public abstract class Locomotive extends RailcraftMinecart
   public static void applyAction(Player player, AbstractMinecart cart,
       boolean single, Consumer<Locomotive> action) {
     var locos = Train.streamCarts(cart)
-        .flatMap(Streams.ofType(Locomotive.class))
+        .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(loco -> loco.canControl(player));
     if (single) {
       locos.findAny().ifPresent(action);
@@ -872,7 +872,7 @@ public abstract class Locomotive extends RailcraftMinecart
     RUNNING("running");
 
     private static final Map<String, Mode> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(Mode::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(Mode::getSerializedName, Function.identity()));
 
     private final String name;
 
@@ -901,7 +901,7 @@ public abstract class Locomotive extends RailcraftMinecart
     MAX("max", 4, 0, -1);
 
     private static final Map<String, Speed> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(Speed::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(Speed::getSerializedName, Function.identity()));
 
     private final String name;
     private final int shiftUp;
@@ -948,7 +948,7 @@ public abstract class Locomotive extends RailcraftMinecart
     PRIVATE("private", new SimpleTexturePosition(240, 48, 16, 16));
 
     private static final Map<String, Lock> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(Lock::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(Lock::getSerializedName, Function.identity()));
 
     private final String name;
     private final TexturePosition texture;

@@ -1,4 +1,4 @@
-package mods.railcraft.util;
+package mods.railcraft.api.track;
 
 import javax.annotation.Nullable;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -8,7 +8,9 @@ import net.minecraft.world.level.block.state.properties.RailShape;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public final class TrackShapeHelper {
+public final class RailShapeUtil {
+
+  private RailShapeUtil() {}
 
   public static boolean isLevelStraight(@Nullable RailShape dir) {
     return dir != null && dir.ordinal() < 2;

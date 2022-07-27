@@ -1,11 +1,11 @@
 package mods.railcraft.world.entity.vehicle;
 
+import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.MiscTools;
-import mods.railcraft.util.RCEntitySelectors;
-import mods.railcraft.util.Vec2D;
+import mods.railcraft.util.ModEntitySelector;
+import mods.railcraft.util.Vec2d;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -19,9 +19,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.IMinecartCollisionHandler;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class MinecartHandler implements IMinecartCollisionHandler {
 
@@ -37,7 +34,9 @@ public class MinecartHandler implements IMinecartCollisionHandler {
 
   @Override
   public void onEntityCollision(AbstractMinecart cart, Entity other) {
-    if (cart.getLevel().isClientSide() || cart.hasPassenger(other)
+    var level = cart.getLevel();
+
+    if (level.isClientSide() || cart.hasPassenger(other)
         || !other.isAlive() || !cart.isAlive()) {
       return;
     }
@@ -54,12 +53,12 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     boolean isLiving = other instanceof LivingEntity;
     boolean isPlayer = other instanceof Player;
 
-    if (isPlayer && ((Player) other).isSpectator()) {
+    if (other instanceof Player otherPlayer && otherPlayer.isSpectator()) {
       return;
     }
 
-    if (other instanceof AbstractMinecart) {
-      LinkageManagerImpl.INSTANCE.tryAutoLink(cart, (AbstractMinecart) other);
+    if (other instanceof AbstractMinecart otherCart) {
+      LinkageManagerImpl.INSTANCE.tryAutoLink(cart, otherCart);
     }
 
     var extension = MinecartExtension.getOrThrow(cart);
@@ -67,7 +66,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     this.testHighSpeedCollision(extension, other);
 
     if (isLiving
-        && cart.getLevel().getBlockState(cart.blockPosition())
+        && level.getBlockState(cart.blockPosition())
             .is(RailcraftBlocks.ELEVATOR_TRACK.get())
         && other.getBoundingBox().minY < cart.getBoundingBox().maxY) {
       other.move(MoverType.SELF,
@@ -76,10 +75,11 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     }
 
     // TODO Config entry? ( Go for it -CJ )
-    if (MiscTools.RANDOM.nextFloat() < 0.001f) {
-      List<AbstractMinecart> carts = EntitySearcher.findMinecarts().around(cart)
-          .and(EntitySelector.ENTITY_STILL_ALIVE, RCEntitySelectors.NON_MECHANICAL)
-          .search(cart.level);
+    if (level.getRandom().nextFloat() < 0.001f) {
+      var carts = EntitySearcher.findMinecarts()
+          .around(cart)
+          .and(EntitySelector.ENTITY_STILL_ALIVE, ModEntitySelector.NON_MECHANICAL)
+          .search(level);
       if (carts.size() >= 12) {
         extension.primeExplosion();
       }
@@ -98,16 +98,15 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       }
     }
 
-    if (isLiving
-        && cart.level.getBlockState(cart.blockPosition())
-            .is(RailcraftBlocks.ELEVATOR_TRACK.get())) {
+    if (isLiving && level.getBlockState(cart.blockPosition())
+        .is(RailcraftBlocks.ELEVATOR_TRACK.get())) {
       return;
     }
 
-    Vec2D cartPos = new Vec2D(cart);
-    Vec2D otherPos = new Vec2D(other);
+    Vec2d cartPos = new Vec2d(cart);
+    Vec2d otherPos = new Vec2d(other);
 
-    Vec2D unit = Vec2D.subtract(otherPos, cartPos);
+    Vec2d unit = Vec2d.subtract(otherPos, cartPos);
     unit.normalize();
 
     double distance = cart.distanceTo(other);
@@ -130,10 +129,10 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         impulseX *= -(1.0 + COEF_RESTITUTION);
         impulseZ *= -(1.0 + COEF_RESTITUTION);
 
-        Vec2D cartVel = new Vec2D(cart.getDeltaMovement());
-        Vec2D otherVel = new Vec2D(other.getDeltaMovement());
+        Vec2d cartVel = new Vec2d(cart.getDeltaMovement());
+        Vec2d otherVel = new Vec2d(other.getDeltaMovement());
 
-        double dot = Vec2D.subtract(otherVel, cartVel).dotProduct(unit);
+        double dot = Vec2d.subtract(otherVel, cartVel).dotProduct(unit);
 
         impulseX *= dot;
         impulseZ *= dot;
@@ -158,12 +157,12 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         }
       }
     } else {
-      Vec2D cartVel = new Vec2D(cart.getDeltaMovement());
+      Vec2d cartVel = new Vec2d(cart.getDeltaMovement());
       cartVel.add(forceX, forceZ);
-      Vec2D otherVel = new Vec2D(other.getDeltaMovement());
+      Vec2d otherVel = new Vec2d(other.getDeltaMovement());
       otherVel.subtract(forceX, forceZ);
 
-      double dot = Vec2D.subtract(otherVel, cartVel).dotProduct(unit);
+      double dot = Vec2d.subtract(otherVel, cartVel).dotProduct(unit);
 
       double dampX = COEF_DAMPING * dot * unit.getX();
       double dampZ = COEF_DAMPING * dot * unit.getY();

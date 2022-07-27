@@ -1,6 +1,9 @@
 package mods.railcraft.world.item;
 
-import mods.railcraft.util.MiscTools;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
+import javax.annotation.Nullable;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
 import net.minecraft.core.BlockPos;
@@ -25,10 +28,6 @@ import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -63,7 +62,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
   public ItemStack getCraftingRemainingItem(ItemStack stack) {
     ItemStack newStack;
     double damageLevel = (double) stack.getDamageValue() / (double) stack.getMaxDamage();
-    if (MiscTools.RANDOM.nextDouble() < damageLevel * 0.0001) {
+    if (ThreadLocalRandom.current().nextDouble() < damageLevel * 0.0001) {
       newStack = CrackedFirestoneItem.getItemEmpty();
       if (stack.hasCustomHoverName())
         newStack.setHoverName(stack.getHoverName());

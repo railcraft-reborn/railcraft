@@ -163,7 +163,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     this.updateButtons();
     this.updateLockButtonTooltip();
     Locomotive locomotive = this.getMenu().getLocomotive();
-    NetworkChannel.GAME.getSimpleChannel().sendToServer(
+    NetworkChannel.GAME.sendToServer(
         new SetLocomotiveAttributesMessage(this.menu.getLocomotive().getId(),
             locomotive.getMode(), locomotive.getSpeed(), locomotive.getLock(),
             locomotive.isReverse()));

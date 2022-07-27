@@ -1,14 +1,12 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-import mods.railcraft.util.collections.ItemStackKey;
+import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerManifest;
 import mods.railcraft.util.container.ContainerMapper;
@@ -90,7 +88,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
       ContainerManifest remainingManifest = ContainerManifest.create(tile.getSource());
       remainingManifest.keySet()
-          .removeIf(stackKey -> StackFilter.anyMatch(tile.getItemFilters()).test(stackKey.get()));
+          .removeIf(stackKey -> StackFilter.anyMatch(tile.getItemFilters()).test(stackKey.stack()));
 
       return remainingManifest.streamValueStacks().anyMatch(dest::willAccept);
     });
@@ -222,12 +220,11 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   protected void moveItem(Stream<ContainerManifest.ManifestEntry> stream) {
-    List<ItemStack> keys = stream.map(ContainerManifest.ManifestEntry::key)
-        .map(ItemStackKey::get)
-        .collect(Collectors.toList());
-    ItemStack moved =
-        this.getSource().moveOneItemTo(this.getDestination(), StackFilter.anyMatch(keys));
-    itemMoved(moved);
+    var keys = stream.map(ContainerManifest.ManifestEntry::key)
+        .map(ItemStackKey::copyStack)
+        .toList();
+    var moved = this.getSource().moveOneItemTo(this.getDestination(), StackFilter.anyMatch(keys));
+    this.itemMoved(moved);
   }
 
   protected final void itemMoved(ItemStack moved) {

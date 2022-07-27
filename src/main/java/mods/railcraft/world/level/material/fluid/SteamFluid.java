@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.material.fluid;
 
+import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,8 +18,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
-
-import java.util.function.Consumer;
 
 public class SteamFluid extends Fluid {
 
@@ -82,20 +81,21 @@ public class SteamFluid extends Fluid {
 
   @Override
   public FluidType getFluidType() {
-    return RailcraftFluids.STEAM_TYPE.get();
+    return RailcraftFluidTypes.STEAM.get();
   }
 
   public static FluidType createFluidType() {
     var properties = FluidType.Properties.create()
-      .temperature(400) // in kelvin, 150c
-      .density(-1000)
-      .viscosity(500);
+        .temperature(400) // in kelvin, 150c
+        .density(-1000)
+        .viscosity(500);
     return new FluidType(properties) {
       @Override
       public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
         consumer.accept(new IClientFluidTypeExtensions() {
           private static final ResourceLocation STILL_TEXTURE =
-            new ResourceLocation(Railcraft.ID, "block/steam_still");
+              new ResourceLocation(Railcraft.ID, "block/steam_still");
+
           @Override
           public int getTintColor() {
             return 0xFFF5F5F5;

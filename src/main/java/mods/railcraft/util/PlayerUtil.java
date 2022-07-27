@@ -1,9 +1,13 @@
 package mods.railcraft.util;
 
+import java.util.UUID;
+import javax.annotation.Nullable;
+import org.apache.logging.log4j.util.Strings;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.item.ActivationBlockingItem;
+import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -14,10 +18,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.apache.logging.log4j.util.Strings;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -110,8 +110,8 @@ public final class PlayerUtil {
       return true;
     ItemStack heldItem = player.getItemInHand(hand);
     if (!heldItem.isEmpty()) {
-      return TrackTools.isRail(heldItem)
-          || Annotations.isAnnotatedDeepSearch(ActivationBlockingItem.class, heldItem.getItem());
+      return TrackUtil.isRail(heldItem)
+          || ReflectionUtil.isAnnotatedDeepSearch(ActivationBlockingItem.class, heldItem.getItem());
     }
     return false;
   }

@@ -1,9 +1,10 @@
-package mods.railcraft.util;
+package mods.railcraft.charge;
 
 import java.util.function.Consumer;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.network.play.EffectMessage;
+import mods.railcraft.util.RemoteEffectType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;

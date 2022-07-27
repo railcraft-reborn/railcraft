@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block.post;
 
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.ToIntFunction;
@@ -54,8 +53,7 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
           box(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D));
 
   public static final Map<Direction, VoxelShape> HORIZONTAL_CONNECTION_SHAPES =
-      Collections.unmodifiableMap(
-          VoxelShapeUtil.createHorizontalShapes(7.0D, 7.0D, 7.0D, 9.0D, 15.0D, 9.0D));
+      Map.copyOf(VoxelShapeUtil.createHorizontalShapes(7.0D, 7.0D, 7.0D, 9.0D, 15.0D, 9.0D));
 
   public static final EnumProperty<Column> COLUMN =
       EnumProperty.create("column", Column.class);
@@ -77,17 +75,11 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
         map.put(Direction.WEST, WEST);
       });
 
-  private final Map<Column, VoxelShape[]> shapes =
-      Util.make(new EnumMap<>(Column.class), map -> {
-        map.put(Column.FULL,
-            VoxelShapeUtil.makeShapes(FULL_COLUMN_SHAPE, HORIZONTAL_CONNECTION_SHAPES));
-        map.put(Column.TOP,
-            VoxelShapeUtil.makeShapes(TOP_COLUMN_SHAPE, HORIZONTAL_CONNECTION_SHAPES));
-        map.put(Column.SMALL,
-            VoxelShapeUtil.makeShapes(MIDDLE_COLUMN_SHAPE, HORIZONTAL_CONNECTION_SHAPES));
-        map.put(Column.PLATFORM,
-            VoxelShapeUtil.makeShapes(PLATFORM_SHAPE, HORIZONTAL_CONNECTION_SHAPES));
-      });
+  private final Map<Column, VoxelShape[]> shapes = Map.of(
+      Column.FULL, VoxelShapeUtil.makeShapes(FULL_COLUMN_SHAPE, HORIZONTAL_CONNECTION_SHAPES),
+      Column.TOP, VoxelShapeUtil.makeShapes(TOP_COLUMN_SHAPE, HORIZONTAL_CONNECTION_SHAPES),
+      Column.SMALL, VoxelShapeUtil.makeShapes(MIDDLE_COLUMN_SHAPE, HORIZONTAL_CONNECTION_SHAPES),
+      Column.PLATFORM, VoxelShapeUtil.makeShapes(PLATFORM_SHAPE, HORIZONTAL_CONNECTION_SHAPES));
 
   private final Object2IntMap<BlockState> stateToIndex = new Object2IntOpenHashMap<>();
 
@@ -134,7 +126,7 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
 
   protected int computeShapeIndex(BlockState blockState) {
     int i = 0;
-    for (Map.Entry<Direction, EnumProperty<Connection>> entry : propertyByDirection.entrySet()) {
+    for (var entry : propertyByDirection.entrySet()) {
       if (blockState.getValue(entry.getValue()) != Connection.NONE) {
         i |= VoxelShapeUtil.indexFor(entry.getKey());
       }

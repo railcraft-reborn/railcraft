@@ -6,7 +6,7 @@ import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.track.TrackUtil;
-import mods.railcraft.util.Vec2D;
+import mods.railcraft.util.Vec2d;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public final class LinkagePhysicsUtil {
@@ -61,10 +61,10 @@ public final class LinkagePhysicsUtil {
     boolean adj1 = canCartBeAdjustedBy(cart1, cart2);
     boolean adj2 = canCartBeAdjustedBy(cart2, cart1);
 
-    Vec2D cart1Pos = new Vec2D(cart1);
-    Vec2D cart2Pos = new Vec2D(cart2);
+    Vec2d cart1Pos = new Vec2d(cart1);
+    Vec2d cart2Pos = new Vec2d(cart2);
 
-    Vec2D unit = Vec2D.unit(cart2Pos, cart1Pos);
+    Vec2d unit = Vec2d.unit(cart2Pos, cart1Pos);
 
     // Energy transfer
 
@@ -112,10 +112,10 @@ public final class LinkagePhysicsUtil {
 
     // Damping
 
-    Vec2D cart1Vel = new Vec2D(cart1.getDeltaMovement().x(), cart1.getDeltaMovement().z());
-    Vec2D cart2Vel = new Vec2D(cart2.getDeltaMovement().x(), cart2.getDeltaMovement().z());
+    Vec2d cart1Vel = new Vec2d(cart1.getDeltaMovement().x(), cart1.getDeltaMovement().z());
+    Vec2d cart2Vel = new Vec2d(cart2.getDeltaMovement().x(), cart2.getDeltaMovement().z());
 
-    double dot = Vec2D.subtract(cart2Vel, cart1Vel).dotProduct(unit);
+    double dot = Vec2d.subtract(cart2Vel, cart1Vel).dotProduct(unit);
 
     double damping = highSpeed ? HS_DAMPING : DAMPING;
     double dampX = damping * dot * unit.getX();

@@ -2,29 +2,33 @@ package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
 import mods.railcraft.client.ClientEffects;
-import mods.railcraft.network.PacketDispatcher;
+import mods.railcraft.network.NetworkChannel;
+import mods.railcraft.network.NetworkUtil;
 import mods.railcraft.util.RemoteEffectType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 public record EffectMessage(RemoteEffectType effect, FriendlyByteBuf data) {
 
+  private static final int DISPATCH_RADIUS = 80;
+
   public void send(Level level, BlockPos pos) {
-    PacketDispatcher.sendToAllAround(this,
-        PacketDispatcher.targetPoint(level.dimension(), pos, 80));
+    NetworkChannel.GAME.sendToAllAround(this,
+        NetworkUtil.targetPoint(level.dimension(), pos, DISPATCH_RADIUS));
   }
 
   public void send(Level level, Vec3 vec) {
-    PacketDispatcher.sendToAllAround(this,
-        PacketDispatcher.targetPoint(level.dimension(), vec, 80));
+    NetworkChannel.GAME.sendToAllAround(this,
+        NetworkUtil.targetPoint(level.dimension(), vec, DISPATCH_RADIUS));
   }
 
   public void send(Level level, double x, double y, double z) {
-    PacketDispatcher.sendToAllAround(this,
-        PacketDispatcher.targetPoint(level.dimension(), x, y, z, 80));
+    NetworkChannel.GAME.sendToAllAround(this,
+        new PacketDistributor.TargetPoint(x, y, z, DISPATCH_RADIUS, level.dimension()));
   }
 
   public void encode(FriendlyByteBuf out) {

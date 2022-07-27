@@ -11,8 +11,8 @@ public enum Link implements StringRepresentable {
 
   FRONT("front"), BACK("back");
 
-  private static final Map<String, Link> byName =
-      Arrays.stream(values()).collect(Collectors.toMap(Link::getName, Function.identity()));
+  private static final Map<String, Link> byName = Arrays.stream(values())
+      .collect(Collectors.toUnmodifiableMap(Link::getName, Function.identity()));
 
   private final String name;
 

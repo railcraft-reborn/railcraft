@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.util.HostEffects;
+import mods.railcraft.charge.HostEffects;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.Magnifiable;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;

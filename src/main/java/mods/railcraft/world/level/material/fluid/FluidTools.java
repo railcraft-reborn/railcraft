@@ -87,7 +87,8 @@ public final class FluidTools {
     RESET("reset");
 
     private static final Map<String, ProcessState> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(ProcessState::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(
+            ProcessState::getSerializedName, Function.identity()));
 
     private final String name;
 
@@ -157,7 +158,7 @@ public final class FluidTools {
         return tryDrain(container, tank, itemStack);
       } else if (type == ProcessType.FILL_THEN_DRAIN) {
         if (FluidUtil.tryFillContainer(itemStack, tank,
-          FluidType.BUCKET_VOLUME, null, false).isSuccess()) {
+            FluidType.BUCKET_VOLUME, null, false).isSuccess()) {
           return tryFill(container, tank, itemStack);
         } else {
           return tryDrain(container, tank, itemStack);

@@ -13,12 +13,10 @@ import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.AABBFactory;
+import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.LevelUtil;
-import mods.railcraft.util.MiscTools;
-import mods.railcraft.util.RCEntitySelectors;
-import mods.railcraft.util.TrackTools;
+import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
@@ -163,7 +161,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   protected boolean boreLayer;
   protected int boreRotationAngle;
   private boolean active;
-  private int clock = MiscTools.RANDOM.nextInt();
+  private int clock;
   private int burnTime;
   private int fuel;
   private final boolean hasInit;
@@ -406,8 +404,8 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
             }
             placeRail = false;
           } else if (BaseRailBlock.isRail(existingState)) {
-            if (dir != TrackTools.getTrackDirection(this.level, targetPos, this)) {
-              TrackTools.setRailShape(this.level, targetPos, dir);
+            if (dir != TrackUtil.getTrackDirection(this.level, targetPos, this)) {
+              TrackUtil.setRailShape(this.level, targetPos, dir);
               setDelay(STANDARD_DELAY);
             }
           } else if (existingState.isAir()
@@ -448,11 +446,11 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
       if (isMinecartPowered()) {
         Vec3 headPos = getPositionAhead(3.3);
         double size = 0.8;
-        AABB entitySearchBox = AABBFactory.start()
+        AABB entitySearchBox = BoxBuilder.create()
             .setBoundsToPoint(headPos)
             .inflateHorizontally(size)
             .raiseCeiling(2).build();
-        List<LivingEntity> entities = EntitySearcher.findLiving().and(RCEntitySelectors.KILLABLE)
+        List<LivingEntity> entities = EntitySearcher.findLiving().and(ModEntitySelector.KILLABLE)
             .around(entitySearchBox).search(this.level);
         entities.forEach(e -> e.hurt(RailcraftDamageSource.BORE, 2));
 
@@ -790,8 +788,8 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
     }
 
     if (BaseRailBlock.isRail(targetState)) {
-      RailShape targetShape =
-          TrackTools.getTrackDirection(this.level, targetPos, targetState, this);
+      var targetShape =
+          TrackUtil.getTrackDirection(this.level, targetPos, targetState, this);
       if (preferredShape == targetShape) {
         return true;
       }
@@ -887,7 +885,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
     }
 
     if (BaseRailBlock.isRail(blockState)) {
-      RailShape trackMeta = TrackTools.getTrackDirection(this.level, pos, blockState, this);
+      var trackMeta = TrackUtil.getTrackDirection(this.level, pos, blockState, this);
       if (dir == trackMeta) {
         return 0;
       }

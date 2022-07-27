@@ -90,8 +90,7 @@ public final class AdjacentBlockEntityCache {
     int s = side.ordinal();
     if (cache[s] != null)
       if (cache[s].isRemoved()
-          || !MiscTools.areCoordinatesOnSide(blockEntity.getBlockPos(), cache[s].getBlockPos(),
-              side))
+          || !blockEntity.getBlockPos().relative(side).equals(cache[s].getBlockPos()))
         setTile(side, null);
       else
         return cache[s];

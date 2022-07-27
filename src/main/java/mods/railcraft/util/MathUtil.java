@@ -12,7 +12,7 @@ import net.minecraft.core.Vec3i;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public final class MathTools {
+public final class MathUtil {
 
   public static final UUID NIL_UUID = new UUID(0, 0);
   private static final ThreadLocalRandom random = ThreadLocalRandom.current();

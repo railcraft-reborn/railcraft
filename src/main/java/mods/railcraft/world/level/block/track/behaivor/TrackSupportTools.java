@@ -2,13 +2,13 @@ package mods.railcraft.world.level.block.track.behaivor;
 
 import java.util.HashSet;
 import java.util.Set;
-import mods.railcraft.util.TrackTools;
-import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.Block;
+import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
 
 /**
  * Created by CovertJaguar on 8/7/2016 for Railcraft.
@@ -33,23 +33,28 @@ public class TrackSupportTools {
 
   @SuppressWarnings("deprecation")
   private static boolean isSupported(LevelReader level, BlockPos pos, boolean checkSelf,
-      int distance,
-      Set<BlockPos> checked) {
-    if (checked.contains(pos))
+      int distance, Set<BlockPos> checked) {
+    if (checked.contains(pos)) {
       return false;
+    }
     checked.add(pos);
-    if (!level.hasChunkAt(pos))
+    if (!level.hasChunkAt(pos)) {
       return true;
-    if (checkSelf && !BaseRailBlock.isRail(level.getBlockState(pos)))
+    }
+    if (checkSelf && !BaseRailBlock.isRail(level.getBlockState(pos))) {
       return false;
-    if (isSupportedDirectly(level, pos))
+    }
+    if (isSupportedDirectly(level, pos)) {
       return true;
-    if (distance <= 0)
+    }
+    if (distance <= 0) {
       return false;
+    }
     distance--;
-    for (BlockPos connectedTrack : TrackTools.getConnectedTracks(level, pos)) {
-      if (isSupported(level, connectedTrack, true, distance, checked))
+    for (var connectedTrack : TrackUtil.getConnectedTracks(level, pos)) {
+      if (isSupported(level, connectedTrack, true, distance, checked)) {
         return true;
+      }
     }
     return false;
   }

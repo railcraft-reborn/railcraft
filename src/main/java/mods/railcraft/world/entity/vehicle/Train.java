@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.MapMaker;
 import mods.railcraft.util.CompositeFluidHandler;
-import mods.railcraft.util.collections.Streams;
+import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -283,7 +283,7 @@ public final class Train implements Iterable<AbstractMinecart> {
   }
 
   public Optional<Locomotive> getHeadLocomotive() {
-    return getEnds().stream().map(this::getCart).flatMap(Streams.ofType(Locomotive.class))
+    return getEnds().stream().map(this::getCart).flatMap(FunctionalUtil.ofType(Locomotive.class))
         .findFirst();
   }
 
@@ -292,7 +292,7 @@ public final class Train implements Iterable<AbstractMinecart> {
   }
 
   public <T extends AbstractMinecart> Stream<T> stream(Class<T> cartClass) {
-    return stream().flatMap(Streams.ofType(cartClass));
+    return stream().flatMap(FunctionalUtil.ofType(cartClass));
   }
 
   @Override
@@ -317,7 +317,7 @@ public final class Train implements Iterable<AbstractMinecart> {
         .flatMap(cart -> cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             .map(Stream::of)
             .orElse(Stream.empty()))
-        .flatMap(Streams.ofType(IItemHandlerModifiable.class))
+        .flatMap(FunctionalUtil.ofType(IItemHandlerModifiable.class))
         .collect(Collectors.toList());
     return cartHandlers.isEmpty()
         ? Optional.empty()
@@ -401,7 +401,7 @@ public final class Train implements Iterable<AbstractMinecart> {
     STOPPED("stopped"), IDLE("idle"), NORMAL("normal");
 
     private static final Map<String, State> byName = Arrays.stream(values())
-        .collect(Collectors.toMap(State::getSerializedName, Function.identity()));
+        .collect(Collectors.toUnmodifiableMap(State::getSerializedName, Function.identity()));
 
     private final String name;
 

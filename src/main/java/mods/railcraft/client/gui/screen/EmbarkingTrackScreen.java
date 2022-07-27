@@ -41,7 +41,7 @@ public class EmbarkingTrackScreen extends IngameWindowScreen {
   private void setRadius(int radius) {
     this.radius = radius;
     this.updateButtons();
-    NetworkChannel.GAME.getSimpleChannel().sendToServer(
+    NetworkChannel.GAME.sendToServer(
         new SetEmbarkingTrackAttributesMessage(this.blockPos, this.radius));
   }
 

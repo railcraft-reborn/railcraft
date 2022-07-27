@@ -79,8 +79,8 @@ public class GogglesItem extends ArmorItem {
     SURVEYING("surveying"),
     WORLDSPIKE("worldspike");
 
-    private static final Map<String, Aura> byName =
-        Arrays.stream(values()).collect(Collectors.toMap(Aura::getName, Function.identity()));
+    private static final Map<String, Aura> byName = Arrays.stream(values())
+        .collect(Collectors.toUnmodifiableMap(Aura::getName, Function.identity()));
 
     private String name;
     private final Component displayName;
