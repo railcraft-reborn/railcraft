@@ -104,6 +104,8 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
     this.tag(RailcraftTags.Items.STRENGTHENED_GLASS)
         .add(RailcraftItems.STRENGTHENED_GLASS.resolveVariants().toArray(Item[]::new));
+    this.tag(RailcraftTags.Items.POST)
+        .add(RailcraftItems.POST.resolveVariants().toArray(Item[]::new));
   }
 
   @Override

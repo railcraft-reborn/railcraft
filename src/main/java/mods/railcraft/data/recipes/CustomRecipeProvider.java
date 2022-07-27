@@ -59,6 +59,12 @@ public abstract class CustomRecipeProvider extends RecipeProvider {
     coloredBlockVariant(consumer, colorItems, tagItem);
   }
 
+  protected static void post(Consumer<FinishedRecipe> consumer,
+                                 VariantRegistrar<DyeColor, BlockItem> colorItems,
+                                 TagKey<Item> tagItem) {
+    coloredBlockVariant(consumer, colorItems, tagItem, DyeColor.BLACK);
+  }
+
   protected static void compress(Consumer<FinishedRecipe> finishedRecipe,
                                  Item itemOut,
                                  TagKey<Item> materialTag,
@@ -87,7 +93,13 @@ public abstract class CustomRecipeProvider extends RecipeProvider {
   protected static void coloredBlockVariant(Consumer<FinishedRecipe> consumer,
                                           VariantRegistrar<DyeColor, BlockItem> colorItems,
                                           TagKey<Item> tagItem) {
-    var base = colorItems.variantFor(DyeColor.WHITE).get();
+    coloredBlockVariant(consumer, colorItems, tagItem, DyeColor.WHITE);
+  }
+  protected static void coloredBlockVariant(Consumer<FinishedRecipe> consumer,
+                                            VariantRegistrar<DyeColor, BlockItem> colorItems,
+                                            TagKey<Item> tagItem,
+                                            DyeColor baseColor) {
+    var base = colorItems.variantFor(baseColor).get();
     for (var dyeColor : DyeColor.values()) {
       ShapedRecipeBuilder.shaped(colorItems.variantFor(dyeColor).get(), 8)
         .pattern("aaa")
