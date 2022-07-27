@@ -37,6 +37,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.containerTranslations();
     this.tipsTranslations();
     this.screenTranslations();
+    this.jeiTranslations();
   }
 
   private void blockTranslations() {
@@ -366,6 +367,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.IRON_LAUNCHER_TRACK, "Iron Launcher Track");
 
     this.addBlock(RailcraftBlocks.ELEVATOR_TRACK, "Elevator Track");
+  }
+
+  public void jeiTranslations() {
+    this.add(Translations.Jei.METAL_ROLLING, "Metal Rolling");
   }
 
   public void addFluidType(Supplier<? extends FluidType> key, String name) {

@@ -110,6 +110,12 @@ public class Translations {
         format("container.%railcraft.fluid_fueled_steam_boiler");
   }
 
+  public static class Jei {
+
+    public static final String METAL_ROLLING =
+      format("jei.%railcraft.category.rolling");
+  }
+
   private static String format(String key) {
     return key.replace("%railcraft", Railcraft.ID);
   }

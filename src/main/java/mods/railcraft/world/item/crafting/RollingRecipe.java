@@ -30,7 +30,7 @@ import net.minecraft.world.level.Level;
 public class RollingRecipe implements Recipe<CraftingContainer> {
 
   private final ResourceLocation id;
-  private final NonNullList<Ingredient> recipeItems;
+  private final NonNullList<Ingredient> ingredients;
   private final ItemStack result;
   private final int tickCost;
 
@@ -45,7 +45,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   public RollingRecipe(ResourceLocation resourceLocation, int tickCost,
       NonNullList<Ingredient> ingredients, ItemStack resultItemStack) {
     this.id = resourceLocation;
-    this.recipeItems = ingredients;
+    this.ingredients = ingredients;
     this.result = resultItemStack;
     this.tickCost = tickCost;
   }
@@ -84,9 +84,9 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
         Ingredient ingredient = Ingredient.EMPTY;
         if (k >= 0 && l >= 0 && k < 3 && l < 3) {
           if (inverse) {
-            ingredient = this.recipeItems.get(3 - k - 1 + l * 3);
+            ingredient = this.ingredients.get(3 - k - 1 + l * 3);
           } else {
-            ingredient = this.recipeItems.get(k + l * 3);
+            ingredient = this.ingredients.get(k + l * 3);
           }
         }
 
@@ -112,6 +112,11 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   @Override
   public ItemStack getResultItem() {
     return this.result;
+  }
+
+  @Override
+  public NonNullList<Ingredient> getIngredients() {
+    return this.ingredients;
   }
 
   @Override
@@ -161,7 +166,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
     public void toNetwork(FriendlyByteBuf packetBuffer, RollingRecipe recipe) {
       packetBuffer.writeVarInt(recipe.tickCost);
       // format: [tickcost(int), ingredient, result]
-      for (Ingredient ingredient : recipe.recipeItems) {
+      for (Ingredient ingredient : recipe.ingredients) {
         ingredient.toNetwork(packetBuffer);
       }
 

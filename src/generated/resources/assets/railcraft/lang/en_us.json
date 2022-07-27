@@ -358,6 +358,7 @@
   "itemGroup.railcraft": "Railcraft",
   "itemGroup.railcraft_decorative_blocks": "Railcraft Decorative Blocks",
   "itemGroup.railcraft_outfitted_tracks": "Railcraft Outfitted Tracks",
+  "jei.railcraft.category.rolling": "Metal Rolling",
   "screen.railcraft.action_signal_box.lock.locked": "This signal box is locked to %s. It can only be modified by them or an operator.",
   "screen.railcraft.action_signal_box.lock.unlocked": "Click to lock signal box. Once locked, it will only be modifiable by you or an operator",
   "screen.railcraft.embarking_track.radius": "Radius: %s",
