@@ -142,6 +142,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.NICKEL_INGOT, "Nickel Ingot");
     this.addItem(RailcraftItems.INVAR_INGOT, "Invar Ingot");
     this.addItem(RailcraftItems.BRONZE_INGOT, "Bronze Ingot");
+    this.addItem(RailcraftItems.SILVER_INGOT, "Silver Ingot");
+    this.addItem(RailcraftItems.LEAD_INGOT, "Lead Ingot");
     this.addItem(RailcraftItems.STEEL_NUGGET, "Steel Nugget");
     this.addItem(RailcraftItems.TIN_NUGGET, "Tin Nugget");
     this.addItem(RailcraftItems.ZINC_NUGGET, "Zinc Nugget");
@@ -149,6 +151,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.BRONZE_NUGGET, "Bronze Nugget");
     this.addItem(RailcraftItems.NICKEL_NUGGET, "Nickel Nugget");
     this.addItem(RailcraftItems.INVAR_NUGGET, "Invar Nugget");
+    this.addItem(RailcraftItems.SILVER_NUGGET, "Silver Nugget");
+    this.addItem(RailcraftItems.LEAD_NUGGET, "Lead Nugget");
     this.addItem(RailcraftItems.STEEL_PLATE, "Steel Plate");
     this.addItem(RailcraftItems.IRON_PLATE, "Iron Plate");
     this.addItem(RailcraftItems.TIN_PLATE, "Tin Plate");

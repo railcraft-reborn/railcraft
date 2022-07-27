@@ -90,4 +90,16 @@ public class RollingRecipePattern {
       .define('a', materialTag)
       .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
   }
+
+  public static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
+                                  TagKey<Item> materialTag,
+                                  ItemLike result,
+                                  int count) {
+    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    RollingRecipeBuilder.rolled(result, count)
+      .pattern("aa")
+      .pattern("aa")
+      .define('a', materialTag)
+      .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
+  }
 }

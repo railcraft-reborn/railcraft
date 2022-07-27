@@ -100,6 +100,10 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.NICKEL_NUGGET.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.INVAR_INGOT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.INVAR_NUGGET.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.LEAD_INGOT.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.LEAD_NUGGET.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.SILVER_INGOT.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.SILVER_NUGGET.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.STEEL_PLATE.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.IRON_PLATE.get(), ModelTemplates.FLAT_ITEM);

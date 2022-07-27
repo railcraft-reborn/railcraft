@@ -1205,6 +1205,14 @@ public class RailcraftItems {
     deferredRegister.register("invar_ingot",
       () -> new Item(new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> LEAD_INGOT =
+    deferredRegister.register("lead_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SILVER_INGOT =
+    deferredRegister.register("silver_ingot",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> SALTPETER_DUST =
     deferredRegister.register("saltpeter_dust",
       () -> new Item(new Item.Properties().tab(TAB)));
@@ -1236,6 +1244,14 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> INVAR_NUGGET =
     deferredRegister.register("invar_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SILVER_NUGGET =
+    deferredRegister.register("silver_nugget",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> LEAD_NUGGET =
+    deferredRegister.register("lead_nugget",
       () -> new Item(new Item.Properties().tab(TAB)));
 
   // circuits

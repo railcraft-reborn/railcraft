@@ -1,4 +1,4 @@
-// 1.19	2022-07-27T16:40:10.353681138	Railcraft Block State Definitions
+// 1.19	2022-07-27T17:07:32.938806336	Railcraft Block State Definitions
 a083f898ae06e89152e61c30096caa3ff297f306 assets/railcraft/blockstates/abandoned_activator_track.json
 d6506fb0bdeaddc35eebb1ae33ba1b32448b2e1c assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -1059,6 +1059,8 @@ d2dc2209b3bd6e11fca5cce18740e005f8e633ec assets/railcraft/models/item/iron_tunne
 9a43babc0cecad65df8c4f36981b842693f7768f assets/railcraft/models/item/item_loader.json
 ea5fcfded777acbbf9cc816ea5acb54c73bd7e5d assets/railcraft/models/item/item_unloader.json
 bca5154841f3e0b195d80e966c6d5bccd5db5beb assets/railcraft/models/item/launcher_track_kit.json
+c50e1f0f434f1a8d31b25c8b296b3bce56c78eb0 assets/railcraft/models/item/lead_ingot.json
+bbcf7ae15ee2e441be886ba7e855b5db06293538 assets/railcraft/models/item/lead_nugget.json
 fb44d98855ed668795028b651ccfaefd34d03dde assets/railcraft/models/item/lead_plate.json
 de27f455fc324cdc0fc34b9588344f730cc69a4d assets/railcraft/models/item/light_blue_iron_tank_gauge.json
 6b759f3f1626fec2f77a8172bafa2d8c12435a01 assets/railcraft/models/item/light_blue_iron_tank_valve.json
@@ -1156,6 +1158,8 @@ c90139e1b7938664701a8ec938d8b51d6f5dc30a assets/railcraft/models/item/signal_cir
 29053c2cd1ea43e99f7569350af668e9fab8e8e9 assets/railcraft/models/item/signal_label.json
 0ebb71a171126c165820de54c753ff8deca76c9c assets/railcraft/models/item/signal_lamp.json
 e07a81e1610daa58deece879337be51f6fb46fe3 assets/railcraft/models/item/signal_tuner.json
+d230bac3c81ad3442ab91fe3295583a3cd4297d4 assets/railcraft/models/item/silver_ingot.json
+722b31e198fa40616a7baf97e21fd842247c5de3 assets/railcraft/models/item/silver_nugget.json
 ecb4ee05a820232e34d0553943d06583af6a92ed assets/railcraft/models/item/silver_plate.json
 59d072f529bc0cdc0c4c7e2437c3aa015621464d assets/railcraft/models/item/slag.json
 3e61fa5c647cd93d37019afee702b4a9535f8dec assets/railcraft/models/item/solid_fueled_firebox.json

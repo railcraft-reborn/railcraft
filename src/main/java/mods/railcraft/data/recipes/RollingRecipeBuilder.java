@@ -76,12 +76,9 @@ public class RollingRecipeBuilder {
 
   /**
    * Defines a row of the recipie's pattern.
-   *
-   * @param pattern Three char-patern using the keys from the define()
-   * @return this, for chaning functions.
    */
   public RollingRecipeBuilder pattern(String pattern) {
-    if (!this.rows.isEmpty() && pattern.length() != 3) {
+    if (!this.rows.isEmpty() && pattern.length() != this.rows.get(0).length()) {
       throw new IllegalArgumentException("Pattern must be the same width on every line!");
     } else {
       this.rows.add(pattern);

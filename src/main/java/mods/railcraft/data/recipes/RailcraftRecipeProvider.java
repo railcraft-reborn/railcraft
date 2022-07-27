@@ -170,6 +170,18 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     RollingRecipePattern.parallelThreeLines(consumer, RailcraftItems.STANDARD_RAIL.get(), Tags.Items.DUSTS_REDSTONE,
       Tags.Items.INGOTS_GOLD, RailcraftItems.ADVANCED_RAIL.get(), 8);
 
+    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_IRON, RailcraftItems.IRON_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_GOLD, RailcraftItems.GOLD_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_COPPER, RailcraftItems.COPPER_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.STEEL_INGOT, RailcraftItems.STEEL_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.NICKEL_INGOT, RailcraftItems.NICKEL_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.INVAR_INGOT, RailcraftItems.INVAR_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRASS_INGOT, RailcraftItems.BRASS_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.TIN_INGOT, RailcraftItems.TIN_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRONZE_INGOT, RailcraftItems.BRONZE_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.LEAD_INGOT, RailcraftItems.LEAD_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.SILVER_INGOT, RailcraftItems.SILVER_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.ZINC_INGOT, RailcraftItems.ZINC_PLATE.get(), 4);
 
 
     ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())

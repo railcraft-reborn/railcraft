@@ -70,6 +70,10 @@ public class RecipeBlocks extends CustomRecipeProvider {
       RailcraftTags.Items.NICKEL_INGOT, "nugget");
     decompress(consumer, RailcraftItems.INVAR_NUGGET.get(),
       RailcraftTags.Items.INVAR_INGOT, "nugget");
+    decompress(consumer, RailcraftItems.SILVER_NUGGET.get(),
+      RailcraftTags.Items.SILVER_INGOT, "nugget");
+    decompress(consumer, RailcraftItems.LEAD_NUGGET.get(),
+      RailcraftTags.Items.LEAD_INGOT, "nugget");
 
     decompress(consumer, RailcraftItems.STEEL_INGOT.get(),
       RailcraftTags.Items.STEEL_BLOCK, "block_ingot");
@@ -90,6 +94,10 @@ public class RecipeBlocks extends CustomRecipeProvider {
       RailcraftTags.Items.NICKEL_NUGGET, "ingot");
     compress(consumer, RailcraftItems.INVAR_INGOT.get(),
       RailcraftTags.Items.INVAR_NUGGET, "ingot");
+    compress(consumer, RailcraftItems.LEAD_INGOT.get(),
+      RailcraftTags.Items.LEAD_NUGGET, "ingot");
+    compress(consumer, RailcraftItems.SILVER_INGOT.get(),
+      RailcraftTags.Items.SILVER_NUGGET, "ingot");
 
     compress(consumer, RailcraftItems.STEEL_BLOCK.get(),
       RailcraftTags.Items.STEEL_INGOT, "block");
