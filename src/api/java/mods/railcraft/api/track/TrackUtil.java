@@ -13,11 +13,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.item.TrackPlacer;
 import mods.railcraft.api.item.TrackTypeLike;
-import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -213,17 +212,6 @@ public final class TrackUtil {
     }
     blockState = blockState.setValue(prop, railShape);
     return level.setBlockAndUpdate(pos, blockState);
-  }
-
-  public static TrackType getTrackTypeAt(BlockGetter level, BlockPos pos) {
-    return getTrackTypeAt(level, pos, level.getBlockState(pos));
-  }
-
-  public static TrackType getTrackTypeAt(BlockGetter level, BlockPos pos, BlockState state) {
-    if (state.getBlock() instanceof TypedTrack typedTrack) {
-      return typedTrack.getTrackType();
-    }
-    return TrackTypes.IRON.get();
   }
 
   public static void traverseConnectedTracks(Level level, BlockPos pos,

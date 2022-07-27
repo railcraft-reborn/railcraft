@@ -3,15 +3,19 @@ package mods.railcraft.world.level.block.track.behaivor;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.track.RailShapeUtil;
+import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.api.track.TypedTrack;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
+import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -94,7 +98,18 @@ public final class HighSpeedTools {
   }
 
   public static boolean isHighSpeedTrackAt(BlockGetter world, BlockPos pos) {
-    return TrackUtil.getTrackTypeAt(world, pos).isHighSpeed();
+    return getTrackTypeAt(world, pos).isHighSpeed();
+  }
+
+  public static TrackType getTrackTypeAt(BlockGetter level, BlockPos pos) {
+    return getTrackTypeAt(level, pos, level.getBlockState(pos));
+  }
+
+  public static TrackType getTrackTypeAt(BlockGetter level, BlockPos pos, BlockState state) {
+    if (state.getBlock() instanceof TypedTrack typedTrack) {
+      return typedTrack.getTrackType();
+    }
+    return TrackTypes.IRON.get();
   }
 
   public static double speedForNextTrack(Level world, BlockPos pos, int dist,
