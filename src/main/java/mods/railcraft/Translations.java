@@ -2,6 +2,16 @@ package mods.railcraft;
 
 public class Translations {
 
+  public static class Tab {
+
+    public static final String RAILCRAFT =
+        format("itemGroup.%railcraft");
+    public static final String RAILCRAFT_OUTFITTED_TRACKS =
+        format("itemGroup.%railcraft.outfitted_tracks");
+    public static final String RAILCRAFT_DECORATIVE_BLOCKS =
+        format("itemGroup.%railcraft.decorative_blocks");
+  }
+
   public static class Screen {
 
     public static final String STEAM_TURBINE_ROTOR =

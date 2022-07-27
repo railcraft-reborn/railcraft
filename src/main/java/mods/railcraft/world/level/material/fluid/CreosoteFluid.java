@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.material.fluid;
 
+import java.util.function.Consumer;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.BlockPos;
@@ -19,8 +20,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
-
-import java.util.function.Consumer;
 
 public abstract class CreosoteFluid extends FlowingFluid {
 
@@ -86,19 +85,22 @@ public abstract class CreosoteFluid extends FlowingFluid {
 
   @Override
   public FluidType getFluidType() {
-    return RailcraftFluids.CREOSOTE_TYPE.get();
+    return RailcraftFluidTypes.CREOSOTE.get();
   }
 
   public static FluidType createFluidType() {
     var properties = FluidType.Properties.create()
-      .density(1100)
-      .viscosity(3000);
+        .density(1100)
+        .viscosity(3000);
     return new FluidType(properties) {
       @Override
       public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
         consumer.accept(new IClientFluidTypeExtensions() {
-          private static final ResourceLocation STILL_TEXTURE = new ResourceLocation("block/water_still");
-          private static final ResourceLocation FLOW_TEXURE = new ResourceLocation("block/water_flow");
+          private static final ResourceLocation STILL_TEXTURE =
+              new ResourceLocation("block/water_still");
+          private static final ResourceLocation FLOW_TEXURE =
+              new ResourceLocation("block/water_flow");
+
           @Override
           public int getTintColor() {
             return 0xFF6A6200; // color is now ARGB 6a6200
