@@ -7,9 +7,9 @@ public class Translations {
     public static final String RAILCRAFT =
         format("itemGroup.%railcraft");
     public static final String RAILCRAFT_OUTFITTED_TRACKS =
-        format("itemGroup.%railcraft.outfitted_tracks");
+        format("itemGroup.%railcraft_outfitted_tracks");
     public static final String RAILCRAFT_DECORATIVE_BLOCKS =
-        format("itemGroup.%railcraft.decorative_blocks");
+        format("itemGroup.%railcraft_decorative_blocks");
   }
 
   public static class Screen {

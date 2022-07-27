@@ -3,7 +3,6 @@ package mods.railcraft.world.item;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
-import mods.railcraft.Translations;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
@@ -50,7 +49,7 @@ public class RailcraftItems {
    * Railcraft's creative tab.
    */
   public static final CreativeModeTab TAB =
-      new CreativeModeTab(Translations.Tab.RAILCRAFT) {
+      new CreativeModeTab(Railcraft.ID) {
         @Override
         public ItemStack makeIcon() {
           return new ItemStack(IRON_CROWBAR.get());
@@ -58,7 +57,7 @@ public class RailcraftItems {
       };
 
   public static final CreativeModeTab OUTFITTED_TRACKS_TAB =
-      new CreativeModeTab(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS) {
+      new CreativeModeTab(Railcraft.ID + "_outfitted_tracks") {
         @Override
         public ItemStack makeIcon() {
           return new ItemStack(IRON_DETECTOR_TRACK.get());
@@ -66,7 +65,7 @@ public class RailcraftItems {
       };
 
   public static final CreativeModeTab DECORATIVE_TAB =
-      new CreativeModeTab(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS) {
+      new CreativeModeTab(Railcraft.ID + "_decorative_blocks") {
         @Override
         public ItemStack makeIcon() {
           return new ItemStack(STRENGTHENED_GLASS.variantFor(DyeColor.BLACK).get());

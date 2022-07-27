@@ -389,7 +389,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   private static String getColorName(DyeColor color) {
     return switch (color) {
       case WHITE -> "White";
-      case ORANGE -> "range";
+      case ORANGE -> "Orange";
       case MAGENTA -> "Magenta";
       case LIGHT_BLUE -> "Light Blue";
       case YELLOW -> "Yellow";
