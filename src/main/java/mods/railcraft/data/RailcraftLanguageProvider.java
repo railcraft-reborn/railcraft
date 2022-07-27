@@ -289,10 +289,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.HIGH_SPEED_WYE_TRACK, "High Speed Wye Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK, "High Speed Junction Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK, "High Speed Transition Track");
-    // "block.railcraft.high_speed_buffer_stop_track": "High Speed Buffer Stop Track",
-    // "block.railcraft.high_speed_control_track": "High Speed Control Track",
 
-    this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK, "High Speed Electric Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK,
+        "High Speed Electric Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK,
+        "High Speed Electric Transition Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK,
         "High Speed Electric Locking Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK,
@@ -303,15 +304,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         "High Speed Electric Detector Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK,
         "High Speed Electric Turnout Track");
-    this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK, "High Speed Electric Wye Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK,
+        "High Speed Electric Wye Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK,
         "High Speed Electric Junction Track");
-    // "block.railcraft.high_speed_electric_transition_track": "High Speed Electric Transition
-    // Track",
-    // "block.railcraft.high_speed_electric_buffer_stop_track": "High Speed Electric Buffer Stop
-    // Track",
-    // "block.railcraft.high_speed_electric_control_track": "High Speed Electric Control Track",
-    // "block.railcraft.high_speed_electric_detector_track": "High Speed Electric Detector Track",
 
     this.addBlock(RailcraftBlocks.REINFORCED_TRACK, "Reinforced Track");
     this.addBlock(RailcraftBlocks.REINFORCED_LOCKING_TRACK, "Reinforced Locking Track");
