@@ -124,7 +124,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
             RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
     this.tag(RailcraftTags.Blocks.POST)
-        .add(RailcraftBlocks.POST.resolveValues().toArray(Block[]::new));
+        .add(RailcraftBlocks.POST.resolveVariants().toArray(Block[]::new));
     this.tag(RailcraftTags.Blocks.SIGNAL)
         .add(RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),
             RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
@@ -142,10 +142,10 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTag(BlockTags.RAILS);
 
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .add(RailcraftBlocks.IRON_TANK_VALVE.resolveValues().toArray(Block[]::new))
-        .add(RailcraftBlocks.IRON_TANK_WALL.resolveValues().toArray(Block[]::new))
-        .add(RailcraftBlocks.STEEL_TANK_VALVE.resolveValues().toArray(Block[]::new))
-        .add(RailcraftBlocks.STEEL_TANK_WALL.resolveValues().toArray(Block[]::new))
+        .add(RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().toArray(Block[]::new))
+        .add(RailcraftBlocks.IRON_TANK_WALL.resolveVariants().toArray(Block[]::new))
+        .add(RailcraftBlocks.STEEL_TANK_VALVE.resolveVariants().toArray(Block[]::new))
+        .add(RailcraftBlocks.STEEL_TANK_WALL.resolveVariants().toArray(Block[]::new))
         .add(RailcraftBlocks.FIRESTONE.get(),
             RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
             RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
@@ -159,10 +159,10 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.FIRESTONE.get());
 
     this.tag(BlockTags.NEEDS_STONE_TOOL)
-        .add(RailcraftBlocks.IRON_TANK_VALVE.resolveValues().toArray(Block[]::new))
-        .add(RailcraftBlocks.IRON_TANK_WALL.resolveValues().toArray(Block[]::new))
-        .add(RailcraftBlocks.STEEL_TANK_VALVE.resolveValues().toArray(Block[]::new))
-        .add(RailcraftBlocks.STEEL_TANK_WALL.resolveValues().toArray(Block[]::new))
+        .add(RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().toArray(Block[]::new))
+        .add(RailcraftBlocks.IRON_TANK_WALL.resolveVariants().toArray(Block[]::new))
+        .add(RailcraftBlocks.STEEL_TANK_VALVE.resolveVariants().toArray(Block[]::new))
+        .add(RailcraftBlocks.STEEL_TANK_WALL.resolveVariants().toArray(Block[]::new))
         .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
             RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
             RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
@@ -173,22 +173,22 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
     this.tag(RailcraftTags.Blocks.IRON_TANK_GAUGE)
-        .add(RailcraftBlocks.IRON_TANK_GAUGE.resolveValues().toArray(Block[]::new));
+        .add(RailcraftBlocks.IRON_TANK_GAUGE.resolveVariants().toArray(Block[]::new));
 
     this.tag(RailcraftTags.Blocks.IRON_TANK_VALVE)
-        .add(RailcraftBlocks.IRON_TANK_VALVE.resolveValues().toArray(Block[]::new));
+        .add(RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().toArray(Block[]::new));
 
     this.tag(RailcraftTags.Blocks.IRON_TANK_WALL)
-        .add(RailcraftBlocks.IRON_TANK_WALL.resolveValues().toArray(Block[]::new));
+        .add(RailcraftBlocks.IRON_TANK_WALL.resolveVariants().toArray(Block[]::new));
 
     this.tag(RailcraftTags.Blocks.STEEL_TANK_GAUGE)
-        .add(RailcraftBlocks.STEEL_TANK_GAUGE.resolveValues().toArray(Block[]::new));
+        .add(RailcraftBlocks.STEEL_TANK_GAUGE.resolveVariants().toArray(Block[]::new));
 
     this.tag(RailcraftTags.Blocks.STEEL_TANK_VALVE)
-        .add(RailcraftBlocks.STEEL_TANK_VALVE.resolveValues().toArray(Block[]::new));
+        .add(RailcraftBlocks.STEEL_TANK_VALVE.resolveVariants().toArray(Block[]::new));
 
     this.tag(RailcraftTags.Blocks.STEEL_TANK_WALL)
-        .add(RailcraftBlocks.STEEL_TANK_WALL.resolveValues().toArray(Block[]::new));
+        .add(RailcraftBlocks.STEEL_TANK_WALL.resolveVariants().toArray(Block[]::new));
   }
 
   @Override

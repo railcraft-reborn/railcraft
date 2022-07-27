@@ -32,12 +32,12 @@ public class VariantRegistrar<K extends Enum<K> & StringRepresentable, V> {
     return this.variants.get(key);
   }
 
-  public Collection<RegistryObject<? extends V>> registryObjects() {
+  public Collection<RegistryObject<? extends V>> variants() {
     return this.variants.values();
   }
 
-  public Stream<? extends V> resolveValues() {
-    return this.registryObjects().stream().map(RegistryObject::get);
+  public Stream<? extends V> resolveVariants() {
+    return this.variants().stream().map(RegistryObject::get);
   }
 
   private void put(K key, RegistryObject<? extends V> registryObject) {

@@ -53,9 +53,9 @@ public class RailcraftBlockEntityTypes {
           () -> BlockEntityType.Builder
               .of(IronTankBlockEntity::new,
                   toArray(
-                      RailcraftBlocks.IRON_TANK_GAUGE.registryObjects(),
-                      RailcraftBlocks.IRON_TANK_VALVE.registryObjects(),
-                      RailcraftBlocks.IRON_TANK_WALL.registryObjects()))
+                      RailcraftBlocks.IRON_TANK_GAUGE.variants(),
+                      RailcraftBlocks.IRON_TANK_VALVE.variants(),
+                      RailcraftBlocks.IRON_TANK_WALL.variants()))
               .build(null));
 
   public static final RegistryObject<BlockEntityType<SteelTankBlockEntity>> STEEL_TANK =
@@ -63,9 +63,9 @@ public class RailcraftBlockEntityTypes {
           () -> BlockEntityType.Builder
               .of(SteelTankBlockEntity::new,
                   toArray(
-                      RailcraftBlocks.STEEL_TANK_GAUGE.registryObjects(),
-                      RailcraftBlocks.STEEL_TANK_VALVE.registryObjects(),
-                      RailcraftBlocks.STEEL_TANK_WALL.registryObjects()))
+                      RailcraftBlocks.STEEL_TANK_GAUGE.variants(),
+                      RailcraftBlocks.STEEL_TANK_VALVE.variants(),
+                      RailcraftBlocks.STEEL_TANK_WALL.variants()))
               .build(null));
 
   public static final RegistryObject<BlockEntityType<SteamBoilerBlockEntity>> STEAM_BOILER =

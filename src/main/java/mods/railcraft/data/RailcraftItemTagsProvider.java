@@ -3,12 +3,10 @@ package mods.railcraft.data;
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class RailcraftItemTagsProvider extends ItemTagsProvider {
@@ -21,61 +19,61 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
   @Override
   protected void addTags() {
     this.tag(RailcraftTags.Items.STEEL_INGOT)
-      .add(RailcraftItems.STEEL_INGOT.get());
+        .add(RailcraftItems.STEEL_INGOT.get());
     this.tag(RailcraftTags.Items.TIN_INGOT)
-      .add(RailcraftItems.TIN_INGOT.get());
+        .add(RailcraftItems.TIN_INGOT.get());
     this.tag(RailcraftTags.Items.ZINC_INGOT)
-      .add(RailcraftItems.ZINC_INGOT.get());
+        .add(RailcraftItems.ZINC_INGOT.get());
     this.tag(RailcraftTags.Items.BRASS_INGOT)
-      .add(RailcraftItems.BRASS_INGOT.get());
+        .add(RailcraftItems.BRASS_INGOT.get());
     this.tag(RailcraftTags.Items.BRONZE_INGOT)
-      .add(RailcraftItems.BRONZE_INGOT.get());
+        .add(RailcraftItems.BRONZE_INGOT.get());
     this.tag(RailcraftTags.Items.NICKEL_INGOT)
-      .add(RailcraftItems.NICKEL_INGOT.get());
+        .add(RailcraftItems.NICKEL_INGOT.get());
     this.tag(RailcraftTags.Items.INVAR_INGOT)
-      .add(RailcraftItems.INVAR_INGOT.get());
+        .add(RailcraftItems.INVAR_INGOT.get());
 
     this.tag(RailcraftTags.Items.STEEL_NUGGET)
-      .add(RailcraftItems.STEEL_NUGGET.get());
+        .add(RailcraftItems.STEEL_NUGGET.get());
     this.tag(RailcraftTags.Items.TIN_NUGGET)
-      .add(RailcraftItems.TIN_NUGGET.get());
+        .add(RailcraftItems.TIN_NUGGET.get());
     this.tag(RailcraftTags.Items.ZINC_NUGGET)
-      .add(RailcraftItems.ZINC_NUGGET.get());
+        .add(RailcraftItems.ZINC_NUGGET.get());
     this.tag(RailcraftTags.Items.BRASS_NUGGET)
-      .add(RailcraftItems.BRASS_NUGGET.get());
+        .add(RailcraftItems.BRASS_NUGGET.get());
     this.tag(RailcraftTags.Items.BRONZE_NUGGET)
-      .add(RailcraftItems.BRONZE_NUGGET.get());
+        .add(RailcraftItems.BRONZE_NUGGET.get());
     this.tag(RailcraftTags.Items.NICKEL_NUGGET)
-      .add(RailcraftItems.NICKEL_NUGGET.get());
+        .add(RailcraftItems.NICKEL_NUGGET.get());
     this.tag(RailcraftTags.Items.INVAR_NUGGET)
-      .add(RailcraftItems.INVAR_NUGGET.get());
+        .add(RailcraftItems.INVAR_NUGGET.get());
 
     this.tag(RailcraftTags.Items.STEEL_BLOCK)
-      .add(RailcraftItems.STEEL_BLOCK.get());
+        .add(RailcraftItems.STEEL_BLOCK.get());
 
     this.tag(RailcraftTags.Items.STEEL_PLATE)
-      .add(RailcraftItems.STEEL_PLATE.get());
+        .add(RailcraftItems.STEEL_PLATE.get());
     this.tag(RailcraftTags.Items.IRON_PLATE)
-      .add(RailcraftItems.IRON_PLATE.get());
+        .add(RailcraftItems.IRON_PLATE.get());
     this.tag(RailcraftTags.Items.SALTPETER_DUST)
-      .add(RailcraftItems.SALTPETER_DUST.get());
+        .add(RailcraftItems.SALTPETER_DUST.get());
 
     this.tag(RailcraftTags.Items.IRON_TANK_WALL)
-      .add(RailcraftItems.IRON_TANK_WALL.resolveValues().toArray(Item[]::new));
+        .add(RailcraftItems.IRON_TANK_WALL.resolveVariants().toArray(Item[]::new));
     this.tag(RailcraftTags.Items.IRON_TANK_GAUGE)
-      .add(RailcraftItems.IRON_TANK_GAUGE.resolveValues().toArray(Item[]::new));
+        .add(RailcraftItems.IRON_TANK_GAUGE.resolveVariants().toArray(Item[]::new));
     this.tag(RailcraftTags.Items.IRON_TANK_VALVE)
-      .add(RailcraftItems.IRON_TANK_VALVE.resolveValues().toArray(Item[]::new));
+        .add(RailcraftItems.IRON_TANK_VALVE.resolveVariants().toArray(Item[]::new));
 
     this.tag(RailcraftTags.Items.STEEL_TANK_WALL)
-      .add(RailcraftItems.STEEL_TANK_WALL.resolveValues().toArray(Item[]::new));
+        .add(RailcraftItems.STEEL_TANK_WALL.resolveVariants().toArray(Item[]::new));
     this.tag(RailcraftTags.Items.STEEL_TANK_GAUGE)
-      .add(RailcraftItems.STEEL_TANK_GAUGE.resolveValues().toArray(Item[]::new));
+        .add(RailcraftItems.STEEL_TANK_GAUGE.resolveVariants().toArray(Item[]::new));
     this.tag(RailcraftTags.Items.STEEL_TANK_VALVE)
-      .add(RailcraftItems.STEEL_TANK_VALVE.resolveValues().toArray(Item[]::new));
+        .add(RailcraftItems.STEEL_TANK_VALVE.resolveVariants().toArray(Item[]::new));
 
     this.tag(RailcraftTags.Items.STRENGTHENED_GLASS)
-      .add(RailcraftItems.STRENGTHENED_GLASS.resolveValues().toArray(Item[]::new));
+        .add(RailcraftItems.STRENGTHENED_GLASS.resolveVariants().toArray(Item[]::new));
   }
 
   @Override

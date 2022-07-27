@@ -1,9 +1,8 @@
 package mods.railcraft.data.recipes;
 
 import java.util.function.Consumer;
-
 import mods.railcraft.Railcraft;
-import mods.railcraft.util.ColorVariantRegistrar;
+import mods.railcraft.util.VariantRegistrar;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -20,13 +19,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 
 public abstract class CustomRecipeProvider extends RecipeProvider {
+
   public CustomRecipeProvider(DataGenerator gen) {
     super(gen);
   }
 
   protected static void tankWall(Consumer<FinishedRecipe> consumer,
                           ItemLike ingredient,
-                          ColorVariantRegistrar<BlockItem> colorItems,
+                          VariantRegistrar<DyeColor, BlockItem> colorItems,
                           TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
@@ -42,7 +42,7 @@ public abstract class CustomRecipeProvider extends RecipeProvider {
 
   protected static void tankValve(Consumer<FinishedRecipe> consumer,
                                  ItemLike ingredient,
-                                 ColorVariantRegistrar<BlockItem> colorItems,
+                                 VariantRegistrar<DyeColor, BlockItem> colorItems,
                                  TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
@@ -85,7 +85,7 @@ public abstract class CustomRecipeProvider extends RecipeProvider {
   }
 
   protected static void coloredBlockVariant(Consumer<FinishedRecipe> consumer,
-                                          ColorVariantRegistrar<BlockItem> colorItems,
+                                          VariantRegistrar<DyeColor, BlockItem> colorItems,
                                           TagKey<Item> tagItem) {
     var base = colorItems.variantFor(DyeColor.WHITE).get();
     for (var dyeColor : DyeColor.values()) {
