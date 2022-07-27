@@ -2,9 +2,11 @@ package mods.railcraft;
 
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.charge.ChargeProviderImpl;
+import mods.railcraft.charge.ZapEffectProviderImpl;
 import mods.railcraft.client.ClientManager;
 import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.network.NetworkChannel;
@@ -71,6 +73,7 @@ public class Railcraft {
     FuelUtil._setFuelManager(FuelManagerImpl.INSTANCE);
     CartUtil._setLinkageManager(LinkageManagerImpl.INSTANCE);
     CartUtil._setTransferHelper(TrainTransferHelperImpl.INSTANCE);
+    Charge._setZapEffectProvider(new ZapEffectProviderImpl());
     for (var value : ChargeProviderImpl.values()) {
       value.getCharge()._setProvider(value);
     }

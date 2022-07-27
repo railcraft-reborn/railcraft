@@ -10,6 +10,7 @@ package mods.railcraft.api.charge;
 import java.util.Objects;
 import java.util.Optional;
 import org.jetbrains.annotations.ApiStatus;
+import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -17,7 +18,6 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 
 /**
  * The heart of the Charge system is here.
@@ -61,8 +61,8 @@ import net.minecraft.world.phys.Vec3;
  *
  * <p>
  * Every block on the grid has a generic loss over time. It various with the type of block, more
- * details on that in the {link {@link mods.railcraft.api.charge.ChargeBlock.Spec}}. The value
- * is calculated as the grid is constructed and removed from the grid every tick. Consider it
+ * details on that in the {link {@link mods.railcraft.api.charge.ChargeBlock.Spec}}. The value is
+ * calculated as the grid is constructed and removed from the grid every tick. Consider it
  * representative of resistive losses and current leakage. All large scale real life power systems
  * suffer from these loss effects and are often major concerns when designing these systems.
  *
@@ -142,7 +142,6 @@ public enum Charge implements StringRepresentable {
   // catenary("catenary");
 
   private static ZapEffectProvider zapEffectProvider;
-  private static ServerZapEffectProvider serverZapEffectProvider;
 
   private final String name;
 
@@ -164,9 +163,7 @@ public enum Charge implements StringRepresentable {
 
   @ApiStatus.Internal
   public void _setProvider(Provider provider) {
-    if (this.provider != null) {
-      throw new IllegalStateException("provider already set.");
-    }
+    Preconditions.checkState(this.provider == null, "provider already set.");
     this.provider = provider;
   }
 
@@ -188,26 +185,8 @@ public enum Charge implements StringRepresentable {
 
   @ApiStatus.Internal
   public static void _setZapEffectProvider(ZapEffectProvider zapEffectProvider) {
-    if (Charge.zapEffectProvider != null) {
-      throw new IllegalStateException("zapEffectProvider already set.");
-    }
+    Preconditions.checkState(Charge.zapEffectProvider == null, "zapEffectProvider already set.");
     Charge.zapEffectProvider = zapEffectProvider;
-  }
-
-  /**
-   * Entry point for charge related effects sent from the server thread.
-   */
-  public static ServerZapEffectProvider serverZapEffectProvider() {
-    Objects.requireNonNull(serverZapEffectProvider);
-    return serverZapEffectProvider;
-  }
-
-  @ApiStatus.Internal
-  public static void _setHostZapEffectProvider(ServerZapEffectProvider serverZapEffectProvider) {
-    if (Charge.serverZapEffectProvider != null) {
-      throw new IllegalStateException("serverZapEffectProvider already set.");
-    }
-    Charge.serverZapEffectProvider = serverZapEffectProvider;
   }
 
   public interface Provider {
@@ -325,20 +304,11 @@ public enum Charge implements StringRepresentable {
     BLOCK, TRACK
   }
 
-  public interface ServerZapEffectProvider {
-    /**
-     * Spawns a lot of sparks from a point source.
-     *
-     * @param pos - the position of the sparks.
-     * @throws IllegalArgumentException If source is of an unexpected type.
-     */
-    default void zapEffectDeath(Level world, Vec3 pos) {}
-  }
-
   /**
    * Interface used by clientparticles.
    */
   public interface ZapEffectProvider {
+
     /**
      * Helper method that most blocks can use for spark effects. It has a chance of calling
      * {@link #zapEffectSurface(BlockState, World, BlockPos)}.
@@ -350,28 +320,22 @@ public enum Charge implements StringRepresentable {
      *        {@code rand.nextInt(chance) == 0} Most blocks use 50, tracks use 75. Lower numbers
      *        means more frequent sparks.
      */
-    default void throwSparks(BlockState state, Level world, BlockPos pos, RandomSource rand,
+    default void throwSparks(BlockState state, Level level, BlockPos pos, RandomSource rand,
         int chance) {}
 
     /**
      * Spawns a single spark from a point source.
-     *
-     * @param source Can be a TileEntity, Entity, BlockPos, or Vector3d
-     * @throws IllegalArgumentException If source is of an unexpected type.
      */
-    default void zapEffectPoint(Level world, Vec3 source) {}
-
-    /**
-     * Spawns a lot of sparks from a point source.
-     *
-     * @param source Can be a TileEntity, Entity, BlockPos, or Vector3d
-     * @throws IllegalArgumentException If source is of an unexpected type.
-     */
-    default void zapEffectDeath(Level world, Vec3 source) {}
+    default void zapEffectPoint(Level level, double x, double y, double z) {}
 
     /**
      * Spawns a spark from the surface of each rendered side of a block.
      */
-    default void zapEffectSurface(BlockState stateIn, Level worldIn, BlockPos pos) {}
+    default void zapEffectSurface(BlockState state, Level level, BlockPos pos) {}
+
+    /**
+     * Spawns a lot of sparks from a point source.
+     */
+    default void zapEffectDeath(Level level, double x, double y, double z) {}
   }
 }

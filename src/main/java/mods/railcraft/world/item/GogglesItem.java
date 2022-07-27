@@ -69,6 +69,11 @@ public class GogglesItem extends ArmorItem {
     itemStack.getOrCreateTag().putString("aura", aura.getSerializedName());
   }
 
+  public static boolean isGoggleAuraActive(Player player, Aura aura) {
+    var itemStack = player.getItemBySlot(EquipmentSlot.HEAD);
+    return itemStack.getItem() instanceof GogglesItem && getAura(itemStack) == aura;
+  }
+
   public enum Aura implements StringRepresentable {
 
     NONE("none"),

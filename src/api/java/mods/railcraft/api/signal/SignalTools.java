@@ -18,15 +18,15 @@ public abstract class SignalTools {
   public static boolean printSignalDebug;
   public static int aspectUpdateInterval = 4;
 
-  private static TuningAuraProvider tuningAuraProvider;
+  private static TuningAuraHandler tuningAuraProvider;
 
-  public static TuningAuraProvider tuningAuraProvider() {
+  public static TuningAuraHandler tuningAuraProvider() {
     Objects.requireNonNull(tuningAuraProvider);
     return tuningAuraProvider;
   }
 
   @ApiStatus.Internal
-  public static void _setTuningAuraProvider(TuningAuraProvider tuningAuraProvider) {
+  public static void _setTuningAuraProvider(TuningAuraHandler tuningAuraProvider) {
     if (SignalTools.tuningAuraProvider != null) {
       throw new IllegalStateException("tuningAuraProvider is already set.");
     }

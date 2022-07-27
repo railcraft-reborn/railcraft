@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public interface TuningAuraProvider {
+public interface TuningAuraHandler {
 
   boolean isTuningAuraActive();
 

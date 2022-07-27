@@ -62,7 +62,7 @@ public class TuningAuraParticleOptions implements ParticleOptions {
 
   public TuningAuraParticleOptions(Vec3 destination, int color) {
     this.destination = destination;
-    this.color = color;;
+    this.color = color;
   }
 
   @Override
