@@ -8,6 +8,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.RollingRecipe;
@@ -19,14 +20,14 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
 
   private static final int WIDTH = 116;
   private static final int HEIGHT = 54;
-  private final IDrawable background, icon;
-  private final Component localizedName;
+
+  private static final ResourceLocation CRAFTING_TABLE =
+    new ResourceLocation("textures/gui/container/crafting_table.png");
+
+  private final IGuiHelper guiHelper;
 
   public RollingRecipeCategory(IGuiHelper guiHelper) {
-    var location = new ResourceLocation("minecraft", "textures/gui/container/crafting_table.png");
-    background = guiHelper.createDrawable(location, 29, 16, WIDTH, HEIGHT);
-    icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get()));
-    localizedName = Component.translatable("jei.railcraft.category.rolling");
+    this.guiHelper = guiHelper;
   }
 
   @Override
@@ -36,17 +37,18 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
 
   @Override
   public Component getTitle() {
-    return localizedName;
+    return Component.translatable(Translations.Jei.METAL_ROLLING);
   }
 
   @Override
   public IDrawable getBackground() {
-    return background;
+    return guiHelper.createDrawable(CRAFTING_TABLE, 29, 16, WIDTH, HEIGHT);
   }
 
   @Override
   public IDrawable getIcon() {
-    return icon;
+    return guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
+      new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get()));
   }
 
   @Override
