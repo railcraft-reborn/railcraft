@@ -103,6 +103,16 @@ public class RailcraftItemModelGenerators {
 
     this.generateFlatItem(RailcraftItems.STEEL_PLATE.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.IRON_PLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.TIN_PLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.GOLD_PLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.LEAD_PLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.ZINC_PLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.BRASS_PLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.INVAR_PLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.BRONZE_PLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.COPPER_PLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.NICKEL_PLATE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.SILVER_PLATE.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.COAL_COKE.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.SLAG.get(), ModelTemplates.FLAT_ITEM);

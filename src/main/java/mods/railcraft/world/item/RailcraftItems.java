@@ -1127,6 +1127,7 @@ public class RailcraftItems {
             }
           });
 
+  //Plates
   public static final RegistryObject<Item> STEEL_PLATE =
       deferredRegister.register("steel_plate",
           () -> new Item(new Item.Properties().tab(TAB)));
@@ -1134,6 +1135,46 @@ public class RailcraftItems {
   public static final RegistryObject<Item> IRON_PLATE =
       deferredRegister.register("iron_plate",
           () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> TIN_PLATE =
+    deferredRegister.register("tin_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> GOLD_PLATE =
+    deferredRegister.register("gold_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> LEAD_PLATE =
+    deferredRegister.register("lead_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ZINC_PLATE =
+    deferredRegister.register("zinc_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRASS_PLATE =
+    deferredRegister.register("brass_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> INVAR_PLATE =
+    deferredRegister.register("invar_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRONZE_PLATE =
+    deferredRegister.register("bronze_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> COPPER_PLATE =
+    deferredRegister.register("copper_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> NICKEL_PLATE =
+    deferredRegister.register("nickel_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SILVER_PLATE =
+    deferredRegister.register("silver_plate",
+      () -> new Item(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> STEEL_INGOT =
       deferredRegister.register("steel_ingot",

@@ -151,6 +151,16 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.INVAR_NUGGET, "Invar Nugget");
     this.addItem(RailcraftItems.STEEL_PLATE, "Steel Plate");
     this.addItem(RailcraftItems.IRON_PLATE, "Iron Plate");
+    this.addItem(RailcraftItems.TIN_PLATE, "Tin Plate");
+    this.addItem(RailcraftItems.GOLD_PLATE, "Gold Plate");
+    this.addItem(RailcraftItems.LEAD_PLATE, "Lead Plate");
+    this.addItem(RailcraftItems.ZINC_PLATE, "Zinc Plate");
+    this.addItem(RailcraftItems.BRASS_PLATE, "Brass Plate");
+    this.addItem(RailcraftItems.INVAR_PLATE, "Invar Plate");
+    this.addItem(RailcraftItems.BRONZE_PLATE, "Bronze Plate");
+    this.addItem(RailcraftItems.COPPER_PLATE, "Copper Plate");
+    this.addItem(RailcraftItems.NICKEL_PLATE, "Nickel Plate");
+    this.addItem(RailcraftItems.SILVER_PLATE, "Silver Plate");
     this.addItem(RailcraftItems.SALTPETER_DUST, "Saltpeter Dust");
     this.addItem(RailcraftItems.CONTROLLER_CIRCUIT, "Controller Circuit");
     this.addItem(RailcraftItems.RECEIVER_CIRCUIT, "Receiver Circuit");

@@ -55,6 +55,29 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.STEEL_PLATE.get());
     this.tag(RailcraftTags.Items.IRON_PLATE)
         .add(RailcraftItems.IRON_PLATE.get());
+
+    this.tag(RailcraftTags.Items.TIN_PLATE)
+      .add(RailcraftItems.TIN_PLATE.get());
+    this.tag(RailcraftTags.Items.GOLD_PLATE)
+      .add(RailcraftItems.GOLD_PLATE.get());
+    this.tag(RailcraftTags.Items.LEAD_PLATE)
+      .add(RailcraftItems.LEAD_PLATE.get());
+    this.tag(RailcraftTags.Items.ZINC_PLATE)
+      .add(RailcraftItems.ZINC_PLATE.get());
+    this.tag(RailcraftTags.Items.BRASS_PLATE)
+      .add(RailcraftItems.BRASS_PLATE.get());
+    this.tag(RailcraftTags.Items.INVAR_PLATE)
+      .add(RailcraftItems.INVAR_PLATE.get());
+    this.tag(RailcraftTags.Items.BRONZE_PLATE)
+      .add(RailcraftItems.BRONZE_PLATE.get());
+    this.tag(RailcraftTags.Items.COPPER_PLATE)
+      .add(RailcraftItems.COPPER_PLATE.get());
+    this.tag(RailcraftTags.Items.NICKEL_PLATE)
+      .add(RailcraftItems.NICKEL_PLATE.get());
+    this.tag(RailcraftTags.Items.SILVER_PLATE)
+      .add(RailcraftItems.SILVER_PLATE.get());
+
+
     this.tag(RailcraftTags.Items.SALTPETER_DUST)
         .add(RailcraftItems.SALTPETER_DUST.get());
 
