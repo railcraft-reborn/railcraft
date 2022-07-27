@@ -3,17 +3,19 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
-
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.charge.HostEffects;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.WaterAnimal;
@@ -26,8 +28,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.Vec3;
 
 public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
+
+  public static final short TELEPORT_PARTICLES = 64;
 
   public static final int MIN_RADIUS = 1;
   public static final int MAX_RADIUS = 5;
@@ -103,11 +108,34 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
         }
 
         if (!entity.isPassenger()) {
-          HostEffects.INSTANCE.teleportEffect(entity, cart.position());
+          teleportEffect(entity, cart.position());
           CartTools.addPassenger(cart, entity);
         }
       }
     }
+  }
+
+  private static void teleportEffect(Entity entity, Vec3 destination) {
+    var level = entity.getLevel();
+    if (level.isClientSide()) {
+      return;
+    }
+
+    var random = level.getRandom();
+    var start = entity.position();
+    for (int i = 0; i < TELEPORT_PARTICLES; i++) {
+      var travel = (double) i / ((double) TELEPORT_PARTICLES - 1.0D);
+      var vX = (random.nextFloat() - 0.5F) * 0.2F;
+      var vY = (random.nextFloat() - 0.5F) * 0.2F;
+      var vZ = (random.nextFloat() - 0.5F) * 0.2F;
+      var pX = start.x + (destination.x - start.x) * travel + (random.nextDouble() - 0.5D) * 2.0D;
+      var pY = start.y + (destination.y - start.y) * travel + (random.nextDouble() - 0.5D) * 2.0D;
+      var pZ = start.z + (destination.z - start.z) * travel + (random.nextDouble() - 0.5D) * 2.0D;
+      level.addParticle(ParticleTypes.PORTAL, pX, pY, pZ, vX, vY, vZ);
+    }
+
+    level.playSound(
+        null, entity, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1.0F);
   }
 
   public static int getRadius(BlockState blockState) {

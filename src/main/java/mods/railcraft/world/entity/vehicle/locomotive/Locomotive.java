@@ -20,7 +20,6 @@ import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.core.Lockable;
-import mods.railcraft.client.ClientEffects;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
@@ -29,8 +28,8 @@ import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.util.MathUtil;
-import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.ModEntitySelector;
+import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.vehicle.CartTools;
@@ -43,6 +42,7 @@ import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -491,8 +491,7 @@ public abstract class Locomotive extends RailcraftMinecart
       if (Seasons.isPolarExpress(this)
           && (!MathUtil.nearZero(this.getDeltaMovement().x())
               || !MathUtil.nearZero(this.getDeltaMovement().z()))) {
-        ClientEffects.INSTANCE.snowEffect(
-            this.getX(), this.getBoundingBox().minY - this.getY(), this.getZ());
+        this.snowEffect(this.getX(), this.getBoundingBox().minY - this.getY(), this.getZ());
       }
       return;
     }
@@ -513,6 +512,13 @@ public abstract class Locomotive extends RailcraftMinecart
         && this.random.nextInt(WHISTLE_CHANCE) == 0) {
       this.whistle();
     }
+  }
+
+  private void snowEffect(double x, double y, double z) {
+    double vx = this.random.nextGaussian() * 0.1;
+    double vy = this.random.nextDouble() * 0.01;
+    double vz = this.random.nextGaussian() * 0.1;
+    this.level.addParticle(ParticleTypes.ITEM_SNOWBALL, x, y, z, vx, vy, vz);
   }
 
   protected abstract Container getTicketInventory();

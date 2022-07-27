@@ -1,5 +1,6 @@
 package mods.railcraft.particle;
 
+import java.util.function.Function;
 import com.mojang.serialization.Codec;
 import mods.railcraft.Railcraft;
 import net.minecraft.core.particles.ParticleOptions;
@@ -9,8 +10,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.function.Function;
 
 /**
  * Railcraft particle types.
@@ -35,6 +34,11 @@ public class RailcraftParticleTypes {
       deferredRegister.register("tuning_aura",
           () -> create(TuningAuraParticleOptions.DESERIALIZER,
               __ -> TuningAuraParticleOptions.CODEC));
+
+  public static final RegistryObject<ParticleType<ForceSpawnParticleOptions>> FORCE_SPAWN =
+      deferredRegister.register("force_spawn",
+          () -> create(ForceSpawnParticleOptions.DESERIALIZER,
+              __ -> ForceSpawnParticleOptions.CODEC));
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.charge.HostEffects;
+import mods.railcraft.particle.ForceSpawnParticleOptions;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.Magnifiable;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
@@ -13,10 +13,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
@@ -80,26 +81,44 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     }
   }
 
-  // always logical server
   private void spawnParticles(BlockPos pos) {
-    HostEffects.INSTANCE.forceTrackSpawnEffect(this.level, pos,
-        this.getBlockState().getValue(ForceTrackEmitterBlock.COLOR).getFireworkColor());
+    if (this.level.isClientSide()) {
+      return;
+    }
+
+    int x = pos.getX();
+    int y = pos.getY();
+    int z = pos.getZ();
+    var color = this.getBlockState().getValue(ForceTrackEmitterBlock.COLOR).getFireworkColor();
+
+    this.level.addParticle(new ForceSpawnParticleOptions(color),
+        x + 0.1, y, z + 0.1, 0.0D, 0.0D, 0.0D);
+    this.level.addParticle(new ForceSpawnParticleOptions(color),
+        x + 0.9, y, z + 0.1, 0.0D, 0.0D, 0.0D);
+    this.level.addParticle(new ForceSpawnParticleOptions(color),
+        x + 0.1, y, z + 0.9, 0.0D, 0.0D, 0.0D);
+    this.level.addParticle(new ForceSpawnParticleOptions(color),
+        x + 0.9, y, z + 0.9, 0.0D, 0.0D, 0.0D);
+
+    this.level.playSound(
+        null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1.0F);
   }
 
   boolean placeTrack(BlockPos blockPos, BlockState existingBlockState, RailShape railShape) {
-    if (existingBlockState.isAir()) {
-      this.spawnParticles(blockPos);
-      BlockState trackBlockState = RailcraftBlocks.FORCE_TRACK.get().defaultBlockState()
-          .setValue(ForceTrackBlock.SHAPE, railShape);
-      this.level.setBlockAndUpdate(blockPos, trackBlockState);
-      BlockEntity blockEntity = this.level.getBlockEntity(blockPos);
-      if (blockEntity instanceof ForceTrackBlockEntity) {
-        ForceTrackBlockEntity track = (ForceTrackBlockEntity) blockEntity;
-        track.setEmitter(this);
-        this.trackCount++;
-        return true;
-      }
+    if (!existingBlockState.isAir()) {
+      return false;
     }
+
+    this.spawnParticles(blockPos);
+    var trackBlockState = RailcraftBlocks.FORCE_TRACK.get().defaultBlockState()
+        .setValue(ForceTrackBlock.SHAPE, railShape);
+    this.level.setBlockAndUpdate(blockPos, trackBlockState);
+    if (this.level.getBlockEntity(blockPos) instanceof ForceTrackBlockEntity track) {
+      track.setEmitter(this);
+      this.trackCount++;
+      return true;
+    }
+
     return false;
   }
 

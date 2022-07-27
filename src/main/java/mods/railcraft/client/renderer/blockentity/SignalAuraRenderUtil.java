@@ -1,54 +1,53 @@
 package mods.railcraft.client.renderer.blockentity;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.BlockSignal;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.TokenSignal;
-import mods.railcraft.client.ClientEffects;
 import mods.railcraft.world.item.GogglesItem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-
 public class SignalAuraRenderUtil {
 
-  public static void tryRenderSignalAura(BlockEntity blockEntity, PoseStack matrixStack,
-      MultiBufferSource renderTypeBuffer) {
-    if (blockEntity instanceof SignalControllerProvider) {
-      Collection<BlockPos> peers =
-          ((SignalControllerProvider) blockEntity).getSignalController().getPeers();
-      if (ClientEffects.INSTANCE.isGoggleAuraActive(GogglesItem.Aura.TUNING)) {
-        renderSignalAura(blockEntity, matrixStack, renderTypeBuffer, peers,
+  private static final Minecraft minecraft = Minecraft.getInstance();
+
+  public static void tryRenderSignalAura(BlockEntity blockEntity,
+      PoseStack poseStack, MultiBufferSource bufferSource) {
+    if (blockEntity instanceof SignalControllerProvider provider) {
+      var peers = provider.getSignalController().getPeers();
+      if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.TUNING)) {
+        renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.COORD_RAINBOW);
-      } else if (ClientEffects.INSTANCE.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
-        renderSignalAura(blockEntity, matrixStack, renderTypeBuffer, peers,
+      } else if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SIGNALLING)) {
+        renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.CONTROLLER_ASPECT);
       }
     }
-    if (blockEntity instanceof BlockSignal) {
-      Collection<BlockPos> peers = ((BlockSignal) blockEntity).getSignalNetwork().getPeers();
-      if (ClientEffects.INSTANCE.isGoggleAuraActive(GogglesItem.Aura.SURVEYING)) {
-        renderSignalAura(blockEntity, matrixStack, renderTypeBuffer, peers,
+    if (blockEntity instanceof BlockSignal blockSignal) {
+      var peers = blockSignal.getSignalNetwork().getPeers();
+      if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SURVEYING)) {
+        renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.COORD_RAINBOW);
-      } else if (ClientEffects.INSTANCE.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
-        renderSignalAura(blockEntity, matrixStack, renderTypeBuffer, peers,
+      } else if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SIGNALLING)) {
+        renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.CONSTANT_BLUE);
       }
-    } else if (blockEntity instanceof TokenSignal) {
-      TokenSignal tokenSignal = (TokenSignal) blockEntity;
-      Collection<BlockPos> centroid = Collections.singletonList(tokenSignal.getTokenRingCentroid());
-      if (ClientEffects.INSTANCE.isGoggleAuraActive(GogglesItem.Aura.SURVEYING)) {
-        renderSignalAura(blockEntity, matrixStack, renderTypeBuffer, centroid,
+    } else if (blockEntity instanceof TokenSignal tokenSignal) {
+      var centroid = Collections.singletonList(tokenSignal.getTokenRingCentroid());
+      if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SURVEYING)) {
+        renderSignalAura(blockEntity, poseStack, bufferSource, centroid,
             (t, s, d) -> tokenSignal.getTokenRingId().hashCode());
-      } else if (ClientEffects.INSTANCE.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
-        renderSignalAura(blockEntity, matrixStack, renderTypeBuffer, centroid,
+      } else if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SIGNALLING)) {
+        renderSignalAura(blockEntity, poseStack, bufferSource, centroid,
             ColorProfile.CONSTANT_BLUE);
       }
     }

@@ -3,7 +3,8 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
-import mods.railcraft.client.ClientEffects;
+import mods.railcraft.particle.RailcraftParticleTypes;
+import mods.railcraft.season.Seasons;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -15,6 +16,7 @@ import mods.railcraft.world.level.material.fluid.steam.SteamConstants;
 import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -168,29 +170,38 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
     double rads = Math.toRadians(renderYaw);
     if (this.isSmoking()) {
       float offset = 0.4f;
-      ClientEffects.INSTANCE.locomotiveEffect(
-          this.getX() - Math.cos(rads) * offset, this.getY() + 1.5,
-          this.getZ() - Math.sin(rads) * offset);
+
+      var x = this.getX() - Math.cos(rads) * offset;
+      var y = this.getY() + 1.5;
+      var z = this.getZ() - Math.sin(rads) * offset;
+
+      if (Seasons.HALLOWEEN && this.random.nextInt(4) == 0) { // 20%?
+        this.level.addParticle(RailcraftParticleTypes.PUMPKIN.get(), x, y, z, 0, 0.02, 0);
+      } else {
+        // smog obviously.
+        this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0, 0.02, 0);
+      }
     }
     // steam spawns ON the engine itself, spreading left or right
     // as the pistons are on the train's sides
     if (this.isSteaming()) {
       float offset = 0.5f;
-      double ninetyDeg = Math.toRadians(90) + Math.toRadians(random.nextInt(10)); // 10* bias
+      double ninetyDeg = Math.toRadians(90) + Math.toRadians(this.random.nextInt(10)); // 10* bias
       double steamAngularSpeed = 0.01;
       double ycoord = this.getY() + 0.15;
-      // right
-      ClientEffects.INSTANCE.steamEffect(
+
+      var vx = steamAngularSpeed * Math.cos(rads - ninetyDeg);
+      var vz = steamAngularSpeed * Math.sin(rads - ninetyDeg);
+
+      this.level.addParticle(RailcraftParticleTypes.STEAM.get(),
           this.getX() - Math.cos(rads + ninetyDeg) * offset, ycoord,
-          this.getZ() - Math.sin(rads + ninetyDeg) * offset,
-          steamAngularSpeed * Math.cos(rads - ninetyDeg),
-          steamAngularSpeed * Math.sin(rads - ninetyDeg));
-      // left
-      ClientEffects.INSTANCE.steamEffect(
+          this.getZ() - Math.sin(rads + ninetyDeg) * offset, vx,
+          0.02 + (this.random.nextDouble() * 0.01), vz);
+
+      this.level.addParticle(RailcraftParticleTypes.STEAM.get(),
           this.getX() - Math.cos(rads + -ninetyDeg) * offset, ycoord,
-          this.getZ() - Math.sin(rads + -ninetyDeg) * offset,
-          steamAngularSpeed * Math.cos(rads + ninetyDeg),
-          steamAngularSpeed * Math.sin(rads + ninetyDeg));
+          this.getZ() - Math.sin(rads + -ninetyDeg) * offset, vx,
+          0.02 + (this.random.nextDouble() * 0.01), vz);
     }
   }
 

@@ -1,16 +1,17 @@
 package mods.railcraft.world.level.block;
 
-import mods.railcraft.client.ClientEffects;
+import mods.railcraft.particle.RailcraftParticleTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -24,12 +25,15 @@ public class FirestoneBlock extends Block {
   @Override
   public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource rand) {
     super.animateTick(blockState, level, pos, rand);
-    BlockPos start = new BlockPos(pos.getX() - 10 + rand.nextInt(20), pos.getY(),
+    var start = new BlockPos(
+        pos.getX() - 10 + rand.nextInt(20),
+        pos.getY(),
         pos.getZ() - 10 + rand.nextInt(20));
-    Vec3 startPosition = new Vec3(pos.getX(), pos.getY(), pos.getZ()).add(0.5, 0.8, 0.5);
-    Vec3 endPosition =
-        new Vec3(start.getX(), start.getY(), start.getZ()).add(0.5, 0.5, 0.5);
-    ClientEffects.INSTANCE.fireSparkEffect(level, startPosition, endPosition);
+    level.playSound(null, start, SoundEvents.LAVA_POP, SoundSource.BLOCKS,
+        0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F);
+    level.addParticle(RailcraftParticleTypes.SPARK.get(),
+        pos.getX(), pos.getY(), pos.getZ(),
+        start.getX() + 0.5D, start.getY() + 0.5D, start.getZ() + 0.5D);
     this.spawnBurningFaceParticles(level, pos);
   }
 

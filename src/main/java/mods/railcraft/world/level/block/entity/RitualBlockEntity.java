@@ -5,7 +5,7 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
-import mods.railcraft.charge.HostEffects;
+import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.Util;
@@ -100,13 +100,22 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
             new Vec3(pos.getX(), pos.getY(), pos.getZ()).add(0.5, 0.5, 0.5);
         Vec3 endPosition = new Vec3(this.worldPosition.getX(), this.worldPosition.getY(),
             this.worldPosition.getZ()).add(0.5, 0.8, 0.5);
-        HostEffects.INSTANCE.fireSparkEffect(this.level, startPosition, endPosition);
+        fireSparkEffect(this.level, startPosition, endPosition);
         queueAdjacent(pos);
         expandQueue();
         return true;
       }
     }
     return false;
+  }
+
+  private static void fireSparkEffect(Level level, Vec3 start, Vec3 end) {
+    if (level.isClientSide()) {
+      return;
+    }
+
+    level.addParticle(RailcraftParticleTypes.SPARK.get(),
+        start.x(), start.y(), start.z(), end.x(), end.y(), end.z());
   }
 
   private @Nullable BlockPos getNextLavaBlock(boolean remove) {

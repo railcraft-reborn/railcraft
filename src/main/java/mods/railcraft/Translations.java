@@ -4,12 +4,18 @@ public class Translations {
 
   public static class Tab {
 
+    private static final String PREFIX = "itemGroup.";
+
     public static final String RAILCRAFT =
-        format("itemGroup.%railcraft");
+        PREFIX + format("%railcraft");
     public static final String RAILCRAFT_OUTFITTED_TRACKS =
-        format("itemGroup.%railcraft_outfitted_tracks");
+        PREFIX + format("%railcraft_outfitted_tracks");
     public static final String RAILCRAFT_DECORATIVE_BLOCKS =
-        format("itemGroup.%railcraft_decorative_blocks");
+        PREFIX + format("%railcraft_decorative_blocks");
+
+    public static String withoutPrefix(String key) {
+      return key.substring(PREFIX.length());
+    }
   }
 
   public static class Screen {

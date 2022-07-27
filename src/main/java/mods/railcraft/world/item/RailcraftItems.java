@@ -49,7 +49,7 @@ public class RailcraftItems {
    * Railcraft's creative tab.
    */
   public static final CreativeModeTab TAB =
-      new CreativeModeTab(Railcraft.ID) {
+      new CreativeModeTab(Translations.Tab.withoutPrefix(Translations.Tab.RAILCRAFT)) {
         @Override
         public ItemStack makeIcon() {
           return new ItemStack(IRON_CROWBAR.get());
@@ -57,7 +57,8 @@ public class RailcraftItems {
       };
 
   public static final CreativeModeTab OUTFITTED_TRACKS_TAB =
-      new CreativeModeTab(Railcraft.ID + "_outfitted_tracks") {
+      new CreativeModeTab(Translations.Tab.withoutPrefix(
+          Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS)) {
         @Override
         public ItemStack makeIcon() {
           return new ItemStack(IRON_DETECTOR_TRACK.get());
@@ -65,7 +66,8 @@ public class RailcraftItems {
       };
 
   public static final CreativeModeTab DECORATIVE_TAB =
-      new CreativeModeTab(Railcraft.ID + "_decorative_blocks") {
+      new CreativeModeTab(Translations.Tab.withoutPrefix(
+          Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS)) {
         @Override
         public ItemStack makeIcon() {
           return new ItemStack(STRENGTHENED_GLASS.variantFor(DyeColor.BLACK).get());

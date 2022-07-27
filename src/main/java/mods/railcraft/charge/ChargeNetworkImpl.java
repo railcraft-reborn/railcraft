@@ -713,7 +713,8 @@ public class ChargeNetworkImpl implements Charge.Network {
                 ? RailcraftDamageSource.ELECTRIC
                 : RailcraftDamageSource.TRACK_ELECTRIC, remainingDamage)) {
           this.removeCharge(chargeCost, false);
-          Charge.serverZapEffectProvider().zapEffectDeath(entity.getLevel(), entity.position());
+          Charge.zapEffectProvider().zapEffectDeath(entity.getLevel(),
+              entity.getX(), entity.getY(), entity.getZ());
         }
       }
     }
