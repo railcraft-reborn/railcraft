@@ -146,13 +146,13 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("I I")
         .pattern("I I")
         .pattern("I I")
-        .save(consumer, Railcraft.ID + ":standard_rail_recipie");
+        .save(consumer, Railcraft.ID + ":standard_rail_recipe");
     RollingRecipeBuilder.rolled(RailcraftItems.STANDARD_RAIL.get(), 16)
         .define('I', RailcraftTags.Items.STEEL_INGOT)
         .pattern("I I")
         .pattern("I I")
         .pattern("I I")
-        .save(consumer, Railcraft.ID + ":steel_rail_recipie");
+        .save(consumer, Railcraft.ID + ":steel_rail_recipe");
     RollingRecipeBuilder.rolled(RailcraftItems.ADVANCED_RAIL.get(), 8)
         .define('I', RailcraftItems.STANDARD_RAIL.get())
         .define('R', Tags.Items.DUSTS_REDSTONE)
@@ -202,7 +202,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()), has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
 
-    // this.railsFromMaterials(finishedRecipie, RailcraftItems.IRON_.get(),
+    // this.railsFromMaterials(finishedRecipe, RailcraftItems.IRON_.get(),
     // RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
     this.railsFromMaterials(consumer, Items.RAIL,
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
@@ -281,7 +281,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     return new ResourceLocation(Railcraft.ID, "blasting_" + tag);
   }
 
-  private void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
+  private void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
                                    Item itemOut, TagKey<Item> materialTag) {
     ShapedRecipeBuilder.shaped(itemOut)
         .define('I', materialTag)
@@ -289,11 +289,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern(" DI")
         .pattern("DID")
         .pattern("ID ")
-        .unlockedBy("has_rail", has(Blocks.RAIL))
-        .save(finishedRecipie);
+        .unlockedBy(getHasName(Blocks.RAIL), has(Blocks.RAIL))
+        .save(finishedRecipe);
   }
 
-  private void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
+  private void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
                                    Item itemOut, Item woolItem) {
     ShapedRecipeBuilder.shaped(itemOut)
         .define('W', woolItem)
@@ -306,20 +306,20 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("BGS")
         .pattern("WSL")
         .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
-        .save(finishedRecipie);
+        .save(finishedRecipe);
   }
 
-  private void rebarFromMaterial(Consumer<FinishedRecipe> finishedRecipie,
+  private void rebarFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
                                  TagKey<Item> materialTag, int count, String fancyname) {
     RollingRecipeBuilder.rolled(RailcraftItems.REBAR.get(), count)
-        .define('I', materialTag)
         .pattern("  I")
         .pattern(" I ")
         .pattern("I  ")
-        .save(finishedRecipie, fancyname);
+        .define('I', materialTag)
+        .save(finishedRecipe, fancyname);
   }
 
-  private void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipie,
+  private void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipe,
                                   Item itemOut, Item railType, Item railBedType) {
     ShapedRecipeBuilder.shaped(itemOut, 32)
         .define('I', railType)
@@ -327,11 +327,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("I I")
         .pattern("IBI")
         .pattern("I I")
-        .unlockedBy("has_rail", has(railType))
-        .unlockedBy("has_railbed", has(railBedType))
+        .unlockedBy(getHasName(railType), has(railType))
+        .unlockedBy(getHasName(railBedType), has(railBedType))
         // this is deliberate as vanilla ones fail to properly register (rails.json already exists)
-        .save(finishedRecipie,
-            new ResourceLocation(Railcraft.ID, ForgeRegistries.ITEMS.getKey(itemOut).getPath()));
+        .save(finishedRecipe,
+            new ResourceLocation(Railcraft.ID, RecipeBuilder.getDefaultRecipeId(itemOut).getPath()));
   }
 
 

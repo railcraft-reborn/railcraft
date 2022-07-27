@@ -28,10 +28,10 @@ public class RollingRecipeBuilder {
   private final List<String> rows = Lists.newArrayList();
   private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
 
-  public RollingRecipeBuilder(ItemLike resultItem, int resultCount, int recipieDelay) {
+  public RollingRecipeBuilder(ItemLike resultItem, int resultCount, int recipeDelay) {
     this.result = resultItem.asItem();
     this.count = resultCount;
-    this.delay = recipieDelay;
+    this.delay = recipeDelay;
   }
 
   public static RollingRecipeBuilder rolled(ItemLike resultItem) {
@@ -43,8 +43,8 @@ public class RollingRecipeBuilder {
   }
 
   public static RollingRecipeBuilder rolled(ItemLike resultItem,
-      int resultCount, int recipieDelay) {
-    return new RollingRecipeBuilder(resultItem, resultCount, recipieDelay);
+      int resultCount, int recipeDelay) {
+    return new RollingRecipeBuilder(resultItem, resultCount, recipeDelay);
   }
 
   public RollingRecipeBuilder define(Character key, TagKey<Item> itemTagValue) {
@@ -57,9 +57,9 @@ public class RollingRecipeBuilder {
 
   /**
    * Define a key for the recipie.
-   * 
+   *
    * @param key A charachter used by the pattern
-   * @param itemValue The ingredient, can be an {@link net.minecraft.tags.ITag ItemTag}
+   * @param itemValue The ingredient, can be an {@link net.minecraft.tags.TagKey<Item> ItemTag}
    * @return this, for chaning functions.
    */
   public RollingRecipeBuilder define(Character key, Ingredient itemValue) {
@@ -76,7 +76,7 @@ public class RollingRecipeBuilder {
 
   /**
    * Defines a row of the recipie's pattern.
-   * 
+   *
    * @param pattern Three char-patern using the keys from the define()
    * @return this, for chaning functions.
    */
@@ -89,30 +89,30 @@ public class RollingRecipeBuilder {
     }
   }
 
-  public void save(Consumer<FinishedRecipe> finishedRecipie) {
-    this.save(finishedRecipie, ForgeRegistries.ITEMS.getKey(this.result));
+  public void save(Consumer<FinishedRecipe> finishedRecipe) {
+    this.save(finishedRecipe, ForgeRegistries.ITEMS.getKey(this.result));
   }
 
   /**
    * Saves the item for registration.
-   * 
+   *
    * @param key Custom filename for multiple recipies creating a single item
    */
-  public void save(Consumer<FinishedRecipe> finishedRecipie, String key) {
+  public void save(Consumer<FinishedRecipe> finishedRecipe, String key) {
     ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
     if ((new ResourceLocation(key)).equals(resourcelocation)) {
       throw new IllegalStateException("Shaped Recipe "
           + key + " should remove its 'save' argument");
     } else {
-      this.save(finishedRecipie, new ResourceLocation(key));
+      this.save(finishedRecipe, new ResourceLocation(key));
     }
   }
 
   /**
    * Saves the item for registration.
    */
-  public void save(Consumer<FinishedRecipe> finishedRecipie, ResourceLocation resourceLocation) {
-    finishedRecipie.accept(
+  public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
+    finishedRecipe.accept(
         new RollingRecipeBuilder.Result(resourceLocation, this.result, this.count,
             this.delay, this.rows, this.key));
   }
@@ -127,12 +127,12 @@ public class RollingRecipeBuilder {
     private final Map<Character, Ingredient> key;
 
     public Result(ResourceLocation resourceLocation, Item resultItem, int resultCount,
-        int recipieDelay, List<String> recipiePattern, Map<Character, Ingredient> ingredientMap) {
+        int recipeDelay, List<String> recipePattern, Map<Character, Ingredient> ingredientMap) {
       this.id = resourceLocation;
       this.resultItem = resultItem;
       this.count = resultCount;
-      this.delay = recipieDelay;
-      this.pattern = recipiePattern;
+      this.delay = recipeDelay;
+      this.pattern = recipePattern;
       this.key = ingredientMap;
     }
 
