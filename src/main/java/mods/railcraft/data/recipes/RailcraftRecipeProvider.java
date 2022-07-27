@@ -2,6 +2,7 @@ package mods.railcraft.data.recipes;
 
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
+import mods.railcraft.data.recipes.helpers.RollingRecipePattern;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -141,47 +142,35 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy("has_rail", has(Items.RAIL))
         .save(consumer, Railcraft.ID + ":rail_deconstruction");
 
-    RollingRecipeBuilder.rolled(RailcraftItems.STANDARD_RAIL.get(), 8)
-        .define('I', Tags.Items.INGOTS_IRON)
-        .pattern("I I")
-        .pattern("I I")
-        .pattern("I I")
-        .save(consumer, Railcraft.ID + ":standard_rail_recipe");
-    RollingRecipeBuilder.rolled(RailcraftItems.STANDARD_RAIL.get(), 16)
-        .define('I', RailcraftTags.Items.STEEL_INGOT)
-        .pattern("I I")
-        .pattern("I I")
-        .pattern("I I")
-        .save(consumer, Railcraft.ID + ":steel_rail_recipe");
-    RollingRecipeBuilder.rolled(RailcraftItems.ADVANCED_RAIL.get(), 8)
-        .define('I', RailcraftItems.STANDARD_RAIL.get())
-        .define('R', Tags.Items.DUSTS_REDSTONE)
-        .define('G', Tags.Items.INGOTS_GOLD)
-        .pattern("IRG")
-        .pattern("IRG")
-        .pattern("IRG")
-        .save(consumer);
-    RollingRecipeBuilder.rolled(RailcraftItems.HIGH_SPEED_RAIL.get(), 8)
-        .define('S', RailcraftTags.Items.STEEL_INGOT)
-        .define('O', Tags.Items.DUSTS_REDSTONE)
-        .pattern("SOS")
-        .pattern("SOS")
-        .pattern("SOS")
-        .save(consumer);
-    RollingRecipeBuilder.rolled(RailcraftItems.ELECTRIC_RAIL.get(), 6)
-        .define('S', RailcraftItems.STANDARD_RAIL.get())
-        .define('C', Tags.Items.INGOTS_COPPER)
-        .pattern("SCS")
-        .pattern("SCS")
-        .pattern("SCS")
-        .save(consumer);
+    //NEW
+    RollingRecipePattern.parallelLines(consumer, Tags.Items.INGOTS_IRON,
+      RailcraftItems.STANDARD_RAIL.get(), 8, "standard_rail");
+    RollingRecipePattern.parallelLines(consumer, RailcraftTags.Items.BRONZE_INGOT,
+      RailcraftItems.STANDARD_RAIL.get(), 8, "bronze_rail");
+    RollingRecipePattern.parallelLines(consumer, RailcraftTags.Items.INVAR_INGOT,
+      RailcraftItems.STANDARD_RAIL.get(), 12, "invar_rail");
+    RollingRecipePattern.parallelLines(consumer, RailcraftTags.Items.STEEL_INGOT,
+      RailcraftItems.STANDARD_RAIL.get(), 16, "steel_rail");
+    RollingRecipePattern.parallelLines(consumer, Tags.Items.INGOTS_COPPER,
+      RailcraftItems.ELECTRIC_RAIL.get(), 6, "copper_electric_rail");
 
-    this.rebarFromMaterial(consumer, Tags.Items.INGOTS_IRON, 4,
-        Railcraft.ID + ":rebar_iron");
-    this.rebarFromMaterial(consumer, RailcraftTags.Items.BRONZE_INGOT, 4,
-        Railcraft.ID + ":rebar_bronze");
-    this.rebarFromMaterial(consumer, RailcraftTags.Items.STEEL_INGOT, 6,
-        Railcraft.ID + ":rebar_steel");
+
+    RollingRecipePattern.diagonalLine(consumer, Tags.Items.INGOTS_IRON,
+      RailcraftItems.REBAR.get(), 4, "rebar_iron");
+    RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.BRONZE_INGOT,
+      RailcraftItems.REBAR.get(), 4, "rebar_bronze");
+    RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.STEEL_INGOT,
+      RailcraftItems.REBAR.get(), 6, "rebar_steel");
+
+
+    RollingRecipePattern.parallelThreeLines(consumer, RailcraftItems.STEEL_INGOT.get(),
+      Tags.Items.INGOTS_COPPER, RailcraftItems.STEEL_INGOT.get(), RailcraftItems.ELECTRIC_RAIL.get(), 12);
+    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT, Tags.Items.DUSTS_REDSTONE,
+      RailcraftTags.Items.STEEL_INGOT, RailcraftItems.HIGH_SPEED_RAIL.get(), 8);
+    RollingRecipePattern.parallelThreeLines(consumer, RailcraftItems.STANDARD_RAIL.get(), Tags.Items.DUSTS_REDSTONE,
+      Tags.Items.INGOTS_GOLD, RailcraftItems.ADVANCED_RAIL.get(), 8);
+
+
 
     ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())
         .define('R', RailcraftItems.REBAR.get())
@@ -307,16 +296,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("WSL")
         .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
         .save(finishedRecipe);
-  }
-
-  private void rebarFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
-                                 TagKey<Item> materialTag, int count, String fancyname) {
-    RollingRecipeBuilder.rolled(RailcraftItems.REBAR.get(), count)
-        .pattern("  I")
-        .pattern(" I ")
-        .pattern("I  ")
-        .define('I', materialTag)
-        .save(finishedRecipe, fancyname);
   }
 
   private void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipe,

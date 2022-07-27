@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_rail": {
+    "has_high_speed_rail": {
       "conditions": {
         "items": [
           {
@@ -13,7 +13,7 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_railbed": {
+    "has_stone_railbed": {
       "conditions": {
         "items": [
           {
@@ -34,8 +34,8 @@
   },
   "requirements": [
     [
-      "has_rail",
-      "has_railbed",
+      "has_high_speed_rail",
+      "has_stone_railbed",
       "has_the_recipe"
     ]
   ],

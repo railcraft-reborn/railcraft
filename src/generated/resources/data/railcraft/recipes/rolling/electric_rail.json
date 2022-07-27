@@ -1,20 +1,23 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "C": {
+    "a": {
+      "item": "railcraft:steel_ingot"
+    },
+    "b": {
       "tag": "forge:ingots/copper"
     },
-    "S": {
-      "item": "railcraft:standard_rail"
+    "c": {
+      "item": "railcraft:steel_ingot"
     }
   },
   "pattern": [
-    "SCS",
-    "SCS",
-    "SCS"
+    "abc",
+    "abc",
+    "abc"
   ],
   "result": {
-    "count": 6,
+    "count": 12,
     "item": "railcraft:electric_rail"
   },
   "tickCost": 100

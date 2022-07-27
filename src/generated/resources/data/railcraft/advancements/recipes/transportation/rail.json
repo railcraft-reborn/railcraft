@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_rail": {
+    "has_standard_rail": {
       "conditions": {
         "items": [
           {
@@ -13,7 +13,13 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_railbed": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:rail"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wooden_railbed": {
       "conditions": {
         "items": [
           {
@@ -24,18 +30,12 @@
         ]
       },
       "trigger": "minecraft:inventory_changed"
-    },
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "railcraft:rail"
-      },
-      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_rail",
-      "has_railbed",
+      "has_standard_rail",
+      "has_wooden_railbed",
       "has_the_recipe"
     ]
   ],

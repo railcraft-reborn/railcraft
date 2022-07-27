@@ -1,0 +1,18 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "pattern": [
+    "a a",
+    "a a",
+    "a a"
+  ],
+  "result": {
+    "count": 6,
+    "item": "railcraft:electric_rail"
+  },
+  "tickCost": 100
+}

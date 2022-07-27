@@ -1,17 +1,20 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "O": {
+    "a": {
+      "tag": "forge:ingots/steel"
+    },
+    "b": {
       "tag": "forge:dusts/redstone"
     },
-    "S": {
+    "c": {
       "tag": "forge:ingots/steel"
     }
   },
   "pattern": [
-    "SOS",
-    "SOS",
-    "SOS"
+    "abc",
+    "abc",
+    "abc"
   ],
   "result": {
     "count": 8,

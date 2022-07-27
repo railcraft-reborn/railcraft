@@ -1,17 +1,17 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "I": {
-      "tag": "forge:ingots/bronze"
+    "a": {
+      "tag": "forge:ingots/steel"
     }
   },
   "pattern": [
-    "  I",
-    " I ",
-    "I  "
+    "  a",
+    " a ",
+    "a  "
   ],
   "result": {
-    "count": 4,
+    "count": 6,
     "item": "railcraft:rebar"
   },
   "tickCost": 100

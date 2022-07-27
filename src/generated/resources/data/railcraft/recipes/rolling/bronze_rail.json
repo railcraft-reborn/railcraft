@@ -1,17 +1,17 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "I": {
-      "tag": "forge:ingots/steel"
+    "a": {
+      "tag": "forge:ingots/bronze"
     }
   },
   "pattern": [
-    "I I",
-    "I I",
-    "I I"
+    "a a",
+    "a a",
+    "a a"
   ],
   "result": {
-    "count": 16,
+    "count": 8,
     "item": "railcraft:standard_rail"
   },
   "tickCost": 100
