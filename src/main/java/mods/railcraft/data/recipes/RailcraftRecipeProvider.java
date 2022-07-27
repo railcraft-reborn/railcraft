@@ -169,10 +169,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       RailcraftItems.REBAR.get(), 8, "rebar_steel");
 
 
-    RollingRecipePattern.parallelThreeLines(consumer, RailcraftItems.STEEL_INGOT.get(),
-      Tags.Items.INGOTS_COPPER, RailcraftItems.STEEL_INGOT.get(), RailcraftItems.ELECTRIC_RAIL.get(), 12);
-    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT, Tags.Items.DUSTS_REDSTONE,
-      RailcraftTags.Items.STEEL_INGOT, RailcraftItems.HIGH_SPEED_RAIL.get(), 8);
+    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT,
+      Tags.Items.INGOTS_COPPER, RailcraftTags.Items.STEEL_INGOT, RailcraftItems.ELECTRIC_RAIL.get(), 12);
     RollingRecipePattern.hForm(consumer, Tags.Items.INGOTS_IRON,
       RailcraftItems.POST.variantFor(DyeColor.BLACK).get(), 16);
 
