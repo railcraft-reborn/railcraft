@@ -2,17 +2,17 @@
   "type": "railcraft:rolling",
   "key": {
     "a": {
-      "tag": "forge:ingots/steel"
+      "tag": "forge:ingots/iron"
     }
   },
   "pattern": [
-    "  a",
-    " a ",
-    "a  "
+    "a a",
+    "aaa",
+    "a a"
   ],
   "result": {
-    "count": 8,
-    "item": "railcraft:rebar"
+    "count": 16,
+    "item": "railcraft:black_post"
   },
   "tickCost": 100
 }

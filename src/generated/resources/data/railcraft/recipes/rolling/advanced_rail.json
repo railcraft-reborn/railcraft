@@ -2,19 +2,16 @@
   "type": "railcraft:rolling",
   "key": {
     "a": {
-      "item": "railcraft:standard_rail"
-    },
-    "b": {
       "tag": "forge:dusts/redstone"
     },
-    "c": {
+    "b": {
       "tag": "forge:ingots/gold"
     }
   },
   "pattern": [
-    "abc",
-    "abc",
-    "abc"
+    "a b",
+    "a b",
+    "a b"
   ],
   "result": {
     "count": 8,

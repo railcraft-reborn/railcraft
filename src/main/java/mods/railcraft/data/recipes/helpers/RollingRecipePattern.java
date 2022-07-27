@@ -15,7 +15,7 @@ import net.minecraft.world.level.ItemLike;
 public class RollingRecipePattern {
 
   public static void parallelLines(Consumer<FinishedRecipe> finishedRecipe,
-                                   TagKey<Item> materialTag,
+                                   TagKey<Item> ingred1,
                                    ItemLike result,
                                    int count,
                                    String customName) {
@@ -23,7 +23,22 @@ public class RollingRecipePattern {
       .pattern("a a")
       .pattern("a a")
       .pattern("a a")
-      .define('a', materialTag)
+      .define('a', ingred1)
+      .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
+  }
+
+  public static void parallelLines(Consumer<FinishedRecipe> finishedRecipe,
+                                   TagKey<Item> ingred1,
+                                   TagKey<Item> ingred2,
+                                   ItemLike result,
+                                   int count,
+                                   String customName) {
+    RollingRecipeBuilder.rolled(result, count)
+      .pattern("a b")
+      .pattern("a b")
+      .pattern("a b")
+      .define('a', ingred1)
+      .define('b', ingred2)
       .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
   }
 
@@ -78,6 +93,23 @@ public class RollingRecipePattern {
       .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
   }
 
+  public static void parallelThreeLines(Consumer<FinishedRecipe> finishedRecipe,
+                                        TagKey<Item> ingred1,
+                                        ItemLike ingred2,
+                                        TagKey<Item> ingred3,
+                                        Item result,
+                                        int count,
+                                        String customName) {
+    RollingRecipeBuilder.rolled(result, count)
+      .pattern("abc")
+      .pattern("abc")
+      .pattern("abc")
+      .define('a', ingred1)
+      .define('b', ingred2)
+      .define('c', ingred3)
+      .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
+  }
+
   public static void diagonalLine(Consumer<FinishedRecipe> finishedRecipe,
                                    TagKey<Item> materialTag,
                                    ItemLike result,
@@ -99,6 +131,19 @@ public class RollingRecipePattern {
     RollingRecipeBuilder.rolled(result, count)
       .pattern("aa")
       .pattern("aa")
+      .define('a', materialTag)
+      .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
+  }
+
+  public static void hForm(Consumer<FinishedRecipe> finishedRecipe,
+                               TagKey<Item> materialTag,
+                               ItemLike result,
+                               int count) {
+    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    RollingRecipeBuilder.rolled(result, count)
+      .pattern("a a")
+      .pattern("aaa")
+      .pattern("a a")
       .define('a', materialTag)
       .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
   }

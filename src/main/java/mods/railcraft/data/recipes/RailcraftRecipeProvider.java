@@ -15,6 +15,7 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -153,22 +154,27 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       RailcraftItems.STANDARD_RAIL.get(), 16, "steel_rail");
     RollingRecipePattern.parallelLines(consumer, Tags.Items.INGOTS_COPPER,
       RailcraftItems.ELECTRIC_RAIL.get(), 6, "copper_electric_rail");
-
+    RollingRecipePattern.parallelLines(consumer, Tags.Items.DUSTS_REDSTONE, Tags.Items.INGOTS_GOLD,
+      RailcraftItems.ADVANCED_RAIL.get(), 8, "advanced_rail");
+    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT, Items.BLAZE_POWDER,
+      Tags.Items.INGOTS_GOLD, RailcraftItems.HIGH_SPEED_RAIL.get(), 6, "standard_high_speed_rail");
 
     RollingRecipePattern.diagonalLine(consumer, Tags.Items.INGOTS_IRON,
       RailcraftItems.REBAR.get(), 4, "rebar_iron");
     RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.BRONZE_INGOT,
       RailcraftItems.REBAR.get(), 4, "rebar_bronze");
+    RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.INVAR_INGOT,
+      RailcraftItems.REBAR.get(), 6, "rebar_invar");
     RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.STEEL_INGOT,
-      RailcraftItems.REBAR.get(), 6, "rebar_steel");
+      RailcraftItems.REBAR.get(), 8, "rebar_steel");
 
 
     RollingRecipePattern.parallelThreeLines(consumer, RailcraftItems.STEEL_INGOT.get(),
       Tags.Items.INGOTS_COPPER, RailcraftItems.STEEL_INGOT.get(), RailcraftItems.ELECTRIC_RAIL.get(), 12);
     RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT, Tags.Items.DUSTS_REDSTONE,
       RailcraftTags.Items.STEEL_INGOT, RailcraftItems.HIGH_SPEED_RAIL.get(), 8);
-    RollingRecipePattern.parallelThreeLines(consumer, RailcraftItems.STANDARD_RAIL.get(), Tags.Items.DUSTS_REDSTONE,
-      Tags.Items.INGOTS_GOLD, RailcraftItems.ADVANCED_RAIL.get(), 8);
+    RollingRecipePattern.hForm(consumer, Tags.Items.INGOTS_IRON,
+      RailcraftItems.POST.variantFor(DyeColor.BLACK).get(), 16);
 
     RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_IRON, RailcraftItems.IRON_PLATE.get(), 4);
     RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_GOLD, RailcraftItems.GOLD_PLATE.get(), 4);
