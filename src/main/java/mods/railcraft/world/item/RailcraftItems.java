@@ -3,6 +3,7 @@ package mods.railcraft.world.item;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
+import mods.railcraft.Translations;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
