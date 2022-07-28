@@ -146,53 +146,66 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     //NEW
     RollingRecipePattern.parallelLines(consumer, Tags.Items.INGOTS_IRON,
-      RailcraftItems.STANDARD_RAIL.get(), 8, "standard_rail");
+        RailcraftItems.STANDARD_RAIL.get(), 8, "standard_rail");
     RollingRecipePattern.parallelLines(consumer, RailcraftTags.Items.BRONZE_INGOT,
-      RailcraftItems.STANDARD_RAIL.get(), 8, "bronze_rail");
+        RailcraftItems.STANDARD_RAIL.get(), 8, "bronze_rail");
     RollingRecipePattern.parallelLines(consumer, RailcraftTags.Items.INVAR_INGOT,
-      RailcraftItems.STANDARD_RAIL.get(), 12, "invar_rail");
+        RailcraftItems.STANDARD_RAIL.get(), 12, "invar_rail");
     RollingRecipePattern.parallelLines(consumer, RailcraftTags.Items.STEEL_INGOT,
-      RailcraftItems.STANDARD_RAIL.get(), 16, "steel_rail");
+        RailcraftItems.STANDARD_RAIL.get(), 16, "steel_rail");
     RollingRecipePattern.parallelLines(consumer, Tags.Items.INGOTS_COPPER,
-      RailcraftItems.ELECTRIC_RAIL.get(), 6, "copper_electric_rail");
+        RailcraftItems.ELECTRIC_RAIL.get(), 6, "copper_electric_rail");
     RollingRecipePattern.parallelLines(consumer, Tags.Items.DUSTS_REDSTONE, Tags.Items.INGOTS_GOLD,
-      RailcraftItems.ADVANCED_RAIL.get(), 8, "advanced_rail");
-    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT, Items.BLAZE_POWDER,
-      Tags.Items.INGOTS_GOLD, RailcraftItems.HIGH_SPEED_RAIL.get(), 6, "standard_high_speed_rail");
+        RailcraftItems.ADVANCED_RAIL.get(), 8, "advanced_rail");
+    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT,
+        Items.BLAZE_POWDER,
+        Tags.Items.INGOTS_GOLD, RailcraftItems.HIGH_SPEED_RAIL.get(), 6,
+        "standard_high_speed_rail");
 
     RollingRecipePattern.diagonalLine(consumer, Tags.Items.INGOTS_IRON,
-      RailcraftItems.REBAR.get(), 4, "rebar_iron");
+        RailcraftItems.REBAR.get(), 4, "rebar_iron");
     RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.BRONZE_INGOT,
-      RailcraftItems.REBAR.get(), 4, "rebar_bronze");
+        RailcraftItems.REBAR.get(), 4, "rebar_bronze");
     RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.INVAR_INGOT,
-      RailcraftItems.REBAR.get(), 6, "rebar_invar");
+        RailcraftItems.REBAR.get(), 6, "rebar_invar");
     RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.STEEL_INGOT,
-      RailcraftItems.REBAR.get(), 8, "rebar_steel");
-
+        RailcraftItems.REBAR.get(), 8, "rebar_steel");
 
     RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT,
-      Tags.Items.INGOTS_COPPER, RailcraftTags.Items.STEEL_INGOT, RailcraftItems.ELECTRIC_RAIL.get(), 12);
+        Tags.Items.INGOTS_COPPER, RailcraftTags.Items.STEEL_INGOT,
+        RailcraftItems.ELECTRIC_RAIL.get(), 12);
     RollingRecipePattern.hForm(consumer, Tags.Items.INGOTS_IRON,
-      RailcraftItems.POST.variantFor(DyeColor.BLACK).get(), 16);
+        RailcraftItems.POST.variantFor(DyeColor.BLACK).get(), 16);
 
     RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRONZE_PLATE,
-      RailcraftItems.BUSHING_GEAR.get(), 4, "_bronze");
+        RailcraftItems.BUSHING_GEAR.get(), 4, "_bronze");
     RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRASS_PLATE,
-      RailcraftItems.BUSHING_GEAR.get(), 4, "_brass");
+        RailcraftItems.BUSHING_GEAR.get(), 4, "_brass");
 
-    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_IRON, RailcraftItems.IRON_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_GOLD, RailcraftItems.GOLD_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_COPPER, RailcraftItems.COPPER_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.STEEL_INGOT, RailcraftItems.STEEL_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.NICKEL_INGOT, RailcraftItems.NICKEL_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.INVAR_INGOT, RailcraftItems.INVAR_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRASS_INGOT, RailcraftItems.BRASS_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.TIN_INGOT, RailcraftItems.TIN_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRONZE_INGOT, RailcraftItems.BRONZE_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.LEAD_INGOT, RailcraftItems.LEAD_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.SILVER_INGOT, RailcraftItems.SILVER_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.ZINC_INGOT, RailcraftItems.ZINC_PLATE.get(), 4);
-
+    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_IRON,
+        RailcraftItems.IRON_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_GOLD,
+        RailcraftItems.GOLD_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_COPPER,
+        RailcraftItems.COPPER_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.STEEL_INGOT,
+        RailcraftItems.STEEL_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.NICKEL_INGOT,
+        RailcraftItems.NICKEL_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.INVAR_INGOT,
+        RailcraftItems.INVAR_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRASS_INGOT,
+        RailcraftItems.BRASS_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.TIN_INGOT,
+        RailcraftItems.TIN_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRONZE_INGOT,
+        RailcraftItems.BRONZE_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.LEAD_INGOT,
+        RailcraftItems.LEAD_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.SILVER_INGOT,
+        RailcraftItems.SILVER_PLATE.get(), 4);
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.ZINC_INGOT,
+        RailcraftItems.ZINC_PLATE.get(), 4);
 
     ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())
         .define('R', RailcraftItems.REBAR.get())
@@ -205,12 +218,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAILBED.get())
         .requires(RailcraftItems.WOODEN_TIE.get(), 4)
-        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()), has(RailcraftItems.WOODEN_TIE.get()))
+        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
+            has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
 
     ShapelessRecipeBuilder.shapeless(RailcraftItems.STONE_RAILBED.get())
         .requires(RailcraftItems.STONE_TIE.get(), 4)
-      .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()), has(RailcraftItems.WOODEN_TIE.get()))
+        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
+            has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
 
     // this.railsFromMaterials(finishedRecipe, RailcraftItems.IRON_.get(),
@@ -238,8 +253,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         Ingredient.of(Tags.Items.STORAGE_BLOCKS_IRON), 0.0F,
         BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME * 9,
         9)
-            .unlockedBy("has_iron_block", has(Tags.Items.STORAGE_BLOCKS_IRON))
-            .save(consumer, getRailcraftBlastingRecipeName(RailcraftItems.STEEL_BLOCK.get()));
+        .unlockedBy("has_iron_block", has(Tags.Items.STORAGE_BLOCKS_IRON))
+        .save(consumer, getRailcraftBlastingRecipeName(RailcraftItems.STEEL_BLOCK.get()));
     BlastFurnaceRecipeBuilder
         .smelting(RailcraftItems.STEEL_INGOT.get(), Ingredient.of(Tags.Items.INGOTS_IRON), 1)
         .unlockedBy("has_iron_ingots", has(Tags.Items.INGOTS_IRON))
@@ -293,7 +308,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
-                                   Item itemOut, TagKey<Item> materialTag) {
+      Item itemOut, TagKey<Item> materialTag) {
     ShapedRecipeBuilder.shaped(itemOut)
         .define('I', materialTag)
         .define('D', Tags.Items.DYES_RED)
@@ -305,7 +320,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
-                                   Item itemOut, Item woolItem) {
+      Item itemOut, Item woolItem) {
     ShapedRecipeBuilder.shaped(itemOut)
         .define('W', woolItem)
         .define('R', Items.REPEATER)
@@ -321,7 +336,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipe,
-                                  Item itemOut, Item railType, Item railBedType) {
+      Item itemOut, Item railType, Item railBedType) {
     ShapedRecipeBuilder.shaped(itemOut, 32)
         .define('I', railType)
         .define('B', railBedType)
@@ -332,9 +347,9 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(railBedType), has(railBedType))
         // this is deliberate as vanilla ones fail to properly register (rails.json already exists)
         .save(finishedRecipe,
-            new ResourceLocation(Railcraft.ID, RecipeBuilder.getDefaultRecipeId(itemOut).getPath()));
+            new ResourceLocation(Railcraft.ID,
+                RecipeBuilder.getDefaultRecipeId(itemOut).getPath()));
   }
-
 
 
   @Override

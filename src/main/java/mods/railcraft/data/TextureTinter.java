@@ -38,7 +38,9 @@ public class TextureTinter {
     return new BufferedImage(colorModel, raster, alphaPremultiplied, null);
   }
 
-  private record Result(String name, BufferedImage image) {}
+  private record Result(String name, BufferedImage image) {
+
+  }
 
   private static Stream<Result> process(Path path) {
     BufferedImage image;

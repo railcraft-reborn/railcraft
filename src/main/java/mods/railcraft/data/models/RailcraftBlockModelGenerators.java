@@ -1,12 +1,12 @@
 package mods.railcraft.data.models;
 
+import com.google.gson.JsonElement;
 import java.util.EnumMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
-import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
@@ -238,9 +238,9 @@ public class RailcraftBlockModelGenerators {
       this.createStrengthenedGlass(RailcraftBlocks.STEEL_TANK_GAUGE.variantFor(dyeColor).get());
 
       this.createTankValve(RailcraftBlocks.IRON_TANK_VALVE.variantFor(dyeColor).get(),
-        RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
+          RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
       this.createTankValve(RailcraftBlocks.STEEL_TANK_VALVE.variantFor(dyeColor).get(),
-        RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
+          RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
 
       this.createTankWall(RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
       this.createTankWall(RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
@@ -473,8 +473,8 @@ public class RailcraftBlockModelGenerators {
         ModelTemplates.CUBE_ALL.createWithSuffix(block, "_single", TextureMapping.cube(endTexture),
             this.modelOutput);
     var topModel = ModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_top", new TextureMapping()
-        .put(TextureSlot.END, endTexture)
-        .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_top")),
+            .put(TextureSlot.END, endTexture)
+            .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_top")),
         this.modelOutput);
     var centerModel = ModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_center",
         new TextureMapping()
@@ -1107,8 +1107,8 @@ public class RailcraftBlockModelGenerators {
 
     this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
         .with(PropertyDispatch.properties(SwitchTrackBlock.SHAPE,
-            ReversibleOutfittedTrackBlock.REVERSED, TurnoutTrackBlock.MIRRORED,
-            SwitchTrackBlock.SWITCHED)
+                ReversibleOutfittedTrackBlock.REVERSED, TurnoutTrackBlock.MIRRORED,
+                SwitchTrackBlock.SWITCHED)
             .select(RailShape.NORTH_SOUTH, false, false, false, Variant.variant() // North
                 .with(VariantProperties.MODEL, northModel))
             .select(RailShape.NORTH_SOUTH, false, false, true, Variant.variant() // North
@@ -1169,7 +1169,7 @@ public class RailcraftBlockModelGenerators {
 
     this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
         .with(PropertyDispatch.properties(SwitchTrackBlock.SHAPE,
-            ReversibleOutfittedTrackBlock.REVERSED, SwitchTrackBlock.SWITCHED)
+                ReversibleOutfittedTrackBlock.REVERSED, SwitchTrackBlock.SWITCHED)
             .generate((railShape, reversed, switched) -> {
               Direction facing = ReversibleOutfittedTrackBlock.getDirection(railShape, reversed);
               switch (facing) {
@@ -1197,7 +1197,8 @@ public class RailcraftBlockModelGenerators {
 
   private void createJunctionTrack(Block block) {
     this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant()
-        .with(VariantProperties.MODEL, this.createPassiveRail(ForgeRegistries.BLOCKS.getKey(block).getPath()))));
+        .with(VariantProperties.MODEL,
+            this.createPassiveRail(ForgeRegistries.BLOCKS.getKey(block).getPath()))));
     this.createSimpleFlatItemModel(block);
   }
 
@@ -1854,12 +1855,12 @@ public class RailcraftBlockModelGenerators {
 
       if (includeRaised) {
         generator.with(
-            condition.get().term(shapeProperty, RailShape.ASCENDING_NORTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL,
-                    reversed ? this.raisedSouthWestModel : this.raisedNorthEastModel)
-                .with(VariantProperties.Y_ROT,
-                    reversed ? VariantProperties.Rotation.R180 : VariantProperties.Rotation.R0))
+                condition.get().term(shapeProperty, RailShape.ASCENDING_NORTH),
+                Variant.variant()
+                    .with(VariantProperties.MODEL,
+                        reversed ? this.raisedSouthWestModel : this.raisedNorthEastModel)
+                    .with(VariantProperties.Y_ROT,
+                        reversed ? VariantProperties.Rotation.R180 : VariantProperties.Rotation.R0))
             .with(
                 condition.get().term(shapeProperty, RailShape.ASCENDING_SOUTH),
                 Variant.variant()

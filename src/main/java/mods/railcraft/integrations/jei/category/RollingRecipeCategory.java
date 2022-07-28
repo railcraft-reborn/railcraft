@@ -21,7 +21,7 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
   private static final int HEIGHT = 54;
 
   private static final ResourceLocation CRAFTING_TABLE =
-    new ResourceLocation("textures/gui/container/crafting_table.png");
+      new ResourceLocation("textures/gui/container/crafting_table.png");
 
   private final IGuiHelper guiHelper;
   private final ItemStack icon;
@@ -56,12 +56,12 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
     builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 19).addItemStack(recipe.getResultItem());
 
     var ingredients = recipe.getIngredients();
-    for(int y = 0; y < 3; y++) {
-      for(int x = 0; x < 3; x++) {
+    for (int y = 0; y < 3; y++) {
+      for (int x = 0; x < 3; x++) {
         var ingredient = ingredients.get(x + (y * 3));
         builder
-          .addSlot(RecipeIngredientRole.INPUT, x * 18 + 1, y * 18 + 1)
-          .addIngredients(ingredient);
+            .addSlot(RecipeIngredientRole.INPUT, x * 18 + 1, y * 18 + 1)
+            .addIngredients(ingredient);
       }
     }
   }

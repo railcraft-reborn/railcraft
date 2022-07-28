@@ -1,5 +1,6 @@
 package mods.railcraft.data.advancements;
 
+import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.advancements.MultiBlockFormedTrigger;
 import mods.railcraft.advancements.SpikeMaulUseTrigger;
@@ -12,8 +13,6 @@ import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-
-import java.util.function.Consumer;
 
 public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
 
@@ -86,7 +85,8 @@ public class TrackAdvancements implements Consumer<Consumer<Advancement>> {
             true, false, false)
         .parent(rcRoot)
         .addCriterion("has_rolling_table",
-            InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
+            InventoryChangeTrigger.TriggerInstance.hasItems(
+                RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
         .save(consumer, Railcraft.ID + ":tracks/manual_rolling_machine");
 
     // Advancement.Builder.advancement()

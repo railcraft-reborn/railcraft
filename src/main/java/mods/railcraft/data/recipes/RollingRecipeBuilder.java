@@ -1,15 +1,15 @@
 package mods.railcraft.data.recipes;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
-import javax.annotation.Nullable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
+import javax.annotation.Nullable;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -58,7 +58,7 @@ public class RollingRecipeBuilder {
   /**
    * Define a key for the recipie.
    *
-   * @param key A charachter used by the pattern
+   * @param key       A charachter used by the pattern
    * @param itemValue The ingredient, can be an {@link net.minecraft.tags.TagKey<Item> ItemTag}
    * @return this, for chaning functions.
    */

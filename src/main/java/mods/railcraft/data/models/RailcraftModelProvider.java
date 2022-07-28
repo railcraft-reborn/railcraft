@@ -1,5 +1,8 @@
 package mods.railcraft.data.models;
 
+import com.google.common.collect.Maps;
+import com.google.gson.JsonElement;
+import com.mojang.logging.LogUtils;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Map;
@@ -8,10 +11,6 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import org.slf4j.Logger;
-import com.google.common.collect.Maps;
-import com.google.gson.JsonElement;
-import com.mojang.logging.LogUtils;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -23,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
 
 public class RailcraftModelProvider implements DataProvider {
 
@@ -54,7 +54,6 @@ public class RailcraftModelProvider implements DataProvider {
     new RailcraftBlockModelGenerators(blockStateConsumer, modelConsumer, skippedAutoModels::add)
         .run();
     new RailcraftItemModelGenerators(modelConsumer).run();
-
 
     RailcraftBlocks.entries().forEach(entry -> {
       var block = entry.get();

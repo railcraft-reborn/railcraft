@@ -33,9 +33,9 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(RailcraftTags.Items.INVAR_INGOT)
         .add(RailcraftItems.INVAR_INGOT.get());
     this.tag(RailcraftTags.Items.LEAD_INGOT)
-      .add(RailcraftItems.LEAD_INGOT.get());
+        .add(RailcraftItems.LEAD_INGOT.get());
     this.tag(RailcraftTags.Items.SILVER_INGOT)
-      .add(RailcraftItems.SILVER_INGOT.get());
+        .add(RailcraftItems.SILVER_INGOT.get());
 
     this.tag(RailcraftTags.Items.STEEL_NUGGET)
         .add(RailcraftItems.STEEL_NUGGET.get());
@@ -52,9 +52,9 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(RailcraftTags.Items.INVAR_NUGGET)
         .add(RailcraftItems.INVAR_NUGGET.get());
     this.tag(RailcraftTags.Items.SILVER_NUGGET)
-      .add(RailcraftItems.SILVER_NUGGET.get());
+        .add(RailcraftItems.SILVER_NUGGET.get());
     this.tag(RailcraftTags.Items.LEAD_NUGGET)
-      .add(RailcraftItems.LEAD_NUGGET.get());
+        .add(RailcraftItems.LEAD_NUGGET.get());
 
     this.tag(RailcraftTags.Items.STEEL_BLOCK)
         .add(RailcraftItems.STEEL_BLOCK.get());
@@ -108,7 +108,6 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.NICKEL_GEAR.get());
     this.tag(RailcraftTags.Items.SILVER_GEAR)
         .add(RailcraftItems.SILVER_GEAR.get());
-
 
     this.tag(RailcraftTags.Items.SALTPETER_DUST)
         .add(RailcraftItems.SALTPETER_DUST.get());
