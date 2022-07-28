@@ -105,6 +105,38 @@ public class RecipeBlocks extends CustomRecipeProvider {
       RailcraftTags.Items.STEEL_INGOT, "block");
   }
 
+  public static void gearItem(Consumer<FinishedRecipe> consumer) {
+    square2x2(consumer, RailcraftTags.Items.BRONZE_INGOT,
+      RailcraftItems.BUSHING_GEAR.get(), 1, "_bronze");
+    square2x2(consumer, RailcraftTags.Items.BRASS_INGOT,
+      RailcraftItems.BUSHING_GEAR.get(), 1, "_brass");
+
+    gear(consumer, RailcraftItems.IRON_GEAR.get(),
+      Tags.Items.INGOTS_IRON);
+    gear(consumer, RailcraftItems.COPPER_GEAR.get(),
+      Tags.Items.INGOTS_COPPER);
+    gear(consumer, RailcraftItems.GOLD_GEAR.get(),
+      Tags.Items.INGOTS_GOLD);
+    gear(consumer, RailcraftItems.STEEL_GEAR.get(),
+      RailcraftTags.Items.STEEL_INGOT);
+    gear(consumer, RailcraftItems.TIN_GEAR.get(),
+      RailcraftTags.Items.TIN_INGOT);
+    gear(consumer, RailcraftItems.ZINC_GEAR.get(),
+      RailcraftTags.Items.ZINC_INGOT);
+    gear(consumer, RailcraftItems.BRASS_GEAR.get(),
+      RailcraftTags.Items.BRASS_INGOT);
+    gear(consumer, RailcraftItems.BRONZE_GEAR.get(),
+      RailcraftTags.Items.BRONZE_INGOT);
+    gear(consumer, RailcraftItems.NICKEL_GEAR.get(),
+      RailcraftTags.Items.NICKEL_INGOT);
+    gear(consumer, RailcraftItems.INVAR_GEAR.get(),
+      RailcraftTags.Items.INVAR_INGOT);
+    gear(consumer, RailcraftItems.SILVER_GEAR.get(),
+      RailcraftTags.Items.SILVER_INGOT);
+    gear(consumer, RailcraftItems.LEAD_GEAR.get(),
+      RailcraftTags.Items.LEAD_INGOT);
+  }
+
   private static void strengthenedGlass(Consumer<FinishedRecipe> consumer) {
     var ingredients = new HashMap<String, TagKey<Item>>();
     ingredients.put("tin", RailcraftTags.Items.TIN_INGOT);

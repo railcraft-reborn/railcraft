@@ -84,6 +84,31 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(RailcraftTags.Items.SILVER_PLATE)
         .add(RailcraftItems.SILVER_PLATE.get());
 
+    this.tag(RailcraftTags.Items.STEEL_GEAR)
+        .add(RailcraftItems.STEEL_GEAR.get());
+    this.tag(RailcraftTags.Items.IRON_GEAR)
+        .add(RailcraftItems.IRON_GEAR.get());
+    this.tag(RailcraftTags.Items.TIN_GEAR)
+        .add(RailcraftItems.TIN_GEAR.get());
+    this.tag(RailcraftTags.Items.GOLD_GEAR)
+        .add(RailcraftItems.GOLD_GEAR.get());
+    this.tag(RailcraftTags.Items.LEAD_GEAR)
+        .add(RailcraftItems.LEAD_GEAR.get());
+    this.tag(RailcraftTags.Items.ZINC_GEAR)
+        .add(RailcraftItems.ZINC_GEAR.get());
+    this.tag(RailcraftTags.Items.BRASS_GEAR)
+        .add(RailcraftItems.BRASS_GEAR.get());
+    this.tag(RailcraftTags.Items.INVAR_GEAR)
+        .add(RailcraftItems.INVAR_GEAR.get());
+    this.tag(RailcraftTags.Items.BRONZE_GEAR)
+        .add(RailcraftItems.BRONZE_GEAR.get());
+    this.tag(RailcraftTags.Items.COPPER_GEAR)
+        .add(RailcraftItems.COPPER_GEAR.get());
+    this.tag(RailcraftTags.Items.NICKEL_GEAR)
+        .add(RailcraftItems.NICKEL_GEAR.get());
+    this.tag(RailcraftTags.Items.SILVER_GEAR)
+        .add(RailcraftItems.SILVER_GEAR.get());
+
 
     this.tag(RailcraftTags.Items.SALTPETER_DUST)
         .add(RailcraftItems.SALTPETER_DUST.get());

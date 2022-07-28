@@ -1,0 +1,17 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": {
+      "tag": "forge:plates/bronze"
+    }
+  },
+  "pattern": [
+    "aa",
+    "aa"
+  ],
+  "result": {
+    "count": 4,
+    "item": "railcraft:bushing_gear"
+  },
+  "tickCost": 100
+}

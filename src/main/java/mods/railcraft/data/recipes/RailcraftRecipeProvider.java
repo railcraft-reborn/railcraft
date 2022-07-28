@@ -121,6 +121,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     RecipeBlocks.registerBlocks(consumer);
     RecipeBlocks.compressItem(consumer);
     RecipeBlocks.decompressItem(consumer);
+    RecipeBlocks.gearItem(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
@@ -173,6 +174,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       Tags.Items.INGOTS_COPPER, RailcraftTags.Items.STEEL_INGOT, RailcraftItems.ELECTRIC_RAIL.get(), 12);
     RollingRecipePattern.hForm(consumer, Tags.Items.INGOTS_IRON,
       RailcraftItems.POST.variantFor(DyeColor.BLACK).get(), 16);
+
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRONZE_PLATE,
+      RailcraftItems.BUSHING_GEAR.get(), 4, "_bronze");
+    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRASS_PLATE,
+      RailcraftItems.BUSHING_GEAR.get(), 4, "_brass");
 
     RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_IRON, RailcraftItems.IRON_PLATE.get(), 4);
     RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_GOLD, RailcraftItems.GOLD_PLATE.get(), 4);

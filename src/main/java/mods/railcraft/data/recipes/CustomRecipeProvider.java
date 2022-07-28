@@ -3,6 +3,7 @@ package mods.railcraft.data.recipes;
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.VariantRegistrar;
+import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -88,6 +89,40 @@ public abstract class CustomRecipeProvider extends RecipeProvider {
       .unlockedBy("has_material", has(materialTag))
       .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
         RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
+  }
+
+  protected static void gear(Consumer<FinishedRecipe> finishedRecipe,
+                             Item itemOut,
+                             TagKey<Item> materialTag) {
+    ShapedRecipeBuilder.shaped(itemOut)
+      .pattern(" a ")
+      .pattern("aba")
+      .pattern(" a ")
+      .define('a', materialTag)
+      .define('b', RailcraftItems.BUSHING_GEAR.get())
+      .unlockedBy("has_material", has(materialTag))
+      .save(finishedRecipe);
+  }
+
+  protected static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
+                                  TagKey<Item> ingredient,
+                                  Item result,
+                                  int quantity) {
+    square2x2(finishedRecipe, ingredient, result, quantity, "");
+  }
+
+  protected static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
+                                  TagKey<Item> ingredient,
+                                  Item result,
+                                  int quantity,
+                                  String postfix) {
+    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    ShapedRecipeBuilder.shaped(result, quantity)
+      .pattern("aa")
+      .pattern("aa")
+      .define('a', ingredient)
+      .unlockedBy("has_material", has(ingredient))
+      .save(finishedRecipe, new ResourceLocation(Railcraft.ID,name + postfix));
   }
 
   protected static void coloredBlockVariant(Consumer<FinishedRecipe> consumer,

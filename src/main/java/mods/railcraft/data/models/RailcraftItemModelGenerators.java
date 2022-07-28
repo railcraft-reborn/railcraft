@@ -118,6 +118,20 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.NICKEL_PLATE.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.SILVER_PLATE.get(), ModelTemplates.FLAT_ITEM);
 
+    this.generateFlatItem(RailcraftItems.BUSHING_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.STEEL_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.IRON_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.TIN_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.GOLD_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.LEAD_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.ZINC_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.BRASS_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.INVAR_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.BRONZE_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.COPPER_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.NICKEL_GEAR.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.SILVER_GEAR.get(), ModelTemplates.FLAT_ITEM);
+
     this.generateFlatItem(RailcraftItems.COAL_COKE.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.SLAG.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.SALTPETER_DUST.get(), ModelTemplates.FLAT_ITEM);

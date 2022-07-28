@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/brass"
+    },
+    "b": {
+      "item": "railcraft:bushing_gear"
+    }
+  },
+  "pattern": [
+    " a ",
+    "aba",
+    " a "
+  ],
+  "result": {
+    "item": "railcraft:brass_gear"
+  }
+}

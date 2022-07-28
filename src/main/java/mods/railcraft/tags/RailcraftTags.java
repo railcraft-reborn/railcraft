@@ -66,6 +66,23 @@ public class RailcraftTags {
     public static final TagKey<Item> COPPER_PLATE = forgeTag("plates/copper");
     public static final TagKey<Item> NICKEL_PLATE = forgeTag("plates/nickel");
     public static final TagKey<Item> SILVER_PLATE = forgeTag("plates/silver");
+
+    public static final TagKey<Item> STEEL_GEAR = forgeTag("gears/steel");
+    public static final TagKey<Item> IRON_GEAR = forgeTag("gears/iron");
+    public static final TagKey<Item> TIN_GEAR = forgeTag("gears/tin");
+    public static final TagKey<Item> GOLD_GEAR = forgeTag("gears/gold");
+    public static final TagKey<Item> LEAD_GEAR = forgeTag("gears/lead");
+    public static final TagKey<Item> ZINC_GEAR = forgeTag("gears/zinc");
+    public static final TagKey<Item> BRASS_GEAR = forgeTag("gears/brass");
+    public static final TagKey<Item> INVAR_GEAR = forgeTag("gears/invar");
+    public static final TagKey<Item> BRONZE_GEAR = forgeTag("gears/bronze");
+    public static final TagKey<Item> COPPER_GEAR = forgeTag("gears/copper");
+    public static final TagKey<Item> NICKEL_GEAR = forgeTag("gears/nickel");
+    public static final TagKey<Item> SILVER_GEAR = forgeTag("gears/silver");
+
+
+
+
     public static final TagKey<Item> SALTPETER_DUST = forgeTag("dusts/salt");
 
     public static final TagKey<Item> IRON_TANK_GAUGE = tag("iron_tank_gauge");

@@ -127,12 +127,20 @@ public class RollingRecipePattern {
                                   TagKey<Item> materialTag,
                                   ItemLike result,
                                   int count) {
+    square2x2(finishedRecipe, materialTag, result, count, "");
+  }
+
+  public static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
+                               TagKey<Item> materialTag,
+                               ItemLike result,
+                               int count,
+                               String postfix) {
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
     RollingRecipeBuilder.rolled(result, count)
       .pattern("aa")
       .pattern("aa")
       .define('a', materialTag)
-      .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
+      .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name + postfix));
   }
 
   public static void hForm(Consumer<FinishedRecipe> finishedRecipe,

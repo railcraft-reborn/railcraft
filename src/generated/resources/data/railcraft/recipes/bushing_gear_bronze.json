@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/bronze"
+    }
+  },
+  "pattern": [
+    "aa",
+    "aa"
+  ],
+  "result": {
+    "item": "railcraft:bushing_gear"
+  }
+}

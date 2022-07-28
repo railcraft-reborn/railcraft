@@ -1257,6 +1257,21 @@ public class RailcraftItems {
     deferredRegister.register("lead_nugget",
       () -> new Item(new Item.Properties().tab(TAB)));
 
+  // Gear
+  public static final RegistryObject<Item> BUSHING_GEAR = registerBasicItem("bushing_gear");
+  public static final RegistryObject<Item> TIN_GEAR = registerBasicItem("tin_gear");
+  public static final RegistryObject<Item> GOLD_GEAR = registerBasicItem("gold_gear");
+  public static final RegistryObject<Item> IRON_GEAR = registerBasicItem("iron_gear");
+  public static final RegistryObject<Item> LEAD_GEAR = registerBasicItem("lead_gear");
+  public static final RegistryObject<Item> ZINC_GEAR = registerBasicItem("zinc_gear");
+  public static final RegistryObject<Item> BRASS_GEAR = registerBasicItem("brass_gear");
+  public static final RegistryObject<Item> INVAR_GEAR = registerBasicItem("invar_gear");
+  public static final RegistryObject<Item> STEEL_GEAR = registerBasicItem("steel_gear");
+  public static final RegistryObject<Item> BRONZE_GEAR = registerBasicItem("bronze_gear");
+  public static final RegistryObject<Item> COPPER_GEAR = registerBasicItem("copper_gear");
+  public static final RegistryObject<Item> NICKEL_GEAR = registerBasicItem("nickel_gear");
+  public static final RegistryObject<Item> SILVER_GEAR = registerBasicItem("silver_gear");
+
   // circuits
   public static final RegistryObject<Item> CONTROLLER_CIRCUIT =
       deferredRegister.register("controller_circuit",
@@ -1326,9 +1341,18 @@ public class RailcraftItems {
       deferredRegister.register("creosote_bucket",
           () -> new BucketItem(RailcraftFluids.CREOSOTE, new Item.Properties().tab(TAB)));
 
-
+  // UTILS
   private static <B extends Block> Function<Block, BlockItem> blockItemFactory(
       CreativeModeTab tab) {
     return block -> new BlockItem(block, new Item.Properties().tab(tab));
+  }
+
+  private static RegistryObject<Item> registerBasicItem(String registerName) {
+    return registerBasicItem(registerName, TAB);
+  }
+
+  private static RegistryObject<Item> registerBasicItem(String registerName, CreativeModeTab tab) {
+    return deferredRegister.register(registerName,
+      () -> new Item(new Item.Properties().tab(tab)));
   }
 }

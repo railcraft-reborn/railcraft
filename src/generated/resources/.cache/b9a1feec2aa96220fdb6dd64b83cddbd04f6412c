@@ -1,6 +1,18 @@
-// 1.19	2022-07-27T18:14:42.749619259	Railcraft Item Tags
+// 1.19	2022-07-28T16:10:38.672105426	Railcraft Item Tags
 f34843bfb7b650f383c4d01e491bd1059bfad784 data/forge/tags/items/blocks/steel.json
 bbf7f6d0c00803b6e02d423b443d154ae326e93b data/forge/tags/items/dusts/salt.json
+92490b80fa24ea30d834e9ca91683e84f3ba7ef3 data/forge/tags/items/gears/brass.json
+d14f18ce05fc15ee4f0e1575e7f298c00f079aa9 data/forge/tags/items/gears/bronze.json
+f8776c632583384b22e94b57809091324a2e3015 data/forge/tags/items/gears/copper.json
+217670f3ab7a86e3d83d18350845194323a602ad data/forge/tags/items/gears/gold.json
+d22363091cb20d88f60541bc3e696dafadebd78e data/forge/tags/items/gears/invar.json
+b7443144af2c84ef408ae1b3cbf9b7055f1adb6f data/forge/tags/items/gears/iron.json
+c56ef33ff6960b8329d10b3526d7271aaad6ff4e data/forge/tags/items/gears/lead.json
+074b84a2d23b614be032ca1d0acb2e964d19daa6 data/forge/tags/items/gears/nickel.json
+df739a62c8171731a87e8e3937a0c552a158924d data/forge/tags/items/gears/silver.json
+b132144ce58c0e15f2bd6fc60521d1185f782191 data/forge/tags/items/gears/steel.json
+4042e67b37e84696852d8328eca8efb8be267ab0 data/forge/tags/items/gears/tin.json
+d50a8ba5bae7d9d2c2581ce4d0fd4471ee818797 data/forge/tags/items/gears/zinc.json
 75ab00fcba7527628f8180d4da1258f38eaf7993 data/forge/tags/items/ingots/brass.json
 a0ce7d34162c16575f232fefea706bfee9997e5f data/forge/tags/items/ingots/bronze.json
 2ce332cc17da714a47e7391f5318a5886db269f3 data/forge/tags/items/ingots/invar.json
