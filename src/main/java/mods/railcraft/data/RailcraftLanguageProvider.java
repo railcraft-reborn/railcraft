@@ -244,6 +244,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.EMBARKING_TRACK_KIT, "Embarking Track Kit");
     this.addItem(RailcraftItems.DISEMBARKING_TRACK_KIT, "Disembarking Track Kit");
     this.addItem(RailcraftItems.LAUNCHER_TRACK_KIT, "Launcher Track Kit");
+    this.addItem(RailcraftItems.CHARGE_SPOOL_LARGE, "Large Charge Wire Spool");
+    this.addItem(RailcraftItems.CHARGE_SPOOL_MEDIUM, "Medium Charge Wire Spool");
+    this.addItem(RailcraftItems.CHARGE_SPOOL_SMALL, "Small Charge Wire Spool");
   }
 
   private void entityTranslations() {

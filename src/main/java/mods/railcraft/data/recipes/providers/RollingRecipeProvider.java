@@ -24,6 +24,7 @@ public class RollingRecipeProvider extends RecipeProvider {
   @Override
   protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
     this.misc(consumer);
+    this.buildChargeSpool(consumer);
     this.buildTrackParts(consumer);
     this.buildRebars(consumer);
     this.buildElectrodes(consumer);
@@ -44,6 +45,20 @@ public class RollingRecipeProvider extends RecipeProvider {
         RailcraftItems.BUSHING_GEAR.get(), 4, "_bronze");
     RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRASS_PLATE,
         RailcraftItems.BUSHING_GEAR.get(), 4, "_brass");
+  }
+
+  private void buildChargeSpool(Consumer<FinishedRecipe> consumer) {
+    final var largeChargeSpool = RailcraftItems.CHARGE_SPOOL_LARGE.get();
+    RollingRecipeBuilder.rolled(largeChargeSpool)
+        .pattern("a")
+        .define('a', Tags.Items.STORAGE_BLOCKS_COPPER)
+        .save(consumer, new ResourceLocation(Railcraft.ID, "rolling/" + largeChargeSpool));
+
+    final var smallChargeSpool = RailcraftItems.CHARGE_SPOOL_SMALL.get();
+    RollingRecipeBuilder.rolled(smallChargeSpool)
+        .pattern("a")
+        .define('a', Tags.Items.INGOTS_COPPER)
+        .save(consumer, new ResourceLocation(Railcraft.ID, "rolling/" + smallChargeSpool));
   }
 
   private void buildTrackParts(Consumer<FinishedRecipe> consumer) {

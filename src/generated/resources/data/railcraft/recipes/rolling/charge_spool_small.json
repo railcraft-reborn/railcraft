@@ -1,0 +1,15 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "pattern": [
+    "a"
+  ],
+  "result": {
+    "item": "railcraft:charge_spool_small"
+  },
+  "tickCost": 100
+}

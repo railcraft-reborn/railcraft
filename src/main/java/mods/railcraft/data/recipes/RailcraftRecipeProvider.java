@@ -131,6 +131,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     this.circuitFromMaterial(consumer, RailcraftItems.SIGNAL_CIRCUIT.get(),
         Items.YELLOW_WOOL);
 
+    this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_MEDIUM.get(),
+        RailcraftItems.CHARGE_SPOOL_SMALL.get(), 3, "charge_spool_small_from_medium");
+    this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_LARGE.get(),
+        RailcraftItems.CHARGE_SPOOL_MEDIUM.get(), 3, "charge_spool_medium_from_large");
+
     ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
         .requires(RailcraftItems.WOODEN_TIE.get())
         .requires(Tags.Items.INGOTS_IRON)
@@ -252,6 +257,20 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("ID ")
         .unlockedBy(getHasName(Blocks.RAIL), has(Blocks.RAIL))
         .save(finishedRecipe);
+  }
+
+  private void conversion(Consumer<FinishedRecipe> finishedRecipe, ItemLike from, ItemLike to,
+      int count, String optionalName) {
+    ResourceLocation path;
+    if(optionalName.isEmpty()) {
+      path = RecipeBuilder.getDefaultRecipeId(to);
+    } else {
+      path = new ResourceLocation(Railcraft.ID, optionalName);
+    }
+    ShapelessRecipeBuilder.shapeless(to, count)
+        .requires(from)
+        .unlockedBy(getHasName(from), has(from))
+        .save(finishedRecipe, path);
   }
 
   private void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipe,

@@ -1223,6 +1223,13 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> SIGNAL_LAMP = registerBasicItem("signal_lamp");
 
+  public static final RegistryObject<Item> CHARGE_SPOOL_LARGE = registerBasicItem(
+      "charge_spool_large");
+  public static final RegistryObject<Item> CHARGE_SPOOL_MEDIUM = registerBasicItem(
+      "charge_spool_medium");
+  public static final RegistryObject<Item> CHARGE_SPOOL_SMALL = registerBasicItem(
+      "charge_spool_small");
+
   /* ===== BUCKETS ===== */
 
   public static final RegistryObject<Item> CREOSOTE_BUCKET =

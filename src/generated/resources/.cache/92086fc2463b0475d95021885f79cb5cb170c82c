@@ -1,4 +1,4 @@
-// 1.19	2022-07-28T20:52:58.006898381	Railcraft Block State Definitions
+// 1.19	2022-07-28T21:38:20.321940083	Railcraft Block State Definitions
 a083f898ae06e89152e61c30096caa3ff297f306 assets/railcraft/blockstates/abandoned_activator_track.json
 d6506fb0bdeaddc35eebb1ae33ba1b32448b2e1c assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -959,6 +959,9 @@ e70f4283c5dd1dc6d4bf26223f5fcf798cce0065 assets/railcraft/models/item/brown_stre
 1c4dcf99a8bb33a1f0f5e7df9c92dfac3c783e58 assets/railcraft/models/item/bushing_gear.json
 5fe026f023c54d2f56719260eb0e673515710337 assets/railcraft/models/item/carbon_electrode.json
 b78986baf137bb0e6a9dc922d8b54caf71abb12b assets/railcraft/models/item/charcoal_dust.json
+17a35bb835ad6b86205d327f8142734bcd51d944 assets/railcraft/models/item/charge_spool_large.json
+7ef14f34cd846d824bb04dc39bd709e59d69b541 assets/railcraft/models/item/charge_spool_medium.json
+3ce57c8714b150794e0befaf6b096c278662b5f0 assets/railcraft/models/item/charge_spool_small.json
 81c32dd99947f8fb38ceafac7f640b9609d0c96d assets/railcraft/models/item/chipped_steel_anvil.json
 7905b6be1c1ce032003660f415ba32f5becfb265 assets/railcraft/models/item/coal_coke.json
 778e40548b2d8dc366a45cdd39d90f22ce2f6977 assets/railcraft/models/item/coal_dust.json

@@ -187,5 +187,8 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.EMBARKING_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.DISEMBARKING_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.LAUNCHER_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.CHARGE_SPOOL_LARGE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.CHARGE_SPOOL_MEDIUM.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.CHARGE_SPOOL_SMALL.get(), ModelTemplates.FLAT_ITEM);
   }
 }

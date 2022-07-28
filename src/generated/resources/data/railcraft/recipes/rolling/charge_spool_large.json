@@ -1,0 +1,15 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": {
+      "tag": "forge:storage_blocks/copper"
+    }
+  },
+  "pattern": [
+    "a"
+  ],
+  "result": {
+    "item": "railcraft:charge_spool_large"
+  },
+  "tickCost": 100
+}

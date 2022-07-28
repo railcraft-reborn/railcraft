@@ -1,4 +1,4 @@
-// 1.19	2022-07-28T21:17:06.15636227	Recipes
+// 1.19	2022-07-28T21:38:20.317356689	Recipes
 a94d0c74a6d7286cbf179aa697da5f043843aa8b data/railcraft/recipes/rolling/advanced_rail.json
 f217c073496ba20e55adda83310a99e17c760515 data/railcraft/recipes/rolling/black_post.json
 875ccee0738b5e31d20809210ae1a90e2a017edc data/railcraft/recipes/rolling/brass_electrode.json
@@ -9,6 +9,8 @@ a406ed5ab27f96c00c8f6b1d229ed20c3922f4b3 data/railcraft/recipes/rolling/bronze_e
 ab87bdb1a4ac0b9d49c882812c62f1cfaac0d2a3 data/railcraft/recipes/rolling/bushing_gear_brass.json
 f9d0147c3df50abf7c725c8131d3de4d4faae74d data/railcraft/recipes/rolling/bushing_gear_bronze.json
 e723db6e2507eef8bc96ccf48dc6945e999e787a data/railcraft/recipes/rolling/charcoal_carbon_electrode.json
+986ab5e4e4a2262ad0b87b72650a509559a0b058 data/railcraft/recipes/rolling/charge_spool_large.json
+4ab7ab4c9172eff1aa98f66fa0438d689ed0822a data/railcraft/recipes/rolling/charge_spool_small.json
 def67123485d2267c50d9c0fe737f458fb63d1dd data/railcraft/recipes/rolling/coal_carbon_electrode.json
 e2b37152ba50ce515c1924753f13b71e8cd33e70 data/railcraft/recipes/rolling/copper_electric_rail.json
 14e656c1fac46668d84573e9bf19eceff1e97805 data/railcraft/recipes/rolling/copper_electrode.json
