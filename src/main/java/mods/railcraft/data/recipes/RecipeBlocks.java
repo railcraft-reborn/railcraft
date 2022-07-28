@@ -50,9 +50,16 @@ public class RecipeBlocks extends CustomRecipeProvider {
         RailcraftItems.STEEL_TANK_VALVE,
         RailcraftTags.Items.STEEL_TANK_VALVE);
 
-    post(consumer, RailcraftItems.POST, RailcraftTags.Items.POST);
+    tankGauge(consumer,
+        RailcraftItems.IRON_PLATE.get(),
+        RailcraftItems.IRON_TANK_GAUGE,
+        RailcraftTags.Items.IRON_TANK_GAUGE);
+    tankGauge(consumer,
+        RailcraftItems.STEEL_PLATE.get(),
+        RailcraftItems.STEEL_TANK_GAUGE,
+        RailcraftTags.Items.STEEL_TANK_GAUGE);
 
-    //TODO: TANK_GAUGE I don't know the recipe
+    post(consumer, RailcraftItems.POST, RailcraftTags.Items.POST);
     strengthenedGlass(consumer);
   }
 

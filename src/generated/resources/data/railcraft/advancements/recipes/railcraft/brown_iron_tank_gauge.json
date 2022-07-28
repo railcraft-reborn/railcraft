@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:brown_iron_tank_gauge"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_white_iron_tank_gauge": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:white_iron_tank_gauge"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_white_iron_tank_gauge",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:brown_iron_tank_gauge"
+    ]
+  }
+}

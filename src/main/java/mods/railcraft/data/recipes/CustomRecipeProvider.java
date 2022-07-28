@@ -60,6 +60,24 @@ public abstract class CustomRecipeProvider extends RecipeProvider {
     coloredBlockVariant(consumer, colorItems, tagItem);
   }
 
+  protected static void tankGauge(Consumer<FinishedRecipe> consumer,
+      ItemLike ingredient,
+      VariantRegistrar<DyeColor, BlockItem> colorItems,
+      TagKey<Item> tagItem) {
+    var result = colorItems.variantFor(DyeColor.WHITE).get();
+    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    ShapedRecipeBuilder.shaped(result, 8)
+        .pattern("aba")
+        .pattern("bab")
+        .pattern("aba")
+        .define('a', Items.GLASS_PANE)
+        .define('b', ingredient)
+        .unlockedBy(getHasName(ingredient), has(ingredient))
+        .save(consumer, new ResourceLocation(Railcraft.ID, name.substring(name.indexOf('_') + 1)));
+
+    coloredBlockVariant(consumer, colorItems, tagItem);
+  }
+
   protected static void post(Consumer<FinishedRecipe> consumer,
       VariantRegistrar<DyeColor, BlockItem> colorItems,
       TagKey<Item> tagItem) {
