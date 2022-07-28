@@ -1,6 +1,5 @@
 package mods.railcraft.integrations.jei.category;
 
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -25,9 +24,11 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
     new ResourceLocation("textures/gui/container/crafting_table.png");
 
   private final IGuiHelper guiHelper;
+  private final ItemStack icon;
 
   public RollingRecipeCategory(IGuiHelper guiHelper) {
     this.guiHelper = guiHelper;
+    this.icon = new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get());
   }
 
   @Override
@@ -47,8 +48,7 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
 
   @Override
   public IDrawable getIcon() {
-    return guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-      new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get()));
+    return guiHelper.createDrawableItemStack(icon);
   }
 
   @Override
