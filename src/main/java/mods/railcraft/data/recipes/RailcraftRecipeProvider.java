@@ -161,6 +161,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         Items.BLAZE_POWDER,
         Tags.Items.INGOTS_GOLD, RailcraftItems.HIGH_SPEED_RAIL.get(), 8,
         "standard_high_speed_rail");
+    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT,
+        RailcraftTags.Items.OBSIDIAN_DUST,
+        RailcraftTags.Items.STEEL_INGOT, RailcraftItems.REINFORCED_RAIL.get(), 8,
+        "steel_reinforced_rail");
+    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.INVAR_INGOT,
+        RailcraftTags.Items.OBSIDIAN_DUST,
+        RailcraftTags.Items.INVAR_INGOT, RailcraftItems.REINFORCED_RAIL.get(), 4,
+        "invar_reinforced_rail");
 
     RollingRecipePattern.diagonalLine(consumer, Tags.Items.INGOTS_IRON,
         RailcraftItems.REBAR.get(), 4, "rebar_iron");

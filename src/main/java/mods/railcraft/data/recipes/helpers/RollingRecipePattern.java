@@ -75,12 +75,12 @@ public class RollingRecipePattern {
   }
 
   public static void parallelThreeLines(Consumer<FinishedRecipe> finishedRecipe,
-      ItemLike ingred1,
+      TagKey<Item> ingred1,
       TagKey<Item> ingred2,
       TagKey<Item> ingred3,
       Item result,
-      int count) {
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+      int count,
+      String customName) {
     RollingRecipeBuilder.rolled(result, count)
         .pattern("abc")
         .pattern("abc")
@@ -88,7 +88,7 @@ public class RollingRecipePattern {
         .define('a', ingred1)
         .define('b', ingred2)
         .define('c', ingred3)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
   }
 
   public static void parallelThreeLines(Consumer<FinishedRecipe> finishedRecipe,

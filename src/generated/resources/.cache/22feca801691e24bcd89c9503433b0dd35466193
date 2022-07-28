@@ -1,4 +1,4 @@
-// 1.19	2022-07-28T18:22:15.937061776	Railcraft Recipes
+// 1.19	2022-07-28T18:31:26.211852461	Railcraft Recipes
 2a0b4bcc535c496c926130b8305a601d49e53ec8 data/minecraft/advancements/recipes/misc/coal.json
 8f130b2a31ddd34d98e31897f3fd3d21fcf11014 data/minecraft/recipes/coal.json
 56a474d5f4632735cf0622daf049c6825588f404 data/railcraft/advancements/recipes/railcraft/black_iron_tank_gauge.json
@@ -413,6 +413,7 @@ ffd6c6acea925ba440fbd53646a4b34153854751 data/railcraft/recipes/rolling/electric
 a74020a3495aa636bf554533a2d2fe71612e7135 data/railcraft/recipes/rolling/gold_plate.json
 5151da45ddad6141193aa0a3f253bb199edc5ad1 data/railcraft/recipes/rolling/invar_plate.json
 6eee555c439f086ad61b2b2c08200e5c38fe0312 data/railcraft/recipes/rolling/invar_rail.json
+4de471d894588ec9f9d90b6a5b4bc500447bd3f0 data/railcraft/recipes/rolling/invar_reinforced_rail.json
 8484bb6100970602f444e5bd0910c88f427a0cf6 data/railcraft/recipes/rolling/iron_plate.json
 3f54b2d93e3d4580fc2153e0b9c4e5cef65012a8 data/railcraft/recipes/rolling/lead_plate.json
 5cb93731c10502cc6507f6bed2ee85c284b8a493 data/railcraft/recipes/rolling/nickel_plate.json
@@ -425,6 +426,7 @@ be1f87e0091d531d49f0ad63d7ea8a3e33586d33 data/railcraft/recipes/rolling/rebar_st
 d87f3b417bf8b90b519ff367baa4db4909c60c8e data/railcraft/recipes/rolling/standard_rail.json
 f9b8a2d022a41ac806dfd97ab78cf366c8b7a029 data/railcraft/recipes/rolling/steel_plate.json
 beab96d052e38f9abab698bcc77c703acd334f10 data/railcraft/recipes/rolling/steel_rail.json
+e64d81ebc3dfb379f38c4f19ac9288f706e53235 data/railcraft/recipes/rolling/steel_reinforced_rail.json
 3c5d864f671e391ae3e4e0f4cc2ee5d2e1d57f67 data/railcraft/recipes/rolling/tin_plate.json
 85f5f46e39b9890d6a78e14adb60349339dba28f data/railcraft/recipes/rolling/zinc_plate.json
 9a9a90bc372018d00aa3b6849011819af7cccd5f data/railcraft/recipes/signal_block_surveyor.json

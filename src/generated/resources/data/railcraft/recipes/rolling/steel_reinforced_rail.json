@@ -1,0 +1,24 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/steel"
+    },
+    "b": {
+      "tag": "forge:dusts/obsidian"
+    },
+    "c": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "abc",
+    "abc",
+    "abc"
+  ],
+  "result": {
+    "count": 8,
+    "item": "railcraft:reinforced_rail"
+  },
+  "tickCost": 100
+}
