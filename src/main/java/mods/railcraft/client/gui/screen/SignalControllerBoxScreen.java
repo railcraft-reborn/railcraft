@@ -29,16 +29,16 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
     int centredY = (this.height - this.windowHeight) / 2;
     this.addRenderableWidget(
         new Button(centredX + 10, centredY + 25, 30, 20, Component.literal("<"),
-            __ -> this.defaultAspect = this.defaultAspect.getPrevious()));
+            __ -> this.defaultAspect = this.defaultAspect.previous()));
     this.addRenderableWidget(
         new Button(centredX + 135, centredY + 25, 30, 20, Component.literal(">"),
-            __ -> this.defaultAspect = this.defaultAspect.getNext()));
+            __ -> this.defaultAspect = this.defaultAspect.next()));
     this.addRenderableWidget(
         new Button(centredX + 10, centredY + 60, 30, 20, Component.literal("<"),
-            __ -> this.poweredAspect = this.poweredAspect.getPrevious()));
+            __ -> this.poweredAspect = this.poweredAspect.previous()));
     this.addRenderableWidget(
         new Button(centredX + 135, centredY + 60, 30, 20, Component.literal(">"),
-            __ -> this.poweredAspect = this.poweredAspect.getNext()));
+            __ -> this.poweredAspect = this.poweredAspect.next()));
   }
 
   @Override

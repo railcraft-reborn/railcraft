@@ -60,7 +60,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   public abstract Level getLevel();
 
   @Override
-  public Optional<T> getPeer(BlockPos blockPos) {
+  public Optional<T> peerAt(BlockPos blockPos) {
     return this.peers.contains(blockPos)
         ? Optional.ofNullable(this.getBlockEntity(blockPos))
         : Optional.empty();
@@ -75,7 +75,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   }
 
   @Override
-  public Collection<BlockPos> getPeers() {
+  public Collection<BlockPos> peers() {
     return this.unmodifiablePeers;
   }
 
@@ -103,7 +103,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
 
   @Override
   public void refresh() {
-    this.peers.removeIf(peerPos -> !this.getPeer(peerPos).filter(this::refreshPeer).isPresent());
+    this.peers.removeIf(peerPos -> !this.peerAt(peerPos).filter(this::refreshPeer).isPresent());
   }
 
   protected boolean refreshPeer(T peer) {

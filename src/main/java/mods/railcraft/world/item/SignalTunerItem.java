@@ -3,8 +3,8 @@ package mods.railcraft.world.item;
 import java.util.Objects;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.DimensionPos;
-import mods.railcraft.api.signal.SignalControllerProvider;
-import mods.railcraft.api.signal.SignalReceiverProvider;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
+import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -27,7 +27,7 @@ public class SignalTunerItem extends PairingToolItem {
     if (level instanceof ServerLevel serverLevel) {
       if (this.checkAbandonPairing(itemStack, player, serverLevel,
           () -> {
-            if (level.getBlockEntity(pos) instanceof SignalControllerProvider provider) {
+            if (level.getBlockEntity(pos) instanceof SignalControllerEntity provider) {
               provider.getSignalController().stopLinking();
             }
           })) {
@@ -39,11 +39,11 @@ public class SignalTunerItem extends PairingToolItem {
       var blockEntity = level.getBlockEntity(pos);
       if (blockEntity != null) {
         var previousTarget = this.getPeerPos(itemStack);
-        if (blockEntity instanceof SignalReceiverProvider signalReceiver
+        if (blockEntity instanceof SignalReceiverEntity signalReceiver
             && previousTarget != null) {
           if (!Objects.equals(pos, previousTarget.getPos())) {
             var previousBlockEntity = level.getBlockEntity(previousTarget.getPos());
-            if (previousBlockEntity instanceof SignalControllerProvider signalController) {
+            if (previousBlockEntity instanceof SignalControllerEntity signalController) {
               if (blockEntity != previousBlockEntity) {
                 signalController.getSignalController().addPeer(signalReceiver);
                 signalController.getSignalController().stopLinking();
@@ -67,7 +67,7 @@ public class SignalTunerItem extends PairingToolItem {
               this.clearPeerPos(itemStack);
             }
           }
-        } else if (blockEntity instanceof SignalControllerProvider provider) {
+        } else if (blockEntity instanceof SignalControllerEntity provider) {
           var controller = provider.getSignalController();
           if (previousTarget == null || !Objects.equals(pos, previousTarget.getPos())) {
             player.displayClientMessage(

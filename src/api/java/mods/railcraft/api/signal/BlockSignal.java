@@ -1,30 +1,12 @@
-/*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
-
- This work (the API) is licensed under the "MIT" License,
- see LICENSE.md for details.
- -----------------------------------------------------------------------------*/
 package mods.railcraft.api.signal;
 
-import mods.railcraft.api.core.BlockEntityLike;
-import mods.railcraft.api.core.Ownable;
+import net.minecraft.core.BlockPos;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
-public interface BlockSignal
-    extends SurveyableSignal<BlockSignal>, BlockEntityLike, Ownable {
+public interface BlockSignal extends SignalNetwork<BlockSignalEntity> {
 
-  @Override
-  default TrackLocator getTrackLocator() {
-    return this.getSignalNetwork().getTrackLocator();
-  }
+  TrackLocator trackLocator();
 
-  @Override
-  BlockSignalNetwork getSignalNetwork();
+  BlockPos blockPos();
 
-  @Override
-  default Class<BlockSignal> getSignalType() {
-    return BlockSignal.class;
-  }
+  SignalAspect aspectExcluding(BlockPos peerPos);
 }

@@ -16,7 +16,7 @@ import net.minecraft.core.BlockPos;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public interface TokenRing extends SignalNetwork<TokenSignal> {
+public interface TokenRing extends SignalNetwork<TokenSignalEntity> {
 
   Set<UUID> getTrackedCarts();
 

@@ -2,8 +2,8 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
-import mods.railcraft.api.signal.SignalReceiverProvider;
 import mods.railcraft.api.signal.SingleSignalReceiver;
+import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -13,7 +13,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
-    implements SignalReceiverProvider {
+    implements SignalReceiverEntity {
 
   private final SingleSignalReceiver signalReceiver = new SingleSignalReceiver(this,
       this::syncToClient, __ -> this.setChanged());

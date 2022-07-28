@@ -4,9 +4,14 @@
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
  -----------------------------------------------------------------------------*/
-package mods.railcraft.api.signal;
+package mods.railcraft.api.signal.entity;
 
-public interface SignalReceiverProvider extends Signal {
+import mods.railcraft.api.signal.SignalController;
 
-  SignalReceiver getSignalReceiver();
+/**
+ * @author CovertJaguar <https://www.railcraft.info>
+ */
+public interface SignalControllerEntity extends SignalEntity {
+
+  SignalController getSignalController();
 }

@@ -3,8 +3,8 @@ package mods.railcraft.world.item;
 import java.util.Objects;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.DimensionPos;
-import mods.railcraft.api.signal.SurveyableSignal;
 import mods.railcraft.api.signal.TrackLocator;
+import mods.railcraft.api.signal.entity.MonitoringSignalEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -24,12 +24,12 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
     var level = context.getLevel();
     var pos = context.getClickedPos();
     var blockEntity = level.getBlockEntity(pos);
-    if (blockEntity instanceof SurveyableSignal<?> signal) {
+    if (blockEntity instanceof MonitoringSignalEntity<?> signal) {
       if (level.isClientSide()) {
         return InteractionResult.SUCCESS;
       }
 
-      var signalNetwork = signal.getSignalNetwork();
+      var signalNetwork = signal.signalNetwork();
 
       if (this.checkAbandonPairing(stack, player, (ServerLevel) level,
           signalNetwork::stopLinking)) {
@@ -39,7 +39,7 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
       }
 
       var signalPos = this.getPeerPos(stack);
-      var trackStatus = signal.getTrackLocator().getTrackStatus();
+      var trackStatus = signal.trackLocator().trackStatus();
       if (trackStatus == TrackLocator.Status.INVALID) {
         player.displayClientMessage(
             Component.translatable(Translations.Misc.SIGNAL_SURVEYOR_INVALID_TRACK,
@@ -53,10 +53,10 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
         signalNetwork.startLinking();
       } else if (!Objects.equals(pos, signalPos.getPos())) {
         blockEntity = level.getBlockEntity(signalPos.getPos());
-        if (blockEntity instanceof SurveyableSignal<?> otherSignal) {
+        if (blockEntity instanceof MonitoringSignalEntity<?> otherSignal) {
           if (this.tryLinking(signal, otherSignal)) {
-            signal.getSignalNetwork().stopLinking();
-            otherSignal.getSignalNetwork().stopLinking();
+            signal.signalNetwork().stopLinking();
+            otherSignal.signalNetwork().stopLinking();
             player.displayClientMessage(
                 Component.translatable(Translations.Misc.SIGNAL_SURVEYOR_SUCCESS),
                 true);
@@ -92,10 +92,10 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
     return InteractionResult.PASS;
   }
 
-  private <T, T2> boolean tryLinking(SurveyableSignal<T> signal1, SurveyableSignal<T2> signal2) {
-    return signal1.getSignalType().isInstance(signal2)
-        && signal2.getSignalType().isInstance(signal1)
-        && signal1.getSignalNetwork().addPeer(signal1.getSignalType().cast(signal2))
-        && signal2.getSignalNetwork().addPeer(signal2.getSignalType().cast(signal1));
+  private <T, T2> boolean tryLinking(MonitoringSignalEntity<T> signal1, MonitoringSignalEntity<T2> signal2) {
+    return signal1.type().isInstance(signal2)
+        && signal2.type().isInstance(signal1)
+        && signal1.signalNetwork().addPeer(signal1.type().cast(signal2))
+        && signal2.signalNetwork().addPeer(signal2.type().cast(signal1));
   }
 }

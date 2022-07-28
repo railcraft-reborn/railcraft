@@ -9,34 +9,31 @@ package mods.railcraft.api.signal;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
-import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 import mods.railcraft.api.carts.CartUtil;
-import mods.railcraft.api.track.TrackScanner;
+import mods.railcraft.api.track.TrackScanUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSignal>
-    implements BlockSignalNetwork {
+public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSignalEntity>
+    implements BlockSignal {
 
   private static final Logger logger = LogUtils.getLogger();
 
   public static final int SIGNAL_VALIDATION_INTERVAL = 4 * 60 * 20;
   private final Set<BlockPos> signalsToRevalidate = new HashSet<>();
 
-  private final Map<BlockPos, TrackScanner.Result> trackScans = new HashMap<>();
+  private final Map<BlockPos, TrackScanUtil.Result> trackScans = new HashMap<>();
   private final TrackLocator trackLocator;
 
   private int aspectUpdateTimer = 0;
@@ -49,44 +46,42 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
   public SimpleBlockSignalNetwork(int maxPeers, Runnable syncListener,
       @Nullable Consumer<SignalAspect> signalAspectListener,
       BlockEntity blockEntity) {
-    super(BlockSignal.class, maxPeers, syncListener, blockEntity);
-    this.trackLocator = new TrackLocator(blockEntity);
+    super(BlockSignalEntity.class, maxPeers, syncListener, blockEntity);
+    this.trackLocator = new TrackLocator(blockEntity::getLevel, blockEntity.getBlockPos());
     this.signalAspectListener = signalAspectListener;
   }
 
   @Override
-  public SignalAspect getSignalAspect() {
+  public SignalAspect aspect() {
     return this.signalAspect;
   }
 
   @Override
-  public TrackLocator getTrackLocator() {
+  public TrackLocator trackLocator() {
     return this.trackLocator;
   }
 
   @Override
-  public boolean addPeer(BlockSignal peer) {
-    var blockSignal = peer.getSignalNetwork();
+  public boolean addPeer(BlockSignalEntity peer) {
+    var blockSignal = peer.signalNetwork();
     if (blockSignal == this) {
       return false;
     }
 
-    var trackStatus = this.trackLocator.getTrackStatus();
-    var otherTrackStatus = blockSignal.getTrackLocator().getTrackStatus();
-    if (trackStatus == TrackLocator.Status.INVALID
-        || otherTrackStatus == TrackLocator.Status.INVALID) {
+    var trackStatus = this.trackLocator.trackStatus();
+    var otherTrackStatus = blockSignal.trackLocator().trackStatus();
+    if (trackStatus.invalid() || otherTrackStatus.invalid()) {
       return false;
     }
 
-    var trackPos = this.trackLocator.getTrackPos();
-    var peerTrackPos = blockSignal.getTrackLocator().getTrackPos();
+    var trackPos = this.trackLocator.trackPos();
+    var peerTrackPos = blockSignal.trackLocator().trackPos();
 
     assert trackPos != null;
     assert peerTrackPos != null;
 
-    TrackScanner.Result result =
-        TrackScanner.scanStraightTrackSection(this.getLevel(), trackPos, peerTrackPos);
-    if (result.getStatus() != TrackScanner.Status.VALID) {
+    var result = TrackScanUtil.scanStraightTrackSection(this.getLevel(), trackPos, peerTrackPos);
+    if (!result.status().valid()) {
       return false;
     }
 
@@ -104,7 +99,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
     if (super.removePeer(peerPos)) {
       var blockSignalProvider = this.getBlockEntity(peerPos);
       if (blockSignalProvider != null) {
-        blockSignalProvider.getSignalNetwork().removePeer(this.getBlockPos());
+        blockSignalProvider.signalNetwork().removePeer(this.blockPos());
       }
       return true;
     }
@@ -120,110 +115,127 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
   }
 
   @Override
-  protected boolean refreshPeer(BlockSignal peer) {
-    return peer.getSignalNetwork().isPeer(this.getBlockPos());
+  protected boolean refreshPeer(BlockSignalEntity peer) {
+    return peer.signalNetwork().isPeer(this.blockPos());
   }
 
   @Override
-  public SignalAspect getSignalAspectExcluding(BlockPos exludingPos) {
+  public SignalAspect aspectExcluding(BlockPos exludingPos) {
     return this.stream()
         .filter(peer -> !peer.asBlockEntity().getBlockPos().equals(exludingPos))
         .map(this::calculateSignalAspect)
         .reduce(SignalAspect.GREEN, SignalAspect::mostRestrictive);
   }
 
-  private SignalAspect calculateSignalAspect(BlockSignal peer) {
-    BlockPos trackPos = this.trackLocator.getTrackPos();
-    if (trackPos == null)
+  private SignalAspect calculateSignalAspect(BlockSignalEntity peer) {
+    var trackPos = this.trackLocator.trackPos();
+    if (trackPos == null) {
       return SignalAspect.RED;
-    BlockPos otherTrack = peer.getSignalNetwork().getTrackLocator().getTrackPos();
-    if (otherTrack == null)
+    }
+
+    var otherTrack = peer.signalNetwork().trackLocator().trackPos();
+    if (otherTrack == null) {
       return SignalAspect.YELLOW;
+    }
 
-    TrackScanner.Result scan = this.getOrCreateTrackScan(otherTrack);
-    if (scan == null)
+    var scan = this.getOrCreateTrackScan(otherTrack);
+    if (scan == null) {
       return SignalAspect.RED;
+    }
 
-    int y1 = scan.getMinY();
-    int y2 = scan.getMaxY() + 1;
+    int y1 = scan.minY();
+    int y2 = scan.maxY() + 1;
 
     int x1 = Math.min(trackPos.getX(), otherTrack.getX());
     int z1 = Math.min(trackPos.getZ(), otherTrack.getZ());
     int x2 = Math.max(trackPos.getX(), otherTrack.getX()) + 1;
     int z2 = Math.max(trackPos.getZ(), otherTrack.getZ()) + 1;
 
-    boolean zAxis =
-        Math.abs(trackPos.getX() - otherTrack.getX()) < Math
-            .abs(trackPos.getZ() - otherTrack.getZ());
+    var zAxis = Math.abs(trackPos.getX() - otherTrack.getX()) < Math
+        .abs(trackPos.getZ() - otherTrack.getZ());
     int xOffset = otherTrack.getX() > trackPos.getX() ? -3 : 3;
     int zOffset = otherTrack.getZ() > trackPos.getZ() ? -3 : 3;
 
-    List<AbstractMinecart> carts = CartUtil.getMinecartsIn(getLevel(),
+    var carts = CartUtil.getMinecartsIn(this.getLevel(),
         new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2));
-    // System.out.printf("%d, %d, %d, %d, %d, %d\n", i1, j1, k1, i2, j2, k2);
-    // System.out.println("carts = " + carts.size());
-    SignalAspect newAspect = SignalAspect.GREEN;
-    for (AbstractMinecart cart : carts) {
+
+    var newAspect = SignalAspect.GREEN;
+    for (var cart : carts) {
       int cartX = Mth.floor(cart.getX());
       int cartZ = Mth.floor(cart.getZ());
-      double motionX = cart.getDeltaMovement().x();
-      double motionZ = cart.getDeltaMovement().z();
-      if (Math.abs(motionX) < 0.08 && Math.abs(motionZ) < 0.08)
+      var motionX = cart.getDeltaMovement().x();
+      var motionZ = cart.getDeltaMovement().z();
+      if (Math.abs(motionX) < 0.08 && Math.abs(motionZ) < 0.08) {
         return SignalAspect.RED;
-      else if (zAxis)
-        if (cartZ > trackPos.getZ() + zOffset && motionZ < 0)
+      }
+
+      if (zAxis) {
+        if (cartZ > trackPos.getZ() + zOffset && motionZ < 0) {
           return SignalAspect.RED;
-        else if (cartZ < trackPos.getZ() + zOffset && motionZ > 0)
+        }
+
+        if (cartZ < trackPos.getZ() + zOffset && motionZ > 0) {
           return SignalAspect.RED;
-        else
-          newAspect = SignalAspect.YELLOW;
-      else if (cartX > trackPos.getX() + xOffset && motionX < 0)
-        return SignalAspect.RED;
-      else if (cartX < trackPos.getX() + xOffset && motionX > 0)
-        return SignalAspect.RED;
-      else
+        }
+
         newAspect = SignalAspect.YELLOW;
+      }
+
+      if (cartX > trackPos.getX() + xOffset && motionX < 0) {
+        return SignalAspect.RED;
+      }
+
+      if (cartX < trackPos.getX() + xOffset && motionX > 0) {
+        return SignalAspect.RED;
+      }
+
+      newAspect = SignalAspect.YELLOW;
     }
 
     return SignalAspect.mostRestrictive(newAspect,
-        peer.getSignalNetwork().getSignalAspectExcluding(this.getBlockPos()));
+        peer.signalNetwork().aspectExcluding(this.blockPos()));
   }
 
   @Nullable
-  private TrackScanner.Result getOrCreateTrackScan(BlockPos otherTrack) {
-    TrackScanner.Result result = this.trackScans.get(otherTrack);
+  private TrackScanUtil.Result getOrCreateTrackScan(BlockPos otherTrack) {
+    TrackScanUtil.Result result = this.trackScans.get(otherTrack);
     if (result == null) {
-      BlockPos trackPos = this.trackLocator.getTrackPos();
+      BlockPos trackPos = this.trackLocator.trackPos();
       if (trackPos != null) {
-        result = TrackScanner.scanStraightTrackSection(getLevel(), trackPos, otherTrack);
+        result = TrackScanUtil.scanStraightTrackSection(getLevel(), trackPos, otherTrack);
         this.trackScans.put(otherTrack, result);
       }
     }
     return result;
   }
 
-  private TrackValidationResult validateSignal(BlockSignalNetwork blockSignal) {
-    TrackLocator.Status trackStatus = this.trackLocator.getTrackStatus();
+  private TrackValidationResult validateSignal(BlockSignal blockSignal) {
+    TrackLocator.Status trackStatus = this.trackLocator.trackStatus();
     if (trackStatus == TrackLocator.Status.INVALID)
       return new TrackValidationResult(false, "INVALID_MY_TRACK_NULL");
-    TrackLocator.Status otherTrackStatus = blockSignal.getTrackLocator().getTrackStatus();
+    TrackLocator.Status otherTrackStatus = blockSignal.trackLocator().trackStatus();
     if (otherTrackStatus == TrackLocator.Status.INVALID)
       return new TrackValidationResult(false, "INVALID_OTHER_TRACK_INVALID");
-    BlockPos otherTrackPos = blockSignal.getTrackLocator().getTrackPos();
+    BlockPos otherTrackPos = blockSignal.trackLocator().trackPos();
     if (otherTrackPos == null)
       return new TrackValidationResult(true, "UNVERIFIABLE_OTHER_TRACK_NULL");
-    BlockPos trackPos = this.trackLocator.getTrackPos();
+    BlockPos trackPos = this.trackLocator.trackPos();
     if (trackPos == null)
       return new TrackValidationResult(true, "INVALID_MY_TRACK_NULL");
-    TrackScanner.Result scanResult =
-        TrackScanner.scanStraightTrackSection(this.getLevel(), trackPos, otherTrackPos);
+    TrackScanUtil.Result scanResult =
+        TrackScanUtil.scanStraightTrackSection(this.getLevel(), trackPos, otherTrackPos);
     this.trackScans.put(otherTrackPos, scanResult);
-    if (scanResult.getStatus() == TrackScanner.Status.VALID)
+
+    if (scanResult.status().valid()) {
       return new TrackValidationResult(true, "VALID");
-    if (scanResult.getStatus() == TrackScanner.Status.UNKNOWN)
+    }
+
+    if (scanResult.status().unknown()) {
       return new TrackValidationResult(true, "UNVERIFIABLE_UNLOADED_CHUNK");
+    }
+
     return new TrackValidationResult(false,
-        "INVALID_SCAN_FAIL: " + scanResult.getStatus().toString());
+        "INVALID_SCAN_FAIL: " + scanResult.status().toString());
   }
 
   public void serverTick() {
@@ -232,8 +244,8 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
       SignalAspect lastAspect = this.signalAspect;
       if (this.hasPeers()) {
         this.signalAspect = SignalAspect.GREEN;
-        for (BlockPos peerPos : this.peers) {
-          this.getPeer(peerPos).ifPresent(peer -> this.signalAspect =
+        for (var peerPos : this.peers) {
+          this.peerAt(peerPos).ifPresent(peer -> this.signalAspect =
               SignalAspect.mostRestrictive(this.signalAspect,
                   this.calculateSignalAspect(peer)));
         }
@@ -248,48 +260,41 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
     }
     if (this.signalValidationTimer++ >= SIGNAL_VALIDATION_INTERVAL) {
       this.signalValidationTimer = 0;
-      switch (this.trackLocator.getTrackStatus()) {
-        case INVALID:
+      switch (this.trackLocator.trackStatus()) {
+        case INVALID -> {
           this.peers.clear();
           logger.debug("Block signal dropped because no track was found near signal @ [{}]",
-              this.getBlockPos());
-          break;
-        case VALID:
-          this.signalsToRevalidate.retainAll(this.getPeers());
-          for (BlockPos peerPos : this.signalsToRevalidate) {
-            BlockSignal peer = this.getPeer(peerPos).orElse(null);
-            if (peer == null) {
-              // Silently remove
-              this.peers.remove();
-            }
-            TrackValidationResult result = this.validateSignal(peer.getSignalNetwork());
-            if (!result.valid) {
-              this.removePeer(peerPos);
-              logger.debug(
-                  "Block signal dropped because track between signals was invalid. source:[{}] target:[{}] reason:{}",
-                  this.getBlockPos(), peerPos, result.message);
-            }
+              this.blockPos());
+        }
+        case VALID -> {
+          this.signalsToRevalidate.retainAll(this.peers());
+          for (var peerPos : this.signalsToRevalidate) {
+            this.peerAt(peerPos).ifPresentOrElse(peer -> {
+              var result = this.validateSignal(peer.signalNetwork());
+              if (!result.valid) {
+                this.removePeer(peerPos);
+                logger.debug(
+                    "Block signal dropped because track between signals was invalid. source:[{}] target:[{}] reason:{}",
+                    this.blockPos(), peerPos, result.message);
+              }
+
+            }, this.peers::remove);
           }
           this.signalsToRevalidate.clear();
 
-          Iterator<BlockPos> iterator = this.peers.iterator();
+          var iterator = this.peers.iterator();
           while (iterator.hasNext()) {
-            BlockPos peerPos = iterator.next();
-            BlockSignal peer = this.getPeer(peerPos).orElse(null);
-            if (peer == null) {
-              // Silently remove
-              iterator.remove();
-              continue;
-            }
-
-            TrackValidationResult result = this.validateSignal(peer.getSignalNetwork());
-            if (!result.valid) {
-              this.signalsToRevalidate.add(peerPos);
-            }
+            var peerPos = iterator.next();
+            this.peerAt(peerPos).ifPresentOrElse(peer -> {
+              var result = this.validateSignal(peer.signalNetwork());
+              if (!result.valid) {
+                this.signalsToRevalidate.add(peerPos);
+              }
+            }, iterator::remove);
           }
-          break;
-        default:
-          break;
+        }
+        default -> {
+        }
       }
     }
   }
@@ -306,14 +311,5 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
     this.signalAspect = data.readEnum(SignalAspect.class);
   }
 
-  private static class TrackValidationResult {
-
-    private final boolean valid;
-    private final String message;
-
-    private TrackValidationResult(boolean valid, String message) {
-      this.valid = valid;
-      this.message = message;
-    }
-  }
+  private record TrackValidationResult(boolean valid, String message) {}
 }

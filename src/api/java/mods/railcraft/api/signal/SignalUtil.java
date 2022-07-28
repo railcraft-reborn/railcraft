@@ -14,11 +14,13 @@ import com.google.common.base.Preconditions;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public abstract class SignalUtil {
+public final class SignalUtil {
 
   public static int aspectUpdateInterval = 4;
 
   private static TuningAuraHandler tuningAuraHandler;
+
+  private SignalUtil() {}
 
   public static TuningAuraHandler tuningAuraHandler() {
     Objects.requireNonNull(tuningAuraHandler);

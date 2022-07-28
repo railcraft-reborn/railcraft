@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import mods.railcraft.util.EnumUtil;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.network.chat.Component;
 
@@ -129,13 +130,12 @@ public enum SignalAspect implements StringRepresentable {
     return this;
   }
 
-  public SignalAspect getNext() {
-    return values()[(this.ordinal() + 1) % values().length];
+  public SignalAspect next() {
+    return EnumUtil.next(this, VALUES);
   }
 
-  public SignalAspect getPrevious() {
-    return values()[this.ordinal() == 0 ? values().length - 1
-        : this.ordinal() - 1];
+  public SignalAspect previous() {
+    return EnumUtil.previous(this, VALUES);
   }
 
   /**
@@ -166,14 +166,18 @@ public enum SignalAspect implements StringRepresentable {
    */
   public static SignalAspect mostRestrictive(@Nullable SignalAspect first,
       @Nullable SignalAspect second) {
-    if (first == null && second == null)
+    if (first == null && second == null) {
       return RED;
-    if (first == null)
+    }
+    if (first == null) {
       return second;
-    if (second == null)
+    }
+    if (second == null) {
       return first;
-    if (first.ordinal() > second.ordinal())
+    }
+    if (first.ordinal() > second.ordinal()) {
       return first;
+    }
     return second;
   }
 

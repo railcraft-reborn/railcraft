@@ -6,11 +6,11 @@ import java.util.Queue;
 import java.util.Set;
 import javax.annotation.Nullable;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.SignalReceiver;
-import mods.railcraft.api.signal.SignalReceiverProvider;
 import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.api.signal.SingleSignalReceiver;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
+import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import net.minecraft.core.BlockPos;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements SignalControllerProvider, SignalReceiverProvider {
+    implements SignalControllerEntity, SignalReceiverEntity {
 
   private final SimpleSignalController signalController =
       new SimpleSignalController(1, this::syncToClient, this, true);
@@ -120,7 +120,7 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
   @Override
   public SignalAspect getSignalAspect(Direction direction) {
-    return this.signalController.getSignalAspect();
+    return this.signalController.aspect();
   }
 
   @Override

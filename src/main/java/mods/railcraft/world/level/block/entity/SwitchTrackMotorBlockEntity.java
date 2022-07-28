@@ -5,8 +5,8 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
-import mods.railcraft.api.signal.SignalReceiverProvider;
 import mods.railcraft.api.signal.SingleSignalReceiver;
+import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBlockEntity
-    implements SignalReceiverProvider {
+    implements SignalReceiverEntity {
 
   private final SingleSignalReceiver signalReceiver =
       new SingleSignalReceiver(this, this::syncToClient, __ -> this.updateSwitched());
