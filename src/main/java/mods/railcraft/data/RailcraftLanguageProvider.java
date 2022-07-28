@@ -80,7 +80,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.FORCE_TRACK_EMITTER, "Force Track Emitter");
 
     this.addBlockColorVariants(RailcraftBlocks.STRENGTHENED_GLASS, "Strengthened Glass");
-    this.addBlockColorVariants(RailcraftBlocks.POST, "Metal Post");
+    this.addBlockColorVariants(RailcraftBlocks.POST, "Post");
     this.addBlockColorVariants(RailcraftBlocks.IRON_TANK_GAUGE, "Iron Tank Gauge");
     this.addBlockColorVariants(RailcraftBlocks.IRON_TANK_VALVE, "Iron Tank Valve");
     this.addBlockColorVariants(RailcraftBlocks.IRON_TANK_WALL, "Iron Tank Wall");
