@@ -7,10 +7,12 @@
 
 package mods.railcraft.api.signal;
 
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
-import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
 
 /**
  * Created by CovertJaguar on 7/9/2017 for Railcraft.
@@ -19,74 +21,54 @@ import net.minecraft.core.BlockPos;
  */
 public class TrackLocator {
 
-  private BlockEntity blockEntity;
+  private final Supplier<Level> level;
+  private final BlockPos originPos;
   @Nullable
-  private BlockPos trackLocation;
+  private BlockPos trackPos;
 
-  public TrackLocator(BlockEntity blockEntity) {
-    this.blockEntity = blockEntity;
+  public TrackLocator(Supplier<Level> level, BlockPos originPos) {
+    this.level = level;
+    this.originPos = originPos;
   }
 
   @Nullable
-  public BlockPos getTrackPos() {
-    if (this.trackLocation == null)
+  public BlockPos trackPos() {
+    if (this.trackPos == null) {
       this.locateTrack();
-    return this.trackLocation;
+    }
+    return this.trackPos;
   }
 
-  public Status getTrackStatus() {
-    if (this.trackLocation == null)
+  public Status trackStatus() {
+    if (this.trackPos == null) {
       return locateTrack();
-    if (!this.blockEntity.getLevel().isLoaded(this.trackLocation))
+    }
+    if (!this.level.get().isLoaded(this.trackPos)) {
       return Status.UNKNOWN;
-    if (!BaseRailBlock.isRail(this.blockEntity.getLevel(), this.trackLocation)) {
-      this.trackLocation = null;
+    }
+    if (!BaseRailBlock.isRail(this.level.get(), this.trackPos)) {
+      this.trackPos = null;
       return this.locateTrack();
     }
     return Status.VALID;
   }
 
   private Status locateTrack() {
-    int x = this.blockEntity.getBlockPos().getX();
-    int y = this.blockEntity.getBlockPos().getY();
-    int z = this.blockEntity.getBlockPos().getZ();
-    Status status = this.testForTrack(x, y, z);
-    if (status != Status.INVALID)
-      return status;
-    status = this.testForTrack(x - 1, y, z);
-    if (status != Status.INVALID)
-      return status;
-    status = this.testForTrack(x + 1, y, z);
-    if (status != Status.INVALID)
-      return status;
-    status = this.testForTrack(x, y, z - 1);
-    if (status != Status.INVALID)
-      return status;
-    status = this.testForTrack(x, y, z + 1);
-    if (status != Status.INVALID)
-      return status;
-    status = this.testForTrack(x - 2, y, z);
-    if (status != Status.INVALID)
-      return status;
-    status = this.testForTrack(x + 2, y, z);
-    if (status != Status.INVALID)
-      return status;
-    status = this.testForTrack(x, y, z - 2);
-    if (status != Status.INVALID)
-      return status;
-    status = this.testForTrack(x, y, z + 2);
-    if (status != Status.INVALID)
-      return status;
-    return Status.INVALID;
+    return BlockPos
+        .betweenClosedStream(this.originPos.offset(-2, 0, -2), this.originPos.offset(2, 0, 2))
+        .map(this::testForTrack)
+        .filter(Predicate.not(Status::invalid))
+        .findFirst()
+        .orElse(Status.INVALID);
   }
 
-  private Status testForTrack(int x, int y, int z) {
+  private Status testForTrack(BlockPos blockPos) {
     for (int i = -2; i < 4; i++) {
-      BlockPos pos = new BlockPos(x, y - i, z);
-      if (!this.blockEntity.getLevel().isLoaded(pos))
+      if (!this.level.get().isLoaded(blockPos)) {
         return Status.UNKNOWN;
-      if (BaseRailBlock.isRail(this.blockEntity.getLevel(), pos)) {
-        this.trackLocation = pos;
+      }
+      if (BaseRailBlock.isRail(this.level.get(), blockPos)) {
+        this.trackPos = blockPos;
         return Status.VALID;
       }
     }
@@ -94,6 +76,11 @@ public class TrackLocator {
   }
 
   public enum Status {
-    VALID, INVALID, UNKNOWN
+
+    VALID, INVALID, UNKNOWN;
+
+    public boolean invalid() {
+      return this == INVALID;
+    }
   }
 }

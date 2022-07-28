@@ -7,25 +7,25 @@
 package mods.railcraft.api.signal;
 
 import java.util.UUID;
-import mods.railcraft.api.core.BlockEntityLike;
+import mods.railcraft.api.signal.entity.MonitoringSignalEntity;
 import net.minecraft.core.BlockPos;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public interface TokenSignal extends BlockEntityLike, SurveyableSignal<TokenSignal> {
+public interface TokenSignalEntity extends MonitoringSignalEntity<TokenSignalEntity> {
 
-  BlockPos getTokenRingCentroid();
+  BlockPos ringCentroidPos();
 
-  UUID getTokenRingId();
+  UUID ringId();
 
-  void setTokenRingId(UUID tokenRingId);
-
-  @Override
-  TokenRing getSignalNetwork();
+  void setRingId(UUID ringId);
 
   @Override
-  default Class<TokenSignal> getSignalType() {
-    return TokenSignal.class;
+  TokenRing signalNetwork();
+
+  @Override
+  default Class<TokenSignalEntity> type() {
+    return TokenSignalEntity.class;
   }
 }

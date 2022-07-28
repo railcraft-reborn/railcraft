@@ -64,7 +64,7 @@ public class TokenRingManager extends SavedData {
       CompoundTag tokenData = new CompoundTag();
       tokenData.putUUID("id", tokenRing.getId());
       ListTag signalList = new ListTag();
-      for (BlockPos pos : tokenRing.getPeers()) {
+      for (BlockPos pos : tokenRing.peers()) {
         signalList.add(NbtUtils.writeBlockPos(pos));
       }
       tokenData.put("signals", signalList);

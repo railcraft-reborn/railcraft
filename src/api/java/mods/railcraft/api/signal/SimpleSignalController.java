@@ -8,6 +8,7 @@ package mods.railcraft.api.signal;
 
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
@@ -15,7 +16,7 @@ import net.minecraft.core.BlockPos;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class SimpleSignalController extends BlockEntitySignalNetwork<SignalReceiverProvider>
+public class SimpleSignalController extends BlockEntitySignalNetwork<SignalReceiverEntity>
     implements SignalController {
 
   private final boolean blinkRedWithoutPeers;
@@ -31,18 +32,18 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
   public SimpleSignalController(int maxPeers, Runnable syncListener, BlockEntity blockEntity,
       boolean blinkRedWithoutPeers,
       @Nullable Consumer<SignalAspect> signalAspectListener) {
-    super(SignalReceiverProvider.class, maxPeers, syncListener, blockEntity);
+    super(SignalReceiverEntity.class, maxPeers, syncListener, blockEntity);
     this.blinkRedWithoutPeers = blinkRedWithoutPeers;
     this.signalAspectListener = signalAspectListener;
   }
 
   @Override
-  public boolean addPeer(SignalReceiverProvider peer) {
+  public boolean addPeer(SignalReceiverEntity peer) {
     boolean hadPeers = this.hasPeers();
     if (super.addPeer(peer)) {
       peer.getSignalReceiver().linked(this);
       if (!hadPeers && this.blinkRedWithoutPeers && this.signalAspectListener != null) {
-        this.signalAspectListener.accept(this.getSignalAspect());
+        this.signalAspectListener.accept(this.aspect());
       }
       return true;
     }
@@ -73,17 +74,17 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
   @Override
   public void stopLinking() {
     super.stopLinking();
-    this.broadcastSignalAspect(this.getSignalAspect());
+    this.broadcastSignalAspect(this.aspect());
   }
 
   @Override
-  public boolean refreshPeer(SignalReceiverProvider peer) {
-    peer.getSignalReceiver().receiveSignalAspect(this, this.getSignalAspect());
+  public boolean refreshPeer(SignalReceiverEntity peer) {
+    peer.getSignalReceiver().receiveSignalAspect(this, this.aspect());
     return true;
   }
 
   @Override
-  public SignalAspect getSignalAspect() {
+  public SignalAspect aspect() {
     if (this.isLinking()) {
       return SignalAspect.BLINK_YELLOW;
     } else if (this.hasPeers() || !this.blinkRedWithoutPeers) {
@@ -109,9 +110,9 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
   }
 
   public void spawnTuningAuraParticles() {
-    var provider = SignalTools.tuningAuraProvider();
-    if (provider.isTuningAuraActive()) {
-      this.stream().forEach(peer -> provider.spawnTuningAura(
+    var handler = SignalUtil.tuningAuraHandler();
+    if (handler.isTuningAuraActive()) {
+      this.stream().forEach(peer -> handler.spawnTuningAura(
           this.getBlockEntity(), peer.asBlockEntity()));
     }
   }

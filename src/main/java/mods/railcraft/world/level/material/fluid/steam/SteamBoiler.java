@@ -310,7 +310,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     @Override
     public void refresh() {
       this.tooltip = List.of(
-          Component.literal(String.format("%.0fÂ°", SteamBoiler.this.getTemperature())));
+          Component.literal(String.format("%.0f°C", SteamBoiler.this.getTemperature())));
     }
 
     @Override

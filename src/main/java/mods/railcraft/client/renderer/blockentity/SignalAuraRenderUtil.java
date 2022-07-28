@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mods.railcraft.api.signal.BlockSignal;
+import mods.railcraft.api.signal.BlockSignalEntity;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.api.signal.SignalControllerProvider;
-import mods.railcraft.api.signal.TokenSignal;
+import mods.railcraft.api.signal.TokenSignalEntity;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,8 +22,8 @@ public class SignalAuraRenderUtil {
 
   public static void tryRenderSignalAura(BlockEntity blockEntity,
       PoseStack poseStack, MultiBufferSource bufferSource) {
-    if (blockEntity instanceof SignalControllerProvider provider) {
-      var peers = provider.getSignalController().getPeers();
+    if (blockEntity instanceof SignalControllerEntity provider) {
+      var peers = provider.getSignalController().peers();
       if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.TUNING)) {
         renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.COORD_RAINBOW);
@@ -32,8 +32,8 @@ public class SignalAuraRenderUtil {
             ColorProfile.CONTROLLER_ASPECT);
       }
     }
-    if (blockEntity instanceof BlockSignal blockSignal) {
-      var peers = blockSignal.getSignalNetwork().getPeers();
+    if (blockEntity instanceof BlockSignalEntity blockSignal) {
+      var peers = blockSignal.signalNetwork().peers();
       if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SURVEYING)) {
         renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.COORD_RAINBOW);
@@ -41,11 +41,11 @@ public class SignalAuraRenderUtil {
         renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.CONSTANT_BLUE);
       }
-    } else if (blockEntity instanceof TokenSignal tokenSignal) {
-      var centroid = Collections.singletonList(tokenSignal.getTokenRingCentroid());
+    } else if (blockEntity instanceof TokenSignalEntity tokenSignal) {
+      var centroid = Collections.singletonList(tokenSignal.ringCentroidPos());
       if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SURVEYING)) {
         renderSignalAura(blockEntity, poseStack, bufferSource, centroid,
-            (t, s, d) -> tokenSignal.getTokenRingId().hashCode());
+            (t, s, d) -> tokenSignal.ringId().hashCode());
       } else if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SIGNALLING)) {
         renderSignalAura(blockEntity, poseStack, bufferSource, centroid,
             ColorProfile.CONSTANT_BLUE);
@@ -117,9 +117,9 @@ public class SignalAuraRenderUtil {
     CONTROLLER_ASPECT {
       @Override
       public int getColor(BlockEntity blockEntity, BlockPos source, BlockPos target) {
-        if (blockEntity instanceof SignalControllerProvider) {
+        if (blockEntity instanceof SignalControllerEntity) {
           SignalAspect aspect =
-              ((SignalControllerProvider) blockEntity).getSignalController().getSignalAspect();
+              ((SignalControllerEntity) blockEntity).getSignalController().aspect();
           switch (aspect) {
             case GREEN:
               return DyeColor.LIME.getFireworkColor();

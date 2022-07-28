@@ -3,10 +3,10 @@ package mods.railcraft.world.level.block.entity.signal;
 import java.util.Objects;
 import java.util.UUID;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.SimpleSignalController;
-import mods.railcraft.api.signal.TokenSignal;
+import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.api.signal.TrackLocator;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.TimerBag;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -26,17 +26,17 @@ import net.minecraft.world.level.block.state.BlockState;
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
-    implements SignalControllerProvider, TokenSignal {
+    implements SignalControllerEntity, TokenSignalEntity {
 
   private final SimpleSignalController signalController =
       new SimpleSignalController(1, this::syncToClient, this, false,
           __ -> this.level.getLightEngine().checkBlock(this.getBlockPos()));
 
-  private UUID tokenRingId = UUID.randomUUID();
-  private BlockPos tokenRingCentroid;
+  private UUID ringId = UUID.randomUUID();
+  private BlockPos ringCentroidPos;
 
   private final TimerBag<UUID> cartTimers = new TimerBag<>(8);
-  private final TrackLocator trackLocator = new TrackLocator(this);
+  private final TrackLocator trackLocator;
 
   public TokenSignalBlockEntity(BlockPos blockPos, BlockState blockState) {
     this(RailcraftBlockEntityTypes.TOKEN_SIGNAL.get(), blockPos, blockState);
@@ -44,6 +44,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
 
   public TokenSignalBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     super(type, blockPos, blockState);
+    this.trackLocator = new TrackLocator(this::getLevel, blockPos);
   }
 
   @Override
@@ -57,7 +58,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   public void blockRemoved() {
     this.signalController.destroy();
     if (!this.level.isClientSide()) {
-      this.getSignalNetwork().removePeer(this.getBlockPos());
+      this.signalNetwork().removePeer(this.getBlockPos());
     }
   }
 
@@ -69,15 +70,15 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       TokenSignalBlockEntity blockEntity) {
 
-    var tokenRing = blockEntity.getSignalNetwork();
-    if (!Objects.equals(blockEntity.tokenRingCentroid, tokenRing.getCentroid())) {
-      blockEntity.tokenRingCentroid = tokenRing.getCentroid();
+    var tokenRing = blockEntity.signalNetwork();
+    if (!Objects.equals(blockEntity.ringCentroidPos, tokenRing.getCentroid())) {
+      blockEntity.ringCentroidPos = tokenRing.getCentroid();
       blockEntity.syncToClient();
     }
 
     blockEntity.cartTimers.tick();
-    if (blockEntity.trackLocator.getTrackStatus() == TrackLocator.Status.VALID) {
-      var trackPos = blockEntity.trackLocator.getTrackPos();
+    if (blockEntity.trackLocator.trackStatus() == TrackLocator.Status.VALID) {
+      var trackPos = blockEntity.trackLocator.trackPos();
       if (trackPos != null) {
         var carts = EntitySearcher.findMinecarts()
             .around(trackPos)
@@ -88,58 +89,58 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
       }
     }
 
-    blockEntity.signalController.setSignalAspect(blockEntity.getSignalNetwork().getSignalAspect());
+    blockEntity.signalController.setSignalAspect(blockEntity.signalNetwork().aspect());
   }
 
   @Override
   public SignalAspect getPrimarySignalAspect() {
-    return this.signalController.getSignalAspect();
+    return this.signalController.aspect();
   }
 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
     tag.put("network", this.signalController.serializeNBT());
-    tag.putUUID("tokenRingId", this.tokenRingId);
+    tag.putUUID("tokenRingId", this.ringId);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
     this.signalController.deserializeNBT(tag.getCompound("network"));
-    this.tokenRingId = tag.getUUID("tokenRingId");
+    this.ringId = tag.getUUID("tokenRingId");
   }
 
   @Override
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
     this.signalController.writeToBuf(data);
-    data.writeBlockPos(this.getSignalNetwork().getCentroid());
-    data.writeUUID(this.tokenRingId);
+    data.writeBlockPos(this.signalNetwork().getCentroid());
+    data.writeUUID(this.ringId);
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf data) {
     super.readFromBuf(data);
     this.signalController.readFromBuf(data);
-    this.tokenRingCentroid = data.readBlockPos();
-    this.tokenRingId = data.readUUID();
+    this.ringCentroidPos = data.readBlockPos();
+    this.ringId = data.readUUID();
   }
 
   @Override
-  public UUID getTokenRingId() {
-    return this.tokenRingId;
+  public UUID ringId() {
+    return this.ringId;
   }
 
-  public void setTokenRingId(UUID tokenRingId) {
-    this.tokenRingId = tokenRingId;
+  public void setRingId(UUID tokenRingId) {
+    this.ringId = tokenRingId;
   }
 
   @Override
-  public BlockPos getTokenRingCentroid() {
-    if (this.tokenRingCentroid == null)
+  public BlockPos ringCentroidPos() {
+    if (this.ringCentroidPos == null)
       return this.getBlockPos();
-    return this.tokenRingCentroid;
+    return this.ringCentroidPos;
   }
 
   @Override
@@ -148,16 +149,16 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public SimpleTokenRing getSignalNetwork() {
+  public SimpleTokenRing signalNetwork() {
     if (this.level.isClientSide()) {
       throw new IllegalStateException("Token ring is not available on the client.");
     }
     return TokenRingManager.get((ServerLevel) this.level)
-        .getTokenRingNetwork(this.tokenRingId, this.getBlockPos());
+        .getTokenRingNetwork(this.ringId, this.getBlockPos());
   }
 
   @Override
-  public TrackLocator getTrackLocator() {
+  public TrackLocator trackLocator() {
     return this.trackLocator;
   }
 }

@@ -2,8 +2,8 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import java.util.EnumSet;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.SimpleSignalController;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import net.minecraft.core.BlockPos;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
-    implements SignalControllerProvider {
+    implements SignalControllerEntity {
 
   private final SimpleSignalController signalController =
       new SimpleSignalController(1, this::syncToClient, this, true);
@@ -100,7 +100,7 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
 
   @Override
   public SignalAspect getSignalAspect(Direction direction) {
-    return this.signalController.getSignalAspect();
+    return this.signalController.aspect();
   }
 
   @Override

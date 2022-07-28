@@ -1,6 +1,5 @@
 package mods.railcraft.world.item;
 
-import mods.railcraft.api.signal.Signal;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -10,6 +9,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
+import mods.railcraft.api.signal.entity.SignalEntity;
 import java.util.List;
 
 public class SignalLabelItem extends Item {
@@ -23,7 +23,7 @@ public class SignalLabelItem extends Item {
     var level = context.getLevel();
     var player = context.getPlayer();
     if (player.isShiftKeyDown() && itemStack.hasCustomHoverName()
-        && level.getBlockEntity(context.getClickedPos()) instanceof Signal signal) {
+        && level.getBlockEntity(context.getClickedPos()) instanceof SignalEntity signal) {
       if (!level.isClientSide()) {
         signal.setCustomName(itemStack.getHoverName());
         if (!player.isCreative()) {

@@ -16,17 +16,19 @@ import net.minecraft.world.level.Level;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public final class TrackScanner {
+public final class TrackScanUtil {
+
+  private TrackScanUtil() {}
 
   /**
    * Verifies that two rails are connected to each other along a straight line with no gaps or
    * wanderings.
    *
-   * @param world The World object
+   * @param level The World object
    * @return true if they are connected
    */
-  public static boolean areTracksConnectedAlongAxis(Level world, BlockPos start, BlockPos end) {
-    return scanStraightTrackSection(world, start, end).status == Status.VALID;
+  public static boolean areTracksConnectedAlongAxis(Level level, BlockPos start, BlockPos end) {
+    return scanStraightTrackSection(level, start, end).status() == Status.VALID;
   }
 
   /**
@@ -35,10 +37,10 @@ public final class TrackScanner {
    * <p/>
    * Also records the min and max y values along the way.
    *
-   * @param world The World object
+   * @param level The World object
    * @return ScanResult object with results
    */
-  public static Result scanStraightTrackSection(Level world, BlockPos start, BlockPos end) {
+  public static Result scanStraightTrackSection(Level level, BlockPos start, BlockPos end) {
     int x1 = start.getX();
     int y1 = start.getY();
     int z1 = start.getZ();
@@ -67,17 +69,17 @@ public final class TrackScanner {
       for (int xx = min; xx <= max; xx++) {
         // if (world.blockExists(xx, yy, z1))
         BlockPos p = new BlockPos(xx, yy, z1);
-        if (BaseRailBlock.isRail(world, p)) {
+        if (BaseRailBlock.isRail(level, p)) {
           // NOOP
-        } else if (BaseRailBlock.isRail(world, p.below())) {
+        } else if (BaseRailBlock.isRail(level, p.below())) {
           yy--;
           if (yy < minY)
             minY = yy;
-        } else if (BaseRailBlock.isRail(world, p.above())) {
+        } else if (BaseRailBlock.isRail(level, p.above())) {
           yy++;
           if (yy > maxY)
             maxY = yy;
-        } else if (!world.isLoaded(p)) {
+        } else if (!level.isLoaded(p)) {
           return new Result(Status.UNKNOWN, minY, maxY);
         } else
           return new Result(Status.PATH_NOT_FOUND, minY, maxY);
@@ -98,17 +100,17 @@ public final class TrackScanner {
       for (int zz = min; zz <= max; zz++) {
         // if (world.blockExists(x1, yy, zz))
         BlockPos p = new BlockPos(x1, yy, zz);
-        if (BaseRailBlock.isRail(world, p)) {
+        if (BaseRailBlock.isRail(level, p)) {
           // NOOP
-        } else if (BaseRailBlock.isRail(world, p.below())) {
+        } else if (BaseRailBlock.isRail(level, p.below())) {
           yy--;
           if (yy < minY)
             minY = yy;
-        } else if (BaseRailBlock.isRail(world, p.above())) {
+        } else if (BaseRailBlock.isRail(level, p.above())) {
           yy++;
           if (yy > maxY)
             maxY = yy;
-        } else if (!world.isLoaded(p)) {
+        } else if (!level.isLoaded(p)) {
           return new Result(Status.UNKNOWN, minY, maxY);
         } else
           return new Result(Status.PATH_NOT_FOUND, minY, maxY);
@@ -117,36 +119,21 @@ public final class TrackScanner {
     return new Result(Status.VALID, minY, maxY);
   }
 
-  private TrackScanner() {}
-
-  public static final class Result {
-
-    private final Status status;
-    private final int minY, maxY;
-
-    public Result(Status verdict, int minY, int maxY) {
-      this.status = verdict;
-      this.minY = minY;
-      this.maxY = maxY;
-    }
-
-    public Status getStatus() {
-      return this.status;
-    }
-
-    public int getMinY() {
-      return this.minY;
-    }
-
-    public int getMaxY() {
-      return this.maxY;
-    }
-  }
+  public record Result(Status status, int minY, int maxY) {}
 
   public enum Status {
+
     VALID,
     UNKNOWN,
     NOT_ALIGNED,
-    PATH_NOT_FOUND
+    PATH_NOT_FOUND;
+
+    public boolean valid() {
+      return this == VALID;
+    }
+
+    public boolean unknown() {
+      return this == UNKNOWN;
+    }
   }
 }

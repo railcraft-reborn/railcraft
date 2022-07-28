@@ -10,7 +10,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.TokenRing;
-import mods.railcraft.api.signal.TokenSignal;
+import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MathUtil;
@@ -65,19 +65,19 @@ public class SimpleTokenRing implements TokenRing {
   }
 
   @Override
-  public boolean addPeer(TokenSignal peer) {
+  public boolean addPeer(TokenSignalEntity peer) {
     BlockPos otherPos = peer.asBlockEntity().getBlockPos();
 
     if (this.peers.stream().anyMatch(pos -> pos.distSqr(otherPos) > MAX_DISTANCE)) {
       return false;
     }
-    TokenRing otherRing = peer.getSignalNetwork();
+    TokenRing otherRing = peer.signalNetwork();
     if (otherRing != this) {
       otherRing.removePeer(peer.asBlockEntity().getBlockPos());
     }
     // TokenRing tokenRing = otherRing.signals.size() > signals.size() ? otherRing : this;
     SimpleTokenRing tokenRing = this;
-    peer.setTokenRingId(tokenRing.getId());
+    peer.setRingId(tokenRing.getId());
     tokenRing.addSignal(peer.asBlockEntity().getBlockPos());
     return true;
   }
@@ -98,7 +98,7 @@ public class SimpleTokenRing implements TokenRing {
   }
 
   public boolean isOrphaned(ServerLevel level) {
-    return !this.peers.stream().map(this::getPeer).allMatch(Optional::isPresent);
+    return !this.peers.stream().map(this::peerAt).allMatch(Optional::isPresent);
   }
 
   void loadSignals(Collection<BlockPos> signals) {
@@ -133,7 +133,7 @@ public class SimpleTokenRing implements TokenRing {
   }
 
   @Override
-  public Collection<BlockPos> getPeers() {
+  public Collection<BlockPos> peers() {
     return Collections.unmodifiableSet(this.peers);
   }
 
@@ -143,7 +143,7 @@ public class SimpleTokenRing implements TokenRing {
   }
 
   @Override
-  public SignalAspect getSignalAspect() {
+  public SignalAspect aspect() {
     if (this.isLinking()) {
       return SignalAspect.BLINK_YELLOW;
     } else if (this.peers.size() <= 1) {
@@ -163,7 +163,7 @@ public class SimpleTokenRing implements TokenRing {
   }
 
   @Override
-  public Optional<TokenSignal> getPeer(BlockPos blockPos) {
+  public Optional<TokenSignalEntity> peerAt(BlockPos blockPos) {
     if (!this.level.isLoaded(blockPos)) {
       return Optional.empty();
     }

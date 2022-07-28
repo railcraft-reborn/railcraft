@@ -41,15 +41,15 @@ public class DualSignalReceiver extends SingleSignalReceiver {
   @Override
   public void unlinked(SignalController signalController) {
     if (this.primarySignalClient.getSignalControllerBlockPos()
-        .equals(signalController.getBlockPos())) {
+        .equals(signalController.blockPos())) {
       this.primarySignalClient.unlinked();
     } else if (this.secondarySignalClient.getSignalControllerBlockPos()
-        .equals(signalController.getBlockPos())) {
+        .equals(signalController.blockPos())) {
       this.secondarySignalClient.unlinked();
     } else {
       logger.warn(
           "Signal controller @ [{}] tried to unlink with signal receiver @ [{}] without initially being linked",
-          signalController.getBlockPos(), this.blockEntity.getBlockPos());
+          signalController.blockPos(), this.blockEntity.getBlockPos());
     }
   }
 

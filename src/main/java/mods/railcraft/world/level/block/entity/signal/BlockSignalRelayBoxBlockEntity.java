@@ -1,11 +1,11 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import mods.railcraft.api.signal.BlockSignal;
+import mods.railcraft.api.signal.BlockSignalEntity;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalController;
-import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.SimpleBlockSignalNetwork;
 import mods.railcraft.api.signal.SimpleSignalController;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
-    implements BlockSignal, SignalControllerProvider {
+    implements BlockSignalEntity, SignalControllerEntity {
 
   private final SimpleSignalController signalController =
       new SimpleSignalController(1, this::syncToClient, this, false);
@@ -49,7 +49,7 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
 
   @Override
   public int getRedstoneSignal(Direction side) {
-    return this.isActionSignalAspect(this.blockSignal.getSignalAspect())
+    return this.isActionSignalAspect(this.blockSignal.aspect())
         ? PowerUtil.FULL_POWER
         : PowerUtil.NO_POWER;
   }
@@ -83,13 +83,13 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public SimpleBlockSignalNetwork getSignalNetwork() {
+  public SimpleBlockSignalNetwork signalNetwork() {
     return this.blockSignal;
   }
 
   @Override
   public SignalAspect getSignalAspect(Direction direction) {
-    return this.signalController.getSignalAspect();
+    return this.signalController.aspect();
   }
 
   @Override

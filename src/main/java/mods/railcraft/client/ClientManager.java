@@ -1,7 +1,7 @@
 package mods.railcraft.client;
 
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.api.signal.SignalTools;
+import mods.railcraft.api.signal.SignalUtil;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
@@ -68,7 +68,7 @@ public class ClientManager {
   public ClientManager() {
     instance = this;
 
-    SignalTools._setTuningAuraProvider(new TuningAuraHandlerImpl());
+    SignalUtil._setTuningAuraHandler(new TuningAuraHandlerImpl());
 
     var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleClientSetup);

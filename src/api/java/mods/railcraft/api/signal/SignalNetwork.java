@@ -13,17 +13,15 @@ import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 
 /**
- * This interface represent an object that can be paired with another object.
+ * Provides access to a signal network.
+ * 
+ * @author Sm0keySa1m0n
  *
- * Generally this applies to AbstractPair, but it is also used for creating TokenRings.
- *
- * Created by CovertJaguar on 7/26/2017 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
+ * @param <T> - node type
  */
 public interface SignalNetwork<T> {
 
-  SignalAspect getSignalAspect();
+  SignalAspect aspect();
 
   /**
    * If the signal network
@@ -36,26 +34,26 @@ public interface SignalNetwork<T> {
 
   void stopLinking();
 
-  Optional<T> getPeer(BlockPos blockPos);
+  Optional<T> peerAt(BlockPos blockPos);
 
-  Collection<BlockPos> getPeers();
+  Collection<BlockPos> peers();
 
   default Stream<T> stream() {
-    return this.getPeers().stream()
-        .map(this::getPeer)
+    return this.peers().stream()
+        .map(this::peerAt)
         .flatMap(optional -> optional.isPresent() ? Stream.of(optional.get()) : Stream.empty());
   }
 
-  default int getPeerCount() {
-    return this.getPeers().size();
+  default int peerCount() {
+    return this.peers().size();
   }
 
   default boolean hasPeers() {
-    return this.getPeerCount() > 0;
+    return this.peerCount() > 0;
   }
 
   default boolean isPeer(BlockPos blockPos) {
-    return this.getPeers().contains(blockPos);
+    return this.peers().contains(blockPos);
   }
 
   boolean addPeer(T peer);

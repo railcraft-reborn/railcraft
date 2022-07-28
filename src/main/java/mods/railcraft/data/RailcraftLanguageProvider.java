@@ -30,6 +30,23 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, "Railcraft Outfitted Tracks");
     this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, "Railcraft Decorative Blocks");
 
+    this.add(Translations.Misc.SIGNAL_SURVEYOR_INVALID_TRACK, "§cNo Track Found Near %s");
+    this.add(Translations.Misc.SIGNAL_SURVEYOR_BEGIN, "§dBeginning Survey");
+    this.add(Translations.Misc.SIGNAL_SURVEYOR_SUCCESS, "§aSuccessfully Paired Signals");
+    this.add(Translations.Misc.SIGNAL_SURVEYOR_INVALID_PAIR, "§cPairing Invalid");
+    this.add(Translations.Misc.SIGNAL_SURVEYOR_LOST, "§cFirst Signal No Longer Exists");
+    this.add(Translations.Misc.SIGNAL_SURVEYOR_UNLOADED,
+        "§cFirst Signal's Chunk Has Been Unloaded");
+    this.add(Translations.Misc.SIGNAL_SURVEYOR_ABANDONED, "§dSurvey Abandoned");
+    this.add(Translations.Misc.SIGNAL_SURVEYOR_INVALID_BLOCK, "§cNot a Valid Signal");
+
+    this.add(Translations.Misc.SIGNAL_TUNER_BEGIN, "§dStarted Pairing %s§d With a Receiver");
+    this.add(Translations.Misc.SIGNAL_TUNER_ABANDONED, "§dStopped Pairing");
+    this.add(Translations.Misc.SIGNAL_TUNER_UNLOADED,
+        "§cSignal Controller's Chunk Has Been Unloaded");
+    this.add(Translations.Misc.SIGNAL_TUNER_LOST, "§cSignal Controller No Longer Exists");
+    this.add(Translations.Misc.SIGNAL_TUNER_SUCCESS, "§aSuccessfully Paired Signal Receiver");
+
     this.blockTranslations();
     this.itemTranslations();
     this.entityTranslations();

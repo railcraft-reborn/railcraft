@@ -1,10 +1,10 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import mods.railcraft.api.signal.BlockSignal;
+import mods.railcraft.api.signal.BlockSignalEntity;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.api.signal.SignalControllerProvider;
 import mods.railcraft.api.signal.SimpleBlockSignalNetwork;
 import mods.railcraft.api.signal.SimpleSignalController;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
-    implements SignalControllerProvider, BlockSignal {
+    implements SignalControllerEntity, BlockSignalEntity {
 
   private final SimpleSignalController signalController =
       new SimpleSignalController(1, this::syncToClient, this, false,
@@ -47,7 +47,7 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
 
   @Override
   public SignalAspect getPrimarySignalAspect() {
-    return this.blockSignal.getSignalAspect();
+    return this.blockSignal.aspect();
   }
 
   @Override
@@ -84,7 +84,7 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public SimpleBlockSignalNetwork getSignalNetwork() {
+  public SimpleBlockSignalNetwork signalNetwork() {
     return this.blockSignal;
   }
 

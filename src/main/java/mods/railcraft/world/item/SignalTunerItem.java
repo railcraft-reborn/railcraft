@@ -1,21 +1,15 @@
 package mods.railcraft.world.item;
 
+import java.util.Objects;
+import mods.railcraft.Translations;
 import mods.railcraft.api.core.DimensionPos;
-import mods.railcraft.api.signal.SignalController;
-import mods.railcraft.api.signal.SignalControllerProvider;
-import mods.railcraft.api.signal.SignalReceiverProvider;
-import net.minecraft.core.BlockPos;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
+import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.Objects;
 
 public class SignalTunerItem extends PairingToolItem {
 
@@ -25,38 +19,36 @@ public class SignalTunerItem extends PairingToolItem {
 
   @Override
   public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
-    Player player = context.getPlayer();
-    Level level = context.getLevel();
-    BlockPos pos = context.getClickedPos();
-    BlockState blockState = level.getBlockState(pos);
+    var player = context.getPlayer();
+    var level = context.getLevel();
+    var pos = context.getClickedPos();
+    var blockState = level.getBlockState(pos);
 
-    if (!level.isClientSide()) {
-      if (this.checkAbandonPairing(itemStack, player, (ServerLevel) level,
+    if (level instanceof ServerLevel serverLevel) {
+      if (this.checkAbandonPairing(itemStack, player, serverLevel,
           () -> {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof SignalControllerProvider) {
-              ((SignalControllerProvider) blockEntity).getSignalController().stopLinking();
+            if (level.getBlockEntity(pos) instanceof SignalControllerEntity provider) {
+              provider.getSignalController().stopLinking();
             }
           })) {
-        player.displayClientMessage(Component.translatable("signal_tuner.abandoned"), true);
+        player.displayClientMessage(
+            Component.translatable(Translations.Misc.SIGNAL_TUNER_ABANDONED), true);
         return InteractionResult.SUCCESS;
       }
 
-      BlockEntity blockEntity = level.getBlockEntity(pos);
+      var blockEntity = level.getBlockEntity(pos);
       if (blockEntity != null) {
-        DimensionPos previousTarget = this.getPeerPos(itemStack);
-        if (blockEntity instanceof SignalReceiverProvider && previousTarget != null) {
+        var previousTarget = this.getPeerPos(itemStack);
+        if (blockEntity instanceof SignalReceiverEntity signalReceiver
+            && previousTarget != null) {
           if (!Objects.equals(pos, previousTarget.getPos())) {
-            SignalReceiverProvider signalReceiver = (SignalReceiverProvider) blockEntity;
-            BlockEntity previousBlockEntity = level.getBlockEntity(previousTarget.getPos());
-            if (previousBlockEntity instanceof SignalControllerProvider) {
-              SignalControllerProvider signalController =
-                  (SignalControllerProvider) previousBlockEntity;
+            var previousBlockEntity = level.getBlockEntity(previousTarget.getPos());
+            if (previousBlockEntity instanceof SignalControllerEntity signalController) {
               if (blockEntity != previousBlockEntity) {
                 signalController.getSignalController().addPeer(signalReceiver);
                 signalController.getSignalController().stopLinking();
                 player.displayClientMessage(
-                    Component.translatable("signal_tuner.success",
+                    Component.translatable(Translations.Misc.SIGNAL_TUNER_SUCCESS,
                         previousBlockEntity.getBlockState().getBlock().getName(),
                         blockState.getBlock().getName()),
                     true);
@@ -65,36 +57,36 @@ public class SignalTunerItem extends PairingToolItem {
               }
             } else if (level.isLoaded(previousTarget.getPos())) {
               player.displayClientMessage(
-                  Component.translatable("signal_tuner.lost"),
+                  Component.translatable(Translations.Misc.SIGNAL_TUNER_LOST),
                   true);
               this.clearPeerPos(itemStack);
             } else {
               player.displayClientMessage(
-                  Component.translatable("signal_tuner.unloaded"),
+                  Component.translatable(Translations.Misc.SIGNAL_TUNER_UNLOADED),
                   true);
               this.clearPeerPos(itemStack);
             }
           }
-        } else if (blockEntity instanceof SignalControllerProvider) {
-          SignalController controller =
-              ((SignalControllerProvider) blockEntity).getSignalController();
+        } else if (blockEntity instanceof SignalControllerEntity provider) {
+          var controller = provider.getSignalController();
           if (previousTarget == null || !Objects.equals(pos, previousTarget.getPos())) {
             player.displayClientMessage(
-                Component.translatable("signal_tuner.begin",
+                Component.translatable(Translations.Misc.SIGNAL_TUNER_BEGIN,
                     blockState.getBlock().getName()),
                 true);
             this.setPeerPos(itemStack, DimensionPos.from(blockEntity));
             controller.startLinking();
           } else {
             player.displayClientMessage(
-                Component.translatable("signal_tuner.abandoned",
+                Component.translatable(Translations.Misc.SIGNAL_TUNER_ABANDONED,
                     blockState.getBlock().getName()),
                 true);
             controller.stopLinking();
             this.clearPeerPos(itemStack);
           }
-        } else
+        } else {
           return InteractionResult.PASS;
+        }
       }
     }
 

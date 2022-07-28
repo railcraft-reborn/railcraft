@@ -44,7 +44,7 @@ public abstract class BlockEntitySignalNetwork<T extends BlockEntityLike>
     return this.blockEntity;
   }
 
-  public BlockPos getBlockPos() {
+  public BlockPos blockPos() {
     return this.blockEntity.getBlockPos();
   }
 

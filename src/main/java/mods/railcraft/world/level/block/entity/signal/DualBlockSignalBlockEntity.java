@@ -1,8 +1,8 @@
 package mods.railcraft.world.level.block.entity.signal;
 
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.api.signal.SignalReceiverProvider;
 import mods.railcraft.api.signal.SingleSignalReceiver;
+import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -10,7 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DualBlockSignalBlockEntity extends BlockSignalBlockEntity
-    implements SignalReceiverProvider, DualSignalBlockEntity {
+    implements SignalReceiverEntity, DualSignalBlockEntity {
 
   private final SingleSignalReceiver signalReceiver = new SingleSignalReceiver(this,
       this::syncToClient, __ -> this.level.getLightEngine().checkBlock(this.getBlockPos()));

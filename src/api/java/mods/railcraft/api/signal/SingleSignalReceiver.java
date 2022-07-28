@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 import mods.railcraft.api.core.NetworkSerializable;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -105,14 +106,14 @@ public class SingleSignalReceiver
       var lastSignalController = this.getSignalController();
       if (lastSignalController == signalController) {
         logger.warn("Signal receiver @ [{}] is already linked to signal controller @ [{}]",
-            SingleSignalReceiver.this.blockEntity.getBlockPos(), signalController.getBlockPos());
+            SingleSignalReceiver.this.blockEntity.getBlockPos(), signalController.blockPos());
         return;
       }
       if (lastSignalController != null) {
         lastSignalController.removePeer(SingleSignalReceiver.this.blockEntity.getBlockPos());
       }
-      this.signalControllerPos = signalController.getBlockPos();
-      this.setSignalAspect(signalController.getSignalAspect());
+      this.signalControllerPos = signalController.blockPos();
+      this.setSignalAspect(signalController.aspect());
       SingleSignalReceiver.this.blockEntity.setChanged();
     }
 
@@ -148,7 +149,7 @@ public class SingleSignalReceiver
       }
       var blockEntity =
           SingleSignalReceiver.this.blockEntity.getLevel().getBlockEntity(this.signalControllerPos);
-      if (blockEntity instanceof SignalControllerProvider provider) {
+      if (blockEntity instanceof SignalControllerEntity provider) {
         return provider.getSignalController();
       } else {
         this.signalControllerPos = null;
@@ -159,7 +160,7 @@ public class SingleSignalReceiver
     protected void refresh() {
       var signalController = this.getSignalController();
       if (signalController != null) {
-        this.setSignalAspect(signalController.getSignalAspect());
+        this.setSignalAspect(signalController.aspect());
       }
     }
 
