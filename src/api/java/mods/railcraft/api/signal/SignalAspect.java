@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import mods.railcraft.util.EnumUtil;
+import mods.railcraft.api.util.EnumUtil;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.network.chat.Component;
 

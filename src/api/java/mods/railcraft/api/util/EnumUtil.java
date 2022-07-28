@@ -1,4 +1,4 @@
-package mods.railcraft.util;
+package mods.railcraft.api.util;
 
 import java.util.concurrent.ThreadLocalRandom;
 
