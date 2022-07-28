@@ -1,0 +1,17 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": {
+      "item": "minecraft:coal"
+    }
+  },
+  "pattern": [
+    " a ",
+    " a ",
+    " a "
+  ],
+  "result": {
+    "item": "railcraft:carbon_electrode"
+  },
+  "tickCost": 100
+}

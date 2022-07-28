@@ -1,0 +1,17 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": {
+      "tag": "forge:plates/brass"
+    }
+  },
+  "pattern": [
+    " a ",
+    " a ",
+    " a "
+  ],
+  "result": {
+    "item": "railcraft:brass_electrode"
+  },
+  "tickCost": 100
+}

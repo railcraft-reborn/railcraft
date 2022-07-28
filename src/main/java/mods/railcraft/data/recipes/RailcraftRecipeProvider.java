@@ -145,6 +145,35 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(consumer, Railcraft.ID + ":rail_deconstruction");
 
     //NEW
+    RollingRecipePattern.line(consumer, Items.COAL, RailcraftItems.CARBON_ELECTRODE.get(), 1,
+        "coal_carbon_electrode");
+    RollingRecipePattern.line(consumer, Items.CHARCOAL, RailcraftItems.CARBON_ELECTRODE.get(), 1,
+        "charcoal_carbon_electrode");
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.NICKEL_PLATE,
+        RailcraftItems.NICKEL_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.IRON_PLATE,
+        RailcraftItems.IRON_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.ZINC_PLATE,
+        RailcraftItems.ZINC_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.SILVER_PLATE,
+        RailcraftItems.SILVER_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.STEEL_PLATE,
+        RailcraftItems.STEEL_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.TIN_PLATE,
+        RailcraftItems.TIN_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.GOLD_PLATE,
+        RailcraftItems.GOLD_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.LEAD_PLATE,
+        RailcraftItems.LEAD_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.BRASS_PLATE,
+        RailcraftItems.BRASS_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.INVAR_PLATE,
+        RailcraftItems.INVAR_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.BRONZE_PLATE,
+        RailcraftItems.BRONZE_ELECTRODE.get(), 1);
+    RollingRecipePattern.line(consumer, RailcraftTags.Items.COPPER_PLATE,
+        RailcraftItems.COPPER_ELECTRODE.get(), 1);
+
     RollingRecipePattern.parallelLines(consumer, Tags.Items.INGOTS_IRON,
         RailcraftItems.STANDARD_RAIL.get(), 8, "standard_rail");
     RollingRecipePattern.parallelLines(consumer, RailcraftTags.Items.BRONZE_INGOT,

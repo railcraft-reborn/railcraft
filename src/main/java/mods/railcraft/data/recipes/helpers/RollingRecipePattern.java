@@ -12,6 +12,32 @@ import net.minecraft.world.level.ItemLike;
 
 public class RollingRecipePattern {
 
+  public static void line(Consumer<FinishedRecipe> finishedRecipe,
+      TagKey<Item> ingredient,
+      ItemLike result,
+      int count) {
+    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    RollingRecipeBuilder.rolled(result, count)
+        .pattern(" a ")
+        .pattern(" a ")
+        .pattern(" a ")
+        .define('a', ingredient)
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
+  }
+
+  public static void line(Consumer<FinishedRecipe> finishedRecipe,
+      ItemLike ingredient,
+      ItemLike result,
+      int count,
+      String customName) {
+    RollingRecipeBuilder.rolled(result, count)
+        .pattern(" a ")
+        .pattern(" a ")
+        .pattern(" a ")
+        .define('a', ingredient)
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
+  }
+
   public static void parallelLines(Consumer<FinishedRecipe> finishedRecipe,
       TagKey<Item> ingred1,
       ItemLike result,

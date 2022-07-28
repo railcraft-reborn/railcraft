@@ -1,4 +1,4 @@
-// 1.19	2022-07-28T18:11:57.355402582	Railcraft Block State Definitions
+// 1.19	2022-07-28T18:53:40.896266927	Railcraft Block State Definitions
 a083f898ae06e89152e61c30096caa3ff297f306 assets/railcraft/blockstates/abandoned_activator_track.json
 d6506fb0bdeaddc35eebb1ae33ba1b32448b2e1c assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -936,10 +936,12 @@ b310cfccafe2a8bf2eec2d5ac03b3ad0b3bf984e assets/railcraft/models/item/blue_post.
 c4e4a31e3e8c6adba28bd1385ff8a3d5ce97d7da assets/railcraft/models/item/blue_steel_tank_wall.json
 74131586469fb0e3586fffbc13558fb4a0cdbf82 assets/railcraft/models/item/blue_strengthened_glass.json
 33a724b821ea5decfb436cbe7d56c85b20fd3e82 assets/railcraft/models/item/booster_track_kit.json
+26f74cc8a0251812b1815c65bda68c1896642485 assets/railcraft/models/item/brass_electrode.json
 061d61f6a4892f1fd271ab8fd62305cddd4f08b5 assets/railcraft/models/item/brass_gear.json
 c8e9189bf701216975e849499bbbaace246ca10e assets/railcraft/models/item/brass_ingot.json
 2f6b24fdd9f0a1781b8f7396598c9bd4c4e06627 assets/railcraft/models/item/brass_nugget.json
 53f604e65afe56e079e8849767804e257cb8a1a2 assets/railcraft/models/item/brass_plate.json
+736cc10bea0dd8d8e0bafaeb7cb0cf7a85b86e3f assets/railcraft/models/item/bronze_electrode.json
 46a767a99127e7bc1a6be05d92b2ac918eef5790 assets/railcraft/models/item/bronze_gear.json
 6445c3378186e64da3a71d45e63c5ce25f082cc8 assets/railcraft/models/item/bronze_ingot.json
 85084c915024e0b3a01bee5f079dd1e6c883e0ae assets/railcraft/models/item/bronze_nugget.json
@@ -955,6 +957,7 @@ bdce70a26c2bfdc25b28af0273a8f3f0358f00ac assets/railcraft/models/item/brown_stee
 e70f4283c5dd1dc6d4bf26223f5fcf798cce0065 assets/railcraft/models/item/brown_strengthened_glass.json
 205dfeca5c3b7e254ce261f895478fed0fbce6f6 assets/railcraft/models/item/buffer_stop_track_kit.json
 1c4dcf99a8bb33a1f0f5e7df9c92dfac3c783e58 assets/railcraft/models/item/bushing_gear.json
+5fe026f023c54d2f56719260eb0e673515710337 assets/railcraft/models/item/carbon_electrode.json
 b78986baf137bb0e6a9dc922d8b54caf71abb12b assets/railcraft/models/item/charcoal_dust.json
 81c32dd99947f8fb38ceafac7f640b9609d0c96d assets/railcraft/models/item/chipped_steel_anvil.json
 7905b6be1c1ce032003660f415ba32f5becfb265 assets/railcraft/models/item/coal_coke.json
@@ -962,6 +965,7 @@ b78986baf137bb0e6a9dc922d8b54caf71abb12b assets/railcraft/models/item/charcoal_d
 cc3d72fefc8eaa8035f16c8dad6e9cfa132f1e58 assets/railcraft/models/item/coke_oven_bricks.json
 44b4a84edfa58899d608812a5f1033723c59221d assets/railcraft/models/item/control_track_kit.json
 2fcf6ed374d4197663af5966155721339540d39b assets/railcraft/models/item/controller_circuit.json
+0cae294c952e394844ebe6521d51d1b8b4da2562 assets/railcraft/models/item/copper_electrode.json
 1d36647d55c4e48b9aae466834d4774a8701502c assets/railcraft/models/item/copper_gear.json
 fec950cc3c46f7516c1ccccd410dfe4954fe4cf2 assets/railcraft/models/item/copper_plate.json
 ecf7136385d997fdafee99a1442647d0d776a9cd assets/railcraft/models/item/coupler_track_kit.json
@@ -1005,6 +1009,7 @@ c501cb646a7a13dcdbd7da80916bfdb1a7d2b7a7 assets/railcraft/models/item/fluid_fuel
 4cd92a11d29f7f3c5627f236052c9c807ca994e5 assets/railcraft/models/item/fluid_unloader.json
 4e24c96a71c9bdd904a6f0804136a05a8b5da314 assets/railcraft/models/item/gated_track_kit.json
 949a11da583e83375d0b836c68c4b9fae02f32a7 assets/railcraft/models/item/goggles.json
+482a065ec291f6cf851961bc8a70ac1b6fc7af05 assets/railcraft/models/item/gold_electrode.json
 c33eb623bc15ad465743213397a57e92e1602de1 assets/railcraft/models/item/gold_gear.json
 11505e800b8e65037cfc20639ffae70a638384c1 assets/railcraft/models/item/gold_plate.json
 70fc47360d97d2fa51b26427b56b6db3a7de4a81 assets/railcraft/models/item/gray_iron_tank_gauge.json
@@ -1043,6 +1048,7 @@ d564e9cd640507fc5bb8ce065aa9d0b86145c6d9 assets/railcraft/models/item/high_speed
 0f6fa8a274b48fe8c9ac773e8ab53c1cc86a382c assets/railcraft/models/item/high_speed_transition_track.json
 966bb0a8225bc23164c598ee34a4d2afa8e0e68b assets/railcraft/models/item/high_speed_turnout_track.json
 102dcb1d4aabe494b496b726346e8bfaadd1331a assets/railcraft/models/item/high_speed_wye_track.json
+43894cda953b9431361d97bf79d8f7971caecda7 assets/railcraft/models/item/invar_electrode.json
 38e5f609b4f4dbe3083a8066a0ad62037d3ebc23 assets/railcraft/models/item/invar_gear.json
 fb60be56129a0a831eaa9389c1d9071d00ed0828 assets/railcraft/models/item/invar_ingot.json
 fc4d69034f51f16d352549d6b1ccc09b0f72f262 assets/railcraft/models/item/invar_nugget.json
@@ -1055,6 +1061,7 @@ fc4d69034f51f16d352549d6b1ccc09b0f72f262 assets/railcraft/models/item/invar_nugg
 e339da6d15406c79577f566ec14d350312337698 assets/railcraft/models/item/iron_crowbar.json
 e72d7180da8869d737c331473858fb8ef3d10b10 assets/railcraft/models/item/iron_detector_track.json
 792d2bb0bf7a380fe58d99fbee31b44817d6bb8d assets/railcraft/models/item/iron_disembarking_track.json
+b387d332a12138a82eda4af70affd905145d8146 assets/railcraft/models/item/iron_electrode.json
 6f9f05413d041e769043da2fc0a245cd93e69fa4 assets/railcraft/models/item/iron_embarking_track.json
 41780f28bd7ea5fdca36a9f1b8c934f741a615f7 assets/railcraft/models/item/iron_gated_track.json
 7f2a0db608c88cf8503026b16c9ec8d86afd3022 assets/railcraft/models/item/iron_gear.json
@@ -1069,6 +1076,7 @@ d2dc2209b3bd6e11fca5cce18740e005f8e633ec assets/railcraft/models/item/iron_tunne
 9a43babc0cecad65df8c4f36981b842693f7768f assets/railcraft/models/item/item_loader.json
 ea5fcfded777acbbf9cc816ea5acb54c73bd7e5d assets/railcraft/models/item/item_unloader.json
 bca5154841f3e0b195d80e966c6d5bccd5db5beb assets/railcraft/models/item/launcher_track_kit.json
+658779a613ce2b3fa9fbd74ae998768709606920 assets/railcraft/models/item/lead_electrode.json
 905f051e75df7366b266c39c8ed8833bd2e417e2 assets/railcraft/models/item/lead_gear.json
 c50e1f0f434f1a8d31b25c8b296b3bce56c78eb0 assets/railcraft/models/item/lead_ingot.json
 bbcf7ae15ee2e441be886ba7e855b5db06293538 assets/railcraft/models/item/lead_nugget.json
@@ -1108,6 +1116,7 @@ ce93280b1e8888f9d45681ce4b6112014c37d393 assets/railcraft/models/item/magenta_po
 e23da8a0dd30b59618331a9ffca8c40014fd6bc8 assets/railcraft/models/item/magenta_steel_tank_wall.json
 b809be67021d845136d11f9e1fb4703bd08c6bdf assets/railcraft/models/item/magenta_strengthened_glass.json
 f29d9239731520f11819b6bf85a35c7d1927712a assets/railcraft/models/item/manual_rolling_machine.json
+da880c14fca946bdc4d9efc28696f1389124911d assets/railcraft/models/item/nickel_electrode.json
 fb43723eec1456fe8991d8a834c2455b3a854556 assets/railcraft/models/item/nickel_gear.json
 0606694dde3714aebbf57664d70673779b997171 assets/railcraft/models/item/nickel_ingot.json
 92b7799ed88f47ea41fdeb8ac9409937da28eba3 assets/railcraft/models/item/nickel_nugget.json
@@ -1171,6 +1180,7 @@ c90139e1b7938664701a8ec938d8b51d6f5dc30a assets/railcraft/models/item/signal_cir
 29053c2cd1ea43e99f7569350af668e9fab8e8e9 assets/railcraft/models/item/signal_label.json
 0ebb71a171126c165820de54c753ff8deca76c9c assets/railcraft/models/item/signal_lamp.json
 e07a81e1610daa58deece879337be51f6fb46fe3 assets/railcraft/models/item/signal_tuner.json
+2272816c746d69926286f455a5213d626d63e19e assets/railcraft/models/item/silver_electrode.json
 ed348777f5dc53572ff4d034b024163c274ac3b1 assets/railcraft/models/item/silver_gear.json
 d230bac3c81ad3442ab91fe3295583a3cd4297d4 assets/railcraft/models/item/silver_ingot.json
 722b31e198fa40616a7baf97e21fd842247c5de3 assets/railcraft/models/item/silver_nugget.json
@@ -1186,6 +1196,7 @@ c05b8d44ca4522223a237c4538e9d365876a7e60 assets/railcraft/models/item/steel_axe.
 7d3777118b6ed39c0b6c3c90f835bdd0e4a29eeb assets/railcraft/models/item/steel_boots.json
 4e255cdafed36bd1b0ed630019a21e48edd22c9e assets/railcraft/models/item/steel_chestplate.json
 1bad766f152acc8220cd02c2bf0662f7662a74b6 assets/railcraft/models/item/steel_crowbar.json
+5bb27f901af257f2ea05cc9d12c49e689cb2c995 assets/railcraft/models/item/steel_electrode.json
 ecf80a3397136aa143484cdb8b4f09e609e80d1f assets/railcraft/models/item/steel_gear.json
 0015752b00ef2fdd2936274e49df001c792f3df1 assets/railcraft/models/item/steel_helmet.json
 2e451ec3c98145209d70a5274bdfe12fe9f6c5db assets/railcraft/models/item/steel_hoe.json
@@ -1219,6 +1230,7 @@ c42d803f2d5350b755b0bf8e4dca1e970cd39e83 assets/railcraft/models/item/strap_iron
 df2d20137c3ed09bfd996c4860fb566f328dff54 assets/railcraft/models/item/sulfur_dust.json
 74bc16c4a2844490d22922e6525cba7394fda212 assets/railcraft/models/item/tank_minecart.json
 a2d0c82dedb26272b4ba1cbaa2660a9880ae031f assets/railcraft/models/item/ticket.json
+9992ce25a341f848952d4b2bf03dfe69aa2769be assets/railcraft/models/item/tin_electrode.json
 afe0c98c6d7c96d82299b5c4027d6602155a1132 assets/railcraft/models/item/tin_gear.json
 77d9f18a84481b2786da0c8246c4e5a14883d2b2 assets/railcraft/models/item/tin_ingot.json
 79b08d6095f60d967f6619aa301b0b5d14518963 assets/railcraft/models/item/tin_nugget.json
@@ -1248,6 +1260,7 @@ a23458d7b292eebb148578f4372e3980f19f31ee assets/railcraft/models/item/wooden_rai
 b7c2a33d2283f10c01ea3e79d4e207e9ae2496a1 assets/railcraft/models/item/yellow_steel_tank_valve.json
 a86021a5ab012132092c939bbe98a7cc7367cb8f assets/railcraft/models/item/yellow_steel_tank_wall.json
 f2b3b51f96df9411fa1211efb6ed6e8b6cf54349 assets/railcraft/models/item/yellow_strengthened_glass.json
+bad3a7b2eb461b7f51ff73f0346cfea8f9c3130f assets/railcraft/models/item/zinc_electrode.json
 3ca0b9e47ae31a236053d6c505eb9670aba2fa20 assets/railcraft/models/item/zinc_gear.json
 80bbd1095ede4ea0d4047e33969f08b78c7d89ef assets/railcraft/models/item/zinc_ingot.json
 366b2c832093ae4689438afa69e65e0c8a855d34 assets/railcraft/models/item/zinc_nugget.json

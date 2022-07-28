@@ -1182,6 +1182,21 @@ public class RailcraftItems {
   public static final RegistryObject<Item> NICKEL_GEAR = registerBasicItem("nickel_gear");
   public static final RegistryObject<Item> SILVER_GEAR = registerBasicItem("silver_gear");
 
+  // Electrode
+  public static final RegistryObject<Item> TIN_ELECTRODE = registerBasicItem("tin_electrode");
+  public static final RegistryObject<Item> GOLD_ELECTRODE = registerBasicItem("gold_electrode");
+  public static final RegistryObject<Item> IRON_ELECTRODE = registerBasicItem("iron_electrode");
+  public static final RegistryObject<Item> LEAD_ELECTRODE = registerBasicItem("lead_electrode");
+  public static final RegistryObject<Item> ZINC_ELECTRODE = registerBasicItem("zinc_electrode");
+  public static final RegistryObject<Item> BRASS_ELECTRODE = registerBasicItem("brass_electrode");
+  public static final RegistryObject<Item> INVAR_ELECTRODE = registerBasicItem("invar_electrode");
+  public static final RegistryObject<Item> STEEL_ELECTRODE = registerBasicItem("steel_electrode");
+  public static final RegistryObject<Item> BRONZE_ELECTRODE = registerBasicItem("bronze_electrode");
+  public static final RegistryObject<Item> CARBON_ELECTRODE = registerBasicItem("carbon_electrode");
+  public static final RegistryObject<Item> COPPER_ELECTRODE = registerBasicItem("copper_electrode");
+  public static final RegistryObject<Item> NICKEL_ELECTRODE = registerBasicItem("nickel_electrode");
+  public static final RegistryObject<Item> SILVER_ELECTRODE = registerBasicItem("silver_electrode");
+
   // circuits
   public static final RegistryObject<Item> CONTROLLER_CIRCUIT = registerBasicItem(
       "controller_circuit");

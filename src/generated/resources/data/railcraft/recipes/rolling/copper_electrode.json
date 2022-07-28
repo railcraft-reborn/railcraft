@@ -1,0 +1,17 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": {
+      "tag": "forge:plates/copper"
+    }
+  },
+  "pattern": [
+    " a ",
+    " a ",
+    " a "
+  ],
+  "result": {
+    "item": "railcraft:copper_electrode"
+  },
+  "tickCost": 100
+}

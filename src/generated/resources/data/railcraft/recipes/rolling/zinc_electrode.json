@@ -1,0 +1,17 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": {
+      "tag": "forge:plates/zinc"
+    }
+  },
+  "pattern": [
+    " a ",
+    " a ",
+    " a "
+  ],
+  "result": {
+    "item": "railcraft:zinc_electrode"
+  },
+  "tickCost": 100
+}
