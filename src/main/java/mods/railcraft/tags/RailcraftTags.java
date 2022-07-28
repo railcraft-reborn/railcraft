@@ -82,6 +82,10 @@ public class RailcraftTags {
 
 
     public static final TagKey<Item> SALTPETER_DUST = forgeTag("dusts/salt");
+    public static final TagKey<Item> COAL_DUST = forgeTag("dusts/coal");
+    public static final TagKey<Item> CHARCOAL_DUST = forgeTag("dusts/charcoal");
+    public static final TagKey<Item> SULFUR_DUST = forgeTag("dusts/sulfur");
+    public static final TagKey<Item> OBSIDIAN_DUST = forgeTag("dusts/obsidian");
 
     public static final TagKey<Item> IRON_TANK_GAUGE = tag("iron_tank_gauge");
     public static final TagKey<Item> IRON_TANK_VALVE = tag("iron_tank_valve");

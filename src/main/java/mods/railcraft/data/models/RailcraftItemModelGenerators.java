@@ -134,7 +134,14 @@ public class RailcraftItemModelGenerators {
 
     this.generateFlatItem(RailcraftItems.COAL_COKE.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.SLAG.get(), ModelTemplates.FLAT_ITEM);
+
     this.generateFlatItem(RailcraftItems.SALTPETER_DUST.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.COAL_DUST.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.CHARCOAL_DUST.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.SLAG_DUST.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.ENDER_DUST.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.SULFUR_DUST.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.OBSIDIAN_DUST.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.REBAR.get(), ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
 

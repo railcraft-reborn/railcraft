@@ -1,6 +1,10 @@
-// 1.19	2022-07-28T16:10:38.672105426	Railcraft Item Tags
+// 1.19	2022-07-28T18:11:57.352011993	Railcraft Item Tags
 f34843bfb7b650f383c4d01e491bd1059bfad784 data/forge/tags/items/blocks/steel.json
+300d1cc507f1bf874a5931bfa35e08cf1eb1d286 data/forge/tags/items/dusts/charcoal.json
+a02497735a6ef3531075c69c738d773ae344a9d4 data/forge/tags/items/dusts/coal.json
+289fb003679ca3b81c9fa60b0289ba9d0c8d6c8e data/forge/tags/items/dusts/obsidian.json
 bbf7f6d0c00803b6e02d423b443d154ae326e93b data/forge/tags/items/dusts/salt.json
+49854da25a96b091c439bf470152ab1e94d57dd7 data/forge/tags/items/dusts/sulfur.json
 92490b80fa24ea30d834e9ca91683e84f3ba7ef3 data/forge/tags/items/gears/brass.json
 d14f18ce05fc15ee4f0e1575e7f298c00f079aa9 data/forge/tags/items/gears/bronze.json
 f8776c632583384b22e94b57809091324a2e3015 data/forge/tags/items/gears/copper.json

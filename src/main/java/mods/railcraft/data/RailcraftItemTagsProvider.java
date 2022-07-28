@@ -111,6 +111,14 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
     this.tag(RailcraftTags.Items.SALTPETER_DUST)
         .add(RailcraftItems.SALTPETER_DUST.get());
+    this.tag(RailcraftTags.Items.COAL_DUST)
+        .add(RailcraftItems.COAL_DUST.get());
+    this.tag(RailcraftTags.Items.CHARCOAL_DUST)
+        .add(RailcraftItems.CHARCOAL_DUST.get());
+    this.tag(RailcraftTags.Items.SULFUR_DUST)
+        .add(RailcraftItems.SULFUR_DUST.get());
+    this.tag(RailcraftTags.Items.OBSIDIAN_DUST)
+        .add(RailcraftItems.OBSIDIAN_DUST.get());
 
     this.tag(RailcraftTags.Items.IRON_TANK_WALL)
         .add(RailcraftItems.IRON_TANK_WALL.resolveVariants().toArray(Item[]::new));

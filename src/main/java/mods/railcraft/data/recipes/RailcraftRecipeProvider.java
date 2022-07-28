@@ -159,7 +159,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.ADVANCED_RAIL.get(), 8, "advanced_rail");
     RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT,
         Items.BLAZE_POWDER,
-        Tags.Items.INGOTS_GOLD, RailcraftItems.HIGH_SPEED_RAIL.get(), 6,
+        Tags.Items.INGOTS_GOLD, RailcraftItems.HIGH_SPEED_RAIL.get(), 8,
         "standard_high_speed_rail");
 
     RollingRecipePattern.diagonalLine(consumer, Tags.Items.INGOTS_IRON,

@@ -1149,6 +1149,12 @@ public class RailcraftItems {
   public static final RegistryObject<Item> SILVER_INGOT = registerBasicItem("silver_ingot");
 
   public static final RegistryObject<Item> SALTPETER_DUST = registerBasicItem("saltpeter_dust");
+  public static final RegistryObject<Item> COAL_DUST = registerBasicItem("coal_dust");
+  public static final RegistryObject<Item> CHARCOAL_DUST = registerBasicItem("charcoal_dust");
+  public static final RegistryObject<Item> SLAG_DUST = registerBasicItem("slag_dust");
+  public static final RegistryObject<Item> ENDER_DUST = registerBasicItem("ender_dust");
+  public static final RegistryObject<Item> SULFUR_DUST = registerBasicItem("sulfur_dust");
+  public static final RegistryObject<Item> OBSIDIAN_DUST = registerBasicItem("obsidian_dust");
 
   // NUGGET
   public static final RegistryObject<Item> STEEL_NUGGET = registerBasicItem("steel_nugget");

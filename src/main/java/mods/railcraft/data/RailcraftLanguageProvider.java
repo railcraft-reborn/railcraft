@@ -80,7 +80,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.FORCE_TRACK_EMITTER, "Force Track Emitter");
 
     this.addBlockColorVariants(RailcraftBlocks.STRENGTHENED_GLASS, "Strengthened Glass");
-    this.addBlockColorVariants(RailcraftBlocks.POST, "Post");
+    this.addBlockColorVariants(RailcraftBlocks.POST, "Metal Post");
     this.addBlockColorVariants(RailcraftBlocks.IRON_TANK_GAUGE, "Iron Tank Gauge");
     this.addBlockColorVariants(RailcraftBlocks.IRON_TANK_VALVE, "Iron Tank Valve");
     this.addBlockColorVariants(RailcraftBlocks.IRON_TANK_WALL, "Iron Tank Wall");
@@ -179,6 +179,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.NICKEL_GEAR, "Nickel Gear");
     this.addItem(RailcraftItems.SILVER_GEAR, "Silver Gear");
     this.addItem(RailcraftItems.SALTPETER_DUST, "Saltpeter Dust");
+    this.addItem(RailcraftItems.COAL_DUST, "Coal Dust");
+    this.addItem(RailcraftItems.CHARCOAL_DUST, "Charcoal Dust");
+    this.addItem(RailcraftItems.SLAG_DUST, "Slag Dust");
+    this.addItem(RailcraftItems.ENDER_DUST, "Ender Dust");
+    this.addItem(RailcraftItems.SULFUR_DUST, "Sulfur Dust");
+    this.addItem(RailcraftItems.OBSIDIAN_DUST, "Obsidian Dust");
     this.addItem(RailcraftItems.CONTROLLER_CIRCUIT, "Controller Circuit");
     this.addItem(RailcraftItems.RECEIVER_CIRCUIT, "Receiver Circuit");
     this.addItem(RailcraftItems.SIGNAL_CIRCUIT, "Signal Circuit");
