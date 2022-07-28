@@ -13,7 +13,6 @@ public record SyncWidgetMessage(int windowId, byte widgetId, FriendlyByteBuf dat
     out.writeByte(this.widgetId);
     out.writeVarInt(this.data.readableBytes());
     out.writeBytes(this.data);
-    this.data.release();
   }
 
   public static SyncWidgetMessage decode(FriendlyByteBuf in) {

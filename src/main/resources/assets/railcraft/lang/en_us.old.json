@@ -68,21 +68,6 @@
     "goggles.aura": "Current Aura: %s",
     "goggles.description": "Right-click to change aura.",
 
-    "signal_surveyor.invalid_track": "§cNo Track Found Near %s",
-    "signal_surveyor.begin": "§dBeginning Survey",
-    "signal_surveyor.success": "§aSuccessfully Paired Signals",
-    "signal_surveyor.invalid_pair": "§cPairing Invalid",
-    "signal_surveyor.lost": "§cFirst Signal No Longer Exists",
-    "signal_surveyor.unloaded": "§cFirst Signal's Chunk Has Been Unloaded",
-    "signal_surveyor.abandoned": "§dSurvey Abandoned",
-    "signal_surveyor.invalid_block": "§cNot a Valid Signal",
-
-    "signal_tuner.begin": "§dStarted Pairing %s§d With a Receiver",
-    "signal_tuner.abandoned": "§dStopped Pairing",
-    "signal_tuner.unloaded": "§cSignal Controller's Chunk Has Been Unloaded",
-    "signal_tuner.lost": "§cSignal Controller No Longer Exists",
-    "signal_tuner.success": "§aSuccessfully Paired Signal Receiver",
-
     "crowbar.description":"§oRight-click while sneaking to link carts.§r",
     "crowbar.link_broken":"§dLink Broken",
     "crowbar.link_created":"§aSuccessfully Linked Carts",

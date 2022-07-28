@@ -89,7 +89,7 @@ public class RailcraftDataSerializers {
     deferredRegister.register("fluid_stack", () -> FLUID_STACK);
     deferredRegister.register("byte_array", () -> BYTE_ARRAY);
     deferredRegister.register("optional_game_profile", () -> OPTIONAL_GAME_PROFILE);
-    modEventBus.register(deferredRegister);
+    deferredRegister.register(modEventBus);
   }
 
   public static <T extends Enum<T>> void setEnum(SynchedEntityData dataManager,
