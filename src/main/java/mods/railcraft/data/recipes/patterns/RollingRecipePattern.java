@@ -1,4 +1,4 @@
-package mods.railcraft.data.recipes.helpers;
+package mods.railcraft.data.recipes.patterns;
 
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;

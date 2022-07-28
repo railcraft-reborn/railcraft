@@ -2,6 +2,7 @@ package mods.railcraft.data;
 
 import mods.railcraft.data.models.RailcraftModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
+import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -23,6 +24,7 @@ public class DataGenerators {
     generator.addProvider(event.includeServer(),
         new RailcraftAdvancementProviders(generator, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(generator));
+    generator.addProvider(event.includeServer(), new RollingRecipeProvider(generator));
     generator.addProvider(event.includeClient(), new RailcraftModelProvider(generator));
     generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(generator));
   }
