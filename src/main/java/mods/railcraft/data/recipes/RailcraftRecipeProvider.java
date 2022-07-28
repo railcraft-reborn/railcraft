@@ -207,6 +207,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.REBAR.get(), 6, "rebar_invar");
     RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.STEEL_INGOT,
         RailcraftItems.REBAR.get(), 8, "rebar_steel");
+    RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.STEEL_PLATE,
+        RailcraftItems.TURBINE_BLADE.get(), 1, "steel_turbine_blade");
+    RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.NICKEL_PLATE,
+        RailcraftItems.TURBINE_BLADE.get(), 1, "nickel_turbine_blade");
 
     RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT,
         Tags.Items.INGOTS_COPPER, RailcraftTags.Items.STEEL_INGOT,

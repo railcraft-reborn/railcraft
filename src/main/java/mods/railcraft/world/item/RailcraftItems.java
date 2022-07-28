@@ -132,6 +132,7 @@ public class RailcraftItems {
           () -> new SignalLabelItem(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> TURBINE_ROTOR = registerBasicItem("turbine_rotor");
+  public static final RegistryObject<Item> TURBINE_BLADE = registerBasicItem("turbine_blade");
 
   public static final RegistryObject<Item> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",

@@ -112,6 +112,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SIGNAL_LABEL, "Signal Label");
     this.addItem(RailcraftItems.SIGNAL_LAMP, "Signal Lamp");
     this.addItem(RailcraftItems.TURBINE_ROTOR, "Turbine Rotor");
+    this.addItem(RailcraftItems.TURBINE_BLADE, "Turbine Blade");
     this.addItem(RailcraftItems.SLAG, "Ground Blast Furnace Slag");
     this.addItem(RailcraftItems.COAL_COKE, "Coal Coke");
     this.addItem(RailcraftItems.STEEL_SHEARS, "Steel Shears");
