@@ -1,4 +1,4 @@
-// 1.19	2022-07-28T19:54:31.329526288	Railcraft Recipes
+// 1.19	2022-07-28T21:00:13.070702514	Railcraft Recipes
 2a0b4bcc535c496c926130b8305a601d49e53ec8 data/minecraft/advancements/recipes/misc/coal.json
 8f130b2a31ddd34d98e31897f3fd3d21fcf11014 data/minecraft/recipes/coal.json
 56a474d5f4632735cf0622daf049c6825588f404 data/railcraft/advancements/recipes/railcraft/black_iron_tank_gauge.json
@@ -443,6 +443,9 @@ e64d81ebc3dfb379f38c4f19ac9288f706e53235 data/railcraft/recipes/rolling/steel_re
 67949c8bb3cebd3740c6b5c0cd6228b7c33699e0 data/railcraft/recipes/rolling/steel_turbine_blade.json
 e44981204e7f1e51f76ee301185cd5070090ec6e data/railcraft/recipes/rolling/tin_electrode.json
 3c5d864f671e391ae3e4e0f4cc2ee5d2e1d57f67 data/railcraft/recipes/rolling/tin_plate.json
+08bbc0c2656fe83390602951b9565cbbd400ef8d data/railcraft/recipes/rolling/track_parts_bronze_nugget.json
+6723e4d953a20a4025689eca012f71f6b0bff673 data/railcraft/recipes/rolling/track_parts_iron_nugget.json
+23e9a48fe6a289eb121dd58172fd3be318116294 data/railcraft/recipes/rolling/track_parts_steel_nugget.json
 1551ab77792253a681c5a68c965a6078d1b456a9 data/railcraft/recipes/rolling/zinc_electrode.json
 85f5f46e39b9890d6a78e14adb60349339dba28f data/railcraft/recipes/rolling/zinc_plate.json
 9a9a90bc372018d00aa3b6849011819af7cccd5f data/railcraft/recipes/signal_block_surveyor.json

@@ -1,0 +1,15 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": {
+      "tag": "forge:nuggets/steel"
+    }
+  },
+  "pattern": [
+    "a"
+  ],
+  "result": {
+    "item": "railcraft:track_parts"
+  },
+  "tickCost": 100
+}

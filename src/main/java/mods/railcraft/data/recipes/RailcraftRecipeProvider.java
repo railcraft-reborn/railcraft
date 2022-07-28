@@ -248,6 +248,23 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.ZINC_INGOT,
         RailcraftItems.ZINC_PLATE.get(), 4);
 
+
+    final var result = RailcraftItems.TRACK_PARTS.get();
+    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    RollingRecipeBuilder.rolled(result)
+        .pattern("aa ")
+        .pattern("a  ")
+        .define('a', RailcraftTags.Items.BRONZE_NUGGET)
+        .save(consumer, new ResourceLocation(Railcraft.ID, "rolling/" + name + "_bronze_nugget"));
+    RollingRecipeBuilder.rolled(result)
+        .pattern("aa")
+        .define('a', Tags.Items.NUGGETS_IRON)
+        .save(consumer, new ResourceLocation(Railcraft.ID, "rolling/" + name + "_iron_nugget"));
+    RollingRecipeBuilder.rolled(result)
+        .pattern("a")
+        .define('a', RailcraftTags.Items.STEEL_NUGGET)
+        .save(consumer, new ResourceLocation(Railcraft.ID, "rolling/" + name + "_steel_nugget"));
+
     ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())
         .define('R', RailcraftItems.REBAR.get())
         .define('S', Items.STONE_SLAB)

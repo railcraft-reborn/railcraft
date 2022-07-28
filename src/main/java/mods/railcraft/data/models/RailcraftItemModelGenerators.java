@@ -174,6 +174,7 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.DIAMOND_SPIKE_MAUL.get(),
         ModelTemplates.FLAT_HANDHELD_ITEM);
 
+    this.generateFlatItem(RailcraftItems.TRACK_PARTS.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.TRANSITION_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.LOCKING_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);

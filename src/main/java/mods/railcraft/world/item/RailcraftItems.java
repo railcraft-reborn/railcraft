@@ -956,6 +956,8 @@ public class RailcraftItems {
       deferredRegister.register("seasons_crowbar",
           () -> new SeasonsCrowbarItem(new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> TRACK_PARTS = registerBasicItem("track_parts");
+
   public static final RegistryObject<Item> TRANSITION_TRACK_KIT =
       deferredRegister.register("transition_track_kit",
           () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
