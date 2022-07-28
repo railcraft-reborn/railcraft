@@ -131,9 +131,7 @@ public class RailcraftItems {
       deferredRegister.register("signal_label",
           () -> new SignalLabelItem(new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> TURBINE_ROTOR =
-      deferredRegister.register("turbine_rotor",
-          () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> TURBINE_ROTOR = registerBasicItem("turbine_rotor");
 
   public static final RegistryObject<Item> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
@@ -145,9 +143,7 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.BLAST_FURNACE_BRICKS.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> SLAG =
-      deferredRegister.register("slag",
-          () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> SLAG = registerBasicItem("slag");
 
   public static final RegistryObject<Item> FEED_STATION =
       deferredRegister.register("feed_station",
@@ -440,9 +436,7 @@ public class RailcraftItems {
       deferredRegister.register("whistle_tuner",
           () -> new Item(new Item.Properties().durability(250).tab(TAB)));
 
-  public static final RegistryObject<Item> TICKET =
-      deferredRegister.register("ticket",
-          () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> TICKET = registerBasicItem("ticket");
 
   public static final RegistryObject<Item> OVERALLS =
       deferredRegister.register("overalls",
@@ -1131,131 +1125,41 @@ public class RailcraftItems {
           });
 
   //Plates
-  public static final RegistryObject<Item> STEEL_PLATE =
-      deferredRegister.register("steel_plate",
-          () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> STEEL_PLATE = registerBasicItem("steel_plate");
+  public static final RegistryObject<Item> IRON_PLATE = registerBasicItem("iron_plate");
+  public static final RegistryObject<Item> TIN_PLATE = registerBasicItem("tin_plate");
+  public static final RegistryObject<Item> GOLD_PLATE = registerBasicItem("gold_plate");
+  public static final RegistryObject<Item> LEAD_PLATE = registerBasicItem("lead_plate");
+  public static final RegistryObject<Item> ZINC_PLATE = registerBasicItem("zinc_plate");
+  public static final RegistryObject<Item> BRASS_PLATE = registerBasicItem("brass_plate");
+  public static final RegistryObject<Item> INVAR_PLATE = registerBasicItem("invar_plate");
+  public static final RegistryObject<Item> BRONZE_PLATE = registerBasicItem("bronze_plate");
+  public static final RegistryObject<Item> COPPER_PLATE = registerBasicItem("copper_plate");
+  public static final RegistryObject<Item> NICKEL_PLATE = registerBasicItem("nickel_plate");
+  public static final RegistryObject<Item> SILVER_PLATE = registerBasicItem("silver_plate");
 
-  public static final RegistryObject<Item> IRON_PLATE =
-      deferredRegister.register("iron_plate",
-          () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> STEEL_INGOT = registerBasicItem("steel_ingot");
+  public static final RegistryObject<Item> TIN_INGOT = registerBasicItem("tin_ingot");
+  public static final RegistryObject<Item> ZINC_INGOT = registerBasicItem("zinc_ingot");
+  public static final RegistryObject<Item> BRASS_INGOT = registerBasicItem("brass_ingot");
+  public static final RegistryObject<Item> BRONZE_INGOT = registerBasicItem("bronze_ingot");
+  public static final RegistryObject<Item> NICKEL_INGOT = registerBasicItem("nickel_ingot");
+  public static final RegistryObject<Item> INVAR_INGOT = registerBasicItem("invar_ingot");
+  public static final RegistryObject<Item> LEAD_INGOT = registerBasicItem("lead_ingot");
+  public static final RegistryObject<Item> SILVER_INGOT = registerBasicItem("silver_ingot");
 
-  public static final RegistryObject<Item> TIN_PLATE =
-    deferredRegister.register("tin_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> GOLD_PLATE =
-    deferredRegister.register("gold_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> LEAD_PLATE =
-    deferredRegister.register("lead_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> ZINC_PLATE =
-    deferredRegister.register("zinc_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> BRASS_PLATE =
-    deferredRegister.register("brass_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> INVAR_PLATE =
-    deferredRegister.register("invar_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> BRONZE_PLATE =
-    deferredRegister.register("bronze_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> COPPER_PLATE =
-    deferredRegister.register("copper_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> NICKEL_PLATE =
-    deferredRegister.register("nickel_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> SILVER_PLATE =
-    deferredRegister.register("silver_plate",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> STEEL_INGOT =
-      deferredRegister.register("steel_ingot",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-
-  public static final RegistryObject<Item> TIN_INGOT =
-      deferredRegister.register("tin_ingot",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> ZINC_INGOT =
-      deferredRegister.register("zinc_ingot",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> BRASS_INGOT =
-      deferredRegister.register("brass_ingot",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> BRONZE_INGOT =
-      deferredRegister.register("bronze_ingot",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> NICKEL_INGOT =
-    deferredRegister.register("nickel_ingot",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> INVAR_INGOT =
-    deferredRegister.register("invar_ingot",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> LEAD_INGOT =
-    deferredRegister.register("lead_ingot",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> SILVER_INGOT =
-    deferredRegister.register("silver_ingot",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> SALTPETER_DUST =
-    deferredRegister.register("saltpeter_dust",
-      () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> SALTPETER_DUST = registerBasicItem("saltpeter_dust");
 
   // NUGGET
-  public static final RegistryObject<Item> STEEL_NUGGET =
-      deferredRegister.register("steel_nugget",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> TIN_NUGGET =
-      deferredRegister.register("tin_nugget",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> ZINC_NUGGET =
-      deferredRegister.register("zinc_nugget",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> BRASS_NUGGET =
-      deferredRegister.register("brass_nugget",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> BRONZE_NUGGET =
-      deferredRegister.register("bronze_nugget",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> NICKEL_NUGGET =
-    deferredRegister.register("nickel_nugget",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> INVAR_NUGGET =
-    deferredRegister.register("invar_nugget",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> SILVER_NUGGET =
-    deferredRegister.register("silver_nugget",
-      () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> LEAD_NUGGET =
-    deferredRegister.register("lead_nugget",
-      () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> STEEL_NUGGET = registerBasicItem("steel_nugget");
+  public static final RegistryObject<Item> TIN_NUGGET = registerBasicItem("tin_nugget");
+  public static final RegistryObject<Item> ZINC_NUGGET = registerBasicItem("zinc_nugget");
+  public static final RegistryObject<Item> BRASS_NUGGET = registerBasicItem("brass_nugget");
+  public static final RegistryObject<Item> BRONZE_NUGGET = registerBasicItem("bronze_nugget");
+  public static final RegistryObject<Item> NICKEL_NUGGET = registerBasicItem("nickel_nugget");
+  public static final RegistryObject<Item> INVAR_NUGGET = registerBasicItem("invar_nugget");
+  public static final RegistryObject<Item> SILVER_NUGGET = registerBasicItem("silver_nugget");
+  public static final RegistryObject<Item> LEAD_NUGGET = registerBasicItem("lead_nugget");
 
   // Gear
   public static final RegistryObject<Item> BUSHING_GEAR = registerBasicItem("bushing_gear");
@@ -1273,67 +1177,27 @@ public class RailcraftItems {
   public static final RegistryObject<Item> SILVER_GEAR = registerBasicItem("silver_gear");
 
   // circuits
-  public static final RegistryObject<Item> CONTROLLER_CIRCUIT =
-      deferredRegister.register("controller_circuit",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> RECEIVER_CIRCUIT =
-      deferredRegister.register("receiver_circuit",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> SIGNAL_CIRCUIT =
-      deferredRegister.register("signal_circuit",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
+  public static final RegistryObject<Item> CONTROLLER_CIRCUIT = registerBasicItem(
+      "controller_circuit");
+  public static final RegistryObject<Item> RECEIVER_CIRCUIT = registerBasicItem("receiver_circuit");
+  public static final RegistryObject<Item> SIGNAL_CIRCUIT = registerBasicItem("signal_circuit");
   // rails
-  public static final RegistryObject<Item> WOODEN_RAIL =
-      deferredRegister.register("wooden_rail",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> STANDARD_RAIL =
-      deferredRegister.register("standard_rail",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> ADVANCED_RAIL =
-      deferredRegister.register("advanced_rail",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> REINFORCED_RAIL =
-      deferredRegister.register("reinforced_rail",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> HIGH_SPEED_RAIL =
-      deferredRegister.register("high_speed_rail",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> ELECTRIC_RAIL =
-      deferredRegister.register("electric_rail",
-          () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> WOODEN_RAIL = registerBasicItem("wooden_rail");
+  public static final RegistryObject<Item> STANDARD_RAIL = registerBasicItem("standard_rail");
+  public static final RegistryObject<Item> ADVANCED_RAIL = registerBasicItem("advanced_rail");
+  public static final RegistryObject<Item> REINFORCED_RAIL = registerBasicItem("reinforced_rail");
+  public static final RegistryObject<Item> HIGH_SPEED_RAIL = registerBasicItem("high_speed_rail");
+  public static final RegistryObject<Item> ELECTRIC_RAIL = registerBasicItem("electric_rail");
 
   // misc crafting units
-  public static final RegistryObject<Item> WOODEN_TIE =
-      deferredRegister.register("wooden_tie",
-          () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> WOODEN_TIE = registerBasicItem("wooden_tie");
+  public static final RegistryObject<Item> STONE_TIE = registerBasicItem("stone_tie");
 
-  public static final RegistryObject<Item> STONE_TIE =
-      deferredRegister.register("stone_tie",
-          () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> REBAR = registerBasicItem("rebar");
+  public static final RegistryObject<Item> WOODEN_RAILBED = registerBasicItem("wooden_railbed");
+  public static final RegistryObject<Item> STONE_RAILBED = registerBasicItem("stone_railbed");
 
-  public static final RegistryObject<Item> REBAR =
-      deferredRegister.register("rebar",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> WOODEN_RAILBED =
-      deferredRegister.register("wooden_railbed",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> STONE_RAILBED =
-      deferredRegister.register("stone_railbed",
-          () -> new Item(new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> SIGNAL_LAMP =
-      deferredRegister.register("signal_lamp",
-          () -> new Item(new Item.Properties().tab(TAB)));
+  public static final RegistryObject<Item> SIGNAL_LAMP = registerBasicItem("signal_lamp");
 
   /* ===== BUCKETS ===== */
 
