@@ -109,9 +109,9 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
   }
 
   public void spawnTuningAuraParticles() {
-    var provider = SignalTools.tuningAuraProvider();
-    if (provider.isTuningAuraActive()) {
-      this.stream().forEach(peer -> provider.spawnTuningAura(
+    var handler = SignalUtil.tuningAuraHandler();
+    if (handler.isTuningAuraActive()) {
+      this.stream().forEach(peer -> handler.spawnTuningAura(
           this.getBlockEntity(), peer.asBlockEntity()));
     }
   }

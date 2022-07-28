@@ -227,7 +227,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
   }
 
   public void serverTick() {
-    if (this.aspectUpdateTimer++ >= SignalTools.aspectUpdateInterval) {
+    if (this.aspectUpdateTimer++ >= SignalUtil.aspectUpdateInterval) {
       this.aspectUpdateTimer = 0;
       SignalAspect lastAspect = this.signalAspect;
       if (this.hasPeers()) {
