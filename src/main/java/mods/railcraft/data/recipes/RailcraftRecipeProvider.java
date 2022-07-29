@@ -14,7 +14,6 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -184,15 +183,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     this.railsFromMaterials(consumer, RailcraftItems.HIGH_SPEED_TRACK.get(),
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
-
-    new BlastFurnaceRecipeBuilder(RailcraftBlocks.STEEL_BLOCK.get(), 1,
-        Ingredient.of(Tags.Items.STORAGE_BLOCKS_IRON), 0.0F,
-        BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME * 9,
-        9)
-            .unlockedBy("has_iron_block", has(Tags.Items.STORAGE_BLOCKS_IRON))
-            .save(consumer, getRailcraftBlastingRecipeName(RailcraftItems.STEEL_BLOCK.get()));
     BlastFurnaceRecipeBuilder
-        .smelting(RailcraftItems.STEEL_INGOT.get(), Ingredient.of(Tags.Items.INGOTS_IRON), 1)
+        .smelting(RailcraftBlocks.STEEL_BLOCK.get(), 1,
+            Ingredient.of(Tags.Items.STORAGE_BLOCKS_IRON), 9, 9)
+        .unlockedBy("has_iron_block", has(Tags.Items.STORAGE_BLOCKS_IRON))
+        .save(consumer, getRailcraftBlastingRecipeName(RailcraftItems.STEEL_BLOCK.get()));
+
+    BlastFurnaceRecipeBuilder
+        .smelting(RailcraftItems.STEEL_INGOT.get(), Ingredient.of(Tags.Items.INGOTS_IRON), 1, 1)
         .unlockedBy("has_iron_ingots", has(Tags.Items.INGOTS_IRON))
         .save(consumer, getRailcraftBlastingRecipeName(Items.IRON_INGOT));
 
@@ -225,7 +223,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   private static void blastFurnaceSmelting(Consumer<FinishedRecipe> consumer, ItemLike item,
       int multiplier) {
     BlastFurnaceRecipeBuilder
-        .smelting(RailcraftItems.STEEL_INGOT.get(), Ingredient.of(item), multiplier)
+        .smelting(RailcraftItems.STEEL_INGOT.get(), Ingredient.of(item), multiplier, multiplier)
         .unlockedBy(getHasName(item), has(item))
         .save(consumer, getRailcraftBlastingRecipeName(item));
   }
