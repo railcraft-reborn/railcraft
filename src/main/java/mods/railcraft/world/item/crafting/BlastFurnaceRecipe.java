@@ -41,38 +41,38 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
   public static class Serializer implements RecipeSerializer<BlastFurnaceRecipe> {
 
     @Override
-    public BlastFurnaceRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {
-      var group = GsonHelper.getAsString(jsonObject, "group", "");
-      var cookingTime = GsonHelper.getAsInt(jsonObject, "cookingTime",
+    public BlastFurnaceRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+      var group = GsonHelper.getAsString(json, "group", "");
+      var cookingTime = GsonHelper.getAsInt(json, "cookingTime",
           BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME);
-      var slagOutput = GsonHelper.getAsInt(jsonObject, "slagOutput", 1000); // 1 bucket
-      var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(jsonObject, "ingredient"));
-      var result = itemFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
-      var experience = GsonHelper.getAsFloat(jsonObject, "experience", 0.0F);
-      return new BlastFurnaceRecipe(id, group, ingredient, result, experience, cookingTime,
+      var slagOutput = GsonHelper.getAsInt(json, "slagOutput", 1000); // 1 bucket
+      var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "ingredient"));
+      var result = itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
+      var experience = GsonHelper.getAsFloat(json, "experience", 0.0F);
+      return new BlastFurnaceRecipe(recipeId, group, ingredient, result, experience, cookingTime,
           slagOutput);
     }
 
     @Override
-    public BlastFurnaceRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf in) {
-      var group = in.readUtf();
-      var slagOutput = in.readVarInt();
-      var cookingTime = in.readVarInt();
-      var ingredient = Ingredient.fromNetwork(in);
-      var result = in.readItem();
-      var experience = in.readFloat();
-      return new BlastFurnaceRecipe(id, group, ingredient, result, experience, cookingTime,
+    public BlastFurnaceRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+      var group = buffer.readUtf();
+      var slagOutput = buffer.readVarInt();
+      var cookingTime = buffer.readVarInt();
+      var ingredient = Ingredient.fromNetwork(buffer);
+      var result = buffer.readItem();
+      var experience = buffer.readFloat();
+      return new BlastFurnaceRecipe(recipeId, group, ingredient, result, experience, cookingTime,
           slagOutput);
     }
 
     @Override
-    public void toNetwork(FriendlyByteBuf out, BlastFurnaceRecipe recipe) {
-      out.writeUtf(recipe.group);
-      out.writeVarInt(recipe.slagOutput);
-      out.writeVarInt(recipe.cookingTime);
-      recipe.ingredient.toNetwork(out);
-      out.writeItem(recipe.result);
-      out.writeFloat(recipe.experience);
+    public void toNetwork(FriendlyByteBuf buffer, BlastFurnaceRecipe recipe) {
+      buffer.writeUtf(recipe.group);
+      buffer.writeVarInt(recipe.slagOutput);
+      buffer.writeVarInt(recipe.cookingTime);
+      recipe.ingredient.toNetwork(buffer);
+      buffer.writeItem(recipe.result);
+      buffer.writeFloat(recipe.experience);
     }
 
     public static ItemStack itemFromJson(JsonObject json) {
