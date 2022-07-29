@@ -1,4 +1,4 @@
-# Railcraft - A Minecraft Mod
+# Railcraft for Minecraft 1.19
 
 [![Deploy Nightly](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/nightly_1-18-x.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/releases/tag/nightly)
 [![CI Suite](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/ci_suite_1-18-x.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/ci_suite_1-18-x.yml)
