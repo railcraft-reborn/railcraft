@@ -6,7 +6,6 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -20,11 +19,9 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class RailcraftRecipeProvider extends RecipeProvider {
 
@@ -360,7 +357,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     decompress(consumer, RailcraftItems.STEEL_INGOT.get(),
         RailcraftTags.Items.STEEL_BLOCK, "block_ingot");
     decompress(consumer, RailcraftItems.COAL_COKE.get(),
-        RailcraftItems.COAL_COKE_BLOCK.get(), "block_coke");
+        RailcraftItems.COKE_BLOCK.get(), "block_coke");
   }
 
   private static void buildCompressions(Consumer<FinishedRecipe> consumer) {
@@ -385,7 +382,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     compress(consumer, RailcraftItems.STEEL_BLOCK.get(),
         RailcraftTags.Items.STEEL_INGOT, "block");
-    compress(consumer, RailcraftItems.COAL_COKE_BLOCK.get(),
+    compress(consumer, RailcraftItems.COKE_BLOCK.get(),
         RailcraftItems.COAL_COKE.get(), "block");
   }
 

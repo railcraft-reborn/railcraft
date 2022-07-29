@@ -154,7 +154,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.STEAM_TURBINE.get(),
             RailcraftBlocks.COKE_OVEN_BRICKS.get(),
             RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
-        .add(RailcraftBlocks.COAL_COKE_BLOCK.get());
+        .add(RailcraftBlocks.COKE_BLOCK.get());
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE.get());
@@ -168,7 +168,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
             RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
             RailcraftBlocks.STEAM_TURBINE.get())
-        .add(RailcraftBlocks.COAL_COKE_BLOCK.get());
+        .add(RailcraftBlocks.COKE_BLOCK.get());
 
     this.tag(BlockTags.ANVIL)
         .add(RailcraftBlocks.STEEL_ANVIL.get(), RailcraftBlocks.CHIPPED_STEEL_ANVIL.get(),

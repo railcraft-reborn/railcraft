@@ -29,7 +29,7 @@ public class CokeOvenRecipeProvider extends RecipeProvider {
         .save(consumer);
 
     CokeOvenRecipeBuilder
-        .coking(Items.COAL_BLOCK, Ingredient.of(RailcraftItems.COAL_COKE_BLOCK.get()), 0.0F, 16200, 4500)
+        .coking(Items.COAL_BLOCK, Ingredient.of(RailcraftItems.COKE_BLOCK.get()), 0.0F, 16200, 4500)
         .unlockedBy(getHasName(Items.COAL_BLOCK), has(Items.COAL_BLOCK))
         .save(consumer);
   }

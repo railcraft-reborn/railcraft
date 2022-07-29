@@ -168,9 +168,9 @@ public class RailcraftItems {
       deferredRegister.register("steel_block",
           () -> new BlockItem(RailcraftBlocks.STEEL_BLOCK.get(), new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> COAL_COKE_BLOCK =
+  public static final RegistryObject<Item> COKE_BLOCK =
       deferredRegister.register("coal_coke_block",
-          () -> new BlockItem(RailcraftBlocks.COAL_COKE_BLOCK.get(), new Item.Properties().tab(TAB)));
+          () -> new BlockItem(RailcraftBlocks.COKE_BLOCK.get(), new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> STEEL_SHEARS =
       deferredRegister.register("steel_shears",

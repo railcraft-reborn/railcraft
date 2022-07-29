@@ -223,7 +223,7 @@ public class RailcraftBlockModelGenerators {
     this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
 
     this.createTrivialCube(RailcraftBlocks.STEEL_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.COAL_COKE_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.COKE_BLOCK.get());
 
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
