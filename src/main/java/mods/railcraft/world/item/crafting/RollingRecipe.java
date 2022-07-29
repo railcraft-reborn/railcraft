@@ -53,7 +53,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   }
 
   @Override
-  public boolean matches(CraftingContainer inventory, Level world) {
+  public boolean matches(CraftingContainer inventory, Level level) {
     for (int i = 0; i <= inventory.getWidth() - 3; ++i) {
       for (int j = 0; j <= inventory.getHeight() - 3; ++j) {
         if (this.matches(inventory, i, j, true)) {
@@ -141,7 +141,8 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
       int tickCost = GsonHelper.getAsInt(json, "tickCost", 100); // 5 seconds
       var ingredients = ShapedRecipe.dissolvePattern(astring, map, 3, 3);
-      ItemStack resultItemStack = itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
+      ItemStack resultItemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json,
+          "result"));
       return new RollingRecipe(recipeId, ingredients, resultItemStack, tickCost);
     }
 
@@ -162,17 +163,6 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
         ingredient.toNetwork(buffer);
       }
       buffer.writeItem(recipe.result);
-    }
-
-    private static ItemStack itemFromJson(JsonObject itemObject) {
-      if (!itemObject.has("item")) {
-        throw new JsonParseException("No item key found");
-      }
-      if (itemObject.has("data")) {
-        throw new JsonParseException("Disallowed data tag found");
-      } else {
-        return net.minecraftforge.common.crafting.CraftingHelper.getItemStack(itemObject, true);
-      }
     }
   }
 }
