@@ -29,7 +29,7 @@ public class RollingRecipeBuilder {
   private final List<String> rows = Lists.newArrayList();
   private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
 
-  public RollingRecipeBuilder(ItemLike resultItem, int resultCount, int recipeDelay) {
+  private RollingRecipeBuilder(ItemLike resultItem, int resultCount, int recipeDelay) {
     this.result = resultItem.asItem();
     this.count = resultCount;
     this.delay = recipeDelay;
