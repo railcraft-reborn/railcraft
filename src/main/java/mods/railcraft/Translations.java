@@ -120,6 +120,8 @@ public class Translations {
 
     public static final String METAL_ROLLING =
       format("jei.%railcraft.category.rolling");
+    public static final String COKE_OVEN =
+        format("jei.%railcraft.category.coke_oven");
   }
 
   public static class Misc {

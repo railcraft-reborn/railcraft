@@ -42,12 +42,16 @@ public class CokeOvenRecipeBuilder implements RecipeBuilder {
 
   public static CokeOvenRecipeBuilder coking(ItemLike result, Ingredient ingredient,
       float experience, int creosoteOutput) {
-    return new CokeOvenRecipeBuilder(result, 1, ingredient, experience, DEFAULT_COOKING_TIME,
-        creosoteOutput);
+    return coking(result, ingredient, experience, DEFAULT_COOKING_TIME, creosoteOutput);
   }
   public static CokeOvenRecipeBuilder coking(ItemLike result, Ingredient ingredient,
       float experience, int cookingTime, int creosoteOutput) {
-    return new CokeOvenRecipeBuilder(result, 1, ingredient, experience, cookingTime,
+    return coking(result, 1, ingredient, experience, cookingTime, creosoteOutput);
+  }
+
+  public static CokeOvenRecipeBuilder coking(ItemLike result, int resultCount,
+      Ingredient ingredient, float experience, int cookingTime, int creosoteOutput) {
+    return new CokeOvenRecipeBuilder(result, resultCount, ingredient, experience, cookingTime,
         creosoteOutput);
   }
 

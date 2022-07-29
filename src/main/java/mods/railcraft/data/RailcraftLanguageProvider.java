@@ -4,6 +4,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.Translations.Jei;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
@@ -435,7 +436,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   public void jeiTranslations() {
-    this.add(Translations.Jei.METAL_ROLLING, "Metal Rolling");
+    this.add(Jei.METAL_ROLLING, "Metal Rolling");
+    this.add(Jei.COKE_OVEN, "Coke Oven Smelting");
   }
 
   public void addFluidType(Supplier<? extends FluidType> key, String name) {
