@@ -3,6 +3,7 @@ package mods.railcraft.data.recipes;
 import com.google.gson.JsonObject;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
@@ -52,11 +53,10 @@ public class CokeOvenRecipeBuilder implements RecipeBuilder {
 
   @Override
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
-    var namespace = resourceLocation.getNamespace();
     var path = resourceLocation.getPath();
-    var customResourceLocation = new ResourceLocation(namespace, "coke_oven/" + path);
+    var customResourceLocation = new ResourceLocation(Railcraft.ID, "coke_oven/" + path);
 
-    var advancementId = new ResourceLocation(namespace,
+    var advancementId = new ResourceLocation(Railcraft.ID,
         String.format("recipes/%s/%s", this.result.getItemCategory().getRecipeFolderName(),
         customResourceLocation.getPath()));
 
