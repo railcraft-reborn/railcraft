@@ -90,10 +90,10 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
       json.add("result", resultJson);
       json.addProperty("experience", experience);
       json.addProperty("cookingTime", cookingTime);
-      addJsonProject(json);
+      addJsonProperty(json);
     }
 
-    protected void addJsonProject(JsonObject json) {
+    protected void addJsonProperty(JsonObject json) {
     }
 
     @Override

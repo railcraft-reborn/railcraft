@@ -69,7 +69,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
     }
 
     @Override
-    protected void addJsonProject(JsonObject json) {
+    protected void addJsonProperty(JsonObject json) {
       json.addProperty("slagOutput", this.slagOutput);
     }
 
