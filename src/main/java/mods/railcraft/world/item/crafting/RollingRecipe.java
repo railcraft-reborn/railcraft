@@ -22,24 +22,24 @@ import net.minecraft.world.level.Level;
  */
 public class RollingRecipe implements Recipe<CraftingContainer> {
 
-  private final ResourceLocation id;
+  private final ResourceLocation recipeId;
   private final NonNullList<Ingredient> ingredients;
   private final ItemStack result;
   private final int tickCost;
 
   /**
-   * Creates a new recipie.
+   * Creates a new recipe.
    *
-   * @param resourceLocation -
-   * @param tickCost - The time cost of the recipie
-   * @param ingredients - Ingredients list of the object
-   * @param resultItemStack - The result
+   * @param recipeId        - The id of the recipe
+   * @param ingredients     - Ingredients list of the object
+   * @param result          - The result
+   * @param tickCost        - The time cost of the recipe
    */
-  public RollingRecipe(ResourceLocation resourceLocation, int tickCost,
-      NonNullList<Ingredient> ingredients, ItemStack resultItemStack) {
-    this.id = resourceLocation;
+  public RollingRecipe(ResourceLocation recipeId, NonNullList<Ingredient> ingredients,
+      ItemStack result, int tickCost) {
+    this.recipeId = recipeId;
     this.ingredients = ingredients;
-    this.result = resultItemStack;
+    this.result = result;
     this.tickCost = tickCost;
   }
 
@@ -114,7 +114,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
   @Override
   public ResourceLocation getId() {
-    return this.id;
+    return this.recipeId;
   }
 
   @Override
@@ -142,7 +142,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
       int tickCost = GsonHelper.getAsInt(json, "tickCost", 100); // 5 seconds
       var ingredients = ShapedRecipe.dissolvePattern(astring, map, 3, 3);
       ItemStack resultItemStack = itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
-      return new RollingRecipe(recipeId, tickCost, ingredients, resultItemStack);
+      return new RollingRecipe(recipeId, ingredients, resultItemStack, tickCost);
     }
 
     @Override
@@ -152,7 +152,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
       ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
       ItemStack result = buffer.readItem();
 
-      return new RollingRecipe(recipeId, tickCost, ingredients, result);
+      return new RollingRecipe(recipeId, ingredients, result, tickCost);
     }
 
     @Override
