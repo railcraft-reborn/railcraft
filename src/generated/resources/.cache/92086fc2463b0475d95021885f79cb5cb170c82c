@@ -1,4 +1,4 @@
-// 1.19.1	2022-07-29T11:47:45.061821716	Railcraft Block State Definitions
+// 1.19.1	2022-07-29T12:41:15.891155158	Railcraft Block State Definitions
 a083f898ae06e89152e61c30096caa3ff297f306 assets/railcraft/blockstates/abandoned_activator_track.json
 d6506fb0bdeaddc35eebb1ae33ba1b32448b2e1c assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -42,6 +42,7 @@ e14430740b4bf40f59f0b54522c2a720c8576ecc assets/railcraft/blockstates/brown_stee
 5b1bddf8d77c27bb617d02468d0bdb5b821029b2 assets/railcraft/blockstates/brown_steel_tank_wall.json
 e4a1c807d75d6f17b950f947f0f5c83bac483c4a assets/railcraft/blockstates/brown_strengthened_glass.json
 b4e853b1ce74e365dd60a6f295e2dcb21bba7e7b assets/railcraft/blockstates/chipped_steel_anvil.json
+e19bbf2ec78271b88bc00c2991f855c3aded5ec1 assets/railcraft/blockstates/coal_coke_block.json
 9379ccd2a46308fdfde70134ad039f5d38eb7e51 assets/railcraft/blockstates/coke_oven_bricks.json
 9405520af92cd9a65d960e2672acda529c1f85bd assets/railcraft/blockstates/creosote.json
 160610cd2aa8a68688d3a59bc91e4cac3536dda9 assets/railcraft/blockstates/cyan_iron_tank_gauge.json
@@ -355,6 +356,7 @@ f7956119ef41725ca2ab2fc4cd97136013fc6859 assets/railcraft/models/block/brown_str
 9257307b7a37d07f3f3cb11b7742e1012d3c562b assets/railcraft/models/block/brown_strengthened_glass_single.json
 5ca5ffc7ecb4902f877c8370db85dc3f1e32673a assets/railcraft/models/block/brown_strengthened_glass_top.json
 5e6abf5f462e220eba1420e271edb0e3b4b05fa5 assets/railcraft/models/block/chipped_steel_anvil.json
+bc7ac19acf053b29c6c5243937253bfb61caa038 assets/railcraft/models/block/coal_coke_block.json
 169178e5293709be4d1c0203341cba689ce9e451 assets/railcraft/models/block/coke_oven_bricks.json
 962eb353412c3945bce5743af20b8d5cbbbf4deb assets/railcraft/models/block/coke_oven_bricks_window.json
 49383396a4f945ac58a62fb4690f4aefe39cfaf1 assets/railcraft/models/block/coke_oven_bricks_window_lit.json
@@ -964,6 +966,7 @@ b78986baf137bb0e6a9dc922d8b54caf71abb12b assets/railcraft/models/item/charcoal_d
 3ce57c8714b150794e0befaf6b096c278662b5f0 assets/railcraft/models/item/charge_spool_small.json
 81c32dd99947f8fb38ceafac7f640b9609d0c96d assets/railcraft/models/item/chipped_steel_anvil.json
 7905b6be1c1ce032003660f415ba32f5becfb265 assets/railcraft/models/item/coal_coke.json
+81494a1c315e589785536f5b24c14054bf08f768 assets/railcraft/models/item/coal_coke_block.json
 778e40548b2d8dc366a45cdd39d90f22ce2f6977 assets/railcraft/models/item/coal_dust.json
 cc3d72fefc8eaa8035f16c8dad6e9cfa132f1e58 assets/railcraft/models/item/coke_oven_bricks.json
 44b4a84edfa58899d608812a5f1033723c59221d assets/railcraft/models/item/control_track_kit.json

@@ -16,6 +16,7 @@ import mods.railcraft.data.RailcraftLanguageProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
+import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
 import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.network.NetworkChannel;
@@ -151,6 +152,7 @@ public class Railcraft {
         new RailcraftAdvancementProviders(generator, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(generator));
     generator.addProvider(event.includeServer(), new RollingRecipeProvider(generator));
+    generator.addProvider(event.includeServer(), new CokeOvenRecipeProvider(generator));
     generator.addProvider(event.includeClient(), new RailcraftModelProvider(generator));
     generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(generator));
   }

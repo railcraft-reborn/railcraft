@@ -67,6 +67,7 @@
     "railcraft:low_pressure_steam_boiler_tank",
     "railcraft:high_pressure_steam_boiler_tank",
     "railcraft:fluid_fueled_firebox",
-    "railcraft:steam_turbine"
+    "railcraft:steam_turbine",
+    "railcraft:coal_coke_block"
   ]
 }

@@ -1,4 +1,4 @@
-// 1.19.1	2022-07-29T11:47:45.087184894	Railcraft Loot Tables
+// 1.19.1	2022-07-29T12:41:15.907471124	Railcraft Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -45,6 +45,7 @@ ae87dba86857e2f0a3252d66ebcd423cc74e7b28 data/railcraft/loot_tables/blocks/brown
 0ed849da63cc1d7434a044fbc01c6f61f2800460 data/railcraft/loot_tables/blocks/brown_steel_tank_wall.json
 68abcddce402bc709b1682ac0b1be027c43ab4ad data/railcraft/loot_tables/blocks/brown_strengthened_glass.json
 97a259e1df173bfffa2177ac188e8066d93e2f6c data/railcraft/loot_tables/blocks/chipped_steel_anvil.json
+45a71caadc758ceb4080655732512151d14ae9d1 data/railcraft/loot_tables/blocks/coal_coke_block.json
 1296e1dee54d16339c55bd207d5ffe86c03aad61 data/railcraft/loot_tables/blocks/coke_oven_bricks.json
 dd152b214818cdf8ee48b798058ed5251ad3b906 data/railcraft/loot_tables/blocks/cyan_iron_tank_gauge.json
 c7a8341f4e6f9ba5da7ca06f6f77d7179c6fd84d data/railcraft/loot_tables/blocks/cyan_iron_tank_valve.json

@@ -178,4 +178,9 @@ public class RollingRecipeProvider extends RecipeProvider {
     RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.ZINC_INGOT),
         RailcraftItems.ZINC_PLATE.get(), 4);
   }
+
+  @Override
+  public String getName() {
+    return "Railcraft Rolling";
+  }
 }

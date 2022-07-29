@@ -259,6 +259,12 @@ public class RailcraftBlocks {
               .strength(5.0F, 15.0F)
               .sound(SoundType.METAL)));
 
+  public static final RegistryObject<Block> COAL_COKE_BLOCK =
+      deferredRegister.register("coal_coke_block",
+          () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of(Material.STONE)
+              .strength(5.0F, 10.0F)
+              .sound(SoundType.STONE)));
+
   public static final RegistryObject<FluidLoaderBlock> FLUID_LOADER =
       deferredRegister.register("fluid_loader",
           () -> new FluidLoaderBlock(BlockBehaviour.Properties.of(Material.STONE)

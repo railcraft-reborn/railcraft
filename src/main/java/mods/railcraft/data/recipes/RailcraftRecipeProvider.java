@@ -184,15 +184,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     this.railsFromMaterials(consumer, RailcraftItems.HIGH_SPEED_TRACK.get(),
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
-    CokeOvenRecipeBuilder
-        .coking(Items.COAL, Ingredient.of(ItemTags.LOGS), 0.0F, 250)
-        .unlockedBy("has_logs", has(ItemTags.LOGS))
-        .save(consumer);
-
-    CokeOvenRecipeBuilder
-        .coking(RailcraftItems.COAL_COKE.get(), Ingredient.of(Items.COAL), 0.0F, 500)
-        .unlockedBy(getHasName(Items.COAL), has(Items.COAL))
-        .save(consumer);
 
     new BlastFurnaceRecipeBuilder(RailcraftBlocks.STEEL_BLOCK.get(), 1,
         Ingredient.of(Tags.Items.STORAGE_BLOCKS_IRON), 0.0F,
@@ -427,6 +418,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     decompress(consumer, RailcraftItems.STEEL_INGOT.get(),
         RailcraftTags.Items.STEEL_BLOCK, "block_ingot");
+    decompress(consumer, RailcraftItems.COAL_COKE.get(),
+        RailcraftItems.COAL_COKE_BLOCK.get(), "block_coke");
   }
 
   private static void buildCompressions(Consumer<FinishedRecipe> consumer) {
@@ -451,6 +444,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     compress(consumer, RailcraftItems.STEEL_BLOCK.get(),
         RailcraftTags.Items.STEEL_INGOT, "block");
+    compress(consumer, RailcraftItems.COAL_COKE_BLOCK.get(),
+        RailcraftItems.COAL_COKE.get(), "block");
   }
 
   private static void strengthenedGlass(Consumer<FinishedRecipe> consumer) {
@@ -558,6 +553,20 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
   }
 
+  private static void compress(Consumer<FinishedRecipe> finishedRecipe,
+      Item itemOut,
+      Item ingredient,
+      String identifier) {
+    ShapedRecipeBuilder.shaped(itemOut)
+        .pattern("###")
+        .pattern("###")
+        .pattern("###")
+        .define('#', ingredient)
+        .unlockedBy(getHasName(ingredient), has(ingredient))
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
+            RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
+  }
+
   private static void decompress(Consumer<FinishedRecipe> finishedRecipe,
       Item itemOut,
       TagKey<Item> materialTag,
@@ -565,6 +574,17 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     ShapelessRecipeBuilder.shapeless(itemOut, 9)
         .requires(materialTag)
         .unlockedBy("has_material", has(materialTag))
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
+            RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
+  }
+
+  private static void decompress(Consumer<FinishedRecipe> finishedRecipe,
+      Item itemOut,
+      Item ingredient,
+      String identifier) {
+    ShapelessRecipeBuilder.shapeless(itemOut, 9)
+        .requires(ingredient)
+        .unlockedBy("has_material", has(ingredient))
         .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
             RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
   }

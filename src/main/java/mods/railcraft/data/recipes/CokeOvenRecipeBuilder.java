@@ -17,7 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class CokeOvenRecipeBuilder implements RecipeBuilder {
 
-  public static final int DEFAULT_COOKING_TIME = 1800;
+  public static final int DEFAULT_COOKING_TIME = 1800; // 90 sec
 
   private final Item result;
   private final int count;
@@ -44,14 +44,25 @@ public class CokeOvenRecipeBuilder implements RecipeBuilder {
     return new CokeOvenRecipeBuilder(result, 1, ingredient, experience, DEFAULT_COOKING_TIME,
         creosoteOutput);
   }
+  public static CokeOvenRecipeBuilder coking(ItemLike result, Ingredient ingredient,
+      float experience, int cookingTime, int creosoteOutput) {
+    return new CokeOvenRecipeBuilder(result, 1, ingredient, experience, cookingTime,
+        creosoteOutput);
+  }
 
   @Override
-  public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-    consumer.accept(new CokeOvenRecipeBuilder.Result(id,
+  public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
+    var namespace = resourceLocation.getNamespace();
+    var path = resourceLocation.getPath();
+    var customResourceLocation = new ResourceLocation(namespace, "coke_oven/" + path);
+
+    var advancementId = new ResourceLocation(namespace,
+        String.format("recipes/%s/%s", this.result.getItemCategory().getRecipeFolderName(),
+        customResourceLocation.getPath()));
+
+    finishedRecipe.accept(new CokeOvenRecipeBuilder.Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
-        this.experience, this.cookingTime, this.creosoteOutput, this.advancement,
-        new ResourceLocation(id.getNamespace(), "recipes/"
-            + this.result.getItemCategory().getRecipeFolderName() + "/" + id.getPath())));
+        this.experience, this.cookingTime, this.creosoteOutput, this.advancement, advancementId));
   }
 
   @Override

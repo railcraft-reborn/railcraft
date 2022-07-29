@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:coal_coke_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "railcraft:coal_coke"
+  }
+}

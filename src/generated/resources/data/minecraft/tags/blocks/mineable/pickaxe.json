@@ -71,6 +71,7 @@
     "railcraft:fluid_fueled_firebox",
     "railcraft:steam_turbine",
     "railcraft:coke_oven_bricks",
-    "railcraft:blast_furnace_bricks"
+    "railcraft:blast_furnace_bricks",
+    "railcraft:coal_coke_block"
   ]
 }
