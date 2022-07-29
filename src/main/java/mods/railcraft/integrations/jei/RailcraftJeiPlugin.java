@@ -8,10 +8,13 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mods.railcraft.Railcraft;
+import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
+import mods.railcraft.integrations.jei.category.BlastFurnaceRecipeCategory;
 import mods.railcraft.integrations.jei.category.CokeOvenRecipeCategory;
 import mods.railcraft.integrations.jei.category.RollingRecipeCategory;
+import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
@@ -32,6 +35,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
     var guiHelper = registration.getJeiHelpers().getGuiHelper();
     registration.addRecipeCategories(new RollingRecipeCategory(guiHelper));
     registration.addRecipeCategories(new CokeOvenRecipeCategory(guiHelper));
+    registration.addRecipeCategories(new BlastFurnaceRecipeCategory(guiHelper));
   }
 
   @Override
@@ -39,6 +43,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
     registration.addRecipeClickArea(ManualRollingMachineScreen.class, 90, 45, 23, 9,
         RecipeTypes.ROLLING_MACHINE);
     registration.addRecipeClickArea(CokeOvenScreen.class, 34, 43, 20, 16, RecipeTypes.COKE_OVEN);
+    registration.addRecipeClickArea(BlastFurnaceScreen.class, 80, 36, 22, 15,
+        RecipeTypes.BLAST_FURNACE);
   }
 
   @Override
@@ -48,6 +54,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
         RecipeTypes.ROLLING_MACHINE, 2, 9, 11, 36);
     registration.addRecipeTransferHandler(CokeOvenMenu.class, RailcraftMenuTypes.COKE_OVEN.get(),
         RecipeTypes.COKE_OVEN, 0, 1, 4, 36);
+    registration.addRecipeTransferHandler(BlastFurnaceMenu.class,
+        RailcraftMenuTypes.BLAST_FURNACE.get(), RecipeTypes.BLAST_FURNACE, 0, 1, 4, 36);
   }
 
   @Override
@@ -57,5 +65,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()));
     registration.addRecipes(RecipeTypes.COKE_OVEN,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.COKING.get()));
+    registration.addRecipes(RecipeTypes.BLAST_FURNACE,
+        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.BLASTING.get()));
   }
 }

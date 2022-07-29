@@ -122,6 +122,8 @@ public class Translations {
       format("jei.%railcraft.category.rolling");
     public static final String COKE_OVEN =
         format("jei.%railcraft.category.coke_oven");
+    public static final String BLAST_FURNACE =
+        format("jei.%railcraft.category.blast_furnace");
   }
 
   public static class Misc {
