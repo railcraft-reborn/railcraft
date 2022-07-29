@@ -13,6 +13,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 
 public class RollingRecipeProvider extends RecipeProvider {
@@ -33,17 +34,17 @@ public class RollingRecipeProvider extends RecipeProvider {
   }
 
   private void misc(Consumer<FinishedRecipe> consumer) {
-    RollingRecipePattern.hForm(consumer, Tags.Items.INGOTS_IRON,
+    RollingRecipePattern.hForm(consumer, Ingredient.of(Tags.Items.INGOTS_IRON),
         RailcraftItems.POST.variantFor(DyeColor.BLACK).get(), 16);
 
-    RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.STEEL_PLATE,
+    RollingRecipePattern.diagonalLine(consumer, Ingredient.of(RailcraftTags.Items.STEEL_PLATE),
         RailcraftItems.TURBINE_BLADE.get(), 1, "steel_turbine_blade");
-    RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.NICKEL_PLATE,
+    RollingRecipePattern.diagonalLine(consumer, Ingredient.of(RailcraftTags.Items.NICKEL_PLATE),
         RailcraftItems.TURBINE_BLADE.get(), 1, "nickel_turbine_blade");
 
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRONZE_PLATE,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.BRONZE_PLATE),
         RailcraftItems.BUSHING_GEAR.get(), 4, "_bronze");
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRASS_PLATE,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.BRASS_PLATE),
         RailcraftItems.BUSHING_GEAR.get(), 4, "_brass");
   }
 
@@ -77,101 +78,104 @@ public class RollingRecipeProvider extends RecipeProvider {
   }
 
   private void buildRebars(Consumer<FinishedRecipe> consumer) {
-    RollingRecipePattern.diagonalLine(consumer, Tags.Items.INGOTS_IRON,
+    RollingRecipePattern.diagonalLine(consumer, Ingredient.of(Tags.Items.INGOTS_IRON),
         RailcraftItems.REBAR.get(), 4, "rebar_iron");
-    RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.BRONZE_INGOT,
+    RollingRecipePattern.diagonalLine(consumer, Ingredient.of(RailcraftTags.Items.BRONZE_INGOT),
         RailcraftItems.REBAR.get(), 4, "rebar_bronze");
-    RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.INVAR_INGOT,
+    RollingRecipePattern.diagonalLine(consumer, Ingredient.of(RailcraftTags.Items.INVAR_INGOT),
         RailcraftItems.REBAR.get(), 6, "rebar_invar");
-    RollingRecipePattern.diagonalLine(consumer, RailcraftTags.Items.STEEL_INGOT,
+    RollingRecipePattern.diagonalLine(consumer, Ingredient.of(RailcraftTags.Items.STEEL_INGOT),
         RailcraftItems.REBAR.get(), 8, "rebar_steel");
   }
 
   private void buildElectrodes(Consumer<FinishedRecipe> consumer) {
-    RollingRecipePattern.line(consumer, Items.COAL, RailcraftItems.CARBON_ELECTRODE.get(), 1,
-        "coal_carbon_electrode");
-    RollingRecipePattern.line(consumer, Items.CHARCOAL, RailcraftItems.CARBON_ELECTRODE.get(), 1,
-        "charcoal_carbon_electrode");
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.NICKEL_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(Items.COAL),
+        RailcraftItems.CARBON_ELECTRODE.get(), 1, "coal_carbon_electrode");
+    RollingRecipePattern.line(consumer, Ingredient.of(Items.CHARCOAL),
+        RailcraftItems.CARBON_ELECTRODE.get(), 1, "charcoal_carbon_electrode");
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.NICKEL_PLATE),
         RailcraftItems.NICKEL_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.IRON_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.IRON_PLATE),
         RailcraftItems.IRON_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.ZINC_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.ZINC_PLATE),
         RailcraftItems.ZINC_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.SILVER_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.SILVER_PLATE),
         RailcraftItems.SILVER_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.STEEL_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.STEEL_PLATE),
         RailcraftItems.STEEL_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.TIN_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.TIN_PLATE),
         RailcraftItems.TIN_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.GOLD_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.GOLD_PLATE),
         RailcraftItems.GOLD_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.LEAD_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.LEAD_PLATE),
         RailcraftItems.LEAD_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.BRASS_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.BRASS_PLATE),
         RailcraftItems.BRASS_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.INVAR_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.INVAR_PLATE),
         RailcraftItems.INVAR_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.BRONZE_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.BRONZE_PLATE),
         RailcraftItems.BRONZE_ELECTRODE.get(), 1);
-    RollingRecipePattern.line(consumer, RailcraftTags.Items.COPPER_PLATE,
+    RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.COPPER_PLATE),
         RailcraftItems.COPPER_ELECTRODE.get(), 1);
   }
 
   private void buildRails(Consumer<FinishedRecipe> consumer) {
-    RollingRecipePattern.parallelLines(consumer, Tags.Items.INGOTS_IRON,
+    RollingRecipePattern.parallelLines(consumer, Ingredient.of(Tags.Items.INGOTS_IRON),
         RailcraftItems.STANDARD_RAIL.get(), 8, "standard_rail");
-    RollingRecipePattern.parallelLines(consumer, RailcraftTags.Items.BRONZE_INGOT,
+    RollingRecipePattern.parallelLines(consumer, Ingredient.of(RailcraftTags.Items.BRONZE_INGOT),
         RailcraftItems.STANDARD_RAIL.get(), 8, "bronze_rail");
-    RollingRecipePattern.parallelLines(consumer, RailcraftTags.Items.INVAR_INGOT,
+    RollingRecipePattern.parallelLines(consumer, Ingredient.of(RailcraftTags.Items.INVAR_INGOT),
         RailcraftItems.STANDARD_RAIL.get(), 12, "invar_rail");
-    RollingRecipePattern.parallelLines(consumer, RailcraftTags.Items.STEEL_INGOT,
+    RollingRecipePattern.parallelLines(consumer, Ingredient.of(RailcraftTags.Items.STEEL_INGOT),
         RailcraftItems.STANDARD_RAIL.get(), 16, "steel_rail");
-    RollingRecipePattern.parallelLines(consumer, Tags.Items.INGOTS_COPPER,
+    RollingRecipePattern.parallelLines(consumer, Ingredient.of(Tags.Items.INGOTS_COPPER),
         RailcraftItems.ELECTRIC_RAIL.get(), 6, "copper_electric_rail");
-    RollingRecipePattern.parallelLines(consumer, Tags.Items.DUSTS_REDSTONE, Tags.Items.INGOTS_GOLD,
-        RailcraftItems.ADVANCED_RAIL.get(), 8, "advanced_rail");
-    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT,
-        Items.BLAZE_POWDER,
-        Tags.Items.INGOTS_GOLD, RailcraftItems.HIGH_SPEED_RAIL.get(), 8,
-        "standard_high_speed_rail");
-    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT,
-        RailcraftTags.Items.OBSIDIAN_DUST,
-        RailcraftTags.Items.STEEL_INGOT, RailcraftItems.REINFORCED_RAIL.get(), 8,
+    RollingRecipePattern.parallelLines(consumer, Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+        Ingredient.of(Tags.Items.INGOTS_GOLD), RailcraftItems.ADVANCED_RAIL.get(), 8,
+        "advanced_rail");
+    RollingRecipePattern.parallelThreeLines(consumer,
+        Ingredient.of(RailcraftTags.Items.STEEL_INGOT),
+        Ingredient.of(Items.BLAZE_POWDER), Ingredient.of(Tags.Items.INGOTS_GOLD),
+        RailcraftItems.HIGH_SPEED_RAIL.get(), 8, "standard_high_speed_rail");
+    RollingRecipePattern.parallelThreeLines(consumer,
+        Ingredient.of(RailcraftTags.Items.STEEL_INGOT),
+        Ingredient.of(RailcraftTags.Items.OBSIDIAN_DUST),
+        Ingredient.of(RailcraftTags.Items.STEEL_INGOT), RailcraftItems.REINFORCED_RAIL.get(), 8,
         "steel_reinforced_rail");
-    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.INVAR_INGOT,
-        RailcraftTags.Items.OBSIDIAN_DUST,
-        RailcraftTags.Items.INVAR_INGOT, RailcraftItems.REINFORCED_RAIL.get(), 4,
+    RollingRecipePattern.parallelThreeLines(consumer,
+        Ingredient.of(RailcraftTags.Items.INVAR_INGOT),
+        Ingredient.of(RailcraftTags.Items.OBSIDIAN_DUST),
+        Ingredient.of(RailcraftTags.Items.INVAR_INGOT), RailcraftItems.REINFORCED_RAIL.get(), 4,
         "invar_reinforced_rail");
-    RollingRecipePattern.parallelThreeLines(consumer, RailcraftTags.Items.STEEL_INGOT,
-        Tags.Items.INGOTS_COPPER, RailcraftTags.Items.STEEL_INGOT,
-        RailcraftItems.ELECTRIC_RAIL.get(), 12);
+    RollingRecipePattern.parallelThreeLines(consumer,
+        Ingredient.of(RailcraftTags.Items.STEEL_INGOT), Ingredient.of(Tags.Items.INGOTS_COPPER),
+        Ingredient.of(RailcraftTags.Items.STEEL_INGOT), RailcraftItems.ELECTRIC_RAIL.get(), 12);
   }
 
   private void buildPlates(Consumer<FinishedRecipe> consumer) {
-    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_IRON,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(Tags.Items.INGOTS_IRON),
         RailcraftItems.IRON_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_GOLD,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(Tags.Items.INGOTS_GOLD),
         RailcraftItems.GOLD_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, Tags.Items.INGOTS_COPPER,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(Tags.Items.INGOTS_COPPER),
         RailcraftItems.COPPER_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.STEEL_INGOT,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.STEEL_INGOT),
         RailcraftItems.STEEL_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.NICKEL_INGOT,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.NICKEL_INGOT),
         RailcraftItems.NICKEL_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.INVAR_INGOT,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.INVAR_INGOT),
         RailcraftItems.INVAR_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRASS_INGOT,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.BRASS_INGOT),
         RailcraftItems.BRASS_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.TIN_INGOT,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.TIN_INGOT),
         RailcraftItems.TIN_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.BRONZE_INGOT,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.BRONZE_INGOT),
         RailcraftItems.BRONZE_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.LEAD_INGOT,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.LEAD_INGOT),
         RailcraftItems.LEAD_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.SILVER_INGOT,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.SILVER_INGOT),
         RailcraftItems.SILVER_PLATE.get(), 4);
-    RollingRecipePattern.square2x2(consumer, RailcraftTags.Items.ZINC_INGOT,
+    RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.ZINC_INGOT),
         RailcraftItems.ZINC_PLATE.get(), 4);
   }
 }

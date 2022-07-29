@@ -3,12 +3,15 @@
   "key": {
     "a": {
       "tag": "forge:ingots/iron"
+    },
+    "b": {
+      "tag": "forge:ingots/iron"
     }
   },
   "pattern": [
-    "a a",
-    "a a",
-    "a a"
+    "a b",
+    "a b",
+    "a b"
   ],
   "result": {
     "count": 8,

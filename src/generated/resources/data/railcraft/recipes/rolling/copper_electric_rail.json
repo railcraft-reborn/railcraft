@@ -3,12 +3,15 @@
   "key": {
     "a": {
       "tag": "forge:ingots/copper"
+    },
+    "b": {
+      "tag": "forge:ingots/copper"
     }
   },
   "pattern": [
-    "a a",
-    "a a",
-    "a a"
+    "a b",
+    "a b",
+    "a b"
   ],
   "result": {
     "count": 6,
