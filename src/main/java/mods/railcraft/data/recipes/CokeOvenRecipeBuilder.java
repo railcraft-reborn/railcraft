@@ -64,7 +64,7 @@ public class CokeOvenRecipeBuilder implements RecipeBuilder {
         String.format("recipes/%s/%s", this.result.getItemCategory().getRecipeFolderName(),
         customResourceLocation.getPath()));
 
-    finishedRecipe.accept(new CokeOvenRecipeBuilder.Result(customResourceLocation,
+    finishedRecipe.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
         this.experience, this.cookingTime, this.creosoteOutput, this.advancement, advancementId));
   }
@@ -86,7 +86,7 @@ public class CokeOvenRecipeBuilder implements RecipeBuilder {
     return this.result;
   }
 
-  public class Result implements FinishedRecipe {
+  public static class Result implements FinishedRecipe {
 
     private final ResourceLocation id;
     private final String group;

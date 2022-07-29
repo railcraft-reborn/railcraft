@@ -113,11 +113,11 @@ public class RollingRecipeBuilder {
     var path = resourceLocation.getPath();
     var customResourceLocation = new ResourceLocation(Railcraft.ID, "rolling/" + path);
     finishedRecipe.accept(
-        new RollingRecipeBuilder.Result(customResourceLocation, this.result, this.count,
+        new Result(customResourceLocation, this.result, this.count,
             this.delay, this.rows, this.key));
   }
 
-  public class Result implements FinishedRecipe {
+  public static class Result implements FinishedRecipe {
 
     private final ResourceLocation id;
     private final Item resultItem;
