@@ -16,13 +16,12 @@ public class RollingRecipePattern {
       TagKey<Item> ingredient,
       ItemLike result,
       int count) {
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
     RollingRecipeBuilder.rolled(result, count)
         .pattern(" a ")
         .pattern(" a ")
         .pattern(" a ")
         .define('a', ingredient)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
+        .save(finishedRecipe);
   }
 
   public static void line(Consumer<FinishedRecipe> finishedRecipe,
@@ -35,7 +34,7 @@ public class RollingRecipePattern {
         .pattern(" a ")
         .pattern(" a ")
         .define('a', ingredient)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, customName));
   }
 
   public static void parallelLines(Consumer<FinishedRecipe> finishedRecipe,
@@ -48,7 +47,7 @@ public class RollingRecipePattern {
         .pattern("a a")
         .pattern("a a")
         .define('a', ingred1)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, customName));
   }
 
   public static void parallelLines(Consumer<FinishedRecipe> finishedRecipe,
@@ -63,7 +62,7 @@ public class RollingRecipePattern {
         .pattern("a b")
         .define('a', ingred1)
         .define('b', ingred2)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, customName));
   }
 
   public static void parallelThreeLines(Consumer<FinishedRecipe> finishedRecipe,
@@ -72,7 +71,6 @@ public class RollingRecipePattern {
       ItemLike ingred3,
       ItemLike result,
       int count) {
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
     RollingRecipeBuilder.rolled(result, count)
         .pattern("abc")
         .pattern("abc")
@@ -80,7 +78,7 @@ public class RollingRecipePattern {
         .define('a', ingred1)
         .define('b', ingred2)
         .define('c', ingred3)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
+        .save(finishedRecipe);
   }
 
   public static void parallelThreeLines(Consumer<FinishedRecipe> finishedRecipe,
@@ -89,7 +87,6 @@ public class RollingRecipePattern {
       TagKey<Item> ingred3,
       ItemLike result,
       int count) {
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
     RollingRecipeBuilder.rolled(result, count)
         .pattern("abc")
         .pattern("abc")
@@ -97,7 +94,7 @@ public class RollingRecipePattern {
         .define('a', ingred1)
         .define('b', ingred2)
         .define('c', ingred3)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
+        .save(finishedRecipe);
   }
 
   public static void parallelThreeLines(Consumer<FinishedRecipe> finishedRecipe,
@@ -114,7 +111,7 @@ public class RollingRecipePattern {
         .define('a', ingred1)
         .define('b', ingred2)
         .define('c', ingred3)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, customName));
   }
 
   public static void parallelThreeLines(Consumer<FinishedRecipe> finishedRecipe,
@@ -131,7 +128,7 @@ public class RollingRecipePattern {
         .define('a', ingred1)
         .define('b', ingred2)
         .define('c', ingred3)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, customName));
   }
 
   public static void diagonalLine(Consumer<FinishedRecipe> finishedRecipe,
@@ -144,7 +141,7 @@ public class RollingRecipePattern {
         .pattern(" a ")
         .pattern("a  ")
         .define('a', materialTag)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + customName));
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, customName));
   }
 
   public static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
@@ -164,19 +161,18 @@ public class RollingRecipePattern {
         .pattern("aa")
         .pattern("aa")
         .define('a', materialTag)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name + postfix));
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, name + postfix));
   }
 
   public static void hForm(Consumer<FinishedRecipe> finishedRecipe,
       TagKey<Item> materialTag,
       ItemLike result,
       int count) {
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
     RollingRecipeBuilder.rolled(result, count)
         .pattern("a a")
         .pattern("aaa")
         .pattern("a a")
         .define('a', materialTag)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, "rolling/" + name));
+        .save(finishedRecipe);
   }
 }

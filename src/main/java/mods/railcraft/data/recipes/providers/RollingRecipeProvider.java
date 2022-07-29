@@ -48,17 +48,14 @@ public class RollingRecipeProvider extends RecipeProvider {
   }
 
   private void buildChargeSpool(Consumer<FinishedRecipe> consumer) {
-    final var largeChargeSpool = RailcraftItems.CHARGE_SPOOL_LARGE.get();
-    RollingRecipeBuilder.rolled(largeChargeSpool)
+    RollingRecipeBuilder.rolled(RailcraftItems.CHARGE_SPOOL_LARGE.get())
         .pattern("a")
         .define('a', Tags.Items.STORAGE_BLOCKS_COPPER)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "rolling/" + largeChargeSpool));
-
-    final var smallChargeSpool = RailcraftItems.CHARGE_SPOOL_SMALL.get();
-    RollingRecipeBuilder.rolled(smallChargeSpool)
+        .save(consumer);
+    RollingRecipeBuilder.rolled(RailcraftItems.CHARGE_SPOOL_SMALL.get())
         .pattern("a")
         .define('a', Tags.Items.INGOTS_COPPER)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "rolling/" + smallChargeSpool));
+        .save(consumer);
   }
 
   private void buildTrackParts(Consumer<FinishedRecipe> consumer) {
@@ -68,15 +65,15 @@ public class RollingRecipeProvider extends RecipeProvider {
         .pattern("aa ")
         .pattern("a  ")
         .define('a', RailcraftTags.Items.BRONZE_NUGGET)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "rolling/" + name + "_bronze_nugget"));
+        .save(consumer, new ResourceLocation(Railcraft.ID, name + "_bronze_nugget"));
     RollingRecipeBuilder.rolled(trackParts)
         .pattern("aa")
         .define('a', Tags.Items.NUGGETS_IRON)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "rolling/" + name + "_iron_nugget"));
+        .save(consumer, new ResourceLocation(Railcraft.ID, name + "_iron_nugget"));
     RollingRecipeBuilder.rolled(trackParts)
         .pattern("a")
         .define('a', RailcraftTags.Items.STEEL_NUGGET)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "rolling/" + name + "_steel_nugget"));
+        .save(consumer, new ResourceLocation(Railcraft.ID, name + "_steel_nugget"));
   }
 
   private void buildRebars(Consumer<FinishedRecipe> consumer) {

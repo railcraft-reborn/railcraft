@@ -109,8 +109,11 @@ public class RollingRecipeBuilder {
    * Saves the item for registration.
    */
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
+    var namespace = resourceLocation.getNamespace();
+    var path = resourceLocation.getPath();
+    var customResourceLocation = new ResourceLocation(namespace, "rolling/" + path);
     finishedRecipe.accept(
-        new RollingRecipeBuilder.Result(resourceLocation, this.result, this.count,
+        new RollingRecipeBuilder.Result(customResourceLocation, this.result, this.count,
             this.delay, this.rows, this.key));
   }
 
