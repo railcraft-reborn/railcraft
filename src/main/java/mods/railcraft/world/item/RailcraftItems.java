@@ -131,8 +131,8 @@ public class RailcraftItems {
       deferredRegister.register("signal_label",
           () -> new SignalLabelItem(new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> TURBINE_ROTOR = registerBasicItem("turbine_rotor");
-  public static final RegistryObject<Item> TURBINE_BLADE = registerBasicItem("turbine_blade");
+  public static final RegistryObject<Item> TURBINE_ROTOR = registerBasic("turbine_rotor");
+  public static final RegistryObject<Item> TURBINE_BLADE = registerBasic("turbine_blade");
 
   public static final RegistryObject<Item> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
@@ -144,7 +144,7 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.BLAST_FURNACE_BRICKS.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> SLAG = registerBasicItem("slag");
+  public static final RegistryObject<Item> SLAG = registerBasic("slag");
 
   public static final RegistryObject<Item> FEED_STATION =
       deferredRegister.register("feed_station",
@@ -437,7 +437,7 @@ public class RailcraftItems {
       deferredRegister.register("whistle_tuner",
           () -> new Item(new Item.Properties().durability(250).tab(TAB)));
 
-  public static final RegistryObject<Item> TICKET = registerBasicItem("ticket");
+  public static final RegistryObject<Item> TICKET = registerBasic("ticket");
 
   public static final RegistryObject<Item> OVERALLS =
       deferredRegister.register("overalls",
@@ -956,7 +956,7 @@ public class RailcraftItems {
       deferredRegister.register("seasons_crowbar",
           () -> new SeasonsCrowbarItem(new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> TRACK_PARTS = registerBasicItem("track_parts");
+  public static final RegistryObject<Item> TRACK_PARTS = registerBasic("track_parts");
 
   public static final RegistryObject<Item> TRANSITION_TRACK_KIT =
       deferredRegister.register("transition_track_kit",
@@ -1117,7 +1117,10 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.COKE_OVEN_BRICKS.get(),
               new Item.Properties().tab(TAB)));
 
-  /* ===== CRAFTING MATERIALS ===== */
+  // ================================================================================
+  // Crafting Materials
+  // ================================================================================
+
   public static final RegistryObject<Item> COAL_COKE =
       deferredRegister.register("coal_coke",
           () -> new Item(new Item.Properties().tab(TAB)) {
@@ -1127,127 +1130,123 @@ public class RailcraftItems {
             }
           });
 
-  //Plates
-  public static final RegistryObject<Item> STEEL_PLATE = registerBasicItem("steel_plate");
-  public static final RegistryObject<Item> IRON_PLATE = registerBasicItem("iron_plate");
-  public static final RegistryObject<Item> TIN_PLATE = registerBasicItem("tin_plate");
-  public static final RegistryObject<Item> GOLD_PLATE = registerBasicItem("gold_plate");
-  public static final RegistryObject<Item> LEAD_PLATE = registerBasicItem("lead_plate");
-  public static final RegistryObject<Item> ZINC_PLATE = registerBasicItem("zinc_plate");
-  public static final RegistryObject<Item> BRASS_PLATE = registerBasicItem("brass_plate");
-  public static final RegistryObject<Item> INVAR_PLATE = registerBasicItem("invar_plate");
-  public static final RegistryObject<Item> BRONZE_PLATE = registerBasicItem("bronze_plate");
-  public static final RegistryObject<Item> COPPER_PLATE = registerBasicItem("copper_plate");
-  public static final RegistryObject<Item> NICKEL_PLATE = registerBasicItem("nickel_plate");
-  public static final RegistryObject<Item> SILVER_PLATE = registerBasicItem("silver_plate");
+  public static final RegistryObject<Item> STEEL_PLATE = registerBasic("steel_plate");
+  public static final RegistryObject<Item> IRON_PLATE = registerBasic("iron_plate");
+  public static final RegistryObject<Item> TIN_PLATE = registerBasic("tin_plate");
+  public static final RegistryObject<Item> GOLD_PLATE = registerBasic("gold_plate");
+  public static final RegistryObject<Item> LEAD_PLATE = registerBasic("lead_plate");
+  public static final RegistryObject<Item> ZINC_PLATE = registerBasic("zinc_plate");
+  public static final RegistryObject<Item> BRASS_PLATE = registerBasic("brass_plate");
+  public static final RegistryObject<Item> INVAR_PLATE = registerBasic("invar_plate");
+  public static final RegistryObject<Item> BRONZE_PLATE = registerBasic("bronze_plate");
+  public static final RegistryObject<Item> COPPER_PLATE = registerBasic("copper_plate");
+  public static final RegistryObject<Item> NICKEL_PLATE = registerBasic("nickel_plate");
+  public static final RegistryObject<Item> SILVER_PLATE = registerBasic("silver_plate");
 
-  public static final RegistryObject<Item> STEEL_INGOT = registerBasicItem("steel_ingot");
-  public static final RegistryObject<Item> TIN_INGOT = registerBasicItem("tin_ingot");
-  public static final RegistryObject<Item> ZINC_INGOT = registerBasicItem("zinc_ingot");
-  public static final RegistryObject<Item> BRASS_INGOT = registerBasicItem("brass_ingot");
-  public static final RegistryObject<Item> BRONZE_INGOT = registerBasicItem("bronze_ingot");
-  public static final RegistryObject<Item> NICKEL_INGOT = registerBasicItem("nickel_ingot");
-  public static final RegistryObject<Item> INVAR_INGOT = registerBasicItem("invar_ingot");
-  public static final RegistryObject<Item> LEAD_INGOT = registerBasicItem("lead_ingot");
-  public static final RegistryObject<Item> SILVER_INGOT = registerBasicItem("silver_ingot");
+  public static final RegistryObject<Item> STEEL_INGOT = registerBasic("steel_ingot");
+  public static final RegistryObject<Item> TIN_INGOT = registerBasic("tin_ingot");
+  public static final RegistryObject<Item> ZINC_INGOT = registerBasic("zinc_ingot");
+  public static final RegistryObject<Item> BRASS_INGOT = registerBasic("brass_ingot");
+  public static final RegistryObject<Item> BRONZE_INGOT = registerBasic("bronze_ingot");
+  public static final RegistryObject<Item> NICKEL_INGOT = registerBasic("nickel_ingot");
+  public static final RegistryObject<Item> INVAR_INGOT = registerBasic("invar_ingot");
+  public static final RegistryObject<Item> LEAD_INGOT = registerBasic("lead_ingot");
+  public static final RegistryObject<Item> SILVER_INGOT = registerBasic("silver_ingot");
 
-  public static final RegistryObject<Item> SALTPETER_DUST = registerBasicItem("saltpeter_dust");
-  public static final RegistryObject<Item> COAL_DUST = registerBasicItem("coal_dust");
-  public static final RegistryObject<Item> CHARCOAL_DUST = registerBasicItem("charcoal_dust");
-  public static final RegistryObject<Item> SLAG_DUST = registerBasicItem("slag_dust");
-  public static final RegistryObject<Item> ENDER_DUST = registerBasicItem("ender_dust");
-  public static final RegistryObject<Item> SULFUR_DUST = registerBasicItem("sulfur_dust");
-  public static final RegistryObject<Item> OBSIDIAN_DUST = registerBasicItem("obsidian_dust");
+  public static final RegistryObject<Item> SALTPETER_DUST = registerBasic("saltpeter_dust");
+  public static final RegistryObject<Item> COAL_DUST = registerBasic("coal_dust");
+  public static final RegistryObject<Item> CHARCOAL_DUST = registerBasic("charcoal_dust");
+  public static final RegistryObject<Item> SLAG_DUST = registerBasic("slag_dust");
+  public static final RegistryObject<Item> ENDER_DUST = registerBasic("ender_dust");
+  public static final RegistryObject<Item> SULFUR_DUST = registerBasic("sulfur_dust");
+  public static final RegistryObject<Item> OBSIDIAN_DUST = registerBasic("obsidian_dust");
 
-  // NUGGET
-  public static final RegistryObject<Item> STEEL_NUGGET = registerBasicItem("steel_nugget");
-  public static final RegistryObject<Item> TIN_NUGGET = registerBasicItem("tin_nugget");
-  public static final RegistryObject<Item> ZINC_NUGGET = registerBasicItem("zinc_nugget");
-  public static final RegistryObject<Item> BRASS_NUGGET = registerBasicItem("brass_nugget");
-  public static final RegistryObject<Item> BRONZE_NUGGET = registerBasicItem("bronze_nugget");
-  public static final RegistryObject<Item> NICKEL_NUGGET = registerBasicItem("nickel_nugget");
-  public static final RegistryObject<Item> INVAR_NUGGET = registerBasicItem("invar_nugget");
-  public static final RegistryObject<Item> SILVER_NUGGET = registerBasicItem("silver_nugget");
-  public static final RegistryObject<Item> LEAD_NUGGET = registerBasicItem("lead_nugget");
+  public static final RegistryObject<Item> STEEL_NUGGET = registerBasic("steel_nugget");
+  public static final RegistryObject<Item> TIN_NUGGET = registerBasic("tin_nugget");
+  public static final RegistryObject<Item> ZINC_NUGGET = registerBasic("zinc_nugget");
+  public static final RegistryObject<Item> BRASS_NUGGET = registerBasic("brass_nugget");
+  public static final RegistryObject<Item> BRONZE_NUGGET = registerBasic("bronze_nugget");
+  public static final RegistryObject<Item> NICKEL_NUGGET = registerBasic("nickel_nugget");
+  public static final RegistryObject<Item> INVAR_NUGGET = registerBasic("invar_nugget");
+  public static final RegistryObject<Item> SILVER_NUGGET = registerBasic("silver_nugget");
+  public static final RegistryObject<Item> LEAD_NUGGET = registerBasic("lead_nugget");
 
-  // Gear
-  public static final RegistryObject<Item> BUSHING_GEAR = registerBasicItem("bushing_gear");
-  public static final RegistryObject<Item> TIN_GEAR = registerBasicItem("tin_gear");
-  public static final RegistryObject<Item> GOLD_GEAR = registerBasicItem("gold_gear");
-  public static final RegistryObject<Item> IRON_GEAR = registerBasicItem("iron_gear");
-  public static final RegistryObject<Item> LEAD_GEAR = registerBasicItem("lead_gear");
-  public static final RegistryObject<Item> ZINC_GEAR = registerBasicItem("zinc_gear");
-  public static final RegistryObject<Item> BRASS_GEAR = registerBasicItem("brass_gear");
-  public static final RegistryObject<Item> INVAR_GEAR = registerBasicItem("invar_gear");
-  public static final RegistryObject<Item> STEEL_GEAR = registerBasicItem("steel_gear");
-  public static final RegistryObject<Item> BRONZE_GEAR = registerBasicItem("bronze_gear");
-  public static final RegistryObject<Item> COPPER_GEAR = registerBasicItem("copper_gear");
-  public static final RegistryObject<Item> NICKEL_GEAR = registerBasicItem("nickel_gear");
-  public static final RegistryObject<Item> SILVER_GEAR = registerBasicItem("silver_gear");
+  public static final RegistryObject<Item> BUSHING_GEAR = registerBasic("bushing_gear");
+  public static final RegistryObject<Item> TIN_GEAR = registerBasic("tin_gear");
+  public static final RegistryObject<Item> GOLD_GEAR = registerBasic("gold_gear");
+  public static final RegistryObject<Item> IRON_GEAR = registerBasic("iron_gear");
+  public static final RegistryObject<Item> LEAD_GEAR = registerBasic("lead_gear");
+  public static final RegistryObject<Item> ZINC_GEAR = registerBasic("zinc_gear");
+  public static final RegistryObject<Item> BRASS_GEAR = registerBasic("brass_gear");
+  public static final RegistryObject<Item> INVAR_GEAR = registerBasic("invar_gear");
+  public static final RegistryObject<Item> STEEL_GEAR = registerBasic("steel_gear");
+  public static final RegistryObject<Item> BRONZE_GEAR = registerBasic("bronze_gear");
+  public static final RegistryObject<Item> COPPER_GEAR = registerBasic("copper_gear");
+  public static final RegistryObject<Item> NICKEL_GEAR = registerBasic("nickel_gear");
+  public static final RegistryObject<Item> SILVER_GEAR = registerBasic("silver_gear");
 
-  // Electrode
-  public static final RegistryObject<Item> TIN_ELECTRODE = registerBasicItem("tin_electrode");
-  public static final RegistryObject<Item> GOLD_ELECTRODE = registerBasicItem("gold_electrode");
-  public static final RegistryObject<Item> IRON_ELECTRODE = registerBasicItem("iron_electrode");
-  public static final RegistryObject<Item> LEAD_ELECTRODE = registerBasicItem("lead_electrode");
-  public static final RegistryObject<Item> ZINC_ELECTRODE = registerBasicItem("zinc_electrode");
-  public static final RegistryObject<Item> BRASS_ELECTRODE = registerBasicItem("brass_electrode");
-  public static final RegistryObject<Item> INVAR_ELECTRODE = registerBasicItem("invar_electrode");
-  public static final RegistryObject<Item> STEEL_ELECTRODE = registerBasicItem("steel_electrode");
-  public static final RegistryObject<Item> BRONZE_ELECTRODE = registerBasicItem("bronze_electrode");
-  public static final RegistryObject<Item> CARBON_ELECTRODE = registerBasicItem("carbon_electrode");
-  public static final RegistryObject<Item> COPPER_ELECTRODE = registerBasicItem("copper_electrode");
-  public static final RegistryObject<Item> NICKEL_ELECTRODE = registerBasicItem("nickel_electrode");
-  public static final RegistryObject<Item> SILVER_ELECTRODE = registerBasicItem("silver_electrode");
+  public static final RegistryObject<Item> TIN_ELECTRODE = registerBasic("tin_electrode");
+  public static final RegistryObject<Item> GOLD_ELECTRODE = registerBasic("gold_electrode");
+  public static final RegistryObject<Item> IRON_ELECTRODE = registerBasic("iron_electrode");
+  public static final RegistryObject<Item> LEAD_ELECTRODE = registerBasic("lead_electrode");
+  public static final RegistryObject<Item> ZINC_ELECTRODE = registerBasic("zinc_electrode");
+  public static final RegistryObject<Item> BRASS_ELECTRODE = registerBasic("brass_electrode");
+  public static final RegistryObject<Item> INVAR_ELECTRODE = registerBasic("invar_electrode");
+  public static final RegistryObject<Item> STEEL_ELECTRODE = registerBasic("steel_electrode");
+  public static final RegistryObject<Item> BRONZE_ELECTRODE = registerBasic("bronze_electrode");
+  public static final RegistryObject<Item> CARBON_ELECTRODE = registerBasic("carbon_electrode");
+  public static final RegistryObject<Item> COPPER_ELECTRODE = registerBasic("copper_electrode");
+  public static final RegistryObject<Item> NICKEL_ELECTRODE = registerBasic("nickel_electrode");
+  public static final RegistryObject<Item> SILVER_ELECTRODE = registerBasic("silver_electrode");
 
-  // circuits
-  public static final RegistryObject<Item> CONTROLLER_CIRCUIT = registerBasicItem(
-      "controller_circuit");
-  public static final RegistryObject<Item> RECEIVER_CIRCUIT = registerBasicItem("receiver_circuit");
-  public static final RegistryObject<Item> SIGNAL_CIRCUIT = registerBasicItem("signal_circuit");
-  // rails
-  public static final RegistryObject<Item> WOODEN_RAIL = registerBasicItem("wooden_rail");
-  public static final RegistryObject<Item> STANDARD_RAIL = registerBasicItem("standard_rail");
-  public static final RegistryObject<Item> ADVANCED_RAIL = registerBasicItem("advanced_rail");
-  public static final RegistryObject<Item> REINFORCED_RAIL = registerBasicItem("reinforced_rail");
-  public static final RegistryObject<Item> HIGH_SPEED_RAIL = registerBasicItem("high_speed_rail");
-  public static final RegistryObject<Item> ELECTRIC_RAIL = registerBasicItem("electric_rail");
+  public static final RegistryObject<Item> CONTROLLER_CIRCUIT = registerBasic("controller_circuit");
+  public static final RegistryObject<Item> RECEIVER_CIRCUIT = registerBasic("receiver_circuit");
+  public static final RegistryObject<Item> SIGNAL_CIRCUIT = registerBasic("signal_circuit");
 
-  // misc crafting units
-  public static final RegistryObject<Item> WOODEN_TIE = registerBasicItem("wooden_tie");
-  public static final RegistryObject<Item> STONE_TIE = registerBasicItem("stone_tie");
+  public static final RegistryObject<Item> WOODEN_RAIL = registerBasic("wooden_rail");
+  public static final RegistryObject<Item> STANDARD_RAIL = registerBasic("standard_rail");
+  public static final RegistryObject<Item> ADVANCED_RAIL = registerBasic("advanced_rail");
+  public static final RegistryObject<Item> REINFORCED_RAIL = registerBasic("reinforced_rail");
+  public static final RegistryObject<Item> HIGH_SPEED_RAIL = registerBasic("high_speed_rail");
+  public static final RegistryObject<Item> ELECTRIC_RAIL = registerBasic("electric_rail");
 
-  public static final RegistryObject<Item> REBAR = registerBasicItem("rebar");
-  public static final RegistryObject<Item> WOODEN_RAILBED = registerBasicItem("wooden_railbed");
-  public static final RegistryObject<Item> STONE_RAILBED = registerBasicItem("stone_railbed");
+  public static final RegistryObject<Item> WOODEN_TIE = registerBasic("wooden_tie");
+  public static final RegistryObject<Item> STONE_TIE = registerBasic("stone_tie");
 
-  public static final RegistryObject<Item> SIGNAL_LAMP = registerBasicItem("signal_lamp");
+  public static final RegistryObject<Item> REBAR = registerBasic("rebar");
+  public static final RegistryObject<Item> WOODEN_RAILBED = registerBasic("wooden_railbed");
+  public static final RegistryObject<Item> STONE_RAILBED = registerBasic("stone_railbed");
 
-  public static final RegistryObject<Item> CHARGE_SPOOL_LARGE = registerBasicItem(
-      "charge_spool_large");
-  public static final RegistryObject<Item> CHARGE_SPOOL_MEDIUM = registerBasicItem(
-      "charge_spool_medium");
-  public static final RegistryObject<Item> CHARGE_SPOOL_SMALL = registerBasicItem(
-      "charge_spool_small");
+  public static final RegistryObject<Item> SIGNAL_LAMP = registerBasic("signal_lamp");
 
-  /* ===== BUCKETS ===== */
+  public static final RegistryObject<Item> CHARGE_SPOOL_LARGE = registerBasic("charge_spool_large");
+  public static final RegistryObject<Item> CHARGE_SPOOL_MEDIUM =
+      registerBasic("charge_spool_medium");
+  public static final RegistryObject<Item> CHARGE_SPOOL_SMALL = registerBasic("charge_spool_small");
+
+  // ================================================================================
+  // Buckets
+  // ================================================================================
 
   public static final RegistryObject<Item> CREOSOTE_BUCKET =
       deferredRegister.register("creosote_bucket",
           () -> new BucketItem(RailcraftFluids.CREOSOTE, new Item.Properties().tab(TAB)));
 
-  // UTILS
+  // ================================================================================
+  // Utils
+  // ================================================================================
+
   private static <B extends Block> Function<Block, BlockItem> blockItemFactory(
       CreativeModeTab tab) {
     return block -> new BlockItem(block, new Item.Properties().tab(tab));
   }
 
-  private static RegistryObject<Item> registerBasicItem(String registerName) {
-    return registerBasicItem(registerName, TAB);
+  private static RegistryObject<Item> registerBasic(String name) {
+    return registerBasic(name, TAB);
   }
 
-  private static RegistryObject<Item> registerBasicItem(String registerName, CreativeModeTab tab) {
-    return deferredRegister.register(registerName,
-      () -> new Item(new Item.Properties().tab(tab)));
+  private static RegistryObject<Item> registerBasic(String name, CreativeModeTab tab) {
+    return deferredRegister.register(name,
+        () -> new Item(new Item.Properties().tab(tab)));
   }
 }

@@ -8,6 +8,15 @@ import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
 import mods.railcraft.client.ClientManager;
+import mods.railcraft.data.RailcraftAdvancementProviders;
+import mods.railcraft.data.RailcraftBlockTagsProvider;
+import mods.railcraft.data.RailcraftFluidTagsProvider;
+import mods.railcraft.data.RailcraftItemTagsProvider;
+import mods.railcraft.data.RailcraftLanguageProvider;
+import mods.railcraft.data.RailcraftLootTableProvider;
+import mods.railcraft.data.models.RailcraftModelProvider;
+import mods.railcraft.data.recipes.RailcraftRecipeProvider;
+import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
@@ -46,6 +55,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
@@ -91,6 +101,7 @@ public class Railcraft {
     var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleRegisterCapabilities);
+    modEventBus.addListener(this::handleGatherData);
 
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientManager::new);
 
@@ -124,6 +135,24 @@ public class Railcraft {
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
     event.register(MinecartExtension.class);
+  }
+
+  private void handleGatherData(GatherDataEvent event) {
+    var generator = event.getGenerator();
+    var fileHelper = event.getExistingFileHelper();
+    var blockTags = new RailcraftBlockTagsProvider(generator, fileHelper);
+    generator.addProvider(event.includeServer(), blockTags);
+    generator.addProvider(event.includeServer(),
+        new RailcraftItemTagsProvider(generator, blockTags, fileHelper));
+    generator.addProvider(event.includeServer(),
+        new RailcraftFluidTagsProvider(generator, fileHelper));
+    generator.addProvider(event.includeServer(), new RailcraftLootTableProvider(generator));
+    generator.addProvider(event.includeServer(),
+        new RailcraftAdvancementProviders(generator, fileHelper));
+    generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(generator));
+    generator.addProvider(event.includeServer(), new RollingRecipeProvider(generator));
+    generator.addProvider(event.includeClient(), new RailcraftModelProvider(generator));
+    generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(generator));
   }
 
   // ================================================================================
