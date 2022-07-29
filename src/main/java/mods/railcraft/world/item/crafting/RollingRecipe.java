@@ -136,27 +136,24 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
     @Override
     public RollingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
       var map = ShapedRecipe.keyFromJson(GsonHelper.getAsJsonObject(json, "key"));
-      String[] astring =
-          ShapedRecipe.shrink(ShapedRecipe.patternFromJson(GsonHelper.getAsJsonArray(json,
-          "pattern")));
-      int width = astring[0].length();
-      int height = astring.length;
+      var patterns = ShapedRecipe.shrink(ShapedRecipe.patternFromJson(GsonHelper.getAsJsonArray(json,"pattern")));
+      int width = patterns[0].length();
+      int height = patterns.length;
 
       int tickCost = GsonHelper.getAsInt(json, "tickCost", 100); // 5 seconds
-      var ingredients = ShapedRecipe.dissolvePattern(astring, map, width, height);
-      ItemStack resultItemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json,
-          "result"));
+      var ingredients = ShapedRecipe.dissolvePattern(patterns, map, width, height);
+      var resultItemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json,"result"));
       return new RollingRecipe(recipeId, width, height, ingredients, resultItemStack, tickCost);
     }
 
     @Override
     public RollingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-      NonNullList<Ingredient> ingredients = NonNullList.withSize(9, Ingredient.EMPTY);
+      var ingredients = NonNullList.withSize(9, Ingredient.EMPTY);
       int width = buffer.readVarInt();
       int height = buffer.readVarInt();
       int tickCost = buffer.readVarInt();
       ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
-      ItemStack result = buffer.readItem();
+      var result = buffer.readItem();
 
       return new RollingRecipe(recipeId, width, height, ingredients, result, tickCost);
     }
