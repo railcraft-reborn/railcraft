@@ -1,15 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +12,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
 /**
@@ -135,172 +128,51 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   }
 
   public static class RollingRecipeSerializer implements RecipeSerializer<RollingRecipe> {
-
-    @Override
-    public RollingRecipe fromJson(ResourceLocation resourceLoc, JsonObject jsonObject) {
-      Map<String, Ingredient> map = keyFromJson(GsonHelper.getAsJsonObject(jsonObject, "key"));
-      String[] astring = shrink(patternFromJson(GsonHelper.getAsJsonArray(jsonObject, "pattern")));
-
-      int tickCost = GsonHelper.getAsInt(jsonObject, "tickCost", 100); // 5 seconds
-      // I SAID, STRICT 3X3
-      NonNullList<Ingredient> ingredients = dissolvePattern(astring, map, 3, 3);
-      ItemStack resultItemStack = itemFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
-      // 3x3 recipies only, attempting to register 4x4's will not work and we will never honor it.
-      return new RollingRecipe(resourceLoc, tickCost, ingredients, resultItemStack);
+    static {
+      ShapedRecipe.setCraftingSize(3, 3);
     }
 
     @Override
-    public RollingRecipe fromNetwork(ResourceLocation resourceLoc, FriendlyByteBuf packetBuffer) {
+    public RollingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+      var map = ShapedRecipe.keyFromJson(GsonHelper.getAsJsonObject(json, "key"));
+      String[] astring =
+          ShapedRecipe.shrink(ShapedRecipe.patternFromJson(GsonHelper.getAsJsonArray(json,
+          "pattern")));
+
+      int tickCost = GsonHelper.getAsInt(json, "tickCost", 100); // 5 seconds
+      var ingredients = ShapedRecipe.dissolvePattern(astring, map, 3, 3);
+      ItemStack resultItemStack = itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
+      return new RollingRecipe(recipeId, tickCost, ingredients, resultItemStack);
+    }
+
+    @Override
+    public RollingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
       NonNullList<Ingredient> ingredients = NonNullList.withSize(9, Ingredient.EMPTY);
-      int tickCost = packetBuffer.readVarInt();
+      int tickCost = buffer.readVarInt();
+      ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
+      ItemStack result = buffer.readItem();
 
-      for (int k = 0; k < ingredients.size(); ++k) {
-        ingredients.set(k, Ingredient.fromNetwork(packetBuffer));
-      }
-
-      ItemStack itemstack = packetBuffer.readItem();
-      return new RollingRecipe(resourceLoc, tickCost, ingredients, itemstack);
+      return new RollingRecipe(recipeId, tickCost, ingredients, result);
     }
 
     @Override
-    public void toNetwork(FriendlyByteBuf packetBuffer, RollingRecipe recipe) {
-      packetBuffer.writeVarInt(recipe.tickCost);
-      // format: [tickcost(int), ingredient, result]
+    public void toNetwork(FriendlyByteBuf buffer, RollingRecipe recipe) {
+      buffer.writeVarInt(recipe.tickCost);
       for (Ingredient ingredient : recipe.ingredients) {
-        ingredient.toNetwork(packetBuffer);
+        ingredient.toNetwork(buffer);
       }
-
-      packetBuffer.writeItem(recipe.result);
+      buffer.writeItem(recipe.result);
     }
 
-    private static String[] patternFromJson(JsonArray jsondat) {
-      String[] astring = new String[jsondat.size()];
-      if (astring.length > 3) {
-        throw new JsonSyntaxException("Invalid pattern: too many rows, 3 is maximum");
-      } else if (astring.length == 0) {
-        throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
-      } else {
-        for (int i = 0; i < astring.length; ++i) {
-          String s = GsonHelper.convertToString(jsondat.get(i), "pattern[" + i + "]");
-          if (s.length() > 3) {
-            throw new JsonSyntaxException("Invalid pattern: too many columns, 3 is maximum");
-          }
-          if (i > 0 && astring[0].length() != s.length()) {
-            throw new JsonSyntaxException("Invalid pattern: each row must be the same width");
-          }
-          astring[i] = s;
-        }
-        return astring;
-      }
-    }
-
-    /**
-     * see vanilla crafting table.
-     *
-     * @param jsondat -
-     * @return {@see net.minecraft.item.crafting.ShapedRecipe keyFromJson}
-     */
-    private static Map<String, Ingredient> keyFromJson(JsonObject jsondat) {
-      Map<String, Ingredient> map = Maps.newHashMap();
-
-      for (Entry<String, JsonElement> entry : jsondat.entrySet()) {
-        if (entry.getKey().length() != 1) {
-          throw new JsonSyntaxException("Invalid key entry: '" + entry.getKey()
-              + "' is an invalid symbol (must be 1 character only).");
-        }
-        if (" ".equals(entry.getKey())) {
-          throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
-        }
-        map.put(entry.getKey(), Ingredient.fromJson(entry.getValue()));
-      }
-      map.put(" ", Ingredient.EMPTY);
-      return map;
-    }
-
-    public static ItemStack itemFromJson(JsonObject jsondat) {
-      if (!jsondat.has("item")) {
+    private static ItemStack itemFromJson(JsonObject itemObject) {
+      if (!itemObject.has("item")) {
         throw new JsonParseException("No item key found");
       }
-      if (jsondat.has("data")) {
+      if (itemObject.has("data")) {
         throw new JsonParseException("Disallowed data tag found");
       } else {
-        return net.minecraftforge.common.crafting.CraftingHelper.getItemStack(jsondat, true);
+        return net.minecraftforge.common.crafting.CraftingHelper.getItemStack(itemObject, true);
       }
-    }
-
-    private static NonNullList<Ingredient> dissolvePattern(String[] patternArray,
-        Map<String, Ingredient> ingreidentKeyMap, int x, int y) {
-      NonNullList<Ingredient> nonnulllist = NonNullList.withSize(x * y, Ingredient.EMPTY);
-      Set<String> set = Sets.newHashSet(ingreidentKeyMap.keySet());
-      set.remove(" ");
-
-      for (int i = 0; i < patternArray.length; ++i) {
-        for (int j = 0; j < patternArray[i].length(); ++j) {
-          String s = patternArray[i].substring(j, j + 1);
-          Ingredient ingredient = ingreidentKeyMap.get(s);
-          if (ingredient == null) {
-            throw new JsonSyntaxException(
-                "Pattern references symbol '" + s + "' but it's not defined in the key");
-          }
-          set.remove(s);
-          nonnulllist.set(j + x * i, ingredient);
-        }
-      }
-
-      if (!set.isEmpty()) {
-        throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
-      } else {
-        return nonnulllist;
-      }
-    }
-
-    static String[] shrink(String... patternArray) {
-      int i = Integer.MAX_VALUE;
-      int j = 0;
-      int k = 0;
-      int l = 0;
-
-      for (int i1 = 0; i1 < patternArray.length; ++i1) {
-        String s = patternArray[i1];
-        i = Math.min(i, firstNonSpace(s));
-        int j1 = lastNonSpace(s);
-        j = Math.max(j, j1);
-        if (j1 < 0) {
-          if (k == i1) {
-            ++k;
-          }
-
-          ++l;
-        } else {
-          l = 0;
-        }
-      }
-
-      if (patternArray.length == l) {
-        return new String[0];
-      } else {
-        String[] astring = new String[patternArray.length - l - k];
-        for (int k1 = 0; k1 < astring.length; ++k1) {
-          astring[k1] = patternArray[k1 + k].substring(i, j + 1);
-        }
-        return astring;
-      }
-    }
-
-    private static final int firstNonSpace(String in) {
-      int i;
-      for (i = 0; i < in.length() && in.charAt(i) == ' '; ++i) {
-        ;
-      }
-      return i;
-    }
-
-    private static final int lastNonSpace(String in) {
-      int i;
-      for (i = in.length() - 1; i >= 0 && in.charAt(i) == ' '; --i) {
-        ;
-      }
-      return i;
     }
   }
 }
