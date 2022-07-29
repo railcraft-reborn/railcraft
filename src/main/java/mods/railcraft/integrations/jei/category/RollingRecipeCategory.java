@@ -54,14 +54,19 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
   @Override
   public void setRecipe(IRecipeLayoutBuilder builder, RollingRecipe recipe, IFocusGroup focuses) {
     builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 19).addItemStack(recipe.getResultItem());
-
     var ingredients = recipe.getIngredients();
-    for (int y = 0; y < 3; y++) {
-      for (int x = 0; x < 3; x++) {
-        var ingredient = ingredients.get(x + (y * 3));
+
+    int heightOffset = Math.floorDiv(3 - recipe.getHeight(), 2);
+    int widthOffset = Math.floorDiv(3 - recipe.getWidth(), 2);
+    int stackIndex = 0;
+
+    for (int y = heightOffset; y < recipe.getHeight() + heightOffset; y++) {
+      for (int x = widthOffset; x < recipe.getWidth() + widthOffset; x++) {
+        var ingredient = ingredients.get(stackIndex);
         builder
             .addSlot(RecipeIngredientRole.INPUT, x * 18 + 1, y * 18 + 1)
             .addIngredients(ingredient);
+        stackIndex++;
       }
     }
   }

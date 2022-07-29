@@ -1,7 +1,6 @@
 package mods.railcraft.world.item.crafting;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -15,14 +14,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
-/**
- * Rolling recipe class.
- *
- * @author LetterN (https://github.com/LetterN)
- */
 public class RollingRecipe implements Recipe<CraftingContainer> {
-
   private final ResourceLocation recipeId;
+  private final int width, height;
   private final NonNullList<Ingredient> ingredients;
   private final ItemStack result;
   private final int tickCost;
@@ -35,9 +29,11 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
    * @param result          - The result
    * @param tickCost        - The time cost of the recipe
    */
-  public RollingRecipe(ResourceLocation recipeId, NonNullList<Ingredient> ingredients,
-      ItemStack result, int tickCost) {
+  public RollingRecipe(ResourceLocation recipeId, int width, int height,
+      NonNullList<Ingredient> ingredients, ItemStack result, int tickCost) {
     this.recipeId = recipeId;
+    this.width = width;
+    this.height = height;
     this.ingredients = ingredients;
     this.result = result;
     this.tickCost = tickCost;
@@ -52,10 +48,18 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
     return this.tickCost;
   }
 
+  public int getWidth() {
+    return this.width;
+  }
+
+  public int getHeight() {
+    return this.height;
+  }
+
   @Override
   public boolean matches(CraftingContainer inventory, Level level) {
-    for (int i = 0; i <= inventory.getWidth() - 3; ++i) {
-      for (int j = 0; j <= inventory.getHeight() - 3; ++j) {
+    for (int i = 0; i <= inventory.getWidth() - this.width; ++i) {
+      for (int j = 0; j <= inventory.getHeight() - this.height; ++j) {
         if (this.matches(inventory, i, j, true)) {
           return true;
         }
@@ -75,11 +79,11 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
         int k = i - x;
         int l = j - y;
         Ingredient ingredient = Ingredient.EMPTY;
-        if (k >= 0 && l >= 0 && k < 3 && l < 3) {
+        if (k >= 0 && l >= 0 && k < this.width && l < this.height) {
           if (inverse) {
-            ingredient = this.ingredients.get(3 - k - 1 + l * 3);
+            ingredient = this.ingredients.get(this.width - k - 1 + l * this.width);
           } else {
-            ingredient = this.ingredients.get(k + l * 3);
+            ingredient = this.ingredients.get(k + l * this.width);
           }
         }
 
@@ -98,8 +102,8 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   }
 
   @Override
-  public boolean canCraftInDimensions(int x, int y) {
-    return x >= 3 && y >= 3;
+  public boolean canCraftInDimensions(int width, int height) {
+    return width >= this.width && height >= this.height;
   }
 
   @Override
@@ -128,9 +132,6 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   }
 
   public static class RollingRecipeSerializer implements RecipeSerializer<RollingRecipe> {
-    static {
-      ShapedRecipe.setCraftingSize(3, 3);
-    }
 
     @Override
     public RollingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
@@ -138,26 +139,32 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
       String[] astring =
           ShapedRecipe.shrink(ShapedRecipe.patternFromJson(GsonHelper.getAsJsonArray(json,
           "pattern")));
+      int width = astring[0].length();
+      int height = astring.length;
 
       int tickCost = GsonHelper.getAsInt(json, "tickCost", 100); // 5 seconds
-      var ingredients = ShapedRecipe.dissolvePattern(astring, map, 3, 3);
+      var ingredients = ShapedRecipe.dissolvePattern(astring, map, width, height);
       ItemStack resultItemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json,
           "result"));
-      return new RollingRecipe(recipeId, ingredients, resultItemStack, tickCost);
+      return new RollingRecipe(recipeId, width, height, ingredients, resultItemStack, tickCost);
     }
 
     @Override
     public RollingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
       NonNullList<Ingredient> ingredients = NonNullList.withSize(9, Ingredient.EMPTY);
+      int width = buffer.readVarInt();
+      int height = buffer.readVarInt();
       int tickCost = buffer.readVarInt();
       ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
       ItemStack result = buffer.readItem();
 
-      return new RollingRecipe(recipeId, ingredients, result, tickCost);
+      return new RollingRecipe(recipeId, width, height, ingredients, result, tickCost);
     }
 
     @Override
     public void toNetwork(FriendlyByteBuf buffer, RollingRecipe recipe) {
+      buffer.writeVarInt(recipe.width);
+      buffer.writeVarInt(recipe.height);
       buffer.writeVarInt(recipe.tickCost);
       for (Ingredient ingredient : recipe.ingredients) {
         ingredient.toNetwork(buffer);
