@@ -439,6 +439,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Jei.METAL_ROLLING, "Metal Rolling");
     this.add(Jei.COKE_OVEN, "Coke Oven Smelting");
     this.add(Jei.BLAST_FURNACE, "Blast Furnace Smelting");
+    this.add(Jei.CRUSHER, "Rock Crushing");
+    this.add(Jei.CRUSHER_TIP, "(%s%% chance)");
   }
 
   public void addFluidType(Supplier<? extends FluidType> key, String name) {

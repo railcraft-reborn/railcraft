@@ -124,6 +124,10 @@ public class Translations {
         format("jei.%railcraft.category.coke_oven");
     public static final String BLAST_FURNACE =
         format("jei.%railcraft.category.blast_furnace");
+    public static final String CRUSHER =
+        format("jei.%railcraft.category.crusher");
+    public static final String CRUSHER_TIP =
+        format("jei.%railcraft.tips.crusher");
   }
 
   public static class Misc {

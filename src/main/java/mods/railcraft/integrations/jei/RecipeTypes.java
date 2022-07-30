@@ -4,6 +4,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
+import mods.railcraft.world.item.crafting.CrusherRecipe;
 import mods.railcraft.world.item.crafting.RollingRecipe;
 
 public class RecipeTypes {
@@ -14,4 +15,6 @@ public class RecipeTypes {
       "coke_oven", CokeOvenRecipe.class);
   public static final RecipeType<BlastFurnaceRecipe> BLAST_FURNACE = RecipeType.create(Railcraft.ID,
       "blast_furnace", BlastFurnaceRecipe.class);
+  public static final RecipeType<CrusherRecipe> CRUSHER = RecipeType.create(Railcraft.ID,
+      "crusher", CrusherRecipe.class);
 }

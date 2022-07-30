@@ -1,0 +1,23 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "item": "minecraft:cobblestone"
+  },
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 1,
+        "item": "minecraft:gravel"
+      }
+    },
+    {
+      "probability": 0.1,
+      "result": {
+        "count": 1,
+        "item": "minecraft:flint"
+      }
+    }
+  ],
+  "tickCost": 200
+}

@@ -1,0 +1,16 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "item": "minecraft:sandstone_slab"
+  },
+  "output": [
+    {
+      "probability": 0.45,
+      "result": {
+        "count": 1,
+        "item": "minecraft:sand"
+      }
+    }
+  ],
+  "tickCost": 200
+}

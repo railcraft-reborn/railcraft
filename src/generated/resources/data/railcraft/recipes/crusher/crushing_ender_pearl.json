@@ -1,0 +1,16 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "item": "minecraft:ender_pearl"
+  },
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 1,
+        "item": "railcraft:ender_dust"
+      }
+    }
+  ],
+  "tickCost": 200
+}

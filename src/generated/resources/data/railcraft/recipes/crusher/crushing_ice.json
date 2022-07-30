@@ -1,0 +1,23 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "item": "minecraft:ice"
+  },
+  "output": [
+    {
+      "probability": 0.85,
+      "result": {
+        "count": 1,
+        "item": "minecraft:snow_block"
+      }
+    },
+    {
+      "probability": 0.25,
+      "result": {
+        "count": 1,
+        "item": "minecraft:snowball"
+      }
+    }
+  ],
+  "tickCost": 200
+}

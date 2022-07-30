@@ -3,15 +3,20 @@ package mods.railcraft.data.recipes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
@@ -51,8 +56,17 @@ public class CrusherRecipeBuilder {
     return this;
   }
 
-  public void save(Consumer<FinishedRecipe> finishedRecipe, String path) {
-    var customResourceLocation = new ResourceLocation(Railcraft.ID, "crusher/" + path);
+  public void save(Consumer<FinishedRecipe> finishedRecipe) {
+    var item = Arrays.stream(ingredient.getItems())
+        .filter(x -> !x.is(Items.BARRIER))
+        .findFirst()
+        .orElseThrow();
+    save(finishedRecipe, ForgeRegistries.ITEMS.getKey(item.getItem()));
+  }
+
+  public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
+    var path = resourceLocation.getPath();
+    var customResourceLocation = new ResourceLocation(Railcraft.ID, "crusher/crushing_" + path);
 
     finishedRecipe.accept(new Result(customResourceLocation, this.ingredient, this.probabilityItems,
         this.recipeDelay));

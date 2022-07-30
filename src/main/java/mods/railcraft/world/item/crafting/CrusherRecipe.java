@@ -62,14 +62,22 @@ public class CrusherRecipe implements Recipe<CraftingContainer> {
   }
 
 
+  /**
+   * Use getProbabilityItems
+   */
   @Override
+  @Deprecated(forRemoval = false)
   public ItemStack getResultItem() {
     return ItemStack.EMPTY;
   }
 
+  public List<Tuple<ItemStack, Double>> getProbabilityItems() {
+    return probabilityItems;
+  }
+
   @Override
   public NonNullList<Ingredient> getIngredients() {
-    return NonNullList.of(ingredient);
+    return NonNullList.of(Ingredient.EMPTY, ingredient);
   }
 
   @Override
