@@ -7,11 +7,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * Railcraft {@link IRecipeSerializer} registrar.
- *
- * @author LetterN (https://github.com/LetterN)
- */
 public class RailcraftRecipeSerializers {
 
   private static final DeferredRegister<RecipeSerializer<?>> deferredRegister =
@@ -25,6 +20,9 @@ public class RailcraftRecipeSerializers {
 
   public static final RegistryObject<RecipeSerializer<?>> BLASTING =
       deferredRegister.register("blasting", BlastFurnaceRecipe.Serializer::new);
+
+  public static final RegistryObject<RecipeSerializer<?>> CRUSHER =
+      deferredRegister.register("crusher", CrusherRecipe.CrusherRecipeSerializer::new);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

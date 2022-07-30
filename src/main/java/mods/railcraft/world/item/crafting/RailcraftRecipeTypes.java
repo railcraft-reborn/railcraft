@@ -23,6 +23,9 @@ public class RailcraftRecipeTypes {
   public static final RegistryObject<RecipeType<BlastFurnaceRecipe>> BLASTING =
       register("blasting");
 
+  public static final RegistryObject<RecipeType<CrusherRecipe>> CRUSHING =
+      register("crushing");
+
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }
