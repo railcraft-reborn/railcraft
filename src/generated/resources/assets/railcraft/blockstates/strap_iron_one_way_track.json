@@ -1,0 +1,110 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted",
+        "y": 0
+      },
+      "when": {
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted",
+        "y": 90
+      },
+      "when": {
+        "shape": "east_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track",
+        "y": 0
+      },
+      "when": {
+        "powered": "false",
+        "reversed": "false",
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track",
+        "y": 90
+      },
+      "when": {
+        "powered": "false",
+        "reversed": "false",
+        "shape": "east_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track_on",
+        "y": 0
+      },
+      "when": {
+        "powered": "true",
+        "reversed": "false",
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track_on",
+        "y": 90
+      },
+      "when": {
+        "powered": "true",
+        "reversed": "false",
+        "shape": "east_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track",
+        "y": 180
+      },
+      "when": {
+        "powered": "false",
+        "reversed": "true",
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track",
+        "y": 270
+      },
+      "when": {
+        "powered": "false",
+        "reversed": "true",
+        "shape": "east_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track_on",
+        "y": 180
+      },
+      "when": {
+        "powered": "true",
+        "reversed": "true",
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track_on",
+        "y": 270
+      },
+      "when": {
+        "powered": "true",
+        "reversed": "true",
+        "shape": "east_west"
+      }
+    }
+  ]
+}

@@ -57,6 +57,7 @@ import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LauncherTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.OneWayTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
@@ -525,6 +526,14 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
+  public static final RegistryObject<TrackBlock> ABANDONED_ONE_WAY_TRACK =
+      deferredRegister.register("abandoned_one_way_track",
+          () -> new OneWayTrackBlock(TrackTypes.ABANDONED,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
   public static final RegistryObject<TrackBlock> ELECTRIC_TRACK =
       deferredRegister.register("electric_track",
           () -> new TrackBlock(TrackTypes.ELECTRIC,
@@ -647,6 +656,14 @@ public class RailcraftBlocks {
   public static final RegistryObject<TrackBlock> ELECTRIC_LAUNCHER_TRACK =
       deferredRegister.register("electric_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.ELECTRIC,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
+  public static final RegistryObject<TrackBlock> ELECTRIC_ONE_WAY_TRACK =
+      deferredRegister.register("electric_one_way_track",
+          () -> new OneWayTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
@@ -924,6 +941,14 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
+  public static final RegistryObject<TrackBlock> IRON_ONE_WAY_TRACK =
+      deferredRegister.register("iron_one_way_track",
+          () -> new OneWayTrackBlock(TrackTypes.IRON,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
   public static final RegistryObject<TrackBlock> REINFORCED_TRACK =
       deferredRegister.register("reinforced_track",
           () -> new TrackBlock(TrackTypes.REINFORCED,
@@ -1044,6 +1069,14 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
+  public static final RegistryObject<TrackBlock> REINFORCED_ONE_WAY_TRACK =
+      deferredRegister.register("reinforced_one_way_track",
+          () -> new OneWayTrackBlock(TrackTypes.REINFORCED,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
+                  .sound(SoundType.METAL)));
+
   public static final RegistryObject<TrackBlock> STRAP_IRON_TRACK =
       deferredRegister.register("strap_iron_track",
           () -> new TrackBlock(TrackTypes.STRAP_IRON,
@@ -1159,6 +1192,14 @@ public class RailcraftBlocks {
   public static final RegistryObject<TrackBlock> STRAP_IRON_LAUNCHER_TRACK =
       deferredRegister.register("strap_iron_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.STRAP_IRON,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
+  public static final RegistryObject<TrackBlock> STRAP_IRON_ONE_WAY_TRACK =
+      deferredRegister.register("strap_iron_one_way_track",
+          () -> new OneWayTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)

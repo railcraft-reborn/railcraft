@@ -82,8 +82,8 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   private static void slowCartSpeed(AbstractMinecart cart) {
-    if (cart instanceof Locomotive) {
-      ((Locomotive) cart).forceIdle(20);
+    if (cart instanceof Locomotive locomotive) {
+      locomotive.forceIdle(20);
     }
     cart.setDeltaMovement(cart.getDeltaMovement().multiply(SLOW_FACTOR, 1.0D, SLOW_FACTOR));
   }

@@ -15,6 +15,7 @@
     "railcraft:abandoned_wye_track",
     "railcraft:abandoned_junction_track",
     "railcraft:abandoned_launcher_track",
+    "railcraft:abandoned_one_way_track",
     "railcraft:electric_track",
     "railcraft:electric_locking_track",
     "railcraft:electric_activator_track",
@@ -29,6 +30,7 @@
     "railcraft:electric_wye_track",
     "railcraft:electric_junction_track",
     "railcraft:electric_launcher_track",
+    "railcraft:electric_one_way_track",
     "railcraft:high_speed_track",
     "railcraft:high_speed_transition_track",
     "railcraft:high_speed_locking_track",
@@ -60,6 +62,7 @@
     "railcraft:iron_wye_track",
     "railcraft:iron_junction_track",
     "railcraft:iron_launcher_track",
+    "railcraft:iron_one_way_track",
     "railcraft:reinforced_track",
     "railcraft:reinforced_locking_track",
     "railcraft:reinforced_activator_track",
@@ -74,6 +77,7 @@
     "railcraft:reinforced_wye_track",
     "railcraft:reinforced_junction_track",
     "railcraft:reinforced_launcher_track",
+    "railcraft:reinforced_one_way_track",
     "railcraft:strap_iron_track",
     "railcraft:strap_iron_locking_track",
     "railcraft:strap_iron_activator_track",
@@ -87,6 +91,7 @@
     "railcraft:strap_iron_turnout_track",
     "railcraft:strap_iron_wye_track",
     "railcraft:strap_iron_junction_track",
-    "railcraft:strap_iron_launcher_track"
+    "railcraft:strap_iron_launcher_track",
+    "railcraft:strap_iron_one_way_track"
   ]
 }
