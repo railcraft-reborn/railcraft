@@ -51,7 +51,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
         String.format("recipes/%s/%s", this.result.getItemCategory().getRecipeFolderName(),
             customResourceLocation.getPath()));
 
-    finishedRecipe.accept(new Result(resourceLocation,
+    finishedRecipe.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
         this.experience, this.cookingTime, this.slagOutput, this.advancement, advancementId));
   }
