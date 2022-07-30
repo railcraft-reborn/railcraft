@@ -29,13 +29,12 @@ public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceR
   private static final ResourceLocation BLAST_FURNACE_BACKGROUND =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/blast_furnace.png");
 
-  private final IGuiHelper guiHelper;
-  private final ItemStack icon;
-  private final IDrawable flame, arrow;
+  private final IDrawable background, icon, flame, arrow;
 
   public BlastFurnaceRecipeCategory(IGuiHelper guiHelper) {
-    this.guiHelper = guiHelper;
-    this.icon = new ItemStack(RailcraftItems.BLAST_FURNACE_BRICKS.get());
+    this.background = guiHelper.createDrawable(BLAST_FURNACE_BACKGROUND, 55, 16, WIDTH, HEIGHT);
+    var itemStack = new ItemStack(RailcraftItems.BLAST_FURNACE_BRICKS.get());
+    this.icon = guiHelper.createDrawableItemStack(itemStack);
 
     this.flame = guiHelper.createAnimatedDrawable(
         guiHelper.createDrawable(BLAST_FURNACE_BACKGROUND, 176, 0, 14, 14),
@@ -57,12 +56,12 @@ public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceR
 
   @Override
   public IDrawable getBackground() {
-    return guiHelper.createDrawable(BLAST_FURNACE_BACKGROUND, 55, 16, WIDTH, HEIGHT);
+    return background;
   }
 
   @Override
   public IDrawable getIcon() {
-    return guiHelper.createDrawableItemStack(icon);
+    return icon;
   }
 
   @Override
@@ -84,7 +83,8 @@ public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceR
   }
 
   @Override
-  public void setRecipe(IRecipeLayoutBuilder builder, BlastFurnaceRecipe recipe, IFocusGroup focuses) {
+  public void setRecipe(IRecipeLayoutBuilder builder, BlastFurnaceRecipe recipe,
+      IFocusGroup focuses) {
     var ingredients = recipe.getIngredients();
     builder
         .addSlot(RecipeIngredientRole.INPUT, 1, 1)

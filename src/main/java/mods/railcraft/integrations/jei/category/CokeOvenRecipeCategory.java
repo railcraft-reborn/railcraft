@@ -28,13 +28,12 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
   private static final ResourceLocation COKE_OVEN_BACKGROUND =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/coke_oven.png");
 
-  private final IGuiHelper guiHelper;
-  private final ItemStack icon;
-  private final IDrawable flame, arrow;
+  private final IDrawable background, icon, flame, arrow;
 
   public CokeOvenRecipeCategory(IGuiHelper guiHelper) {
-    this.guiHelper = guiHelper;
-    this.icon = new ItemStack(RailcraftItems.COKE_OVEN_BRICKS.get());
+    this.background = guiHelper.createDrawable(COKE_OVEN_BACKGROUND, 15, 23, WIDTH, HEIGHT);
+    var itemStack = new ItemStack(RailcraftItems.COKE_OVEN_BRICKS.get());
+    this.icon = guiHelper.createDrawableItemStack(itemStack);
 
     this.flame = guiHelper.createAnimatedDrawable(
         guiHelper.createDrawable(COKE_OVEN_BACKGROUND, 176, 47, 14, 14),
@@ -56,12 +55,12 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
 
   @Override
   public IDrawable getBackground() {
-    return guiHelper.createDrawable(COKE_OVEN_BACKGROUND, 15, 23, WIDTH, HEIGHT);
+    return background;
   }
 
   @Override
   public IDrawable getIcon() {
-    return guiHelper.createDrawableItemStack(icon);
+    return icon;
   }
 
   @Override
