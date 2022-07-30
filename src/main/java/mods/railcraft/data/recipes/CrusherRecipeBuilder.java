@@ -57,15 +57,15 @@ public class CrusherRecipeBuilder {
   }
 
   public void save(Consumer<FinishedRecipe> finishedRecipe) {
-    var item = Arrays.stream(ingredient.getItems())
+    var itemPath = Arrays.stream(ingredient.getItems())
         .filter(x -> !x.is(Items.BARRIER))
         .findFirst()
+        .map(x -> ForgeRegistries.ITEMS.getKey(x.getItem()).getPath())
         .orElseThrow();
-    save(finishedRecipe, ForgeRegistries.ITEMS.getKey(item.getItem()));
+    save(finishedRecipe, itemPath);
   }
 
-  public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
-    var path = resourceLocation.getPath();
+  public void save(Consumer<FinishedRecipe> finishedRecipe, String path) {
     var customResourceLocation = new ResourceLocation(Railcraft.ID, "crusher/crushing_" + path);
 
     finishedRecipe.accept(new Result(customResourceLocation, this.ingredient, this.probabilityItems,

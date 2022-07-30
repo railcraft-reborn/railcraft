@@ -1,0 +1,30 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "tag": "forge:ores/lapis"
+  },
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 8,
+        "item": "minecraft:lapis_lazuli"
+      }
+    },
+    {
+      "probability": 0.85,
+      "result": {
+        "count": 1,
+        "item": "minecraft:lapis_lazuli"
+      }
+    },
+    {
+      "probability": 0.35,
+      "result": {
+        "count": 1,
+        "item": "minecraft:lapis_lazuli"
+      }
+    }
+  ],
+  "tickCost": 200
+}

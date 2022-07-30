@@ -58,12 +58,12 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(Items.GOLD_NUGGET, 1, 0.001)
         .addResult(Items.DIAMOND, 1, 0.00005)
         .save(consumer);
-    /*CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.STONE), 200)
+    CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.STONE), 200)
         .addResult(Items.COBBLESTONE, 1, 1)
-        .save(consumer);
+        .save(consumer, "tags_stone");
     CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.SANDSTONE), 200)
         .addResult(Items.SAND, 4, 1)
-        .save(consumer);*/
+        .save(consumer, "tags_sandstone");
     CrusherRecipeBuilder.crush(Ingredient.of(Items.BRICKS), 200)
         .addResult(Items.BRICK, 3, 1)
         .addResult(Items.BRICK, 1, 0.50)
@@ -128,34 +128,34 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(Items.BLAZE_POWDER, 1, 0.25)
         .addResult(Items.BLAZE_POWDER, 1, 0.25)
         .save(consumer);
-    /*CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.ORES_REDSTONE), 200)
+    CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.ORES_REDSTONE), 200)
         .addResult(Items.REDSTONE, 6, 1)
         .addResult(Items.REDSTONE, 2, 0.85)
         .addResult(Items.REDSTONE, 1, 0.25)
         .addResult(Items.GLOWSTONE_DUST, 1, 0.1)
-        .save(consumer);
+        .save(consumer, "tags_ores_redstone");
     CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.ORES_DIAMOND), 200)
         .addResult(Items.DIAMOND, 1, 1)
         .addResult(Items.DIAMOND, 1, 0.85)
         .addResult(Items.DIAMOND, 1, 0.25)
         .addResult(Items.COAL, 1, 0.1)
-        .save(consumer);
+        .save(consumer, "tags_ores_diamond");
     CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.ORES_EMERALD), 200)
         .addResult(Items.EMERALD, 1, 1)
         .addResult(Items.EMERALD, 1, 0.85)
         .addResult(Items.EMERALD, 1, 0.25)
-        .save(consumer);
+        .save(consumer, "tags_ores_emerald");
     CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.ORES_LAPIS), 200)
         .addResult(Items.LAPIS_LAZULI, 8, 1)
         .addResult(Items.LAPIS_LAZULI, 1, 0.85)
         .addResult(Items.LAPIS_LAZULI, 1, 0.35)
-        .save(consumer);
+        .save(consumer, "tags_ores_lapis");
     CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.ORES_COAL), 200)
         .addResult(RailcraftItems.COAL_DUST.get(), 2, 1)
         .addResult(RailcraftItems.COAL_DUST.get(), 1, 0.65)
         .addResult(Items.COAL, 1, 0.15)
         .addResult(Items.DIAMOND, 1, 0.001)
-        .save(consumer);*/
+        .save(consumer, "tags_ores_coal");
     CrusherRecipeBuilder.crush(Ingredient.of(Items.COAL), 200)
         .addResult(RailcraftItems.COAL_DUST.get(), 1, 1)
         .save(consumer);
