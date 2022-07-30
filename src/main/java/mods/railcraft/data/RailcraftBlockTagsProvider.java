@@ -6,7 +6,6 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -40,6 +39,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get(),
             RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get(),
             RailcraftBlocks.ABANDONED_ONE_WAY_TRACK.get(),
+            RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK.get(),
             RailcraftBlocks.ELECTRIC_TRACK.get(),
             RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
             RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
@@ -55,6 +55,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get(),
             RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
             RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
@@ -64,6 +65,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
@@ -73,6 +75,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
             RailcraftBlocks.IRON_LOCKING_TRACK.get(),
             RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.IRON_BOOSTER_TRACK.get(),
@@ -87,6 +90,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.IRON_JUNCTION_TRACK.get(),
             RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
             RailcraftBlocks.IRON_ONE_WAY_TRACK.get(),
+            RailcraftBlocks.IRON_LOCOMOTIVE_TRACK.get(),
             RailcraftBlocks.REINFORCED_TRACK.get(),
             RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
             RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
@@ -102,6 +106,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get(),
             RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
             RailcraftBlocks.REINFORCED_ONE_WAY_TRACK.get(),
+            RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
@@ -116,7 +121,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.STRAP_IRON_WYE_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get(),
-            RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK.get());
+            RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK.get());
     this.tag(BlockTags.CLIMBABLE).add(RailcraftBlocks.ELEVATOR_TRACK.get());
     this.tag(RailcraftTags.Blocks.ASPECT_EMITTER)
         .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
@@ -128,8 +134,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(),
             RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
             RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
-    this.tag(RailcraftTags.Blocks.POST)
-        .add(RailcraftBlocks.POST.resolveVariants().toArray(Block[]::new));
+
+    RailcraftBlocks.POST.resolveVariants().forEach(this.tag(RailcraftTags.Blocks.POST)::add);
+
     this.tag(RailcraftTags.Blocks.SIGNAL)
         .add(RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),
             RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),

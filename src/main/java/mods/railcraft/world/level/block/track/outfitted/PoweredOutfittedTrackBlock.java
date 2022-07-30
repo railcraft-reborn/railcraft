@@ -25,8 +25,8 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
   }
 
   @Override
-  protected BlockState buildDefaultState(BlockState blockState) {
-    return super.buildDefaultState(blockState)
+  protected BlockState buildDefaultState(BlockState state) {
+    return super.buildDefaultState(state)
         .setValue(POWERED, false);
   }
 
@@ -43,39 +43,39 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
   }
 
   @Override
-  public boolean isPowered(BlockState blockState, Level level, BlockPos pos) {
-    return isPowered(blockState);
+  public boolean isPowered(BlockState state, Level level, BlockPos pos) {
+    return isPowered(state);
   }
 
   @Override
-  public void setPowered(BlockState blockState, Level level, BlockPos pos, boolean powered) {
-    level.setBlockAndUpdate(pos, blockState.setValue(POWERED, powered));
+  public void setPowered(BlockState state, Level level, BlockPos pos, boolean powered) {
+    level.setBlockAndUpdate(pos, state.setValue(POWERED, powered));
   }
 
   @Override
-  public int getPowerPropagation(BlockState blockState, Level level, BlockPos blockPos) {
+  public int getPowerPropagation(BlockState state, Level level, BlockPos blockPos) {
     return 0;
   }
 
   @Override
-  public void onPlace(BlockState blockState, Level level, BlockPos pos, BlockState oldBlockState,
+  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
       boolean moved) {
-    super.onPlace(blockState, level, pos, oldBlockState, moved);
-    this.testPower(blockState, level, pos);
+    super.onPlace(state, level, pos, oldState, moved);
+    this.testPower(state, level, pos);
   }
 
   @Override
-  public void neighborChanged(BlockState blockState, Level level, BlockPos pos,
+  public void neighborChanged(BlockState state, Level level, BlockPos pos,
       Block neighborBlock, BlockPos neighborPos, boolean moved) {
-    this.testPower(blockState, level, pos);
+    this.testPower(state, level, pos);
   }
 
-  protected final void testPower(BlockState blockState, Level level, BlockPos pos) {
+  protected final void testPower(BlockState state, Level level, BlockPos pos) {
     boolean powered = level.getBestNeighborSignal(pos) > 0
-        || this.testPowerPropagation(level, pos, blockState,
-            this.getPowerPropagation(blockState, level, pos));
-    if (powered != this.isPowered(blockState, level, pos)) {
-      this.setPowered(blockState, level, pos, powered);
+        || this.testPowerPropagation(level, pos, state,
+            this.getPowerPropagation(state, level, pos));
+    if (powered != this.isPowered(state, level, pos)) {
+      this.setPowered(state, level, pos, powered);
       level.updateNeighbourForOutputSignal(pos, this);
     }
   }
@@ -181,7 +181,7 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
     return false;
   }
 
-  public static boolean isPowered(BlockState blockState) {
-    return blockState.getValue(POWERED);
+  public static boolean isPowered(BlockState state) {
+    return state.getValue(POWERED);
   }
 }

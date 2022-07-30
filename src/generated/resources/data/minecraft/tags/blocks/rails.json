@@ -16,6 +16,7 @@
     "railcraft:abandoned_junction_track",
     "railcraft:abandoned_launcher_track",
     "railcraft:abandoned_one_way_track",
+    "railcraft:abandoned_locomotive_track",
     "railcraft:electric_track",
     "railcraft:electric_locking_track",
     "railcraft:electric_activator_track",
@@ -31,6 +32,7 @@
     "railcraft:electric_junction_track",
     "railcraft:electric_launcher_track",
     "railcraft:electric_one_way_track",
+    "railcraft:electric_locomotive_track",
     "railcraft:high_speed_track",
     "railcraft:high_speed_transition_track",
     "railcraft:high_speed_locking_track",
@@ -40,6 +42,7 @@
     "railcraft:high_speed_turnout_track",
     "railcraft:high_speed_wye_track",
     "railcraft:high_speed_junction_track",
+    "railcraft:high_speed_locomotive_track",
     "railcraft:high_speed_electric_track",
     "railcraft:high_speed_electric_transition_track",
     "railcraft:high_speed_electric_locking_track",
@@ -49,6 +52,7 @@
     "railcraft:high_speed_electric_turnout_track",
     "railcraft:high_speed_electric_wye_track",
     "railcraft:high_speed_electric_junction_track",
+    "railcraft:high_speed_electric_locomotive_track",
     "railcraft:iron_locking_track",
     "railcraft:iron_activator_track",
     "railcraft:iron_booster_track",
@@ -63,6 +67,7 @@
     "railcraft:iron_junction_track",
     "railcraft:iron_launcher_track",
     "railcraft:iron_one_way_track",
+    "railcraft:iron_locomotive_track",
     "railcraft:reinforced_track",
     "railcraft:reinforced_locking_track",
     "railcraft:reinforced_activator_track",
@@ -78,6 +83,7 @@
     "railcraft:reinforced_junction_track",
     "railcraft:reinforced_launcher_track",
     "railcraft:reinforced_one_way_track",
+    "railcraft:reinforced_locomotive_track",
     "railcraft:strap_iron_track",
     "railcraft:strap_iron_locking_track",
     "railcraft:strap_iron_activator_track",
@@ -92,6 +98,7 @@
     "railcraft:strap_iron_wye_track",
     "railcraft:strap_iron_junction_track",
     "railcraft:strap_iron_launcher_track",
-    "railcraft:strap_iron_one_way_track"
+    "railcraft:strap_iron_one_way_track",
+    "railcraft:strap_iron_locomotive_track"
   ]
 }
