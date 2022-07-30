@@ -56,39 +56,175 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/control_track"
-      },
-      "when": {
-        "powered": "false",
-        "reversed": "false",
-        "shape": "north_south"
-      }
-    },
-    {
-      "apply": {
         "model": "railcraft:block/control_track",
-        "y": 90
+        "y": 0
       },
       "when": {
-        "powered": "false",
-        "reversed": "false",
-        "shape": "east_west"
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/control_track",
-        "y": 180
-      },
-      "when": {
-        "OR": [
+        "AND": [
           {
-            "powered": "true",
             "shape": "north_south"
           },
           {
-            "reversed": "true",
+            "OR": [
+              {
+                "powered": "false",
+                "reversed": "false"
+              },
+              {
+                "powered": "true",
+                "reversed": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/control_track",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "OR": [
+              {
+                "powered": "false",
+                "reversed": "false"
+              },
+              {
+                "powered": "true",
+                "reversed": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/control_track_raised_ne",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "OR": [
+              {
+                "powered": "false",
+                "reversed": "false"
+              },
+              {
+                "powered": "true",
+                "reversed": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/control_track_raised_sw",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "OR": [
+              {
+                "powered": "false",
+                "reversed": "false"
+              },
+              {
+                "powered": "true",
+                "reversed": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/control_track_raised_ne",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "OR": [
+              {
+                "powered": "false",
+                "reversed": "false"
+              },
+              {
+                "powered": "true",
+                "reversed": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/control_track_raised_sw",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "OR": [
+              {
+                "powered": "false",
+                "reversed": "false"
+              },
+              {
+                "powered": "true",
+                "reversed": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/control_track",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
             "shape": "north_south"
+          },
+          {
+            "OR": [
+              {
+                "powered": "true",
+                "reversed": "false"
+              },
+              {
+                "powered": "false",
+                "reversed": "true"
+              }
+            ]
           }
         ]
       }
@@ -99,58 +235,23 @@
         "y": 270
       },
       "when": {
-        "OR": [
+        "AND": [
           {
-            "powered": "true",
             "shape": "east_west"
           },
           {
-            "reversed": "true",
-            "shape": "east_west"
+            "OR": [
+              {
+                "powered": "true",
+                "reversed": "false"
+              },
+              {
+                "powered": "false",
+                "reversed": "true"
+              }
+            ]
           }
         ]
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/control_track_raised_ne"
-      },
-      "when": {
-        "powered": "false",
-        "reversed": "false",
-        "shape": "ascending_north"
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/control_track_raised_sw"
-      },
-      "when": {
-        "powered": "false",
-        "reversed": "false",
-        "shape": "ascending_south"
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/control_track_raised_ne",
-        "y": 90
-      },
-      "when": {
-        "powered": "false",
-        "reversed": "false",
-        "shape": "ascending_east"
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/control_track_raised_sw",
-        "y": 90
-      },
-      "when": {
-        "powered": "false",
-        "reversed": "false",
-        "shape": "ascending_west"
       }
     },
     {
@@ -159,14 +260,21 @@
         "y": 180
       },
       "when": {
-        "OR": [
+        "AND": [
           {
-            "powered": "true",
             "shape": "ascending_north"
           },
           {
-            "reversed": "true",
-            "shape": "ascending_north"
+            "OR": [
+              {
+                "powered": "true",
+                "reversed": "false"
+              },
+              {
+                "powered": "false",
+                "reversed": "true"
+              }
+            ]
           }
         ]
       }
@@ -177,14 +285,21 @@
         "y": 180
       },
       "when": {
-        "OR": [
+        "AND": [
           {
-            "powered": "true",
             "shape": "ascending_south"
           },
           {
-            "reversed": "true",
-            "shape": "ascending_south"
+            "OR": [
+              {
+                "powered": "true",
+                "reversed": "false"
+              },
+              {
+                "powered": "false",
+                "reversed": "true"
+              }
+            ]
           }
         ]
       }
@@ -195,14 +310,21 @@
         "y": 270
       },
       "when": {
-        "OR": [
+        "AND": [
           {
-            "powered": "true",
             "shape": "ascending_east"
           },
           {
-            "reversed": "true",
-            "shape": "ascending_east"
+            "OR": [
+              {
+                "powered": "true",
+                "reversed": "false"
+              },
+              {
+                "powered": "false",
+                "reversed": "true"
+              }
+            ]
           }
         ]
       }
@@ -213,14 +335,21 @@
         "y": 270
       },
       "when": {
-        "OR": [
+        "AND": [
           {
-            "powered": "true",
             "shape": "ascending_west"
           },
           {
-            "reversed": "true",
-            "shape": "ascending_west"
+            "OR": [
+              {
+                "powered": "true",
+                "reversed": "false"
+              },
+              {
+                "powered": "false",
+                "reversed": "true"
+              }
+            ]
           }
         ]
       }
