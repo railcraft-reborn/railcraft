@@ -270,6 +270,12 @@ public class RailcraftBlockEntityTypes {
               .of(CokeOvenBlockEntity::new, RailcraftBlocks.COKE_OVEN_BRICKS.get())
               .build(null));
 
+  public static final RegistryObject<BlockEntityType<CrusherBlockEntity>> CRUSHER =
+      deferredRegister.register("crusher",
+          () -> BlockEntityType.Builder
+              .of(CrusherBlockEntity::new, RailcraftBlocks.CRUSHER.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<SwitchTrackMotorBlockEntity>> SWITCH_TRACK_MOTOR =
       deferredRegister.register("switch_track_motor",
           () -> BlockEntityType.Builder

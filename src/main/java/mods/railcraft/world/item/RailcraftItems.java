@@ -1201,6 +1201,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
               new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<BlockItem> CRUSHER =
+      deferredRegister.register("crusher",
+          () -> new BlockItem(RailcraftBlocks.CRUSHER.get(),
+              new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<BlockItem> COKE_OVEN_BRICKS =
       deferredRegister.register("coke_oven_bricks",
           () -> new BlockItem(RailcraftBlocks.COKE_OVEN_BRICKS.get(),

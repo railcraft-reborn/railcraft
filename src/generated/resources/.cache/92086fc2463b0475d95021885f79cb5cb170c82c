@@ -1,4 +1,4 @@
-// 1.19.1	2022-07-31T09:31:36.03940083	Railcraft Block State Definitions
+// 1.19.1	2022-07-31T10:30:12.215158558	Railcraft Block State Definitions
 b7fce4a3220edeb2904e53e6377a86a7b237ffc5 assets/railcraft/blockstates/abandoned_activator_track.json
 ff1b13ba4045bb558e3d132ec8830eb9d226af6f assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -48,6 +48,7 @@ e19bbf2ec78271b88bc00c2991f855c3aded5ec1 assets/railcraft/blockstates/coal_coke_
 9379ccd2a46308fdfde70134ad039f5d38eb7e51 assets/railcraft/blockstates/coke_oven_bricks.json
 9405520af92cd9a65d960e2672acda529c1f85bd assets/railcraft/blockstates/creosote.json
 92c1b0e657972a937f79126b66fb62bf5f04d47c assets/railcraft/blockstates/crushed_obsidian.json
+1b992bbae9fdaa4755d4866d9a76715709195001 assets/railcraft/blockstates/crusher.json
 160610cd2aa8a68688d3a59bc91e4cac3536dda9 assets/railcraft/blockstates/cyan_iron_tank_gauge.json
 5e96a52772e05a0d2c4140f350fe51f40768a477 assets/railcraft/blockstates/cyan_iron_tank_valve.json
 4eac32dc008fc656c8855de8bfad25257005bfe8 assets/railcraft/blockstates/cyan_iron_tank_wall.json
@@ -395,6 +396,7 @@ b3b94cf1538cc7494c5b57235538a8b61cfa8e77 assets/railcraft/models/block/coupler_t
 1e44fa38cc0f850c685553de8ba7c1b9457c1b09 assets/railcraft/models/block/coupler_track_decoupler_raised_ne.json
 0e05b7fcb5241f2969b9dc800552a9fb1e865e2a assets/railcraft/models/block/coupler_track_decoupler_raised_sw.json
 dbe5dce77498d79c801f3d8685874caa9b9083bf assets/railcraft/models/block/crushed_obsidian.json
+d3ece91438ebc8a2e36a21f9ced928adb900e228 assets/railcraft/models/block/crusher.json
 faa72bb8aac97fc102b1b4112a23844e1ce8118f assets/railcraft/models/block/cyan_iron_tank_gauge_bottom.json
 339a36a290147fa8489de86cfe3f15fbfc30487b assets/railcraft/models/block/cyan_iron_tank_gauge_center.json
 88bb6530a9782bc1fa540ee5e8f4aac73ede7981 assets/railcraft/models/block/cyan_iron_tank_gauge_single.json
@@ -1017,6 +1019,7 @@ fec950cc3c46f7516c1ccccd410dfe4954fe4cf2 assets/railcraft/models/item/copper_pla
 ecf7136385d997fdafee99a1442647d0d776a9cd assets/railcraft/models/item/coupler_track_kit.json
 d6fb06bb3298177bc3fccaebea9c063a9d53dc4b assets/railcraft/models/item/creosote_bucket.json
 063c892fb3f74239eea651dde7413880dbed04ff assets/railcraft/models/item/crushed_obsidian.json
+8d5e674f3881537173972681b1bbdd869d06ff89 assets/railcraft/models/item/crusher.json
 dff112dfe71db9573920e18ec96226843bbd67a0 assets/railcraft/models/item/cyan_iron_tank_gauge.json
 d56acc9672c45ddbf0efc2ea5afb5fd28921176f assets/railcraft/models/item/cyan_iron_tank_valve.json
 4f0ecbc011eff118cbd26c083e2730ec15060d62 assets/railcraft/models/item/cyan_iron_tank_wall.json

@@ -242,6 +242,8 @@ public class RailcraftBlockModelGenerators {
 
     this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
         TexturedModel.CUBE_TOP_BOTTOM);
+    this.createTrivialBlock(RailcraftBlocks.CRUSHER.get(),
+        TexturedModel.CUBE_TOP);
 
     this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
 

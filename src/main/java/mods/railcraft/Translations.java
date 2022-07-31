@@ -108,6 +108,8 @@ public class Translations {
         format("container.%railcraft.coke_oven");
     public static final String BLAST_FURNACE =
         format("container.%railcraft.blast_furnace");
+    public static final String CRUSHER =
+        format("container.%railcraft.crusher");
     public static final String TANK =
         format("container.%railcraft.tank");
     public static final String STEAM_TURBINE =

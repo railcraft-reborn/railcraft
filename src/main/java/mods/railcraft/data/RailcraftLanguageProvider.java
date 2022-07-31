@@ -4,6 +4,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.Translations.Container;
 import mods.railcraft.Translations.Jei;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.VariantRegistrar;
@@ -96,6 +97,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX, "Signal Sequencer Box");
     this.addBlock(RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX, "Block Signal Relay Box");
     this.addBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
+    this.addBlock(RailcraftBlocks.CRUSHER, "Crusher");
     this.addBlock(RailcraftBlocks.COKE_OVEN_BRICKS, "Coke Oven Bricks");
     this.addBlock(RailcraftBlocks.FORCE_TRACK_EMITTER, "Force Track Emitter");
     this.addBlock(RailcraftBlocks.CRUSHED_OBSIDIAN, "Crushed Obsidian");
@@ -272,6 +274,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Container.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
     this.add(Translations.Container.COKE_OVEN, "Coke Oven");
     this.add(Translations.Container.BLAST_FURNACE, "Blast Furnace");
+    this.add(Container.CRUSHER, "Crusher");
     this.add(Translations.Container.TANK, "Tank");
     this.add(Translations.Container.STEAM_TURBINE, "Steam Turbine");
     this.add(Translations.Container.SOLID_FUELED_STEAM_BOILER, "Solid Fueled Steam Boiler");

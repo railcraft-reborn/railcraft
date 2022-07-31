@@ -13,12 +13,12 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations.Jei;
 import mods.railcraft.integrations.jei.RecipeTypes;
+import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
 
@@ -32,7 +32,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
 
   public CrusherRecipeCategory(IGuiHelper guiHelper) {
     this.background = guiHelper.createDrawable(CRUSHER_BACKGROUND, 0, 171, WIDTH, HEIGHT);
-    var itemStack = new ItemStack(Items.ACACIA_BOAT);
+    var itemStack = new ItemStack(RailcraftItems.CRUSHER.get());
     this.icon = guiHelper.createDrawableItemStack(itemStack);
 
     this.arrow = guiHelper.createAnimatedDrawable(

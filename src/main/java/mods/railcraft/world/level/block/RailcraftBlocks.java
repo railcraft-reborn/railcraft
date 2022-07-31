@@ -1295,6 +1295,11 @@ public class RailcraftBlocks {
               .sound(SoundType.WOOD)
               .strength(2.0F)));
 
+  public static final RegistryObject<Block> CRUSHER =
+      deferredRegister.register("crusher",
+          () -> new CrusherMultiblockBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .sound(SoundType.STONE)));
+
   public static final RegistryObject<Block> COKE_OVEN_BRICKS =
       deferredRegister.register("coke_oven_bricks",
           () -> new CokeOvenBricksBlock(BlockBehaviour.Properties.of(Material.STONE)
