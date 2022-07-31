@@ -33,18 +33,17 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(Items.BLAZE_POWDER, 1, 0.05)
         .save(consumer);
 
-    /*CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.CRUSHED_OBSIDIAN.get()), 200)
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.CRUSHED_OBSIDIAN.get()), 200)
         .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 1)
         .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 0.25)
-        .save(consumer);*/
-
+        .save(consumer);
   }
 
   private void buildVanilla(Consumer<FinishedRecipe> consumer) {
-    /*CrusherRecipeBuilder.crush(Ingredient.of(Items.OBSIDIAN), 200)
+    CrusherRecipeBuilder.crush(Ingredient.of(Items.OBSIDIAN), 200)
         .addResult(RailcraftItems.CRUSHED_OBSIDIAN.get(), 1, 1)
         .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 0.25)
-        .save(consumer);*/
+        .save(consumer);
     CrusherRecipeBuilder.crush(Ingredient.of(Items.COBBLESTONE), 200)
         .addResult(Items.GRAVEL, 1, 1)
         .addResult(Items.FLINT, 1, 0.1)

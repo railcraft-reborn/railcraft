@@ -224,6 +224,7 @@ public class RailcraftBlockModelGenerators {
 
     this.createTrivialCube(RailcraftBlocks.STEEL_BLOCK.get());
     this.createTrivialCube(RailcraftBlocks.COKE_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());

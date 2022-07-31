@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.Translations.Jei;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
@@ -97,6 +98,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
     this.addBlock(RailcraftBlocks.COKE_OVEN_BRICKS, "Coke Oven Bricks");
     this.addBlock(RailcraftBlocks.FORCE_TRACK_EMITTER, "Force Track Emitter");
+    this.addBlock(RailcraftBlocks.CRUSHED_OBSIDIAN, "Crushed Obsidian");
 
     this.addBlockColorVariants(RailcraftBlocks.STRENGTHENED_GLASS, "Strengthened Glass");
     this.addBlockColorVariants(RailcraftBlocks.POST, "Post");
@@ -283,6 +285,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
+    this.add(Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
   }
 
   private void screenTranslations() {

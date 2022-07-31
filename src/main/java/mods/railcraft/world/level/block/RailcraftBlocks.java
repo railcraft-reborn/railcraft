@@ -1209,6 +1209,12 @@ public class RailcraftBlocks {
               BlockBehaviour.Properties.of(Material.WATER)
                   .noCollission().strength(50.0F).noLootTable()));
 
+  public static final RegistryObject<Block> CRUSHED_OBSIDIAN =
+      deferredRegister.register("crushed_obsidian",
+          () -> new CrushedObsidian(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
+              .requiresCorrectToolForDrops()
+              .strength(50, 1200)));
+
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;
   }

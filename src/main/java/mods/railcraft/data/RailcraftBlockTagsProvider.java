@@ -154,10 +154,12 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.STEAM_TURBINE.get(),
             RailcraftBlocks.COKE_OVEN_BRICKS.get(),
             RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
-        .add(RailcraftBlocks.COKE_BLOCK.get());
+        .add(RailcraftBlocks.COKE_BLOCK.get())
+        .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
-        .add(RailcraftBlocks.FIRESTONE.get());
+        .add(RailcraftBlocks.FIRESTONE.get())
+        .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
     this.tag(BlockTags.NEEDS_STONE_TOOL)
         .add(RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().toArray(Block[]::new))

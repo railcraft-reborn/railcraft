@@ -1,4 +1,4 @@
-// 1.19.1	2022-07-30T19:32:24.595271555	Railcraft Crusher
+// 1.19.1	2022-07-31T09:10:06.879255542	Railcraft Crusher
 130041d632c9090765ac8510399bc2bb850dab36 data/railcraft/recipes/crusher/crushing_blast_furnace_bricks.json
 29519557a7b3af08da6d588319e76120a6ff24c3 data/railcraft/recipes/crusher/crushing_blaze_rod.json
 8ff947cf8f6ba6789325455d090ae03fdf358c63 data/railcraft/recipes/crusher/crushing_bone.json
@@ -13,6 +13,7 @@ b5930446bfae242de47bd3d053b8caa45d22e653 data/railcraft/recipes/crusher/crushing
 5f631778c4b847678365394588cd98bb1afc3875 data/railcraft/recipes/crusher/crushing_cobblestone_slab.json
 75998cc3777e24d12f6ed26a5e26f5045b0f345c data/railcraft/recipes/crusher/crushing_cobblestone_stairs.json
 253c3100ed7a30c6c0c7227f5cd8a3f0fdd80996 data/railcraft/recipes/crusher/crushing_coke_oven_bricks.json
+5d82d99925042271af585b0ef4011670372237f7 data/railcraft/recipes/crusher/crushing_crushed_obsidian.json
 73b033fbcd845fff7cc634a41bf619c019220342 data/railcraft/recipes/crusher/crushing_ender_pearl.json
 44ada31b5f60290d0e7e9102e4baae042f62d442 data/railcraft/recipes/crusher/crushing_glowstone.json
 1c77f3153006f99049acc52601c095896cc63849 data/railcraft/recipes/crusher/crushing_gravel.json
@@ -20,6 +21,7 @@ cbc16fc2aa03c55984081656a30f688b25466852 data/railcraft/recipes/crusher/crushing
 aefa2e477d4fc9f5cf395a263f6166ab537cd2a2 data/railcraft/recipes/crusher/crushing_mossy_cobblestone.json
 216f3bddb267b29d8b63e2c2d6ee3cf1744a1962 data/railcraft/recipes/crusher/crushing_nether_brick_fence.json
 08dad7017d1ff3ba571a23ec0ef1c561e6722f33 data/railcraft/recipes/crusher/crushing_nether_brick_stairs.json
+145d1da83917d08bba5587fc4b894ecacb777e57 data/railcraft/recipes/crusher/crushing_obsidian.json
 16eeb163fa534a050c34655ff0b5a48354c00f0d data/railcraft/recipes/crusher/crushing_redstone_lamp.json
 aec2115fb6696111660fa5016fd71a0afbca91fc data/railcraft/recipes/crusher/crushing_sandstone_slab.json
 85543b0539cc94bbcdeab0abebdc584a363094b5 data/railcraft/recipes/crusher/crushing_stone_brick_slab.json

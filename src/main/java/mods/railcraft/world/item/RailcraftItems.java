@@ -1121,6 +1121,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.COKE_OVEN_BRICKS.get(),
               new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<BlockItem> CRUSHED_OBSIDIAN =
+      deferredRegister.register("crushed_obsidian",
+          () -> new BlockItem(RailcraftBlocks.CRUSHED_OBSIDIAN.get(),
+              new Item.Properties().tab(TAB)));
+
   // ================================================================================
   // Crafting Materials
   // ================================================================================

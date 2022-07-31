@@ -96,6 +96,8 @@ public class Translations {
         format("tips.%railcraft.locomotive.item.secondary");
     public static final String LOCOMOTIVE_ITEM_WHISTLE =
         format("tips.%railcraft.locomotive.item.whistle");
+    public static final String CRUSHED_OBSIDIAN =
+        format("tips.%railcraft.crushed_obsidian");
   }
 
   public static class Container {

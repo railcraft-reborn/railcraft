@@ -30,6 +30,7 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.FEED_STATION.get());
+    this.dropSelf(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
     for (DyeColor dyeColor : DyeColor.values()) {
       this.dropSelf(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());

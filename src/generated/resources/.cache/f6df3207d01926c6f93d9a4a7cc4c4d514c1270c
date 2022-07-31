@@ -1,8 +1,8 @@
-// 1.19.1	2022-07-29T12:51:31.202841096	Railcraft Block Tags
+// 1.19.1	2022-07-31T09:16:47.550538266	Railcraft Block Tags
 aefbbbc5abb467f81217a20784fffded5a4cc0df data/minecraft/tags/blocks/anvil.json
 491830ad886621c3a078a87ab488fd45839ad64d data/minecraft/tags/blocks/climbable.json
-1cc512ee29cba52604d62b6f1c7c1cab67048dc4 data/minecraft/tags/blocks/mineable/pickaxe.json
-66c631024fac69a9b502c5915573082a832d7dd8 data/minecraft/tags/blocks/needs_diamond_tool.json
+e969d62e4f633a93bfed9be11d4c761392de58b4 data/minecraft/tags/blocks/mineable/pickaxe.json
+c53a1084d2f2752eaac3634fce1a1afbb2890d8e data/minecraft/tags/blocks/needs_diamond_tool.json
 05a6ff4af21dd81c0b8379a2c0f3dd3bc3264994 data/minecraft/tags/blocks/needs_stone_tool.json
 3a23db0615d9c6d2f38ef1fa47c8cc3f8e890bb0 data/minecraft/tags/blocks/rails.json
 ef2ac7b68d969382709e42d553b20976b37fade6 data/railcraft/tags/blocks/aspect_emitter.json
