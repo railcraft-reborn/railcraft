@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:oak_wood"
+    },
+    {
+      "item": "railcraft:track_parts"
+    },
+    {
+      "item": "minecraft:piston"
+    },
+    {
+      "tag": "forge:blocks/steel"
+    },
+    {
+      "tag": "forge:blocks/steel"
+    },
+    {
+      "tag": "forge:dusts/redstone"
+    }
+  ],
+  "result": {
+    "item": "railcraft:launcher_track_kit"
+  }
+}

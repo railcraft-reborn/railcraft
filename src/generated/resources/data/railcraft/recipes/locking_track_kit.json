@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:oak_wood"
+    },
+    {
+      "item": "railcraft:track_parts"
+    },
+    {
+      "item": "minecraft:stone_pressure_plate"
+    },
+    {
+      "item": "minecraft:sticky_piston"
+    },
+    {
+      "tag": "forge:dusts/redstone"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "railcraft:locking_track_kit"
+  }
+}

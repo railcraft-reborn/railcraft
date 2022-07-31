@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:oak_wood"
+    },
+    {
+      "item": "railcraft:track_parts"
+    },
+    {
+      "item": "minecraft:stone_pressure_plate"
+    },
+    {
+      "tag": "forge:dusts/redstone"
+    }
+  ],
+  "result": {
+    "count": 8,
+    "item": "railcraft:detector_track_kit"
+  }
+}

@@ -1,5 +1,6 @@
 package mods.railcraft.data.recipes;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
@@ -14,11 +15,13 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
@@ -121,6 +124,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildCompressions(consumer);
     buildDecompressions(consumer);
     buildGears(consumer);
+    buildKits(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
@@ -242,6 +246,93 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   @Override
   public String getName() {
     return "Railcraft Recipes";
+  }
+
+  private static void buildKits(Consumer<FinishedRecipe> consumer) {
+    kits(consumer, RailcraftItems.ACTIVATOR_TRACK_KIT.get(), 8, List.of(
+            new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1),
+            new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+        ));
+    kits(consumer, RailcraftItems.BOOSTER_TRACK_KIT.get(), 16, List.of(
+        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
+        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), 2, List.of(
+        new Tuple<>(Ingredient.of(Tags.Items.INGOTS_IRON), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.INGOTS_IRON), 1)
+    ));
+    kits(consumer, RailcraftItems.CONTROL_TRACK_KIT.get(), 16, List.of(
+        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.DETECTOR_TRACK_KIT.get(), 8, List.of(
+        new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.DISEMBARKING_TRACK_KIT.get(), 4, List.of(
+        new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
+        new Tuple<>(Ingredient.of(Items.LEAD), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.EMBARKING_TRACK_KIT.get(), 4, List.of(
+        new Tuple<>(Ingredient.of(Items.ENDER_PEARL), 1),
+        new Tuple<>(Ingredient.of(Items.LEAD), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.GATED_TRACK_KIT.get(), 4, List.of(
+        new Tuple<>(Ingredient.of(Tags.Items.FENCE_GATES), 1),
+        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.LOCKING_TRACK_KIT.get(), 4, List.of(
+        new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
+        new Tuple<>(Ingredient.of(Items.STICKY_PISTON), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.ONE_WAY_TRACK_KIT.get(), 8, List.of(
+        new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
+        new Tuple<>(Ingredient.of(Items.PISTON), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.LAUNCHER_TRACK_KIT.get(), 1, List.of(
+        new Tuple<>(Ingredient.of(Items.PISTON), 1),
+        new Tuple<>(Ingredient.of(RailcraftTags.Items.STEEL_BLOCK), 1),
+        new Tuple<>(Ingredient.of(RailcraftTags.Items.STEEL_BLOCK), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), 4, List.of(
+        new Tuple<>(Ingredient.of(RailcraftItems.SIGNAL_LAMP.get()), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.TRANSITION_TRACK_KIT.get(), 8, List.of(
+        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
+        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+    kits(consumer, RailcraftItems.COUPLER_TRACK_KIT.get(), 4, List.of(
+        new Tuple<>(Ingredient.of(Items.LEAD), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+    ));
+  }
+
+  private static void kits(Consumer<FinishedRecipe> finishedRecipe,
+      Item result,
+      int count,
+      List<Tuple<Ingredient, Integer>> ingredients) {
+
+      var builder = ShapelessRecipeBuilder.shapeless(result, count)
+          .requires(Items.OAK_WOOD)
+          .requires(RailcraftItems.TRACK_PARTS.get());
+
+      for(var ingredient : ingredients) {
+        builder = builder.requires(ingredient.getA(), ingredient.getB());
+      }
+      builder
+          .unlockedBy(getHasName(RailcraftItems.TRACK_PARTS.get()),
+              has(RailcraftItems.TRACK_PARTS.get()))
+          .save(finishedRecipe);
   }
 
   private static void buildGears(Consumer<FinishedRecipe> consumer) {

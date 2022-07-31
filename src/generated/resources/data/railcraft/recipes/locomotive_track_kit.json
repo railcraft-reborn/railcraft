@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:oak_wood"
+    },
+    {
+      "item": "railcraft:track_parts"
+    },
+    {
+      "item": "railcraft:signal_lamp"
+    },
+    {
+      "tag": "forge:dusts/redstone"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "railcraft:locomotive_track_kit"
+  }
+}
