@@ -13,8 +13,7 @@
   },
   "pattern": [
     " T ",
-    "BCB",
-    "   "
+    "BCB"
   ],
   "result": {
     "item": "railcraft:signal_tuner"

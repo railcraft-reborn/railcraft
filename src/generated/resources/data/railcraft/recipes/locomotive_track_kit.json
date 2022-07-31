@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:oak_wood"
+      "tag": "minecraft:planks"
     },
     {
       "item": "railcraft:track_parts"

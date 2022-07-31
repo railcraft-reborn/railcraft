@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "railcraft:creosote_bucket"
+    },
+    "b": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
+  "pattern": [
+    " a ",
+    "bbb"
+  ],
+  "result": {
+    "item": "railcraft:wooden_tie"
+  }
+}
