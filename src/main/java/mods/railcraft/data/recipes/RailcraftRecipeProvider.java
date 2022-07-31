@@ -7,6 +7,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
 import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
 import mods.railcraft.data.recipes.providers.CrusherRecipeProvider;
+import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.item.RailcraftItems;
@@ -40,6 +41,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     CokeOvenRecipeProvider.buildRecipes(consumer);
     BlastFurnaceRecipeProvider.buildRecipes(consumer);
     CrusherRecipeProvider.buildRecipes(consumer);
+    RollingRecipeProvider.buildRecipes(consumer);
     /*
      * ===================================== RAILCRAFT TOOLS =====================================
      */

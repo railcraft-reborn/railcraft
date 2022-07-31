@@ -18,22 +18,21 @@ import net.minecraftforge.common.Tags;
 
 public class RollingRecipeProvider extends RecipeProvider {
 
-  public RollingRecipeProvider(DataGenerator generator) {
+  private RollingRecipeProvider(DataGenerator generator) {
     super(generator);
   }
 
-  @Override
-  protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-    this.misc(consumer);
-    this.buildChargeSpool(consumer);
-    this.buildTrackParts(consumer);
-    this.buildRebars(consumer);
-    this.buildElectrodes(consumer);
-    this.buildRails(consumer);
-    this.buildPlates(consumer);
+  public static void buildRecipes(Consumer<FinishedRecipe> consumer) {
+    misc(consumer);
+    buildChargeSpool(consumer);
+    buildTrackParts(consumer);
+    buildRebars(consumer);
+    buildElectrodes(consumer);
+    buildRails(consumer);
+    buildPlates(consumer);
   }
 
-  private void misc(Consumer<FinishedRecipe> consumer) {
+  private static void misc(Consumer<FinishedRecipe> consumer) {
     RollingRecipePattern.hForm(consumer, Ingredient.of(Tags.Items.INGOTS_IRON),
         RailcraftItems.POST.variantFor(DyeColor.BLACK).get(), 16);
 
@@ -48,7 +47,7 @@ public class RollingRecipeProvider extends RecipeProvider {
         RailcraftItems.BUSHING_GEAR.get(), 4, "_brass");
   }
 
-  private void buildChargeSpool(Consumer<FinishedRecipe> consumer) {
+  private static void buildChargeSpool(Consumer<FinishedRecipe> consumer) {
     RollingRecipeBuilder.rolled(RailcraftItems.CHARGE_SPOOL_LARGE.get())
         .pattern("a")
         .define('a', Tags.Items.STORAGE_BLOCKS_COPPER)
@@ -59,7 +58,7 @@ public class RollingRecipeProvider extends RecipeProvider {
         .save(consumer);
   }
 
-  private void buildTrackParts(Consumer<FinishedRecipe> consumer) {
+  private static void buildTrackParts(Consumer<FinishedRecipe> consumer) {
     final var trackParts = RailcraftItems.TRACK_PARTS.get();
     var name = RecipeBuilder.getDefaultRecipeId(trackParts).getPath();
     RollingRecipeBuilder.rolled(trackParts)
@@ -77,7 +76,7 @@ public class RollingRecipeProvider extends RecipeProvider {
         .save(consumer, new ResourceLocation(Railcraft.ID, name + "_steel_nugget"));
   }
 
-  private void buildRebars(Consumer<FinishedRecipe> consumer) {
+  private static void buildRebars(Consumer<FinishedRecipe> consumer) {
     RollingRecipePattern.diagonalLine(consumer, Ingredient.of(Tags.Items.INGOTS_IRON),
         RailcraftItems.REBAR.get(), 4, "rebar_iron");
     RollingRecipePattern.diagonalLine(consumer, Ingredient.of(RailcraftTags.Items.BRONZE_INGOT),
@@ -88,7 +87,7 @@ public class RollingRecipeProvider extends RecipeProvider {
         RailcraftItems.REBAR.get(), 8, "rebar_steel");
   }
 
-  private void buildElectrodes(Consumer<FinishedRecipe> consumer) {
+  private static void buildElectrodes(Consumer<FinishedRecipe> consumer) {
     RollingRecipePattern.line(consumer, Ingredient.of(Items.COAL),
         RailcraftItems.CARBON_ELECTRODE.get(), 1, "coal_carbon_electrode");
     RollingRecipePattern.line(consumer, Ingredient.of(Items.CHARCOAL),
@@ -119,7 +118,7 @@ public class RollingRecipeProvider extends RecipeProvider {
         RailcraftItems.COPPER_ELECTRODE.get(), 1);
   }
 
-  private void buildRails(Consumer<FinishedRecipe> consumer) {
+  private static void buildRails(Consumer<FinishedRecipe> consumer) {
     RollingRecipePattern.parallelLines(consumer, Ingredient.of(Tags.Items.INGOTS_IRON),
         RailcraftItems.STANDARD_RAIL.get(), 8, "standard_rail");
     RollingRecipePattern.parallelLines(consumer, Ingredient.of(RailcraftTags.Items.BRONZE_INGOT),
@@ -152,7 +151,7 @@ public class RollingRecipeProvider extends RecipeProvider {
         Ingredient.of(RailcraftTags.Items.STEEL_INGOT), RailcraftItems.ELECTRIC_RAIL.get(), 12);
   }
 
-  private void buildPlates(Consumer<FinishedRecipe> consumer) {
+  private static void buildPlates(Consumer<FinishedRecipe> consumer) {
     RollingRecipePattern.square2x2(consumer, Ingredient.of(Tags.Items.INGOTS_IRON),
         RailcraftItems.IRON_PLATE.get(), 4);
     RollingRecipePattern.square2x2(consumer, Ingredient.of(Tags.Items.INGOTS_GOLD),
@@ -177,10 +176,5 @@ public class RollingRecipeProvider extends RecipeProvider {
         RailcraftItems.SILVER_PLATE.get(), 4);
     RollingRecipePattern.square2x2(consumer, Ingredient.of(RailcraftTags.Items.ZINC_INGOT),
         RailcraftItems.ZINC_PLATE.get(), 4);
-  }
-
-  @Override
-  public String getName() {
-    return "Railcraft Rolling";
   }
 }
