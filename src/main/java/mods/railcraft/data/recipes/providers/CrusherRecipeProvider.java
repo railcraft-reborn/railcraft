@@ -2,10 +2,12 @@ package mods.railcraft.data.recipes.providers;
 
 import java.util.function.Consumer;
 import mods.railcraft.data.recipes.CrusherRecipeBuilder;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
@@ -69,6 +71,9 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Ingredient.of(Items.CLAY), 200)
         .addResult(Items.CLAY_BALL, 4, 1)
         .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(ItemTags.STONE_BRICKS), 200)
+        .addResult(Items.COBBLESTONE, 1, 1)
+        .save(consumer, "tags_stone_bricks");
     CrusherRecipeBuilder.crush(Ingredient.of(Items.COBBLESTONE_STAIRS), 200)
         .addResult(Items.GRAVEL, 1, 1)
         .save(consumer);
@@ -166,5 +171,10 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Ingredient.of(Items.ENDER_PEARL), 200)
         .addResult(RailcraftItems.ENDER_DUST.get(), 1, 1)
         .save(consumer);
+    /*CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.SULFUR_ORE), 200)
+        .addResult(RailcraftItems.SULFUR_DUST.get(), 5, 1)
+        .addResult(RailcraftItems.SULFUR_DUST.get(), 1, 0.85)
+        .addResult(RailcraftItems.SULFUR_DUST.get(), 1, 0.35)
+        .save(consumer);*/
   }
 }
