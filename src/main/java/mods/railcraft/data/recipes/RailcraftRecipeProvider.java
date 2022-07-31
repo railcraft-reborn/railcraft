@@ -258,17 +258,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void buildKits(Consumer<FinishedRecipe> consumer) {
     kits(consumer, RailcraftItems.ACTIVATOR_TRACK_KIT.get(), 8, List.of(
-            new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1),
-            new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+            new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 2)
         ));
     kits(consumer, RailcraftItems.BOOSTER_TRACK_KIT.get(), 16, List.of(
-        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
-        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
+        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 2),
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
     ));
     kits(consumer, RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), 2, List.of(
-        new Tuple<>(Ingredient.of(Tags.Items.INGOTS_IRON), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.INGOTS_IRON), 1)
+        new Tuple<>(Ingredient.of(Tags.Items.INGOTS_IRON), 2)
     ));
     kits(consumer, RailcraftItems.CONTROL_TRACK_KIT.get(), 16, List.of(
         new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
@@ -305,8 +302,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     ));
     kits(consumer, RailcraftItems.LAUNCHER_TRACK_KIT.get(), 1, List.of(
         new Tuple<>(Ingredient.of(Items.PISTON), 1),
-        new Tuple<>(Ingredient.of(RailcraftTags.Items.STEEL_BLOCK), 1),
-        new Tuple<>(Ingredient.of(RailcraftTags.Items.STEEL_BLOCK), 1),
+        new Tuple<>(Ingredient.of(RailcraftTags.Items.STEEL_BLOCK), 2),
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
     ));
     kits(consumer, RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), 4, List.of(
@@ -314,10 +310,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
     ));
     kits(consumer, RailcraftItems.TRANSITION_TRACK_KIT.get(), 8, List.of(
-        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
-        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
+        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 2),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 2)
     ));
     kits(consumer, RailcraftItems.COUPLER_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(Items.LEAD), 1),
