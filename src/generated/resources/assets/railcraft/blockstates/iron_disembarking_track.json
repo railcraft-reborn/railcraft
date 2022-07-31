@@ -60,9 +60,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "false",
-        "powered": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "mirrored": "false",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -71,9 +77,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "false",
-        "powered": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "mirrored": "false",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -82,9 +94,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "false",
-        "powered": "false",
-        "shape": "ascending_north"
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "mirrored": "false",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -93,9 +111,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "false",
-        "powered": "false",
-        "shape": "ascending_south"
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "mirrored": "false",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -104,9 +128,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "false",
-        "powered": "false",
-        "shape": "ascending_east"
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "mirrored": "false",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -115,9 +145,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "false",
-        "powered": "false",
-        "shape": "ascending_west"
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "mirrored": "false",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -126,9 +162,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "false",
-        "powered": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "mirrored": "false",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -137,9 +179,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "false",
-        "powered": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "mirrored": "false",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -148,9 +196,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "false",
-        "powered": "true",
-        "shape": "ascending_north"
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "mirrored": "false",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -159,9 +213,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "false",
-        "powered": "true",
-        "shape": "ascending_south"
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "mirrored": "false",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -170,9 +230,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "false",
-        "powered": "true",
-        "shape": "ascending_east"
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "mirrored": "false",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -181,9 +247,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "false",
-        "powered": "true",
-        "shape": "ascending_west"
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "mirrored": "false",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -192,9 +264,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "true",
-        "powered": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "mirrored": "true",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -203,9 +281,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "true",
-        "powered": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "mirrored": "true",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -214,9 +298,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "true",
-        "powered": "false",
-        "shape": "ascending_north"
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "mirrored": "true",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -225,9 +315,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "true",
-        "powered": "false",
-        "shape": "ascending_south"
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "mirrored": "true",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -236,9 +332,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "true",
-        "powered": "false",
-        "shape": "ascending_east"
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "mirrored": "true",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -247,9 +349,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "true",
-        "powered": "false",
-        "shape": "ascending_west"
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "mirrored": "true",
+            "powered": "false"
+          }
+        ]
       }
     },
     {
@@ -258,9 +366,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "true",
-        "powered": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "mirrored": "true",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -269,9 +383,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "true",
-        "powered": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "mirrored": "true",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -280,9 +400,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "true",
-        "powered": "true",
-        "shape": "ascending_north"
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "mirrored": "true",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -291,9 +417,15 @@
         "y": 0
       },
       "when": {
-        "mirrored": "true",
-        "powered": "true",
-        "shape": "ascending_south"
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "mirrored": "true",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -302,9 +434,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "true",
-        "powered": "true",
-        "shape": "ascending_east"
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "mirrored": "true",
+            "powered": "true"
+          }
+        ]
       }
     },
     {
@@ -313,9 +451,15 @@
         "y": 90
       },
       "when": {
-        "mirrored": "true",
-        "powered": "true",
-        "shape": "ascending_west"
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "mirrored": "true",
+            "powered": "true"
+          }
+        ]
       }
     }
   ]

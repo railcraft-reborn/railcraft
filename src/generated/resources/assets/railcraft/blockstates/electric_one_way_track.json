@@ -1,0 +1,158 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "railcraft:block/electric_track_outfitted",
+        "y": 0
+      },
+      "when": {
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/electric_track_outfitted",
+        "y": 90
+      },
+      "when": {
+        "shape": "east_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "powered": "false",
+            "reversed": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "powered": "false",
+            "reversed": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track_on",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "powered": "true",
+            "reversed": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track_on",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "powered": "true",
+            "reversed": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "powered": "false",
+            "reversed": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "powered": "false",
+            "reversed": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track_on",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "powered": "true",
+            "reversed": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track_on",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "powered": "true",
+            "reversed": "true"
+          }
+        ]
+      }
+    }
+  ]
+}

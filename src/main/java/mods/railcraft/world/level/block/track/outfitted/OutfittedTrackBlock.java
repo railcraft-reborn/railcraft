@@ -39,19 +39,19 @@ public class OutfittedTrackBlock extends TrackBlock {
   }
 
   @Override
-  public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player,
+  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
       InteractionHand hand, BlockHitResult rayTraceResult) {
     var itemStack = player.getItemInHand(hand);
     if (itemStack.getItem() instanceof Crowbar crowbar
         && crowbar.canWhack(player, hand, itemStack, pos)
-        && this.crowbarWhack(blockState, level, pos, player, hand, itemStack)) {
+        && this.crowbarWhack(state, level, pos, player, hand, itemStack)) {
       crowbar.onWhack(player, hand, itemStack, pos);
       return InteractionResult.sidedSuccess(level.isClientSide());
     }
     return InteractionResult.PASS;
   }
 
-  protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos,
+  protected boolean crowbarWhack(BlockState state, Level level, BlockPos pos,
       Player player, InteractionHand hand, ItemStack itemStack) {
     return false;
   }

@@ -32,7 +32,7 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.FEED_STATION.get());
     this.dropSelf(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
-    for (DyeColor dyeColor : DyeColor.values()) {
+    for (var dyeColor : DyeColor.values()) {
       this.dropSelf(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
       this.dropSelf(RailcraftBlocks.POST.variantFor(dyeColor).get());
 
@@ -74,6 +74,10 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftBlocks.ABANDONED_TRACK.get());
     this.dropOther(RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ABANDONED_ONE_WAY_TRACK.get(),
+        RailcraftItems.ONE_WAY_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK.get(),
+        RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
@@ -104,6 +108,10 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftBlocks.ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK.get(),
+        RailcraftItems.ONE_WAY_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get(),
+        RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.HIGH_SPEED_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
@@ -122,6 +130,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftBlocks.HIGH_SPEED_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_TRACK.get());
+    this.dropOther(RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
+        RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
@@ -140,6 +150,8 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
+    this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
+        RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
 
     this.dropOther(RailcraftBlocks.IRON_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get());
@@ -166,6 +178,10 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropOther(RailcraftBlocks.IRON_JUNCTION_TRACK.get(), Blocks.RAIL);
     this.dropOther(RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.IRON_ONE_WAY_TRACK.get(),
+        RailcraftItems.ONE_WAY_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK.get(),
+        RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.REINFORCED_TRACK.get());
     this.dropOther(RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
@@ -196,6 +212,10 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftBlocks.REINFORCED_TRACK.get());
     this.dropOther(RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.REINFORCED_ONE_WAY_TRACK.get(),
+        RailcraftItems.ONE_WAY_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK.get(),
+        RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.STRAP_IRON_TRACK.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
@@ -226,6 +246,10 @@ public class RailcraftBlockLoot extends BlockLoot {
         RailcraftBlocks.STRAP_IRON_TRACK.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK.get(),
+        RailcraftItems.ONE_WAY_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
+        RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.ELEVATOR_TRACK.get());
     this.add(RailcraftBlocks.FORCE_TRACK.get(), noDrop());

@@ -80,9 +80,9 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
+  public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
     if (this.getTrackType().isElectric()) {
-      Charge.zapEffectProvider().throwSparks(stateIn, worldIn, pos, rand, 75);
+      Charge.zapEffectProvider().throwSparks(state, level, pos, rand, 75);
     }
   }
 
@@ -120,23 +120,23 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     return this.getTrackType().getMaxSupportDistance();
   }
 
-  protected boolean isRailValid(BlockState state, Level world, BlockPos pos,
+  protected boolean isRailValid(BlockState state, Level level, BlockPos pos,
       int maxSupportedDistance) {
     var railShape = TrackUtil.getRailShapeRaw(state);
-    if (!TrackSupportTools.isSupported(world, pos, maxSupportedDistance)) {
+    if (!TrackSupportTools.isSupported(level, pos, maxSupportedDistance)) {
       return false;
     }
     if (maxSupportedDistance == 0) {
-      if (railShape == RailShape.ASCENDING_EAST && !canSupportRigidBlock(world, pos.east())) {
+      if (railShape == RailShape.ASCENDING_EAST && !canSupportRigidBlock(level, pos.east())) {
         return false;
       }
-      if (railShape == RailShape.ASCENDING_WEST && !canSupportRigidBlock(world, pos.west())) {
+      if (railShape == RailShape.ASCENDING_WEST && !canSupportRigidBlock(level, pos.west())) {
         return false;
       }
-      if (railShape == RailShape.ASCENDING_NORTH && !canSupportRigidBlock(world, pos.north())) {
+      if (railShape == RailShape.ASCENDING_NORTH && !canSupportRigidBlock(level, pos.north())) {
         return false;
       }
-      if (railShape == RailShape.ASCENDING_SOUTH && !canSupportRigidBlock(world, pos.south())) {
+      if (railShape == RailShape.ASCENDING_SOUTH && !canSupportRigidBlock(level, pos.south())) {
         return false;
       }
     }
@@ -176,17 +176,17 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public void onMinecartPass(BlockState state, Level world, BlockPos pos,
+  public void onMinecartPass(BlockState state, Level level, BlockPos pos,
       AbstractMinecart cart) {
-    this.getTrackType().getEventHandler().minecartPass(world, cart, pos);
+    this.getTrackType().getEventHandler().minecartPass(level, cart, pos);
   }
 
   @Override
-  public RailShape getRailDirection(BlockState state, BlockGetter world, BlockPos pos,
+  public RailShape getRailDirection(BlockState state, BlockGetter blockGetter, BlockPos pos,
       @Nullable AbstractMinecart cart) {
     RailShape shape =
-        this.getTrackType().getEventHandler().getRailShapeOverride(world, pos, state, cart);
-    return shape == null ? super.getRailDirection(state, world, pos, cart) : shape;
+        this.getTrackType().getEventHandler().getRailShapeOverride(blockGetter, pos, state, cart);
+    return shape == null ? super.getRailDirection(state, blockGetter, pos, cart) : shape;
   }
 
   @Override
@@ -197,14 +197,14 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public float getRailMaxSpeed(BlockState state, Level world, BlockPos pos,
+  public float getRailMaxSpeed(BlockState state, Level level, BlockPos pos,
       AbstractMinecart cart) {
-    return (float) this.getTrackType().getEventHandler().getMaxSpeed(world, cart, pos);
+    return (float) this.getTrackType().getEventHandler().getMaxSpeed(level, cart, pos);
   }
 
   @Override
-  public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
-    return TrackSupportTools.isSupportedDirectly(world, pos);
+  public boolean canMakeSlopes(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+    return TrackSupportTools.isSupportedDirectly(blockGetter, pos);
   }
 
   @Override
@@ -215,7 +215,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public boolean isConduitFrame(BlockState state, LevelReader world, BlockPos pos,
+  public boolean isConduitFrame(BlockState state, LevelReader level, BlockPos pos,
       BlockPos conduit) {
     return false;
   }

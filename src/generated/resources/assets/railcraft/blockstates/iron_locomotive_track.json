@@ -1,0 +1,670 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "railcraft:block/rail_outfitted",
+        "y": 0
+      },
+      "when": {
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/rail_outfitted",
+        "y": 90
+      },
+      "when": {
+        "shape": "east_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/rail_outfitted_raised_ne",
+        "y": 0
+      },
+      "when": {
+        "shape": "ascending_north"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/rail_outfitted_raised_sw",
+        "y": 0
+      },
+      "when": {
+        "shape": "ascending_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/rail_outfitted_raised_ne",
+        "y": 90
+      },
+      "when": {
+        "shape": "ascending_east"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/rail_outfitted_raised_sw",
+        "y": 90
+      },
+      "when": {
+        "shape": "ascending_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown_raised_ne",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown_raised_sw",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown_raised_ne",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown_raised_sw",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown_on",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown_on",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown_on_raised_ne",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown_on_raised_sw",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown_on_raised_ne",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_shutdown_on_raised_sw",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "locomotive_mode": "shutdown",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle_raised_ne",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle_raised_sw",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle_raised_ne",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle_raised_sw",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle_on",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle_on",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle_on_raised_ne",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle_on_raised_sw",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle_on_raised_ne",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_idle_on_raised_sw",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "locomotive_mode": "idle",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running_raised_ne",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running_raised_sw",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running_raised_ne",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running_raised_sw",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running_on",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running_on",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running_on_raised_ne",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_north"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running_on_raised_sw",
+        "y": 0
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_south"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running_on_raised_ne",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_east"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/locomotive_track_running_on_raised_sw",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "ascending_west"
+          },
+          {
+            "locomotive_mode": "running",
+            "powered": "true"
+          }
+        ]
+      }
+    }
+  ]
+}

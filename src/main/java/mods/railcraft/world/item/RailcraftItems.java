@@ -551,6 +551,16 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> ABANDONED_ONE_WAY_TRACK =
+      deferredRegister.register("abandoned_one_way_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_ONE_WAY_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ABANDONED_LOCOMOTIVE_TRACK =
+      deferredRegister.register("abandoned_locomotive_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> ELECTRIC_TRACK =
       deferredRegister.register("electric_track",
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_TRACK.get(),
@@ -626,6 +636,16 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> ELECTRIC_ONE_WAY_TRACK =
+      deferredRegister.register("electric_one_way_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> ELECTRIC_LOCOMOTIVE_TRACK =
+      deferredRegister.register("electric_locomotive_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> HIGH_SPEED_TRACK =
       deferredRegister.register("high_speed_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
@@ -671,6 +691,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> HIGH_SPEED_LOCOMOTIVE_TRACK =
+      deferredRegister.register("high_speed_locomotive_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TRACK =
       deferredRegister.register("high_speed_electric_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
@@ -714,6 +739,11 @@ public class RailcraftItems {
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_JUNCTION_TRACK =
       deferredRegister.register("high_speed_electric_junction_track",
           () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK =
+      deferredRegister.register("high_speed_electric_locomotive_track",
+          () -> new BlockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> IRON_LOCKING_TRACK =
@@ -784,6 +814,16 @@ public class RailcraftItems {
   public static final RegistryObject<Item> IRON_LAUNCHER_TRACK =
       deferredRegister.register("iron_launcher_track",
           () -> new BlockItem(RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> IRON_ONE_WAY_TRACK =
+      deferredRegister.register("iron_one_way_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_ONE_WAY_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> IRON_LOCOMOTIVE_TRACK =
+      deferredRegister.register("iron_locomotive_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> REINFORCED_TRACK =
@@ -861,6 +901,16 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
+  public static final RegistryObject<Item> REINFORCED_ONE_WAY_TRACK =
+      deferredRegister.register("reinforced_one_way_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_ONE_WAY_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> REINFORCED_LOCOMOTIVE_TRACK =
+      deferredRegister.register("reinforced_locomotive_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
   public static final RegistryObject<Item> STRAP_IRON_TRACK =
       deferredRegister.register("strap_iron_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_TRACK.get(),
@@ -934,6 +984,16 @@ public class RailcraftItems {
   public static final RegistryObject<Item> STRAP_IRON_LAUNCHER_TRACK =
       deferredRegister.register("strap_iron_launcher_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> STRAP_IRON_ONE_WAY_TRACK =
+      deferredRegister.register("strap_iron_one_way_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK.get(),
+              new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
+
+  public static final RegistryObject<Item> STRAP_IRON_LOCOMOTIVE_TRACK =
+      deferredRegister.register("strap_iron_locomotive_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
               new Item.Properties().tab(OUTFITTED_TRACKS_TAB)));
 
   public static final RegistryObject<Item> ELEVATOR_TRACK =
@@ -1105,6 +1165,31 @@ public class RailcraftItems {
                   RailcraftBlocks.REINFORCED_LAUNCHER_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
                   RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK)
+              .tab(TAB)));
+
+  public static final RegistryObject<Item> ONE_WAY_TRACK_KIT =
+      deferredRegister.register("one_way_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_ONE_WAY_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_ONE_WAY_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED,
+                  RailcraftBlocks.REINFORCED_ONE_WAY_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK)
+              .tab(TAB)));
+
+  public static final RegistryObject<Item> LOCOMOTIVE_TRACK_KIT =
+      deferredRegister.register("locomotive_track_kit",
+          () -> new TrackKitItem((TrackKitItem.Properties) new TrackKitItem.Properties()
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_LOCOMOTIVE_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK)
               .tab(TAB)));
 
   public static final RegistryObject<Item> GOGGLES =

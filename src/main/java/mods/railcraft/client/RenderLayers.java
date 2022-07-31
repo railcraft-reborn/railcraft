@@ -2,10 +2,10 @@ package mods.railcraft.client;
 
 import java.util.function.Supplier;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 
 class RenderLayers {
 
@@ -39,6 +39,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.ABANDONED_WYE_TRACK);
     cutout(RailcraftBlocks.ABANDONED_JUNCTION_TRACK);
     cutout(RailcraftBlocks.ABANDONED_LAUNCHER_TRACK);
+    cutout(RailcraftBlocks.ABANDONED_ONE_WAY_TRACK);
+    cutout(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_LOCKING_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK);
@@ -54,6 +56,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.ELECTRIC_WYE_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_JUNCTION_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK);
+    cutout(RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK);
+    cutout(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK);
@@ -63,6 +67,7 @@ class RenderLayers {
     cutout(RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_WYE_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK);
+    cutout(RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK);
@@ -72,6 +77,7 @@ class RenderLayers {
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK);
+    cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.IRON_LOCKING_TRACK);
     cutout(RailcraftBlocks.IRON_BUFFER_STOP_TRACK);
     cutout(RailcraftBlocks.IRON_ACTIVATOR_TRACK);
@@ -86,6 +92,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.IRON_WYE_TRACK);
     cutout(RailcraftBlocks.IRON_JUNCTION_TRACK);
     cutout(RailcraftBlocks.IRON_LAUNCHER_TRACK);
+    cutout(RailcraftBlocks.IRON_ONE_WAY_TRACK);
+    cutout(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.REINFORCED_TRACK);
     cutout(RailcraftBlocks.REINFORCED_LOCKING_TRACK);
     cutout(RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK);
@@ -101,6 +109,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.REINFORCED_WYE_TRACK);
     cutout(RailcraftBlocks.REINFORCED_JUNCTION_TRACK);
     cutout(RailcraftBlocks.REINFORCED_LAUNCHER_TRACK);
+    cutout(RailcraftBlocks.REINFORCED_ONE_WAY_TRACK);
+    cutout(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK);
@@ -116,6 +126,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.STRAP_IRON_WYE_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK);
+    cutout(RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK);
+    cutout(RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.FORCE_TRACK_EMITTER);
     cutout(RailcraftBlocks.BLOCK_SIGNAL);
     cutout(RailcraftBlocks.DISTANT_SIGNAL);
