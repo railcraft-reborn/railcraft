@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
+import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.item.RailcraftItems;
@@ -34,6 +35,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   @Override
   protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+    CokeOvenRecipeProvider.buildRecipes(consumer);
     /*
      * ===================================== RAILCRAFT TOOLS =====================================
      */

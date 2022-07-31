@@ -12,12 +12,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public class CokeOvenRecipeProvider extends RecipeProvider {
 
-  public CokeOvenRecipeProvider(DataGenerator generator) {
+  private CokeOvenRecipeProvider(DataGenerator generator) {
     super(generator);
   }
 
-  @Override
-  protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+  public static void buildRecipes(Consumer<FinishedRecipe> consumer) {
     CokeOvenRecipeBuilder
         .coking(Items.CHARCOAL, Ingredient.of(ItemTags.LOGS), 0.0F, 250)
         .unlockedBy("has_logs", has(ItemTags.LOGS))
@@ -32,10 +31,5 @@ public class CokeOvenRecipeProvider extends RecipeProvider {
         .coking(Items.COAL_BLOCK, Ingredient.of(RailcraftItems.COKE_BLOCK.get()), 0.0F, 16200, 4500)
         .unlockedBy(getHasName(Items.COAL_BLOCK), has(Items.COAL_BLOCK))
         .save(consumer);
-  }
-
-  @Override
-  public String getName() {
-    return "Railcraft CokeOven";
   }
 }
