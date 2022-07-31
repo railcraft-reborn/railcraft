@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    " a",
+    "a "
+  ],
+  "result": {
+    "item": "railcraft:steel_shears"
+  }
+}

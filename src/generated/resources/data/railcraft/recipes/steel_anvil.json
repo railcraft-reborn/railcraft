@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:blocks/steel"
+    },
+    "b": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "aaa",
+    " b ",
+    "bbb"
+  ],
+  "result": {
+    "item": "railcraft:steel_anvil"
+  }
+}
