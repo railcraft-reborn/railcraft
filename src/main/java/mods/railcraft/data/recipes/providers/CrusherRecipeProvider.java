@@ -12,12 +12,11 @@ import net.minecraftforge.common.Tags;
 
 public class CrusherRecipeProvider extends RecipeProvider {
 
-  public CrusherRecipeProvider(DataGenerator generator) {
+  private CrusherRecipeProvider(DataGenerator generator) {
     super(generator);
   }
 
-  @Override
-  protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+  public static void buildRecipes(Consumer<FinishedRecipe> consumer) {
     buildVanilla(consumer);
     CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.COKE_OVEN_BRICKS.get()), 200)
         .addResult(Items.BRICK, 3, 1)
@@ -39,7 +38,7 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .save(consumer);
   }
 
-  private void buildVanilla(Consumer<FinishedRecipe> consumer) {
+  private static void buildVanilla(Consumer<FinishedRecipe> consumer) {
     CrusherRecipeBuilder.crush(Ingredient.of(Items.OBSIDIAN), 200)
         .addResult(RailcraftItems.CRUSHED_OBSIDIAN.get(), 1, 1)
         .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 0.25)
@@ -167,10 +166,5 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Ingredient.of(Items.ENDER_PEARL), 200)
         .addResult(RailcraftItems.ENDER_DUST.get(), 1, 1)
         .save(consumer);
-  }
-
-  @Override
-  public String getName() {
-    return "Railcraft Crusher";
   }
 }
