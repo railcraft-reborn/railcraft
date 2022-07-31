@@ -154,7 +154,6 @@ public class Railcraft {
         new RailcraftAdvancementProviders(generator, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(generator));
     generator.addProvider(event.includeServer(), new RollingRecipeProvider(generator));
-    generator.addProvider(event.includeServer(), new BlastFurnaceRecipeProvider(generator));
     generator.addProvider(event.includeServer(), new CrusherRecipeProvider(generator));
     generator.addProvider(event.includeClient(), new RailcraftModelProvider(generator));
     generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(generator));

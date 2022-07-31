@@ -17,12 +17,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlastFurnaceRecipeProvider extends RecipeProvider {
 
-  public BlastFurnaceRecipeProvider(DataGenerator generator) {
+  private BlastFurnaceRecipeProvider(DataGenerator generator) {
     super(generator);
   }
 
-  @Override
-  protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+  public static void buildRecipes(Consumer<FinishedRecipe> consumer) {
     BlastFurnaceRecipeBuilder
         .smelting(RailcraftBlocks.STEEL_BLOCK.get(), 1,
             Ingredient.of(Tags.Items.STORAGE_BLOCKS_IRON), 9, 9)
@@ -37,7 +36,7 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
     consumeIronSteelItems(consumer);
   }
 
-  private void consumeIronSteelItems(Consumer<FinishedRecipe> consumer) {
+  private static void consumeIronSteelItems(Consumer<FinishedRecipe> consumer) {
     blastFurnaceSmelting(consumer, Items.BUCKET, 3);
     blastFurnaceSmelting(consumer, Items.IRON_HELMET, 5);
     blastFurnaceSmelting(consumer, Items.IRON_CHESTPLATE, 8);
@@ -83,10 +82,5 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
   private static ResourceLocation getRailcraftBlastingRecipeName(ItemLike item) {
     var tag = ForgeRegistries.ITEMS.getKey(item.asItem()).getPath();
     return new ResourceLocation(Railcraft.ID, "blasting_" + tag);
-  }
-
-  @Override
-  public String getName() {
-    return "Railcraft BlastFurnace";
   }
 }
