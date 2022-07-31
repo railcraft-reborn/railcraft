@@ -225,6 +225,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.CONTROLLER_CIRCUIT, "Controller Circuit");
     this.addItem(RailcraftItems.RECEIVER_CIRCUIT, "Receiver Circuit");
     this.addItem(RailcraftItems.SIGNAL_CIRCUIT, "Signal Circuit");
+    this.addItem(RailcraftItems.BAG_OF_CEMENT, "Bag of Cement");
     this.addItem(RailcraftItems.WOODEN_TIE, "Wooden Tie");
     this.addItem(RailcraftItems.STONE_TIE, "Stone Tie");
     this.addItem(RailcraftItems.WOODEN_RAILBED, "Wooden Railbed");

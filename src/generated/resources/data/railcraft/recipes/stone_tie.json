@@ -1,17 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "R": {
-      "item": "railcraft:rebar"
+    "a": {
+      "item": "minecraft:water_bucket"
     },
-    "S": {
-      "item": "minecraft:stone_slab"
+    "b": {
+      "item": "railcraft:bag_of_cement"
+    },
+    "c": {
+      "item": "railcraft:rebar"
     }
   },
   "pattern": [
-    " R ",
-    "SSS",
-    "   "
+    " a ",
+    "bcb"
   ],
   "result": {
     "item": "railcraft:stone_tie"

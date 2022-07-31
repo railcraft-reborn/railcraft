@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_bag_of_cement": {
+    "has_fire_charge": {
       "conditions": {
         "items": [
           {
             "items": [
-              "railcraft:bag_of_cement"
+              "minecraft:fire_charge"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:stone_tie"
+        "recipe": "railcraft:solid_fueled_firebox"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_bag_of_cement",
+      "has_fire_charge",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "railcraft:stone_tie"
+      "railcraft:solid_fueled_firebox"
     ]
   }
 }

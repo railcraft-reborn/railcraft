@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:gravel"
+    },
+    "b": {
+      "item": "minecraft:quartz"
+    }
+  },
+  "pattern": [
+    "ab",
+    "ba"
+  ],
+  "result": {
+    "count": 2,
+    "item": "railcraft:bag_of_cement"
+  }
+}

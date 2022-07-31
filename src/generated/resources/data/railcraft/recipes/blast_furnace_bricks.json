@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "a": {
-      "item": "minecraft:sand"
+      "item": "minecraft:soul_sand"
     },
     "b": {
-      "item": "minecraft:brick"
+      "item": "minecraft:nether_brick"
     },
     "c": {
-      "item": "minecraft:clay"
+      "item": "minecraft:magma_cream"
     }
   },
   "pattern": [
@@ -17,7 +17,7 @@
     "aba"
   ],
   "result": {
-    "count": 2,
-    "item": "railcraft:coke_oven_bricks"
+    "count": 4,
+    "item": "railcraft:blast_furnace_bricks"
   }
 }

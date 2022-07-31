@@ -81,9 +81,9 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.REINFORCED_RAIL.get(),
         ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
 
+    this.generateFlatItem(RailcraftItems.BAG_OF_CEMENT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.WOODEN_RAILBED.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.WOODEN_TIE.get(), ModelTemplates.FLAT_ITEM);
-
     this.generateFlatItem(RailcraftItems.STONE_RAILBED.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.STONE_TIE.get(), ModelTemplates.FLAT_ITEM);
 

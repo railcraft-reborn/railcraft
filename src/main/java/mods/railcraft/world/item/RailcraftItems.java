@@ -1309,6 +1309,8 @@ public class RailcraftItems {
   public static final RegistryObject<Item> HIGH_SPEED_RAIL = registerBasic("high_speed_rail");
   public static final RegistryObject<Item> ELECTRIC_RAIL = registerBasic("electric_rail");
 
+  public static final RegistryObject<Item> BAG_OF_CEMENT = registerBasic("bag_of_cement");
+
   public static final RegistryObject<Item> WOODEN_TIE = registerBasic("wooden_tie");
   public static final RegistryObject<Item> STONE_TIE = registerBasic("stone_tie");
 

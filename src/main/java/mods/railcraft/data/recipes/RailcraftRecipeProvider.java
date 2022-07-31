@@ -137,6 +137,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildPost(consumer, RailcraftItems.POST, RailcraftTags.Items.POST);
     buildStrengthenedGlass(consumer);
     buildTie(consumer);
+    buildCement(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
@@ -163,15 +164,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .requires(Items.RAIL, 8)
         .unlockedBy("has_rail", has(Items.RAIL))
         .save(consumer, Railcraft.ID + ":rail_deconstruction");
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())
-        .define('R', RailcraftItems.REBAR.get())
-        .define('S', Items.STONE_SLAB)
-        .pattern(" R ")
-        .pattern("SSS")
-        .pattern("   ")
-        .unlockedBy(getHasName(RailcraftItems.REBAR.get()), has(RailcraftItems.REBAR.get()))
-        .save(consumer);
 
     ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAILBED.get())
         .requires(RailcraftItems.WOODEN_TIE.get(), 4)
@@ -387,14 +379,61 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private static void buildMultiblockBlocks(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.COKE_OVEN_BRICKS.get())
-        .define('B', Items.BRICK)
-        .define('S', Tags.Items.SAND)
-        .pattern("SBS")
-        .pattern("BSB")
-        .pattern("SBS")
+    ShapedRecipeBuilder.shaped(RailcraftItems.FLUID_FUELED_FIREBOX.get())
+        .pattern("aca")
+        .pattern("bdb")
+        .pattern("aea")
+        .define('a', RailcraftTags.Items.INVAR_PLATE)
+        .define('b', Items.IRON_BARS)
+        .define('c', Items.BUCKET)
+        .define('d', Items.FIRE_CHARGE)
+        .define('e', Items.FURNACE)
+        .unlockedBy(getHasName(RailcraftItems.INVAR_PLATE.get()),
+            has(RailcraftItems.INVAR_PLATE.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.SOLID_FUELED_FIREBOX.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.NETHER_BRICK)
+        .define('b', Items.FIRE_CHARGE)
+        .define('c', Items.FURNACE)
+        .unlockedBy(getHasName(Items.FIRE_CHARGE), has(Items.FIRE_CHARGE))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.COKE_OVEN_BRICKS.get(), 2)
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', Items.SAND)
+        .define('b', Items.BRICK)
+        .define('c', Items.CLAY)
         .unlockedBy(getHasName(Items.BRICK), has(Items.BRICK))
-        .unlockedBy(getHasName(Items.SAND), has(Tags.Items.SAND))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.BLAST_FURNACE_BRICKS.get(), 4)
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', Items.SOUL_SAND)
+        .define('b', Items.NETHER_BRICK)
+        .define('c', Items.MAGMA_CREAM)
+        .unlockedBy(getHasName(Items.MAGMA_CREAM), has(Items.MAGMA_CREAM))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get(), 2)
+        .pattern("a")
+        .pattern("b")
+        .pattern("a")
+        .define('a', RailcraftTags.Items.STEEL_PLATE)
+        .define('b', RailcraftTags.Items.INVAR_PLATE)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()), has(RailcraftItems.STEEL_PLATE.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get(), 2)
+        .pattern("a")
+        .pattern("b")
+        .pattern("a")
+        .define('a', RailcraftTags.Items.IRON_PLATE)
+        .define('b', RailcraftTags.Items.INVAR_PLATE)
+        .unlockedBy(getHasName(RailcraftItems.IRON_PLATE.get()), has(RailcraftItems.IRON_PLATE.get()))
         .save(consumer);
   }
 
@@ -491,6 +530,33 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BUCKET.get()),
             has(RailcraftItems.CREOSOTE_BUCKET.get()))
         .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())
+        .pattern(" a ")
+        .pattern("bcb")
+        .define('a', Items.WATER_BUCKET)
+        .define('b', RailcraftItems.BAG_OF_CEMENT.get())
+        .define('c', RailcraftItems.REBAR.get())
+        .unlockedBy(getHasName(RailcraftItems.BAG_OF_CEMENT.get()),
+            has(RailcraftItems.BAG_OF_CEMENT.get()))
+        .save(consumer);
+  }
+
+  private static void buildCement(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RailcraftItems.BAG_OF_CEMENT.get(), 2)
+        .pattern("ab")
+        .pattern("ba")
+        .define('a', Items.GRAVEL)
+        .define('b', Items.QUARTZ)
+        .unlockedBy(getHasName(Items.QUARTZ), has(Items.QUARTZ))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.BAG_OF_CEMENT.get(), 2)
+        .pattern("ab")
+        .pattern("ca")
+        .define('a', Items.GRAVEL)
+        .define('b', Items.QUARTZ)
+        .define('c', RailcraftItems.SLAG_DUST.get())
+        .unlockedBy(getHasName(RailcraftItems.SLAG_DUST.get()), has(RailcraftItems.SLAG_DUST.get()))
+        .save(consumer, "bag_of_cement_slag");
   }
 
   private static void tankWall(Consumer<FinishedRecipe> consumer,

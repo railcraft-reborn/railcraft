@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:plates/invar"
+    },
+    "b": {
+      "item": "minecraft:iron_bars"
+    },
+    "c": {
+      "item": "minecraft:bucket"
+    },
+    "d": {
+      "item": "minecraft:fire_charge"
+    },
+    "e": {
+      "item": "minecraft:furnace"
+    }
+  },
+  "pattern": [
+    "aca",
+    "bdb",
+    "aea"
+  ],
+  "result": {
+    "item": "railcraft:fluid_fueled_firebox"
+  }
+}
