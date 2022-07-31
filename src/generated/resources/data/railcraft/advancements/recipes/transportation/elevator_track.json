@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_advanced_rail": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:advanced_rail"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_standard_rail": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:standard_rail"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:elevator_track"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_advanced_rail",
+      "has_standard_rail",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:elevator_track"
+    ]
+  }
+}

@@ -2,19 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "a": {
-      "item": "railcraft:reinforced_rail"
+      "item": "railcraft:high_speed_rail"
     },
     "b": {
       "item": "railcraft:stone_railbed"
+    },
+    "c": {
+      "item": "railcraft:electric_rail"
     }
   },
   "pattern": [
-    "a a",
+    "aca",
     "aba",
-    "a a"
+    "aca"
   ],
   "result": {
     "count": 32,
-    "item": "railcraft:reinforced_track"
+    "item": "railcraft:high_speed_electric_track"
   }
 }

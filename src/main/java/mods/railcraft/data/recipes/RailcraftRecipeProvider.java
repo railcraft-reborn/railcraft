@@ -138,6 +138,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildStrengthenedGlass(consumer);
     buildTie(consumer);
     buildCement(consumer);
+    buildRails(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
@@ -176,17 +177,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
             has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
-
-    // this.railsFromMaterials(finishedRecipe, RailcraftItems.IRON_.get(),
-    // RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    this.railsFromMaterials(consumer, Items.RAIL,
-        RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    this.railsFromMaterials(consumer, RailcraftItems.REINFORCED_TRACK.get(),
-        RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    this.railsFromMaterials(consumer, RailcraftItems.ELECTRIC_TRACK.get(),
-        RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    this.railsFromMaterials(consumer, RailcraftItems.HIGH_SPEED_TRACK.get(),
-        RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
   }
 
   private void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
@@ -231,20 +221,55 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipe);
   }
 
+  private void buildRails(Consumer<FinishedRecipe> consumer) {
+    railsFromMaterials(consumer, RailcraftItems.ABANDONED_TRACK.get(), 32,
+        RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_TIE.get());
+    railsFromMaterials(consumer, RailcraftItems.STRAP_IRON_TRACK.get(), 32,
+        RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
+    railsFromMaterials(consumer, Items.RAIL, 32,
+        RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
+    railsFromMaterials(consumer, RailcraftItems.REINFORCED_TRACK.get(), 32,
+        RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+    railsFromMaterials(consumer, RailcraftItems.ELECTRIC_TRACK.get(), 32,
+        RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+    railsFromMaterials(consumer, RailcraftItems.HIGH_SPEED_TRACK.get(), 32,
+        RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
+    railsFromMaterials(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get(), 32,
+        RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get(),
+        RailcraftItems.ELECTRIC_RAIL.get());
+    railsFromMaterials(consumer, RailcraftItems.ELEVATOR_TRACK.get(), 8,
+        RailcraftItems.ADVANCED_RAIL.get(), RailcraftItems.STANDARD_RAIL.get(),
+        Items.REDSTONE);
+  }
+
   private void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipe,
-      Item itemOut, Item railType, Item railBedType) {
-    ShapedRecipeBuilder.shaped(itemOut, 32)
-        .define('I', railType)
-        .define('B', railBedType)
-        .pattern("I I")
-        .pattern("IBI")
-        .pattern("I I")
+      Item result, int count,  Item railType, Item railBedType) {
+    ShapedRecipeBuilder.shaped(result, count)
+        .pattern("a a")
+        .pattern("aba")
+        .pattern("a a")
+        .define('a', railType)
+        .define('b', railBedType)
         .unlockedBy(getHasName(railType), has(railType))
         .unlockedBy(getHasName(railBedType), has(railBedType))
         // this is deliberate as vanilla ones fail to properly build (rails.json already exists)
         .save(finishedRecipe,
             new ResourceLocation(Railcraft.ID,
-                RecipeBuilder.getDefaultRecipeId(itemOut).getPath()));
+                RecipeBuilder.getDefaultRecipeId(result).getPath()));
+  }
+
+  private void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipe,
+      Item result, int count, Item railType, Item railBedType, Item optionalItem) {
+    ShapedRecipeBuilder.shaped(result, count)
+        .pattern("aca")
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', railType)
+        .define('b', railBedType)
+        .define('c', optionalItem)
+        .unlockedBy(getHasName(railType), has(railType))
+        .unlockedBy(getHasName(railBedType), has(railBedType))
+        .save(finishedRecipe);
   }
 
   @Override

@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "B": {
-      "item": "railcraft:stone_railbed"
-    },
-    "I": {
+    "a": {
       "item": "railcraft:electric_rail"
+    },
+    "b": {
+      "item": "railcraft:stone_railbed"
     }
   },
   "pattern": [
-    "I I",
-    "IBI",
-    "I I"
+    "a a",
+    "aba",
+    "a a"
   ],
   "result": {
     "count": 32,

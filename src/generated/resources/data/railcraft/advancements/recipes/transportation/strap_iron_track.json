@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:strap_iron_track"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wooden_rail": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:wooden_rail"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_wooden_railbed": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:wooden_railbed"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_wooden_rail",
+      "has_wooden_railbed",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:strap_iron_track"
+    ]
+  }
+}

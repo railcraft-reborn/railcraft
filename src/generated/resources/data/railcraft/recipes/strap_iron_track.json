@@ -2,10 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "a": {
-      "item": "railcraft:reinforced_rail"
+      "item": "railcraft:wooden_rail"
     },
     "b": {
-      "item": "railcraft:stone_railbed"
+      "item": "railcraft:wooden_railbed"
     }
   },
   "pattern": [
@@ -15,6 +15,6 @@
   ],
   "result": {
     "count": 32,
-    "item": "railcraft:reinforced_track"
+    "item": "railcraft:strap_iron_track"
   }
 }
