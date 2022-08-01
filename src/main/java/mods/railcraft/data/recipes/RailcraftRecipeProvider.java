@@ -141,6 +141,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildRails(consumer);
     buildSteelItems(consumer);
     buildTunnelBoreHead(consumer);
+    buildMaul(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
@@ -181,6 +182,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(consumer);
 
     ShapedRecipeBuilder.shaped(Items.TORCH)
+    ShapedRecipeBuilder.shaped(Items.TORCH, 8)
         .pattern("a")
         .pattern("b")
         .pattern("c")
@@ -401,6 +403,37 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', center)
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
+        .save(consumer);
+  }
+
+  private void buildMaul(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RailcraftItems.IRON_SPIKE_MAUL.get())
+        .pattern("aca")
+        .pattern(" b ")
+        .pattern(" b ")
+        .define('a', Tags.Items.INGOTS_IRON)
+        .define('b', Items.STICK)
+        .define('c', Tags.Items.STORAGE_BLOCKS_IRON)
+        .unlockedBy(getHasName(Items.IRON_BLOCK), has(Items.IRON_BLOCK))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_SPIKE_MAUL.get())
+        .pattern("aca")
+        .pattern(" b ")
+        .pattern(" b ")
+        .define('a', RailcraftTags.Items.STEEL_INGOT)
+        .define('b', Items.STICK)
+        .define('c', RailcraftTags.Items.STEEL_BLOCK)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_BLOCK.get()),
+            has(RailcraftItems.STEEL_BLOCK.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.DIAMOND_SPIKE_MAUL.get())
+        .pattern("aca")
+        .pattern(" b ")
+        .pattern(" b ")
+        .define('a', Tags.Items.GEMS_DIAMOND)
+        .define('b', Items.STICK)
+        .define('c', Tags.Items.STORAGE_BLOCKS_DIAMOND)
+        .unlockedBy(getHasName(Items.DIAMOND_BLOCK), has(Items.DIAMOND_BLOCK))
         .save(consumer);
   }
 

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/steel"
+    },
+    "b": {
+      "item": "minecraft:stick"
+    },
+    "c": {
+      "tag": "forge:blocks/steel"
+    }
+  },
+  "pattern": [
+    "aca",
+    " b ",
+    " b "
+  ],
+  "result": {
+    "item": "railcraft:steel_spike_maul"
+  }
+}
