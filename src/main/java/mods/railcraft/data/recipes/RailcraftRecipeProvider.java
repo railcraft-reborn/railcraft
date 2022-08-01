@@ -140,6 +140,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildCement(consumer);
     buildRails(consumer);
     buildSteelItems(consumer);
+    buildTunnelBoreHead(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
@@ -273,11 +274,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipe);
   }
 
-  @Override
-  public String getName() {
-    return "Railcraft Recipes";
-  }
-
   private void buildSteelItems(Consumer<FinishedRecipe> consumer) {
     ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_ANVIL.get())
         .pattern("aaa")
@@ -367,6 +363,31 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aaa")
         .pattern("a a")
         .define('a', RailcraftTags.Items.STEEL_INGOT)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
+            has(RailcraftItems.STEEL_INGOT.get()))
+        .save(consumer);
+  }
+
+  private void buildTunnelBoreHead(Consumer<FinishedRecipe> consumer) {
+    tunnelBoreHead(consumer, RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get(),
+        RailcraftTags.Items.BRONZE_BLOCK);
+    tunnelBoreHead(consumer, RailcraftItems.IRON_TUNNEL_BORE_HEAD.get(),
+        Tags.Items.STORAGE_BLOCKS_IRON);
+    tunnelBoreHead(consumer, RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get(),
+        RailcraftTags.Items.STEEL_BLOCK);
+    tunnelBoreHead(consumer, RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get(),
+        Tags.Items.STORAGE_BLOCKS_DIAMOND);
+  }
+
+  private static void tunnelBoreHead(Consumer<FinishedRecipe> consumer,
+      Item result,
+      TagKey<Item> center) {
+    ShapedRecipeBuilder.shaped(result)
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', RailcraftTags.Items.STEEL_INGOT)
+        .define('b', center)
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
         .save(consumer);
@@ -851,5 +872,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
           .unlockedBy(getHasName(base), has(base))
           .save(consumer);
     }
+  }
+
+  @Override
+  public String getName() {
+    return "Railcraft Recipes";
   }
 }
