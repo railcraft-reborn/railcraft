@@ -12,7 +12,7 @@ public class EmptyFluidContainerSlot extends Slot {
   }
 
   @Override
-  public boolean mayPlace( ItemStack item) {
+  public boolean mayPlace(ItemStack item) {
     return !item.isEmpty() && FluidItemHelper.isEmptyContainer(item);
   }
 }

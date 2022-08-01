@@ -1333,6 +1333,10 @@ public class RailcraftItems {
       deferredRegister.register("creosote_bucket",
           () -> new BucketItem(RailcraftFluids.CREOSOTE, new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> CREOSOTE_BOTTLE =
+      deferredRegister.register("creosote_bottle",
+          () -> new FluidBottleItem(RailcraftFluids.CREOSOTE, new Item.Properties().tab(TAB)));
+
   // ================================================================================
   // Utils
   // ================================================================================

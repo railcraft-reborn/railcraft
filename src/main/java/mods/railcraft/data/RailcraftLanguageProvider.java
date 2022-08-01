@@ -223,6 +223,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.HIGH_SPEED_RAIL, "High Speed Rail");
     this.addItem(RailcraftItems.ELECTRIC_RAIL, "Electric Rail");
     this.addItem(RailcraftItems.CREOSOTE_BUCKET, "Creosote Bucket");
+    this.addItem(RailcraftItems.CREOSOTE_BOTTLE, "Creosote Bottle");
     this.addItem(RailcraftItems.TRACK_PARTS, "Track Parts");
     this.addItem(RailcraftItems.TRANSITION_TRACK_KIT, "Transition Track Kit");
     this.addItem(RailcraftItems.LOCKING_TRACK_KIT, "Locking Track Kit");

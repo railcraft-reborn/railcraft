@@ -179,6 +179,17 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
             has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
+
+    ShapedRecipeBuilder.shaped(Items.TORCH)
+        .pattern("a")
+        .pattern("b")
+        .pattern("c")
+        .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
+        .define('b', ItemTags.WOOL)
+        .define('c', Items.STICK)
+        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
+            has(RailcraftItems.CREOSOTE_BOTTLE.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "torch_creosote"));
   }
 
   private void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
@@ -671,6 +682,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BUCKET.get()),
             has(RailcraftItems.CREOSOTE_BUCKET.get()))
         .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.WOODEN_TIE.get())
+        .pattern(" a ")
+        .pattern("bbb")
+        .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
+        .define('b', ItemTags.WOODEN_SLABS)
+        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
+            has(RailcraftItems.CREOSOTE_BOTTLE.get()))
+        .save(consumer, "wooden_tie_bottle");
     ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())
         .pattern(" a ")
         .pattern("bcb")

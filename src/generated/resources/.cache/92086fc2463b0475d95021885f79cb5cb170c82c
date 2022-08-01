@@ -1,4 +1,4 @@
-// 1.19.1	2022-07-31T19:52:58.0208672	Railcraft Block State Definitions
+// 1.19.1	2022-08-01T13:10:03.265976393	Railcraft Block State Definitions
 b7fce4a3220edeb2904e53e6377a86a7b237ffc5 assets/railcraft/blockstates/abandoned_activator_track.json
 ff1b13ba4045bb558e3d132ec8830eb9d226af6f assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -1018,6 +1018,7 @@ cc3d72fefc8eaa8035f16c8dad6e9cfa132f1e58 assets/railcraft/models/item/coke_oven_
 1d36647d55c4e48b9aae466834d4774a8701502c assets/railcraft/models/item/copper_gear.json
 fec950cc3c46f7516c1ccccd410dfe4954fe4cf2 assets/railcraft/models/item/copper_plate.json
 ecf7136385d997fdafee99a1442647d0d776a9cd assets/railcraft/models/item/coupler_track_kit.json
+38ef5d9cd09edd8f4ea9d8371eb8c3b2e5bd06c5 assets/railcraft/models/item/creosote_bottle.json
 d6fb06bb3298177bc3fccaebea9c063a9d53dc4b assets/railcraft/models/item/creosote_bucket.json
 063c892fb3f74239eea651dde7413880dbed04ff assets/railcraft/models/item/crushed_obsidian.json
 8d5e674f3881537173972681b1bbdd869d06ff89 assets/railcraft/models/item/crusher.json

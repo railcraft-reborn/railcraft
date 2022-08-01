@@ -61,6 +61,7 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.STEEL_HELMET.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.CREOSOTE_BUCKET.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.CREOSOTE_BOTTLE.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.TICKET.get(), ModelTemplates.FLAT_ITEM);
 
