@@ -2,6 +2,7 @@ package mods.railcraft.data;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.tags.RailcraftTags.Items;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
@@ -58,6 +59,22 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
     this.tag(RailcraftTags.Items.STEEL_BLOCK)
         .add(RailcraftItems.STEEL_BLOCK.get());
+    this.tag(Items.BRONZE_BLOCK)
+        .add(RailcraftItems.BRONZE_BLOCK.get());
+    this.tag(Items.BRASS_BLOCK)
+        .add(RailcraftItems.BRASS_BLOCK.get());
+    this.tag(Items.INVAR_BLOCK)
+        .add(RailcraftItems.INVAR_BLOCK.get());
+    this.tag(Items.LEAD_BLOCK)
+        .add(RailcraftItems.LEAD_BLOCK.get());
+    this.tag(Items.TIN_BLOCK)
+        .add(RailcraftItems.TIN_BLOCK.get());
+    this.tag(Items.SILVER_BLOCK)
+        .add(RailcraftItems.SILVER_BLOCK.get());
+    this.tag(Items.NICKEL_BLOCK)
+        .add(RailcraftItems.NICKEL_BLOCK.get());
+    this.tag(Items.ZINC_BLOCK)
+        .add(RailcraftItems.ZINC_BLOCK.get());
 
     this.tag(RailcraftTags.Items.STEEL_PLATE)
         .add(RailcraftItems.STEEL_PLATE.get());

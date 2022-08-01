@@ -259,7 +259,64 @@ public class RailcraftBlocks {
       deferredRegister.register("steel_block",
           () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
               .strength(5.0F, 15.0F)
-              .sound(SoundType.METAL)));
+              .sound(SoundType.METAL)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> BRASS_BLOCK =
+      deferredRegister.register("brass_block",
+          () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(3.0F, 6.0F)
+              .sound(SoundType.METAL)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> BRONZE_BLOCK =
+      deferredRegister.register("bronze_block",
+          () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(3.0F, 6.0F)
+              .sound(SoundType.METAL)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> INVAR_BLOCK =
+      deferredRegister.register("invar_block",
+          () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(5.0F, 6.0F)
+              .sound(SoundType.METAL)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> LEAD_BLOCK =
+      deferredRegister.register("lead_block",
+          () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(5.0F, 6.0F)
+              .sound(SoundType.METAL)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> NICKEL_BLOCK =
+      deferredRegister.register("nickel_block",
+          () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(5.0F, 6.0F)
+              .sound(SoundType.METAL)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> SILVER_BLOCK =
+      deferredRegister.register("silver_block",
+          () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(3.0F, 6.0F)
+              .sound(SoundType.METAL)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> TIN_BLOCK =
+      deferredRegister.register("tin_block",
+          () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(3.0F, 6.0F)
+              .sound(SoundType.METAL)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> ZINC_BLOCK =
+      deferredRegister.register("zinc_block",
+          () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(5.0F, 15.0F)
+              .sound(SoundType.METAL)
+              .requiresCorrectToolForDrops()));
 
   public static final RegistryObject<Block> COKE_BLOCK =
       deferredRegister.register("coal_coke_block",

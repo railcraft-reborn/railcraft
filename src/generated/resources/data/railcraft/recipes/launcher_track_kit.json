@@ -11,10 +11,10 @@
       "item": "minecraft:piston"
     },
     {
-      "tag": "forge:blocks/steel"
+      "tag": "forge:storage_blocks/steel"
     },
     {
-      "tag": "forge:blocks/steel"
+      "tag": "forge:storage_blocks/steel"
     },
     {
       "tag": "forge:dusts/redstone"

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "a": {
-      "tag": "forge:blocks/steel"
+      "tag": "forge:storage_blocks/steel"
     },
     "b": {
       "tag": "forge:ingots/steel"

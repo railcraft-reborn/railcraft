@@ -32,7 +32,7 @@ public class RailcraftTags {
     public static final TagKey<Item> ZINC_INGOT = forgeTag("ingots/zinc");
     public static final TagKey<Item> BRASS_INGOT = forgeTag("ingots/brass");
 
-    // nuggets
+
     public static final TagKey<Item> STEEL_NUGGET = forgeTag("nuggets/steel");
     public static final TagKey<Item> TIN_NUGGET = forgeTag("nuggets/tin");
     public static final TagKey<Item> LEAD_NUGGET = forgeTag("nuggets/lead");
@@ -43,16 +43,16 @@ public class RailcraftTags {
     public static final TagKey<Item> ZINC_NUGGET = forgeTag("nuggets/zinc");
     public static final TagKey<Item> BRASS_NUGGET = forgeTag("nuggets/brass");
 
-    // blocks
-    public static final TagKey<Item> STEEL_BLOCK = forgeTag("blocks/steel");
-    public static final TagKey<Item> TIN_BLOCK = forgeTag("blocks/tin");
-    public static final TagKey<Item> LEAD_BLOCK = forgeTag("blocks/lead");
-    public static final TagKey<Item> SILVER_BLOCK = forgeTag("blocks/silver");
-    public static final TagKey<Item> BRONZE_BLOCK = forgeTag("blocks/bronze");
-    public static final TagKey<Item> NICKEL_BLOCK = forgeTag("blocks/nickel");
-    public static final TagKey<Item> INVAR_BLOCK = forgeTag("blocks/invar");
-    public static final TagKey<Item> ZINC_BLOCK = forgeTag("blocks/zinc");
-    public static final TagKey<Item> BRASS_BLOCK = forgeTag("blocks/brass");
+
+    public static final TagKey<Item> STEEL_BLOCK = forgeTag("storage_blocks/steel");
+    public static final TagKey<Item> TIN_BLOCK = forgeTag("storage_blocks/tin");
+    public static final TagKey<Item> LEAD_BLOCK = forgeTag("storage_blocks/lead");
+    public static final TagKey<Item> SILVER_BLOCK = forgeTag("storage_blocks/silver");
+    public static final TagKey<Item> BRONZE_BLOCK = forgeTag("storage_blocks/bronze");
+    public static final TagKey<Item> NICKEL_BLOCK = forgeTag("storage_blocks/nickel");
+    public static final TagKey<Item> INVAR_BLOCK = forgeTag("storage_blocks/invar");
+    public static final TagKey<Item> ZINC_BLOCK = forgeTag("storage_blocks/zinc");
+    public static final TagKey<Item> BRASS_BLOCK = forgeTag("storage_blocks/brass");
 
     public static final TagKey<Item> STEEL_PLATE = forgeTag("plates/steel");
     public static final TagKey<Item> IRON_PLATE = forgeTag("plates/iron");

@@ -163,7 +163,16 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.COKE_OVEN_BRICKS.get(),
             RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
         .add(RailcraftBlocks.COKE_BLOCK.get())
-        .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+        .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get())
+        .add(RailcraftBlocks.STEEL_BLOCK.get())
+        .add(RailcraftBlocks.BRASS_BLOCK.get())
+        .add(RailcraftBlocks.BRONZE_BLOCK.get())
+        .add(RailcraftBlocks.INVAR_BLOCK.get())
+        .add(RailcraftBlocks.LEAD_BLOCK.get())
+        .add(RailcraftBlocks.NICKEL_BLOCK.get())
+        .add(RailcraftBlocks.SILVER_BLOCK.get())
+        .add(RailcraftBlocks.TIN_BLOCK.get())
+        .add(RailcraftBlocks.ZINC_BLOCK.get());
 
     RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().forEach(mineableWithPickaxe::add);
     RailcraftBlocks.IRON_TANK_WALL.resolveVariants().forEach(mineableWithPickaxe::add);
@@ -174,6 +183,17 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE.get())
         .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+
+    this.tag(BlockTags.NEEDS_IRON_TOOL)
+        .add(RailcraftBlocks.STEEL_BLOCK.get())
+        .add(RailcraftBlocks.BRASS_BLOCK.get())
+        .add(RailcraftBlocks.BRONZE_BLOCK.get())
+        .add(RailcraftBlocks.INVAR_BLOCK.get())
+        .add(RailcraftBlocks.LEAD_BLOCK.get())
+        .add(RailcraftBlocks.NICKEL_BLOCK.get())
+        .add(RailcraftBlocks.SILVER_BLOCK.get())
+        .add(RailcraftBlocks.TIN_BLOCK.get())
+        .add(RailcraftBlocks.ZINC_BLOCK.get());
 
     var stoneToolAppender = this.tag(BlockTags.NEEDS_STONE_TOOL)
         .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),

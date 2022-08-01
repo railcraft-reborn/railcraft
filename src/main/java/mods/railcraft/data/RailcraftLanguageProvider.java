@@ -55,7 +55,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.STEAM_TURBINE, "Steam Turbine Housing");
     this.addBlock(RailcraftBlocks.BLAST_FURNACE_BRICKS, "Blast Furnace Bricks");
     this.addBlock(RailcraftBlocks.FEED_STATION, "Feed Station");
-    this.addBlock(RailcraftBlocks.STEEL_BLOCK, "Steel Block");
+    this.addBlock(RailcraftBlocks.STEEL_BLOCK, "Block of Steel");
+    this.addBlock(RailcraftBlocks.BRASS_BLOCK, "Block of Brass");
+    this.addBlock(RailcraftBlocks.BRONZE_BLOCK, "Block of Bronze");
+    this.addBlock(RailcraftBlocks.INVAR_BLOCK, "Block of Invar");
+    this.addBlock(RailcraftBlocks.LEAD_BLOCK, "Block of Lead");
+    this.addBlock(RailcraftBlocks.NICKEL_BLOCK, "Block of Nickel");
+    this.addBlock(RailcraftBlocks.SILVER_BLOCK, "Block of Silver");
+    this.addBlock(RailcraftBlocks.TIN_BLOCK, "Block of Tin");
+    this.addBlock(RailcraftBlocks.ZINC_BLOCK, "Block of Zinc");
     this.addBlock(RailcraftBlocks.COKE_BLOCK, "Block of Coal Coke");
     this.addBlock(RailcraftBlocks.STEEL_ANVIL, "Steel Anvil");
     this.addBlock(RailcraftBlocks.CHIPPED_STEEL_ANVIL, "Chipped Steel Anvil");

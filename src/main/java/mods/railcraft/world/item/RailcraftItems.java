@@ -168,6 +168,38 @@ public class RailcraftItems {
       deferredRegister.register("steel_block",
           () -> new BlockItem(RailcraftBlocks.STEEL_BLOCK.get(), new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> BRASS_BLOCK =
+      deferredRegister.register("brass_block",
+          () -> new BlockItem(RailcraftBlocks.BRASS_BLOCK.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> BRONZE_BLOCK =
+      deferredRegister.register("bronze_block",
+          () -> new BlockItem(RailcraftBlocks.BRONZE_BLOCK.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> INVAR_BLOCK =
+      deferredRegister.register("invar_block",
+          () -> new BlockItem(RailcraftBlocks.INVAR_BLOCK.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> LEAD_BLOCK =
+      deferredRegister.register("lead_block",
+          () -> new BlockItem(RailcraftBlocks.LEAD_BLOCK.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> NICKEL_BLOCK =
+      deferredRegister.register("nickel_block",
+          () -> new BlockItem(RailcraftBlocks.NICKEL_BLOCK.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SILVER_BLOCK =
+      deferredRegister.register("silver_block",
+          () -> new BlockItem(RailcraftBlocks.SILVER_BLOCK.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> TIN_BLOCK =
+      deferredRegister.register("tin_block",
+          () -> new BlockItem(RailcraftBlocks.TIN_BLOCK.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ZINC_BLOCK =
+      deferredRegister.register("zinc_block",
+          () -> new BlockItem(RailcraftBlocks.ZINC_BLOCK.get(), new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> COKE_BLOCK =
       deferredRegister.register("coal_coke_block",
           () -> new BlockItem(RailcraftBlocks.COKE_BLOCK.get(), new Item.Properties().tab(TAB)));

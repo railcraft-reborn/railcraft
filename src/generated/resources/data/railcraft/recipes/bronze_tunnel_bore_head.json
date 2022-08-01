@@ -5,7 +5,7 @@
       "tag": "forge:ingots/steel"
     },
     "b": {
-      "tag": "forge:blocks/bronze"
+      "tag": "forge:storage_blocks/bronze"
     }
   },
   "pattern": [

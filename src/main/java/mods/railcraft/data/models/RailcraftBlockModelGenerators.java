@@ -248,6 +248,14 @@ public class RailcraftBlockModelGenerators {
     this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
 
     this.createTrivialCube(RailcraftBlocks.STEEL_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.BRASS_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.BRONZE_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.INVAR_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.LEAD_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.NICKEL_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.SILVER_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.TIN_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.ZINC_BLOCK.get());
     this.createTrivialCube(RailcraftBlocks.COKE_BLOCK.get());
     this.createTrivialCube(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 

@@ -129,8 +129,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
      * ===================================== RAILCRAFT BLOCKS =====================================
      */
     buildMultiblockBlocks(consumer);
-    buildCompressions(consumer);
-    buildDecompressions(consumer);
+    buildBlockStorageRecipes(consumer);
     buildGears(consumer);
     buildKits(consumer);
     buildTankBlocks(consumer);
@@ -621,56 +620,63 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(consumer);
   }
 
-  private void buildDecompressions(Consumer<FinishedRecipe> consumer) {
-    decompress(consumer, RailcraftItems.STEEL_NUGGET.get(),
-        RailcraftTags.Items.STEEL_INGOT, "nugget");
-    decompress(consumer, RailcraftItems.TIN_NUGGET.get(),
-        RailcraftTags.Items.TIN_INGOT, "nugget");
-    decompress(consumer, RailcraftItems.ZINC_NUGGET.get(),
-        RailcraftTags.Items.ZINC_INGOT, "nugget");
-    decompress(consumer, RailcraftItems.BRASS_NUGGET.get(),
-        RailcraftTags.Items.BRASS_INGOT, "nugget");
-    decompress(consumer, RailcraftItems.BRONZE_NUGGET.get(),
-        RailcraftTags.Items.BRONZE_INGOT, "nugget");
-    decompress(consumer, RailcraftItems.NICKEL_NUGGET.get(),
-        RailcraftTags.Items.NICKEL_INGOT, "nugget");
-    decompress(consumer, RailcraftItems.INVAR_NUGGET.get(),
-        RailcraftTags.Items.INVAR_INGOT, "nugget");
-    decompress(consumer, RailcraftItems.SILVER_NUGGET.get(),
-        RailcraftTags.Items.SILVER_INGOT, "nugget");
-    decompress(consumer, RailcraftItems.LEAD_NUGGET.get(),
-        RailcraftTags.Items.LEAD_INGOT, "nugget");
+  private void buildBlockStorageRecipes(Consumer<FinishedRecipe> consumer) {
+    nineBlockStorageRecipes(consumer, RailcraftItems.STEEL_NUGGET.get(),
+        RailcraftItems.STEEL_INGOT.get(), "steel_ingot_from_steel_nugget");
+    nineBlockStorageRecipes(consumer, RailcraftItems.TIN_NUGGET.get(),
+        RailcraftItems.TIN_INGOT.get(), "tin_ingot_from_tin_nugget");
+    nineBlockStorageRecipes(consumer, RailcraftItems.ZINC_NUGGET.get(),
+        RailcraftItems.ZINC_INGOT.get(), "zinc_ingot_from_zinc_nugget");
+    nineBlockStorageRecipes(consumer, RailcraftItems.BRASS_NUGGET.get(),
+        RailcraftItems.BRASS_INGOT.get(), "brass_ingot_from_brass_nugget");
+    nineBlockStorageRecipes(consumer, RailcraftItems.BRONZE_NUGGET.get(),
+        RailcraftItems.BRONZE_INGOT.get(), "bronze_ingot_from_bronze_nugget");
+    nineBlockStorageRecipes(consumer, RailcraftItems.NICKEL_NUGGET.get(),
+        RailcraftItems.NICKEL_INGOT.get(), "nickel_ingot_from_nickel_nugget");
+    nineBlockStorageRecipes(consumer, RailcraftItems.INVAR_NUGGET.get(),
+        RailcraftItems.INVAR_INGOT.get(), "invar_ingot_from_invar_nugget");
+    nineBlockStorageRecipes(consumer, RailcraftItems.SILVER_NUGGET.get(),
+        RailcraftItems.SILVER_INGOT.get(), "silver_ingot_from_silver_nugget");
+    nineBlockStorageRecipes(consumer, RailcraftItems.LEAD_NUGGET.get(),
+        RailcraftItems.LEAD_INGOT.get(), "lead_ingot_from_lead_nugget");
 
-    decompress(consumer, RailcraftItems.STEEL_INGOT.get(),
-        RailcraftTags.Items.STEEL_BLOCK, "block_ingot");
-    decompress(consumer, RailcraftItems.COAL_COKE.get(),
-        RailcraftItems.COKE_BLOCK.get(), "block_coke");
+    nineBlockStorageRecipes(consumer, RailcraftItems.STEEL_INGOT.get(),
+        RailcraftItems.STEEL_BLOCK.get(), "steel_block_from_steel_ingot");
+    nineBlockStorageRecipes(consumer, RailcraftItems.TIN_INGOT.get(),
+        RailcraftItems.TIN_BLOCK.get(), "tin_block_from_tin_ingot");
+    nineBlockStorageRecipes(consumer, RailcraftItems.ZINC_INGOT.get(),
+        RailcraftItems.ZINC_BLOCK.get(), "zinc_block_from_zinc_ingot");
+    nineBlockStorageRecipes(consumer, RailcraftItems.BRASS_INGOT.get(),
+        RailcraftItems.BRASS_BLOCK.get(), "brass_block_from_brass_ingot");
+    nineBlockStorageRecipes(consumer, RailcraftItems.BRONZE_INGOT.get(),
+        RailcraftItems.BRONZE_BLOCK.get(), "bronze_block_from_bronze_ingot");
+    nineBlockStorageRecipes(consumer, RailcraftItems.NICKEL_INGOT.get(),
+        RailcraftItems.NICKEL_BLOCK.get(), "nickel_block_from_nickel_ingot");
+    nineBlockStorageRecipes(consumer, RailcraftItems.INVAR_INGOT.get(),
+        RailcraftItems.INVAR_BLOCK.get(), "invar_block_from_invar_ingot");
+    nineBlockStorageRecipes(consumer, RailcraftItems.SILVER_INGOT.get(),
+        RailcraftItems.SILVER_BLOCK.get(), "silver_block_from_silver_ingot");
+    nineBlockStorageRecipes(consumer, RailcraftItems.LEAD_INGOT.get(),
+        RailcraftItems.LEAD_BLOCK.get(), "lead_block_from_lead_ingot");
+
+
+    nineBlockStorageRecipes(consumer, RailcraftItems.COAL_COKE.get(),
+        RailcraftItems.COKE_BLOCK.get(), "coke_block_from_coal_coke");
   }
 
-  private void buildCompressions(Consumer<FinishedRecipe> consumer) {
-    compress(consumer, RailcraftItems.STEEL_INGOT.get(),
-        RailcraftTags.Items.STEEL_NUGGET, "ingot");
-    compress(consumer, RailcraftItems.TIN_INGOT.get(),
-        RailcraftTags.Items.TIN_NUGGET, "ingot");
-    compress(consumer, RailcraftItems.ZINC_INGOT.get(),
-        RailcraftTags.Items.ZINC_NUGGET, "ingot");
-    compress(consumer, RailcraftItems.BRASS_INGOT.get(),
-        RailcraftTags.Items.BRASS_NUGGET, "ingot");
-    compress(consumer, RailcraftItems.BRONZE_INGOT.get(),
-        RailcraftTags.Items.BRONZE_NUGGET, "ingot");
-    compress(consumer, RailcraftItems.NICKEL_INGOT.get(),
-        RailcraftTags.Items.NICKEL_NUGGET, "ingot");
-    compress(consumer, RailcraftItems.INVAR_INGOT.get(),
-        RailcraftTags.Items.INVAR_NUGGET, "ingot");
-    compress(consumer, RailcraftItems.LEAD_INGOT.get(),
-        RailcraftTags.Items.LEAD_NUGGET, "ingot");
-    compress(consumer, RailcraftItems.SILVER_INGOT.get(),
-        RailcraftTags.Items.SILVER_NUGGET, "ingot");
-
-    compress(consumer, RailcraftItems.STEEL_BLOCK.get(),
-        RailcraftTags.Items.STEEL_INGOT, "block");
-    compress(consumer, RailcraftItems.COKE_BLOCK.get(),
-        RailcraftItems.COAL_COKE.get(), "block");
+  private static void nineBlockStorageRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer,
+      ItemLike pUnpacked, ItemLike pPacked, String pPackingRecipeName) {
+    ShapelessRecipeBuilder.shapeless(pUnpacked, 9)
+        .requires(pPacked)
+        .unlockedBy(getHasName(pPacked), has(pPacked))
+        .save(pFinishedRecipeConsumer);
+    ShapedRecipeBuilder.shaped(pPacked)
+        .pattern("aaa")
+        .pattern("aaa")
+        .pattern("aaa")
+        .define('a', pUnpacked)
+        .unlockedBy(getHasName(pUnpacked), has(pUnpacked))
+        .save(pFinishedRecipeConsumer, new ResourceLocation(Railcraft.ID, pPackingRecipeName));
   }
 
   private void buildStrengthenedGlass(Consumer<FinishedRecipe> consumer) {
@@ -836,56 +842,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       VariantRegistrar<DyeColor, BlockItem> colorItems,
       TagKey<Item> tagItem) {
     coloredBlockVariant(consumer, colorItems, tagItem, DyeColor.BLACK);
-  }
-
-  private static void compress(Consumer<FinishedRecipe> finishedRecipe,
-      Item itemOut,
-      TagKey<Item> materialTag,
-      String identifier) {
-    ShapedRecipeBuilder.shaped(itemOut)
-        .pattern("###")
-        .pattern("###")
-        .pattern("###")
-        .define('#', materialTag)
-        .unlockedBy("has_material", has(materialTag))
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
-            RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
-  }
-
-  private static void compress(Consumer<FinishedRecipe> finishedRecipe,
-      Item itemOut,
-      Item ingredient,
-      String identifier) {
-    ShapedRecipeBuilder.shaped(itemOut)
-        .pattern("###")
-        .pattern("###")
-        .pattern("###")
-        .define('#', ingredient)
-        .unlockedBy(getHasName(ingredient), has(ingredient))
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
-            RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
-  }
-
-  private static void decompress(Consumer<FinishedRecipe> finishedRecipe,
-      Item itemOut,
-      TagKey<Item> materialTag,
-      String identifier) {
-    ShapelessRecipeBuilder.shapeless(itemOut, 9)
-        .requires(materialTag)
-        .unlockedBy("has_material", has(materialTag))
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
-            RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
-  }
-
-  private static void decompress(Consumer<FinishedRecipe> finishedRecipe,
-      Item itemOut,
-      Item ingredient,
-      String identifier) {
-    ShapelessRecipeBuilder.shapeless(itemOut, 9)
-        .requires(ingredient)
-        .unlockedBy("has_material", has(ingredient))
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID,
-            RecipeBuilder.getDefaultRecipeId(itemOut).getPath() + "_" + identifier));
   }
 
   private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,

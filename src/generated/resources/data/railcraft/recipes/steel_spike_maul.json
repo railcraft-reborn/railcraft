@@ -8,7 +8,7 @@
       "item": "minecraft:stick"
     },
     "c": {
-      "tag": "forge:blocks/steel"
+      "tag": "forge:storage_blocks/steel"
     }
   },
   "pattern": [
