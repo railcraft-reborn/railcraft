@@ -134,22 +134,25 @@ public class Translations {
         format("jei.%railcraft.tips.crusher");
   }
 
-  public static class Misc {
+  public static class Signal {
 
-    public static final String SIGNAL_SURVEYOR_INVALID_TRACK = "signal_surveyor.invalid_track";
-    public static final String SIGNAL_SURVEYOR_BEGIN = "signal_surveyor.begin";
-    public static final String SIGNAL_SURVEYOR_SUCCESS = "signal_surveyor.success";
-    public static final String SIGNAL_SURVEYOR_INVALID_PAIR = "signal_surveyor.invalid_pair";
-    public static final String SIGNAL_SURVEYOR_LOST = "signal_surveyor.lost";
-    public static final String SIGNAL_SURVEYOR_UNLOADED = "signal_surveyor.unloaded";
-    public static final String SIGNAL_SURVEYOR_ABANDONED = "signal_surveyor.abandoned";
-    public static final String SIGNAL_SURVEYOR_INVALID_BLOCK = "signal_surveyor.invalid_block";
+    public static final String SIGNAL_SURVEYOR_INVALID_TRACK =
+        format("signal.%railcraft.surveyor.invalid_track");
+    public static final String SIGNAL_SURVEYOR_BEGIN = format("signal.%railcraft.surveyor.begin");
+    public static final String SIGNAL_SURVEYOR_SUCCESS = format("signal.%railcraft.surveyor.success");
+    public static final String SIGNAL_SURVEYOR_INVALID_PAIR = format("signal.%railcraft.surveyor.invalid_pair");
+    public static final String SIGNAL_SURVEYOR_LOST = format("signal.%railcraft.surveyor.lost");
+    public static final String SIGNAL_SURVEYOR_UNLOADED =
+        format("signal.%railcraft.surveyor.unloaded");
+    public static final String SIGNAL_SURVEYOR_ABANDONED =
+        format("signal.%railcraft.surveyor.abandoned");
+    public static final String SIGNAL_SURVEYOR_INVALID_BLOCK = format("signal.%railcraft.surveyor.invalid_block");
 
-    public static final String SIGNAL_TUNER_BEGIN = "signal_tuner.begin";
-    public static final String SIGNAL_TUNER_ABANDONED = "signal_tuner.abandoned";
-    public static final String SIGNAL_TUNER_UNLOADED = "signal_tuner.unloaded";
-    public static final String SIGNAL_TUNER_LOST = "signal_tuner.lost";
-    public static final String SIGNAL_TUNER_SUCCESS = "signal_tuner.success";
+    public static final String SIGNAL_TUNER_BEGIN = format("signal.%railcraft.tuner.begin");
+    public static final String SIGNAL_TUNER_ABANDONED = format("signal.%railcraft.tuner.abandoned");
+    public static final String SIGNAL_TUNER_UNLOADED = format("signal.%railcraft.tuner.unloaded");
+    public static final String SIGNAL_TUNER_LOST = format("signal.%railcraft.tuner.lost");
+    public static final String SIGNAL_TUNER_SUCCESS = format("signal.%railcraft.tuner.success");
   }
 
   private static String format(String key) {

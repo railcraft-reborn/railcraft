@@ -6,6 +6,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.Translations.Container;
 import mods.railcraft.Translations.Jei;
+import mods.railcraft.Translations.Signal;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -33,23 +34,6 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, "Railcraft Outfitted Tracks");
     this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, "Railcraft Decorative Blocks");
 
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_INVALID_TRACK, "§cNo Track Found Near %s");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_BEGIN, "§dBeginning Survey");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_SUCCESS, "§aSuccessfully Paired Signals");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_INVALID_PAIR, "§cPairing Invalid");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_LOST, "§cFirst Signal No Longer Exists");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_UNLOADED,
-        "§cFirst Signal's Chunk Has Been Unloaded");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_ABANDONED, "§dSurvey Abandoned");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_INVALID_BLOCK, "§cNot a Valid Signal");
-
-    this.add(Translations.Misc.SIGNAL_TUNER_BEGIN, "§dStarted Pairing %s§d With a Receiver");
-    this.add(Translations.Misc.SIGNAL_TUNER_ABANDONED, "§dStopped Pairing");
-    this.add(Translations.Misc.SIGNAL_TUNER_UNLOADED,
-        "§cSignal Controller's Chunk Has Been Unloaded");
-    this.add(Translations.Misc.SIGNAL_TUNER_LOST, "§cSignal Controller No Longer Exists");
-    this.add(Translations.Misc.SIGNAL_TUNER_SUCCESS, "§aSuccessfully Paired Signal Receiver");
-
     this.blockTranslations();
     this.itemTranslations();
     this.entityTranslations();
@@ -58,6 +42,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.tipsTranslations();
     this.screenTranslations();
     this.jeiTranslations();
+    this.signalTranslations();
   }
 
   private void blockTranslations() {
@@ -463,6 +448,23 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Jei.BLAST_FURNACE, "Blast Furnace Smelting");
     this.add(Jei.CRUSHER, "Rock Crushing");
     this.add(Jei.CRUSHER_TIP, "(%s%% chance)");
+  }
+
+  public void signalTranslations() {
+    this.add(Signal.SIGNAL_SURVEYOR_INVALID_TRACK, "No Track Found Near %s");
+    this.add(Signal.SIGNAL_SURVEYOR_BEGIN, "Beginning Survey");
+    this.add(Signal.SIGNAL_SURVEYOR_SUCCESS, "Successfully Paired Signals");
+    this.add(Signal.SIGNAL_SURVEYOR_INVALID_PAIR, "Pairing Invalid");
+    this.add(Signal.SIGNAL_SURVEYOR_LOST, "First Signal No Longer Exists");
+    this.add(Signal.SIGNAL_SURVEYOR_UNLOADED, "First Signal's Chunk Has Been Unloaded");
+    this.add(Signal.SIGNAL_SURVEYOR_ABANDONED, "Survey Abandoned");
+    this.add(Signal.SIGNAL_SURVEYOR_INVALID_BLOCK, "Not a Valid Signal");
+
+    this.add(Signal.SIGNAL_TUNER_BEGIN, "Started Pairing %s With a Receiver");
+    this.add(Signal.SIGNAL_TUNER_ABANDONED, "Stopped Pairing");
+    this.add(Signal.SIGNAL_TUNER_UNLOADED, "Signal Controller's Chunk Has Been Unloaded");
+    this.add(Signal.SIGNAL_TUNER_LOST, "Signal Controller No Longer Exists");
+    this.add(Signal.SIGNAL_TUNER_SUCCESS, "Successfully Paired Signal Receiver");
   }
 
   public void addFluidType(Supplier<? extends FluidType> key, String name) {

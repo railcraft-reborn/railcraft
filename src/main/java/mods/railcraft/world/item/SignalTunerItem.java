@@ -1,10 +1,11 @@
 package mods.railcraft.world.item;
 
 import java.util.Objects;
-import mods.railcraft.Translations;
+import mods.railcraft.Translations.Signal;
 import mods.railcraft.api.core.DimensionPos;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.api.signal.entity.SignalReceiverEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -32,7 +33,7 @@ public class SignalTunerItem extends PairingToolItem {
             }
           })) {
         player.displayClientMessage(
-            Component.translatable(Translations.Misc.SIGNAL_TUNER_ABANDONED), true);
+            Component.translatable(Signal.SIGNAL_TUNER_ABANDONED).withStyle(ChatFormatting.LIGHT_PURPLE), true);
         return InteractionResult.SUCCESS;
       }
 
@@ -48,21 +49,21 @@ public class SignalTunerItem extends PairingToolItem {
                 signalController.getSignalController().addPeer(signalReceiver);
                 signalController.getSignalController().stopLinking();
                 player.displayClientMessage(
-                    Component.translatable(Translations.Misc.SIGNAL_TUNER_SUCCESS,
+                    Component.translatable(Signal.SIGNAL_TUNER_SUCCESS,
                         previousBlockEntity.getBlockState().getBlock().getName(),
-                        blockState.getBlock().getName()),
+                        blockState.getBlock().getName()).withStyle(ChatFormatting.GREEN),
                     true);
                 this.clearPeerPos(itemStack);
                 return InteractionResult.SUCCESS;
               }
             } else if (level.isLoaded(previousTarget.getPos())) {
               player.displayClientMessage(
-                  Component.translatable(Translations.Misc.SIGNAL_TUNER_LOST),
+                  Component.translatable(Signal.SIGNAL_TUNER_LOST).withStyle(ChatFormatting.RED),
                   true);
               this.clearPeerPos(itemStack);
             } else {
               player.displayClientMessage(
-                  Component.translatable(Translations.Misc.SIGNAL_TUNER_UNLOADED),
+                  Component.translatable(Signal.SIGNAL_TUNER_UNLOADED).withStyle(ChatFormatting.RED),
                   true);
               this.clearPeerPos(itemStack);
             }
@@ -71,14 +72,14 @@ public class SignalTunerItem extends PairingToolItem {
           var controller = provider.getSignalController();
           if (previousTarget == null || !Objects.equals(pos, previousTarget.getPos())) {
             player.displayClientMessage(
-                Component.translatable(Translations.Misc.SIGNAL_TUNER_BEGIN,
-                    blockState.getBlock().getName()),
+                Component.translatable(Signal.SIGNAL_TUNER_BEGIN,
+                    blockState.getBlock().getName()).withStyle(ChatFormatting.LIGHT_PURPLE),
                 true);
             this.setPeerPos(itemStack, DimensionPos.from(blockEntity));
             controller.startLinking();
           } else {
             player.displayClientMessage(
-                Component.translatable(Translations.Misc.SIGNAL_TUNER_ABANDONED,
+                Component.translatable(Signal.SIGNAL_TUNER_ABANDONED,
                     blockState.getBlock().getName()),
                 true);
             controller.stopLinking();
