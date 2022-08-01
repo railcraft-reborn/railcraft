@@ -442,7 +442,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ELEVATOR_TRACK, "Elevator Track");
   }
 
-  public void jeiTranslations() {
+  private void jeiTranslations() {
     this.add(Jei.METAL_ROLLING, "Metal Rolling");
     this.add(Jei.COKE_OVEN, "Coke Oven Smelting");
     this.add(Jei.BLAST_FURNACE, "Blast Furnace Smelting");
@@ -450,7 +450,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Jei.CRUSHER_TIP, "(%s%% chance)");
   }
 
-  public void signalTranslations() {
+  private void signalTranslations() {
     this.add(Signal.SIGNAL_SURVEYOR_INVALID_TRACK, "No Track Found Near %s");
     this.add(Signal.SIGNAL_SURVEYOR_BEGIN, "Beginning Survey");
     this.add(Signal.SIGNAL_SURVEYOR_SUCCESS, "Successfully Paired Signals");
@@ -467,11 +467,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Signal.SIGNAL_TUNER_SUCCESS, "Successfully Paired Signal Receiver");
   }
 
-  public void addFluidType(Supplier<? extends FluidType> key, String name) {
+  private void addFluidType(Supplier<? extends FluidType> key, String name) {
     this.add(key.get(), name);
   }
 
-  public void add(FluidType key, String name) {
+  private void add(FluidType key, String name) {
     this.add(key.getDescriptionId(), name);
   }
 
