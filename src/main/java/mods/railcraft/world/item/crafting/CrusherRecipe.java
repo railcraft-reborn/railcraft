@@ -95,6 +95,11 @@ public class CrusherRecipe implements Recipe<CraftingContainer> {
     return RailcraftRecipeTypes.CRUSHING.get();
   }
 
+  @Override
+  public boolean isSpecial() {
+    return true;
+  }
+
   public static class CrusherRecipeSerializer implements RecipeSerializer<CrusherRecipe> {
 
     @Override

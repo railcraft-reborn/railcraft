@@ -45,6 +45,11 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
     return RailcraftRecipeSerializers.COKING.get();
   }
 
+  @Override
+  public boolean isSpecial() {
+    return true;
+  }
+
   public static class Serializer implements RecipeSerializer<CokeOvenRecipe> {
 
     @Override

@@ -131,6 +131,11 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
     return RailcraftRecipeTypes.ROLLING.get();
   }
 
+  @Override
+  public boolean isSpecial() {
+    return true;
+  }
+
   public static class RollingRecipeSerializer implements RecipeSerializer<RollingRecipe> {
 
     @Override

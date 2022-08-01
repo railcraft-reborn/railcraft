@@ -38,6 +38,11 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
     return RailcraftRecipeSerializers.BLASTING.get();
   }
 
+  @Override
+  public boolean isSpecial() {
+    return true;
+  }
+
   public static class Serializer implements RecipeSerializer<BlastFurnaceRecipe> {
 
     @Override
