@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "railcraft:high_speed_rail"
+    },
+    "b": {
+      "item": "railcraft:stone_railbed"
+    }
+  },
+  "pattern": [
+    "aba",
+    "aaa",
+    "aaa"
+  ],
+  "result": {
+    "count": 16,
+    "item": "railcraft:high_speed_turnout_track"
+  }
+}

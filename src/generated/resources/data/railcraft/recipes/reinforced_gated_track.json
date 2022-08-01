@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:gated_track_kit"
+    },
+    {
+      "item": "railcraft:reinforced_track"
+    }
+  ],
+  "result": {
+    "item": "railcraft:reinforced_gated_track"
+  }
+}

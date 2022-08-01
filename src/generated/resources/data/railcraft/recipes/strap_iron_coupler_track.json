@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:coupler_track_kit"
+    },
+    {
+      "item": "railcraft:strap_iron_track"
+    }
+  ],
+  "result": {
+    "item": "railcraft:strap_iron_coupler_track"
+  }
+}

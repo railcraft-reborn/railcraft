@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "railcraft:electric_rail"
+    },
+    "b": {
+      "item": "railcraft:stone_railbed"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "aab",
+    "aaa"
+  ],
+  "result": {
+    "count": 16,
+    "item": "railcraft:electric_wye_track"
+  }
+}

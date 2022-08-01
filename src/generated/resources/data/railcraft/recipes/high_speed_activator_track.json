@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:activator_track_kit"
+    },
+    {
+      "item": "railcraft:high_speed_track"
+    }
+  ],
+  "result": {
+    "item": "railcraft:high_speed_activator_track"
+  }
+}

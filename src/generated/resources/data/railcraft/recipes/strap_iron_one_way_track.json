@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:one_way_track_kit"
+    },
+    {
+      "item": "railcraft:strap_iron_track"
+    }
+  ],
+  "result": {
+    "item": "railcraft:strap_iron_one_way_track"
+  }
+}

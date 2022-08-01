@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:high_speed_electric_transition_track"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_transition_track_kit": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:transition_track_kit"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_transition_track_kit",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:high_speed_electric_transition_track"
+    ]
+  }
+}
