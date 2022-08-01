@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:bag_of_cement_slag"
+        "recipe": "railcraft:bag_of_cement_slag"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:bag_of_cement_slag"
+      "railcraft:bag_of_cement_slag"
     ]
   }
 }

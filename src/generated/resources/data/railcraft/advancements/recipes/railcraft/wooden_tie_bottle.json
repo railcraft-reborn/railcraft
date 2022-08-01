@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:wooden_tie_bottle"
+        "recipe": "railcraft:wooden_tie_bottle"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:wooden_tie_bottle"
+      "railcraft:wooden_tie_bottle"
     ]
   }
 }

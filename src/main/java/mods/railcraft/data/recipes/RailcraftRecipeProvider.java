@@ -181,7 +181,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(Items.TORCH)
     ShapedRecipeBuilder.shaped(Items.TORCH, 8)
         .pattern("a")
         .pattern("b")
@@ -722,7 +721,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', ItemTags.WOODEN_SLABS)
         .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
             has(RailcraftItems.CREOSOTE_BOTTLE.get()))
-        .save(consumer, "wooden_tie_bottle");
+        .save(consumer, new ResourceLocation(Railcraft.ID, "wooden_tie_bottle"));
     ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())
         .pattern(" a ")
         .pattern("bcb")
@@ -749,7 +748,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', Items.QUARTZ)
         .define('c', RailcraftItems.SLAG_DUST.get())
         .unlockedBy(getHasName(RailcraftItems.SLAG_DUST.get()), has(RailcraftItems.SLAG_DUST.get()))
-        .save(consumer, "bag_of_cement_slag");
+        .save(consumer, new ResourceLocation(Railcraft.ID, "bag_of_cement_slag"));
   }
 
   private static void tankWall(Consumer<FinishedRecipe> consumer,
