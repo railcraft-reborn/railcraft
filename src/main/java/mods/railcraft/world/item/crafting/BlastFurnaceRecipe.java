@@ -50,7 +50,7 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
       var group = GsonHelper.getAsString(json, "group", "");
       var cookingTime = GsonHelper.getAsInt(json, "cookingTime",
           BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME);
-      var slagOutput = GsonHelper.getAsInt(json, "slagOutput", 1000); // 1 bucket
+      var slagOutput = GsonHelper.getAsInt(json, "slagOutput", 1);
       var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "ingredient"));
       var result = itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
       var experience = GsonHelper.getAsFloat(json, "experience", 0.0F);

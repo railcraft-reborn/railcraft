@@ -56,7 +56,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
         this.experience, this.cookingTime, this.slagOutput, this.advancement, advancementId));
   }
 
-  public static class Result extends AbstractCookingRecipeBuilder.AbstractResult {
+  private static class Result extends AbstractCookingRecipeBuilder.AbstractResult {
 
     private final int slagOutput;
 

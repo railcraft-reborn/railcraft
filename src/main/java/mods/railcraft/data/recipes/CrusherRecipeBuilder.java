@@ -72,7 +72,7 @@ public class CrusherRecipeBuilder {
         this.recipeDelay));
   }
 
-  public static class Result implements FinishedRecipe {
+  private static class Result implements FinishedRecipe {
 
     private final ResourceLocation id;
     private final Ingredient ingredient;

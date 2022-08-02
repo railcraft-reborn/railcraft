@@ -54,7 +54,7 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
         this.experience, this.cookingTime, this.creosoteOutput, this.advancement, advancementId));
   }
 
-  public static class Result extends AbstractCookingRecipeBuilder.AbstractResult {
+  private static class Result extends AbstractCookingRecipeBuilder.AbstractResult {
 
     private final int creosoteOutput;
 

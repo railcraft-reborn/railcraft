@@ -117,7 +117,7 @@ public class RollingRecipeBuilder {
             this.delay, this.rows, this.key));
   }
 
-  public static class Result implements FinishedRecipe {
+  private static class Result implements FinishedRecipe {
 
     private final ResourceLocation id;
     private final Item resultItem;

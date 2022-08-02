@@ -63,7 +63,7 @@ public class CrusherRecipe implements Recipe<CraftingContainer> {
 
 
   /**
-   * Use getProbabilityItems
+   * Use {@link #getProbabilityItems()} since we have more output
    */
   @Override
   @Deprecated(forRemoval = false)
