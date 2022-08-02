@@ -157,6 +157,76 @@ public class Translations {
     public static final String SIGNAL_TUNER_SUCCESS = format("signal.%railcraft.tuner.success");
   }
 
+  public static class Advancment {
+    public static class Tracks {
+      public static final String ROOT = format("advancements.%railcraft.tracks.root.name");
+      public static final String ROOT_DESC = format("advancements.%railcraft.tracks.root.desc");
+      public static final String MANUAL_ROLLING_MACHINE =
+          format("advancements.%railcraft.tracks.manual_rolling_machine.name");
+      public static final String MANUAL_ROLLING_MACHINE_DESC =
+          format("advancements.%railcraft.tracks.manual_rolling_machine.desc");
+      public static final String BLAST_FURNACE =
+          format("advancements.%railcraft.tracks.blast_furnace.name");
+      public static final String BLAST_FURNACE_DESC =
+          format("advancements.%railcraft.tracks.blast_furnace.desc");
+      public static final String COKE_OVEN =
+          format("advancements.%railcraft.tracks.coke_oven.name");
+      public static final String COKE_OVEN_DESC =
+          format("advancements.%railcraft.tracks.coke_oven.desc");
+      public static final String FIRESTONE =
+          format("advancements.%railcraft.tracks.firestone.name");
+      public static final String FIRESTONE_DESC =
+          format("advancements.%railcraft.tracks.firestone.desc");
+      public static final String HIGH_SPEED_TRACK =
+          format("advancements.%railcraft.tracks.high_speed_track.name");
+      public static final String HIGH_SPEED_TRACK_DESC =
+          format("advancements.%railcraft.tracks.high_speed_track.desc");
+      public static final String JUNCTIONS = format("advancements.%railcraft.tracks.junctions.name");
+      public static final String JUNCTIONS_DESC =
+          format("advancements.%railcraft.tracks.junctions.desc");
+      public static final String REGULAR_TRACK =
+          format("advancements.%railcraft.tracks.regular_track.name");
+      public static final String REGULAR_TRACK_DESC =
+          format("advancements.%railcraft.tracks.regular_track.desc");
+      public static final String CRUSHER = format("advancements.%railcraft.tracks.crusher.name");
+      public static final String CRUSHER_DESC = format("advancements.%railcraft.tracks.crusher.desc");
+      public static final String TRACK_KIT = format("advancements.%railcraft.tracks.track_kit.name");
+      public static final String TRACK_KIT_DESC =
+          format("advancements.%railcraft.tracks.track_kit.desc");
+      public static final String WOODEN_TRACK =
+          format("advancements.%railcraft.tracks.wooden_track.name");
+      public static final String WOODEN_TRACK_DESC =
+          format("advancements.%railcraft.tracks.wooden_track.desc");
+    }
+
+    public static class Carts {
+      public static final String ROOT = format("advancements.%railcraft.carts.root.name");
+      public static final String ROOT_DESC = format("advancements.%railcraft.carts.root.desc");
+      public static final String BED_CART = format("advancements.%railcraft.carts.bed_cart.name");
+      public static final String BED_CART_DESC =
+          format("advancements.%railcraft.carts.bed_cart.desc");
+      public static final String JUKEBOX_CART =
+          format("advancements.%railcraft.carts.jukebox_cart.name");
+      public static final String JUKEBOX_CART_DESC =
+          format("advancements.%railcraft.carts.jukebox_cart.desc");
+      public static final String LINK_CARTS =
+          format("advancements.%railcraft.carts.link_carts.name");
+      public static final String LINK_CARTS_DESC =
+          format("advancements.%railcraft.carts.link_carts.desc");
+      public static final String LOCOMOTIVE =
+          format("advancements.%railcraft.carts.locomotive.name");
+      public static final String LOCOMOTIVE_DESC =
+          format("advancements.%railcraft.carts.locomotive.desc");
+      public static final String SEASONS = format("advancements.%railcraft.carts.seasons.name");
+      public static final String SEASONS_DESC =
+          format("advancements.%railcraft.carts.seasons.desc");
+      public static final String SURPRISE =
+          format("advancements.%railcraft.carts.surprise.name");
+      public static final String SURPRISE_DESC =
+          format("advancements.%railcraft.carts.surprise.desc");
+    }
+  }
+
   private static String format(String key) {
     return key.replace("%railcraft", Railcraft.ID);
   }

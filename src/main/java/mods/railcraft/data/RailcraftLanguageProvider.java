@@ -4,6 +4,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.Translations.Advancment.Carts;
+import mods.railcraft.Translations.Advancment.Tracks;
 import mods.railcraft.Translations.Container;
 import mods.railcraft.Translations.Jei;
 import mods.railcraft.Translations.Signal;
@@ -45,6 +47,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.jeiTranslations();
     this.signalTranslations();
     this.enchantmentTranslations();
+    this.advancementTranslations();
   }
 
   private void blockTranslations() {
@@ -484,6 +487,46 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addEnchantment(RailcraftEnchantments.DESTRUCTION, "Destruction");
     this.addEnchantment(RailcraftEnchantments.IMPLOSION, "Implosion");
     this.addEnchantment(RailcraftEnchantments.SMACK, "Smack");
+  }
+
+  private void advancementTranslations() {
+    this.add(Tracks.ROOT, "Tracks");
+    this.add(Tracks.ROOT_DESC, "Railcraft Inc.'s dedication");
+    this.add(Tracks.MANUAL_ROLLING_MACHINE, "Tireless Rolling");
+    this.add(Tracks.MANUAL_ROLLING_MACHINE_DESC, "Build a manual rolling machine out of alloys");
+    this.add(Tracks.BLAST_FURNACE, "Steel Mill");
+    this.add(Tracks.BLAST_FURNACE_DESC, "Build a blast furnace");
+    this.add(Tracks.COKE_OVEN, "Coke Head");
+    this.add(Tracks.COKE_OVEN_DESC, "Read a coke oven brick's tooltip and build a complete one");
+    this.add(Tracks.CRUSHER, "Heavy Machinery");
+    this.add(Tracks.CRUSHER_DESC, "Build a crusher");
+    this.add(Tracks.FIRESTONE, "Intractable Energy");
+    this.add(Tracks.FIRESTONE_DESC, "Find a firestone ore on the floor of nether lava ocean and crush it with a rock crusher");
+    this.add(Tracks.HIGH_SPEED_TRACK, "Fired up Carts");
+    this.add(Tracks.HIGH_SPEED_TRACK_DESC, "Get some high speed tracks and ride your carts on them");
+    this.add(Tracks.JUNCTIONS, "Better Forks");
+    this.add(Tracks.JUNCTIONS_DESC, "Turn a regular track into turnouts, wyes, and intersections with a spike maul");
+    this.add(Tracks.REGULAR_TRACK, "Reasonably Priced");
+    this.add(Tracks.REGULAR_TRACK_DESC, "Manufacture tracks made of regular rails");
+    this.add(Tracks.WOODEN_TRACK, "Wood Age");
+    this.add(Tracks.WOODEN_TRACK_DESC, "Get some strap iron tracks that require very few iron");
+    this.add(Tracks.TRACK_KIT, "Multifunctional Rails");
+    this.add(Tracks.TRACK_KIT_DESC, "Make and place track kits on your flex tracks to empower them like this buffer stop one");
+
+    this.add(Carts.ROOT, "Railcraft Carts");
+    this.add(Carts.ROOT_DESC, "Vehicles and magic from Railcraft");
+    this.add(Carts.BED_CART, "Dreams on the wheels");
+    this.add(Carts.BED_CART_DESC, "Sleeping while riding the bed cart");
+    this.add(Carts.JUKEBOX_CART, "Moving Music");
+    this.add(Carts.JUKEBOX_CART_DESC, "Play a record in a jukebox cart");
+    this.add(Carts.LINK_CARTS, "Linking Carts");
+    this.add(Carts.LINK_CARTS_DESC, "Never forget to sneak!");
+    this.add(Carts.LOCOMOTIVE, "Rolling Through");
+    this.add(Carts.LOCOMOTIVE_DESC, "Power your train with locomotives");
+    this.add(Carts.SEASONS, "Anachronism");
+    this.add(Carts.SEASONS_DESC, "Tweak with a seasons crowbar the season of a cart");
+    this.add(Carts.SURPRISE, "Opportune Kaboom");
+    this.add(Carts.SURPRISE_DESC, "Explode a seasonal cart and collect (really?) gifts");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {

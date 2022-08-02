@@ -1,7 +1,7 @@
 {
   "parent": "railcraft:tracks/root",
   "criteria": {
-    "has_raw_firestone": {
+    "inv_changed": {
       "conditions": {
         "items": [
           {
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "has_raw_firestone"
+      "inv_changed"
     ]
   ]
 }

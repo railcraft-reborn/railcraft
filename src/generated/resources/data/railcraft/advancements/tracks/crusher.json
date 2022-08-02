@@ -1,11 +1,12 @@
 {
+  "parent": "railcraft:tracks/root",
   "criteria": {
     "inv_changed": {
       "conditions": {
         "items": [
           {
             "items": [
-              "railcraft:iron_crowbar"
+              "railcraft:crusher"
             ]
           }
         ]
@@ -15,19 +16,17 @@
   },
   "display": {
     "announce_to_chat": false,
-    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
     "description": {
-      "translate": "advancements.railcraft.carts.root.desc"
+      "translate": "advancements.railcraft.tracks.crusher.desc"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "railcraft:diamond_crowbar",
-      "nbt": "{Damage:0}"
+      "item": "railcraft:crusher"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.railcraft.carts.root.name"
+      "translate": "advancements.railcraft.tracks.crusher.name"
     }
   },
   "requirements": [

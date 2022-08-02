@@ -1,7 +1,7 @@
 {
   "parent": "railcraft:tracks/regular_track",
   "criteria": {
-    "has_raw_firestone": {
+    "has_used_track_kit": {
       "conditions": {},
       "trigger": "railcraft:use_track_kit"
     }
@@ -14,7 +14,7 @@
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "railcraft:raw_firestone"
+      "item": "railcraft:buffer_stop_track_kit"
     },
     "show_toast": true,
     "title": {
@@ -23,7 +23,7 @@
   },
   "requirements": [
     [
-      "has_raw_firestone"
+      "has_used_track_kit"
     ]
   ]
 }
