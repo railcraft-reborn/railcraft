@@ -116,8 +116,6 @@
     "track_kit.slopes_unsupported": "§cSlopes Are Unsupported",
     "track_kit.invalid_track_type": "§cInvalid Track Type",
 
-    "spike_maul.description": "Converts track to switches and junctions.",
-
     "manipulator.redstone_mode.complete": "Complete",
     "manipulator.redstone_mode.complete.description": "Process until operation is complete.",
     "manipulator.redstone_mode.immediate": "Immediate",

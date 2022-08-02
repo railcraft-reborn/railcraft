@@ -11,6 +11,7 @@ import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.material.fluid.RailcraftFluidTypes;
 import net.minecraft.data.DataGenerator;
@@ -43,6 +44,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.screenTranslations();
     this.jeiTranslations();
     this.signalTranslations();
+    this.enchantmentTranslations();
   }
 
   private void blockTranslations() {
@@ -286,6 +288,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
     this.add(Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
+    this.add(Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
   }
 
   private void screenTranslations() {
@@ -474,6 +477,13 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Signal.SIGNAL_TUNER_UNLOADED, "Signal Controller's Chunk Has Been Unloaded");
     this.add(Signal.SIGNAL_TUNER_LOST, "Signal Controller No Longer Exists");
     this.add(Signal.SIGNAL_TUNER_SUCCESS, "Successfully Paired Signal Receiver");
+  }
+
+  private void enchantmentTranslations() {
+    this.addEnchantment(RailcraftEnchantments.WRECKING, "Wrecking");
+    this.addEnchantment(RailcraftEnchantments.DESTRUCTION, "Destruction");
+    this.addEnchantment(RailcraftEnchantments.IMPLOSION, "Implosion");
+    this.addEnchantment(RailcraftEnchantments.SMACK, "Smack");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {

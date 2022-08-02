@@ -7,10 +7,14 @@ import mods.railcraft.util.Predicates;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.DamageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraftforge.common.extensions.IForgeAbstractMinecart;
+import net.minecraftforge.common.extensions.IForgeEnchantment;
 
-public class RailcraftDamageEnchantment extends RailcraftToolEnchantment {
+public class RailcraftDamageEnchantment extends RailcraftToolEnchantment implements
+    IForgeEnchantment {
 
   private final int baseEnchantability, levelEnchantability, thresholdEnchantability;
   private final Predicate<? super Entity> check;
@@ -26,7 +30,6 @@ public class RailcraftDamageEnchantment extends RailcraftToolEnchantment {
     this.thresholdEnchantability = thresholdEnchantability;
     this.check = check == null ? Predicates.alwaysTrue() : check;
     this.damageBonusPerLevel = damageBonusPerLevel;
-  //  MinecraftForge.EVENT_BUS.register(this);
   }
 
   @Override
@@ -45,13 +48,15 @@ public class RailcraftDamageEnchantment extends RailcraftToolEnchantment {
   }
 
   @Override
-  public float getDamageBonus(int lvl, MobType creatureType) {
+  public float getDamageBonus(int level, MobType mobType, ItemStack enchantedItem) {
     float modifier = 0.0f;
-    if ((target != null && check.test(target.get())))
-      modifier = lvl * damageBonusPerLevel;
+    if(target != null && check.test(target.get())) {
+      modifier = level * damageBonusPerLevel;
+    }
     target = null;
     return modifier;
   }
+
   //
   // @SubscribeEvent
   // public void attackEvent(AttackEntityEvent event) {

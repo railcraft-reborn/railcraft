@@ -286,6 +286,10 @@
   "container.railcraft.solid_fueled_steam_boiler": "Solid Fueled Steam Boiler",
   "container.railcraft.steam_turbine": "Steam Turbine",
   "container.railcraft.tank": "Tank",
+  "enchantment.railcraft.destruction": "Destruction",
+  "enchantment.railcraft.implosion": "Implosion",
+  "enchantment.railcraft.smack": "Smack",
+  "enchantment.railcraft.wrecking": "Wrecking",
   "entity.railcraft.creative_locomotive": "Creative Locomotive",
   "entity.railcraft.electric_locomotive": "Electric Locomotive",
   "entity.railcraft.steam_locomotive": "Steam Locomotive",
@@ -492,5 +496,6 @@
   "tips.railcraft.locomotive.slot.ticket": "Insert Ticket",
   "tips.railcraft.routing.ticket.blank": "Blank Ticket",
   "tips.railcraft.routing.ticket.dest": "Destination:",
-  "tips.railcraft.routing.ticket.issuer": "Issuer:"
+  "tips.railcraft.routing.ticket.issuer": "Issuer:",
+  "tips.railcraft.spike_maul": "Converts track to switches and junctions."
 }
