@@ -266,9 +266,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', railBedType)
         .unlockedBy(getHasName(railType), has(railType))
         .unlockedBy(getHasName(railBedType), has(railBedType))
-        // this is deliberate as vanilla ones fail to properly build (rails.json already exists)
         .save(finishedRecipe,
-            new ResourceLocation(Railcraft.ID,
+            new ResourceLocation(result.equals(Items.RAIL) ? "minecraft" : Railcraft.ID,
                 RecipeBuilder.getDefaultRecipeId(result).getPath()));
   }
 

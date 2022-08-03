@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:rail"
+        "recipe": "minecraft:rail"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -41,7 +41,7 @@
   ],
   "rewards": {
     "recipes": [
-      "railcraft:rail"
+      "minecraft:rail"
     ]
   }
 }
