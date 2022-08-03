@@ -161,7 +161,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
         .requires(RailcraftItems.WOODEN_TIE.get())
         .requires(Tags.Items.INGOTS_IRON)
-        .unlockedBy("has_wooden_tie", has(Items.RAIL))
+        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
+            has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
 
     ShapelessRecipeBuilder.shapeless(RailcraftItems.STANDARD_RAIL.get())
