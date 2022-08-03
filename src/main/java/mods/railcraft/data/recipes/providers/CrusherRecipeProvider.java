@@ -176,5 +176,10 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(RailcraftItems.SULFUR_DUST.get(), 1, 0.85)
         .addResult(RailcraftItems.SULFUR_DUST.get(), 1, 0.35)
         .save(consumer, "tags_ores_sulfure");
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.SALTPETER_ORE), 200)
+        .addResult(RailcraftItems.SALTPETER_DUST.get(), 3, 1)
+        .addResult(RailcraftItems.SALTPETER_DUST.get(), 1, 0.85)
+        .addResult(RailcraftItems.SALTPETER_DUST.get(), 1, 0.35)
+        .save(consumer, "tags_ores_saltpeter");
   }
 }

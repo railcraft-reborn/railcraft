@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "group": "nickel_ingot",
+  "ingredient": {
+    "item": "railcraft:nickel_ore"
+  },
+  "result": "railcraft:nickel_ingot"
+}
