@@ -259,6 +259,20 @@ public class RailcraftBlockModelGenerators {
     this.createTrivialCube(RailcraftBlocks.COKE_BLOCK.get());
     this.createTrivialCube(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
+    this.createTrivialCube(RailcraftBlocks.LEAD_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.NICKEL_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.SILVER_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.SULFURE_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.TIN_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.ZINC_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.DEEPSLATE_SULFURE_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.SALTPETER_ORE.get());
+
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());

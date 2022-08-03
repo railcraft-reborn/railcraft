@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#forge:ores/lead",
+    "#forge:ores/nickel",
+    "#forge:ores/silver",
+    "#forge:ores/sulfure",
+    "#forge:ores/tin",
+    "#forge:ores/zinc",
+    "#forge:ores/salt"
+  ]
+}

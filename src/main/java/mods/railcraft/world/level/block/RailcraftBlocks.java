@@ -65,11 +65,13 @@ import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.material.RailcraftMaterials;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.LightBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -315,14 +317,97 @@ public class RailcraftBlocks {
       deferredRegister.register("zinc_block",
           () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
               .strength(5.0F, 15.0F)
-              .sound(SoundType.METAL)
               .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> LEAD_ORE =
+      deferredRegister.register("lead_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.0F, 3.0F)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> DEEPSLATE_LEAD_ORE =
+      deferredRegister.register("deepslate_lead_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_ORE.get())
+              .color(MaterialColor.DEEPSLATE)
+              .strength(4.5F, 3.0F)
+              .sound(SoundType.DEEPSLATE)));
+
+  public static final RegistryObject<Block> NICKEL_ORE =
+      deferredRegister.register("nickel_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.0F, 3.0F)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> DEEPSLATE_NICKEL_ORE =
+      deferredRegister.register("deepslate_nickel_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(NICKEL_ORE.get())
+              .color(MaterialColor.DEEPSLATE)
+              .strength(4.5F, 3.0F)
+              .sound(SoundType.DEEPSLATE)));
+
+  public static final RegistryObject<Block> SILVER_ORE =
+      deferredRegister.register("silver_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.0F, 3.0F)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> DEEPSLATE_SILVER_ORE =
+      deferredRegister.register("deepslate_silver_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SILVER_ORE.get())
+              .color(MaterialColor.DEEPSLATE)
+              .strength(4.5F, 3.0F)
+              .sound(SoundType.DEEPSLATE)));
+
+  public static final RegistryObject<Block> SULFURE_ORE =
+      deferredRegister.register("sulfure_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.0F, 3.0F)
+              .requiresCorrectToolForDrops(), UniformInt.of(2, 5)));
+
+  public static final RegistryObject<Block> DEEPSLATE_SULFURE_ORE =
+      deferredRegister.register("deepslate_sulfure_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SULFURE_ORE.get())
+              .color(MaterialColor.DEEPSLATE)
+              .strength(4.5F, 3.0F)
+              .sound(SoundType.DEEPSLATE), UniformInt.of(2, 5)));
+
+  public static final RegistryObject<Block> TIN_ORE =
+      deferredRegister.register("tin_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.0F, 3.0F)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> DEEPSLATE_TIN_ORE =
+      deferredRegister.register("deepslate_tin_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(TIN_ORE.get())
+              .color(MaterialColor.DEEPSLATE)
+              .strength(4.5F, 3.0F)
+              .sound(SoundType.DEEPSLATE)));
+
+  public static final RegistryObject<Block> ZINC_ORE =
+      deferredRegister.register("zinc_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.0F, 3.0F)
+              .requiresCorrectToolForDrops()));
+
+  public static final RegistryObject<Block> DEEPSLATE_ZINC_ORE =
+      deferredRegister.register("deepslate_zinc_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(ZINC_ORE.get())
+              .color(MaterialColor.DEEPSLATE)
+              .strength(4.5F, 3.0F)
+              .sound(SoundType.DEEPSLATE)));
 
   public static final RegistryObject<Block> COKE_BLOCK =
       deferredRegister.register("coal_coke_block",
           () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of(Material.STONE)
               .strength(5.0F, 10.0F)
               .sound(SoundType.STONE)));
+
+  public static final RegistryObject<Block> SALTPETER_ORE =
+      deferredRegister.register("saltpeter_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.SAND)
+              .requiresCorrectToolForDrops()
+              .strength(0.8F), UniformInt.of(2, 5)));
 
   public static final RegistryObject<FluidLoaderBlock> FLUID_LOADER =
       deferredRegister.register("fluid_loader",

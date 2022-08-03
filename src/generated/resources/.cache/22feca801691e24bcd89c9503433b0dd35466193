@@ -1,4 +1,4 @@
-// 1.19.1	2022-08-03T12:02:28.531897089	Railcraft Recipes
+// 1.19.1	2022-08-03T18:48:05.632419609	Railcraft Recipes
 e39ead7ff7b72635ceccafd585fd5b062f549194 data/minecraft/advancements/recipes/transportation/rail.json
 790844dc8b3e3f93241eed9ccb9ef57845638191 data/minecraft/recipes/rail.json
 643033ea165b00d4ad131623d07762edbf6b460e data/railcraft/advancements/recipes/building_blocks/coke_oven/coal_block.json
@@ -520,6 +520,7 @@ aec2115fb6696111660fa5016fd71a0afbca91fc data/railcraft/recipes/crusher/crushing
 e7b7ef7ff890a0d3c99615e1d1e0ec09a9227f26 data/railcraft/recipes/crusher/crushing_tags_ores_emerald.json
 a6d3162f5063667a8785c348b3d2d9fed44bb857 data/railcraft/recipes/crusher/crushing_tags_ores_lapis.json
 9c0ed23b18163e2ec2099994865fc7574157876c data/railcraft/recipes/crusher/crushing_tags_ores_redstone.json
+ca793a4a8c1bda46e5cd4eb6b2c7ea9b52beab2e data/railcraft/recipes/crusher/crushing_tags_ores_sulfure.json
 8c5ad45732857852cc31ead7c4ece382ea870e68 data/railcraft/recipes/crusher/crushing_tags_sandstone.json
 e5f1e1d4c89d80446dbc321eb0bba9e662a64dd4 data/railcraft/recipes/crusher/crushing_tags_stone.json
 5bf07df478816b7396a0a8f04aa02255e5e4317b data/railcraft/recipes/crusher/crushing_tags_stone_bricks.json

@@ -1,10 +1,22 @@
-// 1.19.1	2022-08-01T17:19:18.735847023	Railcraft Block Tags
+// 1.19.1	2022-08-03T18:31:33.790550562	Railcraft Block Tags
+cbe2d5f0aface9a04438253c5e216f1b71ba0c3b data/forge/tags/blocks/ore_rates/dense.json
+f7f695af59519f65335bb4e2cbd2ba77662463cd data/forge/tags/blocks/ore_rates/singular.json
+9c698a39724e32e0f331294a60574a147539aeac data/forge/tags/blocks/ores.json
+8c50a9944556e96063fbc340f5ad0cc8db547ff3 data/forge/tags/blocks/ores/lead.json
+83ceb2d2883c80859eebd5d5bb21fc2bfb849cf9 data/forge/tags/blocks/ores/nickel.json
+35a98a11222809a20225372b2d7129082cbbc2b8 data/forge/tags/blocks/ores/salt.json
+8570ce0086d3cce7d0bfa04d10c388cbcd4d4e04 data/forge/tags/blocks/ores/silver.json
+6de46763c049e6ee1ff43cf7751392e4c28c9891 data/forge/tags/blocks/ores/sulfure.json
+0fbe7a7a55102f803486517de1004a189959f607 data/forge/tags/blocks/ores/tin.json
+e04f5a6285f9ec10108641e77582345991282073 data/forge/tags/blocks/ores/zinc.json
+ab8a6f7d61afc254cc8f018a4e9182ccac386840 data/forge/tags/blocks/ores_in_ground/deepslate.json
+8d0d031029522d2be9f7fcd59e97e7a9dbd95c06 data/forge/tags/blocks/ores_in_ground/stone.json
 aefbbbc5abb467f81217a20784fffded5a4cc0df data/minecraft/tags/blocks/anvil.json
 491830ad886621c3a078a87ab488fd45839ad64d data/minecraft/tags/blocks/climbable.json
-7fd3a9a1d0cb0d3d5030dc03490c92e54fa00484 data/minecraft/tags/blocks/mineable/pickaxe.json
+2294ff7a6b35dde18a27a9360c981a472c21aa36 data/minecraft/tags/blocks/mineable/pickaxe.json
 c53a1084d2f2752eaac3634fce1a1afbb2890d8e data/minecraft/tags/blocks/needs_diamond_tool.json
 3ee348cffca12d1de1fa85c8c011c0ac26272c3c data/minecraft/tags/blocks/needs_iron_tool.json
-eaf9a60d668e52585438acb095582cf2da96cc1a data/minecraft/tags/blocks/needs_stone_tool.json
+504ec8256d8273417c69d1502c1b68709851a63f data/minecraft/tags/blocks/needs_stone_tool.json
 9d3090396bd00b992fb2c3bdc37e24e602b0aa69 data/minecraft/tags/blocks/rails.json
 ef2ac7b68d969382709e42d553b20976b37fade6 data/railcraft/tags/blocks/aspect_emitter.json
 192386fbb9d76dd115cb27c418ef2656209a93c4 data/railcraft/tags/blocks/aspect_receiver.json

@@ -4,8 +4,16 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftBlockLoot extends BlockLoot {
@@ -39,6 +47,24 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.FEED_STATION.get());
     this.dropSelf(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+
+    this.dropSelf(RailcraftBlocks.LEAD_ORE.get());
+    this.dropSelf(RailcraftBlocks.NICKEL_ORE.get());
+    this.dropSelf(RailcraftBlocks.SILVER_ORE.get());
+    this.dropSelf(RailcraftBlocks.TIN_ORE.get());
+    this.dropSelf(RailcraftBlocks.ZINC_ORE.get());
+    this.dropSelf(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get());
+    this.dropSelf(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get());
+    this.dropSelf(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get());
+    this.dropSelf(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
+    this.dropSelf(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+
+    this.add(RailcraftBlocks.SULFURE_ORE.get(),
+        block -> createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
+    this.add(RailcraftBlocks.DEEPSLATE_SULFURE_ORE.get(),
+        block -> createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
+    this.add(RailcraftBlocks.SALTPETER_ORE.get(),
+        block -> createOreDrop(block, RailcraftItems.SALTPETER_DUST.get(), 3, 5));
 
     for (var dyeColor : DyeColor.values()) {
       this.dropSelf(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
@@ -291,6 +317,15 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.FIRESTONE.get());
     // TODO: implement this ritual thingy
     this.add(RailcraftBlocks.RITUAL.get(), noDrop());
+  }
+
+  protected static LootTable.Builder createOreDrop(Block pBlock, Item pItem, int min, int max) {
+    return createSilkTouchDispatchTable(pBlock, applyExplosionDecay(pBlock,
+        LootItem
+            .lootTableItem(pItem)
+            .apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max)))
+            .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
+    ));
   }
 
   @Override

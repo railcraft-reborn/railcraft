@@ -2,6 +2,7 @@ package mods.railcraft.data;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.tags.RailcraftTags.Blocks;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
@@ -172,7 +173,14 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.NICKEL_BLOCK.get())
         .add(RailcraftBlocks.SILVER_BLOCK.get())
         .add(RailcraftBlocks.TIN_BLOCK.get())
-        .add(RailcraftBlocks.ZINC_BLOCK.get());
+        .add(RailcraftBlocks.ZINC_BLOCK.get())
+        .addTags(Blocks.LEAD_ORE,
+            Blocks.NICKEL_ORE,
+            Blocks.SILVER_ORE,
+            Blocks.SULFURE_ORE,
+            Blocks.TIN_ORE,
+            Blocks.ZINC_ORE,
+            Blocks.SALTPETER_ORE);
 
     RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().forEach(mineableWithPickaxe::add);
     RailcraftBlocks.IRON_TANK_WALL.resolveVariants().forEach(mineableWithPickaxe::add);
@@ -200,7 +208,14 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
             RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
             RailcraftBlocks.STEAM_TURBINE.get())
-        .add(RailcraftBlocks.COKE_BLOCK.get());
+        .add(RailcraftBlocks.COKE_BLOCK.get())
+        .addTags(Blocks.LEAD_ORE,
+            Blocks.NICKEL_ORE,
+            Blocks.SILVER_ORE,
+            Blocks.SULFURE_ORE,
+            Blocks.TIN_ORE,
+            Blocks.ZINC_ORE,
+            Blocks.SALTPETER_ORE);
 
     RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().forEach(stoneToolAppender::add);
     RailcraftBlocks.IRON_TANK_WALL.resolveVariants().forEach(stoneToolAppender::add);
@@ -229,6 +244,75 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
     RailcraftBlocks.STEEL_TANK_WALL.resolveVariants()
         .forEach(this.tag(RailcraftTags.Blocks.STEEL_TANK_WALL)::add);
+
+
+    this.tag(Tags.Blocks.ORE_RATES_SINGULAR)
+        .add(RailcraftBlocks.LEAD_ORE.get())
+        .add(RailcraftBlocks.NICKEL_ORE.get())
+        .add(RailcraftBlocks.SILVER_ORE.get())
+        .add(RailcraftBlocks.TIN_ORE.get())
+        .add(RailcraftBlocks.ZINC_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_TIN_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+
+    this.tag(Tags.Blocks.ORE_RATES_DENSE)
+        .add(RailcraftBlocks.SULFURE_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_SULFURE_ORE.get())
+        .add(RailcraftBlocks.SALTPETER_ORE.get());
+
+    this.tag(Blocks.LEAD_ORE)
+        .add(RailcraftBlocks.LEAD_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get());
+
+    this.tag(Blocks.NICKEL_ORE)
+        .add(RailcraftBlocks.NICKEL_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get());
+
+    this.tag(Blocks.SILVER_ORE)
+        .add(RailcraftBlocks.SILVER_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get());
+
+    this.tag(Blocks.SULFURE_ORE)
+        .add(RailcraftBlocks.SULFURE_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_SULFURE_ORE.get());
+
+    this.tag(Blocks.TIN_ORE)
+        .add(RailcraftBlocks.TIN_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
+
+    this.tag(Blocks.ZINC_ORE)
+        .add(RailcraftBlocks.ZINC_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+
+    this.tag(Blocks.SALTPETER_ORE)
+        .add(RailcraftBlocks.SALTPETER_ORE.get());
+
+    this.tag(Tags.Blocks.ORES)
+        .addTags(Blocks.LEAD_ORE,
+            Blocks.NICKEL_ORE,
+            Blocks.SILVER_ORE,
+            Blocks.SULFURE_ORE,
+            Blocks.TIN_ORE,
+            Blocks.ZINC_ORE,
+            Blocks.SALTPETER_ORE);
+
+    this.tag(Tags.Blocks.ORES_IN_GROUND_STONE)
+        .add(RailcraftBlocks.LEAD_ORE.get())
+        .add(RailcraftBlocks.NICKEL_ORE.get())
+        .add(RailcraftBlocks.SILVER_ORE.get())
+        .add(RailcraftBlocks.TIN_ORE.get())
+        .add(RailcraftBlocks.ZINC_ORE.get())
+        .add(RailcraftBlocks.SULFURE_ORE.get())
+        .add(RailcraftBlocks.SALTPETER_ORE.get());
+    this.tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE)
+        .add(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_TIN_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
   }
 
   @Override

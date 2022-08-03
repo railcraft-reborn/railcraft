@@ -171,10 +171,10 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Ingredient.of(Items.ENDER_PEARL), 200)
         .addResult(RailcraftItems.ENDER_DUST.get(), 1, 1)
         .save(consumer);
-    /*CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.SULFUR_ORE), 200)
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.SULFURE_ORE), 200)
         .addResult(RailcraftItems.SULFUR_DUST.get(), 5, 1)
         .addResult(RailcraftItems.SULFUR_DUST.get(), 1, 0.85)
         .addResult(RailcraftItems.SULFUR_DUST.get(), 1, 0.35)
-        .save(consumer);*/
+        .save(consumer, "tags_ores_sulfure");
   }
 }
