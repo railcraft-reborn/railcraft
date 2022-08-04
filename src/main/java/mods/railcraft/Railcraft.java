@@ -1,8 +1,7 @@
 package mods.railcraft;
 
-import com.mojang.logging.LogUtils;
 import com.mojang.serialization.JsonOps;
-import java.util.Map;
+import java.util.HashMap;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.charge.Charge;
@@ -19,8 +18,8 @@ import mods.railcraft.data.RailcraftLanguageProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
-import mods.railcraft.data.worldgen.modifiers.RailcraftBiomeModifier;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
+import mods.railcraft.data.worldgen.modifiers.RailcraftBiomeModifier;
 import mods.railcraft.data.worldgen.modifiers.RailcraftOreBiomeModifier;
 import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import mods.railcraft.fuel.FuelManagerImpl;
@@ -69,6 +68,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.JsonCodecProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -85,14 +85,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.registries.ForgeRegistries.Keys;
-import org.slf4j.Logger;
 
 @Mod(Railcraft.ID)
 public class Railcraft {
 
   public static final String ID = "railcraft";
-
-  public static final Logger LOGGER = LogUtils.getLogger();
 
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
   private final MinecartHandler minecartHandler = new MinecartHandler();
@@ -179,23 +176,24 @@ public class Railcraft {
 
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
         fileHelper, Railcraft.ID, ops, Registry.CONFIGURED_FEATURE_REGISTRY,
-        Map.of(new ResourceLocation(ID, "lead_ore"), RailcraftOreFeatures.ORE_LEAD.get())));
-
-
-
+            RailcraftOreFeatures.getConfiguredFeatureMap()));
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
         fileHelper, Railcraft.ID, ops, Registry.PLACED_FEATURE_REGISTRY,
-        Map.of(new ResourceLocation(ID, "lead_ore"),
-            RailcraftOrePlacements.ORE_LEAD_MIDDLE.get())));
+            RailcraftOrePlacements.getPlacedFeatureMap()));
 
-    var addLeadOre =
-        new RailcraftOreBiomeModifier(new Named<>(ops.registry(Registry.BIOME_REGISTRY).get(),
-            BiomeTags.IS_OVERWORLD),
-            Holder.direct(RailcraftOrePlacements.ORE_LEAD_MIDDLE.get()));
+    HashMap<ResourceLocation, BiomeModifier> biomeModifierHashMap = new HashMap<>();
+    for(var placedFeature : RailcraftOrePlacements.getPlacedFeatureMap().entrySet()) {
+      var biomeModifier =
+          new RailcraftOreBiomeModifier(new Named<>(ops.registry(Registry.BIOME_REGISTRY).get(),
+              BiomeTags.IS_OVERWORLD),
+              Holder.direct(placedFeature.getValue()));
+      var resourceLocation = new ResourceLocation(placedFeature.getKey().getNamespace(),
+          "add_" + placedFeature.getKey().getPath());
+      biomeModifierHashMap.put(resourceLocation, biomeModifier);
+    }
 
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
-        fileHelper, ID, ops, Keys.BIOME_MODIFIERS,
-        Map.of(new ResourceLocation(ID, "add_lead_ore"), addLeadOre)));
+        fileHelper, ID, ops, Keys.BIOME_MODIFIERS, biomeModifierHashMap));
   }
 
   // ================================================================================
