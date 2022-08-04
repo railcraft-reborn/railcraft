@@ -407,7 +407,8 @@ public class RailcraftBlocks {
       deferredRegister.register("saltpeter_ore",
           () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.SAND)
               .requiresCorrectToolForDrops()
-              .strength(0.8F), UniformInt.of(2, 5)));
+              .strength(0.8F)
+              .sound(SoundType.SAND), UniformInt.of(2, 5)));
 
   public static final RegistryObject<FluidLoaderBlock> FLUID_LOADER =
       deferredRegister.register("fluid_loader",

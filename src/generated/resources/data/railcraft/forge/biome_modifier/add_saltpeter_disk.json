@@ -1,0 +1,5 @@
+{
+  "type": "railcraft:railcraft_saltpeter_biome_modifier",
+  "biomes": "#minecraft:is_overworld",
+  "step": "underground_ores"
+}
