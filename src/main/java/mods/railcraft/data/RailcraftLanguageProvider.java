@@ -76,8 +76,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.DEEPSLATE_NICKEL_ORE, "Deepslate Nickel Ore");
     this.addBlock(RailcraftBlocks.SILVER_ORE, "Silver Ore");
     this.addBlock(RailcraftBlocks.DEEPSLATE_SILVER_ORE, "Deepslate Silver Ore");
-    this.addBlock(RailcraftBlocks.SULFURE_ORE, "Sulfure Ore");
-    this.addBlock(RailcraftBlocks.DEEPSLATE_SULFURE_ORE, "Deepslate Sulfure Ore");
+    this.addBlock(RailcraftBlocks.SULFUR_ORE, "Sulfur Ore");
+    this.addBlock(RailcraftBlocks.DEEPSLATE_SULFUR_ORE, "Deepslate Sulfur Ore");
     this.addBlock(RailcraftBlocks.TIN_ORE, "Tin Ore");
     this.addBlock(RailcraftBlocks.DEEPSLATE_TIN_ORE, "Deepslate Tin Ore");
     this.addBlock(RailcraftBlocks.ZINC_ORE, "Zinc Ore");

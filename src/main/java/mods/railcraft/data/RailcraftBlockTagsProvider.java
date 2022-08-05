@@ -177,7 +177,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTags(Blocks.LEAD_ORE,
             Blocks.NICKEL_ORE,
             Blocks.SILVER_ORE,
-            Blocks.SULFURE_ORE,
+            Blocks.SULFUR_ORE,
             Blocks.TIN_ORE,
             Blocks.ZINC_ORE,
             Blocks.SALTPETER_ORE);
@@ -212,7 +212,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTags(Blocks.LEAD_ORE,
             Blocks.NICKEL_ORE,
             Blocks.SILVER_ORE,
-            Blocks.SULFURE_ORE,
+            Blocks.SULFUR_ORE,
             Blocks.TIN_ORE,
             Blocks.ZINC_ORE,
             Blocks.SALTPETER_ORE);
@@ -259,8 +259,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
 
     this.tag(Tags.Blocks.ORE_RATES_DENSE)
-        .add(RailcraftBlocks.SULFURE_ORE.get())
-        .add(RailcraftBlocks.DEEPSLATE_SULFURE_ORE.get())
+        .add(RailcraftBlocks.SULFUR_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get())
         .add(RailcraftBlocks.SALTPETER_ORE.get());
 
     this.tag(Blocks.LEAD_ORE)
@@ -275,9 +275,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.SILVER_ORE.get())
         .add(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get());
 
-    this.tag(Blocks.SULFURE_ORE)
-        .add(RailcraftBlocks.SULFURE_ORE.get())
-        .add(RailcraftBlocks.DEEPSLATE_SULFURE_ORE.get());
+    this.tag(Blocks.SULFUR_ORE)
+        .add(RailcraftBlocks.SULFUR_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get());
 
     this.tag(Blocks.TIN_ORE)
         .add(RailcraftBlocks.TIN_ORE.get())
@@ -294,7 +294,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTags(Blocks.LEAD_ORE,
             Blocks.NICKEL_ORE,
             Blocks.SILVER_ORE,
-            Blocks.SULFURE_ORE,
+            Blocks.SULFUR_ORE,
             Blocks.TIN_ORE,
             Blocks.ZINC_ORE,
             Blocks.SALTPETER_ORE);
@@ -305,7 +305,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.SILVER_ORE.get())
         .add(RailcraftBlocks.TIN_ORE.get())
         .add(RailcraftBlocks.ZINC_ORE.get())
-        .add(RailcraftBlocks.SULFURE_ORE.get())
+        .add(RailcraftBlocks.SULFUR_ORE.get())
         .add(RailcraftBlocks.SALTPETER_ORE.get());
     this.tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE)
         .add(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get())

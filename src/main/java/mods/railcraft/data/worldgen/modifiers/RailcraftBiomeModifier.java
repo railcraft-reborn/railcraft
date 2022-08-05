@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftBiomeModifier {
 
-    private static DeferredRegister<Codec<? extends BiomeModifier>> deferredRegister =
+    private static final DeferredRegister<Codec<? extends BiomeModifier>> deferredRegister =
         DeferredRegister.create(Keys.BIOME_MODIFIER_SERIALIZERS, Railcraft.ID);
 
     public static RegistryObject<Codec<RailcraftOreBiomeModifier>> BIOME_MODIFIER =

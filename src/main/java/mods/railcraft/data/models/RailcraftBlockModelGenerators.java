@@ -262,13 +262,13 @@ public class RailcraftBlockModelGenerators {
     this.createTrivialCube(RailcraftBlocks.LEAD_ORE.get());
     this.createTrivialCube(RailcraftBlocks.NICKEL_ORE.get());
     this.createTrivialCube(RailcraftBlocks.SILVER_ORE.get());
-    this.createTrivialCube(RailcraftBlocks.SULFURE_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.SULFUR_ORE.get());
     this.createTrivialCube(RailcraftBlocks.TIN_ORE.get());
     this.createTrivialCube(RailcraftBlocks.ZINC_ORE.get());
     this.createTrivialCube(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get());
     this.createTrivialCube(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get());
     this.createTrivialCube(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get());
-    this.createTrivialCube(RailcraftBlocks.DEEPSLATE_SULFURE_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get());
     this.createTrivialCube(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
     this.createTrivialCube(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
     this.createTrivialCube(RailcraftBlocks.SALTPETER_ORE.get());

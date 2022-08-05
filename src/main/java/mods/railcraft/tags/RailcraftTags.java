@@ -102,7 +102,7 @@ public class RailcraftTags {
     public static final TagKey<Item> LEAD_ORE = forgeTag("ores/lead");
     public static final TagKey<Item> NICKEL_ORE = forgeTag("ores/nickel");
     public static final TagKey<Item> SILVER_ORE = forgeTag("ores/silver");
-    public static final TagKey<Item> SULFURE_ORE = forgeTag("ores/sulfure");
+    public static final TagKey<Item> SULFUR_ORE = forgeTag("ores/sulfur");
     public static final TagKey<Item> TIN_ORE = forgeTag("ores/tin");
     public static final TagKey<Item> ZINC_ORE = forgeTag("ores/zinc");
     public static final TagKey<Item> SALTPETER_ORE = forgeTag("ores/salt");
@@ -143,7 +143,7 @@ public class RailcraftTags {
     public static final TagKey<Block> LEAD_ORE = forgeTag("ores/lead");
     public static final TagKey<Block> NICKEL_ORE = forgeTag("ores/nickel");
     public static final TagKey<Block> SILVER_ORE = forgeTag("ores/silver");
-    public static final TagKey<Block> SULFURE_ORE = forgeTag("ores/sulfure");
+    public static final TagKey<Block> SULFUR_ORE = forgeTag("ores/sulfur");
     public static final TagKey<Block> TIN_ORE = forgeTag("ores/tin");
     public static final TagKey<Block> ZINC_ORE = forgeTag("ores/zinc");
     public static final TagKey<Block> SALTPETER_ORE = forgeTag("ores/salt");

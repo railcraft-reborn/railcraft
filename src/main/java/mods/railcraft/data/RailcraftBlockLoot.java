@@ -5,7 +5,6 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -59,9 +58,9 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
     this.dropSelf(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
 
-    this.add(RailcraftBlocks.SULFURE_ORE.get(),
+    this.add(RailcraftBlocks.SULFUR_ORE.get(),
         block -> createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
-    this.add(RailcraftBlocks.DEEPSLATE_SULFURE_ORE.get(),
+    this.add(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get(),
         block -> createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
     this.add(RailcraftBlocks.SALTPETER_ORE.get(),
         block -> createOreDrop(block, RailcraftItems.SALTPETER_DUST.get(), 3, 5));

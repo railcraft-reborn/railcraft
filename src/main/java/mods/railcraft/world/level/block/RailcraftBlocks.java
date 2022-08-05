@@ -358,15 +358,15 @@ public class RailcraftBlocks {
               .strength(4.5F, 3.0F)
               .sound(SoundType.DEEPSLATE)));
 
-  public static final RegistryObject<Block> SULFURE_ORE =
-      deferredRegister.register("sulfure_ore",
+  public static final RegistryObject<Block> SULFUR_ORE =
+      deferredRegister.register("sulfur_ore",
           () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE)
               .strength(3.0F, 3.0F)
               .requiresCorrectToolForDrops(), UniformInt.of(2, 5)));
 
-  public static final RegistryObject<Block> DEEPSLATE_SULFURE_ORE =
-      deferredRegister.register("deepslate_sulfure_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SULFURE_ORE.get())
+  public static final RegistryObject<Block> DEEPSLATE_SULFUR_ORE =
+      deferredRegister.register("deepslate_sulfur_ore",
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SULFUR_ORE.get())
               .color(MaterialColor.DEEPSLATE)
               .strength(4.5F, 3.0F)
               .sound(SoundType.DEEPSLATE), UniformInt.of(2, 5)));

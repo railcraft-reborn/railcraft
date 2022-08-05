@@ -22,7 +22,7 @@ public class RailcraftOreFeatures {
     private static final int LEAD_VEIN_DIMENSION = 9;
     private static final int TIN_SMALL_VEIN_DIMENSION = 4;
     private static final int TIN_LARGE_VEIN_DIMENSION = 9;
-    private static final int SULFURE_VEIN_DIMENSION = 10;
+    private static final int SULFUR_VEIN_DIMENSION = 10;
     private static final int ZINC_VEIN_DIMENSION = 6;
     private static final int NICKEL_VEIN_DIMENSION = 7;
     private static final int NICKEL_SMALL_VEIN_DIMENSION = 4;
@@ -51,12 +51,12 @@ public class RailcraftOreFeatures {
                 RailcraftBlocks.DEEPSLATE_TIN_ORE.get().defaultBlockState())
         ));
 
-    private static final Supplier<List<OreConfiguration.TargetBlockState>> SULFURE_ORE_TARGET_LIST =
+    private static final Supplier<List<OreConfiguration.TargetBlockState>> SULFUR_ORE_TARGET_LIST =
         Suppliers.memoize(() -> List.of(
             OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES,
-                RailcraftBlocks.SULFURE_ORE.get().defaultBlockState()),
+                RailcraftBlocks.SULFUR_ORE.get().defaultBlockState()),
             OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES,
-                RailcraftBlocks.DEEPSLATE_SULFURE_ORE.get().defaultBlockState())
+                RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get().defaultBlockState())
         ));
 
     private static final Supplier<List<OreConfiguration.TargetBlockState>> ZINC_ORE_TARGET_LIST =
@@ -92,11 +92,11 @@ public class RailcraftOreFeatures {
     public static final RegistryObject<ConfiguredFeature<?, ?>> TIN_ORE_LARGE = register("tin_ore_large",
         () -> new OreConfiguration(TIN_ORE_TARGET_LIST.get(), TIN_LARGE_VEIN_DIMENSION));
 
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SULFURE_ORE = register("sulfure_ore",
-        () -> new OreConfiguration(SULFURE_ORE_TARGET_LIST.get(), SULFURE_VEIN_DIMENSION));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> SULFUR_ORE = register("sulfur_ore",
+        () -> new OreConfiguration(SULFUR_ORE_TARGET_LIST.get(), SULFUR_VEIN_DIMENSION));
 
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SULFURE_ORE_BURIED = register("sulfure_ore_buried",
-        () -> new OreConfiguration(SULFURE_ORE_TARGET_LIST.get(), SULFURE_VEIN_DIMENSION, 0.5F));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> SULFUR_ORE_BURIED = register("sulfur_ore_buried",
+        () -> new OreConfiguration(SULFUR_ORE_TARGET_LIST.get(), SULFUR_VEIN_DIMENSION, 0.5F));
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> ZINC_ORE = register("zinc_ore",
         () -> new OreConfiguration(ZINC_ORE_TARGET_LIST.get(), ZINC_VEIN_DIMENSION));

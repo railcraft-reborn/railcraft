@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "railcraft:block/deepslate_sulfure_ore"
+    "all": "railcraft:block/deepslate_sulfur_ore"
   }
 }

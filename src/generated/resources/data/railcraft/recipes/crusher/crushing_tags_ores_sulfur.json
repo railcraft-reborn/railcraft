@@ -1,7 +1,7 @@
 {
   "type": "railcraft:crusher",
   "ingredient": {
-    "tag": "forge:ores/sulfure"
+    "tag": "forge:ores/sulfur"
   },
   "output": [
     {

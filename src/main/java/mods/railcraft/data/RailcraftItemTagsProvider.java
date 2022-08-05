@@ -153,7 +153,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.copy(Blocks.LEAD_ORE, Items.LEAD_ORE);
     this.copy(Blocks.NICKEL_ORE, Items.NICKEL_ORE);
     this.copy(Blocks.SILVER_ORE, Items.SILVER_ORE);
-    this.copy(Blocks.SULFURE_ORE, Items.SULFURE_ORE);
+    this.copy(Blocks.SULFUR_ORE, Items.SULFUR_ORE);
     this.copy(Blocks.TIN_ORE, Items.TIN_ORE);
     this.copy(Blocks.ZINC_ORE, Items.ZINC_ORE);
     this.copy(Blocks.SALTPETER_ORE, Items.SALTPETER_ORE);

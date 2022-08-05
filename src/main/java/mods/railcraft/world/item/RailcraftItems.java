@@ -241,13 +241,13 @@ public class RailcraftItems {
       deferredRegister.register("deepslate_zinc_ore",
           () -> new BlockItem(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get(), new Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> SULFURE_ORE =
-      deferredRegister.register("sulfure_ore",
-          () -> new BlockItem(RailcraftBlocks.SULFURE_ORE.get(), new Properties().tab(TAB)));
+  public static final RegistryObject<Item> SULFUR_ORE =
+      deferredRegister.register("sulfur_ore",
+          () -> new BlockItem(RailcraftBlocks.SULFUR_ORE.get(), new Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> DEEPSLATE_SULFURE_ORE =
-      deferredRegister.register("deepslate_sulfure_ore",
-          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_SULFURE_ORE.get(), new Properties().tab(TAB)));
+  public static final RegistryObject<Item> DEEPSLATE_SULFUR_ORE =
+      deferredRegister.register("deepslate_sulfur_ore",
+          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get(), new Properties().tab(TAB)));
 
   public static final RegistryObject<Item> SALTPETER_ORE =
       deferredRegister.register("saltpeter_ore",

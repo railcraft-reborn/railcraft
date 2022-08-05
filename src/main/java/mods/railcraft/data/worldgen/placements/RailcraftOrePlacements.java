@@ -28,8 +28,8 @@ public class RailcraftOrePlacements {
     private static final int LEAD_VEIN_PER_CHUNK = 8;
     private static final int TIN_SMALL_VEIN_PER_CHUNK = 14;
     private static final int TIN_LARGE_VEIN_PER_CHUNK = 12;
-    private static final int SULFURE_VEIN_PER_CHUNK = 20;
-    private static final int SULFURE_BURIED_VEIN_PER_CHUNK = 12;
+    private static final int SULFUR_VEIN_PER_CHUNK = 20;
+    private static final int SULFUR_BURIED_VEIN_PER_CHUNK = 12;
     private static final int ZINC_VEIN_PER_CHUNK = 7;
     private static final int NICKEL_UPPER_VEIN_PER_CHUNK = 70;
     private static final int NICKEL_MIDDLE_VEIN_PER_CHUNK = 10;
@@ -56,12 +56,13 @@ public class RailcraftOrePlacements {
             HeightRangePlacement.triangle(VerticalAnchor.absolute(-32), VerticalAnchor.absolute(72))
         ));
 
-    public static final RegistryObject<PlacedFeature> SULFURE_ORE_UPPER = register("sulfure_ore_upper",
-        RailcraftOreFeatures.SULFURE_ORE, () -> commonOrePlacement(SULFURE_VEIN_PER_CHUNK,
+    public static final RegistryObject<PlacedFeature> SULFUR_ORE_UPPER = register("sulfur_ore_upper",
+        RailcraftOreFeatures.SULFUR_ORE, () -> commonOrePlacement(SULFUR_VEIN_PER_CHUNK,
             HeightRangePlacement.uniform(VerticalAnchor.absolute(136), VerticalAnchor.top())
         ));
-    public static final RegistryObject<PlacedFeature> SULFURE_ORE_LOWER = register("sulfure_ore_lower",
-        RailcraftOreFeatures.SULFURE_ORE_BURIED, () -> commonOrePlacement(SULFURE_BURIED_VEIN_PER_CHUNK,
+    public static final RegistryObject<PlacedFeature> SULFUR_ORE_LOWER = register("sulfur_ore_lower",
+        RailcraftOreFeatures.SULFUR_ORE_BURIED, () -> commonOrePlacement(
+            SULFUR_BURIED_VEIN_PER_CHUNK,
             HeightRangePlacement.triangle(VerticalAnchor.absolute(-10), VerticalAnchor.absolute(182))
         ));
 
@@ -98,7 +99,7 @@ public class RailcraftOrePlacements {
         RegistryObject<ConfiguredFeature<?, ?>> configuredFeature,
         Supplier<List<PlacementModifier>> placementModifier) {
 
-        RegistryObject<PlacedFeature> result = deferredRegister.register(name, () ->
+        var result = deferredRegister.register(name, () ->
             new PlacedFeature(Holder.direct(configuredFeature.get()), placementModifier.get()));
 
         PLACED_FEATURE_MAP.put(new ResourceLocation(Railcraft.ID, name), result);

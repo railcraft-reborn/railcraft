@@ -48,7 +48,7 @@ public class RailcraftMiscOverworldPlacements {
         RegistryObject<ConfiguredFeature<?, ?>> configuredFeature,
         Supplier<List<PlacementModifier>> placementModifier) {
 
-        RegistryObject<PlacedFeature> result = deferredRegister.register(name, () ->
+        var result = deferredRegister.register(name, () ->
             new PlacedFeature(Holder.direct(configuredFeature.get()), placementModifier.get()));
 
         PLACED_FEATURE_MAP.put(new ResourceLocation(Railcraft.ID, name), result);

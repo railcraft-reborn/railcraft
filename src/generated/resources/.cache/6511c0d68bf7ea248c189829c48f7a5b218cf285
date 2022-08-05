@@ -1,4 +1,4 @@
-// 1.19.1	2022-08-03T19:01:26.047867923	Railcraft Loot Tables
+// 1.19.1	2022-08-05T11:00:43.777141747	Railcraft Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -65,7 +65,7 @@ c627f0a0321e08320d026f0a3ede8eead42deb34 data/railcraft/loot_tables/blocks/cyan_
 2bb5c72d1434f43df78d0153d218ef0d9f931c24 data/railcraft/loot_tables/blocks/deepslate_lead_ore.json
 ce24668b7a63cc5036aeb4e877d43419d88243e6 data/railcraft/loot_tables/blocks/deepslate_nickel_ore.json
 987bb4a1ea6719496344d1c7cdc5f09ab78a08bf data/railcraft/loot_tables/blocks/deepslate_silver_ore.json
-8c77c7d6655f5a9754b0738bd4d8c095f83d2adf data/railcraft/loot_tables/blocks/deepslate_sulfure_ore.json
+21c4b46277b62bfa3e344948eed431fc3a026ba4 data/railcraft/loot_tables/blocks/deepslate_sulfur_ore.json
 ef99e9a3fb34c964ff2d1d02cf06e16db8490eaf data/railcraft/loot_tables/blocks/deepslate_tin_ore.json
 696532dc523ae21ad726110e46253263e9dea092 data/railcraft/loot_tables/blocks/deepslate_zinc_ore.json
 8566488c64c39bf867ce7f1dee818a2e55f9cc8b data/railcraft/loot_tables/blocks/distant_signal.json
@@ -270,7 +270,7 @@ b2b8f27197fb6febae7aa26010c6179fc8a40700 data/railcraft/loot_tables/blocks/strap
 ac4f0cd894dc3739a02de69a5458de48e356b40d data/railcraft/loot_tables/blocks/strap_iron_track.json
 ac4f0cd894dc3739a02de69a5458de48e356b40d data/railcraft/loot_tables/blocks/strap_iron_turnout_track.json
 ac4f0cd894dc3739a02de69a5458de48e356b40d data/railcraft/loot_tables/blocks/strap_iron_wye_track.json
-1dd2512ee9da27ab972254485945d0025d79fc66 data/railcraft/loot_tables/blocks/sulfure_ore.json
+df087daaa282b2dd2d2a04c482caee6a141f5f2e data/railcraft/loot_tables/blocks/sulfur_ore.json
 4a44e7364fd26422c184e1994eefa665cfbbc61a data/railcraft/loot_tables/blocks/switch_track_lever.json
 194a6f30f98357e584b7381523fbd9242acdbf3e data/railcraft/loot_tables/blocks/switch_track_motor.json
 1cfba089df4bcac5891dd654a3dffe4f3baf3d84 data/railcraft/loot_tables/blocks/tin_block.json

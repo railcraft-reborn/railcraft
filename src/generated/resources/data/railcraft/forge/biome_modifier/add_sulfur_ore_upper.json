@@ -10,7 +10,7 @@
         "targets": [
           {
             "state": {
-              "Name": "railcraft:sulfure_ore"
+              "Name": "railcraft:sulfur_ore"
             },
             "target": {
               "predicate_type": "minecraft:tag_match",
@@ -19,7 +19,7 @@
           },
           {
             "state": {
-              "Name": "railcraft:deepslate_sulfure_ore"
+              "Name": "railcraft:deepslate_sulfur_ore"
             },
             "target": {
               "predicate_type": "minecraft:tag_match",

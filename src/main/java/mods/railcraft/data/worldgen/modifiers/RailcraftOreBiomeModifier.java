@@ -15,7 +15,8 @@ public record RailcraftOreBiomeModifier(HolderSet<Biome> biomes, Holder<PlacedFe
     @Override
     public void modify(Holder<Biome> biome, Phase phase, Builder builder) {
         if (phase == Phase.ADD && biomes.contains(biome)) {
-            builder.getGenerationSettings().addFeature(Decoration.UNDERGROUND_ORES, feature);
+            var generation = builder.getGenerationSettings();
+            generation.addFeature(Decoration.UNDERGROUND_ORES, feature);
         }
     }
 
