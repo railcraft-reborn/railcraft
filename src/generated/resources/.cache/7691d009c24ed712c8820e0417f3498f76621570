@@ -1,7 +1,8 @@
-// 1.19.1	2022-08-04T21:50:57.613762314	worldgen/configured_feature generator for railcraft
+// 1.19.1	2022-08-05T10:03:31.371361316	worldgen/configured_feature generator for railcraft
 48fa2ef347b10679440e414fa3b50334ae59c022 data/railcraft/worldgen/configured_feature/lead_ore.json
 3887f73ca478e303d9835fbc2d82cfaaf7f827f0 data/railcraft/worldgen/configured_feature/nickel_ore.json
 ee8f651f558efeb79c4e4359847082486c3c8f40 data/railcraft/worldgen/configured_feature/nickel_ore_small.json
+e951360d55e48ae14b0effe35fccdcd2e36e8b54 data/railcraft/worldgen/configured_feature/saltpeter.json
 2580d1ea178e3680c350f6131a539e4bc4da47cf data/railcraft/worldgen/configured_feature/silver_ore.json
 ad43c894afc91acc1ff72c1864ca731914e0b9a4 data/railcraft/worldgen/configured_feature/silver_ore_buried.json
 a12bae7f57981d33234a7a860c89adf2f35531b6 data/railcraft/worldgen/configured_feature/sulfure_ore.json

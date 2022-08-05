@@ -34,8 +34,8 @@ public class RailcraftMiscOverworldPlacements {
         PLACED_FEATURE_MAP = new HashMap<>();
 
 
-    public static final RegistryObject<PlacedFeature> SALTPETER_ORE = register("saltpeter_disk",
-        RailcraftMiscOverworldFeatures.SALTPETER_ORE,
+    public static final RegistryObject<PlacedFeature> SALTPETER = register("saltpeter",
+        RailcraftMiscOverworldFeatures.SALTPETER,
         () -> List.of(
             //CountPlacement.of(SALTPETER_VEIN_PER_CHUNK),
             InSquarePlacement.spread(),

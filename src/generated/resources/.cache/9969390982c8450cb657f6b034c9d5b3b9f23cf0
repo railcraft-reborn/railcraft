@@ -1,9 +1,9 @@
-// 1.19.1	2022-08-04T21:04:02.30311465	forge/biome_modifier generator for railcraft
+// 1.19.1	2022-08-05T10:03:31.356618597	forge/biome_modifier generator for railcraft
 790b96b285859c65dbc792236474361f6532af65 data/railcraft/forge/biome_modifier/add_lead_ore.json
 6304616364d4c4acc70d6c30eec2414c1b9591ae data/railcraft/forge/biome_modifier/add_nickel_ore_middle.json
 7e45c7adada6ef2914eae915924aa7c336a1a81d data/railcraft/forge/biome_modifier/add_nickel_ore_small.json
 8d767195498a01ff7b46324555973082b88acef4 data/railcraft/forge/biome_modifier/add_nickel_ore_upper.json
-981fc57f5f70fd5323771d3b08c576790584711e data/railcraft/forge/biome_modifier/add_saltpeter_disk.json
+981fc57f5f70fd5323771d3b08c576790584711e data/railcraft/forge/biome_modifier/add_saltpeter.json
 cda85128c66ff86a5134eb545c9d6591ce593797 data/railcraft/forge/biome_modifier/add_silver_ore.json
 b152c094105d906ceaecdc72b677dfaa652fb4ba data/railcraft/forge/biome_modifier/add_silver_ore_lower.json
 227d7b53c27384db53f9368a225c5ac7f03455f7 data/railcraft/forge/biome_modifier/add_sulfure_ore_lower.json

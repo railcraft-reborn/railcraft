@@ -27,8 +27,7 @@ public class RailcraftMiscOverworldFeatures {
     private static final Map<ResourceLocation, RegistryObject<ConfiguredFeature<?, ?>>>
         CONFIGURED_FEATURE_MAP = new HashMap<>();
 
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SALTPETER_ORE = register(
-        "saltpeter_disk",
+    public static final RegistryObject<ConfiguredFeature<?, ?>> SALTPETER = register("saltpeter",
         () -> new DiskConfiguration(RuleBasedBlockStateProvider.simple(RailcraftBlocks.SALTPETER_ORE.get()),
             BlockPredicate.matchesBlocks(List.of(Blocks.DIRT, RailcraftBlocks.SALTPETER_ORE.get())),
             UniformInt.of(2, 3), 1));

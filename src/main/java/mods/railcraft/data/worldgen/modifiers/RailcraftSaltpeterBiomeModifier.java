@@ -16,7 +16,7 @@ public record RailcraftSaltpeterBiomeModifier (HolderSet<Biome> biomes, Decorati
     public void modify(Holder<Biome> biome, Phase phase, Builder builder) {
         if (phase == Phase.ADD && biomes.contains(biome)) {
             var generation = builder.getGenerationSettings();
-            generation.addFeature(step, RailcraftMiscOverworldPlacements.SALTPETER_ORE.getHolder().get());
+            generation.addFeature(step, RailcraftMiscOverworldPlacements.SALTPETER.getHolder().get());
         }
     }
 
