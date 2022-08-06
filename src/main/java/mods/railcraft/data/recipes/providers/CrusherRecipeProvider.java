@@ -20,24 +20,7 @@ public class CrusherRecipeProvider extends RecipeProvider {
 
   public static void buildRecipes(Consumer<FinishedRecipe> consumer) {
     buildVanilla(consumer);
-    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.COKE_OVEN_BRICKS.get()), 200)
-        .addResult(Items.BRICK, 3, 1)
-        .addResult(Items.BRICK, 1, 0.5)
-        .addResult(Items.SAND, 1, 0.25)
-        .addResult(Items.SAND, 1, 0.25)
-        .addResult(Items.SAND, 1, 0.25)
-        .addResult(Items.SAND, 1, 0.25)
-        .save(consumer);
-    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.BLAST_FURNACE_BRICKS.get()), 200)
-        .addResult(Items.NETHER_BRICK, 1, 0.75)
-        .addResult(Items.SOUL_SAND, 1, 0.75)
-        .addResult(Items.BLAZE_POWDER, 1, 0.05)
-        .save(consumer);
-
-    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.CRUSHED_OBSIDIAN.get()), 200)
-        .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 1)
-        .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 0.25)
-        .save(consumer);
+    buildRailcraft(consumer);
   }
 
   private static void buildVanilla(Consumer<FinishedRecipe> consumer) {
@@ -170,6 +153,26 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .save(consumer);
     CrusherRecipeBuilder.crush(Ingredient.of(Items.ENDER_PEARL), 200)
         .addResult(RailcraftItems.ENDER_DUST.get(), 1, 1)
+        .save(consumer);
+  }
+
+  private static void buildRailcraft(Consumer<FinishedRecipe> consumer) {
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.COKE_OVEN_BRICKS.get()), 200)
+        .addResult(Items.BRICK, 3, 1)
+        .addResult(Items.BRICK, 1, 0.5)
+        .addResult(Items.SAND, 1, 0.25)
+        .addResult(Items.SAND, 1, 0.25)
+        .addResult(Items.SAND, 1, 0.25)
+        .addResult(Items.SAND, 1, 0.25)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.BLAST_FURNACE_BRICKS.get()), 200)
+        .addResult(Items.NETHER_BRICK, 1, 0.75)
+        .addResult(Items.SOUL_SAND, 1, 0.75)
+        .addResult(Items.BLAZE_POWDER, 1, 0.05)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.CRUSHED_OBSIDIAN.get()), 200)
+        .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 1)
+        .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 0.25)
         .save(consumer);
     CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.SULFUR_ORE), 200)
         .addResult(RailcraftItems.SULFUR_DUST.get(), 5, 1)
