@@ -2,7 +2,7 @@ package mods.railcraft.world.item.crafting;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import mods.railcraft.data.recipes.CokeOvenRecipeBuilder;
+import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.network.FriendlyByteBuf;

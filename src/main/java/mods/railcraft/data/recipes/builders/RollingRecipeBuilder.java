@@ -1,4 +1,4 @@
-package mods.railcraft.data.recipes;
+package mods.railcraft.data.recipes.builders;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

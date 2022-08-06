@@ -1,7 +1,7 @@
 package mods.railcraft.data.recipes.providers;
 
 import java.util.function.Consumer;
-import mods.railcraft.data.recipes.CokeOvenRecipeBuilder;
+import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;

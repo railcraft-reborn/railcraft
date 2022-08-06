@@ -2,7 +2,7 @@ package mods.railcraft.world.item.crafting;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import mods.railcraft.data.recipes.BlastFurnaceRecipeBuilder;
+import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

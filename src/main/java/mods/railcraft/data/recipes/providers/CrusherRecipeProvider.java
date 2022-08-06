@@ -1,8 +1,7 @@
 package mods.railcraft.data.recipes.providers;
 
 import java.util.function.Consumer;
-import mods.railcraft.data.recipes.CrusherRecipeBuilder;
-import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;

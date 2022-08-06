@@ -2,7 +2,7 @@ package mods.railcraft.data.recipes.providers;
 
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
-import mods.railcraft.data.recipes.BlastFurnaceRecipeBuilder;
+import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.DataGenerator;
