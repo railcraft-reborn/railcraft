@@ -181,9 +181,9 @@ dependencies {
     annotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
     testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
 
-    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge-api:${project.jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.1-common-api:${project.jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.1-forge-api:${project.jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.19.1-forge:${project.jei_version}")
 }
 
 jar {
