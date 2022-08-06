@@ -1,4 +1,12 @@
-// 1.19.1	2022-08-01T17:19:18.753806442	Railcraft Item Tags
+// 1.19.2	2022-08-06T10:05:26.836622174	Railcraft Item Tags
+f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
+e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
+32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
+5251495abc7cf69ab447d425014c585ffd3ee618 data/forge/tags/items/armors/chestplates/steel.json
+c528a3d5c53bec7a776fcfec265d9168d7524675 data/forge/tags/items/armors/helmets.json
+e17d210ae3b04c5e5696fab17c38c94dcb437f75 data/forge/tags/items/armors/helmets/steel.json
+e806153edbe9426532130484c3f7c8fab51b274b data/forge/tags/items/armors/leggings.json
+7d0d4397207e7b1f0ad989437709d6cf04823431 data/forge/tags/items/armors/leggings/steel.json
 300d1cc507f1bf874a5931bfa35e08cf1eb1d286 data/forge/tags/items/dusts/charcoal.json
 a02497735a6ef3531075c69c738d773ae344a9d4 data/forge/tags/items/dusts/coal.json
 289fb003679ca3b81c9fa60b0289ba9d0c8d6c8e data/forge/tags/items/dusts/obsidian.json
@@ -55,6 +63,16 @@ d8a0afa9468fa132e645cb46a5cafa2846bc640e data/forge/tags/items/storage_blocks/br
 f34843bfb7b650f383c4d01e491bd1059bfad784 data/forge/tags/items/storage_blocks/steel.json
 61ec7aa57313c2ddde898c774799d7378bcbd659 data/forge/tags/items/storage_blocks/tin.json
 f20e839f832dcea6925586af038aa6dd6fcae88a data/forge/tags/items/storage_blocks/zinc.json
+e3ba2fab927d9f5cba4296693574f0ca9cac69eb data/forge/tags/items/tools/axes.json
+e3ba2fab927d9f5cba4296693574f0ca9cac69eb data/forge/tags/items/tools/axes/steel.json
+88e186f1e72ff7a1d3bfbcb969ef18b8a7acbb5f data/forge/tags/items/tools/hoes.json
+88e186f1e72ff7a1d3bfbcb969ef18b8a7acbb5f data/forge/tags/items/tools/hoes/steel.json
+c12118bda87efc5274515a86a0a7f3b189982de6 data/forge/tags/items/tools/pickaxes.json
+c12118bda87efc5274515a86a0a7f3b189982de6 data/forge/tags/items/tools/pickaxes/steel.json
+15360ef6012773af817ef8496de52353494b4db3 data/forge/tags/items/tools/shovels.json
+15360ef6012773af817ef8496de52353494b4db3 data/forge/tags/items/tools/shovels/steel.json
+05168ea5fb65c2a597f1ca271644789e1dd9aa9c data/forge/tags/items/tools/swords.json
+05168ea5fb65c2a597f1ca271644789e1dd9aa9c data/forge/tags/items/tools/swords/steel.json
 e428d6ae724c5108f98185295926eb14c6510c44 data/railcraft/tags/items/iron_tank_gauge.json
 ad43ddea7185867f695a872b9110aff36104b44d data/railcraft/tags/items/iron_tank_valve.json
 c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/items/iron_tank_wall.json
