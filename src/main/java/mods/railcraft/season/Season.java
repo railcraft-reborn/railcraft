@@ -1,46 +1,27 @@
 package mods.railcraft.season;
 
+import mods.railcraft.Translations.Tips;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.network.chat.MutableComponent;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+public enum Season {
 
-public enum Season implements StringRepresentable {
+  DEFAULT,
+  HALLOWEEN,
+  CHRISTMAS,
+  NONE;
 
-  DEFAULT("default"),
-  HALLOWEEN("halloween"),
-  CHRISTMAS("christmas"),
-  NONE("none");
-
-  private static final Map<String, Season> byName = Arrays.stream(values())
-      .collect(Collectors.toUnmodifiableMap(Season::getSerializedName, Function.identity()));
-
-  private final String name;
-  private final Component displayName;
-
-  private Season(String name) {
-    this.name = name;
-    this.displayName = Component.translatable("season." + name);
-  }
-
-  public Component getDisplayName() {
-    return this.displayName;
-  }
-
-  @Override
-  public String getSerializedName() {
-    return this.name;
+  public MutableComponent getTranslation() {
+    return Component.translatable(switch (this.ordinal()) {
+      case 0 -> Tips.CRAWBAR_SEASON_DEFAULT;
+      case 1 -> Tips.CRAWBAR_SEASON_HALLOWEEN;
+      case 2 -> Tips.CRAWBAR_SEASON_CHRISTMAS;
+      case 3 -> Tips.CRAWBAR_SEASON_NONE;
+      default -> "translation.not.implemented";
+    });
   }
 
   public Season getNext() {
     return values()[(this.ordinal() + 1) % values().length];
-  }
-
-  public static Optional<Season> getByName(String name) {
-    return Optional.ofNullable(byName.get(name));
   }
 }

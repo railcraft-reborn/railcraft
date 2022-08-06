@@ -72,13 +72,16 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putString("season", this.getSeason().getSerializedName());
+    tag.putInt("season", this.getSeason().ordinal());
   }
 
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.setSeason(Season.getByName(tag.getString("season")).orElse(Season.DEFAULT));
+    var season = Season.DEFAULT;
+    if(tag.contains("season"))
+      season = Season.values()[tag.getInt("season")];
+    this.setSeason(season);
   }
 
   @Override
@@ -109,7 +112,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
 
   /**
    * Returns the minecart type.
-   * {@link net.minecraft.entity.item.EntityArmorStand#IS_RIDEABLE_MINECART}
+   * {@link net.minecraft.world.entity.decoration.ArmorStand#IS_RIDEABLE_MINECART}
    */
   @Override
   public AbstractMinecart.Type getMinecartType() {

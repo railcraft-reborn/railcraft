@@ -1,7 +1,7 @@
 package mods.railcraft.advancements;
 
-import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
+import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.JsonUtil;
@@ -27,7 +27,8 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
   public Instance createInstance(JsonObject json,
       EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
     var season = JsonUtil.getAsString(json, "season")
-        .flatMap(Season::getByName)
+        .map(Integer::valueOf)
+        .map(x -> Season.values()[x])
         .orElse(null);
     var cartPredicate = JsonUtil.getAsJsonObject(json, "cart")
         .map(MinecartPredicate::deserialize)
@@ -63,7 +64,7 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart, Season target) {
-      return (this.season != null ? this.season.equals(target) : true)
+      return (this.season == null || this.season.equals(target))
           && this.cartPredicate.test(player, cart);
     }
 
@@ -76,7 +77,7 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
     public JsonObject serializeToJson(SerializationContext serializer) {
       JsonObject json = new JsonObject();
       if (this.season != null) {
-        json.addProperty("season", this.season.getSerializedName());
+        json.addProperty("season", this.season.ordinal());
       }
       json.add("cart", this.cartPredicate.serializeToJson());
       return json;

@@ -15,29 +15,6 @@
     "__DESC.misc": "======= Misc GUI/tooltip =======",
     "signal_label.description": "§oRight-click while sneaking to name a signal/signal box.§r",
 
-    "goggles.aura.worldspike": "Worldspike",
-    "goggles.aura.none": "None",
-    "goggles.aura.shunting": "Shunting",
-    "goggles.aura.signalling": "Signalling",
-    "goggles.aura.surveying": "Surveying",
-    "goggles.aura.tracking": "Tracking",
-    "goggles.aura.tuning": "Tuning",
-    "goggles.aura": "Current Aura: %s",
-    "goggles.description": "Right-click to change aura.",
-
-    "crowbar.description":"§oRight-click while sneaking to link carts.§r",
-    "crowbar.link_broken":"§dLink Broken",
-    "crowbar.link_created":"§aSuccessfully Linked Carts",
-    "crowbar.link_failed":"§cLink Failed",
-    "crowbar.link_started":"§dStarted Linking Carts",
-
-    "seasons_crowbar.season": "Current season: %s",
-
-    "season.default": "Default",
-    "season.halloween": "Halloween",
-    "season.christmas": "Christmas",
-    "season.none": "None",
-
 
     "signal_aspect.green": "Green",
     "signal_aspect.blink_yellow": "Blink Yellow",
