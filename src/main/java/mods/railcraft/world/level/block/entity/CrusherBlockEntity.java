@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
 
-  private static final MultiblockPattern<Void> PATTERN = Util.make(() -> {
+  private static final MultiblockPattern<Void> pattern = Util.make(() -> {
     final var bricks = BlockPredicate.of(RailcraftBlocks.CRUSHER);
 
     final var pattern = List.of(
@@ -38,11 +38,15 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
         .build();
   });
 
+  private static final MultiblockPattern<Void> rotatedPattern = pattern.rotateClockwise();
+
+  private static final List<MultiblockPattern<Void>> PATTERNS = List.of(pattern, rotatedPattern);
+
   private final CrusherModule crusherModule;
 
   public CrusherBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.CRUSHER.get(), blockPos, blockState,
-        CrusherBlockEntity.class, PATTERN);
+        CrusherBlockEntity.class, PATTERNS);
     this.crusherModule = this.moduleDispatcher.registerModule("crusher",
         new CrusherModule(this));
   }
