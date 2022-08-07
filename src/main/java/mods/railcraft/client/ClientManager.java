@@ -5,6 +5,7 @@ import mods.railcraft.api.signal.SignalUtil;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
+import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.FeedStationScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidFueledSteamBoilerScreen;
@@ -120,6 +121,8 @@ public class ClientManager {
         ManualRollingMachineScreen::new);
     MenuScreens.register(RailcraftMenuTypes.COKE_OVEN.get(),
         CokeOvenScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.CRUSHER.get(),
+        CrusherScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(),
         ItemManipulatorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(),

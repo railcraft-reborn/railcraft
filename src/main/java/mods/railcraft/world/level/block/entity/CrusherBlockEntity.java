@@ -4,6 +4,8 @@ import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.List;
 import javax.annotation.Nullable;
 import mods.railcraft.Translations.Container;
+import mods.railcraft.world.inventory.CrusherMenu;
+import mods.railcraft.world.level.block.CokeOvenBricksBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
@@ -17,6 +19,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
@@ -28,8 +31,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
         CharList.of('A', 'A', 'A'),
         CharList.of('A', 'A', 'A'));
 
-    return MultiblockPattern.<Void>builder(2, 1, 2)
-        .layer(pattern)
+    return MultiblockPattern.<Void>builder(BlockPos.ZERO)
         .layer(pattern)
         .layer(pattern)
         .predicate('A', bricks)
@@ -57,13 +59,16 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
   @Override
   protected void membershipChanged(@Nullable Membership<CrusherBlockEntity> membership) {
     if (membership == null) {
+      this.level.setBlock(this.getBlockPos(), this.getBlockState(), Block.UPDATE_ALL);
       Containers.dropContents(this.level, this.getBlockPos(), this.crusherModule);
+    } else {
+      this.level.setBlock(getBlockPos(), getBlockState(), Block.UPDATE_ALL);
     }
   }
 
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-    return null; //new CokeOvenMenu(id, inventory, this);
+    return new CrusherMenu(id, inventory, this);
   }
 
   @Override
@@ -78,16 +83,13 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
 
     blockEntity.moduleDispatcher.serverTick();
 
-    /*blockEntity.getMembership()
+    blockEntity.getMembership()
         .map(Membership::master)
         .ifPresent(master -> {
           var lit = master.crusherModule.isProcessing();
-          if (lit != blockState.getValue(CokeOvenBricksBlock.LIT)) {
-            level.setBlockAndUpdate(blockPos,
-                blockState.setValue(CokeOvenBricksBlock.LIT, lit));
-          }
+          level.setBlockAndUpdate(blockPos, blockState);
         });
-*/
+
     if (blockEntity.isMaster()) {
       blockEntity.crusherModule.serverTick();
     }
