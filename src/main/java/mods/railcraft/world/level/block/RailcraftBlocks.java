@@ -1355,6 +1355,8 @@ public class RailcraftBlocks {
   public static final RegistryObject<Block> CRUSHER =
       deferredRegister.register("crusher",
           () -> new CrusherMultiblockBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .requiresCorrectToolForDrops()
+              .strength(3.5F)
               .sound(SoundType.STONE)));
 
   public static final RegistryObject<Block> COKE_OVEN_BRICKS =
