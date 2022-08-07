@@ -11,7 +11,6 @@ import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
@@ -47,7 +46,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
     @Override
     protected boolean lacksRequirements() {
-        return !currentRecipe.isPresent();
+        return currentRecipe.isEmpty();
     }
 
     @Override
