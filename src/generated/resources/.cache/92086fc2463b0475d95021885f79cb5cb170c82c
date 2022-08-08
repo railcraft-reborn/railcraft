@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-08T21:51:45.083409947	Railcraft Block State Definitions
+// 1.19.2	2022-08-08T22:28:38.180644322	Railcraft Block State Definitions
 b7fce4a3220edeb2904e53e6377a86a7b237ffc5 assets/railcraft/blockstates/abandoned_activator_track.json
 ff1b13ba4045bb558e3d132ec8830eb9d226af6f assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -50,7 +50,7 @@ e19bbf2ec78271b88bc00c2991f855c3aded5ec1 assets/railcraft/blockstates/coal_coke_
 9379ccd2a46308fdfde70134ad039f5d38eb7e51 assets/railcraft/blockstates/coke_oven_bricks.json
 9405520af92cd9a65d960e2672acda529c1f85bd assets/railcraft/blockstates/creosote.json
 92c1b0e657972a937f79126b66fb62bf5f04d47c assets/railcraft/blockstates/crushed_obsidian.json
-29bbec43a0f57d5d0bebd2d53ee289f6973c6760 assets/railcraft/blockstates/crusher.json
+bd302901f2c58017d13a4c2909353d3497af710b assets/railcraft/blockstates/crusher.json
 160610cd2aa8a68688d3a59bc91e4cac3536dda9 assets/railcraft/blockstates/cyan_iron_tank_gauge.json
 5e96a52772e05a0d2c4140f350fe51f40768a477 assets/railcraft/blockstates/cyan_iron_tank_valve.json
 4eac32dc008fc656c8855de8bfad25257005bfe8 assets/railcraft/blockstates/cyan_iron_tank_wall.json
@@ -407,6 +407,7 @@ b3b94cf1538cc7494c5b57235538a8b61cfa8e77 assets/railcraft/models/block/coupler_t
 0e05b7fcb5241f2969b9dc800552a9fb1e865e2a assets/railcraft/models/block/coupler_track_decoupler_raised_sw.json
 dbe5dce77498d79c801f3d8685874caa9b9083bf assets/railcraft/models/block/crushed_obsidian.json
 d3ece91438ebc8a2e36a21f9ced928adb900e228 assets/railcraft/models/block/crusher.json
+45928f3a1eab3819de9718dd7f521516c23ce41d assets/railcraft/models/block/crusher_exporter.json
 b97456e53109a41945197df82376dc3dc87685d8 assets/railcraft/models/block/crusher_top_north.json
 92e0089b25e822f962f0e9ca847530f971337761 assets/railcraft/models/block/crusher_top_north_east.json
 02379013f4f08ef812e3715373b898fcd2860034 assets/railcraft/models/block/crusher_top_north_west.json

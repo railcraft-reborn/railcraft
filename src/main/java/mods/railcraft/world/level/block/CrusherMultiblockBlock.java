@@ -53,6 +53,7 @@ public class CrusherMultiblockBlock extends MultiblockBlock {
   public enum Type implements StringRepresentable {
 
     NONE("none"),
+    EXPORTER("exporter"),
     NORTH("north"),
     NORTH_EAST("north_east"),
     NORTH_WEST("north_west"),

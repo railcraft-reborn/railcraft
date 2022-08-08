@@ -102,6 +102,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
             case '3' -> Type.SOUTH_EAST;
             case '4' -> Type.SOUTH;
             case '5' -> Type.SOUTH_WEST;
+            case 'O' -> Type.EXPORTER;
             default -> Type.NONE;
         };
 

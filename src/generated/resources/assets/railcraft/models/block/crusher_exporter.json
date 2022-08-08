@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "railcraft:block/crusher_side",
+    "side": "railcraft:block/crusher_side_exporter",
+    "top": "railcraft:block/crusher_top"
+  }
+}

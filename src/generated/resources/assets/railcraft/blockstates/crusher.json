@@ -1,5 +1,9 @@
 {
   "variants": {
+    "rotated=false,type=exporter": {
+      "model": "railcraft:block/crusher_exporter",
+      "y": 0
+    },
     "rotated=false,type=none": {
       "model": "railcraft:block/crusher"
     },
@@ -26,6 +30,10 @@
     "rotated=false,type=south_west": {
       "model": "railcraft:block/crusher_top_south_west",
       "y": 0
+    },
+    "rotated=true,type=exporter": {
+      "model": "railcraft:block/crusher_exporter",
+      "y": 90
     },
     "rotated=true,type=none": {
       "model": "railcraft:block/crusher"

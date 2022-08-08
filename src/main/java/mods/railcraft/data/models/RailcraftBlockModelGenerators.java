@@ -609,13 +609,23 @@ public class RailcraftBlockModelGenerators {
       if (type.equals(Type.NONE))
         continue;
 
-      models.put(type,
-          ModelTemplates.CUBE_TOP.createWithSuffix(block, "_top_" + type.getSerializedName(),
-              new TextureMapping()
-                  .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
-                  .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block,
-                      "_top_" + type.getSerializedName())),
-              this.modelOutput));
+      ResourceLocation location;
+      if(type.equals(Type.EXPORTER)) {
+        location = ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_exporter",
+            new TextureMapping()
+                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_exporter"))
+                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
+                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_side")),
+            this.modelOutput);
+      } else {
+        location = ModelTemplates.CUBE_TOP.createWithSuffix(block, "_top_" + type.getSerializedName(),
+            new TextureMapping()
+                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
+                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block,
+                    "_top_" + type.getSerializedName())),
+            this.modelOutput);
+      }
+      models.put(type, location);
     }
 
     this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
