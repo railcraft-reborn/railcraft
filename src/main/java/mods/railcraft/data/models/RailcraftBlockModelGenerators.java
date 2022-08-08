@@ -1,15 +1,16 @@
 package mods.railcraft.data.models;
 
+import com.google.gson.JsonElement;
 import java.util.EnumMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
-import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
+import mods.railcraft.world.level.block.CrusherMultiblockBlock;
+import mods.railcraft.world.level.block.CrusherMultiblockBlock.Type;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
@@ -44,6 +45,7 @@ import net.minecraft.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.blockstates.VariantProperties.Rotation;
 import net.minecraft.data.models.model.DelegatedModel;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplate;
@@ -62,6 +64,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 public class RailcraftBlockModelGenerators {
 
@@ -242,8 +245,6 @@ public class RailcraftBlockModelGenerators {
 
     this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
         TexturedModel.CUBE_TOP_BOTTOM);
-    this.createTrivialBlock(RailcraftBlocks.CRUSHER.get(),
-        TexturedModel.CUBE_TOP);
 
     this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
 
@@ -265,6 +266,7 @@ public class RailcraftBlockModelGenerators {
 
     this.createFurnaceMultiblockBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
     this.createFurnaceMultiblockBricks(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
+    this.createCrusherMultiblockBricks(RailcraftBlocks.CRUSHER.get());
     this.createFeedStation();
 
     for (DyeColor dyeColor : DyeColor.values()) {
@@ -593,6 +595,36 @@ public class RailcraftBlockModelGenerators {
                     .with(VariantProperties.MODEL, windowModel))
                 .select(true, true, Variant.variant()
                     .with(VariantProperties.MODEL, litWindowModel))));
+  }
+
+  private void createCrusherMultiblockBricks(Block block) {
+    var baseTexture = TexturedModel.CUBE_TOP.create(block, this.modelOutput);
+
+    var noneVariant = Variant.variant()
+        .with(VariantProperties.MODEL, baseTexture);
+
+    var models = new EnumMap<Type, ResourceLocation>(Type.class);
+
+    for(var type : Type.values()) {
+      if (type.equals(Type.NONE))
+        continue;
+
+      models.put(type,
+          ModelTemplates.CUBE_TOP.createWithSuffix(block, "_top_" + type.getSerializedName(),
+              new TextureMapping()
+                  .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
+                  .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block,
+                      "_top_" + type.getSerializedName())),
+              this.modelOutput));
+    }
+
+    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+        .with(PropertyDispatch.properties(CrusherMultiblockBlock.TYPE, CrusherMultiblockBlock.ROTATED)
+            .generate((type, rotated) -> type == Type.NONE
+              ? noneVariant
+              : Variant.variant()
+                  .with(VariantProperties.MODEL, models.get(type))
+                  .with(VariantProperties.Y_ROT, rotated ? Rotation.R90 : Rotation.R0))));
   }
 
   private void createFeedStation() {
