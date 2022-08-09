@@ -15,7 +15,7 @@ public final class BlastFurnaceMenu extends CrafterMenu {
     this.blastFurnace = blastFurnace;
 
     var logic = blastFurnace.getBlastFurnaceModule();
-    this.addSlot(new Slot(this.module, BlastFurnaceModule.SLOT_INPUT, 56, 17));
+    this.addSlot(new RailcraftSlot(this.module, BlastFurnaceModule.SLOT_INPUT, 56, 17));
     this.addSlot(new ItemFilterSlot(item -> logic.getItemBurnTime(item) > 0, this.module,
         BlastFurnaceModule.SLOT_FUEL, 56, 53));
     this.addSlot(new OutputSlot(this.module, BlastFurnaceModule.SLOT_OUTPUT, 116, 21));

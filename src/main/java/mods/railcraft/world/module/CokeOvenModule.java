@@ -1,6 +1,5 @@
 package mods.railcraft.world.module;
 
-import java.util.Objects;
 import javax.annotation.Nonnull;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
@@ -69,9 +68,9 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   }
 
   private boolean craftAndPushImp() {
-    Objects.requireNonNull(this.recipe);
-    var output = this.recipe.getResultItem();
-    var fluidOutput = this.recipe.getCreosote();
+    final var recipe = this.recipe.orElseThrow(NullPointerException::new);
+    var output = recipe.getResultItem();
+    var fluidOutput = recipe.getCreosote();
     if (this.outputContainer.canFit(output)
         && (fluidOutput.isEmpty() || this.tank.internalFill(fluidOutput,
             IFluidHandler.FluidAction.SIMULATE) >= fluidOutput.getAmount())) {

@@ -1,6 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
 import it.unimi.dsi.fastutil.chars.CharList;
+import java.util.List;
+import javax.annotation.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
@@ -24,9 +26,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceBlockEntity, Void> {
 
@@ -67,12 +66,28 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
         new BlastFurnaceModule(this));
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability,
-      @Nullable Direction direction) {
-    return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.isFormed()
-        ? this.blastFurnaceModule.getItemHandler().cast()
-        : LazyOptional.empty();
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      BlastFurnaceBlockEntity blockEntity) {
+    blockEntity.serverTick();
+
+    blockEntity.moduleDispatcher.serverTick();
+
+    blockEntity.getMembership()
+        .map(Membership::master)
+        .ifPresent(master -> {
+          var lit = master.blastFurnaceModule.isBurning();
+          if (lit != blockState.getValue(FurnaceMultiblockBlock.LIT)) {
+            level.setBlockAndUpdate(blockPos,
+                blockState.setValue(FurnaceMultiblockBlock.LIT, lit));
+          }
+
+          if (blockEntity.fuelMoveTicks++ >= 128) {
+            blockEntity.fuelMoveTicks = 0;
+            blockEntity.getAdjacentContainers().moveOneItemTo(
+                master.getBlastFurnaceModule().getFuelContainer(),
+                master.blastFurnaceModule::isFuel);
+          }
+        });
   }
 
   public BlastFurnaceModule getBlastFurnaceModule() {
@@ -101,30 +116,6 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
     }
   }
 
-  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
-      BlastFurnaceBlockEntity blockEntity) {
-    blockEntity.serverTick();
-
-    blockEntity.moduleDispatcher.serverTick();
-
-    blockEntity.getMembership()
-        .map(Membership::master)
-        .ifPresent(master -> {
-          var lit = master.blastFurnaceModule.isBurning();
-          if (lit != blockState.getValue(FurnaceMultiblockBlock.LIT)) {
-            level.setBlockAndUpdate(blockPos,
-                blockState.setValue(FurnaceMultiblockBlock.LIT, lit));
-          }
-
-          if (blockEntity.fuelMoveTicks++ >= 128) {
-            blockEntity.fuelMoveTicks = 0;
-            blockEntity.getAdjacentContainers().moveOneItemTo(
-                master.getBlastFurnaceModule().getFuelContainer(),
-                master.blastFurnaceModule::isFuel);
-          }
-        });
-  }
-
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
     return new BlastFurnaceMenu(id, inventory, this);
@@ -133,5 +124,28 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
   @Override
   public Component getDisplayName() {
     return Component.translatable(Translations.Container.BLAST_FURNACE);
+  }
+
+  @Override
+  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+      return this.getMembership()
+          .map(Membership::master)
+          .map(BlastFurnaceBlockEntity::getBlastFurnaceModule)
+          .map(m -> switch (side) {
+            case UP -> m.getInputHandler();
+            case DOWN -> m.getOutputHandler();
+            default -> m.getFuelHandler();
+          })
+          .<LazyOptional<T>>map(LazyOptional::cast)
+          .orElse(LazyOptional.empty());
+    }
+    return LazyOptional.empty();
+  }
+
+  @Override
+  public void invalidateCaps() {
+    super.invalidateCaps();
+    this.blastFurnaceModule.invalidItemHandler();
   }
 }
