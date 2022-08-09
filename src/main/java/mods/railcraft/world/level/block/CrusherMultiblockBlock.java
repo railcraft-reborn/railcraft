@@ -1,9 +1,16 @@
 package mods.railcraft.world.level.block;
 
+import java.util.List;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,9 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class CrusherMultiblockBlock extends MultiblockBlock {
 
-  public static final Property<Type> TYPE =
-      EnumProperty.create("type", Type.class);
-
+  public static final Property<Type> TYPE = EnumProperty.create("type", Type.class);
   public static final Property<Boolean> ROTATED = BooleanProperty.create("rotated");
   public static final Property<Boolean> OUTPUT = BooleanProperty.create("output");
 
@@ -50,6 +55,12 @@ public class CrusherMultiblockBlock extends MultiblockBlock {
     return level.isClientSide() ? null
         : createTickerHelper(type, RailcraftBlockEntityTypes.CRUSHER.get(),
             CrusherBlockEntity::serverTick);
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
+      List<Component> tooltip, TooltipFlag flag) {
+    tooltip.add(Component.translatable(Tips.CRUSHER).withStyle(ChatFormatting.GRAY));
   }
 
   public enum Type implements StringRepresentable {
