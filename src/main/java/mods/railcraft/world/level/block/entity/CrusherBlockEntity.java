@@ -125,7 +125,9 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return getMasterModule()
+            return this.getMembership()
+                .map(Membership::master)
+                .map(CrusherBlockEntity::getCrusherModule)
                 .map(m -> {
                     if (this.getBlockState().getValue(CrusherMultiblockBlock.OUTPUT)) {
                         return m.getOutputHandler();
@@ -138,28 +140,9 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
         return super.getCapability(cap, side);
     }
 
-    @NotNull
-    private Optional<CrusherModule> getMasterModule() {
-        return this.getMembership()
-            .map(Membership::master)
-            .map(CrusherBlockEntity::getCrusherModule);
-    }
-
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        getMasterModule().ifPresent(CrusherModule::invalidItemHandlers);
-    }
-
-    @Override
-    public void setRemoved() {
-        super.setRemoved();
-        getMasterModule().ifPresent(CrusherModule::invalidItemHandlers);
-    }
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        getMasterModule().ifPresent(CrusherModule::reviveCaps);
+        this.crusherModule.invalidItemHandlers();
     }
 }

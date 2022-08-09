@@ -129,9 +129,4 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
         inputHandler.invalidate();
         outputHandler.invalidate();
     }
-
-    public void reviveCaps() {
-        inputHandler = LazyOptional.of(() -> new FilteredInvWrapper(inputContainer, true, false));
-        outputHandler = LazyOptional.of(() -> new FilteredInvWrapper(outputContainer, false, true));
-    }
 }
