@@ -61,16 +61,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
         CrusherBlockEntity blockEntity) {
 
         blockEntity.serverTick();
-
         blockEntity.moduleDispatcher.serverTick();
-
-        blockEntity.getMembership()
-            .map(Membership::master)
-            .ifPresent(master -> {
-                var lit = master.crusherModule.isProcessing();
-                level.setBlockAndUpdate(blockPos, blockState);
-            });
-
         if (blockEntity.isMaster()) {
             blockEntity.crusherModule.serverTick();
         }
