@@ -5,6 +5,7 @@ import static mods.railcraft.data.recipes.builders.CrusherRecipeBuilder.DEFAULT_
 import java.util.Optional;
 import mods.railcraft.util.container.ContainerCopy;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.FilteredInvWrapper;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
@@ -12,6 +13,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 
 public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
@@ -24,11 +27,16 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     private Optional<CrusherRecipe> currentRecipe;
     private int currentSlot;
 
+    private LazyOptional<IItemHandler> inputHandler, outputHandler;
+
     public CrusherModule(CrusherBlockEntity provider) {
         super(provider, 18);
         inputContainer = ContainerMapper.make(this, SLOT_INPUT, 9);
         outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
         currentRecipe = Optional.empty();
+
+        inputHandler = LazyOptional.of(() -> new FilteredInvWrapper(inputContainer, true, false));
+        outputHandler = LazyOptional.of(() -> new FilteredInvWrapper(outputContainer, false, true));
     }
 
     @Override
@@ -107,5 +115,23 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     public void setChanged() {
         super.setChanged();
         currentRecipe = Optional.empty();
+    }
+
+    public LazyOptional<IItemHandler> getInputHandler() {
+        return inputHandler;
+    }
+
+    public LazyOptional<IItemHandler> getOutputHandler() {
+        return outputHandler;
+    }
+
+    public void invalidItemHandlers() {
+        inputHandler.invalidate();
+        outputHandler.invalidate();
+    }
+
+    public void reviveCaps() {
+        inputHandler = LazyOptional.of(() -> new FilteredInvWrapper(inputContainer, true, false));
+        outputHandler = LazyOptional.of(() -> new FilteredInvWrapper(outputContainer, false, true));
     }
 }
