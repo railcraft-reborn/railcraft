@@ -1,66 +1,100 @@
 {
   "variants": {
-    "rotated=false,type=exporter": {
-      "model": "railcraft:block/crusher_exporter",
-      "y": 0
-    },
-    "rotated=false,type=none": {
+    "output=false,rotated=false,type=none": {
       "model": "railcraft:block/crusher"
     },
-    "rotated=false,type=north": {
+    "output=false,rotated=false,type=north": {
       "model": "railcraft:block/crusher_top_north",
       "y": 0
     },
-    "rotated=false,type=north_east": {
+    "output=false,rotated=false,type=north_east": {
       "model": "railcraft:block/crusher_top_north_east",
       "y": 0
     },
-    "rotated=false,type=north_west": {
+    "output=false,rotated=false,type=north_west": {
       "model": "railcraft:block/crusher_top_north_west",
       "y": 0
     },
-    "rotated=false,type=south": {
+    "output=false,rotated=false,type=south": {
       "model": "railcraft:block/crusher_top_south",
       "y": 0
     },
-    "rotated=false,type=south_east": {
+    "output=false,rotated=false,type=south_east": {
       "model": "railcraft:block/crusher_top_south_east",
       "y": 0
     },
-    "rotated=false,type=south_west": {
+    "output=false,rotated=false,type=south_west": {
       "model": "railcraft:block/crusher_top_south_west",
       "y": 0
     },
-    "rotated=true,type=exporter": {
-      "model": "railcraft:block/crusher_exporter",
-      "y": 90
-    },
-    "rotated=true,type=none": {
+    "output=false,rotated=true,type=none": {
       "model": "railcraft:block/crusher"
     },
-    "rotated=true,type=north": {
+    "output=false,rotated=true,type=north": {
       "model": "railcraft:block/crusher_top_north",
       "y": 90
     },
-    "rotated=true,type=north_east": {
+    "output=false,rotated=true,type=north_east": {
       "model": "railcraft:block/crusher_top_north_east",
       "y": 90
     },
-    "rotated=true,type=north_west": {
+    "output=false,rotated=true,type=north_west": {
       "model": "railcraft:block/crusher_top_north_west",
       "y": 90
     },
-    "rotated=true,type=south": {
+    "output=false,rotated=true,type=south": {
       "model": "railcraft:block/crusher_top_south",
       "y": 90
     },
-    "rotated=true,type=south_east": {
+    "output=false,rotated=true,type=south_east": {
       "model": "railcraft:block/crusher_top_south_east",
       "y": 90
     },
-    "rotated=true,type=south_west": {
+    "output=false,rotated=true,type=south_west": {
       "model": "railcraft:block/crusher_top_south_west",
       "y": 90
+    },
+    "output=true,rotated=false,type=none": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=false,type=north": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=false,type=north_east": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=false,type=north_west": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=false,type=south": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=false,type=south_east": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=false,type=south_west": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=true,type=none": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=true,type=north": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=true,type=north_east": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=true,type=north_west": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=true,type=south": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=true,type=south_east": {
+      "model": "railcraft:block/crusher_exporter"
+    },
+    "output=true,rotated=true,type=south_west": {
+      "model": "railcraft:block/crusher_exporter"
     }
   }
 }

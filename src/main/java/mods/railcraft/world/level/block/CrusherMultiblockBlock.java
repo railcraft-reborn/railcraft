@@ -22,17 +22,19 @@ public class CrusherMultiblockBlock extends MultiblockBlock {
       EnumProperty.create("type", Type.class);
 
   public static final Property<Boolean> ROTATED = BooleanProperty.create("rotated");
+  public static final Property<Boolean> OUTPUT = BooleanProperty.create("output");
 
   public CrusherMultiblockBlock(Properties properties) {
     super(properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(TYPE, Type.NONE)
-        .setValue(ROTATED, false));
+        .setValue(ROTATED, false)
+        .setValue(OUTPUT, false));
   }
 
   @Override
   protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-    builder.add(TYPE, ROTATED);
+    builder.add(TYPE, ROTATED, OUTPUT);
   }
 
   @Nullable
@@ -53,7 +55,6 @@ public class CrusherMultiblockBlock extends MultiblockBlock {
   public enum Type implements StringRepresentable {
 
     NONE("none"),
-    EXPORTER("exporter"),
     NORTH("north"),
     NORTH_EAST("north_east"),
     NORTH_WEST("north_west"),

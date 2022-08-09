@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-08T22:28:38.180644322	Railcraft Block State Definitions
+// 1.19.2	2022-08-09T18:05:25.81293309	Railcraft Block State Definitions
 b7fce4a3220edeb2904e53e6377a86a7b237ffc5 assets/railcraft/blockstates/abandoned_activator_track.json
 ff1b13ba4045bb558e3d132ec8830eb9d226af6f assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -50,7 +50,7 @@ e19bbf2ec78271b88bc00c2991f855c3aded5ec1 assets/railcraft/blockstates/coal_coke_
 9379ccd2a46308fdfde70134ad039f5d38eb7e51 assets/railcraft/blockstates/coke_oven_bricks.json
 9405520af92cd9a65d960e2672acda529c1f85bd assets/railcraft/blockstates/creosote.json
 92c1b0e657972a937f79126b66fb62bf5f04d47c assets/railcraft/blockstates/crushed_obsidian.json
-bd302901f2c58017d13a4c2909353d3497af710b assets/railcraft/blockstates/crusher.json
+6c61ce7f36e1479134c68dd354fb2eeef4996159 assets/railcraft/blockstates/crusher.json
 160610cd2aa8a68688d3a59bc91e4cac3536dda9 assets/railcraft/blockstates/cyan_iron_tank_gauge.json
 5e96a52772e05a0d2c4140f350fe51f40768a477 assets/railcraft/blockstates/cyan_iron_tank_valve.json
 4eac32dc008fc656c8855de8bfad25257005bfe8 assets/railcraft/blockstates/cyan_iron_tank_wall.json

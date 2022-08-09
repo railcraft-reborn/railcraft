@@ -90,7 +90,9 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
         if (membership == null) {
             this.level.setBlockAndUpdate(this.getBlockPos(),
                 this.getBlockState()
-                    .setValue(CrusherMultiblockBlock.TYPE, Type.NONE));
+                    .setValue(CrusherMultiblockBlock.TYPE, Type.NONE)
+                    .setValue(CrusherMultiblockBlock.ROTATED, false)
+                    .setValue(CrusherMultiblockBlock.OUTPUT, false));
             Containers.dropContents(this.level, this.getBlockPos(), this.crusherModule);
             return;
         }
@@ -102,13 +104,14 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
             case '3' -> Type.SOUTH_EAST;
             case '4' -> Type.SOUTH;
             case '5' -> Type.SOUTH_WEST;
-            case 'O' -> Type.EXPORTER;
             default -> Type.NONE;
         };
 
         this.level.setBlockAndUpdate(this.getBlockPos(),
             this.getBlockState()
                 .setValue(CrusherMultiblockBlock.TYPE, type)
+                .setValue(CrusherMultiblockBlock.OUTPUT,
+                    membership.patternElement().marker() == 'O')
                 .setValue(CrusherMultiblockBlock.ROTATED,
                     membership.master().getCurrentPattern().get() == rotatedPattern));
     }

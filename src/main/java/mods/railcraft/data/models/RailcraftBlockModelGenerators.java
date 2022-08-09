@@ -599,9 +599,17 @@ public class RailcraftBlockModelGenerators {
 
   private void createCrusherMultiblockBricks(Block block) {
     var baseTexture = TexturedModel.CUBE_TOP.create(block, this.modelOutput);
+    var outputTexture = ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_exporter",
+        new TextureMapping()
+            .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_exporter"))
+            .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
+            .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_side")),
+        this.modelOutput);
 
     var noneVariant = Variant.variant()
         .with(VariantProperties.MODEL, baseTexture);
+    var outputVariant = Variant.variant()
+        .with(VariantProperties.MODEL, outputTexture);
 
     var models = new EnumMap<Type, ResourceLocation>(Type.class);
 
@@ -609,32 +617,26 @@ public class RailcraftBlockModelGenerators {
       if (type.equals(Type.NONE))
         continue;
 
-      ResourceLocation location;
-      if(type.equals(Type.EXPORTER)) {
-        location = ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_exporter",
-            new TextureMapping()
-                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_exporter"))
-                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
-                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_side")),
-            this.modelOutput);
-      } else {
-        location = ModelTemplates.CUBE_TOP.createWithSuffix(block, "_top_" + type.getSerializedName(),
-            new TextureMapping()
-                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
-                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block,
-                    "_top_" + type.getSerializedName())),
-            this.modelOutput);
-      }
-      models.put(type, location);
+      var suffix = "_top_" + type.getSerializedName();
+      models.put(type, ModelTemplates.CUBE_TOP.createWithSuffix(block, suffix,
+          new TextureMapping()
+              .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
+              .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, suffix)),
+          this.modelOutput));
     }
 
     this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-        .with(PropertyDispatch.properties(CrusherMultiblockBlock.TYPE, CrusherMultiblockBlock.ROTATED)
-            .generate((type, rotated) -> type == Type.NONE
-              ? noneVariant
-              : Variant.variant()
+        .with(PropertyDispatch.properties(CrusherMultiblockBlock.TYPE,
+                CrusherMultiblockBlock.ROTATED, CrusherMultiblockBlock.OUTPUT)
+            .generate((type, rotated, output) -> {
+              if(output)
+                return outputVariant;
+              if(type == Type.NONE)
+                return noneVariant;
+              return Variant.variant()
                   .with(VariantProperties.MODEL, models.get(type))
-                  .with(VariantProperties.Y_ROT, rotated ? Rotation.R90 : Rotation.R0))));
+                  .with(VariantProperties.Y_ROT, rotated ? Rotation.R90 : Rotation.R0);
+            })));
   }
 
   private void createFeedStation() {
