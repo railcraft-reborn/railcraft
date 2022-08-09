@@ -1,7 +1,7 @@
 package mods.railcraft.world.module;
 
-import javax.annotation.Nonnull;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.FilteredInvWrapper;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
@@ -15,7 +15,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockEntity> {
 
@@ -25,32 +24,28 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   public static final int SLOT_PROCESSING_FLUID = 3;
   public static final int SLOT_OUTPUT_FLUID = 4;
   public static final int TANK_CAPACITY = 64 * FluidTools.BUCKET_VOLUME;
-  private final ContainerMapper outputContainer =
-      new ContainerMapper(this, SLOT_OUTPUT, 1).ignoreItemChecks();
+  private final ContainerMapper inputContainer, outputContainer;
   private int multiplier = 1;
 
   private final StandardTank tank;
   private int fluidProcessingTimer;
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
-  private final ContainerMapper fluidContainer =
-      ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_OUTPUT_FLUID);
+  private final ContainerMapper fluidContainer;
 
-  private final LazyOptional<IItemHandler> itemHandler =
-      LazyOptional.of(() -> new InvWrapper(this) {
-        @Nonnull
-        @Override
-        public ItemStack extractItem(int slot, int amount, boolean simulate) {
-          if (slot != SLOT_OUTPUT && slot != SLOT_OUTPUT_FLUID)
-            return ItemStack.EMPTY;
-          return super.extractItem(slot, amount, simulate);
-        }
-      });
+  private LazyOptional<IItemHandler> inputHandler, outputHandler;
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
     this.tank = new StandardTank(TANK_CAPACITY)
         .disableFill()
         .setChangeListener(this::setChanged);
+
+    inputContainer = new ContainerMapper(this, SLOT_INPUT, 1);
+    outputContainer = new ContainerMapper(this, SLOT_OUTPUT, 1).ignoreItemChecks();
+    fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_OUTPUT_FLUID);
+
+    inputHandler = LazyOptional.of(() -> new FilteredInvWrapper(inputContainer, true, false));
+    outputHandler = LazyOptional.of(() -> new FilteredInvWrapper(outputContainer, false, true));
   }
 
   @Override
@@ -116,22 +111,26 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   }
 
   @Override
-  public boolean canPlaceItem(int slot, ItemStack stack) {
-    if (!super.canPlaceItem(slot, stack)) {
-      return false;
-    }
-    switch (slot) {
-      case SLOT_INPUT:
-        return true;
-      case SLOT_LIQUID_INPUT:
-        return FluidItemHelper.isRoomInContainer(stack, RailcraftFluids.CREOSOTE.get());
-      default:
-        return false;
-    }
+  public boolean canPlaceItem(int slot, ItemStack itemStack) {
+    if(slot == SLOT_INPUT)
+      return super.canPlaceItem(slot, itemStack) && getRecipe(itemStack).isPresent();
+    if(slot == SLOT_LIQUID_INPUT)
+      return super.canPlaceItem(slot, itemStack) &&
+          FluidItemHelper.isRoomInContainer(itemStack, RailcraftFluids.CREOSOTE.get());
+    return false;
   }
 
-  public LazyOptional<IItemHandler> getItemHandler() {
-    return this.itemHandler;
+  public LazyOptional<IItemHandler> getInputHandler() {
+    return inputHandler;
+  }
+
+  public LazyOptional<IItemHandler> getOutputHandler() {
+    return this.outputHandler;
+  }
+
+  public void invalidItemHandler() {
+    inputHandler.invalidate();
+    outputHandler.invalidate();
   }
 
   @Override

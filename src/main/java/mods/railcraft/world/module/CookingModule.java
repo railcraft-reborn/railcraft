@@ -19,6 +19,7 @@ public abstract class CookingModule<R extends AbstractCookingRecipe, T extends M
   protected CookingModule(T provider, int size, int inputSlot) {
     super(provider, size);
     this.inputSlot = inputSlot;
+    this.recipe = Optional.empty();
   }
 
   protected abstract RecipeType<R> getRecipeType();
