@@ -132,20 +132,10 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
       return this.getMembership()
           .map(Membership::master)
           .map(BlastFurnaceBlockEntity::getBlastFurnaceModule)
-          .map(m -> switch (side) {
-            case UP -> m.getInputHandler();
-            case DOWN -> m.getOutputHandler();
-            default -> m.getFuelHandler();
-          })
+          .map(BlastFurnaceModule::getItemHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)
           .orElse(LazyOptional.empty());
     }
     return LazyOptional.empty();
-  }
-
-  @Override
-  public void invalidateCaps() {
-    super.invalidateCaps();
-    this.blastFurnaceModule.invalidItemHandler();
   }
 }

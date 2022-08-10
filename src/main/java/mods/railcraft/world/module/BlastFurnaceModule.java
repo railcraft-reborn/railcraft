@@ -2,7 +2,6 @@ package mods.railcraft.world.module;
 
 import java.util.function.IntSupplier;
 import mods.railcraft.util.container.ContainerMapper;
-import mods.railcraft.util.container.FilteredInvWrapper;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
@@ -16,7 +15,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import org.jetbrains.annotations.NotNull;
 
 public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastFurnaceBlockEntity> {
   
@@ -25,10 +25,9 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   public static final int SLOT_OUTPUT = 2;
   public static final int SLOT_SLAG = 3;
   private static final int FUEL_PER_TICK = 5;
-  private final ContainerMapper inputContainer, fuelContainer;
-  private final ContainerMapper outputContainer, slagContainer;
+  private final ContainerMapper fuelContainer, outputContainer, slagContainer;
 
-  private LazyOptional<IItemHandler> inputHandler, fuelHandler, outputHandler;
+  private LazyOptional<IItemHandler> itemHandler;
 
   /**
    * The number of ticks that the furnace will keep burning
@@ -42,16 +41,20 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   public BlastFurnaceModule(BlastFurnaceBlockEntity provider) {
     super(provider, 4, SLOT_INPUT);
-    inputContainer = ContainerMapper.make(this, SLOT_INPUT, 1);
     fuelContainer = ContainerMapper.make(this, SLOT_FUEL, 1);
-    outputContainer = new ContainerMapper(this, SLOT_OUTPUT, 1).ignoreItemChecks();
-    slagContainer = new ContainerMapper(this, SLOT_SLAG, 1).ignoreItemChecks();
+    outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
+    slagContainer = ContainerMapper.make(this, SLOT_SLAG, 1).ignoreItemChecks();
 
-    inputHandler = LazyOptional.of(() -> new FilteredInvWrapper(inputContainer, true, false));
-    fuelHandler = LazyOptional.of(() -> new FilteredInvWrapper(fuelContainer, true, false));
-    outputHandler = LazyOptional.of(() -> new CombinedInvWrapper(
-        new FilteredInvWrapper(outputContainer, false, true),
-        new FilteredInvWrapper(slagContainer, false, true)));
+    itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
+      @Override
+      @NotNull
+      public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
+          return ItemStack.EMPTY;
+        }
+        return super.extractItem(slot, amount, simulate);
+      }
+    });
   }
 
   public ContainerManipulator<?> getFuelContainer() {
@@ -165,9 +168,9 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack itemStack) {
-    if(slot == SLOT_INPUT)
-      return super.canPlaceItem(slot, itemStack) && getRecipe(itemStack).isPresent();
-    if(slot == SLOT_FUEL && this.isFuel(itemStack))
+    if(slot == SLOT_INPUT && getRecipe(itemStack).isPresent())
+      return super.canPlaceItem(slot, itemStack);
+    if(slot == SLOT_FUEL && isFuel(itemStack))
       return super.canPlaceItem(slot, itemStack);
     return false;
   }
@@ -176,22 +179,12 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     return this.getItemBurnTime(itemStack) > 0;
   }
 
-  public LazyOptional<IItemHandler> getInputHandler() {
-    return inputHandler;
-  }
-
-  public LazyOptional<IItemHandler> getFuelHandler() {
-    return this.fuelHandler;
-  }
-
-  public LazyOptional<IItemHandler> getOutputHandler() {
-    return this.outputHandler;
+  public LazyOptional<IItemHandler> getItemHandler() {
+    return itemHandler;
   }
 
   public void invalidItemHandler() {
-    inputHandler.invalidate();
-    fuelHandler.invalidate();
-    outputHandler.invalidate();
+    itemHandler.invalidate();
   }
 
   @Override

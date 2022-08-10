@@ -86,39 +86,6 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new CokeOvenMenu(id, inventory, this);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return Component.translatable(Translations.Container.COKE_OVEN);
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return this.getMembership()
-                .map(Membership::master)
-                .map(CokeOvenBlockEntity::getCokeOvenModule)
-                .map(m -> {
-                    if(side.equals(Direction.UP))
-                        return m.getInputHandler();
-                    return m.getOutputHandler();
-                })
-                .<LazyOptional<T>>map(LazyOptional::cast)
-                .orElse(LazyOptional.empty());
-        }
-        return LazyOptional.empty();
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        this.cokeOvenModule.invalidItemHandler();
-    }
-
-    @Override
     protected boolean isBlockEntity(MultiblockPattern.Element element) {
         return element.marker() == 'B' || element.marker() == 'W';
     }
@@ -136,5 +103,28 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
                 this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW,
                     membership.patternElement().marker() == 'W'));
         }
+    }
+
+    @Override
+    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+        return new CokeOvenMenu(id, inventory, this);
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.translatable(Translations.Container.COKE_OVEN);
+    }
+
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return this.getMembership()
+                .map(Membership::master)
+                .map(CokeOvenBlockEntity::getCokeOvenModule)
+                .map(CokeOvenModule::getItemHandler)
+                .<LazyOptional<T>>map(LazyOptional::cast)
+                .orElse(LazyOptional.empty());
+        }
+        return LazyOptional.empty();
     }
 }
