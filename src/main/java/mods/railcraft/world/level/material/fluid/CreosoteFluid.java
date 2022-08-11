@@ -47,7 +47,7 @@ public abstract class CreosoteFluid extends FlowingFluid {
   protected BlockState createLegacyBlock(FluidState fluidState) {
     return RailcraftBlocks.CREOSOTE.get()
         .defaultBlockState()
-        .setValue(LiquidBlock.LEVEL, Integer.valueOf(getLegacyLevel(fluidState)));
+        .setValue(LiquidBlock.LEVEL, getLegacyLevel(fluidState));
   }
 
   @Override
@@ -78,8 +78,7 @@ public abstract class CreosoteFluid extends FlowingFluid {
   }
 
   @Override
-  public Vec3 getFlow(BlockGetter blockGetter, BlockPos blockPos,
-      FluidState fluidState) {
+  public Vec3 getFlow(BlockGetter blockGetter, BlockPos blockPos, FluidState fluidState) {
     return Vec3.ZERO;
   }
 

@@ -1,4 +1,4 @@
-package mods.railcraft.data.recipes;
+package mods.railcraft.data.recipes.builders;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -10,11 +10,8 @@ import javax.annotation.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;

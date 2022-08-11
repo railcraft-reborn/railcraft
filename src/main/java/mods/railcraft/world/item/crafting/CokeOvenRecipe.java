@@ -2,7 +2,7 @@ package mods.railcraft.world.item.crafting;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import mods.railcraft.data.recipes.CokeOvenRecipeBuilder;
+import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,15 +31,6 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
     return this.creosote;
   }
 
-  public FluidStack assembleFluid() {
-    return this.getCreosote().copy();
-  }
-
-  @Override
-  public ItemStack getToastSymbol() {
-    return new ItemStack(RailcraftBlocks.COKE_OVEN_BRICKS.get());
-  }
-
   @Override
   public RecipeSerializer<?> getSerializer() {
     return RailcraftRecipeSerializers.COKING.get();
@@ -48,6 +39,11 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
   @Override
   public boolean isSpecial() {
     return true;
+  }
+
+  @Override
+  public ItemStack getToastSymbol() {
+    return new ItemStack(RailcraftBlocks.COKE_OVEN_BRICKS.get());
   }
 
   public static class Serializer implements RecipeSerializer<CokeOvenRecipe> {

@@ -100,6 +100,45 @@ public class Translations {
         format("tips.%railcraft.crushed_obsidian");
     public static final String SPIKE_MAUL =
         format("tips.%railcraft.spike_maul");
+    public static final String GOOGLES_DESC =
+        format("tips.%railcraft.googles.desc");
+    public static final String GOOGLES_AURA =
+        format("tips.%railcraft.googles.aura");
+    public static final String GOOGLES_AURA_NONE =
+        format("tips.%railcraft.googles.aura.none");
+    public static final String GOOGLES_AURA_SHUNTING =
+        format("tips.%railcraft.googles.aura.shunting");
+    public static final String GOOGLES_AURA_SIGNALLING =
+        format("tips.%railcraft.googles.aura.signalling");
+    public static final String GOOGLES_AURA_SURVEYING =
+        format("tips.%railcraft.googles.aura.surveying");
+    public static final String GOOGLES_AURA_TRACKING =
+        format("tips.%railcraft.googles.aura.tracking");
+    public static final String GOOGLES_AURA_TUNING =
+        format("tips.%railcraft.googles.aura.tuning");
+    public static final String GOOGLES_AURA_WORLDSPIKE =
+        format("tips.%railcraft.googles.aura.worldspike");
+
+    public static final String CRAWBAR_DESC =
+        format("tips.%railcraft.crowbar.desc");
+    public static final String CRAWBAR_LINK_BROKEN =
+        format("tips.%railcraft.crowbar.link.broken");
+    public static final String CRAWBAR_LINK_CREATED =
+        format("tips.%railcraft.crowbar.link.created");
+    public static final String CRAWBAR_LINK_FAILED =
+        format("tips.%railcraft.crowbar.link.failed");
+    public static final String CRAWBAR_LINK_STARTED =
+        format("tips.%railcraft.crowbar.link.started");
+    public static final String CRAWBAR_SEASON_DESC =
+        format("tips.%railcraft.crowbar.seasons.desc");
+    public static final String CRAWBAR_SEASON_NONE =
+        format("tips.%railcraft.crowbar.seasons.none");
+    public static final String CRAWBAR_SEASON_DEFAULT =
+        format("tips.%railcraft.crowbar.seasons.default");
+    public static final String CRAWBAR_SEASON_HALLOWEEN =
+        format("tips.%railcraft.crowbar.seasons.halloween");
+    public static final String CRAWBAR_SEASON_CHRISTMAS =
+        format("tips.%railcraft.crowbar.seasons.christmas");
   }
 
   public static class Container {

@@ -2,7 +2,7 @@ package mods.railcraft.data.recipes.patterns;
 
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
-import mods.railcraft.data.recipes.RollingRecipeBuilder;
+import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;

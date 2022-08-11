@@ -99,6 +99,7 @@ public class RailcraftTags {
 
     public static final TagKey<Item> STRENGTHENED_GLASS = tag("strengthened_glass");
 
+
     public static final TagKey<Item> LEAD_ORE = forgeTag("ores/lead");
     public static final TagKey<Item> NICKEL_ORE = forgeTag("ores/nickel");
     public static final TagKey<Item> SILVER_ORE = forgeTag("ores/silver");
@@ -106,6 +107,18 @@ public class RailcraftTags {
     public static final TagKey<Item> TIN_ORE = forgeTag("ores/tin");
     public static final TagKey<Item> ZINC_ORE = forgeTag("ores/zinc");
     public static final TagKey<Item> SALTPETER_ORE = forgeTag("ores/salt");
+
+    public static final TagKey<Item> TOOLS_SWORDS_STEEL = forgeTag("tools/swords/steel");
+    public static final TagKey<Item> TOOLS_AXES_STEEL = forgeTag("tools/axes/steel");
+    public static final TagKey<Item> TOOLS_PICKAXES_STEEL = forgeTag("tools/pickaxes/steel");
+    public static final TagKey<Item> TOOLS_SHOVELS_STEEL = forgeTag("tools/shovels/steel");
+    public static final TagKey<Item> TOOLS_HOES_STEEL = forgeTag("tools/hoes/steel");
+
+    public static final TagKey<Item> ARMORS_HELMETS_STEEL = forgeTag("armors/helmets/steel");
+    public static final TagKey<Item> ARMORS_CHESTPLATES_STEEL = forgeTag("armors/chestplates/steel");
+    public static final TagKey<Item> ARMORS_LEGGINGS_STEEL = forgeTag("armors/leggings/steel");
+    public static final TagKey<Item> ARMORS_BOOTS_STEEL = forgeTag("armors/boots/steel");
+
 
     private static TagKey<Item> tag(String name) {
       return ItemTags.create(new ResourceLocation(Railcraft.ID, name));

@@ -295,16 +295,35 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void tipsTranslations() {
-    this.add(Translations.Tips.ROUTING_TICKET_ISSUER, "Issuer:");
-    this.add(Translations.Tips.ROUTING_TICKET_DEST, "Destination:");
-    this.add(Translations.Tips.ROUTING_TICKET_BLANK, "Blank Ticket");
-    this.add(Translations.Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
+    this.add(Tips.ROUTING_TICKET_ISSUER, "Issuer:");
+    this.add(Tips.ROUTING_TICKET_DEST, "Destination:");
+    this.add(Tips.ROUTING_TICKET_BLANK, "Blank Ticket");
+    this.add(Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
+    this.add(Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
+    this.add(Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");
+    this.add(Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
+    this.add(Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
     this.add(Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
     this.add(Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
+    this.add(Tips.GOOGLES_DESC, "Right-click to change aura.");
+    this.add(Tips.GOOGLES_AURA, "Current Aura: %s");
+    this.add(Tips.GOOGLES_AURA_NONE, "None");
+    this.add(Tips.GOOGLES_AURA_SHUNTING, "Shunting");
+    this.add(Tips.GOOGLES_AURA_SIGNALLING, "Signalling");
+    this.add(Tips.GOOGLES_AURA_SURVEYING, "Surveying");
+    this.add(Tips.GOOGLES_AURA_TRACKING, "Tracking");
+    this.add(Tips.GOOGLES_AURA_TUNING, "Tuning");
+    this.add(Tips.GOOGLES_AURA_WORLDSPIKE, "Worldspike");
+    this.add(Tips.CRAWBAR_DESC, "Right-click while sneaking to link carts.");
+    this.add(Tips.CRAWBAR_LINK_BROKEN, "Link Broken");
+    this.add(Tips.CRAWBAR_LINK_CREATED, "Successfully Linked Carts");
+    this.add(Tips.CRAWBAR_LINK_FAILED, "Link Failed");
+    this.add(Tips.CRAWBAR_LINK_STARTED, "Started Linking Carts");
+    this.add(Tips.CRAWBAR_SEASON_DESC, "Current season: %s");
+    this.add(Tips.CRAWBAR_SEASON_NONE, "None");
+    this.add(Tips.CRAWBAR_SEASON_DEFAULT, "Default");
+    this.add(Tips.CRAWBAR_SEASON_CHRISTMAS, "Christmas");
+    this.add(Tips.CRAWBAR_SEASON_HALLOWEEN, "Halloween");
   }
 
   private void screenTranslations() {

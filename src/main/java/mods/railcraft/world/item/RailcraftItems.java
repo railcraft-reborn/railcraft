@@ -26,6 +26,7 @@ import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.ShovelItem;
@@ -1416,11 +1417,19 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> CREOSOTE_BUCKET =
       deferredRegister.register("creosote_bucket",
-          () -> new BucketItem(RailcraftFluids.CREOSOTE, new Item.Properties().tab(TAB)));
+          () -> new BucketItem(RailcraftFluids.CREOSOTE,
+              new Item.Properties()
+                  .stacksTo(1)
+                  .craftRemainder(Items.BUCKET)
+                  .tab(TAB)));
 
   public static final RegistryObject<Item> CREOSOTE_BOTTLE =
       deferredRegister.register("creosote_bottle",
-          () -> new FluidBottleItem(RailcraftFluids.CREOSOTE, new Item.Properties().tab(TAB)));
+          () -> new FluidBottleItem(RailcraftFluids.CREOSOTE,
+              new Item.Properties()
+                  .stacksTo(16)
+                  .craftRemainder(Items.GLASS_BOTTLE)
+                  .tab(TAB)));
 
   // ================================================================================
   // Utils
