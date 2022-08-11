@@ -33,13 +33,12 @@ public class SteamFluid extends Fluid {
   }
 
   @Override
-  protected Vec3 getFlow(BlockGetter reader, BlockPos blockPos,
-      FluidState fluidState) {
+  protected Vec3 getFlow(BlockGetter reader, BlockPos blockPos, FluidState fluidState) {
     return Vec3.ZERO;
   }
 
   @Override
-  public int getTickDelay(LevelReader worldReader) {
+  public int getTickDelay(LevelReader levelReader) {
     return 0;
   }
 
@@ -74,8 +73,7 @@ public class SteamFluid extends Fluid {
   }
 
   @Override
-  public VoxelShape getShape(FluidState fluidState, BlockGetter blockReader,
-      BlockPos blockPos) {
+  public VoxelShape getShape(FluidState fluidState, BlockGetter blockReader, BlockPos blockPos) {
     return Shapes.empty();
   }
 
