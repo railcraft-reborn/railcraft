@@ -145,10 +145,4 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
         }
         return super.getCapability(cap, side);
     }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        this.crusherModule.invalidateCaps();
-    }
 }
