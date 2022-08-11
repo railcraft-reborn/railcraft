@@ -105,8 +105,8 @@ public class StandardTank extends FluidTank {
   /**
    * Disables draning of our tank. Blocks drain() from draining.
    *
-   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#drain() Drain Function
-   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalDrain() Bypassed Drain
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#drain(FluidStack, FluidAction)  Drain Function
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalDrain(FluidStack, FluidAction)  Bypassed Drain
    *      Function
    */
   public StandardTank disableDrain() {
@@ -117,8 +117,8 @@ public class StandardTank extends FluidTank {
   /**
    * Disables filling of our tank.
    *
-   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#fill() Fill Function
-   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalFill() Bypassed Fill
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#fill(FluidStack, FluidAction)  Fill Function
+   * @see mods.railcraft.world.level.material.fluid.tank.StandardTank#internalFill(FluidStack, FluidAction)  Bypassed Fill
    *      Function
    */
   public StandardTank disableFill() {

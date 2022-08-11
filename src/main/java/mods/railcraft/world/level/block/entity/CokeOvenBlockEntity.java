@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
@@ -117,14 +118,21 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+        var masterModule = this.getMembership()
+            .map(Membership::master)
+            .map(CokeOvenBlockEntity::getCokeOvenModule);
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return this.getMembership()
-                .map(Membership::master)
-                .map(CokeOvenBlockEntity::getCokeOvenModule)
+            return masterModule
                 .map(CokeOvenModule::getItemHandler)
                 .<LazyOptional<T>>map(LazyOptional::cast)
                 .orElse(LazyOptional.empty());
         }
-        return LazyOptional.empty();
+        if(cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return masterModule
+                .map(CokeOvenModule::getFluidHandler)
+                .<LazyOptional<T>>map(LazyOptional::cast)
+                .orElse(LazyOptional.empty());
+        }
+        return super.getCapability(cap, side);
     }
 }

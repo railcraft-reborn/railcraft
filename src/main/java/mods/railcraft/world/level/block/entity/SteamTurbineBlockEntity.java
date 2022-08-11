@@ -142,27 +142,23 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   }
 
   @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability,
-      @Nullable Direction side) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return this.getMembership()
-          .map(Membership::master)
-          .map(SteamTurbineBlockEntity::getSteamTurbineModule)
+  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    var masterModule = this.getMembership()
+        .map(Membership::master)
+        .map(SteamTurbineBlockEntity::getSteamTurbineModule);
+    if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      return masterModule
           .map(SteamTurbineModule::getFluidHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)
           .orElse(LazyOptional.empty());
     }
-
-    if (capability == CapabilityEnergy.ENERGY) {
-      return this.getMembership()
-          .map(Membership::master)
-          .map(SteamTurbineBlockEntity::getSteamTurbineModule)
+    if (cap == CapabilityEnergy.ENERGY) {
+      return masterModule
           .map(SteamTurbineModule::getEnergyStorage)
           .<LazyOptional<T>>map(LazyOptional::cast)
           .orElse(LazyOptional.empty());
     }
-
-    return super.getCapability(capability, side);
+    return super.getCapability(cap, side);
   }
 
   @Override

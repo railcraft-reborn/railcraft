@@ -1,7 +1,6 @@
 package mods.railcraft.world.module;
 
 import mods.railcraft.util.container.ContainerMapper;
-import mods.railcraft.util.container.FilteredInvWrapper;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
@@ -35,6 +34,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   private final ContainerMapper fluidContainer;
 
   private LazyOptional<IItemHandler> itemHandler;
+  private LazyOptional<IFluidHandler> fluidHandler;
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
@@ -55,6 +55,8 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
         return super.extractItem(slot, amount, simulate);
       }
     });
+
+    fluidHandler = LazyOptional.of(() -> tank);
   }
 
   @Override
@@ -133,8 +135,13 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     return itemHandler;
   }
 
-  public void invalidItemHandler() {
+  public LazyOptional<IFluidHandler> getFluidHandler() {
+    return fluidHandler;
+  }
+
+  public void invalidateCaps() {
     itemHandler.invalidate();
+    fluidHandler.invalidate();
   }
 
   @Override

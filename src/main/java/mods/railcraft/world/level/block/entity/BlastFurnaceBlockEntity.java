@@ -136,6 +136,6 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
           .<LazyOptional<T>>map(LazyOptional::cast)
           .orElse(LazyOptional.empty());
     }
-    return LazyOptional.empty();
+    return super.getCapability(cap, side);
   }
 }
