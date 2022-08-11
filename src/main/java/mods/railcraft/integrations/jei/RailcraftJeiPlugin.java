@@ -4,6 +4,7 @@ import java.util.Objects;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
@@ -21,9 +22,11 @@ import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.inventory.CrusherMenu;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
+import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 @JeiPlugin
 public class RailcraftJeiPlugin implements IModPlugin {
@@ -76,5 +79,17 @@ public class RailcraftJeiPlugin implements IModPlugin {
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.BLASTING.get()));
     registration.addRecipes(RecipeTypes.CRUSHER,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()));
+  }
+
+  @Override
+  public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get()),
+        RecipeTypes.ROLLING_MACHINE);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.COKE_OVEN_BRICKS.get()),
+        RecipeTypes.COKE_OVEN);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.BLAST_FURNACE_BRICKS.get()),
+        RecipeTypes.BLAST_FURNACE);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.CRUSHER.get()),
+        RecipeTypes.CRUSHER);
   }
 }
