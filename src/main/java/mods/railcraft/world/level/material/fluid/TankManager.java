@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.material.fluid;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -38,9 +39,7 @@ public class TankManager extends ForwardingList<StandardTank>
   private final List<StandardTank> tanks = new ArrayList<>();
 
   public TankManager(StandardTank... tanks) {
-    for (StandardTank tank : tanks) {
-      this.add(tank);
-    }
+    this.addAll(Arrays.asList(tanks));
   }
 
   @Override

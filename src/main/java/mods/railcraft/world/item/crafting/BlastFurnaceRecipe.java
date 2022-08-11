@@ -29,11 +29,6 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
   }
 
   @Override
-  public ItemStack getToastSymbol() {
-    return new ItemStack(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
-  }
-
-  @Override
   public RecipeSerializer<?> getSerializer() {
     return RailcraftRecipeSerializers.BLASTING.get();
   }
@@ -41,6 +36,10 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
   @Override
   public boolean isSpecial() {
     return true;
+  }
+  @Override
+  public ItemStack getToastSymbol() {
+    return new ItemStack(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
   }
 
   public static class Serializer implements RecipeSerializer<BlastFurnaceRecipe> {

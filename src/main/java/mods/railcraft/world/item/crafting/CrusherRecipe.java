@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.ArrayList;
 import java.util.List;
+import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -110,6 +111,11 @@ public class CrusherRecipe implements Recipe<Container> {
   @Override
   public boolean isSpecial() {
     return true;
+  }
+
+  @Override
+  public ItemStack getToastSymbol() {
+    return new ItemStack(RailcraftBlocks.CRUSHER.get());
   }
 
   public static class CrusherRecipeSerializer implements RecipeSerializer<CrusherRecipe> {
