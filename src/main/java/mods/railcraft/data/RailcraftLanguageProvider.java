@@ -291,6 +291,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
     this.add(Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
     this.add(Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
+    this.add(Tips.COKE_OVEN, "Multi-Block: 3x3x3");
+    this.add(Tips.BLAST_FURNACE, "Multi-Block: 3x4x3");
     this.add(Tips.CRUSHER, "Multi-Block: 3x2x2");
     this.add(Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
     this.add(Tips.GOOGLES_DESC, "Right-click to change aura.");

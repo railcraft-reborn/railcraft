@@ -524,6 +524,8 @@
   "signal.railcraft.tuner.lost": "Signal Controller No Longer Exists",
   "signal.railcraft.tuner.success": "Successfully Paired Signal Receiver",
   "signal.railcraft.tuner.unloaded": "Signal Controller's Chunk Has Been Unloaded",
+  "tips.railcraft.blast_furnace": "Multi-Block: 3x4x3",
+  "tips.railcraft.coke_oven": "Multi-Block: 3x3x3",
   "tips.railcraft.crowbar.desc": "Right-click while sneaking to link carts.",
   "tips.railcraft.crowbar.link.broken": "Link Broken",
   "tips.railcraft.crowbar.link.created": "Successfully Linked Carts",
