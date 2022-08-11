@@ -1,4 +1,4 @@
-// 1.19.1	2022-08-05T10:57:01.105354835	worldgen/configured_feature generator for railcraft
+// 1.19.2	2022-08-11T17:20:20.653696115	worldgen/configured_feature generator for railcraft
 48fa2ef347b10679440e414fa3b50334ae59c022 data/railcraft/worldgen/configured_feature/lead_ore.json
 3887f73ca478e303d9835fbc2d82cfaaf7f827f0 data/railcraft/worldgen/configured_feature/nickel_ore.json
 ee8f651f558efeb79c4e4359847082486c3c8f40 data/railcraft/worldgen/configured_feature/nickel_ore_small.json
