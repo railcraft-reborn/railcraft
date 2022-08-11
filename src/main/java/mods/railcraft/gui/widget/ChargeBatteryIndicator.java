@@ -24,17 +24,15 @@ public class ChargeBatteryIndicator implements Gauge {
 
   @Override
   public void refresh() {
-    int capacity = this.battery.getEnergyStored();
+    int capacity = this.battery.getMaxEnergyStored();
     int current = Math.min(this.charge, capacity);
     float chargeLevel = capacity <= 0.0F ? 0.0F : (current / capacity) * 100.0F;
     this.tooltip.clear();
-    this.tooltip.add(Component.literal(String.format("%.0f%%", chargeLevel)));
-    this.tooltip.add(Component.literal(
-        HumanReadableNumberFormatter.format(current)
-        + " / "
-        + HumanReadableNumberFormatter.format(capacity)
-        + " CU" // charge unit, railcraft energy unit: not eu
-        ));
+    //this.tooltip.add(Component.literal(String.format("%.0f%%", chargeLevel)));
+
+    var currentFormatter = HumanReadableNumberFormatter.format(current) + "FE";
+    var capacityFormatter = HumanReadableNumberFormatter.format(capacity) + "FE";
+    this.tooltip.add(Component.literal(currentFormatter + "/" + capacityFormatter));
   }
 
   @Override

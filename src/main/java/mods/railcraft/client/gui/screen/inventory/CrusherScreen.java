@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
+import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.world.inventory.CrusherMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +18,7 @@ public class CrusherScreen extends RailcraftMenuScreen<CrusherMenu> {
     this.imageHeight = 171;
     this.inventoryLabelY = this.imageHeight - 94;
 
-    //this.registerWidgetRenderer(new FluidGaugeRenderer(this.menu.getFluidGauge()));
+    this.registerWidgetRenderer(new GaugeRenderer(this.menu.getEnergyWidget()));
   }
 
   @Override

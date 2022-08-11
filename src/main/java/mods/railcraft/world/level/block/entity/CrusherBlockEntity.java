@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.entity;
 
 import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.List;
-import java.util.Optional;
 import javax.annotation.Nullable;
 import mods.railcraft.Translations.Container;
 import mods.railcraft.world.inventory.CrusherMenu;
@@ -25,8 +24,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
-import org.jetbrains.annotations.NotNull;
 
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
 
@@ -124,10 +123,11 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+        var masterModule = this.getMembership()
+            .map(Membership::master)
+            .map(CrusherBlockEntity::getCrusherModule);
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return this.getMembership()
-                .map(Membership::master)
-                .map(CrusherBlockEntity::getCrusherModule)
+            return masterModule
                 .map(m -> {
                     if (this.getBlockState().getValue(CrusherMultiblockBlock.OUTPUT)) {
                         return m.getOutputHandler();
@@ -137,12 +137,18 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
                 .<LazyOptional<T>>map(LazyOptional::cast)
                 .orElse(LazyOptional.empty());
         }
+        if (cap == CapabilityEnergy.ENERGY) {
+            return masterModule
+                .map(CrusherModule::getEnergyHandler)
+                .<LazyOptional<T>>map(LazyOptional::cast)
+                .orElse(LazyOptional.empty());
+        }
         return super.getCapability(cap, side);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        this.crusherModule.invalidItemHandlers();
+        this.crusherModule.invalidateCaps();
     }
 }
