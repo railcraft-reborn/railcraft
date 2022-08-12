@@ -53,7 +53,9 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     @Override
     public void serverTick() {
         super.serverTick();
-        energyStorage.consumeEnergyInternally(COST_PER_TICK);
+        if(!lacksRequirements()) {
+            energyStorage.consumeEnergyInternally(COST_PER_TICK);
+        }
     }
 
     public MachineEnergyStorage getEnergyStorage() {
