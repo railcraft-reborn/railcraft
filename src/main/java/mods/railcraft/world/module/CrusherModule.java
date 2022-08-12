@@ -39,7 +39,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
     public CrusherModule(CrusherBlockEntity provider) {
         super(provider, 18);
-        energyStorage = new MachineEnergyStorage(8000, 1000);
+        energyStorage = new MachineEnergyStorage(80000, 5000);
 
         inputContainer = ContainerMapper.make(this, SLOT_INPUT, 9);
         outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
