@@ -18,7 +18,7 @@ public class CrusherScreen extends RailcraftMenuScreen<CrusherMenu> {
     this.imageHeight = 171;
     this.inventoryLabelY = this.imageHeight - 94;
 
-    this.registerWidgetRenderer(new GaugeRenderer(this.menu.getEnergyWidget()));
+    this.registerWidgetRenderer(new GaugeRenderer(menu.getEnergyWidget()));
   }
 
   @Override
@@ -30,7 +30,7 @@ public class CrusherScreen extends RailcraftMenuScreen<CrusherMenu> {
     var logic = this.menu.getCrusher().getCrusherModule();
     if (logic.getProgress() > 0) {
       var progressPercent = (int) (logic.getProgressPercent() * 29 + 1);
-      this.blit(poseStack, x + 73, y + 20, 176, 0, progressPercent, 38);
+      this.blit(poseStack, x + 64, y + 20, 176, 0, progressPercent, 53);
     }
   }
 
