@@ -315,6 +315,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.CRAWBAR_SEASON_DEFAULT, "Default");
     this.add(Tips.CRAWBAR_SEASON_CHRISTMAS, "Christmas");
     this.add(Tips.CRAWBAR_SEASON_HALLOWEEN, "Halloween");
+    this.add(Tips.SIGNAL_LABEL_DESC1, "Rename in Anvil");
+    this.add(Tips.SIGNAL_LABEL_DESC2, "Right click while sneaking to name a signal or signal box");
   }
 
   private void screenTranslations() {

@@ -562,7 +562,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipe);
   }
 
-
   private void buildSteelItems(Consumer<FinishedRecipe> consumer) {
     ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_ANVIL.get())
         .pattern("aaa")

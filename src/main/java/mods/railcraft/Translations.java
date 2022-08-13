@@ -118,7 +118,6 @@ public class Translations {
         format("tips.%railcraft.googles.aura.tuning");
     public static final String GOOGLES_AURA_WORLDSPIKE =
         format("tips.%railcraft.googles.aura.worldspike");
-
     public static final String CRAWBAR_DESC =
         format("tips.%railcraft.crowbar.desc");
     public static final String CRAWBAR_LINK_BROKEN =
@@ -139,6 +138,10 @@ public class Translations {
         format("tips.%railcraft.crowbar.seasons.halloween");
     public static final String CRAWBAR_SEASON_CHRISTMAS =
         format("tips.%railcraft.crowbar.seasons.christmas");
+    public static final String SIGNAL_LABEL_DESC1 =
+        format("tips.%railcraft.signal_label.desc1");
+    public static final String SIGNAL_LABEL_DESC2 =
+        format("tips.%railcraft.signal_label.desc2");
   }
 
   public static class Container {
