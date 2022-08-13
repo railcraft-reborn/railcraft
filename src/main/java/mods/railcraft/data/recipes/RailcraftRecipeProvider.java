@@ -144,6 +144,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildMaul(consumer);
     buildTurbineParts(consumer);
     buildChargeItems(consumer);
+    buildSignalBox(consumer);
     buildMiscItems(consumer);
 
     /*
@@ -802,6 +803,48 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()),
             has(RailcraftItems.STEEL_PLATE.get()))
         .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.TANK_MINECART.get())
+        .pattern("a")
+        .pattern("b")
+        .define('a', RailcraftTags.Items.STRENGTHENED_GLASS)
+        .define('b', Items.MINECART)
+        .unlockedBy(getHasName(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()),
+            has(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.TUNNEL_BORE.get())
+        .pattern("aba")
+        .pattern("cbc")
+        .pattern(" d ")
+        .define('a', RailcraftTags.Items.STEEL_BLOCK)
+        .define('b', Items.MINECART)
+        .define('c', Items.FURNACE)
+        .define('d', Items.CHEST_MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.STEAM_LOCOMOTIVE.get())
+        .pattern("aab")
+        .pattern("aab")
+        .pattern("cdd")
+        .define('a', RailcraftTags.Items.IRON_TANK_WALL)
+        .define('b', RailcraftItems.BLAST_FURNACE_BRICKS.get())
+        .define('c', Items.IRON_BARS)
+        .define('d', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
+
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.MANUAL_ROLLING_MACHINE.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', RailcraftTags.Items.BRONZE_GEAR)
+        .define('b', Items.PISTON)
+        .define('c', Items.CRAFTING_TABLE)
+        .unlockedBy(getHasName(Items.PISTON), has(Items.PISTON))
+        .save(consumer);
   }
 
   private void buildChargeItems(Consumer<FinishedRecipe> consumer) {
@@ -1008,6 +1051,17 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', Items.NETHER_BRICK)
         .define('c', Items.MAGMA_CREAM)
         .unlockedBy(getHasName(Items.MAGMA_CREAM), has(Items.MAGMA_CREAM))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.CRUSHER.get(), 4)
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("ada")
+        .define('a', Items.DIAMOND)
+        .define('b', Items.PISTON)
+        .define('c', RailcraftTags.Items.STEEL_BLOCK)
+        .define('d', RailcraftItems.CHARGE_MOTOR.get())
+        .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
+            has(RailcraftItems.CHARGE_MOTOR.get()))
         .save(consumer);
     ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get(), 2)
         .pattern("a")

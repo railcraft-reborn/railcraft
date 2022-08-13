@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:diamond"
+    },
+    "b": {
+      "item": "minecraft:piston"
+    },
+    "c": {
+      "tag": "forge:storage_blocks/steel"
+    },
+    "d": {
+      "item": "railcraft:charge_motor"
+    }
+  },
+  "pattern": [
+    "aba",
+    "bcb",
+    "ada"
+  ],
+  "result": {
+    "count": 4,
+    "item": "railcraft:crusher"
+  }
+}

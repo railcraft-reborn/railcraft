@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:gears/bronze"
+    },
+    "b": {
+      "item": "minecraft:piston"
+    },
+    "c": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "pattern": [
+    "aba",
+    "bcb",
+    "aba"
+  ],
+  "result": {
+    "item": "railcraft:manual_rolling_machine"
+  }
+}

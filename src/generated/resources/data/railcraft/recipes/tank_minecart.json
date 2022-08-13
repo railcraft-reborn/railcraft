@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "railcraft:strengthened_glass"
+    },
+    "b": {
+      "item": "minecraft:minecart"
+    }
+  },
+  "pattern": [
+    "a",
+    "b"
+  ],
+  "result": {
+    "item": "railcraft:tank_minecart"
+  }
+}
