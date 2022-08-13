@@ -49,12 +49,11 @@ public class FEEnergyIndicator implements Gauge {
 
     @Override
     public float getClientValue() {
-        return (float)this.battery.getEnergyStored();
+        return this.charge;
     }
 
     @Override
     public void setClientValue(float value) {
         this.charge = (int)value;
-        this.battery.receiveEnergy(charge, false);
     }
 }
