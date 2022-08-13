@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.signal;
 
 import javax.annotation.Nullable;
-
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
@@ -18,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class AnalogSignalControllerBoxBlock extends SignalBoxBlock implements EntityBlock {
+public class AnalogSignalControllerBoxBlock extends SignalControllerBoxBlock implements EntityBlock {
 
   public AnalogSignalControllerBoxBlock(Properties properties) {
     super(properties);

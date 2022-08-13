@@ -1,6 +1,6 @@
 {
   "parent": "railcraft:block/signal_box_inventory",
   "textures": {
-    "up": "railcraft:entity/signal_box/block_signal_relay_box"
+    "up": "railcraft:entity/signal_box/signal_block_relay_box"
   }
 }

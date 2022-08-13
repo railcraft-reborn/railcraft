@@ -27,7 +27,7 @@ import mods.railcraft.client.particle.TuningAuraParticle;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
-import mods.railcraft.client.renderer.blockentity.BlockSignalRelayBoxRenderer;
+import mods.railcraft.client.renderer.blockentity.SignalBlockRelayBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.FluidLoaderRenderer;
 import mods.railcraft.client.renderer.blockentity.FluidManipulatorRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
@@ -170,7 +170,7 @@ public class ClientManager {
       event.addSprite(SignalControllerBoxRenderer.TEXTURE_LOCATION);
       event.addSprite(SignalCapacitorBoxRenderer.TEXTURE_LOCATION);
       event.addSprite(SignalReceiverBoxRenderer.TEXTURE_LOCATION);
-      event.addSprite(BlockSignalRelayBoxRenderer.TEXTURE_LOCATION);
+      event.addSprite(SignalBlockRelayBoxRenderer.TEXTURE_LOCATION);
       event.addSprite(AbstractSignalBoxRenderer.BOTTOM_TEXTURE_LOCATION);
       event.addSprite(AbstractSignalBoxRenderer.CONNECTED_SIDE_TEXTURE_LOCATION);
       event.addSprite(AbstractSignalBoxRenderer.SIDE_TEXTURE_LOCATION);

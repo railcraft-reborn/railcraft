@@ -31,7 +31,7 @@ public class RailcraftBlockEntityRenderers {
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_RECEIVER_BOX.get(),
         supply(SignalReceiverBoxRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.BLOCK_SIGNAL_RELAY_BOX.get(),
-        supply(BlockSignalRelayBoxRenderer::new));
+        supply(SignalBlockRelayBoxRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
         supply(AnalogSignalControllerBoxRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_SEQUENCER_BOX.get(),

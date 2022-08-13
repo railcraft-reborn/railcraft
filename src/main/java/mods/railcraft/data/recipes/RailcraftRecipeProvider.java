@@ -144,6 +144,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildMaul(consumer);
     buildTurbineParts(consumer);
     buildChargeItems(consumer);
+    buildMiscItems(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
@@ -739,6 +740,67 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', RailcraftItems.CHARGE_MOTOR.get())
         .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
             has(RailcraftItems.CHARGE_MOTOR.get()))
+        .save(consumer);
+  }
+
+  private void buildSignalBox(Consumer<FinishedRecipe> consumer) {
+    signalBox(consumer, RailcraftItems.SIGNAL_CONTROLLER_BOX.get(),
+        RailcraftItems.CONTROLLER_CIRCUIT.get(), Items.REDSTONE);
+    signalBox(consumer, RailcraftItems.SIGNAL_RECEIVER_BOX.get(),
+        RailcraftItems.RECEIVER_CIRCUIT.get(), Items.REDSTONE);
+    signalBox(consumer, RailcraftItems.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
+        RailcraftItems.CONTROLLER_CIRCUIT.get(), Items.COMPARATOR);
+    signalBox(consumer, RailcraftItems.SIGNAL_CAPACITOR_BOX.get(),
+        Items.REPEATER, Items.REDSTONE);
+    signalBox(consumer, RailcraftItems.SIGNAL_SEQUENCER_BOX.get(),
+        Items.COMPARATOR, Items.REDSTONE);
+
+
+    var circuit = RailcraftItems.CONTROLLER_CIRCUIT.get();
+    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_INTERLOCK_BOX.get())
+        .pattern(" d ")
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.IRON_INGOT)
+        .define('b', circuit)
+        .define('c', Items.REDSTONE)
+        .define('d', RailcraftItems.RECEIVER_CIRCUIT.get())
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(consumer);
+    circuit = RailcraftItems.SIGNAL_CIRCUIT.get();
+    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get())
+        .pattern(" c ")
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.IRON_INGOT)
+        .define('b', circuit)
+        .define('c', Items.REDSTONE)
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(consumer);
+  }
+
+  private static void signalBox(Consumer<FinishedRecipe> finishedRecipe,
+      Item result, Item circuit, Item bottomItem) {
+    ShapedRecipeBuilder.shaped(result)
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.IRON_INGOT)
+        .define('b', circuit)
+        .define('c', bottomItem)
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(finishedRecipe);
+  }
+
+  private void buildMiscItems(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RailcraftItems.FEED_STATION.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', ItemTags.PLANKS)
+        .define('b', Items.GOLDEN_CARROT)
+        .define('c', RailcraftTags.Items.STEEL_PLATE)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()),
+            has(RailcraftItems.STEEL_PLATE.get()))
         .save(consumer);
   }
 

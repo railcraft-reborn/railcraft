@@ -93,7 +93,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX, "Analog Signal Controller Box");
     this.addBlock(RailcraftBlocks.SIGNAL_INTERLOCK_BOX, "Signal Interlock Box");
     this.addBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX, "Signal Sequencer Box");
-    this.addBlock(RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX, "Block Signal Relay Box");
+    this.addBlock(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX, "Signal Block Relay Box");
     this.addBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
     this.addBlock(RailcraftBlocks.CRUSHER, "Crusher");
     this.addBlock(RailcraftBlocks.COKE_OVEN_BRICKS, "Coke Oven Bricks");
@@ -317,6 +317,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.CRAWBAR_SEASON_HALLOWEEN, "Halloween");
     this.add(Tips.SIGNAL_LABEL_DESC1, "Rename in Anvil");
     this.add(Tips.SIGNAL_LABEL_DESC2, "Right click while sneaking to name a signal or signal box");
+    this.add(Tips.SENDS_SIGNALS_TO_RECEIVERS, "Sends signals to Receivers");
+    this.add(Tips.SIGNAL_RECEIVER_BOX, "Listens to Controller signals");
+    this.add(Tips.SIGNAL_INTERLOCK_BOX, "Permits only one aspect signal to pass");
+    this.add(Tips.SIGNAL_SEQUENCER_BOX, "Loops through adjacent blocks");
+    this.add(Tips.SIGNAL_BLOCK_RELAY_BOX, "Creates chains of Signal Blocks");
   }
 
   private void screenTranslations() {

@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-06T10:05:26.83593019	Railcraft Block Tags
+// 1.19.2	2022-08-13T15:05:10.74183802	Railcraft Block Tags
 aefbbbc5abb467f81217a20784fffded5a4cc0df data/minecraft/tags/blocks/anvil.json
 491830ad886621c3a078a87ab488fd45839ad64d data/minecraft/tags/blocks/climbable.json
 7fd3a9a1d0cb0d3d5030dc03490c92e54fa00484 data/minecraft/tags/blocks/mineable/pickaxe.json
@@ -6,13 +6,13 @@ c53a1084d2f2752eaac3634fce1a1afbb2890d8e data/minecraft/tags/blocks/needs_diamon
 3ee348cffca12d1de1fa85c8c011c0ac26272c3c data/minecraft/tags/blocks/needs_iron_tool.json
 eaf9a60d668e52585438acb095582cf2da96cc1a data/minecraft/tags/blocks/needs_stone_tool.json
 9d3090396bd00b992fb2c3bdc37e24e602b0aa69 data/minecraft/tags/blocks/rails.json
-ef2ac7b68d969382709e42d553b20976b37fade6 data/railcraft/tags/blocks/aspect_emitter.json
+fab1e9f7ff52840990cfd768fadbfae51350d821 data/railcraft/tags/blocks/aspect_emitter.json
 192386fbb9d76dd115cb27c418ef2656209a93c4 data/railcraft/tags/blocks/aspect_receiver.json
 7e5c073993b497f00165a2cd8588c86b92c42e32 data/railcraft/tags/blocks/ballast.json
 e428d6ae724c5108f98185295926eb14c6510c44 data/railcraft/tags/blocks/iron_tank_gauge.json
 ad43ddea7185867f695a872b9110aff36104b44d data/railcraft/tags/blocks/iron_tank_valve.json
 c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/blocks/iron_tank_wall.json
-6ce5f4cf1dd91d15a25d16f047ae9c20c9b72892 data/railcraft/tags/blocks/mineable/crowbar.json
+03d874cf92b1d10d9631a9747b3994c60f20ffc9 data/railcraft/tags/blocks/mineable/crowbar.json
 5c3ee0c8b144c2b48d062bca01cdc96427bb6c26 data/railcraft/tags/blocks/post.json
 cef2fe722cdf4386365bd961d925fa5aeb2e244e data/railcraft/tags/blocks/signal.json
 36dd475b78cc6cfda74baa55b8a7ba9919242524 data/railcraft/tags/blocks/steel_tank_gauge.json

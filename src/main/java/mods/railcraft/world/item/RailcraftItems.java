@@ -381,10 +381,10 @@ public class RailcraftItems {
               RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> BLOCK_SIGNAL_RELAY_BOX =
-      deferredRegister.register("block_signal_relay_box",
+  public static final RegistryObject<Item> SIGNAL_BLOCK_RELAY_BOX =
+      deferredRegister.register("signal_block_relay_box",
           () -> new BlockItem(
-              RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get(),
+              RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> SIGNAL_RECEIVER_BOX =

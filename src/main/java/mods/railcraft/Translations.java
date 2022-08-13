@@ -142,6 +142,16 @@ public class Translations {
         format("tips.%railcraft.signal_label.desc1");
     public static final String SIGNAL_LABEL_DESC2 =
         format("tips.%railcraft.signal_label.desc2");
+    public static final String SENDS_SIGNALS_TO_RECEIVERS =
+        format("tips.%railcraft.send_signals_to_receivers");
+    public static final String SIGNAL_RECEIVER_BOX =
+        format("tips.%railcraft.signal_receiver_box");
+    public static final String SIGNAL_SEQUENCER_BOX =
+        format("tips.%railcraft.signal_sequencer_box");
+    public static final String SIGNAL_INTERLOCK_BOX =
+        format("tips.%railcraft.signal_interlock_box");
+    public static final String SIGNAL_BLOCK_RELAY_BOX =
+        format("tips.%railcraft.signal_block_relay_box");
   }
 
   public static class Container {
