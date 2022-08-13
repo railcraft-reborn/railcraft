@@ -1,5 +1,7 @@
 package mods.railcraft.client;
 
+import java.util.stream.Stream;
+import mods.railcraft.Railcraft;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
@@ -40,9 +42,11 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -212,6 +216,24 @@ public class ClientManager {
   @SubscribeEvent
   public void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
     this.shuntingAuraRenderer.clearCarts();
+  }
+
+  @SubscribeEvent
+  public void handleClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
+    if(!Railcraft.BETA) return;
+
+    var player = event.getPlayer();
+
+    Stream.of(
+        "You are using a development version of Railcraft.",
+        "There is no guarantee that your server or worlds are safe.",
+        "You use this at your own risk, as is. Bugs and all.",
+        "Some features may not be present or different,",
+        "Please let us know by opening a ticket on Sm0keySa1m0n GitHub",
+        "- CovertJaguar, Sm0keySa1m0n, 3divad99"
+    ).map(Component::literal)
+        .map(c -> c.withStyle(ChatFormatting.RED))
+        .forEach(m -> player.displayClientMessage(m, false));
   }
 
   // ================================================================================

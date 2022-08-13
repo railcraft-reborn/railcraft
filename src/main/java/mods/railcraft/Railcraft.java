@@ -74,6 +74,7 @@ import net.minecraftforge.network.NetworkDirection;
 public class Railcraft {
 
   public static final String ID = "railcraft";
+  public static final boolean BETA = true;
 
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
   private final MinecartHandler minecartHandler = new MinecartHandler();
