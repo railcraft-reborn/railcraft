@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "N": {
+    "a": {
       "tag": "forge:nuggets/steel"
     }
   },
   "pattern": [
-    "N N",
-    "NNN",
-    " N "
+    "a a",
+    "aaa",
+    " a "
   ],
   "result": {
     "item": "railcraft:whistle_tuner"

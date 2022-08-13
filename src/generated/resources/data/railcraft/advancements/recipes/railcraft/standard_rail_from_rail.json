@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:rail_deconstruction"
+        "recipe": "railcraft:standard_rail_from_rail"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "railcraft:rail_deconstruction"
+      "railcraft:standard_rail_from_rail"
     ]
   }
 }

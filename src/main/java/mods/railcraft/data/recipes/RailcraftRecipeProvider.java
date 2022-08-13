@@ -43,83 +43,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     BlastFurnaceRecipeProvider.buildRecipes(consumer);
     CrusherRecipeProvider.buildRecipes(consumer);
     RollingRecipeProvider.buildRecipes(consumer);
-    /*
-     * ===================================== RAILCRAFT TOOLS =====================================
-     */
-    /* === Crowbar === */
-    this.crowbarFromMaterial(consumer, RailcraftItems.IRON_CROWBAR.get(),
-        Tags.Items.INGOTS_IRON);
-    this.crowbarFromMaterial(consumer, RailcraftItems.STEEL_CROWBAR.get(),
-        RailcraftTags.Items.STEEL_INGOT);
-    this.crowbarFromMaterial(consumer, RailcraftItems.DIAMOND_CROWBAR.get(),
-        Tags.Items.GEMS_DIAMOND);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get())
-        .define('C', Items.COMPASS)
-        .define('G', Tags.Items.GLASS_PANES)
-        .define('B', Blocks.STONE_BUTTON)
-        .define('R', Tags.Items.DUSTS_REDSTONE)
-        .pattern(" C ")
-        .pattern("BGB")
-        .pattern(" R ")
-        .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
-        .save(consumer);
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_TUNER.get())
-        .define('T', Items.REDSTONE_TORCH)
-        .define('C', RailcraftItems.RECEIVER_CIRCUIT.get())
-        .define('B', Blocks.STONE_BUTTON)
-        .pattern(" T ")
-        .pattern("BCB")
-        .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
-        .unlockedBy("has_circuit", has(RailcraftItems.RECEIVER_CIRCUIT.get()))
-        .save(consumer);
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.GOGGLES.get())
-        .define('S', RailcraftTags.Items.STEEL_INGOT)
-        .define('G', Tags.Items.GLASS_PANES)
-        .define('C', RailcraftItems.RECEIVER_CIRCUIT.get())
-        .define('L', Tags.Items.LEATHER)
-        .pattern("GCG")
-        .pattern("S S")
-        .pattern("LLL")
-        .unlockedBy("has_steel", has(RailcraftTags.Items.STEEL_INGOT))
-        .unlockedBy("has_circuit", has(RailcraftItems.RECEIVER_CIRCUIT.get()))
-        .save(consumer);
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.WHISTLE_TUNER.get())
-        .define('N', RailcraftTags.Items.STEEL_NUGGET)
-        .pattern("N N")
-        .pattern("NNN")
-        .pattern(" N ")
-        .unlockedBy("has_nugget", has(RailcraftTags.Items.STEEL_NUGGET))
-        .save(consumer);
-
-    // this is a tool i think
-    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
-        .define('L', Items.LAVA_BUCKET)
-        .define('R', Items.REDSTONE_BLOCK)
-        .define('S', RailcraftItems.CUT_FIRESTONE.get())
-        .pattern("LRL")
-        .pattern("RSR")
-        .pattern("LRL")
-        .unlockedBy("has_firestone", has(RailcraftItems.CUT_FIRESTONE.get()))
-        .save(consumer, Railcraft.ID + ":firestone_lava_refinement");
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
-        .define('L', Items.LAVA_BUCKET)
-        .define('R', Items.REDSTONE_BLOCK)
-        .define('S', RailcraftItems.CRACKED_FIRESTONE.get())
-        .define('F', RailcraftItems.RAW_FIRESTONE.get())
-        .pattern("LFL")
-        .pattern("RSR")
-        .pattern("LRL")
-        .unlockedBy("has_firestone", has(RailcraftItems.CRACKED_FIRESTONE.get()))
-        .save(consumer, Railcraft.ID + ":firestone_cracked_fixing");
-
-    /*
-     * ===================================== RAILCRAFT BLOCKS =====================================
-     */
     buildMultiblockBlocks(consumer);
     buildBlockStorageRecipes(consumer);
     buildGears(consumer);
@@ -143,46 +67,31 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildCartsVariant(consumer);
     buildSwitch(consumer);
     buildLoaders(consumer);
+    buildCrowbars(consumer);
 
-    /*
-     * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
-     */
+    // This is a tool I think
+    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
+        .pattern("LRL")
+        .pattern("RSR")
+        .pattern("LRL")
+        .define('L', Items.LAVA_BUCKET)
+        .define('R', Items.REDSTONE_BLOCK)
+        .define('S', RailcraftItems.CUT_FIRESTONE.get())
+        .unlockedBy(getHasName(RailcraftItems.CUT_FIRESTONE.get()),
+            has(RailcraftItems.CUT_FIRESTONE.get()))
+        .save(consumer, Railcraft.ID + ":firestone_lava_refinement");
 
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
-        .requires(RailcraftItems.WOODEN_TIE.get())
-        .requires(Tags.Items.INGOTS_IRON)
-        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
-            has(RailcraftItems.WOODEN_TIE.get()))
-        .save(consumer);
-
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.STANDARD_RAIL.get())
-        .requires(Items.RAIL, 8)
-        .unlockedBy("has_rail", has(Items.RAIL))
-        .save(consumer, Railcraft.ID + ":rail_deconstruction");
-
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAILBED.get())
-        .requires(RailcraftItems.WOODEN_TIE.get(), 4)
-        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
-            has(RailcraftItems.WOODEN_TIE.get()))
-        .save(consumer);
-
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.STONE_RAILBED.get())
-        .requires(RailcraftItems.STONE_TIE.get(), 4)
-        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
-            has(RailcraftItems.WOODEN_TIE.get()))
-        .save(consumer);
-  }
-
-  private void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
-      Item itemOut, TagKey<Item> materialTag) {
-    ShapedRecipeBuilder.shaped(itemOut)
-        .define('I', materialTag)
-        .define('D', Tags.Items.DYES_RED)
-        .pattern(" DI")
-        .pattern("DID")
-        .pattern("ID ")
-        .unlockedBy(getHasName(Blocks.RAIL), has(Blocks.RAIL))
-        .save(finishedRecipe);
+    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
+        .pattern("LFL")
+        .pattern("RSR")
+        .pattern("LRL")
+        .define('L', Items.LAVA_BUCKET)
+        .define('R', Items.REDSTONE_BLOCK)
+        .define('S', RailcraftItems.CRACKED_FIRESTONE.get())
+        .define('F', RailcraftItems.RAW_FIRESTONE.get())
+        .unlockedBy(getHasName(RailcraftItems.CRACKED_FIRESTONE.get()),
+            has(RailcraftItems.CRACKED_FIRESTONE.get()))
+        .save(consumer, Railcraft.ID + ":firestone_cracked_fixing");
   }
 
   private void conversion(Consumer<FinishedRecipe> finishedRecipe, ItemLike from, ItemLike to,
@@ -219,6 +128,30 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     railsFromMaterials(consumer, RailcraftItems.ELEVATOR_TRACK.get(), 8,
         RailcraftItems.ADVANCED_RAIL.get(), RailcraftItems.STANDARD_RAIL.get(),
         Items.REDSTONE);
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
+        .requires(RailcraftItems.WOODEN_TIE.get())
+        .requires(Tags.Items.INGOTS_IRON)
+        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
+            has(RailcraftItems.WOODEN_TIE.get()))
+        .save(consumer);
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.STANDARD_RAIL.get())
+        .requires(Items.RAIL, 8)
+        .unlockedBy(getHasName(Items.RAIL), has(Items.RAIL))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "standard_rail_from_rail"));
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAILBED.get())
+        .requires(RailcraftItems.WOODEN_TIE.get(), 4)
+        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
+            has(RailcraftItems.WOODEN_TIE.get()))
+        .save(consumer);
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.STONE_RAILBED.get())
+        .requires(RailcraftItems.STONE_TIE.get(), 4)
+        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
+            has(RailcraftItems.WOODEN_TIE.get()))
+        .save(consumer);
   }
 
   private static void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipe,
@@ -925,6 +858,27 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(consumer);
   }
 
+  private void buildCrowbars(Consumer<FinishedRecipe> consumer) {
+    crowbar(consumer, RailcraftItems.IRON_CROWBAR.get(),
+        Tags.Items.INGOTS_IRON);
+    crowbar(consumer, RailcraftItems.STEEL_CROWBAR.get(),
+        RailcraftTags.Items.STEEL_INGOT);
+    crowbar(consumer, RailcraftItems.DIAMOND_CROWBAR.get(),
+        Tags.Items.GEMS_DIAMOND);
+  }
+
+  private static void crowbar(Consumer<FinishedRecipe> finishedRecipe, Item itemOut,
+      TagKey<Item> materialTag) {
+    ShapedRecipeBuilder.shaped(itemOut)
+        .pattern(" ba")
+        .pattern("bab")
+        .pattern("ab ")
+        .define('a', materialTag)
+        .define('b', Tags.Items.DYES_RED)
+        .unlockedBy(getHasName(Items.RAIL), has(Items.RAIL))
+        .save(finishedRecipe);
+  }
+
   private void buildMiscItems(Consumer<FinishedRecipe> consumer) {
     ShapedRecipeBuilder.shaped(RailcraftItems.FEED_STATION.get())
         .pattern("aba")
@@ -962,6 +916,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('a', Items.CYAN_WOOL)
         .unlockedBy(getHasName(Items.CYAN_WOOL), has(Items.CYAN_WOOL))
         .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.WHISTLE_TUNER.get())
+        .pattern("a a")
+        .pattern("aaa")
+        .pattern(" a ")
+        .define('a', RailcraftTags.Items.STEEL_NUGGET)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_NUGGET.get()),
+            has(RailcraftTags.Items.STEEL_NUGGET))
+        .save(consumer);
     ShapelessRecipeBuilder.shapeless(RailcraftItems.SIGNAL_LABEL.get())
         .requires(Items.PAPER)
         .requires(RailcraftTags.Items.STEEL_NUGGET)
@@ -978,6 +940,39 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('d', Tags.Items.STORAGE_BLOCKS_DIAMOND)
         .unlockedBy(getHasName(RailcraftItems.ENDER_DUST.get()),
             has(RailcraftItems.ENDER_DUST.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get())
+        .pattern(" a ")
+        .pattern("cbc")
+        .pattern(" d ")
+        .define('a', Items.COMPASS)
+        .define('b', Tags.Items.GLASS_PANES)
+        .define('c', Blocks.STONE_BUTTON)
+        .define('d', Tags.Items.DUSTS_REDSTONE)
+        .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_TUNER.get())
+        .define('a', Items.REDSTONE_TORCH)
+        .define('b', RailcraftItems.RECEIVER_CIRCUIT.get())
+        .define('c', Blocks.STONE_BUTTON)
+        .pattern(" a ")
+        .pattern("cbc")
+        .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
+        .unlockedBy(getHasName(RailcraftItems.RECEIVER_CIRCUIT.get()),
+            has(RailcraftItems.RECEIVER_CIRCUIT.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.GOGGLES.get())
+        .pattern("aba")
+        .pattern("c c")
+        .pattern("ddd")
+        .define('a', Tags.Items.GLASS_PANES)
+        .define('b', RailcraftItems.RECEIVER_CIRCUIT.get())
+        .define('c', RailcraftTags.Items.STEEL_INGOT)
+        .define('d', Tags.Items.LEATHER)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
+            has(RailcraftTags.Items.STEEL_INGOT))
+        .unlockedBy(getHasName(RailcraftItems.RECEIVER_CIRCUIT.get()),
+            has(RailcraftItems.RECEIVER_CIRCUIT.get()))
         .save(consumer);
   }
 

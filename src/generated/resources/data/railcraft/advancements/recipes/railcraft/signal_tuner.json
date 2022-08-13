@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_circuit": {
+    "has_receiver_circuit": {
       "conditions": {
         "items": [
           {
@@ -33,7 +33,7 @@
   "requirements": [
     [
       "has_redstone",
-      "has_circuit",
+      "has_receiver_circuit",
       "has_the_recipe"
     ]
   ],
