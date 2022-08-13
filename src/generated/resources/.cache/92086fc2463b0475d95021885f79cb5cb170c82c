@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-13T13:29:33.452163334	Railcraft Block State Definitions
+// 1.19.2	2022-08-13T16:03:06.666633683	Railcraft Block State Definitions
 b7fce4a3220edeb2904e53e6377a86a7b237ffc5 assets/railcraft/blockstates/abandoned_activator_track.json
 ff1b13ba4045bb558e3d132ec8830eb9d226af6f assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -1231,6 +1231,7 @@ a1c9b52edde04315536cb204b6b76ba859304942 assets/railcraft/models/item/purple_iro
 14b7cf5cf3df226cd1beac694d207c7fb37914cf assets/railcraft/models/item/purple_steel_tank_valve.json
 87f43dc7190b02b5d0a5d96e625a895cf8c32496 assets/railcraft/models/item/purple_steel_tank_wall.json
 40b1c67d5f6f20b7315db7c4b046cb4be0d6c877 assets/railcraft/models/item/purple_strengthened_glass.json
+620f0741e4e3e12bbad5bd04b279831c389d0480 assets/railcraft/models/item/radio_circuit.json
 98e9bd5c31e8711afd536b5f9ac9f38ac8474133 assets/railcraft/models/item/rebar.json
 93e6f5d1cad0dae72ead237d05f1de1485f1bc79 assets/railcraft/models/item/receiver_circuit.json
 44f3658877db013a12ef2534ac42e406ad5c223e assets/railcraft/models/item/red_iron_tank_gauge.json

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:glass_pane"
+    },
+    "b": {
+      "item": "minecraft:lime_dye"
+    },
+    "c": {
+      "item": "minecraft:yellow_dye"
+    },
+    "d": {
+      "item": "minecraft:red_dye"
+    },
+    "e": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "f": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "ab ",
+    "ace",
+    "adf"
+  ],
+  "result": {
+    "item": "railcraft:signal_lamp"
+  }
+}

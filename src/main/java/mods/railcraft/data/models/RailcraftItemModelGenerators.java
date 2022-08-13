@@ -69,6 +69,7 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.CONTROLLER_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.RECEIVER_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.SIGNAL_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.RADIO_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.WOODEN_RAIL.get(),
         ModelTemplates.FLAT_HANDHELD_ROD_ITEM);

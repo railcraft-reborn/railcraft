@@ -1341,6 +1341,7 @@ public class RailcraftItems {
   public static final RegistryObject<Item> CONTROLLER_CIRCUIT = registerBasic("controller_circuit");
   public static final RegistryObject<Item> RECEIVER_CIRCUIT = registerBasic("receiver_circuit");
   public static final RegistryObject<Item> SIGNAL_CIRCUIT = registerBasic("signal_circuit");
+  public static final RegistryObject<Item> RADIO_CIRCUIT = registerBasic("radio_circuit");
 
   public static final RegistryObject<Item> WOODEN_RAIL = registerBasic("wooden_rail");
   public static final RegistryObject<Item> STANDARD_RAIL = registerBasic("standard_rail");

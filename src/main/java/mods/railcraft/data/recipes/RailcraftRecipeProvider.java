@@ -145,17 +145,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildTurbineParts(consumer);
     buildChargeItems(consumer);
     buildSignalBox(consumer);
+    buildSignals(consumer);
+    buildCircuit(consumer);
     buildMiscItems(consumer);
+    buildCartsVariant(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
      */
-    this.circuitFromMaterial(consumer, RailcraftItems.CONTROLLER_CIRCUIT.get(),
-        Items.RED_WOOL);
-    this.circuitFromMaterial(consumer, RailcraftItems.RECEIVER_CIRCUIT.get(),
-        Items.GREEN_WOOL);
-    this.circuitFromMaterial(consumer, RailcraftItems.SIGNAL_CIRCUIT.get(),
-        Items.YELLOW_WOOL);
 
     ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
         .requires(RailcraftItems.WOODEN_TIE.get())
@@ -219,21 +216,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipe, path);
   }
 
-  private void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
-      Item itemOut, Item woolItem) {
-    ShapedRecipeBuilder.shaped(itemOut)
-        .define('W', woolItem)
-        .define('R', Items.REPEATER)
-        .define('S', Tags.Items.DUSTS_REDSTONE)
-        .define('G', Tags.Items.INGOTS_GOLD)
-        .define('L', Tags.Items.GEMS_LAPIS)
-        .define('B', Tags.Items.SLIMEBALLS)
-        .pattern(" RW")
-        .pattern("BGS")
-        .pattern("WSL")
-        .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
-        .save(finishedRecipe);
-  }
 
   private void buildRails(Consumer<FinishedRecipe> consumer) {
     railsFromMaterials(consumer, RailcraftItems.ABANDONED_TRACK.get(), 32,
@@ -792,6 +774,88 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipe);
   }
 
+  private void buildSignals(Consumer<FinishedRecipe> consumer) {
+    singleSignal(consumer, RailcraftItems.BLOCK_SIGNAL.get(), RailcraftItems.SIGNAL_CIRCUIT.get());
+    singleSignal(consumer, RailcraftItems.DISTANT_SIGNAL.get(),
+        RailcraftItems.RECEIVER_CIRCUIT.get());
+    singleSignal(consumer, RailcraftItems.TOKEN_SIGNAL.get(), RailcraftItems.RADIO_CIRCUIT.get());
+
+    dualSignal(consumer, RailcraftItems.DUAL_BLOCK_SIGNAL.get(),
+        RailcraftItems.SIGNAL_CIRCUIT.get());
+    dualSignal(consumer, RailcraftItems.DUAL_DISTANT_SIGNAL.get(),
+        RailcraftItems.RECEIVER_CIRCUIT.get());
+    dualSignal(consumer, RailcraftItems.DUAL_TOKEN_SIGNAL.get(),
+        RailcraftItems.RADIO_CIRCUIT.get());
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_LAMP.get())
+        .pattern("ab ")
+        .pattern("ace")
+        .pattern("adf")
+        .define('a', Items.GLASS_PANE)
+        .define('b', Items.LIME_DYE)
+        .define('c', Items.YELLOW_DYE)
+        .define('d', Items.RED_DYE)
+        .define('e', Items.GLOWSTONE_DUST)
+        .define('f', Items.REDSTONE)
+        .unlockedBy(getHasName(Items.GLOWSTONE_DUST), has(Items.GLOWSTONE_DUST))
+        .save(consumer);
+  }
+
+  private static void singleSignal(Consumer<FinishedRecipe> finishedRecipe,
+      Item result, Item circuit) {
+    ShapedRecipeBuilder.shaped(result)
+        .pattern("abc")
+        .pattern(" dc")
+        .define('a', RailcraftItems.SIGNAL_LAMP.get())
+        .define('b', circuit)
+        .define('c', Items.IRON_INGOT)
+        .define('d', Items.INK_SAC)
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(finishedRecipe);
+  }
+
+  private static void dualSignal(Consumer<FinishedRecipe> finishedRecipe,
+      Item result, Item circuit) {
+    ShapedRecipeBuilder.shaped(result)
+        .pattern("abc")
+        .pattern(" dc")
+        .pattern("aec")
+        .define('a', RailcraftItems.SIGNAL_LAMP.get())
+        .define('b', circuit)
+        .define('c', Items.IRON_INGOT)
+        .define('d', Items.INK_SAC)
+        .define('e', RailcraftItems.RECEIVER_CIRCUIT.get())
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(finishedRecipe);
+  }
+
+  private void buildCircuit(Consumer<FinishedRecipe> consumer) {
+    circuitFromMaterial(consumer, RailcraftItems.CONTROLLER_CIRCUIT.get(),
+        Items.RED_WOOL);
+    circuitFromMaterial(consumer, RailcraftItems.RECEIVER_CIRCUIT.get(),
+        Items.GREEN_WOOL);
+    circuitFromMaterial(consumer, RailcraftItems.SIGNAL_CIRCUIT.get(),
+        Items.YELLOW_WOOL);
+    circuitFromMaterial(consumer, RailcraftItems.RADIO_CIRCUIT.get(),
+        Items.BLUE_WOOL);
+  }
+
+  private static void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
+      Item itemOut, Item woolItem) {
+    ShapedRecipeBuilder.shaped(itemOut)
+        .define('W', woolItem)
+        .define('R', Items.REPEATER)
+        .define('S', Tags.Items.DUSTS_REDSTONE)
+        .define('G', Tags.Items.INGOTS_GOLD)
+        .define('L', Tags.Items.GEMS_LAPIS)
+        .define('B', Tags.Items.SLIMEBALLS)
+        .pattern(" RW")
+        .pattern("BGS")
+        .pattern("WSL")
+        .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
+        .save(finishedRecipe);
+  }
+
   private void buildMiscItems(Consumer<FinishedRecipe> consumer) {
     ShapedRecipeBuilder.shaped(RailcraftItems.FEED_STATION.get())
         .pattern("aba")
@@ -803,7 +867,18 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()),
             has(RailcraftItems.STEEL_PLATE.get()))
         .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.MANUAL_ROLLING_MACHINE.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', RailcraftTags.Items.BRONZE_GEAR)
+        .define('b', Items.PISTON)
+        .define('c', Items.CRAFTING_TABLE)
+        .unlockedBy(getHasName(Items.PISTON), has(Items.PISTON))
+        .save(consumer);
+  }
 
+  private void buildCartsVariant(Consumer<FinishedRecipe> consumer) {
     ShapedRecipeBuilder.shaped(RailcraftItems.TANK_MINECART.get())
         .pattern("a")
         .pattern("b")
@@ -835,15 +910,30 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
 
+    ShapedRecipeBuilder.shaped(RailcraftItems.TRACK_LAYER.get())
+        .pattern("aba")
+        .pattern("cdc")
+        .pattern("efe")
+        .define('a', Items.YELLOW_DYE)
+        .define('b', Items.REDSTONE_LAMP)
+        .define('c', Items.ANVIL)
+        .define('d', RailcraftTags.Items.STEEL_BLOCK)
+        .define('e', Items.DISPENSER)
+        .define('f', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.MANUAL_ROLLING_MACHINE.get())
+    ShapedRecipeBuilder.shaped(RailcraftItems.TRACK_REMOVER.get())
         .pattern("aba")
-        .pattern("bcb")
-        .pattern("aba")
-        .define('a', RailcraftTags.Items.BRONZE_GEAR)
-        .define('b', Items.PISTON)
-        .define('c', Items.CRAFTING_TABLE)
-        .unlockedBy(getHasName(Items.PISTON), has(Items.PISTON))
+        .pattern("cdc")
+        .pattern("efe")
+        .define('a', Items.YELLOW_DYE)
+        .define('b', Items.REDSTONE_LAMP)
+        .define('c', Items.STICKY_PISTON)
+        .define('d', RailcraftTags.Items.STEEL_BLOCK)
+        .define('e', RailcraftTags.Items.CROWBAR)
+        .define('f', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
   }
 
