@@ -183,205 +183,205 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipe);
   }
 
-  private void buildTracks(Consumer<FinishedRecipe> finishedRecipe) {
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get(),
+  private void buildTracks(Consumer<FinishedRecipe> consumer) {
+    tracks(consumer, RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_BUFFER_STOP_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_COUPLER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_COUPLER_TRACK.get(),
         RailcraftItems.COUPLER_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_CONTROL_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_CONTROL_TRACK.get(),
         RailcraftItems.CONTROL_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_DISEMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_EMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_GATED_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_LAUNCHER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_ONE_WAY_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
 
-    tracks(finishedRecipe, RailcraftItems.IRON_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_BUFFER_STOP_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_COUPLER_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_COUPLER_TRACK.get(),
         RailcraftItems.COUPLER_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_CONTROL_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_CONTROL_TRACK.get(),
         RailcraftItems.CONTROL_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_DISEMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_EMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_GATED_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_LAUNCHER_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_ONE_WAY_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), Items.RAIL);
 
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_BUFFER_STOP_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_COUPLER_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_COUPLER_TRACK.get(),
         RailcraftItems.COUPLER_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_CONTROL_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_CONTROL_TRACK.get(),
         RailcraftItems.CONTROL_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_DISEMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_EMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_GATED_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_LAUNCHER_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_ONE_WAY_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
 
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_BUFFER_STOP_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_COUPLER_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_COUPLER_TRACK.get(),
         RailcraftItems.COUPLER_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_CONTROL_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_CONTROL_TRACK.get(),
         RailcraftItems.CONTROL_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_DISEMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_EMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_GATED_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_LAUNCHER_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_ONE_WAY_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
 
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_BUFFER_STOP_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_COUPLER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_COUPLER_TRACK.get(),
         RailcraftItems.COUPLER_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_CONTROL_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_CONTROL_TRACK.get(),
         RailcraftItems.CONTROL_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_DISEMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_EMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_GATED_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_LAUNCHER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_ONE_WAY_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
 
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_TRANSITION_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_TRANSITION_TRACK.get(),
         RailcraftItems.TRANSITION_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
 
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
         RailcraftItems.TRANSITION_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
 
-    wyeTracks(finishedRecipe, RailcraftItems.STRAP_IRON_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.STRAP_IRON_WYE_TRACK.get(),
         RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    wyeTracks(finishedRecipe, RailcraftItems.ABANDONED_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.ABANDONED_WYE_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_TIE.get());
-    wyeTracks(finishedRecipe, RailcraftItems.IRON_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.IRON_WYE_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    wyeTracks(finishedRecipe, RailcraftItems.REINFORCED_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.REINFORCED_WYE_TRACK.get(),
         RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    wyeTracks(finishedRecipe, RailcraftItems.ELECTRIC_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.ELECTRIC_WYE_TRACK.get(),
         RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    wyeTracks(finishedRecipe, RailcraftItems.HIGH_SPEED_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.HIGH_SPEED_WYE_TRACK.get(),
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
-    turnoutTracks(finishedRecipe, RailcraftItems.STRAP_IRON_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.STRAP_IRON_TURNOUT_TRACK.get(),
         RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    turnoutTracks(finishedRecipe, RailcraftItems.ABANDONED_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.ABANDONED_TURNOUT_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_TIE.get());
-    turnoutTracks(finishedRecipe, RailcraftItems.IRON_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.IRON_TURNOUT_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    turnoutTracks(finishedRecipe, RailcraftItems.REINFORCED_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.REINFORCED_TURNOUT_TRACK.get(),
         RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    turnoutTracks(finishedRecipe, RailcraftItems.ELECTRIC_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.ELECTRIC_TURNOUT_TRACK.get(),
         RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    turnoutTracks(finishedRecipe, RailcraftItems.HIGH_SPEED_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.HIGH_SPEED_TURNOUT_TRACK.get(),
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
-    junctionTracks(finishedRecipe, RailcraftItems.STRAP_IRON_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.STRAP_IRON_JUNCTION_TRACK.get(),
         RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    junctionTracks(finishedRecipe, RailcraftItems.ABANDONED_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.ABANDONED_JUNCTION_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_TIE.get());
-    junctionTracks(finishedRecipe, RailcraftItems.IRON_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.IRON_JUNCTION_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    junctionTracks(finishedRecipe, RailcraftItems.REINFORCED_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.REINFORCED_JUNCTION_TRACK.get(),
         RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    junctionTracks(finishedRecipe, RailcraftItems.ELECTRIC_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.ELECTRIC_JUNCTION_TRACK.get(),
         RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    junctionTracks(finishedRecipe, RailcraftItems.HIGH_SPEED_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.HIGH_SPEED_JUNCTION_TRACK.get(),
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
 
@@ -394,7 +394,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', RailcraftItems.STONE_RAILBED.get())
         .unlockedBy(getHasName(RailcraftItems.HIGH_SPEED_RAIL.get()),
             has(RailcraftItems.HIGH_SPEED_RAIL.get()))
-        .save(finishedRecipe);
+        .save(consumer);
     ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(), 16)
         .pattern("aca")
         .pattern("aba")
@@ -404,7 +404,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', RailcraftItems.STONE_RAILBED.get())
         .unlockedBy(getHasName(RailcraftItems.HIGH_SPEED_RAIL.get()),
             has(RailcraftItems.HIGH_SPEED_RAIL.get()))
-        .save(finishedRecipe);
+        .save(consumer);
     ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(), 16)
         .pattern("aba")
         .pattern("aca")
@@ -414,7 +414,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', RailcraftItems.STONE_RAILBED.get())
         .unlockedBy(getHasName(RailcraftItems.HIGH_SPEED_RAIL.get()),
             has(RailcraftItems.HIGH_SPEED_RAIL.get()))
-        .save(finishedRecipe);
+        .save(consumer);
   }
 
   private static void tracks(Consumer<FinishedRecipe> finishedRecipe, Item result,
