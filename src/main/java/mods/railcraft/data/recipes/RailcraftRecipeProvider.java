@@ -142,6 +142,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildSteelItems(consumer);
     buildTunnelBoreHead(consumer);
     buildMaul(consumer);
+    buildTurbineParts(consumer);
+    buildChargeItems(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
@@ -152,11 +154,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         Items.GREEN_WOOL);
     this.circuitFromMaterial(consumer, RailcraftItems.SIGNAL_CIRCUIT.get(),
         Items.YELLOW_WOOL);
-
-    this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_MEDIUM.get(),
-        RailcraftItems.CHARGE_SPOOL_SMALL.get(), 3, "charge_spool_small_from_medium");
-    this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_LARGE.get(),
-        RailcraftItems.CHARGE_SPOOL_MEDIUM.get(), 3, "charge_spool_medium_from_large");
 
     ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
         .requires(RailcraftItems.WOODEN_TIE.get())
@@ -713,6 +710,74 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', Items.STICK)
         .define('c', Tags.Items.STORAGE_BLOCKS_DIAMOND)
         .unlockedBy(getHasName(Items.DIAMOND_BLOCK), has(Items.DIAMOND_BLOCK))
+        .save(consumer);
+  }
+
+  private void buildTurbineParts(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RailcraftItems.TURBINE_DISK.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', RailcraftItems.TURBINE_BLADE.get())
+        .define('b', RailcraftTags.Items.STEEL_INGOT)
+        .unlockedBy(getHasName(RailcraftItems.TURBINE_BLADE.get()),
+            has(RailcraftItems.TURBINE_BLADE.get()))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.TURBINE_ROTOR.get())
+        .pattern("aaa")
+        .define('a', RailcraftItems.TURBINE_DISK.get())
+        .unlockedBy(getHasName(RailcraftItems.TURBINE_DISK.get()),
+            has(RailcraftItems.TURBINE_DISK.get()))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.STEAM_TURBINE.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', RailcraftItems.STEEL_BLOCK.get())
+        .define('b', RailcraftTags.Items.STEEL_PLATE)
+        .define('c', RailcraftItems.CHARGE_MOTOR.get())
+        .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
+            has(RailcraftItems.CHARGE_MOTOR.get()))
+        .save(consumer);
+  }
+
+  private void buildChargeItems(Consumer<FinishedRecipe> consumer) {
+    this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_MEDIUM.get(),
+        RailcraftItems.CHARGE_SPOOL_SMALL.get(), 3, "charge_spool_small_from_medium");
+    this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_LARGE.get(),
+        RailcraftItems.CHARGE_SPOOL_MEDIUM.get(), 3, "charge_spool_medium_from_large");
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.CHARGE_TERMINAL.get())
+        .pattern(" b ")
+        .pattern("aaa")
+        .define('a', RailcraftTags.Items.BRASS_INGOT)
+        .define('b', RailcraftTags.Items.BRASS_PLATE)
+        .unlockedBy(getHasName(RailcraftItems.BRASS_INGOT.get()),
+            has(RailcraftItems.BRASS_INGOT.get()))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.CHARGE_COIL.get())
+        .pattern("aaa")
+        .pattern("bbb")
+        .pattern("aaa")
+        .define('a', RailcraftItems.CHARGE_SPOOL_SMALL.get())
+        .define('b', RailcraftTags.Items.IRON_PLATE)
+        .unlockedBy(getHasName(RailcraftItems.CHARGE_SPOOL_SMALL.get()),
+            has(RailcraftItems.CHARGE_SPOOL_SMALL.get()))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.CHARGE_MOTOR.get())
+        .pattern(" a ")
+        .pattern("bcb")
+        .pattern(" d ")
+        .define('a', RailcraftTags.Items.STEEL_INGOT)
+        .define('b', RailcraftTags.Items.TIN_PLATE)
+        .define('c', RailcraftItems.CHARGE_COIL.get())
+        .define('d', RailcraftItems.CHARGE_TERMINAL.get())
+        .unlockedBy(getHasName(RailcraftItems.CHARGE_SPOOL_SMALL.get()),
+            has(RailcraftItems.CHARGE_SPOOL_SMALL.get()))
         .save(consumer);
   }
 

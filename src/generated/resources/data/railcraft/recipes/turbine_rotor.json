@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "railcraft:turbine_disk"
+    }
+  },
+  "pattern": [
+    "aaa"
+  ],
+  "result": {
+    "item": "railcraft:turbine_rotor"
+  }
+}

@@ -132,8 +132,13 @@ public class RailcraftItems {
       deferredRegister.register("signal_label",
           () -> new SignalLabelItem(new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> TURBINE_ROTOR = registerBasic("turbine_rotor");
   public static final RegistryObject<Item> TURBINE_BLADE = registerBasic("turbine_blade");
+
+  public static final RegistryObject<Item> TURBINE_DISK = registerBasic("turbine_disk");
+
+  public static final RegistryObject<Item> TURBINE_ROTOR =
+      deferredRegister.register("turbine_rotor",
+          () -> new TurbineRotorItem(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
@@ -1357,6 +1362,12 @@ public class RailcraftItems {
   public static final RegistryObject<Item> CHARGE_SPOOL_MEDIUM =
       registerBasic("charge_spool_medium");
   public static final RegistryObject<Item> CHARGE_SPOOL_SMALL = registerBasic("charge_spool_small");
+
+  public static final RegistryObject<Item> CHARGE_MOTOR = registerBasic("charge_motor");
+
+  public static final RegistryObject<Item> CHARGE_COIL = registerBasic("charge_coil");
+
+  public static final RegistryObject<Item> CHARGE_TERMINAL = registerBasic("charge_terminal");
 
   // ================================================================================
   // Buckets

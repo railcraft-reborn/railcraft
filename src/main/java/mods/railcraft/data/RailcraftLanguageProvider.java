@@ -117,6 +117,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SIGNAL_LAMP, "Signal Lamp");
     this.addItem(RailcraftItems.TURBINE_ROTOR, "Turbine Rotor");
     this.addItem(RailcraftItems.TURBINE_BLADE, "Turbine Blade");
+    this.addItem(RailcraftItems.TURBINE_DISK, "Turbine Disk");
     this.addItem(RailcraftItems.SLAG, "Ground Blast Furnace Slag");
     this.addItem(RailcraftItems.COAL_COKE, "Coal Coke");
     this.addItem(RailcraftItems.STEEL_SHEARS, "Steel Shears");
@@ -255,6 +256,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.CHARGE_SPOOL_LARGE, "Large Charge Wire Spool");
     this.addItem(RailcraftItems.CHARGE_SPOOL_MEDIUM, "Medium Charge Wire Spool");
     this.addItem(RailcraftItems.CHARGE_SPOOL_SMALL, "Small Charge Wire Spool");
+    this.addItem(RailcraftItems.CHARGE_COIL, "Charge Coil");
+    this.addItem(RailcraftItems.CHARGE_TERMINAL, "Charge Terminal");
+    this.addItem(RailcraftItems.CHARGE_MOTOR, "Charge Motor");
   }
 
   private void entityTranslations() {

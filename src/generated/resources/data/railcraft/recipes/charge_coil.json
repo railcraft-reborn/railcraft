@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "railcraft:charge_spool_small"
+    },
+    "b": {
+      "tag": "forge:plates/iron"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "bbb",
+    "aaa"
+  ],
+  "result": {
+    "item": "railcraft:charge_coil"
+  }
+}

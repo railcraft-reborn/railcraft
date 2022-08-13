@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-06T10:05:26.838962176	Railcraft Block State Definitions
+// 1.19.2	2022-08-13T13:29:33.452163334	Railcraft Block State Definitions
 b7fce4a3220edeb2904e53e6377a86a7b237ffc5 assets/railcraft/blockstates/abandoned_activator_track.json
 ff1b13ba4045bb558e3d132ec8830eb9d226af6f assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -1022,9 +1022,12 @@ e70f4283c5dd1dc6d4bf26223f5fcf798cce0065 assets/railcraft/models/item/brown_stre
 1c4dcf99a8bb33a1f0f5e7df9c92dfac3c783e58 assets/railcraft/models/item/bushing_gear.json
 5fe026f023c54d2f56719260eb0e673515710337 assets/railcraft/models/item/carbon_electrode.json
 b78986baf137bb0e6a9dc922d8b54caf71abb12b assets/railcraft/models/item/charcoal_dust.json
+32227b01f19ae25a4cee098cdc48b2747f2e68d0 assets/railcraft/models/item/charge_coil.json
+feb0008a66073c2c8402bcf8f53d769f402a3442 assets/railcraft/models/item/charge_motor.json
 17a35bb835ad6b86205d327f8142734bcd51d944 assets/railcraft/models/item/charge_spool_large.json
 7ef14f34cd846d824bb04dc39bd709e59d69b541 assets/railcraft/models/item/charge_spool_medium.json
 3ce57c8714b150794e0befaf6b096c278662b5f0 assets/railcraft/models/item/charge_spool_small.json
+ba33feb545a6dc5bb83a41717262b460a3027317 assets/railcraft/models/item/charge_terminal.json
 81c32dd99947f8fb38ceafac7f640b9609d0c96d assets/railcraft/models/item/chipped_steel_anvil.json
 7905b6be1c1ce032003660f415ba32f5becfb265 assets/railcraft/models/item/coal_coke.json
 81494a1c315e589785536f5b24c14054bf08f768 assets/railcraft/models/item/coal_coke_block.json
@@ -1328,6 +1331,7 @@ cea85f2cecdfed35a48cf27458b69a69804ddf9c assets/railcraft/models/item/track_remo
 b8ee3f30a0947add5c16ac4e9642896b7513f0a1 assets/railcraft/models/item/transition_track_kit.json
 82ad4ebda88e4b1aec1f19bc2392f16fb567d56a assets/railcraft/models/item/tunnel_bore.json
 96b6d43295f0885600b2862daabd7ce152d679fc assets/railcraft/models/item/turbine_blade.json
+1661dbebd2453a40e97b9ebad718687bd3cdae08 assets/railcraft/models/item/turbine_disk.json
 e8838ab9c684e06d9c5aa4afb22d1fef73808f4f assets/railcraft/models/item/turbine_rotor.json
 3ea3596bd7cb8e4018f134c86a7c89d67b20ed5d assets/railcraft/models/item/whistle_tuner.json
 c34131e95a858f2ae1308348b514ed9445f0b3d1 assets/railcraft/models/item/white_iron_tank_gauge.json
