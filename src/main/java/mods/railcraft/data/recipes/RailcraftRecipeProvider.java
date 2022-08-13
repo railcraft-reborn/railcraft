@@ -95,14 +95,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy("has_nugget", has(RailcraftTags.Items.STEEL_NUGGET))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.OVERALLS.get())
-        .define('W', Items.CYAN_WOOL)
-        .pattern("WWW")
-        .pattern("W W")
-        .pattern("W W")
-        .unlockedBy("has_wool", has(Items.CYAN_WOOL))
-        .save(consumer);
-
     // this is a tool i think
     ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
         .define('L', Items.LAVA_BUCKET)
@@ -149,6 +141,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildCircuit(consumer);
     buildMiscItems(consumer);
     buildCartsVariant(consumer);
+    buildSwitch(consumer);
 
     /*
      * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
@@ -177,17 +170,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
             has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
-
-    ShapedRecipeBuilder.shaped(Items.TORCH, 8)
-        .pattern("a")
-        .pattern("b")
-        .pattern("c")
-        .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
-        .define('b', ItemTags.WOOL)
-        .define('c', Items.STICK)
-        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
-            has(RailcraftItems.CREOSOTE_BOTTLE.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "torch_creosote"));
   }
 
   private void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
@@ -856,6 +838,26 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipe);
   }
 
+  private void buildSwitch(Consumer<FinishedRecipe> consumer) {
+    switchItem(consumer, RailcraftItems.SWITCH_TRACK_LEVER.get(), Items.LEVER);
+    switchItem(consumer, RailcraftItems.SWITCH_TRACK_MOTOR.get(), RailcraftItems.RECEIVER_CIRCUIT.get());
+  }
+
+  private static void switchItem(Consumer<FinishedRecipe> finishedRecipe,
+      Item result, Item circuit) {
+    ShapedRecipeBuilder.shaped(result)
+        .pattern("abc")
+        .pattern("def")
+        .define('a', Items.RED_DYE)
+        .define('b', Items.INK_SAC)
+        .define('c', Items.BONE_MEAL)
+        .define('d', Items.PISTON)
+        .define('e', circuit)
+        .define('f', Items.IRON_INGOT)
+        .unlockedBy(getHasName(circuit),has(circuit))
+        .save(finishedRecipe);
+  }
+
   private void buildMiscItems(Consumer<FinishedRecipe> consumer) {
     ShapedRecipeBuilder.shaped(RailcraftItems.FEED_STATION.get())
         .pattern("aba")
@@ -875,6 +877,29 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', Items.PISTON)
         .define('c', Items.CRAFTING_TABLE)
         .unlockedBy(getHasName(Items.PISTON), has(Items.PISTON))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(Items.TORCH, 8)
+        .pattern("a")
+        .pattern("b")
+        .pattern("c")
+        .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
+        .define('b', ItemTags.WOOL)
+        .define('c', Items.STICK)
+        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
+            has(RailcraftItems.CREOSOTE_BOTTLE.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "torch_creosote"));
+    ShapedRecipeBuilder.shaped(RailcraftItems.OVERALLS.get())
+        .define('a', Items.CYAN_WOOL)
+        .pattern("aaa")
+        .pattern("a a")
+        .pattern("a a")
+        .unlockedBy(getHasName(Items.CYAN_WOOL), has(Items.CYAN_WOOL))
+        .save(consumer);
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.SIGNAL_LABEL.get())
+        .requires(Items.PAPER)
+        .requires(RailcraftTags.Items.STEEL_NUGGET)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_NUGGET.get()),
+            has(RailcraftItems.STEEL_NUGGET.get()))
         .save(consumer);
   }
 

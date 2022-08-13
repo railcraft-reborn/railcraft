@@ -138,6 +138,11 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(RailcraftTags.Items.OBSIDIAN_DUST)
         .add(RailcraftItems.OBSIDIAN_DUST.get());
 
+    this.tag(Items.CROWBAR)
+        .add(RailcraftItems.STEEL_CROWBAR.get())
+        .add(RailcraftItems.IRON_CROWBAR.get())
+        .add(RailcraftItems.DIAMOND_CROWBAR.get());
+
     this.tag(RailcraftTags.Items.IRON_TANK_WALL)
         .add(RailcraftItems.IRON_TANK_WALL.resolveVariants().toArray(Item[]::new));
     this.tag(RailcraftTags.Items.IRON_TANK_GAUGE)

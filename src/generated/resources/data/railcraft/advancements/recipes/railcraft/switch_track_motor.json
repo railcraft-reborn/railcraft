@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cyan_wool": {
+    "has_receiver_circuit": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:cyan_wool"
+              "railcraft:receiver_circuit"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:overalls"
+        "recipe": "railcraft:switch_track_motor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_cyan_wool",
+      "has_receiver_circuit",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "railcraft:overalls"
+      "railcraft:switch_track_motor"
     ]
   }
 }

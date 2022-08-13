@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cyan_wool": {
+    "has_steel_nugget": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:cyan_wool"
+              "railcraft:steel_nugget"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:overalls"
+        "recipe": "railcraft:signal_label"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_cyan_wool",
+      "has_steel_nugget",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "railcraft:overalls"
+      "railcraft:signal_label"
     ]
   }
 }

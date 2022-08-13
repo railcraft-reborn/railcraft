@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cyan_wool": {
+    "has_lever": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:cyan_wool"
+              "minecraft:lever"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:overalls"
+        "recipe": "railcraft:switch_track_lever"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_cyan_wool",
+      "has_lever",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "railcraft:overalls"
+      "railcraft:switch_track_lever"
     ]
   }
 }
