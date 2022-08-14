@@ -593,5 +593,8 @@
   "tips.railcraft.signal_label.desc2": "Right click while sneaking to name a signal or signal box",
   "tips.railcraft.signal_receiver_box": "Listens to Controller signals",
   "tips.railcraft.signal_sequencer_box": "Loops through adjacent blocks",
-  "tips.railcraft.spike_maul": "Converts track to switches and junctions."
+  "tips.railcraft.spike_maul": "Converts track to switches and junctions.",
+  "tips.railcraft.track_kit.corners_unsupported": "Corners are Unsupported",
+  "tips.railcraft.track_kit.invalid_track_type": "Invalid Track Type",
+  "tips.railcraft.track_kit.slopes_unsupported": "Slopes are Unsupported"
 }

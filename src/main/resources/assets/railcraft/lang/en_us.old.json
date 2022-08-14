@@ -6,10 +6,6 @@
 
     "gui.railcraft.filter": "Filter",
 
-    "track_kit.corners_unsupported": "§cCorners Are Unsupported",
-    "track_kit.slopes_unsupported": "§cSlopes Are Unsupported",
-    "track_kit.invalid_track_type": "§cInvalid Track Type",
-
     "manipulator.redstone_mode.complete": "Complete",
     "manipulator.redstone_mode.complete.description": "Process until operation is complete.",
     "manipulator.redstone_mode.immediate": "Immediate",

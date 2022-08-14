@@ -180,6 +180,12 @@ public class Translations {
         format("tips.%railcraft.coupler_track.decoupler");
     public static final String COUPLER_TRACK_AUTO_COUPLER =
         format("tips.%railcraft.coupler_track.auto_coupler");
+    public static final String TRACK_KIT_CORNERS_UNSUPPORTED =
+        format("tips.%railcraft.track_kit.corners_unsupported");
+    public static final String TRACK_KIT_SLOPES_UNSUPPORTED =
+        format("tips.%railcraft.track_kit.slopes_unsupported");
+    public static final String TRACK_KIT_INVALID_TRACK_TYPE =
+        format("tips.%railcraft.track_kit.invalid_track_type");
   }
 
   public static class Container {

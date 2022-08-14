@@ -343,6 +343,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.COUPLER_TRACK_COUPLER, "Coupler");
     this.add(Tips.COUPLER_TRACK_DECOUPLER, "Decoupler");
     this.add(Tips.COUPLER_TRACK_AUTO_COUPLER, "Auto Coupler");
+    this.add(Tips.TRACK_KIT_CORNERS_UNSUPPORTED, "Corners are Unsupported");
+    this.add(Tips.TRACK_KIT_SLOPES_UNSUPPORTED, "Slopes are Unsupported");
+    this.add(Tips.TRACK_KIT_INVALID_TRACK_TYPE, "Invalid Track Type");
   }
 
   private void screenTranslations() {
