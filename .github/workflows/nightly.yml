@@ -28,7 +28,6 @@ jobs:
 
       - name: Compile
         env:
-          GRADLE_OPTS: -Dorg.gradle.daemon=false
           GITHUB_NIGHTLY: true
         run: |
           ./gradlew hideOfficialWarningUntilChanged
