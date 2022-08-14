@@ -30,7 +30,7 @@ jobs:
 
       - name: Create datagen assets
         continue-on-error: true
-        run: ./gradlew runData
+        run: ./gradlew runData --no-daemon --max-workers 1
 
       - name: Compile
         env:
