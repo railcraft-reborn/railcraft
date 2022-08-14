@@ -331,6 +331,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.SIGNAL_BLOCK_RELAY_BOX, "Creates chains of Signal Blocks");
     this.add(Tips.FIRESTONE_EMPTY, "Its energies controlled, it could be useful if you could recharge it...");
     this.add(Tips.FIRESTONE_CHARGED, "Filled with energy, you only need to exert your will onto it to release it's blistering heat...");
+    this.add(Tips.CURRENT_MODE, "Current Mode:");
+    this.add(Tips.LOCKING_TRACK_LOCKDOWN, "Lockdown");
+    this.add(Tips.LOCKING_TRACK_TRAIN_LOCKDOWN, "Train Lockdown");
+    this.add(Tips.LOCKING_TRACK_HOLDING, "Holding");
+    this.add(Tips.LOCKING_TRACK_TRAIN_HOLDING, "Train Holding");
+    this.add(Tips.LOCKING_TRACK_BOARDING, "Boarding");
+    this.add(Tips.LOCKING_TRACK_BOARDING_REVERSED, "Boarding Reversed");
+    this.add(Tips.LOCKING_TRACK_TRAIN_BOARDING, "Train Boarding");
+    this.add(Tips.LOCKING_TRACK_TRAIN_BOARDING_REVERSED, "Train Boarding Reversed");
   }
 
   private void screenTranslations() {

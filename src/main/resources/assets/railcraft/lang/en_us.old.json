@@ -6,17 +6,6 @@
 
     "gui.railcraft.filter": "Filter",
 
-
-    "locking_track.mode.lockdown": "Lockdown",
-    "locking_track.mode.train_lockdown": "Train Lockdown",
-    "locking_track.mode.holding": "Holding",
-    "locking_track.mode.train_holding": "Train Holding",
-    "locking_track.mode.boarding": "Boarding",
-    "locking_track.mode.boarding_reversed": "Boarding Reversed",
-    "locking_track.mode.train_boarding": "Train Boarding",
-    "locking_track.mode.train_boarding_reversed": "Train Boarding Reversed",
-    "locking_track.mode": "Current Mode: %s",
-
     "coupler_track.mode.coupler": "Coupler",
     "coupler_track.mode.decoupler": "Decoupler",
     "coupler_track.mode.auto_coupler": "Auto Coupler",

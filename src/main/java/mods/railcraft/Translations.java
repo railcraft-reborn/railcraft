@@ -156,6 +156,28 @@ public class Translations {
         format("tips.%railcraft.firestone.empty");
     public static final String FIRESTONE_CHARGED =
         format("tips.%railcraft.firestone.charged");
+
+
+
+    public static final String CURRENT_MODE =
+        format("tips.%railcraft.current_mode");
+
+    public static final String LOCKING_TRACK_LOCKDOWN =
+        format("tips.%railcraft.locking_track.lockdown");
+    public static final String LOCKING_TRACK_TRAIN_LOCKDOWN =
+        format("tips.%railcraft.locking_track.train_lockdown");
+    public static final String LOCKING_TRACK_HOLDING =
+        format("tips.%railcraft.locking_track.holding");
+    public static final String LOCKING_TRACK_TRAIN_HOLDING =
+        format("tips.%railcraft.locking_track.train_holding");
+    public static final String LOCKING_TRACK_BOARDING =
+        format("tips.%railcraft.locking_track.boarding");
+    public static final String LOCKING_TRACK_BOARDING_REVERSED =
+        format("tips.%railcraft.locking_track.boarding_reversed");
+    public static final String LOCKING_TRACK_TRAIN_BOARDING =
+        format("tips.%railcraft.locking_track.train_boarding");
+    public static final String LOCKING_TRACK_TRAIN_BOARDING_REVERSED =
+        format("tips.%railcraft.locking_track.train_boarding_reversed");
   }
 
   public static class Container {
