@@ -186,6 +186,38 @@ public class Translations {
         format("tips.%railcraft.track_kit.slopes_unsupported");
     public static final String TRACK_KIT_INVALID_TRACK_TYPE =
         format("tips.%railcraft.track_kit.invalid_track_type");
+    public static final String MANIPULATOR_REDSTONE_MODE_COMPLETE =
+        format("tips.%railcraft.manipulator.redstone_mode.complete");
+    public static final String MANIPULATOR_REDSTONE_MODE_COMPLETE_DESC =
+        format("tips.%railcraft.manipulator.redstone_mode.complete.desc");
+    public static final String MANIPULATOR_REDSTONE_MODE_IMMEDIATE =
+        format("tips.%railcraft.manipulator.redstone_mode.immediate");
+    public static final String MANIPULATOR_REDSTONE_MODE_IMMEDIATE_DESC =
+        format("tips.%railcraft.manipulator.redstone_mode.immediate.desc");
+    public static final String MANIPULATOR_REDSTONE_MODE_MANUAL =
+        format("tips.%railcraft.manipulator.redstone_mode.manual");
+    public static final String MANIPULATOR_REDSTONE_MODE_MANUAL_DESC =
+        format("tips.%railcraft.manipulator.redstone_mode.manual.desc");
+    public static final String MANIPULATOR_REDSTONE_MODE_PARTIAL =
+        format("tips.%railcraft.manipulator.redstone_mode.partial");
+    public static final String MANIPULATOR_REDSTONE_MODE_PARTIAL_DESC =
+        format("tips.%railcraft.manipulator.redstone_mode.partial.desc");
+    public static final String MANIPULATOR_TRANSFER_MODE_ALL =
+        format("tips.%railcraft.manipulator.transfer_mode.all");
+    public static final String MANIPULATOR_TRANSFER_MODE_ALL_DESC =
+        format("tips.%railcraft.manipulator.transfer_mode.all.desc");
+    public static final String MANIPULATOR_TRANSFER_MODE_EXCESS =
+        format("tips.%railcraft.manipulator.transfer_mode.excess");
+    public static final String MANIPULATOR_TRANSFER_MODE_EXCESS_DESC =
+        format("tips.%railcraft.manipulator.transfer_mode.excess.desc");
+    public static final String MANIPULATOR_TRANSFER_MODE_STOCK =
+        format("tips.%railcraft.manipulator.transfer_mode.stock");
+    public static final String MANIPULATOR_TRANSFER_MODE_STOCK_DESC =
+        format("tips.%railcraft.manipulator.transfer_mode.stock.desc");
+    public static final String MANIPULATOR_TRANSFER_MODE_TRANSFER =
+        format("tips.%railcraft.manipulator.transfer_mode.transfer");
+    public static final String MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC =
+        format("tips.%railcraft.manipulator.transfer_mode.transfer.desc");
   }
 
   public static class Container {

@@ -346,6 +346,22 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.TRACK_KIT_CORNERS_UNSUPPORTED, "Corners are Unsupported");
     this.add(Tips.TRACK_KIT_SLOPES_UNSUPPORTED, "Slopes are Unsupported");
     this.add(Tips.TRACK_KIT_INVALID_TRACK_TYPE, "Invalid Track Type");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE, "Complete");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE_DESC, "Process until operation is complete.");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE, "Immediate");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE_DESC, "Process until out of room or supply.");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL, "Manual");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL_DESC, "Never emit a redstone signal.");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL, "Partial");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL_DESC, "Process until out of room or supply, but keep pristine carts.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_ALL, "All");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_ALL_DESC, "Move all matching items.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS, "Excess");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS_DESC, "Move until the source matches the filter.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_STOCK, "Stock");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_STOCK_DESC, "Move until the destination matches the filter.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER, "Transfer");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC, "Move exactly as much as is in the filter.");
   }
 
   private void screenTranslations() {
