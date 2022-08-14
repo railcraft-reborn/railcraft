@@ -297,6 +297,19 @@ public class Translations {
     }
   }
 
+  public static class Subtitle {
+    public static final String STEAM_WHISTLE =
+        format("subtitle.%railcraft.locomotive.steam.whistle");
+    public static final String ELECTRIC_WHISTLE =
+        format("subtitle.%railcraft.locomotive.electric.whistle");
+    public static final String STEAM_BURST =
+        format("subtitle.%railcraft.machine.steam.burst");
+    public static final String STEAM_HISS =
+        format("subtitle.%railcraft.machine.steam.hiss");
+    public static final String MACHINE_ZAP =
+        format("subtitle.%railcraft.machine.zap");
+  }
+
   private static String format(String key) {
     return key.replace("%railcraft", Railcraft.ID);
   }

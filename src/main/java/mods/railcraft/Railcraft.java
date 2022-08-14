@@ -14,6 +14,7 @@ import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
+import mods.railcraft.data.RailcraftSoundsProvider;
 import mods.railcraft.data.models.RailcraftModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.fuel.FuelManagerImpl;
@@ -152,6 +153,7 @@ public class Railcraft {
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(generator));
     generator.addProvider(event.includeClient(), new RailcraftModelProvider(generator));
     generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(generator));
+    generator.addProvider(event.includeClient(), new RailcraftSoundsProvider(generator, fileHelper));
   }
 
   // ================================================================================

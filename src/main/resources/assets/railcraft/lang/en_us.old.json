@@ -1,12 +1,4 @@
 {
-    "__DESC.sound_subtitles": "======= Sound Subtitles =======",
-
-    "subtitle.railcraft.locomotive.steam.whistle":"Steam Locomotive Whistle",
-    "subtitle.railcraft.locomotive.electric.whistle":"Electric Locomotive Whistle",
-    "subtitle.railcraft.machine.steam_burst":"Machine Steam Burst",
-    "subtitle.railcraft.machine.steam_hiss":"Machine Steam Hiss",
-    "subtitle.railcraft.machine.zap":"Machine Zap",
-
     "__DESC.items": "======= Items =======",
     "item.railcraft.firestone.empty":"Its energies controlled, it could be useful §oif you could recharge it§r...",
     "item.railcraft.firestone.charged":"Filled with energy, you only need to exert your will onto it to release it's §cblistering heat§r...",

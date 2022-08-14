@@ -11,6 +11,7 @@ import mods.railcraft.Translations.Jei;
 import mods.railcraft.Translations.Signal;
 import mods.railcraft.Translations.SignalAspect;
 import mods.railcraft.Translations.SignalCapacitor;
+import mods.railcraft.Translations.Subtitle;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -51,7 +52,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.enchantmentTranslations();
     this.advancementTranslations();
     this.signalAspectTranslations();
-    this.signalCapactiorTranslations();
+    this.signalCapacitorTranslations();
+    this.subtitleTranslations();
   }
 
   private void blockTranslations() {
@@ -578,6 +580,14 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(SignalCapacitor.RISING_EDGE_DESC, "Start timer as soon as the input signal is received.");
     this.add(SignalCapacitor.FALLING_EDGE, "Rising Edge");
     this.add(SignalCapacitor.FALLING_EDGE_DESC, "Start timer when the last input signal turns off.");
+  }
+
+  private void subtitleTranslations() {
+    this.add(Subtitle.STEAM_WHISTLE, "Steam Locomotive Whistle");
+    this.add(Subtitle.ELECTRIC_WHISTLE, "Electric Locomotive Whistle");
+    this.add(Subtitle.STEAM_BURST, "Machine Steam Burst");
+    this.add(Subtitle.STEAM_HISS, "Machine Steam Hiss");
+    this.add(Subtitle.MACHINE_ZAP, "Machine Zap");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {
