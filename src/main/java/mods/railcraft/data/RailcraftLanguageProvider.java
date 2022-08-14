@@ -580,7 +580,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   private void signalCapacitorTranslations() {
     this.add(SignalCapacitor.RISING_EDGE, "Rising Edge");
     this.add(SignalCapacitor.RISING_EDGE_DESC, "Start timer as soon as the input signal is received.");
-    this.add(SignalCapacitor.FALLING_EDGE, "Rising Edge");
+    this.add(SignalCapacitor.FALLING_EDGE, "Falling Edge");
     this.add(SignalCapacitor.FALLING_EDGE_DESC, "Start timer when the last input signal turns off.");
   }
 

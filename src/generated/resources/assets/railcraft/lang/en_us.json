@@ -522,7 +522,7 @@
   "signal.railcraft.aspect.off": "Off",
   "signal.railcraft.aspect.red": "Red",
   "signal.railcraft.aspect.yellow": "Yellow",
-  "signal.railcraft.capacitor.falling_edge": "Rising Edge",
+  "signal.railcraft.capacitor.falling_edge": "Falling Edge",
   "signal.railcraft.capacitor.falling_edge.desc": "Start timer when the last input signal turns off.",
   "signal.railcraft.capacitor.rising_edge": "Rising Edge",
   "signal.railcraft.capacitor.rising_edge.desc": "Start timer as soon as the input signal is received.",
