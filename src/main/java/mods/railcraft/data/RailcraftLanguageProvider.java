@@ -340,6 +340,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.LOCKING_TRACK_BOARDING_REVERSED, "Boarding Reversed");
     this.add(Tips.LOCKING_TRACK_TRAIN_BOARDING, "Train Boarding");
     this.add(Tips.LOCKING_TRACK_TRAIN_BOARDING_REVERSED, "Train Boarding Reversed");
+    this.add(Tips.COUPLER_TRACK_COUPLER, "Coupler");
+    this.add(Tips.COUPLER_TRACK_DECOUPLER, "Decoupler");
+    this.add(Tips.COUPLER_TRACK_AUTO_COUPLER, "Auto Coupler");
   }
 
   private void screenTranslations() {

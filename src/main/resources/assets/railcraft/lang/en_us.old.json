@@ -6,11 +6,6 @@
 
     "gui.railcraft.filter": "Filter",
 
-    "coupler_track.mode.coupler": "Coupler",
-    "coupler_track.mode.decoupler": "Decoupler",
-    "coupler_track.mode.auto_coupler": "Auto Coupler",
-    "coupler_track.mode": "Current Mode: %s",
-
     "track_kit.corners_unsupported": "§cCorners Are Unsupported",
     "track_kit.slopes_unsupported": "§cSlopes Are Unsupported",
     "track_kit.invalid_track_type": "§cInvalid Track Type",

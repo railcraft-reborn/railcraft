@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity.track;
 
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
@@ -28,7 +29,7 @@ public class CouplerTrackBlockEntity extends BlockEntity {
 
   public enum Mode implements StringRepresentable {
 
-    COUPLER("coupler", 8) {
+    COUPLER(8) {
       @Override
       protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
         if (track.pendingCoupling != null) {
@@ -37,13 +38,13 @@ public class CouplerTrackBlockEntity extends BlockEntity {
         track.pendingCoupling = cart;
       }
     },
-    DECOUPLER("decoupler", 0) {
+    DECOUPLER(0) {
       @Override
       protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
         LinkageManagerImpl.INSTANCE.breakLinks(cart);
       }
     },
-    AUTO_COUPLER("auto_coupler", 0) {
+    AUTO_COUPLER(0) {
       @Override
       protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
         LinkageManagerImpl.INSTANCE.setAutoLink(cart,
@@ -51,13 +52,9 @@ public class CouplerTrackBlockEntity extends BlockEntity {
       }
     };
 
-    private final String name;
-    private final Component displayName;
     private final int powerPropagation;
 
-    private Mode(String name, int powerPropagation) {
-      this.name = name;
-      this.displayName = Component.translatable("coupler_track.mode." + name);
+    Mode(int powerPropagation) {
       this.powerPropagation = powerPropagation;
     }
 
@@ -69,13 +66,23 @@ public class CouplerTrackBlockEntity extends BlockEntity {
       return values()[(this.ordinal() + values().length - 1) % values().length];
     }
 
-    @Override
-    public String getSerializedName() {
-      return this.name;
+    public Component getDisplayName() {
+      return Component.translatable(getTip());
     }
 
-    public Component getDisplayName() {
-      return this.displayName;
+    @Override
+    public String getSerializedName() {
+      var name = getTip().split("\\.");
+      return name[name.length - 1];
+    }
+
+    private String getTip() {
+      return switch (this.ordinal()) {
+        case 0 -> Tips.COUPLER_TRACK_COUPLER;
+        case 1 -> Tips.COUPLER_TRACK_DECOUPLER;
+        case 2 -> Tips.COUPLER_TRACK_AUTO_COUPLER;
+        default -> "translation.not.implemented";
+      };
     }
 
     public int getPowerPropagation() {

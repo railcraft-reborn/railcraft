@@ -156,12 +156,8 @@ public class Translations {
         format("tips.%railcraft.firestone.empty");
     public static final String FIRESTONE_CHARGED =
         format("tips.%railcraft.firestone.charged");
-
-
-
     public static final String CURRENT_MODE =
         format("tips.%railcraft.current_mode");
-
     public static final String LOCKING_TRACK_LOCKDOWN =
         format("tips.%railcraft.locking_track.lockdown");
     public static final String LOCKING_TRACK_TRAIN_LOCKDOWN =
@@ -178,6 +174,12 @@ public class Translations {
         format("tips.%railcraft.locking_track.train_boarding");
     public static final String LOCKING_TRACK_TRAIN_BOARDING_REVERSED =
         format("tips.%railcraft.locking_track.train_boarding_reversed");
+    public static final String COUPLER_TRACK_COUPLER =
+        format("tips.%railcraft.coupler_track.coupler");
+    public static final String COUPLER_TRACK_DECOUPLER =
+        format("tips.%railcraft.coupler_track.decoupler");
+    public static final String COUPLER_TRACK_AUTO_COUPLER =
+        format("tips.%railcraft.coupler_track.auto_coupler");
   }
 
   public static class Container {
