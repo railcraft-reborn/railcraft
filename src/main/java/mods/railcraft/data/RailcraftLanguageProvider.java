@@ -329,6 +329,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.SIGNAL_INTERLOCK_BOX, "Permits only one aspect signal to pass");
     this.add(Tips.SIGNAL_SEQUENCER_BOX, "Loops through adjacent blocks");
     this.add(Tips.SIGNAL_BLOCK_RELAY_BOX, "Creates chains of Signal Blocks");
+    this.add(Tips.FIRESTONE_EMPTY, "Its energies controlled, it could be useful if you could recharge it...");
+    this.add(Tips.FIRESTONE_CHARGED, "Filled with energy, you only need to exert your will onto it to release it's blistering heat...");
   }
 
   private void screenTranslations() {

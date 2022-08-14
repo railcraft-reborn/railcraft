@@ -152,6 +152,10 @@ public class Translations {
         format("tips.%railcraft.signal_interlock_box");
     public static final String SIGNAL_BLOCK_RELAY_BOX =
         format("tips.%railcraft.signal_block_relay_box");
+    public static final String FIRESTONE_EMPTY =
+        format("tips.%railcraft.firestone.empty");
+    public static final String FIRESTONE_CHARGED =
+        format("tips.%railcraft.firestone.charged");
   }
 
   public static class Container {
