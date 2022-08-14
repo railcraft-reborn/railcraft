@@ -209,6 +209,24 @@ public class Translations {
     public static final String SIGNAL_TUNER_SUCCESS = format("signal.%railcraft.tuner.success");
   }
 
+  public static class SignalAspect {
+    public static final String GREEN = format("signal.%railcraft.aspect.green");
+    public static final String YELLOW = format("signal.%railcraft.aspect.yellow");
+    public static final String RED = format("signal.%railcraft.aspect.red");
+    public static final String BLINK_YELLOW = format("signal.%railcraft.aspect.blink_yellow");
+    public static final String BLINK_RED = format("signal.%railcraft.aspect.blink_red");
+    public static final String OFF = format("signal.%railcraft.aspect.off");
+  }
+
+  public static class SignalCapacitor {
+    public static final String RISING_EDGE = format("signal.%railcraft.capacitor.rising_edge");
+    public static final String RISING_EDGE_DESC =
+        format("signal.%railcraft.capacitor.rising_edge.desc");
+    public static final String FALLING_EDGE = format("signal.%railcraft.capacitor.falling_edge");
+    public static final String FALLING_EDGE_DESC =
+        format("signal.%railcraft.capacitor.falling_edge.desc");
+  }
+
   public static class Advancment {
     public static class Tracks {
       public static final String ROOT = format("advancements.%railcraft.tracks.root.name");

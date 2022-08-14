@@ -9,6 +9,8 @@ import mods.railcraft.Translations.Advancment.Tracks;
 import mods.railcraft.Translations.Container;
 import mods.railcraft.Translations.Jei;
 import mods.railcraft.Translations.Signal;
+import mods.railcraft.Translations.SignalAspect;
+import mods.railcraft.Translations.SignalCapacitor;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -48,6 +50,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.signalTranslations();
     this.enchantmentTranslations();
     this.advancementTranslations();
+    this.signalAspectTranslations();
+    this.signalCapactiorTranslations();
   }
 
   private void blockTranslations() {
@@ -558,6 +562,22 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Carts.SEASONS_DESC, "Tweak with a seasons crowbar the season of a cart");
     this.add(Carts.SURPRISE, "Opportune Kaboom");
     this.add(Carts.SURPRISE_DESC, "Explode a seasonal cart and collect (really?) gifts");
+  }
+
+  private void signalAspectTranslations() {
+    this.add(SignalAspect.GREEN, "Green");
+    this.add(SignalAspect.BLINK_YELLOW, "Blink Yellow");
+    this.add(SignalAspect.YELLOW, "Yellow");
+    this.add(SignalAspect.BLINK_RED, "Blink Red");
+    this.add(SignalAspect.RED, "Red");
+    this.add(SignalAspect.OFF, "Off");
+  }
+
+  private void signalCapactiorTranslations() {
+    this.add(SignalCapacitor.RISING_EDGE, "Rising Edge");
+    this.add(SignalCapacitor.RISING_EDGE_DESC, "Start timer as soon as the input signal is received.");
+    this.add(SignalCapacitor.FALLING_EDGE, "Rising Edge");
+    this.add(SignalCapacitor.FALLING_EDGE_DESC, "Start timer when the last input signal turns off.");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {
