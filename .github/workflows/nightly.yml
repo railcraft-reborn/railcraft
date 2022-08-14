@@ -28,10 +28,6 @@ jobs:
           restore-keys: |
             gradle-
 
-      - name: Create datagen assets
-        continue-on-error: true
-        run: ./gradlew runData --no-daemon --max-workers 1
-
       - name: Compile
         env:
           GRADLE_OPTS: -Dorg.gradle.daemon=false
