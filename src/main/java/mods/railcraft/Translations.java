@@ -227,7 +227,7 @@ public class Translations {
         format("signal.%railcraft.capacitor.falling_edge.desc");
   }
 
-  public static class Advancment {
+  public static class Advancement {
     public static class Tracks {
       public static final String ROOT = format("advancements.%railcraft.tracks.root.name");
       public static final String ROOT_DESC = format("advancements.%railcraft.tracks.root.desc");
