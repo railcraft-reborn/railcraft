@@ -26,7 +26,7 @@ public class ZapEffectProviderImpl implements Charge.ZapEffectProvider {
         rand.nextDouble() - 0.5D,
         rand.nextDouble() - 0.5D);
 
-    level.playLocalSound(x, y, z, RailcraftSoundEvents.ZAP.get(),
+    level.playLocalSound(x, y, z, RailcraftSoundEvents.MACHINE_ZAP.get(),
         SoundSource.BLOCKS, 0.2F, 0.75F, false);
   }
 
@@ -34,7 +34,7 @@ public class ZapEffectProviderImpl implements Charge.ZapEffectProvider {
   public void zapEffectSurface(BlockState blockState, Level level, BlockPos pos) {
     var rand = level.getRandom();
 
-    level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), RailcraftSoundEvents.ZAP.get(),
+    level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), RailcraftSoundEvents.MACHINE_ZAP.get(),
         SoundSource.BLOCKS,
         0.1F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 
@@ -71,7 +71,7 @@ public class ZapEffectProviderImpl implements Charge.ZapEffectProvider {
 
   @Override
   public void zapEffectDeath(Level level, double x, double y, double z) {
-    level.playSound(null, x, y, z, RailcraftSoundEvents.ZAP.get(),
+    level.playSound(null, x, y, z, RailcraftSoundEvents.MACHINE_ZAP.get(),
         SoundSource.BLOCKS, 3F, 0.75F);
 
     for (int i = 0; i < 20; i++) {

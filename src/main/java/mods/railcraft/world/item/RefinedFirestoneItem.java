@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.Nullable;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -78,11 +81,15 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  public void appendHoverText(
-      ItemStack stack, @Nullable Level world, List<Component> info, TooltipFlag adv) {
-    info.add(Component.translatable(stack.getDamageValue() >= stack.getMaxDamage() - 5
-        ? "item.railcraft.firestone.empty"
-        : "item.railcraft.firestone.charged"));
+  public void appendHoverText(ItemStack itemStack, @Nullable Level level,
+      List<Component> lines, TooltipFlag adv) {
+    MutableComponent component;
+    if(itemStack.getDamageValue() >= itemStack.getMaxDamage() - 5) {
+      component = Component.translatable(Tips.FIRESTONE_EMPTY);
+    } else {
+      component = Component.translatable(Tips.FIRESTONE_CHARGED);
+    }
+    lines.add(component.withStyle(ChatFormatting.GRAY));
   }
 
   @Override

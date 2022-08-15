@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "railcraft:block_signal_relay_box"
+          "name": "railcraft:signal_block_relay_box"
         }
       ],
       "rolls": 1.0

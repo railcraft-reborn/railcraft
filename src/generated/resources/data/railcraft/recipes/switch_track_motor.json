@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:red_dye"
+    },
+    "b": {
+      "item": "minecraft:ink_sac"
+    },
+    "c": {
+      "item": "minecraft:bone_meal"
+    },
+    "d": {
+      "item": "minecraft:piston"
+    },
+    "e": {
+      "item": "railcraft:receiver_circuit"
+    },
+    "f": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "abc",
+    "def"
+  ],
+  "result": {
+    "item": "railcraft:switch_track_motor"
+  }
+}

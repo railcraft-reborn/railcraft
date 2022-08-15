@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:glass"
+    },
+    "b": {
+      "item": "minecraft:hopper"
+    },
+    "c": {
+      "item": "railcraft:detector_track_kit"
+    }
+  },
+  "pattern": [
+    "aba",
+    "a a",
+    "aca"
+  ],
+  "result": {
+    "item": "railcraft:fluid_loader"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "railcraft:signal_lamp"
+    },
+    "b": {
+      "item": "railcraft:radio_circuit"
+    },
+    "c": {
+      "item": "minecraft:iron_ingot"
+    },
+    "d": {
+      "item": "minecraft:ink_sac"
+    }
+  },
+  "pattern": [
+    "abc",
+    " dc"
+  ],
+  "result": {
+    "item": "railcraft:token_signal"
+  }
+}

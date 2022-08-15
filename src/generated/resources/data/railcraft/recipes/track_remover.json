@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:yellow_dye"
+    },
+    "b": {
+      "item": "minecraft:redstone_lamp"
+    },
+    "c": {
+      "item": "minecraft:sticky_piston"
+    },
+    "d": {
+      "tag": "forge:storage_blocks/steel"
+    },
+    "e": {
+      "tag": "railcraft:crowbar"
+    },
+    "f": {
+      "item": "minecraft:minecart"
+    }
+  },
+  "pattern": [
+    "aba",
+    "cdc",
+    "efe"
+  ],
+  "result": {
+    "item": "railcraft:track_remover"
+  }
+}

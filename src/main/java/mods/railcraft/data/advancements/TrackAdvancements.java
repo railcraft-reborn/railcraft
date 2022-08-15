@@ -2,7 +2,7 @@ package mods.railcraft.data.advancements;
 
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
-import mods.railcraft.Translations.Advancment.Tracks;
+import mods.railcraft.Translations.Advancement.Tracks;
 import mods.railcraft.advancements.MultiBlockFormedTrigger;
 import mods.railcraft.advancements.SpikeMaulUseTrigger;
 import mods.railcraft.advancements.UseTrackKitTrigger;

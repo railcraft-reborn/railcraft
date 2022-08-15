@@ -13,7 +13,7 @@ import mods.railcraft.world.level.block.manipulator.ItemUnloaderBlock;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.signal.AnalogSignalControllerBoxBlock;
 import mods.railcraft.world.level.block.signal.BlockSignalBlock;
-import mods.railcraft.world.level.block.signal.BlockSignalRelayBoxBlock;
+import mods.railcraft.world.level.block.signal.SignalBlockRelayBoxBlock;
 import mods.railcraft.world.level.block.signal.DistantSignalBlock;
 import mods.railcraft.world.level.block.signal.DualBlockSignalBlock;
 import mods.railcraft.world.level.block.signal.DualDistantSignalBlock;
@@ -485,9 +485,9 @@ public class RailcraftBlocks {
               .sound(SoundType.METAL)
               .noOcclusion()));
 
-  public static final RegistryObject<SignalBoxBlock> BLOCK_SIGNAL_RELAY_BOX =
-      deferredRegister.register("block_signal_relay_box",
-          () -> new BlockSignalRelayBoxBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+  public static final RegistryObject<SignalBoxBlock> SIGNAL_BLOCK_RELAY_BOX =
+      deferredRegister.register("signal_block_relay_box",
+          () -> new SignalBlockRelayBoxBlock(BlockBehaviour.Properties.of(Material.DECORATION)
               .strength(8.0F, 50.0F)
               .sound(SoundType.METAL)
               .noOcclusion()));

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "railcraft:turbine_blade"
+    },
+    "b": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "result": {
+    "item": "railcraft:turbine_disk"
+  }
+}

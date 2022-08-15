@@ -222,7 +222,7 @@ public class RailcraftBlockModelGenerators {
     this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_RECEIVER_BOX.get());
     this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
     this.skipAutoItemBlock(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get());
-    this.skipAutoItemBlock(RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get());
+    this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get());
     this.skipAutoItemBlock(RailcraftBlocks.BLOCK_SIGNAL.get());
     this.skipAutoItemBlock(RailcraftBlocks.DISTANT_SIGNAL.get());
     this.skipAutoItemBlock(RailcraftBlocks.TOKEN_SIGNAL.get());

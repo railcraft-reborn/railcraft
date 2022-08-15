@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:cobblestone"
+    },
+    "b": {
+      "item": "railcraft:detector_track_kit"
+    },
+    "c": {
+      "item": "minecraft:hopper"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "aba",
+    "aca"
+  ],
+  "result": {
+    "item": "railcraft:item_unloader"
+  }
+}

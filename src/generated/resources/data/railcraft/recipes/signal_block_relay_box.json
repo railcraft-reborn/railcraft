@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:iron_ingot"
+    },
+    "b": {
+      "item": "railcraft:signal_circuit"
+    },
+    "c": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " c ",
+    "aba",
+    "aca"
+  ],
+  "result": {
+    "item": "railcraft:signal_block_relay_box"
+  }
+}

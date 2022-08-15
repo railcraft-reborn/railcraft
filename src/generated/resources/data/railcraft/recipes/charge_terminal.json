@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/brass"
+    },
+    "b": {
+      "tag": "forge:plates/brass"
+    }
+  },
+  "pattern": [
+    " b ",
+    "aaa"
+  ],
+  "result": {
+    "item": "railcraft:charge_terminal"
+  }
+}

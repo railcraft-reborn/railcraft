@@ -128,7 +128,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     this.tag(RailcraftTags.Blocks.ASPECT_EMITTER)
         .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
             RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
-            RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get(),
+            RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
             RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
     this.tag(RailcraftTags.Blocks.ASPECT_RECEIVER)
         .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
@@ -147,7 +147,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
             RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get(), RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
             RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
-            RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get(), RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
+            RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(), RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
             RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
             RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
             RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),

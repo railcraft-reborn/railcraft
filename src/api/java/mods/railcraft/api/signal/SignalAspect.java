@@ -68,7 +68,7 @@ public enum SignalAspect implements StringRepresentable {
   private SignalAspect(String name, int blockLight) {
     this.name = name;
     this.blockLight = blockLight;
-    this.displayName = Component.translatable("signal_aspect." + name);
+    this.displayName = Component.translatable("signal.railcraft.aspect." + name);
   }
 
   /**
