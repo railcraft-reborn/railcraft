@@ -2,7 +2,7 @@ package mods.railcraft.data.advancements;
 
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
-import mods.railcraft.Translations.Advancment.Carts;
+import mods.railcraft.Translations.Advancement.Carts;
 import mods.railcraft.advancements.BedCartSleepTrigger;
 import mods.railcraft.advancements.CartLinkingTrigger;
 import mods.railcraft.advancements.JukeboxCartPlayMusicTrigger;

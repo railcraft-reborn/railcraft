@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:iron_ingot"
+    },
+    "b": {
+      "item": "railcraft:controller_circuit"
+    },
+    "c": {
+      "item": "minecraft:redstone"
+    },
+    "d": {
+      "item": "railcraft:receiver_circuit"
+    }
+  },
+  "pattern": [
+    " d ",
+    "aba",
+    "aca"
+  ],
+  "result": {
+    "item": "railcraft:signal_interlock_box"
+  }
+}

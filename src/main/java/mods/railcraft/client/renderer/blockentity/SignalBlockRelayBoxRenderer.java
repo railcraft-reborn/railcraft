@@ -3,10 +3,10 @@ package mods.railcraft.client.renderer.blockentity;
 import mods.railcraft.Railcraft;
 import net.minecraft.resources.ResourceLocation;
 
-public class BlockSignalRelayBoxRenderer extends AbstractSignalBoxRenderer {
+public class SignalBlockRelayBoxRenderer extends AbstractSignalBoxRenderer {
 
   public static final ResourceLocation TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "entity/signal_box/block_signal_relay_box");
+      new ResourceLocation(Railcraft.ID, "entity/signal_box/signal_block_relay_box");
 
   @Override
   protected ResourceLocation getTopTextureLocation() {

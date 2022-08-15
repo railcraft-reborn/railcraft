@@ -47,7 +47,7 @@ public class LockingTrackBlock extends PoweredOutfittedTrackBlock implements Ent
   protected boolean crowbarWhack(BlockState state, Level level, BlockPos pos,
       Player player, InteractionHand hand, ItemStack itemStack) {
     return level.getBlockEntity(pos, RailcraftBlockEntityTypes.LOCKING_TRACK.get())
-        .map(lockingTrack -> lockingTrack.crowbarWhack(player, itemStack))
+        .map(lockingTrack -> lockingTrack.crowbarWhack(player))
         .orElse(false);
   }
 

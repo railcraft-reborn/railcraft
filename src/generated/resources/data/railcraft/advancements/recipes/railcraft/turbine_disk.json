@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:turbine_disk"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_turbine_blade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:turbine_blade"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_turbine_blade",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:turbine_disk"
+    ]
+  }
+}

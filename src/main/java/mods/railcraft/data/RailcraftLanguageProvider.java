@@ -4,11 +4,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
-import mods.railcraft.Translations.Advancment.Carts;
-import mods.railcraft.Translations.Advancment.Tracks;
+import mods.railcraft.Translations.Advancement.Carts;
+import mods.railcraft.Translations.Advancement.Tracks;
 import mods.railcraft.Translations.Container;
 import mods.railcraft.Translations.Jei;
 import mods.railcraft.Translations.Signal;
+import mods.railcraft.Translations.SignalAspect;
+import mods.railcraft.Translations.SignalCapacitor;
+import mods.railcraft.Translations.Subtitle;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -48,6 +51,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.signalTranslations();
     this.enchantmentTranslations();
     this.advancementTranslations();
+    this.signalAspectTranslations();
+    this.signalCapacitorTranslations();
+    this.subtitleTranslations();
   }
 
   private void blockTranslations() {
@@ -93,7 +99,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX, "Analog Signal Controller Box");
     this.addBlock(RailcraftBlocks.SIGNAL_INTERLOCK_BOX, "Signal Interlock Box");
     this.addBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX, "Signal Sequencer Box");
-    this.addBlock(RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX, "Block Signal Relay Box");
+    this.addBlock(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX, "Signal Block Relay Box");
     this.addBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
     this.addBlock(RailcraftBlocks.CRUSHER, "Crusher");
     this.addBlock(RailcraftBlocks.COKE_OVEN_BRICKS, "Coke Oven Bricks");
@@ -117,6 +123,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SIGNAL_LAMP, "Signal Lamp");
     this.addItem(RailcraftItems.TURBINE_ROTOR, "Turbine Rotor");
     this.addItem(RailcraftItems.TURBINE_BLADE, "Turbine Blade");
+    this.addItem(RailcraftItems.TURBINE_DISK, "Turbine Disk");
     this.addItem(RailcraftItems.SLAG, "Ground Blast Furnace Slag");
     this.addItem(RailcraftItems.COAL_COKE, "Coal Coke");
     this.addItem(RailcraftItems.STEEL_SHEARS, "Steel Shears");
@@ -223,6 +230,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.CONTROLLER_CIRCUIT, "Controller Circuit");
     this.addItem(RailcraftItems.RECEIVER_CIRCUIT, "Receiver Circuit");
     this.addItem(RailcraftItems.SIGNAL_CIRCUIT, "Signal Circuit");
+    this.addItem(RailcraftItems.RADIO_CIRCUIT, "Radio Circuit");
     this.addItem(RailcraftItems.BAG_OF_CEMENT, "Bag of Cement");
     this.addItem(RailcraftItems.WOODEN_TIE, "Wooden Tie");
     this.addItem(RailcraftItems.STONE_TIE, "Stone Tie");
@@ -255,6 +263,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.CHARGE_SPOOL_LARGE, "Large Charge Wire Spool");
     this.addItem(RailcraftItems.CHARGE_SPOOL_MEDIUM, "Medium Charge Wire Spool");
     this.addItem(RailcraftItems.CHARGE_SPOOL_SMALL, "Small Charge Wire Spool");
+    this.addItem(RailcraftItems.CHARGE_COIL, "Charge Coil");
+    this.addItem(RailcraftItems.CHARGE_TERMINAL, "Charge Terminal");
+    this.addItem(RailcraftItems.CHARGE_MOTOR, "Charge Motor");
   }
 
   private void entityTranslations() {
@@ -314,6 +325,46 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.CRAWBAR_SEASON_DEFAULT, "Default");
     this.add(Tips.CRAWBAR_SEASON_CHRISTMAS, "Christmas");
     this.add(Tips.CRAWBAR_SEASON_HALLOWEEN, "Halloween");
+    this.add(Tips.SIGNAL_LABEL_DESC1, "Rename in Anvil");
+    this.add(Tips.SIGNAL_LABEL_DESC2, "Right click while sneaking to name a signal or signal box");
+    this.add(Tips.SENDS_SIGNALS_TO_RECEIVERS, "Sends signals to Receivers");
+    this.add(Tips.SIGNAL_RECEIVER_BOX, "Listens to Controller signals");
+    this.add(Tips.SIGNAL_INTERLOCK_BOX, "Permits only one aspect signal to pass");
+    this.add(Tips.SIGNAL_SEQUENCER_BOX, "Loops through adjacent blocks");
+    this.add(Tips.SIGNAL_BLOCK_RELAY_BOX, "Creates chains of Signal Blocks");
+    this.add(Tips.FIRESTONE_EMPTY, "Its energies controlled, it could be useful if you could recharge it...");
+    this.add(Tips.FIRESTONE_CHARGED, "Filled with energy, you only need to exert your will onto it to release it's blistering heat...");
+    this.add(Tips.CURRENT_MODE, "Current Mode:");
+    this.add(Tips.LOCKING_TRACK_LOCKDOWN, "Lockdown");
+    this.add(Tips.LOCKING_TRACK_TRAIN_LOCKDOWN, "Train Lockdown");
+    this.add(Tips.LOCKING_TRACK_HOLDING, "Holding");
+    this.add(Tips.LOCKING_TRACK_TRAIN_HOLDING, "Train Holding");
+    this.add(Tips.LOCKING_TRACK_BOARDING, "Boarding");
+    this.add(Tips.LOCKING_TRACK_BOARDING_REVERSED, "Boarding Reversed");
+    this.add(Tips.LOCKING_TRACK_TRAIN_BOARDING, "Train Boarding");
+    this.add(Tips.LOCKING_TRACK_TRAIN_BOARDING_REVERSED, "Train Boarding Reversed");
+    this.add(Tips.COUPLER_TRACK_COUPLER, "Coupler");
+    this.add(Tips.COUPLER_TRACK_DECOUPLER, "Decoupler");
+    this.add(Tips.COUPLER_TRACK_AUTO_COUPLER, "Auto Coupler");
+    this.add(Tips.TRACK_KIT_CORNERS_UNSUPPORTED, "Corners are Unsupported");
+    this.add(Tips.TRACK_KIT_SLOPES_UNSUPPORTED, "Slopes are Unsupported");
+    this.add(Tips.TRACK_KIT_INVALID_TRACK_TYPE, "Invalid Track Type");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE, "Complete");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE_DESC, "Process until operation is complete.");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE, "Immediate");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE_DESC, "Process until out of room or supply.");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL, "Manual");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL_DESC, "Never emit a redstone signal.");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL, "Partial");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL_DESC, "Process until out of room or supply, but keep pristine carts.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_ALL, "All");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_ALL_DESC, "Move all matching items.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS, "Excess");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS_DESC, "Move until the source matches the filter.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_STOCK, "Stock");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_STOCK_DESC, "Move until the destination matches the filter.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER, "Transfer");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC, "Move exactly as much as is in the filter.");
   }
 
   private void screenTranslations() {
@@ -549,6 +600,30 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Carts.SEASONS_DESC, "Tweak with a seasons crowbar the season of a cart");
     this.add(Carts.SURPRISE, "Opportune Kaboom");
     this.add(Carts.SURPRISE_DESC, "Explode a seasonal cart and collect (really?) gifts");
+  }
+
+  private void signalAspectTranslations() {
+    this.add(SignalAspect.GREEN, "Green");
+    this.add(SignalAspect.BLINK_YELLOW, "Blink Yellow");
+    this.add(SignalAspect.YELLOW, "Yellow");
+    this.add(SignalAspect.BLINK_RED, "Blink Red");
+    this.add(SignalAspect.RED, "Red");
+    this.add(SignalAspect.OFF, "Off");
+  }
+
+  private void signalCapacitorTranslations() {
+    this.add(SignalCapacitor.RISING_EDGE, "Rising Edge");
+    this.add(SignalCapacitor.RISING_EDGE_DESC, "Start timer as soon as the input signal is received.");
+    this.add(SignalCapacitor.FALLING_EDGE, "Falling Edge");
+    this.add(SignalCapacitor.FALLING_EDGE_DESC, "Start timer when the last input signal turns off.");
+  }
+
+  private void subtitleTranslations() {
+    this.add(Subtitle.STEAM_WHISTLE, "Steam Locomotive Whistle");
+    this.add(Subtitle.ELECTRIC_WHISTLE, "Electric Locomotive Whistle");
+    this.add(Subtitle.STEAM_BURST, "Machine Steam Burst");
+    this.add(Subtitle.STEAM_HISS, "Machine Steam Hiss");
+    this.add(Subtitle.MACHINE_ZAP, "Machine Zap");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {

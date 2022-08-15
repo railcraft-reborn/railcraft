@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-06T10:05:26.855646307	Railcraft Loot Tables
+// 1.19.2	2022-08-13T15:05:10.759367625	Railcraft Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -29,7 +29,6 @@ a5665f5fc3e2f2acbd97269a51be463fa8540d8c data/railcraft/loot_tables/blocks/black
 2408a6f6dbf83ef1d0b99160e216effae277cc38 data/railcraft/loot_tables/blocks/black_strengthened_glass.json
 2c1cc7ee67628052eb5bb83e502a41d9ef141144 data/railcraft/loot_tables/blocks/blast_furnace_bricks.json
 02f0e7d866c72d798245902c317bc4f0bd3854b7 data/railcraft/loot_tables/blocks/block_signal.json
-93eb5196aae481205472c57abebc2bd09d4232a4 data/railcraft/loot_tables/blocks/block_signal_relay_box.json
 e1cb48ab7bdcc3b471eb8cc8f5177b728e7b6abf data/railcraft/loot_tables/blocks/blue_iron_tank_gauge.json
 8aee764b476850dd8e2c2f291f22254142b94de8 data/railcraft/loot_tables/blocks/blue_iron_tank_valve.json
 e7441a7a1d3967b79eaa15f073c301ce06d8cc13 data/railcraft/loot_tables/blocks/blue_iron_tank_wall.json
@@ -233,6 +232,7 @@ b2b8f27197fb6febae7aa26010c6179fc8a40700 data/railcraft/loot_tables/blocks/reinf
 494a16d3821291ea23bfc013b2638fc2b94fbccc data/railcraft/loot_tables/blocks/reinforced_turnout_track.json
 494a16d3821291ea23bfc013b2638fc2b94fbccc data/railcraft/loot_tables/blocks/reinforced_wye_track.json
 1d4929d7d6176f60e5ea991a577527ed251ef375 data/railcraft/loot_tables/blocks/ritual.json
+e5cfc6198ed67ee152c655e24907f3d941ff699a data/railcraft/loot_tables/blocks/signal_block_relay_box.json
 479ddc9de5022b17967e0ddfb35a2851e1958e4a data/railcraft/loot_tables/blocks/signal_capacitor_box.json
 c22915a364e2b526712462c54f1ae59fc20e6009 data/railcraft/loot_tables/blocks/signal_controller_box.json
 13c1dc66a162d92abca8ecc91b70aee681b4822e data/railcraft/loot_tables/blocks/signal_interlock_box.json

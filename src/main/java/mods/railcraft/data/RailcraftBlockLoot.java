@@ -271,7 +271,7 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
 
     this.dropSelf(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get());
-    this.dropSelf(RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get());
+    this.dropSelf(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get());
     this.dropSelf(RailcraftBlocks.DISTANT_SIGNAL.get());
     this.dropSelf(RailcraftBlocks.DUAL_BLOCK_SIGNAL.get());
     this.dropSelf(RailcraftBlocks.DUAL_DISTANT_SIGNAL.get());

@@ -1,5 +1,7 @@
 package mods.railcraft.world.item;
 
+import mods.railcraft.Translations.Tips;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -38,6 +40,10 @@ public class SignalLabelItem extends Item {
   @Override
   public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> lines,
       TooltipFlag tooltipFlag) {
-    lines.add(Component.translatable("signal_label.description"));
+    lines.add(Component.literal("- ")
+        .append(Component.translatable(Tips.SIGNAL_LABEL_DESC1)).append(" -")
+        .withStyle(ChatFormatting.BLUE));
+    lines.add(Component.translatable(Tips.SIGNAL_LABEL_DESC2)
+        .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
   }
 }

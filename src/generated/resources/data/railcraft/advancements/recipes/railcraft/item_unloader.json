@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_rail": {
+    "has_detector_track_kit": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:rail"
+              "railcraft:detector_track_kit"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:rail_deconstruction"
+        "recipe": "railcraft:item_unloader"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_rail",
+      "has_detector_track_kit",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "railcraft:rail_deconstruction"
+      "railcraft:item_unloader"
     ]
   }
 }

@@ -43,91 +43,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     BlastFurnaceRecipeProvider.buildRecipes(consumer);
     CrusherRecipeProvider.buildRecipes(consumer);
     RollingRecipeProvider.buildRecipes(consumer);
-    /*
-     * ===================================== RAILCRAFT TOOLS =====================================
-     */
-    /* === Crowbar === */
-    this.crowbarFromMaterial(consumer, RailcraftItems.IRON_CROWBAR.get(),
-        Tags.Items.INGOTS_IRON);
-    this.crowbarFromMaterial(consumer, RailcraftItems.STEEL_CROWBAR.get(),
-        RailcraftTags.Items.STEEL_INGOT);
-    this.crowbarFromMaterial(consumer, RailcraftItems.DIAMOND_CROWBAR.get(),
-        Tags.Items.GEMS_DIAMOND);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get())
-        .define('C', Items.COMPASS)
-        .define('G', Tags.Items.GLASS_PANES)
-        .define('B', Blocks.STONE_BUTTON)
-        .define('R', Tags.Items.DUSTS_REDSTONE)
-        .pattern(" C ")
-        .pattern("BGB")
-        .pattern(" R ")
-        .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
-        .save(consumer);
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_TUNER.get())
-        .define('T', Items.REDSTONE_TORCH)
-        .define('C', RailcraftItems.RECEIVER_CIRCUIT.get())
-        .define('B', Blocks.STONE_BUTTON)
-        .pattern(" T ")
-        .pattern("BCB")
-        .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
-        .unlockedBy("has_circuit", has(RailcraftItems.RECEIVER_CIRCUIT.get()))
-        .save(consumer);
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.GOGGLES.get())
-        .define('S', RailcraftTags.Items.STEEL_INGOT)
-        .define('G', Tags.Items.GLASS_PANES)
-        .define('C', RailcraftItems.RECEIVER_CIRCUIT.get())
-        .define('L', Tags.Items.LEATHER)
-        .pattern("GCG")
-        .pattern("S S")
-        .pattern("LLL")
-        .unlockedBy("has_steel", has(RailcraftTags.Items.STEEL_INGOT))
-        .unlockedBy("has_circuit", has(RailcraftItems.RECEIVER_CIRCUIT.get()))
-        .save(consumer);
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.WHISTLE_TUNER.get())
-        .define('N', RailcraftTags.Items.STEEL_NUGGET)
-        .pattern("N N")
-        .pattern("NNN")
-        .pattern(" N ")
-        .unlockedBy("has_nugget", has(RailcraftTags.Items.STEEL_NUGGET))
-        .save(consumer);
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.OVERALLS.get())
-        .define('W', Items.CYAN_WOOL)
-        .pattern("WWW")
-        .pattern("W W")
-        .pattern("W W")
-        .unlockedBy("has_wool", has(Items.CYAN_WOOL))
-        .save(consumer);
-
-    // this is a tool i think
-    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
-        .define('L', Items.LAVA_BUCKET)
-        .define('R', Items.REDSTONE_BLOCK)
-        .define('S', RailcraftItems.CUT_FIRESTONE.get())
-        .pattern("LRL")
-        .pattern("RSR")
-        .pattern("LRL")
-        .unlockedBy("has_firestone", has(RailcraftItems.CUT_FIRESTONE.get()))
-        .save(consumer, Railcraft.ID + ":firestone_lava_refinement");
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
-        .define('L', Items.LAVA_BUCKET)
-        .define('R', Items.REDSTONE_BLOCK)
-        .define('S', RailcraftItems.CRACKED_FIRESTONE.get())
-        .define('F', RailcraftItems.RAW_FIRESTONE.get())
-        .pattern("LFL")
-        .pattern("RSR")
-        .pattern("LRL")
-        .unlockedBy("has_firestone", has(RailcraftItems.CRACKED_FIRESTONE.get()))
-        .save(consumer, Railcraft.ID + ":firestone_cracked_fixing");
-
-    /*
-     * ===================================== RAILCRAFT BLOCKS =====================================
-     */
     buildMultiblockBlocks(consumer);
     buildBlockStorageRecipes(consumer);
     buildGears(consumer);
@@ -142,68 +58,40 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildSteelItems(consumer);
     buildTunnelBoreHead(consumer);
     buildMaul(consumer);
+    buildTurbineParts(consumer);
+    buildChargeItems(consumer);
+    buildSignalBox(consumer);
+    buildSignals(consumer);
+    buildCircuit(consumer);
+    buildMiscItems(consumer);
+    buildCartsVariant(consumer);
+    buildSwitch(consumer);
+    buildLoaders(consumer);
+    buildCrowbars(consumer);
 
-    /*
-     * ===================================== RAILCRAFT CRAFTING COMPONENTS =========================
-     */
-    this.circuitFromMaterial(consumer, RailcraftItems.CONTROLLER_CIRCUIT.get(),
-        Items.RED_WOOL);
-    this.circuitFromMaterial(consumer, RailcraftItems.RECEIVER_CIRCUIT.get(),
-        Items.GREEN_WOOL);
-    this.circuitFromMaterial(consumer, RailcraftItems.SIGNAL_CIRCUIT.get(),
-        Items.YELLOW_WOOL);
+    // This is a tool I think
+    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
+        .pattern("LRL")
+        .pattern("RSR")
+        .pattern("LRL")
+        .define('L', Items.LAVA_BUCKET)
+        .define('R', Items.REDSTONE_BLOCK)
+        .define('S', RailcraftItems.CUT_FIRESTONE.get())
+        .unlockedBy(getHasName(RailcraftItems.CUT_FIRESTONE.get()),
+            has(RailcraftItems.CUT_FIRESTONE.get()))
+        .save(consumer, Railcraft.ID + ":firestone_lava_refinement");
 
-    this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_MEDIUM.get(),
-        RailcraftItems.CHARGE_SPOOL_SMALL.get(), 3, "charge_spool_small_from_medium");
-    this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_LARGE.get(),
-        RailcraftItems.CHARGE_SPOOL_MEDIUM.get(), 3, "charge_spool_medium_from_large");
-
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
-        .requires(RailcraftItems.WOODEN_TIE.get())
-        .requires(Tags.Items.INGOTS_IRON)
-        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
-            has(RailcraftItems.WOODEN_TIE.get()))
-        .save(consumer);
-
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.STANDARD_RAIL.get())
-        .requires(Items.RAIL, 8)
-        .unlockedBy("has_rail", has(Items.RAIL))
-        .save(consumer, Railcraft.ID + ":rail_deconstruction");
-
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAILBED.get())
-        .requires(RailcraftItems.WOODEN_TIE.get(), 4)
-        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
-            has(RailcraftItems.WOODEN_TIE.get()))
-        .save(consumer);
-
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.STONE_RAILBED.get())
-        .requires(RailcraftItems.STONE_TIE.get(), 4)
-        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
-            has(RailcraftItems.WOODEN_TIE.get()))
-        .save(consumer);
-
-    ShapedRecipeBuilder.shaped(Items.TORCH, 8)
-        .pattern("a")
-        .pattern("b")
-        .pattern("c")
-        .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
-        .define('b', ItemTags.WOOL)
-        .define('c', Items.STICK)
-        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
-            has(RailcraftItems.CREOSOTE_BOTTLE.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "torch_creosote"));
-  }
-
-  private void crowbarFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
-      Item itemOut, TagKey<Item> materialTag) {
-    ShapedRecipeBuilder.shaped(itemOut)
-        .define('I', materialTag)
-        .define('D', Tags.Items.DYES_RED)
-        .pattern(" DI")
-        .pattern("DID")
-        .pattern("ID ")
-        .unlockedBy(getHasName(Blocks.RAIL), has(Blocks.RAIL))
-        .save(finishedRecipe);
+    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
+        .pattern("LFL")
+        .pattern("RSR")
+        .pattern("LRL")
+        .define('L', Items.LAVA_BUCKET)
+        .define('R', Items.REDSTONE_BLOCK)
+        .define('S', RailcraftItems.CRACKED_FIRESTONE.get())
+        .define('F', RailcraftItems.RAW_FIRESTONE.get())
+        .unlockedBy(getHasName(RailcraftItems.CRACKED_FIRESTONE.get()),
+            has(RailcraftItems.CRACKED_FIRESTONE.get()))
+        .save(consumer, Railcraft.ID + ":firestone_cracked_fixing");
   }
 
   private void conversion(Consumer<FinishedRecipe> finishedRecipe, ItemLike from, ItemLike to,
@@ -220,21 +108,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipe, path);
   }
 
-  private void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
-      Item itemOut, Item woolItem) {
-    ShapedRecipeBuilder.shaped(itemOut)
-        .define('W', woolItem)
-        .define('R', Items.REPEATER)
-        .define('S', Tags.Items.DUSTS_REDSTONE)
-        .define('G', Tags.Items.INGOTS_GOLD)
-        .define('L', Tags.Items.GEMS_LAPIS)
-        .define('B', Tags.Items.SLIMEBALLS)
-        .pattern(" RW")
-        .pattern("BGS")
-        .pattern("WSL")
-        .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
-        .save(finishedRecipe);
-  }
 
   private void buildRails(Consumer<FinishedRecipe> consumer) {
     railsFromMaterials(consumer, RailcraftItems.ABANDONED_TRACK.get(), 32,
@@ -255,6 +128,30 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     railsFromMaterials(consumer, RailcraftItems.ELEVATOR_TRACK.get(), 8,
         RailcraftItems.ADVANCED_RAIL.get(), RailcraftItems.STANDARD_RAIL.get(),
         Items.REDSTONE);
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
+        .requires(RailcraftItems.WOODEN_TIE.get())
+        .requires(Tags.Items.INGOTS_IRON)
+        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
+            has(RailcraftItems.WOODEN_TIE.get()))
+        .save(consumer);
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.STANDARD_RAIL.get())
+        .requires(Items.RAIL, 8)
+        .unlockedBy(getHasName(Items.RAIL), has(Items.RAIL))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "standard_rail_from_rail"));
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAILBED.get())
+        .requires(RailcraftItems.WOODEN_TIE.get(), 4)
+        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
+            has(RailcraftItems.WOODEN_TIE.get()))
+        .save(consumer);
+
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.STONE_RAILBED.get())
+        .requires(RailcraftItems.STONE_TIE.get(), 4)
+        .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
+            has(RailcraftItems.WOODEN_TIE.get()))
+        .save(consumer);
   }
 
   private static void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipe,
@@ -286,205 +183,205 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(finishedRecipe);
   }
 
-  private void buildTracks(Consumer<FinishedRecipe> finishedRecipe) {
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get(),
+  private void buildTracks(Consumer<FinishedRecipe> consumer) {
+    tracks(consumer, RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_BUFFER_STOP_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_COUPLER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_COUPLER_TRACK.get(),
         RailcraftItems.COUPLER_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_CONTROL_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_CONTROL_TRACK.get(),
         RailcraftItems.CONTROL_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_DISEMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_EMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_GATED_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_LAUNCHER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ABANDONED_ONE_WAY_TRACK.get(),
+    tracks(consumer, RailcraftItems.ABANDONED_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
 
-    tracks(finishedRecipe, RailcraftItems.IRON_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_BUFFER_STOP_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_COUPLER_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_COUPLER_TRACK.get(),
         RailcraftItems.COUPLER_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_CONTROL_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_CONTROL_TRACK.get(),
         RailcraftItems.CONTROL_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_DISEMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_EMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_GATED_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_LAUNCHER_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), Items.RAIL);
-    tracks(finishedRecipe, RailcraftItems.IRON_ONE_WAY_TRACK.get(),
+    tracks(consumer, RailcraftItems.IRON_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), Items.RAIL);
 
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_BUFFER_STOP_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_COUPLER_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_COUPLER_TRACK.get(),
         RailcraftItems.COUPLER_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_CONTROL_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_CONTROL_TRACK.get(),
         RailcraftItems.CONTROL_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_DISEMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_EMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_GATED_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_LAUNCHER_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.STRAP_IRON_ONE_WAY_TRACK.get(),
+    tracks(consumer, RailcraftItems.STRAP_IRON_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
 
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_BUFFER_STOP_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_COUPLER_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_COUPLER_TRACK.get(),
         RailcraftItems.COUPLER_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_CONTROL_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_CONTROL_TRACK.get(),
         RailcraftItems.CONTROL_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_DISEMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_EMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_GATED_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_LAUNCHER_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.REINFORCED_ONE_WAY_TRACK.get(),
+    tracks(consumer, RailcraftItems.REINFORCED_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
 
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_BUFFER_STOP_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_COUPLER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_COUPLER_TRACK.get(),
         RailcraftItems.COUPLER_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_CONTROL_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_CONTROL_TRACK.get(),
         RailcraftItems.CONTROL_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_DISEMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_EMBARKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_GATED_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_LAUNCHER_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_LAUNCHER_TRACK.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.ELECTRIC_ONE_WAY_TRACK.get(),
+    tracks(consumer, RailcraftItems.ELECTRIC_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
 
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_TRANSITION_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_TRANSITION_TRACK.get(),
         RailcraftItems.TRANSITION_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
 
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
         RailcraftItems.BOOSTER_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK.get(),
         RailcraftItems.DETECTOR_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
-    tracks(finishedRecipe, RailcraftItems.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
         RailcraftItems.TRANSITION_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
 
-    wyeTracks(finishedRecipe, RailcraftItems.STRAP_IRON_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.STRAP_IRON_WYE_TRACK.get(),
         RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    wyeTracks(finishedRecipe, RailcraftItems.ABANDONED_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.ABANDONED_WYE_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_TIE.get());
-    wyeTracks(finishedRecipe, RailcraftItems.IRON_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.IRON_WYE_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    wyeTracks(finishedRecipe, RailcraftItems.REINFORCED_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.REINFORCED_WYE_TRACK.get(),
         RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    wyeTracks(finishedRecipe, RailcraftItems.ELECTRIC_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.ELECTRIC_WYE_TRACK.get(),
         RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    wyeTracks(finishedRecipe, RailcraftItems.HIGH_SPEED_WYE_TRACK.get(),
+    wyeTracks(consumer, RailcraftItems.HIGH_SPEED_WYE_TRACK.get(),
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
-    turnoutTracks(finishedRecipe, RailcraftItems.STRAP_IRON_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.STRAP_IRON_TURNOUT_TRACK.get(),
         RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    turnoutTracks(finishedRecipe, RailcraftItems.ABANDONED_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.ABANDONED_TURNOUT_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_TIE.get());
-    turnoutTracks(finishedRecipe, RailcraftItems.IRON_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.IRON_TURNOUT_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    turnoutTracks(finishedRecipe, RailcraftItems.REINFORCED_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.REINFORCED_TURNOUT_TRACK.get(),
         RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    turnoutTracks(finishedRecipe, RailcraftItems.ELECTRIC_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.ELECTRIC_TURNOUT_TRACK.get(),
         RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    turnoutTracks(finishedRecipe, RailcraftItems.HIGH_SPEED_TURNOUT_TRACK.get(),
+    turnoutTracks(consumer, RailcraftItems.HIGH_SPEED_TURNOUT_TRACK.get(),
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
-    junctionTracks(finishedRecipe, RailcraftItems.STRAP_IRON_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.STRAP_IRON_JUNCTION_TRACK.get(),
         RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    junctionTracks(finishedRecipe, RailcraftItems.ABANDONED_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.ABANDONED_JUNCTION_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_TIE.get());
-    junctionTracks(finishedRecipe, RailcraftItems.IRON_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.IRON_JUNCTION_TRACK.get(),
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    junctionTracks(finishedRecipe, RailcraftItems.REINFORCED_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.REINFORCED_JUNCTION_TRACK.get(),
         RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    junctionTracks(finishedRecipe, RailcraftItems.ELECTRIC_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.ELECTRIC_JUNCTION_TRACK.get(),
         RailcraftItems.ELECTRIC_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
-    junctionTracks(finishedRecipe, RailcraftItems.HIGH_SPEED_JUNCTION_TRACK.get(),
+    junctionTracks(consumer, RailcraftItems.HIGH_SPEED_JUNCTION_TRACK.get(),
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
 
@@ -497,7 +394,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', RailcraftItems.STONE_RAILBED.get())
         .unlockedBy(getHasName(RailcraftItems.HIGH_SPEED_RAIL.get()),
             has(RailcraftItems.HIGH_SPEED_RAIL.get()))
-        .save(finishedRecipe);
+        .save(consumer);
     ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(), 16)
         .pattern("aca")
         .pattern("aba")
@@ -507,7 +404,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', RailcraftItems.STONE_RAILBED.get())
         .unlockedBy(getHasName(RailcraftItems.HIGH_SPEED_RAIL.get()),
             has(RailcraftItems.HIGH_SPEED_RAIL.get()))
-        .save(finishedRecipe);
+        .save(consumer);
     ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(), 16)
         .pattern("aba")
         .pattern("aca")
@@ -517,7 +414,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', RailcraftItems.STONE_RAILBED.get())
         .unlockedBy(getHasName(RailcraftItems.HIGH_SPEED_RAIL.get()),
             has(RailcraftItems.HIGH_SPEED_RAIL.get()))
-        .save(finishedRecipe);
+        .save(consumer);
   }
 
   private static void tracks(Consumer<FinishedRecipe> finishedRecipe, Item result,
@@ -564,7 +461,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(rail), has(rail))
         .save(finishedRecipe);
   }
-
 
   private void buildSteelItems(Consumer<FinishedRecipe> consumer) {
     ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_ANVIL.get())
@@ -713,6 +609,467 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', Items.STICK)
         .define('c', Tags.Items.STORAGE_BLOCKS_DIAMOND)
         .unlockedBy(getHasName(Items.DIAMOND_BLOCK), has(Items.DIAMOND_BLOCK))
+        .save(consumer);
+  }
+
+  private void buildTurbineParts(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RailcraftItems.TURBINE_DISK.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', RailcraftItems.TURBINE_BLADE.get())
+        .define('b', RailcraftTags.Items.STEEL_INGOT)
+        .unlockedBy(getHasName(RailcraftItems.TURBINE_BLADE.get()),
+            has(RailcraftItems.TURBINE_BLADE.get()))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.TURBINE_ROTOR.get())
+        .pattern("aaa")
+        .define('a', RailcraftItems.TURBINE_DISK.get())
+        .unlockedBy(getHasName(RailcraftItems.TURBINE_DISK.get()),
+            has(RailcraftItems.TURBINE_DISK.get()))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.STEAM_TURBINE.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', RailcraftItems.STEEL_BLOCK.get())
+        .define('b', RailcraftTags.Items.STEEL_PLATE)
+        .define('c', RailcraftItems.CHARGE_MOTOR.get())
+        .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
+            has(RailcraftItems.CHARGE_MOTOR.get()))
+        .save(consumer);
+  }
+
+  private void buildSignalBox(Consumer<FinishedRecipe> consumer) {
+    signalBox(consumer, RailcraftItems.SIGNAL_CONTROLLER_BOX.get(),
+        RailcraftItems.CONTROLLER_CIRCUIT.get(), Items.REDSTONE);
+    signalBox(consumer, RailcraftItems.SIGNAL_RECEIVER_BOX.get(),
+        RailcraftItems.RECEIVER_CIRCUIT.get(), Items.REDSTONE);
+    signalBox(consumer, RailcraftItems.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
+        RailcraftItems.CONTROLLER_CIRCUIT.get(), Items.COMPARATOR);
+    signalBox(consumer, RailcraftItems.SIGNAL_CAPACITOR_BOX.get(),
+        Items.REPEATER, Items.REDSTONE);
+    signalBox(consumer, RailcraftItems.SIGNAL_SEQUENCER_BOX.get(),
+        Items.COMPARATOR, Items.REDSTONE);
+
+
+    var circuit = RailcraftItems.CONTROLLER_CIRCUIT.get();
+    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_INTERLOCK_BOX.get())
+        .pattern(" d ")
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.IRON_INGOT)
+        .define('b', circuit)
+        .define('c', Items.REDSTONE)
+        .define('d', RailcraftItems.RECEIVER_CIRCUIT.get())
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(consumer);
+    circuit = RailcraftItems.SIGNAL_CIRCUIT.get();
+    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get())
+        .pattern(" c ")
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.IRON_INGOT)
+        .define('b', circuit)
+        .define('c', Items.REDSTONE)
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(consumer);
+  }
+
+  private static void signalBox(Consumer<FinishedRecipe> finishedRecipe,
+      Item result, Item circuit, Item bottomItem) {
+    ShapedRecipeBuilder.shaped(result)
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.IRON_INGOT)
+        .define('b', circuit)
+        .define('c', bottomItem)
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(finishedRecipe);
+  }
+
+  private void buildSignals(Consumer<FinishedRecipe> consumer) {
+    singleSignal(consumer, RailcraftItems.BLOCK_SIGNAL.get(), RailcraftItems.SIGNAL_CIRCUIT.get());
+    singleSignal(consumer, RailcraftItems.DISTANT_SIGNAL.get(),
+        RailcraftItems.RECEIVER_CIRCUIT.get());
+    singleSignal(consumer, RailcraftItems.TOKEN_SIGNAL.get(), RailcraftItems.RADIO_CIRCUIT.get());
+
+    dualSignal(consumer, RailcraftItems.DUAL_BLOCK_SIGNAL.get(),
+        RailcraftItems.SIGNAL_CIRCUIT.get());
+    dualSignal(consumer, RailcraftItems.DUAL_DISTANT_SIGNAL.get(),
+        RailcraftItems.RECEIVER_CIRCUIT.get());
+    dualSignal(consumer, RailcraftItems.DUAL_TOKEN_SIGNAL.get(),
+        RailcraftItems.RADIO_CIRCUIT.get());
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_LAMP.get())
+        .pattern("ab ")
+        .pattern("ace")
+        .pattern("adf")
+        .define('a', Items.GLASS_PANE)
+        .define('b', Items.LIME_DYE)
+        .define('c', Items.YELLOW_DYE)
+        .define('d', Items.RED_DYE)
+        .define('e', Items.GLOWSTONE_DUST)
+        .define('f', Items.REDSTONE)
+        .unlockedBy(getHasName(Items.GLOWSTONE_DUST), has(Items.GLOWSTONE_DUST))
+        .save(consumer);
+  }
+
+  private static void singleSignal(Consumer<FinishedRecipe> finishedRecipe,
+      Item result, Item circuit) {
+    ShapedRecipeBuilder.shaped(result)
+        .pattern("abc")
+        .pattern(" dc")
+        .define('a', RailcraftItems.SIGNAL_LAMP.get())
+        .define('b', circuit)
+        .define('c', Items.IRON_INGOT)
+        .define('d', Items.INK_SAC)
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(finishedRecipe);
+  }
+
+  private static void dualSignal(Consumer<FinishedRecipe> finishedRecipe,
+      Item result, Item circuit) {
+    ShapedRecipeBuilder.shaped(result)
+        .pattern("abc")
+        .pattern(" dc")
+        .pattern("aec")
+        .define('a', RailcraftItems.SIGNAL_LAMP.get())
+        .define('b', circuit)
+        .define('c', Items.IRON_INGOT)
+        .define('d', Items.INK_SAC)
+        .define('e', RailcraftItems.RECEIVER_CIRCUIT.get())
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(finishedRecipe);
+  }
+
+  private void buildCircuit(Consumer<FinishedRecipe> consumer) {
+    circuitFromMaterial(consumer, RailcraftItems.CONTROLLER_CIRCUIT.get(),
+        Items.RED_WOOL);
+    circuitFromMaterial(consumer, RailcraftItems.RECEIVER_CIRCUIT.get(),
+        Items.GREEN_WOOL);
+    circuitFromMaterial(consumer, RailcraftItems.SIGNAL_CIRCUIT.get(),
+        Items.YELLOW_WOOL);
+    circuitFromMaterial(consumer, RailcraftItems.RADIO_CIRCUIT.get(),
+        Items.BLUE_WOOL);
+  }
+
+  private static void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
+      Item itemOut, Item woolItem) {
+    ShapedRecipeBuilder.shaped(itemOut)
+        .define('W', woolItem)
+        .define('R', Items.REPEATER)
+        .define('S', Tags.Items.DUSTS_REDSTONE)
+        .define('G', Tags.Items.INGOTS_GOLD)
+        .define('L', Tags.Items.GEMS_LAPIS)
+        .define('B', Tags.Items.SLIMEBALLS)
+        .pattern(" RW")
+        .pattern("BGS")
+        .pattern("WSL")
+        .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
+        .save(finishedRecipe);
+  }
+
+  private void buildSwitch(Consumer<FinishedRecipe> consumer) {
+    switchItem(consumer, RailcraftItems.SWITCH_TRACK_LEVER.get(), Items.LEVER);
+    switchItem(consumer, RailcraftItems.SWITCH_TRACK_MOTOR.get(), RailcraftItems.RECEIVER_CIRCUIT.get());
+  }
+
+  private static void switchItem(Consumer<FinishedRecipe> finishedRecipe,
+      Item result, Item circuit) {
+    ShapedRecipeBuilder.shaped(result)
+        .pattern("abc")
+        .pattern("def")
+        .define('a', Items.RED_DYE)
+        .define('b', Items.INK_SAC)
+        .define('c', Items.BONE_MEAL)
+        .define('d', Items.PISTON)
+        .define('e', circuit)
+        .define('f', Items.IRON_INGOT)
+        .unlockedBy(getHasName(circuit),has(circuit))
+        .save(finishedRecipe);
+  }
+
+  private void buildLoaders(Consumer<FinishedRecipe> consumer) {
+    //TODO: Fix when we implement detector blocks
+    ShapedRecipeBuilder.shaped(RailcraftItems.ITEM_LOADER.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.COBBLESTONE)
+        .define('b', Items.HOPPER)
+        .define('c', RailcraftItems.DETECTOR_TRACK_KIT.get())
+        .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
+            has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.ADVANCED_ITEM_LOADER.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("ada")
+        .define('a', RailcraftTags.Items.STEEL_INGOT)
+        .define('b', Items.REDSTONE)
+        .define('c', RailcraftItems.ITEM_LOADER.get())
+        .define('d', RailcraftItems.STEEL_SHOVEL.get())
+        .unlockedBy(getHasName(RailcraftItems.ITEM_LOADER.get()),
+            has(RailcraftItems.ITEM_LOADER.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.ITEM_UNLOADER.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.COBBLESTONE)
+        .define('b', RailcraftItems.DETECTOR_TRACK_KIT.get())
+        .define('c', Items.HOPPER)
+        .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
+            has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.ADVANCED_ITEM_UNLOADER.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("ada")
+        .define('a', RailcraftTags.Items.STEEL_INGOT)
+        .define('b', Items.REDSTONE)
+        .define('c', RailcraftItems.ITEM_UNLOADER.get())
+        .define('d', RailcraftItems.STEEL_SHOVEL.get())
+        .unlockedBy(getHasName(RailcraftItems.ITEM_UNLOADER.get()),
+            has(RailcraftItems.ITEM_UNLOADER.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.FLUID_LOADER.get())
+        .pattern("aba")
+        .pattern("a a")
+        .pattern("aca")
+        .define('a', Items.GLASS)
+        .define('b', Items.HOPPER)
+        .define('c', RailcraftItems.DETECTOR_TRACK_KIT.get())
+        .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
+            has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.FLUID_UNLOADER.get())
+        .pattern("aba")
+        .pattern("a a")
+        .pattern("aca")
+        .define('a', Items.GLASS)
+        .define('b', RailcraftItems.DETECTOR_TRACK_KIT.get())
+        .define('c', Items.HOPPER)
+        .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
+            has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
+        .save(consumer);
+  }
+
+  private void buildCrowbars(Consumer<FinishedRecipe> consumer) {
+    crowbar(consumer, RailcraftItems.IRON_CROWBAR.get(),
+        Tags.Items.INGOTS_IRON);
+    crowbar(consumer, RailcraftItems.STEEL_CROWBAR.get(),
+        RailcraftTags.Items.STEEL_INGOT);
+    crowbar(consumer, RailcraftItems.DIAMOND_CROWBAR.get(),
+        Tags.Items.GEMS_DIAMOND);
+  }
+
+  private static void crowbar(Consumer<FinishedRecipe> finishedRecipe, Item itemOut,
+      TagKey<Item> materialTag) {
+    ShapedRecipeBuilder.shaped(itemOut)
+        .pattern(" ba")
+        .pattern("bab")
+        .pattern("ab ")
+        .define('a', materialTag)
+        .define('b', Tags.Items.DYES_RED)
+        .unlockedBy(getHasName(Items.RAIL), has(Items.RAIL))
+        .save(finishedRecipe);
+  }
+
+  private void buildMiscItems(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RailcraftItems.FEED_STATION.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', ItemTags.PLANKS)
+        .define('b', Items.GOLDEN_CARROT)
+        .define('c', RailcraftTags.Items.STEEL_PLATE)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()),
+            has(RailcraftItems.STEEL_PLATE.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.MANUAL_ROLLING_MACHINE.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', RailcraftTags.Items.BRONZE_GEAR)
+        .define('b', Items.PISTON)
+        .define('c', Items.CRAFTING_TABLE)
+        .unlockedBy(getHasName(Items.PISTON), has(Items.PISTON))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(Items.TORCH, 8)
+        .pattern("a")
+        .pattern("b")
+        .pattern("c")
+        .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
+        .define('b', ItemTags.WOOL)
+        .define('c', Items.STICK)
+        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
+            has(RailcraftItems.CREOSOTE_BOTTLE.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "torch_creosote"));
+    ShapedRecipeBuilder.shaped(RailcraftItems.OVERALLS.get())
+        .pattern("aaa")
+        .pattern("a a")
+        .pattern("a a")
+        .define('a', Items.CYAN_WOOL)
+        .unlockedBy(getHasName(Items.CYAN_WOOL), has(Items.CYAN_WOOL))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.WHISTLE_TUNER.get())
+        .pattern("a a")
+        .pattern("aaa")
+        .pattern(" a ")
+        .define('a', RailcraftTags.Items.STEEL_NUGGET)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_NUGGET.get()),
+            has(RailcraftTags.Items.STEEL_NUGGET))
+        .save(consumer);
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.SIGNAL_LABEL.get())
+        .requires(Items.PAPER)
+        .requires(RailcraftTags.Items.STEEL_NUGGET)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_NUGGET.get()),
+            has(RailcraftItems.STEEL_NUGGET.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.FORCE_TRACK_EMITTER.get())
+        .pattern("aba")
+        .pattern("cdc")
+        .pattern("aba")
+        .define('a', RailcraftTags.Items.TIN_PLATE)
+        .define('b', RailcraftItems.ENDER_DUST.get())
+        .define('c', RailcraftItems.CHARGE_COIL.get())
+        .define('d', Tags.Items.STORAGE_BLOCKS_DIAMOND)
+        .unlockedBy(getHasName(RailcraftItems.ENDER_DUST.get()),
+            has(RailcraftItems.ENDER_DUST.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get())
+        .pattern(" a ")
+        .pattern("cbc")
+        .pattern(" d ")
+        .define('a', Items.COMPASS)
+        .define('b', Tags.Items.GLASS_PANES)
+        .define('c', Blocks.STONE_BUTTON)
+        .define('d', Tags.Items.DUSTS_REDSTONE)
+        .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_TUNER.get())
+        .define('a', Items.REDSTONE_TORCH)
+        .define('b', RailcraftItems.RECEIVER_CIRCUIT.get())
+        .define('c', Blocks.STONE_BUTTON)
+        .pattern(" a ")
+        .pattern("cbc")
+        .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
+        .unlockedBy(getHasName(RailcraftItems.RECEIVER_CIRCUIT.get()),
+            has(RailcraftItems.RECEIVER_CIRCUIT.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.GOGGLES.get())
+        .pattern("aba")
+        .pattern("c c")
+        .pattern("ddd")
+        .define('a', Tags.Items.GLASS_PANES)
+        .define('b', RailcraftItems.RECEIVER_CIRCUIT.get())
+        .define('c', RailcraftTags.Items.STEEL_INGOT)
+        .define('d', Tags.Items.LEATHER)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
+            has(RailcraftTags.Items.STEEL_INGOT))
+        .unlockedBy(getHasName(RailcraftItems.RECEIVER_CIRCUIT.get()),
+            has(RailcraftItems.RECEIVER_CIRCUIT.get()))
+        .save(consumer);
+  }
+
+  private void buildCartsVariant(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RailcraftItems.TANK_MINECART.get())
+        .pattern("a")
+        .pattern("b")
+        .define('a', RailcraftTags.Items.STRENGTHENED_GLASS)
+        .define('b', Items.MINECART)
+        .unlockedBy(getHasName(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()),
+            has(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.TUNNEL_BORE.get())
+        .pattern("aba")
+        .pattern("cbc")
+        .pattern(" d ")
+        .define('a', RailcraftTags.Items.STEEL_BLOCK)
+        .define('b', Items.MINECART)
+        .define('c', Items.FURNACE)
+        .define('d', Items.CHEST_MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.STEAM_LOCOMOTIVE.get())
+        .pattern("aab")
+        .pattern("aab")
+        .pattern("cdd")
+        .define('a', RailcraftTags.Items.IRON_TANK_WALL)
+        .define('b', RailcraftItems.BLAST_FURNACE_BRICKS.get())
+        .define('c', Items.IRON_BARS)
+        .define('d', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.TRACK_LAYER.get())
+        .pattern("aba")
+        .pattern("cdc")
+        .pattern("efe")
+        .define('a', Items.YELLOW_DYE)
+        .define('b', Items.REDSTONE_LAMP)
+        .define('c', Items.ANVIL)
+        .define('d', RailcraftTags.Items.STEEL_BLOCK)
+        .define('e', Items.DISPENSER)
+        .define('f', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.TRACK_REMOVER.get())
+        .pattern("aba")
+        .pattern("cdc")
+        .pattern("efe")
+        .define('a', Items.YELLOW_DYE)
+        .define('b', Items.REDSTONE_LAMP)
+        .define('c', Items.STICKY_PISTON)
+        .define('d', RailcraftTags.Items.STEEL_BLOCK)
+        .define('e', RailcraftTags.Items.CROWBAR)
+        .define('f', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
+  }
+
+  private void buildChargeItems(Consumer<FinishedRecipe> consumer) {
+    this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_MEDIUM.get(),
+        RailcraftItems.CHARGE_SPOOL_SMALL.get(), 3, "charge_spool_small_from_medium");
+    this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_LARGE.get(),
+        RailcraftItems.CHARGE_SPOOL_MEDIUM.get(), 3, "charge_spool_medium_from_large");
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.CHARGE_TERMINAL.get())
+        .pattern(" b ")
+        .pattern("aaa")
+        .define('a', RailcraftTags.Items.BRASS_INGOT)
+        .define('b', RailcraftTags.Items.BRASS_PLATE)
+        .unlockedBy(getHasName(RailcraftItems.BRASS_INGOT.get()),
+            has(RailcraftItems.BRASS_INGOT.get()))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.CHARGE_COIL.get())
+        .pattern("aaa")
+        .pattern("bbb")
+        .pattern("aaa")
+        .define('a', RailcraftItems.CHARGE_SPOOL_SMALL.get())
+        .define('b', RailcraftTags.Items.IRON_PLATE)
+        .unlockedBy(getHasName(RailcraftItems.CHARGE_SPOOL_SMALL.get()),
+            has(RailcraftItems.CHARGE_SPOOL_SMALL.get()))
+        .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.CHARGE_MOTOR.get())
+        .pattern(" a ")
+        .pattern("bcb")
+        .pattern(" d ")
+        .define('a', RailcraftTags.Items.STEEL_INGOT)
+        .define('b', RailcraftTags.Items.TIN_PLATE)
+        .define('c', RailcraftItems.CHARGE_COIL.get())
+        .define('d', RailcraftItems.CHARGE_TERMINAL.get())
+        .unlockedBy(getHasName(RailcraftItems.CHARGE_SPOOL_SMALL.get()),
+            has(RailcraftItems.CHARGE_SPOOL_SMALL.get()))
         .save(consumer);
   }
 
@@ -882,6 +1239,17 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', Items.NETHER_BRICK)
         .define('c', Items.MAGMA_CREAM)
         .unlockedBy(getHasName(Items.MAGMA_CREAM), has(Items.MAGMA_CREAM))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.CRUSHER.get(), 4)
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("ada")
+        .define('a', Items.DIAMOND)
+        .define('b', Items.PISTON)
+        .define('c', RailcraftTags.Items.STEEL_BLOCK)
+        .define('d', RailcraftItems.CHARGE_MOTOR.get())
+        .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
+            has(RailcraftItems.CHARGE_MOTOR.get()))
         .save(consumer);
     ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get(), 2)
         .pattern("a")

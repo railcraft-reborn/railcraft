@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:plates/tin"
+    },
+    "b": {
+      "item": "railcraft:ender_dust"
+    },
+    "c": {
+      "item": "railcraft:charge_coil"
+    },
+    "d": {
+      "tag": "forge:storage_blocks/diamond"
+    }
+  },
+  "pattern": [
+    "aba",
+    "cdc",
+    "aba"
+  ],
+  "result": {
+    "item": "railcraft:force_track_emitter"
+  }
+}

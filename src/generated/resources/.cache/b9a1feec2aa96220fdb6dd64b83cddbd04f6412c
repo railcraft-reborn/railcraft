@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-06T10:05:26.836622174	Railcraft Item Tags
+// 1.19.2	2022-08-13T16:54:54.244044802	Railcraft Item Tags
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -73,6 +73,7 @@ c12118bda87efc5274515a86a0a7f3b189982de6 data/forge/tags/items/tools/pickaxes/st
 15360ef6012773af817ef8496de52353494b4db3 data/forge/tags/items/tools/shovels/steel.json
 05168ea5fb65c2a597f1ca271644789e1dd9aa9c data/forge/tags/items/tools/swords.json
 05168ea5fb65c2a597f1ca271644789e1dd9aa9c data/forge/tags/items/tools/swords/steel.json
+3f5ccd47db2e1f5b813e0f1e606034d2ba9b53e6 data/railcraft/tags/items/crowbar.json
 e428d6ae724c5108f98185295926eb14c6510c44 data/railcraft/tags/items/iron_tank_gauge.json
 ad43ddea7185867f695a872b9110aff36104b44d data/railcraft/tags/items/iron_tank_valve.json
 c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/items/iron_tank_wall.json

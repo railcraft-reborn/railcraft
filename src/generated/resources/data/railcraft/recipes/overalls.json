@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "W": {
+    "a": {
       "item": "minecraft:cyan_wool"
     }
   },
   "pattern": [
-    "WWW",
-    "W W",
-    "W W"
+    "aaa",
+    "a a",
+    "a a"
   ],
   "result": {
     "item": "railcraft:overalls"

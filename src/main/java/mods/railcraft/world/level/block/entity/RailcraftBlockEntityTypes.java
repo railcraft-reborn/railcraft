@@ -162,7 +162,7 @@ public class RailcraftBlockEntityTypes {
   public static final RegistryObject<BlockEntityType<BlockSignalRelayBoxBlockEntity>> BLOCK_SIGNAL_RELAY_BOX =
       deferredRegister.register("block_signal_relay_box",
           () -> BlockEntityType.Builder
-              .of(BlockSignalRelayBoxBlockEntity::new, RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get())
+              .of(BlockSignalRelayBoxBlockEntity::new, RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<SignalReceiverBoxBlockEntity>> SIGNAL_RECEIVER_BOX =

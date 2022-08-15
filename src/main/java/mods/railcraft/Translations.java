@@ -124,7 +124,6 @@ public class Translations {
         format("tips.%railcraft.googles.aura.tuning");
     public static final String GOOGLES_AURA_WORLDSPIKE =
         format("tips.%railcraft.googles.aura.worldspike");
-
     public static final String CRAWBAR_DESC =
         format("tips.%railcraft.crowbar.desc");
     public static final String CRAWBAR_LINK_BROKEN =
@@ -145,6 +144,86 @@ public class Translations {
         format("tips.%railcraft.crowbar.seasons.halloween");
     public static final String CRAWBAR_SEASON_CHRISTMAS =
         format("tips.%railcraft.crowbar.seasons.christmas");
+    public static final String SIGNAL_LABEL_DESC1 =
+        format("tips.%railcraft.signal_label.desc1");
+    public static final String SIGNAL_LABEL_DESC2 =
+        format("tips.%railcraft.signal_label.desc2");
+    public static final String SENDS_SIGNALS_TO_RECEIVERS =
+        format("tips.%railcraft.send_signals_to_receivers");
+    public static final String SIGNAL_RECEIVER_BOX =
+        format("tips.%railcraft.signal_receiver_box");
+    public static final String SIGNAL_SEQUENCER_BOX =
+        format("tips.%railcraft.signal_sequencer_box");
+    public static final String SIGNAL_INTERLOCK_BOX =
+        format("tips.%railcraft.signal_interlock_box");
+    public static final String SIGNAL_BLOCK_RELAY_BOX =
+        format("tips.%railcraft.signal_block_relay_box");
+    public static final String FIRESTONE_EMPTY =
+        format("tips.%railcraft.firestone.empty");
+    public static final String FIRESTONE_CHARGED =
+        format("tips.%railcraft.firestone.charged");
+    public static final String CURRENT_MODE =
+        format("tips.%railcraft.current_mode");
+    public static final String LOCKING_TRACK_LOCKDOWN =
+        format("tips.%railcraft.locking_track.lockdown");
+    public static final String LOCKING_TRACK_TRAIN_LOCKDOWN =
+        format("tips.%railcraft.locking_track.train_lockdown");
+    public static final String LOCKING_TRACK_HOLDING =
+        format("tips.%railcraft.locking_track.holding");
+    public static final String LOCKING_TRACK_TRAIN_HOLDING =
+        format("tips.%railcraft.locking_track.train_holding");
+    public static final String LOCKING_TRACK_BOARDING =
+        format("tips.%railcraft.locking_track.boarding");
+    public static final String LOCKING_TRACK_BOARDING_REVERSED =
+        format("tips.%railcraft.locking_track.boarding_reversed");
+    public static final String LOCKING_TRACK_TRAIN_BOARDING =
+        format("tips.%railcraft.locking_track.train_boarding");
+    public static final String LOCKING_TRACK_TRAIN_BOARDING_REVERSED =
+        format("tips.%railcraft.locking_track.train_boarding_reversed");
+    public static final String COUPLER_TRACK_COUPLER =
+        format("tips.%railcraft.coupler_track.coupler");
+    public static final String COUPLER_TRACK_DECOUPLER =
+        format("tips.%railcraft.coupler_track.decoupler");
+    public static final String COUPLER_TRACK_AUTO_COUPLER =
+        format("tips.%railcraft.coupler_track.auto_coupler");
+    public static final String TRACK_KIT_CORNERS_UNSUPPORTED =
+        format("tips.%railcraft.track_kit.corners_unsupported");
+    public static final String TRACK_KIT_SLOPES_UNSUPPORTED =
+        format("tips.%railcraft.track_kit.slopes_unsupported");
+    public static final String TRACK_KIT_INVALID_TRACK_TYPE =
+        format("tips.%railcraft.track_kit.invalid_track_type");
+    public static final String MANIPULATOR_REDSTONE_MODE_COMPLETE =
+        format("tips.%railcraft.manipulator.redstone_mode.complete");
+    public static final String MANIPULATOR_REDSTONE_MODE_COMPLETE_DESC =
+        format("tips.%railcraft.manipulator.redstone_mode.complete.desc");
+    public static final String MANIPULATOR_REDSTONE_MODE_IMMEDIATE =
+        format("tips.%railcraft.manipulator.redstone_mode.immediate");
+    public static final String MANIPULATOR_REDSTONE_MODE_IMMEDIATE_DESC =
+        format("tips.%railcraft.manipulator.redstone_mode.immediate.desc");
+    public static final String MANIPULATOR_REDSTONE_MODE_MANUAL =
+        format("tips.%railcraft.manipulator.redstone_mode.manual");
+    public static final String MANIPULATOR_REDSTONE_MODE_MANUAL_DESC =
+        format("tips.%railcraft.manipulator.redstone_mode.manual.desc");
+    public static final String MANIPULATOR_REDSTONE_MODE_PARTIAL =
+        format("tips.%railcraft.manipulator.redstone_mode.partial");
+    public static final String MANIPULATOR_REDSTONE_MODE_PARTIAL_DESC =
+        format("tips.%railcraft.manipulator.redstone_mode.partial.desc");
+    public static final String MANIPULATOR_TRANSFER_MODE_ALL =
+        format("tips.%railcraft.manipulator.transfer_mode.all");
+    public static final String MANIPULATOR_TRANSFER_MODE_ALL_DESC =
+        format("tips.%railcraft.manipulator.transfer_mode.all.desc");
+    public static final String MANIPULATOR_TRANSFER_MODE_EXCESS =
+        format("tips.%railcraft.manipulator.transfer_mode.excess");
+    public static final String MANIPULATOR_TRANSFER_MODE_EXCESS_DESC =
+        format("tips.%railcraft.manipulator.transfer_mode.excess.desc");
+    public static final String MANIPULATOR_TRANSFER_MODE_STOCK =
+        format("tips.%railcraft.manipulator.transfer_mode.stock");
+    public static final String MANIPULATOR_TRANSFER_MODE_STOCK_DESC =
+        format("tips.%railcraft.manipulator.transfer_mode.stock.desc");
+    public static final String MANIPULATOR_TRANSFER_MODE_TRANSFER =
+        format("tips.%railcraft.manipulator.transfer_mode.transfer");
+    public static final String MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC =
+        format("tips.%railcraft.manipulator.transfer_mode.transfer.desc");
   }
 
   public static class Container {
@@ -202,7 +281,25 @@ public class Translations {
     public static final String SIGNAL_TUNER_SUCCESS = format("signal.%railcraft.tuner.success");
   }
 
-  public static class Advancment {
+  public static class SignalAspect {
+    public static final String GREEN = format("signal.%railcraft.aspect.green");
+    public static final String YELLOW = format("signal.%railcraft.aspect.yellow");
+    public static final String RED = format("signal.%railcraft.aspect.red");
+    public static final String BLINK_YELLOW = format("signal.%railcraft.aspect.blink_yellow");
+    public static final String BLINK_RED = format("signal.%railcraft.aspect.blink_red");
+    public static final String OFF = format("signal.%railcraft.aspect.off");
+  }
+
+  public static class SignalCapacitor {
+    public static final String RISING_EDGE = format("signal.%railcraft.capacitor.rising_edge");
+    public static final String RISING_EDGE_DESC =
+        format("signal.%railcraft.capacitor.rising_edge.desc");
+    public static final String FALLING_EDGE = format("signal.%railcraft.capacitor.falling_edge");
+    public static final String FALLING_EDGE_DESC =
+        format("signal.%railcraft.capacitor.falling_edge.desc");
+  }
+
+  public static class Advancement {
     public static class Tracks {
       public static final String ROOT = format("advancements.%railcraft.tracks.root.name");
       public static final String ROOT_DESC = format("advancements.%railcraft.tracks.root.desc");
@@ -270,6 +367,19 @@ public class Translations {
       public static final String SURPRISE_DESC =
           format("advancements.%railcraft.carts.surprise.desc");
     }
+  }
+
+  public static class Subtitle {
+    public static final String STEAM_WHISTLE =
+        format("subtitle.%railcraft.locomotive.steam.whistle");
+    public static final String ELECTRIC_WHISTLE =
+        format("subtitle.%railcraft.locomotive.electric.whistle");
+    public static final String STEAM_BURST =
+        format("subtitle.%railcraft.machine.steam.burst");
+    public static final String STEAM_HISS =
+        format("subtitle.%railcraft.machine.steam.hiss");
+    public static final String MACHINE_ZAP =
+        format("subtitle.%railcraft.machine.zap");
   }
 
   private static String format(String key) {

@@ -2,7 +2,7 @@
   "values": [
     "railcraft:signal_capacitor_box",
     "railcraft:signal_receiver_box",
-    "railcraft:block_signal_relay_box",
+    "railcraft:signal_block_relay_box",
     "railcraft:signal_sequencer_box"
   ]
 }
