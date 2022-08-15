@@ -53,7 +53,6 @@ public class RailcraftModelProvider implements DataProvider {
     Set<Item> skippedAutoModels = new HashSet<>();
     new RailcraftBlockModelGenerators(blockStateConsumer, modelConsumer, skippedAutoModels::add)
         .run();
-    new RailcraftItemModelGenerators(modelConsumer).run();
 
     RailcraftBlocks.entries().forEach(entry -> {
       var block = entry.get();
