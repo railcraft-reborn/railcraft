@@ -21,7 +21,7 @@ public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
 
   private int recipieRequiredTime = 12222222;
   private int currentTick = 0;
-  private Consumer<Void> callback;
+  private Runnable callback;
   private boolean shouldFire = false;
   // KEY INFO:
   // 1. required time | 2. currentTick (UNSETTABLE)
@@ -73,14 +73,14 @@ public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
     if (this.rollingProgress() == 1F) {
       this.shouldFire = false;
       if (callback != null) {
-        callback.accept(null);
+        callback.run();
       }
       return true;
     }
     return false;
   }
 
-  public void setOnFinishedCallback(Consumer<Void> callback) {
+  public void setOnFinishedCallback(Runnable callback) {
     this.callback = callback;
   }
 
@@ -136,7 +136,6 @@ public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
 
   @Override
   public void setItem(int slotID, ItemStack stack) {
-    // nothing here.
   }
 
   @Override
@@ -153,7 +152,6 @@ public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
 
   @Override
   public void clearContent() {
-    // nothing
   }
 
   @Override
