@@ -1,6 +1,5 @@
 package mods.railcraft.world.inventory;
 
-import java.util.Optional;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.crafting.RollingRecipe;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
@@ -18,11 +17,8 @@ import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ManualRollingMachineMenu extends AbstractContainerMenu {

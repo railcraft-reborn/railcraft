@@ -12,10 +12,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.function.Consumer;
 
 public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
 
@@ -58,15 +55,6 @@ public class ManualRollingMachineBlockEntity extends BaseContainerBlockEntity {
 
   public ManualRollingMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.MANUAL_ROLLING_MACHINE.get(), blockPos, blockState);
-  }
-
-  public ManualRollingMachineBlockEntity(BlockEntityType<?> type, BlockPos blockPos,
-      BlockState blockState) {
-    super(type, blockPos, blockState);
-  }
-
-  public void setRequiredTime(int requiredTime) {
-    this.recipieRequiredTime = requiredTime;
   }
 
   public boolean updateRollingStatus() {
