@@ -1,11 +1,11 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerManifest;
@@ -30,7 +30,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>
@@ -146,7 +146,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     this.chests =
         CompositeContainerManipulator.of(this.bufferContainer, this.getAdjacentContainers());
 
-    var cartInv = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+    var cartInv = cart.getCapability(ForgeCapabilities.ITEM_HANDLER,
         this.getFacing().getOpposite()).map(ContainerManipulator::of).orElse(null);
     if (cartInv == null) {
       sendCart(cart);
@@ -197,7 +197,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   protected boolean hasWorkForCart(AbstractMinecart cart) {
     var cartInv = cart
-        .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+        .getCapability(ForgeCapabilities.ITEM_HANDLER,
             this.getFacing().getOpposite())
         .map(ContainerManipulator::of)
         .orElse(null);
@@ -236,7 +236,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
-    return cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+    return cart.getCapability(ForgeCapabilities.ITEM_HANDLER,
         this.getFacing().getOpposite())
         .map(inventory -> inventory.getSlots() > 0).orElse(false)
         && super.canHandleCart(cart);

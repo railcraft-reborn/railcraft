@@ -25,6 +25,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PickaxeItem;
@@ -210,7 +211,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> COKE_BLOCK =
       deferredRegister.register("coal_coke_block",
-          () -> new BlockItem(RailcraftBlocks.COKE_BLOCK.get(), new Item.Properties().tab(TAB)));
+          () -> new CoalCokeBlockItem(new Properties().tab(TAB)));
 
   public static final RegistryObject<Item> STEEL_SHEARS =
       deferredRegister.register("steel_shears",
@@ -1262,14 +1263,8 @@ public class RailcraftItems {
   // Crafting Materials
   // ================================================================================
 
-  public static final RegistryObject<Item> COAL_COKE =
-      deferredRegister.register("coal_coke",
-          () -> new Item(new Item.Properties().tab(TAB)) {
-            @Override
-            public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-              return recipeType == RailcraftRecipeTypes.BLASTING.get() ? 3200 : 0;
-            }
-          });
+  public static final RegistryObject<Item> COAL_COKE = deferredRegister.register("coal_coke",
+      () -> new CoalCokeItem(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> STEEL_PLATE = registerBasic("steel_plate");
   public static final RegistryObject<Item> IRON_PLATE = registerBasic("iron_plate");
