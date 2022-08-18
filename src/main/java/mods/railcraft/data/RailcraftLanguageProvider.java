@@ -362,6 +362,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.MANIPULATOR_TRANSFER_MODE_STOCK_DESC, "Move until the destination matches the filter.");
     this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER, "Transfer");
     this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC, "Move exactly as much as is in the filter.");
+    this.add(Tips.COAL_COKE_BLOCK, "%s Fuel Units");
   }
 
   private void screenTranslations() {

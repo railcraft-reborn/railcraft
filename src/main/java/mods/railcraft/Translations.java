@@ -218,6 +218,8 @@ public class Translations {
         format("tips.%railcraft.manipulator.transfer_mode.transfer");
     public static final String MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC =
         format("tips.%railcraft.manipulator.transfer_mode.transfer.desc");
+
+    public static final String COAL_COKE_BLOCK = format("tips.%railcraft.coal_coke_block");
   }
 
   public static class Container {
