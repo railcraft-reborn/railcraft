@@ -1,12 +1,12 @@
 package mods.railcraft.util;
 
-import static net.minecraftforge.energy.CapabilityEnergy.ENERGY;
 import java.util.Arrays;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 
 /**
@@ -52,7 +52,7 @@ public class EnergyUtil {
     if (powerToTransfer <= 0) {
       return 0;
     }
-    return blockEntity.getCapability(ENERGY, side)
+    return blockEntity.getCapability(ForgeCapabilities.ENERGY, side)
         .filter(IEnergyStorage::canReceive)
         .map(storage -> storage.receiveEnergy(powerToTransfer, false))
         .orElse(0);
@@ -69,7 +69,7 @@ public class EnergyUtil {
       int pushPerSide, Direction side, Predicate<BlockEntity> filter) {
     return LevelUtil.getBlockEntity(level, blockPos.relative(side))
         .filter(filter)
-        .flatMap(target -> target.getCapability(ENERGY, side.getOpposite()).resolve())
+        .flatMap(target -> target.getCapability(ForgeCapabilities.ENERGY, side.getOpposite()).resolve())
         .filter(IEnergyStorage::canReceive)
         .map(receiver -> {
           int amountToPush = energyStorage.extractEnergy(pushPerSide, true);

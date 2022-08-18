@@ -1,7 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
 import javax.annotation.Nullable;
-import org.apache.commons.lang3.NotImplementedException;
 import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.core.Direction;
@@ -13,10 +12,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.apache.commons.lang3.NotImplementedException;
 
 public class EnergyMinecart extends RailcraftMinecart {
 
@@ -30,8 +30,8 @@ public class EnergyMinecart extends RailcraftMinecart {
   }
 
   protected EnergyMinecart(EntityType<?> type, double x, double y, double z,
-      Level world) {
-    super(type, x, y, z, world);
+      Level level) {
+    super(type, x, y, z, level);
   }
 
   @Override
@@ -41,7 +41,7 @@ public class EnergyMinecart extends RailcraftMinecart {
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    if (CapabilityEnergy.ENERGY == capability) {
+    if (ForgeCapabilities.ENERGY == capability) {
       return this.cartBattery.cast();
     }
     return super.getCapability(capability, facing);

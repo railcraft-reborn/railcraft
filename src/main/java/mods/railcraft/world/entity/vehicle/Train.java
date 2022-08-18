@@ -1,5 +1,8 @@
 package mods.railcraft.world.entity.vehicle;
 
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.MapMaker;
+import com.mojang.logging.LogUtils;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,10 +21,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import com.mojang.logging.LogUtils;
-import org.slf4j.Logger;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.MapMaker;
 import mods.railcraft.util.CompositeFluidHandler;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -34,11 +33,11 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import org.slf4j.Logger;
 
 /**
  * @author CovertJaguar (https://www.railcraft.info)
@@ -314,7 +313,7 @@ public final class Train implements Iterable<AbstractMinecart> {
 
   public Optional<IItemHandlerModifiable> getItemHandler() {
     List<IItemHandlerModifiable> cartHandlers = stream()
-        .flatMap(cart -> cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        .flatMap(cart -> cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
             .map(Stream::of)
             .orElse(Stream.empty()))
         .flatMap(FunctionalUtil.ofType(IItemHandlerModifiable.class))
@@ -326,7 +325,7 @@ public final class Train implements Iterable<AbstractMinecart> {
 
   public Optional<IFluidHandler> getFluidHandler() {
     List<IFluidHandler> cartHandlers = stream()
-        .flatMap(cart -> cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        .flatMap(cart -> cart.getCapability(ForgeCapabilities.FLUID_HANDLER)
             .map(Stream::of)
             .orElse(Stream.empty()))
         .collect(Collectors.toList());

@@ -10,7 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
 
@@ -53,7 +53,7 @@ public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
     return super.canHandleCart(cart)
         && cart
             .getCapability(
-                CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, this.getFacing().getOpposite())
+                ForgeCapabilities.ITEM_HANDLER, this.getFacing().getOpposite())
             .map(ContainerManipulator::of)
             .map(ContainerManipulator::hasItems)
             .orElse(false);
