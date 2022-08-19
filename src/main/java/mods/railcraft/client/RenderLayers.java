@@ -14,9 +14,6 @@ class RenderLayers {
     ItemBlockRenderTypes.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
 
 
-    cutout(RailcraftBlocks.FLUID_LOADER);
-    cutout(RailcraftBlocks.FLUID_UNLOADER);
-
     cutout(RailcraftBlocks.ELEVATOR_TRACK);
     cutout(RailcraftBlocks.FORCE_TRACK);
     cutout(RailcraftBlocks.ABANDONED_TRACK);

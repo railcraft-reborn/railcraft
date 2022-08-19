@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
-import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
@@ -58,7 +57,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -247,17 +245,6 @@ public class RailcraftBlockModelGenerators {
 
     this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
 
-    this.createTrivialCube(RailcraftBlocks.STEEL_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.BRASS_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.BRONZE_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.INVAR_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.LEAD_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.NICKEL_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.SILVER_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.TIN_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.ZINC_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.COKE_BLOCK.get());
-    this.createTrivialCube(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
@@ -279,14 +266,6 @@ public class RailcraftBlockModelGenerators {
       this.createPost(RailcraftBlocks.POST.variantFor(dyeColor).get());
     }
 
-    this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
-    this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
-    this.createManipulator(RailcraftBlocks.ITEM_LOADER.get());
-    this.createManipulator(RailcraftBlocks.ITEM_UNLOADER.get());
-    this.createDirectionalManipulator(RailcraftBlocks.ADVANCED_ITEM_LOADER.get(),
-        AdvancedItemLoaderBlock.FACING);
-    this.createDirectionalManipulator(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get(),
-        AdvancedItemLoaderBlock.FACING);
 
     this.createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
 
@@ -407,10 +386,6 @@ public class RailcraftBlockModelGenerators {
 
   private void skipAutoItemBlock(Block block) {
     this.skippedAutoModelsOutput.accept(block.asItem());
-  }
-
-  private void createTrivialCube(Block block) {
-    this.createTrivialBlock(block, TexturedModel.CUBE);
   }
 
   private void createTrivialBlock(Block block, TexturedModel.Provider textureFactory) {
@@ -734,76 +709,6 @@ public class RailcraftBlockModelGenerators {
         this.modelOutput);
   }
 
-  private void createFluidManipulator(Block block) {
-    this.createManipulator(block);
-    var model =
-        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_inventory",
-            new TextureMapping()
-                .put(TextureSlot.SIDE,
-                    new ResourceLocation(Railcraft.ID, "block/fluid_manipulator_side_inventory"))
-                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
-                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom")),
-            this.modelOutput);
-    this.delegateItemModel(block, model);
-  }
-
-  private void createManipulator(Block block) {
-    var model =
-        ModelTemplates.CUBE_BOTTOM_TOP.create(block, TextureMapping.cubeBottomTop(block),
-            this.modelOutput);
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block,
-        Variant.variant()
-            .with(VariantProperties.MODEL, model)));
-  }
-
-  private void createDirectionalManipulator(Block block, DirectionProperty facingProperty) {
-    var horizontalModel =
-        ModelTemplates.CUBE_ORIENTABLE.create(block, TextureMapping.orientableCubeOnlyTop(block),
-            this.modelOutput);
-    var upModel =
-        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_up",
-            new TextureMapping()
-                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
-                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_front"))
-                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_top")),
-            this.modelOutput);
-    var downModel =
-        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_down",
-            new TextureMapping()
-                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
-                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
-                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_front")),
-            this.modelOutput);
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-        .with(PropertyDispatch.property(facingProperty)
-            .generate(facing -> {
-              VariantProperties.Rotation yRot = VariantProperties.Rotation.R0;
-              VariantProperties.Rotation xRot = VariantProperties.Rotation.R0;
-              switch (facing) {
-                case SOUTH:
-                  yRot = VariantProperties.Rotation.R180;
-                  break;
-                case EAST:
-                  yRot = VariantProperties.Rotation.R90;
-                  break;
-                case WEST:
-                  yRot = VariantProperties.Rotation.R270;
-                  break;
-                case UP:
-                  return Variant.variant()
-                      .with(VariantProperties.MODEL, upModel);
-                case DOWN:
-                  return Variant.variant()
-                      .with(VariantProperties.MODEL, downModel);
-                default:
-                  break;
-              }
-              return Variant.variant()
-                  .with(VariantProperties.MODEL, horizontalModel)
-                  .with(VariantProperties.Y_ROT, yRot)
-                  .with(VariantProperties.X_ROT, xRot);
-            })));
-  }
 
   private void createPost(Block block) {
     var textures = TextureMapping.defaultTexture(block);
