@@ -5,20 +5,18 @@ import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOL
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.SteamTurbineBlock;
+import mods.railcraft.world.level.block.SteamTurbineBlock.Type;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -74,6 +72,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
         createFirebox(RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
         createFirebox(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
+
+        createSteamTurbine(RailcraftBlocks.STEAM_TURBINE.get());
     }
 
     private void createStrengthenedGlass(Block block) {
@@ -177,5 +177,46 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                 var lit = blockState.getValue(FireboxBlock.LIT);
                 return ConfiguredModel.builder().modelFile(lit ? litModel : model).build();
             });
+    }
+
+    private void createSteamTurbine(Block block) {
+        var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+
+        createSteamTurbineModel(block, sideTexture, "_inventory", false);
+        itemModels().withExistingParent(name(block),
+            modLoc(BLOCK_FOLDER + "/" + name(block, "_inventory")));
+
+        var noneVariant = models().cubeAll(name(block, "_side"), sideTexture);
+
+        getVariantBuilder(block)
+            .forAllStates(blockState -> {
+                var type = blockState.getValue(SteamTurbineBlock.TYPE);
+                var rotated = blockState.getValue(SteamTurbineBlock.ROTATED);
+
+                if(type == Type.NONE) {
+                    return ConfiguredModel.builder().modelFile(noneVariant).build();
+                } else {
+                    var model = this.createSteamTurbineModel(block, sideTexture, "_" + type.getSerializedName(),
+                        type != SteamTurbineBlock.Type.WINDOW);
+                    return ConfiguredModel.builder()
+                        .modelFile(model)
+                        .rotationY(rotated ? 90 : 0)
+                        .build();
+                }
+            });
+    }
+
+    private BlockModelBuilder createSteamTurbineModel(Block block, ResourceLocation sideTexture,
+        String suffix, boolean rotated) {
+        var frontTexture = TextureMapping.getBlockTexture(block, suffix);
+        var parent = modLoc(BLOCK_FOLDER + "/template_mirrored_cube");
+        return models().withExistingParent(name(block, suffix), parent)
+            .texture("down", sideTexture)
+            .texture("up", sideTexture)
+            .texture("north", rotated ? sideTexture : frontTexture)
+            .texture("south", rotated ? sideTexture : frontTexture)
+            .texture("east", rotated ? frontTexture : sideTexture)
+            .texture("west", rotated ? frontTexture : sideTexture)
+            .texture("particle", sideTexture);
     }
 }

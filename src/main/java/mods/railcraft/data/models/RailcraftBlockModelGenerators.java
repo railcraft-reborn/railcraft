@@ -1,7 +1,6 @@
 package mods.railcraft.data.models;
 
 import com.google.gson.JsonElement;
-import java.util.EnumMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -10,7 +9,6 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
@@ -232,7 +230,6 @@ public class RailcraftBlockModelGenerators {
     this.createSteamBoilerTank(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
 
 
-    this.createSteamTurbine(RailcraftBlocks.STEAM_TURBINE.get());
 
     this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
         TexturedModel.CUBE_TOP_BOTTOM);
@@ -633,39 +630,6 @@ public class RailcraftBlockModelGenerators {
                 .with(VariantProperties.MODEL, northEastWestModel))
             .select(SteamBoilerTankBlock.ConnectionType.NORTH_SOUTH_WEST, Variant.variant()
                 .with(VariantProperties.MODEL, northSouthWestModel))));
-  }
-
-  private void createSteamTurbine(Block block) {
-    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
-    this.delegateItemModel(block,
-        this.createSteamTurbineModel(block, sideTexture, "_inventory", false));
-
-    var noneVariant = Variant.variant()
-        .with(VariantProperties.MODEL,
-            ModelTemplates.CUBE_ALL.createWithSuffix(block, "_side",
-                new TextureMapping().put(TextureSlot.ALL, sideTexture),
-                this.modelOutput));
-
-    var models =
-        new EnumMap<SteamTurbineBlock.Type, ResourceLocation>(SteamTurbineBlock.Type.class);
-    for (var type : SteamTurbineBlock.Type.values()) {
-      if (type == SteamTurbineBlock.Type.NONE) {
-        continue;
-      }
-      models.put(type,
-          this.createSteamTurbineModel(block, sideTexture, "_" + type.getSerializedName(),
-              type != SteamTurbineBlock.Type.WINDOW));
-    }
-
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-        .with(PropertyDispatch.properties(SteamTurbineBlock.TYPE, SteamTurbineBlock.ROTATED)
-            .generate((type, rotated) -> type == SteamTurbineBlock.Type.NONE
-                ? noneVariant
-                : Variant.variant()
-                    .with(VariantProperties.MODEL, models.get(type))
-                    .with(VariantProperties.Y_ROT, rotated
-                        ? VariantProperties.Rotation.R90
-                        : VariantProperties.Rotation.R0))));
   }
 
   private ResourceLocation createSteamTurbineModel(Block block, ResourceLocation sideTexture,
