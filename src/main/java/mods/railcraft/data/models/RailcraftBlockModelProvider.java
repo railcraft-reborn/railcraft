@@ -16,6 +16,7 @@ import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -48,6 +49,11 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             createStrengthenedGlass(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
             createStrengthenedGlass(RailcraftBlocks.IRON_TANK_GAUGE.variantFor(dyeColor).get());
             createStrengthenedGlass(RailcraftBlocks.STEEL_TANK_GAUGE.variantFor(dyeColor).get());
+
+            createTankValve(RailcraftBlocks.IRON_TANK_VALVE.variantFor(dyeColor).get(),
+                RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
+            createTankValve(RailcraftBlocks.STEEL_TANK_VALVE.variantFor(dyeColor).get(),
+                RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
         }
 
 
@@ -218,5 +224,35 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .texture("east", rotated ? frontTexture : sideTexture)
             .texture("west", rotated ? frontTexture : sideTexture)
             .texture("particle", sideTexture);
+    }
+
+    private void createTankValve(Block block, Block wallBlock) {
+        var verticalModel = models().withExistingParent(name(block), "cube")
+            .texture("down", TextureMapping.getBlockTexture(block, "_top"))
+            .texture("up", TextureMapping.getBlockTexture(block, "_top"))
+            .texture("north", TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .texture("south", TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .texture("east", TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .texture("west", TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .texture("particle", TextureMapping.getBlockTexture(wallBlock, "_top"));
+
+        var horizontalModel = models().withExistingParent(name(block, "_horizontal"), "cube")
+            .texture("down", TextureMapping.getBlockTexture(wallBlock, "_top"))
+            .texture("up", TextureMapping.getBlockTexture(wallBlock, "_top"))
+            .texture("north", TextureMapping.getBlockTexture(block, "_front"))
+            .texture("south", TextureMapping.getBlockTexture(block, "_front"))
+            .texture("east", TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .texture("west", TextureMapping.getBlockTexture(wallBlock, "_side"))
+            .texture("particle", TextureMapping.getBlockTexture(wallBlock, "_top"));
+
+        getVariantBuilder(block)
+            .forAllStates(blockState -> {
+                var axis = blockState.getValue(BlockStateProperties.AXIS);
+                return switch (axis) {
+                    case Y -> ConfiguredModel.builder().modelFile(verticalModel).build();
+                    case Z -> ConfiguredModel.builder().modelFile(horizontalModel).build();
+                    case X -> ConfiguredModel.builder().modelFile(horizontalModel).rotationY(90).build();
+                };
+            });
     }
 }

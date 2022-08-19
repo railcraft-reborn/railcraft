@@ -248,11 +248,6 @@ public class RailcraftBlockModelGenerators {
     this.createFeedStation();
 
     for (DyeColor dyeColor : DyeColor.values()) {
-      this.createTankValve(RailcraftBlocks.IRON_TANK_VALVE.variantFor(dyeColor).get(),
-          RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
-      this.createTankValve(RailcraftBlocks.STEEL_TANK_VALVE.variantFor(dyeColor).get(),
-          RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
-
       this.createTankWall(RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
       this.createTankWall(RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
 
@@ -439,38 +434,6 @@ public class RailcraftBlockModelGenerators {
         new ResourceLocation(Railcraft.ID, "block/" + name + model.suffix.orElse("")),
         textureFactory.apply(new ResourceLocation(Railcraft.ID, "block/" + name)),
         this.modelOutput);
-  }
-
-  private void createTankValve(Block block, Block wallBlock) {
-    var verticalModel = ModelTemplates.CUBE.create(block,
-        new TextureMapping()
-            .put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(wallBlock, "_top"))
-            .put(TextureSlot.NORTH, TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .put(TextureSlot.SOUTH, TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .put(TextureSlot.EAST, TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .put(TextureSlot.WEST, TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .put(TextureSlot.UP, TextureMapping.getBlockTexture(block, "_top"))
-            .put(TextureSlot.DOWN, TextureMapping.getBlockTexture(block, "_top")),
-        this.modelOutput);
-    var horizontalModel = ModelTemplates.CUBE.createWithSuffix(block, "_horizontal",
-        new TextureMapping()
-            .put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(wallBlock, "_top"))
-            .put(TextureSlot.NORTH, TextureMapping.getBlockTexture(block, "_front"))
-            .put(TextureSlot.SOUTH, TextureMapping.getBlockTexture(block, "_front"))
-            .put(TextureSlot.EAST, TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .put(TextureSlot.WEST, TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .put(TextureSlot.UP, TextureMapping.getBlockTexture(wallBlock, "_top"))
-            .put(TextureSlot.DOWN, TextureMapping.getBlockTexture(wallBlock, "_top")),
-        this.modelOutput);
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-        .with(PropertyDispatch.property(BlockStateProperties.AXIS)
-            .select(Direction.Axis.Y,
-                Variant.variant().with(VariantProperties.MODEL, verticalModel))
-            .select(Direction.Axis.Z,
-                Variant.variant().with(VariantProperties.MODEL, horizontalModel))
-            .select(Direction.Axis.X,
-                Variant.variant().with(VariantProperties.MODEL, horizontalModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
   }
 
   private void createTankWall(Block block) {
