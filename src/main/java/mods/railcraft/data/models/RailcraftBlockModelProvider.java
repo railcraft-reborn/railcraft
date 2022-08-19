@@ -6,8 +6,14 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
+import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
+import net.minecraft.data.models.blockstates.Variant;
+import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
@@ -65,6 +71,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         createManipulator(RailcraftBlocks.ITEM_UNLOADER.get());
         createDirectionalManipulator(RailcraftBlocks.ADVANCED_ITEM_LOADER.get());
         createDirectionalManipulator(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get());
+
+        createFirebox(RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
+        createFirebox(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
     }
 
     private void createStrengthenedGlass(Block block) {
@@ -153,5 +162,20 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                     .rotationY(yRot)
                     .build();
             }, AdvancedItemLoaderBlock.POWERED);
+    }
+
+    private void createFirebox(Block block) {
+        var endTexture = TextureMapping.getBlockTexture(block, "_end");
+        var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+        var sideLitTexture = TextureMapping.getBlockTexture(block, "_side_lit");
+
+        var model = models().cubeColumn(name(block), sideTexture, endTexture);
+        var litModel = models().cubeColumn(name(block, "_lit"), sideLitTexture, endTexture);
+
+        getVariantBuilder(block)
+            .forAllStates(blockState -> {
+                var lit = blockState.getValue(FireboxBlock.LIT);
+                return ConfiguredModel.builder().modelFile(lit ? litModel : model).build();
+            });
     }
 }

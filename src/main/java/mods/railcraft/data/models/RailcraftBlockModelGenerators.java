@@ -1,23 +1,20 @@
 package mods.railcraft.data.models;
 
+import com.google.gson.JsonElement;
 import java.util.EnumMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
-import com.google.gson.JsonElement;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
-import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
-import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
@@ -60,6 +57,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 public class RailcraftBlockModelGenerators {
 
@@ -233,8 +231,6 @@ public class RailcraftBlockModelGenerators {
     this.createSteamBoilerTank(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get());
     this.createSteamBoilerTank(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
 
-    this.createFirebox(RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
-    this.createFirebox(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
 
     this.createSteamTurbine(RailcraftBlocks.STEAM_TURBINE.get());
 
@@ -577,28 +573,6 @@ public class RailcraftBlockModelGenerators {
             })));
 
     this.createSimpleFlatItemModel(block);
-  }
-
-  private void createFirebox(Block block) {
-    var endTexture = TextureMapping.getBlockTexture(block, "_end");
-    var model = ModelTemplates.CUBE_COLUMN.create(block,
-        new TextureMapping()
-            .put(TextureSlot.END, endTexture)
-            .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side")),
-        this.modelOutput);
-
-    var litModel = ModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_lit",
-        new TextureMapping()
-            .put(TextureSlot.END, endTexture)
-            .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_lit")),
-        this.modelOutput);
-
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-        .with(PropertyDispatch.property(FireboxBlock.LIT)
-            .select(false, Variant.variant()
-                .with(VariantProperties.MODEL, model))
-            .select(true, Variant.variant()
-                .with(VariantProperties.MODEL, litModel))));
   }
 
   private void createSteamBoilerTank(Block block) {
