@@ -43,6 +43,21 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         return name(block) + suffix;
     }
 
+    private BlockModelBuilder cube(String name, ResourceLocation parent, ResourceLocation down,
+        ResourceLocation up,
+        ResourceLocation north,
+        ResourceLocation south, ResourceLocation east, ResourceLocation west,
+        ResourceLocation particle) {
+        return models().withExistingParent(name, parent)
+            .texture("down", down)
+            .texture("up", up)
+            .texture("north", north)
+            .texture("south", south)
+            .texture("east", east)
+            .texture("west", west)
+            .texture("particle", particle);
+    }
+
     @Override
     protected void registerStatesAndModels() {
         for (DyeColor dyeColor : DyeColor.values()) {
@@ -216,34 +231,34 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         String suffix, boolean rotated) {
         var frontTexture = TextureMapping.getBlockTexture(block, suffix);
         var parent = modLoc(BLOCK_FOLDER + "/template_mirrored_cube");
-        return models().withExistingParent(name(block, suffix), parent)
-            .texture("down", sideTexture)
-            .texture("up", sideTexture)
-            .texture("north", rotated ? sideTexture : frontTexture)
-            .texture("south", rotated ? sideTexture : frontTexture)
-            .texture("east", rotated ? frontTexture : sideTexture)
-            .texture("west", rotated ? frontTexture : sideTexture)
-            .texture("particle", sideTexture);
+        return cube(name(block, suffix), parent,
+            sideTexture,
+            sideTexture,
+            rotated ? sideTexture : frontTexture,
+            rotated ? sideTexture : frontTexture,
+            rotated ? frontTexture : sideTexture,
+            rotated ? frontTexture : sideTexture,
+            sideTexture);
     }
 
     private void createTankValve(Block block, Block wallBlock) {
-        var verticalModel = models().withExistingParent(name(block), "cube")
-            .texture("down", TextureMapping.getBlockTexture(block, "_top"))
-            .texture("up", TextureMapping.getBlockTexture(block, "_top"))
-            .texture("north", TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .texture("south", TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .texture("east", TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .texture("west", TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .texture("particle", TextureMapping.getBlockTexture(wallBlock, "_top"));
+        var verticalModel = cube(name(block), mcLoc("cube"),
+            TextureMapping.getBlockTexture(block, "_top"),
+            TextureMapping.getBlockTexture(block, "_top"),
+            TextureMapping.getBlockTexture(wallBlock, "_side"),
+            TextureMapping.getBlockTexture(wallBlock, "_side"),
+            TextureMapping.getBlockTexture(wallBlock, "_side"),
+            TextureMapping.getBlockTexture(wallBlock, "_side"),
+            TextureMapping.getBlockTexture(wallBlock, "_top"));
 
-        var horizontalModel = models().withExistingParent(name(block, "_horizontal"), "cube")
-            .texture("down", TextureMapping.getBlockTexture(wallBlock, "_top"))
-            .texture("up", TextureMapping.getBlockTexture(wallBlock, "_top"))
-            .texture("north", TextureMapping.getBlockTexture(block, "_front"))
-            .texture("south", TextureMapping.getBlockTexture(block, "_front"))
-            .texture("east", TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .texture("west", TextureMapping.getBlockTexture(wallBlock, "_side"))
-            .texture("particle", TextureMapping.getBlockTexture(wallBlock, "_top"));
+        var horizontalModel = cube(name(block, "_horizontal"), mcLoc("cube"),
+            TextureMapping.getBlockTexture(wallBlock, "_top"),
+            TextureMapping.getBlockTexture(wallBlock, "_top"),
+            TextureMapping.getBlockTexture(block, "_front"),
+            TextureMapping.getBlockTexture(block, "_front"),
+            TextureMapping.getBlockTexture(wallBlock, "_side"),
+            TextureMapping.getBlockTexture(wallBlock, "_side"),
+            TextureMapping.getBlockTexture(wallBlock, "_top"));
 
         getVariantBuilder(block)
             .forAllStates(blockState -> {
