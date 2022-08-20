@@ -19,7 +19,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
     }
 
     private ItemModelBuilder basicCustomItem(Item item, String model) {
-        var rl= Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+        var rl = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
         return getBuilder(item.toString())
             .parent(new ModelFile.UncheckedModelFile("item/" + model))
             .texture("layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
