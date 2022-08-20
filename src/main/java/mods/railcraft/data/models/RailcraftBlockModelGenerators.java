@@ -217,8 +217,6 @@ public class RailcraftBlockModelGenerators {
     this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_LEVER.get());
     this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
 
-    this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
-
     this.createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
 
     this.createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
@@ -338,21 +336,6 @@ public class RailcraftBlockModelGenerators {
 
   private void skipAutoItemBlock(Block block) {
     this.skippedAutoModelsOutput.accept(block.asItem());
-  }
-
-  private void createTrivialBlock(Block block) {
-    this.createTrivialBlock(block, block);
-  }
-
-  private void createTrivialBlock(Block block, Block block2) {
-    this.blockStateOutput.accept(createSimpleBlock(block,
-        ModelLocationUtils.getModelLocation(block2)));
-  }
-
-  private static MultiVariantGenerator createSimpleBlock(Block block,
-      ResourceLocation modelLocation) {
-    return MultiVariantGenerator.multiVariant(block,
-        Variant.variant().with(VariantProperties.MODEL, modelLocation));
   }
 
   private void createSimpleFlatItemModel(Block block) {

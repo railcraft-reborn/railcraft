@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-20T21:30:11.350652571	Block States: railcraft
+// 1.19.2	2022-08-20T21:55:53.173803166	Block States: railcraft
 a99ffdb7d82508f90443353ae02d93f108b550a8 assets/railcraft/blockstates/advanced_item_loader.json
 4d29d589152971eda406827a6d1b49e773ec95c9 assets/railcraft/blockstates/advanced_item_unloader.json
 6cf953def7c498854c263d5c80ca840b3ea71589 assets/railcraft/blockstates/black_iron_tank_gauge.json
@@ -31,6 +31,7 @@ e4a1c807d75d6f17b950f947f0f5c83bac483c4a assets/railcraft/blockstates/brown_stre
 b4e853b1ce74e365dd60a6f295e2dcb21bba7e7b assets/railcraft/blockstates/chipped_steel_anvil.json
 e19bbf2ec78271b88bc00c2991f855c3aded5ec1 assets/railcraft/blockstates/coal_coke_block.json
 9379ccd2a46308fdfde70134ad039f5d38eb7e51 assets/railcraft/blockstates/coke_oven_bricks.json
+9405520af92cd9a65d960e2672acda529c1f85bd assets/railcraft/blockstates/creosote.json
 92c1b0e657972a937f79126b66fb62bf5f04d47c assets/railcraft/blockstates/crushed_obsidian.json
 1b992bbae9fdaa4755d4866d9a76715709195001 assets/railcraft/blockstates/crusher.json
 160610cd2aa8a68688d3a59bc91e4cac3536dda9 assets/railcraft/blockstates/cyan_iron_tank_gauge.json
@@ -248,6 +249,7 @@ bc7ac19acf053b29c6c5243937253bfb61caa038 assets/railcraft/models/block/coal_coke
 169178e5293709be4d1c0203341cba689ce9e451 assets/railcraft/models/block/coke_oven_bricks.json
 962eb353412c3945bce5743af20b8d5cbbbf4deb assets/railcraft/models/block/coke_oven_bricks_window.json
 49383396a4f945ac58a62fb4690f4aefe39cfaf1 assets/railcraft/models/block/coke_oven_bricks_window_lit.json
+5b766e0f61b66c7c6e57476273d2725d32055dd6 assets/railcraft/models/block/creosote.json
 dbe5dce77498d79c801f3d8685874caa9b9083bf assets/railcraft/models/block/crushed_obsidian.json
 d3ece91438ebc8a2e36a21f9ced928adb900e228 assets/railcraft/models/block/crusher.json
 a6469f4b2dea060dba6b20a0bbec48714946b8b0 assets/railcraft/models/block/cyan_iron_tank_gauge_bottom.json

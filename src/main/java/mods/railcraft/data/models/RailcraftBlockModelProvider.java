@@ -21,6 +21,7 @@ import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -99,6 +100,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         simpleBlock(RailcraftBlocks.ZINC_BLOCK.get());
         simpleBlock(RailcraftBlocks.COKE_BLOCK.get());
         simpleBlock(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+
+        fluidBlock(RailcraftBlocks.CREOSOTE.get());
 
         createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
         createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
@@ -465,5 +468,10 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .texture("body", base)
             .texture("particle", base);
         horizontalBlock(block, model, 0);
+    }
+
+    public void fluidBlock(LiquidBlock block) {
+        var model = models().withExistingParent(name(block), mcLoc("water"));
+        simpleBlock(block, model);
     }
 }

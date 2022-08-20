@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-20T21:30:11.36071144	Railcraft Block State Definitions
+// 1.19.2	2022-08-20T21:57:08.285177054	Railcraft Block State Definitions
 b7fce4a3220edeb2904e53e6377a86a7b237ffc5 assets/railcraft/blockstates/abandoned_activator_track.json
 ff1b13ba4045bb558e3d132ec8830eb9d226af6f assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -16,7 +16,6 @@ b6d828bf51fb1a39a5c23bf7210f4f2c28510e89 assets/railcraft/blockstates/abandoned_
 3f5fd11e3d852a01116043ab2e4bdc3c02a1add3 assets/railcraft/blockstates/abandoned_track.json
 a2d74d835b553a98845dd8f80db35fd6871594a0 assets/railcraft/blockstates/abandoned_turnout_track.json
 e692a4bb96ac98858d3f5cab422196caacb8152f assets/railcraft/blockstates/abandoned_wye_track.json
-9405520af92cd9a65d960e2672acda529c1f85bd assets/railcraft/blockstates/creosote.json
 4a59b530c132bb7722b6deb1e903b4d537646557 assets/railcraft/blockstates/electric_activator_track.json
 d05393ba15b271909cc7afad6d1ed33abc806a22 assets/railcraft/blockstates/electric_booster_track.json
 e06bf6d60b861499faca5da2f917b49686553533 assets/railcraft/blockstates/electric_buffer_stop_track.json
