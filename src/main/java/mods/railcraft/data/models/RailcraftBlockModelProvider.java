@@ -13,8 +13,14 @@ import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
+import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
+import net.minecraft.data.models.blockstates.Variant;
+import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
@@ -63,6 +69,13 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .texture("particle", particle);
     }
 
+    private BlockModelBuilder sideEnd(String name, ResourceLocation parent, ResourceLocation side,
+        ResourceLocation end) {
+        return models().withExistingParent(name, parent)
+            .texture("side", side)
+            .texture("end", end);
+    }
+
     @Override
     protected void registerStatesAndModels() {
         for (DyeColor dyeColor : DyeColor.values()) {
@@ -107,6 +120,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         createFirebox(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
         createFurnaceMultiblockBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
         createFurnaceMultiblockBricks(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
+        createSteamBoilerTank(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get());
+        createSteamBoilerTank(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
 
         createSteamTurbine(RailcraftBlocks.STEAM_TURBINE.get());
     }
@@ -396,5 +411,48 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .part()
             .modelFile(doubleConnectionModel).uvLock(true).rotationY(270).addModel()
             .condition(PostBlock.WEST, Connection.DOUBLE).end();
+    }
+
+    private void createSteamBoilerTank(Block block) {
+        var end = TextureMapping.getBlockTexture(block, "_end");
+        var side = TextureMapping.getBlockTexture(block, "_side");
+
+        var steamBoilerTemplate = modLoc("template_steam_boiler_tank");
+        var steamBoilerNETemplate = modLoc("template_steam_boiler_tank_ne");
+        var steamBoilerNEWTemplate = modLoc("template_steam_boiler_tank_new");
+        var steamBoilerNSETemplate = modLoc("template_steam_boiler_tank_nse");
+        var steamBoilerNSWTemplate = modLoc("template_steam_boiler_tank_nsw");
+        var steamBoilerNWTemplate = modLoc("template_steam_boiler_tank_nw");
+        var steamBoilerSETemplate = modLoc("template_steam_boiler_tank_se");
+        var steamBoilerSEWTemplate = modLoc("template_steam_boiler_tank_sew");
+        var steamBoilerSWTemplate = modLoc("template_steam_boiler_tank_sw");
+
+        var model = sideEnd(name(block), steamBoilerTemplate, side, end);
+        var allModel = models().cubeColumn(name(block, "_all"), side, end);
+        var northEastModel = sideEnd(name(block, "_ne"), steamBoilerNETemplate, side, end);
+        var northEastWestModel = sideEnd(name(block, "_new"), steamBoilerNEWTemplate, side, end);
+        var northSouthEastModel = sideEnd(name(block, "_nse"), steamBoilerNSETemplate, side, end);
+        var northSouthWestModel = sideEnd(name(block, "_nsw"), steamBoilerNSWTemplate, side, end);
+        var northWestModel = sideEnd(name(block, "_nw"), steamBoilerNWTemplate, side, end);
+        var southEastModel = sideEnd(name(block, "_se"), steamBoilerSETemplate, side, end);
+        var southEastWestModel = sideEnd(name(block, "_sew"), steamBoilerSEWTemplate, side, end);
+        var southWestModel = sideEnd(name(block, "_sw"), steamBoilerSWTemplate, side, end);
+
+        getVariantBuilder(block)
+            .forAllStates(blockState -> {
+                var type = blockState.getValue(SteamBoilerTankBlock.CONNECTION_TYPE);
+                return ConfiguredModel.builder().modelFile(switch (type) {
+                    case ALL -> allModel;
+                    case NONE -> model;
+                    case NORTH_EAST -> northEastModel;
+                    case SOUTH_EAST -> southEastModel;
+                    case SOUTH_WEST -> southWestModel;
+                    case NORTH_WEST -> northWestModel;
+                    case NORTH_SOUTH_EAST -> northSouthEastModel;
+                    case SOUTH_EAST_WEST -> southEastWestModel;
+                    case NORTH_EAST_WEST -> northEastWestModel;
+                    case NORTH_SOUTH_WEST -> northSouthWestModel;
+                }).build();
+            });
     }
 }
