@@ -4,6 +4,7 @@ import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOL
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
+import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock.Type;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -97,6 +99,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
         createFirebox(RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
         createFirebox(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
+        createFurnaceMultiblockBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
+        createFurnaceMultiblockBricks(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
 
         createSteamTurbine(RailcraftBlocks.STEAM_TURBINE.get());
     }
@@ -201,6 +205,32 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .forAllStates(blockState -> {
                 var lit = blockState.getValue(FireboxBlock.LIT);
                 return ConfiguredModel.builder().modelFile(lit ? litModel : model).build();
+            });
+    }
+
+    private void createFurnaceMultiblockBricks(Block block) {
+        var bricksModel = cubeAll(block);
+        var blockTexture = TextureMapping.getBlockTexture(block);
+        var sideTexture = TextureMapping.getBlockTexture(block, "_window");
+        var sideLitTexture = TextureMapping.getBlockTexture(block, "_window_lit");
+
+        var windowModel = models().cubeBottomTop(name(block, "_window"), sideTexture,
+            blockTexture, blockTexture);
+        var litWindowModel = models().cubeBottomTop(name(block, "_window_lit"), sideLitTexture,
+            blockTexture, blockTexture);
+
+        getVariantBuilder(block)
+            .forAllStates(blockState -> {
+                var lit = blockState.getValue(FurnaceMultiblockBlock.LIT);
+                var window = blockState.getValue(FurnaceMultiblockBlock.WINDOW);
+                ModelFile model;
+                if(!window)
+                    model = bricksModel;
+                else if (lit)
+                    model = litWindowModel;
+                else
+                    model = windowModel;
+                return ConfiguredModel.builder().modelFile(model).build();
             });
     }
 

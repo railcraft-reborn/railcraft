@@ -7,7 +7,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
-import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.post.Column;
@@ -243,8 +242,6 @@ public class RailcraftBlockModelGenerators {
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
-    this.createFurnaceMultiblockBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
-    this.createFurnaceMultiblockBricks(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
 
     for (DyeColor dyeColor : DyeColor.values()) {
       this.createPost(RailcraftBlocks.POST.variantFor(dyeColor).get());
@@ -449,36 +446,6 @@ public class RailcraftBlockModelGenerators {
             .select(RailShape.EAST_WEST,
                 Variant.variant().with(VariantProperties.MODEL, model)
                     .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
-  }
-
-  private void createFurnaceMultiblockBricks(Block block) {
-    var bricksModel = TexturedModel.CUBE.create(block, this.modelOutput);
-    var windowModel =
-        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_window",
-            new TextureMapping()
-                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_window"))
-                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block))
-                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block)),
-            this.modelOutput);
-    var litWindowModel =
-        ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(block, "_window_lit",
-            new TextureMapping()
-                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_window_lit"))
-                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block))
-                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block)),
-            this.modelOutput);
-
-    this.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block).with(
-            PropertyDispatch.properties(FurnaceMultiblockBlock.LIT, FurnaceMultiblockBlock.WINDOW)
-                .select(false, false, Variant.variant()
-                    .with(VariantProperties.MODEL, bricksModel))
-                .select(true, false, Variant.variant()
-                    .with(VariantProperties.MODEL, bricksModel))
-                .select(false, true, Variant.variant()
-                    .with(VariantProperties.MODEL, windowModel))
-                .select(true, true, Variant.variant()
-                    .with(VariantProperties.MODEL, litWindowModel))));
   }
 
   private static PropertyDispatch createHorizontalFacingDispatchAlt() {
