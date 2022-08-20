@@ -89,6 +89,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         simpleBlock(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
         createCubeColumnBlock(RailcraftBlocks.FEED_STATION.get());
+        createCubeTopBottomBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
+        createCubeTopBlock(RailcraftBlocks.CRUSHER.get());
 
         createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
         createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
@@ -308,6 +310,21 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     private void createCubeColumnBlock(Block block) {
         var model = models().cubeColumn(name(block), TextureMapping.getBlockTexture(block, "_side"),
             TextureMapping.getBlockTexture(block, "_top"));
+        simpleBlock(block, model);
+    }
+
+    private void createCubeTopBottomBlock(Block block) {
+        var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+        var bottomTexture = TextureMapping.getBlockTexture(block, "_bottom");
+        var topTexture = TextureMapping.getBlockTexture(block, "_top");
+        var model = models().cubeBottomTop(name(block), sideTexture, bottomTexture, topTexture);
+        simpleBlock(block, model);
+    }
+
+    private void createCubeTopBlock(Block block) {
+        var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+        var topTexture = TextureMapping.getBlockTexture(block, "_top");
+        var model = models().cubeTop(name(block), sideTexture, topTexture);
         simpleBlock(block, model);
     }
 }

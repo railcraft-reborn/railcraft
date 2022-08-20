@@ -228,13 +228,6 @@ public class RailcraftBlockModelGenerators {
     this.createSteamBoilerTank(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get());
     this.createSteamBoilerTank(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
 
-
-
-    this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
-        TexturedModel.CUBE_TOP_BOTTOM);
-    this.createTrivialBlock(RailcraftBlocks.CRUSHER.get(),
-        TexturedModel.CUBE_TOP);
-
     this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
 
 
@@ -367,11 +360,6 @@ public class RailcraftBlockModelGenerators {
 
   private void skipAutoItemBlock(Block block) {
     this.skippedAutoModelsOutput.accept(block.asItem());
-  }
-
-  private void createTrivialBlock(Block block, TexturedModel.Provider textureFactory) {
-    this.blockStateOutput.accept(
-        createSimpleBlock(block, textureFactory.create(block, this.modelOutput)));
   }
 
   private void createTrivialBlock(Block block) {
