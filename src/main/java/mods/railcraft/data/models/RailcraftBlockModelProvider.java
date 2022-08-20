@@ -69,8 +69,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                 RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
             createTankValve(RailcraftBlocks.STEEL_TANK_VALVE.variantFor(dyeColor).get(),
                 RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
-            createTankWall(RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
-            createTankWall(RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
+            createCubeColumnBlock(RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
+            createCubeColumnBlock(RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
         }
 
 
@@ -85,6 +85,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         simpleBlock(RailcraftBlocks.ZINC_BLOCK.get());
         simpleBlock(RailcraftBlocks.COKE_BLOCK.get());
         simpleBlock(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+
+        createCubeColumnBlock(RailcraftBlocks.FEED_STATION.get());
 
         createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
         createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
@@ -273,7 +275,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             });
     }
 
-    private void createTankWall(Block block) {
+    private void createCubeColumnBlock(Block block) {
         var model = models().cubeColumn(name(block), TextureMapping.getBlockTexture(block, "_side"),
             TextureMapping.getBlockTexture(block, "_top"));
         simpleBlock(block, model);

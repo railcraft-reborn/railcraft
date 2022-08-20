@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-20T12:00:21.266843887	Railcraft Block State Definitions
+// 1.19.2	2022-08-20T12:24:07.499213912	Railcraft Block State Definitions
 b7fce4a3220edeb2904e53e6377a86a7b237ffc5 assets/railcraft/blockstates/abandoned_activator_track.json
 ff1b13ba4045bb558e3d132ec8830eb9d226af6f assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -44,7 +44,6 @@ b7494d023f1e4c8a3b134e8c3afce01ada6e8dce assets/railcraft/blockstates/electric_t
 29d1a0bacb6866decc613b953fb8051d8e497e01 assets/railcraft/blockstates/electric_turnout_track.json
 6e9f2c20be91deace6b3814da6b4631cdeda3c2f assets/railcraft/blockstates/electric_wye_track.json
 9a9a9ae7fadce00e2d9047880026d5cbd539a6e0 assets/railcraft/blockstates/elevator_track.json
-daa9c70386aad5dde293d34579e0953fb064cae4 assets/railcraft/blockstates/feed_station.json
 74e9f4984b906cd933f4cf1c527b755a81c3ec04 assets/railcraft/blockstates/force_track.json
 0c7fe77161d6f2e1dc68782a2500b0f044254263 assets/railcraft/blockstates/gray_post.json
 a693b4e565d0dd2843da7246676170ad9c4b0cb6 assets/railcraft/blockstates/green_post.json
@@ -267,7 +266,6 @@ c71e0d403892a45e1904ec4f727958de40e9cc3a assets/railcraft/models/block/embarking
 fdb3157590fd6aacd76a9514370f51a66002da1a assets/railcraft/models/block/embarking_track_on_raised_sw.json
 041199333ee86d9fd9747036cdeab9aa586b9e85 assets/railcraft/models/block/embarking_track_raised_ne.json
 8845418b5eeed098613ace06ba5c36838c56b7db assets/railcraft/models/block/embarking_track_raised_sw.json
-3853674a66fd91d879cebe318ffb659750f9fd10 assets/railcraft/models/block/feed_station.json
 c241428c4db62fe62f7e50196578569e3007b335 assets/railcraft/models/block/force_track.json
 0ea30634e1f5348813927abcd2952f3c863710b6 assets/railcraft/models/block/gray_post_double_connection.json
 f4f28644e31047732aa8805bdecb8d008d8f0cbc assets/railcraft/models/block/gray_post_full_column.json

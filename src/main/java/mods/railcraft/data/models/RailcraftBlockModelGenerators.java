@@ -245,7 +245,6 @@ public class RailcraftBlockModelGenerators {
 
     this.createFurnaceMultiblockBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
     this.createFurnaceMultiblockBricks(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
-    this.createFeedStation();
 
     for (DyeColor dyeColor : DyeColor.values()) {
       this.createPost(RailcraftBlocks.POST.variantFor(dyeColor).get());
@@ -480,14 +479,6 @@ public class RailcraftBlockModelGenerators {
                     .with(VariantProperties.MODEL, windowModel))
                 .select(true, true, Variant.variant()
                     .with(VariantProperties.MODEL, litWindowModel))));
-  }
-
-  private void createFeedStation() {
-    var block = RailcraftBlocks.FEED_STATION.get();
-    var mapping = TextureMapping.column(TextureMapping.getBlockTexture(block, "_side"),
-        TextureMapping.getBlockTexture(block, "_top"));
-    var model = ModelTemplates.CUBE_COLUMN.create(block, mapping, this.modelOutput);
-    this.blockStateOutput.accept(createSimpleBlock(block, model));
   }
 
   private static PropertyDispatch createHorizontalFacingDispatchAlt() {
