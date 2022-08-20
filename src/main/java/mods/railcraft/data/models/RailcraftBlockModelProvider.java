@@ -69,6 +69,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                 RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
             createTankValve(RailcraftBlocks.STEEL_TANK_VALVE.variantFor(dyeColor).get(),
                 RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
+            createTankWall(RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
+            createTankWall(RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
         }
 
 
@@ -269,5 +271,11 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                     case X -> ConfiguredModel.builder().modelFile(horizontalModel).rotationY(90).build();
                 };
             });
+    }
+
+    private void createTankWall(Block block) {
+        var model = models().cubeColumn(name(block), TextureMapping.getBlockTexture(block, "_side"),
+            TextureMapping.getBlockTexture(block, "_top"));
+        simpleBlock(block, model);
     }
 }

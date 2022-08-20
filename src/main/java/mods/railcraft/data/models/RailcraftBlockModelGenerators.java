@@ -248,9 +248,6 @@ public class RailcraftBlockModelGenerators {
     this.createFeedStation();
 
     for (DyeColor dyeColor : DyeColor.values()) {
-      this.createTankWall(RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
-      this.createTankWall(RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
-
       this.createPost(RailcraftBlocks.POST.variantFor(dyeColor).get());
     }
 
@@ -436,11 +433,6 @@ public class RailcraftBlockModelGenerators {
         this.modelOutput);
   }
 
-  private void createTankWall(Block block) {
-    this.blockStateOutput.accept(
-        createSimpleBlock(block, TexturedModel.COLUMN.create(block, this.modelOutput)));
-  }
-
   private void createSteelAnvil(Block block) {
     var model = RailcraftTexturedModel.STEEL_ANVIL.create(block, this.modelOutput);
     this.blockStateOutput.accept(
@@ -594,22 +586,6 @@ public class RailcraftBlockModelGenerators {
             .select(SteamBoilerTankBlock.ConnectionType.NORTH_SOUTH_WEST, Variant.variant()
                 .with(VariantProperties.MODEL, northSouthWestModel))));
   }
-
-  private ResourceLocation createSteamTurbineModel(Block block, ResourceLocation sideTexture,
-      String suffix, boolean rotated) {
-    var frontTexture = TextureMapping.getBlockTexture(block, suffix);
-    return RailcraftModelTemplates.MIRRORED_CUBE.createWithOverride(block, suffix,
-        new TextureMapping()
-            .put(TextureSlot.PARTICLE, sideTexture)
-            .put(TextureSlot.NORTH, rotated ? sideTexture : frontTexture)
-            .put(TextureSlot.SOUTH, rotated ? sideTexture : frontTexture)
-            .put(TextureSlot.EAST, rotated ? frontTexture : sideTexture)
-            .put(TextureSlot.WEST, rotated ? frontTexture : sideTexture)
-            .put(TextureSlot.UP, sideTexture)
-            .put(TextureSlot.DOWN, sideTexture),
-        this.modelOutput);
-  }
-
 
   private void createPost(Block block) {
     var textures = TextureMapping.defaultTexture(block);
