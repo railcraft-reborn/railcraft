@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 
 class RenderLayers {

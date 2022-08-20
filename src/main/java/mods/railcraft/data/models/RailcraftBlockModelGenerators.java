@@ -9,9 +9,6 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
-import mods.railcraft.world.level.block.post.Column;
-import mods.railcraft.world.level.block.post.Connection;
-import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
@@ -43,9 +40,7 @@ import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
-import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -234,11 +229,6 @@ public class RailcraftBlockModelGenerators {
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
-
-
-    for (DyeColor dyeColor : DyeColor.values()) {
-      this.createPost(RailcraftBlocks.POST.variantFor(dyeColor).get());
-    }
 
 
     this.createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
@@ -531,101 +521,6 @@ public class RailcraftBlockModelGenerators {
                 .with(VariantProperties.MODEL, northEastWestModel))
             .select(SteamBoilerTankBlock.ConnectionType.NORTH_SOUTH_WEST, Variant.variant()
                 .with(VariantProperties.MODEL, northSouthWestModel))));
-  }
-
-  private void createPost(Block block) {
-    var textures = TextureMapping.defaultTexture(block);
-    var fullColumnModel = RailcraftModelTemplates.POST_COLUMN.create(
-        block, textures, this.modelOutput);
-    var doubleConnectionModel = RailcraftModelTemplates.POST_DOUBLE_CONNECTION.create(
-        block, textures, this.modelOutput);
-    var topColumnModel = RailcraftModelTemplates.POST_TOP_COLUMN.create(
-        block, textures, this.modelOutput);
-    var middleColumnModel = RailcraftModelTemplates.POST_SMALL_COLUMN.create(
-        block, textures, this.modelOutput);
-    var platformModel = RailcraftModelTemplates.POST_PLATFORM.create(
-        block, textures, this.modelOutput);
-    var singleConnectionModel = RailcraftModelTemplates.POST_SINGLE_CONNECTION.create(
-        block, textures, this.modelOutput);
-    var inventoryModel =
-        RailcraftModelTemplates.POST_INVENTORY.create(block, textures, this.modelOutput);
-    this.delegateItemModel(block, inventoryModel);
-    this.blockStateOutput.accept(
-        MultiPartGenerator.multiPart(block)
-            .with(
-                Condition.condition()
-                    .term(PostBlock.COLUMN, Column.PLATFORM),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, platformModel))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.COLUMN, Column.TOP),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, topColumnModel))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.COLUMN, Column.SMALL),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, middleColumnModel))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.COLUMN, Column.FULL),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, fullColumnModel))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.NORTH, Connection.SINGLE),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, singleConnectionModel)
-                    .with(VariantProperties.UV_LOCK, true))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.NORTH, Connection.DOUBLE),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, doubleConnectionModel)
-                    .with(VariantProperties.UV_LOCK, true))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.SOUTH, Connection.SINGLE),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, singleConnectionModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                    .with(VariantProperties.UV_LOCK, true))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.SOUTH, Connection.DOUBLE),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, doubleConnectionModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                    .with(VariantProperties.UV_LOCK, true))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.EAST, Connection.SINGLE),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, singleConnectionModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                    .with(VariantProperties.UV_LOCK, true))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.EAST, Connection.DOUBLE),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, doubleConnectionModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                    .with(VariantProperties.UV_LOCK, true))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.WEST, Connection.SINGLE),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, singleConnectionModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                    .with(VariantProperties.UV_LOCK, true))
-            .with(
-                Condition.condition()
-                    .term(PostBlock.WEST, Connection.DOUBLE),
-                Variant.variant()
-                    .with(VariantProperties.MODEL, doubleConnectionModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                    .with(VariantProperties.UV_LOCK, true)));
   }
 
   private void createAbandonedTracks(Block block, Block lockingTrackBlock,

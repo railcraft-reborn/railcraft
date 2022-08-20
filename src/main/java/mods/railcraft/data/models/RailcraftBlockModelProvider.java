@@ -9,6 +9,9 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock.Type;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
+import mods.railcraft.world.level.block.post.Column;
+import mods.railcraft.world.level.block.post.Connection;
+import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import net.minecraft.data.DataGenerator;
@@ -73,6 +76,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                 RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
             createCubeColumnBlock(RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
             createCubeColumnBlock(RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
+            createPost(RailcraftBlocks.POST.variantFor(dyeColor).get());
         }
 
 
@@ -326,5 +330,71 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         var topTexture = TextureMapping.getBlockTexture(block, "_top");
         var model = models().cubeTop(name(block), sideTexture, topTexture);
         simpleBlock(block, model);
+    }
+
+    private void createPost(Block block) {
+        var texture = TextureMapping.defaultTexture(block).get(TextureSlot.TEXTURE);
+        var postFullColumnTemplate = modLoc("template_post_full_column");
+        var postDoubleConnectionTemplate = modLoc("template_post_double_connection");
+        var postTopColumnTemplate = modLoc("template_post_top_column");
+        var postSmallColumnTemplate = modLoc("template_post_small_column");
+        var postPlatformTemplate = modLoc("template_post_platform");
+        var postSingleConnectionTemplate = modLoc("template_post_single_connection");
+        var postInventoryTemplate = modLoc("post_inventory");
+
+        var fullColumnModel = models()
+            .singleTexture(name(block, "_full_column"), postFullColumnTemplate, texture);
+        var doubleConnectionModel = models()
+            .singleTexture(name(block, "_double_connection"), postDoubleConnectionTemplate, texture);
+        var topColumnModel = models()
+            .singleTexture(name(block, "_top_column"), postTopColumnTemplate, texture);
+        var smallColumnModel = models()
+            .singleTexture(name(block, "_small_column"), postSmallColumnTemplate, texture);
+        var platformModel = models()
+            .singleTexture(name(block, "_platform"), postPlatformTemplate, texture);
+        var singleConnectionModel = models()
+            .singleTexture(name(block, "_single_connection"), postSingleConnectionTemplate, texture);
+        var inventoryModel = models()
+            .singleTexture(name(block, "_inventory"), postInventoryTemplate, texture);
+
+        itemModels().withExistingParent(name(block), inventoryModel.getLocation());
+
+        getMultipartBuilder(block)
+            .part()
+            .modelFile(platformModel).addModel()
+            .condition(PostBlock.COLUMN, Column.PLATFORM).end()
+            .part()
+            .modelFile(topColumnModel).addModel()
+            .condition(PostBlock.COLUMN, Column.TOP).end()
+            .part()
+            .modelFile(smallColumnModel).addModel()
+            .condition(PostBlock.COLUMN, Column.SMALL).end()
+            .part()
+            .modelFile(fullColumnModel).addModel()
+            .condition(PostBlock.COLUMN, Column.FULL).end()
+            .part()
+            .modelFile(singleConnectionModel).uvLock(true).addModel()
+            .condition(PostBlock.NORTH, Connection.SINGLE).end()
+            .part()
+            .modelFile(doubleConnectionModel).uvLock(true).addModel()
+            .condition(PostBlock.NORTH, Connection.DOUBLE).end()
+            .part()
+            .modelFile(singleConnectionModel).uvLock(true).rotationY(180).addModel()
+            .condition(PostBlock.SOUTH, Connection.SINGLE).end()
+            .part()
+            .modelFile(doubleConnectionModel).uvLock(true).rotationY(180).addModel()
+            .condition(PostBlock.SOUTH, Connection.DOUBLE).end()
+            .part()
+            .modelFile(singleConnectionModel).uvLock(true).rotationY(90).addModel()
+            .condition(PostBlock.EAST, Connection.SINGLE).end()
+            .part()
+            .modelFile(doubleConnectionModel).uvLock(true).rotationY(90).addModel()
+            .condition(PostBlock.EAST, Connection.DOUBLE).end()
+            .part()
+            .modelFile(singleConnectionModel).uvLock(true).rotationY(270).addModel()
+            .condition(PostBlock.WEST, Connection.SINGLE).end()
+            .part()
+            .modelFile(doubleConnectionModel).uvLock(true).rotationY(270).addModel()
+            .condition(PostBlock.WEST, Connection.DOUBLE).end();
     }
 }
