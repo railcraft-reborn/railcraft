@@ -33,7 +33,6 @@ import net.minecraft.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.DelegatedModel;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
@@ -220,12 +219,6 @@ public class RailcraftBlockModelGenerators {
 
     this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
 
-
-    this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
-    this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
-    this.createSteelAnvil(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
-
-
     this.createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
 
     this.createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
@@ -362,11 +355,6 @@ public class RailcraftBlockModelGenerators {
         Variant.variant().with(VariantProperties.MODEL, modelLocation));
   }
 
-  private void delegateItemModel(Block block, ResourceLocation modelLocation) {
-    this.modelOutput.accept(ModelLocationUtils.getModelLocation(block.asItem()),
-        new DelegatedModel(modelLocation));
-  }
-
   private void createSimpleFlatItemModel(Block block) {
     Item item = block.asItem();
     if (item != Items.AIR) {
@@ -402,12 +390,6 @@ public class RailcraftBlockModelGenerators {
         this.modelOutput);
   }
 
-  private void createSteelAnvil(Block block) {
-    var model = RailcraftTexturedModel.STEEL_ANVIL.create(block, this.modelOutput);
-    this.blockStateOutput.accept(
-        createSimpleBlock(block, model).with(createHorizontalFacingDispatchAlt()));
-  }
-
   private void createForceTrack(Block block) {
     var model = RailcraftModelTemplates.FORCE_TRACK.create(
         block, TextureMapping.rail(block), this.modelOutput);
@@ -419,17 +401,6 @@ public class RailcraftBlockModelGenerators {
             .select(RailShape.EAST_WEST,
                 Variant.variant().with(VariantProperties.MODEL, model)
                     .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
-  }
-
-  private static PropertyDispatch createHorizontalFacingDispatchAlt() {
-    return PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
-        .select(Direction.SOUTH, Variant.variant())
-        .select(Direction.WEST,
-            Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .select(Direction.NORTH,
-            Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .select(Direction.EAST,
-            Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
   }
 
   private void createElevatorTrack(Block block) {

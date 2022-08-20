@@ -16,11 +16,6 @@ import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
@@ -104,6 +99,10 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         simpleBlock(RailcraftBlocks.ZINC_BLOCK.get());
         simpleBlock(RailcraftBlocks.COKE_BLOCK.get());
         simpleBlock(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+
+        createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
+        createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
+        createSteelAnvil(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
         createCubeColumnBlock(RailcraftBlocks.FEED_STATION.get());
         createCubeTopBottomBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
@@ -454,5 +453,17 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                     case NORTH_SOUTH_WEST -> northSouthWestModel;
                 }).build();
             });
+    }
+
+    private void createSteelAnvil(Block block) {
+        var base = TextureMapping.getBlockTexture(RailcraftBlocks.STEEL_ANVIL.get());
+        var top = TextureMapping.getBlockTexture(block, "_top");
+
+        var template = mcLoc("template_anvil");
+        var model = models().withExistingParent(name(block), template)
+            .texture("top", top)
+            .texture("body", base)
+            .texture("particle", base);
+        horizontalBlock(block, model, 0);
     }
 }

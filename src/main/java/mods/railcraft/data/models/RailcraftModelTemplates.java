@@ -20,8 +20,6 @@ public class RailcraftModelTemplates {
   public static final ResourceLocation BUFFER_STOP =
       new ResourceLocation(Railcraft.ID, "block/buffer_stop");
 
-  public static final ModelTemplate STEEL_ANVIL = create("template_steel_anvil", TextureSlot.TOP);
-
   private static ModelTemplate create(String name, TextureSlot... textureAliases) {
     return new ModelTemplate(Optional.of(new ResourceLocation(Railcraft.ID, "block/" + name)),
         Optional.empty(), textureAliases);
