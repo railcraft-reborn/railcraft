@@ -10,7 +10,6 @@ import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
-import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
@@ -217,8 +216,6 @@ public class RailcraftBlockModelGenerators {
     this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_LEVER.get());
     this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
 
-    this.createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
-
     this.createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
 
     this.createAbandonedTracks(
@@ -384,32 +381,6 @@ public class RailcraftBlockModelGenerators {
             .select(RailShape.EAST_WEST,
                 Variant.variant().with(VariantProperties.MODEL, model)
                     .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
-  }
-
-  private void createElevatorTrack(Block block) {
-    var model =
-        RailcraftModelTemplates.ELEVATOR_TRACK.create(block, TextureMapping.defaultTexture(block),
-            this.modelOutput);
-    var activeModel =
-        this.createSuffixedVariant(block, "_on", RailcraftModelTemplates.ELEVATOR_TRACK,
-            TextureMapping::defaultTexture);
-
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-        .with(PropertyDispatch
-            .properties(ElevatorTrackBlock.POWERED, ElevatorTrackBlock.FACING)
-            .generate((powered, facing) -> {
-              var yRot = switch (facing) {
-                case SOUTH -> VariantProperties.Rotation.R180;
-                case EAST -> VariantProperties.Rotation.R90;
-                case WEST -> VariantProperties.Rotation.R270;
-                default -> VariantProperties.Rotation.R0;
-              };
-              return Variant.variant()
-                  .with(VariantProperties.MODEL, powered ? activeModel : model)
-                  .with(VariantProperties.Y_ROT, yRot);
-            })));
-
-    this.createSimpleFlatItemModel(block);
   }
 
   private void createAbandonedTracks(Block block, Block lockingTrackBlock,

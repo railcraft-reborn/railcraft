@@ -15,6 +15,7 @@ import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
+import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
@@ -126,6 +127,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         createSteamBoilerTank(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
 
         createSteamTurbine(RailcraftBlocks.STEAM_TURBINE.get());
+
+        createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
     }
 
     private void createStrengthenedGlass(Block block) {
@@ -473,5 +476,38 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     public void fluidBlock(LiquidBlock block) {
         var model = models().withExistingParent(name(block), mcLoc("water"));
         simpleBlock(block, model);
+    }
+
+    private void createElevatorTrack(Block block) {
+        var texture =  TextureMapping.defaultTexture(block).get(TextureSlot.TEXTURE);
+        var textureOn =  TextureMapping.getBlockTexture(block, "_on");
+        var template = modLoc("template_elevator_track");
+
+        var model = models()
+            .singleTexture(name(block), template, texture)
+            .renderType(CUTOUT);
+        var activeModel = models()
+            .singleTexture(name(block, "_on"), template, textureOn)
+            .renderType(CUTOUT);
+
+        getVariantBuilder(block)
+            .forAllStates(blockState -> {
+                var powered = blockState.getValue(ElevatorTrackBlock.POWERED);
+                var facing = blockState.getValue(ElevatorTrackBlock.FACING);
+
+                var yRot = switch (facing) {
+                    case SOUTH -> 180;
+                    case EAST -> 90;
+                    case WEST -> 270;
+                    default -> 0;
+                };
+                return ConfiguredModel.builder()
+                    .modelFile(powered ? activeModel : model)
+                    .rotationY(yRot)
+                    .build();
+            });
+
+        itemModels().withExistingParent(block.asItem().toString(), "item/generated")
+            .texture("layer0", modLoc("block/" + key(block).getPath()));
     }
 }

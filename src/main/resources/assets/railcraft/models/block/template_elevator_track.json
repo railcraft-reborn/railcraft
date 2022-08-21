@@ -1,8 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"particle": "#texture",
-		"texture": "railcraft:block/elevator_track"
+		"particle": "#texture"
 	},
 	"elements": [
 		{

@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-20T21:55:53.173803166	Block States: railcraft
+// 1.19.2	2022-08-21T18:23:32.250257327	Block States: railcraft
 a99ffdb7d82508f90443353ae02d93f108b550a8 assets/railcraft/blockstates/advanced_item_loader.json
 4d29d589152971eda406827a6d1b49e773ec95c9 assets/railcraft/blockstates/advanced_item_unloader.json
 6cf953def7c498854c263d5c80ca840b3ea71589 assets/railcraft/blockstates/black_iron_tank_gauge.json
@@ -43,6 +43,7 @@ ae6948c995ef11a6578a91f32c2462d49fe2d357 assets/railcraft/blockstates/cyan_steel
 2e3a6922bd639f28bdf4f04c05328f3f9d35d00b assets/railcraft/blockstates/cyan_steel_tank_wall.json
 d285467930cd91718f2c53793ddfe5b0d789007c assets/railcraft/blockstates/cyan_strengthened_glass.json
 e73989ef6d1bfaf06c174658c9ddb0a05107d3a5 assets/railcraft/blockstates/damaged_steel_anvil.json
+4abcc221c993cbf0781d4369132b328ca6f230de assets/railcraft/blockstates/elevator_track.json
 daa9c70386aad5dde293d34579e0953fb064cae4 assets/railcraft/blockstates/feed_station.json
 dfcd4322747af04dee1e0752504c83755455cd26 assets/railcraft/blockstates/fluid_fueled_firebox.json
 d0033564ba044554fcc76cb596c8d74885f593bb assets/railcraft/blockstates/fluid_loader.json
@@ -278,6 +279,8 @@ b630d92fae8b74fa92658b91f17ba5edd7887deb assets/railcraft/models/block/cyan_stre
 8b4baf7ae4098d20a199b10e430bfa71735047b2 assets/railcraft/models/block/cyan_strengthened_glass_single.json
 46b95860c7bcae6209938ea8d6c79c84bf2b94d8 assets/railcraft/models/block/cyan_strengthened_glass_top.json
 7554b6d9a2a627ae30ccccb08ba2f61ccd5fd30b assets/railcraft/models/block/damaged_steel_anvil.json
+294d902efdcfefe330264195b6ee338b35a6e4be assets/railcraft/models/block/elevator_track.json
+4984a55bddb6e5e769bc199733412ebd75f4db8e assets/railcraft/models/block/elevator_track_on.json
 3853674a66fd91d879cebe318ffb659750f9fd10 assets/railcraft/models/block/feed_station.json
 30502b8aa337e834ac81a03c55ca558f56eae58e assets/railcraft/models/block/fluid_fueled_firebox.json
 c70f5dc109ad3f792030eec26850a008247cf3bd assets/railcraft/models/block/fluid_fueled_firebox_lit.json
@@ -641,6 +644,7 @@ dff112dfe71db9573920e18ec96226843bbd67a0 assets/railcraft/models/item/cyan_iron_
 eea23eb8e2966857e6f9ac7f2961eea2c0a18bb9 assets/railcraft/models/item/cyan_post.json
 e999bed66fd6947918c0353ca64a242cdba28ff1 assets/railcraft/models/item/cyan_steel_tank_gauge.json
 cfe6c942d38710ef8e253d6bb3fdb1acd76bb7f6 assets/railcraft/models/item/cyan_strengthened_glass.json
+1641bfe541d38f789281b0104d05ce37447c54eb assets/railcraft/models/item/elevator_track.json
 090e59272a7eb9f6ab90eb582d30981a04b60b61 assets/railcraft/models/item/fluid_loader.json
 4cd92a11d29f7f3c5627f236052c9c807ca994e5 assets/railcraft/models/item/fluid_unloader.json
 70fc47360d97d2fa51b26427b56b6db3a7de4a81 assets/railcraft/models/item/gray_iron_tank_gauge.json

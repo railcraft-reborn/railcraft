@@ -8,9 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RailcraftModelTemplates {
 
-  public static final ModelTemplate ELEVATOR_TRACK =
-      create("template_elevator_track", TextureSlot.TEXTURE);
-
   public static final ModelTemplate FORCE_TRACK =
       create("template_force_track", TextureSlot.RAIL);
 

@@ -13,7 +13,6 @@ class RenderLayers {
     ItemBlockRenderTypes.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
 
 
-    cutout(RailcraftBlocks.ELEVATOR_TRACK);
     cutout(RailcraftBlocks.FORCE_TRACK);
     cutout(RailcraftBlocks.ABANDONED_TRACK);
     cutout(RailcraftBlocks.ABANDONED_LOCKING_TRACK);
