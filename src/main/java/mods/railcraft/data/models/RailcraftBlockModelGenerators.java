@@ -21,8 +21,6 @@ import mods.railcraft.world.level.block.track.outfitted.LocomotiveTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
-import net.minecraft.core.Direction;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.data.models.blockstates.Condition;
 import net.minecraft.data.models.blockstates.MultiPartGenerator;
@@ -351,13 +349,6 @@ public class RailcraftBlockModelGenerators {
         this.modelOutput);
   }
 
-  private ResourceLocation createSuffixedVariant(Block block, String suffix,
-      ModelTemplate model, Function<ResourceLocation, TextureMapping> textureFactory) {
-    return model.createWithSuffix(block, suffix,
-        textureFactory.apply(TextureMapping.getBlockTexture(block, suffix)),
-        this.modelOutput);
-  }
-
   private ResourceLocation createVariant(String name,
       ModelTemplate model, Function<ResourceLocation, TextureMapping> textureFactory) {
     return model.create(
@@ -501,7 +492,6 @@ public class RailcraftBlockModelGenerators {
     this.createActiveOutfittedTrack(embarkingTrackBlock, true, false, outfittedTrackModels,
         this.embarkingTrack, this.activeEmbarkingTrack);
     this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
-    this.createWyeTrack(wyeTrackBlock);
     this.createJunctionTrack(junctionTrackBlock);
     this.createActiveOutfittedTrack(launcherTrackBlock, false, false, outfittedTrackModels,
         this.launcherTrackModels, this.activeLauncherTrackModels);
@@ -524,7 +514,6 @@ public class RailcraftBlockModelGenerators {
     this.createActiveOutfittedTrack(boosterTrackBlock, true, false, outfittedTrackModels,
         this.boosterTrackModels, this.activeBoosterTrackModels);
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
-    this.createWyeTrack(wyeTrackBlock);
     this.createJunctionTrack(junctionTrackBlock);
     this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
   }
@@ -569,44 +558,6 @@ public class RailcraftBlockModelGenerators {
             .select(RailShape.NORTH_EAST, Variant.variant()
                 .with(VariantProperties.MODEL, cornerModel)
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))));
-  }
-
-  private void createWyeTrack(Block block) {
-    var eastModel = this.createSuffixedVariant(block, "_east",
-        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    var eastSwitchedModel = this.createSuffixedVariant(block, "_east_switched",
-        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    var westModel = this.createSuffixedVariant(block, "_west",
-        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    var westSwitchedModel = this.createSuffixedVariant(block, "_west_switched",
-        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-        .with(PropertyDispatch.properties(SwitchTrackBlock.SHAPE,
-            ReversibleOutfittedTrackBlock.REVERSED, SwitchTrackBlock.SWITCHED)
-            .generate((railShape, reversed, switched) -> {
-              Direction facing = ReversibleOutfittedTrackBlock.getDirection(railShape, reversed);
-              switch (facing) {
-                case NORTH:
-                  return Variant.variant()
-                      .with(VariantProperties.MODEL, switched ? eastSwitchedModel : eastModel)
-                      .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
-                case SOUTH:
-                  return Variant.variant()
-                      .with(VariantProperties.MODEL, switched ? westSwitchedModel : westModel)
-                      .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
-                case EAST:
-                  return Variant.variant()
-                      .with(VariantProperties.MODEL, switched ? westSwitchedModel : westModel);
-                case WEST:
-                  return Variant.variant()
-                      .with(VariantProperties.MODEL, switched ? eastSwitchedModel : eastModel);
-                default:
-                  throw new UnsupportedOperationException();
-              }
-            })));
-
-    this.createSimpleFlatItemModel(block, "_east");
   }
 
   private void createJunctionTrack(Block block) {

@@ -20,12 +20,8 @@ import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
@@ -148,6 +144,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         createTurnoutTrack(RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get());
         createTurnoutTrack(RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get());
         createTurnoutTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get());
+
+        createWyeTrack(RailcraftBlocks.ABANDONED_WYE_TRACK.get());
+        createWyeTrack(RailcraftBlocks.ELECTRIC_WYE_TRACK.get());
+        createWyeTrack(RailcraftBlocks.IRON_WYE_TRACK.get());
+        createWyeTrack(RailcraftBlocks.REINFORCED_WYE_TRACK.get());
+        createWyeTrack(RailcraftBlocks.STRAP_IRON_WYE_TRACK.get());
+        createWyeTrack(RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get());
+        createWyeTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get());
     }
 
     private void createStrengthenedGlass(Block block) {
@@ -617,5 +621,56 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
         itemModels().withExistingParent(name(block), "item/generated")
             .texture("layer0", modLoc("block/" + name(block, "_north")));
+    }
+
+    private void createWyeTrack(Block block) {
+        var eastTexture = TextureMapping.getBlockTexture(block, "_east");
+        var eastSwitchedTexture = TextureMapping.getBlockTexture(block, "_east_switched");
+        var westTexture = TextureMapping.getBlockTexture(block, "_west");
+        var westSwitchedTexture = TextureMapping.getBlockTexture(block, "_west_switched");
+
+        var template = mcLoc("rail_flat");
+
+        var eastModel = models()
+            .singleTexture(name(block, "_east"), template, "rail", eastTexture)
+            .renderType(CUTOUT);
+        var eastSwitchedModel = models()
+            .singleTexture(name(block, "_east_switched"), template, "rail", eastSwitchedTexture)
+            .renderType(CUTOUT);
+        var westModel = models()
+            .singleTexture(name(block, "_west"), template, "rail", westTexture)
+            .renderType(CUTOUT);
+        var westSwitchedModel = models()
+            .singleTexture(name(block, "_west_switched"), template, "rail", westSwitchedTexture)
+            .renderType(CUTOUT);
+
+
+        getVariantBuilder(block)
+            .forAllStatesExcept(blockState -> {
+                var railShape = blockState.getValue(SwitchTrackBlock.SHAPE);
+                var reversed = blockState.getValue(ReversibleOutfittedTrackBlock.REVERSED);
+                var switched = blockState.getValue(SwitchTrackBlock.SWITCHED);
+
+                var facing = ReversibleOutfittedTrackBlock.getDirection(railShape, reversed);
+                return switch (facing) {
+                    case NORTH -> ConfiguredModel.builder()
+                        .modelFile(switched ? eastSwitchedModel : eastModel)
+                        .rotationY(90)
+                        .build();
+                    case SOUTH -> ConfiguredModel.builder()
+                        .modelFile(switched ? westSwitchedModel : westModel)
+                        .rotationY(90)
+                        .build();
+                    case EAST -> ConfiguredModel.builder()
+                        .modelFile(switched ? westSwitchedModel : westModel)
+                        .build();
+                    case WEST -> ConfiguredModel.builder()
+                        .modelFile(switched ? eastSwitchedModel : eastModel)
+                        .build();
+                    default -> throw new UnsupportedOperationException();
+                };
+            }, WyeTrackBlock.WATERLOGGED);
+        itemModels().withExistingParent(name(block), "item/generated")
+            .texture("layer0", modLoc("block/" + name(block, "_east")));
     }
 }
