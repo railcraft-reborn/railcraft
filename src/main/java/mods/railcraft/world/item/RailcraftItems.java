@@ -16,6 +16,7 @@ import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
@@ -35,7 +36,9 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -1379,7 +1382,18 @@ public class RailcraftItems {
               new Item.Properties()
                   .stacksTo(1)
                   .craftRemainder(Items.BUCKET)
-                  .tab(TAB)));
+                  .tab(TAB)) {
+            @Override
+            public ICapabilityProvider initCapabilities(ItemStack stack,
+                @Nullable CompoundTag nbt) {
+              return new FluidBucketWrapper(stack);
+            }
+
+            @Override
+            public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+              return 800;
+            }
+          });
 
   public static final RegistryObject<Item> CREOSOTE_BOTTLE =
       deferredRegister.register("creosote_bottle",
