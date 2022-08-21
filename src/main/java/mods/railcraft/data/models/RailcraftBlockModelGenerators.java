@@ -22,7 +22,6 @@ import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.data.models.blockstates.Condition;
@@ -502,7 +501,6 @@ public class RailcraftBlockModelGenerators {
     this.createActiveOutfittedTrack(embarkingTrackBlock, true, false, outfittedTrackModels,
         this.embarkingTrack, this.activeEmbarkingTrack);
     this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
-    this.createTurnoutTrack(turnoutTrackBlock);
     this.createWyeTrack(wyeTrackBlock);
     this.createJunctionTrack(junctionTrackBlock);
     this.createActiveOutfittedTrack(launcherTrackBlock, false, false, outfittedTrackModels,
@@ -526,7 +524,6 @@ public class RailcraftBlockModelGenerators {
     this.createActiveOutfittedTrack(boosterTrackBlock, true, false, outfittedTrackModels,
         this.boosterTrackModels, this.activeBoosterTrackModels);
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
-    this.createTurnoutTrack(turnoutTrackBlock);
     this.createWyeTrack(wyeTrackBlock);
     this.createJunctionTrack(junctionTrackBlock);
     this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
@@ -572,68 +569,6 @@ public class RailcraftBlockModelGenerators {
             .select(RailShape.NORTH_EAST, Variant.variant()
                 .with(VariantProperties.MODEL, cornerModel)
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))));
-  }
-
-  private void createTurnoutTrack(Block block) {
-    var northModel = this.createSuffixedVariant(block, "_north",
-        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    var northSwitchedModel = this.createSuffixedVariant(block, "_north_switched",
-        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    var southModel = this.createSuffixedVariant(block, "_south",
-        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-    var southSwitchedModel = this.createSuffixedVariant(block, "_south_switched",
-        ModelTemplates.RAIL_FLAT, TextureMapping::rail);
-
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-        .with(PropertyDispatch.properties(SwitchTrackBlock.SHAPE,
-            ReversibleOutfittedTrackBlock.REVERSED, TurnoutTrackBlock.MIRRORED,
-            SwitchTrackBlock.SWITCHED)
-            .select(RailShape.NORTH_SOUTH, false, false, false, Variant.variant() // North
-                .with(VariantProperties.MODEL, northModel))
-            .select(RailShape.NORTH_SOUTH, false, false, true, Variant.variant() // North
-                .with(VariantProperties.MODEL, northSwitchedModel))
-            .select(RailShape.NORTH_SOUTH, true, false, false, Variant.variant() // South
-                .with(VariantProperties.MODEL, northModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .select(RailShape.NORTH_SOUTH, true, false, true, Variant.variant() // South
-                .with(VariantProperties.MODEL, northSwitchedModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .select(RailShape.NORTH_SOUTH, false, true, false, Variant.variant() // North
-                .with(VariantProperties.MODEL, southModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .select(RailShape.NORTH_SOUTH, false, true, true, Variant.variant() // North
-                .with(VariantProperties.MODEL, southSwitchedModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .select(RailShape.NORTH_SOUTH, true, true, false, Variant.variant() // South
-                .with(VariantProperties.MODEL, southModel))
-            .select(RailShape.NORTH_SOUTH, true, true, true, Variant.variant() // South
-                .with(VariantProperties.MODEL, southSwitchedModel))
-            .select(RailShape.EAST_WEST, false, false, false, Variant.variant() // East
-                .with(VariantProperties.MODEL, northModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .select(RailShape.EAST_WEST, false, false, true, Variant.variant() // East
-                .with(VariantProperties.MODEL, northSwitchedModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .select(RailShape.EAST_WEST, true, false, false, Variant.variant() // West
-                .with(VariantProperties.MODEL, northModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-            .select(RailShape.EAST_WEST, true, false, true, Variant.variant() // West
-                .with(VariantProperties.MODEL, northSwitchedModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-            .select(RailShape.EAST_WEST, false, true, false, Variant.variant() // East
-                .with(VariantProperties.MODEL, southModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-            .select(RailShape.EAST_WEST, false, true, true, Variant.variant() // East
-                .with(VariantProperties.MODEL, southSwitchedModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-            .select(RailShape.EAST_WEST, true, true, false, Variant.variant() // West
-                .with(VariantProperties.MODEL, southModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .select(RailShape.EAST_WEST, true, true, true, Variant.variant() // West
-                .with(VariantProperties.MODEL, southSwitchedModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
-
-    this.createSimpleFlatItemModel(block, "_north");
   }
 
   private void createWyeTrack(Block block) {

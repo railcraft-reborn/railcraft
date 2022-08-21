@@ -17,11 +17,15 @@ import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
@@ -136,6 +140,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
         createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
         createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
+
+        createTurnoutTrack(RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get());
+        createTurnoutTrack(RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get());
+        createTurnoutTrack(RailcraftBlocks.IRON_TURNOUT_TRACK.get());
+        createTurnoutTrack(RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get());
+        createTurnoutTrack(RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get());
+        createTurnoutTrack(RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get());
+        createTurnoutTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get());
     }
 
     private void createStrengthenedGlass(Block block) {
@@ -533,5 +545,77 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .partialState()
             .with(ForceTrackBlock.SHAPE, RailShape.EAST_WEST)
             .setModels(ConfiguredModel.builder().modelFile(model).rotationY(90).build());
+    }
+
+    private void createTurnoutTrack(Block block) {
+        var northTexture = TextureMapping.getBlockTexture(block, "_north");
+        var northSwitchedTexture = TextureMapping.getBlockTexture(block, "_north_switched");
+        var southTexture = TextureMapping.getBlockTexture(block, "_south");
+        var southSwitchedTexture = TextureMapping.getBlockTexture(block, "_south_switched");
+
+        var template = mcLoc("rail_flat");
+
+        var northModel = models()
+            .singleTexture(name(block, "_north"), template, "rail", northTexture)
+            .renderType(CUTOUT);
+        var northSwitchedModel = models()
+            .singleTexture(name(block, "_north_switched"), template, "rail", northSwitchedTexture)
+            .renderType(CUTOUT);
+        var southModel = models()
+            .singleTexture(name(block, "_south"), template, "rail", southTexture)
+            .renderType(CUTOUT);
+        var southSwitchedModel = models()
+            .singleTexture(name(block, "_south_switched"), template, "rail", southSwitchedTexture)
+            .renderType(CUTOUT);
+
+        getVariantBuilder(block)
+            .forAllStatesExcept(blockState -> {
+                var shape = blockState.getValue(SwitchTrackBlock.SHAPE);
+                var reversed = blockState.getValue(ReversibleOutfittedTrackBlock.REVERSED);
+                var mirrored = blockState.getValue(TurnoutTrackBlock.MIRRORED);
+                var switched = blockState.getValue(SwitchTrackBlock.SWITCHED);
+
+                if(shape == RailShape.NORTH_SOUTH) {
+                    if(!reversed && !mirrored && !switched) {
+                        return ConfiguredModel.builder().modelFile(northModel).build();
+                    } else if (!reversed && !mirrored && switched) {
+                        return ConfiguredModel.builder().modelFile(northSwitchedModel).build();
+                    } else if (reversed && !mirrored && !switched) {
+                        return ConfiguredModel.builder().modelFile(northModel).rotationY(180).build();
+                    } else if (reversed && !mirrored && switched) {
+                        return ConfiguredModel.builder().modelFile(northSwitchedModel).rotationY(180).build();
+                    } else if (!reversed && mirrored && !switched) {
+                        return ConfiguredModel.builder().modelFile(southModel).rotationY(180).build();
+                    } else if (!reversed && mirrored && switched) {
+                        return ConfiguredModel.builder().modelFile(southSwitchedModel).rotationY(180).build();
+                    } else if (reversed && mirrored && !switched) {
+                        return ConfiguredModel.builder().modelFile(southModel).build();
+                    } else {
+                        return ConfiguredModel.builder().modelFile(southSwitchedModel).build();
+                    }
+                } else if(shape == RailShape.EAST_WEST) {
+                    if(!reversed && !mirrored && !switched) {
+                        return ConfiguredModel.builder().modelFile(northModel).rotationY(90).build();
+                    } else if (!reversed && !mirrored && switched) {
+                        return ConfiguredModel.builder().modelFile(northSwitchedModel).rotationY(90).build();
+                    } else if (reversed && !mirrored && !switched) {
+                        return ConfiguredModel.builder().modelFile(northModel).rotationY(270).build();
+                    } else if (reversed && !mirrored && switched) {
+                        return ConfiguredModel.builder().modelFile(northSwitchedModel).rotationY(270).build();
+                    } else if (!reversed && mirrored && !switched) {
+                        return ConfiguredModel.builder().modelFile(southModel).rotationY(270).build();
+                    } else if (!reversed && mirrored && switched) {
+                        return ConfiguredModel.builder().modelFile(southSwitchedModel).rotationY(270).build();
+                    } else if (reversed && mirrored && !switched) {
+                        return ConfiguredModel.builder().modelFile(southModel).rotationY(90).build();
+                    } else {
+                        return ConfiguredModel.builder().modelFile(southSwitchedModel).rotationY(90).build();
+                    }
+                }
+                return ConfiguredModel.builder().build();
+            }, TurnoutTrackBlock.WATERLOGGED);
+
+        itemModels().withExistingParent(name(block), "item/generated")
+            .texture("layer0", modLoc("block/" + name(block, "_north")));
     }
 }
