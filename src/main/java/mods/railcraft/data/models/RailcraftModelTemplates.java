@@ -8,12 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RailcraftModelTemplates {
 
-  public static final ModelTemplate FORCE_TRACK =
-      create("template_force_track", TextureSlot.RAIL);
-
-  public static final ModelTemplate FACE_OVERLAY =
-      create("face_overlay", TextureSlot.TEXTURE);
-
   public static final ResourceLocation BUFFER_STOP =
       new ResourceLocation(Railcraft.ID, "block/buffer_stop");
 

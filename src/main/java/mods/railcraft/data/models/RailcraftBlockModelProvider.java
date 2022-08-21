@@ -16,7 +16,12 @@ import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
+import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
+import net.minecraft.data.models.blockstates.Variant;
+import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +29,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -129,6 +135,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         createSteamTurbine(RailcraftBlocks.STEAM_TURBINE.get());
 
         createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
+        createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
     }
 
     private void createStrengthenedGlass(Block block) {
@@ -509,5 +516,22 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
         itemModels().withExistingParent(block.asItem().toString(), "item/generated")
             .texture("layer0", modLoc("block/" + key(block).getPath()));
+    }
+
+    private void createForceTrack(Block block) {
+        var texture = TextureMapping.getBlockTexture(block);
+        var template = modLoc("template_force_track");
+
+        var model = models()
+            .singleTexture(name(block), template, "rail", texture)
+            .renderType(CUTOUT);
+
+        getVariantBuilder(block)
+            .partialState()
+            .with(ForceTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+            .setModels(ConfiguredModel.builder().modelFile(model).build())
+            .partialState()
+            .with(ForceTrackBlock.SHAPE, RailShape.EAST_WEST)
+            .setModels(ConfiguredModel.builder().modelFile(model).rotationY(90).build());
     }
 }

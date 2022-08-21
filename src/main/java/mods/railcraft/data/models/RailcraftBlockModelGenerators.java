@@ -10,7 +10,6 @@ import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
-import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
@@ -216,8 +215,6 @@ public class RailcraftBlockModelGenerators {
     this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_LEVER.get());
     this.skipAutoItemBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
 
-    this.createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
-
     this.createAbandonedTracks(
         RailcraftBlocks.ABANDONED_TRACK.get(),
         RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
@@ -368,19 +365,6 @@ public class RailcraftBlockModelGenerators {
         new ResourceLocation(Railcraft.ID, "block/" + name + model.suffix.orElse("")),
         textureFactory.apply(new ResourceLocation(Railcraft.ID, "block/" + name)),
         this.modelOutput);
-  }
-
-  private void createForceTrack(Block block) {
-    var model = RailcraftModelTemplates.FORCE_TRACK.create(
-        block, TextureMapping.rail(block), this.modelOutput);
-    this.createSimpleFlatItemModel(block);
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-        .with(PropertyDispatch.property(ForceTrackBlock.SHAPE)
-            .select(RailShape.NORTH_SOUTH,
-                Variant.variant().with(VariantProperties.MODEL, model))
-            .select(RailShape.EAST_WEST,
-                Variant.variant().with(VariantProperties.MODEL, model)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
   }
 
   private void createAbandonedTracks(Block block, Block lockingTrackBlock,
