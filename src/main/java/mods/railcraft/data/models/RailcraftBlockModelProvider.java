@@ -9,12 +9,16 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock.Type;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
+import mods.railcraft.world.level.block.manipulator.FluidManipulatorBlock;
+import mods.railcraft.world.level.block.manipulator.ManipulatorBlock;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
+import mods.railcraft.world.level.block.tank.BaseTankBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
+import mods.railcraft.world.level.block.tank.TankValveBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
@@ -26,6 +30,7 @@ import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -182,7 +187,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             modLoc(BLOCK_FOLDER + "/" + name(block, "_single")));
     }
 
-    private void createFluidManipulator(Block block) {
+    private void createFluidManipulator(FluidManipulatorBlock block) {
         var texture = TextureMapping.cubeBottomTop(block);
         var model = models().cubeBottomTop(name(block), texture.get(TextureSlot.SIDE),
                 texture.get(TextureSlot.BOTTOM), texture.get(TextureSlot.TOP))
@@ -199,7 +204,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             modLoc(BLOCK_FOLDER + "/" + name(block, "_inventory")));
     }
 
-    private void createManipulator(Block block) {
+    private void createManipulator(ManipulatorBlock block) {
         var texture = TextureMapping.cubeBottomTop(block);
         var model = models().cubeBottomTop(name(block), texture.get(TextureSlot.SIDE),
             texture.get(TextureSlot.BOTTOM), texture.get(TextureSlot.TOP));
@@ -207,7 +212,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         simpleBlock(block, model);
     }
 
-    private void createDirectionalManipulator(Block block) {
+    private void createDirectionalManipulator(ManipulatorBlock block) {
 
         var horizontalTexture = TextureMapping.orientableCubeOnlyTop(block);
         var horizontalModel = models().orientable(name(block),
@@ -242,7 +247,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             }, AdvancedItemLoaderBlock.POWERED);
     }
 
-    private void createFirebox(Block block) {
+    private void createFirebox(FireboxBlock block) {
         var endTexture = TextureMapping.getBlockTexture(block, "_end");
         var sideTexture = TextureMapping.getBlockTexture(block, "_side");
         var sideLitTexture = TextureMapping.getBlockTexture(block, "_side_lit");
@@ -257,7 +262,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             });
     }
 
-    private void createFurnaceMultiblockBricks(Block block) {
+    private void createFurnaceMultiblockBricks(FurnaceMultiblockBlock block) {
         var bricksModel = cubeAll(block);
         var blockTexture = TextureMapping.getBlockTexture(block);
         var sideTexture = TextureMapping.getBlockTexture(block, "_window");
@@ -324,7 +329,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             sideTexture);
     }
 
-    private void createTankValve(Block block, Block wallBlock) {
+    private void createTankValve(TankValveBlock block, BaseTankBlock wallBlock) {
         var verticalModel = cube(name(block), mcLoc("cube"),
             TextureMapping.getBlockTexture(block, "_top"),
             TextureMapping.getBlockTexture(block, "_top"),
@@ -375,7 +380,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         simpleBlock(block, model);
     }
 
-    private void createPost(Block block) {
+    private void createPost(PostBlock block) {
         var texture = TextureMapping.defaultTexture(block).get(TextureSlot.TEXTURE);
         var postFullColumnTemplate = modLoc("template_post_full_column");
         var postDoubleConnectionTemplate = modLoc("template_post_double_connection");
@@ -441,7 +446,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .condition(PostBlock.WEST, Connection.DOUBLE).end();
     }
 
-    private void createSteamBoilerTank(Block block) {
+    private void createSteamBoilerTank(SteamBoilerTankBlock block) {
         var end = TextureMapping.getBlockTexture(block, "_end");
         var side = TextureMapping.getBlockTexture(block, "_side");
 
@@ -484,7 +489,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             });
     }
 
-    private void createSteelAnvil(Block block) {
+    private void createSteelAnvil(AnvilBlock block) {
         var base = TextureMapping.getBlockTexture(RailcraftBlocks.STEEL_ANVIL.get());
         var top = TextureMapping.getBlockTexture(block, "_top");
 
@@ -501,7 +506,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         simpleBlock(block, model);
     }
 
-    private void createElevatorTrack(Block block) {
+    private void createElevatorTrack(ElevatorTrackBlock block) {
         var texture =  TextureMapping.defaultTexture(block).get(TextureSlot.TEXTURE);
         var textureOn =  TextureMapping.getBlockTexture(block, "_on");
         var template = modLoc("template_elevator_track");
@@ -534,7 +539,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .texture("layer0", modLoc("block/" + key(block).getPath()));
     }
 
-    private void createForceTrack(Block block) {
+    private void createForceTrack(ForceTrackBlock block) {
         var texture = TextureMapping.getBlockTexture(block);
         var template = modLoc("template_force_track");
 
@@ -551,7 +556,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .setModels(ConfiguredModel.builder().modelFile(model).rotationY(90).build());
     }
 
-    private void createTurnoutTrack(Block block) {
+    private void createTurnoutTrack(TurnoutTrackBlock block) {
         var northTexture = TextureMapping.getBlockTexture(block, "_north");
         var northSwitchedTexture = TextureMapping.getBlockTexture(block, "_north_switched");
         var southTexture = TextureMapping.getBlockTexture(block, "_south");
@@ -623,7 +628,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .texture("layer0", modLoc("block/" + name(block, "_north")));
     }
 
-    private void createWyeTrack(Block block) {
+    private void createWyeTrack(WyeTrackBlock block) {
         var eastTexture = TextureMapping.getBlockTexture(block, "_east");
         var eastSwitchedTexture = TextureMapping.getBlockTexture(block, "_east_switched");
         var westTexture = TextureMapping.getBlockTexture(block, "_west");

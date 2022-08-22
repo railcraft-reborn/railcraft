@@ -49,7 +49,7 @@ public interface BlockPredicate {
     return of(block);
   }
 
-  static BlockPredicate of(Supplier<Block> block) {
+  static BlockPredicate of(Supplier<? extends Block> block) {
     return (level, blockPos) -> level.getBlockState(blockPos).is(block.get());
   }
 }

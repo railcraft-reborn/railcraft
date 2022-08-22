@@ -189,25 +189,25 @@ public class RailcraftBlocks {
         .sound(SoundType.METAL));
   }
 
-  public static final RegistryObject<Block> LOW_PRESSURE_STEAM_BOILER_TANK =
+  public static final RegistryObject<SteamBoilerTankBlock> LOW_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("low_pressure_steam_boiler_tank",
           () -> new SteamBoilerTankBlock(BlockBehaviour.Properties.of(Material.METAL)
               .noOcclusion()
               .sound(SoundType.METAL)));
 
-  public static final RegistryObject<Block> HIGH_PRESSURE_STEAM_BOILER_TANK =
+  public static final RegistryObject<SteamBoilerTankBlock> HIGH_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("high_pressure_steam_boiler_tank",
           () -> new SteamBoilerTankBlock(BlockBehaviour.Properties.of(Material.METAL)
               .noOcclusion()
               .sound(SoundType.METAL)));
 
-  public static final RegistryObject<Block> SOLID_FUELED_FIREBOX =
+  public static final RegistryObject<SolidFueledFireboxBlock> SOLID_FUELED_FIREBOX =
       deferredRegister.register("solid_fueled_firebox",
           () -> new SolidFueledFireboxBlock(BlockBehaviour.Properties.of(Material.STONE)
               .lightLevel(litBlockEmission(13))
               .sound(SoundType.STONE)));
 
-  public static final RegistryObject<Block> FLUID_FUELED_FIREBOX =
+  public static final RegistryObject<FluidFueledFireboxBlock> FLUID_FUELED_FIREBOX =
       deferredRegister.register("fluid_fueled_firebox",
           () -> new FluidFueledFireboxBlock(BlockBehaviour.Properties.of(Material.STONE)
               .lightLevel(litBlockEmission(13))
@@ -219,7 +219,7 @@ public class RailcraftBlocks {
               .randomTicks()
               .sound(SoundType.METAL)));
 
-  public static final RegistryObject<Block> BLAST_FURNACE_BRICKS =
+  public static final RegistryObject<BlastFurnaceBricksBlock> BLAST_FURNACE_BRICKS =
       deferredRegister.register("blast_furnace_bricks",
           () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of(Material.STONE)
               .lightLevel(litBlockEmission(13))
@@ -231,7 +231,7 @@ public class RailcraftBlocks {
               BlockBehaviour.Properties.of(Material.STONE, MaterialColor.WOOD)
                   .sound(SoundType.WOOD)));
 
-  public static final RegistryObject<Block> STEEL_ANVIL =
+  public static final RegistryObject<AnvilBlock> STEEL_ANVIL =
       deferredRegister.register("steel_anvil",
           () -> new AnvilBlock(
               BlockBehaviour.Properties.of(Material.HEAVY_METAL, MaterialColor.METAL)
@@ -239,7 +239,7 @@ public class RailcraftBlocks {
                   .strength(5.0F, 2000.0F)
                   .sound(SoundType.ANVIL)));
 
-  public static final RegistryObject<Block> CHIPPED_STEEL_ANVIL =
+  public static final RegistryObject<AnvilBlock> CHIPPED_STEEL_ANVIL =
       deferredRegister.register("chipped_steel_anvil",
           () -> new AnvilBlock(
               BlockBehaviour.Properties.of(Material.HEAVY_METAL, MaterialColor.METAL)
@@ -247,7 +247,7 @@ public class RailcraftBlocks {
                   .strength(5.0F, 2000.0F)
                   .sound(SoundType.ANVIL)));
 
-  public static final RegistryObject<Block> DAMAGED_STEEL_ANVIL =
+  public static final RegistryObject<AnvilBlock> DAMAGED_STEEL_ANVIL =
       deferredRegister.register("damaged_steel_anvil",
           () -> new AnvilBlock(
               BlockBehaviour.Properties.of(Material.HEAVY_METAL, MaterialColor.METAL)
@@ -558,7 +558,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ABANDONED_WYE_TRACK =
+  public static final RegistryObject<WyeTrackBlock> ABANDONED_WYE_TRACK =
       deferredRegister.register("abandoned_wye_track",
           () -> new WyeTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -566,7 +566,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ABANDONED_TURNOUT_TRACK =
+  public static final RegistryObject<TurnoutTrackBlock> ABANDONED_TURNOUT_TRACK =
       deferredRegister.register("abandoned_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -701,7 +701,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ELECTRIC_WYE_TRACK =
+  public static final RegistryObject<WyeTrackBlock> ELECTRIC_WYE_TRACK =
       deferredRegister.register("electric_wye_track",
           () -> new WyeTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -709,7 +709,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ELECTRIC_TURNOUT_TRACK =
+  public static final RegistryObject<TurnoutTrackBlock> ELECTRIC_TURNOUT_TRACK =
       deferredRegister.register("electric_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -797,7 +797,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_WYE_TRACK =
+  public static final RegistryObject<WyeTrackBlock> HIGH_SPEED_WYE_TRACK =
       deferredRegister.register("high_speed_wye_track",
           () -> new WyeTrackBlock(TrackTypes.HIGH_SPEED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -805,7 +805,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_TURNOUT_TRACK =
+  public static final RegistryObject<TurnoutTrackBlock> HIGH_SPEED_TURNOUT_TRACK =
       deferredRegister.register("high_speed_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.HIGH_SPEED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -883,7 +883,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_ELECTRIC_WYE_TRACK =
+  public static final RegistryObject<WyeTrackBlock> HIGH_SPEED_ELECTRIC_WYE_TRACK =
       deferredRegister.register("high_speed_electric_wye_track",
           () -> new WyeTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -892,7 +892,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_ELECTRIC_TURNOUT_TRACK =
+  public static final RegistryObject<TurnoutTrackBlock> HIGH_SPEED_ELECTRIC_TURNOUT_TRACK =
       deferredRegister.register("high_speed_electric_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1006,7 +1006,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> IRON_WYE_TRACK =
+  public static final RegistryObject<WyeTrackBlock> IRON_WYE_TRACK =
       deferredRegister.register("iron_wye_track",
           () -> new WyeTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1014,7 +1014,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> IRON_TURNOUT_TRACK =
+  public static final RegistryObject<TurnoutTrackBlock> IRON_TURNOUT_TRACK =
       deferredRegister.register("iron_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1142,7 +1142,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> REINFORCED_WYE_TRACK =
+  public static final RegistryObject<WyeTrackBlock> REINFORCED_WYE_TRACK =
       deferredRegister.register("reinforced_wye_track",
           () -> new WyeTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1150,7 +1150,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> REINFORCED_TURNOUT_TRACK =
+  public static final RegistryObject<TurnoutTrackBlock> REINFORCED_TURNOUT_TRACK =
       deferredRegister.register("reinforced_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1278,7 +1278,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> STRAP_IRON_WYE_TRACK =
+  public static final RegistryObject<WyeTrackBlock> STRAP_IRON_WYE_TRACK =
       deferredRegister.register("strap_iron_wye_track",
           () -> new WyeTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1286,7 +1286,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> STRAP_IRON_TURNOUT_TRACK =
+  public static final RegistryObject<TurnoutTrackBlock> STRAP_IRON_TURNOUT_TRACK =
       deferredRegister.register("strap_iron_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1326,7 +1326,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<Block> ELEVATOR_TRACK =
+  public static final RegistryObject<ElevatorTrackBlock> ELEVATOR_TRACK =
       deferredRegister.register("elevator_track",
           () -> new ElevatorTrackBlock(BlockBehaviour.Properties.of(RailcraftMaterials.ELEVATOR)
               .noCollission()
@@ -1357,7 +1357,7 @@ public class RailcraftBlocks {
           () -> new CrusherMultiblockBlock(BlockBehaviour.Properties.of(Material.STONE)
               .sound(SoundType.STONE)));
 
-  public static final RegistryObject<Block> COKE_OVEN_BRICKS =
+  public static final RegistryObject<CokeOvenBricksBlock> COKE_OVEN_BRICKS =
       deferredRegister.register("coke_oven_bricks",
           () -> new CokeOvenBricksBlock(BlockBehaviour.Properties.of(Material.STONE)
               .sound(SoundType.STONE)
