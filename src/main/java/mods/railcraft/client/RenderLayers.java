@@ -24,7 +24,6 @@ class RenderLayers {
     cutout(RailcraftBlocks.ABANDONED_COUPLER_TRACK);
     cutout(RailcraftBlocks.ABANDONED_EMBARKING_TRACK);
     cutout(RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK);
-    cutout(RailcraftBlocks.ABANDONED_JUNCTION_TRACK);
     cutout(RailcraftBlocks.ABANDONED_LAUNCHER_TRACK);
     cutout(RailcraftBlocks.ABANDONED_ONE_WAY_TRACK);
     cutout(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK);
@@ -39,7 +38,6 @@ class RenderLayers {
     cutout(RailcraftBlocks.ELECTRIC_COUPLER_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_EMBARKING_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK);
-    cutout(RailcraftBlocks.ELECTRIC_JUNCTION_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK);
@@ -49,7 +47,6 @@ class RenderLayers {
     cutout(RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK);
-    cutout(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK);
@@ -57,7 +54,6 @@ class RenderLayers {
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK);
-    cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.IRON_LOCKING_TRACK);
     cutout(RailcraftBlocks.IRON_BUFFER_STOP_TRACK);
@@ -69,7 +65,6 @@ class RenderLayers {
     cutout(RailcraftBlocks.IRON_COUPLER_TRACK);
     cutout(RailcraftBlocks.IRON_EMBARKING_TRACK);
     cutout(RailcraftBlocks.IRON_DISEMBARKING_TRACK);
-    cutout(RailcraftBlocks.IRON_JUNCTION_TRACK);
     cutout(RailcraftBlocks.IRON_LAUNCHER_TRACK);
     cutout(RailcraftBlocks.IRON_ONE_WAY_TRACK);
     cutout(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK);
@@ -84,7 +79,6 @@ class RenderLayers {
     cutout(RailcraftBlocks.REINFORCED_COUPLER_TRACK);
     cutout(RailcraftBlocks.REINFORCED_EMBARKING_TRACK);
     cutout(RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK);
-    cutout(RailcraftBlocks.REINFORCED_JUNCTION_TRACK);
     cutout(RailcraftBlocks.REINFORCED_LAUNCHER_TRACK);
     cutout(RailcraftBlocks.REINFORCED_ONE_WAY_TRACK);
     cutout(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK);
@@ -99,7 +93,6 @@ class RenderLayers {
     cutout(RailcraftBlocks.STRAP_IRON_COUPLER_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK);
-    cutout(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK);

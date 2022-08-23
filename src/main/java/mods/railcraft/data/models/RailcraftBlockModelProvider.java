@@ -21,10 +21,12 @@ import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import mods.railcraft.world.level.block.tank.TankValveBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
+import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
@@ -157,6 +159,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         createWyeTrack(RailcraftBlocks.STRAP_IRON_WYE_TRACK.get());
         createWyeTrack(RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get());
         createWyeTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get());
+
+        createJunctionTrack(RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get());
+        createJunctionTrack(RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get());
+        createJunctionTrack(RailcraftBlocks.IRON_JUNCTION_TRACK.get());
+        createJunctionTrack(RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get());
+        createJunctionTrack(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get());
+        createJunctionTrack(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get());
+        createJunctionTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get());
     }
 
     private void createStrengthenedGlass(Block block) {
@@ -227,7 +237,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
         getVariantBuilder(block)
             .forAllStatesExcept(blockState -> {
-                var facing = blockState.getValue(AdvancedItemLoaderBlock.FACING);
+                Direction facing = blockState.getValue(BlockStateProperties.FACING);
                 int yRot = 0;
 
                 switch (facing) {
@@ -677,5 +687,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             }, WyeTrackBlock.WATERLOGGED);
         itemModels().withExistingParent(name(block), "item/generated")
             .texture("layer0", modLoc("block/" + name(block, "_east")));
+    }
+
+    private void createJunctionTrack(JunctionTrackBlock block) {
+        var model = models().withExistingParent(name(block), "rail_flat")
+            .texture("rail", TextureMapping.getBlockTexture(block))
+            .renderType(CUTOUT);
+        simpleBlock(block, model);
+        itemModels().withExistingParent(name(block), "item/generated")
+            .texture("layer0", modLoc("block/" + name(block)));
     }
 }

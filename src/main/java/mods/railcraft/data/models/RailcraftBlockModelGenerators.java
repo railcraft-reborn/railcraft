@@ -492,7 +492,6 @@ public class RailcraftBlockModelGenerators {
     this.createActiveOutfittedTrack(embarkingTrackBlock, true, false, outfittedTrackModels,
         this.embarkingTrack, this.activeEmbarkingTrack);
     this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
-    this.createJunctionTrack(junctionTrackBlock);
     this.createActiveOutfittedTrack(launcherTrackBlock, false, false, outfittedTrackModels,
         this.launcherTrackModels, this.activeLauncherTrackModels);
     this.createActiveOutfittedTrack(oneWayTrackBlock, false, true, outfittedTrackModels,
@@ -514,7 +513,6 @@ public class RailcraftBlockModelGenerators {
     this.createActiveOutfittedTrack(boosterTrackBlock, true, false, outfittedTrackModels,
         this.boosterTrackModels, this.activeBoosterTrackModels);
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
-    this.createJunctionTrack(junctionTrackBlock);
     this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
   }
 
@@ -558,13 +556,6 @@ public class RailcraftBlockModelGenerators {
             .select(RailShape.NORTH_EAST, Variant.variant()
                 .with(VariantProperties.MODEL, cornerModel)
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))));
-  }
-
-  private void createJunctionTrack(Block block) {
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant()
-        .with(VariantProperties.MODEL,
-            this.createPassiveRail(ForgeRegistries.BLOCKS.getKey(block).getPath()))));
-    this.createSimpleFlatItemModel(block);
   }
 
   private void createLockingTrack(Block block, ResourceLocation trackModel) {
