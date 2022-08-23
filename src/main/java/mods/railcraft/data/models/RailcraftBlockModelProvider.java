@@ -19,6 +19,7 @@ import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.BaseTankBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import mods.railcraft.world.level.block.tank.TankValveBlock;
+import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.block.track.TrackBlock;
@@ -48,6 +49,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class RailcraftBlockModelProvider extends BlockStateProvider {
     
     private static final String CUTOUT = "cutout";
+
+    private final ResourceLocation FLAT_TEMPLATE = mcLoc("rail_flat");
+    private final ResourceLocation CORNER_TEMPLATE = mcLoc("rail_curved");
+    private final ResourceLocation RAISED_NE_TEMPLATE = mcLoc("template_rail_raised_ne");
+    private final ResourceLocation RAISED_SW_TEMPLATE = mcLoc("template_rail_raised_sw");
 
     public RailcraftBlockModelProvider(DataGenerator generator,
         ExistingFileHelper existingFileHelper) {
@@ -178,6 +184,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         createJunctionTrack(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get());
         createJunctionTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get());
 
+        createAbandonedFlexTrack(RailcraftBlocks.ABANDONED_TRACK.get());
         createFlexTrack(RailcraftBlocks.ELECTRIC_TRACK.get());
         createFlexTrack(RailcraftBlocks.REINFORCED_TRACK.get());
         createFlexTrack(RailcraftBlocks.STRAP_IRON_TRACK.get());
@@ -587,19 +594,17 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         var southTexture = TextureMapping.getBlockTexture(block, "_south");
         var southSwitchedTexture = TextureMapping.getBlockTexture(block, "_south_switched");
 
-        var template = mcLoc("rail_flat");
-
         var northModel = models()
-            .singleTexture(name(block, "_north"), template, "rail", northTexture)
+            .singleTexture(name(block, "_north"), FLAT_TEMPLATE, "rail", northTexture)
             .renderType(CUTOUT);
         var northSwitchedModel = models()
-            .singleTexture(name(block, "_north_switched"), template, "rail", northSwitchedTexture)
+            .singleTexture(name(block, "_north_switched"), FLAT_TEMPLATE, "rail", northSwitchedTexture)
             .renderType(CUTOUT);
         var southModel = models()
-            .singleTexture(name(block, "_south"), template, "rail", southTexture)
+            .singleTexture(name(block, "_south"), FLAT_TEMPLATE, "rail", southTexture)
             .renderType(CUTOUT);
         var southSwitchedModel = models()
-            .singleTexture(name(block, "_south_switched"), template, "rail", southSwitchedTexture)
+            .singleTexture(name(block, "_south_switched"), FLAT_TEMPLATE, "rail", southSwitchedTexture)
             .renderType(CUTOUT);
 
         getVariantBuilder(block)
@@ -658,19 +663,17 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         var westTexture = TextureMapping.getBlockTexture(block, "_west");
         var westSwitchedTexture = TextureMapping.getBlockTexture(block, "_west_switched");
 
-        var template = mcLoc("rail_flat");
-
         var eastModel = models()
-            .singleTexture(name(block, "_east"), template, "rail", eastTexture)
+            .singleTexture(name(block, "_east"), FLAT_TEMPLATE, "rail", eastTexture)
             .renderType(CUTOUT);
         var eastSwitchedModel = models()
-            .singleTexture(name(block, "_east_switched"), template, "rail", eastSwitchedTexture)
+            .singleTexture(name(block, "_east_switched"), FLAT_TEMPLATE, "rail", eastSwitchedTexture)
             .renderType(CUTOUT);
         var westModel = models()
-            .singleTexture(name(block, "_west"), template, "rail", westTexture)
+            .singleTexture(name(block, "_west"), FLAT_TEMPLATE, "rail", westTexture)
             .renderType(CUTOUT);
         var westSwitchedModel = models()
-            .singleTexture(name(block, "_west_switched"), template, "rail", westSwitchedTexture)
+            .singleTexture(name(block, "_west_switched"), FLAT_TEMPLATE, "rail", westSwitchedTexture)
             .renderType(CUTOUT);
 
 
@@ -703,7 +706,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     }
 
     private void createJunctionTrack(JunctionTrackBlock block) {
-        var model = models().withExistingParent(name(block), "rail_flat")
+        var model = models().withExistingParent(name(block), FLAT_TEMPLATE)
             .texture("rail", TextureMapping.getBlockTexture(block))
             .renderType(CUTOUT);
         simpleBlock(block, model);
@@ -714,27 +717,22 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         var blockTexture = TextureMapping.getBlockTexture(block);
         var cornerTexture = TextureMapping.getBlockTexture(block, "_corner");
 
-        var flatTemplate = mcLoc("rail_flat");
-        var cornerTemplate = mcLoc("rail_curved");
-        var raisedNETemplate = mcLoc("template_rail_raised_ne");
-        var raisedSWTemplate = mcLoc("template_rail_raised_sw");
-
         var flatModel = models()
-            .singleTexture(name(block), flatTemplate, "rail", blockTexture)
+            .singleTexture(name(block), FLAT_TEMPLATE, "rail", blockTexture)
             .renderType(CUTOUT);
         var cornerModel = models()
-            .singleTexture(name(block, "_corner"), cornerTemplate, "rail", cornerTexture)
+            .singleTexture(name(block, "_corner"), CORNER_TEMPLATE, "rail", cornerTexture)
             .renderType(CUTOUT);
         var raisedNorthEastModel = models()
-            .singleTexture(name(block, "_raised_ne"), raisedNETemplate, "rail", blockTexture)
+            .singleTexture(name(block, "_raised_ne"), RAISED_NE_TEMPLATE, "rail", blockTexture)
             .renderType(CUTOUT);
         var raisedSouthWestModel = models()
-            .singleTexture(name(block, "_raised_sw"), raisedSWTemplate, "rail", blockTexture)
+            .singleTexture(name(block, "_raised_sw"), RAISED_SW_TEMPLATE, "rail", blockTexture)
             .renderType(CUTOUT);
 
         getVariantBuilder(block)
             .forAllStatesExcept(blockState -> {
-                var shape = blockState.getValue(BlockStateProperties.RAIL_SHAPE);
+                RailShape shape = blockState.getValue(BlockStateProperties.RAIL_SHAPE);
                 int rotY = 0;
                 BlockModelBuilder model = null;
                 switch (shape) {
@@ -771,5 +769,64 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             }, BlockStateProperties.WATERLOGGED);
 
         basicItem(block);
+    }
+
+    private void createAbandonedFlexTrack(TrackBlock block) {
+        var texture0 = TextureMapping.getBlockTexture(block, "_0");
+        var texture1 = TextureMapping.getBlockTexture(block, "_1");
+        var cornerTexture = TextureMapping.getBlockTexture(block, "_corner");
+
+        var flatModel0 =  models()
+            .singleTexture(name(block, "_0"), FLAT_TEMPLATE, "rail", texture0)
+            .renderType(CUTOUT);
+        var flatModel1 =  models()
+            .singleTexture(name(block, "_1"), FLAT_TEMPLATE, "rail", texture1)
+            .renderType(CUTOUT);
+        var cornerModel = models()
+            .singleTexture(name(block, "_corner"), CORNER_TEMPLATE, "rail", cornerTexture)
+            .renderType(CUTOUT);
+        var raisedNorthEastModel = models()
+            .singleTexture(name(block, "_raised_ne"), RAISED_NE_TEMPLATE, "rail", texture0)
+            .renderType(CUTOUT);
+        var raisedSouthWestModel = models()
+            .singleTexture(name(block, "_raised_sw"), RAISED_SW_TEMPLATE, "rail", texture0)
+            .renderType(CUTOUT);
+
+        getMultipartBuilder(block)
+            .part()
+            .modelFile(models().getExistingFile(mcLoc("block/grass"))).addModel()
+            .condition(AbandonedTrackBlock.GRASS, true).end()
+            .part()
+            .modelFile(flatModel0).nextModel().modelFile(flatModel1).addModel()
+            .condition(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_SOUTH).end()
+            .part()
+            .modelFile(flatModel0).rotationY(90).nextModel().modelFile(flatModel1).rotationY(90).addModel()
+            .condition(BlockStateProperties.RAIL_SHAPE, RailShape.EAST_WEST).end()
+            .part()
+            .modelFile(raisedNorthEastModel).rotationY(90).addModel()
+            .condition(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_EAST).end()
+            .part()
+            .modelFile(raisedSouthWestModel).rotationY(90).addModel()
+            .condition(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_WEST).end()
+            .part()
+            .modelFile(raisedNorthEastModel).addModel()
+            .condition(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_NORTH).end()
+            .part()
+            .modelFile(raisedSouthWestModel).addModel()
+            .condition(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_SOUTH).end()
+            .part()
+            .modelFile(cornerModel).addModel()
+            .condition(BlockStateProperties.RAIL_SHAPE, RailShape.SOUTH_EAST).end()
+            .part()
+            .modelFile(cornerModel).rotationY(90).addModel()
+            .condition(BlockStateProperties.RAIL_SHAPE, RailShape.SOUTH_WEST).end()
+            .part()
+            .modelFile(cornerModel).rotationY(180).addModel()
+            .condition(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_WEST).end()
+            .part()
+            .modelFile(cornerModel).rotationY(270).addModel()
+            .condition(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_EAST).end();
+
+        basicItem(block, "_0");
     }
 }

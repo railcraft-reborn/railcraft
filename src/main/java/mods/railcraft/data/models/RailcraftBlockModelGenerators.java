@@ -9,7 +9,6 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
-import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
@@ -32,10 +31,8 @@ import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -327,25 +324,11 @@ public class RailcraftBlockModelGenerators {
     this.skippedAutoModelsOutput.accept(block.asItem());
   }
 
-  private void createSimpleFlatItemModel(Block block) {
-    Item item = block.asItem();
-    if (item != Items.AIR) {
-      ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item),
-          TextureMapping.layer0(block), this.modelOutput);
-    }
-  }
-
   private void createSimpleFlatItemModel(Item item) {
     ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item),
         TextureMapping.layer0(item), this.modelOutput);
   }
 
-  private void createSimpleFlatItemModel(Block block, String textureSuffix) {
-    Item item = block.asItem();
-    ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item),
-        TextureMapping.layer0(TextureMapping.getBlockTexture(block, textureSuffix)),
-        this.modelOutput);
-  }
 
   private ResourceLocation createVariant(String name,
       ModelTemplate model, Function<ResourceLocation, TextureMapping> textureFactory) {
@@ -361,99 +344,11 @@ public class RailcraftBlockModelGenerators {
       Block couplerTrackBlock, Block embarkingTrackBlock, Block disembarkingTrackBlock,
       Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock,
       Block launcherTrackBlock, Block oneWayTrackBlock, Block locomotiveTrackBlock) {
-    this.createAbandonedFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
         boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
         couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, turnoutTrackBlock,
         wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
         locomotiveTrackBlock);
-  }
-
-  private void createAbandonedFlexTrack(Block block) {
-    var texture0 =
-        TextureMapping.rail(TextureMapping.getBlockTexture(block, "_0"));
-    var texture1 =
-        TextureMapping.rail(TextureMapping.getBlockTexture(block, "_1"));
-    var cornerTextures =
-        TextureMapping.rail(TextureMapping.getBlockTexture(block, "_corner"));
-    var flatModel0 =
-        ModelTemplates.RAIL_FLAT.createWithSuffix(block, "_0", texture0, this.modelOutput);
-    var flatModel1 =
-        ModelTemplates.RAIL_FLAT.createWithSuffix(block, "_1", texture1, this.modelOutput);
-    var cornerModel =
-        ModelTemplates.RAIL_CURVED.create(block, cornerTextures, this.modelOutput);
-    var raisedNorthEastModel =
-        ModelTemplates.RAIL_RAISED_NE.create(block, texture0, this.modelOutput);
-    var raisedSouthWestModel =
-        ModelTemplates.RAIL_RAISED_SW.create(block, texture0, this.modelOutput);
-
-    this.createSimpleFlatItemModel(block, "_0");
-
-    this.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
-        .with(
-            Condition.condition()
-                .term(AbandonedTrackBlock.GRASS, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL, new ResourceLocation("block/grass")))
-        .with(
-            Condition.condition()
-                .term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant().with(VariantProperties.MODEL, flatModel0),
-            Variant.variant().with(VariantProperties.MODEL, flatModel1))
-        .with(
-            Condition.condition()
-                .term(BlockStateProperties.RAIL_SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, flatModel0)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90),
-            Variant.variant()
-                .with(VariantProperties.MODEL, flatModel1)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_EAST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, raisedNorthEastModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, raisedSouthWestModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_NORTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, raisedNorthEastModel))
-        .with(
-            Condition.condition()
-                .term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, raisedSouthWestModel))
-        .with(
-            Condition.condition()
-                .term(BlockStateProperties.RAIL_SHAPE, RailShape.SOUTH_EAST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, cornerModel))
-        .with(
-            Condition.condition()
-                .term(BlockStateProperties.RAIL_SHAPE, RailShape.SOUTH_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, cornerModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, cornerModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .with(
-            Condition.condition()
-                .term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_EAST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, cornerModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
   }
 
   private void createTracks(Block block, Block lockingTrackBlock, Block bufferStopTrackBlock,

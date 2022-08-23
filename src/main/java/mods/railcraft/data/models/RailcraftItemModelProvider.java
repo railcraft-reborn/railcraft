@@ -4,11 +4,9 @@ import java.util.Objects;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -20,9 +18,8 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
 
     private ItemModelBuilder basicCustomItem(Item item, String model) {
         var rl = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
-        return getBuilder(item.toString())
-            .parent(new ModelFile.UncheckedModelFile("item/" + model))
-            .texture("layer0", new ResourceLocation(rl.getNamespace(), "item/" + rl.getPath()));
+        return withExistingParent(rl.getPath(), "item/" + model)
+            .texture("layer0", modLoc("item/" + rl.getPath()));
     }
 
     private ItemModelBuilder basicHandheldItem(Item item) {
