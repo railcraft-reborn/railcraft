@@ -21,6 +21,7 @@ import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import mods.railcraft.world.level.block.tank.TankValveBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
+import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
@@ -84,6 +85,15 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         return models().withExistingParent(name, parent)
             .texture("side", side)
             .texture("end", end);
+    }
+
+    private void basicItem(Block block) {
+        basicItem(block, "");
+    }
+
+    private void basicItem(Block block, String suffix) {
+        itemModels().withExistingParent(name(block), "item/generated")
+            .texture("layer0", modLoc("block/" + name(block) + suffix));
     }
 
     @Override
@@ -167,6 +177,12 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         createJunctionTrack(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get());
         createJunctionTrack(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get());
         createJunctionTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get());
+
+        createFlexTrack(RailcraftBlocks.ELECTRIC_TRACK.get());
+        createFlexTrack(RailcraftBlocks.REINFORCED_TRACK.get());
+        createFlexTrack(RailcraftBlocks.STRAP_IRON_TRACK.get());
+        createFlexTrack(RailcraftBlocks.HIGH_SPEED_TRACK.get());
+        createFlexTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
     }
 
     private void createStrengthenedGlass(Block block) {
@@ -545,8 +561,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                     .build();
             });
 
-        itemModels().withExistingParent(block.asItem().toString(), "item/generated")
-            .texture("layer0", modLoc("block/" + key(block).getPath()));
+        basicItem(block);
     }
 
     private void createForceTrack(ForceTrackBlock block) {
@@ -634,8 +649,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                 return ConfiguredModel.builder().build();
             }, TurnoutTrackBlock.WATERLOGGED);
 
-        itemModels().withExistingParent(name(block), "item/generated")
-            .texture("layer0", modLoc("block/" + name(block, "_north")));
+        basicItem(block, "_north");
     }
 
     private void createWyeTrack(WyeTrackBlock block) {
@@ -685,8 +699,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                     default -> throw new UnsupportedOperationException();
                 };
             }, WyeTrackBlock.WATERLOGGED);
-        itemModels().withExistingParent(name(block), "item/generated")
-            .texture("layer0", modLoc("block/" + name(block, "_east")));
+        basicItem(block, "_east");
     }
 
     private void createJunctionTrack(JunctionTrackBlock block) {
@@ -694,7 +707,69 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .texture("rail", TextureMapping.getBlockTexture(block))
             .renderType(CUTOUT);
         simpleBlock(block, model);
-        itemModels().withExistingParent(name(block), "item/generated")
-            .texture("layer0", modLoc("block/" + name(block)));
+        basicItem(block);
+    }
+
+    private void createFlexTrack(TrackBlock block) {
+        var blockTexture = TextureMapping.getBlockTexture(block);
+        var cornerTexture = TextureMapping.getBlockTexture(block, "_corner");
+
+        var flatTemplate = mcLoc("rail_flat");
+        var cornerTemplate = mcLoc("rail_curved");
+        var raisedNETemplate = mcLoc("template_rail_raised_ne");
+        var raisedSWTemplate = mcLoc("template_rail_raised_sw");
+
+        var flatModel = models()
+            .singleTexture(name(block), flatTemplate, "rail", blockTexture)
+            .renderType(CUTOUT);
+        var cornerModel = models()
+            .singleTexture(name(block, "_corner"), cornerTemplate, "rail", cornerTexture)
+            .renderType(CUTOUT);
+        var raisedNorthEastModel = models()
+            .singleTexture(name(block, "_raised_ne"), raisedNETemplate, "rail", blockTexture)
+            .renderType(CUTOUT);
+        var raisedSouthWestModel = models()
+            .singleTexture(name(block, "_raised_sw"), raisedSWTemplate, "rail", blockTexture)
+            .renderType(CUTOUT);
+
+        getVariantBuilder(block)
+            .forAllStatesExcept(blockState -> {
+                var shape = blockState.getValue(BlockStateProperties.RAIL_SHAPE);
+                int rotY = 0;
+                BlockModelBuilder model = null;
+                switch (shape) {
+                    case NORTH_SOUTH -> model = flatModel;
+                    case EAST_WEST -> {
+                        model = flatModel;
+                        rotY = 90;
+                    }
+                    case ASCENDING_EAST -> {
+                        model = raisedNorthEastModel;
+                        rotY = 90;
+                    }
+                    case ASCENDING_WEST -> {
+                        model = raisedSouthWestModel;
+                        rotY = 90;
+                    }
+                    case ASCENDING_NORTH -> model = raisedNorthEastModel;
+                    case ASCENDING_SOUTH -> model = raisedSouthWestModel;
+                    case SOUTH_EAST -> model = cornerModel;
+                    case SOUTH_WEST -> {
+                        model = cornerModel;
+                        rotY = 90;
+                    }
+                    case NORTH_WEST -> {
+                        model = cornerModel;
+                        rotY = 180;
+                    }
+                    case NORTH_EAST -> {
+                        model = cornerModel;
+                        rotY = 270;
+                    }
+                }
+                return ConfiguredModel.builder().modelFile(model).rotationY(rotY).build();
+            }, BlockStateProperties.WATERLOGGED);
+
+        basicItem(block);
     }
 }

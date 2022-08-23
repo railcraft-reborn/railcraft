@@ -24,8 +24,6 @@ import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrack
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.data.models.blockstates.Condition;
 import net.minecraft.data.models.blockstates.MultiPartGenerator;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.data.models.model.ModelLocationUtils;
@@ -464,7 +462,6 @@ public class RailcraftBlockModelGenerators {
       Block embarkingTrackBlock, Block disembarkingTrackBlock, Block turnoutTrackBlock,
       Block wyeTrackBlock, Block junctionTrackBlock, Block launcherTrackBlock,
       Block oneWayTrackBlock, Block locomotiveTrackBlock) {
-    this.createFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
         boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
         couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, turnoutTrackBlock,
@@ -503,7 +500,6 @@ public class RailcraftBlockModelGenerators {
       Block lockingTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
       Block detectorTrackBlock, Block turnoutTrackBlock, Block wyeTrackBlock,
       Block junctionTrackBlock, Block locomotiveTrackBlock) {
-    this.createFlexTrack(block);
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
     this.createActiveOutfittedTrack(transitionTrackBlock, true, true, outfittedTrackModels,
         this.transitionTrackModels, this.activeTransitionTrackModels);
@@ -514,48 +510,6 @@ public class RailcraftBlockModelGenerators {
         this.boosterTrackModels, this.activeBoosterTrackModels);
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
     this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
-  }
-
-  private void createFlexTrack(Block block) {
-    var textures = TextureMapping.rail(block);
-    var cornerTextures = TextureMapping.rail(TextureMapping.getBlockTexture(block, "_corner"));
-    var flatModel = ModelTemplates.RAIL_FLAT.create(block, textures, this.modelOutput);
-    var cornerModel = ModelTemplates.RAIL_CURVED.create(block, cornerTextures, this.modelOutput);
-    var raisedNorthEastModel =
-        ModelTemplates.RAIL_RAISED_NE.create(block, textures, this.modelOutput);
-    var raisedSouthWestModel =
-        ModelTemplates.RAIL_RAISED_SW.create(block, textures, this.modelOutput);
-
-    this.createSimpleFlatItemModel(block);
-
-    this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-        .with(PropertyDispatch.property(BlockStateProperties.RAIL_SHAPE)
-            .select(RailShape.NORTH_SOUTH, Variant.variant()
-                .with(VariantProperties.MODEL, flatModel))
-            .select(RailShape.EAST_WEST, Variant.variant()
-                .with(VariantProperties.MODEL, flatModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .select(RailShape.ASCENDING_EAST, Variant.variant()
-                .with(VariantProperties.MODEL, raisedNorthEastModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .select(RailShape.ASCENDING_WEST, Variant.variant()
-                .with(VariantProperties.MODEL, raisedSouthWestModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .select(RailShape.ASCENDING_NORTH, Variant.variant()
-                .with(VariantProperties.MODEL, raisedNorthEastModel))
-            .select(RailShape.ASCENDING_SOUTH, Variant.variant()
-                .with(VariantProperties.MODEL, raisedSouthWestModel))
-            .select(RailShape.SOUTH_EAST, Variant.variant()
-                .with(VariantProperties.MODEL, cornerModel))
-            .select(RailShape.SOUTH_WEST, Variant.variant()
-                .with(VariantProperties.MODEL, cornerModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .select(RailShape.NORTH_WEST, Variant.variant()
-                .with(VariantProperties.MODEL, cornerModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .select(RailShape.NORTH_EAST, Variant.variant()
-                .with(VariantProperties.MODEL, cornerModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))));
   }
 
   private void createLockingTrack(Block block, ResourceLocation trackModel) {
