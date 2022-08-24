@@ -320,7 +320,6 @@ public class RailcraftBlockModelGenerators {
       Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock,
       Block launcherTrackBlock, Block oneWayTrackBlock, Block locomotiveTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
-    this.createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.flatModel());
     this.createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
         this.activatorTrackModels, this.activeActivatorTrackModels);
     this.createActiveOutfittedTrack(boosterTrackBlock, true, false, outfittedTrackModels,
@@ -352,49 +351,6 @@ public class RailcraftBlockModelGenerators {
         this.boosterTrackModels, this.activeBoosterTrackModels);
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
     this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
-  }
-
-  private void createBufferStopTrack(Block block, ResourceLocation trackModel) {
-    this.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, false), // North
-            Variant.variant()
-                .with(VariantProperties.MODEL, RailcraftModelTemplates.BUFFER_STOP))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, true), // South
-            Variant.variant()
-                .with(VariantProperties.MODEL, RailcraftModelTemplates.BUFFER_STOP)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, false), // East
-            Variant.variant()
-                .with(VariantProperties.MODEL, RailcraftModelTemplates.BUFFER_STOP)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, true), // West
-            Variant.variant()
-                .with(VariantProperties.MODEL, RailcraftModelTemplates.BUFFER_STOP)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-        .with(
-            Condition.condition()
-                .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModel))
-        .with(
-            Condition.condition()
-                .term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
-    this.createSimpleFlatItemModel(block.asItem());
   }
 
   private void createActiveOutfittedTrack(
