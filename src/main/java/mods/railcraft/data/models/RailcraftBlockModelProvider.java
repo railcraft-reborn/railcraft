@@ -24,18 +24,23 @@ import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.LockingMode;
+import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.models.model.ModelTemplate;
+import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -43,6 +48,7 @@ import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -160,41 +166,53 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
         createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
 
-        createTurnoutTrack(RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get());
-        createTurnoutTrack(RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get());
-        createTurnoutTrack(RailcraftBlocks.IRON_TURNOUT_TRACK.get());
-        createTurnoutTrack(RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get());
-        createTurnoutTrack(RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get());
-        createTurnoutTrack(RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get());
-        createTurnoutTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get());
 
-        createWyeTrack(RailcraftBlocks.ABANDONED_WYE_TRACK.get());
-        createWyeTrack(RailcraftBlocks.ELECTRIC_WYE_TRACK.get());
-        createWyeTrack(RailcraftBlocks.IRON_WYE_TRACK.get());
-        createWyeTrack(RailcraftBlocks.REINFORCED_WYE_TRACK.get());
-        createWyeTrack(RailcraftBlocks.STRAP_IRON_WYE_TRACK.get());
-        createWyeTrack(RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get());
-        createWyeTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get());
+        createAbandonedTracks(RailcraftBlocks.ABANDONED_TRACK.get(),
+            RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
+            RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
+            RailcraftBlocks.ABANDONED_WYE_TRACK.get(),
+            RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get());
 
-        createJunctionTrack(RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get());
-        createJunctionTrack(RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get());
-        createJunctionTrack(RailcraftBlocks.IRON_JUNCTION_TRACK.get());
-        createJunctionTrack(RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get());
-        createJunctionTrack(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get());
-        createJunctionTrack(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get());
-        createJunctionTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get());
+        createOutfittedTracks(Blocks.RAIL,
+            RailcraftBlocks.IRON_LOCKING_TRACK.get(),
+            RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
+            RailcraftBlocks.IRON_WYE_TRACK.get(),
+            RailcraftBlocks.IRON_JUNCTION_TRACK.get());
 
-        createAbandonedFlexTrack(RailcraftBlocks.ABANDONED_TRACK.get());
-        createFlexTrack(RailcraftBlocks.ELECTRIC_TRACK.get());
-        createFlexTrack(RailcraftBlocks.REINFORCED_TRACK.get());
-        createFlexTrack(RailcraftBlocks.STRAP_IRON_TRACK.get());
-        createFlexTrack(RailcraftBlocks.HIGH_SPEED_TRACK.get());
-        createFlexTrack(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
+        createTracks(RailcraftBlocks.STRAP_IRON_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_WYE_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get());
+
+        createTracks(RailcraftBlocks.REINFORCED_TRACK.get(),
+            RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
+            RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
+            RailcraftBlocks.REINFORCED_WYE_TRACK.get(),
+            RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get());
+
+        createTracks(RailcraftBlocks.ELECTRIC_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_WYE_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get());
+
+        createHighSpeedTracks(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get());
+
+        createHighSpeedTracks(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get());
     }
 
     private void createStrengthenedGlass(Block block) {
         var endTexture = TextureMapping.getBlockTexture(block, "_top");
-        
+
         var singleModel = models().cubeAll(name(block, "_single"), endTexture)
             .renderType(CUTOUT);
         var topModel = models().cubeColumn(name(block, "_top"),
@@ -828,5 +846,146 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .condition(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_EAST).end();
 
         basicItem(block, "_0");
+    }
+
+    private void createAbandonedTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock) {
+        createAbandonedFlexTrack(block);
+        createOutfittedTracks(block, lockingTrackBlock, turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock);
+    }
+
+    private void createTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock) {
+        createFlexTrack(block);
+        createOutfittedTracks(block, lockingTrackBlock, turnoutTrackBlock, wyeTrackBlock,
+            junctionTrackBlock);
+    }
+
+    private void createOutfittedTracks(Block block, LockingTrackBlock lockingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock) {
+        var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
+        createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
+        createTurnoutTrack(turnoutTrackBlock);
+        createWyeTrack(wyeTrackBlock);
+        createJunctionTrack(junctionTrackBlock);
+    }
+
+    private void createHighSpeedTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock) {
+        createFlexTrack(block);
+        var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
+        createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
+        createTurnoutTrack(turnoutTrackBlock);
+        createWyeTrack(wyeTrackBlock);
+        createJunctionTrack(junctionTrackBlock);
+    }
+
+    private void createLockingTrack(LockingTrackBlock block, ModelFile trackModel) {
+        var lockdownModel = createPassiveRail("locking_track_lockdown");
+        var trainLockdownModel = createPassiveRail("locking_track_train_lockdown");
+        var holdingModel = createPassiveRail("locking_track_holding");
+        var trainHoldingModel = createPassiveRail("locking_track_train_holding");
+        var boardingModel = createPassiveRail("locking_track_boarding");
+        var boardingReversedModel = createPassiveRail("locking_track_boarding_reversed");
+        var trainBoardingModel = createPassiveRail("locking_track_train_boarding");
+        var trainBoardingReversedModel = createPassiveRail("locking_track_train_boarding_reversed");
+        var activeLockdownModel = createActiveRail("locking_track_lockdown");
+        var activeTrainLockdownModel = createActiveRail("locking_track_train_lockdown");
+        var activeHoldingModel = createActiveRail("locking_track_holding");
+        var activeTrainHoldingModel = createActiveRail("locking_track_train_holding");
+        var activeBoardingModel = createActiveRail("locking_track_boarding");
+        var activeBoardingReversedModel = createActiveRail("locking_track_boarding_reversed");
+        var activeTrainBoardingModel = createActiveRail("locking_track_train_boarding");
+        var activeTrainBoardingReversedModel = createActiveRail("locking_track_train_boarding_reversed");
+
+        var builder = getMultipartBuilder(block)
+            .part()
+            .modelFile(trackModel).addModel()
+            .condition(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH).end()
+            .part()
+            .modelFile(trackModel).rotationY(90).addModel()
+            .condition(LockingTrackBlock.SHAPE, RailShape.EAST_WEST).end();
+
+        addLockingMode(LockingMode.LOCKDOWN, lockdownModel, activeLockdownModel, builder);
+        addLockingMode(LockingMode.TRAIN_LOCKDOWN, trainLockdownModel, activeTrainLockdownModel,
+            builder);
+        addLockingMode(LockingMode.HOLDING, holdingModel, activeHoldingModel, builder);
+        addLockingMode(LockingMode.TRAIN_HOLDING, trainHoldingModel, activeTrainHoldingModel,
+            builder);
+        addLockingMode(LockingMode.BOARDING, boardingModel, activeBoardingModel, builder);
+        addLockingMode(LockingMode.BOARDING_REVERSED, boardingReversedModel,
+            activeBoardingReversedModel, builder);
+        addLockingMode(LockingMode.TRAIN_BOARDING, trainBoardingModel, activeTrainBoardingModel,
+            builder);
+        addLockingMode(LockingMode.TRAIN_BOARDING_REVERSED, trainBoardingReversedModel,
+            activeTrainBoardingReversedModel, builder);
+
+        itemModels().basicItem(block.asItem());
+    }
+
+    private void addLockingMode(LockingMode lockingMode, BlockModelBuilder model,
+        BlockModelBuilder poweredModel, MultiPartBlockStateBuilder builder) {
+
+        builder
+            .part()
+            .modelFile(model).addModel()
+            .condition(LockingTrackBlock.LOCKING_MODE, lockingMode)
+            .condition(LockingTrackBlock.POWERED, false)
+            .condition(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH).end()
+            .part()
+            .modelFile(poweredModel).addModel()
+            .condition(LockingTrackBlock.LOCKING_MODE, lockingMode)
+            .condition(LockingTrackBlock.POWERED, true)
+            .condition(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH).end()
+            .part()
+            .modelFile(model).rotationY(90).addModel()
+            .condition(LockingTrackBlock.LOCKING_MODE, lockingMode)
+            .condition(LockingTrackBlock.POWERED, false)
+            .condition(LockingTrackBlock.SHAPE, RailShape.EAST_WEST).end()
+            .part()
+            .modelFile(poweredModel).rotationY(90).addModel()
+            .condition(LockingTrackBlock.LOCKING_MODE, lockingMode)
+            .condition(LockingTrackBlock.POWERED, true)
+            .condition(LockingTrackBlock.SHAPE, RailShape.EAST_WEST).end();
+    }
+
+
+    private BlockModelBuilder createVariant(String name, ModelTemplate model) {
+        var texture = modLoc(BLOCK_FOLDER + "/" + name);
+        var modelName = name + model.suffix.orElse("");
+        var parent = model.model.orElseThrow();
+
+        return models()
+            .singleTexture(modelName, parent, "rail", texture)
+            .renderType(CUTOUT);
+    }
+
+    private BlockModelBuilder createPassiveRail(String name) {
+        return createVariant(name, ModelTemplates.RAIL_FLAT);
+    }
+
+    private BlockModelBuilder createActiveRail(String name) {
+        return createVariant(name + "_on", ModelTemplates.RAIL_FLAT);
+    }
+
+    private StraightTrackModelSet createOutfittedTrackModelSet(Block block) {
+        return createTrackModelSet(name(block, "_outfitted"));
+    }
+
+    private StraightTrackModelSet createTrackModelSet(String name) {
+        return new StraightTrackModelSet(createPassiveRail(name),
+            createVariant(name, ModelTemplates.RAIL_RAISED_NE),
+            createVariant(name, ModelTemplates.RAIL_RAISED_SW));
+    }
+
+    private record StraightTrackModelSet(
+        ModelFile flatModel,
+        ModelFile raisedNorthEastModel,
+        ModelFile raisedSouthWestModel) {
+
     }
 }

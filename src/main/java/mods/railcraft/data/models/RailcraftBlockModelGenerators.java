@@ -14,7 +14,6 @@ import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LocomotiveTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
@@ -43,23 +42,6 @@ public class RailcraftBlockModelGenerators {
   private final Consumer<BlockStateGenerator> blockStateOutput;
   private final BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput;
   private final Consumer<Item> skippedAutoModelsOutput;
-
-  private final ResourceLocation lockingTrackLockdownModel;
-  private final ResourceLocation lockingTrackTrainLockdownModel;
-  private final ResourceLocation lockingTrackHoldingModel;
-  private final ResourceLocation lockingTrackTrainHoldingModel;
-  private final ResourceLocation lockingTrackBoardingModel;
-  private final ResourceLocation lockingTrackBoardingReversedModel;
-  private final ResourceLocation lockingTrackTrainBoardingModel;
-  private final ResourceLocation lockingTrackTrainBoardingReversedModel;
-  private final ResourceLocation lockingTrackActiveLockdownModel;
-  private final ResourceLocation lockingTrackActiveTrainLockdownModel;
-  private final ResourceLocation lockingTrackActiveHoldingModel;
-  private final ResourceLocation lockingTrackActiveTrainHoldingModel;
-  private final ResourceLocation lockingTrackActiveBoardingModel;
-  private final ResourceLocation lockingTrackActiveBoardingReversedModel;
-  private final ResourceLocation lockingTrackActiveTrainBoardingModel;
-  private final ResourceLocation lockingTrackActiveTrainBoardingReversedModel;
 
   private final StraightTrackModelSet transitionTrackModels;
   private final StraightTrackModelSet activeTransitionTrackModels;
@@ -107,39 +89,6 @@ public class RailcraftBlockModelGenerators {
     this.blockStateOutput = blockStateOutput;
     this.modelOutput = modelOutput;
     this.skippedAutoModelsOutput = skippedAutoModelsOutput;
-
-    this.lockingTrackLockdownModel =
-        this.createPassiveRail("locking_track_lockdown");
-    this.lockingTrackTrainLockdownModel =
-        this.createPassiveRail("locking_track_train_lockdown");
-    this.lockingTrackHoldingModel =
-        this.createPassiveRail("locking_track_holding");
-    this.lockingTrackTrainHoldingModel =
-        this.createPassiveRail("locking_track_train_holding");
-    this.lockingTrackBoardingModel =
-        this.createPassiveRail("locking_track_boarding");
-    this.lockingTrackBoardingReversedModel =
-        this.createPassiveRail("locking_track_boarding_reversed");
-    this.lockingTrackTrainBoardingModel =
-        this.createPassiveRail("locking_track_train_boarding");
-    this.lockingTrackTrainBoardingReversedModel =
-        this.createPassiveRail("locking_track_train_boarding_reversed");
-    this.lockingTrackActiveLockdownModel =
-        this.createActiveRail("locking_track_lockdown");
-    this.lockingTrackActiveTrainLockdownModel =
-        this.createActiveRail("locking_track_train_lockdown");
-    this.lockingTrackActiveHoldingModel =
-        this.createActiveRail("locking_track_holding");
-    this.lockingTrackActiveTrainHoldingModel =
-        this.createActiveRail("locking_track_train_holding");
-    this.lockingTrackActiveBoardingModel =
-        this.createActiveRail("locking_track_boarding");
-    this.lockingTrackActiveBoardingReversedModel =
-        this.createActiveRail("locking_track_boarding_reversed");
-    this.lockingTrackActiveTrainBoardingModel =
-        this.createActiveRail("locking_track_train_boarding");
-    this.lockingTrackActiveTrainBoardingReversedModel =
-        this.createActiveRail("locking_track_train_boarding_reversed");
 
     this.transitionTrackModels = this.createTrackModelSet("transition_track");
     this.activeTransitionTrackModels = this.createActiveTrackModelSet("transition_track");
@@ -371,7 +320,6 @@ public class RailcraftBlockModelGenerators {
       Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock,
       Block launcherTrackBlock, Block oneWayTrackBlock, Block locomotiveTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
-    this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
     this.createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.flatModel());
     this.createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
         this.activatorTrackModels, this.activeActivatorTrackModels);
@@ -398,88 +346,12 @@ public class RailcraftBlockModelGenerators {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
     this.createActiveOutfittedTrack(transitionTrackBlock, true, true, outfittedTrackModels,
         this.transitionTrackModels, this.activeTransitionTrackModels);
-    this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
     this.createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
         this.activatorTrackModels, this.activeActivatorTrackModels);
     this.createActiveOutfittedTrack(boosterTrackBlock, true, false, outfittedTrackModels,
         this.boosterTrackModels, this.activeBoosterTrackModels);
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
     this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
-  }
-
-  private void createLockingTrack(Block block, ResourceLocation trackModel) {
-    var generator = MultiPartGenerator.multiPart(block)
-        .with(
-            Condition.condition()
-                .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModel))
-        .with(
-            Condition.condition()
-                .term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
-
-    this.addLockingMode(LockingMode.LOCKDOWN, this.lockingTrackLockdownModel,
-        this.lockingTrackActiveLockdownModel,
-        generator);
-    this.addLockingMode(LockingMode.TRAIN_LOCKDOWN, this.lockingTrackTrainLockdownModel,
-        this.lockingTrackActiveTrainLockdownModel, generator);
-    this.addLockingMode(LockingMode.HOLDING, this.lockingTrackHoldingModel,
-        this.lockingTrackActiveHoldingModel,
-        generator);
-    this.addLockingMode(LockingMode.TRAIN_HOLDING, this.lockingTrackTrainHoldingModel,
-        this.lockingTrackActiveTrainHoldingModel, generator);
-    this.addLockingMode(LockingMode.BOARDING, this.lockingTrackBoardingModel,
-        this.lockingTrackActiveBoardingModel,
-        generator);
-    this.addLockingMode(LockingMode.BOARDING_REVERSED, this.lockingTrackBoardingReversedModel,
-        this.lockingTrackActiveBoardingReversedModel, generator);
-    this.addLockingMode(LockingMode.TRAIN_BOARDING, this.lockingTrackTrainBoardingModel,
-        this.lockingTrackActiveTrainBoardingModel, generator);
-    this.addLockingMode(LockingMode.TRAIN_BOARDING_REVERSED,
-        this.lockingTrackTrainBoardingReversedModel,
-        this.lockingTrackActiveTrainBoardingReversedModel, generator);
-
-    this.blockStateOutput.accept(generator);
-
-    this.createSimpleFlatItemModel(block.asItem());
-  }
-
-  private void addLockingMode(LockingMode lockingMode, ResourceLocation model,
-      ResourceLocation poweredModel, MultiPartGenerator blockState) {
-    blockState
-        .with(
-            Condition.condition()
-                .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
-                .term(LockingTrackBlock.POWERED, false)
-                .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, model))
-        .with(
-            Condition.condition()
-                .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
-                .term(LockingTrackBlock.POWERED, true)
-                .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, poweredModel))
-        .with(
-            Condition.condition()
-                .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
-                .term(LockingTrackBlock.POWERED, false)
-                .term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, model)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
-                .term(LockingTrackBlock.POWERED, true)
-                .term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, poweredModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
   }
 
   private void createBufferStopTrack(Block block, ResourceLocation trackModel) {

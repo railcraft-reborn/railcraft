@@ -478,7 +478,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ABANDONED_LOCKING_TRACK =
+  public static final RegistryObject<LockingTrackBlock> ABANDONED_LOCKING_TRACK =
       deferredRegister.register("abandoned_locking_track",
           () -> new LockingTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -615,7 +615,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ELECTRIC_LOCKING_TRACK =
+  public static final RegistryObject<LockingTrackBlock> ELECTRIC_LOCKING_TRACK =
       deferredRegister.register("electric_locking_track",
           () -> new LockingTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -765,7 +765,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_LOCKING_TRACK =
+  public static final RegistryObject<LockingTrackBlock> HIGH_SPEED_LOCKING_TRACK =
       deferredRegister.register("high_speed_locking_track",
           () -> new LockingTrackBlock(TrackTypes.HIGH_SPEED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -847,7 +847,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_ELECTRIC_LOCKING_TRACK =
+  public static final RegistryObject<LockingTrackBlock> HIGH_SPEED_ELECTRIC_LOCKING_TRACK =
       deferredRegister.register("high_speed_electric_locking_track",
           () -> new LockingTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -919,7 +919,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> IRON_LOCKING_TRACK =
+  public static final RegistryObject<LockingTrackBlock> IRON_LOCKING_TRACK =
       deferredRegister.register("iron_locking_track",
           () -> new LockingTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1062,7 +1062,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> REINFORCED_LOCKING_TRACK =
+  public static final RegistryObject<LockingTrackBlock> REINFORCED_LOCKING_TRACK =
       deferredRegister.register("reinforced_locking_track",
           () -> new LockingTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1198,7 +1198,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> STRAP_IRON_LOCKING_TRACK =
+  public static final RegistryObject<LockingTrackBlock> STRAP_IRON_LOCKING_TRACK =
       deferredRegister.register("strap_iron_locking_track",
           () -> new LockingTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
