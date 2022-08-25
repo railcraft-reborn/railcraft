@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-25T20:44:00.407574	Block States: railcraft
+// 1.19.2	2022-08-25T21:50:01.875176	Block States: railcraft
 add6c7b9a50c93a0ccd9ba6e317c1464c29ff9f0 assets/railcraft/blockstates/abandoned_activator_track.json
 141e735829ad3c7798b22e3fcc73490d9a9602ac assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -83,6 +83,7 @@ dfcd4322747af04dee1e0752504c83755455cd26 assets/railcraft/blockstates/fluid_fuel
 d0033564ba044554fcc76cb596c8d74885f593bb assets/railcraft/blockstates/fluid_loader.json
 c3270a2e6ac073d9c9a5484f583d9a2ff9d0072f assets/railcraft/blockstates/fluid_unloader.json
 74e9f4984b906cd933f4cf1c527b755a81c3ec04 assets/railcraft/blockstates/force_track.json
+84d4c400fc7146d6f29d5d8b02492494fff75dec assets/railcraft/blockstates/force_track_emitter.json
 d0ea4fa2d82deaa6e0deabf79a6ea400e62b05bf assets/railcraft/blockstates/gray_iron_tank_gauge.json
 f031f2e6d17f66f99ecb3666ce3eff97d36f242d assets/railcraft/blockstates/gray_iron_tank_valve.json
 138f3f538d691f284323b94b27e3a2b5da3ab2c6 assets/railcraft/blockstates/gray_iron_tank_wall.json
@@ -490,6 +491,8 @@ c70f5dc109ad3f792030eec26850a008247cf3bd assets/railcraft/models/block/fluid_fue
 10ec0b59e585cc556e0764071cf50d3289ac8fa0 assets/railcraft/models/block/fluid_unloader.json
 c3b8848c4e8a9a253dbe117f6f36ac1ff11f5619 assets/railcraft/models/block/fluid_unloader_inventory.json
 cb77a749abb7fe1348215fc8806fa5bceab4c529 assets/railcraft/models/block/force_track.json
+5794c2641d3d2997487a004a74b7757cdc3097dd assets/railcraft/models/block/force_track_emitter_powered.json
+07b9742b923247d319bbcced3bf0a61b07c30722 assets/railcraft/models/block/force_track_emitter_unpowered.json
 50644b781592545375efcc89d32e63ed44da5753 assets/railcraft/models/block/gray_iron_tank_gauge_bottom.json
 8a41eaf5f5b359e2911dadeaf388b736121d38c1 assets/railcraft/models/block/gray_iron_tank_gauge_center.json
 fa9f4feb0a03871b8704bca29535a456073264b2 assets/railcraft/models/block/gray_iron_tank_gauge_single.json

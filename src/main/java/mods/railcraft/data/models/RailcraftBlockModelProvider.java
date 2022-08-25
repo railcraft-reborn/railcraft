@@ -3,9 +3,11 @@ package mods.railcraft.data.models;
 import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
 
 import java.util.Map.Entry;
+import java.util.function.Function;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
+import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
@@ -65,6 +67,7 @@ import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -142,6 +145,16 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     public void simpleBlock(Block block) {
         super.simpleBlock(block);
         simpleBlockItem(block, cubeAll(block));
+    }
+
+    public void horizontalBlockPropertyIgnore(Block block,
+        Function<BlockState, ModelFile> modelFunc, Property<?>... ignored) {
+        getVariantBuilder(block)
+            .forAllStatesExcept(state -> ConfiguredModel.builder()
+                .modelFile(modelFunc.apply(state))
+                .rotationY(((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
+                .build()
+            , ignored);
     }
 
     private BlockModelBuilder cube(String name, ResourceLocation parent, ResourceLocation down,
@@ -232,6 +245,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
         createElevatorTrack(RailcraftBlocks.ELEVATOR_TRACK.get());
         createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
+        createForceTrackEmitter(RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
 
         // Not put in the constructor!
@@ -796,6 +810,44 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .partialState()
             .with(ForceTrackBlock.SHAPE, RailShape.EAST_WEST)
             .setModels(ConfiguredModel.builder().modelFile(model).rotationY(90).build());
+    }
+
+    private void createForceTrackEmitter(ForceTrackEmitterBlock block) {
+        var front = TextureMapping.getBlockTexture(block, "_facing");
+        var side = TextureMapping.getBlockTexture(block, "_side");
+        var frontColored = TextureMapping.getBlockTexture(block, "_facing_colored");
+        var sideColored = TextureMapping.getBlockTexture(block, "_side_colored");
+
+        var frontUnpowered = TextureMapping.getBlockTexture(block, "_facing_unpowered");
+        var sideUnpowered = TextureMapping.getBlockTexture(block, "_side_unpowered");
+        var frontColoredUnpowered = TextureMapping.getBlockTexture(block,
+            "_facing_unpowered_colored");
+        var sideColoredUnpowered = TextureMapping.getBlockTexture(block, "_side_unpowered_colored");
+
+        var template = modLoc("force_track_emitter");
+
+        var modelUnpowered = models()
+            .withExistingParent(name(block, "_unpowered"), template)
+            .texture("front", frontUnpowered)
+            .texture("side", sideUnpowered)
+            .texture("colored_front", frontColoredUnpowered)
+            .texture("colored_side", sideColoredUnpowered)
+            .texture("particle", sideUnpowered)
+            .renderType(CUTOUT);
+
+        var modelPowered = models()
+            .withExistingParent(name(block, "_powered"), template)
+            .texture("front", front)
+            .texture("side", side)
+            .texture("colored_front", frontColored)
+            .texture("colored_side", sideColored)
+            .texture("particle", side)
+            .renderType(CUTOUT);
+
+        horizontalBlockPropertyIgnore(block, blockState -> {
+            var powered = blockState.getValue(ForceTrackEmitterBlock.POWERED);
+            return powered ? modelPowered : modelUnpowered;
+        }, ForceTrackEmitterBlock.COLOR);
     }
 
     private void createTurnoutTrack(TurnoutTrackBlock block) {
