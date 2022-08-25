@@ -138,6 +138,12 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         return name(block) + suffix;
     }
 
+    @Override
+    public void simpleBlock(Block block) {
+        super.simpleBlock(block);
+        simpleBlockItem(block, cubeAll(block));
+    }
+
     private BlockModelBuilder cube(String name, ResourceLocation parent, ResourceLocation down,
         ResourceLocation up,
         ResourceLocation north,
@@ -432,6 +438,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             texture.get(TextureSlot.BOTTOM), texture.get(TextureSlot.TOP));
 
         simpleBlock(block, model);
+        simpleBlockItem(block, model);
     }
 
     private void createDirectionalManipulator(ManipulatorBlock block) {
@@ -467,6 +474,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                     .rotationY(yRot)
                     .build();
             }, AdvancedItemLoaderBlock.POWERED);
+
+        simpleBlockItem(block, horizontalModel);
     }
 
     private void createFirebox(FireboxBlock block) {
@@ -482,6 +491,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                 var lit = blockState.getValue(FireboxBlock.LIT);
                 return ConfiguredModel.builder().modelFile(lit ? litModel : model).build();
             });
+
+        simpleBlockItem(block, model);
     }
 
     private void createFurnaceMultiblockBricks(FurnaceMultiblockBlock block) {
@@ -508,6 +519,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                     model = windowModel;
                 return ConfiguredModel.builder().modelFile(model).build();
             });
+
+        simpleBlockItem(block, bricksModel);
     }
 
     private void createSteamTurbine(Block block) {
@@ -579,12 +592,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                     case X -> ConfiguredModel.builder().modelFile(horizontalModel).rotationY(90).build();
                 };
             });
+        simpleBlockItem(block, verticalModel);
     }
 
     private void createCubeColumnBlock(Block block) {
         var model = models().cubeColumn(name(block), TextureMapping.getBlockTexture(block, "_side"),
             TextureMapping.getBlockTexture(block, "_top"));
         simpleBlock(block, model);
+        simpleBlockItem(block, model);
     }
 
     private void createCubeTopBottomBlock(Block block) {
@@ -593,6 +608,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         var topTexture = TextureMapping.getBlockTexture(block, "_top");
         var model = models().cubeBottomTop(name(block), sideTexture, bottomTexture, topTexture);
         simpleBlock(block, model);
+        simpleBlockItem(block, model);
     }
 
     private void createCubeTopBlock(Block block) {
@@ -600,6 +616,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         var topTexture = TextureMapping.getBlockTexture(block, "_top");
         var model = models().cubeTop(name(block), sideTexture, topTexture);
         simpleBlock(block, model);
+        simpleBlockItem(block, model);
     }
 
     private void createPost(PostBlock block) {
@@ -709,6 +726,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                     case NORTH_SOUTH_WEST -> northSouthWestModel;
                 }).build();
             });
+
+        simpleBlockItem(block, model);
     }
 
     private void createSteelAnvil(AnvilBlock block) {
@@ -721,6 +740,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .texture("body", base)
             .texture("particle", base);
         horizontalBlock(block, model, 0);
+
+        simpleBlockItem(block, model);
     }
 
     public void fluidBlock(LiquidBlock block) {
