@@ -38,6 +38,7 @@ import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import net.minecraft.core.Direction;
@@ -84,6 +85,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     private StraightTrackModelSet activeLauncherTrackModels;
     private StraightTrackModelSet oneWayTrackModels;
     private StraightTrackModelSet activeOneWayTrackModels;
+    private StraightTrackModelSet transitionTrackModels;
+    private StraightTrackModelSet activeTransitionTrackModels;
 
     public RailcraftBlockModelProvider(DataGenerator generator,
         ExistingFileHelper existingFileHelper) {
@@ -202,6 +205,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.activeLauncherTrackModels = createActiveTrackModelSet("launcher_track");
         this.oneWayTrackModels = createTrackModelSet("one_way_track");
         this.activeOneWayTrackModels = createActiveTrackModelSet("one_way_track");
+        this.transitionTrackModels = createTrackModelSet("transition_track");
+        this.activeTransitionTrackModels = createActiveTrackModelSet("transition_track");
 
 
 
@@ -266,6 +271,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK.get());
 
         createHighSpeedTracks(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK.get(),
@@ -274,6 +280,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get());
 
         createHighSpeedTracks(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
@@ -971,10 +978,10 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         createJunctionTrack(junctionTrackBlock);
     }
 
-    private void createHighSpeedTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
-        ActivatorTrackBlock activatorTrackBlock, BoosterTrackBlock boosterTrackBlock,
-        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
-        JunctionTrackBlock junctionTrackBlock) {
+    private void createHighSpeedTracks(TrackBlock block, TransitionTrackBlock transitionTrackBlock,
+        LockingTrackBlock lockingTrackBlock, ActivatorTrackBlock activatorTrackBlock,
+        BoosterTrackBlock boosterTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
+        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock) {
         createFlexTrack(block);
         var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
 
@@ -982,6 +989,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             activatorTrackModels, activeActivatorTrackModels);
         createActiveOutfittedTrack(boosterTrackBlock, true, false, outfittedTrackModels,
             boosterTrackModels, activeBoosterTrackModels);
+        createActiveOutfittedTrack(transitionTrackBlock, true, true, outfittedTrackModels,
+            transitionTrackModels, activeTransitionTrackModels);
 
 
         createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());

@@ -14,7 +14,6 @@ import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LocomotiveTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
@@ -43,8 +42,6 @@ public class RailcraftBlockModelGenerators {
   private final BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput;
   private final Consumer<Item> skippedAutoModelsOutput;
 
-  private final StraightTrackModelSet transitionTrackModels;
-  private final StraightTrackModelSet activeTransitionTrackModels;
   private final StraightTrackModelSet controlTrackModels;
   private final StraightTrackModelSet detectorTrackModels;
   private final StraightTrackModelSet activeDetectorTrackModels;
@@ -76,9 +73,6 @@ public class RailcraftBlockModelGenerators {
     this.blockStateOutput = blockStateOutput;
     this.modelOutput = modelOutput;
     this.skippedAutoModelsOutput = skippedAutoModelsOutput;
-
-    this.transitionTrackModels = this.createTrackModelSet("transition_track");
-    this.activeTransitionTrackModels = this.createActiveTrackModelSet("transition_track");
 
     this.controlTrackModels = this.createTrackModelSet("control_track");
 
@@ -305,46 +299,8 @@ public class RailcraftBlockModelGenerators {
       Block detectorTrackBlock, Block turnoutTrackBlock, Block wyeTrackBlock,
       Block junctionTrackBlock, Block locomotiveTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
-    this.createActiveOutfittedTrack(transitionTrackBlock, true, true, outfittedTrackModels,
-        this.transitionTrackModels, this.activeTransitionTrackModels);
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
     this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
-  }
-
-  private void createActiveOutfittedTrack(
-      Block block,
-      boolean allowedOnSlopes,
-      boolean reversible,
-      StraightTrackModelSet trackModels,
-      StraightTrackModelSet trackKitModels,
-      StraightTrackModelSet activeTrackKitModels) {
-    var generator = MultiPartGenerator.multiPart(block);
-    trackModels.apply(generator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false);
-    if (reversible) {
-      trackKitModels.apply(generator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-          Condition.condition()
-              .term(ReversibleOutfittedTrackBlock.REVERSED, false)
-              .term(PoweredOutfittedTrackBlock.POWERED, false));
-      activeTrackKitModels.apply(generator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-          Condition.condition()
-              .term(ReversibleOutfittedTrackBlock.REVERSED, false)
-              .term(PoweredOutfittedTrackBlock.POWERED, true));
-      trackKitModels.apply(generator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, true,
-          Condition.condition()
-              .term(ReversibleOutfittedTrackBlock.REVERSED, true)
-              .term(PoweredOutfittedTrackBlock.POWERED, false));
-      activeTrackKitModels.apply(generator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, true,
-          Condition.condition()
-              .term(ReversibleOutfittedTrackBlock.REVERSED, true)
-              .term(PoweredOutfittedTrackBlock.POWERED, true));
-    } else {
-      trackKitModels.apply(generator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-          Condition.condition().term(PoweredOutfittedTrackBlock.POWERED, false));
-      activeTrackKitModels.apply(generator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-          Condition.condition().term(PoweredOutfittedTrackBlock.POWERED, true));
-    }
-    this.blockStateOutput.accept(generator);
-    this.createSimpleFlatItemModel(block.asItem());
   }
 
   private void createControlTrack(Block block, StraightTrackModelSet trackModels) {

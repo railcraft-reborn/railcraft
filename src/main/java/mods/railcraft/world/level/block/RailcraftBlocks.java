@@ -757,7 +757,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_TRANSITION_TRACK =
+  public static final RegistryObject<TransitionTrackBlock> HIGH_SPEED_TRANSITION_TRACK =
       deferredRegister.register("high_speed_transition_track",
           () -> new TransitionTrackBlock(TrackTypes.HIGH_SPEED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -838,7 +838,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_ELECTRIC_TRANSITION_TRACK =
+  public static final RegistryObject<TransitionTrackBlock> HIGH_SPEED_ELECTRIC_TRANSITION_TRACK =
       deferredRegister.register("high_speed_electric_transition_track",
           () -> new TransitionTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)

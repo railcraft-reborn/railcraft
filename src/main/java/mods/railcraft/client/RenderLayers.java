@@ -25,10 +25,8 @@ class RenderLayers {
     cutout(RailcraftBlocks.ELECTRIC_COUPLER_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK);
-    cutout(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK);
-    cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK);
