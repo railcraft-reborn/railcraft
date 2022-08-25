@@ -63,12 +63,6 @@ public class RailcraftBlockModelGenerators {
   private final StraightTrackModelSet disembarkingTrackRight;
   private final StraightTrackModelSet activeDisembarkingTrackRight;
 
-  private final StraightTrackModelSet launcherTrackModels;
-  private final StraightTrackModelSet activeLauncherTrackModels;
-
-  private final StraightTrackModelSet oneWayTrackModels;
-  private final StraightTrackModelSet activeOneWayTrackModels;
-
   private final StraightTrackModelSet locomotiveTrackShutdownModel;
   private final StraightTrackModelSet locomotiveTrackIdleModel;
   private final StraightTrackModelSet locomotiveTrackRunningModel;
@@ -105,12 +99,6 @@ public class RailcraftBlockModelGenerators {
     this.activeDisembarkingTrackLeft = this.createActiveTrackModelSet("disembarking_track_left");
     this.disembarkingTrackRight = this.createTrackModelSet("disembarking_track_right");
     this.activeDisembarkingTrackRight = this.createActiveTrackModelSet("disembarking_track_right");
-
-    this.launcherTrackModels = this.createTrackModelSet("launcher_track");
-    this.activeLauncherTrackModels = this.createActiveTrackModelSet("launcher_track");
-
-    this.oneWayTrackModels = this.createTrackModelSet("one_way_track");
-    this.activeOneWayTrackModels = this.createActiveTrackModelSet("one_way_track");
 
     this.locomotiveTrackShutdownModel = this.createTrackModelSet("locomotive_track_shutdown");
     this.locomotiveTrackIdleModel = this.createTrackModelSet("locomotive_track_idle");
@@ -309,10 +297,6 @@ public class RailcraftBlockModelGenerators {
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
     this.createCouplerTrack(couplerTrackBlock, outfittedTrackModels);
     this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
-    this.createActiveOutfittedTrack(launcherTrackBlock, false, false, outfittedTrackModels,
-        this.launcherTrackModels, this.activeLauncherTrackModels);
-    this.createActiveOutfittedTrack(oneWayTrackBlock, false, true, outfittedTrackModels,
-        this.oneWayTrackModels, this.activeOneWayTrackModels);
     this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
   }
 

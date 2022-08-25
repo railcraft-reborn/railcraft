@@ -582,7 +582,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ABANDONED_LAUNCHER_TRACK =
+  public static final RegistryObject<LauncherTrackBlock> ABANDONED_LAUNCHER_TRACK =
       deferredRegister.register("abandoned_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -590,7 +590,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ABANDONED_ONE_WAY_TRACK =
+  public static final RegistryObject<OneWayTrackBlock> ABANDONED_ONE_WAY_TRACK =
       deferredRegister.register("abandoned_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -725,7 +725,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ELECTRIC_LAUNCHER_TRACK =
+  public static final RegistryObject<LauncherTrackBlock> ELECTRIC_LAUNCHER_TRACK =
       deferredRegister.register("electric_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -733,7 +733,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ELECTRIC_ONE_WAY_TRACK =
+  public static final RegistryObject<OneWayTrackBlock> ELECTRIC_ONE_WAY_TRACK =
       deferredRegister.register("electric_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1030,7 +1030,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> IRON_LAUNCHER_TRACK =
+  public static final RegistryObject<LauncherTrackBlock> IRON_LAUNCHER_TRACK =
       deferredRegister.register("iron_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1038,7 +1038,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> IRON_ONE_WAY_TRACK =
+  public static final RegistryObject<OneWayTrackBlock> IRON_ONE_WAY_TRACK =
       deferredRegister.register("iron_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1166,7 +1166,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> REINFORCED_LAUNCHER_TRACK =
+  public static final RegistryObject<LauncherTrackBlock> REINFORCED_LAUNCHER_TRACK =
       deferredRegister.register("reinforced_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1174,7 +1174,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> REINFORCED_ONE_WAY_TRACK =
+  public static final RegistryObject<OneWayTrackBlock> REINFORCED_ONE_WAY_TRACK =
       deferredRegister.register("reinforced_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1302,7 +1302,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> STRAP_IRON_LAUNCHER_TRACK =
+  public static final RegistryObject<LauncherTrackBlock> STRAP_IRON_LAUNCHER_TRACK =
       deferredRegister.register("strap_iron_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1310,7 +1310,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> STRAP_IRON_ONE_WAY_TRACK =
+  public static final RegistryObject<OneWayTrackBlock> STRAP_IRON_ONE_WAY_TRACK =
       deferredRegister.register("strap_iron_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
