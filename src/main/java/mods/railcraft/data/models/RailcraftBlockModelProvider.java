@@ -32,6 +32,7 @@ import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock.Mode;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LauncherTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
@@ -49,8 +50,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.models.blockstates.Condition;
 import net.minecraft.data.models.blockstates.Condition.CompositeCondition;
-import net.minecraft.data.models.blockstates.Condition.Operation;
 import net.minecraft.data.models.blockstates.Condition.TerminalCondition;
+import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
@@ -249,6 +250,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ABANDONED_BOOSTER_TRACK.get(),
             RailcraftBlocks.ABANDONED_CONTROL_TRACK.get(),
+            RailcraftBlocks.ABANDONED_GATED_TRACK.get(),
             RailcraftBlocks.ABANDONED_DETECTOR_TRACK.get(),
             RailcraftBlocks.ABANDONED_EMBARKING_TRACK.get(),
             RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
@@ -264,6 +266,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.IRON_BOOSTER_TRACK.get(),
             RailcraftBlocks.IRON_CONTROL_TRACK.get(),
+            RailcraftBlocks.IRON_GATED_TRACK.get(),
             RailcraftBlocks.IRON_DETECTOR_TRACK.get(),
             RailcraftBlocks.IRON_EMBARKING_TRACK.get(),
             RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
@@ -279,6 +282,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_CONTROL_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_GATED_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
@@ -294,6 +298,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.REINFORCED_BOOSTER_TRACK.get(),
             RailcraftBlocks.REINFORCED_CONTROL_TRACK.get(),
+            RailcraftBlocks.REINFORCED_GATED_TRACK.get(),
             RailcraftBlocks.REINFORCED_DETECTOR_TRACK.get(),
             RailcraftBlocks.REINFORCED_EMBARKING_TRACK.get(),
             RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
@@ -309,6 +314,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ELECTRIC_BOOSTER_TRACK.get(),
             RailcraftBlocks.ELECTRIC_CONTROL_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_GATED_TRACK.get(),
             RailcraftBlocks.ELECTRIC_DETECTOR_TRACK.get(),
             RailcraftBlocks.ELECTRIC_EMBARKING_TRACK.get(),
             RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
@@ -982,38 +988,41 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     private void createAbandonedTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
         BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
-        DetectorTrackBlock detectorTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
-        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
-        JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
-        OneWayTrackBlock oneWayTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
+        GatedTrackBlock gatedTrackBlock, DetectorTrackBlock detectorTrackBlock,
+        EmbarkingTrackBlock embarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
+        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
+        LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
+        LocomotiveTrackBlock locomotiveTrackBlock) {
         createAbandonedFlexTrack(block);
         createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
-            boosterTrackBlock, controlTrackBlock, detectorTrackBlock, embarkingTrackBlock,
-            turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock, launcherTrackBlock,
-            oneWayTrackBlock, locomotiveTrackBlock);
+            boosterTrackBlock, controlTrackBlock, gatedTrackBlock,detectorTrackBlock,
+            embarkingTrackBlock, turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock,
+            launcherTrackBlock, oneWayTrackBlock, locomotiveTrackBlock);
     }
 
     private void createTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
         BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
-        DetectorTrackBlock detectorTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
-        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
-        JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
-        OneWayTrackBlock oneWayTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
+        GatedTrackBlock gatedTrackBlock, DetectorTrackBlock detectorTrackBlock,
+        EmbarkingTrackBlock embarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
+        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
+        LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
+        LocomotiveTrackBlock locomotiveTrackBlock) {
         createFlexTrack(block);
         createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
-            boosterTrackBlock, controlTrackBlock, detectorTrackBlock, embarkingTrackBlock,
-            turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock, launcherTrackBlock,
-            oneWayTrackBlock, locomotiveTrackBlock);
+            boosterTrackBlock, controlTrackBlock, gatedTrackBlock,detectorTrackBlock,
+            embarkingTrackBlock, turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock,
+            launcherTrackBlock, oneWayTrackBlock, locomotiveTrackBlock);
     }
 
     private void createOutfittedTracks(Block block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
         BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
-        DetectorTrackBlock detectorTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
-        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
-        JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
-        OneWayTrackBlock oneWayTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
+        GatedTrackBlock gatedTrackBlock, DetectorTrackBlock detectorTrackBlock,
+        EmbarkingTrackBlock embarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
+        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
+        LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
+        LocomotiveTrackBlock locomotiveTrackBlock) {
         var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
 
         createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
@@ -1035,7 +1044,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             locomotiveTrackIdleModel, activeLocomotiveTrackIdleModel,
             locomotiveTrackRunningModel, activeLocomotiveTrackRunningModel);
 
-        this.createControlTrack(controlTrackBlock, outfittedTrackModels, controlTrackModels);
+        createControlTrack(controlTrackBlock, outfittedTrackModels, controlTrackModels);
+        createGatedTrack(gatedTrackBlock, outfittedTrackModels, controlTrackModels);
 
         createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
         createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.flatModel());
@@ -1302,6 +1312,82 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                     .term(ControlTrackBlock.REVERSED, true));
 
         itemModels().basicItem(block.asItem());
+    }
+
+    private void createGatedTrack(GatedTrackBlock block, StraightTrackModelSet trackModels,
+        StraightTrackModelSet controlTrackModels) {
+        var closedGateModel = new ModelFile.UncheckedModelFile(
+            ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE));
+        var openGateModel = new ModelFile.UncheckedModelFile(
+            ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_open"));
+        var closedWallGateModel = new ModelFile.UncheckedModelFile(
+            ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall"));
+        var openWallGateModel = new ModelFile.UncheckedModelFile(
+            ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall_open"));
+
+        var builder = getMultipartBuilder(block)
+            .part()
+            .modelFile(trackModels.flatModel()).addModel()
+            .condition(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH).end()
+            .part()
+            .modelFile(trackModels.flatModel()).rotationY(90).addModel()
+            .condition(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST).end()
+            .part()
+            .modelFile(controlTrackModels.flatModel()).addModel()
+            .condition(GatedTrackBlock.ONE_WAY, true)
+            .condition(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+            .condition(ReversibleOutfittedTrackBlock.REVERSED, false).end()
+            .part()
+            .modelFile(controlTrackModels.flatModel()).rotationY(180).addModel()
+            .condition(GatedTrackBlock.ONE_WAY, true)
+            .condition(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+            .condition(ReversibleOutfittedTrackBlock.REVERSED, true).end()
+            .part()
+            .modelFile(controlTrackModels.flatModel()).rotationY(90).addModel()
+            .condition(GatedTrackBlock.ONE_WAY, true)
+            .condition(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+            .condition(ReversibleOutfittedTrackBlock.REVERSED, false).end()
+            .part()
+            .modelFile(controlTrackModels.flatModel()).rotationY(270).addModel()
+            .condition(GatedTrackBlock.ONE_WAY, true)
+            .condition(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+            .condition(ReversibleOutfittedTrackBlock.REVERSED, true).end();
+
+        this.addGateVariants(builder, false, false, closedGateModel);
+        this.addGateVariants(builder, true, false, openGateModel);
+        this.addGateVariants(builder, false, true, closedWallGateModel);
+        this.addGateVariants(builder, true, true, openWallGateModel);
+
+        itemModels().basicItem(block.asItem());
+    }
+
+    private void addGateVariants(MultiPartBlockStateBuilder builder, boolean open, boolean inWall,
+        ModelFile model) {
+        builder
+            .part()
+            .modelFile(model).rotationY(180).addModel()
+            .condition(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+            .condition(ReversibleOutfittedTrackBlock.REVERSED, false)
+            .condition(GatedTrackBlock.OPEN, open)
+            .condition(GatedTrackBlock.IN_WALL, inWall).end()
+            .part()
+            .modelFile(model).addModel()
+            .condition(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+            .condition(ReversibleOutfittedTrackBlock.REVERSED, true)
+            .condition(GatedTrackBlock.OPEN, open)
+            .condition(GatedTrackBlock.IN_WALL, inWall).end()
+            .part()
+            .modelFile(model).rotationY(270).addModel()
+            .condition(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+            .condition(ReversibleOutfittedTrackBlock.REVERSED, false)
+            .condition(GatedTrackBlock.OPEN, open)
+            .condition(GatedTrackBlock.IN_WALL, inWall).end()
+            .part()
+            .modelFile(model).rotationY(90).addModel()
+            .condition(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+            .condition(ReversibleOutfittedTrackBlock.REVERSED, true)
+            .condition(GatedTrackBlock.OPEN, open)
+            .condition(GatedTrackBlock.IN_WALL, inWall).end();
     }
 
     private BlockModelBuilder createVariant(String name, ModelTemplate model) {

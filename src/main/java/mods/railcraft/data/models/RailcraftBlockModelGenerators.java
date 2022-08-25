@@ -8,13 +8,9 @@ import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
-import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.data.models.blockstates.Condition;
 import net.minecraft.data.models.blockstates.MultiPartGenerator;
@@ -39,8 +35,6 @@ public class RailcraftBlockModelGenerators {
   private final BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput;
   private final Consumer<Item> skippedAutoModelsOutput;
 
-  private final StraightTrackModelSet controlTrackModels;
-
   private final StraightTrackModelSet couplerTrackCoupler;
   private final StraightTrackModelSet activeCouplerTrackCoupler;
   private final StraightTrackModelSet couplerTrackDecoupler;
@@ -59,8 +53,6 @@ public class RailcraftBlockModelGenerators {
     this.blockStateOutput = blockStateOutput;
     this.modelOutput = modelOutput;
     this.skippedAutoModelsOutput = skippedAutoModelsOutput;
-
-    this.controlTrackModels = this.createTrackModelSet("control_track");
 
     this.couplerTrackCoupler = this.createTrackModelSet("coupler_track_coupler");
     this.activeCouplerTrackCoupler = this.createActiveTrackModelSet("coupler_track_coupler");
@@ -235,113 +227,8 @@ public class RailcraftBlockModelGenerators {
       Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock,
       Block launcherTrackBlock, Block oneWayTrackBlock, Block locomotiveTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
-    this.createGatedTrack(gatedTrackBlock, outfittedTrackModels);
     this.createCouplerTrack(couplerTrackBlock, outfittedTrackModels);
     this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
-  }
-
-  private void createGatedTrack(Block block, StraightTrackModelSet trackModels) {
-    var closedGateModel =
-        ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE);
-    var openGateModel =
-        ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_open");
-    var closedWallGateModel =
-        ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall");
-    var openWallGateModel =
-        ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall_open");
-
-    var generator = MultiPartGenerator.multiPart(block)
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.flatModel()))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant()
-                .with(VariantProperties.MODEL, trackModels.flatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(GatedTrackBlock.ONE_WAY, true)
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.controlTrackModels.flatModel()))
-        .with(
-            Condition.condition()
-                .term(GatedTrackBlock.ONE_WAY, true)
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.controlTrackModels.flatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .with(
-            Condition.condition()
-                .term(GatedTrackBlock.ONE_WAY, true)
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, false),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.controlTrackModels.flatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-        .with(
-            Condition.condition()
-                .term(GatedTrackBlock.ONE_WAY, true)
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, true),
-            Variant.variant()
-                .with(VariantProperties.MODEL, this.controlTrackModels.flatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
-
-    this.addGateVariants(generator, false, false, closedGateModel);
-    this.addGateVariants(generator, true, false, openGateModel);
-    this.addGateVariants(generator, false, true, closedWallGateModel);
-    this.addGateVariants(generator, true, true, openWallGateModel);
-
-    this.blockStateOutput.accept(generator);
-
-    this.createSimpleFlatItemModel(block.asItem());
-  }
-
-  private void addGateVariants(MultiPartGenerator blockState, boolean open, boolean inWall,
-      ResourceLocation model) {
-    blockState
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, false) // North
-                .term(GatedTrackBlock.OPEN, open)
-                .term(GatedTrackBlock.IN_WALL, inWall),
-            Variant.variant()
-                .with(VariantProperties.MODEL, model)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, true) // South
-                .term(GatedTrackBlock.OPEN, open)
-                .term(GatedTrackBlock.IN_WALL, inWall),
-            Variant.variant()
-                .with(VariantProperties.MODEL, model))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, false) // East
-                .term(GatedTrackBlock.OPEN, open)
-                .term(GatedTrackBlock.IN_WALL, inWall),
-            Variant.variant()
-                .with(VariantProperties.MODEL, model)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-        .with(
-            Condition.condition()
-                .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
-                .term(ReversibleOutfittedTrackBlock.REVERSED, true) // West
-                .term(GatedTrackBlock.OPEN, open)
-                .term(GatedTrackBlock.IN_WALL, inWall),
-            Variant.variant()
-                .with(VariantProperties.MODEL, model)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
   }
 
   private void createCouplerTrack(Block block, StraightTrackModelSet trackModels) {

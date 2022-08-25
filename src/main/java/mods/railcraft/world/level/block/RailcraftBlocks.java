@@ -518,7 +518,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ABANDONED_GATED_TRACK =
+  public static final RegistryObject<GatedTrackBlock> ABANDONED_GATED_TRACK =
       deferredRegister.register("abandoned_gated_track",
           () -> new GatedTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -659,7 +659,7 @@ public class RailcraftBlocks {
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, 3.5F)));
 
-  public static final RegistryObject<TrackBlock> ELECTRIC_GATED_TRACK =
+  public static final RegistryObject<GatedTrackBlock> ELECTRIC_GATED_TRACK =
       deferredRegister.register("electric_gated_track",
           () -> new GatedTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -964,7 +964,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> IRON_GATED_TRACK =
+  public static final RegistryObject<GatedTrackBlock> IRON_GATED_TRACK =
       deferredRegister.register("iron_gated_track",
           () -> new GatedTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1102,7 +1102,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> REINFORCED_GATED_TRACK =
+  public static final RegistryObject<GatedTrackBlock> REINFORCED_GATED_TRACK =
       deferredRegister.register("reinforced_gated_track",
           () -> new GatedTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1238,7 +1238,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> STRAP_IRON_GATED_TRACK =
+  public static final RegistryObject<GatedTrackBlock> STRAP_IRON_GATED_TRACK =
       deferredRegister.register("strap_iron_gated_track",
           () -> new GatedTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
