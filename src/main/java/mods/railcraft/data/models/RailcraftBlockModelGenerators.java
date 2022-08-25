@@ -45,8 +45,6 @@ public class RailcraftBlockModelGenerators {
 
   private final StraightTrackModelSet transitionTrackModels;
   private final StraightTrackModelSet activeTransitionTrackModels;
-  private final StraightTrackModelSet activatorTrackModels;
-  private final StraightTrackModelSet activeActivatorTrackModels;
   private final StraightTrackModelSet boosterTrackModels;
   private final StraightTrackModelSet activeBoosterTrackModels;
   private final StraightTrackModelSet controlTrackModels;
@@ -92,9 +90,6 @@ public class RailcraftBlockModelGenerators {
 
     this.transitionTrackModels = this.createTrackModelSet("transition_track");
     this.activeTransitionTrackModels = this.createActiveTrackModelSet("transition_track");
-
-    this.activatorTrackModels = this.createTrackModelSet("activator_track");
-    this.activeActivatorTrackModels = this.createActiveTrackModelSet("activator_track");
 
     this.boosterTrackModels = this.createTrackModelSet("booster_track");
     this.activeBoosterTrackModels = this.createActiveTrackModelSet("booster_track");
@@ -320,8 +315,6 @@ public class RailcraftBlockModelGenerators {
       Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock,
       Block launcherTrackBlock, Block oneWayTrackBlock, Block locomotiveTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
-    this.createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
-        this.activatorTrackModels, this.activeActivatorTrackModels);
     this.createActiveOutfittedTrack(boosterTrackBlock, true, false, outfittedTrackModels,
         this.boosterTrackModels, this.activeBoosterTrackModels);
     this.createControlTrack(controlTrackBlock, outfittedTrackModels);
@@ -345,8 +338,6 @@ public class RailcraftBlockModelGenerators {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
     this.createActiveOutfittedTrack(transitionTrackBlock, true, true, outfittedTrackModels,
         this.transitionTrackModels, this.activeTransitionTrackModels);
-    this.createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
-        this.activatorTrackModels, this.activeActivatorTrackModels);
     this.createActiveOutfittedTrack(boosterTrackBlock, true, false, outfittedTrackModels,
         this.boosterTrackModels, this.activeBoosterTrackModels);
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
