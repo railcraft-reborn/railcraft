@@ -6,15 +6,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
-import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.LocomotiveTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
@@ -56,13 +53,6 @@ public class RailcraftBlockModelGenerators {
   private final StraightTrackModelSet disembarkingTrackRight;
   private final StraightTrackModelSet activeDisembarkingTrackRight;
 
-  private final StraightTrackModelSet locomotiveTrackShutdownModel;
-  private final StraightTrackModelSet locomotiveTrackIdleModel;
-  private final StraightTrackModelSet locomotiveTrackRunningModel;
-  private final StraightTrackModelSet activeLocomotiveTrackShutdownModel;
-  private final StraightTrackModelSet activeLocomotiveTrackIdleModel;
-  private final StraightTrackModelSet activeLocomotiveTrackRunningModel;
-
   public RailcraftBlockModelGenerators(Consumer<BlockStateGenerator> blockStateOutput,
       BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput,
       Consumer<Item> skippedAutoModelsOutput) {
@@ -83,17 +73,7 @@ public class RailcraftBlockModelGenerators {
     this.disembarkingTrackLeft = this.createTrackModelSet("disembarking_track_left");
     this.activeDisembarkingTrackLeft = this.createActiveTrackModelSet("disembarking_track_left");
     this.disembarkingTrackRight = this.createTrackModelSet("disembarking_track_right");
-    this.activeDisembarkingTrackRight = this.createActiveTrackModelSet("disembarking_track_right");
-
-    this.locomotiveTrackShutdownModel = this.createTrackModelSet("locomotive_track_shutdown");
-    this.locomotiveTrackIdleModel = this.createTrackModelSet("locomotive_track_idle");
-    this.locomotiveTrackRunningModel = this.createTrackModelSet("locomotive_track_running");
-    this.activeLocomotiveTrackShutdownModel =
-        this.createActiveTrackModelSet("locomotive_track_shutdown");
-    this.activeLocomotiveTrackIdleModel = this.createActiveTrackModelSet("locomotive_track_idle");
-    this.activeLocomotiveTrackRunningModel =
-        this.createActiveTrackModelSet("locomotive_track_running");
-  }
+    this.activeDisembarkingTrackRight = this.createActiveTrackModelSet("disembarking_track_right");  }
 
   public void run() {
     this.skipAutoItemBlock(RailcraftBlocks.FORCE_TRACK_EMITTER.get());
@@ -149,28 +129,6 @@ public class RailcraftBlockModelGenerators {
         RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
         RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK.get(),
         RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get());
-    this.createHighSpeedTracks(
-        RailcraftBlocks.HIGH_SPEED_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get());
-    this.createHighSpeedTracks(
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get());
     this.createOutfittedTracks(Blocks.RAIL,
         RailcraftBlocks.IRON_LOCKING_TRACK.get(),
         RailcraftBlocks.IRON_BUFFER_STOP_TRACK.get(),
@@ -281,15 +239,6 @@ public class RailcraftBlockModelGenerators {
     this.createGatedTrack(gatedTrackBlock, outfittedTrackModels);
     this.createCouplerTrack(couplerTrackBlock, outfittedTrackModels);
     this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
-    this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
-  }
-
-  private void createHighSpeedTracks(Block block, Block transitionTrackBlock,
-      Block lockingTrackBlock, Block activatorTrackBlock, Block boosterTrackBlock,
-      Block detectorTrackBlock, Block turnoutTrackBlock, Block wyeTrackBlock,
-      Block junctionTrackBlock, Block locomotiveTrackBlock) {
-    var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
-    this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
   }
 
   private void createControlTrack(Block block, StraightTrackModelSet trackModels) {
@@ -471,32 +420,6 @@ public class RailcraftBlockModelGenerators {
             .term(PoweredOutfittedTrackBlock.POWERED, true));
     this.blockStateOutput.accept(generator);
     this.createSimpleFlatItemModel(block.asItem());
-  }
-
-  private void createLocomotiveTrack(Block block, StraightTrackModelSet trackModel) {
-    var generator = MultiPartGenerator.multiPart(block);
-    trackModel.apply(generator, LocomotiveTrackBlock.SHAPE, true, false);
-    this.addLocomotiveMode(Locomotive.Mode.SHUTDOWN, this.locomotiveTrackShutdownModel,
-        this.activeLocomotiveTrackShutdownModel, generator);
-    this.addLocomotiveMode(Locomotive.Mode.IDLE, this.locomotiveTrackIdleModel,
-        this.activeLocomotiveTrackIdleModel, generator);
-    this.addLocomotiveMode(Locomotive.Mode.RUNNING, this.locomotiveTrackRunningModel,
-        this.activeLocomotiveTrackRunningModel, generator);
-    this.blockStateOutput.accept(generator);
-
-    this.createSimpleFlatItemModel(block.asItem());
-  }
-
-  private void addLocomotiveMode(Locomotive.Mode locomotiveMode, StraightTrackModelSet model,
-      StraightTrackModelSet poweredModel, MultiPartGenerator generator) {
-    model.apply(generator, LocomotiveTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(LocomotiveTrackBlock.LOCOMOTIVE_MODE, locomotiveMode)
-            .term(LocomotiveTrackBlock.POWERED, false));
-    poweredModel.apply(generator, LocomotiveTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(LocomotiveTrackBlock.LOCOMOTIVE_MODE, locomotiveMode)
-            .term(LocomotiveTrackBlock.POWERED, true));
   }
 
   private ResourceLocation createPassiveRail(String name) {
