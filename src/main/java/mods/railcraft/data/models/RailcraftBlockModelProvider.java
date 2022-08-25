@@ -28,6 +28,7 @@ import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
@@ -75,6 +76,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     private StraightTrackModelSet activeActivatorTrackModels;
     private StraightTrackModelSet boosterTrackModels;
     private StraightTrackModelSet activeBoosterTrackModels;
+
+    private StraightTrackModelSet embarkingTrack;
+    private StraightTrackModelSet activeEmbarkingTrack;
 
     public RailcraftBlockModelProvider(DataGenerator generator,
         ExistingFileHelper existingFileHelper) {
@@ -187,6 +191,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.activeActivatorTrackModels = createActiveTrackModelSet("activator_track");
         this.boosterTrackModels = createTrackModelSet("booster_track");
         this.activeBoosterTrackModels = createActiveTrackModelSet("booster_track");
+        this.embarkingTrack = createTrackModelSet("embarking_track");
+        this.activeEmbarkingTrack = createActiveTrackModelSet("embarking_track");
 
 
 
@@ -195,6 +201,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK.get(),
             RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ABANDONED_BOOSTER_TRACK.get(),
+            RailcraftBlocks.ABANDONED_EMBARKING_TRACK.get(),
             RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
             RailcraftBlocks.ABANDONED_WYE_TRACK.get(),
             RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get());
@@ -204,6 +211,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.IRON_BUFFER_STOP_TRACK.get(),
             RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.IRON_BOOSTER_TRACK.get(),
+            RailcraftBlocks.IRON_EMBARKING_TRACK.get(),
             RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
             RailcraftBlocks.IRON_WYE_TRACK.get(),
             RailcraftBlocks.IRON_JUNCTION_TRACK.get());
@@ -213,6 +221,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_WYE_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get());
@@ -222,6 +231,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK.get(),
             RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.REINFORCED_BOOSTER_TRACK.get(),
+            RailcraftBlocks.REINFORCED_EMBARKING_TRACK.get(),
             RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
             RailcraftBlocks.REINFORCED_WYE_TRACK.get(),
             RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get());
@@ -231,6 +241,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK.get(),
             RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ELECTRIC_BOOSTER_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_EMBARKING_TRACK.get(),
             RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
             RailcraftBlocks.ELECTRIC_WYE_TRACK.get(),
             RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get());
@@ -892,32 +903,39 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     private void createAbandonedTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
-        BoosterTrackBlock boosterTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock) {
+        BoosterTrackBlock boosterTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock) {
         createAbandonedFlexTrack(block);
         createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
-            boosterTrackBlock, turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock);
+            boosterTrackBlock, embarkingTrackBlock, turnoutTrackBlock, wyeTrackBlock,
+            junctionTrackBlock);
     }
 
     private void createTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
-        BoosterTrackBlock boosterTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock) {
+        BoosterTrackBlock boosterTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock) {
         createFlexTrack(block);
         createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
-            boosterTrackBlock, turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock);
+            boosterTrackBlock, embarkingTrackBlock, turnoutTrackBlock, wyeTrackBlock,
+            junctionTrackBlock);
     }
 
     private void createOutfittedTracks(Block block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
-        BoosterTrackBlock boosterTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock) {
+        BoosterTrackBlock boosterTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock) {
         var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
 
         createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
             activatorTrackModels, activeActivatorTrackModels);
         createActiveOutfittedTrack(boosterTrackBlock, true, false, outfittedTrackModels,
             boosterTrackModels, activeBoosterTrackModels);
+        createActiveOutfittedTrack(embarkingTrackBlock, true, false, outfittedTrackModels,
+            embarkingTrack, activeEmbarkingTrack);
 
 
         createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());

@@ -542,7 +542,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ABANDONED_EMBARKING_TRACK =
+  public static final RegistryObject<EmbarkingTrackBlock> ABANDONED_EMBARKING_TRACK =
       deferredRegister.register("abandoned_embarking_track",
           () -> new EmbarkingTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -685,7 +685,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ELECTRIC_EMBARKING_TRACK =
+  public static final RegistryObject<EmbarkingTrackBlock> ELECTRIC_EMBARKING_TRACK =
       deferredRegister.register("electric_embarking_track",
           () -> new EmbarkingTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -990,7 +990,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> IRON_EMBARKING_TRACK =
+  public static final RegistryObject<EmbarkingTrackBlock> IRON_EMBARKING_TRACK =
       deferredRegister.register("iron_embarking_track",
           () -> new EmbarkingTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1126,7 +1126,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> REINFORCED_EMBARKING_TRACK =
+  public static final RegistryObject<EmbarkingTrackBlock> REINFORCED_EMBARKING_TRACK =
       deferredRegister.register("reinforced_embarking_track",
           () -> new EmbarkingTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1262,7 +1262,7 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> STRAP_IRON_EMBARKING_TRACK =
+  public static final RegistryObject<EmbarkingTrackBlock> STRAP_IRON_EMBARKING_TRACK =
       deferredRegister.register("strap_iron_embarking_track",
           () -> new EmbarkingTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)

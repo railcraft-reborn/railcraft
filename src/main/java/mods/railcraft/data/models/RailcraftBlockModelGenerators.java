@@ -58,9 +58,6 @@ public class RailcraftBlockModelGenerators {
   private final StraightTrackModelSet couplerTrackAutoCoupler;
   private final StraightTrackModelSet activeCouplerTrackAutoCoupler;
 
-  private final StraightTrackModelSet embarkingTrack;
-  private final StraightTrackModelSet activeEmbarkingTrack;
-
   private final StraightTrackModelSet disembarkingTrackLeft;
   private final StraightTrackModelSet activeDisembarkingTrackLeft;
   private final StraightTrackModelSet disembarkingTrackRight;
@@ -103,9 +100,6 @@ public class RailcraftBlockModelGenerators {
     this.couplerTrackAutoCoupler = this.createTrackModelSet("coupler_track_auto_coupler");
     this.activeCouplerTrackAutoCoupler =
         this.createActiveTrackModelSet("coupler_track_auto_coupler");
-
-    this.embarkingTrack = this.createTrackModelSet("embarking_track");
-    this.activeEmbarkingTrack = this.createActiveTrackModelSet("embarking_track");
 
     this.disembarkingTrackLeft = this.createTrackModelSet("disembarking_track_left");
     this.activeDisembarkingTrackLeft = this.createActiveTrackModelSet("disembarking_track_left");
@@ -314,8 +308,6 @@ public class RailcraftBlockModelGenerators {
     this.createGatedTrack(gatedTrackBlock, outfittedTrackModels);
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
     this.createCouplerTrack(couplerTrackBlock, outfittedTrackModels);
-    this.createActiveOutfittedTrack(embarkingTrackBlock, true, false, outfittedTrackModels,
-        this.embarkingTrack, this.activeEmbarkingTrack);
     this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
     this.createActiveOutfittedTrack(launcherTrackBlock, false, false, outfittedTrackModels,
         this.launcherTrackModels, this.activeLauncherTrackModels);
