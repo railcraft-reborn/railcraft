@@ -235,33 +235,9 @@ public class RailcraftBlockModelGenerators {
       Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock,
       Block launcherTrackBlock, Block oneWayTrackBlock, Block locomotiveTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
-    this.createControlTrack(controlTrackBlock, outfittedTrackModels);
     this.createGatedTrack(gatedTrackBlock, outfittedTrackModels);
     this.createCouplerTrack(couplerTrackBlock, outfittedTrackModels);
     this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
-  }
-
-  private void createControlTrack(Block block, StraightTrackModelSet trackModels) {
-    var generator = MultiPartGenerator.multiPart(block);
-    trackModels.apply(generator, OutfittedTrackBlock.SHAPE, true, false);
-    this.controlTrackModels.apply(generator, OutfittedTrackBlock.SHAPE, true, false,
-        Condition.or(
-            Condition.condition()
-                .term(PoweredOutfittedTrackBlock.POWERED, false)
-                .term(ControlTrackBlock.REVERSED, false),
-            Condition.condition()
-                .term(PoweredOutfittedTrackBlock.POWERED, true)
-                .term(ControlTrackBlock.REVERSED, true)));
-    this.controlTrackModels.apply(generator, OutfittedTrackBlock.SHAPE, true, true,
-        Condition.or(
-            Condition.condition()
-                .term(PoweredOutfittedTrackBlock.POWERED, true)
-                .term(ControlTrackBlock.REVERSED, false),
-            Condition.condition()
-                .term(PoweredOutfittedTrackBlock.POWERED, false)
-                .term(ControlTrackBlock.REVERSED, true)));
-    this.blockStateOutput.accept(generator);
-    this.createSimpleFlatItemModel(block.asItem());
   }
 
   private void createGatedTrack(Block block, StraightTrackModelSet trackModels) {

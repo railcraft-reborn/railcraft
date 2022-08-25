@@ -28,6 +28,7 @@ import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock.Mode;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
@@ -75,7 +76,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 public class RailcraftBlockModelProvider extends BlockStateProvider {
-    
+
     private static final String CUTOUT = "cutout";
 
     private final ResourceLocation FLAT_TEMPLATE = mcLoc("rail_flat");
@@ -105,6 +106,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     private StraightTrackModelSet activeLocomotiveTrackShutdownModel;
     private StraightTrackModelSet activeLocomotiveTrackIdleModel;
     private StraightTrackModelSet activeLocomotiveTrackRunningModel;
+    private StraightTrackModelSet controlTrackModels;
 
     public RailcraftBlockModelProvider(DataGenerator generator,
         ExistingFileHelper existingFileHelper) {
@@ -237,6 +239,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.activeLocomotiveTrackIdleModel = createActiveTrackModelSet("locomotive_track_idle");
         this.activeLocomotiveTrackRunningModel =
             createActiveTrackModelSet("locomotive_track_running");
+        this.controlTrackModels = createTrackModelSet("control_track");
 
 
 
@@ -245,6 +248,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK.get(),
             RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ABANDONED_BOOSTER_TRACK.get(),
+            RailcraftBlocks.ABANDONED_CONTROL_TRACK.get(),
             RailcraftBlocks.ABANDONED_DETECTOR_TRACK.get(),
             RailcraftBlocks.ABANDONED_EMBARKING_TRACK.get(),
             RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
@@ -259,6 +263,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.IRON_BUFFER_STOP_TRACK.get(),
             RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.IRON_BOOSTER_TRACK.get(),
+            RailcraftBlocks.IRON_CONTROL_TRACK.get(),
             RailcraftBlocks.IRON_DETECTOR_TRACK.get(),
             RailcraftBlocks.IRON_EMBARKING_TRACK.get(),
             RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
@@ -273,6 +278,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_CONTROL_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
@@ -287,6 +293,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK.get(),
             RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.REINFORCED_BOOSTER_TRACK.get(),
+            RailcraftBlocks.REINFORCED_CONTROL_TRACK.get(),
             RailcraftBlocks.REINFORCED_DETECTOR_TRACK.get(),
             RailcraftBlocks.REINFORCED_EMBARKING_TRACK.get(),
             RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
@@ -301,6 +308,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK.get(),
             RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ELECTRIC_BOOSTER_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_CONTROL_TRACK.get(),
             RailcraftBlocks.ELECTRIC_DETECTOR_TRACK.get(),
             RailcraftBlocks.ELECTRIC_EMBARKING_TRACK.get(),
             RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
@@ -339,23 +347,23 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         var singleModel = models().cubeAll(name(block, "_single"), endTexture)
             .renderType(CUTOUT);
         var topModel = models().cubeColumn(name(block, "_top"),
-            TextureMapping.getBlockTexture(block, "_side_top"), endTexture)
+                TextureMapping.getBlockTexture(block, "_side_top"), endTexture)
             .renderType(CUTOUT);
         var centerModel = models().cubeColumn(name(block, "_center"),
-            TextureMapping.getBlockTexture(block, "_side_center"), endTexture)
+                TextureMapping.getBlockTexture(block, "_side_center"), endTexture)
             .renderType(CUTOUT);
         var bottomModel = models().cubeColumn(name(block, "_bottom"),
-            TextureMapping.getBlockTexture(block, "_side_bottom"), endTexture)
+                TextureMapping.getBlockTexture(block, "_side_bottom"), endTexture)
             .renderType(CUTOUT);
 
         getVariantBuilder(block)
             .forAllStatesExcept(blockState -> ConfiguredModel.builder()
                 .modelFile(switch (blockState.getValue(AbstractStrengthenedGlassBlock.TYPE)) {
-                case SINGLE -> singleModel;
-                case TOP -> topModel;
-                case CENTER -> centerModel;
-                case BOTTOM -> bottomModel;
-            }).build(), IronTankGaugeBlock.LEVEL);
+                    case SINGLE -> singleModel;
+                    case TOP -> topModel;
+                    case CENTER -> centerModel;
+                    case BOTTOM -> bottomModel;
+                }).build(), IronTankGaugeBlock.LEVEL);
 
         itemModels().withExistingParent(name(block),
             modLoc(BLOCK_FOLDER + "/" + name(block, "_single")));
@@ -973,39 +981,39 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     private void createAbandonedTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
-        BoosterTrackBlock boosterTrackBlock, DetectorTrackBlock detectorTrackBlock,
-        EmbarkingTrackBlock embarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
-        LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-        LocomotiveTrackBlock locomotiveTrackBlock) {
+        BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
+        DetectorTrackBlock detectorTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
+        OneWayTrackBlock oneWayTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
         createAbandonedFlexTrack(block);
         createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
-            boosterTrackBlock, detectorTrackBlock, embarkingTrackBlock, turnoutTrackBlock,
-            wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
-            locomotiveTrackBlock);
+            boosterTrackBlock, controlTrackBlock, detectorTrackBlock, embarkingTrackBlock,
+            turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock, launcherTrackBlock,
+            oneWayTrackBlock, locomotiveTrackBlock);
     }
 
     private void createTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
-        BoosterTrackBlock boosterTrackBlock, DetectorTrackBlock detectorTrackBlock,
-        EmbarkingTrackBlock embarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
-        LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-        LocomotiveTrackBlock locomotiveTrackBlock) {
+        BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
+        DetectorTrackBlock detectorTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
+        OneWayTrackBlock oneWayTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
         createFlexTrack(block);
         createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
-            boosterTrackBlock, detectorTrackBlock, embarkingTrackBlock, turnoutTrackBlock,
-            wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
-            locomotiveTrackBlock);
+            boosterTrackBlock, controlTrackBlock, detectorTrackBlock, embarkingTrackBlock,
+            turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock, launcherTrackBlock,
+            oneWayTrackBlock, locomotiveTrackBlock);
     }
 
     private void createOutfittedTracks(Block block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
-        BoosterTrackBlock boosterTrackBlock, DetectorTrackBlock detectorTrackBlock,
-        EmbarkingTrackBlock embarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
-        LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-        LocomotiveTrackBlock locomotiveTrackBlock) {
+        BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
+        DetectorTrackBlock detectorTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
+        OneWayTrackBlock oneWayTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
         var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
 
         createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
@@ -1026,6 +1034,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             locomotiveTrackShutdownModel, activeLocomotiveTrackShutdownModel,
             locomotiveTrackIdleModel, activeLocomotiveTrackIdleModel,
             locomotiveTrackRunningModel, activeLocomotiveTrackRunningModel);
+
+        this.createControlTrack(controlTrackBlock, outfittedTrackModels, controlTrackModels);
 
         createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
         createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.flatModel());
@@ -1166,34 +1176,34 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         boolean reversible, StraightTrackModelSet trackModels, StraightTrackModelSet trackKitModels,
         StraightTrackModelSet activeTrackKitModels) {
 
-         var builder = getMultipartBuilder(block);
-         trackModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false);
+        var builder = getMultipartBuilder(block);
+        trackModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false);
 
-         if (reversible) {
-             trackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-                 Condition.condition()
-                     .term(ReversibleOutfittedTrackBlock.REVERSED, false)
-                     .term(PoweredOutfittedTrackBlock.POWERED, false));
-             activeTrackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-                 Condition.condition()
-                     .term(ReversibleOutfittedTrackBlock.REVERSED, false)
-                     .term(PoweredOutfittedTrackBlock.POWERED, true));
+        if (reversible) {
+            trackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
+                Condition.condition()
+                    .term(ReversibleOutfittedTrackBlock.REVERSED, false)
+                    .term(PoweredOutfittedTrackBlock.POWERED, false));
+            activeTrackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
+                Condition.condition()
+                    .term(ReversibleOutfittedTrackBlock.REVERSED, false)
+                    .term(PoweredOutfittedTrackBlock.POWERED, true));
 
-             trackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, true,
-                 Condition.condition()
-                     .term(ReversibleOutfittedTrackBlock.REVERSED, true)
-                     .term(PoweredOutfittedTrackBlock.POWERED, false));
-             activeTrackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, true,
-                 Condition.condition()
-                     .term(ReversibleOutfittedTrackBlock.REVERSED, true)
-                     .term(PoweredOutfittedTrackBlock.POWERED, true));
-         } else {
-             trackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-                 Condition.condition().term(PoweredOutfittedTrackBlock.POWERED, false));
-             activeTrackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-                 Condition.condition().term(PoweredOutfittedTrackBlock.POWERED, true));
-         }
-         itemModels().basicItem(block.asItem());
+            trackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, true,
+                Condition.condition()
+                    .term(ReversibleOutfittedTrackBlock.REVERSED, true)
+                    .term(PoweredOutfittedTrackBlock.POWERED, false));
+            activeTrackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, true,
+                Condition.condition()
+                    .term(ReversibleOutfittedTrackBlock.REVERSED, true)
+                    .term(PoweredOutfittedTrackBlock.POWERED, true));
+        } else {
+            trackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
+                Condition.condition().term(PoweredOutfittedTrackBlock.POWERED, false));
+            activeTrackKitModels.apply(builder, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
+                Condition.condition().term(PoweredOutfittedTrackBlock.POWERED, true));
+        }
+        itemModels().basicItem(block.asItem());
     }
 
     private void createDetectorTrack(DetectorTrackBlock block, StraightTrackModelSet trackModels,
@@ -1244,7 +1254,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         StraightTrackModelSet activeLocomotiveTrackRunningModel) {
         var builder = getMultipartBuilder(block);
         trackModel.apply(builder, LocomotiveTrackBlock.SHAPE, true, false);
-        
+
         addLocomotiveMode(builder, Locomotive.Mode.SHUTDOWN, locomotiveTrackShutdownModel,
             activeLocomotiveTrackShutdownModel);
         addLocomotiveMode(builder, Locomotive.Mode.IDLE, locomotiveTrackIdleModel,
@@ -1255,10 +1265,10 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         itemModels().basicItem(block.asItem());
     }
 
-    private void addLocomotiveMode(MultiPartBlockStateBuilder builder, 
-        Locomotive.Mode locomotiveMode, StraightTrackModelSet model, 
+    private void addLocomotiveMode(MultiPartBlockStateBuilder builder,
+        Locomotive.Mode locomotiveMode, StraightTrackModelSet model,
         StraightTrackModelSet poweredModel) {
-        
+
         model.apply(builder, LocomotiveTrackBlock.SHAPE, true, false,
             Condition.condition()
                 .term(LocomotiveTrackBlock.LOCOMOTIVE_MODE, locomotiveMode)
@@ -1269,6 +1279,30 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
                 .term(LocomotiveTrackBlock.POWERED, true));
     }
 
+    private void createControlTrack(ControlTrackBlock block, StraightTrackModelSet trackModels,
+        StraightTrackModelSet controlTrackModels) {
+        var builder = getMultipartBuilder(block);
+        trackModels.apply(builder, OutfittedTrackBlock.SHAPE, true, false);
+
+        controlTrackModels.apply(builder, OutfittedTrackBlock.SHAPE, true, false,
+                Condition.condition()
+                    .term(PoweredOutfittedTrackBlock.POWERED, false)
+                    .term(ControlTrackBlock.REVERSED, false));
+        controlTrackModels.apply(builder, OutfittedTrackBlock.SHAPE, true, false,
+                Condition.condition()
+                    .term(PoweredOutfittedTrackBlock.POWERED, true)
+                    .term(ControlTrackBlock.REVERSED, true));
+        controlTrackModels.apply(builder, OutfittedTrackBlock.SHAPE, true, true,
+                Condition.condition()
+                    .term(PoweredOutfittedTrackBlock.POWERED, true)
+                    .term(ControlTrackBlock.REVERSED, false));
+        controlTrackModels.apply(builder, OutfittedTrackBlock.SHAPE, true, true,
+                Condition.condition()
+                    .term(PoweredOutfittedTrackBlock.POWERED, false)
+                    .term(ControlTrackBlock.REVERSED, true));
+
+        itemModels().basicItem(block.asItem());
+    }
 
     private BlockModelBuilder createVariant(String name, ModelTemplate model) {
         var texture = modLoc(BLOCK_FOLDER + "/" + name);
@@ -1317,14 +1351,10 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         private static PartBuilder conditions(ConditionGroup partialBuilder,
             @Nullable Condition conditions) {
             if(conditions instanceof CompositeCondition compositeCondition) {
-                partialBuilder.nestedGroup();
-                if(compositeCondition.operation == Operation.OR) {
-                    partialBuilder.useOr();
-                }
-                for(var sub : ((CompositeCondition) conditions).subconditions) {
+                for(var sub : compositeCondition.subconditions) {
                     conditions(partialBuilder, sub);
                 }
-                return partialBuilder.endNestedGroup().end();
+                return partialBuilder.end();
             } else if (conditions instanceof TerminalCondition terminalCondition) {
                 for (Entry<Property<?>, String> set : terminalCondition.terms.entrySet()) {
                     var key = set.getKey();
