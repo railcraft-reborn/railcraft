@@ -13,16 +13,10 @@ class RenderLayers {
     ItemBlockRenderTypes.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
 
 
-    cutout(RailcraftBlocks.ABANDONED_COUPLER_TRACK);
     cutout(RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK);
-    cutout(RailcraftBlocks.ELECTRIC_COUPLER_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK);
-    cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK);
-    cutout(RailcraftBlocks.IRON_COUPLER_TRACK);
     cutout(RailcraftBlocks.IRON_DISEMBARKING_TRACK);
-    cutout(RailcraftBlocks.REINFORCED_COUPLER_TRACK);
     cutout(RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK);
-    cutout(RailcraftBlocks.STRAP_IRON_COUPLER_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK);
     cutout(RailcraftBlocks.FORCE_TRACK_EMITTER);
     cutout(RailcraftBlocks.BLOCK_SIGNAL);

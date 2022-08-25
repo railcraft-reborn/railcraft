@@ -7,7 +7,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
@@ -35,13 +34,6 @@ public class RailcraftBlockModelGenerators {
   private final BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput;
   private final Consumer<Item> skippedAutoModelsOutput;
 
-  private final StraightTrackModelSet couplerTrackCoupler;
-  private final StraightTrackModelSet activeCouplerTrackCoupler;
-  private final StraightTrackModelSet couplerTrackDecoupler;
-  private final StraightTrackModelSet activeCouplerTrackDecoupler;
-  private final StraightTrackModelSet couplerTrackAutoCoupler;
-  private final StraightTrackModelSet activeCouplerTrackAutoCoupler;
-
   private final StraightTrackModelSet disembarkingTrackLeft;
   private final StraightTrackModelSet activeDisembarkingTrackLeft;
   private final StraightTrackModelSet disembarkingTrackRight;
@@ -53,14 +45,6 @@ public class RailcraftBlockModelGenerators {
     this.blockStateOutput = blockStateOutput;
     this.modelOutput = modelOutput;
     this.skippedAutoModelsOutput = skippedAutoModelsOutput;
-
-    this.couplerTrackCoupler = this.createTrackModelSet("coupler_track_coupler");
-    this.activeCouplerTrackCoupler = this.createActiveTrackModelSet("coupler_track_coupler");
-    this.couplerTrackDecoupler = this.createTrackModelSet("coupler_track_decoupler");
-    this.activeCouplerTrackDecoupler = this.createActiveTrackModelSet("coupler_track_decoupler");
-    this.couplerTrackAutoCoupler = this.createTrackModelSet("coupler_track_auto_coupler");
-    this.activeCouplerTrackAutoCoupler =
-        this.createActiveTrackModelSet("coupler_track_auto_coupler");
 
     this.disembarkingTrackLeft = this.createTrackModelSet("disembarking_track_left");
     this.activeDisembarkingTrackLeft = this.createActiveTrackModelSet("disembarking_track_left");
@@ -227,39 +211,7 @@ public class RailcraftBlockModelGenerators {
       Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock,
       Block launcherTrackBlock, Block oneWayTrackBlock, Block locomotiveTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
-    this.createCouplerTrack(couplerTrackBlock, outfittedTrackModels);
     this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
-  }
-
-  private void createCouplerTrack(Block block, StraightTrackModelSet trackModels) {
-    var generator = MultiPartGenerator.multiPart(block);
-    trackModels.apply(generator, CouplerTrackBlock.SHAPE, true, false);
-    this.couplerTrackCoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.COUPLER)
-            .term(CouplerTrackBlock.POWERED, false));
-    this.activeCouplerTrackCoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.COUPLER)
-            .term(CouplerTrackBlock.POWERED, true));
-    this.couplerTrackDecoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.DECOUPLER)
-            .term(CouplerTrackBlock.POWERED, false));
-    this.activeCouplerTrackDecoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.DECOUPLER)
-            .term(CouplerTrackBlock.POWERED, true));
-    this.couplerTrackAutoCoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.AUTO_COUPLER)
-            .term(CouplerTrackBlock.POWERED, false));
-    this.activeCouplerTrackAutoCoupler.apply(generator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.AUTO_COUPLER)
-            .term(CouplerTrackBlock.POWERED, true));
-    this.blockStateOutput.accept(generator);
-    this.createSimpleFlatItemModel(block.asItem());
   }
 
   private void createDisembarkingTrack(Block block, StraightTrackModelSet trackModels) {

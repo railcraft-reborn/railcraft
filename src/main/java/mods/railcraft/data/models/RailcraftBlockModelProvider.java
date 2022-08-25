@@ -10,6 +10,7 @@ import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock.Type;
+import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.FluidManipulatorBlock;
 import mods.railcraft.world.level.block.manipulator.ManipulatorBlock;
@@ -29,6 +30,7 @@ import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock.Mode;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
@@ -108,6 +110,12 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     private StraightTrackModelSet activeLocomotiveTrackIdleModel;
     private StraightTrackModelSet activeLocomotiveTrackRunningModel;
     private StraightTrackModelSet controlTrackModels;
+    private StraightTrackModelSet couplerTrackCoupler;
+    private StraightTrackModelSet activeCouplerTrackCoupler;
+    private StraightTrackModelSet couplerTrackDecoupler;
+    private StraightTrackModelSet activeCouplerTrackDecoupler;
+    private StraightTrackModelSet couplerTrackAutoCoupler;
+    private StraightTrackModelSet activeCouplerTrackAutoCoupler;
 
     public RailcraftBlockModelProvider(DataGenerator generator,
         ExistingFileHelper existingFileHelper) {
@@ -241,6 +249,13 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.activeLocomotiveTrackRunningModel =
             createActiveTrackModelSet("locomotive_track_running");
         this.controlTrackModels = createTrackModelSet("control_track");
+        this.couplerTrackCoupler = createTrackModelSet("coupler_track_coupler");
+        this.activeCouplerTrackCoupler = createActiveTrackModelSet("coupler_track_coupler");
+        this.couplerTrackDecoupler = createTrackModelSet("coupler_track_decoupler");
+        this.activeCouplerTrackDecoupler = createActiveTrackModelSet("coupler_track_decoupler");
+        this.couplerTrackAutoCoupler = createTrackModelSet("coupler_track_auto_coupler");
+        this.activeCouplerTrackAutoCoupler =
+            createActiveTrackModelSet("coupler_track_auto_coupler");
 
 
 
@@ -252,6 +267,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.ABANDONED_CONTROL_TRACK.get(),
             RailcraftBlocks.ABANDONED_GATED_TRACK.get(),
             RailcraftBlocks.ABANDONED_DETECTOR_TRACK.get(),
+            RailcraftBlocks.ABANDONED_COUPLER_TRACK.get(),
             RailcraftBlocks.ABANDONED_EMBARKING_TRACK.get(),
             RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
             RailcraftBlocks.ABANDONED_WYE_TRACK.get(),
@@ -268,6 +284,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.IRON_CONTROL_TRACK.get(),
             RailcraftBlocks.IRON_GATED_TRACK.get(),
             RailcraftBlocks.IRON_DETECTOR_TRACK.get(),
+            RailcraftBlocks.IRON_COUPLER_TRACK.get(),
             RailcraftBlocks.IRON_EMBARKING_TRACK.get(),
             RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
             RailcraftBlocks.IRON_WYE_TRACK.get(),
@@ -284,6 +301,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.STRAP_IRON_CONTROL_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_GATED_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_COUPLER_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_WYE_TRACK.get(),
@@ -300,6 +318,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.REINFORCED_CONTROL_TRACK.get(),
             RailcraftBlocks.REINFORCED_GATED_TRACK.get(),
             RailcraftBlocks.REINFORCED_DETECTOR_TRACK.get(),
+            RailcraftBlocks.REINFORCED_COUPLER_TRACK.get(),
             RailcraftBlocks.REINFORCED_EMBARKING_TRACK.get(),
             RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
             RailcraftBlocks.REINFORCED_WYE_TRACK.get(),
@@ -316,6 +335,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             RailcraftBlocks.ELECTRIC_CONTROL_TRACK.get(),
             RailcraftBlocks.ELECTRIC_GATED_TRACK.get(),
             RailcraftBlocks.ELECTRIC_DETECTOR_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_COUPLER_TRACK.get(),
             RailcraftBlocks.ELECTRIC_EMBARKING_TRACK.get(),
             RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
             RailcraftBlocks.ELECTRIC_WYE_TRACK.get(),
@@ -989,40 +1009,40 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
         BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
         GatedTrackBlock gatedTrackBlock, DetectorTrackBlock detectorTrackBlock,
-        EmbarkingTrackBlock embarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
-        LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-        LocomotiveTrackBlock locomotiveTrackBlock) {
+        CouplerTrackBlock couplerTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
+        OneWayTrackBlock oneWayTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
         createAbandonedFlexTrack(block);
         createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
             boosterTrackBlock, controlTrackBlock, gatedTrackBlock,detectorTrackBlock,
-            embarkingTrackBlock, turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock,
-            launcherTrackBlock, oneWayTrackBlock, locomotiveTrackBlock);
+            couplerTrackBlock, embarkingTrackBlock, turnoutTrackBlock, wyeTrackBlock,
+            junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock, locomotiveTrackBlock);
     }
 
     private void createTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
         BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
         GatedTrackBlock gatedTrackBlock, DetectorTrackBlock detectorTrackBlock,
-        EmbarkingTrackBlock embarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
-        LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-        LocomotiveTrackBlock locomotiveTrackBlock) {
+        CouplerTrackBlock couplerTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
+        OneWayTrackBlock oneWayTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
         createFlexTrack(block);
         createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
             boosterTrackBlock, controlTrackBlock, gatedTrackBlock,detectorTrackBlock,
-            embarkingTrackBlock, turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock,
-            launcherTrackBlock, oneWayTrackBlock, locomotiveTrackBlock);
+            couplerTrackBlock, embarkingTrackBlock, turnoutTrackBlock, wyeTrackBlock,
+            junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock, locomotiveTrackBlock);
     }
 
     private void createOutfittedTracks(Block block, LockingTrackBlock lockingTrackBlock,
         BufferStopTrackBlock bufferStopTrackBlock, ActivatorTrackBlock activatorTrackBlock,
         BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
         GatedTrackBlock gatedTrackBlock, DetectorTrackBlock detectorTrackBlock,
-        EmbarkingTrackBlock embarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-        WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
-        LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-        LocomotiveTrackBlock locomotiveTrackBlock) {
+        CouplerTrackBlock couplerTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
+        TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+        JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
+        OneWayTrackBlock oneWayTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
         var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
 
         createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
@@ -1046,6 +1066,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
         createControlTrack(controlTrackBlock, outfittedTrackModels, controlTrackModels);
         createGatedTrack(gatedTrackBlock, outfittedTrackModels, controlTrackModels);
+        createCouplerTrack(couplerTrackBlock, outfittedTrackModels, couplerTrackCoupler,
+            activeCouplerTrackCoupler, couplerTrackDecoupler, activeCouplerTrackDecoupler,
+            couplerTrackAutoCoupler, activeCouplerTrackAutoCoupler);
 
         createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
         createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.flatModel());
@@ -1388,6 +1411,41 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .condition(ReversibleOutfittedTrackBlock.REVERSED, true)
             .condition(GatedTrackBlock.OPEN, open)
             .condition(GatedTrackBlock.IN_WALL, inWall).end();
+    }
+
+    private void createCouplerTrack(CouplerTrackBlock block, StraightTrackModelSet trackModels,
+        StraightTrackModelSet couplerTrackCoupler, StraightTrackModelSet activeCouplerTrackCoupler,
+        StraightTrackModelSet couplerTrackDecoupler, StraightTrackModelSet activeCouplerTrackDecoupler,
+        StraightTrackModelSet couplerTrackAutoCoupler, StraightTrackModelSet activeCouplerTrackAutoCoupler) {
+        var builder = getMultipartBuilder(block);
+        trackModels.apply(builder, CouplerTrackBlock.SHAPE, true, false);
+    
+        couplerTrackCoupler.apply(builder, CouplerTrackBlock.SHAPE, true, false,
+            Condition.condition()
+                .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.COUPLER)
+                .term(CouplerTrackBlock.POWERED, false));
+        activeCouplerTrackCoupler.apply(builder, CouplerTrackBlock.SHAPE, true, false,
+            Condition.condition()
+                .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.COUPLER)
+                .term(CouplerTrackBlock.POWERED, true));
+        couplerTrackDecoupler.apply(builder, CouplerTrackBlock.SHAPE, true, false,
+            Condition.condition()
+                .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.DECOUPLER)
+                .term(CouplerTrackBlock.POWERED, false));
+        activeCouplerTrackDecoupler.apply(builder, CouplerTrackBlock.SHAPE, true, false,
+            Condition.condition()
+                .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.DECOUPLER)
+                .term(CouplerTrackBlock.POWERED, true));
+        couplerTrackAutoCoupler.apply(builder, CouplerTrackBlock.SHAPE, true, false,
+            Condition.condition()
+                .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.AUTO_COUPLER)
+                .term(CouplerTrackBlock.POWERED, false));
+        activeCouplerTrackAutoCoupler.apply(builder, CouplerTrackBlock.SHAPE, true, false,
+            Condition.condition()
+                .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.AUTO_COUPLER)
+                .term(CouplerTrackBlock.POWERED, true));
+        
+        itemModels().basicItem(block.asItem());
     }
 
     private BlockModelBuilder createVariant(String name, ModelTemplate model) {
