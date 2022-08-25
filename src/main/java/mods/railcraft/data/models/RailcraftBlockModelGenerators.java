@@ -7,9 +7,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.data.models.blockstates.Condition;
 import net.minecraft.data.models.blockstates.MultiPartGenerator;
@@ -34,22 +31,13 @@ public class RailcraftBlockModelGenerators {
   private final BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput;
   private final Consumer<Item> skippedAutoModelsOutput;
 
-  private final StraightTrackModelSet disembarkingTrackLeft;
-  private final StraightTrackModelSet activeDisembarkingTrackLeft;
-  private final StraightTrackModelSet disembarkingTrackRight;
-  private final StraightTrackModelSet activeDisembarkingTrackRight;
-
   public RailcraftBlockModelGenerators(Consumer<BlockStateGenerator> blockStateOutput,
       BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput,
       Consumer<Item> skippedAutoModelsOutput) {
     this.blockStateOutput = blockStateOutput;
     this.modelOutput = modelOutput;
     this.skippedAutoModelsOutput = skippedAutoModelsOutput;
-
-    this.disembarkingTrackLeft = this.createTrackModelSet("disembarking_track_left");
-    this.activeDisembarkingTrackLeft = this.createActiveTrackModelSet("disembarking_track_left");
-    this.disembarkingTrackRight = this.createTrackModelSet("disembarking_track_right");
-    this.activeDisembarkingTrackRight = this.createActiveTrackModelSet("disembarking_track_right");  }
+  }
 
   public void run() {
     this.skipAutoItemBlock(RailcraftBlocks.FORCE_TRACK_EMITTER.get());
@@ -211,30 +199,6 @@ public class RailcraftBlockModelGenerators {
       Block turnoutTrackBlock, Block wyeTrackBlock, Block junctionTrackBlock,
       Block launcherTrackBlock, Block oneWayTrackBlock, Block locomotiveTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
-    this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
-  }
-
-  private void createDisembarkingTrack(Block block, StraightTrackModelSet trackModels) {
-    var generator = MultiPartGenerator.multiPart(block);
-    trackModels.apply(generator, CouplerTrackBlock.SHAPE, true, false);
-    this.disembarkingTrackLeft.apply(generator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(DisembarkingTrackBlock.MIRRORED, false)
-            .term(PoweredOutfittedTrackBlock.POWERED, false));
-    this.activeDisembarkingTrackLeft.apply(generator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(DisembarkingTrackBlock.MIRRORED, false)
-            .term(PoweredOutfittedTrackBlock.POWERED, true));
-    this.disembarkingTrackRight.apply(generator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(DisembarkingTrackBlock.MIRRORED, true)
-            .term(PoweredOutfittedTrackBlock.POWERED, false));
-    this.activeDisembarkingTrackRight.apply(generator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(DisembarkingTrackBlock.MIRRORED, true)
-            .term(PoweredOutfittedTrackBlock.POWERED, true));
-    this.blockStateOutput.accept(generator);
-    this.createSimpleFlatItemModel(block.asItem());
   }
 
   private ResourceLocation createPassiveRail(String name) {
