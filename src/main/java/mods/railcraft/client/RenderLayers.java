@@ -13,7 +13,6 @@ class RenderLayers {
     ItemBlockRenderTypes.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
 
 
-    cutout(RailcraftBlocks.ABANDONED_BOOSTER_TRACK);
     cutout(RailcraftBlocks.ABANDONED_CONTROL_TRACK);
     cutout(RailcraftBlocks.ABANDONED_GATED_TRACK);
     cutout(RailcraftBlocks.ABANDONED_DETECTOR_TRACK);
@@ -23,7 +22,6 @@ class RenderLayers {
     cutout(RailcraftBlocks.ABANDONED_LAUNCHER_TRACK);
     cutout(RailcraftBlocks.ABANDONED_ONE_WAY_TRACK);
     cutout(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK);
-    cutout(RailcraftBlocks.ELECTRIC_BOOSTER_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_CONTROL_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_GATED_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_DETECTOR_TRACK);
@@ -34,14 +32,12 @@ class RenderLayers {
     cutout(RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK);
     cutout(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK);
-    cutout(RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK);
     cutout(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK);
-    cutout(RailcraftBlocks.IRON_BOOSTER_TRACK);
     cutout(RailcraftBlocks.IRON_CONTROL_TRACK);
     cutout(RailcraftBlocks.IRON_GATED_TRACK);
     cutout(RailcraftBlocks.IRON_DETECTOR_TRACK);
@@ -51,7 +47,6 @@ class RenderLayers {
     cutout(RailcraftBlocks.IRON_LAUNCHER_TRACK);
     cutout(RailcraftBlocks.IRON_ONE_WAY_TRACK);
     cutout(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK);
-    cutout(RailcraftBlocks.REINFORCED_BOOSTER_TRACK);
     cutout(RailcraftBlocks.REINFORCED_CONTROL_TRACK);
     cutout(RailcraftBlocks.REINFORCED_GATED_TRACK);
     cutout(RailcraftBlocks.REINFORCED_DETECTOR_TRACK);
@@ -61,7 +56,6 @@ class RenderLayers {
     cutout(RailcraftBlocks.REINFORCED_LAUNCHER_TRACK);
     cutout(RailcraftBlocks.REINFORCED_ONE_WAY_TRACK);
     cutout(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK);
-    cutout(RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_CONTROL_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_GATED_TRACK);
     cutout(RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK);
