@@ -43,10 +43,6 @@ public class RailcraftBlockModelGenerators {
   private final Consumer<Item> skippedAutoModelsOutput;
 
   private final StraightTrackModelSet controlTrackModels;
-  private final StraightTrackModelSet detectorTrackModels;
-  private final StraightTrackModelSet activeDetectorTrackModels;
-  private final StraightTrackModelSet travelDetectorTrackModels;
-  private final StraightTrackModelSet activeTravelDetectorTrackModels;
 
   private final StraightTrackModelSet couplerTrackCoupler;
   private final StraightTrackModelSet activeCouplerTrackCoupler;
@@ -75,11 +71,6 @@ public class RailcraftBlockModelGenerators {
     this.skippedAutoModelsOutput = skippedAutoModelsOutput;
 
     this.controlTrackModels = this.createTrackModelSet("control_track");
-
-    this.detectorTrackModels = this.createTrackModelSet("detector_track");
-    this.activeDetectorTrackModels = this.createActiveTrackModelSet("detector_track");
-    this.travelDetectorTrackModels = this.createTrackModelSet("detector_track_travel");
-    this.activeTravelDetectorTrackModels = this.createActiveTrackModelSet("detector_track_travel");
 
     this.couplerTrackCoupler = this.createTrackModelSet("coupler_track_coupler");
     this.activeCouplerTrackCoupler = this.createActiveTrackModelSet("coupler_track_coupler");
@@ -288,7 +279,6 @@ public class RailcraftBlockModelGenerators {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
     this.createControlTrack(controlTrackBlock, outfittedTrackModels);
     this.createGatedTrack(gatedTrackBlock, outfittedTrackModels);
-    this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
     this.createCouplerTrack(couplerTrackBlock, outfittedTrackModels);
     this.createDisembarkingTrack(disembarkingTrackBlock, outfittedTrackModels);
     this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
@@ -299,7 +289,6 @@ public class RailcraftBlockModelGenerators {
       Block detectorTrackBlock, Block turnoutTrackBlock, Block wyeTrackBlock,
       Block junctionTrackBlock, Block locomotiveTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
-    this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels);
     this.createLocomotiveTrack(locomotiveTrackBlock, outfittedTrackModels);
   }
 
@@ -428,37 +417,6 @@ public class RailcraftBlockModelGenerators {
             Variant.variant()
                 .with(VariantProperties.MODEL, model)
                 .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
-  }
-
-  private void createDetectorTrack(Block block, StraightTrackModelSet trackModels) {
-    var generator = MultiPartGenerator.multiPart(block);
-    trackModels.apply(generator, DetectorTrackBlock.SHAPE, true, false);
-    this.detectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-            .term(DetectorTrackBlock.POWERED, false));
-    this.activeDetectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
-            .term(DetectorTrackBlock.POWERED, true));
-    this.travelDetectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-            .term(DetectorTrackBlock.POWERED, false));
-    this.activeTravelDetectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, false,
-        Condition.condition()
-            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
-            .term(DetectorTrackBlock.POWERED, true));
-    this.travelDetectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, true,
-        Condition.condition()
-            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-            .term(DetectorTrackBlock.POWERED, false));
-    this.activeTravelDetectorTrackModels.apply(generator, DetectorTrackBlock.SHAPE, true, true,
-        Condition.condition()
-            .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
-            .term(DetectorTrackBlock.POWERED, true));
-    this.blockStateOutput.accept(generator);
-    this.createSimpleFlatItemModel(block.asItem());
   }
 
   private void createCouplerTrack(Block block, StraightTrackModelSet trackModels) {
