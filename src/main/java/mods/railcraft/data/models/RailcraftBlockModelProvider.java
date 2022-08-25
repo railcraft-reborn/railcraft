@@ -1241,20 +1241,10 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         ModelFile raisedNorthEastModel,
         ModelFile raisedSouthWestModel) {
 
-        private <T extends Comparable<T>> void apply (MultiPartBlockStateBuilder builder,
-            Property<RailShape> shapeProperty, boolean includeRaised, boolean reversed) {
+        private void apply (MultiPartBlockStateBuilder builder, Property<RailShape> shapeProperty,
+            boolean includeRaised, boolean reversed) {
             apply(builder, shapeProperty, includeRaised, reversed, null);
         }
-
-        private static <T extends Comparable<T>> PartBuilder conditions(
-            PartBuilder.ConditionGroup partialBuilder,
-            List<Tuple<Property<T>, T>> conditions) {
-            for (var tuple : conditions) {
-                partialBuilder.condition(tuple.getA(), tuple.getB());
-            }
-            return partialBuilder.end();
-        }
-
 
         private static PartBuilder conditions(ConditionGroup partialBuilder,
             @Nullable Condition conditions) {
@@ -1277,9 +1267,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             return partialBuilder.end();
         }
 
-        private <T extends Comparable<T>> void apply (MultiPartBlockStateBuilder builder,
-            Property<RailShape> shapeProperty, boolean includeRaised, boolean reversed,
-            @Nullable Condition conditions) {
+        private void apply (MultiPartBlockStateBuilder builder, Property<RailShape> shapeProperty,
+            boolean includeRaised, boolean reversed, @Nullable Condition conditions) {
 
             var partialBuilder = builder
                 .part()
