@@ -10,7 +10,7 @@ issueTrackerURL = "https://github.com/Railcraft/Railcraft/Issues"
   displayURL = "https://railcraft.info"
   logoFile = "pack.png"
   credits = "Created by CovertJaguar and other contributions at Github"
-  authors = "CovertJaguar, Sm0keySa1m0n"
+  authors = "CovertJaguar, Sm0keySa1m0n, 3divad99"
   description = "Redefine your rails"
 
 [[dependencies.railcraft]]
