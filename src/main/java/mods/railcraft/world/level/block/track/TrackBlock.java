@@ -228,7 +228,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   /**
-   * @see net.minecraft.block.RailBlock#rotate()
+   * @see net.minecraft.world.level.block.RailBlock#rotate(BlockState, Rotation)
    */
   @Override
   public BlockState rotate(BlockState state, Rotation rot) {
@@ -307,7 +307,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   /**
-   * @see net.minecraft.block.RailBlock#mirror()
+   * @see net.minecraft.world.level.block.RailBlock#mirror(BlockState, Mirror)
    */
   @SuppressWarnings("deprecation")
   @Override

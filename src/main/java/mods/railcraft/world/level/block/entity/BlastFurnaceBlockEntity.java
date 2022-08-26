@@ -1,6 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
 import it.unimi.dsi.fastutil.chars.CharList;
+import java.util.List;
+import javax.annotation.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
@@ -22,11 +24,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceBlockEntity, Void> {
 
@@ -70,7 +69,7 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability,
       @Nullable Direction direction) {
-    return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.isFormed()
+    return capability == ForgeCapabilities.ITEM_HANDLER && this.isFormed()
         ? this.blastFurnaceModule.getItemHandler().cast()
         : LazyOptional.empty();
   }

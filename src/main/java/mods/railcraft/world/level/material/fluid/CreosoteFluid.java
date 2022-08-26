@@ -1,8 +1,14 @@
 package mods.railcraft.world.level.material.fluid;
 
+import com.mojang.blaze3d.shaders.FogShape;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.math.Vector3f;
 import java.util.function.Consumer;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.FogRenderer.FogMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +26,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class CreosoteFluid extends FlowingFluid {
 
@@ -113,6 +120,24 @@ public abstract class CreosoteFluid extends FlowingFluid {
           @Override
           public ResourceLocation getFlowingTexture() {
             return FLOW_TEXURE;
+          }
+
+          @Override
+          @NotNull
+          public Vector3f modifyFogColor(Camera camera, float partialTick,
+              ClientLevel level, int renderDistance, float darkenWorldAmount,
+              Vector3f fluidFogColor) {
+            var x = Integer.parseInt("6A", 16) / 255f;
+            var y = Integer.parseInt("62", 16) / 255f;
+            var z = Integer.parseInt("00", 16) / 255f;
+            return new Vector3f(x, y, z);
+          }
+
+          @Override
+          public void modifyFogRender(Camera camera, FogMode mode, float renderDistance,
+              float partialTick, float nearDistance, float farDistance, FogShape shape) {
+            RenderSystem.setShaderFogStart(0);
+            RenderSystem.setShaderFogEnd(3f);
           }
         });
       }

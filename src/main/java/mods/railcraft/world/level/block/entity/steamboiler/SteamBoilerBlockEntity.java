@@ -1,11 +1,10 @@
 package mods.railcraft.world.level.block.entity.steamboiler;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharArrayList;
 import it.unimi.dsi.fastutil.chars.CharList;
+import java.util.ArrayList;
+import java.util.List;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
@@ -30,12 +29,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>
@@ -85,13 +84,12 @@ public class SteamBoilerBlockEntity
   }
 
   @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability,
-      @Nullable Direction direction) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction direction) {
+    if (capability == ForgeCapabilities.FLUID_HANDLER) {
       return this.fluidHandler.cast();
     }
 
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+    if (capability == ForgeCapabilities.ITEM_HANDLER) {
       return this.itemHandler.cast();
     }
 

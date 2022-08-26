@@ -3,9 +3,7 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
-
 import javax.annotation.Nullable;
-
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.container.ContainerMapper;
@@ -14,25 +12,25 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -168,13 +166,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   public IEnergyStorage getBatteryCart() {
-    return this.getCapability(CapabilityEnergy.ENERGY)
+    return this.getCapability(ForgeCapabilities.ENERGY)
         .orElseThrow(IllegalStateException::new);
   }
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    if (CapabilityEnergy.ENERGY == capability) {
+    if (ForgeCapabilities.ENERGY == capability) {
       return this.cartBattery.cast();
     }
     return super.getCapability(capability, facing);

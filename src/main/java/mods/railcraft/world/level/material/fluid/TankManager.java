@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.material.fluid;
 
+import com.google.common.collect.ForwardingList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import com.google.common.collect.ForwardingList;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -15,10 +15,10 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 /**
@@ -35,7 +35,7 @@ public class TankManager extends ForwardingList<StandardTank>
   };
 
   public static final BiFunction<BlockEntity, Direction, Boolean> TANK_FILTER =
-      (t, f) -> t.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, f).isPresent();
+      (t, f) -> t.getCapability(ForgeCapabilities.FLUID_HANDLER, f).isPresent();
   private final List<StandardTank> tanks = new ArrayList<>();
 
   public TankManager(StandardTank... tanks) {
