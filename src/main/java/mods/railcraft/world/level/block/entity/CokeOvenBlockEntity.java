@@ -1,6 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
 import it.unimi.dsi.fastutil.chars.CharList;
+import java.util.List;
+import javax.annotation.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;
@@ -18,15 +20,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity, Void> {
 
@@ -121,13 +118,13 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
         var masterModule = this.getMembership()
             .map(Membership::master)
             .map(CokeOvenBlockEntity::getCokeOvenModule);
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return masterModule
                 .map(CokeOvenModule::getItemHandler)
                 .<LazyOptional<T>>map(LazyOptional::cast)
                 .orElse(LazyOptional.empty());
         }
-        if(cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+        if (cap == ForgeCapabilities.FLUID_HANDLER) {
             return masterModule
                 .map(CokeOvenModule::getFluidHandler)
                 .<LazyOptional<T>>map(LazyOptional::cast)

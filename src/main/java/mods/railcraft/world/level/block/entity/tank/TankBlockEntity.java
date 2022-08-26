@@ -2,6 +2,10 @@ package mods.railcraft.world.level.block.entity.tank;
 
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharList;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.annotation.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.TankMenu;
@@ -31,16 +35,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEntity, Void> {
 
@@ -171,9 +170,8 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   }
 
   @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability,
-      @Nullable Direction side) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
+    if (capability == ForgeCapabilities.FLUID_HANDLER) {
       return this.fluidHandler.cast();
     }
 

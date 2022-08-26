@@ -17,10 +17,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -69,7 +68,7 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
   private ItemStack _pushStack(AbstractMinecart requester,
       Iterable<AbstractMinecart> carts, ItemStack stack) {
     for (AbstractMinecart cart : carts) {
-      var adaptor = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+      var adaptor = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
           .map(ContainerManipulator::of)
           .orElse(null);
       if (adaptor != null && this.canAcceptPushedItem(requester, cart, stack)) {
@@ -103,7 +102,7 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
     AbstractMinecart upTo = null;
     ContainerManipulator<?> targetInv = null;
     for (var cart : carts) {
-      var inv = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+      var inv = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
           .map(ContainerManipulator::of)
           .orElse(null);
       if (inv != null) {
@@ -158,7 +157,7 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
   private boolean blocksItemRequests(AbstractMinecart cart, ItemStack stack) {
     return cart instanceof IItemCart
         ? !((IItemCart) cart).canPassItemRequests(stack)
-        : cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        : cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
             .map(IItemHandler::getSlots)
             .orElse(0) < NUM_SLOTS;
   }
@@ -191,7 +190,7 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
       FluidStack fluidStack) {
     for (AbstractMinecart cart : carts) {
       if (canAcceptPushedFluid(requester, cart, fluidStack)) {
-        cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP)
+        cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP)
             .ifPresent(fluidHandler -> fluidStack.setAmount(
                 fluidStack.getAmount()
                     - fluidHandler.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE)));
@@ -227,7 +226,7 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
     for (AbstractMinecart cart : carts) {
       if (canProvidePulledFluid(requester, cart, fluidStack)) {
         IFluidHandler fluidHandler =
-            cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.DOWN)
+            cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN)
                 .orElse(null);
         if (fluidHandler != null) {
           FluidStack drained = fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
@@ -248,7 +247,7 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
       AbstractMinecart cart,
       FluidStack fluid) {
     IFluidHandler fluidHandler = cart
-        .getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null);
+        .getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP).orElse(null);
     if (fluidHandler == null) {
       return false;
     }
@@ -261,7 +260,7 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
   private boolean canProvidePulledFluid(AbstractMinecart requester,
       AbstractMinecart cart, FluidStack fluid) {
     IFluidHandler fluidHandler =
-        cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.DOWN)
+        cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN)
             .orElse(null);
     if (fluidHandler == null) {
       return false;
@@ -276,7 +275,7 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
   private boolean blocksFluidRequests(AbstractMinecart cart, FluidStack fluid) {
     return cart instanceof FluidMinecart
         ? !((FluidMinecart) cart).canPassFluidRequests(fluid)
-        : cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        : cart.getCapability(ForgeCapabilities.FLUID_HANDLER)
             .map(fluidHandler -> !this.hasMatchingTank(fluidHandler, fluid))
             .orElse(true);
   }

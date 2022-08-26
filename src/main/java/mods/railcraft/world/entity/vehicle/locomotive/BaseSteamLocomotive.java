@@ -33,9 +33,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
@@ -132,7 +132,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? this.tankManager.cast()
+    return capability == ForgeCapabilities.FLUID_HANDLER ? this.tankManager.cast()
         : super.getCapability(capability, facing);
   }
 

@@ -67,6 +67,7 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos,
       Block neighborBlock, BlockPos neighborPos, boolean moved) {
+    super.neighborChanged(state, level, pos, neighborBlock, neighborPos, moved);
     this.testPower(state, level, pos);
   }
 

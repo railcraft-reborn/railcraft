@@ -27,10 +27,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
@@ -83,7 +83,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Nullable
   protected static IFluidHandler getFluidHandler(AbstractMinecart cart, Direction direction) {
-    return cart.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction)
+    return cart.getCapability(ForgeCapabilities.FLUID_HANDLER, direction)
         .orElse(null);
   }
 
@@ -94,8 +94,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
     return cart
-        .getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-            this.getFacing().getOpposite())
+        .getCapability(ForgeCapabilities.FLUID_HANDLER, this.getFacing().getOpposite())
         .isPresent()
         && super.canHandleCart(cart);
   }
@@ -186,7 +185,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+    return capability == ForgeCapabilities.FLUID_HANDLER
         ? this.fluidHandler.cast()
         : super.getCapability(capability, facing);
   }
