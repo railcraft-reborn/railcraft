@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-15T15:52:07.292352187	Railcraft Recipes
+// 1.19.2	2022-08-29T16:27:56.168128772	Railcraft Recipes
 b5a17571ce39881697d539ab8e2e6830c430e652 data/minecraft/advancements/recipes/railcraft/lead_ingot_from_blasting_deepslate_lead_ore.json
 3159a4cc9361689702fc1dee383096849bfdb726 data/minecraft/advancements/recipes/railcraft/lead_ingot_from_blasting_lead_ore.json
 9293038e4f6a21d986adfd45b476c5538ab7a56a data/minecraft/advancements/recipes/railcraft/lead_ingot_from_smelting_deepslate_lead_ore.json
@@ -590,6 +590,7 @@ b5930446bfae242de47bd3d053b8caa45d22e653 data/railcraft/recipes/crusher/crushing
 253c3100ed7a30c6c0c7227f5cd8a3f0fdd80996 data/railcraft/recipes/crusher/crushing_coke_oven_bricks.json
 5d82d99925042271af585b0ef4011670372237f7 data/railcraft/recipes/crusher/crushing_crushed_obsidian.json
 73b033fbcd845fff7cc634a41bf619c019220342 data/railcraft/recipes/crusher/crushing_ender_pearl.json
+407fc5e3d0582b0dbf5afc3ca00a9b2d05964cea data/railcraft/recipes/crusher/crushing_firestone_ore.json
 44ada31b5f60290d0e7e9102e4baae042f62d442 data/railcraft/recipes/crusher/crushing_glowstone.json
 1c77f3153006f99049acc52601c095896cc63849 data/railcraft/recipes/crusher/crushing_gravel.json
 cbc16fc2aa03c55984081656a30f688b25466852 data/railcraft/recipes/crusher/crushing_ice.json

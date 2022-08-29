@@ -39,9 +39,9 @@ public class FirestoneItem extends Item {
   }
 
   /**
-   * Determines if this Item has a special entity for when they are in the world. Is called when a
-   * EntityItem is spawned in the world, if true and Item#createCustomEntity returns non null, the
-   * EntityItem will be destroyed and the new Entity will be added to the world.
+   * Determines if this Item has a special entity for when they are in the level. Is called when a
+   * EntityItem is spawned in the level, if true and Item#createCustomEntity returns non null, the
+   * EntityItem will be destroyed and the new Entity will be added to the level.
    *
    * @param stack The current item stack
    * @return True of the item has a custom entity, If true, Item#createCustomEntity will be called
@@ -54,9 +54,9 @@ public class FirestoneItem extends Item {
   /**
    * This function should return a new entity to replace the dropped item. Returning null here will
    * not kill the EntityItem and will leave it to function normally. Called when the item it placed
-   * in a world.
+   * in a level.
    *
-   * @param level The world object
+   * @param level The level object
    * @param original The EntityItem object, useful for getting the position of the entity
    * @param stack The current item stack
    * @return A new Entity object to spawn or null
@@ -76,18 +76,15 @@ public class FirestoneItem extends Item {
     return false;
   }
 
-  public static FirestoneItemEntity createEntityItem(Level level, Entity original,
-      ItemStack stack) {
-    FirestoneItemEntity entity =
-        new FirestoneItemEntity(original.getX(), original.getY(), original.getZ(), level, stack);
-    entity.setThrower(((ItemEntity) original).getThrower());
-    entity.setDeltaMovement(original.getDeltaMovement());
-    entity.setDefaultPickUpDelay();
-    return entity;
+  public static FirestoneItemEntity createEntityItem(Level level, Entity entity, ItemStack stack) {
+    var firestone = new FirestoneItemEntity(entity.position(), level, stack);
+    firestone.setThrower(((ItemEntity) entity).getThrower());
+    firestone.setDeltaMovement(entity.getDeltaMovement());
+    firestone.setDefaultPickUpDelay();
+    return firestone;
   }
 
-  public static boolean trySpawnFire(Level level, BlockPos pos, ItemStack stack,
-      Player holder) {
+  public static boolean trySpawnFire(Level level, BlockPos pos, ItemStack stack, Player holder) {
     if (stack.isEmpty() || !SPAWNS_FIRE.test(stack))
       return false;
     boolean spawnedFire = false;

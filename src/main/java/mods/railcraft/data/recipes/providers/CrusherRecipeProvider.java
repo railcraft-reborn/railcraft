@@ -184,5 +184,8 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(RailcraftItems.SALTPETER_DUST.get(), 1, 0.85)
         .addResult(RailcraftItems.SALTPETER_DUST.get(), 1, 0.35)
         .save(consumer, "tags_ores_saltpeter");
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.FIRESTONE_ORE.get()), 200)
+        .addResult(RailcraftItems.RAW_FIRESTONE.get(), 1, 1)
+        .save(consumer);
   }
 }
