@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -63,6 +64,16 @@ public class FirestoneItem extends Item {
     firestone.setDeltaMovement(entity.getDeltaMovement());
     firestone.setDefaultPickUpDelay();
     return firestone;
+  }
+
+  @Override
+  public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId,
+      boolean isSelected) {
+    if (entity instanceof Player player) {
+      if (level.getRandom().nextInt(12) % 4 == 0) {
+        trySpawnFire(player.level, new BlockPos(player.position()), stack, player);
+      }
+    }
   }
 
   public static boolean trySpawnFire(Level level, BlockPos pos, ItemStack stack, Player player) {
