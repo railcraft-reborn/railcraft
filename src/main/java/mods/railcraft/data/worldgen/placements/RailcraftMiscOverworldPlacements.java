@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
+import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -41,6 +42,15 @@ public class RailcraftMiscOverworldPlacements {
             InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_TOP_SOLID,
             BlockPredicateFilter.forPredicate(BlockPredicate.matchesFluids(Fluids.WATER)),
+            BiomeFilter.biome()
+        ));
+
+    public static final RegistryObject<PlacedFeature> FIRESTONE = register("firestone",
+        RailcraftMiscOverworldFeatures.FIRESTONE,
+        () -> List.of(
+            CountPlacement.of(2),
+            PlacementUtils.FULL_RANGE,
+            BlockPredicateFilter.forPredicate(BlockPredicate.matchesFluids(Fluids.LAVA)),
             BiomeFilter.biome()
         ));
 

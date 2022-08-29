@@ -8,6 +8,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -31,6 +32,12 @@ public class RailcraftMiscOverworldFeatures {
         () -> new DiskConfiguration(RuleBasedBlockStateProvider.simple(RailcraftBlocks.SALTPETER_ORE.get()),
             BlockPredicate.matchesBlocks(List.of(Blocks.DIRT, RailcraftBlocks.SALTPETER_ORE.get())),
             UniformInt.of(2, 3), 1));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> FIRESTONE = register("firestone",
+        () -> new DiskConfiguration(RuleBasedBlockStateProvider.simple(RailcraftBlocks.FIRESTONE_ORE.get()),
+            BlockPredicate.matchesBlocks(List.of(Blocks.NETHERRACK,
+                RailcraftBlocks.FIRESTONE_ORE.get())),
+            ConstantInt.of(1), 1));
 
 
 

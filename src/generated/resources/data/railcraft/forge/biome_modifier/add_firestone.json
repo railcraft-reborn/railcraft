@@ -1,0 +1,5 @@
+{
+  "type": "railcraft:railcraft_firestone_biome_modifier",
+  "biomes": "#minecraft:is_nether",
+  "step": "underground_ores"
+}

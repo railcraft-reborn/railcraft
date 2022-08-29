@@ -31,6 +31,13 @@ public class RailcraftBiomeModifier {
                 Decoration.CODEC.fieldOf("step").forGetter(RailcraftSaltpeterBiomeModifier::step)
             ).apply(builder, RailcraftSaltpeterBiomeModifier::new)));
 
+    public static RegistryObject<Codec<RailcraftFirestoneBiomeModifier>> FIRESTONE_BIOME_MODIFIER =
+        deferredRegister.register("railcraft_firestone_biome_modifier", () ->
+            RecordCodecBuilder.create(builder -> builder.group(
+                Biome.LIST_CODEC.fieldOf("biomes").forGetter(RailcraftFirestoneBiomeModifier::biomes),
+                Decoration.CODEC.fieldOf("step").forGetter(RailcraftFirestoneBiomeModifier::step)
+            ).apply(builder, RailcraftFirestoneBiomeModifier::new)));
+
     public static void register(IEventBus modEventBus) {
         deferredRegister.register(modEventBus);
     }

@@ -22,6 +22,7 @@ import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.worldgen.features.RailcraftMiscOverworldFeatures;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
 import mods.railcraft.data.worldgen.modifiers.RailcraftBiomeModifier;
+import mods.railcraft.data.worldgen.modifiers.RailcraftFirestoneBiomeModifier;
 import mods.railcraft.data.worldgen.modifiers.RailcraftOreBiomeModifier;
 import mods.railcraft.data.worldgen.modifiers.RailcraftSaltpeterBiomeModifier;
 import mods.railcraft.data.worldgen.placements.RailcraftMiscOverworldPlacements;
@@ -200,14 +201,18 @@ public class Railcraft {
         fileHelper, ID, ops, Registry.PLACED_FEATURE_REGISTRY, placedFeaturesMap));
 
     HashMap<ResourceLocation, BiomeModifier> biomeModifierHashMap = new HashMap<>();
+    var biomeRegistry = ops.registry(Registry.BIOME_REGISTRY).get();
+    var biomes = new Named<>(biomeRegistry, BiomeTags.IS_OVERWORLD);
+    var netherBiomes = new Named<>(biomeRegistry, BiomeTags.IS_NETHER);
     for(var placedFeature : placedFeaturesMap.entrySet()) {
-      var biomes = new Named<>(ops.registry(Registry.BIOME_REGISTRY).get(), BiomeTags.IS_OVERWORLD);
       var resourceLocation = new ResourceLocation(placedFeature.getKey().getNamespace(),
           "add_" + placedFeature.getKey().getPath());
 
       BiomeModifier biomeModifier;
       if(placedFeature.getKey().getPath().equals("saltpeter")) {
         biomeModifier = new RailcraftSaltpeterBiomeModifier(biomes, Decoration.UNDERGROUND_ORES);
+      } else if(placedFeature.getKey().getPath().equals("firestone")) {
+        biomeModifier = new RailcraftFirestoneBiomeModifier(netherBiomes, Decoration.UNDERGROUND_ORES);
       } else {
         biomeModifier = new RailcraftOreBiomeModifier(biomes, Holder.direct(placedFeature.getValue()));
       }
