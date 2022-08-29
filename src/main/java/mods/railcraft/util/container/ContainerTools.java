@@ -248,8 +248,9 @@ public abstract class ContainerTools {
   }
 
   public static boolean isStackEqualToBlock(ItemStack stack, @Nullable Block block) {
-    return !(stack.isEmpty() || block == null) && stack.getItem() instanceof BlockItem
-        && ((BlockItem) stack.getItem()).getBlock() == block;
+    if(stack.isEmpty() || block == null || !(block.asItem() instanceof BlockItem item))
+      return false;
+    return stack.is(item);
   }
 
   public static Block getBlockFromStack(ItemStack stack) {

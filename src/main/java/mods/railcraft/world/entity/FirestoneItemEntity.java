@@ -28,24 +28,16 @@ public class FirestoneItemEntity extends ItemEntity {
 
   public FirestoneItemEntity(EntityType<? extends FirestoneItemEntity> type, Level level) {
     super(type, level);
+    this.setExtendedLifetime();
   }
 
-  public FirestoneItemEntity(double x, double y, double z, Level level) {
+  public FirestoneItemEntity(Level level, Vec3 position, ItemStack itemStack) {
     this(RailcraftEntityTypes.FIRESTONE.get(), level);
-    this.setPos(x, y, z);
-    this.setYRot(this.random.nextFloat() * 360.0F);
+    this.setPos(position.x, position.y, position.z);
     this.setDeltaMovement(this.random.nextDouble() * 0.2D - 0.1D, 0.2D,
         this.random.nextDouble() * 0.2D - 0.1D);
-  }
-
-  public FirestoneItemEntity(Vec3 position, Level level, ItemStack stack) {
-    this(position.x, position.y, position.z, level);
-    this.setItem(stack);
-    this.lifespan = (stack.getItem() == null ? 6000 : stack.getEntityLifespan(level));
-  }
-
-  {
-    this.setExtendedLifetime();
+    this.setItem(itemStack);
+    this.lifespan = itemStack.getEntityLifespan(level);
   }
 
   @Override

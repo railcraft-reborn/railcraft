@@ -31,6 +31,7 @@ import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -62,22 +63,22 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  public ItemStack getCraftingRemainingItem(ItemStack stack) {
+  public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
     ItemStack newStack;
-    double damageLevel = (double) stack.getDamageValue() / (double) stack.getMaxDamage();
+    double damageLevel = (double) itemStack.getDamageValue() / (double) itemStack.getMaxDamage();
     if (ThreadLocalRandom.current().nextDouble() < damageLevel * 0.0001) {
       newStack = CrackedFirestoneItem.getItemEmpty();
-      if (stack.hasCustomHoverName())
-        newStack.setHoverName(stack.getHoverName());
+      if (itemStack.hasCustomHoverName())
+        newStack.setHoverName(itemStack.getHoverName());
     } else
-      newStack = stack.copy();
+      newStack = itemStack.copy();
     newStack.setCount(1);
     return newStack.hurt(1, RandomSource.create(), null) ? ItemStack.EMPTY : newStack;
   }
 
   @Override
-  public final int getBurnTime(ItemStack stack, RecipeType<?> recipeType) {
-    return stack.getDamageValue() < stack.getMaxDamage() ? this.heat : 0;
+  public final int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
+    return itemStack.getDamageValue() < itemStack.getMaxDamage() ? this.heat : 0;
   }
 
   @Override
@@ -138,11 +139,11 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  public InteractionResult interactLivingEntity(ItemStack stack, Player player,
-      LivingEntity target, InteractionHand hand) {
-    if (player instanceof ServerPlayer && !target.fireImmune()) {
-      target.setSecondsOnFire(5);
-      stack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
+  public InteractionResult interactLivingEntity(ItemStack itemStack, Player player,
+      LivingEntity livingEntity, InteractionHand hand) {
+    if (player instanceof ServerPlayer && !livingEntity.fireImmune()) {
+      livingEntity.setSecondsOnFire(5);
+      itemStack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
       player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F,
           player.getRandom().nextFloat() * 0.4F + 0.8F);
       player.swing(hand);
@@ -152,20 +153,11 @@ public class RefinedFirestoneItem extends FirestoneItem {
     return InteractionResult.CONSUME;
   }
 
-  /**
-   * This function should return a new entity to replace the dropped item. Returning null here will
-   * not kill the EntityItem and will leave it to function normally. Called when the item it placed
-   * in a world.
-   *
-   * @param world The world object
-   * @param location The EntityItem object, useful for getting the position of the entity
-   * @param stack The current item stack
-   * @return A new Entity object to spawn or null
-   */
   @Override
-  public FirestoneItemEntity createEntity(Level world, Entity location, ItemStack stack) {
-    FirestoneItemEntity entity = super.createEntity(world, location, stack);
-    Objects.requireNonNull(entity).setRefined(true);
-    return entity;
+  @NotNull
+  public FirestoneItemEntity createEntity(Level level, Entity entity, ItemStack itemStack) {
+    var firestone = super.createEntity(level, entity, itemStack);
+    firestone.setRefined(true);
+    return firestone;
   }
 }
