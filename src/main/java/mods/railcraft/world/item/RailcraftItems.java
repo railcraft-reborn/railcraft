@@ -546,6 +546,11 @@ public class RailcraftItems {
           () -> new ArmorItem(RailcraftArmorMaterial.OVERALLS, EquipmentSlot.LEGS,
               new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<BlockItem> FIRESTONE_ORE =
+      deferredRegister.register("firestone_ore", () -> new BlockItem(
+          RailcraftBlocks.FIRESTONE_ORE.get(),
+          new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> CRACKED_FIRESTONE =
       deferredRegister.register("cracked_firestone",
           () -> new CrackedFirestoneItem(new Item.Properties()

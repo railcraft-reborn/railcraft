@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block;
 
 import mods.railcraft.particle.RailcraftParticleTypes;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,22 +22,21 @@ public class FirestoneBlock extends Block {
   }
 
   @Override
-  public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource rand) {
-    super.animateTick(blockState, level, pos, rand);
+  public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource random) {
+    super.animateTick(blockState, level, pos, random);
     var start = new BlockPos(
-        pos.getX() - 10 + rand.nextInt(20),
+        pos.getX() - 10 + random.nextInt(20),
         pos.getY(),
-        pos.getZ() - 10 + rand.nextInt(20));
+        pos.getZ() - 10 + random.nextInt(20));
     level.playSound(null, start, SoundEvents.LAVA_POP, SoundSource.BLOCKS,
-        0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F);
+        0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F);
     level.addParticle(RailcraftParticleTypes.SPARK.get(),
         pos.getX(), pos.getY(), pos.getZ(),
         start.getX() + 0.5D, start.getY() + 0.5D, start.getZ() + 0.5D);
-    this.spawnBurningFaceParticles(level, pos);
+    this.spawnBurningFaceParticles(level, pos, random);
   }
 
-  private void spawnBurningFaceParticles(Level level, BlockPos pos) {
-    var random = level.getRandom();
+  private void spawnBurningFaceParticles(Level level, BlockPos pos, RandomSource random){
     double pixel = 0.0625D;
 
     BlockState state = level.getBlockState(pos);
@@ -69,14 +67,11 @@ public class FirestoneBlock extends Block {
       else
         pz += random.nextFloat();
 
-      Minecraft mc = Minecraft.getInstance();
-      ParticleEngine particleEngine = mc.particleEngine;
-      // flame particle
-      particleEngine.add(particleEngine.createParticle(
-          ParticleTypes.FLAME, px, py, pz, 0.0D, 0.0D, 0.0D));
-      // smoke_normal particle
-      particleEngine.add(particleEngine.createParticle(
-          ParticleTypes.SMOKE, px, py, pz, 0.0D, 0.0D, 0.0D));
+      var particleEngine = Minecraft.getInstance().particleEngine;
+      var flame = particleEngine.createParticle(ParticleTypes.FLAME, px, py, pz, 0.0D, 0.0D, 0.0D);
+      var smoke = particleEngine.createParticle(ParticleTypes.SMOKE, px, py, pz, 0.0D, 0.0D, 0.0D);
+      particleEngine.add(flame);
+      particleEngine.add(smoke);
     }
   }
 }

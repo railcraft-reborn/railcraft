@@ -272,6 +272,7 @@ public class RailcraftBlockModelGenerators {
     this.createTrivialCube(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
     this.createTrivialCube(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
     this.createTrivialCube(RailcraftBlocks.SALTPETER_ORE.get());
+    this.createTrivialCube(RailcraftBlocks.FIRESTONE_ORE.get());
 
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());

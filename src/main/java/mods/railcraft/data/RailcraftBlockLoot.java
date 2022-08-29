@@ -57,6 +57,7 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get());
     this.dropSelf(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
     this.dropSelf(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+    this.dropSelf(RailcraftBlocks.FIRESTONE_ORE.get());
 
     this.add(RailcraftBlocks.SULFUR_ORE.get(),
         block -> createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
@@ -313,7 +314,6 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
 
     /* === misc === */
-    this.dropSelf(RailcraftBlocks.FIRESTONE.get());
     // TODO: implement this ritual thingy
     this.add(RailcraftBlocks.RITUAL.get(), noDrop());
   }

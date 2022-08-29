@@ -31,7 +31,7 @@ public class FirestoneItem extends Item {
       return true;
     if (RailcraftItems.CRACKED_FIRESTONE.get() == stack.getItem())
       return true;
-    return ContainerTools.isStackEqualToBlock(stack, RailcraftBlocks.FIRESTONE.get());
+    return ContainerTools.isStackEqualToBlock(stack, RailcraftBlocks.FIRESTONE_ORE.get());
   };
 
   public FirestoneItem(Properties properties) {
@@ -56,14 +56,14 @@ public class FirestoneItem extends Item {
    * not kill the EntityItem and will leave it to function normally. Called when the item it placed
    * in a world.
    *
-   * @param world The world object
+   * @param level The world object
    * @param original The EntityItem object, useful for getting the position of the entity
    * @param stack The current item stack
    * @return A new Entity object to spawn or null
    */
   @Override
-  public FirestoneItemEntity createEntity(Level world, Entity original, ItemStack stack) {
-    return createEntityItem(world, original, stack);
+  public FirestoneItemEntity createEntity(Level level, Entity original, ItemStack stack) {
+    return createEntityItem(level, original, stack);
   }
 
   /**
@@ -76,23 +76,23 @@ public class FirestoneItem extends Item {
     return false;
   }
 
-  public static FirestoneItemEntity createEntityItem(Level world, Entity original,
+  public static FirestoneItemEntity createEntityItem(Level level, Entity original,
       ItemStack stack) {
     FirestoneItemEntity entity =
-        new FirestoneItemEntity(original.getX(), original.getY(), original.getZ(), world, stack);
+        new FirestoneItemEntity(original.getX(), original.getY(), original.getZ(), level, stack);
     entity.setThrower(((ItemEntity) original).getThrower());
     entity.setDeltaMovement(original.getDeltaMovement());
     entity.setDefaultPickUpDelay();
     return entity;
   }
 
-  public static boolean trySpawnFire(Level world, BlockPos pos, ItemStack stack,
+  public static boolean trySpawnFire(Level level, BlockPos pos, ItemStack stack,
       Player holder) {
     if (stack.isEmpty() || !SPAWNS_FIRE.test(stack))
       return false;
     boolean spawnedFire = false;
     for (int i = 0; i < stack.getCount(); i++) {
-      spawnedFire |= spawnFire(world, pos, holder);
+      spawnedFire |= spawnFire(level, pos, holder);
     }
     if (spawnedFire && stack.isDamageableItem()
         && stack.getDamageValue() < stack.getMaxDamage() - 1)
@@ -116,13 +116,13 @@ public class FirestoneItem extends Item {
         && LevelUtil.setBlockState(level, firePos, Blocks.FIRE.defaultBlockState(), holder);
   }
 
-  private static boolean canBurn(Level world, BlockPos pos) {
-    if (world.getBlockState(pos).isAir()) {
+  private static boolean canBurn(Level level, BlockPos pos) {
+    if (level.getBlockState(pos).isAir()) {
       return false;
     }
     for (var side : Direction.values()) {
       var offset = pos.relative(side);
-      var offsetBlockState = world.getBlockState(offset);
+      var offsetBlockState = level.getBlockState(offset);
       if (!offsetBlockState.isAir() && offsetBlockState.getMaterial() != Material.FIRE) {
         return true;
       }

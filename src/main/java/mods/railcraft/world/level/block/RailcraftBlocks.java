@@ -1419,10 +1419,10 @@ public class RailcraftBlocks {
               .strength(1.05F)
               .sound(SoundType.METAL)));
 
-  // firestone (ORE)
-  public static final RegistryObject<Block> FIRESTONE =
-      deferredRegister.register("firestone",
+  public static final RegistryObject<Block> FIRESTONE_ORE =
+      deferredRegister.register("firestone_ore",
           () -> new FirestoneBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3, 15)
               .lightLevel(__ -> 15)
               .strength(3, 5)));
 
