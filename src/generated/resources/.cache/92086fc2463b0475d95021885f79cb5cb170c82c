@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-15T15:43:30.299663902	Railcraft Block State Definitions
+// 1.19.2	2022-08-29T16:44:35.329763513	Railcraft Block State Definitions
 b7fce4a3220edeb2904e53e6377a86a7b237ffc5 assets/railcraft/blockstates/abandoned_activator_track.json
 ff1b13ba4045bb558e3d132ec8830eb9d226af6f assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -79,6 +79,7 @@ b7494d023f1e4c8a3b134e8c3afce01ada6e8dce assets/railcraft/blockstates/electric_t
 6e9f2c20be91deace6b3814da6b4631cdeda3c2f assets/railcraft/blockstates/electric_wye_track.json
 9a9a9ae7fadce00e2d9047880026d5cbd539a6e0 assets/railcraft/blockstates/elevator_track.json
 daa9c70386aad5dde293d34579e0953fb064cae4 assets/railcraft/blockstates/feed_station.json
+15c7d48493c14e7842cee4647a5cc9ee8217713d assets/railcraft/blockstates/firestone_ore.json
 dfcd4322747af04dee1e0752504c83755455cd26 assets/railcraft/blockstates/fluid_fueled_firebox.json
 d0033564ba044554fcc76cb596c8d74885f593bb assets/railcraft/blockstates/fluid_loader.json
 c3270a2e6ac073d9c9a5484f583d9a2ff9d0072f assets/railcraft/blockstates/fluid_unloader.json
@@ -489,6 +490,7 @@ fdb3157590fd6aacd76a9514370f51a66002da1a assets/railcraft/models/block/embarking
 041199333ee86d9fd9747036cdeab9aa586b9e85 assets/railcraft/models/block/embarking_track_raised_ne.json
 8845418b5eeed098613ace06ba5c36838c56b7db assets/railcraft/models/block/embarking_track_raised_sw.json
 3853674a66fd91d879cebe318ffb659750f9fd10 assets/railcraft/models/block/feed_station.json
+46cb9356b66af85147982dd8ac6dea99c87def0e assets/railcraft/models/block/firestone_ore.json
 30502b8aa337e834ac81a03c55ca558f56eae58e assets/railcraft/models/block/fluid_fueled_firebox.json
 c70f5dc109ad3f792030eec26850a008247cf3bd assets/railcraft/models/block/fluid_fueled_firebox_lit.json
 a00001c567552c0c18dcadc72d522c910575cd4f assets/railcraft/models/block/fluid_loader.json
@@ -1086,6 +1088,7 @@ d13bf788e6c64f24528463c32fc177a774c9cfe6 assets/railcraft/models/item/electric_w
 2d1c8a424573c2795b1c8605aff3d9bd61ee69b8 assets/railcraft/models/item/embarking_track_kit.json
 245bf48c8cedd8733bfceca3d1fd28bd7e84a442 assets/railcraft/models/item/ender_dust.json
 dad3f4e446f374d6518227841b1779389e9efca1 assets/railcraft/models/item/feed_station.json
+1652af9d99611c874c1c70b08305aa4c7728ce8a assets/railcraft/models/item/firestone_ore.json
 c501cb646a7a13dcdbd7da80916bfdb1a7d2b7a7 assets/railcraft/models/item/fluid_fueled_firebox.json
 090e59272a7eb9f6ab90eb582d30981a04b60b61 assets/railcraft/models/item/fluid_loader.json
 4cd92a11d29f7f3c5627f236052c9c807ca994e5 assets/railcraft/models/item/fluid_unloader.json

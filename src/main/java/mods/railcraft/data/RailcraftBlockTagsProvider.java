@@ -154,7 +154,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTag(BlockTags.RAILS);
 
     var mineableWithPickaxe = this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .add(RailcraftBlocks.FIRESTONE.get())
+        .add(RailcraftBlocks.FIRESTONE_ORE.get())
         .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get())
         .add(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get())
         .add(RailcraftBlocks.SOLID_FUELED_FIREBOX.get())
@@ -182,7 +182,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
-        .add(RailcraftBlocks.FIRESTONE.get())
+        .add(RailcraftBlocks.FIRESTONE_ORE.get())
         .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
     this.tag(BlockTags.NEEDS_IRON_TOOL)
