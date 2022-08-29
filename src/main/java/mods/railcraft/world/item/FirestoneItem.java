@@ -79,9 +79,10 @@ public class FirestoneItem extends Item {
   }
 
   public static boolean spawnFire(Level level, BlockPos pos, @Nullable Player player) {
-    int x = pos.getX() - 5 + level.getRandom().nextInt(12);
-    int y = pos.getY() - 5 + level.getRandom().nextInt(12);
-    int z = pos.getZ() - 5 + level.getRandom().nextInt(12);
+    var random = level.getRandom();
+    int x = pos.getX() - 5 + random.nextInt(12);
+    int y = pos.getY() - 5 + random.nextInt(12);
+    int z = pos.getZ() - 5 + random.nextInt(12);
 
     y = Mth.clamp(y, level.getMinBuildHeight(), level.getMaxBuildHeight() - 1);
 

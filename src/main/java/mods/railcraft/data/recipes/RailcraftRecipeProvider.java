@@ -68,30 +68,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildSwitch(consumer);
     buildLoaders(consumer);
     buildCrowbars(consumer);
-
-    // This is a tool I think
-    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
-        .pattern("LRL")
-        .pattern("RSR")
-        .pattern("LRL")
-        .define('L', Items.LAVA_BUCKET)
-        .define('R', Items.REDSTONE_BLOCK)
-        .define('S', RailcraftItems.CUT_FIRESTONE.get())
-        .unlockedBy(getHasName(RailcraftItems.CUT_FIRESTONE.get()),
-            has(RailcraftItems.CUT_FIRESTONE.get()))
-        .save(consumer, Railcraft.ID + ":firestone_lava_refinement");
-
-    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
-        .pattern("LFL")
-        .pattern("RSR")
-        .pattern("LRL")
-        .define('L', Items.LAVA_BUCKET)
-        .define('R', Items.REDSTONE_BLOCK)
-        .define('S', RailcraftItems.CRACKED_FIRESTONE.get())
-        .define('F', RailcraftItems.RAW_FIRESTONE.get())
-        .unlockedBy(getHasName(RailcraftItems.CRACKED_FIRESTONE.get()),
-            has(RailcraftItems.CRACKED_FIRESTONE.get()))
-        .save(consumer, Railcraft.ID + ":firestone_cracked_fixing");
+    buildFirestones(consumer);
   }
 
   private void conversion(Consumer<FinishedRecipe> finishedRecipe, ItemLike from, ItemLike to,
@@ -877,6 +854,41 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', Tags.Items.DYES_RED)
         .unlockedBy(getHasName(Items.RAIL), has(Items.RAIL))
         .save(finishedRecipe);
+  }
+
+  private void buildFirestones(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
+        .pattern("LRL")
+        .pattern("RSR")
+        .pattern("LRL")
+        .define('L', Items.LAVA_BUCKET)
+        .define('R', Items.REDSTONE_BLOCK)
+        .define('S', RailcraftItems.CUT_FIRESTONE.get())
+        .unlockedBy(getHasName(RailcraftItems.CUT_FIRESTONE.get()),
+            has(RailcraftItems.CUT_FIRESTONE.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "firestone_lava_refinement"));
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
+        .pattern("LFL")
+        .pattern("RSR")
+        .pattern("LRL")
+        .define('L', Items.LAVA_BUCKET)
+        .define('R', Items.REDSTONE_BLOCK)
+        .define('S', RailcraftItems.CRACKED_FIRESTONE.get())
+        .define('F', RailcraftItems.RAW_FIRESTONE.get())
+        .unlockedBy(getHasName(RailcraftItems.CRACKED_FIRESTONE.get()),
+            has(RailcraftItems.CRACKED_FIRESTONE.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "firestone_cracked_fixing"));
+
+    ShapedRecipeBuilder.shaped(RailcraftItems.CUT_FIRESTONE.get())
+        .pattern(" a ")
+        .pattern("aba")
+        .pattern(" a ")
+        .define('a', Items.DIAMOND_PICKAXE)
+        .define('b', RailcraftItems.RAW_FIRESTONE.get())
+        .unlockedBy(getHasName(RailcraftItems.RAW_FIRESTONE.get()),
+            has(RailcraftItems.RAW_FIRESTONE.get()))
+        .save(consumer);
   }
 
   private void buildMiscItems(Consumer<FinishedRecipe> consumer) {

@@ -499,6 +499,17 @@ public class RailcraftItems {
           RailcraftBlocks.FIRESTONE_ORE.get(),
           new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> RAW_FIRESTONE =
+      deferredRegister.register("raw_firestone", () -> new FirestoneItem(
+          new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> REFINED_FIRESTONE =
+      deferredRegister.register("refined_firestone",
+          () -> new RefinedFirestoneItem(new Item.Properties()
+              .stacksTo(1)
+              .durability(RefinedFirestoneItem.CHARGES)
+              .tab(TAB)));
+
   public static final RegistryObject<Item> CRACKED_FIRESTONE =
       deferredRegister.register("cracked_firestone",
           () -> new CrackedFirestoneItem(new Item.Properties()
@@ -506,17 +517,9 @@ public class RailcraftItems {
               .durability(RefinedFirestoneItem.CHARGES)
               .tab(TAB)));
 
-  public static final RegistryObject<Item> RAW_FIRESTONE =
-      deferredRegister.register("raw_firestone", () -> new FirestoneItem(
-          new Item.Properties().tab(TAB)));
-
   public static final RegistryObject<Item> CUT_FIRESTONE =
       deferredRegister.register("cut_firestone", () -> new FirestoneItem(
-          new Item.Properties().tab(TAB)));
-
-  public static final RegistryObject<Item> REFINED_FIRESTONE =
-      deferredRegister.register("refined_firestone",
-          () -> new RefinedFirestoneItem(new Item.Properties()
+          new Item.Properties()
               .stacksTo(1)
               .durability(RefinedFirestoneItem.CHARGES)
               .tab(TAB)));

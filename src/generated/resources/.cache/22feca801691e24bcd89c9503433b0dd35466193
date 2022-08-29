@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-29T16:04:22.849835615	Railcraft Recipes
+// 1.19.2	2022-08-29T21:36:54.59004943	Railcraft Recipes
 e39ead7ff7b72635ceccafd585fd5b062f549194 data/minecraft/advancements/recipes/transportation/rail.json
 790844dc8b3e3f93241eed9ccb9ef57845638191 data/minecraft/recipes/rail.json
 643033ea165b00d4ad131623d07762edbf6b460e data/railcraft/advancements/recipes/building_blocks/coke_oven/coal_block.json
@@ -78,6 +78,7 @@ f609cb520b389ad7a33247475a22bafbb3694e12 data/railcraft/advancements/recipes/rai
 e92915bb716142a2e0122b5f65e298cc85e83eef data/railcraft/advancements/recipes/railcraft/controller_circuit.json
 51b881ac2e0d6adc03c4589ce356e5118ee606c2 data/railcraft/advancements/recipes/railcraft/copper_gear.json
 04ea90a0842d5151e75c1c05ddd810d685f8f4b1 data/railcraft/advancements/recipes/railcraft/crusher.json
+0fa9c07cdae6e3822431810b40d81fc97ea416a3 data/railcraft/advancements/recipes/railcraft/cut_firestone.json
 29bdd1101e148a28034248262431820830a56efd data/railcraft/advancements/recipes/railcraft/cyan_iron_tank_gauge.json
 87046b2292feb178eec03c580b66c69c66f1b1b0 data/railcraft/advancements/recipes/railcraft/cyan_iron_tank_valve.json
 3223f4a135017175ebf0542088e2873cab4220d6 data/railcraft/advancements/recipes/railcraft/cyan_iron_tank_wall.json
@@ -571,6 +572,7 @@ a6d3162f5063667a8785c348b3d2d9fed44bb857 data/railcraft/recipes/crusher/crushing
 8c5ad45732857852cc31ead7c4ece382ea870e68 data/railcraft/recipes/crusher/crushing_tags_sandstone.json
 e5f1e1d4c89d80446dbc321eb0bba9e662a64dd4 data/railcraft/recipes/crusher/crushing_tags_stone.json
 5bf07df478816b7396a0a8f04aa02255e5e4317b data/railcraft/recipes/crusher/crushing_tags_stone_bricks.json
+917a766965bf817ac192c5190f18af4c1c0542dc data/railcraft/recipes/cut_firestone.json
 b907602706a1988b024573773b3d3f8956cf67e5 data/railcraft/recipes/cyan_iron_tank_gauge.json
 957eed1e78b86e83189c7704d52e927a30e54190 data/railcraft/recipes/cyan_iron_tank_valve.json
 8ef7a7582b6696d06dfdd2dca90fda5690b81cd6 data/railcraft/recipes/cyan_iron_tank_wall.json

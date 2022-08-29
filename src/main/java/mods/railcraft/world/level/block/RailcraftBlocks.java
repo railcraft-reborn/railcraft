@@ -1337,7 +1337,7 @@ public class RailcraftBlocks {
       deferredRegister.register("firestone_ore",
           () -> new FirestoneBlock(BlockBehaviour.Properties.of(Material.STONE)
               .lightLevel(__ -> 15)
-              .strength(3, 15)));
+              .strength(3, 5)));
 
   public static final RegistryObject<Block> RITUAL =
       deferredRegister.register("ritual",

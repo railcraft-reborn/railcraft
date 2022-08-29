@@ -29,13 +29,13 @@ public class FirestoneItemEntity extends ItemEntity {
   public FirestoneItemEntity(EntityType<? extends FirestoneItemEntity> type, Level level) {
     super(type, level);
     this.setExtendedLifetime();
+    this.setDeltaMovement(this.random.nextDouble() * 0.2D - 0.1D, 0.2D,
+        this.random.nextDouble() * 0.2D - 0.1D);
   }
 
   public FirestoneItemEntity(Level level, Vec3 position, ItemStack itemStack) {
     this(RailcraftEntityTypes.FIRESTONE.get(), level);
     this.setPos(position.x, position.y, position.z);
-    this.setDeltaMovement(this.random.nextDouble() * 0.2D - 0.1D, 0.2D,
-        this.random.nextDouble() * 0.2D - 0.1D);
     this.setItem(itemStack);
     this.lifespan = itemStack.getEntityLifespan(level);
   }
@@ -45,11 +45,10 @@ public class FirestoneItemEntity extends ItemEntity {
     super.tick();
     if (!this.level.isClientSide()) {
       clock++;
-      if (clock % 4 != 0)
-        return;
-      ItemStack stack = getItem();
-      FirestoneItem.trySpawnFire(this.level, this.blockPosition(), stack,
-          PlayerUtil.getItemThrower(this));
+      if (clock % 4 == 0) {
+        FirestoneItem.trySpawnFire(this.level, this.blockPosition(), getItem(),
+            PlayerUtil.getItemThrower(this));
+      }
     }
   }
 

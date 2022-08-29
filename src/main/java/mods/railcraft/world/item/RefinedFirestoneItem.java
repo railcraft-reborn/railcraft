@@ -1,8 +1,6 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.Nullable;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.container.ContainerTools;
@@ -66,7 +64,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
   public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
     ItemStack newStack;
     double damageLevel = (double) itemStack.getDamageValue() / (double) itemStack.getMaxDamage();
-    if (ThreadLocalRandom.current().nextDouble() < damageLevel * 0.0001) {
+    if (RandomSource.create().nextDouble() < damageLevel * 0.0001) {
       newStack = CrackedFirestoneItem.getItemEmpty();
       if (itemStack.hasCustomHoverName())
         newStack.setHoverName(itemStack.getHoverName());
