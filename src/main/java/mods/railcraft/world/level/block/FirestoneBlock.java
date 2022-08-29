@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block;
 
-import mods.railcraft.particle.RailcraftParticleTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,9 +29,6 @@ public class FirestoneBlock extends Block {
         pos.getZ() - 10 + random.nextInt(20));
     level.playSound(null, start, SoundEvents.LAVA_POP, SoundSource.BLOCKS,
         0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F);
-    level.addParticle(RailcraftParticleTypes.SPARK.get(),
-        pos.getX(), pos.getY(), pos.getZ(),
-        start.getX() + 0.5D, start.getY() + 0.5D, start.getZ() + 0.5D);
     this.spawnBurningFaceParticles(level, pos, random);
   }
 
