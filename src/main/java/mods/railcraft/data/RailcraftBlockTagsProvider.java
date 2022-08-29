@@ -154,14 +154,14 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTag(BlockTags.RAILS);
 
     var mineableWithPickaxe = this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .add(RailcraftBlocks.FIRESTONE.get(),
-            RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
-            RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
-            RailcraftBlocks.SOLID_FUELED_FIREBOX.get(),
-            RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
-            RailcraftBlocks.STEAM_TURBINE.get(),
-            RailcraftBlocks.COKE_OVEN_BRICKS.get(),
-            RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
+        .add(RailcraftBlocks.FIRESTONE_ORE.get())
+        .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get())
+        .add(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get())
+        .add(RailcraftBlocks.SOLID_FUELED_FIREBOX.get())
+        .add(RailcraftBlocks.FLUID_FUELED_FIREBOX.get())
+        .add(RailcraftBlocks.STEAM_TURBINE.get())
+        .add(RailcraftBlocks.COKE_OVEN_BRICKS.get())
+        .add(RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
         .add(RailcraftBlocks.COKE_BLOCK.get())
         .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get())
         .add(RailcraftBlocks.STEEL_BLOCK.get())
@@ -181,7 +181,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
-        .add(RailcraftBlocks.FIRESTONE.get())
+        .add(RailcraftBlocks.FIRESTONE_ORE.get())
         .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
     this.tag(BlockTags.NEEDS_IRON_TOOL)

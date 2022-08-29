@@ -11,8 +11,6 @@ class RenderLayers {
 
   static void register() {
     // TODO: Set these values from JSON
-    ItemBlockRenderTypes.setRenderLayer(RailcraftBlocks.FIRESTONE.get(), RenderType.cutoutMipped());
-
     for (var dyeColor : DyeColor.values()) {
       cutout(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor));
       cutout(RailcraftBlocks.IRON_TANK_GAUGE.variantFor(dyeColor));
