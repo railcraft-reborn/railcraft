@@ -217,6 +217,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         simpleBlock(RailcraftBlocks.COKE_BLOCK.get());
         simpleBlock(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
+        simpleBlock(RailcraftBlocks.FIRESTONE_ORE.get());
+
         fluidBlock(RailcraftBlocks.CREOSOTE.get());
 
         createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
