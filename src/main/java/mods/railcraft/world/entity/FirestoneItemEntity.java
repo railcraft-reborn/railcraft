@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -25,22 +26,22 @@ public class FirestoneItemEntity extends ItemEntity {
   private int clock;
   private boolean refined;
 
-  public FirestoneItemEntity(EntityType<? extends FirestoneItemEntity> type, Level world) {
-    super(type, world);
+  public FirestoneItemEntity(EntityType<? extends FirestoneItemEntity> type, Level level) {
+    super(type, level);
   }
 
-  public FirestoneItemEntity(double x, double y, double z, Level world) {
-    this(RailcraftEntityTypes.FIRESTONE.get(), world);
+  public FirestoneItemEntity(double x, double y, double z, Level level) {
+    this(RailcraftEntityTypes.FIRESTONE.get(), level);
     this.setPos(x, y, z);
     this.setYRot(this.random.nextFloat() * 360.0F);
     this.setDeltaMovement(this.random.nextDouble() * 0.2D - 0.1D, 0.2D,
         this.random.nextDouble() * 0.2D - 0.1D);
   }
 
-  public FirestoneItemEntity(double x, double y, double z, Level world, ItemStack stack) {
-    this(x, y, z, world);
+  public FirestoneItemEntity(Vec3 position, Level level, ItemStack stack) {
+    this(position.x, position.y, position.z, level);
     this.setItem(stack);
-    this.lifespan = (stack.getItem() == null ? 6000 : stack.getEntityLifespan(world));
+    this.lifespan = (stack.getItem() == null ? 6000 : stack.getEntityLifespan(level));
   }
 
   {
@@ -77,8 +78,7 @@ public class FirestoneItemEntity extends ItemEntity {
               firestoneBlock.setValue(RitualBlock.CRACKED, cracked),
               PlayerUtil.getItemThrower(this))) {
             BlockEntity tile = this.level.getBlockEntity(surface);
-            if (tile instanceof RitualBlockEntity) {
-              RitualBlockEntity fireTile = (RitualBlockEntity) tile;
+            if (tile instanceof RitualBlockEntity fireTile) {
               ItemStack firestone = getItem();
               fireTile.charge = firestone.getMaxDamage() - firestone.getDamageValue();
               if (firestone.hasCustomHoverName())

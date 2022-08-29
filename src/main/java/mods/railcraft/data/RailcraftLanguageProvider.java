@@ -76,6 +76,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.TIN_BLOCK, "Block of Tin");
     this.addBlock(RailcraftBlocks.ZINC_BLOCK, "Block of Zinc");
     this.addBlock(RailcraftBlocks.COKE_BLOCK, "Block of Coal Coke");
+    this.addBlock(RailcraftBlocks.FIRESTONE_ORE, "Firestone Ore");
     this.addBlock(RailcraftBlocks.STEEL_ANVIL, "Steel Anvil");
     this.addBlock(RailcraftBlocks.CHIPPED_STEEL_ANVIL, "Chipped Steel Anvil");
     this.addBlock(RailcraftBlocks.DAMAGED_STEEL_ANVIL, "Damaged Steel Anvil");

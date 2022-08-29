@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-14T12:37:50.334979401	Railcraft Recipes
+// 1.19.2	2022-08-29T16:04:22.849835615	Railcraft Recipes
 e39ead7ff7b72635ceccafd585fd5b062f549194 data/minecraft/advancements/recipes/transportation/rail.json
 790844dc8b3e3f93241eed9ccb9ef57845638191 data/minecraft/recipes/rail.json
 643033ea165b00d4ad131623d07762edbf6b460e data/railcraft/advancements/recipes/building_blocks/coke_oven/coal_block.json
@@ -550,6 +550,7 @@ b5930446bfae242de47bd3d053b8caa45d22e653 data/railcraft/recipes/crusher/crushing
 253c3100ed7a30c6c0c7227f5cd8a3f0fdd80996 data/railcraft/recipes/crusher/crushing_coke_oven_bricks.json
 5d82d99925042271af585b0ef4011670372237f7 data/railcraft/recipes/crusher/crushing_crushed_obsidian.json
 73b033fbcd845fff7cc634a41bf619c019220342 data/railcraft/recipes/crusher/crushing_ender_pearl.json
+407fc5e3d0582b0dbf5afc3ca00a9b2d05964cea data/railcraft/recipes/crusher/crushing_firestone_ore.json
 44ada31b5f60290d0e7e9102e4baae042f62d442 data/railcraft/recipes/crusher/crushing_glowstone.json
 1c77f3153006f99049acc52601c095896cc63849 data/railcraft/recipes/crusher/crushing_gravel.json
 cbc16fc2aa03c55984081656a30f688b25466852 data/railcraft/recipes/crusher/crushing_ice.json
