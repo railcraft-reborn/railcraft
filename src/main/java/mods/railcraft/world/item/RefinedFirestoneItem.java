@@ -27,8 +27,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -98,24 +99,24 @@ public class RefinedFirestoneItem extends FirestoneItem {
     Level level = context.getLevel();
     BlockPos pos = context.getClickedPos();
     Direction side = context.getClickedFace();
+    BlockState blockState = level.getBlockState(pos);
+    RandomSource random = level.getRandom();
 
-    if (!level.isClientSide() && player.mayUseItemAt(pos, side, stack)) {
-      var blockState = level.getBlockState(pos);
+    if (level.isClientSide()) return InteractionResult.CONSUME;
+
+    ServerPlayer serverPlayer = (ServerPlayer) player;
+
+    if (player.mayUseItemAt(pos, side, stack)) {
       if (blockState.getBlock() != Blocks.STONE) {
-        var drops = blockState.getDrops(new LootContext.Builder((ServerLevel) level));
-        if (drops.size() == 1 && !drops.get(0).isEmpty()
-            && drops.get(0).getItem() instanceof BlockItem) {
-          var cooked = level.getRecipeManager()
-              .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drops.get(0)), level)
-              .map(SmeltingRecipe::getResultItem)
-              .orElse(ItemStack.EMPTY);
+        var drops = Block.getDrops(blockState, (ServerLevel) level, pos, level.getBlockEntity(pos));
+        if (drops.size() == 1 && !drops.get(0).isEmpty() && drops.get(0).getItem() instanceof BlockItem) {
+          var cooked = cookedItem(level, drops.get(0));
           if (cooked.getItem() instanceof BlockItem) {
             var newState = ContainerTools.getBlockStateFromStack(cooked, level, pos);
             if (newState != null) {
               level.setBlockAndUpdate(pos, newState);
-              player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F,
-                  player.getRandom().nextFloat() * 0.4F + 0.8F);
-              stack.hurt(1, player.getRandom(), (ServerPlayer) player);
+              player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F, random.nextFloat() * 0.4F + 0.8F);
+              stack.hurt(1, random, serverPlayer);
               return InteractionResult.SUCCESS;
             }
           }
@@ -125,15 +126,21 @@ public class RefinedFirestoneItem extends FirestoneItem {
       pos = pos.relative(side);
 
       if (player.mayUseItemAt(pos, side, stack) && level.getBlockState(pos).isAir()) {
-        player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F,
-            player.getRandom().nextFloat() * 0.4F + 0.8F);
+        player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F, random.nextFloat() * 0.4F + 0.8F);
         level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
-        stack.hurt(1, player.getRandom(), (ServerPlayer) player);
+        stack.hurt(1, random, serverPlayer);
         return InteractionResult.SUCCESS;
       }
     }
-
     return InteractionResult.CONSUME;
+  }
+
+  @NotNull
+  private ItemStack cookedItem(Level level, ItemStack ingredient) {
+    return level.getRecipeManager()
+        .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(ingredient), level)
+        .map(SmeltingRecipe::getResultItem)
+        .orElse(ItemStack.EMPTY);
   }
 
   @Override
