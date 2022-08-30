@@ -46,10 +46,10 @@ public interface BlockPredicate {
   }
 
   static BlockPredicate of(Block block) {
-    return of(block);
+    return of(() -> block);
   }
 
-  static BlockPredicate of(Supplier<Block> block) {
+  static BlockPredicate of(Supplier<? extends Block> block) {
     return (level, blockPos) -> level.getBlockState(blockPos).is(block.get());
   }
 }

@@ -372,6 +372,31 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.PRESSURE_BOILER_TANK, "Multi-Block: Variable Size, Above Firebox");
     this.add(Tips.PRESSURE_BOILER_TANK_PRODUCTION, "Produces %smB of Steam per tick");
     this.add(Tips.DIMENSIONS, "Dimensions: %s");
+    this.add(Tips.APPLY_REDSTONE_TO_ENABLE, "- Apply Redstone to enable -");
+    this.add(Tips.APPLY_REDSTONE_TO_CHANGE_DIRECTION, "- Apply Redstone to change direction -");
+    this.add(Tips.APPLY_REDSTONE_TO_OPEN, "- Apply Redstone to open -");
+    this.add(Tips.APPLY_REDSTONE_TO_RELEASE_CARTS, "- Apply Redstone to release carts -");
+    this.add(Tips.COMPARATOR_OUTPUT_FROM_CARTS, "- Can be used to get Comparator output from carts -");
+    this.add(Tips.HIT_CROWBAR_TO_CHANGE_DIRECTION, "- Hit with Crowbar to change direction -");
+    this.add(Tips.HIT_CROWBAR_TO_CHANGE_DETECTION_DIRECTION, "- Hit with Crowbar to change detection direction -");
+    this.add(Tips.HIT_CROWBAR_TO_CHANGE_RANGE, "- Hit with Crowbar to change range -");
+    this.add(Tips.HIT_CROWBAR_TO_CHANGE_MODE, "- Hit with Crowbar to change mode -");
+    this.add(Tips.HIT_CROWBAR_TO_CHANGE_FORCE, "- Hit with Crowbar to change force -");
+    this.add(Tips.SLOW_UNPOWERED, "Slows if unpowered");
+    this.add(Tips.ACTIVATOR_TRACK, "Activates passing carts");
+    this.add(Tips.BOOSTER_TRACK, "Applies a boost force to the cart");
+    this.add(Tips.BUFFER_STOP_TRACK, "End of the Line");
+    this.add(Tips.CONTROL_TRACK, "Applies a small force to the cart");
+    this.add(Tips.DETECTOR_TRACK, "Emits Redstone when a cart passes in the indicated direction");
+    this.add(Tips.DISEMBARKING_TRACK, "Dismount riding entities in direction of arrow");
+    this.add(Tips.EMBARKING_TRACK, "Loads entities into carts");
+    this.add(Tips.GATED_TRACK, "Track with built-in gate");
+    this.add(Tips.COUPLER_TRACK, "Couples/Decouples passing carts");
+    this.add(Tips.LAUNCHER_TRACK, "Makes carts fly!");
+    this.add(Tips.ONE_WAY_TRACK, "Carts can only pass in the direction of the arrow");
+    this.add(Tips.LOCOMOTIVE_TRACK, "Starts/Stops locomotive");
+    this.add(Tips.LOCKING_TRACK, "Stops and holds carts");
+    this.add(Tips.TRANSITION_TRACK, "Transitions to/from high speed");
   }
 
   private void screenTranslations() {

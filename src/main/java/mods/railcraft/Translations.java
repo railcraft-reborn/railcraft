@@ -234,6 +234,42 @@ public class Translations {
         format("tips.%railcraft.pressure_boiler_tank.production");
     public static final String DIMENSIONS =
         format("tips.%railcraft.dimensions");
+
+    public static final String APPLY_REDSTONE_TO_ENABLE =
+        format("tips.%railcraft.apply_redstone_to_enable");
+    public static final String APPLY_REDSTONE_TO_CHANGE_DIRECTION =
+        format("tips.%railcraft.apply_redstone_to_change_direction");
+    public static final String APPLY_REDSTONE_TO_OPEN =
+        format("tips.%railcraft.apply_redstone_to_open");
+    public static final String APPLY_REDSTONE_TO_RELEASE_CARTS =
+        format("tips.%railcraft.apply_redstone_to_release_carts");
+    public static final String COMPARATOR_OUTPUT_FROM_CARTS =
+        format("tips.%railcraft.comparator_output_from_carts");
+    public static final String HIT_CROWBAR_TO_CHANGE_DIRECTION =
+        format("tips.%railcraft.hit_crowbar_to_change_direction");
+    public static final String HIT_CROWBAR_TO_CHANGE_DETECTION_DIRECTION =
+        format("tips.%railcraft.hit_crowbar_to_change_detection_direction");
+    public static final String HIT_CROWBAR_TO_CHANGE_RANGE =
+        format("tips.%railcraft.hit_crowbar_to_change_range");
+    public static final String HIT_CROWBAR_TO_CHANGE_MODE =
+        format("tips.%railcraft.hit_crowbar_to_change_mode");
+    public static final String HIT_CROWBAR_TO_CHANGE_FORCE =
+        format("tips.%railcraft.hit_crowbar_to_change_force");
+    public static final String SLOW_UNPOWERED = format("tips.%railcraft.slow_unpowered");
+    public static final String ACTIVATOR_TRACK = format("tips.%railcraft.activator_track");
+    public static final String BOOSTER_TRACK = format("tips.%railcraft.booster_track");
+    public static final String BUFFER_STOP_TRACK = format("tips.%railcraft.buffer_stop_track");
+    public static final String CONTROL_TRACK = format("tips.%railcraft.control_track");
+    public static final String DETECTOR_TRACK = format("tips.%railcraft.detector_track");
+    public static final String DISEMBARKING_TRACK = format("tips.%railcraft.disembarking_track");
+    public static final String EMBARKING_TRACK = format("tips.%railcraft.embarking_track");
+    public static final String GATED_TRACK = format("tips.%railcraft.gated_track");
+    public static final String COUPLER_TRACK = format("tips.%railcraft.coupler_track");
+    public static final String LAUNCHER_TRACK = format("tips.%railcraft.launcher_track");
+    public static final String ONE_WAY_TRACK = format("tips.%railcraft.one_way_track");
+    public static final String LOCOMOTIVE_TRACK = format("tips.%railcraft.locomotive_track");
+    public static final String LOCKING_TRACK = format("tips.%railcraft.locking_track");
+    public static final String TRANSITION_TRACK = format("tips.%railcraft.transition_track");
   }
 
   public static class Container {
