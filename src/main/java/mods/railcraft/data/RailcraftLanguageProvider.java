@@ -366,6 +366,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER, "Transfer");
     this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC, "Move exactly as much as is in the filter.");
     this.add(Tips.COAL_COKE_BLOCK, "%s Fuel Units");
+    this.add(Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
+    this.add(Tips.SIGNAL_TUNER, "Links Controllers to Receivers");
+    this.add(Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");
+    this.add(Tips.PRESSURE_BOILER_TANK, "Multi-Block: Variable Size, Above Firebox");
+    this.add(Tips.PRESSURE_BOILER_TANK_PRODUCTION, "Produces %smB of Steam per tick");
+    this.add(Tips.DIMENSIONS, "Dimensions: %s");
   }
 
   private void screenTranslations() {

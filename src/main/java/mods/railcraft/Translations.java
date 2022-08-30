@@ -222,8 +222,18 @@ public class Translations {
         format("tips.%railcraft.manipulator.transfer_mode.transfer");
     public static final String MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC =
         format("tips.%railcraft.manipulator.transfer_mode.transfer.desc");
-
     public static final String COAL_COKE_BLOCK = format("tips.%railcraft.coal_coke_block");
+    public static final String SIGNAL_BLOCK_SURVEYOR =
+        format("tips.%railcraft.signal_block_surveyor");
+    public static final String SIGNAL_TUNER = format("tips.%railcraft.signal_tuner");
+    public static final String FUELED_BOILER_FIREBOX =
+        format("tips.%railcraft.fueled_boiler_firebox");
+    public static final String PRESSURE_BOILER_TANK =
+        format("tips.%railcraft.pressure_boiler_tank");
+    public static final String PRESSURE_BOILER_TANK_PRODUCTION =
+        format("tips.%railcraft.pressure_boiler_tank.production");
+    public static final String DIMENSIONS =
+        format("tips.%railcraft.dimensions");
   }
 
   public static class Container {

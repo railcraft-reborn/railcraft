@@ -113,24 +113,24 @@ public class RailcraftItems {
     STEEL_TANK_WALL.registerUsing(RailcraftBlocks.STEEL_TANK_WALL, tabFactory);
   }
 
-  public static final RegistryObject<Item> LOW_PRESSURE_STEAM_BOILER_TANK =
+  public static final RegistryObject<PressureBoilerTankBlockItem> LOW_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("low_pressure_steam_boiler_tank",
-          () -> new BlockItem(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
+          () -> new PressureBoilerTankBlockItem(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> HIGH_PRESSURE_STEAM_BOILER_TANK =
+  public static final RegistryObject<PressureBoilerTankBlockItem> HIGH_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("high_pressure_steam_boiler_tank",
-          () -> new BlockItem(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
+          () -> new PressureBoilerTankBlockItem(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> SOLID_FUELED_FIREBOX =
+  public static final RegistryObject<FueledFireboxBlockItem> SOLID_FUELED_FIREBOX =
       deferredRegister.register("solid_fueled_firebox",
-          () -> new BlockItem(RailcraftBlocks.SOLID_FUELED_FIREBOX.get(),
+          () -> new FueledFireboxBlockItem(RailcraftBlocks.SOLID_FUELED_FIREBOX.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> FLUID_FUELED_FIREBOX =
+  public static final RegistryObject<FueledFireboxBlockItem> FLUID_FUELED_FIREBOX =
       deferredRegister.register("fluid_fueled_firebox",
-          () -> new BlockItem(RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
+          () -> new FueledFireboxBlockItem(RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
               new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> SIGNAL_LABEL =
