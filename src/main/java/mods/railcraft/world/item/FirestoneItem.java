@@ -1,19 +1,24 @@
 package mods.railcraft.world.item;
 
+import java.util.List;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
@@ -56,6 +61,11 @@ public class FirestoneItem extends Item {
     return false;
   }
 
+  @Override
+  public boolean isEnchantable(ItemStack itemStack) {
+    return false;
+  }
+
   @NotNull
   public static FirestoneItemEntity createEntityItem(Level level, Entity entity, ItemStack itemStack) {
     var firestone = new FirestoneItemEntity(level, entity.position(), itemStack);
@@ -70,7 +80,8 @@ public class FirestoneItem extends Item {
       boolean isSelected) {
     if (entity instanceof Player player) {
       if (level.getRandom().nextInt(12) % 4 == 0) {
-        trySpawnFire(player.level, new BlockPos(player.position()), stack, player);
+        var pos = new BlockPos(player.position());
+        trySpawnFire(player.level, pos, stack, player);
       }
     }
   }
@@ -94,7 +105,7 @@ public class FirestoneItem extends Item {
     int y = pos.getY() - 5 + random.nextInt(12);
     int z = pos.getZ() - 5 + random.nextInt(12);
 
-    y = Mth.clamp(y, level.getMinBuildHeight(), level.getMaxBuildHeight() - 1);
+    y = Mth.clamp(y, level.getMinBuildHeight() + 2, level.getMaxBuildHeight() - 1);
 
     BlockPos firePos = new BlockPos(x, y, z);
     return canBurn(level, firePos)
@@ -113,5 +124,15 @@ public class FirestoneItem extends Item {
       }
     }
     return false;
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents,
+      TooltipFlag isAdvanced) {
+    if(stack.is(RailcraftItems.RAW_FIRESTONE.get())) {
+      tooltipComponents.add(Component.translatable(Tips.RAW_FIRESTONE).withStyle(ChatFormatting.GRAY));
+    } else if (stack.is(RailcraftItems.CUT_FIRESTONE.get())) {
+      tooltipComponents.add(Component.translatable(Tips.CUT_FIRESTONE).withStyle(ChatFormatting.GRAY));
+    }
   }
 }

@@ -12,7 +12,6 @@ import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
-import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
@@ -494,9 +493,8 @@ public class RailcraftItems {
           () -> new ArmorItem(RailcraftArmorMaterial.OVERALLS, EquipmentSlot.LEGS,
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<BlockItem> FIRESTONE_ORE =
-      deferredRegister.register("firestone_ore", () -> new BlockItem(
-          RailcraftBlocks.FIRESTONE_ORE.get(),
+  public static final RegistryObject<FirestoneOreBlockItem> FIRESTONE_ORE =
+      deferredRegister.register("firestone_ore", () -> new FirestoneOreBlockItem(
           new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<Item> RAW_FIRESTONE =

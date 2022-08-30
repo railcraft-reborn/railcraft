@@ -156,6 +156,10 @@ public class Translations {
         format("tips.%railcraft.firestone.empty");
     public static final String FIRESTONE_CHARGED =
         format("tips.%railcraft.firestone.charged");
+    public static final String RAW_FIRESTONE =
+        format("tips.%railcraft.firestone.raw");
+    public static final String CUT_FIRESTONE =
+        format("tips.%railcraft.firestone.cut");
     public static final String CURRENT_MODE =
         format("tips.%railcraft.current_mode");
     public static final String LOCKING_TRACK_LOCKDOWN =

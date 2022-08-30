@@ -332,6 +332,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.SIGNAL_BLOCK_RELAY_BOX, "Creates chains of Signal Blocks");
     this.add(Tips.FIRESTONE_EMPTY, "Its energies controlled, it could be useful if you could recharge it...");
     this.add(Tips.FIRESTONE_CHARGED, "Filled with energy, you only need to exert your will onto it to release it's blistering heat...");
+    this.add(Tips.RAW_FIRESTONE, "It quickens in your hands, you can feel it in the very air around you...");
+    this.add(Tips.CUT_FIRESTONE, "Still its energies rage out of control...");
     this.add(Tips.CURRENT_MODE, "Current Mode:");
     this.add(Tips.LOCKING_TRACK_LOCKDOWN, "Lockdown");
     this.add(Tips.LOCKING_TRACK_TRAIN_LOCKDOWN, "Train Lockdown");
