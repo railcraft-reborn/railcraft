@@ -37,7 +37,7 @@ public class FireSparkParticle extends TextureSheetParticle {
     private double getHorizontalDistSq(Vec3 point) {
         double xDiff = this.x - point.x;
         double zDiff = this.z - point.z;
-        return xDiff * xDiff + xDiff * zDiff;
+        return xDiff * xDiff + zDiff * zDiff;
     }
 
     private void calculateVector(double dist) {
@@ -54,16 +54,16 @@ public class FireSparkParticle extends TextureSheetParticle {
 
 
     @Override
-    protected int getLightColor(float pPartialTick) {
-        int brightness = super.getLightColor(pPartialTick);
+    protected int getLightColor(float partialTick) {
+        int brightness = super.getLightColor(partialTick);
         short short1 = 240;
         int j = brightness >> 16 & 255;
         return short1 | j << 16;
     }
 
     @Override
-    public float getQuadSize(float pScaleFactor) {
-        float f6 = (this.age + pScaleFactor) / lifetime;
+    public float getQuadSize(float scaleFactor) {
+        float f6 = (this.age + scaleFactor) / lifetime;
         return this.quadSize = lavaParticleScale * (1 - f6 * f6);
     }
 
