@@ -884,7 +884,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern(" a ")
         .pattern("aba")
         .pattern(" a ")
-        .define('a', Items.DIAMOND_PICKAXE)
+        .define('a', Items.NETHERITE_PICKAXE)
         .define('b', RailcraftItems.RAW_FIRESTONE.get())
         .unlockedBy(getHasName(RailcraftItems.RAW_FIRESTONE.get()),
             has(RailcraftItems.RAW_FIRESTONE.get()))

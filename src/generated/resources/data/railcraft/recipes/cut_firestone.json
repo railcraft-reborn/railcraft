@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "a": {
-      "item": "minecraft:diamond_pickaxe"
+      "item": "minecraft:netherite_pickaxe"
     },
     "b": {
       "item": "railcraft:raw_firestone"

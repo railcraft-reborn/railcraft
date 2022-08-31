@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-29T21:36:54.59004943	Railcraft Recipes
+// 1.19.2	2022-08-31T15:08:04.895890408	Railcraft Recipes
 e39ead7ff7b72635ceccafd585fd5b062f549194 data/minecraft/advancements/recipes/transportation/rail.json
 790844dc8b3e3f93241eed9ccb9ef57845638191 data/minecraft/recipes/rail.json
 643033ea165b00d4ad131623d07762edbf6b460e data/railcraft/advancements/recipes/building_blocks/coke_oven/coal_block.json
@@ -572,7 +572,7 @@ a6d3162f5063667a8785c348b3d2d9fed44bb857 data/railcraft/recipes/crusher/crushing
 8c5ad45732857852cc31ead7c4ece382ea870e68 data/railcraft/recipes/crusher/crushing_tags_sandstone.json
 e5f1e1d4c89d80446dbc321eb0bba9e662a64dd4 data/railcraft/recipes/crusher/crushing_tags_stone.json
 5bf07df478816b7396a0a8f04aa02255e5e4317b data/railcraft/recipes/crusher/crushing_tags_stone_bricks.json
-917a766965bf817ac192c5190f18af4c1c0542dc data/railcraft/recipes/cut_firestone.json
+118330d5fce01b92ec9633c570c220e675345b60 data/railcraft/recipes/cut_firestone.json
 b907602706a1988b024573773b3d3f8956cf67e5 data/railcraft/recipes/cyan_iron_tank_gauge.json
 957eed1e78b86e83189c7704d52e927a30e54190 data/railcraft/recipes/cyan_iron_tank_valve.json
 8ef7a7582b6696d06dfdd2dca90fda5690b81cd6 data/railcraft/recipes/cyan_iron_tank_wall.json
