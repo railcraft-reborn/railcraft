@@ -4,9 +4,9 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.Nullable;
+import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.particle.RailcraftParticleTypes;
-import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.RefinedFirestoneItem;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -14,12 +14,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -46,7 +47,7 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   private int rebuildDelay;
   private Component itemName;
 
-  private int rebuildDelayTicks;
+  private int tick = 0;
 
   public RitualBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.RITUAL.get(), blockPos, blockState);
@@ -68,26 +69,26 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       RitualBlockEntity blockEntity) {
-    var firestone = RailcraftItems.REFINED_FIRESTONE.get().getDefaultInstance();
-
-    if (blockEntity.charge >= firestone.getMaxDamage()) {
+    if (blockEntity.charge >= RefinedFirestoneItem.CHARGES) {
+      blockEntity.tick = 0;
       return;
     }
 
-    if (blockEntity.rebuildDelayTicks++ >= REBUILD_DELAY[blockEntity.rebuildDelay]) {
-      blockEntity.rebuildDelayTicks = 0;
+    if(blockEntity.tick % REBUILD_DELAY[blockEntity.rebuildDelay] == 0) {
       blockEntity.rebuildDelay++;
       if (blockEntity.rebuildDelay >= REBUILD_DELAY.length) {
         blockEntity.rebuildDelay = REBUILD_DELAY.length - 1;
       }
       blockEntity.rebuildQueue();
     }
-    var index = blockEntity.getNextLavaBlock(true);
+    var pos = blockEntity.getNextLavaBlock(true);
+    var serverLevel = (ServerLevel) level;
 
-    if (index != null && blockEntity.coolLava(index)) {
+    if (pos != null && blockEntity.coolLava(serverLevel, pos)) {
       blockEntity.charge++;
       blockEntity.rebuildDelay = 0;
     }
+    blockEntity.tick++;
   }
 
   // logical server
@@ -118,7 +119,8 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
         start.x(), start.y(), start.z(), end.x(), end.y(), end.z());
   }
 
-  private @Nullable BlockPos getNextLavaBlock(boolean remove) {
+  @Nullable
+  private BlockPos getNextLavaBlock(boolean remove) {
     if (queue.isEmpty())
       return null;
 

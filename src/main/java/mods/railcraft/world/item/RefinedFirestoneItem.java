@@ -103,6 +103,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
     RandomSource random = level.getRandom();
 
     if (level.isClientSide()) return InteractionResult.CONSUME;
+    if (stack.getDamageValue() == stack.getMaxDamage()) return InteractionResult.PASS;
 
     ServerPlayer serverPlayer = (ServerPlayer) player;
 
