@@ -11,11 +11,13 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -64,6 +66,18 @@ public class FirestoneItem extends Item {
   @Override
   public boolean isEnchantable(ItemStack itemStack) {
     return false;
+  }
+
+  @Override
+  public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
+    super.fillItemCategory(category, items);
+    if (allowedIn(category)) {
+      var damageItem = new ItemStack(this);
+      if(damageItem.isDamageableItem()) {
+        damageItem.setDamageValue(damageItem.getMaxDamage() - 1);
+        items.add(damageItem);
+      }
+    }
   }
 
   @NotNull
