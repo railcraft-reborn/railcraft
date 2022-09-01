@@ -69,22 +69,19 @@ public class RitualBlock extends BaseEntityBlock {
     return RefinedFirestoneItem.getItemCharged();
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
     List<ItemStack> drops = super.getDrops(state, builder);
     BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-    if (tile instanceof RitualBlockEntity) {
-      RitualBlockEntity firestone = (RitualBlockEntity) tile;
+    if (tile instanceof RitualBlockEntity firestone) {
       Item item = state.getValue(CRACKED)
           ? RailcraftItems.CRACKED_FIRESTONE.get()
           : RailcraftItems.REFINED_FIRESTONE.get();
-      if (item != null) {
-        ItemStack drop = new ItemStack(item, 1);
-        if (firestone.hasCustomName())
-          drop.setHoverName(firestone.getCustomName());
-        drops.add(drop);
-      }
+      ItemStack drop = new ItemStack(item);
+      if (firestone.hasCustomName())
+        drop.setHoverName(firestone.getCustomName());
+      drop.setDamageValue(drop.getMaxDamage() - firestone.charge);
+      drops.add(drop);
     } else {
       drops.add(RefinedFirestoneItem.getItemEmpty());
     }

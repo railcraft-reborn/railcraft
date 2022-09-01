@@ -3,7 +3,6 @@ package mods.railcraft.world.inventory;
 import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import mods.railcraft.world.module.BlastFurnaceModule;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
 
 public final class BlastFurnaceMenu extends CrafterMenu {
 

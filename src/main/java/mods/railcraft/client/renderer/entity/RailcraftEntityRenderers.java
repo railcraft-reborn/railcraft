@@ -7,6 +7,7 @@ import mods.railcraft.client.renderer.entity.cart.TrackLayerMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.TrackRemoverMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.TunnelBoreRenderer;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
+import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 
 public class RailcraftEntityRenderers {
@@ -26,5 +27,7 @@ public class RailcraftEntityRenderers {
         ElectricLocomotiveRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.TUNNEL_BORE.get(),
         TunnelBoreRenderer::new);
+    event.registerEntityRenderer(RailcraftEntityTypes.FIRESTONE.get(),
+        ItemEntityRenderer::new);
   }
 }

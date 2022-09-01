@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -67,11 +66,8 @@ public class FirestoneBlock extends Block {
       else
         pz += random.nextFloat();
 
-      var particleEngine = Minecraft.getInstance().particleEngine;
-      var flame = particleEngine.createParticle(ParticleTypes.FLAME, px, py, pz, 0.0D, 0.0D, 0.0D);
-      var smoke = particleEngine.createParticle(ParticleTypes.SMOKE, px, py, pz, 0.0D, 0.0D, 0.0D);
-      particleEngine.add(flame);
-      particleEngine.add(smoke);
+      level.addParticle(ParticleTypes.FLAME, px, py, pz, 0, 0, 0);
+      level.addParticle(ParticleTypes.SMOKE, px, py, pz, 0, 0, 0);
     }
   }
 

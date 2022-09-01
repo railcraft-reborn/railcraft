@@ -21,6 +21,7 @@ import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TankScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.model.RailcraftLayerDefinitions;
+import mods.railcraft.client.particle.FireSparkParticle;
 import mods.railcraft.client.particle.PumpkinParticle;
 import mods.railcraft.client.particle.SparkParticle;
 import mods.railcraft.client.particle.SteamParticle;
@@ -191,6 +192,7 @@ public class ClientManager {
     event.register(RailcraftParticleTypes.SPARK.get(), SparkParticle.Provider::new);
     event.register(RailcraftParticleTypes.PUMPKIN.get(), PumpkinParticle.Provider::new);
     event.register(RailcraftParticleTypes.TUNING_AURA.get(), TuningAuraParticle.Provider::new);
+    event.register(RailcraftParticleTypes.FIRE_SPARK.get(), FireSparkParticle.Provider::new);
   }
 
   private void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {

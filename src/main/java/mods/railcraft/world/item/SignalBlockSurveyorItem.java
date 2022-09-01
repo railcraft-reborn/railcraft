@@ -1,7 +1,9 @@
 package mods.railcraft.world.item;
 
+import java.util.List;
 import java.util.Objects;
 import mods.railcraft.Translations.Signal;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.api.core.DimensionPos;
 import mods.railcraft.api.signal.TrackLocator;
 import mods.railcraft.api.signal.entity.MonitoringSignalEntity;
@@ -10,7 +12,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public class SignalBlockSurveyorItem extends PairingToolItem {
 
@@ -99,5 +104,11 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
         && signal2.type().isInstance(signal1)
         && signal1.signalNetwork().addPeer(signal1.type().cast(signal2))
         && signal2.signalNetwork().addPeer(signal2.type().cast(signal1));
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents,
+      TooltipFlag isAdvanced) {
+    tooltipComponents.add(Component.translatable(Tips.SIGNAL_BLOCK_SURVEYOR).withStyle(ChatFormatting.GRAY));
   }
 }
