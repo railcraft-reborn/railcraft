@@ -21,6 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class CrusherRecipeBuilder {
 
+  public static final int DEFAULT_PROCESSING_TIME = 200; // 10 sec
   private static final int MAX_SLOTS = 9;
 
   private final Ingredient ingredient;
@@ -32,6 +33,10 @@ public class CrusherRecipeBuilder {
     this.ingredient = ingredient;
     this.probabilityItems = probabilityItems;
     this.recipeDelay = recipeDelay;
+  }
+
+  public static CrusherRecipeBuilder crush(Ingredient ingredient) {
+    return crush(ingredient, DEFAULT_PROCESSING_TIME);
   }
 
   public static CrusherRecipeBuilder crush(Ingredient ingredient, int recipeDelay) {
