@@ -108,9 +108,7 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
 
   private void fireSparkEffect(ServerLevel level, BlockPos start, BlockPos end) {
     level.sendParticles(new FireSparkParticleOptions(Vec3.atCenterOf(end)),
-        start.getX(), start.getY(), start.getZ(),
-        1, 0, 0, 0, 0
-    );
+        start.getX(), start.getY(), start.getZ(), 1, 0, 0, 0, 0);
   }
 
   @Nullable
@@ -162,7 +160,7 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
         return;
 
       BlockState state = this.level.getBlockState(index);
-      if (state.getBlock() == Blocks.OBSIDIAN || Fluids.LAVA == FluidTools.getFluid(state)) {
+      if (state.getBlock() == Blocks.OBSIDIAN || FluidTools.getFluid(state).isSame(Fluids.LAVA)) {
         lavaFound.add(index);
         if (FluidTools.isFullFluidBlock(state, this.level, index))
           queue.addLast(index);
