@@ -7,16 +7,18 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
 public class TuningAuraParticle extends DimmableParticle {
 
-  private final Vec3 destination;
+  private final Vec3 destination, source;
 
   public TuningAuraParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
       double dz, TuningAuraParticleOptions options, SpriteSet sprites) {
     super(level, x, y, z, dx, dy, dz);
     this.destination = options.getDestination();
+    this.source = new Vec3(x, y, z);
     this.calculateVector();
 
     this.scale(0.5F);
@@ -51,14 +53,30 @@ public class TuningAuraParticle extends DimmableParticle {
     this.zd = vel.z * velScale;
   }
 
-  /**
-   * Called to update the entity's position/logic.
-   */
   @Override
   public void tick() {
+    this.xo = this.x;
+    this.yo = this.y;
+    this.zo = this.z;
+
     if (!SignalUtil.tuningAuraHandler().isTuningAuraActive()) {
       this.remove();
       return;
+    }
+
+    if (!level.isLoaded(new BlockPos(source)) ||
+        !level.isLoaded(new BlockPos(destination))) {
+      this.remove();
+    }
+
+    var sourceBE = level.getBlockEntity(new BlockPos(source));
+    var destBE = level.getBlockEntity(new BlockPos(source));
+    if((sourceBE == null || sourceBE.isRemoved()) || (destBE == null || destBE.isRemoved())) {
+      this.remove();
+    }
+
+    if (this.age++ >= this.lifetime) {
+      this.remove();
     }
 
     if (this.destination.distanceToSqr(this.x, this.y, this.z) <= 0.3) {
@@ -66,7 +84,8 @@ public class TuningAuraParticle extends DimmableParticle {
       return;
     }
 
-    super.tick();
+    calculateVector();
+    move(xd, yd, zd);
   }
 
   public static class Provider implements ParticleProvider<TuningAuraParticleOptions> {
