@@ -1,5 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
+import static mods.railcraft.data.recipes.builders.CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.ArrayList;
@@ -109,7 +111,7 @@ public class CrusherRecipe implements Recipe<CraftingContainer> {
 
     @Override
     public CrusherRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-      int tickCost = GsonHelper.getAsInt(json, "tickCost", 100); // 5 seconds
+      int tickCost = GsonHelper.getAsInt(json, "tickCost", DEFAULT_PROCESSING_TIME);
       var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json,"ingredient"));
       var probabilityItems = new ArrayList<Tuple<ItemStack, Double>>();
 

@@ -46,7 +46,7 @@ public interface BlockPredicate {
   }
 
   static BlockPredicate of(Block block) {
-    return of(block);
+    return of(() -> block);
   }
 
   static BlockPredicate of(Supplier<? extends Block> block) {

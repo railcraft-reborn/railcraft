@@ -213,7 +213,7 @@ public class RailcraftBlocks {
               .lightLevel(litBlockEmission(13))
               .sound(SoundType.METAL)));
 
-  public static final RegistryObject<Block> STEAM_TURBINE =
+  public static final RegistryObject<SteamTurbineBlock> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
           () -> new SteamTurbineBlock(BlockBehaviour.Properties.of(Material.METAL)
               .randomTicks()
@@ -225,7 +225,7 @@ public class RailcraftBlocks {
               .lightLevel(litBlockEmission(13))
               .sound(SoundType.STONE)));
 
-  public static final RegistryObject<Block> FEED_STATION =
+  public static final RegistryObject<FeedStationBlock> FEED_STATION =
       deferredRegister.register("feed_station",
           () -> new FeedStationBlock(
               BlockBehaviour.Properties.of(Material.STONE, MaterialColor.WOOD)
@@ -470,7 +470,7 @@ public class RailcraftBlocks {
               .sound(SoundType.METAL)
               .randomTicks()));
 
-  public static final RegistryObject<TrackBlock> ABANDONED_TRACK =
+  public static final RegistryObject<AbandonedTrackBlock> ABANDONED_TRACK =
       deferredRegister.register("abandoned_track",
           () -> new AbandonedTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.of(Material.DECORATION)
@@ -1333,25 +1333,25 @@ public class RailcraftBlocks {
               .strength(1.05F)
               .sound(SoundType.METAL)));
 
-  public static final RegistryObject<Block> FIRESTONE_ORE =
+  public static final RegistryObject<FirestoneBlock> FIRESTONE_ORE =
       deferredRegister.register("firestone_ore",
           () -> new FirestoneBlock(BlockBehaviour.Properties.of(Material.STONE)
               .lightLevel(__ -> 15)
-              .strength(3, 15)));
+              .strength(3, 5)));
 
-  public static final RegistryObject<Block> RITUAL =
+  public static final RegistryObject<RitualBlock> RITUAL =
       deferredRegister.register("ritual",
           () -> new RitualBlock(BlockBehaviour.Properties.of(Material.STONE)
               .lightLevel(__ -> 1)
               .noOcclusion()));
 
-  public static final RegistryObject<Block> MANUAL_ROLLING_MACHINE =
+  public static final RegistryObject<ManualRollingMachineBlock> MANUAL_ROLLING_MACHINE =
       deferredRegister.register("manual_rolling_machine",
           () -> new ManualRollingMachineBlock(BlockBehaviour.Properties.of(Material.WOOD)
               .sound(SoundType.WOOD)
               .strength(2.0F)));
 
-  public static final RegistryObject<Block> CRUSHER =
+  public static final RegistryObject<CrusherMultiblockBlock> CRUSHER =
       deferredRegister.register("crusher",
           () -> new CrusherMultiblockBlock(BlockBehaviour.Properties.of(Material.STONE)
               .sound(SoundType.STONE)));
@@ -1369,7 +1369,7 @@ public class RailcraftBlocks {
               BlockBehaviour.Properties.of(Material.WATER)
                   .noCollission().strength(50.0F).noLootTable()));
 
-  public static final RegistryObject<Block> CRUSHED_OBSIDIAN =
+  public static final RegistryObject<CrushedObsidian> CRUSHED_OBSIDIAN =
       deferredRegister.register("crushed_obsidian",
           () -> new CrushedObsidian(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
               .requiresCorrectToolForDrops()

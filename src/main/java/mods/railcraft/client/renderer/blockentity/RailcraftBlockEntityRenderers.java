@@ -44,6 +44,8 @@ public class RailcraftBlockEntityRenderers {
         supply(FluidManipulatorRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.STEAM_TURBINE.get(),
         supply(SteamTurbineRenderer::new));
+    event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.RITUAL.get(),
+        RitualBlockRenderer::new);
   }
 
   private static <T extends BlockEntity> BlockEntityRendererProvider<T> supply(
