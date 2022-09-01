@@ -637,7 +637,7 @@
   "tips.railcraft.signal_block_relay_box": "Creates chains of Signal Blocks",
   "tips.railcraft.signal_block_surveyor": "Links Signals together",
   "tips.railcraft.signal_interlock_box": "Permits only one aspect signal to pass",
-  "tips.railcraft.signal_label.desc1": "Rename in Anvil",
+  "tips.railcraft.signal_label.desc1": "- Rename in Anvil -",
   "tips.railcraft.signal_label.desc2": "Right click while sneaking to name a signal or signal box",
   "tips.railcraft.signal_receiver_box": "Listens to Controller signals",
   "tips.railcraft.signal_sequencer_box": "Loops through adjacent blocks",
