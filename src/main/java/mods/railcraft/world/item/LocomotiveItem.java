@@ -1,7 +1,6 @@
 package mods.railcraft.world.item;
 
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.Translations;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.item.Filter;
@@ -18,7 +17,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.apache.logging.log4j.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -70,7 +69,7 @@ public class LocomotiveItem extends CartItem implements Filter {
     info.add(Component.translatable(Tips.LOCOMOTIVE_ITEM_WHISTLE, whisteText).withStyle(ChatFormatting.GRAY));
 
     String emblemIdent = getEmblem(stack);
-    if (!Strings.isEmpty(emblemIdent) && EmblemToolsClient.packageManager != null) {
+    if (!StringUtils.isEmpty(emblemIdent) && EmblemToolsClient.packageManager != null) {
       Emblem emblem = EmblemToolsClient.packageManager.getEmblem(emblemIdent);
       if (emblem != null) {
         info.add(Component.translatable("gui.railcraft.locomotive.tips.item.emblem",
