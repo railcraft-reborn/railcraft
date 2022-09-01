@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-13T15:05:10.759367625	Railcraft Loot Tables
+// 1.19.2	2022-08-29T15:42:20.424112398	Railcraft Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -84,7 +84,7 @@ b2b8f27197fb6febae7aa26010c6179fc8a40700 data/railcraft/loot_tables/blocks/elect
 174aa50fbf2de3257785cb84f4b49dbeca4fc7d4 data/railcraft/loot_tables/blocks/electric_wye_track.json
 d102711692001545c6fad7eaa69ce411ccd6bdda data/railcraft/loot_tables/blocks/elevator_track.json
 b5ed2ba5645c795b0506ede9eb3dc4139c726c99 data/railcraft/loot_tables/blocks/feed_station.json
-2b2a4bde1a1c86393b28fa3ff9b81ef1ddeed22d data/railcraft/loot_tables/blocks/firestone.json
+11d01addbe20da9654a3feaae50975ff1a30c3ea data/railcraft/loot_tables/blocks/firestone_ore.json
 88bd0faeb6f9a146dd1c32e6350f7f40973886ee data/railcraft/loot_tables/blocks/fluid_fueled_firebox.json
 d1066d7d1bf3fe32af587be1dbd67566bcda911c data/railcraft/loot_tables/blocks/fluid_loader.json
 0064dd280d1a4bda7d2dae9e02bf05a4c4f7fb6c data/railcraft/loot_tables/blocks/fluid_unloader.json

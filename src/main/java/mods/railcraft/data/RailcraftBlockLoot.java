@@ -40,6 +40,8 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.FEED_STATION.get());
     this.dropSelf(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
+    this.dropSelf(RailcraftBlocks.FIRESTONE_ORE.get());
+
     for (var dyeColor : DyeColor.values()) {
       this.dropSelf(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
       this.dropSelf(RailcraftBlocks.POST.variantFor(dyeColor).get());
@@ -288,7 +290,6 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
 
     /* === misc === */
-    this.dropSelf(RailcraftBlocks.FIRESTONE.get());
     // TODO: implement this ritual thingy
     this.add(RailcraftBlocks.RITUAL.get(), noDrop());
   }

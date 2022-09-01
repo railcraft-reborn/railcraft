@@ -20,6 +20,7 @@ import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TankScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.model.RailcraftLayerDefinitions;
+import mods.railcraft.client.particle.FireSparkParticle;
 import mods.railcraft.client.particle.PumpkinParticle;
 import mods.railcraft.client.particle.SparkParticle;
 import mods.railcraft.client.particle.SteamParticle;
@@ -27,10 +28,10 @@ import mods.railcraft.client.particle.TuningAuraParticle;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.AbstractSignalRenderer;
-import mods.railcraft.client.renderer.blockentity.SignalBlockRelayBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.FluidLoaderRenderer;
 import mods.railcraft.client.renderer.blockentity.FluidManipulatorRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
+import mods.railcraft.client.renderer.blockentity.SignalBlockRelayBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalCapacitorBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalControllerBoxRenderer;
 import mods.railcraft.client.renderer.blockentity.SignalReceiverBoxRenderer;
@@ -46,7 +47,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.ClickEvent.Action;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -185,6 +189,7 @@ public class ClientManager {
     event.register(RailcraftParticleTypes.SPARK.get(), SparkParticle.Provider::new);
     event.register(RailcraftParticleTypes.PUMPKIN.get(), PumpkinParticle.Provider::new);
     event.register(RailcraftParticleTypes.TUNING_AURA.get(), TuningAuraParticle.Provider::new);
+    event.register(RailcraftParticleTypes.FIRE_SPARK.get(), FireSparkParticle.Provider::new);
   }
 
   private void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -223,17 +228,24 @@ public class ClientManager {
     if(!Railcraft.BETA) return;
 
     var player = event.getPlayer();
+    var clickEvent = new ClickEvent(Action.OPEN_URL, "https://github.com/Sm0keySa1m0n/Railcraft/issues");
+    Style style = Style.EMPTY
+        .withColor(ChatFormatting.RED)
+        .withUnderlined(true)
+        .withClickEvent(clickEvent);
 
     Stream.of(
         "You are using a development version of Railcraft.",
         "There is no guarantee that your server or worlds are safe.",
         "You use this at your own risk, as is. Bugs and all.",
-        "Some features may not be present or different,",
-        "Please let us know by opening a ticket on Sm0keySa1m0n GitHub",
-        "- CovertJaguar, Sm0keySa1m0n, 3divad99"
-    ).map(Component::literal)
+        "Some features may not be present or different,")
+        .map(Component::literal)
         .map(c -> c.withStyle(ChatFormatting.RED))
         .forEach(m -> player.displayClientMessage(m, false));
+    var message = Component.literal("Please let us know by opening a ticket on Sm0keySa1m0n GitHub");
+    player.displayClientMessage(message.setStyle(style), false);
+    player.displayClientMessage(Component.literal("- CovertJaguar, Sm0keySa1m0n, 3divad99")
+        .withStyle(ChatFormatting.RED), false);
   }
 
   // ================================================================================

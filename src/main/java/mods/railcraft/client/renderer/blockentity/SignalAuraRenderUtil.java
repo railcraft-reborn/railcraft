@@ -61,30 +61,36 @@ public class SignalAuraRenderUtil {
     }
 
     poseStack.pushPose();
-    {
-      var consumer = bufferSource.getBuffer(RenderType.lines());
-      var matrix = poseStack.last().pose();
-      var normal = poseStack.last().normal();
+    var consumer = bufferSource.getBuffer(RenderType.lines());
+    var matrix = poseStack.last().pose();
+    var normal = poseStack.last().normal();
 
-      for (BlockPos target : endPoints) {
-        int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), target);
-        float c1 = (float) (color >> 16 & 255) / 255.0F;
-        float c2 = (float) (color >> 8 & 255) / 255.0F;
-        float c3 = (float) (color & 255) / 255.0F;
-
-        consumer
-            .vertex(matrix, 0.5F, 0.5F, 0.5F)
-            .color(c1, c2, c3, 1.0F)
-            .normal(normal, 1.0F, 0.0F, 0.0F)
-            .endVertex();
-
-        float endX = 0.5F + target.getX() - blockEntity.getBlockPos().getX();
-        float endY = 0.5F + target.getY() - blockEntity.getBlockPos().getY();
-        float endZ = 0.5F + target.getZ() - blockEntity.getBlockPos().getZ();
-
-        consumer.vertex(matrix, endX, endY, endZ).color(c1, c2, c3, 1.0F)
-            .normal(normal, 1.0F, 0.0F, 0.0F).endVertex();
+    for (BlockPos target : endPoints) {
+      var be = minecraft.level.getBlockEntity(target);
+      if (be == null || be.isRemoved()) {
+        continue;
       }
+
+      int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), target);
+      float c1 = (float) (color >> 16 & 255) / 255.0F;
+      float c2 = (float) (color >> 8 & 255) / 255.0F;
+      float c3 = (float) (color & 255) / 255.0F;
+
+      consumer
+          .vertex(matrix, 0.5F, 0.5F, 0.5F)
+          .color(c1, c2, c3, 1.0F)
+          .normal(normal, 1.0F, 0.0F, 0.0F)
+          .endVertex();
+
+      float endX = 0.5F + target.getX() - blockEntity.getBlockPos().getX();
+      float endY = 0.5F + target.getY() - blockEntity.getBlockPos().getY();
+      float endZ = 0.5F + target.getZ() - blockEntity.getBlockPos().getZ();
+
+      consumer
+          .vertex(matrix, endX, endY, endZ)
+          .color(c1, c2, c3, 1.0F)
+          .normal(normal, 1.0F, 0.0F, 0.0F)
+          .endVertex();
     }
     poseStack.popPose();
   }
@@ -120,15 +126,11 @@ public class SignalAuraRenderUtil {
         if (blockEntity instanceof SignalControllerEntity) {
           SignalAspect aspect =
               ((SignalControllerEntity) blockEntity).getSignalController().aspect();
-          switch (aspect) {
-            case GREEN:
-              return DyeColor.LIME.getFireworkColor();
-            case YELLOW:
-            case BLINK_YELLOW:
-              return DyeColor.YELLOW.getFireworkColor();
-            default:
-              return DyeColor.RED.getFireworkColor();
-          }
+          return switch (aspect) {
+            case GREEN -> DyeColor.LIME.getFireworkColor();
+            case YELLOW, BLINK_YELLOW -> DyeColor.YELLOW.getFireworkColor();
+            default -> DyeColor.RED.getFireworkColor();
+          };
         }
         return CONSTANT_BLUE.getColor(blockEntity, source, target);
       }
