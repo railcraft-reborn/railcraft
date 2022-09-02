@@ -56,9 +56,8 @@ public class FireSparkParticle extends TextureSheetParticle {
     @Override
     protected int getLightColor(float partialTick) {
         int brightness = super.getLightColor(partialTick);
-        short short1 = 240;
         int j = brightness >> 16 & 255;
-        return short1 | j << 16;
+        return 240 | j << 16;
     }
 
     @Override
@@ -81,8 +80,7 @@ public class FireSparkParticle extends TextureSheetParticle {
                 level.addParticle(ParticleTypes.SMOKE, x, y, z, xd, yd, zd);
             }
 
-            var pos = new Vec3(x, y, z);
-            double dist = pos.distanceToSqr(destination);
+            double dist = destination.distanceToSqr(x, y, z);
             if (dist <= 0.1) {
                 this.remove();
             } else {
@@ -108,7 +106,7 @@ public class FireSparkParticle extends TextureSheetParticle {
         @Override
         public Particle createParticle(FireSparkParticleOptions options, ClientLevel level,
             double x, double y, double z, double dx, double dy, double dz) {
-            return new FireSparkParticle(level, x, y, y, dx, dy, dz, options, this.sprites);
+            return new FireSparkParticle(level, x, y, z, dx, dy, dz, options, this.sprites);
         }
     }
 }
