@@ -43,7 +43,7 @@
 
 * You may not create works using the Railcraft code (source or binary) without CovertJaguar's explicit permission except in the cases listed in this license.
 
-* The source code is hosted on [GitHub](https://github.com/CovertJaguar/Railcraft)
+* The source code is hosted on [GitHub](https://github.com/Sm0keySa1m0n/Railcraft)
 
 * You may **NOT** create derivative Jars from Railcraft source to distribute to other users.
 
