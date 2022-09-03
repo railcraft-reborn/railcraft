@@ -164,7 +164,7 @@ public final class FluidTools {
           return tryDrain(container, tank, itemStack);
         }
       } else if (type == ProcessType.DRAIN_THEN_FILL) {
-        // TODO https://github.com/MinecraftForge/MinecraftForge/pull/8318
+        // TODO https://github.com/MinecraftForge/MinecraftForge/pull/9004
         if (FluidUtil.getFluidContained(itemStack).isPresent() && !tank.isFull()) {
           return tryDrain(container, tank, itemStack);
         } else {
