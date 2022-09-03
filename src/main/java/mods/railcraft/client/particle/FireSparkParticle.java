@@ -16,7 +16,7 @@ public class FireSparkParticle extends TextureSheetParticle {
     private final double maxHorizontalDist;
     private final float lavaParticleScale;
 
-    public FireSparkParticle(ClientLevel level, double x, double y, double z, double dx,
+    private FireSparkParticle(ClientLevel level, double x, double y, double z, double dx,
         double dy, double dz, FireSparkParticleOptions options, SpriteSet sprites) {
         super(level, x, y, z, dx, dy, dz);
         this.destination = options.getDestination();
@@ -27,7 +27,7 @@ public class FireSparkParticle extends TextureSheetParticle {
 
         this.rCol = this.gCol = this.bCol = 1.0f;
 
-        this.quadSize *= level.random.nextFloat() * 2.0f + 0.2f;
+        this.quadSize *= random.nextFloat() * 2.0f + 0.2f;
         this.lavaParticleScale = quadSize;
         setLifetime(2000);
         this.hasPhysics = false;
