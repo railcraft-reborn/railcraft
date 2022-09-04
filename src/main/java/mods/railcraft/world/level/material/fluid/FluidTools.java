@@ -164,7 +164,6 @@ public final class FluidTools {
           return tryDrain(container, tank, itemStack);
         }
       } else if (type == ProcessType.DRAIN_THEN_FILL) {
-        // TODO https://github.com/MinecraftForge/MinecraftForge/pull/9004
         if (FluidUtil.getFluidContained(itemStack).isPresent() && !tank.isFull()) {
           return tryDrain(container, tank, itemStack);
         } else {
@@ -186,16 +185,16 @@ public final class FluidTools {
     MinecraftForge.EVENT_BUS.register(WaterBottleEventHandler.INSTANCE);
   }
 
-  public static boolean isFullFluidBlock(Level world, BlockPos pos) {
-    return isFullFluidBlock(world.getBlockState(pos), world, pos);
+  public static boolean isFullFluidBlock(Level level, BlockPos pos) {
+    return isFullFluidBlock(level.getBlockState(pos), level, pos);
   }
 
-  public static boolean isFullFluidBlock(BlockState state, Level world, BlockPos pos) {
+  public static boolean isFullFluidBlock(BlockState state, Level level, BlockPos pos) {
     if (state.getBlock() instanceof LiquidBlock) {
       return state.getValue(LiquidBlock.LEVEL) == 0;
     }
-    if (state.getBlock() instanceof IFluidBlock) {
-      return Math.abs(((IFluidBlock) state.getBlock()).getFilledPercentage(world, pos)) == 1.0;
+    if (state.getBlock() instanceof IFluidBlock fluidBlock) {
+      return Math.abs(fluidBlock.getFilledPercentage(level, pos)) == 1.0;
     }
     return false;
   }
