@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
-import mods.railcraft.world.inventory.OutputSlot;
+import mods.railcraft.world.inventory.slots.OutputSlot;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;

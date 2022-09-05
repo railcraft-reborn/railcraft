@@ -3,6 +3,8 @@ package mods.railcraft.world.inventory;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
+import mods.railcraft.world.inventory.slots.ItemFilterSlot;
+import mods.railcraft.world.inventory.slots.RailcraftSlot;
 import net.minecraft.world.entity.player.Inventory;
 
 public class TunnelBoreMenu extends RailcraftMenu {

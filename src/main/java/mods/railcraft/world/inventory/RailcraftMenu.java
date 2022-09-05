@@ -1,14 +1,15 @@
 package mods.railcraft.world.inventory;
 
+import io.netty.buffer.Unpooled;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
-import io.netty.buffer.Unpooled;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.world.inventory.slots.RailcraftSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,8 +38,8 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   }
 
   @Override
-  public boolean stillValid(Player playerEntity) {
-    return this.validator.test(playerEntity);
+  public boolean stillValid(Player player) {
+    return this.validator.test(player);
   }
 
   public List<Widget> getWidgets() {
@@ -87,8 +88,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   }
 
   @Override
-  public void clicked(int slotId, int mouseButton, ClickType clickType,
-      Player player) {
+  public void clicked(int slotId, int mouseButton, ClickType clickType, Player player) {
     Slot slot = slotId < 0 ? null : this.slots.get(slotId);
     if (slot instanceof RailcraftSlot railcraftSlot && railcraftSlot.isPhantom()) {
       this.slotClickPhantom(railcraftSlot, mouseButton, clickType, player);
@@ -210,8 +210,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   protected boolean tryShiftItem(ItemStack stackToShift, int numSlots) {
     for (int machineIndex = 0; machineIndex < numSlots - 9 * 4; machineIndex++) {
       Slot slot = this.slots.get(machineIndex);
-      if (slot instanceof RailcraftSlot) {
-        RailcraftSlot slotRailcraft = (RailcraftSlot) slot;
+      if (slot instanceof RailcraftSlot slotRailcraft) {
         if (slotRailcraft.isPhantom()) {
           continue;
         }

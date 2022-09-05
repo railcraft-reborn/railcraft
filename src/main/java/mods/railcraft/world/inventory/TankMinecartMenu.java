@@ -3,10 +3,13 @@ package mods.railcraft.world.inventory;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
+import mods.railcraft.world.inventory.slots.FluidFilterSlot;
+import mods.railcraft.world.inventory.slots.ItemFilterSlot;
+import mods.railcraft.world.inventory.slots.OutputSlot;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.network.FriendlyByteBuf;
 
 public class TankMinecartMenu extends RailcraftMenu {
 

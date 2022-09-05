@@ -1,6 +1,9 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
+import mods.railcraft.world.inventory.slots.EmptyFluidContainerSlot;
+import mods.railcraft.world.inventory.slots.OutputSlot;
+import mods.railcraft.world.inventory.slots.RailcraftSlot;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 

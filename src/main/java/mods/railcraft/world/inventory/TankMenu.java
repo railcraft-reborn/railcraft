@@ -3,6 +3,8 @@ package mods.railcraft.world.inventory;
 import java.util.Collection;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.WaterCollectionGaugeWidget;
+import mods.railcraft.world.inventory.slots.OutputSlot;
+import mods.railcraft.world.inventory.slots.RailcraftSlot;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import mods.railcraft.world.module.TankModule;
 import mods.railcraft.world.module.WaterCollectionModule;

@@ -1,4 +1,4 @@
-package mods.railcraft.world.inventory;
+package mods.railcraft.world.inventory.slots;
 
 import mods.railcraft.util.container.StackFilter;
 import net.minecraft.world.Container;

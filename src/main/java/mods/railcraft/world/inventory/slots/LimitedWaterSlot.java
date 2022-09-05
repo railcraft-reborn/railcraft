@@ -1,4 +1,4 @@
-package mods.railcraft.world.inventory;
+package mods.railcraft.world.inventory.slots;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -8,8 +8,8 @@ import net.minecraftforge.fluids.FluidUtil;
 
 public class LimitedWaterSlot extends WaterSlot {
 
-  public LimitedWaterSlot(Container iinventory, int slotIndex, int posX, int posY) {
-    super(iinventory, slotIndex, posX, posY);
+  public LimitedWaterSlot(Container container, int slotIndex, int posX, int posY) {
+    super(container, slotIndex, posX, posY);
     this.setStackLimit(4);
   }
 

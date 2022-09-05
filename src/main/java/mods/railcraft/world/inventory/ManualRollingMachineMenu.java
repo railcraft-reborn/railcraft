@@ -1,5 +1,6 @@
 package mods.railcraft.world.inventory;
 
+import mods.railcraft.world.inventory.slots.RollingResultSlot;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.crafting.RollingRecipe;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;

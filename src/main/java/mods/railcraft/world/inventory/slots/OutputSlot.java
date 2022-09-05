@@ -1,4 +1,4 @@
-package mods.railcraft.world.inventory;
+package mods.railcraft.world.inventory.slots;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;

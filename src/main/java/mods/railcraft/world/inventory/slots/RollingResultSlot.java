@@ -1,12 +1,12 @@
-package mods.railcraft.world.inventory;
+package mods.railcraft.world.inventory.slots;
 
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.Container;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Alternate to CraftingResultSlot.
@@ -15,11 +15,11 @@ public class RollingResultSlot extends Slot {
   private final CraftingContainer craftSlots;
   private final Player player;
 
-  public RollingResultSlot(Player user, CraftingContainer craftingInventory,
+  public RollingResultSlot(Player player, CraftingContainer craftingContainer,
       Container outputInventory, int slotID, int x, int y) {
     super(outputInventory, slotID, x, y);
-    this.player = user;
-    this.craftSlots = craftingInventory;
+    this.player = player;
+    this.craftSlots = craftingContainer;
   }
 
   @Override

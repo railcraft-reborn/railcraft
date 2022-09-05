@@ -1,16 +1,18 @@
 package mods.railcraft.world.inventory;
 
+import java.util.Collections;
 import mods.railcraft.Translations;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
+import mods.railcraft.world.inventory.slots.ItemFilterSlot;
+import mods.railcraft.world.inventory.slots.RailcraftSlot;
+import mods.railcraft.world.inventory.slots.UnmodifiableSlot;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-
-import javax.annotation.Nullable;
-import java.util.Collections;
+import org.jetbrains.annotations.Nullable;
 
 public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
 
@@ -52,7 +54,7 @@ public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
   }
 
   @Override
-  public boolean stillValid(Player playerEntity) {
+  public boolean stillValid(Player player) {
     return true;
   }
 }
