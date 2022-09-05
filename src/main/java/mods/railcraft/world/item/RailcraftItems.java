@@ -43,6 +43,7 @@ import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SwordItem;
@@ -565,13 +566,14 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> RAW_FIRESTONE =
       deferredRegister.register("raw_firestone", () -> new FirestoneItem(
-          new Item.Properties().tab(TAB)));
+          new Item.Properties().rarity(Rarity.RARE).tab(TAB)));
 
   public static final RegistryObject<Item> REFINED_FIRESTONE =
       deferredRegister.register("refined_firestone",
           () -> new RefinedFirestoneItem(new Item.Properties()
               .stacksTo(1)
               .durability(RefinedFirestoneItem.CHARGES)
+              .rarity(Rarity.RARE)
               .tab(TAB)));
 
   public static final RegistryObject<Item> CRACKED_FIRESTONE =
@@ -579,6 +581,7 @@ public class RailcraftItems {
           () -> new CrackedFirestoneItem(new Item.Properties()
               .stacksTo(1)
               .durability(RefinedFirestoneItem.CHARGES)
+              .rarity(Rarity.RARE)
               .tab(TAB)));
 
   public static final RegistryObject<Item> CUT_FIRESTONE =
@@ -586,6 +589,7 @@ public class RailcraftItems {
           new Item.Properties()
               .stacksTo(1)
               .durability(RefinedFirestoneItem.CHARGES)
+              .rarity(Rarity.RARE)
               .tab(TAB)));
 
   public static final RegistryObject<BlockItem> FORCE_TRACK_EMITTER =

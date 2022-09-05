@@ -14,7 +14,7 @@ public class TuningAuraParticle extends DimmableParticle {
 
   private final Vec3 destination, source;
 
-  public TuningAuraParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
+  private TuningAuraParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
       double dz, TuningAuraParticleOptions options, SpriteSet sprites) {
     super(level, x, y, z, dx, dy, dz);
     this.destination = options.getDestination();
