@@ -63,7 +63,7 @@ if (!signProps.isEmpty()) {
 println('Java: ' + System.getProperty('java.version'))
 println('JVM: ' + System.getProperty('java.vm.version') + ' (' + System.getProperty('java.vendor') + ')')
 println('Arch: ' + System.getProperty('os.arch'))
-print(repeat('*', 60))
+println(repeat('*', 60))
 
 sourceSets {
     api {
