@@ -16,6 +16,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     super(generator, Railcraft.ID, fileHelper);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void addTags() {
     this.tag(RailcraftTags.Blocks.BALLAST)
@@ -204,10 +205,10 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.ZINC_BLOCK.get());
 
     var stoneToolAppender = this.tag(BlockTags.NEEDS_STONE_TOOL)
-        .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
-            RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
-            RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
-            RailcraftBlocks.STEAM_TURBINE.get())
+        .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get())
+        .add(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get())
+        .add(RailcraftBlocks.FLUID_FUELED_FIREBOX.get())
+        .add(RailcraftBlocks.STEAM_TURBINE.get())
         .add(RailcraftBlocks.COKE_BLOCK.get())
         .addTags(Blocks.LEAD_ORE,
             Blocks.NICKEL_ORE,
@@ -256,7 +257,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get())
         .add(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get())
         .add(RailcraftBlocks.DEEPSLATE_TIN_ORE.get())
-        .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+        .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get())
+        .add(RailcraftBlocks.FIRESTONE_ORE.get());
 
     this.tag(Tags.Blocks.ORE_RATES_DENSE)
         .add(RailcraftBlocks.SULFUR_ORE.get())
@@ -291,6 +293,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.SALTPETER_ORE.get());
 
     this.tag(Tags.Blocks.ORES)
+        .add(RailcraftBlocks.FIRESTONE_ORE.get())
         .addTags(Blocks.LEAD_ORE,
             Blocks.NICKEL_ORE,
             Blocks.SILVER_ORE,
@@ -313,6 +316,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get())
         .add(RailcraftBlocks.DEEPSLATE_TIN_ORE.get())
         .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+    this.tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
+        .add(RailcraftBlocks.FIRESTONE_ORE.get());
   }
 
   @Override

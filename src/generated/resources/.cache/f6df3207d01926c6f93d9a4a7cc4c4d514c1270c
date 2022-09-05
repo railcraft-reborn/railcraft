@@ -1,7 +1,7 @@
-// 1.19.2	2022-08-29T16:27:56.167248218	Railcraft Block Tags
+// 1.19.2	2022-09-05T09:46:42.57917	Railcraft Block Tags
 e36857f35c1bac4bde5a8450008b92cf82656216 data/forge/tags/blocks/ore_rates/dense.json
-f7f695af59519f65335bb4e2cbd2ba77662463cd data/forge/tags/blocks/ore_rates/singular.json
-18c516956b2cd559ff21217d8f3e963b62c95e8f data/forge/tags/blocks/ores.json
+8ce5fa4b4f1c2619e124ef387b086d72f9c26f04 data/forge/tags/blocks/ore_rates/singular.json
+c31435450cdbffad0151b7e26a9cc131bf672a75 data/forge/tags/blocks/ores.json
 8c50a9944556e96063fbc340f5ad0cc8db547ff3 data/forge/tags/blocks/ores/lead.json
 83ceb2d2883c80859eebd5d5bb21fc2bfb849cf9 data/forge/tags/blocks/ores/nickel.json
 35a98a11222809a20225372b2d7129082cbbc2b8 data/forge/tags/blocks/ores/salt.json
@@ -10,6 +10,7 @@ f7f695af59519f65335bb4e2cbd2ba77662463cd data/forge/tags/blocks/ore_rates/singul
 0fbe7a7a55102f803486517de1004a189959f607 data/forge/tags/blocks/ores/tin.json
 e04f5a6285f9ec10108641e77582345991282073 data/forge/tags/blocks/ores/zinc.json
 ab8a6f7d61afc254cc8f018a4e9182ccac386840 data/forge/tags/blocks/ores_in_ground/deepslate.json
+cba1c5a31aa2960efa0703b2e57f8390f53d4ce6 data/forge/tags/blocks/ores_in_ground/netherrack.json
 679d265c52f455f2a0f0f9afcfb254016b47f407 data/forge/tags/blocks/ores_in_ground/stone.json
 aefbbbc5abb467f81217a20784fffded5a4cc0df data/minecraft/tags/blocks/anvil.json
 491830ad886621c3a078a87ab488fd45839ad64d data/minecraft/tags/blocks/climbable.json

@@ -1,5 +1,6 @@
 {
   "values": [
+    "railcraft:firestone_ore",
     "#forge:ores/lead",
     "#forge:ores/nickel",
     "#forge:ores/silver",
