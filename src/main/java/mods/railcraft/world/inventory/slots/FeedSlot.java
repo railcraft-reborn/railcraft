@@ -18,10 +18,6 @@ public class FeedSlot extends Slot {
 
   @Override
   public boolean mayPlace(ItemStack stack) {
-    return canPlaceItem(stack);
-  }
-
-  public static boolean canPlaceItem(ItemStack stack) {
     return StackFilter.FEED.test(stack);
   }
 }
