@@ -103,10 +103,7 @@ public class ClientManager {
   // ================================================================================
 
   private void handleClientSetup(FMLClientSetupEvent event) {
-    RenderLayers.register();
-
     // === Menu Screens ===
-
     MenuScreens.register(RailcraftMenuTypes.SOLID_FUELED_STEAM_BOILER.get(),
         SolidFueledSteamBoilerScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FLUID_FUELED_STEAM_BOILER.get(),

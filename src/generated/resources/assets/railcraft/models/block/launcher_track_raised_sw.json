@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/template_rail_raised_sw",
+  "render_type": "minecraft:cutout",
   "textures": {
     "rail": "railcraft:block/launcher_track"
   }

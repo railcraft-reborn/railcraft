@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/cube_column",
+  "render_type": "minecraft:cutout",
   "textures": {
     "end": "railcraft:block/light_gray_strengthened_glass_top",
     "side": "railcraft:block/light_gray_strengthened_glass_side_top"
