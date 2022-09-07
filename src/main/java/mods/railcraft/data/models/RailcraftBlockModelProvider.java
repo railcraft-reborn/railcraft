@@ -1,10 +1,10 @@
 package mods.railcraft.data.models;
 
 import java.util.function.Function;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
+import mods.railcraft.world.level.block.CrusherMultiblockBlock;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -76,6 +76,7 @@ import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 public class RailcraftBlockModelProvider extends BlockStateProvider {
 
@@ -227,7 +228,6 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.createCubeColumnBlock(RailcraftBlocks.FEED_STATION.get());
     this.createCubeTopBottomBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
-    this.createCubeTopBlock(RailcraftBlocks.CRUSHER.get());
 
     this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
     this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
@@ -240,6 +240,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createFirebox(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
     this.createFurnaceMultiblockBricks(RailcraftBlocks.COKE_OVEN_BRICKS.get());
     this.createFurnaceMultiblockBricks(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
+    this.createCrusherMultiblockBricks(RailcraftBlocks.CRUSHER.get());
     this.createSteamBoilerTank(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get());
     this.createSteamBoilerTank(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
 
@@ -519,11 +520,11 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   }
 
   private void createFurnaceMultiblockBricks(FurnaceMultiblockBlock block) {
-    var bricksModel = this.cubeAll(block);
     var blockTexture = TextureMapping.getBlockTexture(block);
     var sideTexture = TextureMapping.getBlockTexture(block, "_window");
     var sideLitTexture = TextureMapping.getBlockTexture(block, "_window_lit");
 
+    var bricksModel = this.cubeAll(block);
     var windowModel = this.models().cubeBottomTop(name(block, "_window"), sideTexture,
         blockTexture, blockTexture);
     var litWindowModel = this.models().cubeBottomTop(name(block, "_window_lit"), sideLitTexture,
@@ -545,6 +546,38 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         });
 
     this.simpleBlockItem(block, bricksModel);
+  }
+
+  private void createCrusherMultiblockBricks(CrusherMultiblockBlock block) {
+    var topTexture = TextureMapping.getBlockTexture(block, "_top");
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side_exporter");
+    var bottomTexture = TextureMapping.getBlockTexture(block, "_side");
+
+    var baseModel = this.models().cubeTop(name(block), bottomTexture, topTexture);
+    var outputModel = this.models().cubeBottomTop(name(block, "_exporter"), sideTexture,
+        bottomTexture, topTexture);
+
+    this.getVariantBuilder(block)
+        .forAllStates(blockState -> {
+          var type = blockState.getValue(CrusherMultiblockBlock.TYPE);
+          var rotated = blockState.getValue(CrusherMultiblockBlock.ROTATED);
+          var output = blockState.getValue(CrusherMultiblockBlock.OUTPUT);
+          if (output) {
+            return ConfiguredModel.builder().modelFile(outputModel).build();
+          } else if (type.equals(CrusherMultiblockBlock.Type.NONE)) {
+            return ConfiguredModel.builder().modelFile(baseModel).build();
+          } else {
+            var suffix = "_top_" + type.getSerializedName();
+            var model = this.models().cubeTop(name(block, suffix), bottomTexture,
+                TextureMapping.getBlockTexture(block, suffix));
+            return ConfiguredModel.builder()
+                .modelFile(model)
+                .rotationY(rotated ? 90 : 0)
+                .build();
+          }
+        });
+
+    this.simpleBlockItem(block, baseModel);
   }
 
   private void createSteamTurbine(Block block) {
