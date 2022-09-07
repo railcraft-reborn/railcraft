@@ -6,7 +6,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.world.inventory.RailcraftMenu;
-import mods.railcraft.world.inventory.RailcraftSlot;
+import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

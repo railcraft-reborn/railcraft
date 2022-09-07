@@ -81,14 +81,14 @@ public enum StackFilter implements Predicate<ItemStack> {
    * Matches against the provided Item.
    */
   public static Predicate<ItemStack> of(final Item item) {
-    return itemStack -> !itemStack.isEmpty() && itemStack.getItem() == item;
+    return itemStack -> !itemStack.isEmpty() && itemStack.is(item);
   }
 
   /**
    * Matches against the provided Item.
    */
   public static Predicate<ItemStack> of(final Block block) {
-    return itemStack -> !itemStack.isEmpty() && itemStack.getItem() == block.asItem();
+    return itemStack -> !itemStack.isEmpty() && itemStack.is(block.asItem());
   }
 
   /**

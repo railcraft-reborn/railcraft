@@ -1373,7 +1373,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildTie(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.WOODEN_TIE.get())
+    ShapedRecipeBuilder.shaped(RailcraftItems.WOODEN_TIE.get(), 3)
         .pattern(" a ")
         .pattern("bbb")
         .define('a', RailcraftItems.CREOSOTE_BUCKET.get())

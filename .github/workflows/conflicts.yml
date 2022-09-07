@@ -1,14 +1,15 @@
 name: 'Check for merge conflicts'
+
 on:
   push:
     branches:
-      - mc-1.16.5
-      - 1.18.x
+      - 1.19.x
+
 jobs:
   triage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: mschilde/auto-label-merge-conflicts@2e8fcc76c6430272ec8bb64fb74ec1592156aa6a
+      - uses: mschilde/auto-label-merge-conflicts@v2.0
         with:
           CONFLICT_LABEL_NAME: 'needs rebase'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

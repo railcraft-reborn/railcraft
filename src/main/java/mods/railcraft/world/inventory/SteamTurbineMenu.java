@@ -1,17 +1,17 @@
 package mods.railcraft.world.inventory;
 
+import java.util.Collections;
+import java.util.List;
 import mods.railcraft.gui.widget.AnalogGaugeWidget;
 import mods.railcraft.gui.widget.ChargeNetworkIndicator;
 import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.util.container.StackFilter;
+import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
-
-import java.util.Collections;
-import java.util.List;
 
 public class SteamTurbineMenu extends RailcraftMenu {
 
