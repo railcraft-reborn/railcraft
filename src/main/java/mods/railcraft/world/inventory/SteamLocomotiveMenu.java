@@ -3,9 +3,9 @@ package mods.railcraft.world.inventory;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
-import mods.railcraft.world.inventory.slots.LimitedWaterSlot;
-import mods.railcraft.world.inventory.slots.OutputSlot;
-import mods.railcraft.world.inventory.slots.RailcraftSlot;
+import mods.railcraft.world.inventory.slot.LimitedWaterSlot;
+import mods.railcraft.world.inventory.slot.OutputSlot;
+import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.world.entity.player.Inventory;
 
 public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {

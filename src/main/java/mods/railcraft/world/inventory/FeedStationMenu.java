@@ -1,6 +1,6 @@
 package mods.railcraft.world.inventory;
 
-import mods.railcraft.world.inventory.slots.FeedSlot;
+import mods.railcraft.world.inventory.slot.FeedSlot;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;

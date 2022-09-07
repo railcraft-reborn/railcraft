@@ -6,7 +6,7 @@ import mods.railcraft.gui.widget.AnalogGaugeWidget;
 import mods.railcraft.gui.widget.ChargeNetworkIndicator;
 import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.util.container.StackFilter;
-import mods.railcraft.world.inventory.slots.ItemFilterSlot;
+import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import net.minecraft.network.chat.Component;

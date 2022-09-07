@@ -1,6 +1,6 @@
 package mods.railcraft.world.inventory;
 
-import mods.railcraft.world.inventory.slots.RailcraftSlot;
+import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 

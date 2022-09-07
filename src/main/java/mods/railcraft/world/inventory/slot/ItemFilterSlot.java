@@ -1,4 +1,4 @@
-package mods.railcraft.world.inventory.slots;
+package mods.railcraft.world.inventory.slot;
 
 import java.util.function.Predicate;
 import net.minecraft.world.Container;

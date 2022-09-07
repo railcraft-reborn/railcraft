@@ -1,4 +1,4 @@
-package mods.railcraft.world.inventory.slots;
+package mods.railcraft.world.inventory.slot;
 
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import net.minecraft.core.NonNullList;

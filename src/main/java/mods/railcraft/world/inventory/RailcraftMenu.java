@@ -9,7 +9,7 @@ import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.world.inventory.slots.RailcraftSlot;
+import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;

@@ -1,4 +1,4 @@
-package mods.railcraft.world.inventory.slots;
+package mods.railcraft.world.inventory.slot;
 
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
@@ -12,6 +12,7 @@ public class WaterSlot extends RailcraftSlot {
     super(container, slotIndex, posX, posY);
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public boolean mayPlace(ItemStack stack) {
     return FluidUtil.getFluidContained(stack)
