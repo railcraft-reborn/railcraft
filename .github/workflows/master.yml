@@ -1,0 +1,43 @@
+name: Railcraft 1.19.x CI
+
+on:
+  push:
+    branches:
+    - 1.19.x
+  pull_request:
+    branches:
+    - 1.19.x
+  workflow_dispatch:
+
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 17
+
+      - name: Restore gradle cache
+        uses: actions/cache@v3.0.7
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+      - name: Compile
+        run: |
+          ./gradlew hideOfficialWarningUntilChanged
+          ./gradlew build --no-daemon --max-workers 1
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Railcraft-1.19.x-GitHub
+          path: build/libs
