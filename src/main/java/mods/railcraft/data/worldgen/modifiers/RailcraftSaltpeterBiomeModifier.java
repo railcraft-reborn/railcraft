@@ -9,20 +9,20 @@ import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ModifiableBiomeInfo.BiomeInfo.Builder;
 
-public record RailcraftSaltpeterBiomeModifier (HolderSet<Biome> biomes, Decoration step)
+public record RailcraftSaltpeterBiomeModifier(HolderSet<Biome> biomes, Decoration step)
     implements BiomeModifier {
 
-    @Override
-    public void modify(Holder<Biome> biome, Phase phase, Builder builder) {
-        if (phase == Phase.ADD && biomes.contains(biome)) {
-            var generation = builder.getGenerationSettings();
-            generation.addFeature(step, RailcraftMiscOverworldPlacements.SALTPETER.getHolder().get());
-        }
+  @Override
+  public void modify(Holder<Biome> biome, Phase phase, Builder builder) {
+    if (phase == Phase.ADD && biomes.contains(biome)) {
+      var generation = builder.getGenerationSettings();
+      generation.addFeature(step, RailcraftMiscOverworldPlacements.SALTPETER.getHolder().get());
     }
+  }
 
-    @Override
-    public Codec<? extends BiomeModifier> codec() {
-        return RailcraftBiomeModifier.SALTPETER_BIOME_MODIFIER.get();
-    }
+  @Override
+  public Codec<? extends BiomeModifier> codec() {
+    return RailcraftBiomeModifier.SALTPETER_BIOME_MODIFIER.get();
+  }
 }
 

@@ -12,16 +12,16 @@ import net.minecraftforge.common.world.ModifiableBiomeInfo.BiomeInfo.Builder;
 public record RailcraftOreBiomeModifier(HolderSet<Biome> biomes, Holder<PlacedFeature> feature)
     implements BiomeModifier {
 
-    @Override
-    public void modify(Holder<Biome> biome, Phase phase, Builder builder) {
-        if (phase == Phase.ADD && biomes.contains(biome)) {
-            var generation = builder.getGenerationSettings();
-            generation.addFeature(Decoration.UNDERGROUND_ORES, feature);
-        }
+  @Override
+  public void modify(Holder<Biome> biome, Phase phase, Builder builder) {
+    if (phase == Phase.ADD && biomes.contains(biome)) {
+      var generation = builder.getGenerationSettings();
+      generation.addFeature(Decoration.UNDERGROUND_ORES, feature);
     }
+  }
 
-    @Override
-    public Codec<? extends BiomeModifier> codec() {
-        return RailcraftBiomeModifier.BIOME_MODIFIER.get();
-    }
+  @Override
+  public Codec<? extends BiomeModifier> codec() {
+    return RailcraftBiomeModifier.BIOME_MODIFIER.get();
+  }
 }

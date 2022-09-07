@@ -25,53 +25,53 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftMiscOverworldPlacements {
 
-    private static final int SALTPETER_VEIN_PER_CHUNK = 5;
+  private static final int SALTPETER_VEIN_PER_CHUNK = 5;
 
 
-    private static final DeferredRegister<PlacedFeature> deferredRegister =
-        DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, Railcraft.ID);
+  private static final DeferredRegister<PlacedFeature> deferredRegister =
+      DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, Railcraft.ID);
 
-    private static final Map<ResourceLocation, RegistryObject<PlacedFeature>>
-        PLACED_FEATURE_MAP = new HashMap<>();
+  private static final Map<ResourceLocation, RegistryObject<PlacedFeature>>
+      PLACED_FEATURE_MAP = new HashMap<>();
 
 
-    public static final RegistryObject<PlacedFeature> SALTPETER = register("saltpeter",
-        RailcraftMiscOverworldFeatures.SALTPETER,
-        () -> List.of(
-            //CountPlacement.of(SALTPETER_VEIN_PER_CHUNK),
-            InSquarePlacement.spread(),
-            PlacementUtils.HEIGHTMAP_TOP_SOLID,
-            BlockPredicateFilter.forPredicate(BlockPredicate.matchesFluids(Fluids.WATER)),
-            BiomeFilter.biome()
-        ));
+  public static final RegistryObject<PlacedFeature> SALTPETER = register("saltpeter",
+      RailcraftMiscOverworldFeatures.SALTPETER,
+      () -> List.of(
+          //CountPlacement.of(SALTPETER_VEIN_PER_CHUNK),
+          InSquarePlacement.spread(),
+          PlacementUtils.HEIGHTMAP_TOP_SOLID,
+          BlockPredicateFilter.forPredicate(BlockPredicate.matchesFluids(Fluids.WATER)),
+          BiomeFilter.biome()
+      ));
 
-    public static final RegistryObject<PlacedFeature> FIRESTONE = register("firestone",
-        RailcraftMiscOverworldFeatures.FIRESTONE,
-        () -> List.of(
-            CountPlacement.of(2),
-            PlacementUtils.FULL_RANGE,
-            BlockPredicateFilter.forPredicate(BlockPredicate.matchesFluids(Fluids.LAVA)),
-            BiomeFilter.biome()
-        ));
+  public static final RegistryObject<PlacedFeature> FIRESTONE = register("firestone",
+      RailcraftMiscOverworldFeatures.FIRESTONE,
+      () -> List.of(
+          CountPlacement.of(2),
+          PlacementUtils.FULL_RANGE,
+          BlockPredicateFilter.forPredicate(BlockPredicate.matchesFluids(Fluids.LAVA)),
+          BiomeFilter.biome()
+      ));
 
-    private static RegistryObject<PlacedFeature> register(String name,
-        RegistryObject<ConfiguredFeature<?, ?>> configuredFeature,
-        Supplier<List<PlacementModifier>> placementModifier) {
+  private static RegistryObject<PlacedFeature> register(String name,
+      RegistryObject<ConfiguredFeature<?, ?>> configuredFeature,
+      Supplier<List<PlacementModifier>> placementModifier) {
 
-        var result = deferredRegister.register(name, () ->
-            new PlacedFeature(Holder.direct(configuredFeature.get()), placementModifier.get()));
+    var result = deferredRegister.register(name, () ->
+        new PlacedFeature(Holder.direct(configuredFeature.get()), placementModifier.get()));
 
-        PLACED_FEATURE_MAP.put(new ResourceLocation(Railcraft.ID, name), result);
-        return result;
-    }
+    PLACED_FEATURE_MAP.put(new ResourceLocation(Railcraft.ID, name), result);
+    return result;
+  }
 
-    public static Map<ResourceLocation, PlacedFeature> getPlacedFeatureMap() {
-        var result = new HashMap<ResourceLocation, PlacedFeature>();
-        PLACED_FEATURE_MAP.forEach((key, value) -> result.put(key, value.get()));
-        return result;
-    }
+  public static Map<ResourceLocation, PlacedFeature> getPlacedFeatureMap() {
+    var result = new HashMap<ResourceLocation, PlacedFeature>();
+    PLACED_FEATURE_MAP.forEach((key, value) -> result.put(key, value.get()));
+    return result;
+  }
 
-    public static void register(IEventBus modEventBus) {
-        deferredRegister.register(modEventBus);
-    }
+  public static void register(IEventBus modEventBus) {
+    deferredRegister.register(modEventBus);
+  }
 }

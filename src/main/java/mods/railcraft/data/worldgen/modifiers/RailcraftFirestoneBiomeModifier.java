@@ -12,17 +12,17 @@ import net.minecraftforge.common.world.ModifiableBiomeInfo.BiomeInfo.Builder;
 public record RailcraftFirestoneBiomeModifier(HolderSet<Biome> biomes, Decoration step)
     implements BiomeModifier {
 
-    @Override
-    public void modify(Holder<Biome> biome, Phase phase, Builder builder) {
-        if (phase == Phase.ADD && biomes.contains(biome)) {
-            var generation = builder.getGenerationSettings();
-            generation.addFeature(step, RailcraftMiscOverworldPlacements.FIRESTONE.getHolder().get());
-        }
+  @Override
+  public void modify(Holder<Biome> biome, Phase phase, Builder builder) {
+    if (phase == Phase.ADD && biomes.contains(biome)) {
+      var generation = builder.getGenerationSettings();
+      generation.addFeature(step, RailcraftMiscOverworldPlacements.FIRESTONE.getHolder().get());
     }
+  }
 
-    @Override
-    public Codec<? extends BiomeModifier> codec() {
-        return RailcraftBiomeModifier.FIRESTONE_BIOME_MODIFIER.get();
-    }
+  @Override
+  public Codec<? extends BiomeModifier> codec() {
+    return RailcraftBiomeModifier.FIRESTONE_BIOME_MODIFIER.get();
+  }
 }
 

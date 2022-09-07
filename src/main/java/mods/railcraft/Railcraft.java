@@ -101,9 +101,6 @@ public class Railcraft {
   public static final String ID = "railcraft";
   public static final boolean BETA = true;
 
-  private final CrowbarHandler crowbarHandler = new CrowbarHandler();
-  private final MinecartHandler minecartHandler = new MinecartHandler();
-
   static {
     FuelUtil._setFuelManager(FuelManagerImpl.INSTANCE);
     CartUtil._setLinkageManager(LinkageManagerImpl.INSTANCE);
@@ -113,6 +110,9 @@ public class Railcraft {
       value.getCharge()._setProvider(value);
     }
   }
+
+  private final CrowbarHandler crowbarHandler = new CrowbarHandler();
+  private final MinecartHandler minecartHandler = new MinecartHandler();
 
   public Railcraft() {
     MinecraftForge.EVENT_BUS.register(this.minecartHandler);
@@ -180,17 +180,19 @@ public class Railcraft {
     generator.addProvider(event.includeServer(),
         new RailcraftAdvancementProviders(generator, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(generator));
-    generator.addProvider(event.includeClient(), new RailcraftItemModelProvider(generator, fileHelper));
-    generator.addProvider(event.includeClient(), new RailcraftBlockModelProvider(generator, fileHelper));
+    generator.addProvider(event.includeClient(),
+        new RailcraftItemModelProvider(generator, fileHelper));
+    generator.addProvider(event.includeClient(),
+        new RailcraftBlockModelProvider(generator, fileHelper));
     generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(generator));
-    generator.addProvider(event.includeClient(), new RailcraftSoundsProvider(generator, fileHelper));
-
+    generator.addProvider(event.includeClient(),
+        new RailcraftSoundsProvider(generator, fileHelper));
 
     // WORLD GENERATION
     var registries = RegistryAccess.builtinCopy();
     var ops = RegistryOps.create(JsonOps.INSTANCE, registries);
 
-    var featuresMap = new HashMap<ResourceLocation, ConfiguredFeature<?,?>>();
+    var featuresMap = new HashMap<ResourceLocation, ConfiguredFeature<?, ?>>();
     featuresMap.putAll(RailcraftOreFeatures.getConfiguredFeatureMap());
     featuresMap.putAll(RailcraftMiscOverworldFeatures.getConfiguredFeatureMap());
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
@@ -206,17 +208,19 @@ public class Railcraft {
     var biomeRegistry = ops.registry(Registry.BIOME_REGISTRY).get();
     var biomes = new Named<>(biomeRegistry, BiomeTags.IS_OVERWORLD);
     var netherBiomes = new Named<>(biomeRegistry, BiomeTags.IS_NETHER);
-    for(var placedFeature : placedFeaturesMap.entrySet()) {
+    for (var placedFeature : placedFeaturesMap.entrySet()) {
       var resourceLocation = new ResourceLocation(placedFeature.getKey().getNamespace(),
           "add_" + placedFeature.getKey().getPath());
 
       BiomeModifier biomeModifier;
-      if(placedFeature.getKey().getPath().equals("saltpeter")) {
+      if (placedFeature.getKey().getPath().equals("saltpeter")) {
         biomeModifier = new RailcraftSaltpeterBiomeModifier(biomes, Decoration.UNDERGROUND_ORES);
-      } else if(placedFeature.getKey().getPath().equals("firestone")) {
-        biomeModifier = new RailcraftFirestoneBiomeModifier(netherBiomes, Decoration.UNDERGROUND_ORES);
+      } else if (placedFeature.getKey().getPath().equals("firestone")) {
+        biomeModifier = new RailcraftFirestoneBiomeModifier(netherBiomes,
+            Decoration.UNDERGROUND_ORES);
       } else {
-        biomeModifier = new RailcraftOreBiomeModifier(biomes, Holder.direct(placedFeature.getValue()));
+        biomeModifier = new RailcraftOreBiomeModifier(biomes,
+            Holder.direct(placedFeature.getValue()));
       }
       biomeModifierHashMap.put(resourceLocation, biomeModifier);
     }
