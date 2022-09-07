@@ -10,7 +10,7 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class LauncherTrackTest {
 
-    @GameTest(template = "launcher_track_active")
+    @GameTest(template = "launcher_track_active", timeoutTicks = 200)
     public static void launcherTrackActive(GameTestHelper helper) {
         helper.pressButton(0, 3, 1);
         helper.succeedWhenEntityPresent(EntityType.MINECART, 22, 2, 1);
