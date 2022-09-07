@@ -1,5 +1,8 @@
 package mods.railcraft.world.inventory;
 
+import mods.railcraft.world.inventory.slot.ItemFilterSlot;
+import mods.railcraft.world.inventory.slot.OutputSlot;
+import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import mods.railcraft.world.module.BlastFurnaceModule;
 import net.minecraft.world.entity.player.Inventory;

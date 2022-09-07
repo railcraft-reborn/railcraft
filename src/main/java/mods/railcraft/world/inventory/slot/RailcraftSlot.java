@@ -1,4 +1,4 @@
-package mods.railcraft.world.inventory;
+package mods.railcraft.world.inventory.slot;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;

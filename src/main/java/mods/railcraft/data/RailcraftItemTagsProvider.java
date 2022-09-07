@@ -19,6 +19,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     super(generator, blockTagsProvider, Railcraft.ID, fileHelper);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void addTags() {
     this.tag(RailcraftTags.Items.STEEL_INGOT)
@@ -167,7 +168,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
 
 
-    //TOOLS
+    // TOOLS
     this.tag(Items.TOOLS_AXES_STEEL).add(RailcraftItems.STEEL_AXE.get());
     this.tag(Items.TOOLS_HOES_STEEL).add(RailcraftItems.STEEL_HOE.get());
     this.tag(Items.TOOLS_PICKAXES_STEEL).add(RailcraftItems.STEEL_PICKAXE.get());

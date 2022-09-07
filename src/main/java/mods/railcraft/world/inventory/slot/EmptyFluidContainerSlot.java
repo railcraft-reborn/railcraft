@@ -1,4 +1,4 @@
-package mods.railcraft.world.inventory;
+package mods.railcraft.world.inventory.slot;
 
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import net.minecraft.world.Container;
