@@ -2,6 +2,8 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FEEnergyIndicator;
 import mods.railcraft.gui.widget.GaugeWidget;
+import mods.railcraft.world.inventory.slot.OutputSlot;
+import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 

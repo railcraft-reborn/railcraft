@@ -23,9 +23,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
 
@@ -126,7 +125,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
         var masterModule = this.getMembership()
             .map(Membership::master)
             .map(CrusherBlockEntity::getCrusherModule);
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return masterModule
                 .map(m -> {
                     if (this.getBlockState().getValue(CrusherMultiblockBlock.OUTPUT)) {
@@ -137,7 +136,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
                 .<LazyOptional<T>>map(LazyOptional::cast)
                 .orElse(LazyOptional.empty());
         }
-        if (cap == CapabilityEnergy.ENERGY) {
+        if (cap == ForgeCapabilities.ENERGY) {
             return masterModule
                 .map(CrusherModule::getEnergyHandler)
                 .<LazyOptional<T>>map(LazyOptional::cast)
