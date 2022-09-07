@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 public class SignalBlockSurveyorItem extends PairingToolItem {
 
@@ -40,7 +39,8 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
       if (this.checkAbandonPairing(stack, player, (ServerLevel) level,
           signalNetwork::stopLinking)) {
         player.displayClientMessage(
-            Component.translatable(Signal.SIGNAL_SURVEYOR_ABANDONED).withStyle(ChatFormatting.LIGHT_PURPLE),
+            Component.translatable(Signal.SIGNAL_SURVEYOR_ABANDONED)
+                .withStyle(ChatFormatting.LIGHT_PURPLE),
             true);
         return InteractionResult.SUCCESS;
       }
@@ -54,7 +54,8 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
             true);
       } else if (signalPos == null) {
         player.displayClientMessage(
-            Component.translatable(Signal.SIGNAL_SURVEYOR_BEGIN).withStyle(ChatFormatting.LIGHT_PURPLE),
+            Component.translatable(Signal.SIGNAL_SURVEYOR_BEGIN)
+                .withStyle(ChatFormatting.LIGHT_PURPLE),
             true);
         this.setPeerPos(stack, DimensionPos.from(blockEntity));
         signalNetwork.startLinking();
@@ -65,17 +66,20 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
             signal.signalNetwork().stopLinking();
             otherSignal.signalNetwork().stopLinking();
             player.displayClientMessage(
-                Component.translatable(Signal.SIGNAL_SURVEYOR_SUCCESS).withStyle(ChatFormatting.GREEN),
+                Component.translatable(Signal.SIGNAL_SURVEYOR_SUCCESS)
+                    .withStyle(ChatFormatting.GREEN),
                 true);
             this.clearPeerPos(stack);
           } else {
             player.displayClientMessage(
-                Component.translatable(Signal.SIGNAL_SURVEYOR_INVALID_PAIR).withStyle(ChatFormatting.RED),
+                Component.translatable(Signal.SIGNAL_SURVEYOR_INVALID_PAIR)
+                    .withStyle(ChatFormatting.RED),
                 true);
           }
         } else if (level.isLoaded(signalPos.getPos())) {
           player.displayClientMessage(
-              Component.translatable(Signal.SIGNAL_SURVEYOR_LOST).withStyle(ChatFormatting.RED), true);
+              Component.translatable(Signal.SIGNAL_SURVEYOR_LOST).withStyle(ChatFormatting.RED),
+              true);
           signalNetwork.stopLinking();
           this.clearPeerPos(stack);
         } else {
@@ -92,14 +96,16 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
       }
     } else if (!level.isClientSide()) {
       player.displayClientMessage(
-          Component.translatable(Signal.SIGNAL_SURVEYOR_INVALID_BLOCK).withStyle(ChatFormatting.RED),
+          Component.translatable(Signal.SIGNAL_SURVEYOR_INVALID_BLOCK)
+              .withStyle(ChatFormatting.RED),
           true);
     }
 
     return InteractionResult.PASS;
   }
 
-  private <T, T2> boolean tryLinking(MonitoringSignalEntity<T> signal1, MonitoringSignalEntity<T2> signal2) {
+  private <T, T2> boolean tryLinking(MonitoringSignalEntity<T> signal1,
+      MonitoringSignalEntity<T2> signal2) {
     return signal1.type().isInstance(signal2)
         && signal2.type().isInstance(signal1)
         && signal1.signalNetwork().addPeer(signal1.type().cast(signal2))
@@ -109,6 +115,7 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
   @Override
   public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents,
       TooltipFlag isAdvanced) {
-    tooltipComponents.add(Component.translatable(Tips.SIGNAL_BLOCK_SURVEYOR).withStyle(ChatFormatting.GRAY));
+    tooltipComponents
+        .add(Component.translatable(Tips.SIGNAL_BLOCK_SURVEYOR).withStyle(ChatFormatting.GRAY));
   }
 }

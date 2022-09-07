@@ -16,7 +16,6 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -75,10 +74,10 @@ public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceR
       int cookTimeSeconds = cookTime / 20;
       var timeString = Component.translatable("gui.jei.category.smelting.time.seconds",
           cookTimeSeconds);
-      Font fontRenderer = Minecraft.getInstance().font;
-      int stringWidth = fontRenderer.width(timeString);
-      fontRenderer.draw(stack, timeString, getBackground().getWidth() - stringWidth - 30, 45,
-          0xFF808080);
+      var minecraft = Minecraft.getInstance();
+      var font = minecraft.font;
+      int stringWidth = font.width(timeString);
+      font.draw(stack, timeString, getBackground().getWidth() - stringWidth - 30, 45, 0xFF808080);
     }
   }
 

@@ -11,7 +11,6 @@ import mods.railcraft.world.level.block.entity.RitualBlockEntity;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -71,15 +70,17 @@ public class RitualBlock extends BaseEntityBlock {
 
   @Override
   public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-    List<ItemStack> drops = super.getDrops(state, builder);
-    BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+    @SuppressWarnings("deprecation")
+    var drops = super.getDrops(state, builder);
+    var tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
     if (tile instanceof RitualBlockEntity firestone) {
-      Item item = state.getValue(CRACKED)
+      var item = state.getValue(CRACKED)
           ? RailcraftItems.CRACKED_FIRESTONE.get()
           : RailcraftItems.REFINED_FIRESTONE.get();
-      ItemStack drop = new ItemStack(item);
-      if (firestone.hasCustomName())
+      var drop = item.getDefaultInstance();
+      if (firestone.hasCustomName()) {
         drop.setHoverName(firestone.getCustomName());
+      }
       drop.setDamageValue(drop.getMaxDamage() - firestone.charge);
       drops.add(drop);
     } else {

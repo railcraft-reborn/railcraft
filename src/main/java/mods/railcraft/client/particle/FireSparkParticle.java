@@ -16,7 +16,7 @@ public class FireSparkParticle extends TextureSheetParticle {
     private final double maxHorizontalDist;
     private final float lavaParticleScale;
 
-    public FireSparkParticle(ClientLevel level, double x, double y, double z, double dx,
+    private FireSparkParticle(ClientLevel level, double x, double y, double z, double dx,
         double dy, double dz, FireSparkParticleOptions options, SpriteSet sprites) {
         super(level, x, y, z, dx, dy, dz);
         this.destination = options.getDestination();
@@ -27,7 +27,7 @@ public class FireSparkParticle extends TextureSheetParticle {
 
         this.rCol = this.gCol = this.bCol = 1.0f;
 
-        this.quadSize *= level.random.nextFloat() * 2.0f + 0.2f;
+        this.quadSize *= random.nextFloat() * 2.0f + 0.2f;
         this.lavaParticleScale = quadSize;
         setLifetime(2000);
         this.hasPhysics = false;
@@ -56,9 +56,8 @@ public class FireSparkParticle extends TextureSheetParticle {
     @Override
     protected int getLightColor(float partialTick) {
         int brightness = super.getLightColor(partialTick);
-        short short1 = 240;
         int j = brightness >> 16 & 255;
-        return short1 | j << 16;
+        return 240 | j << 16;
     }
 
     @Override
@@ -81,8 +80,7 @@ public class FireSparkParticle extends TextureSheetParticle {
                 level.addParticle(ParticleTypes.SMOKE, x, y, z, xd, yd, zd);
             }
 
-            var pos = new Vec3(x, y, z);
-            double dist = pos.distanceToSqr(destination);
+            double dist = destination.distanceToSqr(x, y, z);
             if (dist <= 0.1) {
                 this.remove();
             } else {
@@ -108,7 +106,7 @@ public class FireSparkParticle extends TextureSheetParticle {
         @Override
         public Particle createParticle(FireSparkParticleOptions options, ClientLevel level,
             double x, double y, double z, double dx, double dy, double dz) {
-            return new FireSparkParticle(level, x, y, y, dx, dy, dz, options, this.sprites);
+            return new FireSparkParticle(level, x, y, z, dx, dy, dz, options, this.sprites);
         }
     }
 }

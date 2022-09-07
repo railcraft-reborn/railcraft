@@ -50,8 +50,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
     registration.addRecipeClickArea(CokeOvenScreen.class, 34, 43, 20, 16, RecipeTypes.COKE_OVEN);
     registration.addRecipeClickArea(BlastFurnaceScreen.class, 80, 36, 22, 15,
         RecipeTypes.BLAST_FURNACE);
-    //registration.addRecipeClickArea(RockCrusherScreen.class, 73, 20, 30, 38,
-    //    RecipeTypes.CRUSHER);
+    // registration.addRecipeClickArea(RockCrusherScreen.class, 73, 20, 30, 38,
+    // RecipeTypes.CRUSHER);
   }
 
   @Override
@@ -63,13 +63,14 @@ public class RailcraftJeiPlugin implements IModPlugin {
         RecipeTypes.COKE_OVEN, 0, 1, 4, 36);
     registration.addRecipeTransferHandler(BlastFurnaceMenu.class,
         RailcraftMenuTypes.BLAST_FURNACE.get(), RecipeTypes.BLAST_FURNACE, 0, 1, 4, 36);
-    //registration.addRecipeTransferHandler(RockCrusherMenu.class,
-    //    RailcraftMenuTypes.CRUSHER.get(), RecipeTypes.CRUSHER, 0, 9, 17, 36);
+    // registration.addRecipeTransferHandler(RockCrusherMenu.class,
+    // RailcraftMenuTypes.CRUSHER.get(), RecipeTypes.CRUSHER, 0, 9, 17, 36);
   }
 
   @Override
   public void registerRecipes(IRecipeRegistration registration) {
-    var recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
+    var minecraft = Minecraft.getInstance();
+    var recipeManager = Objects.requireNonNull(minecraft.level).getRecipeManager();
     registration.addRecipes(RecipeTypes.ROLLING_MACHINE,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()));
     registration.addRecipes(RecipeTypes.COKE_OVEN,

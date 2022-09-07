@@ -1,4 +1,4 @@
-package mods.railcraft.world.inventory;
+package mods.railcraft.world.inventory.slot;
 
 import java.util.function.Predicate;
 import net.minecraft.world.Container;
@@ -12,9 +12,9 @@ public class ItemFilterSlot extends RailcraftSlot {
 
   private final Predicate<ItemStack> filter;
 
-  public ItemFilterSlot(Predicate<ItemStack> filter, Container iinventory, int slotIndex,
+  public ItemFilterSlot(Predicate<ItemStack> filter, Container container, int slotIndex,
       int posX, int posY) {
-    super(iinventory, slotIndex, posX, posY);
+    super(container, slotIndex, posX, posY);
     this.filter = filter;
     setStackLimit(64);
   }

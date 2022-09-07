@@ -1,8 +1,9 @@
 package mods.railcraft.world.inventory;
 
-import net.minecraft.world.entity.player.Player;
+import mods.railcraft.world.inventory.slot.PhantomMinecartSlot;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 
