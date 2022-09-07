@@ -139,6 +139,7 @@ class RenderLayers {
     cutout(block.get());
   }
 
+  @SuppressWarnings("removal")
   private static void cutout(Block block) {
     ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
   }

@@ -31,17 +31,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public class FirestoneItem extends Item {
 
-  public static final Predicate<ItemStack> SPAWNS_FIRE = itemStack -> {
-    if (itemStack.isEmpty())
-      return false;
-    if (itemStack.is(RailcraftItems.RAW_FIRESTONE.get()))
-      return true;
-    if (itemStack.is(RailcraftItems.CUT_FIRESTONE.get()))
-      return true;
-    if (itemStack.is(RailcraftItems.CRACKED_FIRESTONE.get()))
-      return true;
-    return ContainerTools.isStackEqualToBlock(itemStack, RailcraftBlocks.FIRESTONE_ORE.get());
-  };
+  public static final Predicate<ItemStack> SPAWNS_FIRE = itemStack -> itemStack.isEmpty()
+      || itemStack.is(RailcraftItems.RAW_FIRESTONE.get())
+      || itemStack.is(RailcraftItems.CUT_FIRESTONE.get())
+      || itemStack.is(RailcraftItems.CRACKED_FIRESTONE.get())
+      || ContainerTools.isStackEqualToBlock(itemStack, RailcraftBlocks.FIRESTONE_ORE.get());
 
   public FirestoneItem(Properties properties) {
     super(properties);
@@ -73,7 +67,7 @@ public class FirestoneItem extends Item {
     super.fillItemCategory(category, items);
     if (allowedIn(category)) {
       var damageItem = new ItemStack(this);
-      if(damageItem.isDamageableItem()) {
+      if (damageItem.isDamageableItem()) {
         damageItem.setDamageValue(damageItem.getMaxDamage() - 1);
         items.add(damageItem);
       }
@@ -81,7 +75,8 @@ public class FirestoneItem extends Item {
   }
 
   @NotNull
-  public static FirestoneItemEntity createEntityItem(Level level, Entity entity, ItemStack itemStack) {
+  public static FirestoneItemEntity createEntityItem(Level level, Entity entity,
+      ItemStack itemStack) {
     var firestone = new FirestoneItemEntity(level, entity.position(), itemStack);
     firestone.setThrower(((ItemEntity) entity).getThrower());
     firestone.setDeltaMovement(entity.getDeltaMovement());
@@ -92,11 +87,9 @@ public class FirestoneItem extends Item {
   @Override
   public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId,
       boolean isSelected) {
-    if (entity instanceof Player player) {
-      if (level.getRandom().nextInt(12) % 4 == 0) {
-        var pos = new BlockPos(player.position());
-        trySpawnFire(player.level, pos, stack, player);
-      }
+    if (entity instanceof Player player
+        && level.getRandom().nextInt(12) % 4 == 0) {
+      trySpawnFire(player.getLevel(), player.blockPosition(), stack, player);
     }
   }
 
@@ -143,10 +136,12 @@ public class FirestoneItem extends Item {
   @Override
   public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents,
       TooltipFlag isAdvanced) {
-    if(stack.is(RailcraftItems.RAW_FIRESTONE.get())) {
-      tooltipComponents.add(Component.translatable(Tips.RAW_FIRESTONE).withStyle(ChatFormatting.GRAY));
+    if (stack.is(RailcraftItems.RAW_FIRESTONE.get())) {
+      tooltipComponents
+          .add(Component.translatable(Tips.RAW_FIRESTONE).withStyle(ChatFormatting.GRAY));
     } else if (stack.is(RailcraftItems.CUT_FIRESTONE.get())) {
-      tooltipComponents.add(Component.translatable(Tips.CUT_FIRESTONE).withStyle(ChatFormatting.GRAY));
+      tooltipComponents
+          .add(Component.translatable(Tips.CUT_FIRESTONE).withStyle(ChatFormatting.GRAY));
     }
   }
 }

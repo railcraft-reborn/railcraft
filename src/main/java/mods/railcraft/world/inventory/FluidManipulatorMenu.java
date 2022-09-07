@@ -2,6 +2,9 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.util.container.StackFilter;
+import mods.railcraft.world.inventory.slot.FluidFilterSlot;
+import mods.railcraft.world.inventory.slot.ItemFilterSlot;
+import mods.railcraft.world.inventory.slot.OutputSlot;
 import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 

@@ -70,7 +70,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
 
   @Override
   public void registerRecipes(IRecipeRegistration registration) {
-    var recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
+    var minecraft = Minecraft.getInstance();
+    var recipeManager = Objects.requireNonNull(minecraft.level).getRecipeManager();
     registration.addRecipes(RecipeTypes.ROLLING_MACHINE,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()));
     registration.addRecipes(RecipeTypes.COKE_OVEN,

@@ -6,7 +6,6 @@ import mods.railcraft.Translations.Tips;
 import mods.railcraft.season.Season;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +29,7 @@ public class SeasonsCrowbarItem extends CrowbarItem {
     if (!level.isClientSide()) {
       incrementSeason(itemStack);
       Season season = getSeason(itemStack);
-      player.displayClientMessage(getDescriptionText(season.getTranslation(), false), true);
+      player.displayClientMessage(getDescriptionText(season, false), true);
     }
     return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
   }
@@ -44,7 +43,7 @@ public class SeasonsCrowbarItem extends CrowbarItem {
   public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list,
       TooltipFlag adv) {
     Season season = getSeason(stack);
-    list.add(getDescriptionText(season.getTranslation(), true));
+    list.add(getDescriptionText(season, true));
   }
 
   public static Season getSeason(ItemStack itemStack) {
@@ -62,10 +61,11 @@ public class SeasonsCrowbarItem extends CrowbarItem {
     itemStack.getOrCreateTag().putInt("season", season.ordinal());
   }
 
-  private static Component getDescriptionText(MutableComponent value, boolean tooltip) {
+  private static Component getDescriptionText(Season value, boolean tooltip) {
     var title = Component.translatable(Tips.CRAWBAR_SEASON_DESC);
-    if(tooltip)
+    if (tooltip) {
       title.withStyle(ChatFormatting.GRAY);
-    return title.append(value.withStyle(ChatFormatting.DARK_PURPLE));
+    }
+    return title.append(value.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE));
   }
 }
