@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-31T15:08:04.895890408	Railcraft Recipes
+// 1.19.2	2022-09-02T21:45:48.527892377	Railcraft Recipes
 e39ead7ff7b72635ceccafd585fd5b062f549194 data/minecraft/advancements/recipes/transportation/rail.json
 790844dc8b3e3f93241eed9ccb9ef57845638191 data/minecraft/recipes/rail.json
 643033ea165b00d4ad131623d07762edbf6b460e data/railcraft/advancements/recipes/building_blocks/coke_oven/coal_block.json
@@ -929,7 +929,7 @@ f9f07262f31a8cd1ae96a075e10c463a5d2d3d11 data/railcraft/recipes/white_steel_tank
 e3d509dafc24fa891a1d47e2f8150bd4f09a13c5 data/railcraft/recipes/white_strengthened_glass.json
 1fc698a578da86f4866b8daac2ef2248babd2da4 data/railcraft/recipes/wooden_rail.json
 1b63300af8a6db59755fd050854901ddc04e21f4 data/railcraft/recipes/wooden_railbed.json
-a03297f0852bc9729c6f6e0085abefb6ab4b60a5 data/railcraft/recipes/wooden_tie.json
+7ae18e28e9c233f07c0b463a0a745044d17a0b2a data/railcraft/recipes/wooden_tie.json
 96e7d43da846f25a7f79963e40b934d88554749c data/railcraft/recipes/wooden_tie_bottle.json
 f1770722a6529091e7de72467893a2264cb1e19f data/railcraft/recipes/yellow_iron_tank_gauge.json
 bde3849b9be5afe6b37ca00fcdad2c9e0601c8f9 data/railcraft/recipes/yellow_iron_tank_valve.json

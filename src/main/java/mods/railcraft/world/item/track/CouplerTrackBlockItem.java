@@ -3,7 +3,6 @@ package mods.railcraft.world.item.track;
 import java.util.List;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -13,15 +12,18 @@ import net.minecraft.world.level.Level;
 
 public class CouplerTrackBlockItem extends BlockItem {
 
-    public CouplerTrackBlockItem(CouplerTrackBlock block, Properties properties) {
-        super(block, properties);
-    }
+  public CouplerTrackBlockItem(CouplerTrackBlock block, Properties properties) {
+    super(block, properties);
+  }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents,
-        TooltipFlag isAdvanced) {
-        tooltipComponents.add(Component.translatable(Tips.COUPLER_TRACK).withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable(Tips.HIT_CROWBAR_TO_CHANGE_MODE).withStyle(ChatFormatting.BLUE));
-        tooltipComponents.add(Component.translatable(Tips.APPLY_REDSTONE_TO_ENABLE).withStyle(ChatFormatting.RED));
-    }
+  @Override
+  public void appendHoverText(ItemStack stack, Level level, List<Component> lines,
+      TooltipFlag flag) {
+    lines.add(Component.translatable(Tips.COUPLER_TRACK)
+        .withStyle(ChatFormatting.GRAY));
+    lines.add(Component.translatable(Tips.HIT_CROWBAR_TO_CHANGE_MODE)
+        .withStyle(ChatFormatting.BLUE));
+    lines.add(Component.translatable(Tips.APPLY_REDSTONE_TO_ENABLE)
+        .withStyle(ChatFormatting.RED));
+  }
 }

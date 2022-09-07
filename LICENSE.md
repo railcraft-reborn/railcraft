@@ -2,7 +2,7 @@
 
 ## Usage
 
-* The "*.cfg" files in the Railcraft config folder are not considered part of Railcraft and may be freely distributed.
+* The "*.toml" files in the config folder are not considered part of Railcraft and may be freely distributed.
 
 * The Railcraft API is not considered part of Railcraft and may be freely distributed and/or used as you see fit, according to the MIT License.
 
@@ -36,14 +36,13 @@
   * You may not sell the mod pack.
   * You are not allowed to use the latest series of Railcraft (versioning system being <major.series.revision.build>, ie 3.3.1.0) until a new series is released or one week has passed since the last revision was released. This is to protect the users from unstable versions.
   * You must provide a link to the [Railcraft Blog](https://railcraft.info/), [Railcraft Wiki](https://railcraft.info/wiki) and [Railcraft License](https://railcraft.info/wiki/info:license) on your website.
-  * Beta builds or nightlies are never to be packaged as part of a public mod pack. Only public releases ending in zero (x.x.x) can be used in public mod packs.
-  * Explicit permission is no longer required thanks to the great support via [Patreon](https://www.patreon.com/CovertJaguar)! Meet the above requirements and you are good.
+  * Nightlies builds are never to be packaged as part of a public mod pack.
 
 ## Source
 
 * You may not create works using the Railcraft code (source or binary) without CovertJaguar's explicit permission except in the cases listed in this license.
 
-* The source code is hosted on [GitHub](https://github.com/CovertJaguar/Railcraft)
+* The source code is hosted on [GitHub](https://github.com/Sm0keySa1m0n/Railcraft)
 
 * You may **NOT** create derivative Jars from Railcraft source to distribute to other users.
 
@@ -52,5 +51,3 @@
 * You may **NOT** use Railcraft Art Assets in other projects **unless** the project is intended to operate alongside Railcraft. Examples are Addons and InterMod Integration.
 
 * You **MAY** fork and edit the Github Project for the purpose of contributing to the Official Railcraft Project. You may **NOT** distribute any Jar created from a fork for any reason.
-
-* All contributions to the Official Railcraft Project must be covered by a Contributor Licensing Agreement signed by the contributor. See the Github readme for more details.

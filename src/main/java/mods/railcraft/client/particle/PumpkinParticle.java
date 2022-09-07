@@ -14,9 +14,9 @@ import net.minecraft.util.Mth;
  */
 public class PumpkinParticle extends SteamParticle {
 
-  public PumpkinParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
-      double dz) {
-    super(level, x, y, z, dx, dy, dz);
+  private PumpkinParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
+      double dz, SpriteSet sprites) {
+    super(level, x, y, z, dx, dy, dz, sprites);
     this.gravity = -0.01F;
     this.lifetime = (int) (16.0D / (this.random.nextGaussian() * 0.8D + 0.2D));
   }
@@ -38,9 +38,7 @@ public class PumpkinParticle extends SteamParticle {
     @Override
     public Particle createParticle(SimpleParticleType type, ClientLevel level,
         double x, double y, double z, double dx, double dy, double dz) {
-      PumpkinParticle steam = new PumpkinParticle(level, x, y, z, dx, dy, dz);
-      steam.pickSprite(this.spriteSet);
-      return steam;
+      return new PumpkinParticle(level, x, y, z, dx, dy, dz, spriteSet);
     }
   }
 }

@@ -41,9 +41,11 @@ public class RefinedFirestoneItem extends FirestoneItem {
   public static final int HEAT = 250;
 
   protected int heat = HEAT;
+  protected final RandomSource random;
 
   public RefinedFirestoneItem(Properties properties) {
     super(properties);
+    this.random = RandomSource.create();
   }
 
   public static ItemStack getItemCharged() {
@@ -65,14 +67,14 @@ public class RefinedFirestoneItem extends FirestoneItem {
   public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
     ItemStack newStack;
     double damageLevel = (double) itemStack.getDamageValue() / (double) itemStack.getMaxDamage();
-    if (RandomSource.create().nextDouble() < damageLevel * 0.0001) {
+    if (random.nextDouble() < damageLevel * 0.0001) {
       newStack = CrackedFirestoneItem.getItemEmpty();
       if (itemStack.hasCustomHoverName())
         newStack.setHoverName(itemStack.getHoverName());
     } else
       newStack = itemStack.copy();
     newStack.setCount(1);
-    return newStack.hurt(1, RandomSource.create(), null) ? ItemStack.EMPTY : newStack;
+    return newStack.hurt(1, random, null) ? ItemStack.EMPTY : newStack;
   }
 
   @Override
