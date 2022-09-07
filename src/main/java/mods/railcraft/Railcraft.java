@@ -17,7 +17,8 @@ import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.RailcraftSoundsProvider;
-import mods.railcraft.data.models.RailcraftModelProvider;
+import mods.railcraft.data.models.RailcraftBlockModelProvider;
+import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.worldgen.features.RailcraftMiscOverworldFeatures;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
@@ -179,7 +180,8 @@ public class Railcraft {
     generator.addProvider(event.includeServer(),
         new RailcraftAdvancementProviders(generator, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(generator));
-    generator.addProvider(event.includeClient(), new RailcraftModelProvider(generator));
+    generator.addProvider(event.includeClient(), new RailcraftItemModelProvider(generator, fileHelper));
+    generator.addProvider(event.includeClient(), new RailcraftBlockModelProvider(generator, fileHelper));
     generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(generator));
     generator.addProvider(event.includeClient(), new RailcraftSoundsProvider(generator, fileHelper));
 

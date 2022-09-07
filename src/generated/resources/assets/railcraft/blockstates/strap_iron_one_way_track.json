@@ -2,11 +2,14 @@
   "multipart": [
     {
       "apply": {
-        "model": "railcraft:block/strap_iron_track_outfitted",
-        "y": 0
+        "model": "railcraft:block/strap_iron_track_outfitted"
       },
       "when": {
-        "shape": "north_south"
+        "AND": [
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
@@ -15,22 +18,23 @@
         "y": 90
       },
       "when": {
-        "shape": "east_west"
+        "AND": [
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/one_way_track",
-        "y": 0
+        "model": "railcraft:block/one_way_track"
       },
       "when": {
         "AND": [
           {
-            "shape": "north_south"
-          },
-          {
             "powered": "false",
-            "reversed": "false"
+            "reversed": "false",
+            "shape": "north_south"
           }
         ]
       }
@@ -43,11 +47,23 @@
       "when": {
         "AND": [
           {
-            "shape": "east_west"
-          },
-          {
             "powered": "false",
-            "reversed": "false"
+            "reversed": "false",
+            "shape": "east_west"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/one_way_track_on"
+      },
+      "when": {
+        "AND": [
+          {
+            "powered": "true",
+            "reversed": "false",
+            "shape": "north_south"
           }
         ]
       }
@@ -55,33 +71,14 @@
     {
       "apply": {
         "model": "railcraft:block/one_way_track_on",
-        "y": 0
-      },
-      "when": {
-        "AND": [
-          {
-            "shape": "north_south"
-          },
-          {
-            "powered": "true",
-            "reversed": "false"
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/one_way_track_on",
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "shape": "east_west"
-          },
-          {
             "powered": "true",
-            "reversed": "false"
+            "reversed": "false",
+            "shape": "east_west"
           }
         ]
       }
@@ -94,11 +91,9 @@
       "when": {
         "AND": [
           {
-            "shape": "north_south"
-          },
-          {
             "powered": "false",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "north_south"
           }
         ]
       }
@@ -111,11 +106,9 @@
       "when": {
         "AND": [
           {
-            "shape": "east_west"
-          },
-          {
             "powered": "false",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "east_west"
           }
         ]
       }
@@ -128,11 +121,9 @@
       "when": {
         "AND": [
           {
-            "shape": "north_south"
-          },
-          {
             "powered": "true",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "north_south"
           }
         ]
       }
@@ -145,11 +136,9 @@
       "when": {
         "AND": [
           {
-            "shape": "east_west"
-          },
-          {
             "powered": "true",
-            "reversed": "true"
+            "reversed": "true",
+            "shape": "east_west"
           }
         ]
       }

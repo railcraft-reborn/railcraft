@@ -1,5 +1,6 @@
 {
   "parent": "railcraft:block/template_force_track",
+  "render_type": "minecraft:cutout",
   "textures": {
     "rail": "railcraft:block/force_track"
   }
