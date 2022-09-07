@@ -1,23 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "B": {
-      "item": "minecraft:stone_button"
-    },
-    "C": {
+    "a": {
       "item": "minecraft:compass"
     },
-    "G": {
+    "b": {
       "tag": "forge:glass_panes"
     },
-    "R": {
+    "c": {
+      "item": "minecraft:stone_button"
+    },
+    "d": {
       "tag": "forge:dusts/redstone"
     }
   },
   "pattern": [
-    " C ",
-    "BGB",
-    " R "
+    " a ",
+    "cbc",
+    " d "
   ],
   "result": {
     "item": "railcraft:signal_block_surveyor"

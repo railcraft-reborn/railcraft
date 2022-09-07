@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:gated_track_kit"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_track_parts": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:track_parts"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_track_parts",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:gated_track_kit"
+    ]
+  }
+}

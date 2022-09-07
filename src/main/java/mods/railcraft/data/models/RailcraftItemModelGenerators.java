@@ -30,6 +30,7 @@ public class RailcraftItemModelGenerators {
 
     this.generateFlatItem(RailcraftItems.TURBINE_ROTOR.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.TURBINE_BLADE.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.TURBINE_DISK.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get(), ModelTemplates.FLAT_ITEM);
@@ -61,12 +62,14 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.STEEL_HELMET.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.CREOSOTE_BUCKET.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.CREOSOTE_BOTTLE.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.TICKET.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.CONTROLLER_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.RECEIVER_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.SIGNAL_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.RADIO_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);
 
     this.generateFlatItem(RailcraftItems.WOODEN_RAIL.get(),
         ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
@@ -81,9 +84,9 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.REINFORCED_RAIL.get(),
         ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
 
+    this.generateFlatItem(RailcraftItems.BAG_OF_CEMENT.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.WOODEN_RAILBED.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.WOODEN_TIE.get(), ModelTemplates.FLAT_ITEM);
-
     this.generateFlatItem(RailcraftItems.STONE_RAILBED.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.STONE_TIE.get(), ModelTemplates.FLAT_ITEM);
 
@@ -192,5 +195,8 @@ public class RailcraftItemModelGenerators {
     this.generateFlatItem(RailcraftItems.CHARGE_SPOOL_LARGE.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.CHARGE_SPOOL_MEDIUM.get(), ModelTemplates.FLAT_ITEM);
     this.generateFlatItem(RailcraftItems.CHARGE_SPOOL_SMALL.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.CHARGE_COIL.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.CHARGE_TERMINAL.get(), ModelTemplates.FLAT_ITEM);
+    this.generateFlatItem(RailcraftItems.CHARGE_MOTOR.get(), ModelTemplates.FLAT_ITEM);
   }
 }

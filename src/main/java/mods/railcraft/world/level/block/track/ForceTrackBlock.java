@@ -68,6 +68,7 @@ public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
   @Override
   public void neighborChanged(BlockState blockState,
       Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean moved) {
+    super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, moved);
     if (neighborBlock != this) {
       BlockEntity tile = level.getBlockEntity(pos);
       if (tile instanceof ForceTrackBlockEntity) {

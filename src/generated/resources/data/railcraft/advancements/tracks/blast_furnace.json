@@ -1,0 +1,31 @@
+{
+  "parent": "railcraft:tracks/root",
+  "criteria": {
+    "blast_furnace_formed": {
+      "conditions": {
+        "type": "railcraft:blast_furnace"
+      },
+      "trigger": "railcraft:multiblock_formed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.railcraft.tracks.blast_furnace.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "railcraft:blast_furnace_bricks"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.railcraft.tracks.blast_furnace.name"
+    }
+  },
+  "requirements": [
+    [
+      "blast_furnace_formed"
+    ]
+  ]
+}

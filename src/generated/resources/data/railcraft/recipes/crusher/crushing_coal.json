@@ -1,0 +1,16 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "item": "minecraft:coal"
+  },
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 1,
+        "item": "railcraft:coal_dust"
+      }
+    }
+  ],
+  "tickCost": 200
+}

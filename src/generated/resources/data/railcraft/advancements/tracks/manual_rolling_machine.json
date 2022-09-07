@@ -1,7 +1,7 @@
 {
   "parent": "railcraft:tracks/root",
   "criteria": {
-    "has_rolling_table": {
+    "inv_changed": {
       "conditions": {
         "items": [
           {
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "has_rolling_table"
+      "inv_changed"
     ]
   ]
 }

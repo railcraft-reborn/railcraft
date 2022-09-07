@@ -2,11 +2,13 @@ package mods.railcraft.data;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.tags.RailcraftTags.Items;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class RailcraftItemTagsProvider extends ItemTagsProvider {
@@ -16,6 +18,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     super(generator, blockTagsProvider, Railcraft.ID, fileHelper);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void addTags() {
     this.tag(RailcraftTags.Items.STEEL_INGOT)
@@ -58,6 +61,22 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
     this.tag(RailcraftTags.Items.STEEL_BLOCK)
         .add(RailcraftItems.STEEL_BLOCK.get());
+    this.tag(Items.BRONZE_BLOCK)
+        .add(RailcraftItems.BRONZE_BLOCK.get());
+    this.tag(Items.BRASS_BLOCK)
+        .add(RailcraftItems.BRASS_BLOCK.get());
+    this.tag(Items.INVAR_BLOCK)
+        .add(RailcraftItems.INVAR_BLOCK.get());
+    this.tag(Items.LEAD_BLOCK)
+        .add(RailcraftItems.LEAD_BLOCK.get());
+    this.tag(Items.TIN_BLOCK)
+        .add(RailcraftItems.TIN_BLOCK.get());
+    this.tag(Items.SILVER_BLOCK)
+        .add(RailcraftItems.SILVER_BLOCK.get());
+    this.tag(Items.NICKEL_BLOCK)
+        .add(RailcraftItems.NICKEL_BLOCK.get());
+    this.tag(Items.ZINC_BLOCK)
+        .add(RailcraftItems.ZINC_BLOCK.get());
 
     this.tag(RailcraftTags.Items.STEEL_PLATE)
         .add(RailcraftItems.STEEL_PLATE.get());
@@ -120,6 +139,11 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(RailcraftTags.Items.OBSIDIAN_DUST)
         .add(RailcraftItems.OBSIDIAN_DUST.get());
 
+    this.tag(Items.CROWBAR)
+        .add(RailcraftItems.STEEL_CROWBAR.get())
+        .add(RailcraftItems.IRON_CROWBAR.get())
+        .add(RailcraftItems.DIAMOND_CROWBAR.get());
+
     this.tag(RailcraftTags.Items.IRON_TANK_WALL)
         .add(RailcraftItems.IRON_TANK_WALL.resolveVariants().toArray(Item[]::new));
     this.tag(RailcraftTags.Items.IRON_TANK_GAUGE)
@@ -138,6 +162,30 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.STRENGTHENED_GLASS.resolveVariants().toArray(Item[]::new));
     this.tag(RailcraftTags.Items.POST)
         .add(RailcraftItems.POST.resolveVariants().toArray(Item[]::new));
+
+
+    // TOOLS
+    this.tag(Items.TOOLS_AXES_STEEL).add(RailcraftItems.STEEL_AXE.get());
+    this.tag(Items.TOOLS_HOES_STEEL).add(RailcraftItems.STEEL_HOE.get());
+    this.tag(Items.TOOLS_PICKAXES_STEEL).add(RailcraftItems.STEEL_PICKAXE.get());
+    this.tag(Items.TOOLS_SHOVELS_STEEL).add(RailcraftItems.STEEL_SHOVEL.get());
+    this.tag(Items.TOOLS_SWORDS_STEEL).add(RailcraftItems.STEEL_SWORD.get());
+    this.tag(Items.ARMORS_HELMETS_STEEL).add(RailcraftItems.STEEL_HELMET.get());
+    this.tag(Items.ARMORS_CHESTPLATES_STEEL).add(RailcraftItems.STEEL_CHESTPLATE.get());
+    this.tag(Items.ARMORS_LEGGINGS_STEEL).add(RailcraftItems.STEEL_LEGGINGS.get());
+    this.tag(Items.ARMORS_BOOTS_STEEL).add(RailcraftItems.STEEL_BOOTS.get());
+
+
+    this.tag(Tags.Items.TOOLS_AXES).add(RailcraftItems.STEEL_AXE.get());
+    this.tag(Tags.Items.TOOLS_HOES).add(RailcraftItems.STEEL_HOE.get());
+    this.tag(Tags.Items.TOOLS_PICKAXES).add(RailcraftItems.STEEL_PICKAXE.get());
+    this.tag(Tags.Items.TOOLS_SHOVELS).add(RailcraftItems.STEEL_SHOVEL.get());
+    this.tag(Tags.Items.TOOLS_SWORDS).add(RailcraftItems.STEEL_SWORD.get());
+
+    this.tag(Tags.Items.ARMORS_HELMETS).addTags(Items.ARMORS_HELMETS_STEEL);
+    this.tag(Tags.Items.ARMORS_CHESTPLATES).addTags(Items.ARMORS_CHESTPLATES_STEEL);
+    this.tag(Tags.Items.ARMORS_LEGGINGS).addTags(Items.ARMORS_LEGGINGS_STEEL);
+    this.tag(Tags.Items.ARMORS_BOOTS).addTags(Items.ARMORS_BOOTS_STEEL);
   }
 
   @Override

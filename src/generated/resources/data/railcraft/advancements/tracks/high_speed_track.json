@@ -1,7 +1,7 @@
 {
   "parent": "railcraft:tracks/manual_rolling_machine",
   "criteria": {
-    "has_hs_track": {
+    "inv_changed": {
       "conditions": {
         "items": [
           {
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "has_hs_track"
+      "inv_changed"
     ]
   ]
 }

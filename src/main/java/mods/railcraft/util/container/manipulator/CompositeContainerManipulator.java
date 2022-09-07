@@ -12,7 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 /**
  * Primary interface for inventories of all types.
@@ -38,7 +38,7 @@ public interface CompositeContainerManipulator<T extends SlotAccessor>
         .flatMap(direction -> LevelUtil.getBlockEntity(level, blockPos.relative(direction))
             .filter(filter)
             .flatMap(blockEntity -> blockEntity.getCapability(
-                CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()).resolve())
+                ForgeCapabilities.ITEM_HANDLER, direction.getOpposite()).resolve())
             .stream())
         .map(ContainerManipulator::of);
   }

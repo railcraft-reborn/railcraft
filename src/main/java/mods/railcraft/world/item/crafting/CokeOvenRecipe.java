@@ -2,7 +2,7 @@ package mods.railcraft.world.item.crafting;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import mods.railcraft.data.recipes.CokeOvenRecipeBuilder;
+import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,8 +31,14 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
     return this.creosote;
   }
 
-  public FluidStack assembleFluid() {
-    return this.getCreosote().copy();
+  @Override
+  public RecipeSerializer<?> getSerializer() {
+    return RailcraftRecipeSerializers.COKING.get();
+  }
+
+  @Override
+  public boolean isSpecial() {
+    return true;
   }
 
   @Override
@@ -40,46 +46,41 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
     return new ItemStack(RailcraftBlocks.COKE_OVEN_BRICKS.get());
   }
 
-  @Override
-  public RecipeSerializer<?> getSerializer() {
-    return RailcraftRecipeSerializers.COKING.get();
-  }
-
   public static class Serializer implements RecipeSerializer<CokeOvenRecipe> {
 
     @Override
-    public CokeOvenRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {
-      var group = GsonHelper.getAsString(jsonObject, "group", "");
-      var cookingTime = GsonHelper.getAsInt(jsonObject, "cookingTime",
+    public CokeOvenRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+      var group = GsonHelper.getAsString(json, "group", "");
+      var cookingTime = GsonHelper.getAsInt(json, "cookingTime",
           CokeOvenRecipeBuilder.DEFAULT_COOKING_TIME);
-      var creosoteOutput = GsonHelper.getAsInt(jsonObject, "creosoteOutput", 1000); // 1 bucket
-      var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(jsonObject, "ingredient"));
-      var result = itemFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
-      var experience = GsonHelper.getAsFloat(jsonObject, "experience", 0.0F);
-      return new CokeOvenRecipe(id, group, ingredient, result, experience, cookingTime,
+      var creosoteOutput = GsonHelper.getAsInt(json, "creosoteOutput", 1000); // 1 bucket
+      var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "ingredient"));
+      var result = itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
+      var experience = GsonHelper.getAsFloat(json, "experience", 0.0F);
+      return new CokeOvenRecipe(recipeId, group, ingredient, result, experience, cookingTime,
           creosoteOutput);
     }
 
     @Override
-    public CokeOvenRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf in) {
-      var group = in.readUtf();
-      var creosoteOutput = in.readVarInt();
-      var cookingTime = in.readVarInt();
-      var ingredient = Ingredient.fromNetwork(in);
-      var result = in.readItem();
-      var experience = in.readFloat();
-      return new CokeOvenRecipe(id, group, ingredient, result, experience, cookingTime,
+    public CokeOvenRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+      var group = buffer.readUtf();
+      var creosoteOutput = buffer.readVarInt();
+      var cookingTime = buffer.readVarInt();
+      var ingredient = Ingredient.fromNetwork(buffer);
+      var result = buffer.readItem();
+      var experience = buffer.readFloat();
+      return new CokeOvenRecipe(recipeId, group, ingredient, result, experience, cookingTime,
           creosoteOutput);
     }
 
     @Override
-    public void toNetwork(FriendlyByteBuf out, CokeOvenRecipe recipe) {
-      out.writeUtf(recipe.group);
-      out.writeVarInt(recipe.creosote.getAmount());
-      out.writeVarInt(recipe.cookingTime);
-      recipe.ingredient.toNetwork(out);
-      out.writeItem(recipe.result);
-      out.writeFloat(recipe.experience);
+    public void toNetwork(FriendlyByteBuf buffer, CokeOvenRecipe recipe) {
+      buffer.writeUtf(recipe.group);
+      buffer.writeVarInt(recipe.creosote.getAmount());
+      buffer.writeVarInt(recipe.cookingTime);
+      recipe.ingredient.toNetwork(buffer);
+      buffer.writeItem(recipe.result);
+      buffer.writeFloat(recipe.experience);
     }
 
     public static ItemStack itemFromJson(JsonObject json) {

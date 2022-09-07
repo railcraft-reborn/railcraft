@@ -4,9 +4,19 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.Translations.Advancement.Carts;
+import mods.railcraft.Translations.Advancement.Tracks;
+import mods.railcraft.Translations.Container;
+import mods.railcraft.Translations.Jei;
+import mods.railcraft.Translations.Signal;
+import mods.railcraft.Translations.SignalAspect;
+import mods.railcraft.Translations.SignalCapacitor;
+import mods.railcraft.Translations.Subtitle;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.material.fluid.RailcraftFluidTypes;
 import net.minecraft.data.DataGenerator;
@@ -30,23 +40,6 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, "Railcraft Outfitted Tracks");
     this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, "Railcraft Decorative Blocks");
 
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_INVALID_TRACK, "§cNo Track Found Near %s");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_BEGIN, "§dBeginning Survey");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_SUCCESS, "§aSuccessfully Paired Signals");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_INVALID_PAIR, "§cPairing Invalid");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_LOST, "§cFirst Signal No Longer Exists");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_UNLOADED,
-        "§cFirst Signal's Chunk Has Been Unloaded");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_ABANDONED, "§dSurvey Abandoned");
-    this.add(Translations.Misc.SIGNAL_SURVEYOR_INVALID_BLOCK, "§cNot a Valid Signal");
-
-    this.add(Translations.Misc.SIGNAL_TUNER_BEGIN, "§dStarted Pairing %s§d With a Receiver");
-    this.add(Translations.Misc.SIGNAL_TUNER_ABANDONED, "§dStopped Pairing");
-    this.add(Translations.Misc.SIGNAL_TUNER_UNLOADED,
-        "§cSignal Controller's Chunk Has Been Unloaded");
-    this.add(Translations.Misc.SIGNAL_TUNER_LOST, "§cSignal Controller No Longer Exists");
-    this.add(Translations.Misc.SIGNAL_TUNER_SUCCESS, "§aSuccessfully Paired Signal Receiver");
-
     this.blockTranslations();
     this.itemTranslations();
     this.entityTranslations();
@@ -55,6 +48,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.tipsTranslations();
     this.screenTranslations();
     this.jeiTranslations();
+    this.signalTranslations();
+    this.enchantmentTranslations();
+    this.advancementTranslations();
+    this.signalAspectTranslations();
+    this.signalCapacitorTranslations();
+    this.subtitleTranslations();
   }
 
   private void blockTranslations() {
@@ -67,7 +66,17 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.STEAM_TURBINE, "Steam Turbine Housing");
     this.addBlock(RailcraftBlocks.BLAST_FURNACE_BRICKS, "Blast Furnace Bricks");
     this.addBlock(RailcraftBlocks.FEED_STATION, "Feed Station");
-    this.addBlock(RailcraftBlocks.STEEL_BLOCK, "Steel Block");
+    this.addBlock(RailcraftBlocks.STEEL_BLOCK, "Block of Steel");
+    this.addBlock(RailcraftBlocks.BRASS_BLOCK, "Block of Brass");
+    this.addBlock(RailcraftBlocks.BRONZE_BLOCK, "Block of Bronze");
+    this.addBlock(RailcraftBlocks.INVAR_BLOCK, "Block of Invar");
+    this.addBlock(RailcraftBlocks.LEAD_BLOCK, "Block of Lead");
+    this.addBlock(RailcraftBlocks.NICKEL_BLOCK, "Block of Nickel");
+    this.addBlock(RailcraftBlocks.SILVER_BLOCK, "Block of Silver");
+    this.addBlock(RailcraftBlocks.TIN_BLOCK, "Block of Tin");
+    this.addBlock(RailcraftBlocks.ZINC_BLOCK, "Block of Zinc");
+    this.addBlock(RailcraftBlocks.COKE_BLOCK, "Block of Coal Coke");
+    this.addBlock(RailcraftBlocks.FIRESTONE_ORE, "Firestone Ore");
     this.addBlock(RailcraftBlocks.STEEL_ANVIL, "Steel Anvil");
     this.addBlock(RailcraftBlocks.CHIPPED_STEEL_ANVIL, "Chipped Steel Anvil");
     this.addBlock(RailcraftBlocks.DAMAGED_STEEL_ANVIL, "Damaged Steel Anvil");
@@ -91,10 +100,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX, "Analog Signal Controller Box");
     this.addBlock(RailcraftBlocks.SIGNAL_INTERLOCK_BOX, "Signal Interlock Box");
     this.addBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX, "Signal Sequencer Box");
-    this.addBlock(RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX, "Block Signal Relay Box");
+    this.addBlock(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX, "Signal Block Relay Box");
     this.addBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
+    this.addBlock(RailcraftBlocks.CRUSHER, "Crusher");
     this.addBlock(RailcraftBlocks.COKE_OVEN_BRICKS, "Coke Oven Bricks");
     this.addBlock(RailcraftBlocks.FORCE_TRACK_EMITTER, "Force Track Emitter");
+    this.addBlock(RailcraftBlocks.CRUSHED_OBSIDIAN, "Crushed Obsidian");
 
     this.addBlockColorVariants(RailcraftBlocks.STRENGTHENED_GLASS, "Strengthened Glass");
     this.addBlockColorVariants(RailcraftBlocks.POST, "Post");
@@ -113,6 +124,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SIGNAL_LAMP, "Signal Lamp");
     this.addItem(RailcraftItems.TURBINE_ROTOR, "Turbine Rotor");
     this.addItem(RailcraftItems.TURBINE_BLADE, "Turbine Blade");
+    this.addItem(RailcraftItems.TURBINE_DISK, "Turbine Disk");
     this.addItem(RailcraftItems.SLAG, "Ground Blast Furnace Slag");
     this.addItem(RailcraftItems.COAL_COKE, "Coal Coke");
     this.addItem(RailcraftItems.STEEL_SHEARS, "Steel Shears");
@@ -219,6 +231,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.CONTROLLER_CIRCUIT, "Controller Circuit");
     this.addItem(RailcraftItems.RECEIVER_CIRCUIT, "Receiver Circuit");
     this.addItem(RailcraftItems.SIGNAL_CIRCUIT, "Signal Circuit");
+    this.addItem(RailcraftItems.RADIO_CIRCUIT, "Radio Circuit");
+    this.addItem(RailcraftItems.BAG_OF_CEMENT, "Bag of Cement");
     this.addItem(RailcraftItems.WOODEN_TIE, "Wooden Tie");
     this.addItem(RailcraftItems.STONE_TIE, "Stone Tie");
     this.addItem(RailcraftItems.WOODEN_RAILBED, "Wooden Railbed");
@@ -231,6 +245,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.HIGH_SPEED_RAIL, "High Speed Rail");
     this.addItem(RailcraftItems.ELECTRIC_RAIL, "Electric Rail");
     this.addItem(RailcraftItems.CREOSOTE_BUCKET, "Creosote Bucket");
+    this.addItem(RailcraftItems.CREOSOTE_BOTTLE, "Creosote Bottle");
     this.addItem(RailcraftItems.TRACK_PARTS, "Track Parts");
     this.addItem(RailcraftItems.TRANSITION_TRACK_KIT, "Transition Track Kit");
     this.addItem(RailcraftItems.LOCKING_TRACK_KIT, "Locking Track Kit");
@@ -249,6 +264,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.CHARGE_SPOOL_LARGE, "Large Charge Wire Spool");
     this.addItem(RailcraftItems.CHARGE_SPOOL_MEDIUM, "Medium Charge Wire Spool");
     this.addItem(RailcraftItems.CHARGE_SPOOL_SMALL, "Small Charge Wire Spool");
+    this.addItem(RailcraftItems.CHARGE_COIL, "Charge Coil");
+    this.addItem(RailcraftItems.CHARGE_TERMINAL, "Charge Terminal");
+    this.addItem(RailcraftItems.CHARGE_MOTOR, "Charge Motor");
   }
 
   private void entityTranslations() {
@@ -268,6 +286,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Container.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
     this.add(Translations.Container.COKE_OVEN, "Coke Oven");
     this.add(Translations.Container.BLAST_FURNACE, "Blast Furnace");
+    this.add(Container.CRUSHER, "Crusher");
     this.add(Translations.Container.TANK, "Tank");
     this.add(Translations.Container.STEAM_TURBINE, "Steam Turbine");
     this.add(Translations.Container.SOLID_FUELED_STEAM_BOILER, "Solid Fueled Steam Boiler");
@@ -275,14 +294,109 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void tipsTranslations() {
-    this.add(Translations.Tips.ROUTING_TICKET_ISSUER, "Issuer:");
-    this.add(Translations.Tips.ROUTING_TICKET_DEST, "Destination:");
-    this.add(Translations.Tips.ROUTING_TICKET_BLANK, "Blank Ticket");
-    this.add(Translations.Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
+    this.add(Tips.ROUTING_TICKET_ISSUER, "Issuer:");
+    this.add(Tips.ROUTING_TICKET_DEST, "Destination:");
+    this.add(Tips.ROUTING_TICKET_BLANK, "Blank Ticket");
+    this.add(Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
+    this.add(Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
+    this.add(Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");
+    this.add(Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
+    this.add(Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
+    this.add(Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
+    this.add(Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
+    this.add(Tips.GOOGLES_DESC, "Right-click to change aura.");
+    this.add(Tips.GOOGLES_AURA, "Current Aura: %s");
+    this.add(Tips.GOOGLES_AURA_NONE, "None");
+    this.add(Tips.GOOGLES_AURA_SHUNTING, "Shunting");
+    this.add(Tips.GOOGLES_AURA_SIGNALLING, "Signalling");
+    this.add(Tips.GOOGLES_AURA_SURVEYING, "Surveying");
+    this.add(Tips.GOOGLES_AURA_TRACKING, "Tracking");
+    this.add(Tips.GOOGLES_AURA_TUNING, "Tuning");
+    this.add(Tips.GOOGLES_AURA_WORLDSPIKE, "Worldspike");
+    this.add(Tips.CRAWBAR_DESC, "Right-click while sneaking to link carts.");
+    this.add(Tips.CRAWBAR_LINK_BROKEN, "Link Broken");
+    this.add(Tips.CRAWBAR_LINK_CREATED, "Successfully Linked Carts");
+    this.add(Tips.CRAWBAR_LINK_FAILED, "Link Failed");
+    this.add(Tips.CRAWBAR_LINK_STARTED, "Started Linking Carts");
+    this.add(Tips.CRAWBAR_SEASON_DESC, "Current season: %s");
+    this.add(Tips.CRAWBAR_SEASON_NONE, "None");
+    this.add(Tips.CRAWBAR_SEASON_DEFAULT, "Default");
+    this.add(Tips.CRAWBAR_SEASON_CHRISTMAS, "Christmas");
+    this.add(Tips.CRAWBAR_SEASON_HALLOWEEN, "Halloween");
+    this.add(Tips.SIGNAL_LABEL_DESC1, "- Rename in Anvil -");
+    this.add(Tips.SIGNAL_LABEL_DESC2, "Right click while sneaking to name a signal or signal box");
+    this.add(Tips.SENDS_SIGNALS_TO_RECEIVERS, "Sends signals to Receivers");
+    this.add(Tips.SIGNAL_RECEIVER_BOX, "Listens to Controller signals");
+    this.add(Tips.SIGNAL_INTERLOCK_BOX, "Permits only one aspect signal to pass");
+    this.add(Tips.SIGNAL_SEQUENCER_BOX, "Loops through adjacent blocks");
+    this.add(Tips.SIGNAL_BLOCK_RELAY_BOX, "Creates chains of Signal Blocks");
+    this.add(Tips.FIRESTONE_EMPTY, "Its energies controlled, it could be useful if you could recharge it...");
+    this.add(Tips.FIRESTONE_CHARGED, "Filled with energy, you only need to exert your will onto it to release it's blistering heat...");
+    this.add(Tips.RAW_FIRESTONE, "It quickens in your hands, you can feel it in the very air around you...");
+    this.add(Tips.CUT_FIRESTONE, "Still its energies rage out of control...");
+    this.add(Tips.CURRENT_MODE, "Current Mode:");
+    this.add(Tips.LOCKING_TRACK_LOCKDOWN, "Lockdown");
+    this.add(Tips.LOCKING_TRACK_TRAIN_LOCKDOWN, "Train Lockdown");
+    this.add(Tips.LOCKING_TRACK_HOLDING, "Holding");
+    this.add(Tips.LOCKING_TRACK_TRAIN_HOLDING, "Train Holding");
+    this.add(Tips.LOCKING_TRACK_BOARDING, "Boarding");
+    this.add(Tips.LOCKING_TRACK_BOARDING_REVERSED, "Boarding Reversed");
+    this.add(Tips.LOCKING_TRACK_TRAIN_BOARDING, "Train Boarding");
+    this.add(Tips.LOCKING_TRACK_TRAIN_BOARDING_REVERSED, "Train Boarding Reversed");
+    this.add(Tips.COUPLER_TRACK_COUPLER, "Coupler");
+    this.add(Tips.COUPLER_TRACK_DECOUPLER, "Decoupler");
+    this.add(Tips.COUPLER_TRACK_AUTO_COUPLER, "Auto Coupler");
+    this.add(Tips.TRACK_KIT_CORNERS_UNSUPPORTED, "Corners are Unsupported");
+    this.add(Tips.TRACK_KIT_SLOPES_UNSUPPORTED, "Slopes are Unsupported");
+    this.add(Tips.TRACK_KIT_INVALID_TRACK_TYPE, "Invalid Track Type");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE, "Complete");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE_DESC, "Process until operation is complete.");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE, "Immediate");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE_DESC, "Process until out of room or supply.");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL, "Manual");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL_DESC, "Never emit a redstone signal.");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL, "Partial");
+    this.add(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL_DESC, "Process until out of room or supply, but keep pristine carts.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_ALL, "All");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_ALL_DESC, "Move all matching items.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS, "Excess");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS_DESC, "Move until the source matches the filter.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_STOCK, "Stock");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_STOCK_DESC, "Move until the destination matches the filter.");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER, "Transfer");
+    this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC, "Move exactly as much as is in the filter.");
+    this.add(Tips.COAL_COKE_BLOCK, "%s Fuel Units");
+    this.add(Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
+    this.add(Tips.SIGNAL_TUNER, "Links Controllers to Receivers");
+    this.add(Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");
+    this.add(Tips.PRESSURE_BOILER_TANK, "Multi-Block: Variable Size, Above Firebox");
+    this.add(Tips.PRESSURE_BOILER_TANK_PRODUCTION, "Produces %smB of Steam per tick");
+    this.add(Tips.DIMENSIONS, "Dimensions: %s");
+    this.add(Tips.APPLY_REDSTONE_TO_ENABLE, "- Apply Redstone to enable -");
+    this.add(Tips.APPLY_REDSTONE_TO_CHANGE_DIRECTION, "- Apply Redstone to change direction -");
+    this.add(Tips.APPLY_REDSTONE_TO_OPEN, "- Apply Redstone to open -");
+    this.add(Tips.APPLY_REDSTONE_TO_RELEASE_CARTS, "- Apply Redstone to release carts -");
+    this.add(Tips.COMPARATOR_OUTPUT_FROM_CARTS, "- Can be used to get Comparator output from carts -");
+    this.add(Tips.HIT_CROWBAR_TO_CHANGE_DIRECTION, "- Hit with Crowbar to change direction -");
+    this.add(Tips.HIT_CROWBAR_TO_CHANGE_DETECTION_DIRECTION, "- Hit with Crowbar to change detection direction -");
+    this.add(Tips.HIT_CROWBAR_TO_CHANGE_RANGE, "- Hit with Crowbar to change range -");
+    this.add(Tips.HIT_CROWBAR_TO_CHANGE_MODE, "- Hit with Crowbar to change mode -");
+    this.add(Tips.HIT_CROWBAR_TO_CHANGE_FORCE, "- Hit with Crowbar to change force -");
+    this.add(Tips.SLOW_UNPOWERED, "Slows if unpowered");
+    this.add(Tips.ACTIVATOR_TRACK, "Activates passing carts");
+    this.add(Tips.BOOSTER_TRACK, "Applies a boost force to the cart");
+    this.add(Tips.BUFFER_STOP_TRACK, "End of the Line");
+    this.add(Tips.CONTROL_TRACK, "Applies a small force to the cart");
+    this.add(Tips.DETECTOR_TRACK, "Emits Redstone when a cart passes in the indicated direction");
+    this.add(Tips.DISEMBARKING_TRACK, "Dismount riding entities in direction of arrow");
+    this.add(Tips.EMBARKING_TRACK, "Loads entities into carts");
+    this.add(Tips.GATED_TRACK, "Track with built-in gate");
+    this.add(Tips.COUPLER_TRACK, "Couples/Decouples passing carts");
+    this.add(Tips.LAUNCHER_TRACK, "Makes carts fly!");
+    this.add(Tips.ONE_WAY_TRACK, "Carts can only pass in the direction of the arrow");
+    this.add(Tips.LOCOMOTIVE_TRACK, "Starts/Stops locomotive");
+    this.add(Tips.LOCKING_TRACK, "Stops and holds carts");
+    this.add(Tips.TRANSITION_TRACK, "Transitions to/from high speed");
   }
 
   private void screenTranslations() {
@@ -448,15 +562,107 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ELEVATOR_TRACK, "Elevator Track");
   }
 
-  public void jeiTranslations() {
-    this.add(Translations.Jei.METAL_ROLLING, "Metal Rolling");
+  private void jeiTranslations() {
+    this.add(Jei.METAL_ROLLING, "Metal Rolling");
+    this.add(Jei.COKE_OVEN, "Coke Oven Smelting");
+    this.add(Jei.BLAST_FURNACE, "Blast Furnace Smelting");
+    this.add(Jei.CRUSHER, "Rock Crushing");
+    this.add(Jei.CRUSHER_TIP, "(%s%% chance)");
   }
 
-  public void addFluidType(Supplier<? extends FluidType> key, String name) {
+  private void signalTranslations() {
+    this.add(Signal.SIGNAL_SURVEYOR_INVALID_TRACK, "No Track Found Near %s");
+    this.add(Signal.SIGNAL_SURVEYOR_BEGIN, "Beginning Survey");
+    this.add(Signal.SIGNAL_SURVEYOR_SUCCESS, "Successfully Paired Signals");
+    this.add(Signal.SIGNAL_SURVEYOR_INVALID_PAIR, "Pairing Invalid");
+    this.add(Signal.SIGNAL_SURVEYOR_LOST, "First Signal No Longer Exists");
+    this.add(Signal.SIGNAL_SURVEYOR_UNLOADED, "First Signal's Chunk Has Been Unloaded");
+    this.add(Signal.SIGNAL_SURVEYOR_ABANDONED, "Survey Abandoned");
+    this.add(Signal.SIGNAL_SURVEYOR_INVALID_BLOCK, "Not a Valid Signal");
+
+    this.add(Signal.SIGNAL_TUNER_BEGIN, "Started Pairing %s With a Receiver");
+    this.add(Signal.SIGNAL_TUNER_ABANDONED, "Stopped Pairing");
+    this.add(Signal.SIGNAL_TUNER_UNLOADED, "Signal Controller's Chunk Has Been Unloaded");
+    this.add(Signal.SIGNAL_TUNER_LOST, "Signal Controller No Longer Exists");
+    this.add(Signal.SIGNAL_TUNER_SUCCESS, "Successfully Paired Signal Receiver");
+  }
+
+  private void enchantmentTranslations() {
+    this.addEnchantment(RailcraftEnchantments.WRECKING, "Wrecking");
+    this.addEnchantment(RailcraftEnchantments.DESTRUCTION, "Destruction");
+    this.addEnchantment(RailcraftEnchantments.IMPLOSION, "Implosion");
+    this.addEnchantment(RailcraftEnchantments.SMACK, "Smack");
+  }
+
+  private void advancementTranslations() {
+    this.add(Tracks.ROOT, "Tracks");
+    this.add(Tracks.ROOT_DESC, "Railcraft Inc.'s dedication");
+    this.add(Tracks.MANUAL_ROLLING_MACHINE, "Tireless Rolling");
+    this.add(Tracks.MANUAL_ROLLING_MACHINE_DESC, "Build a manual rolling machine out of alloys");
+    this.add(Tracks.BLAST_FURNACE, "Steel Mill");
+    this.add(Tracks.BLAST_FURNACE_DESC, "Build a blast furnace");
+    this.add(Tracks.COKE_OVEN, "Coke Head");
+    this.add(Tracks.COKE_OVEN_DESC, "Read a coke oven brick's tooltip and build a complete one");
+    this.add(Tracks.CRUSHER, "Heavy Machinery");
+    this.add(Tracks.CRUSHER_DESC, "Build a crusher");
+    this.add(Tracks.FIRESTONE, "Intractable Energy");
+    this.add(Tracks.FIRESTONE_DESC, "Find a firestone ore on the floor of nether lava ocean and crush it with a rock crusher");
+    this.add(Tracks.HIGH_SPEED_TRACK, "Fired up Carts");
+    this.add(Tracks.HIGH_SPEED_TRACK_DESC, "Get some high speed tracks and ride your carts on them");
+    this.add(Tracks.JUNCTIONS, "Better Forks");
+    this.add(Tracks.JUNCTIONS_DESC, "Turn a regular track into turnouts, wyes, and intersections with a spike maul");
+    this.add(Tracks.REGULAR_TRACK, "Reasonably Priced");
+    this.add(Tracks.REGULAR_TRACK_DESC, "Manufacture tracks made of regular rails");
+    this.add(Tracks.WOODEN_TRACK, "Wood Age");
+    this.add(Tracks.WOODEN_TRACK_DESC, "Get some strap iron tracks that require very few iron");
+    this.add(Tracks.TRACK_KIT, "Multifunctional Rails");
+    this.add(Tracks.TRACK_KIT_DESC, "Make and place track kits on your flex tracks to empower them like this buffer stop one");
+
+    this.add(Carts.ROOT, "Railcraft Carts");
+    this.add(Carts.ROOT_DESC, "Vehicles and magic from Railcraft");
+    this.add(Carts.BED_CART, "Dreams on the wheels");
+    this.add(Carts.BED_CART_DESC, "Sleeping while riding the bed cart");
+    this.add(Carts.JUKEBOX_CART, "Moving Music");
+    this.add(Carts.JUKEBOX_CART_DESC, "Play a record in a jukebox cart");
+    this.add(Carts.LINK_CARTS, "Linking Carts");
+    this.add(Carts.LINK_CARTS_DESC, "Never forget to sneak!");
+    this.add(Carts.LOCOMOTIVE, "Rolling Through");
+    this.add(Carts.LOCOMOTIVE_DESC, "Power your train with locomotives");
+    this.add(Carts.SEASONS, "Anachronism");
+    this.add(Carts.SEASONS_DESC, "Tweak with a seasons crowbar the season of a cart");
+    this.add(Carts.SURPRISE, "Opportune Kaboom");
+    this.add(Carts.SURPRISE_DESC, "Explode a seasonal cart and collect (really?) gifts");
+  }
+
+  private void signalAspectTranslations() {
+    this.add(SignalAspect.GREEN, "Green");
+    this.add(SignalAspect.BLINK_YELLOW, "Blink Yellow");
+    this.add(SignalAspect.YELLOW, "Yellow");
+    this.add(SignalAspect.BLINK_RED, "Blink Red");
+    this.add(SignalAspect.RED, "Red");
+    this.add(SignalAspect.OFF, "Off");
+  }
+
+  private void signalCapacitorTranslations() {
+    this.add(SignalCapacitor.RISING_EDGE, "Rising Edge");
+    this.add(SignalCapacitor.RISING_EDGE_DESC, "Start timer as soon as the input signal is received.");
+    this.add(SignalCapacitor.FALLING_EDGE, "Falling Edge");
+    this.add(SignalCapacitor.FALLING_EDGE_DESC, "Start timer when the last input signal turns off.");
+  }
+
+  private void subtitleTranslations() {
+    this.add(Subtitle.STEAM_WHISTLE, "Steam Locomotive Whistle");
+    this.add(Subtitle.ELECTRIC_WHISTLE, "Electric Locomotive Whistle");
+    this.add(Subtitle.STEAM_BURST, "Machine Steam Burst");
+    this.add(Subtitle.STEAM_HISS, "Machine Steam Hiss");
+    this.add(Subtitle.MACHINE_ZAP, "Machine Zap");
+  }
+
+  private void addFluidType(Supplier<? extends FluidType> key, String name) {
     this.add(key.get(), name);
   }
 
-  public void add(FluidType key, String name) {
+  private void add(FluidType key, String name) {
     this.add(key.getDescriptionId(), name);
   }
 

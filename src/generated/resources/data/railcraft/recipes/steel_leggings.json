@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "a a",
+    "a a"
+  ],
+  "result": {
+    "item": "railcraft:steel_leggings"
+  }
+}

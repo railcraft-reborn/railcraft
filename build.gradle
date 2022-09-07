@@ -1,52 +1,34 @@
+import static org.apache.commons.lang3.StringUtils.repeat
 buildscript {
-    repositories {
-        maven {
-            name 'forge'
-            url 'https://maven.minecraftforge.net/'
-        }
-        mavenCentral()
-        maven {
-            name 'sponge'
-            url 'https://repo.spongepowered.org/repository/maven-public'
-        }
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-        maven {
-            name 'parchment'
-            url 'https://maven.parchmentmc.org'
-        }
-    }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-        classpath 'net.covers1624:JarSignPlugin:1.1.4' // signing.
-        classpath 'org.parchmentmc:librarian:1.+'
+        classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+plugins {
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.covers1624.signing' version '1.1.4'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+}
 apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'net.covers1624.signing'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-def isCI = System.getenv("GITHUB_ACTION")
-def nightly = System.getenv("GITHUB_NIGHTLY")
-def ref = System.getenv("GITHUB_PR_NUMBER")
+def isCI = System.getenv('GITHUB_ACTION')
+def nightly = System.getenv('GITHUB_NIGHTLY')
+def ref = System.getenv('GITHUB_PR_NUMBER')
 
-def tag = nightly ? "NIGHTLY" : "CI"
-def suffix = "-${tag}" + (ref ? "-${ref}" : "")
+def tag = nightly ? 'NIGHTLY' : 'CI'
+def suffix = "-${tag}" + (ref ? "-${ref}" : '')
 
 def signProps = [:]
-if (System.getenv("SECURE_SIGN")) {
-    println("Using Env variables for jar signing.")
-    signProps['keyStore'] = System.getenv("KEY_STORE")
+if (System.getenv('SECURE_SIGN')) {
+    println('Using Env variables for jar signing.')
+    signProps['keyStore'] = System.getenv('KEY_STORE')
     signProps['storePass'] = System.getenv('KEY_STORE_PASS')
     signProps['keyPass'] = System.getenv('KEY_STORE_KEY_PASS')
 } else if (project.hasProperty('keyStore')) {
-    println("Using Project properties for jar signing.")
+    println('Using Project properties for jar signing.')
     signProps['keyStore'] = project.getProperty('keyStore')
     signProps['storePass'] = project.getProperty('keyStorePass')
     signProps['keyPass'] = project.getProperty('keyStoreKeyPass')
@@ -58,7 +40,7 @@ if (isCI) {
     version = version + suffix
 }
 if (isCI || nightly) {
-    version = version + "-" + 'git rev-parse --short HEAD'.execute().text.trim()
+    version = version + '-' + 'git rev-parse --short HEAD'.execute().text.trim()
 }
 
 group = 'mods.railcraft'
@@ -70,20 +52,18 @@ java {
     }
 }
 
-println('')
-println('*************************************************************')
+println(repeat('*', 60))
 println('Project Version: ' + version)
 if (isCI) {
-    println("Running in Github Workflow ${tag}" + (ref ? " pull request ${ref}." : "."))
+    println("Running in Github Workflow ${tag}" + (ref ? " pull request ${ref}." : '.'))
 }
 if (!signProps.isEmpty()) {
-    println("With .jar signing.")
+    println('With .jar signing.')
 }
 println('Java: ' + System.getProperty('java.version'))
 println('JVM: ' + System.getProperty('java.vm.version') + ' (' + System.getProperty('java.vendor') + ')')
 println('Arch: ' + System.getProperty('os.arch'))
-println('*************************************************************')
-println('')
+println(repeat('*', 60))
 
 sourceSets {
     api {
@@ -105,12 +85,12 @@ configurations {
 }
 
 minecraft {
-    if (project.mappings_channel == "parchment_previous") {
+    if (project.mappings_channel == 'parchment_previous') {
         mappings channel: 'parchment', version: "${project.previous_minecraft_version}-${project.mappings_version}-${project.minecraft_version}"
-    } else if (project.mappings_channel == 'official'){
-        mappings channel: 'official', version: "${project.minecraft_version}"
+    } else if (project.mappings_channel == 'parchment'){
+        mappings channel: 'parchment', version: "${project.mappings_version}-${project.minecraft_version}"
     } else {
-        mappings channel: "${project.mappings_channel}", version: "${project.mappings_version}"
+        mappings channel: 'official', version: "${project.minecraft_version}"
     }
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -177,9 +157,8 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
-    implementation group: 'org.spongepowered', name: 'mixin', version: "${project.mixin_version}"
-    annotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
-    testAnnotationProcessor("org.spongepowered:mixin:${project.mixin_version}:processor")
+    annotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor"
+    testAnnotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor"
 
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge-api:${project.jei_version}")
@@ -190,11 +169,11 @@ jar {
     from([sourceSets.api.output, sourceSets.main.output])
     manifest {
         attributes([
-            "Implementation-Title": project.name,
-            "Implementation-Version": project.version,
-            "Implementation-Commit": 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": 'railcraft.mixins.json'
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+            'Implementation-Commit': 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
+            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'MixinConfigs': 'railcraft.mixins.json'
         ])
     }
     finalizedBy('reobfJar')
@@ -213,7 +192,7 @@ signing {
             keyStore = signProps.keyStore
             storePass = signProps.storePass
 
-            alias = "railcraft"
+            alias = 'railcraft'
             keyPass = signProps.keyPass
         }
     }

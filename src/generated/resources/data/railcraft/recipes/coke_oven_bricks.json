@@ -1,19 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "B": {
+    "a": {
+      "item": "minecraft:sand"
+    },
+    "b": {
       "item": "minecraft:brick"
     },
-    "S": {
-      "tag": "forge:sand"
+    "c": {
+      "item": "minecraft:clay"
     }
   },
   "pattern": [
-    "SBS",
-    "BSB",
-    "SBS"
+    "aba",
+    "bcb",
+    "aba"
   ],
   "result": {
+    "count": 2,
     "item": "railcraft:coke_oven_bricks"
   }
 }

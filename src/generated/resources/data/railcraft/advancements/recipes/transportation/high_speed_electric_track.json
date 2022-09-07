@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_high_speed_rail": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:high_speed_rail"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_stone_railbed": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:stone_railbed"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:high_speed_electric_track"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_high_speed_rail",
+      "has_stone_railbed",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:high_speed_electric_track"
+    ]
+  }
+}

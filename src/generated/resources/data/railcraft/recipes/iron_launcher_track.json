@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:launcher_track_kit"
+    },
+    {
+      "item": "minecraft:rail"
+    }
+  ],
+  "result": {
+    "item": "railcraft:iron_launcher_track"
+  }
+}

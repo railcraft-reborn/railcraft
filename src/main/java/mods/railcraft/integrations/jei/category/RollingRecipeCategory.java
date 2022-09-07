@@ -23,12 +23,12 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
   private static final ResourceLocation CRAFTING_TABLE =
       new ResourceLocation("textures/gui/container/crafting_table.png");
 
-  private final IGuiHelper guiHelper;
-  private final ItemStack icon;
+  private final IDrawable background, icon;
 
   public RollingRecipeCategory(IGuiHelper guiHelper) {
-    this.guiHelper = guiHelper;
-    this.icon = new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get());
+    this.background = guiHelper.createDrawable(CRAFTING_TABLE, 29, 16, WIDTH, HEIGHT);
+    var itemStack = new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get());
+    this.icon = guiHelper.createDrawableItemStack(itemStack);
   }
 
   @Override
@@ -43,12 +43,12 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
 
   @Override
   public IDrawable getBackground() {
-    return guiHelper.createDrawable(CRAFTING_TABLE, 29, 16, WIDTH, HEIGHT);
+    return background;
   }
 
   @Override
   public IDrawable getIcon() {
-    return guiHelper.createDrawableItemStack(icon);
+    return icon;
   }
 
   @Override

@@ -1,0 +1,12 @@
+{
+  "type": "railcraft:coking",
+  "cookingTime": 1800,
+  "creosoteOutput": 250,
+  "experience": 0.0,
+  "ingredient": {
+    "tag": "minecraft:logs"
+  },
+  "result": {
+    "item": "minecraft:charcoal"
+  }
+}

@@ -4,10 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -94,18 +96,18 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   }
 
   @Override
-  public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos,
+  public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos,
       LivingEntity entityLiving) {
-    if (!world.isClientSide())
-      if (entityLiving instanceof Player) {
-        Player player = (Player) entityLiving;
+    if (!level.isClientSide())
+      if (entityLiving instanceof Player player) {
         if (!player.isShiftKeyDown()) {
-          int level = stack.getEnchantmentLevel(RailcraftEnchantments.DESTRUCTION.get()) * 2 + 1;
-          if (level > 1)
-            checkBlock(world, level, pos, player);
+          int enchantLevel =
+              stack.getEnchantmentLevel(RailcraftEnchantments.DESTRUCTION.get()) * 2 + 1;
+          if (enchantLevel > 1)
+            checkBlock(level, enchantLevel, pos, player);
         }
       }
-    return super.mineBlock(stack, world, state, pos, entityLiving);
+    return super.mineBlock(stack, level, state, pos, entityLiving);
   }
 
   /**
@@ -177,7 +179,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> info,
       TooltipFlag adv) {
-    info.add(Component.translatable("crowbar.description"));
+    info.add(Component.translatable(Tips.CRAWBAR_DESC).withStyle(ChatFormatting.ITALIC));
   }
 
   private void removeExtraBlocks(Level world, int level, BlockPos pos, BlockState state,

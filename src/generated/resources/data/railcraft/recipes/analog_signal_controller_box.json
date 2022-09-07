@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:iron_ingot"
+    },
+    "b": {
+      "item": "railcraft:controller_circuit"
+    },
+    "c": {
+      "item": "minecraft:comparator"
+    }
+  },
+  "pattern": [
+    "aba",
+    "aca"
+  ],
+  "result": {
+    "item": "railcraft:analog_signal_controller_box"
+  }
+}

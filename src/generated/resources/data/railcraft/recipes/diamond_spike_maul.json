@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "forge:gems/diamond"
+    },
+    "b": {
+      "item": "minecraft:stick"
+    },
+    "c": {
+      "tag": "forge:storage_blocks/diamond"
+    }
+  },
+  "pattern": [
+    "aca",
+    " b ",
+    " b "
+  ],
+  "result": {
+    "item": "railcraft:diamond_spike_maul"
+  }
+}

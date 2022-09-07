@@ -6,7 +6,7 @@
     "railcraft:signal_sequencer_box",
     "railcraft:signal_capacitor_box",
     "railcraft:signal_interlock_box",
-    "railcraft:block_signal_relay_box",
+    "railcraft:signal_block_relay_box",
     "railcraft:signal_receiver_box",
     "railcraft:signal_controller_box",
     "railcraft:dual_block_signal",

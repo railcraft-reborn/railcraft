@@ -20,7 +20,7 @@ import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
@@ -39,7 +39,7 @@ public enum StackFilter implements Predicate<ItemStack> {
   BALLAST(itemStack -> itemStack.getItem() instanceof BlockItem blockItem
       && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),
   FLUID_CONTAINER(itemStack -> itemStack
-      .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+      .getCapability(ForgeCapabilities.FLUID_HANDLER)
       .isPresent()),
   FEED(itemStack -> itemStack.getItem().getFoodProperties(itemStack, null) != null
       || itemStack.getItem() == Items.WHEAT
@@ -81,14 +81,14 @@ public enum StackFilter implements Predicate<ItemStack> {
    * Matches against the provided Item.
    */
   public static Predicate<ItemStack> of(final Item item) {
-    return itemStack -> !itemStack.isEmpty() && itemStack.getItem() == item;
+    return itemStack -> !itemStack.isEmpty() && itemStack.is(item);
   }
 
   /**
    * Matches against the provided Item.
    */
   public static Predicate<ItemStack> of(final Block block) {
-    return itemStack -> !itemStack.isEmpty() && itemStack.getItem() == block.asItem();
+    return itemStack -> !itemStack.isEmpty() && itemStack.is(block.asItem());
   }
 
   /**

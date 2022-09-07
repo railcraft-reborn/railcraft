@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.track;
 
 import java.util.UUID;
 import javax.annotation.Nullable;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.api.event.CartLockdownEvent;
 import mods.railcraft.api.track.LockingTrack;
 import mods.railcraft.api.track.RailShapeUtil;
@@ -22,7 +23,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -111,15 +111,14 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   }
 
   // Called by block
-  public boolean crowbarWhack(Player player, ItemStack itemStack) {
+  public boolean crowbarWhack(Player player) {
     final var lockingMode = LockingTrackBlock.getLockingMode(this.getBlockState());
     var newLockingMode = player.isCrouching() ? lockingMode.previous() : lockingMode.next();
     if (!this.level.isClientSide()) {
       this.setLockingMode(newLockingMode);
-      player.displayClientMessage(
-          Component.translatable("locking_track.mode",
-              newLockingMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE)),
-          true);
+      var currentMode = Component.translatable(Tips.CURRENT_MODE);
+      var mode = newLockingMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
+      player.displayClientMessage(currentMode.append(" ").append(mode), true);
     }
     return true;
   }

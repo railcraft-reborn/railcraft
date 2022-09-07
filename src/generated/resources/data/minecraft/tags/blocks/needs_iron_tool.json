@@ -1,0 +1,13 @@
+{
+  "values": [
+    "railcraft:steel_block",
+    "railcraft:brass_block",
+    "railcraft:bronze_block",
+    "railcraft:invar_block",
+    "railcraft:lead_block",
+    "railcraft:nickel_block",
+    "railcraft:silver_block",
+    "railcraft:tin_block",
+    "railcraft:zinc_block"
+  ]
+}

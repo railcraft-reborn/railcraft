@@ -3,6 +3,8 @@ package mods.railcraft.world.inventory;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
 import mods.railcraft.util.container.StackFilter;
+import mods.railcraft.world.inventory.slot.ItemFilterSlot;
+import mods.railcraft.world.inventory.slot.OutputSlot;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import mods.railcraft.world.module.FluidFueledSteamBoilerModule;
 import mods.railcraft.world.module.SteamBoilerModule;

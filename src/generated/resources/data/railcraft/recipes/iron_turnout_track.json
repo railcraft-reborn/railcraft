@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "railcraft:standard_rail"
+    },
+    "b": {
+      "item": "railcraft:wooden_railbed"
+    }
+  },
+  "pattern": [
+    "aba",
+    "aaa",
+    "aaa"
+  ],
+  "result": {
+    "count": 16,
+    "item": "railcraft:iron_turnout_track"
+  }
+}

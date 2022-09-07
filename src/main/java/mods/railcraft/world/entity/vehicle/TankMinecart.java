@@ -34,10 +34,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class TankMinecart extends FilteredMinecart implements WorldlyContainer, FluidMinecart {
 
@@ -98,7 +98,7 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+    return capability == ForgeCapabilities.FLUID_HANDLER
         ? LazyOptional.of(() -> this.tankManager).cast()
         : super.getCapability(capability, facing);
   }

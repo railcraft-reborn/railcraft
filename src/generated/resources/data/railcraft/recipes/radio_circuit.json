@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "tag": "forge:slimeballs"
+    },
+    "G": {
+      "tag": "forge:ingots/gold"
+    },
+    "L": {
+      "tag": "forge:gems/lapis"
+    },
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "S": {
+      "tag": "forge:dusts/redstone"
+    },
+    "W": {
+      "item": "minecraft:blue_wool"
+    }
+  },
+  "pattern": [
+    " RW",
+    "BGS",
+    "WSL"
+  ],
+  "result": {
+    "item": "railcraft:radio_circuit"
+  }
+}

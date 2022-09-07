@@ -1,12 +1,12 @@
 {
-  "type": "railcraft:coking",
-  "cookingTime": 1800,
-  "creosoteOutput": 500,
-  "experience": 0.0,
-  "ingredient": {
-    "item": "minecraft:coal"
-  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:coal_coke_block"
+    }
+  ],
   "result": {
+    "count": 9,
     "item": "railcraft:coal_coke"
   }
 }

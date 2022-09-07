@@ -1,6 +1,7 @@
 package mods.railcraft.world.item.enchantment;
 
 import mods.railcraft.api.item.Crowbar;
+import mods.railcraft.world.item.SpikeMaulItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -14,8 +15,8 @@ public class RailcraftToolEnchantment extends Enchantment {
 
   @Override
   public boolean canEnchant(ItemStack stack) {
-    return stack.getItem() instanceof Crowbar;
-    // || stack.getItem() instanceof ItemSpikeMaul;
+    var item = stack.getItem();
+    return item instanceof Crowbar || item instanceof SpikeMaulItem;
   }
 
   @Override

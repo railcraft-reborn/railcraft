@@ -1,17 +1,13 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.NotImplementedException;
 import com.google.common.collect.ImmutableList;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
@@ -28,7 +24,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -43,7 +39,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   public static final int PAUSE_DELAY = 4;
 
   private static final Set<RedstoneMode> SUPPORTED_REDSTONE_MODES =
-      Collections.unmodifiableSet(EnumSet.allOf(RedstoneMode.class));
+      Set.copyOf(EnumSet.allOf(RedstoneMode.class));
 
   private final AdvancedContainer cartFiltersInventory =
       new AdvancedContainer(2).listener((Container) this).phantom();
@@ -271,7 +267,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putString("redstoneMode", this.redstoneMode.getSerializedName());
+    tag.putInt("redstoneMode", this.redstoneMode.ordinal());
     tag.put("cartFilters", this.getCartFilters().createTag());
   }
 
@@ -279,94 +275,107 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   public void load(CompoundTag tag) {
     super.load(tag);
     this.setPowered(ManipulatorBlock.isPowered(this.getBlockState()));
-    this.redstoneMode =
-        RedstoneMode.getByName(tag.getString("redstoneMode")).orElse(RedstoneMode.COMPLETE);
+    this.redstoneMode = RedstoneMode.values()[tag.getInt("redstoneMode")];
     this.getCartFilters().fromTag(tag.getList("cartFilters", Tag.TAG_COMPOUND));
   }
 
-  public enum TransferMode implements ButtonState<TransferMode>, StringRepresentable {
+  public enum TransferMode implements ButtonState<TransferMode> {
 
-    ALL("all", Component.literal("\u27a7\u27a7\u27a7")),
-    EXCESS("excess", Component.literal("#\u27a7\u27a7")),
-    STOCK("stock", Component.literal("\u27a7\u27a7#")),
-    TRANSFER("transfer", Component.literal("\u27a7#\u27a7"));
-
-    private static final Map<String, TransferMode> byName = Arrays.stream(values())
-        .collect(
-            Collectors.toUnmodifiableMap(TransferMode::getSerializedName, Function.identity()));
-
-    private final String name;
-    private final Component label;
-    private final List<Component> tooltip;
-
-    private TransferMode(String name, Component label) {
-      this.name = name;
-      this.label = label;
-      final String translationKey = "manipulator.transfer_mode." + name;
-      this.tooltip = ImmutableList.of(
-          label.copy().withStyle(ChatFormatting.WHITE),
-          Component.translatable(translationKey).withStyle(ChatFormatting.DARK_GREEN),
-          Component.translatable(translationKey + ".description"));
-    }
+    ALL,
+    EXCESS,
+    STOCK,
+    TRANSFER;
 
     @Override
     public Component getLabel() {
-      return this.label;
+      return Component.literal(switch (this.ordinal()) {
+        case 0 -> "\u27a7\u27a7\u27a7";
+        case 1 -> "#\u27a7\u27a7";
+        case 2 -> "\u27a7\u27a7#";
+        case 3 -> "\u27a7#\u27a7";
+        default -> throw new NotImplementedException();
+      });
+    }
+
+    @Override
+    public List<Component> getTooltip() {
+      var line1 = getLabel().copy().withStyle(ChatFormatting.WHITE);
+      MutableComponent line2, line3;
+      switch (this.ordinal()) {
+        case 0 -> {
+          line2 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_ALL);
+          line3 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_ALL_DESC);
+        }
+        case 1 -> {
+          line2 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS);
+          line3 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS_DESC);
+        }
+        case 2 -> {
+          line2 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_STOCK);
+          line3 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_STOCK_DESC);
+        }
+        case 3 -> {
+          line2 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER);
+          line3 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC);
+        }
+        default -> throw new NotImplementedException();
+      }
+      return ImmutableList.of(line1, line2.withStyle(ChatFormatting.DARK_GREEN), line3);
     }
 
     @Override
     public TexturePosition getTexturePosition() {
       return ButtonTexture.SMALL_BUTTON;
-    }
-
-    @Override
-    public List<Component> getTooltip() {
-      return this.tooltip;
     }
 
     @Override
     public TransferMode getNext() {
       return values()[(this.ordinal() + 1) % values().length];
     }
-
-    @Override
-    public String getSerializedName() {
-      return this.name;
-    }
-
-    public static Optional<TransferMode> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
-    }
   }
 
-  public enum RedstoneMode implements ButtonState<RedstoneMode>, StringRepresentable {
+  public enum RedstoneMode implements ButtonState<RedstoneMode> {
 
-    COMPLETE("complete", Component.literal("\u2714")),
-    IMMEDIATE("immediate", Component.literal("\u2762")),
-    MANUAL("manual", Component.literal("\u2718")),
-    PARTIAL("partial", Component.literal("\u27a7"));
-
-    private static final Map<String, RedstoneMode> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(
-            RedstoneMode::getSerializedName, Function.identity()));
-
-    private final String name;
-    private final Component label;
-    private final List<Component> tooltip;
-
-    private RedstoneMode(String name, Component label) {
-      this.name = name;
-      this.label = label;
-      final String translationKey = "manipulator.redstone_mode." + name;
-      this.tooltip = ImmutableList.of(
-          label.copy().withStyle(ChatFormatting.WHITE),
-          Component.translatable(translationKey).withStyle(ChatFormatting.DARK_GREEN),
-          Component.translatable(translationKey + ".description"));
-    }
+    COMPLETE,
+    IMMEDIATE,
+    MANUAL,
+    PARTIAL;
 
     @Override
     public Component getLabel() {
-      return this.label;
+      return Component.literal(switch (this.ordinal()) {
+        case 0 -> "\u2714";
+        case 1 -> "\u2762";
+        case 2 -> "\u2718";
+        case 3 -> "\u27a7";
+        default -> throw new NotImplementedException();
+      });
+    }
+
+    @Override
+    public List<Component> getTooltip() {
+      var line1 = getLabel().copy().withStyle(ChatFormatting.WHITE);
+      MutableComponent line2, line3;
+      switch (this.ordinal()) {
+        case 0 -> {
+          line2 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE);
+          line3 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE_DESC);
+        }
+        case 1 -> {
+          line2 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE);
+          line3 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE_DESC);
+        }
+        case 2 -> {
+          line2 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL);
+          line3 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL_DESC);
+        }
+        case 3 -> {
+          line2 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL);
+          line3 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL_DESC);
+        }
+        default -> throw new NotImplementedException();
+      }
+      return ImmutableList.of(line1, line2.withStyle(ChatFormatting.DARK_GREEN), line3);
     }
 
     @Override
@@ -375,22 +384,8 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     }
 
     @Override
-    public List<Component> getTooltip() {
-      return this.tooltip;
-    }
-
-    @Override
     public RedstoneMode getNext() {
       return values()[(this.ordinal() + 1) % values().length];
-    }
-
-    @Override
-    public String getSerializedName() {
-      return this.name;
-    }
-
-    public static Optional<RedstoneMode> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
     }
   }
 }

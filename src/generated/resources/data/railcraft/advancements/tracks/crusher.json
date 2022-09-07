@@ -1,0 +1,37 @@
+{
+  "parent": "railcraft:tracks/root",
+  "criteria": {
+    "inv_changed": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:crusher"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.railcraft.tracks.crusher.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "railcraft:crusher"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.railcraft.tracks.crusher.name"
+    }
+  },
+  "requirements": [
+    [
+      "inv_changed"
+    ]
+  ]
+}

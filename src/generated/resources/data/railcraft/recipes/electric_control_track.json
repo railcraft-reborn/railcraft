@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:control_track_kit"
+    },
+    {
+      "item": "railcraft:electric_track"
+    }
+  ],
+  "result": {
+    "item": "railcraft:electric_control_track"
+  }
+}

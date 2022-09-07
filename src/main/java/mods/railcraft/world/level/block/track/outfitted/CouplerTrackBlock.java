@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
@@ -49,14 +50,13 @@ public class CouplerTrackBlock extends PoweredOutfittedTrackBlock implements Ent
   @Override
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos blockPos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    final var mode = CouplerTrackBlock.getMode(blockState);
-    var newMode = player.isCrouching() ? mode.previous() : mode.next();
+    final var couplerMode = CouplerTrackBlock.getMode(blockState);
+    var newCouplerMode = player.isCrouching() ? couplerMode.previous() : couplerMode.next();
     if (!level.isClientSide()) {
-      level.setBlockAndUpdate(blockPos, blockState.setValue(CouplerTrackBlock.MODE, newMode));
-      player.displayClientMessage(
-          Component.translatable("coupler_track.mode",
-              newMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE)),
-          true);
+      level.setBlockAndUpdate(blockPos, blockState.setValue(CouplerTrackBlock.MODE, newCouplerMode));
+      var currentMode = Component.translatable(Tips.CURRENT_MODE);
+      var mode = newCouplerMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
+      player.displayClientMessage(currentMode.append(" ").append(mode), true);
     }
     return true;
   }

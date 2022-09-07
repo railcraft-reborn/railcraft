@@ -25,10 +25,22 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.ADVANCED_ITEM_LOADER.get());
     this.dropSelf(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get());
     this.dropSelf(RailcraftBlocks.STEEL_BLOCK.get());
+    this.dropSelf(RailcraftBlocks.BRASS_BLOCK.get());
+    this.dropSelf(RailcraftBlocks.BRONZE_BLOCK.get());
+    this.dropSelf(RailcraftBlocks.INVAR_BLOCK.get());
+    this.dropSelf(RailcraftBlocks.LEAD_BLOCK.get());
+    this.dropSelf(RailcraftBlocks.NICKEL_BLOCK.get());
+    this.dropSelf(RailcraftBlocks.SILVER_BLOCK.get());
+    this.dropSelf(RailcraftBlocks.TIN_BLOCK.get());
+    this.dropSelf(RailcraftBlocks.ZINC_BLOCK.get());
+    this.dropSelf(RailcraftBlocks.COKE_BLOCK.get());
     this.dropSelf(RailcraftBlocks.STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.FEED_STATION.get());
+    this.dropSelf(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+
+    this.dropSelf(RailcraftBlocks.FIRESTONE_ORE.get());
 
     for (var dyeColor : DyeColor.values()) {
       this.dropSelf(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
@@ -261,7 +273,7 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
 
     this.dropSelf(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get());
-    this.dropSelf(RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get());
+    this.dropSelf(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get());
     this.dropSelf(RailcraftBlocks.DISTANT_SIGNAL.get());
     this.dropSelf(RailcraftBlocks.DUAL_BLOCK_SIGNAL.get());
     this.dropSelf(RailcraftBlocks.DUAL_DISTANT_SIGNAL.get());
@@ -273,11 +285,11 @@ public class RailcraftBlockLoot extends BlockLoot {
 
     /* === machines === */
     this.dropSelf(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
+    this.dropSelf(RailcraftBlocks.CRUSHER.get());
     this.dropSelf(RailcraftBlocks.COKE_OVEN_BRICKS.get());
     this.dropSelf(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
 
     /* === misc === */
-    this.dropSelf(RailcraftBlocks.FIRESTONE.get());
     // TODO: implement this ritual thingy
     this.add(RailcraftBlocks.RITUAL.get(), noDrop());
   }

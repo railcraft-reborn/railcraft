@@ -1,12 +1,8 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import mods.railcraft.Translations.SignalCapacitor;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
@@ -18,7 +14,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -131,7 +126,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     tag.putShort("ticksPowered", this.ticksPowered);
     tag.putShort("ticksToPower", this.ticksToPower);
     tag.putString("signalAspect", this.signalAspect.getSerializedName());
-    tag.putString("mode", this.mode.getSerializedName());
+    tag.putInt("mode", this.mode.ordinal());
   }
 
   @Override
@@ -141,7 +136,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     this.ticksToPower = tag.getShort("ticksToPower");
     this.signalAspect =
         SignalAspect.getByName(tag.getString("signalAspect")).orElse(SignalAspect.OFF);
-    this.mode = Mode.getByName(tag.getString("mode")).orElse(Mode.RISING_EDGE);
+    this.mode = Mode.values()[tag.getInt("mode")];
   }
 
   @Override
@@ -167,28 +162,28 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     return this.ticksPowered > 0 ? this.signalAspect : SignalAspect.RED;
   }
 
-  public enum Mode implements ButtonState<Mode>, StringRepresentable {
+  public enum Mode implements ButtonState<Mode> {
 
-    RISING_EDGE("rising_edge"),
-    FALLING_EDGE("falling_edge");
-
-    private final String name;
-    private final Component label;
-    private final List<Component> tooltip;
-
-    private static final Map<String, Mode> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(Mode::getSerializedName, Function.identity()));
-
-    private Mode(String name) {
-      this.name = name;
-      this.label = Component.translatable("signal_capacitor_box.mode." + name);
-      this.tooltip = Collections.singletonList(
-          Component.translatable("signal_capacitor_box.mode." + name + ".description"));
-    }
+    RISING_EDGE,
+    FALLING_EDGE;
 
     @Override
     public Component getLabel() {
-      return this.label;
+      return Component.translatable(switch (this.ordinal()) {
+        case 0 -> SignalCapacitor.RISING_EDGE;
+        case 1 -> SignalCapacitor.FALLING_EDGE;
+        default -> "translation.not.implemented";
+      });
+    }
+
+    @Override
+    public List<Component> getTooltip() {
+      var tooltip = switch (this.ordinal()) {
+        case 0 -> SignalCapacitor.RISING_EDGE_DESC;
+        case 1 -> SignalCapacitor.FALLING_EDGE_DESC;
+        default -> "translation.not.implemented";
+      };
+      return Collections.singletonList(Component.translatable(tooltip));
     }
 
     @Override
@@ -197,22 +192,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     }
 
     @Override
-    public List<Component> getTooltip() {
-      return this.tooltip;
-    }
-
-    @Override
     public Mode getNext() {
       return values()[(this.ordinal() + 1) % values().length];
-    }
-
-    @Override
-    public String getSerializedName() {
-      return this.name;
-    }
-
-    public static Optional<Mode> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
     }
   }
 }

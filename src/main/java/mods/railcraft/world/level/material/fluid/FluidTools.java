@@ -31,13 +31,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
@@ -164,7 +164,6 @@ public final class FluidTools {
           return tryDrain(container, tank, itemStack);
         }
       } else if (type == ProcessType.DRAIN_THEN_FILL) {
-        // TODO https://github.com/MinecraftForge/MinecraftForge/pull/8318
         if (FluidUtil.getFluidContained(itemStack).isPresent() && !tank.isFull()) {
           return tryDrain(container, tank, itemStack);
         } else {
@@ -186,16 +185,16 @@ public final class FluidTools {
     MinecraftForge.EVENT_BUS.register(WaterBottleEventHandler.INSTANCE);
   }
 
-  public static boolean isFullFluidBlock(Level world, BlockPos pos) {
-    return isFullFluidBlock(world.getBlockState(pos), world, pos);
+  public static boolean isFullFluidBlock(Level level, BlockPos pos) {
+    return isFullFluidBlock(level.getBlockState(pos), level, pos);
   }
 
-  public static boolean isFullFluidBlock(BlockState state, Level world, BlockPos pos) {
+  public static boolean isFullFluidBlock(BlockState state, Level level, BlockPos pos) {
     if (state.getBlock() instanceof LiquidBlock) {
       return state.getValue(LiquidBlock.LEVEL) == 0;
     }
-    if (state.getBlock() instanceof IFluidBlock) {
-      return Math.abs(((IFluidBlock) state.getBlock()).getFilledPercentage(world, pos)) == 1.0;
+    if (state.getBlock() instanceof IFluidBlock fluidBlock) {
+      return Math.abs(fluidBlock.getFilledPercentage(level, pos)) == 1.0;
     }
     return false;
   }
@@ -219,7 +218,7 @@ public final class FluidTools {
         continue;
       }
       blockEntity
-          .getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite())
+          .getCapability(ForgeCapabilities.FLUID_HANDLER, direction.getOpposite())
           .ifPresent(targets::add);
     }
     return targets;

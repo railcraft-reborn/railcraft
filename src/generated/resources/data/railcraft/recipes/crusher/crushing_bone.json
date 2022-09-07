@@ -1,0 +1,16 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "item": "minecraft:bone"
+  },
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 4,
+        "item": "minecraft:bone_meal"
+      }
+    }
+  ],
+  "tickCost": 200
+}

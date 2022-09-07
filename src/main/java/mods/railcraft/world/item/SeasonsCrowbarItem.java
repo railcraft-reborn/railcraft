@@ -1,8 +1,10 @@
 package mods.railcraft.world.item;
 
+import java.util.List;
+import javax.annotation.Nullable;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.season.Season;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -11,10 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -31,7 +29,7 @@ public class SeasonsCrowbarItem extends CrowbarItem {
     if (!level.isClientSide()) {
       incrementSeason(itemStack);
       Season season = getSeason(itemStack);
-      player.displayClientMessage(getDescriptionText(season.getDisplayName()), true);
+      player.displayClientMessage(getDescriptionText(season, false), true);
     }
     return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
   }
@@ -45,24 +43,29 @@ public class SeasonsCrowbarItem extends CrowbarItem {
   public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list,
       TooltipFlag adv) {
     Season season = getSeason(stack);
-    list.add(getDescriptionText(season.getDisplayName()));
-  }
-
-  public static Component getDescriptionText(Component displayName) {
-    return Component.translatable("seasons_crowbar.season",
-        displayName.copy().withStyle(ChatFormatting.DARK_PURPLE));
+    list.add(getDescriptionText(season, true));
   }
 
   public static Season getSeason(ItemStack itemStack) {
-    return Optional.ofNullable(itemStack.getTag())
-        .filter(tag -> tag.contains("season", Tag.TAG_STRING))
-        .map(tag -> tag.getString("season"))
-        .flatMap(Season::getByName)
-        .orElse(Season.DEFAULT);
+    if (itemStack.hasTag()) {
+      var tag = itemStack.getTag();
+      if (tag.contains("season")) {
+        return Season.values()[tag.getInt("season")];
+      }
+    }
+    return Season.DEFAULT;
   }
 
-  public static void incrementSeason(ItemStack itemStack) {
+  private static void incrementSeason(ItemStack itemStack) {
     Season season = getSeason(itemStack).getNext();
-    itemStack.getOrCreateTag().putString("season", season.getSerializedName());
+    itemStack.getOrCreateTag().putInt("season", season.ordinal());
+  }
+
+  private static Component getDescriptionText(Season value, boolean tooltip) {
+    var title = Component.translatable(Tips.CRAWBAR_SEASON_DESC);
+    if (tooltip) {
+      title.withStyle(ChatFormatting.GRAY);
+    }
+    return title.append(value.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE));
   }
 }

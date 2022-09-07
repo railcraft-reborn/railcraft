@@ -27,6 +27,11 @@ public class RailcraftParticleTypes {
   public static final RegistryObject<SimpleParticleType> SPARK =
       deferredRegister.register("spark", () -> new SimpleParticleType(false));
 
+  public static final RegistryObject<ParticleType<FireSparkParticleOptions>> FIRE_SPARK =
+      deferredRegister.register("fire_spark",
+          () -> create(FireSparkParticleOptions.DESERIALIZER,
+          __ -> FireSparkParticleOptions.CODEC));
+
   public static final RegistryObject<SimpleParticleType> PUMPKIN =
       deferredRegister.register("pumpkin", () -> new SimpleParticleType(false));
 

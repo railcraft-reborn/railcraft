@@ -2,7 +2,7 @@ package mods.railcraft.util;
 
 import java.util.UUID;
 import javax.annotation.Nullable;
-import org.apache.logging.log4j.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
@@ -79,7 +79,7 @@ public final class PlayerUtil {
     }
     String username = gameProfile.getName();
     return Component.literal(
-        Strings.isEmpty(username) ? RailcraftConstantsAPI.UNKNOWN_PLAYER : username);
+        StringUtils.isEmpty(username) ? RailcraftConstantsAPI.UNKNOWN_PLAYER : username);
   }
 
   public static Component getUsername(Level world, @Nullable UUID playerId) {

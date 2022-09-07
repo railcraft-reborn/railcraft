@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_rebar": {
+    "has_bag_of_cement": {
       "conditions": {
         "items": [
           {
             "items": [
-              "railcraft:rebar"
+              "railcraft:bag_of_cement"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_rebar",
+      "has_bag_of_cement",
       "has_the_recipe"
     ]
   ],

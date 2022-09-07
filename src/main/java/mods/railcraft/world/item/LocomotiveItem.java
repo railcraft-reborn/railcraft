@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.Translations;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;
@@ -9,6 +9,7 @@ import mods.railcraft.client.emblem.Emblem;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -16,7 +17,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.apache.logging.log4j.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -53,24 +54,22 @@ public class LocomotiveItem extends CartItem implements Filter {
     GameProfile owner = getOwner(stack);
     if (owner.getName() != null
         && !RailcraftConstantsAPI.UNKNOWN_PLAYER.equalsIgnoreCase(owner.getName())) {
-      info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_OWNER,
-          owner.getName()));
+      info.add(Component.translatable(Tips.LOCOMOTIVE_ITEM_OWNER, owner.getName())
+          .withStyle(ChatFormatting.GRAY));
     }
 
     DyeColor primary = getPrimaryColor(stack);
-    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY,
-        primary.getName()));
+    info.add(Component.translatable(Tips.LOCOMOTIVE_ITEM_PRIMARY, primary.getName()).withStyle(ChatFormatting.GRAY));
 
     DyeColor secondary = getSecondaryColor(stack);
-    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY,
-        secondary.getName()));
+    info.add(Component.translatable(Tips.LOCOMOTIVE_ITEM_SECONDARY, secondary.getName()).withStyle(ChatFormatting.GRAY));
 
     float whistle = getWhistlePitch(stack);
-    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE,
-        whistle < 0 ? "???" : String.format("%.2f", whistle)));
+    var whisteText = whistle < 0 ? "???" : String.format("%.2f", whistle);
+    info.add(Component.translatable(Tips.LOCOMOTIVE_ITEM_WHISTLE, whisteText).withStyle(ChatFormatting.GRAY));
 
     String emblemIdent = getEmblem(stack);
-    if (!Strings.isEmpty(emblemIdent) && EmblemToolsClient.packageManager != null) {
+    if (!StringUtils.isEmpty(emblemIdent) && EmblemToolsClient.packageManager != null) {
       Emblem emblem = EmblemToolsClient.packageManager.getEmblem(emblemIdent);
       if (emblem != null) {
         info.add(Component.translatable("gui.railcraft.locomotive.tips.item.emblem",

@@ -23,7 +23,7 @@ public class RailcraftSoundEvents {
 
   public static final RegistryObject<SoundEvent> STEAM_HISS = register("machine.steam_hiss");
 
-  public static final RegistryObject<SoundEvent> ZAP = register("machine.zap");
+  public static final RegistryObject<SoundEvent> MACHINE_ZAP = register("machine.zap");
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

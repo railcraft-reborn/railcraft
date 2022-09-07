@@ -1,6 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
 import com.google.gson.JsonObject;
+import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -129,6 +130,16 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   @Override
   public RecipeType<?> getType() {
     return RailcraftRecipeTypes.ROLLING.get();
+  }
+
+  @Override
+  public boolean isSpecial() {
+    return true;
+  }
+
+  @Override
+  public ItemStack getToastSymbol() {
+    return new ItemStack(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
   }
 
   public static class RollingRecipeSerializer implements RecipeSerializer<RollingRecipe> {

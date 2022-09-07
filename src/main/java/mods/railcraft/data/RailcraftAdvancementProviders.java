@@ -18,8 +18,8 @@ public class RailcraftAdvancementProviders extends AdvancementProvider {
   @Override
   protected void registerAdvancements(Consumer<Advancement> consumer,
       ExistingFileHelper fileHelper) {
-    new CartAdvancements().accept(consumer);
-    new TrackAdvancements().accept(consumer);
+    CartAdvancements.register(consumer, fileHelper);
+    TrackAdvancements.register(consumer, fileHelper);
   }
 
   @Override

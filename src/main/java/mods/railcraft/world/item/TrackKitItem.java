@@ -3,12 +3,14 @@ package mods.railcraft.world.item;
 import java.util.Map;
 import java.util.function.Supplier;
 import com.google.common.collect.ImmutableMap;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -56,8 +58,8 @@ public class TrackKitItem extends Item {
     }
 
     TrackType trackType;
-    if (oldState.getBlock() instanceof TrackBlock) {
-      trackType = ((TrackBlock) oldState.getBlock()).getTrackType();
+    if (oldState.getBlock() instanceof TrackBlock trackBlock) {
+      trackType = trackBlock.getTrackType();
     } else if (oldState.getBlock() == Blocks.RAIL) {
       trackType = TrackTypes.IRON.get();
     } else {
@@ -67,22 +69,22 @@ public class TrackKitItem extends Item {
     var shape = TrackUtil.getRailShapeRaw(level, blockPos);
 
     if (!RailShapeUtil.isStraight(shape)) {
-      player.displayClientMessage(Component.translatable("track_kit.corners_unsupported"),
-          true);
+      player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_CORNERS_UNSUPPORTED)
+              .withStyle(ChatFormatting.RED), true);
       return InteractionResult.PASS;
     }
 
     if (shape.isAscending() && !this.allowedOnSlopes) {
-      player.displayClientMessage(Component.translatable("track_kit.slopes_unsupported"),
-          true);
+      player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_SLOPES_UNSUPPORTED)
+          .withStyle(ChatFormatting.RED), true);
       return InteractionResult.PASS;
     }
 
     BaseRailBlock outfittedBlock =
         this.outfittedBlocks.getOrDefault(TrackTypes.registry.get().getKey(trackType), () -> null).get();
     if (outfittedBlock == null) {
-      player.displayClientMessage(
-          Component.translatable("track_kit.invalid_track_type"), true);
+      player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_INVALID_TRACK_TYPE)
+          .withStyle(ChatFormatting.RED), true);
       return InteractionResult.PASS;
     }
 

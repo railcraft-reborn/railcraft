@@ -1,0 +1,23 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "item": "minecraft:brick_slab"
+  },
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 1,
+        "item": "minecraft:brick"
+      }
+    },
+    {
+      "probability": 0.75,
+      "result": {
+        "count": 1,
+        "item": "minecraft:brick"
+      }
+    }
+  ],
+  "tickCost": 200
+}

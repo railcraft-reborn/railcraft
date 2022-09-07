@@ -127,7 +127,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     this.tag(RailcraftTags.Blocks.ASPECT_EMITTER)
         .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
             RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
-            RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get(),
+            RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
             RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
     this.tag(RailcraftTags.Blocks.ASPECT_RECEIVER)
         .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
@@ -146,7 +146,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
             RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get(), RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
             RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
-            RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get(), RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
+            RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(), RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
             RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
             RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
             RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),
@@ -154,27 +154,54 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTag(BlockTags.RAILS);
 
     var mineableWithPickaxe = this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .add(RailcraftBlocks.FIRESTONE.get(),
-            RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
-            RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
-            RailcraftBlocks.SOLID_FUELED_FIREBOX.get(),
-            RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
-            RailcraftBlocks.STEAM_TURBINE.get(),
-            RailcraftBlocks.COKE_OVEN_BRICKS.get(),
-            RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
+        .add(RailcraftBlocks.FIRESTONE_ORE.get())
+        .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get())
+        .add(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get())
+        .add(RailcraftBlocks.SOLID_FUELED_FIREBOX.get())
+        .add(RailcraftBlocks.FLUID_FUELED_FIREBOX.get())
+        .add(RailcraftBlocks.STEAM_TURBINE.get())
+        .add(RailcraftBlocks.COKE_OVEN_BRICKS.get())
+        .add(RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
+        .add(RailcraftBlocks.COKE_BLOCK.get())
+        .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get())
+        .add(RailcraftBlocks.STEEL_BLOCK.get())
+        .add(RailcraftBlocks.BRASS_BLOCK.get())
+        .add(RailcraftBlocks.BRONZE_BLOCK.get())
+        .add(RailcraftBlocks.INVAR_BLOCK.get())
+        .add(RailcraftBlocks.LEAD_BLOCK.get())
+        .add(RailcraftBlocks.NICKEL_BLOCK.get())
+        .add(RailcraftBlocks.SILVER_BLOCK.get())
+        .add(RailcraftBlocks.TIN_BLOCK.get())
+        .add(RailcraftBlocks.ZINC_BLOCK.get());
+
     RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().forEach(mineableWithPickaxe::add);
     RailcraftBlocks.IRON_TANK_WALL.resolveVariants().forEach(mineableWithPickaxe::add);
     RailcraftBlocks.STEEL_TANK_VALVE.resolveVariants().forEach(mineableWithPickaxe::add);
     RailcraftBlocks.STEEL_TANK_WALL.resolveVariants().forEach(mineableWithPickaxe::add);
 
+
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
-        .add(RailcraftBlocks.FIRESTONE.get());
+        .add(RailcraftBlocks.FIRESTONE_ORE.get())
+        .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+
+    this.tag(BlockTags.NEEDS_IRON_TOOL)
+        .add(RailcraftBlocks.STEEL_BLOCK.get())
+        .add(RailcraftBlocks.BRASS_BLOCK.get())
+        .add(RailcraftBlocks.BRONZE_BLOCK.get())
+        .add(RailcraftBlocks.INVAR_BLOCK.get())
+        .add(RailcraftBlocks.LEAD_BLOCK.get())
+        .add(RailcraftBlocks.NICKEL_BLOCK.get())
+        .add(RailcraftBlocks.SILVER_BLOCK.get())
+        .add(RailcraftBlocks.TIN_BLOCK.get())
+        .add(RailcraftBlocks.ZINC_BLOCK.get());
 
     var stoneToolAppender = this.tag(BlockTags.NEEDS_STONE_TOOL)
         .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
             RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
             RailcraftBlocks.FLUID_FUELED_FIREBOX.get(),
-            RailcraftBlocks.STEAM_TURBINE.get());
+            RailcraftBlocks.STEAM_TURBINE.get())
+        .add(RailcraftBlocks.COKE_BLOCK.get());
+
     RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().forEach(stoneToolAppender::add);
     RailcraftBlocks.IRON_TANK_WALL.resolveVariants().forEach(stoneToolAppender::add);
     RailcraftBlocks.STEEL_TANK_VALVE.resolveVariants().forEach(stoneToolAppender::add);

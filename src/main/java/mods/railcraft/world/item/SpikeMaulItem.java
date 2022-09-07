@@ -4,11 +4,13 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import mods.railcraft.Translations.Tips;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.item.SpikeMaulTarget;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -148,9 +150,8 @@ public class SpikeMaulItem extends TieredItem {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> lines,
-      TooltipFlag advanced) {
-    super.appendHoverText(stack, world, lines, advanced);
-    lines.add(Component.translatable("spike_maul.description"));
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components,
+      TooltipFlag isAdvanced) {
+    components.add(Component.translatable(Tips.SPIKE_MAUL).withStyle(ChatFormatting.GRAY));
   }
 }

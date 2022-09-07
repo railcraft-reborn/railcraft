@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:embarking_track_kit"
+    },
+    {
+      "item": "minecraft:rail"
+    }
+  ],
+  "result": {
+    "item": "railcraft:iron_embarking_track"
+  }
+}

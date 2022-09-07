@@ -222,7 +222,7 @@ public class RailcraftBlockModelGenerators {
     this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_RECEIVER_BOX.get());
     this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
     this.skipAutoItemBlock(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get());
-    this.skipAutoItemBlock(RailcraftBlocks.BLOCK_SIGNAL_RELAY_BOX.get());
+    this.skipAutoItemBlock(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get());
     this.skipAutoItemBlock(RailcraftBlocks.BLOCK_SIGNAL.get());
     this.skipAutoItemBlock(RailcraftBlocks.DISTANT_SIGNAL.get());
     this.skipAutoItemBlock(RailcraftBlocks.TOKEN_SIGNAL.get());
@@ -242,10 +242,24 @@ public class RailcraftBlockModelGenerators {
 
     this.createTrivialBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
         TexturedModel.CUBE_TOP_BOTTOM);
+    this.createTrivialBlock(RailcraftBlocks.CRUSHER.get(),
+        TexturedModel.CUBE_TOP);
 
     this.createTrivialBlock(RailcraftBlocks.CREOSOTE.get());
 
     this.createTrivialCube(RailcraftBlocks.STEEL_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.BRASS_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.BRONZE_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.INVAR_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.LEAD_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.NICKEL_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.SILVER_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.TIN_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.ZINC_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.COKE_BLOCK.get());
+    this.createTrivialCube(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+
+    this.createTrivialCube(RailcraftBlocks.FIRESTONE_ORE.get());
 
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
     this.createSteelAnvil(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());

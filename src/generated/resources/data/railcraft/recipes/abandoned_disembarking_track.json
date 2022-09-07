@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "railcraft:disembarking_track_kit"
+    },
+    {
+      "item": "railcraft:abandoned_track"
+    }
+  ],
+  "result": {
+    "item": "railcraft:abandoned_disembarking_track"
+  }
+}

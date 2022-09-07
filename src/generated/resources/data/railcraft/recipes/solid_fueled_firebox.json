@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "minecraft:nether_brick"
+    },
+    "b": {
+      "item": "minecraft:fire_charge"
+    },
+    "c": {
+      "item": "minecraft:furnace"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "aba",
+    "aca"
+  ],
+  "result": {
+    "item": "railcraft:solid_fueled_firebox"
+  }
+}

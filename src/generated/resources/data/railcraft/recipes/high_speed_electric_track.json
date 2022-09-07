@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "railcraft:high_speed_rail"
+    },
+    "b": {
+      "item": "railcraft:stone_railbed"
+    },
+    "c": {
+      "item": "railcraft:electric_rail"
+    }
+  },
+  "pattern": [
+    "aca",
+    "aba",
+    "aca"
+  ],
+  "result": {
+    "count": 32,
+    "item": "railcraft:high_speed_electric_track"
+  }
+}

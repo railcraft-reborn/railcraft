@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "D": {
-      "tag": "forge:dyes/red"
-    },
-    "I": {
+    "a": {
       "tag": "forge:ingots/steel"
+    },
+    "b": {
+      "tag": "forge:dyes/red"
     }
   },
   "pattern": [
-    " DI",
-    "DID",
-    "ID "
+    " ba",
+    "bab",
+    "ab "
   ],
   "result": {
     "item": "railcraft:steel_crowbar"

@@ -1,0 +1,51 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "item": "railcraft:coke_oven_bricks"
+  },
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 3,
+        "item": "minecraft:brick"
+      }
+    },
+    {
+      "probability": 0.5,
+      "result": {
+        "count": 1,
+        "item": "minecraft:brick"
+      }
+    },
+    {
+      "probability": 0.25,
+      "result": {
+        "count": 1,
+        "item": "minecraft:sand"
+      }
+    },
+    {
+      "probability": 0.25,
+      "result": {
+        "count": 1,
+        "item": "minecraft:sand"
+      }
+    },
+    {
+      "probability": 0.25,
+      "result": {
+        "count": 1,
+        "item": "minecraft:sand"
+      }
+    },
+    {
+      "probability": 0.25,
+      "result": {
+        "count": 1,
+        "item": "minecraft:sand"
+      }
+    }
+  ],
+  "tickCost": 200
+}
