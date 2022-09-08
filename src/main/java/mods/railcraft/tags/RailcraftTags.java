@@ -99,6 +99,15 @@ public class RailcraftTags {
 
     public static final TagKey<Item> STRENGTHENED_GLASS = tag("strengthened_glass");
 
+
+    public static final TagKey<Item> LEAD_ORE = forgeTag("ores/lead");
+    public static final TagKey<Item> NICKEL_ORE = forgeTag("ores/nickel");
+    public static final TagKey<Item> SILVER_ORE = forgeTag("ores/silver");
+    public static final TagKey<Item> SULFUR_ORE = forgeTag("ores/sulfur");
+    public static final TagKey<Item> TIN_ORE = forgeTag("ores/tin");
+    public static final TagKey<Item> ZINC_ORE = forgeTag("ores/zinc");
+    public static final TagKey<Item> SALTPETER_ORE = forgeTag("ores/salt");
+
     public static final TagKey<Item> TOOLS_SWORDS_STEEL = forgeTag("tools/swords/steel");
     public static final TagKey<Item> TOOLS_AXES_STEEL = forgeTag("tools/axes/steel");
     public static final TagKey<Item> TOOLS_PICKAXES_STEEL = forgeTag("tools/pickaxes/steel");
@@ -109,6 +118,7 @@ public class RailcraftTags {
     public static final TagKey<Item> ARMORS_CHESTPLATES_STEEL = forgeTag("armors/chestplates/steel");
     public static final TagKey<Item> ARMORS_LEGGINGS_STEEL = forgeTag("armors/leggings/steel");
     public static final TagKey<Item> ARMORS_BOOTS_STEEL = forgeTag("armors/boots/steel");
+
 
     private static TagKey<Item> tag(String name) {
       return ItemTags.create(new ResourceLocation(Railcraft.ID, name));
@@ -143,8 +153,20 @@ public class RailcraftTags {
     public static final TagKey<Block> MINEABLE_WITH_CROWBAR =
         tag("mineable/crowbar");
 
+    public static final TagKey<Block> LEAD_ORE = forgeTag("ores/lead");
+    public static final TagKey<Block> NICKEL_ORE = forgeTag("ores/nickel");
+    public static final TagKey<Block> SILVER_ORE = forgeTag("ores/silver");
+    public static final TagKey<Block> SULFUR_ORE = forgeTag("ores/sulfur");
+    public static final TagKey<Block> TIN_ORE = forgeTag("ores/tin");
+    public static final TagKey<Block> ZINC_ORE = forgeTag("ores/zinc");
+    public static final TagKey<Block> SALTPETER_ORE = forgeTag("ores/salt");
+
     private static TagKey<Block> tag(String name) {
       return BlockTags.create(new ResourceLocation(Railcraft.ID, name));
+    }
+
+    private static TagKey<Block> forgeTag(String name) {
+      return BlockTags.create(new ResourceLocation("forge", name));
     }
   }
 

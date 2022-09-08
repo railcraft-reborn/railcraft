@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "group": "lead_ingot",
+  "ingredient": {
+    "item": "railcraft:lead_ore"
+  },
+  "result": "railcraft:lead_ingot"
+}

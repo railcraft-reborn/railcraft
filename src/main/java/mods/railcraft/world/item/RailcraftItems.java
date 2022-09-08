@@ -226,6 +226,58 @@ public class RailcraftItems {
       deferredRegister.register("zinc_block",
           () -> new BlockItem(RailcraftBlocks.ZINC_BLOCK.get(), new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> LEAD_ORE =
+      deferredRegister.register("lead_ore",
+          () -> new BlockItem(RailcraftBlocks.LEAD_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> NICKEL_ORE =
+      deferredRegister.register("nickel_ore",
+          () -> new BlockItem(RailcraftBlocks.NICKEL_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SILVER_ORE =
+      deferredRegister.register("silver_ore",
+          () -> new BlockItem(RailcraftBlocks.SILVER_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> TIN_ORE =
+      deferredRegister.register("tin_ore",
+          () -> new BlockItem(RailcraftBlocks.TIN_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> ZINC_ORE =
+      deferredRegister.register("zinc_ore",
+          () -> new BlockItem(RailcraftBlocks.ZINC_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> DEEPSLATE_LEAD_ORE =
+      deferredRegister.register("deepslate_lead_ore",
+          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> DEEPSLATE_NICKEL_ORE =
+      deferredRegister.register("deepslate_nickel_ore",
+          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> DEEPSLATE_SILVER_ORE =
+      deferredRegister.register("deepslate_silver_ore",
+          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> DEEPSLATE_TIN_ORE =
+      deferredRegister.register("deepslate_tin_ore",
+          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_TIN_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> DEEPSLATE_ZINC_ORE =
+      deferredRegister.register("deepslate_zinc_ore",
+          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SULFUR_ORE =
+      deferredRegister.register("sulfur_ore",
+          () -> new BlockItem(RailcraftBlocks.SULFUR_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> DEEPSLATE_SULFUR_ORE =
+      deferredRegister.register("deepslate_sulfur_ore",
+          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get(), new Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> SALTPETER_ORE =
+      deferredRegister.register("saltpeter_ore",
+          () -> new BlockItem(RailcraftBlocks.SALTPETER_ORE.get(), new Properties().tab(TAB)));
+
   public static final RegistryObject<Item> COKE_BLOCK =
       deferredRegister.register("coal_coke_block",
           () -> new CoalCokeBlockItem(new Properties().tab(TAB)));

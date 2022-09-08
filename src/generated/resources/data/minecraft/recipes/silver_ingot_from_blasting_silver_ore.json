@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "silver_ingot",
+  "ingredient": {
+    "item": "railcraft:silver_ore"
+  },
+  "result": "railcraft:silver_ingot"
+}

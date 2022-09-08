@@ -2,6 +2,7 @@ package mods.railcraft.data.recipes.providers;
 
 import java.util.function.Consumer;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -169,18 +170,22 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(Items.SOUL_SAND, 1, 0.75)
         .addResult(Items.BLAZE_POWDER, 1, 0.05)
         .save(consumer);
-
     CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.CRUSHED_OBSIDIAN.get()))
         .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 1)
         .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 0.25)
         .save(consumer);
-    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.FIRESTONE_ORE.get()))
-        .addResult(RailcraftItems.RAW_FIRESTONE.get(), 1, 1)
-        .save(consumer);
-    /*CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.SULFUR_ORE))
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.SULFUR_ORE))
         .addResult(RailcraftItems.SULFUR_DUST.get(), 5, 1)
         .addResult(RailcraftItems.SULFUR_DUST.get(), 1, 0.85)
         .addResult(RailcraftItems.SULFUR_DUST.get(), 1, 0.35)
-        .save(consumer);*/
+        .save(consumer, "tags_ores_sulfur");
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.SALTPETER_ORE))
+        .addResult(RailcraftItems.SALTPETER_DUST.get(), 3, 1)
+        .addResult(RailcraftItems.SALTPETER_DUST.get(), 1, 0.85)
+        .addResult(RailcraftItems.SALTPETER_DUST.get(), 1, 0.35)
+        .save(consumer, "tags_ores_saltpeter");
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.FIRESTONE_ORE.get()))
+        .addResult(RailcraftItems.RAW_FIRESTONE.get(), 1, 1)
+        .save(consumer);
   }
 }

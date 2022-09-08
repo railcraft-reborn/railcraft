@@ -218,6 +218,19 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.simpleBlock(RailcraftBlocks.COKE_BLOCK.get());
     this.simpleBlock(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
+    this.simpleBlock(RailcraftBlocks.LEAD_ORE.get());
+    this.simpleBlock(RailcraftBlocks.NICKEL_ORE.get());
+    this.simpleBlock(RailcraftBlocks.SILVER_ORE.get());
+    this.simpleBlock(RailcraftBlocks.SULFUR_ORE.get());
+    this.simpleBlock(RailcraftBlocks.TIN_ORE.get());
+    this.simpleBlock(RailcraftBlocks.ZINC_ORE.get());
+    this.simpleBlock(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get());
+    this.simpleBlock(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get());
+    this.simpleBlock(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get());
+    this.simpleBlock(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get());
+    this.simpleBlock(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
+    this.simpleBlock(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+    this.simpleBlock(RailcraftBlocks.SALTPETER_ORE.get());
     this.simpleBlock(RailcraftBlocks.FIRESTONE_ORE.get());
 
     this.fluidBlock(RailcraftBlocks.CREOSOTE.get());
