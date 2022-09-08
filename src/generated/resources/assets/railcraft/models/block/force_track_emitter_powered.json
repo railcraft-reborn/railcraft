@@ -1,0 +1,11 @@
+{
+  "parent": "railcraft:block/force_track_emitter",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "colored_front": "railcraft:block/force_track_emitter_facing_colored",
+    "colored_side": "railcraft:block/force_track_emitter_side_colored",
+    "front": "railcraft:block/force_track_emitter_facing",
+    "particle": "railcraft:block/force_track_emitter_side",
+    "side": "railcraft:block/force_track_emitter_side"
+  }
+}

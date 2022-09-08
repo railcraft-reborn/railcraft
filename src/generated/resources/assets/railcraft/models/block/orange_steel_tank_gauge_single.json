@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
+  "render_type": "minecraft:cutout",
   "textures": {
     "all": "railcraft:block/orange_steel_tank_gauge_top"
   }

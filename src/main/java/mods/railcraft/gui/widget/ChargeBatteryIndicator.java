@@ -31,10 +31,10 @@ public class ChargeBatteryIndicator implements Gauge {
     this.tooltip.add(Component.literal(String.format("%.0f%%", chargeLevel)));
     this.tooltip.add(Component.literal(
         HumanReadableNumberFormatter.format(current)
-        + " / "
-        + HumanReadableNumberFormatter.format(capacity)
-        + " CU" // charge unit, railcraft energy unit: not eu
-        ));
+            + " / "
+            + HumanReadableNumberFormatter.format(capacity)
+            + " CU" // charge unit, railcraft energy unit: not eu
+    ));
   }
 
   @Override

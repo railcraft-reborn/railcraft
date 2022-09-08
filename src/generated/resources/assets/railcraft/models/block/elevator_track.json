@@ -1,5 +1,6 @@
 {
   "parent": "railcraft:block/template_elevator_track",
+  "render_type": "minecraft:cutout",
   "textures": {
     "texture": "railcraft:block/elevator_track"
   }

@@ -66,12 +66,28 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
         new BlastFurnaceModule(this));
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability,
-      @Nullable Direction direction) {
-    return capability == ForgeCapabilities.ITEM_HANDLER && this.isFormed()
-        ? this.blastFurnaceModule.getItemHandler().cast()
-        : LazyOptional.empty();
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      BlastFurnaceBlockEntity blockEntity) {
+    blockEntity.serverTick();
+
+    blockEntity.moduleDispatcher.serverTick();
+
+    blockEntity.getMembership()
+        .map(Membership::master)
+        .ifPresent(master -> {
+          var lit = master.blastFurnaceModule.isBurning();
+          if (lit != blockState.getValue(FurnaceMultiblockBlock.LIT)) {
+            level.setBlockAndUpdate(blockPos,
+                blockState.setValue(FurnaceMultiblockBlock.LIT, lit));
+          }
+
+          if (blockEntity.fuelMoveTicks++ >= 128) {
+            blockEntity.fuelMoveTicks = 0;
+            blockEntity.getAdjacentContainers().moveOneItemTo(
+                master.getBlastFurnaceModule().getFuelContainer(),
+                master.blastFurnaceModule::isFuel);
+          }
+        });
   }
 
   public BlastFurnaceModule getBlastFurnaceModule() {
@@ -100,30 +116,6 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
     }
   }
 
-  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
-      BlastFurnaceBlockEntity blockEntity) {
-    blockEntity.serverTick();
-
-    blockEntity.moduleDispatcher.serverTick();
-
-    blockEntity.getMembership()
-        .map(Membership::master)
-        .ifPresent(master -> {
-          var lit = master.blastFurnaceModule.isBurning();
-          if (lit != blockState.getValue(FurnaceMultiblockBlock.LIT)) {
-            level.setBlockAndUpdate(blockPos,
-                blockState.setValue(FurnaceMultiblockBlock.LIT, lit));
-          }
-
-          if (blockEntity.fuelMoveTicks++ >= 128) {
-            blockEntity.fuelMoveTicks = 0;
-            blockEntity.getAdjacentContainers().moveOneItemTo(
-                master.getBlastFurnaceModule().getFuelContainer(),
-                master.blastFurnaceModule::isFuel);
-          }
-        });
-  }
-
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
     return new BlastFurnaceMenu(id, inventory, this);
@@ -132,5 +124,18 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
   @Override
   public Component getDisplayName() {
     return Component.translatable(Translations.Container.BLAST_FURNACE);
+  }
+
+  @Override
+  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    if (cap == ForgeCapabilities.ITEM_HANDLER) {
+      return this.getMembership()
+          .map(Membership::master)
+          .map(BlastFurnaceBlockEntity::getBlastFurnaceModule)
+          .map(BlastFurnaceModule::getItemHandler)
+          .<LazyOptional<T>>map(LazyOptional::cast)
+          .orElse(LazyOptional.empty());
+    }
+    return super.getCapability(cap, side);
   }
 }

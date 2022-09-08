@@ -1,7 +1,5 @@
 package mods.railcraft.world.module;
 
-import java.util.Objects;
-import javax.annotation.Nonnull;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
@@ -17,6 +15,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+import org.jetbrains.annotations.NotNull;
 
 public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockEntity> {
 
@@ -26,32 +25,38 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   public static final int SLOT_PROCESSING_FLUID = 3;
   public static final int SLOT_OUTPUT_FLUID = 4;
   public static final int TANK_CAPACITY = 64 * FluidTools.BUCKET_VOLUME;
-  private final ContainerMapper outputContainer =
-      new ContainerMapper(this, SLOT_OUTPUT, 1).ignoreItemChecks();
+  private final ContainerMapper outputContainer;
   private int multiplier = 1;
 
   private final StandardTank tank;
   private int fluidProcessingTimer;
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
-  private final ContainerMapper fluidContainer =
-      ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_OUTPUT_FLUID);
+  private final ContainerMapper fluidContainer;
 
-  private final LazyOptional<IItemHandler> itemHandler =
-      LazyOptional.of(() -> new InvWrapper(this) {
-        @Nonnull
-        @Override
-        public ItemStack extractItem(int slot, int amount, boolean simulate) {
-          if (slot != SLOT_OUTPUT && slot != SLOT_OUTPUT_FLUID)
-            return ItemStack.EMPTY;
-          return super.extractItem(slot, amount, simulate);
-        }
-      });
+  private LazyOptional<IItemHandler> itemHandler;
+  private LazyOptional<IFluidHandler> fluidHandler;
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
     this.tank = new StandardTank(TANK_CAPACITY)
         .disableFill()
         .setChangeListener(this::setChanged);
+
+    outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
+    fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_OUTPUT_FLUID);
+
+    itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
+      @Override
+      @NotNull
+      public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        if (slot == SLOT_INPUT) {
+          return ItemStack.EMPTY;
+        }
+        return super.extractItem(slot, amount, simulate);
+      }
+    });
+
+    fluidHandler = LazyOptional.of(() -> tank);
   }
 
   @Override
@@ -69,7 +74,6 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   }
 
   private boolean craftAndPushImp() {
-    Objects.requireNonNull(this.recipe);
     var output = this.recipe.getResultItem();
     var fluidOutput = this.recipe.getCreosote();
     if (this.outputContainer.canFit(output)
@@ -117,22 +121,26 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   }
 
   @Override
-  public boolean canPlaceItem(int slot, ItemStack stack) {
-    if (!super.canPlaceItem(slot, stack)) {
-      return false;
-    }
-    switch (slot) {
-      case SLOT_INPUT:
-        return true;
-      case SLOT_LIQUID_INPUT:
-        return FluidItemHelper.isRoomInContainer(stack, RailcraftFluids.CREOSOTE.get());
-      default:
-        return false;
-    }
+  public boolean canPlaceItem(int slot, ItemStack itemStack) {
+    return switch (slot) {
+      case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
+      case SLOT_LIQUID_INPUT -> FluidItemHelper.isRoomInContainer(itemStack,
+          RailcraftFluids.CREOSOTE.get());
+      default -> false;
+    } && super.canPlaceItem(slot, itemStack);
   }
 
   public LazyOptional<IItemHandler> getItemHandler() {
-    return this.itemHandler;
+    return itemHandler;
+  }
+
+  public LazyOptional<IFluidHandler> getFluidHandler() {
+    return fluidHandler;
+  }
+
+  public void invalidateCaps() {
+    itemHandler.invalidate();
+    fluidHandler.invalidate();
   }
 
   @Override

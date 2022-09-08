@@ -1,5 +1,7 @@
 package mods.railcraft;
 
+import java.util.HashMap;
+import com.mojang.serialization.JsonOps;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.charge.Charge;
@@ -15,8 +17,12 @@ import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
 import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.RailcraftSoundsProvider;
-import mods.railcraft.data.models.RailcraftModelProvider;
+import mods.railcraft.data.models.RailcraftBlockModelProvider;
+import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
+import mods.railcraft.data.worldgen.features.RailcraftMiscOverworldFeatures;
+import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
+import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.RailcraftDataSerializers;
@@ -44,17 +50,31 @@ import mods.railcraft.world.level.material.fluid.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.HolderSet.Named;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.data.JsonCodecProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.ForgeBiomeModifiers;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -70,15 +90,13 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.registries.ForgeRegistries.Keys;
 
 @Mod(Railcraft.ID)
 public class Railcraft {
 
   public static final String ID = "railcraft";
   public static final boolean BETA = true;
-
-  private final CrowbarHandler crowbarHandler = new CrowbarHandler();
-  private final MinecartHandler minecartHandler = new MinecartHandler();
 
   static {
     FuelUtil._setFuelManager(FuelManagerImpl.INSTANCE);
@@ -89,6 +107,9 @@ public class Railcraft {
       value.getCharge()._setProvider(value);
     }
   }
+
+  private final CrowbarHandler crowbarHandler = new CrowbarHandler();
+  private final MinecartHandler minecartHandler = new MinecartHandler();
 
   public Railcraft() {
     MinecraftForge.EVENT_BUS.register(this.minecartHandler);
@@ -121,6 +142,9 @@ public class Railcraft {
     RailcraftRecipeTypes.register(modEventBus);
     RailcraftGameEvents.register(modEventBus);
     RailcraftDataSerializers.register(modEventBus);
+    RailcraftOreFeatures.register(modEventBus);
+    RailcraftOrePlacements.register(modEventBus);
+    RailcraftMiscOverworldFeatures.register(modEventBus);
   }
 
   // ================================================================================
@@ -151,9 +175,46 @@ public class Railcraft {
     generator.addProvider(event.includeServer(),
         new RailcraftAdvancementProviders(generator, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(generator));
-    generator.addProvider(event.includeClient(), new RailcraftModelProvider(generator));
+    generator.addProvider(event.includeClient(),
+        new RailcraftItemModelProvider(generator, fileHelper));
+    generator.addProvider(event.includeClient(),
+        new RailcraftBlockModelProvider(generator, fileHelper));
     generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(generator));
-    generator.addProvider(event.includeClient(), new RailcraftSoundsProvider(generator, fileHelper));
+    generator.addProvider(event.includeClient(),
+        new RailcraftSoundsProvider(generator, fileHelper));
+
+    // WORLD GENERATION
+    var registries = RegistryAccess.builtinCopy();
+    var ops = RegistryOps.create(JsonOps.INSTANCE, registries);
+
+    var configuredFeatures = new HashMap<ResourceLocation, ConfiguredFeature<?, ?>>();
+    configuredFeatures.putAll(RailcraftOreFeatures.collectEntries());
+    configuredFeatures.putAll(RailcraftMiscOverworldFeatures.collectEntries());
+    generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
+        fileHelper, ID, ops, Registry.CONFIGURED_FEATURE_REGISTRY, configuredFeatures));
+
+    var placedFeatures = new HashMap<ResourceLocation, PlacedFeature>();
+    placedFeatures.putAll(RailcraftOrePlacements.collectEntries());
+    generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
+        fileHelper, ID, ops, Registry.PLACED_FEATURE_REGISTRY, placedFeatures));
+
+    var biomeModifiers = new HashMap<ResourceLocation, BiomeModifier>();
+    var biomeRegistry = ops.registry(Registry.BIOME_REGISTRY).get();
+    var biomes = new Named<>(biomeRegistry, BiomeTags.IS_OVERWORLD);
+    var netherBiomes = new Named<>(biomeRegistry, BiomeTags.IS_NETHER);
+    for (var placedFeature : placedFeatures.entrySet()) {
+      var modifierName = new ResourceLocation(Railcraft.ID,
+          "add_" + placedFeature.getKey().getPath());
+      var modifierBiomes =
+          placedFeature.getKey().getPath().equals("firestone") ? netherBiomes : biomes;
+      biomeModifiers.put(modifierName,
+          new ForgeBiomeModifiers.AddFeaturesBiomeModifier(modifierBiomes,
+              HolderSet.direct(Holder.direct(placedFeature.getValue())),
+              GenerationStep.Decoration.UNDERGROUND_ORES));
+    }
+
+    generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
+        fileHelper, ID, ops, Keys.BIOME_MODIFIERS, biomeModifiers));
   }
 
   // ================================================================================

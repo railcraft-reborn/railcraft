@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/cube_column",
+  "render_type": "minecraft:cutout",
   "textures": {
     "end": "railcraft:block/green_steel_tank_gauge_top",
     "side": "railcraft:block/green_steel_tank_gauge_side_top"

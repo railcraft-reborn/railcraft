@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "group": "tin_ingot",
+  "ingredient": {
+    "item": "railcraft:tin_ore"
+  },
+  "result": "railcraft:tin_ingot"
+}

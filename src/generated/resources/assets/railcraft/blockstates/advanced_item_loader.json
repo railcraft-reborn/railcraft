@@ -5,17 +5,13 @@
     },
     "facing=east": {
       "model": "railcraft:block/advanced_item_loader",
-      "x": 0,
       "y": 90
     },
     "facing=north": {
-      "model": "railcraft:block/advanced_item_loader",
-      "x": 0,
-      "y": 0
+      "model": "railcraft:block/advanced_item_loader"
     },
     "facing=south": {
       "model": "railcraft:block/advanced_item_loader",
-      "x": 0,
       "y": 180
     },
     "facing=up": {
@@ -23,7 +19,6 @@
     },
     "facing=west": {
       "model": "railcraft:block/advanced_item_loader",
-      "x": 0,
       "y": 270
     }
   }

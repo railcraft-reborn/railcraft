@@ -12,8 +12,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -22,7 +23,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
-public class CrusherRecipe implements Recipe<CraftingContainer> {
+public class CrusherRecipe implements Recipe<Container> {
   private final ResourceLocation recipeId;
   private final Ingredient ingredient;
   private final List<Tuple<ItemStack, Double>> probabilityItems;
@@ -49,12 +50,12 @@ public class CrusherRecipe implements Recipe<CraftingContainer> {
   }
 
   @Override
-  public boolean matches(CraftingContainer inventory, Level level) {
+  public boolean matches(Container inventory, Level level) {
     return this.ingredient.test(inventory.getItem(0));
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer inventory) {
+  public ItemStack assemble(Container inventory) {
     return this.getResultItem().copy();
   }
 
@@ -75,6 +76,16 @@ public class CrusherRecipe implements Recipe<CraftingContainer> {
 
   public List<Tuple<ItemStack, Double>> getProbabilityItems() {
     return probabilityItems;
+  }
+
+  public List<ItemStack> pollOutputs(RandomSource random) {
+    List<ItemStack> result = new ArrayList<>();
+    for(var item : probabilityItems) {
+      if(random.nextDouble() < item.getB()) {
+        result.add(item.getA().copy());
+      }
+    }
+    return result;
   }
 
   @Override

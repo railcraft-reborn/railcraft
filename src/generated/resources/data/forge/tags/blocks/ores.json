@@ -1,0 +1,12 @@
+{
+  "values": [
+    "railcraft:firestone_ore",
+    "#forge:ores/lead",
+    "#forge:ores/nickel",
+    "#forge:ores/silver",
+    "#forge:ores/sulfur",
+    "#forge:ores/tin",
+    "#forge:ores/zinc",
+    "#forge:ores/salt"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "group": "zinc_ingot",
+  "ingredient": {
+    "item": "railcraft:deepslate_zinc_ore"
+  },
+  "result": "railcraft:zinc_ingot"
+}

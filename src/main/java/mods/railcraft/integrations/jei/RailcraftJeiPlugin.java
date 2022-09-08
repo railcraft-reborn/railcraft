@@ -11,6 +11,7 @@ import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
+import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.integrations.jei.category.BlastFurnaceRecipeCategory;
 import mods.railcraft.integrations.jei.category.CokeOvenRecipeCategory;
@@ -18,6 +19,7 @@ import mods.railcraft.integrations.jei.category.CrusherRecipeCategory;
 import mods.railcraft.integrations.jei.category.RollingRecipeCategory;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.inventory.CokeOvenMenu;
+import mods.railcraft.world.inventory.CrusherMenu;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.RailcraftItems;
@@ -50,8 +52,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
     registration.addRecipeClickArea(CokeOvenScreen.class, 34, 43, 20, 16, RecipeTypes.COKE_OVEN);
     registration.addRecipeClickArea(BlastFurnaceScreen.class, 80, 36, 22, 15,
         RecipeTypes.BLAST_FURNACE);
-    // registration.addRecipeClickArea(RockCrusherScreen.class, 73, 20, 30, 38,
-    // RecipeTypes.CRUSHER);
+    registration.addRecipeClickArea(CrusherScreen.class, 73, 20, 30, 38, RecipeTypes.CRUSHER);
   }
 
   @Override
@@ -63,8 +64,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
         RecipeTypes.COKE_OVEN, 0, 1, 4, 36);
     registration.addRecipeTransferHandler(BlastFurnaceMenu.class,
         RailcraftMenuTypes.BLAST_FURNACE.get(), RecipeTypes.BLAST_FURNACE, 0, 1, 4, 36);
-    // registration.addRecipeTransferHandler(RockCrusherMenu.class,
-    // RailcraftMenuTypes.CRUSHER.get(), RecipeTypes.CRUSHER, 0, 9, 17, 36);
+    registration.addRecipeTransferHandler(CrusherMenu.class, RailcraftMenuTypes.CRUSHER.get(),
+        RecipeTypes.CRUSHER, 0, 9, 17, 36);
   }
 
   @Override

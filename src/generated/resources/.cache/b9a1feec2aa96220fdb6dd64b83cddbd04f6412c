@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-13T16:54:54.244044802	Railcraft Item Tags
+// 1.19.2	2022-09-08T14:28:34.8843382	Railcraft Item Tags
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -42,6 +42,13 @@ ba5451d28b6b6296fcde2c8e1c303489bbbb4cba data/forge/tags/items/nuggets/bronze.js
 7573402de319bd5e69b7aaf6af01669716a93291 data/forge/tags/items/nuggets/steel.json
 d7508b44d29858b83d1e638039e714f27c55ed4d data/forge/tags/items/nuggets/tin.json
 03a440b41fdd236f8c6f52f1e0f73424f859282b data/forge/tags/items/nuggets/zinc.json
+8c50a9944556e96063fbc340f5ad0cc8db547ff3 data/forge/tags/items/ores/lead.json
+83ceb2d2883c80859eebd5d5bb21fc2bfb849cf9 data/forge/tags/items/ores/nickel.json
+35a98a11222809a20225372b2d7129082cbbc2b8 data/forge/tags/items/ores/salt.json
+8570ce0086d3cce7d0bfa04d10c388cbcd4d4e04 data/forge/tags/items/ores/silver.json
+7094cc9c85699e7afa6c283f7a769bab75eeeaff data/forge/tags/items/ores/sulfur.json
+0fbe7a7a55102f803486517de1004a189959f607 data/forge/tags/items/ores/tin.json
+e04f5a6285f9ec10108641e77582345991282073 data/forge/tags/items/ores/zinc.json
 4ba7bc1b06f9b82047c5bcd4d444e63e0e05e010 data/forge/tags/items/plates/brass.json
 5a23b291f3458a08993c77163dd6ae9f6729a2b0 data/forge/tags/items/plates/bronze.json
 a7ccebcdf1b41bc019d4ad2b6877842880b59e8c data/forge/tags/items/plates/copper.json

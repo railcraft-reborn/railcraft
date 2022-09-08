@@ -1,9 +1,11 @@
 package mods.railcraft.world.level.block.entity;
 
-import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.List;
 import javax.annotation.Nullable;
+import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations.Container;
+import mods.railcraft.world.inventory.CrusherMenu;
+import mods.railcraft.world.level.block.CrusherMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
@@ -11,6 +13,7 @@ import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
 import mods.railcraft.world.module.CrusherModule;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,31 +21,52 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
 
-  private static final MultiblockPattern<Void> PATTERN = Util.make(() -> {
-    final var bricks = BlockPredicate.of(RailcraftBlocks.CRUSHER);
+  private static final MultiblockPattern<Void> pattern = Util.make(() -> {
+    final var bricks = BlockPredicate.of(RailcraftBlocks.CRUSHER);  
 
-    final var pattern = List.of(
-        CharList.of('A', 'A', 'A'),
-        CharList.of('A', 'A', 'A'));
-
-    return MultiblockPattern.<Void>builder(2, 1, 2)
-        .layer(pattern)
-        .layer(pattern)
-        .layer(pattern)
+    return MultiblockPattern.<Void>builder(BlockPos.ZERO)
+        .layer(List.of(
+            CharList.of('0', '1', '2'),
+            CharList.of('5', '4', '3')))
+        .layer(List.of(
+            CharList.of('A', 'O', 'A'),
+            CharList.of('A', 'O', 'A')))
         .predicate('A', bricks)
+        .predicate('O', bricks)
+        .predicate('0', bricks)
+        .predicate('1', bricks)
+        .predicate('2', bricks)
+        .predicate('3', bricks)
+        .predicate('4', bricks)
+        .predicate('5', bricks)
         .build();
   });
+
+  private static final MultiblockPattern<Void> rotatedPattern = pattern.rotateClockwise();
 
   private final CrusherModule crusherModule;
 
   public CrusherBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.CRUSHER.get(), blockPos, blockState,
-        CrusherBlockEntity.class, PATTERN);
+        CrusherBlockEntity.class, List.of(pattern, rotatedPattern));
     this.crusherModule = this.moduleDispatcher.registerModule("crusher",
         new CrusherModule(this));
+  }
+
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      CrusherBlockEntity blockEntity) {
+
+    blockEntity.serverTick();
+    blockEntity.moduleDispatcher.serverTick();
+    if (blockEntity.isMaster()) {
+      blockEntity.crusherModule.serverTick();
+    }
   }
 
   public CrusherModule getCrusherModule() {
@@ -51,19 +75,43 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
 
   @Override
   protected boolean isBlockEntity(MultiblockPattern.Element element) {
-    return element.marker() == 'A';
+    return true;
   }
 
   @Override
   protected void membershipChanged(@Nullable Membership<CrusherBlockEntity> membership) {
     if (membership == null) {
+      this.level.setBlockAndUpdate(this.getBlockPos(),
+          this.getBlockState()
+              .setValue(CrusherMultiblockBlock.TYPE, CrusherMultiblockBlock.Type.NONE)
+              .setValue(CrusherMultiblockBlock.ROTATED, false)
+              .setValue(CrusherMultiblockBlock.OUTPUT, false));
       Containers.dropContents(this.level, this.getBlockPos(), this.crusherModule);
+      return;
     }
+
+    var type = switch (membership.patternElement().marker()) {
+      case '0' -> CrusherMultiblockBlock.Type.NORTH_WEST;
+      case '1' -> CrusherMultiblockBlock.Type.NORTH;
+      case '2' -> CrusherMultiblockBlock.Type.NORTH_EAST;
+      case '3' -> CrusherMultiblockBlock.Type.SOUTH_EAST;
+      case '4' -> CrusherMultiblockBlock.Type.SOUTH;
+      case '5' -> CrusherMultiblockBlock.Type.SOUTH_WEST;
+      default -> CrusherMultiblockBlock.Type.NONE;
+    };
+
+    this.level.setBlockAndUpdate(this.getBlockPos(),
+        this.getBlockState()
+            .setValue(CrusherMultiblockBlock.TYPE, type)
+            .setValue(CrusherMultiblockBlock.OUTPUT,
+                membership.patternElement().marker() == 'O')
+            .setValue(CrusherMultiblockBlock.ROTATED,
+                membership.master().getCurrentPattern().get() == rotatedPattern));
   }
 
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-    return null; //new CokeOvenMenu(id, inventory, this);
+    return new CrusherMenu(id, inventory, this);
   }
 
   @Override
@@ -71,25 +119,28 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
     return Component.translatable(Container.CRUSHER);
   }
 
-  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
-      CrusherBlockEntity blockEntity) {
-
-    blockEntity.serverTick();
-
-    blockEntity.moduleDispatcher.serverTick();
-
-    /*blockEntity.getMembership()
+  @Override
+  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    var masterModule = this.getMembership()
         .map(Membership::master)
-        .ifPresent(master -> {
-          var lit = master.crusherModule.isProcessing();
-          if (lit != blockState.getValue(CokeOvenBricksBlock.LIT)) {
-            level.setBlockAndUpdate(blockPos,
-                blockState.setValue(CokeOvenBricksBlock.LIT, lit));
-          }
-        });
-*/
-    if (blockEntity.isMaster()) {
-      blockEntity.crusherModule.serverTick();
+        .map(CrusherBlockEntity::getCrusherModule);
+    if (cap == ForgeCapabilities.ITEM_HANDLER) {
+      return masterModule
+          .map(m -> {
+            if (this.getBlockState().getValue(CrusherMultiblockBlock.OUTPUT)) {
+              return m.getOutputHandler();
+            }
+            return m.getInputHandler();
+          })
+          .<LazyOptional<T>>map(LazyOptional::cast)
+          .orElse(LazyOptional.empty());
     }
+    if (cap == ForgeCapabilities.ENERGY) {
+      return masterModule
+          .map(CrusherModule::getEnergyHandler)
+          .<LazyOptional<T>>map(LazyOptional::cast)
+          .orElse(LazyOptional.empty());
+    }
+    return super.getCapability(cap, side);
   }
 }

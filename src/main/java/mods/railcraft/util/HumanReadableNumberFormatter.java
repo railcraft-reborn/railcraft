@@ -29,9 +29,9 @@ public class HumanReadableNumberFormatter {
   private static String format(double number, int iteration) {
     boolean negative = number < 0.0;
     number = Math.abs(number);
-    if (number < 10_000.0 || iteration == suffix.length - 1) {
+    if (number < 1_000.0 || iteration == suffix.length - 1) {
       DecimalFormat formatter = iteration > 0 ? largeNumberFormatter : smallNumberFormatter;
-      return (negative ? "-" : "") + formatter.format(number) + suffix[iteration];
+      return (negative ? "-" : "") + formatter.format(number) + " " + suffix[iteration];
     }
     return (negative ? "-" : "") + format(number / 1000.0, iteration + 1);
   }

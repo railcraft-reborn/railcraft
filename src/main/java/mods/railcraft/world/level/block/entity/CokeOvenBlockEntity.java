@@ -20,7 +20,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -58,49 +57,6 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
         new CokeOvenModule(this));
   }
 
-  public CokeOvenModule getCokeOvenModule() {
-    return this.cokeOvenModule;
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction direction) {
-    return capability == ForgeCapabilities.ITEM_HANDLER && this.isFormed()
-        ? this.cokeOvenModule.getItemHandler().cast()
-        : LazyOptional.empty();
-  }
-
-  @Override
-  protected boolean isBlockEntity(MultiblockPattern.Element element) {
-    return element.marker() == 'B' || element.marker() == 'W';
-  }
-
-  @Override
-  protected void membershipChanged(@Nullable Membership<CokeOvenBlockEntity> membership) {
-    if (membership == null) {
-      this.level.setBlock(this.getBlockPos(),
-          this.getBlockState()
-              .setValue(CokeOvenBricksBlock.WINDOW, false)
-              .setValue(CokeOvenBricksBlock.LIT, false),
-          Block.UPDATE_ALL);
-      Containers.dropContents(this.level, this.getBlockPos(), this.cokeOvenModule);
-    } else {
-      this.level.setBlock(this.getBlockPos(),
-          this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW,
-              membership.patternElement().marker() == 'W'),
-          Block.UPDATE_ALL);
-    }
-  }
-
-  @Override
-  public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-    return new CokeOvenMenu(id, inventory, this);
-  }
-
-  @Override
-  public Component getDisplayName() {
-    return Component.translatable(Translations.Container.COKE_OVEN);
-  }
-
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       CokeOvenBlockEntity blockEntity) {
 
@@ -121,5 +77,59 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     if (blockEntity.isMaster()) {
       blockEntity.cokeOvenModule.serverTick();
     }
+  }
+
+  public CokeOvenModule getCokeOvenModule() {
+    return this.cokeOvenModule;
+  }
+
+  @Override
+  protected boolean isBlockEntity(MultiblockPattern.Element element) {
+    return element.marker() == 'B' || element.marker() == 'W';
+  }
+
+  @Override
+  protected void membershipChanged(@Nullable Membership<CokeOvenBlockEntity> membership) {
+    if (membership == null) {
+      this.level.setBlockAndUpdate(this.getBlockPos(),
+          this.getBlockState()
+              .setValue(CokeOvenBricksBlock.WINDOW, false)
+              .setValue(CokeOvenBricksBlock.LIT, false));
+      Containers.dropContents(this.level, this.getBlockPos(), this.cokeOvenModule);
+    } else {
+      this.level.setBlockAndUpdate(this.getBlockPos(),
+          this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW,
+              membership.patternElement().marker() == 'W'));
+    }
+  }
+
+  @Override
+  public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+    return new CokeOvenMenu(id, inventory, this);
+  }
+
+  @Override
+  public Component getDisplayName() {
+    return Component.translatable(Translations.Container.COKE_OVEN);
+  }
+
+  @Override
+  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    var masterModule = this.getMembership()
+        .map(Membership::master)
+        .map(CokeOvenBlockEntity::getCokeOvenModule);
+    if (cap == ForgeCapabilities.ITEM_HANDLER) {
+      return masterModule
+          .map(CokeOvenModule::getItemHandler)
+          .<LazyOptional<T>>map(LazyOptional::cast)
+          .orElse(LazyOptional.empty());
+    }
+    if (cap == ForgeCapabilities.FLUID_HANDLER) {
+      return masterModule
+          .map(CokeOvenModule::getFluidHandler)
+          .<LazyOptional<T>>map(LazyOptional::cast)
+          .orElse(LazyOptional.empty());
+    }
+    return super.getCapability(cap, side);
   }
 }

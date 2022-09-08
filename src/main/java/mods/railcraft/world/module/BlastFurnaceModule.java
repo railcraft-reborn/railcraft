@@ -1,8 +1,7 @@
 package mods.railcraft.world.module;
 
-import java.util.Objects;
 import java.util.function.IntSupplier;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.item.RailcraftItems;
@@ -20,29 +19,15 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastFurnaceBlockEntity> {
-  
+
   public static final int SLOT_INPUT = 0;
   public static final int SLOT_FUEL = 1;
   public static final int SLOT_OUTPUT = 2;
   public static final int SLOT_SLAG = 3;
   private static final int FUEL_PER_TICK = 5;
-  private final ContainerMapper fuelContainer = ContainerMapper.make(this, SLOT_FUEL, 1);
-  private final ContainerMapper outputContainer =
-      new ContainerMapper(this, SLOT_OUTPUT, 1).ignoreItemChecks();
-  private final ContainerMapper slagContainer =
-      new ContainerMapper(this, SLOT_SLAG, 1).ignoreItemChecks();
+  private final ContainerMapper fuelContainer, outputContainer, slagContainer;
 
-  private final LazyOptional<IItemHandler> itemHandler =
-      LazyOptional.of(() -> new InvWrapper(this) {
-        @Nonnull
-        @Override
-        public ItemStack extractItem(int slot, int amount, boolean simulate) {
-          if (slot != SLOT_OUTPUT && slot != SLOT_SLAG) {
-            return ItemStack.EMPTY;
-          }
-          return super.extractItem(slot, amount, simulate);
-        }
-      });
+  private LazyOptional<IItemHandler> itemHandler;
 
   /**
    * The number of ticks that the furnace will keep burning
@@ -56,6 +41,20 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   public BlastFurnaceModule(BlastFurnaceBlockEntity provider) {
     super(provider, 4, SLOT_INPUT);
+    fuelContainer = ContainerMapper.make(this, SLOT_FUEL, 1);
+    outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
+    slagContainer = ContainerMapper.make(this, SLOT_SLAG, 1).ignoreItemChecks();
+
+    itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
+      @Override
+      @NotNull
+      public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
+          return ItemStack.EMPTY;
+        }
+        return super.extractItem(slot, amount, simulate);
+      }
+    });
   }
 
   public ContainerManipulator<?> getFuelContainer() {
@@ -93,21 +92,20 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   @Override
   protected boolean craftAndPush() {
-    Objects.requireNonNull(this.recipe);
-    var nextResult = this.recipe.getResultItem();
+    var output = this.recipe.getResultItem();
 
-    if (!this.outputContainer.canFit(nextResult)) {
+    if (!this.outputContainer.canFit(output)) {
       return false;
     }
 
     ItemStack nextSlag = RailcraftItems.SLAG.get().getDefaultInstance();
-    nextSlag.setCount(this.recipe.getSlagOutput());
+    nextSlag.setCount(recipe.getSlagOutput());
 
     if (!this.slagContainer.canFit(nextSlag)) {
       return false;
     }
 
-    this.outputContainer.addStack(nextResult);
+    this.outputContainer.addStack(output);
     this.slagContainer.addStack(nextSlag);
     this.removeItem(SLOT_INPUT, 1);
 
@@ -131,7 +129,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     return defaultTime.getAsInt();
   }
 
-  void loadFuel() {
+  private void loadFuel() {
     ItemStack fuel;
     if (this.burnTime > FUEL_PER_TICK * 2 || (fuel = this.getItem(SLOT_FUEL)).isEmpty()) {
       return;
@@ -169,11 +167,11 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack itemStack) {
-    return super.canPlaceItem(slot, itemStack) && switch (slot) {
-      case SLOT_INPUT -> true;
+    return switch (slot) {
+      case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
       case SLOT_FUEL -> this.isFuel(itemStack);
       default -> false;
-    };
+    } && super.canPlaceItem(slot, itemStack);
   }
 
   public boolean isFuel(ItemStack itemStack) {
@@ -181,7 +179,11 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   }
 
   public LazyOptional<IItemHandler> getItemHandler() {
-    return this.itemHandler;
+    return itemHandler;
+  }
+
+  public void invalidItemHandler() {
+    itemHandler.invalidate();
   }
 
   @Override

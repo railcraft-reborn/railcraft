@@ -2,6 +2,7 @@ package mods.railcraft.data;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.tags.RailcraftTags.Blocks;
 import mods.railcraft.tags.RailcraftTags.Items;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
@@ -139,29 +140,32 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(RailcraftTags.Items.OBSIDIAN_DUST)
         .add(RailcraftItems.OBSIDIAN_DUST.get());
 
+
     this.tag(Items.CROWBAR)
         .add(RailcraftItems.STEEL_CROWBAR.get())
         .add(RailcraftItems.IRON_CROWBAR.get())
         .add(RailcraftItems.DIAMOND_CROWBAR.get());
 
-    this.tag(RailcraftTags.Items.IRON_TANK_WALL)
-        .add(RailcraftItems.IRON_TANK_WALL.resolveVariants().toArray(Item[]::new));
-    this.tag(RailcraftTags.Items.IRON_TANK_GAUGE)
-        .add(RailcraftItems.IRON_TANK_GAUGE.resolveVariants().toArray(Item[]::new));
-    this.tag(RailcraftTags.Items.IRON_TANK_VALVE)
-        .add(RailcraftItems.IRON_TANK_VALVE.resolveVariants().toArray(Item[]::new));
-
-    this.tag(RailcraftTags.Items.STEEL_TANK_WALL)
-        .add(RailcraftItems.STEEL_TANK_WALL.resolveVariants().toArray(Item[]::new));
-    this.tag(RailcraftTags.Items.STEEL_TANK_GAUGE)
-        .add(RailcraftItems.STEEL_TANK_GAUGE.resolveVariants().toArray(Item[]::new));
-    this.tag(RailcraftTags.Items.STEEL_TANK_VALVE)
-        .add(RailcraftItems.STEEL_TANK_VALVE.resolveVariants().toArray(Item[]::new));
 
     this.tag(RailcraftTags.Items.STRENGTHENED_GLASS)
         .add(RailcraftItems.STRENGTHENED_GLASS.resolveVariants().toArray(Item[]::new));
-    this.tag(RailcraftTags.Items.POST)
-        .add(RailcraftItems.POST.resolveVariants().toArray(Item[]::new));
+
+
+    this.copy(Blocks.IRON_TANK_WALL, Items.IRON_TANK_WALL);
+    this.copy(Blocks.IRON_TANK_GAUGE, Items.IRON_TANK_GAUGE);
+    this.copy(Blocks.IRON_TANK_VALVE, Items.IRON_TANK_VALVE);
+    this.copy(Blocks.STEEL_TANK_WALL, Items.STEEL_TANK_WALL);
+    this.copy(Blocks.STEEL_TANK_GAUGE, Items.STEEL_TANK_GAUGE);
+    this.copy(Blocks.STEEL_TANK_VALVE, Items.STEEL_TANK_VALVE);
+    this.copy(Blocks.POST, Items.POST);
+    this.copy(Blocks.LEAD_ORE, Items.LEAD_ORE);
+    this.copy(Blocks.NICKEL_ORE, Items.NICKEL_ORE);
+    this.copy(Blocks.SILVER_ORE, Items.SILVER_ORE);
+    this.copy(Blocks.SULFUR_ORE, Items.SULFUR_ORE);
+    this.copy(Blocks.TIN_ORE, Items.TIN_ORE);
+    this.copy(Blocks.ZINC_ORE, Items.ZINC_ORE);
+    this.copy(Blocks.SALTPETER_ORE, Items.SALTPETER_ORE);
+
 
 
     // TOOLS

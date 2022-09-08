@@ -2,134 +2,142 @@
   "multipart": [
     {
       "apply": {
-        "model": "railcraft:block/rail_outfitted",
-        "y": 0
-      },
-      "when": {
-        "shape": "north_south"
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/rail_outfitted",
-        "y": 90
-      },
-      "when": {
-        "shape": "east_west"
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/rail_outfitted_raised_ne",
-        "y": 0
-      },
-      "when": {
-        "shape": "ascending_north"
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/rail_outfitted_raised_sw",
-        "y": 0
-      },
-      "when": {
-        "shape": "ascending_south"
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/rail_outfitted_raised_ne",
-        "y": 90
-      },
-      "when": {
-        "shape": "ascending_east"
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/rail_outfitted_raised_sw",
-        "y": 90
-      },
-      "when": {
-        "shape": "ascending_west"
-      }
-    },
-    {
-      "apply": {
-        "model": "railcraft:block/booster_track",
-        "y": 0
+        "model": "railcraft:block/rail_outfitted"
       },
       "when": {
         "AND": [
           {
             "shape": "north_south"
-          },
-          {
-            "powered": "false"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/booster_track",
+        "model": "railcraft:block/rail_outfitted",
         "y": 90
       },
       "when": {
         "AND": [
           {
             "shape": "east_west"
-          },
-          {
-            "powered": "false"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/booster_track_raised_ne",
-        "y": 0
+        "model": "railcraft:block/rail_outfitted_raised_ne"
       },
       "when": {
         "AND": [
           {
             "shape": "ascending_north"
-          },
-          {
-            "powered": "false"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/booster_track_raised_sw",
-        "y": 0
+        "model": "railcraft:block/rail_outfitted_raised_sw"
       },
       "when": {
         "AND": [
           {
             "shape": "ascending_south"
-          },
-          {
-            "powered": "false"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/booster_track_raised_ne",
+        "model": "railcraft:block/rail_outfitted_raised_ne",
         "y": 90
       },
       "when": {
         "AND": [
           {
             "shape": "ascending_east"
-          },
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/rail_outfitted_raised_sw",
+        "y": 90
+      },
+      "when": {
+        "AND": [
           {
-            "powered": "false"
+            "shape": "ascending_west"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/booster_track"
+      },
+      "when": {
+        "AND": [
+          {
+            "powered": "false",
+            "shape": "north_south"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/booster_track",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "powered": "false",
+            "shape": "east_west"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/booster_track_raised_ne"
+      },
+      "when": {
+        "AND": [
+          {
+            "powered": "false",
+            "shape": "ascending_north"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/booster_track_raised_sw"
+      },
+      "when": {
+        "AND": [
+          {
+            "powered": "false",
+            "shape": "ascending_south"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/booster_track_raised_ne",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "powered": "false",
+            "shape": "ascending_east"
           }
         ]
       }
@@ -142,26 +150,21 @@
       "when": {
         "AND": [
           {
+            "powered": "false",
             "shape": "ascending_west"
-          },
-          {
-            "powered": "false"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/booster_track_on",
-        "y": 0
+        "model": "railcraft:block/booster_track_on"
       },
       "when": {
         "AND": [
           {
+            "powered": "true",
             "shape": "north_south"
-          },
-          {
-            "powered": "true"
           }
         ]
       }
@@ -174,42 +177,34 @@
       "when": {
         "AND": [
           {
+            "powered": "true",
             "shape": "east_west"
-          },
-          {
-            "powered": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/booster_track_on_raised_ne",
-        "y": 0
+        "model": "railcraft:block/booster_track_on_raised_ne"
       },
       "when": {
         "AND": [
           {
+            "powered": "true",
             "shape": "ascending_north"
-          },
-          {
-            "powered": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/booster_track_on_raised_sw",
-        "y": 0
+        "model": "railcraft:block/booster_track_on_raised_sw"
       },
       "when": {
         "AND": [
           {
+            "powered": "true",
             "shape": "ascending_south"
-          },
-          {
-            "powered": "true"
           }
         ]
       }
@@ -222,10 +217,8 @@
       "when": {
         "AND": [
           {
+            "powered": "true",
             "shape": "ascending_east"
-          },
-          {
-            "powered": "true"
           }
         ]
       }
@@ -238,10 +231,8 @@
       "when": {
         "AND": [
           {
+            "powered": "true",
             "shape": "ascending_west"
-          },
-          {
-            "powered": "true"
           }
         ]
       }

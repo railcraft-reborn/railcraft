@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
+  "render_type": "minecraft:cutout",
   "textures": {
     "all": "railcraft:block/light_blue_strengthened_glass_top"
   }

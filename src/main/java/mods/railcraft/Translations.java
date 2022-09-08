@@ -98,6 +98,12 @@ public class Translations {
         format("tips.%railcraft.locomotive.item.whistle");
     public static final String CRUSHED_OBSIDIAN =
         format("tips.%railcraft.crushed_obsidian");
+    public static final String COKE_OVEN =
+        format("tips.%railcraft.coke_oven");
+    public static final String BLAST_FURNACE =
+        format("tips.%railcraft.blast_furnace");
+    public static final String CRUSHER =
+        format("tips.%railcraft.crusher");
     public static final String SPIKE_MAUL =
         format("tips.%railcraft.spike_maul");
     public static final String GOOGLES_DESC =

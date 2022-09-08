@@ -1,8 +1,10 @@
 package mods.railcraft.world.module;
 
 import java.util.Objects;
+import java.util.Optional;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -28,14 +30,17 @@ public abstract class CookingModule<R extends AbstractCookingRecipe, T extends M
     var input = this.getItem(this.inputSlot);
     if (!ItemStack.matches(input, this.lastInput)) {
       this.lastInput = input.copy();
-      this.recipe = this.provider.level().getRecipeManager()
-          .getRecipeFor(this.getRecipeType(), this, this.provider.level())
-          .orElse(null);
+      this.recipe = this.getRecipeFor(input).orElse(null);
       if (this.recipe == null && !input.isEmpty()) {
         this.setItem(this.inputSlot, ItemStack.EMPTY);
         this.provider.dropItem(input);
       }
     }
+  }
+
+  protected Optional<R> getRecipeFor(ItemStack itemStack) {
+    return this.provider.level().getRecipeManager()
+        .getRecipeFor(this.getRecipeType(), new SimpleContainer(itemStack), this.provider.level());
   }
 
   @Override

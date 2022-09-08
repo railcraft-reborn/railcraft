@@ -1,7 +1,0 @@
-{
-    "parent": "block/template_anvil",
-    "textures": {
-        "particle": "railcraft:block/steel_anvil",
-        "body": "railcraft:block/steel_anvil"
-    }
-}
