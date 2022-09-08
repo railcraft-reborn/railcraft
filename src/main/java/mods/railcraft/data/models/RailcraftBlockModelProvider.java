@@ -685,14 +685,6 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.simpleBlockItem(block, model);
   }
 
-  private void createCubeTopBlock(Block block) {
-    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
-    var topTexture = TextureMapping.getBlockTexture(block, "_top");
-    var model = this.models().cubeTop(this.name(block), sideTexture, topTexture);
-    this.simpleBlock(block, model);
-    this.simpleBlockItem(block, model);
-  }
-
   private void createPost(PostBlock block) {
     var texture = TextureMapping.defaultTexture(block).get(TextureSlot.TEXTURE);
     var postFullColumnTemplate = this.modLoc("template_post_full_column");

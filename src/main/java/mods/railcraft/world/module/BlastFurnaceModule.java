@@ -1,6 +1,7 @@
 package mods.railcraft.world.module;
 
 import java.util.function.IntSupplier;
+import org.jetbrains.annotations.NotNull;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.item.RailcraftItems;
@@ -16,10 +17,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import org.jetbrains.annotations.NotNull;
 
 public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastFurnaceBlockEntity> {
-  
+
   public static final int SLOT_INPUT = 0;
   public static final int SLOT_FUEL = 1;
   public static final int SLOT_OUTPUT = 2;
@@ -92,8 +92,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   @Override
   protected boolean craftAndPush() {
-    final var recipe = this.recipe.orElseThrow(NullPointerException::new);
-    var output = recipe.getResultItem();
+    var output = this.recipe.getResultItem();
 
     if (!this.outputContainer.canFit(output)) {
       return false;
@@ -168,11 +167,11 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack itemStack) {
-    if(slot == SLOT_INPUT && getRecipe(itemStack).isPresent())
-      return super.canPlaceItem(slot, itemStack);
-    if(slot == SLOT_FUEL && isFuel(itemStack))
-      return super.canPlaceItem(slot, itemStack);
-    return false;
+    return switch (slot) {
+      case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
+      case SLOT_FUEL -> this.isFuel(itemStack);
+      default -> false;
+    } && super.canPlaceItem(slot, itemStack);
   }
 
   public boolean isFuel(ItemStack itemStack) {

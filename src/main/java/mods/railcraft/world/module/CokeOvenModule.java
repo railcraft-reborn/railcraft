@@ -49,7 +49,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
       @Override
       @NotNull
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if(slot == SLOT_INPUT) {
+        if (slot == SLOT_INPUT) {
           return ItemStack.EMPTY;
         }
         return super.extractItem(slot, amount, simulate);
@@ -74,9 +74,8 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   }
 
   private boolean craftAndPushImp() {
-    final var recipe = this.recipe.orElseThrow(NullPointerException::new);
-    var output = recipe.getResultItem();
-    var fluidOutput = recipe.getCreosote();
+    var output = this.recipe.getResultItem();
+    var fluidOutput = this.recipe.getCreosote();
     if (this.outputContainer.canFit(output)
         && (fluidOutput.isEmpty() || this.tank.internalFill(fluidOutput,
             IFluidHandler.FluidAction.SIMULATE) >= fluidOutput.getAmount())) {
@@ -123,12 +122,12 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack itemStack) {
-    if(slot == SLOT_INPUT && getRecipe(itemStack).isPresent())
-      return super.canPlaceItem(slot, itemStack);
-    if(slot == SLOT_LIQUID_INPUT && FluidItemHelper.isRoomInContainer(itemStack,
-        RailcraftFluids.CREOSOTE.get()))
-      return super.canPlaceItem(slot, itemStack);
-    return false;
+    return switch (slot) {
+      case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
+      case SLOT_LIQUID_INPUT -> FluidItemHelper.isRoomInContainer(itemStack,
+          RailcraftFluids.CREOSOTE.get());
+      default -> false;
+    } && super.canPlaceItem(slot, itemStack);
   }
 
   public LazyOptional<IItemHandler> getItemHandler() {
