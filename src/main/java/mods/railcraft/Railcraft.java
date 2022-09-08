@@ -22,7 +22,6 @@ import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.worldgen.features.RailcraftMiscOverworldFeatures;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
-import mods.railcraft.data.worldgen.placements.RailcraftMiscOverworldPlacements;
 import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.network.NetworkChannel;
