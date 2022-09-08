@@ -1,7 +1,7 @@
 {
-  "type": "railcraft:railcraft_biome_modifier",
+  "type": "forge:add_features",
   "biomes": "#minecraft:is_overworld",
-  "feature": {
+  "features": {
     "feature": {
       "type": "minecraft:ore",
       "config": {
@@ -53,5 +53,6 @@
         "type": "minecraft:biome"
       }
     ]
-  }
+  },
+  "step": "underground_ores"
 }

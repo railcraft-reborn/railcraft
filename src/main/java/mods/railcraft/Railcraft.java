@@ -1,7 +1,7 @@
 package mods.railcraft;
 
-import com.mojang.serialization.JsonOps;
 import java.util.HashMap;
+import com.mojang.serialization.JsonOps;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.charge.Charge;
@@ -22,10 +22,6 @@ import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.worldgen.features.RailcraftMiscOverworldFeatures;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
-import mods.railcraft.data.worldgen.modifiers.RailcraftBiomeModifier;
-import mods.railcraft.data.worldgen.modifiers.RailcraftFirestoneBiomeModifier;
-import mods.railcraft.data.worldgen.modifiers.RailcraftOreBiomeModifier;
-import mods.railcraft.data.worldgen.modifiers.RailcraftSaltpeterBiomeModifier;
 import mods.railcraft.data.worldgen.placements.RailcraftMiscOverworldPlacements;
 import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import mods.railcraft.fuel.FuelManagerImpl;
@@ -56,6 +52,7 @@ import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -67,7 +64,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.api.distmarker.Dist;
@@ -78,6 +75,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.JsonCodecProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.ForgeBiomeModifiers;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -147,9 +145,7 @@ public class Railcraft {
     RailcraftDataSerializers.register(modEventBus);
     RailcraftOreFeatures.register(modEventBus);
     RailcraftOrePlacements.register(modEventBus);
-    RailcraftBiomeModifier.register(modEventBus);
     RailcraftMiscOverworldFeatures.register(modEventBus);
-    RailcraftMiscOverworldPlacements.register(modEventBus);
   }
 
   // ================================================================================
@@ -192,41 +188,34 @@ public class Railcraft {
     var registries = RegistryAccess.builtinCopy();
     var ops = RegistryOps.create(JsonOps.INSTANCE, registries);
 
-    var featuresMap = new HashMap<ResourceLocation, ConfiguredFeature<?, ?>>();
-    featuresMap.putAll(RailcraftOreFeatures.getConfiguredFeatureMap());
-    featuresMap.putAll(RailcraftMiscOverworldFeatures.getConfiguredFeatureMap());
+    var configuredFeatures = new HashMap<ResourceLocation, ConfiguredFeature<?, ?>>();
+    configuredFeatures.putAll(RailcraftOreFeatures.collectEntries());
+    configuredFeatures.putAll(RailcraftMiscOverworldFeatures.collectEntries());
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
-        fileHelper, ID, ops, Registry.CONFIGURED_FEATURE_REGISTRY, featuresMap));
+        fileHelper, ID, ops, Registry.CONFIGURED_FEATURE_REGISTRY, configuredFeatures));
 
-    var placedFeaturesMap = new HashMap<ResourceLocation, PlacedFeature>();
-    placedFeaturesMap.putAll(RailcraftOrePlacements.getPlacedFeatureMap());
-    placedFeaturesMap.putAll(RailcraftMiscOverworldPlacements.getPlacedFeatureMap());
+    var placedFeatures = new HashMap<ResourceLocation, PlacedFeature>();
+    placedFeatures.putAll(RailcraftOrePlacements.collectEntries());
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
-        fileHelper, ID, ops, Registry.PLACED_FEATURE_REGISTRY, placedFeaturesMap));
+        fileHelper, ID, ops, Registry.PLACED_FEATURE_REGISTRY, placedFeatures));
 
-    HashMap<ResourceLocation, BiomeModifier> biomeModifierHashMap = new HashMap<>();
+    var biomeModifiers = new HashMap<ResourceLocation, BiomeModifier>();
     var biomeRegistry = ops.registry(Registry.BIOME_REGISTRY).get();
     var biomes = new Named<>(biomeRegistry, BiomeTags.IS_OVERWORLD);
     var netherBiomes = new Named<>(biomeRegistry, BiomeTags.IS_NETHER);
-    for (var placedFeature : placedFeaturesMap.entrySet()) {
-      var resourceLocation = new ResourceLocation(placedFeature.getKey().getNamespace(),
+    for (var placedFeature : placedFeatures.entrySet()) {
+      var modifierName = new ResourceLocation(Railcraft.ID,
           "add_" + placedFeature.getKey().getPath());
-
-      BiomeModifier biomeModifier;
-      if (placedFeature.getKey().getPath().equals("saltpeter")) {
-        biomeModifier = new RailcraftSaltpeterBiomeModifier(biomes, Decoration.UNDERGROUND_ORES);
-      } else if (placedFeature.getKey().getPath().equals("firestone")) {
-        biomeModifier = new RailcraftFirestoneBiomeModifier(netherBiomes,
-            Decoration.UNDERGROUND_ORES);
-      } else {
-        biomeModifier = new RailcraftOreBiomeModifier(biomes,
-            Holder.direct(placedFeature.getValue()));
-      }
-      biomeModifierHashMap.put(resourceLocation, biomeModifier);
+      var modifierBiomes =
+          placedFeature.getKey().getPath().equals("firestone") ? netherBiomes : biomes;
+      biomeModifiers.put(modifierName,
+          new ForgeBiomeModifiers.AddFeaturesBiomeModifier(modifierBiomes,
+              HolderSet.direct(Holder.direct(placedFeature.getValue())),
+              GenerationStep.Decoration.UNDERGROUND_ORES));
     }
 
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
-        fileHelper, ID, ops, Keys.BIOME_MODIFIERS, biomeModifierHashMap));
+        fileHelper, ID, ops, Keys.BIOME_MODIFIERS, biomeModifiers));
   }
 
   // ================================================================================
