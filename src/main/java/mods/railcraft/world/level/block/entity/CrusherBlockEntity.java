@@ -1,12 +1,11 @@
 package mods.railcraft.world.level.block.entity;
 
-import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.List;
 import javax.annotation.Nullable;
+import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations.Container;
 import mods.railcraft.world.inventory.CrusherMenu;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
-import mods.railcraft.world.level.block.CrusherMultiblockBlock.Type;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
@@ -29,7 +28,7 @@ import net.minecraftforge.common.util.LazyOptional;
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
 
   private static final MultiblockPattern<Void> pattern = Util.make(() -> {
-    final var bricks = BlockPredicate.of(RailcraftBlocks.CRUSHER);
+    final var bricks = BlockPredicate.of(RailcraftBlocks.CRUSHER);  
 
     return MultiblockPattern.<Void>builder(BlockPos.ZERO)
         .layer(List.of(
@@ -84,7 +83,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
     if (membership == null) {
       this.level.setBlockAndUpdate(this.getBlockPos(),
           this.getBlockState()
-              .setValue(CrusherMultiblockBlock.TYPE, Type.NONE)
+              .setValue(CrusherMultiblockBlock.TYPE, CrusherMultiblockBlock.Type.NONE)
               .setValue(CrusherMultiblockBlock.ROTATED, false)
               .setValue(CrusherMultiblockBlock.OUTPUT, false));
       Containers.dropContents(this.level, this.getBlockPos(), this.crusherModule);
@@ -92,13 +91,13 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
     }
 
     var type = switch (membership.patternElement().marker()) {
-      case '0' -> Type.NORTH_WEST;
-      case '1' -> Type.NORTH;
-      case '2' -> Type.NORTH_EAST;
-      case '3' -> Type.SOUTH_EAST;
-      case '4' -> Type.SOUTH;
-      case '5' -> Type.SOUTH_WEST;
-      default -> Type.NONE;
+      case '0' -> CrusherMultiblockBlock.Type.NORTH_WEST;
+      case '1' -> CrusherMultiblockBlock.Type.NORTH;
+      case '2' -> CrusherMultiblockBlock.Type.NORTH_EAST;
+      case '3' -> CrusherMultiblockBlock.Type.SOUTH_EAST;
+      case '4' -> CrusherMultiblockBlock.Type.SOUTH;
+      case '5' -> CrusherMultiblockBlock.Type.SOUTH_WEST;
+      default -> CrusherMultiblockBlock.Type.NONE;
     };
 
     this.level.setBlockAndUpdate(this.getBlockPos(),

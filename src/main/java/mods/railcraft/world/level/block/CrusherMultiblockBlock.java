@@ -52,15 +52,16 @@ public class CrusherMultiblockBlock extends MultiblockBlock {
   @Override
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
       BlockEntityType<T> type) {
-    return level.isClientSide() ? null
+    return level.isClientSide()
+        ? null
         : createTickerHelper(type, RailcraftBlockEntityTypes.CRUSHER.get(),
             CrusherBlockEntity::serverTick);
   }
 
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
-      List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable(Tips.CRUSHER).withStyle(ChatFormatting.GRAY));
+      List<Component> lines, TooltipFlag flag) {
+    lines.add(Component.translatable(Tips.CRUSHER).withStyle(ChatFormatting.GRAY));
   }
 
   public enum Type implements StringRepresentable {
@@ -75,7 +76,7 @@ public class CrusherMultiblockBlock extends MultiblockBlock {
 
     private final String name;
 
-    Type(String name) {
+    private Type(String name) {
       this.name = name;
     }
 
