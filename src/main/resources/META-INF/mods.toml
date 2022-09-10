@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion = "[43,)"
-license = "https://github.com/Railcraft/Railcraft/blob/mc-1.12.2/LICENSE.md"
-issueTrackerURL = "https://github.com/Railcraft/Railcraft/Issues"
+license = "https://github.com/Sm0keySa1m0n/Railcraft/blob/1.19.x/LICENSE.md"
+issueTrackerURL = "https://github.com/Sm0keySa1m0n/Railcraft/issues"
 
 [[mods]]
   modId = "railcraft"
@@ -18,7 +18,7 @@ issueTrackerURL = "https://github.com/Railcraft/Railcraft/Issues"
   modId = "forge"
   ordering = "AFTER"
   side = "BOTH"
-  versionRange = "[43.1.15,)"
+  versionRange = "[43.1.25,)"
 [[dependencies.railcraft]]
   mandatory=true
   modId="minecraft"
