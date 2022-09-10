@@ -159,11 +159,14 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
     @Override
     public RollingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-      var ingredients = NonNullList.withSize(9, Ingredient.EMPTY);
       int width = buffer.readVarInt();
       int height = buffer.readVarInt();
       int tickCost = buffer.readVarInt();
-      ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
+      int size = buffer.readVarInt();
+      var ingredients = NonNullList.withSize(size, Ingredient.EMPTY);
+      for (int i = 0; i < size; i++) {
+        ingredients.add(Ingredient.fromNetwork(buffer));
+      }
       var result = buffer.readItem();
 
       return new RollingRecipe(recipeId, width, height, ingredients, result, tickCost);
@@ -174,6 +177,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
       buffer.writeVarInt(recipe.width);
       buffer.writeVarInt(recipe.height);
       buffer.writeVarInt(recipe.tickCost);
+      buffer.writeVarInt(recipe.ingredients.size());
       for (Ingredient ingredient : recipe.ingredients) {
         ingredient.toNetwork(buffer);
       }
