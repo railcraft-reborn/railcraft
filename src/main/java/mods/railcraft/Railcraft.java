@@ -193,8 +193,7 @@ public class Railcraft {
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
         fileHelper, ID, ops, Registry.CONFIGURED_FEATURE_REGISTRY, configuredFeatures));
 
-    var placedFeatures = new HashMap<ResourceLocation, PlacedFeature>();
-    placedFeatures.putAll(RailcraftOrePlacements.collectEntries());
+    var placedFeatures = new HashMap<>(RailcraftOrePlacements.collectEntries());
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
         fileHelper, ID, ops, Registry.PLACED_FEATURE_REGISTRY, placedFeatures));
 
@@ -203,8 +202,7 @@ public class Railcraft {
     var biomes = new Named<>(biomeRegistry, BiomeTags.IS_OVERWORLD);
     var netherBiomes = new Named<>(biomeRegistry, BiomeTags.IS_NETHER);
     for (var placedFeature : placedFeatures.entrySet()) {
-      var modifierName = new ResourceLocation(Railcraft.ID,
-          "add_" + placedFeature.getKey().getPath());
+      var modifierName = new ResourceLocation(ID, "add_" + placedFeature.getKey().getPath());
       var modifierBiomes =
           placedFeature.getKey().getPath().equals("firestone") ? netherBiomes : biomes;
       biomeModifiers.put(modifierName,
