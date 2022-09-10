@@ -142,7 +142,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
     return new ItemStack(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
   }
 
-  public static class RollingRecipeSerializer implements RecipeSerializer<RollingRecipe> {
+  public static class Serializer implements RecipeSerializer<RollingRecipe> {
 
     @Override
     public RollingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
