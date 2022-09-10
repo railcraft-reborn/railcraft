@@ -44,7 +44,7 @@ if (isCI || nightly) {
 }
 
 group = 'mods.railcraft'
-archivesBaseName = 'Railcraft'
+archivesBaseName = 'railcraft'
 
 java {
     toolchain {
