@@ -165,7 +165,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
       int size = buffer.readVarInt();
       var ingredients = NonNullList.withSize(size, Ingredient.EMPTY);
       for (int i = 0; i < size; i++) {
-        ingredients.add(Ingredient.fromNetwork(buffer));
+        ingredients.set(i, Ingredient.fromNetwork(buffer));
       }
       var result = buffer.readItem();
 
@@ -178,8 +178,8 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
       buffer.writeVarInt(recipe.height);
       buffer.writeVarInt(recipe.tickCost);
       buffer.writeVarInt(recipe.ingredients.size());
-      for (Ingredient ingredient : recipe.ingredients) {
-        ingredient.toNetwork(buffer);
+      for (int i = 0; i < recipe.ingredients.size(); i++) {
+        recipe.ingredients.get(i).toNetwork(buffer);
       }
       buffer.writeItem(recipe.result);
     }
