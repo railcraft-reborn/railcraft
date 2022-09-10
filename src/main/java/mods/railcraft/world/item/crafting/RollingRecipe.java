@@ -142,7 +142,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
     return new ItemStack(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
   }
 
-  public static class RollingRecipeSerializer implements RecipeSerializer<RollingRecipe> {
+  public static class Serializer implements RecipeSerializer<RollingRecipe> {
 
     @Override
     public RollingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
@@ -159,11 +159,14 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
     @Override
     public RollingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-      var ingredients = NonNullList.withSize(9, Ingredient.EMPTY);
       int width = buffer.readVarInt();
       int height = buffer.readVarInt();
       int tickCost = buffer.readVarInt();
-      ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
+      int size = buffer.readVarInt();
+      var ingredients = NonNullList.withSize(size, Ingredient.EMPTY);
+      for (int i = 0; i < size; i++) {
+        ingredients.set(i, Ingredient.fromNetwork(buffer));
+      }
       var result = buffer.readItem();
 
       return new RollingRecipe(recipeId, width, height, ingredients, result, tickCost);
@@ -174,8 +177,9 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
       buffer.writeVarInt(recipe.width);
       buffer.writeVarInt(recipe.height);
       buffer.writeVarInt(recipe.tickCost);
-      for (Ingredient ingredient : recipe.ingredients) {
-        ingredient.toNetwork(buffer);
+      buffer.writeVarInt(recipe.ingredients.size());
+      for (int i = 0; i < recipe.ingredients.size(); i++) {
+        recipe.ingredients.get(i).toNetwork(buffer);
       }
       buffer.writeItem(recipe.result);
     }
