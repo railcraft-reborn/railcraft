@@ -1,6 +1,5 @@
 package mods.railcraft.client;
 
-import java.util.stream.Stream;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
@@ -49,9 +48,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.ClickEvent.Action;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -225,27 +223,27 @@ public class ClientManager {
 
   @SubscribeEvent
   public void handleClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
-    if(!Railcraft.BETA) return;
-
-    var player = event.getPlayer();
-    var clickEvent = new ClickEvent(Action.OPEN_URL, "https://github.com/Sm0keySa1m0n/Railcraft/issues");
-    Style style = Style.EMPTY
-        .withColor(ChatFormatting.RED)
-        .withUnderlined(true)
-        .withClickEvent(clickEvent);
-
-    Stream.of(
-        "You are using a development version of Railcraft.",
-        "There is no guarantee that your server or worlds are safe.",
-        "You use this at your own risk, as is. Bugs and all.",
-        "Some features may not be present or different,")
-        .map(Component::literal)
-        .map(c -> c.withStyle(ChatFormatting.RED))
-        .forEach(m -> player.displayClientMessage(m, false));
-    var message = Component.literal("Please let us know by opening a ticket on Sm0keySa1m0n GitHub");
-    player.displayClientMessage(message.setStyle(style), false);
-    player.displayClientMessage(Component.literal("- CovertJaguar, Sm0keySa1m0n, 3divad99")
-        .withStyle(ChatFormatting.RED), false);
+    if (!Railcraft.BETA) {
+      return;
+    }
+    var message = CommonComponents.joinLines(
+        Component.literal("You are using a development version of Railcraft.")
+            .withStyle(ChatFormatting.RED),
+        Component.literal("- World saves are not stable and may break between versions.")
+            .withStyle(ChatFormatting.GRAY),
+        Component.literal("- Features might be missing or only partially implemented.")
+            .withStyle(ChatFormatting.GRAY),
+        Component.literal("You have been warned.")
+            .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC),
+        Component.literal("Bug reports are welcome at our issue tracker.")
+            .withStyle(style -> style
+                .withColor(ChatFormatting.GREEN)
+                .withUnderlined(true)
+                .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
+                    "https://github.com/Sm0keySa1m0n/Railcraft/issues"))),
+        Component.literal("- CovertJaguar, Sm0keySa1m0n, 3divad99")
+            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+    event.getPlayer().displayClientMessage(message, false);
   }
 
   // ================================================================================
