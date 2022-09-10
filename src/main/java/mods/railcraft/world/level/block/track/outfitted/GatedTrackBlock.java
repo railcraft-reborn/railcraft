@@ -115,8 +115,7 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level,
-      BlockPos pos) {
+  public VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level, BlockPos pos) {
     if (blockState.getValue(IN_WALL)) {
       return getRailShapeRaw(blockState) == RailShape.EAST_WEST
           ? X_OCCLUSION_SHAPE_LOW
@@ -131,16 +130,10 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   @Override
   public boolean isPathfindable(BlockState blockState, BlockGetter level,
       BlockPos pos, PathComputationType type) {
-    switch (type) {
-      case LAND:
-        return blockState.getValue(OPEN);
-      case WATER:
-        return false;
-      case AIR:
-        return blockState.getValue(OPEN);
-      default:
-        return false;
-    }
+    return switch (type) {
+      case LAND, AIR -> blockState.getValue(OPEN);
+      case WATER -> false;
+    };
   }
 
   @Override
@@ -223,7 +216,7 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
       Block neighborBlock, BlockPos neighborPos, boolean moved) {
     super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, moved);
     if (!level.isClientSide()) {
-      boolean powered = isPowered(level.getBlockState(pos));
+      boolean powered = isPowered(blockState);
       if (powered != isOpen(blockState)) {
         level.setBlock(pos, blockState.setValue(OPEN, powered), Block.UPDATE_CLIENTS);
         level.levelEvent(null, powered ? LevelEvent.SOUND_OPEN_FENCE_GATE
