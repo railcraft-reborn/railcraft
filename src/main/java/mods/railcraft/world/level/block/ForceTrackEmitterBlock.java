@@ -2,10 +2,8 @@ package mods.railcraft.world.level.block;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterState;
@@ -13,7 +11,6 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -42,14 +39,12 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlock {
+public class ForceTrackEmitterBlock extends BaseEntityBlock {
 
   public static final DyeColor DEFAULT_COLOR = DyeColor.LIGHT_BLUE;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
-  private static final Map<Charge, Spec> CHARGE_SPECS =
-      Spec.make(Charge.distribution, ConnectType.BLOCK, 0.1F);
 
   public ForceTrackEmitterBlock(Properties properties) {
     super(properties);
@@ -69,13 +64,6 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     return RenderShape.MODEL;
   }
 
-  @Override
-  public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level,
-      BlockPos pos) {
-    return CHARGE_SPECS;
-  }
-
-  @SuppressWarnings("deprecation")
   @Override
   public InteractionResult use(BlockState state, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
@@ -126,21 +114,14 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     }
   }
 
-  @SuppressWarnings("deprecation")
-  @Override
-  public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
-    super.tick(state, worldIn, pos, rand);
-    this.registerNode(state, worldIn, pos);
-  }
-
   @Override
   public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos,
       Rotation direction) {
-    if (!level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
+    if (level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .map(ForceTrackEmitterBlockEntity::getStateInstance)
         .map(ForceTrackEmitterState.Instance::getState)
         .filter(ForceTrackEmitterState.RETRACTED::equals)
-        .isPresent()) {
+        .isEmpty()) {
       return state;
     }
     return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
@@ -151,17 +132,6 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
   }
 
-  @SuppressWarnings("deprecation")
-  @Override
-  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
-      boolean moved) {
-    super.onPlace(state, level, pos, oldState, moved);
-    if (!state.is(oldState.getBlock())) {
-      this.registerNode(state, (ServerLevel) level, pos);
-    }
-  }
-
-  @SuppressWarnings("deprecation")
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
       BlockPos changedPos, boolean something) {
@@ -180,16 +150,6 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     }
     level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .ifPresent(ForceTrackEmitterBlockEntity::checkSignal);
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
-      boolean moved) {
-    super.onRemove(state, level, pos, newState, moved);
-    if (!state.is(newState.getBlock())) {
-      this.deregisterNode((ServerLevel) level, pos);
-    }
   }
 
   @Override

@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
-import mods.railcraft.api.charge.Charge;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import mods.railcraft.particle.ForceSpawnParticleOptions;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.Magnifiable;
@@ -70,10 +71,7 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
       blockEntity.stateInstance.uncharged().ifPresent(blockEntity::loadState);
     } else {
       var draw = getMaintenanceCost(blockEntity.getTrackCount());
-      if (Charge.distribution
-          .network((ServerLevel) level)
-          .access(blockPos)
-          .useCharge(draw, false)) {
+      if (true) {
         blockEntity.stateInstance.charged().ifPresent(blockEntity::loadState);
       } else {
         blockEntity.stateInstance.uncharged().ifPresent(blockEntity::loadState);
@@ -91,16 +89,18 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     int z = pos.getZ();
     var color = this.getBlockState().getValue(ForceTrackEmitterBlock.COLOR).getFireworkColor();
 
-    this.level.addParticle(new ForceSpawnParticleOptions(color),
-        x + 0.1, y, z + 0.1, 0.0D, 0.0D, 0.0D);
-    this.level.addParticle(new ForceSpawnParticleOptions(color),
-        x + 0.9, y, z + 0.1, 0.0D, 0.0D, 0.0D);
-    this.level.addParticle(new ForceSpawnParticleOptions(color),
-        x + 0.1, y, z + 0.9, 0.0D, 0.0D, 0.0D);
-    this.level.addParticle(new ForceSpawnParticleOptions(color),
-        x + 0.9, y, z + 0.9, 0.0D, 0.0D, 0.0D);
+    var serverLevel = (ServerLevel) this.level;
 
-    this.level.playSound(
+    serverLevel.sendParticles(new ForceSpawnParticleOptions(color),
+        x + 0.1, y * 1.0, z + 0.1, 0, 0, 0, 0, 0);
+    serverLevel.sendParticles(new ForceSpawnParticleOptions(color),
+        x + 0.9, y, z + 0.1, 0, 0, 0, 0, 0);
+    serverLevel.sendParticles(new ForceSpawnParticleOptions(color),
+        x + 0.1, y, z + 0.9, 0, 0, 0, 0, 0);
+    serverLevel.sendParticles(new ForceSpawnParticleOptions(color),
+        x + 0.9, y, z + 0.9, 0, 0, 0, 0, 0);
+
+    serverLevel.playSound(
         null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1.0F);
   }
 
@@ -127,9 +127,9 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   }
 
   void removeFirstTrack() {
-    BlockPos toRemove = this.worldPosition.above().relative(
-        this.getBlockState().getValue(ForceTrackEmitterBlock.FACING),
-        this.getTrackCount());
+    BlockPos toRemove = this.worldPosition.above()
+        .relative(ForceTrackEmitterBlock.getFacing(this.getBlockState()),
+        this.trackCount);
     this.removeTrack(toRemove);
   }
 
@@ -142,8 +142,8 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   }
 
   public void clearTracks() {
-    this.clearTracks(this.getBlockPos().above().relative(
-        ForceTrackEmitterBlock.getFacing(this.getBlockState())));
+    this.clearTracks(this.getBlockPos().above()
+        .relative(ForceTrackEmitterBlock.getFacing(this.getBlockState())));
   }
 
   public void clearTracks(BlockPos startPos) {
@@ -151,18 +151,18 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
       return;
     }
 
-    BlockPos endPos = this.getBlockPos().above().relative(
-        ForceTrackEmitterBlock.getFacing(this.getBlockState()), this.trackCount);
+    BlockPos endPos = this.getBlockPos().above()
+        .relative(ForceTrackEmitterBlock.getFacing(this.getBlockState()), this.trackCount);
 
     if (startPos.getX() == endPos.getX()) {
-      BlockPos
-          .betweenClosedStream(endPos.getX(), endPos.getY(), startPos.getZ(), endPos.getX(),
-              endPos.getY(), endPos.getZ())
+      IntStream.range(startPos.getZ(), endPos.getZ() + 1)
+          .boxed()
+          .map(z -> new BlockPos(endPos.getX(), endPos.getY(), z))
           .forEach(this::removeTrack);
     } else if (startPos.getZ() == endPos.getZ()) {
-      BlockPos
-          .betweenClosedStream(startPos.getX(), endPos.getY(), endPos.getZ(), endPos.getX(),
-              endPos.getY(), endPos.getZ())
+      IntStream.range(startPos.getX(), endPos.getX() + 1)
+          .boxed()
+          .map(x -> new BlockPos(x, endPos.getY(), endPos.getZ()))
           .forEach(this::removeTrack);
     } else {
       throw new IllegalStateException("Block not aligned.");
@@ -173,12 +173,12 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
 
   private void removeTrack(BlockPos blockPos) {
     this.removingTrack = true;
-    if (this.level.isLoaded(blockPos)
-        && this.level.getBlockState(blockPos).is(RailcraftBlocks.FORCE_TRACK.get())) {
-      this.spawnParticles(blockPos);
+    if (this.level.isLoaded(blockPos) &&
+        this.level.getBlockState(blockPos).is(RailcraftBlocks.FORCE_TRACK.get())) {
       LevelUtil.setAir(this.level, blockPos);
+      this.spawnParticles(blockPos);
     }
-    this.trackCount--;
+    this.trackCount = Math.max(0, --this.trackCount); //Safety check
     this.removingTrack = false;
   }
 

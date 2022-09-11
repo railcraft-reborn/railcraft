@@ -5,11 +5,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.track.LockingTrack;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
 
 public enum ForceTrackEmitterState implements StringRepresentable {
@@ -35,9 +33,11 @@ public enum ForceTrackEmitterState implements StringRepresentable {
     @Override
     public Instance load(ForceTrackEmitterBlockEntity emitter) {
       var pos = emitter.getBlockPos().above();
-      var blockState = emitter.getLevel().getBlockState(pos);
-      if (blockState.getBlock() instanceof LockingTrack lockingTrack) {
-        lockingTrack.releaseCart();
+      if (emitter.hasLevel()) {
+        var blockState = emitter.getLevel().getBlockState(pos);
+        if (blockState.getBlock() instanceof LockingTrack lockingTrack) {
+          lockingTrack.releaseCart();
+        }
       }
 
       return super.load(emitter);
@@ -67,11 +67,7 @@ public enum ForceTrackEmitterState implements StringRepresentable {
 
     @Override
     public Optional<ForceTrackEmitterState> charged() {
-      if (!Charge.distribution
-          .network((ServerLevel) emitter.getLevel())
-          .access(emitter.getBlockPos())
-          .hasCapacity(
-              ForceTrackEmitterBlockEntity.getMaintenanceCost(emitter.getTrackCount() + 1))) {
+      if (false) {
         return Optional.of(HALTED);
       }
       if (emitter.getTrackCount() >= MAX_TRACKS) {
@@ -147,7 +143,7 @@ public enum ForceTrackEmitterState implements StringRepresentable {
   private final boolean visuallyPowered;
   private final Function<ForceTrackEmitterBlockEntity, Instance> factory;
 
-  private ForceTrackEmitterState(String name, boolean visuallyPowered,
+  ForceTrackEmitterState(String name, boolean visuallyPowered,
       Function<ForceTrackEmitterBlockEntity, Instance> factory) {
     this.name = name;
     this.visuallyPowered = visuallyPowered;
@@ -176,7 +172,6 @@ public enum ForceTrackEmitterState implements StringRepresentable {
     /**
      * Determines what state the emitter will be after using charge.
      *
-     * @param emitter The emitter
      * @return The new state
      */
     default Optional<ForceTrackEmitterState> charged() {

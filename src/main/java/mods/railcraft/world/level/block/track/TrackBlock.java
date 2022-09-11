@@ -160,8 +160,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
       if (!BaseRailBlock.isRail(s)) {
         return false;
       }
-      if (b instanceof TrackBlock) {
-        TrackBlock track = (TrackBlock) b;
+      if (b instanceof TrackBlock track) {
         int maxSupportedDistance = track.getMaxSupportedDistance(w, p);
         if (maxSupportedDistance <= 0 || TrackSupportTools.isSupportedDirectly(w, p)) {
           return false;
