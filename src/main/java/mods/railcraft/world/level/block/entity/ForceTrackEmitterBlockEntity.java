@@ -44,7 +44,7 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   public ForceTrackEmitterBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get(), blockPos, blockState);
     this.loadState(ForceTrackEmitterState.RETRACTED);
-    this.energyStorage = new MachineEnergyStorage(1000, 1000);
+    this.energyStorage = new MachineEnergyStorage(1000, 5000);
     this.energyHandler = LazyOptional.of(() -> energyStorage);
   }
 
