@@ -92,7 +92,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock {
   private ItemStack getItem(BlockState blockState) {
     ItemStack itemStack = this.asItem().getDefaultInstance();
     CompoundTag tag = itemStack.getOrCreateTag();
-    tag.putInt("color", blockState.getValue(COLOR).getId());
+    tag.putString("color", blockState.getValue(COLOR).getName());
     return itemStack;
   }
 
@@ -143,10 +143,14 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock {
   @Override
   public void setPlacedBy(Level level, BlockPos pos, BlockState state,
       @Nullable LivingEntity livingEntity, ItemStack itemStack) {
-    super.setPlacedBy(level, pos, state, livingEntity, itemStack);
-    DyeColor color = DyeColor.getColor(itemStack);
-    if (color != null) {
-      state.setValue(COLOR, color);
+    var tag = itemStack.getTag();
+    if (tag != null) {
+      if (level.getBlockEntity(pos) instanceof ForceTrackEmitterBlockEntity t) {
+        var color = DyeColor.byName(tag.getString("color"), null);
+        if (color != null) {
+          t.setColor(color);
+        }
+      }
     }
     level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .ifPresent(ForceTrackEmitterBlockEntity::checkSignal);
