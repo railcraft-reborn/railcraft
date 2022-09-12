@@ -1,9 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import mods.railcraft.particle.ForceSpawnParticleOptions;
 import mods.railcraft.util.LevelUtil;
+import mods.railcraft.util.StreamUtil;
 import mods.railcraft.world.item.Magnifiable;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -22,11 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-/**
- * .
- *
- * @author CovertJaguar (https://www.railcraft.info)
- */
 public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implements Magnifiable {
 
   private static final int BASE_DRAW = 22;
@@ -155,13 +149,11 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
         .relative(ForceTrackEmitterBlock.getFacing(this.getBlockState()), this.trackCount);
 
     if (startPos.getX() == endPos.getX()) {
-      IntStream.range(startPos.getZ(), endPos.getZ() + 1)
-          .boxed()
+      StreamUtil.customRangeClosed(startPos.getZ(), endPos.getZ())
           .map(z -> new BlockPos(endPos.getX(), endPos.getY(), z))
           .forEach(this::removeTrack);
     } else if (startPos.getZ() == endPos.getZ()) {
-      IntStream.range(startPos.getX(), endPos.getX() + 1)
-          .boxed()
+      StreamUtil.customRangeClosed(startPos.getX(), endPos.getX())
           .map(x -> new BlockPos(x, endPos.getY(), endPos.getZ()))
           .forEach(this::removeTrack);
     } else {
@@ -203,7 +195,9 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     if (this.getBlockState().getValue(ForceTrackEmitterBlock.COLOR) != color) {
       this.level.setBlockAndUpdate(this.worldPosition,
           this.getBlockState().setValue(ForceTrackEmitterBlock.COLOR, color));
-      this.clearTracks();
+      if (!this.level.isClientSide()) {
+        this.clearTracks();
+      }
       return true;
     }
     return false;
