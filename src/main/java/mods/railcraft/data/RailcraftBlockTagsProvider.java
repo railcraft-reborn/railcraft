@@ -176,6 +176,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.SILVER_BLOCK.get())
         .add(RailcraftBlocks.TIN_BLOCK.get())
         .add(RailcraftBlocks.ZINC_BLOCK.get())
+        .add(RailcraftBlocks.FORCE_TRACK_EMITTER.get())
         .addTags(Blocks.LEAD_ORE,
             Blocks.NICKEL_ORE,
             Blocks.SILVER_ORE,
@@ -203,7 +204,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.NICKEL_BLOCK.get())
         .add(RailcraftBlocks.SILVER_BLOCK.get())
         .add(RailcraftBlocks.TIN_BLOCK.get())
-        .add(RailcraftBlocks.ZINC_BLOCK.get());
+        .add(RailcraftBlocks.ZINC_BLOCK.get())
+        .add(RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
     var stoneToolAppender = this.tag(BlockTags.NEEDS_STONE_TOOL)
         .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get())

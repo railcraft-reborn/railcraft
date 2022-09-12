@@ -8,6 +8,7 @@
     "railcraft:nickel_block",
     "railcraft:silver_block",
     "railcraft:tin_block",
-    "railcraft:zinc_block"
+    "railcraft:zinc_block",
+    "railcraft:force_track_emitter"
   ]
 }
