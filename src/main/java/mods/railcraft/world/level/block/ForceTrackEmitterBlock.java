@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block;
 
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
@@ -38,6 +37,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.Nullable;
 
 public class ForceTrackEmitterBlock extends BaseEntityBlock {
 
