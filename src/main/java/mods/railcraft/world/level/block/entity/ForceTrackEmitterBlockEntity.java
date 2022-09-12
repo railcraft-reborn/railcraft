@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import mods.railcraft.particle.ForceSpawnParticleOptions;
 import mods.railcraft.util.LevelUtil;
+import mods.railcraft.util.MachineEnergyStorage;
 import mods.railcraft.util.StreamUtil;
 import mods.railcraft.world.item.Magnifiable;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
@@ -9,6 +10,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -20,6 +22,11 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
 
 public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implements Magnifiable {
 
@@ -31,10 +38,14 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
    * Field to prevent recursive removing of tracks when a track is broken by the emitter.
    */
   private boolean removingTrack;
+  private final MachineEnergyStorage energyStorage;
+  private final LazyOptional<IEnergyStorage> energyHandler;
 
   public ForceTrackEmitterBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get(), blockPos, blockState);
     this.loadState(ForceTrackEmitterState.RETRACTED);
+    this.energyStorage = new MachineEnergyStorage(1000, 1000);
+    this.energyHandler = LazyOptional.of(() -> energyStorage);
   }
 
   public ForceTrackEmitterState.Instance getStateInstance() {
@@ -65,8 +76,11 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
       blockEntity.stateInstance.uncharged().ifPresent(blockEntity::loadState);
     } else {
       var draw = getMaintenanceCost(blockEntity.getTrackCount());
-      if (true) {
-        blockEntity.stateInstance.charged().ifPresent(blockEntity::loadState);
+      if (blockEntity.energyStorage.getEnergyStored() >= draw) {
+        blockEntity.energyStorage.consumeEnergyInternally(draw);
+        blockEntity.stateInstance
+            .charged(blockEntity.energyStorage)
+            .ifPresent(blockEntity::loadState);
       } else {
         blockEntity.stateInstance.uncharged().ifPresent(blockEntity::loadState);
       }
@@ -237,5 +251,14 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     if (state != this.stateInstance.getState()) {
       this.loadState(state);
     }
+  }
+
+  @Override
+  @NotNull
+  public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
+    if (cap == ForgeCapabilities.ENERGY) {
+      return energyHandler.cast();
+    }
+    return super.getCapability(cap, side);
   }
 }
