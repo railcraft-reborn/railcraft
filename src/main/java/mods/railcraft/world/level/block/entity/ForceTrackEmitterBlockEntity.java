@@ -92,13 +92,13 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     var serverLevel = (ServerLevel) this.level;
 
     serverLevel.sendParticles(new ForceSpawnParticleOptions(color),
-        x + 0.1, y * 1.0, z + 0.1, 0, 0, 0, 0, 0);
+        x + 0.1, y, z + 0.1, 1, 0, 0, 0, 0);
     serverLevel.sendParticles(new ForceSpawnParticleOptions(color),
-        x + 0.9, y, z + 0.1, 0, 0, 0, 0, 0);
+        x + 0.9, y, z + 0.1, 1, 0, 0, 0, 0);
     serverLevel.sendParticles(new ForceSpawnParticleOptions(color),
-        x + 0.1, y, z + 0.9, 0, 0, 0, 0, 0);
+        x + 0.1, y, z + 0.9, 1, 0, 0, 0, 0);
     serverLevel.sendParticles(new ForceSpawnParticleOptions(color),
-        x + 0.9, y, z + 0.9, 0, 0, 0, 0, 0);
+        x + 0.9, y, z + 0.9, 1, 0, 0, 0, 0);
 
     serverLevel.playSound(
         null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1.0F);
