@@ -1,4 +1,4 @@
-// 1.19.2	2022-09-08T14:28:34.8673379	Block States: railcraft
+// 1.19.2	2022-09-12T19:24:48.091734418	Block States: railcraft
 add6c7b9a50c93a0ccd9ba6e317c1464c29ff9f0 assets/railcraft/blockstates/abandoned_activator_track.json
 141e735829ad3c7798b22e3fcc73490d9a9602ac assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -261,6 +261,7 @@ bc79c3c0a7e4876049f54543c4b22aa17f54d89a assets/railcraft/blockstates/strap_iron
 23c93a6b4730ade7e70d1577d752b9e1b200e27e assets/railcraft/blockstates/sulfur_ore.json
 1a29ee18d1ccf3d43ec5db84e9978e309729a3c9 assets/railcraft/blockstates/tin_block.json
 d144ae7674b5d4aa4204310db11cd6e0db0fc8a7 assets/railcraft/blockstates/tin_ore.json
+f1343f56bc730afeb0e07c25cf7481d8da0109f0 assets/railcraft/blockstates/water_tank_siding.json
 a1bb3d06c181aeb7bdb17556a59a1c1a7422b17c assets/railcraft/blockstates/white_iron_tank_gauge.json
 4a2a0bb4dc6fd13d286ac7ed1f5308a371a6576b assets/railcraft/blockstates/white_iron_tank_valve.json
 caa0d5aec75f8b227e6b00b82d1b1a315c3fb5d5 assets/railcraft/blockstates/white_iron_tank_wall.json
@@ -944,6 +945,7 @@ c5dc95c35ccc3d34ac5a0fb0c94c17c63ff0ecf0 assets/railcraft/models/block/transitio
 df40c1679e4463b991a460295e9822c9156dc382 assets/railcraft/models/block/transition_track_on_raised_sw.json
 42b8626d06a77d6017f1be7842345cd21fda18ea assets/railcraft/models/block/transition_track_raised_ne.json
 85a9f8571b70dc58e8f76592dc6e088d0545d6f8 assets/railcraft/models/block/transition_track_raised_sw.json
+9682635f9ff1e0c89e6db1e2832086f379a2574e assets/railcraft/models/block/water_tank_siding.json
 b54bc7d1605853c9dc5e4aba0a9b215e2ef800ff assets/railcraft/models/block/white_iron_tank_gauge_bottom.json
 dd1ba194d375e1a758c37843987203038c954c63 assets/railcraft/models/block/white_iron_tank_gauge_center.json
 7a4a5260e48ebe0442aeffc43b663c5be7369acb assets/railcraft/models/block/white_iron_tank_gauge_single.json
@@ -1255,6 +1257,7 @@ c42d803f2d5350b755b0bf8e4dca1e970cd39e83 assets/railcraft/models/item/strap_iron
 0f14e0d2885e121a5e0147930cb9f9cf60ca07f9 assets/railcraft/models/item/sulfur_ore.json
 9f73b1ad0c9541152704d4d216be211b40006708 assets/railcraft/models/item/tin_block.json
 da38e71f181d9a9f9795a2798d5f0236f572d6cd assets/railcraft/models/item/tin_ore.json
+f5b43b3ba6d4e9e5eb6624d7eee4ddc8e6871225 assets/railcraft/models/item/water_tank_siding.json
 c34131e95a858f2ae1308348b514ed9445f0b3d1 assets/railcraft/models/item/white_iron_tank_gauge.json
 0ce4cb91add2518e18dac27def5ee49ed93f01b9 assets/railcraft/models/item/white_iron_tank_valve.json
 184dc5cf1020b0fa240f3992d262a2c11679f4d9 assets/railcraft/models/item/white_iron_tank_wall.json

@@ -1,4 +1,4 @@
-// 1.19.2	2022-09-08T14:28:34.8823384	Railcraft Loot Tables
+// 1.19.2	2022-09-12T19:21:50.820066492	Railcraft Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -276,6 +276,7 @@ df087daaa282b2dd2d2a04c482caee6a141f5f2e data/railcraft/loot_tables/blocks/sulfu
 1cfba089df4bcac5891dd654a3dffe4f3baf3d84 data/railcraft/loot_tables/blocks/tin_block.json
 b766c43a295785a8055170c4c6215c6f94cb661c data/railcraft/loot_tables/blocks/tin_ore.json
 1d050a0f9e12f58ac448bf9fd4c3e24672644658 data/railcraft/loot_tables/blocks/token_signal.json
+de5ad157f6ee26fc91f8d94014755eb5761341a2 data/railcraft/loot_tables/blocks/water_tank_siding.json
 eec51469d8392d556a1199fdc831a9e4fb37fcbb data/railcraft/loot_tables/blocks/white_iron_tank_gauge.json
 53ef8acb1aad8235816397baad0819d312fb67e2 data/railcraft/loot_tables/blocks/white_iron_tank_valve.json
 71ea1130119ebe1dfe75a70fefdf8e2d2f8635fa data/railcraft/loot_tables/blocks/white_iron_tank_wall.json

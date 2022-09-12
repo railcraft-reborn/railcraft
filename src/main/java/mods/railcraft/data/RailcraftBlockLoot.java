@@ -46,6 +46,7 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.FEED_STATION.get());
     this.dropSelf(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+    this.dropSelf(RailcraftBlocks.WATER_TANK_SIDING.get());
 
     this.dropSelf(RailcraftBlocks.LEAD_ORE.get());
     this.dropSelf(RailcraftBlocks.NICKEL_ORE.get());

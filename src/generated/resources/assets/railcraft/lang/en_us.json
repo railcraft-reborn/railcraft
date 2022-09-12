@@ -310,6 +310,7 @@
   "block.railcraft.tin_block": "Block of Tin",
   "block.railcraft.tin_ore": "Tin Ore",
   "block.railcraft.token_signal": "Token Signal",
+  "block.railcraft.water_tank_siding": "Water Tank Siding",
   "block.railcraft.white_iron_tank_gauge": "White Iron Tank Gauge",
   "block.railcraft.white_iron_tank_valve": "White Iron Tank Valve",
   "block.railcraft.white_iron_tank_wall": "White Iron Tank Wall",
@@ -663,5 +664,6 @@
   "tips.railcraft.track_kit.corners_unsupported": "Corners are Unsupported",
   "tips.railcraft.track_kit.invalid_track_type": "Invalid Track Type",
   "tips.railcraft.track_kit.slopes_unsupported": "Slopes are Unsupported",
-  "tips.railcraft.transition_track": "Transitions to/from high speed"
+  "tips.railcraft.transition_track": "Transitions to/from high speed",
+  "tips.railcraft.water_tank_siding": "Multi-Block: 3x3x3 (Hollow)"
 }

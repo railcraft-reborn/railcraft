@@ -119,6 +119,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.COKE_OVEN_BRICKS, "Coke Oven Bricks");
     this.addBlock(RailcraftBlocks.FORCE_TRACK_EMITTER, "Force Track Emitter");
     this.addBlock(RailcraftBlocks.CRUSHED_OBSIDIAN, "Crushed Obsidian");
+    this.addBlock(RailcraftBlocks.WATER_TANK_SIDING, "Water Tank Siding");
 
     this.addBlockColorVariants(RailcraftBlocks.STRENGTHENED_GLASS, "Strengthened Glass");
     this.addBlockColorVariants(RailcraftBlocks.POST, "Post");
@@ -317,6 +318,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
     this.add(Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
     this.add(Tips.COKE_OVEN, "Multi-Block: 3x3x3 (Hollow)");
+    this.add(Tips.WATER_TANK_SIDING, "Multi-Block: 3x3x3 (Hollow)");
     this.add(Tips.BLAST_FURNACE, "Multi-Block: 3x4x3 (Hollow)");
     this.add(Tips.CRUSHER, "Multi-Block: 3x2x2");
     this.add(Tips.SPIKE_MAUL, "Converts track to switches and junctions.");

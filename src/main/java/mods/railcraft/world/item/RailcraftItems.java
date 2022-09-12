@@ -1448,6 +1448,11 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> CHARGE_TERMINAL = registerBasic("charge_terminal");
 
+  public static final RegistryObject<BlockItem> WATER_TANK_SIDING =
+      deferredRegister.register("water_tank_siding",
+          () -> new BlockItem(RailcraftBlocks.WATER_TANK_SIDING.get(),
+              new Item.Properties().tab(TAB)));
+
   // ================================================================================
   // Buckets
   // ================================================================================

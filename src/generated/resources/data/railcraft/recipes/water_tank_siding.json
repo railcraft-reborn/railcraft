@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "tag": "minecraft:planks"
+    },
+    "b": {
+      "tag": "forge:ingots/iron"
+    },
+    "c": {
+      "item": "minecraft:slime_ball"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "bcb",
+    "aaa"
+  ],
+  "result": {
+    "count": 6,
+    "item": "railcraft:water_tank_siding"
+  }
+}

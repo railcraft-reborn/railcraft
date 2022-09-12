@@ -190,6 +190,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     RailcraftBlocks.STEEL_TANK_WALL.resolveVariants().forEach(mineableWithPickaxe::add);
 
 
+    this.tag(BlockTags.MINEABLE_WITH_AXE)
+        .add(RailcraftBlocks.WATER_TANK_SIDING.get());
+
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
         .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get());

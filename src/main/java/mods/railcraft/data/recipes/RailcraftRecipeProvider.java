@@ -1025,6 +1025,18 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.RECEIVER_CIRCUIT.get()),
             has(RailcraftItems.RECEIVER_CIRCUIT.get()))
         .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.WATER_TANK_SIDING.get(), 6)
+        .pattern("aaa")
+        .pattern("bcb")
+        .pattern("aaa")
+        .define('a', ItemTags.PLANKS)
+        .define('b', Tags.Items.INGOTS_IRON)
+        .define('c', Items.SLIME_BALL)
+        .unlockedBy(getHasName(Items.IRON_INGOT),
+            has(Items.IRON_INGOT))
+        .unlockedBy(getHasName(Items.SLIME_BALL),
+            has(Items.SLIME_BALL))
+        .save(consumer);
   }
 
   private void buildCartsVariant(Consumer<FinishedRecipe> consumer) {

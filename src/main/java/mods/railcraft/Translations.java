@@ -104,6 +104,8 @@ public class Translations {
         format("tips.%railcraft.blast_furnace");
     public static final String CRUSHER =
         format("tips.%railcraft.crusher");
+    public static final String WATER_TANK_SIDING =
+        format("tips.%railcraft.water_tank_siding");
     public static final String SPIKE_MAUL =
         format("tips.%railcraft.spike_maul");
     public static final String GOOGLES_DESC =

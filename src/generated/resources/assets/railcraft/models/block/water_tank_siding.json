@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "railcraft:block/water_tank_siding_top",
+    "side": "railcraft:block/water_tank_siding_side"
+  }
+}

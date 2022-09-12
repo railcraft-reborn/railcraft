@@ -221,6 +221,13 @@ public class RailcraftBlocks {
               .randomTicks()
               .sound(SoundType.METAL)));
 
+  public static final RegistryObject<WaterTankSiding> WATER_TANK_SIDING =
+      deferredRegister.register("water_tank_siding",
+          () -> new WaterTankSiding(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD)
+              .strength(2.0F, 3.0F)
+              .sound(SoundType.WOOD)
+              .requiresCorrectToolForDrops()));
+
   public static final RegistryObject<BlastFurnaceBricksBlock> BLAST_FURNACE_BRICKS =
       deferredRegister.register("blast_furnace_bricks",
           () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of(Material.STONE)

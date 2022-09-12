@@ -240,6 +240,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createSteelAnvil(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
     this.createCubeColumnBlock(RailcraftBlocks.FEED_STATION.get());
+    this.createCubeColumnBlock(RailcraftBlocks.WATER_TANK_SIDING.get());
     this.createCubeTopBottomBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
 
     this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
