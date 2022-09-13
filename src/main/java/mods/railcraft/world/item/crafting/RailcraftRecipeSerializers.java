@@ -13,7 +13,7 @@ public class RailcraftRecipeSerializers {
       DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Railcraft.ID);
 
   public static final RegistryObject<RecipeSerializer<?>> ROLLING =
-      deferredRegister.register("rolling", RollingRecipe.RollingRecipeSerializer::new);
+      deferredRegister.register("rolling", RollingRecipe.Serializer::new);
 
   public static final RegistryObject<RecipeSerializer<?>> COKING =
       deferredRegister.register("coking", CokeOvenRecipe.Serializer::new);
@@ -22,7 +22,7 @@ public class RailcraftRecipeSerializers {
       deferredRegister.register("blasting", BlastFurnaceRecipe.Serializer::new);
 
   public static final RegistryObject<RecipeSerializer<?>> CRUSHER =
-      deferredRegister.register("crusher", CrusherRecipe.CrusherRecipeSerializer::new);
+      deferredRegister.register("crusher", CrusherRecipe.Serializer::new);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

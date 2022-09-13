@@ -118,7 +118,7 @@ public class CrusherRecipe implements Recipe<Container> {
     return new ItemStack(RailcraftBlocks.CRUSHER.get());
   }
 
-  public static class CrusherRecipeSerializer implements RecipeSerializer<CrusherRecipe> {
+  public static class Serializer implements RecipeSerializer<CrusherRecipe> {
 
     @Override
     public CrusherRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
