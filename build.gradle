@@ -149,7 +149,7 @@ minecraft {
 
             property 'forge.enabledGameTestNamespaces', 'railcraft'
 
-            property 'forceExit', 'false'
+            forceExit false
 
             mods {
                 railcraft {
