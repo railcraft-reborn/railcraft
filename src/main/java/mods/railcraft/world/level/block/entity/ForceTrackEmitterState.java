@@ -5,11 +5,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.track.LockingTrack;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
-import net.minecraftforge.energy.IEnergyStorage;
 
 public enum ForceTrackEmitterState implements StringRepresentable {
 
@@ -21,7 +22,7 @@ public enum ForceTrackEmitterState implements StringRepresentable {
     private int ticks;
 
     @Override
-    public Optional<ForceTrackEmitterState> charged(IEnergyStorage energyStorage) {
+    public Optional<ForceTrackEmitterState> charged() {
       return this.ticks++ >= TICKS_PER_REFRESH ? Optional.of(EXTENDING) : Optional.empty();
     }
 
@@ -67,9 +68,12 @@ public enum ForceTrackEmitterState implements StringRepresentable {
     private int ticks;
 
     @Override
-    public Optional<ForceTrackEmitterState> charged(IEnergyStorage energyStorage) {
-      if (energyStorage.getEnergyStored() <
-          ForceTrackEmitterBlockEntity.getMaintenanceCost(emitter.getTrackCount() + 1)) {
+    public Optional<ForceTrackEmitterState> charged() {
+      if (!Charge.distribution
+          .network((ServerLevel) emitter.getLevel())
+          .access(emitter.getBlockPos())
+          .hasCapacity(ForceTrackEmitterBlockEntity
+              .getMaintenanceCost(emitter.getTrackCount() + 1))) {
         return Optional.of(HALTED);
       }
       if (emitter.getTrackCount() >= MAX_TRACKS) {
@@ -176,7 +180,7 @@ public enum ForceTrackEmitterState implements StringRepresentable {
      *
      * @return The new state
      */
-    default Optional<ForceTrackEmitterState> charged(IEnergyStorage energyStorage) {
+    default Optional<ForceTrackEmitterState> charged() {
       return Optional.of(EXTENDING);
     }
 

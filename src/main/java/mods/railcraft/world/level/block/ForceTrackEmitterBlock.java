@@ -2,7 +2,11 @@ package mods.railcraft.world.level.block;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.charge.ChargeBlock;
+import mods.railcraft.api.charge.ChargeStorage;
+import mods.railcraft.api.charge.ChargeStorage.State;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterState;
@@ -10,6 +14,7 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -39,12 +44,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class ForceTrackEmitterBlock extends BaseEntityBlock {
+public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlock {
 
   public static final DyeColor DEFAULT_COLOR = DyeColor.LIGHT_BLUE;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
+  private static final Map<Charge, Spec> CHARGE_SPECS =
+      Spec.make(Charge.distribution, ConnectType.BLOCK, 0,
+          new ChargeStorage.Spec(State.RECHARGEABLE, 1000, 1000, 1));
 
   public ForceTrackEmitterBlock(Properties properties) {
     super(properties);
@@ -62,6 +70,11 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock {
   @Override
   public RenderShape getRenderShape(BlockState state) {
     return RenderShape.MODEL;
+  }
+
+  @Override
+  public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level, BlockPos pos) {
+    return CHARGE_SPECS;
   }
 
   @SuppressWarnings("deprecation")
@@ -115,6 +128,12 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock {
     }
   }
 
+  @SuppressWarnings("deprecation")
+  @Override
+  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    this.registerNode(state, level, pos);
+  }
+
   @Override
   public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos,
       Rotation direction) {
@@ -131,6 +150,15 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock {
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
     return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
+      boolean isMoving) {
+    if (!state.is(oldState.getBlock())) {
+      this.registerNode(state, (ServerLevel) level, pos);
+    }
   }
 
   @SuppressWarnings("deprecation")
@@ -156,6 +184,16 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock {
     }
     level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .ifPresent(ForceTrackEmitterBlockEntity::checkSignal);
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
+      boolean isMoving) {
+    super.onRemove(state, level, pos, newState, isMoving);
+    if (!state.is(newState.getBlock())) {
+      this.deregisterNode((ServerLevel) level, pos);
+    }
   }
 
   @Override

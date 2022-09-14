@@ -1,10 +1,11 @@
 package mods.railcraft.world.level.block.entity;
 
-import org.jetbrains.annotations.NotNull;
+import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.particle.ForceSpawnParticleOptions;
+import mods.railcraft.util.ForwardingEnergyStorage;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.util.LevelUtil;
-import mods.railcraft.util.MachineEnergyStorage;
 import mods.railcraft.world.item.Magnifiable;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -27,6 +28,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
 
 public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implements Magnifiable {
 
@@ -38,14 +40,12 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
    * Field to prevent recursive removing of tracks when a track is broken by the emitter.
    */
   private boolean removingTrack;
-  private final MachineEnergyStorage energyStorage;
   private final LazyOptional<IEnergyStorage> energyHandler;
 
   public ForceTrackEmitterBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get(), blockPos, blockState);
     this.loadState(ForceTrackEmitterState.RETRACTED);
-    this.energyStorage = new MachineEnergyStorage(1000, 5000);
-    this.energyHandler = LazyOptional.of(() -> energyStorage);
+    this.energyHandler = LazyOptional.of(() -> new ForwardingEnergyStorage(this::storage));
   }
 
   public ForceTrackEmitterState.Instance getStateInstance() {
@@ -76,11 +76,9 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
       blockEntity.stateInstance.uncharged().ifPresent(blockEntity::loadState);
     } else {
       var draw = getMaintenanceCost(blockEntity.getTrackCount());
-      if (blockEntity.energyStorage.getEnergyStored() >= draw) {
-        blockEntity.energyStorage.consumeEnergyInternally(draw);
-        blockEntity.stateInstance
-            .charged(blockEntity.energyStorage)
-            .ifPresent(blockEntity::loadState);
+      if (blockEntity.access()
+          .useCharge(draw, false)) {
+        blockEntity.stateInstance.charged().ifPresent(blockEntity::loadState);
       } else {
         blockEntity.stateInstance.uncharged().ifPresent(blockEntity::loadState);
       }
@@ -177,16 +175,16 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   }
 
   private void removeTrack(BlockPos blockPos) {
-    if (this.trackCount <= 0) {
-      throw new IllegalStateException("trackCount must be greater than 0");
-    }
     this.removingTrack = true;
     if (this.level.isLoaded(blockPos) &&
         this.level.getBlockState(blockPos).is(RailcraftBlocks.FORCE_TRACK.get())) {
       LevelUtil.setAir(this.level, blockPos);
       this.spawnParticles(blockPos);
+      this.trackCount--;
     }
-    this.trackCount--;
+    if (this.trackCount < 0) {
+      throw new IllegalStateException("trackCount must be greater or equal than 0");
+    }
     this.removingTrack = false;
   }
 
@@ -253,6 +251,16 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     if (state != this.stateInstance.getState()) {
       this.loadState(state);
     }
+  }
+
+  private ChargeStorage storage() {
+    return this.access().storage().get();
+  }
+
+  private Charge.Access access() {
+    return Charge.distribution
+        .network((ServerLevel) this.level)
+        .access(this.blockPos());
   }
 
   @Override
