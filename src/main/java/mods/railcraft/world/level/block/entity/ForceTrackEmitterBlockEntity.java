@@ -176,15 +176,14 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
 
   private void removeTrack(BlockPos blockPos) {
     this.removingTrack = true;
+    //System.out.println(blockPos);
+    //System.out.println(trackCount + " " + level.getBlockState(blockPos).getBlock().getName());
     if (this.level.isLoaded(blockPos) &&
         this.level.getBlockState(blockPos).is(RailcraftBlocks.FORCE_TRACK.get())) {
       LevelUtil.setAir(this.level, blockPos);
       this.spawnParticles(blockPos);
-      this.trackCount--;
     }
-    if (this.trackCount < 0) {
-      throw new IllegalStateException("trackCount must be greater or equal than 0");
-    }
+    this.trackCount = Math.max(0, --this.trackCount);
     this.removingTrack = false;
   }
 
