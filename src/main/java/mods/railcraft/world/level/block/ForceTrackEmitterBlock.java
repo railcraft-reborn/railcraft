@@ -64,6 +64,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock {
     return RenderShape.MODEL;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public InteractionResult use(BlockState state, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
@@ -132,6 +133,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock {
     return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
       BlockPos changedPos, boolean something) {
