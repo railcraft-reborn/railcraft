@@ -1,9 +1,10 @@
 package mods.railcraft.world.level.block.entity;
 
+import org.jetbrains.annotations.NotNull;
 import mods.railcraft.particle.ForceSpawnParticleOptions;
+import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.MachineEnergyStorage;
-import mods.railcraft.util.StreamUtil;
 import mods.railcraft.world.item.Magnifiable;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -26,7 +27,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
-import org.jetbrains.annotations.NotNull;
 
 public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implements Magnifiable {
 
@@ -135,9 +135,8 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   }
 
   void removeFirstTrack() {
-    BlockPos toRemove = this.worldPosition.above()
-        .relative(ForceTrackEmitterBlock.getFacing(this.getBlockState()),
-        this.trackCount);
+    var toRemove = this.worldPosition.above()
+        .relative(ForceTrackEmitterBlock.getFacing(this.getBlockState()), this.trackCount);
     this.removeTrack(toRemove);
   }
 
@@ -159,16 +158,16 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
       return;
     }
 
-    BlockPos endPos = this.getBlockPos().above()
+    var endPos = this.getBlockPos().above()
         .relative(ForceTrackEmitterBlock.getFacing(this.getBlockState()), this.trackCount);
 
     if (startPos.getX() == endPos.getX()) {
-      StreamUtil.customRangeClosed(startPos.getZ(), endPos.getZ())
-          .map(z -> new BlockPos(endPos.getX(), endPos.getY(), z))
+      FunctionalUtil.rangeClosed(startPos.getZ(), endPos.getZ())
+          .mapToObj(z -> new BlockPos(endPos.getX(), endPos.getY(), z))
           .forEach(this::removeTrack);
     } else if (startPos.getZ() == endPos.getZ()) {
-      StreamUtil.customRangeClosed(startPos.getX(), endPos.getX())
-          .map(x -> new BlockPos(x, endPos.getY(), endPos.getZ()))
+      FunctionalUtil.rangeClosed(startPos.getX(), endPos.getX())
+          .mapToObj(x -> new BlockPos(x, endPos.getY(), endPos.getZ()))
           .forEach(this::removeTrack);
     } else {
       throw new IllegalStateException("Block not aligned.");
@@ -178,13 +177,16 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   }
 
   private void removeTrack(BlockPos blockPos) {
+    if (this.trackCount <= 0) {
+      throw new IllegalStateException("trackCount must be greater than 0");
+    }
     this.removingTrack = true;
     if (this.level.isLoaded(blockPos) &&
         this.level.getBlockState(blockPos).is(RailcraftBlocks.FORCE_TRACK.get())) {
       LevelUtil.setAir(this.level, blockPos);
       this.spawnParticles(blockPos);
     }
-    this.trackCount = Math.max(0, --this.trackCount); //Safety check
+    this.trackCount--;
     this.removingTrack = false;
   }
 
