@@ -149,6 +149,8 @@ minecraft {
 
             property 'forge.enabledGameTestNamespaces', 'railcraft'
 
+            property 'forceExit', 'false'
+
             mods {
                 railcraft {
                     source sourceSets.main
