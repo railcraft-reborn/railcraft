@@ -1,18 +1,21 @@
 package mods.railcraft.world.inventory;
 
+import java.util.Collection;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
+import mods.railcraft.gui.widget.WaterCollectionGaugeWidget;
 import mods.railcraft.world.inventory.slot.OutputSlot;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
-import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
+import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
 import mods.railcraft.world.module.TankModule;
+import mods.railcraft.world.module.WaterCollectionModule;
 import net.minecraft.world.entity.player.Inventory;
 
-public class TankMenu extends RailcraftMenu {
+public class WaterTankSidingMenu extends RailcraftMenu {
 
   private final FluidGaugeWidget fluidGauge;
 
-  public TankMenu(int id, Inventory inventory, TankBlockEntity tank) {
-    super(RailcraftMenuTypes.TANK.get(), id, inventory.player, tank::stillValid);
+  public WaterTankSidingMenu(int id, Inventory inventory, WaterTankSidingBlockEntity tank) {
+    super(RailcraftMenuTypes.WATER_TANK_SIDING.get(), id, inventory.player, tank::stillValid);
 
     this.addWidget(this.fluidGauge = this.createGauge(tank, 35, 20, 176, 0, 48, 47));
 
@@ -27,9 +30,13 @@ public class TankMenu extends RailcraftMenu {
     return this.fluidGauge;
   }
 
-  private FluidGaugeWidget createGauge(TankBlockEntity blockEntity, int x, int y, int u, int v,
-      int w, int h) {
+  private FluidGaugeWidget createGauge(WaterTankSidingBlockEntity blockEntity, int x, int y, int u,
+      int v, int w, int h) {
     var tank = blockEntity.getModule().getTank();
-    return new FluidGaugeWidget(tank, x, y, u, v, w, h);
+    var modules = blockEntity.getMembers().stream()
+        .flatMap(Collection::stream)
+        .flatMap(member -> member.getModule(WaterCollectionModule.class).stream())
+        .toList();
+    return new WaterCollectionGaugeWidget(modules, tank, x, y, u, v, w, h);
   }
 }

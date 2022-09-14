@@ -276,6 +276,12 @@ public class RailcraftBlockEntityTypes {
               .of(CrusherBlockEntity::new, RailcraftBlocks.CRUSHER.get())
               .build(null));
 
+  public static final RegistryObject<BlockEntityType<WaterTankSidingBlockEntity>> WATER_TANK_SIDING =
+      deferredRegister.register("water_tank_siding",
+          () -> BlockEntityType.Builder
+              .of(WaterTankSidingBlockEntity::new, RailcraftBlocks.WATER_TANK_SIDING.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<SwitchTrackMotorBlockEntity>> SWITCH_TRACK_MOTOR =
       deferredRegister.register("switch_track_motor",
           () -> BlockEntityType.Builder

@@ -1,6 +1,8 @@
 package mods.railcraft.gui.widget;
 
 import mods.railcraft.RailcraftConfig;
+import mods.railcraft.Translations.Screen;
+import mods.railcraft.util.HumanReadableNumberFormatter;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import mods.railcraft.world.module.WaterCollectionModule;
 import net.minecraft.ChatFormatting;
@@ -30,10 +32,10 @@ public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
   }
 
   private void refresh() {
-    var count = 0;
-    var temperaturePenalty = 0.0D;
-    var humidityMultiplier = 0.0D;
-    var precipitationMultiplier = 0.0D;
+    int count = 0;
+    double temperaturePenalty = 0;
+    double humidityMultiplier = 0;
+    double precipitationMultiplier = 0;
 
     for (var module : this.modules) {
       var state = module.getState();
@@ -56,26 +58,26 @@ public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
 
     this.tooltip.addAll(this.tank.getTooltip());
     this.tooltip.add(Component.empty());
-    this.tooltip.add(Component.translatable("gui.railcraft.tank.sky", count).withStyle(
-        ChatFormatting.DARK_GRAY));
-    this.tooltip.add(Component.translatable("gui.railcraft.tank.base",
-        baseRate * count)
-            .withStyle(ChatFormatting.DARK_GRAY));
-    this.tooltip.add(Component.translatable("gui.railcraft.tank.humidity", humidityMultiplier)
-        .withStyle(ChatFormatting.DARK_GRAY));
-    this.tooltip
-        .add(Component.translatable("gui.railcraft.tank.precipitation",
-            precipitationMultiplier).withStyle(ChatFormatting.DARK_GRAY));
-    this.tooltip
-        .add(Component.translatable("gui.railcraft.tank.temp", -temperaturePenalty).withStyle(
-            ChatFormatting.DARK_GRAY));
-    this.tooltip.add(Component.translatable("gui.railcraft.tank.final",
-        (baseRate
-            * count
-            * humidityMultiplier
-            * precipitationMultiplier)
-            - temperaturePenalty).withStyle(
-                ChatFormatting.DARK_GRAY));
+    this.tooltip.add(Component.translatable(Screen.WATER_TANK_SEE_SKY,
+            HumanReadableNumberFormatter.format(count))
+        .withStyle(ChatFormatting.GRAY));
+    this.tooltip.add(Component.translatable(Screen.WATER_TANK_BASE_RATE,
+            HumanReadableNumberFormatter.format(baseRate * count))
+        .withStyle(ChatFormatting.GRAY));
+    this.tooltip.add(Component.translatable(Screen.WATER_TANK_HUMIDITY,
+            HumanReadableNumberFormatter.format(humidityMultiplier))
+        .withStyle(ChatFormatting.GRAY));
+    this.tooltip.add(Component.translatable(Screen.WATER_TANK_PRECIPITATION,
+                HumanReadableNumberFormatter.format(precipitationMultiplier))
+        .withStyle(ChatFormatting.GRAY));
+    this.tooltip.add(Component.translatable(Screen.WATER_TANK_TEMP,
+                HumanReadableNumberFormatter.format(-temperaturePenalty))
+        .withStyle(ChatFormatting.GRAY));
+    this.tooltip.add(Component.translatable(Screen.WATER_TANK_FINAL_RATE,
+        HumanReadableNumberFormatter.format(
+            (baseRate * count * humidityMultiplier * precipitationMultiplier)
+                - temperaturePenalty))
+        .withStyle(ChatFormatting.GRAY));
   }
 
   @Override

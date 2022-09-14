@@ -19,6 +19,7 @@ import mods.railcraft.client.gui.screen.inventory.SteamTurbineScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TankScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
+import mods.railcraft.client.gui.screen.inventory.WaterTankSidingScreen;
 import mods.railcraft.client.model.RailcraftLayerDefinitions;
 import mods.railcraft.client.particle.FireSparkParticle;
 import mods.railcraft.client.particle.PumpkinParticle;
@@ -110,6 +111,8 @@ public class ClientManager {
         SteamTurbineScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK.get(),
         TankScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.WATER_TANK_SIDING.get(),
+        WaterTankSidingScreen::new);
     MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(),
         BlastFurnaceScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FEED_STATION.get(),

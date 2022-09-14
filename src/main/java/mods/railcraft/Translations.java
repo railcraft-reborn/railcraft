@@ -76,6 +76,18 @@ public class Translations {
         format("screen.%railcraft.embarking_track.radius");
     public static final String LAUNCHER_TRACK_LAUNCH_FORCE =
         format("screen.%railcraft.launcher_track.launch_force");
+    public static final String WATER_TANK_SEE_SKY =
+        format("screen.%railcraft.water_tank.sky");
+    public static final String WATER_TANK_BASE_RATE =
+        format("screen.%railcraft.water_tank.base_rate");
+    public static final String WATER_TANK_HUMIDITY =
+        format("screen.%railcraft.water_tank.humidity");
+    public static final String WATER_TANK_PRECIPITATION =
+        format("screen.%railcraft.water_tank.precipitation");
+    public static final String WATER_TANK_TEMP =
+        format("screen.%railcraft.water_tank.temperature");
+    public static final String WATER_TANK_FINAL_RATE =
+        format("screen.%railcraft.water_tank.final_rate");
   }
 
   public static class Tips {
@@ -290,6 +302,8 @@ public class Translations {
         format("container.%railcraft.blast_furnace");
     public static final String CRUSHER =
         format("container.%railcraft.crusher");
+    public static final String WATER_TANK_SIDING =
+        format("container.%railcraft.water_tank_siding");
     public static final String TANK =
         format("container.%railcraft.tank");
     public static final String STEAM_TURBINE =

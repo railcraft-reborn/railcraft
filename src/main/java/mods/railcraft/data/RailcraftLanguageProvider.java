@@ -3,15 +3,16 @@ package mods.railcraft.data;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
-import mods.railcraft.Translations;
 import mods.railcraft.Translations.Advancement.Carts;
 import mods.railcraft.Translations.Advancement.Tracks;
 import mods.railcraft.Translations.Container;
 import mods.railcraft.Translations.Jei;
+import mods.railcraft.Translations.Screen;
 import mods.railcraft.Translations.Signal;
 import mods.railcraft.Translations.SignalAspect;
 import mods.railcraft.Translations.SignalCapacitor;
 import mods.railcraft.Translations.Subtitle;
+import mods.railcraft.Translations.Tab;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -36,9 +37,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   @Override
   protected void addTranslations() {
-    this.add(Translations.Tab.RAILCRAFT, "Railcraft");
-    this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, "Railcraft Outfitted Tracks");
-    this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, "Railcraft Decorative Blocks");
+    this.add(Tab.RAILCRAFT, "Railcraft");
+    this.add(Tab.RAILCRAFT_OUTFITTED_TRACKS, "Railcraft Outfitted Tracks");
+    this.add(Tab.RAILCRAFT_DECORATIVE_BLOCKS, "Railcraft Decorative Blocks");
 
     this.blockTranslations();
     this.itemTranslations();
@@ -297,14 +298,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void containerTranslations() {
-    this.add(Translations.Container.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
-    this.add(Translations.Container.COKE_OVEN, "Coke Oven");
-    this.add(Translations.Container.BLAST_FURNACE, "Blast Furnace");
+    this.add(Container.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
+    this.add(Container.COKE_OVEN, "Coke Oven");
+    this.add(Container.BLAST_FURNACE, "Blast Furnace");
     this.add(Container.CRUSHER, "Crusher");
-    this.add(Translations.Container.TANK, "Tank");
-    this.add(Translations.Container.STEAM_TURBINE, "Steam Turbine");
-    this.add(Translations.Container.SOLID_FUELED_STEAM_BOILER, "Solid Fueled Steam Boiler");
-    this.add(Translations.Container.FLUID_FUELED_STEAM_BOILER, "Fluid Fueled Steam Boiler");
+    this.add(Container.TANK, "Tank");
+    this.add(Container.WATER_TANK_SIDING, "Water Tank");
+    this.add(Container.STEAM_TURBINE, "Steam Turbine");
+    this.add(Container.SOLID_FUELED_STEAM_BOILER, "Solid Fueled Steam Boiler");
+    this.add(Container.FLUID_FUELED_STEAM_BOILER, "Fluid Fueled Steam Boiler");
   }
 
   private void tipsTranslations() {
@@ -418,41 +420,47 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void screenTranslations() {
-    this.add(Translations.Screen.STEAM_TURBINE_ROTOR, "Rotor:");
-    this.add(Translations.Screen.STEAM_TURBINE_OUTPUT, "Output:");
-    this.add(Translations.Screen.STEAM_TURBINE_USAGE, "Usage:");
-    this.add(Translations.Screen.STEAM_MODE_DESC_IDLE,
+    this.add(Screen.STEAM_TURBINE_ROTOR, "Rotor:");
+    this.add(Screen.STEAM_TURBINE_OUTPUT, "Output:");
+    this.add(Screen.STEAM_TURBINE_USAGE, "Usage:");
+    this.add(Screen.STEAM_MODE_DESC_IDLE,
         "Locomotive reduces fuel usage, but retains its heat. If the train is held by a track, it behaves as if idle.");
-    this.add(Translations.Screen.STEAM_MODE_DESC_RUNNING, "Makes the locomotive move.");
-    this.add(Translations.Screen.STEAM_MODE_DESC_SHUTDOWN,
+    this.add(Screen.STEAM_MODE_DESC_RUNNING, "Makes the locomotive move.");
+    this.add(Screen.STEAM_MODE_DESC_SHUTDOWN,
         "Shuts off the locomotive. Halts all movement and begins the cool-down process.");
-    this.add(Translations.Screen.LOCOMOTIVE_LOCK_LOCKED,
+    this.add(Screen.LOCOMOTIVE_LOCK_LOCKED,
         "This cart is locked to %s. It will only accept tickets issued by them or an operator.");
-    this.add(Translations.Screen.LOCOMOTIVE_LOCK_UNLOCKED,
+    this.add(Screen.LOCOMOTIVE_LOCK_UNLOCKED,
         "Click to lock locomotive. Once locked, it will only accept tickets issued by you or an operator.");
-    this.add(Translations.Screen.LOCOMOTIVE_LOCK_PRIVATE,
+    this.add(Screen.LOCOMOTIVE_LOCK_PRIVATE,
         "This cart is private to %s. It can only be controlled by them or an operator.");
-    this.add(Translations.Screen.LOCOMOTIVE_MODE_SHUTDOWN, "Shutdown");
-    this.add(Translations.Screen.LOCOMOTIVE_MODE_RUNNING, "Running");
-    this.add(Translations.Screen.LOCOMOTIVE_MODE_IDLE, "Idle");
-    this.add(Translations.Screen.SINGAL_CONTROLLER_BOX_DEFAULT, "Default aspect:");
-    this.add(Translations.Screen.SINGAL_CONTROLLER_BOX_POWERED, "Powered aspect:");
-    this.add(Translations.Screen.SIGNAL_CAPACITOR_BOX_DURATION, "Duration: %s");
-    this.add(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
+    this.add(Screen.LOCOMOTIVE_MODE_SHUTDOWN, "Shutdown");
+    this.add(Screen.LOCOMOTIVE_MODE_RUNNING, "Running");
+    this.add(Screen.LOCOMOTIVE_MODE_IDLE, "Idle");
+    this.add(Screen.SINGAL_CONTROLLER_BOX_DEFAULT, "Default aspect:");
+    this.add(Screen.SINGAL_CONTROLLER_BOX_POWERED, "Powered aspect:");
+    this.add(Screen.SIGNAL_CAPACITOR_BOX_DURATION, "Duration: %s");
+    this.add(Screen.ACTION_SIGNAL_BOX_LOCKED,
         "This signal box is locked to %s. It can only be modified by them or an operator.");
-    this.add(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED,
+    this.add(Screen.ACTION_SIGNAL_BOX_UNLOCKED,
         "Click to lock signal box. Once locked, it will only be modifiable by you or an operator");
-    this.add(Translations.Screen.SWITCH_TRACK_MOTOR_REDSTONE, "Redstone Triggered");
-    this.add(Translations.Screen.CART_FILTERS, "Carts");
-    this.add(Translations.Screen.ITEM_MANIPULATOR_FILTERS, "Filters");
-    this.add(Translations.Screen.ITEM_MANIPULATOR_BUFFER, "Buffer");
-    this.add(Translations.Screen.TUNNEL_BORE_HEAD, "Head");
-    this.add(Translations.Screen.TUNNEL_BORE_FUEL, "Fuel");
-    this.add(Translations.Screen.TUNNEL_BORE_BALLAST, "Ballast");
-    this.add(Translations.Screen.TUNNEL_BORE_TRACK, "Track");
-    this.add(Translations.Screen.MULTIBLOCK_ASSEMBLY_FAILED, "Multiblock Assembly Failed");
-    this.add(Translations.Screen.EMBARKING_TRACK_RADIUS, "Radius: %s");
-    this.add(Translations.Screen.LAUNCHER_TRACK_LAUNCH_FORCE, "Launch Force: %s");
+    this.add(Screen.SWITCH_TRACK_MOTOR_REDSTONE, "Redstone Triggered");
+    this.add(Screen.CART_FILTERS, "Carts");
+    this.add(Screen.ITEM_MANIPULATOR_FILTERS, "Filters");
+    this.add(Screen.ITEM_MANIPULATOR_BUFFER, "Buffer");
+    this.add(Screen.TUNNEL_BORE_HEAD, "Head");
+    this.add(Screen.TUNNEL_BORE_FUEL, "Fuel");
+    this.add(Screen.TUNNEL_BORE_BALLAST, "Ballast");
+    this.add(Screen.TUNNEL_BORE_TRACK, "Track");
+    this.add(Screen.MULTIBLOCK_ASSEMBLY_FAILED, "Multiblock Assembly Failed");
+    this.add(Screen.EMBARKING_TRACK_RADIUS, "Radius: %s");
+    this.add(Screen.LAUNCHER_TRACK_LAUNCH_FORCE, "Launch Force: %s");
+    this.add(Screen.WATER_TANK_SEE_SKY, "Can see sky: %s");
+    this.add(Screen.WATER_TANK_BASE_RATE, "Base rate: %s mB/sec");
+    this.add(Screen.WATER_TANK_HUMIDITY, "Humidity multiplier: %s");
+    this.add(Screen.WATER_TANK_PRECIPITATION, "Precipitation multiplier: %s");
+    this.add(Screen.WATER_TANK_TEMP, "Temperature modifier: %s mB");
+    this.add(Screen.WATER_TANK_FINAL_RATE, "Final rate: %s mB/sec");
   }
 
   private void trackTranslations() {
