@@ -1,0 +1,26 @@
+package mods.railcraft;
+
+import net.minecraft.gametest.framework.GameTest;
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.gametest.GameTestHolder;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
+
+@GameTestHolder(Railcraft.ID)
+@PrefixGameTestTemplate(false)
+public class OnewayTrackTest {
+
+  @GameTest(template = "one_way_track_active")
+  public static void onewayTrackActive(GameTestHelper helper) {
+    helper.pressButton(0, 3, 1);
+    helper.runAfterDelay(50L, () -> {
+      helper.succeedWhenEntityPresent(EntityType.MINECART, 1, 2, 1);
+    });
+  }
+
+  @GameTest(template = "one_way_track_passive")
+  public static void onewayTrackPassive(GameTestHelper helper) {
+    helper.pressButton(0, 3, 1);
+    helper.succeedWhenEntityPresent(EntityType.MINECART, 6, 2, 1);
+  }
+}
