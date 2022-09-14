@@ -107,6 +107,7 @@ minecraft {
                 railcraft {
                     source sourceSets.main
                     source sourceSets.api
+                    source sourceSets.test
                 }
             }
         }
@@ -137,6 +138,24 @@ minecraft {
                 railcraft {
                     source sourceSets.main
                     source sourceSets.api
+                }
+            }
+        }
+
+        gameTestServer {
+            workingDirectory project.file('run/test')
+
+            property 'forge.logging.console.level', 'debug'
+
+            property 'forge.enabledGameTestNamespaces', 'railcraft'
+
+            forceExit false
+
+            mods {
+                railcraft {
+                    source sourceSets.main
+                    source sourceSets.api
+                    source sourceSets.test
                 }
             }
         }
