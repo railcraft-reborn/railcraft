@@ -39,7 +39,7 @@ jobs:
       - name: Test
         run: |
           ./gradlew hideOfficialWarningUntilChanged
-          ./gradlew runGameTestServer
+          ./gradlew runGameTestServer --no-daemon --max-workers 1
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
