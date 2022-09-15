@@ -135,14 +135,6 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     this.removeTrack(toRemove);
   }
 
-  @Override
-  public void setRemoved() {
-    super.setRemoved();
-    if (!this.level.isClientSide()) {
-      this.clearTracks();
-    }
-  }
-
   public void clearTracks() {
     this.clearTracks(this.getBlockPos().above()
         .relative(ForceTrackEmitterBlock.getFacing(this.getBlockState())));
