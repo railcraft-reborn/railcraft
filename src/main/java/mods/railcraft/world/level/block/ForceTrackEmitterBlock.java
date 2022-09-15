@@ -128,7 +128,6 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     }
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     this.registerNode(state, level, pos);
@@ -139,7 +138,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
       Rotation direction) {
     if (level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .map(ForceTrackEmitterBlockEntity::getStateInstance)
-        .map(ForceTrackEmitterState.Instance::getState)
+        .map(ForceTrackEmitterState.Instance::state)
         .filter(ForceTrackEmitterState.RETRACTED::equals)
         .isEmpty()) {
       return state;
@@ -152,7 +151,6 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
       boolean isMoving) {
