@@ -207,24 +207,32 @@ public class RailcraftBlocks {
   public static final RegistryObject<SteamBoilerTankBlock> LOW_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("low_pressure_steam_boiler_tank",
           () -> new SteamBoilerTankBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(5.0F, 6.0F)
+              .requiresCorrectToolForDrops()
               .noOcclusion()
               .sound(SoundType.METAL)));
 
   public static final RegistryObject<SteamBoilerTankBlock> HIGH_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("high_pressure_steam_boiler_tank",
           () -> new SteamBoilerTankBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(5.0F, 6.0F)
+              .requiresCorrectToolForDrops()
               .noOcclusion()
               .sound(SoundType.METAL)));
 
   public static final RegistryObject<SolidFueledFireboxBlock> SOLID_FUELED_FIREBOX =
       deferredRegister.register("solid_fueled_firebox",
           () -> new SolidFueledFireboxBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.5F)
+              .requiresCorrectToolForDrops()
               .lightLevel(litBlockEmission(13))
-              .sound(SoundType.STONE)));
+              .sound(SoundType.METAL)));
 
   public static final RegistryObject<FluidFueledFireboxBlock> FLUID_FUELED_FIREBOX =
       deferredRegister.register("fluid_fueled_firebox",
           () -> new FluidFueledFireboxBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.5F)
+              .requiresCorrectToolForDrops()
               .lightLevel(litBlockEmission(13))
               .sound(SoundType.METAL)));
 
@@ -237,6 +245,8 @@ public class RailcraftBlocks {
   public static final RegistryObject<BlastFurnaceBricksBlock> BLAST_FURNACE_BRICKS =
       deferredRegister.register("blast_furnace_bricks",
           () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.5F)
+              .requiresCorrectToolForDrops()
               .lightLevel(litBlockEmission(13))
               .sound(SoundType.STONE)));
 
@@ -244,6 +254,8 @@ public class RailcraftBlocks {
       deferredRegister.register("feed_station",
           () -> new FeedStationBlock(
               BlockBehaviour.Properties.of(Material.STONE, MaterialColor.WOOD)
+                  .strength(1F)
+                  .requiresCorrectToolForDrops()
                   .sound(SoundType.WOOD)));
 
   public static final RegistryObject<AnvilBlock> STEEL_ANVIL =
@@ -426,34 +438,36 @@ public class RailcraftBlocks {
   public static final RegistryObject<FluidLoaderBlock> FLUID_LOADER =
       deferredRegister.register("fluid_loader",
           () -> new FluidLoaderBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.5F)
+              .requiresCorrectToolForDrops()
               .sound(SoundType.STONE)
               .noOcclusion()));
 
   public static final RegistryObject<FluidUnloaderBlock> FLUID_UNLOADER =
       deferredRegister.register("fluid_unloader",
-          () -> new FluidUnloaderBlock(BlockBehaviour.Properties.of(Material.STONE)
-              .sound(SoundType.STONE)
-              .noOcclusion()));
+          () -> new FluidUnloaderBlock(BlockBehaviour.Properties.copy(FLUID_LOADER.get())));
 
   public static final RegistryObject<AdvancedItemLoaderBlock> ADVANCED_ITEM_LOADER =
       deferredRegister.register("advanced_item_loader",
           () -> new AdvancedItemLoaderBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .strength(3.5F)
+              .requiresCorrectToolForDrops()
               .sound(SoundType.STONE)));
 
   public static final RegistryObject<AdvancedItemUnloaderBlock> ADVANCED_ITEM_UNLOADER =
       deferredRegister.register("advanced_item_unloader",
-          () -> new AdvancedItemUnloaderBlock(BlockBehaviour.Properties.of(Material.STONE)
-              .sound(SoundType.STONE)));
+          () -> new AdvancedItemUnloaderBlock(BlockBehaviour.Properties
+              .copy(ADVANCED_ITEM_LOADER.get())));
 
   public static final RegistryObject<ItemLoaderBlock> ITEM_LOADER =
       deferredRegister.register("item_loader",
-          () -> new ItemLoaderBlock(BlockBehaviour.Properties.of(Material.STONE)
-              .sound(SoundType.STONE)));
+          () -> new ItemLoaderBlock(BlockBehaviour.Properties
+              .copy(ADVANCED_ITEM_LOADER.get())));
 
   public static final RegistryObject<ItemUnloaderBlock> ITEM_UNLOADER =
       deferredRegister.register("item_unloader",
-          () -> new ItemUnloaderBlock(BlockBehaviour.Properties.of(Material.STONE)
-              .sound(SoundType.STONE)));
+          () -> new ItemUnloaderBlock(BlockBehaviour.Properties
+              .copy(ADVANCED_ITEM_LOADER.get())));
 
   public static final RegistryObject<SwitchTrackActuatorBlock> SWITCH_TRACK_LEVER =
       deferredRegister.register("switch_track_lever",
