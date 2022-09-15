@@ -18,9 +18,7 @@ public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
     super(RailcraftBlockEntityTypes.FORCE_TRACK.get(), blockPos, blockState);
   }
 
-  @Override
-  public void setRemoved() {
-    super.setRemoved();
+  public void blockRemoved() {
     if (this.emitter != null) {
       this.emitter.clearTracks(this.getBlockPos());
     }

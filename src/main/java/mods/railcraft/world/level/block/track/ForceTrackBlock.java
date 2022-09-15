@@ -79,6 +79,16 @@ public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
   }
 
   @Override
+  public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newBlockState,
+      boolean moved) {
+    if ((!blockState.is(newBlockState.getBlock()) || !newBlockState.hasBlockEntity())
+        && level.getBlockEntity(pos) instanceof ForceTrackBlockEntity blockEntity) {
+      blockEntity.blockRemoved();
+    }
+    super.onRemove(blockState, level, pos, newBlockState, moved);
+  }
+
+  @Override
   public float getRailMaxSpeed(BlockState blockState, Level level, BlockPos pos,
       AbstractMinecart cart) {
     return 0.6F;
