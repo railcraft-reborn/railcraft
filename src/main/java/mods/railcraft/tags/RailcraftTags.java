@@ -96,8 +96,14 @@ public class RailcraftTags {
     public static final TagKey<Item> STEEL_TANK_WALL = tag("steel_tank_wall");
 
     public static final TagKey<Item> POST = tag("post");
-
     public static final TagKey<Item> STRENGTHENED_GLASS = tag("strengthened_glass");
+    public static final TagKey<Item> ABANDONED_TRACK = tag("abandoned_track");
+    public static final TagKey<Item> ELECTRIC_TRACK = tag("electric_track");
+    public static final TagKey<Item> HIGH_SPEED_TRACK = tag("high_speed_track");
+    public static final TagKey<Item> HIGH_SPEED_ELECTRIC_TRACK = tag("high_speed_electric_track");
+    public static final TagKey<Item> IRON_TRACK = tag("iron_track");
+    public static final TagKey<Item> REINFORCED_TRACK = tag("reinforced_track");
+    public static final TagKey<Item> STRAP_IRON_TRACK = tag("strap_iron_track");
 
 
     public static final TagKey<Item> LEAD_ORE = forgeTag("ores/lead");
@@ -141,6 +147,13 @@ public class RailcraftTags {
         tag("aspect_emitter");
     public static final TagKey<Block> POST = tag("post");
     public static final TagKey<Block> SIGNAL = tag("signal");
+    public static final TagKey<Block> ABANDONED_TRACK = tag("abandoned_track");
+    public static final TagKey<Block> ELECTRIC_TRACK = tag("electric_track");
+    public static final TagKey<Block> HIGH_SPEED_TRACK = tag("high_speed_track");
+    public static final TagKey<Block> HIGH_SPEED_ELECTRIC_TRACK = tag("high_speed_electric_track");
+    public static final TagKey<Block> IRON_TRACK = tag("iron_track");
+    public static final TagKey<Block> REINFORCED_TRACK = tag("reinforced_track");
+    public static final TagKey<Block> STRAP_IRON_TRACK = tag("strap_iron_track");
 
     public static final TagKey<Block> IRON_TANK_GAUGE = tag("iron_tank_gauge");
     public static final TagKey<Block> IRON_TANK_VALVE = tag("iron_tank_valve");

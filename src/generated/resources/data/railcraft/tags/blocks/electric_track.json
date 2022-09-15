@@ -1,0 +1,20 @@
+{
+  "values": [
+    "railcraft:electric_track",
+    "railcraft:electric_locking_track",
+    "railcraft:electric_activator_track",
+    "railcraft:electric_booster_track",
+    "railcraft:electric_control_track",
+    "railcraft:electric_gated_track",
+    "railcraft:electric_detector_track",
+    "railcraft:electric_coupler_track",
+    "railcraft:electric_embarking_track",
+    "railcraft:electric_disembarking_track",
+    "railcraft:electric_turnout_track",
+    "railcraft:electric_wye_track",
+    "railcraft:electric_junction_track",
+    "railcraft:electric_launcher_track",
+    "railcraft:electric_one_way_track",
+    "railcraft:electric_locomotive_track"
+  ]
+}

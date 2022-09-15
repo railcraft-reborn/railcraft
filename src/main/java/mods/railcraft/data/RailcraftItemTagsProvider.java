@@ -166,6 +166,14 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.copy(Blocks.ZINC_ORE, Items.ZINC_ORE);
     this.copy(Blocks.SALTPETER_ORE, Items.SALTPETER_ORE);
 
+    this.copy(Blocks.ABANDONED_TRACK, Items.ABANDONED_TRACK);
+    this.copy(Blocks.ELECTRIC_TRACK, Items.ELECTRIC_TRACK);
+    this.copy(Blocks.HIGH_SPEED_TRACK, Items.HIGH_SPEED_TRACK);
+    this.copy(Blocks.HIGH_SPEED_ELECTRIC_TRACK, Items.HIGH_SPEED_ELECTRIC_TRACK);
+    this.copy(Blocks.IRON_TRACK, Items.IRON_TRACK);
+    this.copy(Blocks.REINFORCED_TRACK, Items.REINFORCED_TRACK);
+    this.copy(Blocks.STRAP_IRON_TRACK, Items.STRAP_IRON_TRACK);
+
 
 
     // TOOLS

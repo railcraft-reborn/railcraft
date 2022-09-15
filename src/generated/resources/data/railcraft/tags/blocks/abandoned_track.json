@@ -1,0 +1,20 @@
+{
+  "values": [
+    "railcraft:abandoned_track",
+    "railcraft:abandoned_locking_track",
+    "railcraft:abandoned_activator_track",
+    "railcraft:abandoned_booster_track",
+    "railcraft:abandoned_control_track",
+    "railcraft:abandoned_gated_track",
+    "railcraft:abandoned_detector_track",
+    "railcraft:abandoned_coupler_track",
+    "railcraft:abandoned_embarking_track",
+    "railcraft:abandoned_disembarking_track",
+    "railcraft:abandoned_turnout_track",
+    "railcraft:abandoned_wye_track",
+    "railcraft:abandoned_junction_track",
+    "railcraft:abandoned_launcher_track",
+    "railcraft:abandoned_one_way_track",
+    "railcraft:abandoned_locomotive_track"
+  ]
+}

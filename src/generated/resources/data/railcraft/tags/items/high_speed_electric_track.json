@@ -1,0 +1,14 @@
+{
+  "values": [
+    "railcraft:high_speed_electric_track",
+    "railcraft:high_speed_electric_transition_track",
+    "railcraft:high_speed_electric_locking_track",
+    "railcraft:high_speed_electric_activator_track",
+    "railcraft:high_speed_electric_booster_track",
+    "railcraft:high_speed_electric_detector_track",
+    "railcraft:high_speed_electric_turnout_track",
+    "railcraft:high_speed_electric_wye_track",
+    "railcraft:high_speed_electric_junction_track",
+    "railcraft:high_speed_electric_locomotive_track"
+  ]
+}

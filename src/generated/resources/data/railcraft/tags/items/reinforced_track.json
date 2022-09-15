@@ -1,0 +1,20 @@
+{
+  "values": [
+    "railcraft:reinforced_track",
+    "railcraft:reinforced_locking_track",
+    "railcraft:reinforced_activator_track",
+    "railcraft:reinforced_booster_track",
+    "railcraft:reinforced_control_track",
+    "railcraft:reinforced_gated_track",
+    "railcraft:reinforced_detector_track",
+    "railcraft:reinforced_coupler_track",
+    "railcraft:reinforced_embarking_track",
+    "railcraft:reinforced_disembarking_track",
+    "railcraft:reinforced_turnout_track",
+    "railcraft:reinforced_wye_track",
+    "railcraft:reinforced_junction_track",
+    "railcraft:reinforced_launcher_track",
+    "railcraft:reinforced_one_way_track",
+    "railcraft:reinforced_locomotive_track"
+  ]
+}

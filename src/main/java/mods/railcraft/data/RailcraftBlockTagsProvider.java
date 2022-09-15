@@ -25,8 +25,28 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get())
         .add(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
     this.tag(BlockTags.RAILS)
-        .add(RailcraftBlocks.FORCE_TRACK.get(),
-            RailcraftBlocks.ABANDONED_TRACK.get(),
+        .addTag(Blocks.ABANDONED_TRACK)
+        .addTag(Blocks.ELECTRIC_TRACK)
+        .addTag(Blocks.HIGH_SPEED_TRACK)
+        .addTag(Blocks.HIGH_SPEED_ELECTRIC_TRACK)
+        .addTag(Blocks.IRON_TRACK)
+        .addTag(Blocks.REINFORCED_TRACK)
+        .addTag(Blocks.STRAP_IRON_TRACK)
+        .add(RailcraftBlocks.FORCE_TRACK.get());
+    this.tag(BlockTags.CLIMBABLE)
+        .add(RailcraftBlocks.ELEVATOR_TRACK.get());
+    this.tag(RailcraftTags.Blocks.ASPECT_EMITTER)
+        .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
+            RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
+            RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
+            RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
+    this.tag(RailcraftTags.Blocks.ASPECT_RECEIVER)
+        .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
+            RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(),
+            RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
+            RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
+    this.tag(Blocks.ABANDONED_TRACK)
+        .add(RailcraftBlocks.ABANDONED_TRACK.get(),
             RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
             RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ABANDONED_BOOSTER_TRACK.get(),
@@ -41,8 +61,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get(),
             RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get(),
             RailcraftBlocks.ABANDONED_ONE_WAY_TRACK.get(),
-            RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK.get(),
-            RailcraftBlocks.ELECTRIC_TRACK.get(),
+            RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK.get());
+    this.tag(Blocks.ELECTRIC_TRACK)
+        .add(RailcraftBlocks.ELECTRIC_TRACK.get(),
             RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
             RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ELECTRIC_BOOSTER_TRACK.get(),
@@ -57,8 +78,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get(),
             RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
             RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK.get(),
-            RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get(),
-            RailcraftBlocks.HIGH_SPEED_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get());
+    this.tag(Blocks.HIGH_SPEED_TRACK)
+        .add(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
@@ -67,8 +89,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get(),
-            RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
-            RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get());
+    this.tag(Blocks.HIGH_SPEED_ELECTRIC_TRACK)
+        .add(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
@@ -77,8 +100,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(),
-            RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
-            RailcraftBlocks.IRON_LOCKING_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get());
+    this.tag(Blocks.IRON_TRACK)
+        .add(RailcraftBlocks.IRON_LOCKING_TRACK.get(),
             RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.IRON_BOOSTER_TRACK.get(),
             RailcraftBlocks.IRON_CONTROL_TRACK.get(),
@@ -92,8 +116,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.IRON_JUNCTION_TRACK.get(),
             RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
             RailcraftBlocks.IRON_ONE_WAY_TRACK.get(),
-            RailcraftBlocks.IRON_LOCOMOTIVE_TRACK.get(),
-            RailcraftBlocks.REINFORCED_TRACK.get(),
+            RailcraftBlocks.IRON_LOCOMOTIVE_TRACK.get());
+    this.tag(Blocks.REINFORCED_TRACK)
+        .add(RailcraftBlocks.REINFORCED_TRACK.get(),
             RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
             RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.REINFORCED_BOOSTER_TRACK.get(),
@@ -108,8 +133,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get(),
             RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
             RailcraftBlocks.REINFORCED_ONE_WAY_TRACK.get(),
-            RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK.get(),
-            RailcraftBlocks.STRAP_IRON_TRACK.get(),
+            RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK.get());
+    this.tag(Blocks.STRAP_IRON_TRACK)
+        .add(RailcraftBlocks.STRAP_IRON_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK.get(),
@@ -125,19 +151,6 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK.get());
-    this.tag(BlockTags.CLIMBABLE).add(RailcraftBlocks.ELEVATOR_TRACK.get());
-    this.tag(RailcraftTags.Blocks.ASPECT_EMITTER)
-        .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
-            RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
-            RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
-            RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
-    this.tag(RailcraftTags.Blocks.ASPECT_RECEIVER)
-        .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
-            RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(),
-            RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
-            RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
-
-    RailcraftBlocks.POST.resolveVariants().forEach(this.tag(RailcraftTags.Blocks.POST)::add);
 
     this.tag(RailcraftTags.Blocks.SIGNAL)
         .add(RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),
@@ -154,6 +167,11 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),
             RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.ELEVATOR_TRACK.get())
         .addTag(BlockTags.RAILS);
+
+    this.tag(BlockTags.ANVIL)
+        .add(RailcraftBlocks.STEEL_ANVIL.get(),
+            RailcraftBlocks.CHIPPED_STEEL_ANVIL.get(),
+            RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
     var mineableWithPickaxe = this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
@@ -182,13 +200,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             Blocks.SULFUR_ORE,
             Blocks.TIN_ORE,
             Blocks.ZINC_ORE,
-            Blocks.SALTPETER_ORE);
-
-    RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().forEach(mineableWithPickaxe::add);
-    RailcraftBlocks.IRON_TANK_WALL.resolveVariants().forEach(mineableWithPickaxe::add);
-    RailcraftBlocks.STEEL_TANK_VALVE.resolveVariants().forEach(mineableWithPickaxe::add);
-    RailcraftBlocks.STEEL_TANK_WALL.resolveVariants().forEach(mineableWithPickaxe::add);
-
+            Blocks.SALTPETER_ORE,
+            Blocks.POST);
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
@@ -220,33 +233,53 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             Blocks.ZINC_ORE,
             Blocks.SALTPETER_ORE);
 
-    RailcraftBlocks.IRON_TANK_VALVE.resolveVariants().forEach(stoneToolAppender::add);
-    RailcraftBlocks.IRON_TANK_WALL.resolveVariants().forEach(stoneToolAppender::add);
-    RailcraftBlocks.STEEL_TANK_VALVE.resolveVariants().forEach(stoneToolAppender::add);
-    RailcraftBlocks.STEEL_TANK_WALL.resolveVariants().forEach(stoneToolAppender::add);
-
-    this.tag(BlockTags.ANVIL)
-        .add(RailcraftBlocks.STEEL_ANVIL.get(),
-            RailcraftBlocks.CHIPPED_STEEL_ANVIL.get(),
-            RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
-
+    RailcraftBlocks.STRENGTHENED_GLASS.resolveVariants()
+        .forEach(x -> {
+          stoneToolAppender.add(x);
+          mineableWithPickaxe.add(x);
+        });
     RailcraftBlocks.IRON_TANK_GAUGE.resolveVariants()
-        .forEach(this.tag(RailcraftTags.Blocks.IRON_TANK_GAUGE)::add);
-
+        .forEach(x -> {
+          this.tag(RailcraftTags.Blocks.IRON_TANK_GAUGE).add(x);
+          mineableWithPickaxe.add(x);
+          stoneToolAppender.add(x);
+        });
     RailcraftBlocks.IRON_TANK_VALVE.resolveVariants()
-        .forEach(this.tag(RailcraftTags.Blocks.IRON_TANK_VALVE)::add);
-
+        .forEach(x -> {
+          this.tag(RailcraftTags.Blocks.IRON_TANK_VALVE).add(x);
+          mineableWithPickaxe.add(x);
+          stoneToolAppender.add(x);
+        });
     RailcraftBlocks.IRON_TANK_WALL.resolveVariants()
-        .forEach(this.tag(RailcraftTags.Blocks.IRON_TANK_WALL)::add);
-
+        .forEach(x -> {
+          this.tag(RailcraftTags.Blocks.IRON_TANK_WALL).add(x);
+          mineableWithPickaxe.add(x);
+          stoneToolAppender.add(x);
+        });
     RailcraftBlocks.STEEL_TANK_GAUGE.resolveVariants()
-        .forEach(this.tag(RailcraftTags.Blocks.STEEL_TANK_GAUGE)::add);
-
+        .forEach(x -> {
+          this.tag(RailcraftTags.Blocks.STEEL_TANK_GAUGE).add(x);
+          mineableWithPickaxe.add(x);
+          stoneToolAppender.add(x);
+        });
     RailcraftBlocks.STEEL_TANK_VALVE.resolveVariants()
-        .forEach(this.tag(RailcraftTags.Blocks.STEEL_TANK_VALVE)::add);
-
+        .forEach(x -> {
+          this.tag(RailcraftTags.Blocks.STEEL_TANK_VALVE).add(x);
+          mineableWithPickaxe.add(x);
+          stoneToolAppender.add(x);
+        });
     RailcraftBlocks.STEEL_TANK_WALL.resolveVariants()
-        .forEach(this.tag(RailcraftTags.Blocks.STEEL_TANK_WALL)::add);
+        .forEach(x -> {
+          this.tag(RailcraftTags.Blocks.STEEL_TANK_WALL).add(x);
+          mineableWithPickaxe.add(x);
+          stoneToolAppender.add(x);
+        });
+    RailcraftBlocks.POST.resolveVariants()
+        .forEach(x -> {
+          this.tag(RailcraftTags.Blocks.POST).add(x);
+          mineableWithPickaxe.add(x);
+          stoneToolAppender.add(x);
+        });
 
 
     this.tag(Tags.Blocks.ORE_RATES_SINGULAR)

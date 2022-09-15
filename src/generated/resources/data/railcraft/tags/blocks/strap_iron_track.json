@@ -1,0 +1,20 @@
+{
+  "values": [
+    "railcraft:strap_iron_track",
+    "railcraft:strap_iron_locking_track",
+    "railcraft:strap_iron_activator_track",
+    "railcraft:strap_iron_booster_track",
+    "railcraft:strap_iron_control_track",
+    "railcraft:strap_iron_gated_track",
+    "railcraft:strap_iron_detector_track",
+    "railcraft:strap_iron_coupler_track",
+    "railcraft:strap_iron_embarking_track",
+    "railcraft:strap_iron_disembarking_track",
+    "railcraft:strap_iron_turnout_track",
+    "railcraft:strap_iron_wye_track",
+    "railcraft:strap_iron_junction_track",
+    "railcraft:strap_iron_launcher_track",
+    "railcraft:strap_iron_one_way_track",
+    "railcraft:strap_iron_locomotive_track"
+  ]
+}

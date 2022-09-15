@@ -128,6 +128,7 @@ public class RailcraftBlocks {
         .sound(SoundType.GLASS)
         .noOcclusion()
         .strength(1.0F, 5.0F)
+        .requiresCorrectToolForDrops()
         .isValidSpawn(RailcraftBlocks::never)
         .isRedstoneConductor(RailcraftBlocks::never)
         .isSuffocating(RailcraftBlocks::never)
@@ -139,6 +140,7 @@ public class RailcraftBlocks {
         .sound(SoundType.GLASS)
         .noOcclusion()
         .strength(1.0F, 5.0F)
+        .requiresCorrectToolForDrops()
         .isValidSpawn(RailcraftBlocks::never)
         .isRedstoneConductor(RailcraftBlocks::never)
         .isSuffocating(RailcraftBlocks::never)
@@ -150,6 +152,8 @@ public class RailcraftBlocks {
     return new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
         .sound(SoundType.METAL)
         .noOcclusion()
+        .strength(1.0F, 5.0F)
+        .requiresCorrectToolForDrops()
         .explosionResistance(12));
   }
 
@@ -157,6 +161,8 @@ public class RailcraftBlocks {
     return new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
         .sound(SoundType.METAL)
         .noOcclusion()
+        .strength(1.0F, 5.0F)
+        .requiresCorrectToolForDrops()
         .explosionResistance(12));
   }
 
@@ -164,7 +170,8 @@ public class RailcraftBlocks {
     return new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
         .sound(SoundType.GLASS)
         .noOcclusion()
-        .strength(1.0F, 5.0F)
+        .strength(1.5F, 6.0F)
+        .requiresCorrectToolForDrops()
         .isValidSpawn(RailcraftBlocks::never)
         .isRedstoneConductor(RailcraftBlocks::never)
         .isSuffocating(RailcraftBlocks::never)
@@ -176,6 +183,8 @@ public class RailcraftBlocks {
     return new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
         .sound(SoundType.METAL)
         .noOcclusion()
+        .strength(1.5F, 6.0F)
+        .requiresCorrectToolForDrops()
         .explosionResistance(15));
   }
 
@@ -183,11 +192,15 @@ public class RailcraftBlocks {
     return new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
         .sound(SoundType.METAL)
         .noOcclusion()
+        .strength(1.5F, 6.0F)
+        .requiresCorrectToolForDrops()
         .explosionResistance(15));
   }
 
   private static PostBlock buildPost() {
     return new PostBlock(BlockBehaviour.Properties.of(Material.METAL)
+        .strength(2.0F, 3.0F)
+        .requiresCorrectToolForDrops()
         .sound(SoundType.METAL));
   }
 
