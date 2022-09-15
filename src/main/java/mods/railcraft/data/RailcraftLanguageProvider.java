@@ -118,6 +118,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.CRUSHER, "Crusher");
     this.addBlock(RailcraftBlocks.COKE_OVEN_BRICKS, "Coke Oven Bricks");
     this.addBlock(RailcraftBlocks.FORCE_TRACK_EMITTER, "Force Track Emitter");
+    this.addBlock(RailcraftBlocks.FORCE_TRACK, "Force Track");
     this.addBlock(RailcraftBlocks.CRUSHED_OBSIDIAN, "Crushed Obsidian");
 
     this.addBlockColorVariants(RailcraftBlocks.STRENGTHENED_GLASS, "Strengthened Glass");

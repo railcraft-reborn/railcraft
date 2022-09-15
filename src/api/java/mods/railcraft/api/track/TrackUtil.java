@@ -19,7 +19,6 @@ import mods.railcraft.api.item.TrackPlacer;
 import mods.railcraft.api.item.TrackTypeLike;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -259,7 +258,7 @@ public final class TrackUtil {
     return Optional.empty();
   }
 
-  public static RailShape getAxisAlignedDirection(Axis axis) {
+  public static RailShape getAxisAlignedDirection(Direction.Axis axis) {
     return switch (axis) {
       case X -> RailShape.EAST_WEST;
       case Z -> RailShape.NORTH_SOUTH;

@@ -51,7 +51,7 @@ public class ForceSpawnParticleOptions implements ParticleOptions {
 
   @Override
   public String writeToString() {
-    return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f",
+    return String.format(Locale.ROOT, "%s %d",
         ForgeRegistries.PARTICLE_TYPES.getKey(this.getType()),
         this.color);
   }

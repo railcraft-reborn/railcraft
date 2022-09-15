@@ -8,8 +8,6 @@ import net.minecraft.client.particle.SpriteSet;
 
 public class ForceSpawnParticle extends BaseShrinkingSmokeParticle {
 
-  public static final float SMOKE_GRAVITY = -0.1F;
-
   private ForceSpawnParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
       double dz, int color, SpriteSet sprites) {
     this(level, x, y, z, dx, dy, dz, color, 1.0F, sprites);
@@ -18,7 +16,7 @@ public class ForceSpawnParticle extends BaseShrinkingSmokeParticle {
   public ForceSpawnParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
       double dz, int color, float scale, SpriteSet sprites) {
     super(level, x, y, z, dx, dy, dz, scale);
-    this.gravity = SMOKE_GRAVITY;
+    this.gravity = -0.1F;
     this.rCol = ((color >> 16) & 0xFF) / 255F;
     this.gCol = ((color >> 8) & 0xFF) / 255F;
     this.bCol = ((color) & 0xFF) / 255F;

@@ -580,6 +580,8 @@ public class RailcraftBlocks {
   public static final RegistryObject<ForceTrackEmitterBlock> FORCE_TRACK_EMITTER =
       deferredRegister.register("force_track_emitter",
           () -> new ForceTrackEmitterBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .requiresCorrectToolForDrops()
+              .strength(1.5F, 6)
               .sound(SoundType.METAL)
               .randomTicks()));
 
