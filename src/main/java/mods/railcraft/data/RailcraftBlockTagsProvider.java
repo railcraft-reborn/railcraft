@@ -157,6 +157,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
     this.tag(RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR)
         .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get(),
+            RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
             RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
             RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
             RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),

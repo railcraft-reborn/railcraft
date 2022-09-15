@@ -1,4 +1,4 @@
-// 1.19.2	2022-09-15T15:56:47.736339173	Railcraft Block Tags
+// 1.19.2	2022-09-15T16:30:37.383177185	Railcraft Block Tags
 e36857f35c1bac4bde5a8450008b92cf82656216 data/forge/tags/blocks/ore_rates/dense.json
 8ce5fa4b4f1c2619e124ef387b086d72f9c26f04 data/forge/tags/blocks/ore_rates/singular.json
 c31435450cdbffad0151b7e26a9cc131bf672a75 data/forge/tags/blocks/ores.json
@@ -15,9 +15,9 @@ cba1c5a31aa2960efa0703b2e57f8390f53d4ce6 data/forge/tags/blocks/ores_in_ground/n
 aefbbbc5abb467f81217a20784fffded5a4cc0df data/minecraft/tags/blocks/anvil.json
 491830ad886621c3a078a87ab488fd45839ad64d data/minecraft/tags/blocks/climbable.json
 007fdd13048ba8e0d04733b589dcfda60917ad53 data/minecraft/tags/blocks/mineable/axe.json
-8aa0921d0d41122b06b5d246ca04094a9ddaf336 data/minecraft/tags/blocks/mineable/pickaxe.json
+a46c8c24b2d1c5bd16648e3fddf61719c90ff6f2 data/minecraft/tags/blocks/mineable/pickaxe.json
 c8cc57d66437ff6a3b383774403997b98453ace2 data/minecraft/tags/blocks/needs_diamond_tool.json
-3ee348cffca12d1de1fa85c8c011c0ac26272c3c data/minecraft/tags/blocks/needs_iron_tool.json
+e28c7fdf089f8fc76f9e5565d74f0293e412cfbc data/minecraft/tags/blocks/needs_iron_tool.json
 0364291fc3f9ccbce68e4624f41d24ca45232596 data/minecraft/tags/blocks/needs_stone_tool.json
 e1d606686d8d1ae939af83da8c931c49c2e9df5e data/minecraft/tags/blocks/rails.json
 d198dd9cbacc02c9b06b952fee02da96c0077457 data/railcraft/tags/blocks/abandoned_track.json
