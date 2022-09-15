@@ -1,7 +1,6 @@
 package mods.railcraft.data;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.tags.RailcraftTags.Blocks;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.DataGenerator;
@@ -16,12 +15,11 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     super(generator, Railcraft.ID, fileHelper);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   protected void addTags() {
-    this.tag(RailcraftTags.Blocks.BALLAST)
+    this.tag(Blocks.BALLAST)
         .addTag(Tags.Blocks.GRAVEL);
-    this.tag(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
+    this.tag(Blocks.SWITCH_TRACK_ACTUATOR)
         .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get())
         .add(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
     this.tag(BlockTags.RAILS)
@@ -35,12 +33,12 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.FORCE_TRACK.get());
     this.tag(BlockTags.CLIMBABLE)
         .add(RailcraftBlocks.ELEVATOR_TRACK.get());
-    this.tag(RailcraftTags.Blocks.ASPECT_EMITTER)
+    this.tag(Blocks.ASPECT_EMITTER)
         .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
             RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
             RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
             RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
-    this.tag(RailcraftTags.Blocks.ASPECT_RECEIVER)
+    this.tag(Blocks.ASPECT_RECEIVER)
         .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
             RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(),
             RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
@@ -152,11 +150,11 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK.get());
 
-    this.tag(RailcraftTags.Blocks.SIGNAL)
+    this.tag(Blocks.SIGNAL)
         .add(RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),
             RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
             RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
-    this.tag(RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR)
+    this.tag(Blocks.MINEABLE_WITH_CROWBAR)
         .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get(), RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
             RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
             RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get(), RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
@@ -173,7 +171,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.CHIPPED_STEEL_ANVIL.get(),
             RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
-    var mineableWithPickaxe = this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+    this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
         .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get())
         .add(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get())
@@ -201,7 +199,14 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             Blocks.TIN_ORE,
             Blocks.ZINC_ORE,
             Blocks.SALTPETER_ORE,
-            Blocks.POST);
+            Blocks.POST,
+            Blocks.STRENGTHENED_GLASS,
+            Blocks.IRON_TANK_GAUGE,
+            Blocks.IRON_TANK_VALVE,
+            Blocks.IRON_TANK_WALL,
+            Blocks.STEEL_TANK_GAUGE,
+            Blocks.STEEL_TANK_VALVE,
+            Blocks.STEEL_TANK_WALL);
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
@@ -218,7 +223,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.TIN_BLOCK.get())
         .add(RailcraftBlocks.ZINC_BLOCK.get());
 
-    var stoneToolAppender = this.tag(BlockTags.NEEDS_STONE_TOOL)
+    this.tag(BlockTags.NEEDS_STONE_TOOL)
         .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get())
         .add(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get())
         .add(RailcraftBlocks.FLUID_FUELED_FIREBOX.get())
@@ -231,55 +236,32 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             Blocks.SULFUR_ORE,
             Blocks.TIN_ORE,
             Blocks.ZINC_ORE,
-            Blocks.SALTPETER_ORE);
+            Blocks.SALTPETER_ORE,
+            Blocks.POST,
+            Blocks.STRENGTHENED_GLASS,
+            Blocks.IRON_TANK_GAUGE,
+            Blocks.IRON_TANK_VALVE,
+            Blocks.IRON_TANK_WALL,
+            Blocks.STEEL_TANK_GAUGE,
+            Blocks.STEEL_TANK_VALVE,
+            Blocks.STEEL_TANK_WALL);
 
     RailcraftBlocks.STRENGTHENED_GLASS.resolveVariants()
-        .forEach(x -> {
-          stoneToolAppender.add(x);
-          mineableWithPickaxe.add(x);
-        });
+        .forEach(x -> this.tag(Blocks.STRENGTHENED_GLASS).add(x));
     RailcraftBlocks.IRON_TANK_GAUGE.resolveVariants()
-        .forEach(x -> {
-          this.tag(RailcraftTags.Blocks.IRON_TANK_GAUGE).add(x);
-          mineableWithPickaxe.add(x);
-          stoneToolAppender.add(x);
-        });
+        .forEach(x -> this.tag(Blocks.IRON_TANK_GAUGE).add(x));
     RailcraftBlocks.IRON_TANK_VALVE.resolveVariants()
-        .forEach(x -> {
-          this.tag(RailcraftTags.Blocks.IRON_TANK_VALVE).add(x);
-          mineableWithPickaxe.add(x);
-          stoneToolAppender.add(x);
-        });
+        .forEach(x -> this.tag(Blocks.IRON_TANK_VALVE).add(x));
     RailcraftBlocks.IRON_TANK_WALL.resolveVariants()
-        .forEach(x -> {
-          this.tag(RailcraftTags.Blocks.IRON_TANK_WALL).add(x);
-          mineableWithPickaxe.add(x);
-          stoneToolAppender.add(x);
-        });
+        .forEach(x -> this.tag(Blocks.IRON_TANK_WALL).add(x));
     RailcraftBlocks.STEEL_TANK_GAUGE.resolveVariants()
-        .forEach(x -> {
-          this.tag(RailcraftTags.Blocks.STEEL_TANK_GAUGE).add(x);
-          mineableWithPickaxe.add(x);
-          stoneToolAppender.add(x);
-        });
+        .forEach(x -> this.tag(Blocks.STEEL_TANK_GAUGE).add(x));
     RailcraftBlocks.STEEL_TANK_VALVE.resolveVariants()
-        .forEach(x -> {
-          this.tag(RailcraftTags.Blocks.STEEL_TANK_VALVE).add(x);
-          mineableWithPickaxe.add(x);
-          stoneToolAppender.add(x);
-        });
+        .forEach(x -> this.tag(Blocks.STEEL_TANK_VALVE).add(x));
     RailcraftBlocks.STEEL_TANK_WALL.resolveVariants()
-        .forEach(x -> {
-          this.tag(RailcraftTags.Blocks.STEEL_TANK_WALL).add(x);
-          mineableWithPickaxe.add(x);
-          stoneToolAppender.add(x);
-        });
+        .forEach(x -> this.tag(Blocks.STEEL_TANK_WALL).add(x));
     RailcraftBlocks.POST.resolveVariants()
-        .forEach(x -> {
-          this.tag(RailcraftTags.Blocks.POST).add(x);
-          mineableWithPickaxe.add(x);
-          stoneToolAppender.add(x);
-        });
+        .forEach(x -> this.tag(Blocks.POST).add(x));
 
 
     this.tag(Tags.Blocks.ORE_RATES_SINGULAR)

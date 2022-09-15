@@ -1,14 +1,12 @@
 package mods.railcraft.data;
 
 import mods.railcraft.Railcraft;
-import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.tags.RailcraftTags.Blocks;
 import mods.railcraft.tags.RailcraftTags.Items;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -19,48 +17,47 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     super(generator, blockTagsProvider, Railcraft.ID, fileHelper);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   protected void addTags() {
-    this.tag(RailcraftTags.Items.STEEL_INGOT)
+    this.tag(Items.STEEL_INGOT)
         .add(RailcraftItems.STEEL_INGOT.get());
-    this.tag(RailcraftTags.Items.TIN_INGOT)
+    this.tag(Items.TIN_INGOT)
         .add(RailcraftItems.TIN_INGOT.get());
-    this.tag(RailcraftTags.Items.ZINC_INGOT)
+    this.tag(Items.ZINC_INGOT)
         .add(RailcraftItems.ZINC_INGOT.get());
-    this.tag(RailcraftTags.Items.BRASS_INGOT)
+    this.tag(Items.BRASS_INGOT)
         .add(RailcraftItems.BRASS_INGOT.get());
-    this.tag(RailcraftTags.Items.BRONZE_INGOT)
+    this.tag(Items.BRONZE_INGOT)
         .add(RailcraftItems.BRONZE_INGOT.get());
-    this.tag(RailcraftTags.Items.NICKEL_INGOT)
+    this.tag(Items.NICKEL_INGOT)
         .add(RailcraftItems.NICKEL_INGOT.get());
-    this.tag(RailcraftTags.Items.INVAR_INGOT)
+    this.tag(Items.INVAR_INGOT)
         .add(RailcraftItems.INVAR_INGOT.get());
-    this.tag(RailcraftTags.Items.LEAD_INGOT)
+    this.tag(Items.LEAD_INGOT)
         .add(RailcraftItems.LEAD_INGOT.get());
-    this.tag(RailcraftTags.Items.SILVER_INGOT)
+    this.tag(Items.SILVER_INGOT)
         .add(RailcraftItems.SILVER_INGOT.get());
 
-    this.tag(RailcraftTags.Items.STEEL_NUGGET)
+    this.tag(Items.STEEL_NUGGET)
         .add(RailcraftItems.STEEL_NUGGET.get());
-    this.tag(RailcraftTags.Items.TIN_NUGGET)
+    this.tag(Items.TIN_NUGGET)
         .add(RailcraftItems.TIN_NUGGET.get());
-    this.tag(RailcraftTags.Items.ZINC_NUGGET)
+    this.tag(Items.ZINC_NUGGET)
         .add(RailcraftItems.ZINC_NUGGET.get());
-    this.tag(RailcraftTags.Items.BRASS_NUGGET)
+    this.tag(Items.BRASS_NUGGET)
         .add(RailcraftItems.BRASS_NUGGET.get());
-    this.tag(RailcraftTags.Items.BRONZE_NUGGET)
+    this.tag(Items.BRONZE_NUGGET)
         .add(RailcraftItems.BRONZE_NUGGET.get());
-    this.tag(RailcraftTags.Items.NICKEL_NUGGET)
+    this.tag(Items.NICKEL_NUGGET)
         .add(RailcraftItems.NICKEL_NUGGET.get());
-    this.tag(RailcraftTags.Items.INVAR_NUGGET)
+    this.tag(Items.INVAR_NUGGET)
         .add(RailcraftItems.INVAR_NUGGET.get());
-    this.tag(RailcraftTags.Items.SILVER_NUGGET)
+    this.tag(Items.SILVER_NUGGET)
         .add(RailcraftItems.SILVER_NUGGET.get());
-    this.tag(RailcraftTags.Items.LEAD_NUGGET)
+    this.tag(Items.LEAD_NUGGET)
         .add(RailcraftItems.LEAD_NUGGET.get());
 
-    this.tag(RailcraftTags.Items.STEEL_BLOCK)
+    this.tag(Items.STEEL_BLOCK)
         .add(RailcraftItems.STEEL_BLOCK.get());
     this.tag(Items.BRONZE_BLOCK)
         .add(RailcraftItems.BRONZE_BLOCK.get());
@@ -79,65 +76,65 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(Items.ZINC_BLOCK)
         .add(RailcraftItems.ZINC_BLOCK.get());
 
-    this.tag(RailcraftTags.Items.STEEL_PLATE)
+    this.tag(Items.STEEL_PLATE)
         .add(RailcraftItems.STEEL_PLATE.get());
-    this.tag(RailcraftTags.Items.IRON_PLATE)
+    this.tag(Items.IRON_PLATE)
         .add(RailcraftItems.IRON_PLATE.get());
-    this.tag(RailcraftTags.Items.TIN_PLATE)
+    this.tag(Items.TIN_PLATE)
         .add(RailcraftItems.TIN_PLATE.get());
-    this.tag(RailcraftTags.Items.GOLD_PLATE)
+    this.tag(Items.GOLD_PLATE)
         .add(RailcraftItems.GOLD_PLATE.get());
-    this.tag(RailcraftTags.Items.LEAD_PLATE)
+    this.tag(Items.LEAD_PLATE)
         .add(RailcraftItems.LEAD_PLATE.get());
-    this.tag(RailcraftTags.Items.ZINC_PLATE)
+    this.tag(Items.ZINC_PLATE)
         .add(RailcraftItems.ZINC_PLATE.get());
-    this.tag(RailcraftTags.Items.BRASS_PLATE)
+    this.tag(Items.BRASS_PLATE)
         .add(RailcraftItems.BRASS_PLATE.get());
-    this.tag(RailcraftTags.Items.INVAR_PLATE)
+    this.tag(Items.INVAR_PLATE)
         .add(RailcraftItems.INVAR_PLATE.get());
-    this.tag(RailcraftTags.Items.BRONZE_PLATE)
+    this.tag(Items.BRONZE_PLATE)
         .add(RailcraftItems.BRONZE_PLATE.get());
-    this.tag(RailcraftTags.Items.COPPER_PLATE)
+    this.tag(Items.COPPER_PLATE)
         .add(RailcraftItems.COPPER_PLATE.get());
-    this.tag(RailcraftTags.Items.NICKEL_PLATE)
+    this.tag(Items.NICKEL_PLATE)
         .add(RailcraftItems.NICKEL_PLATE.get());
-    this.tag(RailcraftTags.Items.SILVER_PLATE)
+    this.tag(Items.SILVER_PLATE)
         .add(RailcraftItems.SILVER_PLATE.get());
 
-    this.tag(RailcraftTags.Items.STEEL_GEAR)
+    this.tag(Items.STEEL_GEAR)
         .add(RailcraftItems.STEEL_GEAR.get());
-    this.tag(RailcraftTags.Items.IRON_GEAR)
+    this.tag(Items.IRON_GEAR)
         .add(RailcraftItems.IRON_GEAR.get());
-    this.tag(RailcraftTags.Items.TIN_GEAR)
+    this.tag(Items.TIN_GEAR)
         .add(RailcraftItems.TIN_GEAR.get());
-    this.tag(RailcraftTags.Items.GOLD_GEAR)
+    this.tag(Items.GOLD_GEAR)
         .add(RailcraftItems.GOLD_GEAR.get());
-    this.tag(RailcraftTags.Items.LEAD_GEAR)
+    this.tag(Items.LEAD_GEAR)
         .add(RailcraftItems.LEAD_GEAR.get());
-    this.tag(RailcraftTags.Items.ZINC_GEAR)
+    this.tag(Items.ZINC_GEAR)
         .add(RailcraftItems.ZINC_GEAR.get());
-    this.tag(RailcraftTags.Items.BRASS_GEAR)
+    this.tag(Items.BRASS_GEAR)
         .add(RailcraftItems.BRASS_GEAR.get());
-    this.tag(RailcraftTags.Items.INVAR_GEAR)
+    this.tag(Items.INVAR_GEAR)
         .add(RailcraftItems.INVAR_GEAR.get());
-    this.tag(RailcraftTags.Items.BRONZE_GEAR)
+    this.tag(Items.BRONZE_GEAR)
         .add(RailcraftItems.BRONZE_GEAR.get());
-    this.tag(RailcraftTags.Items.COPPER_GEAR)
+    this.tag(Items.COPPER_GEAR)
         .add(RailcraftItems.COPPER_GEAR.get());
-    this.tag(RailcraftTags.Items.NICKEL_GEAR)
+    this.tag(Items.NICKEL_GEAR)
         .add(RailcraftItems.NICKEL_GEAR.get());
-    this.tag(RailcraftTags.Items.SILVER_GEAR)
+    this.tag(Items.SILVER_GEAR)
         .add(RailcraftItems.SILVER_GEAR.get());
 
-    this.tag(RailcraftTags.Items.SALTPETER_DUST)
+    this.tag(Items.SALTPETER_DUST)
         .add(RailcraftItems.SALTPETER_DUST.get());
-    this.tag(RailcraftTags.Items.COAL_DUST)
+    this.tag(Items.COAL_DUST)
         .add(RailcraftItems.COAL_DUST.get());
-    this.tag(RailcraftTags.Items.CHARCOAL_DUST)
+    this.tag(Items.CHARCOAL_DUST)
         .add(RailcraftItems.CHARCOAL_DUST.get());
-    this.tag(RailcraftTags.Items.SULFUR_DUST)
+    this.tag(Items.SULFUR_DUST)
         .add(RailcraftItems.SULFUR_DUST.get());
-    this.tag(RailcraftTags.Items.OBSIDIAN_DUST)
+    this.tag(Items.OBSIDIAN_DUST)
         .add(RailcraftItems.OBSIDIAN_DUST.get());
 
 
@@ -146,11 +143,6 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.IRON_CROWBAR.get())
         .add(RailcraftItems.DIAMOND_CROWBAR.get());
 
-
-    this.tag(RailcraftTags.Items.STRENGTHENED_GLASS)
-        .add(RailcraftItems.STRENGTHENED_GLASS.resolveVariants().toArray(Item[]::new));
-
-
     this.copy(Blocks.IRON_TANK_WALL, Items.IRON_TANK_WALL);
     this.copy(Blocks.IRON_TANK_GAUGE, Items.IRON_TANK_GAUGE);
     this.copy(Blocks.IRON_TANK_VALVE, Items.IRON_TANK_VALVE);
@@ -158,6 +150,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.copy(Blocks.STEEL_TANK_GAUGE, Items.STEEL_TANK_GAUGE);
     this.copy(Blocks.STEEL_TANK_VALVE, Items.STEEL_TANK_VALVE);
     this.copy(Blocks.POST, Items.POST);
+    this.copy(Blocks.STRENGTHENED_GLASS, Items.STRENGTHENED_GLASS);
     this.copy(Blocks.LEAD_ORE, Items.LEAD_ORE);
     this.copy(Blocks.NICKEL_ORE, Items.NICKEL_ORE);
     this.copy(Blocks.SILVER_ORE, Items.SILVER_ORE);

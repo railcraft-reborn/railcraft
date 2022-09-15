@@ -139,13 +139,11 @@ public class RailcraftTags {
 
     public static final TagKey<Block> BALLAST = tag("ballast");
     public static final TagKey<Block> MAGIC_ORE = tag("magic_ore");
-    public static final TagKey<Block> SWITCH_TRACK_ACTUATOR =
-        tag("switch_track_actuator");
-    public static final TagKey<Block> ASPECT_RECEIVER =
-        tag("aspect_receiver");
-    public static final TagKey<Block> ASPECT_EMITTER =
-        tag("aspect_emitter");
+    public static final TagKey<Block> SWITCH_TRACK_ACTUATOR = tag("switch_track_actuator");
+    public static final TagKey<Block> ASPECT_RECEIVER = tag("aspect_receiver");
+    public static final TagKey<Block> ASPECT_EMITTER = tag("aspect_emitter");
     public static final TagKey<Block> POST = tag("post");
+    public static final TagKey<Block> STRENGTHENED_GLASS = tag("strengthened_glass");
     public static final TagKey<Block> SIGNAL = tag("signal");
     public static final TagKey<Block> ABANDONED_TRACK = tag("abandoned_track");
     public static final TagKey<Block> ELECTRIC_TRACK = tag("electric_track");
@@ -163,8 +161,7 @@ public class RailcraftTags {
     public static final TagKey<Block> STEEL_TANK_VALVE = tag("steel_tank_valve");
     public static final TagKey<Block> STEEL_TANK_WALL = tag("steel_tank_wall");
 
-    public static final TagKey<Block> MINEABLE_WITH_CROWBAR =
-        tag("mineable/crowbar");
+    public static final TagKey<Block> MINEABLE_WITH_CROWBAR = tag("mineable/crowbar");
 
     public static final TagKey<Block> LEAD_ORE = forgeTag("ores/lead");
     public static final TagKey<Block> NICKEL_ORE = forgeTag("ores/nickel");
