@@ -3,12 +3,7 @@
     "railcraft:switch_track_lever",
     "railcraft:switch_track_motor",
     "railcraft:analog_signal_controller_box",
-    "railcraft:signal_sequencer_box",
-    "railcraft:signal_capacitor_box",
-    "railcraft:signal_interlock_box",
     "railcraft:signal_block_relay_box",
-    "railcraft:signal_receiver_box",
-    "railcraft:signal_controller_box",
     "railcraft:dual_block_signal",
     "railcraft:dual_distant_signal",
     "railcraft:dual_token_signal",
@@ -16,6 +11,8 @@
     "railcraft:distant_signal",
     "railcraft:token_signal",
     "railcraft:elevator_track",
+    "#railcraft:aspect_emitter",
+    "#railcraft:aspect_receiver",
     "#minecraft:rails"
   ]
 }

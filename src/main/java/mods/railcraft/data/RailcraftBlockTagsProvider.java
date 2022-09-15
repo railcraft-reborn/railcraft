@@ -155,21 +155,28 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
             RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
     this.tag(Blocks.MINEABLE_WITH_CROWBAR)
-        .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get(), RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
+        .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get(),
+            RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
             RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
-            RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get(), RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
-            RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
-            RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(), RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
-            RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
-            RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
-            RailcraftBlocks.BLOCK_SIGNAL.get(), RailcraftBlocks.DISTANT_SIGNAL.get(),
-            RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.ELEVATOR_TRACK.get())
+            RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
+            RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
+            RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(),
+            RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
+            RailcraftBlocks.BLOCK_SIGNAL.get(),
+            RailcraftBlocks.DISTANT_SIGNAL.get(),
+            RailcraftBlocks.TOKEN_SIGNAL.get(),
+            RailcraftBlocks.ELEVATOR_TRACK.get())
+        .addTag(Blocks.ASPECT_EMITTER)
+        .addTag(Blocks.ASPECT_RECEIVER)
         .addTag(BlockTags.RAILS);
 
     this.tag(BlockTags.ANVIL)
         .add(RailcraftBlocks.STEEL_ANVIL.get(),
             RailcraftBlocks.CHIPPED_STEEL_ANVIL.get(),
             RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
+
+    this.tag(BlockTags.MINEABLE_WITH_AXE)
+        .add(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
 
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())

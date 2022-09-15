@@ -239,6 +239,8 @@ public class RailcraftBlocks {
   public static final RegistryObject<SteamTurbineBlock> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
           () -> new SteamTurbineBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .strength(3.5F)
+              .requiresCorrectToolForDrops()
               .randomTicks()
               .sound(SoundType.METAL)));
 
@@ -1462,7 +1464,7 @@ public class RailcraftBlocks {
       deferredRegister.register("manual_rolling_machine",
           () -> new ManualRollingMachineBlock(BlockBehaviour.Properties.of(Material.WOOD)
               .sound(SoundType.WOOD)
-              .strength(2.0F)));
+              .strength(2.5F)));
 
   public static final RegistryObject<CrusherMultiblockBlock> CRUSHER =
       deferredRegister.register("crusher",
