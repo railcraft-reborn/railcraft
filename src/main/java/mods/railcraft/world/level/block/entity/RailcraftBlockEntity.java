@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
 import java.util.UUID;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
@@ -27,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class RailcraftBlockEntity extends BlockEntity
     implements NetworkSerializable, Ownable, BlockEntityLike, BlockModuleProvider {
@@ -118,11 +118,9 @@ public abstract class RailcraftBlockEntity extends BlockEntity
 
   @Override
   public void syncToClient() {
-    if (this.level instanceof ServerLevel level) {
+    if (this.level instanceof ServerLevel serverLevel) {
       var packet = this.getUpdatePacket();
-      if (packet != null) {
-        NetworkUtil.sendToTrackingChunk(packet, level, this.getBlockPos());
-      }
+      NetworkUtil.sendToTrackingChunk(packet, serverLevel, this.getBlockPos());
     }
   }
 
@@ -146,16 +144,16 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   }
 
   @Override
-  @Nullable
+  @NotNull
   public final Optional<GameProfile> getOwner() {
     return Optional.ofNullable(this.owner);
   }
 
-  public final boolean isOwner(@Nonnull GameProfile gameProfile) {
+  public final boolean isOwner(@NotNull GameProfile gameProfile) {
     return gameProfile.equals(this.owner);
   }
 
-  public final boolean isOwnerOrOperator(@Nonnull GameProfile gameProfile) {
+  public final boolean isOwnerOrOperator(@NotNull GameProfile gameProfile) {
     return this.isOwner(gameProfile) || (!this.level.isClientSide()
         && ((ServerLevel) this.level).getServer().getPlayerList().isOp(gameProfile));
   }
