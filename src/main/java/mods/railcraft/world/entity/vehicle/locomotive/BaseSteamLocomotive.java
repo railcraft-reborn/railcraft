@@ -1,6 +1,6 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.particle.RailcraftParticleTypes;

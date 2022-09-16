@@ -24,7 +24,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class TrackTypes {
@@ -134,8 +135,7 @@ public class TrackTypes {
     }
 
     @Override
-    @Nullable
-    public RailShape getRailShapeOverride(BlockGetter level,
+    public Optional<RailShape> getRailShapeOverride(BlockGetter level,
         BlockPos pos, BlockState blockState, @Nullable AbstractMinecart cart) {
       return this.speedController.getRailShapeOverride(level, pos, blockState, cart);
     }

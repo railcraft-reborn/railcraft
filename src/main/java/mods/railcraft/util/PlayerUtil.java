@@ -1,7 +1,7 @@
 package mods.railcraft.util;
 
 import java.util.UUID;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;

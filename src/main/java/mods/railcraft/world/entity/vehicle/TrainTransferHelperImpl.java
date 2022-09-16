@@ -1,15 +1,12 @@
 package mods.railcraft.world.entity.vehicle;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
 import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.api.carts.IItemCart;
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageManager;
 import mods.railcraft.api.carts.TrainTransferHelper;
-import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -105,20 +102,25 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
       var inv = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
           .map(ContainerManipulator::of)
           .orElse(null);
-      if (inv != null) {
-        Set<ItemStackKey> items = inv.findAll(filter);
-        for (ItemStackKey stackKey : items) {
-          ItemStack stack = stackKey.copyStack();
-          if (this.canProvidePulledItem(requester, cart, stack)) {
-            ItemStack toRemove = inv.findOne(StackFilter.of(stack));
-            if (!toRemove.isEmpty()) {
-              result = toRemove;
-              upTo = cart;
-              targetInv = inv;
-              break;
-            }
-          }
+      if (inv == null) {
+        continue;
+      }
+
+      for (var stackKey : inv.findAll(filter)) {
+        var stack = stackKey.copyStack();
+        if (!this.canProvidePulledItem(requester, cart, stack)) {
+          continue;
         }
+
+        var toRemove = inv.findOne(StackFilter.of(stack));
+        if (toRemove.isEmpty()) {
+          continue;
+        }
+
+        result = toRemove;
+        upTo = cart;
+        targetInv = inv;
+        break;
       }
     }
 
@@ -172,12 +174,11 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
   // ***************************************************************************************************************************
   @Override
   public FluidStack pushFluid(AbstractMinecart requester, FluidStack fluidStack) {
-    Iterable<AbstractMinecart> carts =
-        LinkageManagerImpl.INSTANCE.linkIterator(requester,
-            Link.FRONT);
+    var carts = LinkageManagerImpl.INSTANCE.linkIterator(requester, Link.FRONT);
     fluidStack = this._pushFluid(requester, carts, fluidStack);
-    if (fluidStack == null)
-      return null;
+    if (fluidStack.isEmpty()) {
+      return FluidStack.EMPTY;
+    }
     if (LinkageManager.hasLink(requester, Link.BACK)) {
       carts = LinkageManagerImpl.INSTANCE.linkIterator(requester, Link.BACK);
       fluidStack = this._pushFluid(requester, carts, fluidStack);
@@ -185,11 +186,10 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
     return fluidStack;
   }
 
-  private @Nullable FluidStack _pushFluid(AbstractMinecart requester,
-      Iterable<AbstractMinecart> carts,
-      FluidStack fluidStack) {
-    for (AbstractMinecart cart : carts) {
-      if (canAcceptPushedFluid(requester, cart, fluidStack)) {
+  private FluidStack _pushFluid(AbstractMinecart requester,
+      Iterable<AbstractMinecart> carts, FluidStack fluidStack) {
+    for (var cart : carts) {
+      if (this.canAcceptPushedFluid(requester, cart, fluidStack)) {
         cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP)
             .ifPresent(fluidHandler -> fluidStack.setAmount(
                 fluidStack.getAmount()
@@ -198,9 +198,6 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
       if (fluidStack.getAmount() <= 0 || this.blocksFluidRequests(cart, fluidStack)) {
         break;
       }
-    }
-    if (fluidStack.getAmount() <= 0) {
-      return null;
     }
     return fluidStack;
   }
@@ -215,21 +212,19 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
     if (!pulled.isEmpty()) {
       return pulled;
     }
-    carts = LinkageManagerImpl.INSTANCE.linkIterator(requester,
-        Link.BACK);
+    carts = LinkageManagerImpl.INSTANCE.linkIterator(requester, Link.BACK);
     return this._pullFluid(requester, carts, fluidStack);
   }
 
   private FluidStack _pullFluid(AbstractMinecart requester,
-      Iterable<AbstractMinecart> carts,
-      FluidStack fluidStack) {
-    for (AbstractMinecart cart : carts) {
-      if (canProvidePulledFluid(requester, cart, fluidStack)) {
-        IFluidHandler fluidHandler =
+      Iterable<AbstractMinecart> carts, FluidStack fluidStack) {
+    for (var cart : carts) {
+      if (this.canProvidePulledFluid(requester, cart, fluidStack)) {
+        var fluidHandler =
             cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN)
                 .orElse(null);
         if (fluidHandler != null) {
-          FluidStack drained = fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+          var drained = fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
           if (!drained.isEmpty()) {
             return drained;
           }
@@ -244,37 +239,35 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
   }
 
   private boolean canAcceptPushedFluid(AbstractMinecart requester,
-      AbstractMinecart cart,
-      FluidStack fluid) {
-    IFluidHandler fluidHandler = cart
-        .getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP).orElse(null);
+      AbstractMinecart cart, FluidStack fluid) {
+    var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP)
+        .orElse(null);
     if (fluidHandler == null) {
       return false;
     }
-    if (cart instanceof FluidMinecart) {
-      return ((FluidMinecart) cart).canAcceptPushedFluid(requester, fluid);
+    if (cart instanceof FluidMinecart fluidMinecart) {
+      return fluidMinecart.canAcceptPushedFluid(requester, fluid);
     }
     return fluidHandler.fill(new FluidStack(fluid, 1), IFluidHandler.FluidAction.SIMULATE) > 0;
   }
 
   private boolean canProvidePulledFluid(AbstractMinecart requester,
       AbstractMinecart cart, FluidStack fluid) {
-    IFluidHandler fluidHandler =
-        cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN)
-            .orElse(null);
+    var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN)
+        .orElse(null);
     if (fluidHandler == null) {
       return false;
     }
-    if (cart instanceof FluidMinecart) {
-      return ((FluidMinecart) cart).canProvidePulledFluid(requester, fluid);
+    if (cart instanceof FluidMinecart fluidMinecart) {
+      return fluidMinecart.canProvidePulledFluid(requester, fluid);
     }
     return !fluidHandler.drain(new FluidStack(fluid, 1), IFluidHandler.FluidAction.SIMULATE)
         .isEmpty();
   }
 
   private boolean blocksFluidRequests(AbstractMinecart cart, FluidStack fluid) {
-    return cart instanceof FluidMinecart
-        ? !((FluidMinecart) cart).canPassFluidRequests(fluid)
+    return cart instanceof FluidMinecart fluidMinecart
+        ? !fluidMinecart.canPassFluidRequests(fluid)
         : cart.getCapability(ForgeCapabilities.FLUID_HANDLER)
             .map(fluidHandler -> !this.hasMatchingTank(fluidHandler, fluid))
             .orElse(true);
@@ -283,7 +276,7 @@ public enum TrainTransferHelperImpl implements TrainTransferHelper {
   private boolean hasMatchingTank(IFluidHandler handler, FluidStack fluid) {
     for (int i = 0; i < handler.getTanks(); i++) {
       if (handler.getTankCapacity(i) >= TANK_CAPACITY) {
-        FluidStack tankFluid = handler.getFluidInTank(i);
+        var tankFluid = handler.getFluidInTank(i);
         if (tankFluid.isEmpty() || tankFluid.isFluidEqual(fluid)) {
           return true;
         }

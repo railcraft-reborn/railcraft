@@ -7,10 +7,10 @@
 
 package mods.railcraft.api.item;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.server.level.ServerLevel;
 
 @FunctionalInterface
 public interface MinecartFactory {

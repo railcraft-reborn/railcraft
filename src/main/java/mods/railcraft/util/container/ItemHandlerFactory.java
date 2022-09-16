@@ -1,6 +1,6 @@
 package mods.railcraft.util.container;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.core.Direction;

@@ -2,7 +2,7 @@ package mods.railcraft.world.item;
 
 import java.util.List;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
 import mods.railcraft.Translations;
 import mods.railcraft.util.LevelUtil;

@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.util.EnumUtil;

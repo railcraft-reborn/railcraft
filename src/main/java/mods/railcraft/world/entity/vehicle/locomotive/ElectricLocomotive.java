@@ -3,7 +3,7 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.container.ContainerMapper;

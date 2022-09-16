@@ -5,7 +5,7 @@ import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.TankMenu;

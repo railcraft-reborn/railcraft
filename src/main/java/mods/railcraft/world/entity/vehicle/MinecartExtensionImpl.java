@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import mods.railcraft.api.carts.Link;

@@ -8,7 +8,6 @@ package mods.railcraft.api.carts;
 
 import java.util.Optional;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -85,11 +84,11 @@ public interface TrainTransferHelper {
    *
    * @param requester the source AbstractMinecartEntity
    * @param fluidStack the amount and type of Fluid to be pushed
-   * @return the FluidStack that remains after any pushed Fluid was removed, or null if it was fully
-   *         pushed
+   * @return the FluidStack that remains after any pushed Fluid was removed, or empty if it was
+   *         fully pushed
    * @see mods.railcraft.api.carts.FluidMinecart
    */
-  default @Nullable FluidStack pushFluid(AbstractMinecart requester, FluidStack fluidStack) {
+  default FluidStack pushFluid(AbstractMinecart requester, FluidStack fluidStack) {
     return fluidStack;
   }
 
@@ -98,11 +97,10 @@ public interface TrainTransferHelper {
    *
    * @param requester the source AbstractMinecartEntity
    * @param fluidStack the amount and type of Fluid requested
-   * @return the FluidStack pulled from the Train, or null if the request cannot be met
+   * @return the FluidStack pulled from the Train, or empty if the request cannot be met
    * @see mods.railcraft.api.carts.FluidMinecart
    */
-  default @Nullable FluidStack pullFluid(AbstractMinecart requester,
-      @Nullable FluidStack fluidStack) {
+  default FluidStack pullFluid(AbstractMinecart requester, FluidStack fluidStack) {
     return null;
   }
 

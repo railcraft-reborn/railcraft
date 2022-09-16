@@ -1,6 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
@@ -41,11 +41,11 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       return;
     }
 
-    var link = LinkageManagerImpl.INSTANCE.getLinkedCartA(cart);
+    var link = LinkageManagerImpl.INSTANCE.getLinkedCartA(cart).orElse(null);
     if (link != null && (link == other || link.hasPassenger(other))) {
       return;
     }
-    link = LinkageManagerImpl.INSTANCE.getLinkedCartB(cart);
+    link = LinkageManagerImpl.INSTANCE.getLinkedCartB(cart).orElse(null);
     if (link != null && (link == other || link.hasPassenger(other))) {
       return;
     }

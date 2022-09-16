@@ -12,10 +12,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.util.EnumUtil;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 
 /**
  * Represents a Signal state.

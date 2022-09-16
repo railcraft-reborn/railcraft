@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.util.EnumUtil;
 import net.minecraft.ChatFormatting;

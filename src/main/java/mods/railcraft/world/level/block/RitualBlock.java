@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block;
 
 import java.util.List;
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.RefinedFirestoneItem;

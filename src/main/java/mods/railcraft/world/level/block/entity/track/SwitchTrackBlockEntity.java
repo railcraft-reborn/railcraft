@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Sets;
 import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.tags.RailcraftTags;

@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.util.BoxBuilder;

@@ -1,7 +1,7 @@
 package mods.railcraft.util;
 
 import java.util.function.BiPredicate;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Utility for checking equality for json conditions.

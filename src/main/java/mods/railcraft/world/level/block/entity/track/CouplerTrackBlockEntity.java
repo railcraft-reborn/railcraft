@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity.track;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;

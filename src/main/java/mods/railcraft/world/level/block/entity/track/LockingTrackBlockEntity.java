@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.track;
 
 import java.util.UUID;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.event.CartLockdownEvent;
 import mods.railcraft.api.track.LockingTrack;

@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.track;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;

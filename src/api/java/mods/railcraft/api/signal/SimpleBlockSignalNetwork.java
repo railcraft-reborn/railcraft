@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.api.carts.CartUtil;
@@ -198,9 +198,9 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
 
   @Nullable
   private TrackScanUtil.Result getOrCreateTrackScan(BlockPos otherTrack) {
-    TrackScanUtil.Result result = this.trackScans.get(otherTrack);
+    var result = this.trackScans.get(otherTrack);
     if (result == null) {
-      BlockPos trackPos = this.trackLocator.trackPos();
+      var trackPos = this.trackLocator.trackPos();
       if (trackPos != null) {
         result = TrackScanUtil.scanStraightTrackSection(getLevel(), trackPos, otherTrack);
         this.trackScans.put(otherTrack, result);

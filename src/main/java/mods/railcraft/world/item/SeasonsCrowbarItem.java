@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.season.Season;
 import net.minecraft.ChatFormatting;

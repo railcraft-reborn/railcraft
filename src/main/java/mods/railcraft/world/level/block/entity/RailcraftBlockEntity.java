@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
 import java.util.UUID;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.BlockEntityLike;

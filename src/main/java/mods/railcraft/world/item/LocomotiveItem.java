@@ -2,7 +2,7 @@ package mods.railcraft.world.item;
 
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstantsAPI;

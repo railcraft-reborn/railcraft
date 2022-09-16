@@ -2,7 +2,7 @@ package mods.railcraft.world.item.enchantment;
 
 import java.lang.ref.WeakReference;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.Predicates;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;

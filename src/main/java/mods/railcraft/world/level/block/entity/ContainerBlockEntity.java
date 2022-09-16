@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.EnumMap;
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.util.container.ItemHandlerFactory;
