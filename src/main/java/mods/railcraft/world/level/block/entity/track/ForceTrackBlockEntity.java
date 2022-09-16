@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
 
+  @Nullable
   private ForceTrackEmitterBlockEntity emitter;
   @Nullable
   private BlockPos emitterPos;
