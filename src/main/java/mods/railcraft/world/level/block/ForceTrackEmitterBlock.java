@@ -3,6 +3,10 @@ package mods.railcraft.world.level.block;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import mods.railcraft.Translations.Tips;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
@@ -210,6 +214,13 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     return level.isClientSide() ? null
         : createTickerHelper(type, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get(),
             ForceTrackEmitterBlockEntity::serverTick);
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
+      TooltipFlag flag) {
+    super.appendHoverText(stack, level, tooltip, flag);
+    tooltip.add(Component.translatable(Tips.FORCE_TRACK_EMITTER).withStyle(ChatFormatting.GRAY));
   }
 
   public static Direction getFacing(BlockState blockState) {

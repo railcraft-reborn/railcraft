@@ -383,6 +383,13 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER, "Transfer");
     this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC, "Move exactly as much as is in the filter.");
     this.add(Tips.COAL_COKE_BLOCK, "%s Fuel Units");
+    this.add(Tips.FORCE_TRACK_EMITTER, "Projects energy-based tracks");
+    this.add(Tips.FEED_STATION, "Feeds animals");
+    this.add(Tips.MANUAL_ROLLING_MACHINE, "Crafting bench for various metal items");
+    this.add(Tips.ITEM_LOADER, "Loads items into carts");
+    this.add(Tips.ITEM_UNLOADER, "Unloads items from carts");
+    this.add(Tips.FLUID_LOADER, "Loads fluids into carts");
+    this.add(Tips.FLUID_UNLOADER, "Unloads fluids from carts");
     this.add(Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
     this.add(Tips.SIGNAL_TUNER, "Links Controllers to Receivers");
     this.add(Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");
@@ -390,6 +397,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.PRESSURE_BOILER_TANK_PRODUCTION, "Produces %smB of Steam per tick");
     this.add(Tips.DIMENSIONS, "Dimensions: %s");
     this.add(Tips.APPLY_REDSTONE_TO_ENABLE, "- Apply Redstone to enable -");
+    this.add(Tips.APPLY_REDSTONE_TO_DISABLE, "- Apply Redstone to disable -");
     this.add(Tips.APPLY_REDSTONE_TO_CHANGE_DIRECTION, "- Apply Redstone to change direction -");
     this.add(Tips.APPLY_REDSTONE_TO_OPEN, "- Apply Redstone to open -");
     this.add(Tips.APPLY_REDSTONE_TO_RELEASE_CARTS, "- Apply Redstone to release carts -");
@@ -399,6 +407,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.HIT_CROWBAR_TO_CHANGE_RANGE, "- Hit with Crowbar to change range -");
     this.add(Tips.HIT_CROWBAR_TO_CHANGE_MODE, "- Hit with Crowbar to change mode -");
     this.add(Tips.HIT_CROWBAR_TO_CHANGE_FORCE, "- Hit with Crowbar to change force -");
+    this.add(Tips.HIT_CROWBAR_TO_ROTATE, "- Hit with Crowbar to rotate -");
+    this.add(Tips.PLACE_ABOVE_TRACK, "- Place 1-2 blocks above track -");
+    this.add(Tips.PLACE_UNDER_TRACK, "- Place under track -");
+    this.add(Tips.PLACE_OVER_TRACK, "- Place over track -");
     this.add(Tips.SLOW_UNPOWERED, "Slows if unpowered");
     this.add(Tips.ACTIVATOR_TRACK, "Activates passing carts");
     this.add(Tips.BOOSTER_TRACK, "Applies a boost force to the cart");

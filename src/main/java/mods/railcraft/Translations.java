@@ -229,6 +229,14 @@ public class Translations {
     public static final String MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC =
         format("tips.%railcraft.manipulator.transfer_mode.transfer.desc");
     public static final String COAL_COKE_BLOCK = format("tips.%railcraft.coal_coke_block");
+    public static final String FORCE_TRACK_EMITTER = format("tips.%railcraft.force_track_emitter");
+    public static final String FEED_STATION = format("tips.%railcraft.feed_station");
+    public static final String MANUAL_ROLLING_MACHINE =
+        format("tips.%railcraft.manual_rolling_machine");
+    public static final String ITEM_LOADER = format("tips.%railcraft.item_loader");
+    public static final String ITEM_UNLOADER = format("tips.%railcraft.item_unloader");
+    public static final String FLUID_LOADER = format("tips.%railcraft.fluid_loader");
+    public static final String FLUID_UNLOADER = format("tips.%railcraft.fluid_unloader");
     public static final String SIGNAL_BLOCK_SURVEYOR =
         format("tips.%railcraft.signal_block_surveyor");
     public static final String SIGNAL_TUNER = format("tips.%railcraft.signal_tuner");
@@ -243,6 +251,8 @@ public class Translations {
 
     public static final String APPLY_REDSTONE_TO_ENABLE =
         format("tips.%railcraft.apply_redstone_to_enable");
+    public static final String APPLY_REDSTONE_TO_DISABLE =
+        format("tips.%railcraft.apply_redstone_to_disable");
     public static final String APPLY_REDSTONE_TO_CHANGE_DIRECTION =
         format("tips.%railcraft.apply_redstone_to_change_direction");
     public static final String APPLY_REDSTONE_TO_OPEN =
@@ -261,6 +271,11 @@ public class Translations {
         format("tips.%railcraft.hit_crowbar_to_change_mode");
     public static final String HIT_CROWBAR_TO_CHANGE_FORCE =
         format("tips.%railcraft.hit_crowbar_to_change_force");
+    public static final String HIT_CROWBAR_TO_ROTATE =
+        format("tips.%railcraft.hit_crowbar_to_rotate");
+    public static final String PLACE_OVER_TRACK = format("tips.%railcraft.place_over_track");
+    public static final String PLACE_UNDER_TRACK = format("tips.%railcraft.place_under_track");
+    public static final String PLACE_ABOVE_TRACK = format("tips.%railcraft.place_above_track");
     public static final String SLOW_UNPOWERED = format("tips.%railcraft.slow_unpowered");
     public static final String ACTIVATOR_TRACK = format("tips.%railcraft.activator_track");
     public static final String BOOSTER_TRACK = format("tips.%railcraft.booster_track");
