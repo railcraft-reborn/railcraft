@@ -16,7 +16,6 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     super(generator, blockTagsProvider, Railcraft.ID, fileHelper);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   protected void addTags() {
     this.tag(RailcraftTags.Items.STEEL_INGOT)
