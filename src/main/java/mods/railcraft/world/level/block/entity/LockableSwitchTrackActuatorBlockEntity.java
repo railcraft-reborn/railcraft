@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.Lockable;
+import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
@@ -98,7 +99,7 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
 
     @Override
     public Lock getNext() {
-      return values()[(this.ordinal() + 1) % values().length];
+      return EnumUtil.next(this, values());
     }
 
     @Override

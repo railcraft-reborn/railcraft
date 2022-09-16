@@ -1,7 +1,8 @@
 package mods.railcraft.world.level.block;
 
 import java.util.List;
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
@@ -27,7 +28,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
 
 public class FeedStationBlock extends BaseEntityBlock {
 
@@ -90,7 +90,7 @@ public class FeedStationBlock extends BaseEntityBlock {
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flag) {
     super.appendHoverText(stack, level, tooltip, flag);
-    tooltip.add(Component.translatable(Tips.FEED_STATION).withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Tips.APPLY_REDSTONE_TO_DISABLE).withStyle(ChatFormatting.RED));
+    tooltip.add(Component.translatable(Translations.Tips.FEED_STATION).withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.APPLY_REDSTONE_TO_DISABLE).withStyle(ChatFormatting.RED));
   }
 }

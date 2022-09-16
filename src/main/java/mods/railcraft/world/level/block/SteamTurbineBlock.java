@@ -2,7 +2,8 @@ package mods.railcraft.world.level.block;
 
 import java.util.List;
 import java.util.Map;
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -28,7 +29,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import org.jetbrains.annotations.Nullable;
 
 public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
 
@@ -84,7 +84,8 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
 
   @SuppressWarnings("deprecation")
   @Override
-  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
+  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos,
+      RandomSource random) {
     super.tick(blockState, level, blockPos, random);
     this.registerNode(blockState, level, blockPos);
   }
@@ -123,10 +124,14 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
       List<Component> tooltip, TooltipFlag flag) {
     super.appendHoverText(stack, level, tooltip, flag);
-    tooltip.add(Component.translatable(Tips.MULTIBLOCK3X2X2).withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Tips.STEAM_TURBINE_DESC_1).withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Tips.STEAM_TURBINE_DESC_2).withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Tips.STEAM_TURBINE_DESC_3).withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.MULTIBLOCK3X2X2)
+        .withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.STEAM_TURBINE_DESC_1)
+        .withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.STEAM_TURBINE_DESC_2)
+        .withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.STEAM_TURBINE_DESC_3)
+        .withStyle(ChatFormatting.GRAY));
   }
 
   public enum Type implements StringRepresentable {

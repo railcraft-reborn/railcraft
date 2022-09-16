@@ -71,12 +71,12 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
   }
 
   @Override
-  public void renderBody(Locomotive cart, float time, PoseStack matrixStack,
+  public void renderBody(Locomotive cart, float time, PoseStack poseStack,
       MultiBufferSource renderTypeBuffer, int packedLight, float red, float green, float blue,
       float alpha) {
-    matrixStack.pushPose();
+    poseStack.pushPose();
 
-    matrixStack.scale(-1, -1, 1);
+    poseStack.scale(-1, -1, 1);
 
     this.color[0] = this.getPrimaryColor(cart);
     this.color[1] = this.getSecondaryColor(cart);
@@ -86,7 +86,7 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
       this.model.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
       VertexConsumer vertexBuilder =
           renderTypeBuffer.getBuffer(this.model.renderType(this.textures[pass]));
-      this.model.renderToBuffer(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY,
+      this.model.renderToBuffer(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY,
           color[0], color[1], color[2], alpha);
     }
 
@@ -94,12 +94,12 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
       this.snowLayer.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
       VertexConsumer vertexBuilder =
           renderTypeBuffer.getBuffer(this.snowLayer.renderType(this.textures[3]));
-      this.snowLayer.renderToBuffer(matrixStack, vertexBuilder, packedLight,
+      this.snowLayer.renderToBuffer(poseStack, vertexBuilder, packedLight,
           OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    ResourceLocation emblemTexture = this.getEmblemTexture(cart);
-    if (emblemTexture != null) {
+    this.getEmblemTexture(cart).ifPresent(emblemTexture -> {
+
       VertexConsumer vertexBuilder =
           renderTypeBuffer.getBuffer(RenderType.entityTranslucent(emblemTexture));
 
@@ -127,9 +127,10 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
           .uv(1, 1).endVertex();
       vertexBuilder.vertex(emblemOffsetX - emblemSize, emblemOffsetY - emblemSize, -emblemOffsetZ)
           .uv(1, 0).endVertex();
-    }
+
+    });
     // OpenGL.glDisable(GL11.GL_BLEND);
-    matrixStack.popPose();
+    poseStack.popPose();
   }
 
   @Override

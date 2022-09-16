@@ -1,7 +1,7 @@
 package mods.railcraft.world.item.track;
 
 import java.util.List;
-import mods.railcraft.Translations.Tips;
+import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -12,14 +12,16 @@ import net.minecraft.world.level.Level;
 
 public class BufferStopTrackBlockItem extends BlockItem {
 
-    public BufferStopTrackBlockItem(BufferStopTrackBlock block, Properties properties) {
-        super(block, properties);
-    }
+  public BufferStopTrackBlockItem(BufferStopTrackBlock block, Properties properties) {
+    super(block, properties);
+  }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents,
-        TooltipFlag isAdvanced) {
-        tooltipComponents.add(Component.translatable(Tips.BUFFER_STOP_TRACK).withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable(Tips.HIT_CROWBAR_TO_CHANGE_DIRECTION).withStyle(ChatFormatting.BLUE));
-    }
+  @Override
+  public void appendHoverText(ItemStack stack, Level level, List<Component> lines,
+      TooltipFlag flag) {
+    lines.add(Component.translatable(Translations.Tips.BUFFER_STOP_TRACK)
+        .withStyle(ChatFormatting.GRAY));
+    lines.add(Component.translatable(Translations.Tips.HIT_CROWBAR_TO_CHANGE_DIRECTION)
+        .withStyle(ChatFormatting.BLUE));
+  }
 }

@@ -1,7 +1,8 @@
 package mods.railcraft.world.level.block;
 
 import java.util.List;
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import org.jetbrains.annotations.Nullable;
 
 public class CrusherMultiblockBlock extends MultiblockBlock {
 
@@ -61,7 +61,7 @@ public class CrusherMultiblockBlock extends MultiblockBlock {
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
       List<Component> lines, TooltipFlag flag) {
-    lines.add(Component.translatable(Tips.MULTIBLOCK3X2X2).withStyle(ChatFormatting.GRAY));
+    lines.add(Component.translatable(Translations.Tips.MULTIBLOCK3X2X2).withStyle(ChatFormatting.GRAY));
   }
 
   public enum Type implements StringRepresentable {

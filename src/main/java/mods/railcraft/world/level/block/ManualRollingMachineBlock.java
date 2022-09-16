@@ -1,7 +1,8 @@
 package mods.railcraft.world.level.block;
 
 import java.util.List;
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 
 public class ManualRollingMachineBlock extends BaseEntityBlock {
 
@@ -73,6 +73,6 @@ public class ManualRollingMachineBlock extends BaseEntityBlock {
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flag) {
     super.appendHoverText(stack, level, tooltip, flag);
-    tooltip.add(Component.translatable(Tips.MANUAL_ROLLING_MACHINE).withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.MANUAL_ROLLING_MACHINE).withStyle(ChatFormatting.GRAY));
   }
 }

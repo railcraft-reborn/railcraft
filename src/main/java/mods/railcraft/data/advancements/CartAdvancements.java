@@ -2,7 +2,7 @@ package mods.railcraft.data.advancements;
 
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
-import mods.railcraft.Translations.Advancement.Carts;
+import mods.railcraft.Translations;
 import mods.railcraft.advancements.BedCartSleepTrigger;
 import mods.railcraft.advancements.CartLinkingTrigger;
 import mods.railcraft.advancements.JukeboxCartPlayMusicTrigger;
@@ -23,8 +23,8 @@ public class CartAdvancements {
     var rcRoot = Advancement.Builder.advancement()
         .display(
             RailcraftItems.DIAMOND_CROWBAR.get(),
-            Component.translatable(Carts.ROOT),
-            Component.translatable(Carts.ROOT_DESC),
+            Component.translatable(Translations.Advancement.Carts.ROOT),
+            Component.translatable(Translations.Advancement.Carts.ROOT_DESC),
             new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
             FrameType.TASK,
             true, false, false)
@@ -35,8 +35,8 @@ public class CartAdvancements {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.STEEL_CROWBAR.get(),
-            Component.translatable(Carts.LINK_CARTS),
-            Component.translatable(Carts.LINK_CARTS_DESC),
+            Component.translatable(Translations.Advancement.Carts.LINK_CARTS),
+            Component.translatable(Translations.Advancement.Carts.LINK_CARTS_DESC),
             null,
             FrameType.TASK,
             true, false, false)
@@ -47,8 +47,8 @@ public class CartAdvancements {
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.SEASONS_CROWBAR.get(),
-            Component.translatable(Carts.SEASONS),
-            Component.translatable(Carts.SEASONS_DESC),
+            Component.translatable(Translations.Advancement.Carts.SEASONS),
+            Component.translatable(Translations.Advancement.Carts.SEASONS_DESC),
             null,
             FrameType.GOAL,
             true, false, false)
@@ -59,8 +59,8 @@ public class CartAdvancements {
     Advancement rcLocomotive = Advancement.Builder.advancement()
         .display(
             RailcraftItems.STEAM_LOCOMOTIVE.get(),
-            Component.translatable(Carts.LOCOMOTIVE),
-            Component.translatable(Carts.LOCOMOTIVE_DESC),
+            Component.translatable(Translations.Advancement.Carts.LOCOMOTIVE),
+            Component.translatable(Translations.Advancement.Carts.LOCOMOTIVE_DESC),
             null,
             FrameType.CHALLENGE,
             true, true, false)
@@ -72,8 +72,8 @@ public class CartAdvancements {
     Advancement.Builder.advancement()
         .display(
             Items.MINECART,
-            Component.translatable(Carts.BED_CART),
-            Component.translatable(Carts.BED_CART_DESC),
+            Component.translatable(Translations.Advancement.Carts.BED_CART),
+            Component.translatable(Translations.Advancement.Carts.BED_CART_DESC),
             null,
             FrameType.TASK,
             true, false, false)
@@ -84,8 +84,8 @@ public class CartAdvancements {
     Advancement.Builder.advancement()
         .display(
             Items.MINECART,
-            Component.translatable(Carts.JUKEBOX_CART),
-            Component.translatable(Carts.JUKEBOX_CART_DESC),
+            Component.translatable(Translations.Advancement.Carts.JUKEBOX_CART),
+            Component.translatable(Translations.Advancement.Carts.JUKEBOX_CART_DESC),
             null,
             FrameType.TASK,
             true, false, false)
@@ -96,8 +96,8 @@ public class CartAdvancements {
     Advancement.Builder.advancement()
         .display(
             Items.MINECART,
-            Component.translatable(Carts.SURPRISE),
-            Component.translatable(Carts.SURPRISE_DESC),
+            Component.translatable(Translations.Advancement.Carts.SURPRISE),
+            Component.translatable(Translations.Advancement.Carts.SURPRISE_DESC),
             null,
             FrameType.TASK,
             true, true, false)

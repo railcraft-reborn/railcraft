@@ -1,7 +1,8 @@
 package mods.railcraft.world.level.block.manipulator;
 
 import java.util.List;
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import org.jetbrains.annotations.Nullable;
 
 public class AdvancedItemLoaderBlock extends ItemLoaderBlock {
 
@@ -47,7 +47,9 @@ public class AdvancedItemLoaderBlock extends ItemLoaderBlock {
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flag) {
-    tooltip.add(Component.translatable(Tips.ITEM_LOADER).withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Tips.HIT_CROWBAR_TO_ROTATE).withStyle(ChatFormatting.BLUE));
+    tooltip.add(Component.translatable(Translations.Tips.ITEM_LOADER)
+        .withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.HIT_CROWBAR_TO_ROTATE)
+        .withStyle(ChatFormatting.BLUE));
   }
 }

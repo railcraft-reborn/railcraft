@@ -1,7 +1,8 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Function;
-import mods.railcraft.Translations.Tips;
+import mods.railcraft.Translations;
+import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.world.level.block.entity.track.BoardingLockingProfile;
 import mods.railcraft.world.level.block.entity.track.EmptyLockingProfile;
 import mods.railcraft.world.level.block.entity.track.HoldingLockingProfile;
@@ -11,44 +12,37 @@ import net.minecraft.util.StringRepresentable;
 
 public enum LockingMode implements StringRepresentable {
 
-  LOCKDOWN(LockType.CART),
-  TRAIN_LOCKDOWN(LockType.TRAIN),
-  HOLDING(LockType.CART, HoldingLockingProfile::new),
-  TRAIN_HOLDING(LockType.TRAIN, HoldingLockingProfile::new),
-  BOARDING(LockType.CART, BoardingLockingProfile::normal),
-  BOARDING_REVERSED(LockType.CART, BoardingLockingProfile::reversed),
-  TRAIN_BOARDING(LockType.TRAIN, BoardingLockingProfile::normal),
-  TRAIN_BOARDING_REVERSED(LockType.TRAIN, BoardingLockingProfile::reversed);
+  LOCKDOWN("lockdown", LockType.CART),
+  TRAIN_LOCKDOWN("train_lockdown", LockType.TRAIN),
+  HOLDING("holding", LockType.CART, HoldingLockingProfile::new),
+  TRAIN_HOLDING("train_holding", LockType.TRAIN, HoldingLockingProfile::new),
+  BOARDING("boarding", LockType.CART, BoardingLockingProfile::normal),
+  BOARDING_REVERSED("boarding_reversed", LockType.CART, BoardingLockingProfile::reversed),
+  TRAIN_BOARDING("train_boarding", LockType.TRAIN, BoardingLockingProfile::normal),
+  TRAIN_BOARDING_REVERSED("train_boarding_reversed", LockType.TRAIN,
+      BoardingLockingProfile::reversed);
 
+  private final String name;
   private final LockType lockType;
   private final Function<? super LockingTrackBlockEntity, ? extends LockingModeController> factory;
 
-  LockingMode(LockType lockType) {
-    this(lockType, __ -> EmptyLockingProfile.INSTANCE);
+  private LockingMode(String name, LockType lockType) {
+    this(name, lockType, __ -> EmptyLockingProfile.INSTANCE);
   }
 
-  LockingMode(LockType lockType,
+  private LockingMode(String name, LockType lockType,
       Function<? super LockingTrackBlockEntity, ? extends LockingModeController> factory) {
+    this.name = name;
     this.lockType = lockType;
     this.factory = factory;
   }
 
   public Component getDisplayName() {
-    return Component.translatable(getTip());
+    return Component.translatable(this.getTranslationKey());
   }
 
-  private String getTip() {
-    return switch (this.ordinal()) {
-      case 0 -> Tips.LOCKING_TRACK_LOCKDOWN;
-      case 1 -> Tips.LOCKING_TRACK_TRAIN_LOCKDOWN;
-      case 2 -> Tips.LOCKING_TRACK_HOLDING;
-      case 3 -> Tips.LOCKING_TRACK_TRAIN_HOLDING;
-      case 4 -> Tips.LOCKING_TRACK_BOARDING;
-      case 5 -> Tips.LOCKING_TRACK_BOARDING_REVERSED;
-      case 6 -> Tips.LOCKING_TRACK_TRAIN_BOARDING;
-      case 7 -> Tips.LOCKING_TRACK_TRAIN_BOARDING_REVERSED;
-      default -> "translation.not.implemented";
-    };
+  public String getTranslationKey() {
+    return Translations.makeKey("tips", "locking_track." + this.name);
   }
 
   public LockType getLockType() {
@@ -60,17 +54,16 @@ public enum LockingMode implements StringRepresentable {
   }
 
   public LockingMode next() {
-    return values()[(this.ordinal() + 1) % values().length];
+    return EnumUtil.next(this, values());
   }
 
   public LockingMode previous() {
-    return values()[(this.ordinal() + values().length - 1) % values().length];
+    return EnumUtil.previous(this, values());
   }
 
   @Override
   public String getSerializedName() {
-    var name = getTip().split("\\.");
-    return name[name.length - 1];
+    return this.name;
   }
 
   public enum LockType {

@@ -3,11 +3,8 @@ package mods.railcraft.world.level.block;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import mods.railcraft.Translations.Tips;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -16,9 +13,11 @@ import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterState;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -27,6 +26,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -220,7 +220,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flag) {
     super.appendHoverText(stack, level, tooltip, flag);
-    tooltip.add(Component.translatable(Tips.FORCE_TRACK_EMITTER).withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.FORCE_TRACK_EMITTER).withStyle(ChatFormatting.GRAY));
   }
 
   public static Direction getFacing(BlockState blockState) {

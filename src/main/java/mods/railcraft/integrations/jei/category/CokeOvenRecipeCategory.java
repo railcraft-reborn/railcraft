@@ -12,7 +12,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mods.railcraft.Railcraft;
-import mods.railcraft.Translations.Jei;
+import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
@@ -50,7 +50,7 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
 
   @Override
   public Component getTitle() {
-    return Component.translatable(Jei.COKE_OVEN);
+    return Component.translatable(Translations.Jei.COKE_OVEN);
   }
 
   @Override

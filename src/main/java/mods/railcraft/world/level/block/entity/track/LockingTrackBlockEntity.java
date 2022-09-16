@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.track;
 
 import java.util.UUID;
 import javax.annotation.Nullable;
-import mods.railcraft.Translations.Tips;
+import mods.railcraft.Translations;
 import mods.railcraft.api.event.CartLockdownEvent;
 import mods.railcraft.api.track.LockingTrack;
 import mods.railcraft.api.track.RailShapeUtil;
@@ -116,7 +116,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
     var newLockingMode = player.isCrouching() ? lockingMode.previous() : lockingMode.next();
     if (!this.level.isClientSide()) {
       this.setLockingMode(newLockingMode);
-      var currentMode = Component.translatable(Tips.CURRENT_MODE);
+      var currentMode = Component.translatable(Translations.Tips.CURRENT_MODE);
       var mode = newLockingMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
       player.displayClientMessage(currentMode.append(" ").append(mode), true);
     }

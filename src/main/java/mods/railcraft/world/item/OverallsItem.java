@@ -11,9 +11,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class OverallsArmor extends ArmorItem {
+public class OverallsItem extends ArmorItem {
 
-  public OverallsArmor(Properties properties) {
+  public OverallsItem(Properties properties) {
     super(RailcraftArmorMaterial.OVERALLS, EquipmentSlot.LEGS, properties);
   }
 

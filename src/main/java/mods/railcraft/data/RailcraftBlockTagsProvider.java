@@ -15,6 +15,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     super(generator, Railcraft.ID, fileHelper);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void addTags() {
     this.tag(RailcraftTags.Blocks.BALLAST)

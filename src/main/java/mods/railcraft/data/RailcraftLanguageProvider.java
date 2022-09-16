@@ -4,20 +4,16 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
-import mods.railcraft.Translations.Advancement.Carts;
-import mods.railcraft.Translations.Advancement.Tracks;
-import mods.railcraft.Translations.Container;
-import mods.railcraft.Translations.Jei;
-import mods.railcraft.Translations.Signal;
-import mods.railcraft.Translations.SignalAspect;
-import mods.railcraft.Translations.SignalCapacitor;
-import mods.railcraft.Translations.Subtitle;
-import mods.railcraft.Translations.Tips;
+import mods.railcraft.season.Season;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
+import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
+import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.material.fluid.RailcraftFluidTypes;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.StringRepresentable;
@@ -300,7 +296,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Container.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
     this.add(Translations.Container.COKE_OVEN, "Coke Oven");
     this.add(Translations.Container.BLAST_FURNACE, "Blast Furnace");
-    this.add(Container.CRUSHER, "Crusher");
+    this.add(Translations.Container.CRUSHER, "Crusher");
     this.add(Translations.Container.TANK, "Tank");
     this.add(Translations.Container.STEAM_TURBINE, "Steam Turbine");
     this.add(Translations.Container.SOLID_FUELED_STEAM_BOILER, "Solid Fueled Steam Boiler");
@@ -308,128 +304,158 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void tipsTranslations() {
-    this.add(Tips.ROUTING_TICKET_ISSUER, "Issuer:");
-    this.add(Tips.ROUTING_TICKET_DEST, "Destination:");
-    this.add(Tips.ROUTING_TICKET_BLANK, "Blank Ticket");
-    this.add(Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
-    this.add(Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
-    this.add(Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");
-    this.add(Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
-    this.add(Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
-    this.add(Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
-    this.add(Tips.COKE_OVEN, "Multi-Block: 3x3x3 (Hollow)");
-    this.add(Tips.BLAST_FURNACE, "Multi-Block: 3x4x3 (Hollow)");
-    this.add(Tips.MULTIBLOCK3X2X2, "Multi-Block: 3x2x2");
-    this.add(Tips.STEAM_TURBINE_DESC_1, "Generates FE from Steam");
-    this.add(Tips.STEAM_TURBINE_DESC_2, "Outputs water to the bottom");
-    this.add(Tips.STEAM_TURBINE_DESC_3, "Requires a Turbine Rotor");
-    this.add(Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
-    this.add(Tips.OVERALLS, "Protection against the dangers of track-working");
-    this.add(Tips.GOOGLES_DESC, "Right-click to change aura.");
-    this.add(Tips.GOOGLES_AURA, "Current Aura: %s");
-    this.add(Tips.GOOGLES_AURA_NONE, "None");
-    this.add(Tips.GOOGLES_AURA_SHUNTING, "Shunting");
-    this.add(Tips.GOOGLES_AURA_SIGNALLING, "Signalling");
-    this.add(Tips.GOOGLES_AURA_SURVEYING, "Surveying");
-    this.add(Tips.GOOGLES_AURA_TRACKING, "Tracking");
-    this.add(Tips.GOOGLES_AURA_TUNING, "Tuning");
-    this.add(Tips.GOOGLES_AURA_WORLDSPIKE, "Worldspike");
-    this.add(Tips.CRAWBAR_DESC, "Right-click while sneaking to link carts.");
-    this.add(Tips.CRAWBAR_LINK_BROKEN, "Link Broken");
-    this.add(Tips.CRAWBAR_LINK_CREATED, "Successfully Linked Carts");
-    this.add(Tips.CRAWBAR_LINK_FAILED, "Link Failed");
-    this.add(Tips.CRAWBAR_LINK_STARTED, "Started Linking Carts");
-    this.add(Tips.CRAWBAR_SEASON_DESC, "Current season: %s");
-    this.add(Tips.CRAWBAR_SEASON_NONE, "None");
-    this.add(Tips.CRAWBAR_SEASON_DEFAULT, "Default");
-    this.add(Tips.CRAWBAR_SEASON_CHRISTMAS, "Christmas");
-    this.add(Tips.CRAWBAR_SEASON_HALLOWEEN, "Halloween");
-    this.add(Tips.SIGNAL_LABEL_DESC1, "- Rename in Anvil -");
-    this.add(Tips.SIGNAL_LABEL_DESC2, "Right click while sneaking to name a signal or signal box");
-    this.add(Tips.SENDS_SIGNALS_TO_RECEIVERS, "Sends signals to Receivers");
-    this.add(Tips.SIGNAL_RECEIVER_BOX, "Listens to Controller signals");
-    this.add(Tips.SIGNAL_INTERLOCK_BOX, "Permits only one aspect signal to pass");
-    this.add(Tips.SIGNAL_SEQUENCER_BOX, "Loops through adjacent blocks");
-    this.add(Tips.SIGNAL_BLOCK_RELAY_BOX, "Creates chains of Signal Blocks");
-    this.add(Tips.FIRESTONE_EMPTY, "Its energies controlled, it could be useful if you could recharge it...");
-    this.add(Tips.FIRESTONE_CHARGED, "Filled with energy, you only need to exert your will onto it to release it's blistering heat...");
-    this.add(Tips.RAW_FIRESTONE, "It quickens in your hands, you can feel it in the very air around you...");
-    this.add(Tips.CUT_FIRESTONE, "Still its energies rage out of control...");
-    this.add(Tips.CURRENT_MODE, "Current Mode:");
-    this.add(Tips.LOCKING_TRACK_LOCKDOWN, "Lockdown");
-    this.add(Tips.LOCKING_TRACK_TRAIN_LOCKDOWN, "Train Lockdown");
-    this.add(Tips.LOCKING_TRACK_HOLDING, "Holding");
-    this.add(Tips.LOCKING_TRACK_TRAIN_HOLDING, "Train Holding");
-    this.add(Tips.LOCKING_TRACK_BOARDING, "Boarding");
-    this.add(Tips.LOCKING_TRACK_BOARDING_REVERSED, "Boarding Reversed");
-    this.add(Tips.LOCKING_TRACK_TRAIN_BOARDING, "Train Boarding");
-    this.add(Tips.LOCKING_TRACK_TRAIN_BOARDING_REVERSED, "Train Boarding Reversed");
-    this.add(Tips.COUPLER_TRACK_COUPLER, "Coupler");
-    this.add(Tips.COUPLER_TRACK_DECOUPLER, "Decoupler");
-    this.add(Tips.COUPLER_TRACK_AUTO_COUPLER, "Auto Coupler");
-    this.add(Tips.TRACK_KIT_CORNERS_UNSUPPORTED, "Corners are Unsupported");
-    this.add(Tips.TRACK_KIT_SLOPES_UNSUPPORTED, "Slopes are Unsupported");
-    this.add(Tips.TRACK_KIT_INVALID_TRACK_TYPE, "Invalid Track Type");
-    this.add(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE, "Complete");
-    this.add(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE_DESC, "Process until operation is complete.");
-    this.add(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE, "Immediate");
-    this.add(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE_DESC, "Process until out of room or supply.");
-    this.add(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL, "Manual");
-    this.add(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL_DESC, "Never emit a redstone signal.");
-    this.add(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL, "Partial");
-    this.add(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL_DESC, "Process until out of room or supply, but keep pristine carts.");
-    this.add(Tips.MANIPULATOR_TRANSFER_MODE_ALL, "All");
-    this.add(Tips.MANIPULATOR_TRANSFER_MODE_ALL_DESC, "Move all matching items.");
-    this.add(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS, "Excess");
-    this.add(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS_DESC, "Move until the source matches the filter.");
-    this.add(Tips.MANIPULATOR_TRANSFER_MODE_STOCK, "Stock");
-    this.add(Tips.MANIPULATOR_TRANSFER_MODE_STOCK_DESC, "Move until the destination matches the filter.");
-    this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER, "Transfer");
-    this.add(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC, "Move exactly as much as is in the filter.");
-    this.add(Tips.COAL_COKE_BLOCK, "%s Fuel Units");
-    this.add(Tips.FORCE_TRACK_EMITTER, "Projects energy-based tracks");
-    this.add(Tips.FEED_STATION, "Feeds animals");
-    this.add(Tips.MANUAL_ROLLING_MACHINE, "Crafting bench for various metal items");
-    this.add(Tips.ITEM_LOADER, "Loads items into carts");
-    this.add(Tips.ITEM_UNLOADER, "Unloads items from carts");
-    this.add(Tips.FLUID_LOADER, "Loads fluids into carts");
-    this.add(Tips.FLUID_UNLOADER, "Unloads fluids from carts");
-    this.add(Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
-    this.add(Tips.SIGNAL_TUNER, "Links Controllers to Receivers");
-    this.add(Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");
-    this.add(Tips.PRESSURE_BOILER_TANK, "Multi-Block: Variable Size, Above Firebox");
-    this.add(Tips.PRESSURE_BOILER_TANK_PRODUCTION, "Produces %smB of Steam per tick");
-    this.add(Tips.DIMENSIONS, "Dimensions: %s");
-    this.add(Tips.APPLY_REDSTONE_TO_ENABLE, "- Apply Redstone to enable -");
-    this.add(Tips.APPLY_REDSTONE_TO_DISABLE, "- Apply Redstone to disable -");
-    this.add(Tips.APPLY_REDSTONE_TO_CHANGE_DIRECTION, "- Apply Redstone to change direction -");
-    this.add(Tips.APPLY_REDSTONE_TO_OPEN, "- Apply Redstone to open -");
-    this.add(Tips.APPLY_REDSTONE_TO_RELEASE_CARTS, "- Apply Redstone to release carts -");
-    this.add(Tips.COMPARATOR_OUTPUT_FROM_CARTS, "- Can be used to get Comparator output from carts -");
-    this.add(Tips.HIT_CROWBAR_TO_CHANGE_DIRECTION, "- Hit with Crowbar to change direction -");
-    this.add(Tips.HIT_CROWBAR_TO_CHANGE_DETECTION_DIRECTION, "- Hit with Crowbar to change detection direction -");
-    this.add(Tips.HIT_CROWBAR_TO_CHANGE_RANGE, "- Hit with Crowbar to change range -");
-    this.add(Tips.HIT_CROWBAR_TO_CHANGE_MODE, "- Hit with Crowbar to change mode -");
-    this.add(Tips.HIT_CROWBAR_TO_CHANGE_FORCE, "- Hit with Crowbar to change force -");
-    this.add(Tips.HIT_CROWBAR_TO_ROTATE, "- Hit with Crowbar to rotate -");
-    this.add(Tips.PLACE_ABOVE_TRACK, "- Place 1-2 blocks above track -");
-    this.add(Tips.PLACE_UNDER_TRACK, "- Place under track -");
-    this.add(Tips.PLACE_OVER_TRACK, "- Place over track -");
-    this.add(Tips.SLOW_UNPOWERED, "Slows if unpowered");
-    this.add(Tips.ACTIVATOR_TRACK, "Activates passing carts");
-    this.add(Tips.BOOSTER_TRACK, "Applies a boost force to the cart");
-    this.add(Tips.BUFFER_STOP_TRACK, "End of the Line");
-    this.add(Tips.CONTROL_TRACK, "Applies a small force to the cart");
-    this.add(Tips.DETECTOR_TRACK, "Emits Redstone when a cart passes in the indicated direction");
-    this.add(Tips.DISEMBARKING_TRACK, "Dismount riding entities in direction of arrow");
-    this.add(Tips.EMBARKING_TRACK, "Loads entities into carts");
-    this.add(Tips.GATED_TRACK, "Track with built-in gate");
-    this.add(Tips.COUPLER_TRACK, "Couples/Decouples passing carts");
-    this.add(Tips.LAUNCHER_TRACK, "Makes carts fly!");
-    this.add(Tips.ONE_WAY_TRACK, "Carts can only pass in the direction of the arrow");
-    this.add(Tips.LOCOMOTIVE_TRACK, "Starts/Stops locomotive");
-    this.add(Tips.LOCKING_TRACK, "Stops and holds carts");
-    this.add(Tips.TRANSITION_TRACK, "Transitions to/from high speed");
+    this.add(MaintenanceMinecart.Mode.SERVICE.getTranslationKey(), "Service");
+    this.add(MaintenanceMinecart.Mode.TRANSPORT.getTranslationKey(), "Transport");
+
+    this.add(Translations.Tips.ROUTING_TICKET_ISSUER, "Issuer:");
+    this.add(Translations.Tips.ROUTING_TICKET_DEST, "Destination:");
+    this.add(Translations.Tips.ROUTING_TICKET_BLANK, "Blank Ticket");
+    this.add(Translations.Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
+    this.add(Translations.Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
+    this.add(Translations.Tips.COKE_OVEN, "Multi-Block: 3x3x3 (Hollow)");
+    this.add(Translations.Tips.BLAST_FURNACE, "Multi-Block: 3x4x3 (Hollow)");
+    this.add(Translations.Tips.MULTIBLOCK3X2X2, "Multi-Block: 3x2x2");
+    this.add(Translations.Tips.STEAM_TURBINE_DESC_1, "Generates FE from Steam");
+    this.add(Translations.Tips.STEAM_TURBINE_DESC_2, "Outputs water to the bottom");
+    this.add(Translations.Tips.STEAM_TURBINE_DESC_3, "Requires a Turbine Rotor");
+    this.add(Translations.Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
+    this.add(Translations.Tips.OVERALLS, "Protection against the dangers of track-working");
+    this.add(Translations.Tips.GOOGLES_DESC, "Right-click to change aura.");
+    this.add(Translations.Tips.GOOGLES_AURA, "Current Aura: %s");
+    this.add(Translations.Tips.GOOGLES_AURA_NONE, "None");
+    this.add(Translations.Tips.GOOGLES_AURA_SHUNTING, "Shunting");
+    this.add(Translations.Tips.GOOGLES_AURA_SIGNALLING, "Signalling");
+    this.add(Translations.Tips.GOOGLES_AURA_SURVEYING, "Surveying");
+    this.add(Translations.Tips.GOOGLES_AURA_TRACKING, "Tracking");
+    this.add(Translations.Tips.GOOGLES_AURA_TUNING, "Tuning");
+    this.add(Translations.Tips.GOOGLES_AURA_WORLDSPIKE, "Worldspike");
+    this.add(Translations.Tips.CROWBAR_DESC, "Right-click while sneaking to link carts.");
+    this.add(Translations.Tips.CROWBAR_LINK_BROKEN, "Link Broken");
+    this.add(Translations.Tips.CROWBAR_LINK_CREATED, "Successfully Linked Carts");
+    this.add(Translations.Tips.CROWBAR_LINK_FAILED, "Link Failed");
+    this.add(Translations.Tips.CROWBAR_LINK_STARTED, "Started Linking Carts");
+    this.add(Translations.Tips.CROWBAR_SEASON_DESC, "Current season: %s");
+
+    this.add(Season.NONE.getTranslationKey(), "None");
+    this.add(Season.DEFAULT.getTranslationKey(), "Default");
+    this.add(Season.CHRISTMAS.getTranslationKey(), "Christmas");
+    this.add(Season.HALLOWEEN.getTranslationKey(), "Halloween");
+
+    this.add(Translations.Tips.SIGNAL_LABEL_DESC1, "- Rename in Anvil -");
+    this.add(Translations.Tips.SIGNAL_LABEL_DESC2,
+        "Right click while sneaking to name a signal or signal box");
+    this.add(Translations.Tips.SENDS_SIGNALS_TO_RECEIVERS, "Sends signals to Receivers");
+    this.add(Translations.Tips.SIGNAL_RECEIVER_BOX, "Listens to Controller signals");
+    this.add(Translations.Tips.SIGNAL_INTERLOCK_BOX, "Permits only one aspect signal to pass");
+    this.add(Translations.Tips.SIGNAL_SEQUENCER_BOX, "Loops through adjacent blocks");
+    this.add(Translations.Tips.SIGNAL_BLOCK_RELAY_BOX, "Creates chains of Signal Blocks");
+    this.add(Translations.Tips.FIRESTONE_EMPTY,
+        "Its energies controlled, it could be useful if you could recharge it...");
+    this.add(Translations.Tips.FIRESTONE_CHARGED,
+        "Filled with energy, you only need to exert your will onto it to release it's blistering heat...");
+    this.add(Translations.Tips.RAW_FIRESTONE,
+        "It quickens in your hands, you can feel it in the very air around you...");
+    this.add(Translations.Tips.CUT_FIRESTONE, "Still its energies rage out of control...");
+    this.add(Translations.Tips.CURRENT_MODE, "Current Mode:");
+
+    this.add(LockingMode.LOCKDOWN.getTranslationKey(), "Lockdown");
+    this.add(LockingMode.TRAIN_LOCKDOWN.getTranslationKey(), "Train Lockdown");
+    this.add(LockingMode.HOLDING.getTranslationKey(), "Holding");
+    this.add(LockingMode.TRAIN_HOLDING.getTranslationKey(), "Train Holding");
+    this.add(LockingMode.BOARDING.getTranslationKey(), "Boarding");
+    this.add(LockingMode.BOARDING_REVERSED.getTranslationKey(), "Boarding Reversed");
+    this.add(LockingMode.TRAIN_BOARDING.getTranslationKey(), "Train Boarding");
+    this.add(LockingMode.TRAIN_BOARDING_REVERSED.getTranslationKey(), "Train Boarding Reversed");
+
+    this.add(CouplerTrackBlockEntity.Mode.COUPLER.getTranslationKey(), "Coupler");
+    this.add(CouplerTrackBlockEntity.Mode.DECOUPLER.getTranslationKey(), "Decoupler");
+    this.add(CouplerTrackBlockEntity.Mode.AUTO_COUPLER.getTranslationKey(), "Auto Coupler");
+
+    this.add(Translations.Tips.TRACK_KIT_CORNERS_UNSUPPORTED, "Corners are Unsupported");
+    this.add(Translations.Tips.TRACK_KIT_SLOPES_UNSUPPORTED, "Slopes are Unsupported");
+    this.add(Translations.Tips.TRACK_KIT_INVALID_TRACK_TYPE, "Invalid Track Type");
+
+    this.add(ManipulatorBlockEntity.RedstoneMode.COMPLETE.getTranslationKey(), "Complete");
+    this.add(ManipulatorBlockEntity.RedstoneMode.COMPLETE.getDescriptionKey(),
+        "Process until operation is complete.");
+    this.add(ManipulatorBlockEntity.RedstoneMode.IMMEDIATE.getTranslationKey(), "Immediate");
+    this.add(ManipulatorBlockEntity.RedstoneMode.IMMEDIATE.getDescriptionKey(),
+        "Process until out of room or supply.");
+    this.add(ManipulatorBlockEntity.RedstoneMode.MANUAL.getTranslationKey(), "Manual");
+    this.add(ManipulatorBlockEntity.RedstoneMode.MANUAL.getDescriptionKey(),
+        "Never emit a redstone signal.");
+    this.add(ManipulatorBlockEntity.RedstoneMode.PARTIAL.getTranslationKey(), "Partial");
+    this.add(ManipulatorBlockEntity.RedstoneMode.PARTIAL.getDescriptionKey(),
+        "Process until out of room or supply, but keep pristine carts.");
+
+    this.add(ManipulatorBlockEntity.TransferMode.ALL.getTranslationKey(), "All");
+    this.add(ManipulatorBlockEntity.TransferMode.ALL.getDescriptionKey(),
+        "Move all matching items.");
+    this.add(ManipulatorBlockEntity.TransferMode.EXCESS.getTranslationKey(), "Excess");
+    this.add(ManipulatorBlockEntity.TransferMode.EXCESS.getDescriptionKey(),
+        "Move until the source matches the filter.");
+    this.add(ManipulatorBlockEntity.TransferMode.STOCK.getTranslationKey(), "Stock");
+    this.add(ManipulatorBlockEntity.TransferMode.STOCK.getDescriptionKey(),
+        "Move until the destination matches the filter.");
+    this.add(ManipulatorBlockEntity.TransferMode.TRANSFER.getTranslationKey(), "Transfer");
+    this.add(ManipulatorBlockEntity.TransferMode.TRANSFER.getDescriptionKey(),
+        "Move exactly as much as is in the filter.");
+
+    this.add(Translations.Tips.COAL_COKE_BLOCK, "%s Fuel Units");
+    this.add(Translations.Tips.FORCE_TRACK_EMITTER, "Projects energy-based tracks");
+    this.add(Translations.Tips.FEED_STATION, "Feeds animals");
+    this.add(Translations.Tips.MANUAL_ROLLING_MACHINE, "Crafting bench for various metal items");
+    this.add(Translations.Tips.ITEM_LOADER, "Loads items into carts");
+    this.add(Translations.Tips.ITEM_UNLOADER, "Unloads items from carts");
+    this.add(Translations.Tips.FLUID_LOADER, "Loads fluids into carts");
+    this.add(Translations.Tips.FLUID_UNLOADER, "Unloads fluids from carts");
+    this.add(Translations.Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
+    this.add(Translations.Tips.SIGNAL_TUNER, "Links Controllers to Receivers");
+    this.add(Translations.Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");
+    this.add(Translations.Tips.PRESSURE_BOILER_TANK, "Multi-Block: Variable Size, Above Firebox");
+    this.add(Translations.Tips.PRESSURE_BOILER_TANK_PRODUCTION, "Produces %smB of Steam per tick");
+    this.add(Translations.Tips.DIMENSIONS, "Dimensions: %s");
+    this.add(Translations.Tips.APPLY_REDSTONE_TO_ENABLE, "- Apply Redstone to enable -");
+    this.add(Translations.Tips.APPLY_REDSTONE_TO_DISABLE, "- Apply Redstone to disable -");
+    this.add(Translations.Tips.APPLY_REDSTONE_TO_CHANGE_DIRECTION,
+        "- Apply Redstone to change direction -");
+    this.add(Translations.Tips.APPLY_REDSTONE_TO_OPEN, "- Apply Redstone to open -");
+    this.add(Translations.Tips.APPLY_REDSTONE_TO_RELEASE_CARTS,
+        "- Apply Redstone to release carts -");
+    this.add(Translations.Tips.COMPARATOR_OUTPUT_FROM_CARTS,
+        "- Can be used to get Comparator output from carts -");
+    this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_DIRECTION,
+        "- Hit with Crowbar to change direction -");
+    this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_DETECTION_DIRECTION,
+        "- Hit with Crowbar to change detection direction -");
+    this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_RANGE, "- Hit with Crowbar to change range -");
+    this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_MODE, "- Hit with Crowbar to change mode -");
+    this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_FORCE, "- Hit with Crowbar to change force -");
+    this.add(Translations.Tips.HIT_CROWBAR_TO_ROTATE, "- Hit with Crowbar to rotate -");
+    this.add(Translations.Tips.PLACE_ABOVE_TRACK, "- Place 1-2 blocks above track -");
+    this.add(Translations.Tips.PLACE_UNDER_TRACK, "- Place under track -");
+    this.add(Translations.Tips.PLACE_OVER_TRACK, "- Place over track -");
+    this.add(Translations.Tips.SLOW_UNPOWERED, "Slows if unpowered");
+    this.add(Translations.Tips.ACTIVATOR_TRACK, "Activates passing carts");
+    this.add(Translations.Tips.BOOSTER_TRACK, "Applies a boost force to the cart");
+    this.add(Translations.Tips.BUFFER_STOP_TRACK, "End of the Line");
+    this.add(Translations.Tips.CONTROL_TRACK, "Applies a small force to the cart");
+    this.add(Translations.Tips.DETECTOR_TRACK,
+        "Emits Redstone when a cart passes in the indicated direction");
+    this.add(Translations.Tips.DISEMBARKING_TRACK,
+        "Dismount riding entities in direction of arrow");
+    this.add(Translations.Tips.EMBARKING_TRACK, "Loads entities into carts");
+    this.add(Translations.Tips.GATED_TRACK, "Track with built-in gate");
+    this.add(Translations.Tips.COUPLER_TRACK, "Couples/Decouples passing carts");
+    this.add(Translations.Tips.LAUNCHER_TRACK, "Makes carts fly!");
+    this.add(Translations.Tips.ONE_WAY_TRACK, "Carts can only pass in the direction of the arrow");
+    this.add(Translations.Tips.LOCOMOTIVE_TRACK, "Starts/Stops locomotive");
+    this.add(Translations.Tips.LOCKING_TRACK, "Stops and holds carts");
+    this.add(Translations.Tips.TRANSITION_TRACK, "Transitions to/from high speed");
   }
 
   private void screenTranslations() {
@@ -596,28 +622,30 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void jeiTranslations() {
-    this.add(Jei.METAL_ROLLING, "Metal Rolling");
-    this.add(Jei.COKE_OVEN, "Coke Oven Smelting");
-    this.add(Jei.BLAST_FURNACE, "Blast Furnace Smelting");
-    this.add(Jei.CRUSHER, "Rock Crushing");
-    this.add(Jei.CRUSHER_TIP, "(%s%% chance)");
+    this.add(Translations.Jei.METAL_ROLLING, "Metal Rolling");
+    this.add(Translations.Jei.COKE_OVEN, "Coke Oven Smelting");
+    this.add(Translations.Jei.BLAST_FURNACE, "Blast Furnace Smelting");
+    this.add(Translations.Jei.CRUSHER, "Rock Crushing");
+    this.add(Translations.Jei.CRUSHER_TIP, "(%s%% chance)");
   }
 
   private void signalTranslations() {
-    this.add(Signal.SIGNAL_SURVEYOR_INVALID_TRACK, "No Track Found Near %s");
-    this.add(Signal.SIGNAL_SURVEYOR_BEGIN, "Beginning Survey");
-    this.add(Signal.SIGNAL_SURVEYOR_SUCCESS, "Successfully Paired Signals");
-    this.add(Signal.SIGNAL_SURVEYOR_INVALID_PAIR, "Pairing Invalid");
-    this.add(Signal.SIGNAL_SURVEYOR_LOST, "First Signal No Longer Exists");
-    this.add(Signal.SIGNAL_SURVEYOR_UNLOADED, "First Signal's Chunk Has Been Unloaded");
-    this.add(Signal.SIGNAL_SURVEYOR_ABANDONED, "Survey Abandoned");
-    this.add(Signal.SIGNAL_SURVEYOR_INVALID_BLOCK, "Not a Valid Signal");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_INVALID_TRACK, "No Track Found Near %s");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_BEGIN, "Beginning Survey");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_SUCCESS, "Successfully Paired Signals");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_INVALID_PAIR, "Pairing Invalid");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_LOST, "First Signal No Longer Exists");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_UNLOADED,
+        "First Signal's Chunk Has Been Unloaded");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_ABANDONED, "Survey Abandoned");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_INVALID_BLOCK, "Not a Valid Signal");
 
-    this.add(Signal.SIGNAL_TUNER_BEGIN, "Started Pairing %s With a Receiver");
-    this.add(Signal.SIGNAL_TUNER_ABANDONED, "Stopped Pairing");
-    this.add(Signal.SIGNAL_TUNER_UNLOADED, "Signal Controller's Chunk Has Been Unloaded");
-    this.add(Signal.SIGNAL_TUNER_LOST, "Signal Controller No Longer Exists");
-    this.add(Signal.SIGNAL_TUNER_SUCCESS, "Successfully Paired Signal Receiver");
+    this.add(Translations.Signal.SIGNAL_TUNER_BEGIN, "Started Pairing %s With a Receiver");
+    this.add(Translations.Signal.SIGNAL_TUNER_ABANDONED, "Stopped Pairing");
+    this.add(Translations.Signal.SIGNAL_TUNER_UNLOADED,
+        "Signal Controller's Chunk Has Been Unloaded");
+    this.add(Translations.Signal.SIGNAL_TUNER_LOST, "Signal Controller No Longer Exists");
+    this.add(Translations.Signal.SIGNAL_TUNER_SUCCESS, "Successfully Paired Signal Receiver");
   }
 
   private void enchantmentTranslations() {
@@ -628,67 +656,79 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void advancementTranslations() {
-    this.add(Tracks.ROOT, "Tracks");
-    this.add(Tracks.ROOT_DESC, "Railcraft Inc.'s dedication");
-    this.add(Tracks.MANUAL_ROLLING_MACHINE, "Tireless Rolling");
-    this.add(Tracks.MANUAL_ROLLING_MACHINE_DESC, "Build a manual rolling machine out of alloys");
-    this.add(Tracks.BLAST_FURNACE, "Steel Mill");
-    this.add(Tracks.BLAST_FURNACE_DESC, "Build a blast furnace");
-    this.add(Tracks.COKE_OVEN, "Coke Head");
-    this.add(Tracks.COKE_OVEN_DESC, "Read a coke oven brick's tooltip and build a complete one");
-    this.add(Tracks.CRUSHER, "Heavy Machinery");
-    this.add(Tracks.CRUSHER_DESC, "Build a crusher");
-    this.add(Tracks.FIRESTONE, "Intractable Energy");
-    this.add(Tracks.FIRESTONE_DESC, "Find a firestone ore on the floor of nether lava ocean and crush it with a rock crusher");
-    this.add(Tracks.HIGH_SPEED_TRACK, "Fired up Carts");
-    this.add(Tracks.HIGH_SPEED_TRACK_DESC, "Get some high speed tracks and ride your carts on them");
-    this.add(Tracks.JUNCTIONS, "Better Forks");
-    this.add(Tracks.JUNCTIONS_DESC, "Turn a regular track into turnouts, wyes, and intersections with a spike maul");
-    this.add(Tracks.REGULAR_TRACK, "Reasonably Priced");
-    this.add(Tracks.REGULAR_TRACK_DESC, "Manufacture tracks made of regular rails");
-    this.add(Tracks.WOODEN_TRACK, "Wood Age");
-    this.add(Tracks.WOODEN_TRACK_DESC, "Get some strap iron tracks that require very few iron");
-    this.add(Tracks.TRACK_KIT, "Multifunctional Rails");
-    this.add(Tracks.TRACK_KIT_DESC, "Make and place track kits on your flex tracks to empower them like this buffer stop one");
+    this.add(Translations.Advancement.Tracks.ROOT, "Tracks");
+    this.add(Translations.Advancement.Tracks.ROOT_DESC, "Railcraft Inc.'s dedication");
+    this.add(Translations.Advancement.Tracks.MANUAL_ROLLING_MACHINE, "Tireless Rolling");
+    this.add(Translations.Advancement.Tracks.MANUAL_ROLLING_MACHINE_DESC,
+        "Build a manual rolling machine out of alloys");
+    this.add(Translations.Advancement.Tracks.BLAST_FURNACE, "Steel Mill");
+    this.add(Translations.Advancement.Tracks.BLAST_FURNACE_DESC, "Build a blast furnace");
+    this.add(Translations.Advancement.Tracks.COKE_OVEN, "Coke Head");
+    this.add(Translations.Advancement.Tracks.COKE_OVEN_DESC,
+        "Read a coke oven brick's tooltip and build a complete one");
+    this.add(Translations.Advancement.Tracks.CRUSHER, "Heavy Machinery");
+    this.add(Translations.Advancement.Tracks.CRUSHER_DESC, "Build a crusher");
+    this.add(Translations.Advancement.Tracks.FIRESTONE, "Intractable Energy");
+    this.add(Translations.Advancement.Tracks.FIRESTONE_DESC,
+        "Find a firestone ore on the floor of nether lava ocean and crush it with a rock crusher");
+    this.add(Translations.Advancement.Tracks.HIGH_SPEED_TRACK, "Fired up Carts");
+    this.add(Translations.Advancement.Tracks.HIGH_SPEED_TRACK_DESC,
+        "Get some high speed tracks and ride your carts on them");
+    this.add(Translations.Advancement.Tracks.JUNCTIONS, "Better Forks");
+    this.add(Translations.Advancement.Tracks.JUNCTIONS_DESC,
+        "Turn a regular track into turnouts, wyes, and intersections with a spike maul");
+    this.add(Translations.Advancement.Tracks.REGULAR_TRACK, "Reasonably Priced");
+    this.add(Translations.Advancement.Tracks.REGULAR_TRACK_DESC,
+        "Manufacture tracks made of regular rails");
+    this.add(Translations.Advancement.Tracks.WOODEN_TRACK, "Wood Age");
+    this.add(Translations.Advancement.Tracks.WOODEN_TRACK_DESC,
+        "Get some strap iron tracks that require very few iron");
+    this.add(Translations.Advancement.Tracks.TRACK_KIT, "Multifunctional Rails");
+    this.add(Translations.Advancement.Tracks.TRACK_KIT_DESC,
+        "Make and place track kits on your flex tracks to empower them like this buffer stop one");
 
-    this.add(Carts.ROOT, "Railcraft Carts");
-    this.add(Carts.ROOT_DESC, "Vehicles and magic from Railcraft");
-    this.add(Carts.BED_CART, "Dreams on the wheels");
-    this.add(Carts.BED_CART_DESC, "Sleeping while riding the bed cart");
-    this.add(Carts.JUKEBOX_CART, "Moving Music");
-    this.add(Carts.JUKEBOX_CART_DESC, "Play a record in a jukebox cart");
-    this.add(Carts.LINK_CARTS, "Linking Carts");
-    this.add(Carts.LINK_CARTS_DESC, "Never forget to sneak!");
-    this.add(Carts.LOCOMOTIVE, "Rolling Through");
-    this.add(Carts.LOCOMOTIVE_DESC, "Power your train with locomotives");
-    this.add(Carts.SEASONS, "Anachronism");
-    this.add(Carts.SEASONS_DESC, "Tweak with a seasons crowbar the season of a cart");
-    this.add(Carts.SURPRISE, "Opportune Kaboom");
-    this.add(Carts.SURPRISE_DESC, "Explode a seasonal cart and collect (really?) gifts");
+    this.add(Translations.Advancement.Carts.ROOT, "Railcraft Carts");
+    this.add(Translations.Advancement.Carts.ROOT_DESC, "Vehicles and magic from Railcraft");
+    this.add(Translations.Advancement.Carts.BED_CART, "Dreams on the wheels");
+    this.add(Translations.Advancement.Carts.BED_CART_DESC, "Sleeping while riding the bed cart");
+    this.add(Translations.Advancement.Carts.JUKEBOX_CART, "Moving Music");
+    this.add(Translations.Advancement.Carts.JUKEBOX_CART_DESC, "Play a record in a jukebox cart");
+    this.add(Translations.Advancement.Carts.LINK_CARTS, "Linking Carts");
+    this.add(Translations.Advancement.Carts.LINK_CARTS_DESC, "Never forget to sneak!");
+    this.add(Translations.Advancement.Carts.LOCOMOTIVE, "Rolling Through");
+    this.add(Translations.Advancement.Carts.LOCOMOTIVE_DESC, "Power your train with locomotives");
+    this.add(Translations.Advancement.Carts.SEASONS, "Anachronism");
+    this.add(Translations.Advancement.Carts.SEASONS_DESC,
+        "Tweak with a seasons crowbar the season of a cart");
+    this.add(Translations.Advancement.Carts.SURPRISE, "Opportune Kaboom");
+    this.add(Translations.Advancement.Carts.SURPRISE_DESC,
+        "Explode a seasonal cart and collect (really?) gifts");
   }
 
   private void signalAspectTranslations() {
-    this.add(SignalAspect.GREEN, "Green");
-    this.add(SignalAspect.BLINK_YELLOW, "Blink Yellow");
-    this.add(SignalAspect.YELLOW, "Yellow");
-    this.add(SignalAspect.BLINK_RED, "Blink Red");
-    this.add(SignalAspect.RED, "Red");
-    this.add(SignalAspect.OFF, "Off");
+    this.add(Translations.SignalAspect.GREEN, "Green");
+    this.add(Translations.SignalAspect.BLINK_YELLOW, "Blink Yellow");
+    this.add(Translations.SignalAspect.YELLOW, "Yellow");
+    this.add(Translations.SignalAspect.BLINK_RED, "Blink Red");
+    this.add(Translations.SignalAspect.RED, "Red");
+    this.add(Translations.SignalAspect.OFF, "Off");
   }
 
   private void signalCapacitorTranslations() {
-    this.add(SignalCapacitor.RISING_EDGE, "Rising Edge");
-    this.add(SignalCapacitor.RISING_EDGE_DESC, "Start timer as soon as the input signal is received.");
-    this.add(SignalCapacitor.FALLING_EDGE, "Falling Edge");
-    this.add(SignalCapacitor.FALLING_EDGE_DESC, "Start timer when the last input signal turns off.");
+    this.add(Translations.SignalCapacitor.RISING_EDGE, "Rising Edge");
+    this.add(Translations.SignalCapacitor.RISING_EDGE_DESC,
+        "Start timer as soon as the input signal is received.");
+    this.add(Translations.SignalCapacitor.FALLING_EDGE, "Falling Edge");
+    this.add(Translations.SignalCapacitor.FALLING_EDGE_DESC,
+        "Start timer when the last input signal turns off.");
   }
 
   private void subtitleTranslations() {
-    this.add(Subtitle.STEAM_WHISTLE, "Steam Locomotive Whistle");
-    this.add(Subtitle.ELECTRIC_WHISTLE, "Electric Locomotive Whistle");
-    this.add(Subtitle.STEAM_BURST, "Machine Steam Burst");
-    this.add(Subtitle.STEAM_HISS, "Machine Steam Hiss");
-    this.add(Subtitle.MACHINE_ZAP, "Machine Zap");
+    this.add(Translations.Subtitle.STEAM_WHISTLE, "Steam Locomotive Whistle");
+    this.add(Translations.Subtitle.ELECTRIC_WHISTLE, "Electric Locomotive Whistle");
+    this.add(Translations.Subtitle.STEAM_BURST, "Machine Steam Burst");
+    this.add(Translations.Subtitle.STEAM_HISS, "Machine Steam Hiss");
+    this.add(Translations.Subtitle.MACHINE_ZAP, "Machine Zap");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {

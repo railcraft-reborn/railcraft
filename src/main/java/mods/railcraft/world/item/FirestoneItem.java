@@ -3,7 +3,8 @@ package mods.railcraft.world.item;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.NotNull;
+import mods.railcraft.Translations;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
@@ -24,7 +25,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -138,10 +138,12 @@ public class FirestoneItem extends Item {
       TooltipFlag isAdvanced) {
     if (stack.is(RailcraftItems.RAW_FIRESTONE.get())) {
       tooltipComponents
-          .add(Component.translatable(Tips.RAW_FIRESTONE).withStyle(ChatFormatting.GRAY));
+          .add(Component.translatable(Translations.Tips.RAW_FIRESTONE)
+              .withStyle(ChatFormatting.GRAY));
     } else if (stack.is(RailcraftItems.CUT_FIRESTONE.get())) {
       tooltipComponents
-          .add(Component.translatable(Tips.CUT_FIRESTONE).withStyle(ChatFormatting.GRAY));
+          .add(Component.translatable(Translations.Tips.CUT_FIRESTONE)
+              .withStyle(ChatFormatting.GRAY));
     }
   }
 }

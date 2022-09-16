@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.track;
 
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
-import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import net.minecraft.core.BlockPos;

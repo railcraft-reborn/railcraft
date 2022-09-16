@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
-import mods.railcraft.Translations.Tips;
+import mods.railcraft.Translations;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
@@ -177,9 +177,10 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> info,
-      TooltipFlag adv) {
-    info.add(Component.translatable(Tips.CRAWBAR_DESC).withStyle(ChatFormatting.ITALIC));
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines,
+      TooltipFlag flag) {
+    lines.add(Component.translatable(Translations.Tips.CROWBAR_DESC)
+        .withStyle(ChatFormatting.ITALIC));
   }
 
   private void removeExtraBlocks(Level world, int level, BlockPos pos, BlockState state,

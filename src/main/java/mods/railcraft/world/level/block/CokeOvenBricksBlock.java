@@ -1,7 +1,8 @@
 package mods.railcraft.world.level.block;
 
 import java.util.List;
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 public class CokeOvenBricksBlock extends FurnaceMultiblockBlock {
 
@@ -40,6 +40,6 @@ public class CokeOvenBricksBlock extends FurnaceMultiblockBlock {
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
       List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable(Tips.COKE_OVEN).withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.COKE_OVEN).withStyle(ChatFormatting.GRAY));
   }
 }

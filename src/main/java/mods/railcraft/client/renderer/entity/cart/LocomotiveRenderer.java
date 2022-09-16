@@ -1,12 +1,11 @@
 package mods.railcraft.client.renderer.entity.cart;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.StringUtil;
 import net.minecraft.world.item.DyeColor;
 
 /**
@@ -31,12 +30,8 @@ public abstract class LocomotiveRenderer<T extends Locomotive>
         : loco.getSecondaryColor();
   }
 
-  @Nullable
-  protected ResourceLocation getEmblemTexture(T loco) {
-    String emblem = loco.getEmblem();
-    ResourceLocation emblemTexture = null;
-    if (!StringUtil.isNullOrEmpty(emblem) && EmblemToolsClient.packageManager != null)
-      emblemTexture = EmblemToolsClient.packageManager.getEmblemTextureLocation(emblem);
-    return emblemTexture;
+  protected Optional<ResourceLocation> getEmblemTexture(T loco) {
+    return loco.getEmblem()
+        .map(EmblemToolsClient.packageManager()::getEmblemTextureLocation);
   }
 }

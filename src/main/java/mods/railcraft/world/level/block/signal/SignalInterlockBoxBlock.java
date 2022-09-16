@@ -1,7 +1,8 @@
 package mods.railcraft.world.level.block.signal;
 
 import java.util.List;
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.SignalInterlockBoxBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 public class SignalInterlockBoxBlock extends SelfAttachableSignalBoxBlock implements EntityBlock {
 
@@ -44,6 +44,7 @@ public class SignalInterlockBoxBlock extends SelfAttachableSignalBoxBlock implem
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
       List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable(Tips.SIGNAL_INTERLOCK_BOX).withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.SIGNAL_INTERLOCK_BOX)
+        .withStyle(ChatFormatting.GRAY));
   }
 }

@@ -1,8 +1,10 @@
 package mods.railcraft.world.entity.vehicle;
 
 import java.util.List;
+import mods.railcraft.Translations;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
@@ -142,12 +144,10 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
     private final String name;
     private final float speed;
-    private final Component label;
 
     private Mode(String name, float speed) {
       this.name = name;
       this.speed = speed;
-      this.label = Component.translatable("gui.railcraft.cart.maintenance.mode." + name);
     }
 
     public float getSpeed() {
@@ -156,7 +156,11 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
     @Override
     public Component getLabel() {
-      return this.label;
+      return Component.translatable(this.getTranslationKey());
+    }
+
+    public String getTranslationKey() {
+      return Translations.makeKey("tips", "cart.maintenance.mode." + this.name);
     }
 
     @Override
@@ -166,7 +170,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
     @Override
     public Mode getNext() {
-      return values()[(this.ordinal() + 1) % values().length];
+      return EnumUtil.next(this, values());
     }
 
     @Override

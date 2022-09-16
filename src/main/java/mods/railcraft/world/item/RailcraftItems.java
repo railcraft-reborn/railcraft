@@ -557,7 +557,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> OVERALLS =
       deferredRegister.register("overalls",
-          () -> new OverallsArmor(new Item.Properties().tab(TAB)));
+          () -> new OverallsItem(new Item.Properties().tab(TAB)));
 
   public static final RegistryObject<FirestoneOreBlockItem> FIRESTONE_ORE =
       deferredRegister.register("firestone_ore", () -> new FirestoneOreBlockItem(

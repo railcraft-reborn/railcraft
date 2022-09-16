@@ -1,7 +1,7 @@
 package mods.railcraft.world.item.track;
 
 import java.util.List;
-import mods.railcraft.Translations.Tips;
+import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,11 +19,11 @@ public class CouplerTrackBlockItem extends BlockItem {
   @Override
   public void appendHoverText(ItemStack stack, Level level, List<Component> lines,
       TooltipFlag flag) {
-    lines.add(Component.translatable(Tips.COUPLER_TRACK)
+    lines.add(Component.translatable(Translations.Tips.COUPLER_TRACK)
         .withStyle(ChatFormatting.GRAY));
-    lines.add(Component.translatable(Tips.HIT_CROWBAR_TO_CHANGE_MODE)
+    lines.add(Component.translatable(Translations.Tips.HIT_CROWBAR_TO_CHANGE_MODE)
         .withStyle(ChatFormatting.BLUE));
-    lines.add(Component.translatable(Tips.APPLY_REDSTONE_TO_ENABLE)
+    lines.add(Component.translatable(Translations.Tips.APPLY_REDSTONE_TO_ENABLE)
         .withStyle(ChatFormatting.RED));
   }
 }
