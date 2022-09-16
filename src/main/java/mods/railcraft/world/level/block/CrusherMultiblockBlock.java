@@ -61,7 +61,7 @@ public class CrusherMultiblockBlock extends MultiblockBlock {
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
       List<Component> lines, TooltipFlag flag) {
-    lines.add(Component.translatable(Tips.CRUSHER).withStyle(ChatFormatting.GRAY));
+    lines.add(Component.translatable(Tips.MULTIBLOCK3X2X2).withStyle(ChatFormatting.GRAY));
   }
 
   public enum Type implements StringRepresentable {

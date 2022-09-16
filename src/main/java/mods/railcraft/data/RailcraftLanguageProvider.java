@@ -319,8 +319,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
     this.add(Tips.COKE_OVEN, "Multi-Block: 3x3x3 (Hollow)");
     this.add(Tips.BLAST_FURNACE, "Multi-Block: 3x4x3 (Hollow)");
-    this.add(Tips.CRUSHER, "Multi-Block: 3x2x2");
+    this.add(Tips.MULTIBLOCK3X2X2, "Multi-Block: 3x2x2");
+    this.add(Tips.STEAM_TURBINE_DESC_1, "Generates FE from Steam");
+    this.add(Tips.STEAM_TURBINE_DESC_2, "Outputs water to the bottom");
+    this.add(Tips.STEAM_TURBINE_DESC_3, "Requires a Turbine Rotor");
     this.add(Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
+    this.add(Tips.OVERALLS, "Protection against the dangers of track-working");
     this.add(Tips.GOOGLES_DESC, "Right-click to change aura.");
     this.add(Tips.GOOGLES_AURA, "Current Aura: %s");
     this.add(Tips.GOOGLES_AURA_NONE, "None");

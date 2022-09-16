@@ -102,10 +102,17 @@ public class Translations {
         format("tips.%railcraft.coke_oven");
     public static final String BLAST_FURNACE =
         format("tips.%railcraft.blast_furnace");
-    public static final String CRUSHER =
-        format("tips.%railcraft.crusher");
+    public static final String MULTIBLOCK3X2X2 =
+        format("tips.%railcraft.multiblock3x2x2");
+    public static final String STEAM_TURBINE_DESC_1 =
+        format("tips.%railcraft.steam_turbine_desc1");
+    public static final String STEAM_TURBINE_DESC_2 =
+        format("tips.%railcraft.steam_turbine_desc2");
+    public static final String STEAM_TURBINE_DESC_3 =
+        format("tips.%railcraft.steam_turbine_desc3");
     public static final String SPIKE_MAUL =
         format("tips.%railcraft.spike_maul");
+    public static final String OVERALLS = format("tips.%railcraft.overalls");
     public static final String GOOGLES_DESC =
         format("tips.%railcraft.googles.desc");
     public static final String GOOGLES_AURA =
