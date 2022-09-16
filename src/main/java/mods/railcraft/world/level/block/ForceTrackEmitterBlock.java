@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -42,7 +43,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import org.jetbrains.annotations.Nullable;
 
 public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlock {
 
@@ -187,8 +187,12 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   @SuppressWarnings("deprecation")
   @Override
   public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
-      boolean isMoving) {
-    super.onRemove(state, level, pos, newState, isMoving);
+      boolean moved) {
+    if (!state.is(newState.getBlock())) {
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
+          .ifPresent(ForceTrackEmitterBlockEntity::clearTracks);
+    }
+    super.onRemove(state, level, pos, newState, moved);
     if (!state.is(newState.getBlock())) {
       this.deregisterNode((ServerLevel) level, pos);
     }
