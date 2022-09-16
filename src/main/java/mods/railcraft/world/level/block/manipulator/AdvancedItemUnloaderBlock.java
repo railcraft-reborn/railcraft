@@ -48,7 +48,6 @@ public class AdvancedItemUnloaderBlock extends ItemUnloaderBlock {
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flag) {
     tooltip.add(Component.translatable(Tips.ITEM_UNLOADER).withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Tips.HIT_CROWBAR_TO_ROTATE)
-        .withStyle(ChatFormatting.BLUE));
+    tooltip.add(Component.translatable(Tips.HIT_CROWBAR_TO_ROTATE).withStyle(ChatFormatting.BLUE));
   }
 }
