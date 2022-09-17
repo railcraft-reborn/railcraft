@@ -177,7 +177,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
 
     this.tag(BlockTags.MINEABLE_WITH_AXE)
-        .add(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
+        .add(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
+        .add(RailcraftBlocks.WATER_TANK_SIDING.get());
 
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
@@ -223,9 +224,6 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftTags.Blocks.STEEL_TANK_GAUGE,
             RailcraftTags.Blocks.STEEL_TANK_VALVE,
             RailcraftTags.Blocks.STEEL_TANK_WALL);
-
-    this.tag(BlockTags.MINEABLE_WITH_AXE)
-        .add(RailcraftBlocks.WATER_TANK_SIDING.get());
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
