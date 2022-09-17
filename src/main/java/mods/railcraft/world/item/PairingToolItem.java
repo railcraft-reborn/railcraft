@@ -1,6 +1,6 @@
 package mods.railcraft.world.item;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.DimensionPos;
 import mods.railcraft.api.item.ActivationBlockingItem;
 import net.minecraft.nbt.CompoundTag;

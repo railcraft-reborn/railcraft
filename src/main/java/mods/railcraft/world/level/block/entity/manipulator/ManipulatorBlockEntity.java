@@ -4,11 +4,10 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
-import org.apache.commons.lang3.NotImplementedException;
-import com.google.common.collect.ImmutableList;
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
@@ -24,7 +23,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -281,46 +279,40 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
 
   public enum TransferMode implements ButtonState<TransferMode> {
 
-    ALL,
-    EXCESS,
-    STOCK,
-    TRANSFER;
+    ALL("all", "➧➧➧"),
+    EXCESS("excess", "#➧➧"),
+    STOCK("stock", "➧➧#"),
+    TRANSFER("transfer", "➧#➧");
+
+    private final String name;
+    private final Component label;
+
+    private TransferMode(String name, String label) {
+      this.name = name;
+      this.label = Component.literal(label);
+    }
 
     @Override
     public Component getLabel() {
-      return Component.literal(switch (this.ordinal()) {
-        case 0 -> "\u27a7\u27a7\u27a7";
-        case 1 -> "#\u27a7\u27a7";
-        case 2 -> "\u27a7\u27a7#";
-        case 3 -> "\u27a7#\u27a7";
-        default -> throw new NotImplementedException();
-      });
+      return this.label;
     }
 
     @Override
     public List<Component> getTooltip() {
-      var line1 = getLabel().copy().withStyle(ChatFormatting.WHITE);
-      MutableComponent line2, line3;
-      switch (this.ordinal()) {
-        case 0 -> {
-          line2 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_ALL);
-          line3 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_ALL_DESC);
-        }
-        case 1 -> {
-          line2 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS);
-          line3 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_EXCESS_DESC);
-        }
-        case 2 -> {
-          line2 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_STOCK);
-          line3 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_STOCK_DESC);
-        }
-        case 3 -> {
-          line2 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER);
-          line3 = Component.translatable(Tips.MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC);
-        }
-        default -> throw new NotImplementedException();
-      }
-      return ImmutableList.of(line1, line2.withStyle(ChatFormatting.DARK_GREEN), line3);
+      return List.of(
+          this.getLabel().copy()
+              .withStyle(ChatFormatting.WHITE),
+          Component.translatable(this.getTranslationKey())
+              .withStyle(ChatFormatting.DARK_GREEN),
+          Component.translatable(this.getDescriptionKey()));
+    }
+
+    public String getTranslationKey() {
+      return Translations.makeKey("tips", "manipulator.transfer_mode." + this.name);
+    }
+
+    public String getDescriptionKey() {
+      return this.getTranslationKey() + ".desc";
     }
 
     @Override
@@ -330,52 +322,46 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
 
     @Override
     public TransferMode getNext() {
-      return values()[(this.ordinal() + 1) % values().length];
+      return EnumUtil.next(this, values());
     }
   }
 
   public enum RedstoneMode implements ButtonState<RedstoneMode> {
 
-    COMPLETE,
-    IMMEDIATE,
-    MANUAL,
-    PARTIAL;
+    COMPLETE("complete", '✓'),
+    IMMEDIATE("immediate", '❢'),
+    MANUAL("manual", '✘'),
+    PARTIAL("partial", '➧');
+
+    private final String name;
+    private final Component label;
+
+    private RedstoneMode(String name, char icon) {
+      this.name = name;
+      this.label = Component.literal(String.valueOf(icon));
+    }
 
     @Override
     public Component getLabel() {
-      return Component.literal(switch (this.ordinal()) {
-        case 0 -> "\u2714";
-        case 1 -> "\u2762";
-        case 2 -> "\u2718";
-        case 3 -> "\u27a7";
-        default -> throw new NotImplementedException();
-      });
+      return this.label;
     }
 
     @Override
     public List<Component> getTooltip() {
-      var line1 = getLabel().copy().withStyle(ChatFormatting.WHITE);
-      MutableComponent line2, line3;
-      switch (this.ordinal()) {
-        case 0 -> {
-          line2 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE);
-          line3 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_COMPLETE_DESC);
-        }
-        case 1 -> {
-          line2 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE);
-          line3 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_IMMEDIATE_DESC);
-        }
-        case 2 -> {
-          line2 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL);
-          line3 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_MANUAL_DESC);
-        }
-        case 3 -> {
-          line2 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL);
-          line3 = Component.translatable(Tips.MANIPULATOR_REDSTONE_MODE_PARTIAL_DESC);
-        }
-        default -> throw new NotImplementedException();
-      }
-      return ImmutableList.of(line1, line2.withStyle(ChatFormatting.DARK_GREEN), line3);
+      return List.of(
+          this.getLabel().copy()
+              .withStyle(ChatFormatting.WHITE),
+          Component.translatable(this.getTranslationKey())
+              .withStyle(ChatFormatting.DARK_GREEN),
+          Component.translatable(this.getDescriptionKey()));
+    }
+
+    public String getTranslationKey() {
+      return Translations.makeKey("tips", "manipulator.redstone_mode." + this.name);
+    }
+
+    public String getDescriptionKey() {
+      return this.getTranslationKey() + ".desc";
     }
 
     @Override
@@ -385,7 +371,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
 
     @Override
     public RedstoneMode getNext() {
-      return values()[(this.ordinal() + 1) % values().length];
+      return EnumUtil.next(this, values());
     }
   }
 }

@@ -3,7 +3,7 @@ package mods.railcraft.util;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

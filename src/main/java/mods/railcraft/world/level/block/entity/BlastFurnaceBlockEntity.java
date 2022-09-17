@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;

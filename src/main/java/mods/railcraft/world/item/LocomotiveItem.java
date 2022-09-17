@@ -1,11 +1,13 @@
 package mods.railcraft.world.item;
 
+import java.util.List;
+import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.Translations.Tips;
+import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;
-import mods.railcraft.client.emblem.Emblem;
 import mods.railcraft.client.emblem.EmblemToolsClient;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
@@ -17,10 +19,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -29,7 +27,7 @@ public class LocomotiveItem extends CartItem implements Filter {
 
   private final DyeColor defaultPrimary;
   private final DyeColor defaultSecondary;
-  //protected final ItemStack sample;
+  // protected final ItemStack sample;
 
   public LocomotiveItem(MinecartFactory minecartPlacer, DyeColor primary, DyeColor secondary,
       Properties properties) {
@@ -37,8 +35,8 @@ public class LocomotiveItem extends CartItem implements Filter {
     this.defaultPrimary = primary;
     this.defaultSecondary = secondary;
 
-    //this.sample = new ItemStack(this, 1);
-    //setItemColorData(sample, primary, secondary);
+    // this.sample = new ItemStack(this, 1);
+    // setItemColorData(sample, primary, secondary);
   }
 
   @Override
@@ -51,31 +49,32 @@ public class LocomotiveItem extends CartItem implements Filter {
   public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> info,
       TooltipFlag adv) {
     super.appendHoverText(stack, world, info, adv);
-    GameProfile owner = getOwner(stack);
+    var owner = getOwner(stack);
     if (owner.getName() != null
         && !RailcraftConstantsAPI.UNKNOWN_PLAYER.equalsIgnoreCase(owner.getName())) {
-      info.add(Component.translatable(Tips.LOCOMOTIVE_ITEM_OWNER, owner.getName())
+      info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, owner.getName())
           .withStyle(ChatFormatting.GRAY));
     }
 
-    DyeColor primary = getPrimaryColor(stack);
-    info.add(Component.translatable(Tips.LOCOMOTIVE_ITEM_PRIMARY, primary.getName()).withStyle(ChatFormatting.GRAY));
+    var primary = getPrimaryColor(stack);
+    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, primary.getName())
+        .withStyle(ChatFormatting.GRAY));
 
-    DyeColor secondary = getSecondaryColor(stack);
-    info.add(Component.translatable(Tips.LOCOMOTIVE_ITEM_SECONDARY, secondary.getName()).withStyle(ChatFormatting.GRAY));
+    var secondary = getSecondaryColor(stack);
+    info.add(
+        Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, secondary.getName())
+            .withStyle(ChatFormatting.GRAY));
 
     float whistle = getWhistlePitch(stack);
     var whisteText = whistle < 0 ? "???" : String.format("%.2f", whistle);
-    info.add(Component.translatable(Tips.LOCOMOTIVE_ITEM_WHISTLE, whisteText).withStyle(ChatFormatting.GRAY));
+    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, whisteText)
+        .withStyle(ChatFormatting.GRAY));
 
-    String emblemIdent = getEmblem(stack);
-    if (!StringUtils.isEmpty(emblemIdent) && EmblemToolsClient.packageManager != null) {
-      Emblem emblem = EmblemToolsClient.packageManager.getEmblem(emblemIdent);
-      if (emblem != null) {
-        info.add(Component.translatable("gui.railcraft.locomotive.tips.item.emblem",
-            emblem.displayName));
-      }
-    }
+    getEmblem(stack)
+        .flatMap(EmblemToolsClient.packageManager()::getEmblem)
+        .ifPresent(emblem -> info.add(
+            Component.translatable("gui.railcraft.locomotive.tips.item.emblem",
+                emblem.displayName())));
   }
 
   public static void setItemColorData(ItemStack stack, DyeColor primaryColor,
@@ -114,11 +113,11 @@ public class LocomotiveItem extends CartItem implements Filter {
     nbt.putString("emblem", emblemIdentifier);
   }
 
-  public static String getEmblem(ItemStack stack) {
-    CompoundTag nbt = stack.getTag();
-    if (nbt == null || !nbt.contains("emblem", Tag.TAG_STRING))
-      return "";
-    return nbt.getString("emblem");
+  public static Optional<String> getEmblem(ItemStack stack) {
+    var tag = stack.getTag();
+    return tag == null || !tag.contains("emblem", Tag.TAG_STRING)
+        ? Optional.empty()
+        : Optional.of(tag.getString("emblem"));
   }
 
   public static void setModel(ItemStack stack, String modelTag) {

@@ -7,11 +7,11 @@
 package mods.railcraft.api.signal;
 
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.signal.entity.SignalReceiverEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.BlockPos;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>

@@ -1,7 +1,7 @@
 package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.gui.widget.Widget;
 import net.minecraft.client.gui.GuiComponent;

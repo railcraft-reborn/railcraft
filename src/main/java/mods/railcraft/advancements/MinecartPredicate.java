@@ -1,6 +1,6 @@
 package mods.railcraft.advancements;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mods.railcraft.api.carts.CartUtil;

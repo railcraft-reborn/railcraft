@@ -1,15 +1,24 @@
 package mods.railcraft.world.level.block;
 
+import java.util.List;
+import java.util.Map;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.module.SteamTurbineModule;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,9 +29,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-
-import javax.annotation.Nullable;
-import java.util.Map;
 
 public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
 
@@ -78,7 +84,8 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
 
   @SuppressWarnings("deprecation")
   @Override
-  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
+  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos,
+      RandomSource random) {
     super.tick(blockState, level, blockPos, random);
     this.registerNode(blockState, level, blockPos);
   }
@@ -111,6 +118,20 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
   @Override
   public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
     return Charge.distribution.network((ServerLevel) level).access(pos).getComparatorOutput();
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
+      List<Component> tooltip, TooltipFlag flag) {
+    super.appendHoverText(stack, level, tooltip, flag);
+    tooltip.add(Component.translatable(Translations.Tips.MULTIBLOCK3X2X2)
+        .withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.STEAM_TURBINE_DESC_1)
+        .withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.STEAM_TURBINE_DESC_2)
+        .withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.STEAM_TURBINE_DESC_3)
+        .withStyle(ChatFormatting.GRAY));
   }
 
   public enum Type implements StringRepresentable {

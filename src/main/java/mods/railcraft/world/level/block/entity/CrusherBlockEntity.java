@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations.Container;
 import mods.railcraft.world.inventory.CrusherMenu;

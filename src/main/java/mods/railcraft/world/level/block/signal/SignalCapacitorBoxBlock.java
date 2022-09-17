@@ -1,8 +1,8 @@
 package mods.railcraft.world.level.block.signal;
 
 import java.util.List;
-
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 
 public class SignalCapacitorBoxBlock extends SignalBoxBlock implements EntityBlock {
 
@@ -60,6 +59,7 @@ public class SignalCapacitorBoxBlock extends SignalBoxBlock implements EntityBlo
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
       List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable(Tips.SENDS_SIGNALS_TO_RECEIVERS).withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.SENDS_SIGNALS_TO_RECEIVERS)
+        .withStyle(ChatFormatting.GRAY));
   }
 }

@@ -1,7 +1,7 @@
 package mods.railcraft.advancements;
 
 import java.util.function.Function;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;

@@ -1,9 +1,9 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import java.util.Collections;
 import java.util.List;
-import mods.railcraft.Translations.SignalCapacitor;
+import mods.railcraft.Translations;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
@@ -164,26 +164,31 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
 
   public enum Mode implements ButtonState<Mode> {
 
-    RISING_EDGE,
-    FALLING_EDGE;
+    RISING_EDGE("rising_edge"),
+    FALLING_EDGE("falling_edge");
+
+    private final String name;
+
+    private Mode(String name) {
+      this.name = name;
+    }
 
     @Override
     public Component getLabel() {
-      return Component.translatable(switch (this.ordinal()) {
-        case 0 -> SignalCapacitor.RISING_EDGE;
-        case 1 -> SignalCapacitor.FALLING_EDGE;
-        default -> "translation.not.implemented";
-      });
+      return Component.translatable(this.getTranslationKey());
     }
 
     @Override
     public List<Component> getTooltip() {
-      var tooltip = switch (this.ordinal()) {
-        case 0 -> SignalCapacitor.RISING_EDGE_DESC;
-        case 1 -> SignalCapacitor.FALLING_EDGE_DESC;
-        default -> "translation.not.implemented";
-      };
-      return Collections.singletonList(Component.translatable(tooltip));
+      return List.of(Component.translatable(this.getDescriptionKey()));
+    }
+
+    public String getTranslationKey() {
+      return Translations.makeKey("signal", "capacitor.mode." + this.name);
+    }
+
+    public String getDescriptionKey() {
+      return this.getTranslationKey() + ".desc";
     }
 
     @Override
@@ -193,7 +198,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
 
     @Override
     public Mode getNext() {
-      return values()[(this.ordinal() + 1) % values().length];
+      return EnumUtil.next(this, values());
     }
   }
 }

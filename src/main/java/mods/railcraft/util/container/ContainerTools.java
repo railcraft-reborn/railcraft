@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.InvToolsAPI;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;

@@ -3,7 +3,7 @@ package mods.railcraft.world.item;
 import java.util.Map;
 import com.google.common.collect.MapMaker;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.Translations.Tips;
+import mods.railcraft.Translations;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.item.Crowbar;
@@ -77,21 +77,21 @@ public class CrowbarHandler {
     var last = linkMap.remove(player);
     if (last == null || !last.isAlive()) {
       linkMap.put(player, cart);
-      var message =
-          Component.translatable(Tips.CRAWBAR_LINK_STARTED).withStyle(ChatFormatting.LIGHT_PURPLE);
+      var message = Component.translatable(Translations.Tips.CROWBAR_LINK_STARTED)
+          .withStyle(ChatFormatting.LIGHT_PURPLE);
       player.displayClientMessage(message, true);
       return;
     }
 
     if (LinkageManagerImpl.INSTANCE.areLinked(cart, last, false)) {
       LinkageManagerImpl.INSTANCE.breakLink(cart, last);
-      var message =
-          Component.translatable(Tips.CRAWBAR_LINK_BROKEN).withStyle(ChatFormatting.LIGHT_PURPLE);
+      var message = Component.translatable(Translations.Tips.CROWBAR_LINK_BROKEN)
+          .withStyle(ChatFormatting.LIGHT_PURPLE);
       player.displayClientMessage(message, true);
     } else {
       if (!LinkageManagerImpl.INSTANCE.createLink(last, cart)) {
-        var message =
-            Component.translatable(Tips.CRAWBAR_LINK_FAILED).withStyle(ChatFormatting.RED);
+        var message = Component.translatable(Translations.Tips.CROWBAR_LINK_FAILED)
+            .withStyle(ChatFormatting.RED);
         player.displayClientMessage(message, true);
         return;
       }
@@ -100,8 +100,8 @@ public class CrowbarHandler {
         RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayer) player, last, cart);
       }
 
-      var message =
-          Component.translatable(Tips.CRAWBAR_LINK_CREATED).withStyle(ChatFormatting.GREEN);
+      var message = Component.translatable(Translations.Tips.CROWBAR_LINK_CREATED)
+          .withStyle(ChatFormatting.GREEN);
       player.displayClientMessage(message, true);
     }
 

@@ -8,8 +8,9 @@
 package mods.railcraft.api.track;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +28,7 @@ import net.minecraft.world.level.block.state.properties.RailShape;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class TrackType /*extends ForgeRegistryEntry<TrackType>*/ {
+public class TrackType {
 
   private final Supplier<? extends BaseRailBlock> flexBlock;
   private final List<Supplier<? extends BaseRailBlock>> spikeMaulVariants;
@@ -139,10 +140,9 @@ public class TrackType /*extends ForgeRegistryEntry<TrackType>*/ {
      */
     default void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {}
 
-    @Nullable
-    default RailShape getRailShapeOverride(BlockGetter level, BlockPos pos,
+    default Optional<RailShape> getRailShapeOverride(BlockGetter level, BlockPos pos,
         BlockState blockState, @Nullable AbstractMinecart cart) {
-      return null;
+      return Optional.empty();
     }
 
     /**

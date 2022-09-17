@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
-import mods.railcraft.Translations.Tips;
+import java.util.function.Supplier;
+import mods.railcraft.Translations;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
@@ -18,8 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-
-import java.util.function.Supplier;
 
 public class CouplerTrackBlock extends PoweredOutfittedTrackBlock implements EntityBlock {
 
@@ -53,8 +52,9 @@ public class CouplerTrackBlock extends PoweredOutfittedTrackBlock implements Ent
     final var couplerMode = CouplerTrackBlock.getMode(blockState);
     var newCouplerMode = player.isCrouching() ? couplerMode.previous() : couplerMode.next();
     if (!level.isClientSide()) {
-      level.setBlockAndUpdate(blockPos, blockState.setValue(CouplerTrackBlock.MODE, newCouplerMode));
-      var currentMode = Component.translatable(Tips.CURRENT_MODE);
+      level.setBlockAndUpdate(blockPos,
+          blockState.setValue(CouplerTrackBlock.MODE, newCouplerMode));
+      var currentMode = Component.translatable(Translations.Tips.CURRENT_MODE);
       var mode = newCouplerMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
       player.displayClientMessage(currentMode.append(" ").append(mode), true);
     }

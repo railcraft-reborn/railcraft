@@ -11,7 +11,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mods.railcraft.Railcraft;
-import mods.railcraft.Translations.Jei;
+import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
@@ -47,7 +47,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
 
   @Override
   public Component getTitle() {
-    return Component.translatable(Jei.CRUSHER);
+    return Component.translatable(Translations.Jei.CRUSHER);
   }
 
   @Override
@@ -79,17 +79,17 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
       for (int x = 0; x < 3; x++) {
         int index = 1 + x + (y * 3);
         ItemStack itemStack = ItemStack.EMPTY;
-        if(outputs.size() > index - 1) {
+        if (outputs.size() > index - 1) {
           itemStack = outputs.get(index - 1).getA();
         }
         var recipeLayout = builder
             .addSlot(RecipeIngredientRole.OUTPUT, 91 + x * 18, y * 18 + 1)
             .addItemStack(itemStack);
-        if(!itemStack.isEmpty()) {
+        if (!itemStack.isEmpty()) {
           recipeLayout.addTooltipCallback((recipeSlotView, tooltip) -> {
             double probability = outputs.get(index - 1).getB() * 100;
-            var probText = Component.translatable(Jei.CRUSHER_TIP, probability).withStyle(
-                ChatFormatting.GRAY);
+            var probText = Component.translatable(Translations.Jei.CRUSHER_TIP, probability)
+                .withStyle(ChatFormatting.GRAY);
             tooltip.add(probText);
           });
         }

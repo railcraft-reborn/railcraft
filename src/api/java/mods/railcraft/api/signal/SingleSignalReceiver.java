@@ -1,9 +1,9 @@
 package mods.railcraft.api.signal;
 
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
-import com.mojang.logging.LogUtils;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import net.minecraft.core.BlockPos;

@@ -7,9 +7,9 @@
 
 package mods.railcraft.api.carts;
 
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.stream.Stream;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**
  * The LinkageManager contains all the functions needed to link and interact with linked carts.
@@ -71,8 +71,8 @@ public interface LinkageManager {
    * @param cart The cart for which to get the link
    * @return The linked cart or null
    */
-  default @Nullable AbstractMinecart getLinkedCartA(AbstractMinecart cart) {
-    return null;
+  default Optional<AbstractMinecart> getLinkedCartA(AbstractMinecart cart) {
+    return Optional.empty();
   }
 
   /**
@@ -81,8 +81,8 @@ public interface LinkageManager {
    * @param cart The cart for which to get the link
    * @return The linked cart or null
    */
-  default @Nullable AbstractMinecart getLinkedCartB(AbstractMinecart cart) {
-    return null;
+  default Optional<AbstractMinecart> getLinkedCartB(AbstractMinecart cart) {
+    return Optional.empty();
   }
 
   /**

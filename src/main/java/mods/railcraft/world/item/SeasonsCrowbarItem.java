@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.season.Season;
 import net.minecraft.ChatFormatting;
@@ -62,7 +62,7 @@ public class SeasonsCrowbarItem extends CrowbarItem {
   }
 
   private static Component getDescriptionText(Season value, boolean tooltip) {
-    var title = Component.translatable(Tips.CRAWBAR_SEASON_DESC);
+    var title = Component.translatable(Tips.CROWBAR_SEASON_DESC);
     if (tooltip) {
       title.withStyle(ChatFormatting.GRAY);
     }

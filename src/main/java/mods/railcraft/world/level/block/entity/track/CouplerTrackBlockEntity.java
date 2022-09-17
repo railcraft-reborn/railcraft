@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity.track;
 
-import mods.railcraft.Translations.Tips;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
@@ -10,8 +11,6 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
-import javax.annotation.Nullable;
 
 public class CouplerTrackBlockEntity extends BlockEntity {
 
@@ -29,7 +28,7 @@ public class CouplerTrackBlockEntity extends BlockEntity {
 
   public enum Mode implements StringRepresentable {
 
-    COUPLER(8) {
+    COUPLER("coupler", 8) {
       @Override
       protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
         if (track.pendingCoupling != null) {
@@ -38,13 +37,13 @@ public class CouplerTrackBlockEntity extends BlockEntity {
         track.pendingCoupling = cart;
       }
     },
-    DECOUPLER(0) {
+    DECOUPLER("decoupler", 0) {
       @Override
       protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
         LinkageManagerImpl.INSTANCE.breakLinks(cart);
       }
     },
-    AUTO_COUPLER(0) {
+    AUTO_COUPLER("auto_coupler", 0) {
       @Override
       protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
         LinkageManagerImpl.INSTANCE.setAutoLink(cart,
@@ -52,9 +51,11 @@ public class CouplerTrackBlockEntity extends BlockEntity {
       }
     };
 
+    private final String name;
     private final int powerPropagation;
 
-    Mode(int powerPropagation) {
+    private Mode(String name, int powerPropagation) {
+      this.name = name;
       this.powerPropagation = powerPropagation;
     }
 
@@ -67,22 +68,16 @@ public class CouplerTrackBlockEntity extends BlockEntity {
     }
 
     public Component getDisplayName() {
-      return Component.translatable(getTip());
+      return Component.translatable(this.getTranslationKey());
+    }
+    
+    public String getTranslationKey() {
+      return Translations.makeKey("tips", "coupler_track." + this.name);
     }
 
     @Override
     public String getSerializedName() {
-      var name = getTip().split("\\.");
-      return name[name.length - 1];
-    }
-
-    private String getTip() {
-      return switch (this.ordinal()) {
-        case 0 -> Tips.COUPLER_TRACK_COUPLER;
-        case 1 -> Tips.COUPLER_TRACK_DECOUPLER;
-        case 2 -> Tips.COUPLER_TRACK_AUTO_COUPLER;
-        default -> "translation.not.implemented";
-      };
+      return this.name;
     }
 
     public int getPowerPropagation() {

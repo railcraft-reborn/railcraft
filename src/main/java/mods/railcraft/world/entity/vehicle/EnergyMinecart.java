@@ -1,6 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.core.Direction;

@@ -1,7 +1,7 @@
 package mods.railcraft.gui.button;
 
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import net.minecraft.network.chat.Component;
 

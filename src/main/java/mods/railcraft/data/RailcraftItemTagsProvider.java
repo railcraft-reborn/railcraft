@@ -2,13 +2,10 @@ package mods.railcraft.data;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.tags.RailcraftTags.Blocks;
-import mods.railcraft.tags.RailcraftTags.Items;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -62,21 +59,21 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
     this.tag(RailcraftTags.Items.STEEL_BLOCK)
         .add(RailcraftItems.STEEL_BLOCK.get());
-    this.tag(Items.BRONZE_BLOCK)
+    this.tag(RailcraftTags.Items.BRONZE_BLOCK)
         .add(RailcraftItems.BRONZE_BLOCK.get());
-    this.tag(Items.BRASS_BLOCK)
+    this.tag(RailcraftTags.Items.BRASS_BLOCK)
         .add(RailcraftItems.BRASS_BLOCK.get());
-    this.tag(Items.INVAR_BLOCK)
+    this.tag(RailcraftTags.Items.INVAR_BLOCK)
         .add(RailcraftItems.INVAR_BLOCK.get());
-    this.tag(Items.LEAD_BLOCK)
+    this.tag(RailcraftTags.Items.LEAD_BLOCK)
         .add(RailcraftItems.LEAD_BLOCK.get());
-    this.tag(Items.TIN_BLOCK)
+    this.tag(RailcraftTags.Items.TIN_BLOCK)
         .add(RailcraftItems.TIN_BLOCK.get());
-    this.tag(Items.SILVER_BLOCK)
+    this.tag(RailcraftTags.Items.SILVER_BLOCK)
         .add(RailcraftItems.SILVER_BLOCK.get());
-    this.tag(Items.NICKEL_BLOCK)
+    this.tag(RailcraftTags.Items.NICKEL_BLOCK)
         .add(RailcraftItems.NICKEL_BLOCK.get());
-    this.tag(Items.ZINC_BLOCK)
+    this.tag(RailcraftTags.Items.ZINC_BLOCK)
         .add(RailcraftItems.ZINC_BLOCK.get());
 
     this.tag(RailcraftTags.Items.STEEL_PLATE)
@@ -141,43 +138,49 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.OBSIDIAN_DUST.get());
 
 
-    this.tag(Items.CROWBAR)
+    this.tag(RailcraftTags.Items.CROWBAR)
         .add(RailcraftItems.STEEL_CROWBAR.get())
         .add(RailcraftItems.IRON_CROWBAR.get())
         .add(RailcraftItems.DIAMOND_CROWBAR.get());
 
+    this.copy(RailcraftTags.Blocks.IRON_TANK_WALL, RailcraftTags.Items.IRON_TANK_WALL);
+    this.copy(RailcraftTags.Blocks.IRON_TANK_GAUGE, RailcraftTags.Items.IRON_TANK_GAUGE);
+    this.copy(RailcraftTags.Blocks.IRON_TANK_VALVE, RailcraftTags.Items.IRON_TANK_VALVE);
+    this.copy(RailcraftTags.Blocks.STEEL_TANK_WALL, RailcraftTags.Items.STEEL_TANK_WALL);
+    this.copy(RailcraftTags.Blocks.STEEL_TANK_GAUGE, RailcraftTags.Items.STEEL_TANK_GAUGE);
+    this.copy(RailcraftTags.Blocks.STEEL_TANK_VALVE, RailcraftTags.Items.STEEL_TANK_VALVE);
+    this.copy(RailcraftTags.Blocks.POST, RailcraftTags.Items.POST);
+    this.copy(RailcraftTags.Blocks.STRENGTHENED_GLASS, RailcraftTags.Items.STRENGTHENED_GLASS);
+    this.copy(RailcraftTags.Blocks.LEAD_ORE, RailcraftTags.Items.LEAD_ORE);
+    this.copy(RailcraftTags.Blocks.NICKEL_ORE, RailcraftTags.Items.NICKEL_ORE);
+    this.copy(RailcraftTags.Blocks.SILVER_ORE, RailcraftTags.Items.SILVER_ORE);
+    this.copy(RailcraftTags.Blocks.SULFUR_ORE, RailcraftTags.Items.SULFUR_ORE);
+    this.copy(RailcraftTags.Blocks.TIN_ORE, RailcraftTags.Items.TIN_ORE);
+    this.copy(RailcraftTags.Blocks.ZINC_ORE, RailcraftTags.Items.ZINC_ORE);
+    this.copy(RailcraftTags.Blocks.SALTPETER_ORE, RailcraftTags.Items.SALTPETER_ORE);
 
-    this.tag(RailcraftTags.Items.STRENGTHENED_GLASS)
-        .add(RailcraftItems.STRENGTHENED_GLASS.resolveVariants().toArray(Item[]::new));
-
-
-    this.copy(Blocks.IRON_TANK_WALL, Items.IRON_TANK_WALL);
-    this.copy(Blocks.IRON_TANK_GAUGE, Items.IRON_TANK_GAUGE);
-    this.copy(Blocks.IRON_TANK_VALVE, Items.IRON_TANK_VALVE);
-    this.copy(Blocks.STEEL_TANK_WALL, Items.STEEL_TANK_WALL);
-    this.copy(Blocks.STEEL_TANK_GAUGE, Items.STEEL_TANK_GAUGE);
-    this.copy(Blocks.STEEL_TANK_VALVE, Items.STEEL_TANK_VALVE);
-    this.copy(Blocks.POST, Items.POST);
-    this.copy(Blocks.LEAD_ORE, Items.LEAD_ORE);
-    this.copy(Blocks.NICKEL_ORE, Items.NICKEL_ORE);
-    this.copy(Blocks.SILVER_ORE, Items.SILVER_ORE);
-    this.copy(Blocks.SULFUR_ORE, Items.SULFUR_ORE);
-    this.copy(Blocks.TIN_ORE, Items.TIN_ORE);
-    this.copy(Blocks.ZINC_ORE, Items.ZINC_ORE);
-    this.copy(Blocks.SALTPETER_ORE, Items.SALTPETER_ORE);
+    this.copy(RailcraftTags.Blocks.ABANDONED_TRACK, RailcraftTags.Items.ABANDONED_TRACK);
+    this.copy(RailcraftTags.Blocks.ELECTRIC_TRACK, RailcraftTags.Items.ELECTRIC_TRACK);
+    this.copy(RailcraftTags.Blocks.HIGH_SPEED_TRACK, RailcraftTags.Items.HIGH_SPEED_TRACK);
+    this.copy(RailcraftTags.Blocks.HIGH_SPEED_ELECTRIC_TRACK,
+        RailcraftTags.Items.HIGH_SPEED_ELECTRIC_TRACK);
+    this.copy(RailcraftTags.Blocks.IRON_TRACK, RailcraftTags.Items.IRON_TRACK);
+    this.copy(RailcraftTags.Blocks.REINFORCED_TRACK, RailcraftTags.Items.REINFORCED_TRACK);
+    this.copy(RailcraftTags.Blocks.STRAP_IRON_TRACK, RailcraftTags.Items.STRAP_IRON_TRACK);
 
 
 
     // TOOLS
-    this.tag(Items.TOOLS_AXES_STEEL).add(RailcraftItems.STEEL_AXE.get());
-    this.tag(Items.TOOLS_HOES_STEEL).add(RailcraftItems.STEEL_HOE.get());
-    this.tag(Items.TOOLS_PICKAXES_STEEL).add(RailcraftItems.STEEL_PICKAXE.get());
-    this.tag(Items.TOOLS_SHOVELS_STEEL).add(RailcraftItems.STEEL_SHOVEL.get());
-    this.tag(Items.TOOLS_SWORDS_STEEL).add(RailcraftItems.STEEL_SWORD.get());
-    this.tag(Items.ARMORS_HELMETS_STEEL).add(RailcraftItems.STEEL_HELMET.get());
-    this.tag(Items.ARMORS_CHESTPLATES_STEEL).add(RailcraftItems.STEEL_CHESTPLATE.get());
-    this.tag(Items.ARMORS_LEGGINGS_STEEL).add(RailcraftItems.STEEL_LEGGINGS.get());
-    this.tag(Items.ARMORS_BOOTS_STEEL).add(RailcraftItems.STEEL_BOOTS.get());
+    this.tag(RailcraftTags.Items.TOOLS_AXES_STEEL).add(RailcraftItems.STEEL_AXE.get());
+    this.tag(RailcraftTags.Items.TOOLS_HOES_STEEL).add(RailcraftItems.STEEL_HOE.get());
+    this.tag(RailcraftTags.Items.TOOLS_PICKAXES_STEEL).add(RailcraftItems.STEEL_PICKAXE.get());
+    this.tag(RailcraftTags.Items.TOOLS_SHOVELS_STEEL).add(RailcraftItems.STEEL_SHOVEL.get());
+    this.tag(RailcraftTags.Items.TOOLS_SWORDS_STEEL).add(RailcraftItems.STEEL_SWORD.get());
+    this.tag(RailcraftTags.Items.ARMORS_HELMETS_STEEL).add(RailcraftItems.STEEL_HELMET.get());
+    this.tag(RailcraftTags.Items.ARMORS_CHESTPLATES_STEEL)
+        .add(RailcraftItems.STEEL_CHESTPLATE.get());
+    this.tag(RailcraftTags.Items.ARMORS_LEGGINGS_STEEL).add(RailcraftItems.STEEL_LEGGINGS.get());
+    this.tag(RailcraftTags.Items.ARMORS_BOOTS_STEEL).add(RailcraftItems.STEEL_BOOTS.get());
 
 
     this.tag(Tags.Items.TOOLS_AXES).add(RailcraftItems.STEEL_AXE.get());
@@ -186,10 +189,10 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(Tags.Items.TOOLS_SHOVELS).add(RailcraftItems.STEEL_SHOVEL.get());
     this.tag(Tags.Items.TOOLS_SWORDS).add(RailcraftItems.STEEL_SWORD.get());
 
-    this.tag(Tags.Items.ARMORS_HELMETS).addTags(Items.ARMORS_HELMETS_STEEL);
-    this.tag(Tags.Items.ARMORS_CHESTPLATES).addTags(Items.ARMORS_CHESTPLATES_STEEL);
-    this.tag(Tags.Items.ARMORS_LEGGINGS).addTags(Items.ARMORS_LEGGINGS_STEEL);
-    this.tag(Tags.Items.ARMORS_BOOTS).addTags(Items.ARMORS_BOOTS_STEEL);
+    this.tag(Tags.Items.ARMORS_HELMETS).addTags(RailcraftTags.Items.ARMORS_HELMETS_STEEL);
+    this.tag(Tags.Items.ARMORS_CHESTPLATES).addTags(RailcraftTags.Items.ARMORS_CHESTPLATES_STEEL);
+    this.tag(Tags.Items.ARMORS_LEGGINGS).addTags(RailcraftTags.Items.ARMORS_LEGGINGS_STEEL);
+    this.tag(Tags.Items.ARMORS_BOOTS).addTags(RailcraftTags.Items.ARMORS_BOOTS_STEEL);
   }
 
   @Override

@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.signal;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.DualTokenSignalBlockEntity;
 import net.minecraft.core.BlockPos;

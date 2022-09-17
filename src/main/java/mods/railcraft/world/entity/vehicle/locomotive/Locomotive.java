@@ -10,8 +10,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
@@ -20,6 +20,7 @@ import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.core.Lockable;
+import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
@@ -210,7 +211,7 @@ public abstract class Locomotive extends RailcraftMinecart
       LocomotiveItem.setOwnerData(itemStack, this.getOwnerOrThrow());
     }
     LocomotiveItem.setItemWhistleData(itemStack, this.whistlePitch);
-    LocomotiveItem.setEmblem(itemStack, this.getEmblem());
+    this.getEmblem().ifPresent(emblem -> LocomotiveItem.setEmblem(itemStack, emblem));
     if (this.hasCustomName()) {
       itemStack.setHoverName(this.getCustomName());
     }
@@ -287,11 +288,12 @@ public abstract class Locomotive extends RailcraftMinecart
     this.entityData.set(LOCK, (byte) lock.ordinal());
   }
 
-  public String getEmblem() {
-    return this.getEntityData().get(EMBLEM);
+  public Optional<String> getEmblem() {
+    var value = this.getEntityData().get(EMBLEM);
+    return value.isEmpty() ? Optional.empty() : Optional.of(value);
   }
 
-  public void setEmblem(String emblem) {
+  public void setEmblem(@Nullable String emblem) {
     if (!getEmblem().equals(emblem)) {
       this.getEntityData().set(EMBLEM, emblem);
     }
@@ -725,7 +727,7 @@ public abstract class Locomotive extends RailcraftMinecart
 
     data.putBoolean("flipped", this.flipped);
 
-    data.putString("emblem", getEmblem());
+    this.getEmblem().ifPresent(emblem -> data.putString("emblem", emblem));
 
     data.putString("dest", StringUtils.defaultIfBlank(getDestination(), ""));
 
@@ -976,7 +978,7 @@ public abstract class Locomotive extends RailcraftMinecart
 
     @Override
     public Lock getNext() {
-      return values()[(this.ordinal() + 1) % values().length];
+      return EnumUtil.next(this, values());
     }
 
     @Override

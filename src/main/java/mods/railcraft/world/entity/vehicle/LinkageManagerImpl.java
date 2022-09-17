@@ -3,9 +3,10 @@ package mods.railcraft.world.entity.vehicle;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.api.carts.Link;
@@ -198,9 +199,8 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @return The linked cart or null
    */
   @Override
-  @Nullable
-  public AbstractMinecart getLinkedCartA(AbstractMinecart cart) {
-    return MinecartExtension.getOrThrow(cart).getLinkedMinecart(Link.FRONT).orElse(null);
+  public Optional<AbstractMinecart> getLinkedCartA(AbstractMinecart cart) {
+    return MinecartExtension.getOrThrow(cart).getLinkedMinecart(Link.FRONT);
   }
 
   /**
@@ -210,9 +210,8 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @return The linked cart or null
    */
   @Override
-  @Nullable
-  public AbstractMinecart getLinkedCartB(AbstractMinecart cart) {
-    return MinecartExtension.getOrThrow(cart).getLinkedMinecart(Link.BACK).orElse(null);
+  public Optional<AbstractMinecart> getLinkedCartB(AbstractMinecart cart) {
+    return MinecartExtension.getOrThrow(cart).getLinkedMinecart(Link.BACK);
   }
 
   /**
@@ -303,13 +302,10 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @param cart Cart
    */
   private void breakLinkA(AbstractMinecart cart) {
-    var other = this.getLinkedCartA(cart);
-    if (other == null) {
-      return;
-    }
-
-    var otherLink = MinecartExtension.getOrThrow(other).getLink(cart).orElse(null);
-    this.breakLinkInternal(cart, other, Link.FRONT, otherLink);
+    this.getLinkedCartA(cart).ifPresent(other -> {
+      var otherLink = MinecartExtension.getOrThrow(other).getLink(cart).orElse(null);
+      this.breakLinkInternal(cart, other, Link.FRONT, otherLink);
+    });
   }
 
   /**
@@ -318,13 +314,10 @@ public enum LinkageManagerImpl implements LinkageManager {
    * @param cart Cart
    */
   private void breakLinkB(AbstractMinecart cart) {
-    var other = this.getLinkedCartB(cart);
-    if (other == null) {
-      return;
-    }
-
-    var otherLink = MinecartExtension.getOrThrow(other).getLink(cart).orElse(null);
-    this.breakLinkInternal(cart, other, Link.BACK, otherLink);
+    this.getLinkedCartB(cart).ifPresent(other -> {
+      var otherLink = MinecartExtension.getOrThrow(other).getLink(cart).orElse(null);
+      this.breakLinkInternal(cart, other, Link.BACK, otherLink);
+    });
   }
 
   /**
@@ -410,12 +403,12 @@ public enum LinkageManagerImpl implements LinkageManager {
           return MinecartExtension.getOrThrow(this.current).getLinkedMinecart(link).orElse(null);
         }
 
-        var cartA = LinkageManagerImpl.this.getLinkedCartA(this.current);
+        var cartA = LinkageManagerImpl.this.getLinkedCartA(this.current).orElse(null);
         if (cartA != null && cartA != this.last) {
           return cartA;
         }
 
-        var cartB = LinkageManagerImpl.this.getLinkedCartB(this.current);
+        var cartB = LinkageManagerImpl.this.getLinkedCartB(this.current).orElse(null);
         return cartB == this.last ? null : cartB;
       }
 

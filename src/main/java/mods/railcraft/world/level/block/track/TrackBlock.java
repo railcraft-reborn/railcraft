@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.item.SpikeMaulTarget;
@@ -160,8 +160,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
       if (!BaseRailBlock.isRail(s)) {
         return false;
       }
-      if (b instanceof TrackBlock) {
-        TrackBlock track = (TrackBlock) b;
+      if (b instanceof TrackBlock track) {
         int maxSupportedDistance = track.getMaxSupportedDistance(w, p);
         if (maxSupportedDistance <= 0 || TrackSupportTools.isSupportedDirectly(w, p)) {
           return false;
@@ -184,9 +183,8 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   @Override
   public RailShape getRailDirection(BlockState state, BlockGetter blockGetter, BlockPos pos,
       @Nullable AbstractMinecart cart) {
-    RailShape shape =
-        this.getTrackType().getEventHandler().getRailShapeOverride(blockGetter, pos, state, cart);
-    return shape == null ? super.getRailDirection(state, blockGetter, pos, cart) : shape;
+    return this.getTrackType().getEventHandler().getRailShapeOverride(blockGetter, pos, state, cart)
+        .orElseGet(() -> super.getRailDirection(state, blockGetter, pos, cart));
   }
 
   @Override

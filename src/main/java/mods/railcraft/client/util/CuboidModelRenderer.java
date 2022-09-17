@@ -1,7 +1,7 @@
 package mods.railcraft.client.util;
 
 import java.util.Arrays;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.util.CuboidModel.Face;

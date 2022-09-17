@@ -7,11 +7,11 @@ public class Translations {
     private static final String PREFIX = "itemGroup.";
 
     public static final String RAILCRAFT =
-        PREFIX + format("%railcraft");
+        PREFIX + Railcraft.ID;
     public static final String RAILCRAFT_OUTFITTED_TRACKS =
-        PREFIX + format("%railcraft_outfitted_tracks");
+        PREFIX + Railcraft.ID + "_outfitted_tracks";
     public static final String RAILCRAFT_DECORATIVE_BLOCKS =
-        PREFIX + format("%railcraft_decorative_blocks");
+        PREFIX + Railcraft.ID + "_decorative_blocks";
 
     public static String withoutPrefix(String key) {
       return key.substring(PREFIX.length());
@@ -21,436 +21,408 @@ public class Translations {
   public static class Screen {
 
     public static final String STEAM_TURBINE_ROTOR =
-        format("screen.%railcraft.steam_turbine.rotor");
+        makeKey("screen", "steam_turbine.rotor");
     public static final String STEAM_TURBINE_OUTPUT =
-        format("screen.%railcraft.steam_turbine.output");
+        makeKey("screen", "steam_turbine.output");
     public static final String STEAM_TURBINE_USAGE =
-        format("screen.%railcraft.steam_turbine.usage");
+        makeKey("screen", "steam_turbine.usage");
     public static final String STEAM_MODE_DESC_IDLE =
-        format("screen.%railcraft.locomotive.steam.mode.description.idle");
+        makeKey("screen", "locomotive.steam.mode.description.idle");
     public static final String STEAM_MODE_DESC_RUNNING =
-        format("screen.%railcraft.locomotive.steam.mode.description.running");
+        makeKey("screen", "locomotive.steam.mode.description.running");
     public static final String STEAM_MODE_DESC_SHUTDOWN =
-        format("screen.%railcraft.locomotive.steam.mode.description.shutdown");
+        makeKey("screen", "locomotive.steam.mode.description.shutdown");
     public static final String LOCOMOTIVE_LOCK_LOCKED =
-        format("screen.%railcraft.locomotive.lock.locked");
+        makeKey("screen", "locomotive.lock.locked");
     public static final String LOCOMOTIVE_LOCK_UNLOCKED =
-        format("screen.%railcraft.locomotive.lock.unlocked");
+        makeKey("screen", "locomotive.lock.unlocked");
     public static final String LOCOMOTIVE_LOCK_PRIVATE =
-        format("screen.%railcraft.locomotive.lock.private");
+        makeKey("screen", "locomotive.lock.private");
     public static final String LOCOMOTIVE_MODE_SHUTDOWN =
-        format("screen.%railcraft.locomotive.mode.shutdown");
+        makeKey("screen", "locomotive.mode.shutdown");
     public static final String LOCOMOTIVE_MODE_RUNNING =
-        format("screen.%railcraft.locomotive.mode.running");
+        makeKey("screen", "locomotive.mode.running");
     public static final String LOCOMOTIVE_MODE_IDLE =
-        format("screen.%railcraft.locomotive.mode.idle");
+        makeKey("screen", "locomotive.mode.idle");
     public static final String SINGAL_CONTROLLER_BOX_DEFAULT =
-        format("screen.%railcraft.signal_controller_box.default_aspect");
+        makeKey("screen", "signal_controller_box.default_aspect");
     public static final String SINGAL_CONTROLLER_BOX_POWERED =
-        format("screen.%railcraft.signal_controller_box.powered_aspect");
+        makeKey("screen", "signal_controller_box.powered_aspect");
     public static final String SIGNAL_CAPACITOR_BOX_DURATION =
-        format("screen.%railcraft.signal_capacitor_box.duration");
+        makeKey("screen", "signal_capacitor_box.duration");
     public static final String ACTION_SIGNAL_BOX_LOCKED =
-        format("screen.%railcraft.action_signal_box.lock.locked");
+        makeKey("screen", "action_signal_box.lock.locked");
     public static final String ACTION_SIGNAL_BOX_UNLOCKED =
-        format("screen.%railcraft.action_signal_box.lock.unlocked");
+        makeKey("screen", "action_signal_box.lock.unlocked");
     public static final String SWITCH_TRACK_MOTOR_REDSTONE =
-        format("screen.%railcraft.switch_track_motor.redstone_triggered");
+        makeKey("screen", "switch_track_motor.redstone_triggered");
     public static final String CART_FILTERS =
-        format("screen.%railcraft.manipulator.cart_filters");
+        makeKey("screen", "manipulator.cart_filters");
     public static final String ITEM_MANIPULATOR_FILTERS =
-        format("screen.%railcraft.item_manipulator.filters");
+        makeKey("screen", "item_manipulator.filters");
     public static final String ITEM_MANIPULATOR_BUFFER =
-        format("screen.%railcraft.item_manipulator.buffer");
+        makeKey("screen", "item_manipulator.buffer");
     public static final String TUNNEL_BORE_HEAD =
-        format("screen.%railcraft.tunnel_bore.head");
+        makeKey("screen", "tunnel_bore.head");
     public static final String TUNNEL_BORE_FUEL =
-        format("screen.%railcraft.tunnel_bore.fuel");
+        makeKey("screen", "tunnel_bore.fuel");
     public static final String TUNNEL_BORE_BALLAST =
-        format("screen.%railcraft.tunnel_bore.ballast");
+        makeKey("screen", "tunnel_bore.ballast");
     public static final String TUNNEL_BORE_TRACK =
-        format("screen.%railcraft.tunnel_bore.track");
+        makeKey("screen", "tunnel_bore.track");
     public static final String MULTIBLOCK_ASSEMBLY_FAILED =
-        format("screen.%railcraft.multiblock.assembly_failed");
+        makeKey("screen", "multiblock.assembly_failed");
     public static final String EMBARKING_TRACK_RADIUS =
-        format("screen.%railcraft.embarking_track.radius");
+        makeKey("screen", "embarking_track.radius");
     public static final String LAUNCHER_TRACK_LAUNCH_FORCE =
-        format("screen.%railcraft.launcher_track.launch_force");
+        makeKey("screen", "launcher_track.launch_force");
     public static final String WATER_TANK_SEE_SKY =
-        format("screen.%railcraft.water_tank.sky");
+        makeKey("screen", "water_tank.sky");
     public static final String WATER_TANK_BASE_RATE =
-        format("screen.%railcraft.water_tank.base_rate");
+        makeKey("screen", "water_tank.base_rate");
     public static final String WATER_TANK_HUMIDITY =
-        format("screen.%railcraft.water_tank.humidity");
+        makeKey("screen", "water_tank.humidity");
     public static final String WATER_TANK_PRECIPITATION =
-        format("screen.%railcraft.water_tank.precipitation");
+        makeKey("screen", "water_tank.precipitation");
     public static final String WATER_TANK_TEMP =
-        format("screen.%railcraft.water_tank.temperature");
+        makeKey("screen", "water_tank.temperature");
     public static final String WATER_TANK_FINAL_RATE =
-        format("screen.%railcraft.water_tank.final_rate");
+        makeKey("screen", "water_tank.final_rate");
   }
 
   public static class Tips {
 
     public static final String ROUTING_TICKET_ISSUER =
-        format("tips.%railcraft.routing.ticket.issuer");
+        makeKey("tips", "routing.ticket.issuer");
     public static final String ROUTING_TICKET_DEST =
-        format("tips.%railcraft.routing.ticket.dest");
+        makeKey("tips", "routing.ticket.dest");
     public static final String ROUTING_TICKET_BLANK =
-        format("tips.%railcraft.routing.ticket.blank");
+        makeKey("tips", "routing.ticket.blank");
     public static final String LOCOMOTIVE_SLOT_TICKET =
-        format("tips.%railcraft.locomotive.slot.ticket");
+        makeKey("tips", "locomotive.slot.ticket");
     public static final String LOCOMOTIVE_ITEM_OWNER =
-        format("tips.%railcraft.locomotive.item.owner");
+        makeKey("tips", "locomotive.item.owner");
     public static final String LOCOMOTIVE_ITEM_PRIMARY =
-        format("tips.%railcraft.locomotive.item.primary");
+        makeKey("tips", "locomotive.item.primary");
     public static final String LOCOMOTIVE_ITEM_SECONDARY =
-        format("tips.%railcraft.locomotive.item.secondary");
+        makeKey("tips", "locomotive.item.secondary");
     public static final String LOCOMOTIVE_ITEM_WHISTLE =
-        format("tips.%railcraft.locomotive.item.whistle");
+        makeKey("tips", "locomotive.item.whistle");
     public static final String CRUSHED_OBSIDIAN =
-        format("tips.%railcraft.crushed_obsidian");
+        makeKey("tips", "crushed_obsidian");
     public static final String COKE_OVEN =
-        format("tips.%railcraft.coke_oven");
+        makeKey("tips", "coke_oven");
     public static final String BLAST_FURNACE =
-        format("tips.%railcraft.blast_furnace");
+        makeKey("tips", "blast_furnace");
     public static final String CRUSHER =
-        format("tips.%railcraft.crusher");
+        makeKey("tips", "crusher");
     public static final String WATER_TANK_SIDING =
-        format("tips.%railcraft.water_tank_siding");
+        makeKey("tips", "water_tank_siding");
+    public static final String MULTIBLOCK3X2X2 =
+        makeKey("tips", "multiblock3x2x2");
+    public static final String STEAM_TURBINE_DESC_1 =
+        makeKey("tips", "steam_turbine_desc1");
+    public static final String STEAM_TURBINE_DESC_2 =
+        makeKey("tips", "steam_turbine_desc2");
+    public static final String STEAM_TURBINE_DESC_3 =
+        makeKey("tips", "steam_turbine_desc3");
     public static final String SPIKE_MAUL =
-        format("tips.%railcraft.spike_maul");
+        makeKey("tips", "spike_maul");
+    public static final String OVERALLS = makeKey("tips", "overalls");
     public static final String GOOGLES_DESC =
-        format("tips.%railcraft.googles.desc");
+        makeKey("tips", "googles.desc");
     public static final String GOOGLES_AURA =
-        format("tips.%railcraft.googles.aura");
+        makeKey("tips", "googles.aura");
     public static final String GOOGLES_AURA_NONE =
-        format("tips.%railcraft.googles.aura.none");
+        makeKey("tips", "googles.aura.none");
     public static final String GOOGLES_AURA_SHUNTING =
-        format("tips.%railcraft.googles.aura.shunting");
+        makeKey("tips", "googles.aura.shunting");
     public static final String GOOGLES_AURA_SIGNALLING =
-        format("tips.%railcraft.googles.aura.signalling");
+        makeKey("tips", "googles.aura.signalling");
     public static final String GOOGLES_AURA_SURVEYING =
-        format("tips.%railcraft.googles.aura.surveying");
+        makeKey("tips", "googles.aura.surveying");
     public static final String GOOGLES_AURA_TRACKING =
-        format("tips.%railcraft.googles.aura.tracking");
+        makeKey("tips", "googles.aura.tracking");
     public static final String GOOGLES_AURA_TUNING =
-        format("tips.%railcraft.googles.aura.tuning");
+        makeKey("tips", "googles.aura.tuning");
     public static final String GOOGLES_AURA_WORLDSPIKE =
-        format("tips.%railcraft.googles.aura.worldspike");
-    public static final String CRAWBAR_DESC =
-        format("tips.%railcraft.crowbar.desc");
-    public static final String CRAWBAR_LINK_BROKEN =
-        format("tips.%railcraft.crowbar.link.broken");
-    public static final String CRAWBAR_LINK_CREATED =
-        format("tips.%railcraft.crowbar.link.created");
-    public static final String CRAWBAR_LINK_FAILED =
-        format("tips.%railcraft.crowbar.link.failed");
-    public static final String CRAWBAR_LINK_STARTED =
-        format("tips.%railcraft.crowbar.link.started");
-    public static final String CRAWBAR_SEASON_DESC =
-        format("tips.%railcraft.crowbar.seasons.desc");
-    public static final String CRAWBAR_SEASON_NONE =
-        format("tips.%railcraft.crowbar.seasons.none");
-    public static final String CRAWBAR_SEASON_DEFAULT =
-        format("tips.%railcraft.crowbar.seasons.default");
-    public static final String CRAWBAR_SEASON_HALLOWEEN =
-        format("tips.%railcraft.crowbar.seasons.halloween");
-    public static final String CRAWBAR_SEASON_CHRISTMAS =
-        format("tips.%railcraft.crowbar.seasons.christmas");
+        makeKey("tips", "googles.aura.worldspike");
+    public static final String CROWBAR_DESC =
+        makeKey("tips", "crowbar.desc");
+    public static final String CROWBAR_LINK_BROKEN =
+        makeKey("tips", "crowbar.link.broken");
+    public static final String CROWBAR_LINK_CREATED =
+        makeKey("tips", "crowbar.link.created");
+    public static final String CROWBAR_LINK_FAILED =
+        makeKey("tips", "crowbar.link.failed");
+    public static final String CROWBAR_LINK_STARTED =
+        makeKey("tips", "crowbar.link.started");
+    public static final String CROWBAR_SEASON_DESC =
+        makeKey("tips", "crowbar.season.desc");
     public static final String SIGNAL_LABEL_DESC1 =
-        format("tips.%railcraft.signal_label.desc1");
+        makeKey("tips", "signal_label.desc1");
     public static final String SIGNAL_LABEL_DESC2 =
-        format("tips.%railcraft.signal_label.desc2");
+        makeKey("tips", "signal_label.desc2");
     public static final String SENDS_SIGNALS_TO_RECEIVERS =
-        format("tips.%railcraft.send_signals_to_receivers");
+        makeKey("tips", "send_signals_to_receivers");
     public static final String SIGNAL_RECEIVER_BOX =
-        format("tips.%railcraft.signal_receiver_box");
+        makeKey("tips", "signal_receiver_box");
     public static final String SIGNAL_SEQUENCER_BOX =
-        format("tips.%railcraft.signal_sequencer_box");
+        makeKey("tips", "signal_sequencer_box");
     public static final String SIGNAL_INTERLOCK_BOX =
-        format("tips.%railcraft.signal_interlock_box");
+        makeKey("tips", "signal_interlock_box");
     public static final String SIGNAL_BLOCK_RELAY_BOX =
-        format("tips.%railcraft.signal_block_relay_box");
+        makeKey("tips", "signal_block_relay_box");
     public static final String FIRESTONE_EMPTY =
-        format("tips.%railcraft.firestone.empty");
+        makeKey("tips", "firestone.empty");
     public static final String FIRESTONE_CHARGED =
-        format("tips.%railcraft.firestone.charged");
+        makeKey("tips", "firestone.charged");
     public static final String RAW_FIRESTONE =
-        format("tips.%railcraft.firestone.raw");
+        makeKey("tips", "firestone.raw");
     public static final String CUT_FIRESTONE =
-        format("tips.%railcraft.firestone.cut");
+        makeKey("tips", "firestone.cut");
     public static final String CURRENT_MODE =
-        format("tips.%railcraft.current_mode");
-    public static final String LOCKING_TRACK_LOCKDOWN =
-        format("tips.%railcraft.locking_track.lockdown");
-    public static final String LOCKING_TRACK_TRAIN_LOCKDOWN =
-        format("tips.%railcraft.locking_track.train_lockdown");
-    public static final String LOCKING_TRACK_HOLDING =
-        format("tips.%railcraft.locking_track.holding");
-    public static final String LOCKING_TRACK_TRAIN_HOLDING =
-        format("tips.%railcraft.locking_track.train_holding");
-    public static final String LOCKING_TRACK_BOARDING =
-        format("tips.%railcraft.locking_track.boarding");
-    public static final String LOCKING_TRACK_BOARDING_REVERSED =
-        format("tips.%railcraft.locking_track.boarding_reversed");
-    public static final String LOCKING_TRACK_TRAIN_BOARDING =
-        format("tips.%railcraft.locking_track.train_boarding");
-    public static final String LOCKING_TRACK_TRAIN_BOARDING_REVERSED =
-        format("tips.%railcraft.locking_track.train_boarding_reversed");
-    public static final String COUPLER_TRACK_COUPLER =
-        format("tips.%railcraft.coupler_track.coupler");
-    public static final String COUPLER_TRACK_DECOUPLER =
-        format("tips.%railcraft.coupler_track.decoupler");
-    public static final String COUPLER_TRACK_AUTO_COUPLER =
-        format("tips.%railcraft.coupler_track.auto_coupler");
+        makeKey("tips", "current_mode");
     public static final String TRACK_KIT_CORNERS_UNSUPPORTED =
-        format("tips.%railcraft.track_kit.corners_unsupported");
+        makeKey("tips", "track_kit.corners_unsupported");
     public static final String TRACK_KIT_SLOPES_UNSUPPORTED =
-        format("tips.%railcraft.track_kit.slopes_unsupported");
+        makeKey("tips", "track_kit.slopes_unsupported");
     public static final String TRACK_KIT_INVALID_TRACK_TYPE =
-        format("tips.%railcraft.track_kit.invalid_track_type");
-    public static final String MANIPULATOR_REDSTONE_MODE_COMPLETE =
-        format("tips.%railcraft.manipulator.redstone_mode.complete");
-    public static final String MANIPULATOR_REDSTONE_MODE_COMPLETE_DESC =
-        format("tips.%railcraft.manipulator.redstone_mode.complete.desc");
-    public static final String MANIPULATOR_REDSTONE_MODE_IMMEDIATE =
-        format("tips.%railcraft.manipulator.redstone_mode.immediate");
-    public static final String MANIPULATOR_REDSTONE_MODE_IMMEDIATE_DESC =
-        format("tips.%railcraft.manipulator.redstone_mode.immediate.desc");
-    public static final String MANIPULATOR_REDSTONE_MODE_MANUAL =
-        format("tips.%railcraft.manipulator.redstone_mode.manual");
-    public static final String MANIPULATOR_REDSTONE_MODE_MANUAL_DESC =
-        format("tips.%railcraft.manipulator.redstone_mode.manual.desc");
-    public static final String MANIPULATOR_REDSTONE_MODE_PARTIAL =
-        format("tips.%railcraft.manipulator.redstone_mode.partial");
-    public static final String MANIPULATOR_REDSTONE_MODE_PARTIAL_DESC =
-        format("tips.%railcraft.manipulator.redstone_mode.partial.desc");
-    public static final String MANIPULATOR_TRANSFER_MODE_ALL =
-        format("tips.%railcraft.manipulator.transfer_mode.all");
-    public static final String MANIPULATOR_TRANSFER_MODE_ALL_DESC =
-        format("tips.%railcraft.manipulator.transfer_mode.all.desc");
-    public static final String MANIPULATOR_TRANSFER_MODE_EXCESS =
-        format("tips.%railcraft.manipulator.transfer_mode.excess");
-    public static final String MANIPULATOR_TRANSFER_MODE_EXCESS_DESC =
-        format("tips.%railcraft.manipulator.transfer_mode.excess.desc");
-    public static final String MANIPULATOR_TRANSFER_MODE_STOCK =
-        format("tips.%railcraft.manipulator.transfer_mode.stock");
-    public static final String MANIPULATOR_TRANSFER_MODE_STOCK_DESC =
-        format("tips.%railcraft.manipulator.transfer_mode.stock.desc");
-    public static final String MANIPULATOR_TRANSFER_MODE_TRANSFER =
-        format("tips.%railcraft.manipulator.transfer_mode.transfer");
-    public static final String MANIPULATOR_TRANSFER_MODE_TRANSFER_DESC =
-        format("tips.%railcraft.manipulator.transfer_mode.transfer.desc");
-    public static final String COAL_COKE_BLOCK = format("tips.%railcraft.coal_coke_block");
+        makeKey("tips", "track_kit.invalid_track_type");
+    public static final String COAL_COKE_BLOCK = makeKey("tips", "coal_coke_block");
+    public static final String FORCE_TRACK_EMITTER = makeKey("tips", "force_track_emitter");
+    public static final String FEED_STATION = makeKey("tips", "feed_station");
+    public static final String MANUAL_ROLLING_MACHINE =
+        makeKey("tips", "manual_rolling_machine");
+    public static final String ITEM_LOADER = makeKey("tips", "item_loader");
+    public static final String ITEM_UNLOADER = makeKey("tips", "item_unloader");
+    public static final String FLUID_LOADER = makeKey("tips", "fluid_loader");
+    public static final String FLUID_UNLOADER = makeKey("tips", "fluid_unloader");
     public static final String SIGNAL_BLOCK_SURVEYOR =
-        format("tips.%railcraft.signal_block_surveyor");
-    public static final String SIGNAL_TUNER = format("tips.%railcraft.signal_tuner");
+        makeKey("tips", "signal_block_surveyor");
+    public static final String SIGNAL_TUNER = makeKey("tips", "signal_tuner");
     public static final String FUELED_BOILER_FIREBOX =
-        format("tips.%railcraft.fueled_boiler_firebox");
+        makeKey("tips", "fueled_boiler_firebox");
     public static final String PRESSURE_BOILER_TANK =
-        format("tips.%railcraft.pressure_boiler_tank");
+        makeKey("tips", "pressure_boiler_tank");
     public static final String PRESSURE_BOILER_TANK_PRODUCTION =
-        format("tips.%railcraft.pressure_boiler_tank.production");
+        makeKey("tips", "pressure_boiler_tank.production");
     public static final String DIMENSIONS =
-        format("tips.%railcraft.dimensions");
+        makeKey("tips", "dimensions");
 
     public static final String APPLY_REDSTONE_TO_ENABLE =
-        format("tips.%railcraft.apply_redstone_to_enable");
+        makeKey("tips", "apply_redstone_to_enable");
+    public static final String APPLY_REDSTONE_TO_DISABLE =
+        makeKey("tips", "apply_redstone_to_disable");
     public static final String APPLY_REDSTONE_TO_CHANGE_DIRECTION =
-        format("tips.%railcraft.apply_redstone_to_change_direction");
+        makeKey("tips", "apply_redstone_to_change_direction");
     public static final String APPLY_REDSTONE_TO_OPEN =
-        format("tips.%railcraft.apply_redstone_to_open");
+        makeKey("tips", "apply_redstone_to_open");
     public static final String APPLY_REDSTONE_TO_RELEASE_CARTS =
-        format("tips.%railcraft.apply_redstone_to_release_carts");
+        makeKey("tips", "apply_redstone_to_release_carts");
     public static final String COMPARATOR_OUTPUT_FROM_CARTS =
-        format("tips.%railcraft.comparator_output_from_carts");
+        makeKey("tips", "comparator_output_from_carts");
     public static final String HIT_CROWBAR_TO_CHANGE_DIRECTION =
-        format("tips.%railcraft.hit_crowbar_to_change_direction");
+        makeKey("tips", "hit_crowbar_to_change_direction");
     public static final String HIT_CROWBAR_TO_CHANGE_DETECTION_DIRECTION =
-        format("tips.%railcraft.hit_crowbar_to_change_detection_direction");
+        makeKey("tips", "hit_crowbar_to_change_detection_direction");
     public static final String HIT_CROWBAR_TO_CHANGE_RANGE =
-        format("tips.%railcraft.hit_crowbar_to_change_range");
+        makeKey("tips", "hit_crowbar_to_change_range");
     public static final String HIT_CROWBAR_TO_CHANGE_MODE =
-        format("tips.%railcraft.hit_crowbar_to_change_mode");
+        makeKey("tips", "hit_crowbar_to_change_mode");
     public static final String HIT_CROWBAR_TO_CHANGE_FORCE =
-        format("tips.%railcraft.hit_crowbar_to_change_force");
-    public static final String SLOW_UNPOWERED = format("tips.%railcraft.slow_unpowered");
-    public static final String ACTIVATOR_TRACK = format("tips.%railcraft.activator_track");
-    public static final String BOOSTER_TRACK = format("tips.%railcraft.booster_track");
-    public static final String BUFFER_STOP_TRACK = format("tips.%railcraft.buffer_stop_track");
-    public static final String CONTROL_TRACK = format("tips.%railcraft.control_track");
-    public static final String DETECTOR_TRACK = format("tips.%railcraft.detector_track");
-    public static final String DISEMBARKING_TRACK = format("tips.%railcraft.disembarking_track");
-    public static final String EMBARKING_TRACK = format("tips.%railcraft.embarking_track");
-    public static final String GATED_TRACK = format("tips.%railcraft.gated_track");
-    public static final String COUPLER_TRACK = format("tips.%railcraft.coupler_track");
-    public static final String LAUNCHER_TRACK = format("tips.%railcraft.launcher_track");
-    public static final String ONE_WAY_TRACK = format("tips.%railcraft.one_way_track");
-    public static final String LOCOMOTIVE_TRACK = format("tips.%railcraft.locomotive_track");
-    public static final String LOCKING_TRACK = format("tips.%railcraft.locking_track");
-    public static final String TRANSITION_TRACK = format("tips.%railcraft.transition_track");
+        makeKey("tips", "hit_crowbar_to_change_force");
+    public static final String HIT_CROWBAR_TO_ROTATE =
+        makeKey("tips", "hit_crowbar_to_rotate");
+    public static final String PLACE_OVER_TRACK = makeKey("tips", "place_over_track");
+    public static final String PLACE_UNDER_TRACK = makeKey("tips", "place_under_track");
+    public static final String PLACE_ABOVE_TRACK = makeKey("tips", "place_above_track");
+    public static final String SLOW_UNPOWERED = makeKey("tips", "slow_unpowered");
+    public static final String ACTIVATOR_TRACK = makeKey("tips", "activator_track");
+    public static final String BOOSTER_TRACK = makeKey("tips", "booster_track");
+    public static final String BUFFER_STOP_TRACK = makeKey("tips", "buffer_stop_track");
+    public static final String CONTROL_TRACK = makeKey("tips", "control_track");
+    public static final String DETECTOR_TRACK = makeKey("tips", "detector_track");
+    public static final String DISEMBARKING_TRACK = makeKey("tips", "disembarking_track");
+    public static final String EMBARKING_TRACK = makeKey("tips", "embarking_track");
+    public static final String GATED_TRACK = makeKey("tips", "gated_track");
+    public static final String COUPLER_TRACK = makeKey("tips", "coupler_track");
+    public static final String LAUNCHER_TRACK = makeKey("tips", "launcher_track");
+    public static final String ONE_WAY_TRACK = makeKey("tips", "one_way_track");
+    public static final String LOCOMOTIVE_TRACK = makeKey("tips", "locomotive_track");
+    public static final String LOCKING_TRACK = makeKey("tips", "locking_track");
+    public static final String TRANSITION_TRACK = makeKey("tips", "transition_track");
   }
 
   public static class Container {
 
     public static final String MANUAL_ROLLING_MACHINE =
-        format("container.%railcraft.manual_rolling_machine");
+        makeKey("container", "manual_rolling_machine");
     public static final String COKE_OVEN =
-        format("container.%railcraft.coke_oven");
+        makeKey("container", "coke_oven");
     public static final String BLAST_FURNACE =
-        format("container.%railcraft.blast_furnace");
-    public static final String CRUSHER =
-        format("container.%railcraft.crusher");
-    public static final String WATER_TANK_SIDING =
-        format("container.%railcraft.water_tank_siding");
+        makeKey("container", "blast_furnace");
+    public static final String CRUSHER = makeKey("container", "crusher");
+    public static final String WATER_TANK_SIDING = makeKey("container", "water_tank_siding");
     public static final String TANK =
-        format("container.%railcraft.tank");
+        makeKey("container", "tank");
     public static final String STEAM_TURBINE =
-        format("container.%railcraft.steam_turbine");
+        makeKey("container", "steam_turbine");
     public static final String SOLID_FUELED_STEAM_BOILER =
-        format("container.%railcraft.solid_fueled_steam_boiler");
+        makeKey("container", "solid_fueled_steam_boiler");
     public static final String FLUID_FUELED_STEAM_BOILER =
-        format("container.%railcraft.fluid_fueled_steam_boiler");
+        makeKey("container", "fluid_fueled_steam_boiler");
   }
 
   public static class Jei {
 
     public static final String METAL_ROLLING =
-      format("jei.%railcraft.category.rolling");
+        makeKey("jei", "category.rolling");
     public static final String COKE_OVEN =
-        format("jei.%railcraft.category.coke_oven");
+        makeKey("jei", "category.coke_oven");
     public static final String BLAST_FURNACE =
-        format("jei.%railcraft.category.blast_furnace");
+        makeKey("jei", "category.blast_furnace");
     public static final String CRUSHER =
-        format("jei.%railcraft.category.crusher");
+        makeKey("jei", "category.crusher");
     public static final String CRUSHER_TIP =
-        format("jei.%railcraft.tips.crusher");
+        makeKey("jei", "tips.crusher");
   }
 
   public static class Signal {
 
     public static final String SIGNAL_SURVEYOR_INVALID_TRACK =
-        format("signal.%railcraft.surveyor.invalid_track");
-    public static final String SIGNAL_SURVEYOR_BEGIN = format("signal.%railcraft.surveyor.begin");
-    public static final String SIGNAL_SURVEYOR_SUCCESS = format("signal.%railcraft.surveyor.success");
-    public static final String SIGNAL_SURVEYOR_INVALID_PAIR = format("signal.%railcraft.surveyor.invalid_pair");
-    public static final String SIGNAL_SURVEYOR_LOST = format("signal.%railcraft.surveyor.lost");
+        makeKey("signal", "surveyor.invalid_track");
+    public static final String SIGNAL_SURVEYOR_BEGIN = makeKey("signal", "surveyor.begin");
+    public static final String SIGNAL_SURVEYOR_SUCCESS =
+        makeKey("signal", "surveyor.success");
+    public static final String SIGNAL_SURVEYOR_INVALID_PAIR =
+        makeKey("signal", "surveyor.invalid_pair");
+    public static final String SIGNAL_SURVEYOR_LOST = makeKey("signal", "surveyor.lost");
     public static final String SIGNAL_SURVEYOR_UNLOADED =
-        format("signal.%railcraft.surveyor.unloaded");
+        makeKey("signal", "surveyor.unloaded");
     public static final String SIGNAL_SURVEYOR_ABANDONED =
-        format("signal.%railcraft.surveyor.abandoned");
-    public static final String SIGNAL_SURVEYOR_INVALID_BLOCK = format("signal.%railcraft.surveyor.invalid_block");
+        makeKey("signal", "surveyor.abandoned");
+    public static final String SIGNAL_SURVEYOR_INVALID_BLOCK =
+        makeKey("signal", "surveyor.invalid_block");
 
-    public static final String SIGNAL_TUNER_BEGIN = format("signal.%railcraft.tuner.begin");
-    public static final String SIGNAL_TUNER_ABANDONED = format("signal.%railcraft.tuner.abandoned");
-    public static final String SIGNAL_TUNER_UNLOADED = format("signal.%railcraft.tuner.unloaded");
-    public static final String SIGNAL_TUNER_LOST = format("signal.%railcraft.tuner.lost");
-    public static final String SIGNAL_TUNER_SUCCESS = format("signal.%railcraft.tuner.success");
+    public static final String SIGNAL_TUNER_BEGIN = makeKey("signal", "tuner.begin");
+    public static final String SIGNAL_TUNER_ABANDONED = makeKey("signal", "tuner.abandoned");
+    public static final String SIGNAL_TUNER_UNLOADED = makeKey("signal", "tuner.unloaded");
+    public static final String SIGNAL_TUNER_LOST = makeKey("signal", "tuner.lost");
+    public static final String SIGNAL_TUNER_SUCCESS = makeKey("signal", "tuner.success");
   }
 
   public static class SignalAspect {
-    public static final String GREEN = format("signal.%railcraft.aspect.green");
-    public static final String YELLOW = format("signal.%railcraft.aspect.yellow");
-    public static final String RED = format("signal.%railcraft.aspect.red");
-    public static final String BLINK_YELLOW = format("signal.%railcraft.aspect.blink_yellow");
-    public static final String BLINK_RED = format("signal.%railcraft.aspect.blink_red");
-    public static final String OFF = format("signal.%railcraft.aspect.off");
+
+    public static final String GREEN = makeKey("signal", "aspect.green");
+    public static final String YELLOW = makeKey("signal", "aspect.yellow");
+    public static final String RED = makeKey("signal", "aspect.red");
+    public static final String BLINK_YELLOW = makeKey("signal", "aspect.blink_yellow");
+    public static final String BLINK_RED = makeKey("signal", "aspect.blink_red");
+    public static final String OFF = makeKey("signal", "aspect.off");
   }
 
   public static class SignalCapacitor {
-    public static final String RISING_EDGE = format("signal.%railcraft.capacitor.rising_edge");
+
+    public static final String RISING_EDGE = makeKey("signal", "capacitor.rising_edge");
     public static final String RISING_EDGE_DESC =
-        format("signal.%railcraft.capacitor.rising_edge.desc");
-    public static final String FALLING_EDGE = format("signal.%railcraft.capacitor.falling_edge");
+        makeKey("signal", "capacitor.rising_edge.desc");
+    public static final String FALLING_EDGE = makeKey("signal", "capacitor.falling_edge");
     public static final String FALLING_EDGE_DESC =
-        format("signal.%railcraft.capacitor.falling_edge.desc");
+        makeKey("signal", "capacitor.falling_edge.desc");
   }
 
   public static class Advancement {
+
     public static class Tracks {
-      public static final String ROOT = format("advancements.%railcraft.tracks.root.name");
-      public static final String ROOT_DESC = format("advancements.%railcraft.tracks.root.desc");
+
+      public static final String ROOT = makeKey("advancements", "tracks.root.name");
+      public static final String ROOT_DESC = makeKey("advancements", "tracks.root.desc");
       public static final String MANUAL_ROLLING_MACHINE =
-          format("advancements.%railcraft.tracks.manual_rolling_machine.name");
+          makeKey("advancements", "tracks.manual_rolling_machine.name");
       public static final String MANUAL_ROLLING_MACHINE_DESC =
-          format("advancements.%railcraft.tracks.manual_rolling_machine.desc");
+          makeKey("advancements", "tracks.manual_rolling_machine.desc");
       public static final String BLAST_FURNACE =
-          format("advancements.%railcraft.tracks.blast_furnace.name");
+          makeKey("advancements", "tracks.blast_furnace.name");
       public static final String BLAST_FURNACE_DESC =
-          format("advancements.%railcraft.tracks.blast_furnace.desc");
+          makeKey("advancements", "tracks.blast_furnace.desc");
       public static final String COKE_OVEN =
-          format("advancements.%railcraft.tracks.coke_oven.name");
+          makeKey("advancements", "tracks.coke_oven.name");
       public static final String COKE_OVEN_DESC =
-          format("advancements.%railcraft.tracks.coke_oven.desc");
+          makeKey("advancements", "tracks.coke_oven.desc");
       public static final String FIRESTONE =
-          format("advancements.%railcraft.tracks.firestone.name");
+          makeKey("advancements", "tracks.firestone.name");
       public static final String FIRESTONE_DESC =
-          format("advancements.%railcraft.tracks.firestone.desc");
+          makeKey("advancements", "tracks.firestone.desc");
       public static final String HIGH_SPEED_TRACK =
-          format("advancements.%railcraft.tracks.high_speed_track.name");
+          makeKey("advancements", "tracks.high_speed_track.name");
       public static final String HIGH_SPEED_TRACK_DESC =
-          format("advancements.%railcraft.tracks.high_speed_track.desc");
-      public static final String JUNCTIONS = format("advancements.%railcraft.tracks.junctions.name");
+          makeKey("advancements", "tracks.high_speed_track.desc");
+      public static final String JUNCTIONS =
+          makeKey("advancements", "tracks.junctions.name");
       public static final String JUNCTIONS_DESC =
-          format("advancements.%railcraft.tracks.junctions.desc");
+          makeKey("advancements", "tracks.junctions.desc");
       public static final String REGULAR_TRACK =
-          format("advancements.%railcraft.tracks.regular_track.name");
+          makeKey("advancements", "tracks.regular_track.name");
       public static final String REGULAR_TRACK_DESC =
-          format("advancements.%railcraft.tracks.regular_track.desc");
-      public static final String CRUSHER = format("advancements.%railcraft.tracks.crusher.name");
-      public static final String CRUSHER_DESC = format("advancements.%railcraft.tracks.crusher.desc");
-      public static final String TRACK_KIT = format("advancements.%railcraft.tracks.track_kit.name");
+          makeKey("advancements", "tracks.regular_track.desc");
+      public static final String CRUSHER = makeKey("advancements", "tracks.crusher.name");
+      public static final String CRUSHER_DESC =
+          makeKey("advancements", "tracks.crusher.desc");
+      public static final String TRACK_KIT =
+          makeKey("advancements", "tracks.track_kit.name");
       public static final String TRACK_KIT_DESC =
-          format("advancements.%railcraft.tracks.track_kit.desc");
+          makeKey("advancements", "tracks.track_kit.desc");
       public static final String WOODEN_TRACK =
-          format("advancements.%railcraft.tracks.wooden_track.name");
+          makeKey("advancements", "tracks.wooden_track.name");
       public static final String WOODEN_TRACK_DESC =
-          format("advancements.%railcraft.tracks.wooden_track.desc");
+          makeKey("advancements", "tracks.wooden_track.desc");
     }
 
     public static class Carts {
-      public static final String ROOT = format("advancements.%railcraft.carts.root.name");
-      public static final String ROOT_DESC = format("advancements.%railcraft.carts.root.desc");
-      public static final String BED_CART = format("advancements.%railcraft.carts.bed_cart.name");
+
+      public static final String ROOT = makeKey("advancements", "carts.root.name");
+      public static final String ROOT_DESC = makeKey("advancements", "carts.root.desc");
+      public static final String BED_CART = makeKey("advancements", "carts.bed_cart.name");
       public static final String BED_CART_DESC =
-          format("advancements.%railcraft.carts.bed_cart.desc");
+          makeKey("advancements", "carts.bed_cart.desc");
       public static final String JUKEBOX_CART =
-          format("advancements.%railcraft.carts.jukebox_cart.name");
+          makeKey("advancements", "carts.jukebox_cart.name");
       public static final String JUKEBOX_CART_DESC =
-          format("advancements.%railcraft.carts.jukebox_cart.desc");
+          makeKey("advancements", "carts.jukebox_cart.desc");
       public static final String LINK_CARTS =
-          format("advancements.%railcraft.carts.link_carts.name");
+          makeKey("advancements", "carts.link_carts.name");
       public static final String LINK_CARTS_DESC =
-          format("advancements.%railcraft.carts.link_carts.desc");
+          makeKey("advancements", "carts.link_carts.desc");
       public static final String LOCOMOTIVE =
-          format("advancements.%railcraft.carts.locomotive.name");
+          makeKey("advancements", "carts.locomotive.name");
       public static final String LOCOMOTIVE_DESC =
-          format("advancements.%railcraft.carts.locomotive.desc");
-      public static final String SEASONS = format("advancements.%railcraft.carts.seasons.name");
+          makeKey("advancements", "carts.locomotive.desc");
+      public static final String SEASONS = makeKey("advancements", "carts.seasons.name");
       public static final String SEASONS_DESC =
-          format("advancements.%railcraft.carts.seasons.desc");
+          makeKey("advancements", "carts.seasons.desc");
       public static final String SURPRISE =
-          format("advancements.%railcraft.carts.surprise.name");
+          makeKey("advancements", "carts.surprise.name");
       public static final String SURPRISE_DESC =
-          format("advancements.%railcraft.carts.surprise.desc");
+          makeKey("advancements", "carts.surprise.desc");
     }
   }
 
   public static class Subtitle {
+
     public static final String STEAM_WHISTLE =
-        format("subtitle.%railcraft.locomotive.steam.whistle");
+        makeKey("subtitle", "locomotive.steam.whistle");
     public static final String ELECTRIC_WHISTLE =
-        format("subtitle.%railcraft.locomotive.electric.whistle");
+        makeKey("subtitle", "locomotive.electric.whistle");
     public static final String STEAM_BURST =
-        format("subtitle.%railcraft.machine.steam.burst");
+        makeKey("subtitle", "machine.steam.burst");
     public static final String STEAM_HISS =
-        format("subtitle.%railcraft.machine.steam.hiss");
+        makeKey("subtitle", "machine.steam.hiss");
     public static final String MACHINE_ZAP =
-        format("subtitle.%railcraft.machine.zap");
+        makeKey("subtitle", "machine.zap");
   }
 
-  private static String format(String key) {
-    return key.replace("%railcraft", Railcraft.ID);
+  public static String makeKey(String type, String name) {
+    return type + "." + Railcraft.ID + "." + name;
   }
 }

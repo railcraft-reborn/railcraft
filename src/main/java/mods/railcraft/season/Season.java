@@ -5,29 +5,32 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import mods.railcraft.Translations.Tips;
+import mods.railcraft.Translations;
+import mods.railcraft.api.util.EnumUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 
 public enum Season implements StringRepresentable {
 
-  DEFAULT("default", Tips.CRAWBAR_SEASON_DEFAULT),
-  HALLOWEEN("halloween", Tips.CRAWBAR_SEASON_HALLOWEEN),
-  CHRISTMAS("christmas", Tips.CRAWBAR_SEASON_CHRISTMAS),
-  NONE("none", Tips.CRAWBAR_SEASON_NONE);
+  DEFAULT("default"),
+  HALLOWEEN("halloween"),
+  CHRISTMAS("christmas"),
+  NONE("none");
 
   private static final Map<String, Season> byName = Arrays.stream(values())
       .collect(Collectors.toUnmodifiableMap(Season::getSerializedName, Function.identity()));
   private final String name;
-  private final Component displayName;
 
-  private Season(String name, String translationKey) {
+  private Season(String name) {
     this.name = name;
-    this.displayName = Component.translatable(translationKey);
   }
 
   public Component getDisplayName() {
-    return this.displayName;
+    return Component.translatable(this.getTranslationKey());
+  }
+
+  public String getTranslationKey() {
+    return Translations.makeKey("season", this.name);
   }
 
   @Override
@@ -36,7 +39,7 @@ public enum Season implements StringRepresentable {
   }
 
   public Season getNext() {
-    return values()[(this.ordinal() + 1) % values().length];
+    return EnumUtil.next(this, values());
   }
 
   public static Optional<Season> getByName(String name) {

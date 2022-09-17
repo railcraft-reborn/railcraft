@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ForwardingMap;
 import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;

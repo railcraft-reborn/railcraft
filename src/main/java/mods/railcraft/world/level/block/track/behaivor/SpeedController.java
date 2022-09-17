@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.track.behaivor;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.RailShapeUtil;
@@ -42,19 +43,20 @@ public enum SpeedController implements TrackType.EventHandler {
     @Nullable
     // FIXME: Client and Server sync is not maintained here. Could result in strange
     // behavior.
-    public RailShape getRailShapeOverride(BlockGetter level, BlockPos pos, BlockState state,
+    public Optional<RailShape> getRailShapeOverride(BlockGetter level, BlockPos pos,
+        BlockState state,
         @Nullable AbstractMinecart cart) {
       if (cart == null || cart.getLevel().isClientSide()) {
-        return null;
+        return Optional.empty();
       }
 
       var shape = TrackUtil.getRailShapeRaw(state);
       if (!RailShapeUtil.isLevelStraight(shape)) {
-        return null;
+        return Optional.empty();
       }
 
       if (!this.isDerailing(cart)) {
-        return null;
+        return Optional.empty();
       }
 
       MinecartExtension.getOrThrow(cart).setDerailedRemainingTicks(100);
@@ -67,9 +69,9 @@ public enum SpeedController implements TrackType.EventHandler {
 
       // TODO make derail ( is this not good enough? -CJ )
       return switch (shape) {
-        case NORTH_SOUTH -> RailShape.EAST_WEST;
-        case EAST_WEST -> RailShape.NORTH_SOUTH;
-        default -> null;
+        case NORTH_SOUTH -> Optional.of(RailShape.EAST_WEST);
+        case EAST_WEST -> Optional.of(RailShape.NORTH_SOUTH);
+        default -> Optional.empty();
       };
     }
   },

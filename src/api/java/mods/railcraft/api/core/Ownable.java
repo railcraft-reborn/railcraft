@@ -7,7 +7,7 @@
 package mods.railcraft.api.core;
 
 import java.util.Optional;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.world.Nameable;
 

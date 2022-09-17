@@ -33,6 +33,11 @@ jobs:
           ./gradlew hideOfficialWarningUntilChanged
           ./gradlew build --no-daemon --max-workers 1
 
+      - name: Test
+        run: |
+          ./gradlew hideOfficialWarningUntilChanged
+          ./gradlew runGameTestServer --no-daemon --max-workers 1
+
       - name: Zip Files
         run : |
           powershell "Compress-Archive ./build/libs ./railcraft-nightly.zip"

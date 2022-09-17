@@ -3,7 +3,7 @@ package mods.railcraft.network.play;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.client.ClientManager;

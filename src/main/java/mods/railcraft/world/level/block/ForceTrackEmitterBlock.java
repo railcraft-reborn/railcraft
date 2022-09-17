@@ -3,16 +3,21 @@ package mods.railcraft.world.level.block;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
+import mods.railcraft.api.charge.ChargeStorage;
+import mods.railcraft.api.charge.ChargeStorage.State;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterState;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -21,6 +26,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -49,7 +55,8 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
   private static final Map<Charge, Spec> CHARGE_SPECS =
-      Spec.make(Charge.distribution, ConnectType.BLOCK, 0.1F);
+      Spec.make(Charge.distribution, ConnectType.BLOCK, 0,
+          new ChargeStorage.Spec(State.RECHARGEABLE, 1000, 1000, 1));
 
   public ForceTrackEmitterBlock(Properties properties) {
     super(properties);
@@ -70,8 +77,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   }
 
   @Override
-  public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level,
-      BlockPos pos) {
+  public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level, BlockPos pos) {
     return CHARGE_SPECS;
   }
 
@@ -104,7 +110,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   private ItemStack getItem(BlockState blockState) {
     ItemStack itemStack = this.asItem().getDefaultInstance();
     CompoundTag tag = itemStack.getOrCreateTag();
-    tag.putInt("color", blockState.getValue(COLOR).getId());
+    tag.putString("color", blockState.getValue(COLOR).getName());
     return itemStack;
   }
 
@@ -126,21 +132,19 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     }
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
-    super.tick(state, worldIn, pos, rand);
-    this.registerNode(state, worldIn, pos);
+  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    this.registerNode(state, level, pos);
   }
 
   @Override
   public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos,
       Rotation direction) {
-    if (!level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
+    if (level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .map(ForceTrackEmitterBlockEntity::getStateInstance)
-        .map(ForceTrackEmitterState.Instance::getState)
+        .map(ForceTrackEmitterState.Instance::state)
         .filter(ForceTrackEmitterState.RETRACTED::equals)
-        .isPresent()) {
+        .isEmpty()) {
       return state;
     }
     return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
@@ -151,11 +155,9 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
-      boolean moved) {
-    super.onPlace(state, level, pos, oldState, moved);
+      boolean isMoving) {
     if (!state.is(oldState.getBlock())) {
       this.registerNode(state, (ServerLevel) level, pos);
     }
@@ -173,10 +175,14 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   @Override
   public void setPlacedBy(Level level, BlockPos pos, BlockState state,
       @Nullable LivingEntity livingEntity, ItemStack itemStack) {
-    super.setPlacedBy(level, pos, state, livingEntity, itemStack);
-    DyeColor color = DyeColor.getColor(itemStack);
-    if (color != null) {
-      state.setValue(COLOR, color);
+    var tag = itemStack.getTag();
+    if (tag != null) {
+      if (level.getBlockEntity(pos) instanceof ForceTrackEmitterBlockEntity t) {
+        var color = DyeColor.byName(tag.getString("color"), null);
+        if (color != null) {
+          t.setColor(color);
+        }
+      }
     }
     level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .ifPresent(ForceTrackEmitterBlockEntity::checkSignal);
@@ -186,6 +192,10 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   @Override
   public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
       boolean moved) {
+    if (!state.is(newState.getBlock())) {
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
+          .ifPresent(ForceTrackEmitterBlockEntity::clearTracks);
+    }
     super.onRemove(state, level, pos, newState, moved);
     if (!state.is(newState.getBlock())) {
       this.deregisterNode((ServerLevel) level, pos);
@@ -204,6 +214,13 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     return level.isClientSide() ? null
         : createTickerHelper(type, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get(),
             ForceTrackEmitterBlockEntity::serverTick);
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
+      TooltipFlag flag) {
+    super.appendHoverText(stack, level, tooltip, flag);
+    tooltip.add(Component.translatable(Translations.Tips.FORCE_TRACK_EMITTER).withStyle(ChatFormatting.GRAY));
   }
 
   public static Direction getFacing(BlockState blockState) {

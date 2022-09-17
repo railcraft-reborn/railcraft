@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.Optional;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;

@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.EnumSet;
 import java.util.Set;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
 import mods.railcraft.api.signal.SingleSignalReceiver;

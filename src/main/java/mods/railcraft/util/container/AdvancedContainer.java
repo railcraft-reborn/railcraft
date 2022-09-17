@@ -1,6 +1,6 @@
 package mods.railcraft.util.container;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.util.container.manipulator.VanillaContainerManipulator;
 import mods.railcraft.world.module.ModuleProvider;

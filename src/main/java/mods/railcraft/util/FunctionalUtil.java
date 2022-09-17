@@ -2,6 +2,7 @@ package mods.railcraft.util;
 
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,6 +12,18 @@ import org.jetbrains.annotations.Nullable;
  * @author CovertJaguar <https://www.railcraft.info>
  */
 public class FunctionalUtil {
+
+  /**
+   * @see {@link IntStream#rangeClosed(int, int)}.
+   * @apiNote Unlike {@code IntStream.rangeClosed} it works even if
+   *          {@code endInclusive < startInclusive}.
+   */
+  public static IntStream rangeClosed(int startInclusive, int endInclusive) {
+    return startInclusive <= endInclusive
+        ? IntStream.rangeClosed(startInclusive, endInclusive)
+        : IntStream.rangeClosed(endInclusive, startInclusive)
+            .map(i -> endInclusive - i + startInclusive);
+  }
 
   /**
    * Helper function to use when casting Streams.

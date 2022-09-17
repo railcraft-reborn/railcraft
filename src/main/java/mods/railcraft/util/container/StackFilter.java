@@ -3,7 +3,7 @@ package mods.railcraft.util.container;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.api.track.TrackUtil;

@@ -20,7 +20,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.CompositeFluidHandler;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -214,8 +214,8 @@ public final class Train implements Iterable<AbstractMinecart> {
     getExisting(next).filter(t -> t != this).ifPresent(Train::kill);
     this.addTrainTag(next);
 
-    AbstractMinecart linkA = LinkageManagerImpl.INSTANCE.getLinkedCartA(next);
-    AbstractMinecart linkB = LinkageManagerImpl.INSTANCE.getLinkedCartB(next);
+    var linkA = LinkageManagerImpl.INSTANCE.getLinkedCartA(next).orElse(null);
+    var linkB = LinkageManagerImpl.INSTANCE.getLinkedCartB(next).orElse(null);
 
     if (linkA != null && linkA != prev && !this.contains(linkA)) {
       this.rebuild(next, linkA);

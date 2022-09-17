@@ -2,7 +2,7 @@ package mods.railcraft.world.inventory.slot;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
