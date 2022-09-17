@@ -1,7 +1,7 @@
 package mods.railcraft.world.module;
 
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
@@ -32,7 +32,7 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
 
   private final LazyOptional<IItemHandler> itemHandler =
       LazyOptional.of(() -> new InvWrapper(this) {
-        @Nonnull
+        @NotNull
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
           if (slot == SLOT_OUTPUT)

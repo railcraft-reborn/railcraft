@@ -1,6 +1,5 @@
 package mods.railcraft.world.module;
 
-import javax.annotation.Nonnull;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
@@ -21,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     extends ContainerModule<T> {
@@ -37,7 +37,7 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> this.tankManager);
   private final LazyOptional<IItemHandler> itemHandler =
       LazyOptional.of(() -> new InvWrapper(this) {
-        @Nonnull
+        @NotNull
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
           if (slot != SLOT_LIQUID_OUTPUT)

@@ -1,7 +1,7 @@
 package mods.railcraft.gui.widget;
 
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.Translations.Screen;
+import mods.railcraft.Translations;
 import mods.railcraft.util.HumanReadableNumberFormatter;
 import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import mods.railcraft.world.module.WaterCollectionModule;
@@ -58,22 +58,22 @@ public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
 
     this.tooltip.addAll(this.tank.getTooltip());
     this.tooltip.add(Component.empty());
-    this.tooltip.add(Component.translatable(Screen.WATER_TANK_SEE_SKY,
+    this.tooltip.add(Component.translatable(Translations.Screen.WATER_TANK_SEE_SKY,
             HumanReadableNumberFormatter.format(count))
         .withStyle(ChatFormatting.GRAY));
-    this.tooltip.add(Component.translatable(Screen.WATER_TANK_BASE_RATE,
+    this.tooltip.add(Component.translatable(Translations.Screen.WATER_TANK_BASE_RATE,
             HumanReadableNumberFormatter.format(baseRate * count))
         .withStyle(ChatFormatting.GRAY));
-    this.tooltip.add(Component.translatable(Screen.WATER_TANK_HUMIDITY,
+    this.tooltip.add(Component.translatable(Translations.Screen.WATER_TANK_HUMIDITY,
             HumanReadableNumberFormatter.format(humidityMultiplier))
         .withStyle(ChatFormatting.GRAY));
-    this.tooltip.add(Component.translatable(Screen.WATER_TANK_PRECIPITATION,
+    this.tooltip.add(Component.translatable(Translations.Screen.WATER_TANK_PRECIPITATION,
                 HumanReadableNumberFormatter.format(precipitationMultiplier))
         .withStyle(ChatFormatting.GRAY));
-    this.tooltip.add(Component.translatable(Screen.WATER_TANK_TEMP,
+    this.tooltip.add(Component.translatable(Translations.Screen.WATER_TANK_TEMP,
                 HumanReadableNumberFormatter.format(-temperaturePenalty))
         .withStyle(ChatFormatting.GRAY));
-    this.tooltip.add(Component.translatable(Screen.WATER_TANK_FINAL_RATE,
+    this.tooltip.add(Component.translatable(Translations.Screen.WATER_TANK_FINAL_RATE,
         HumanReadableNumberFormatter.format(
             (baseRate * count * humidityMultiplier * precipitationMultiplier)
                 - temperaturePenalty))
