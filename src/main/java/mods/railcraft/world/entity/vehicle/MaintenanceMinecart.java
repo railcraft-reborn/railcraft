@@ -110,11 +110,11 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     this.setDeltaMovement(this.getDeltaMovement().multiply(DRAG_FACTOR, 1.0D, DRAG_FACTOR));
   }
 
-  protected boolean placeNewTrack(BlockPos pos, int slotStock,
-      RailShape trackShape) {
-    ItemStack trackStock = getItem(slotStock);
-    if (!trackStock.isEmpty()) {
-      if (TrackUtil.placeRailAt(trackStock, (ServerLevel) this.level, pos)) {
+  protected boolean placeNewTrack(BlockPos pos, int slotStock, RailShape railShape) {
+    ItemStack trackStack = getItem(slotStock);
+    if (!trackStack.isEmpty()) {
+      var succeed = TrackUtil.placeRailAt(trackStack, (ServerLevel) this.level, pos, railShape);
+      if (succeed) {
         this.removeItem(slotStock, 1);
         this.blink();
         return true;

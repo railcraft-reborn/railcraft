@@ -80,22 +80,22 @@ public final class TrackUtil {
     if (stack.getItem() instanceof BlockItem blockItem
         && blockItem.getBlock() instanceof BaseRailBlock railBlock) {
       var blockState = setShape(railBlock, railShape);
-      if (!level.setBlockAndUpdate(pos, blockState)) {
-        return false;
+      boolean success = level.setBlockAndUpdate(pos, blockState);
+      if (success) {
+        var soundType = railBlock.getSoundType(blockState, level, pos, null);
+        level.playSound(null, pos,
+            soundType.getPlaceSound(),
+            SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F,
+            soundType.getPitch() * 0.8F);
       }
-
-      var soundType = railBlock.getSoundType(blockState, level, pos, null);
-      level.playSound(null, pos,
-          soundType.getPlaceSound(),
-          SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F,
-          soundType.getPitch() * 0.8F);
+      return success;
     }
 
     return false;
   }
 
-  public static boolean placeRailAt(ItemStack stack, ServerLevel world, BlockPos pos) {
-    return placeRailAt(stack, world, pos, RailShape.NORTH_SOUTH);
+  public static boolean placeRailAt(ItemStack stack, ServerLevel level, BlockPos pos) {
+    return placeRailAt(stack, level, pos, RailShape.NORTH_SOUTH);
   }
 
   /**
