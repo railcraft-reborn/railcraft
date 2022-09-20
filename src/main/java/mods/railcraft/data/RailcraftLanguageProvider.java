@@ -317,6 +317,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
+    this.add(Translations.Tips.TRACK_LAYER, "Lays track as it moves");
+    this.add(Translations.Tips.TRACK_REMOVER, "Removes tracks it passes over");
     this.add(Translations.Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
     this.add(Translations.Tips.COKE_OVEN, "Multi-Block: 3x3x3 (Hollow)");
     this.add(Translations.Tips.BLAST_FURNACE, "Multi-Block: 3x4x3 (Hollow)");

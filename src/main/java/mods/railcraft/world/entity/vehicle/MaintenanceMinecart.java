@@ -113,8 +113,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   protected boolean placeNewTrack(BlockPos pos, int slotStock, RailShape railShape) {
     ItemStack trackStack = getItem(slotStock);
     if (!trackStack.isEmpty()) {
-      var succeed = TrackUtil.placeRailAt(trackStack, (ServerLevel) this.level, pos, railShape);
-      if (succeed) {
+      if (TrackUtil.placeRailAt(trackStack, (ServerLevel) this.level, pos, railShape)) {
         this.removeItem(slotStock, 1);
         this.blink();
         return true;

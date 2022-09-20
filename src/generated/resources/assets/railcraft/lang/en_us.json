@@ -686,5 +686,7 @@
   "tips.railcraft.track_kit.corners_unsupported": "Corners are Unsupported",
   "tips.railcraft.track_kit.invalid_track_type": "Invalid Track Type",
   "tips.railcraft.track_kit.slopes_unsupported": "Slopes are Unsupported",
+  "tips.railcraft.track_layer": "Lays track as it moves",
+  "tips.railcraft.track_remover": "Removes tracks it passes over",
   "tips.railcraft.transition_track": "Transitions to/from high speed"
 }
