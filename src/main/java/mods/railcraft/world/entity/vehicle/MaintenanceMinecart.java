@@ -38,13 +38,12 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   public static final EntityDataAccessor<Byte> MODE =
       SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.BYTE);
 
-  protected MaintenanceMinecart(EntityType<?> type, Level world) {
-    super(type, world);
+  protected MaintenanceMinecart(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
-  protected MaintenanceMinecart(EntityType<?> type, double x, double y, double z,
-      Level world) {
-    super(type, x, y, z, world);
+  protected MaintenanceMinecart(EntityType<?> type, double x, double y, double z, Level level) {
+    super(type, x, y, z, level);
   }
 
   @Override

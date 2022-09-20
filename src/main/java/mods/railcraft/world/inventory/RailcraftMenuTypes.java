@@ -2,6 +2,7 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
+import mods.railcraft.world.entity.vehicle.TrackLayer;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
@@ -110,6 +111,10 @@ public class RailcraftMenuTypes {
   public static final RegistryObject<MenuType<TunnelBoreMenu>> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
           () -> new MenuType<>(entityMenu(TunnelBore.class, TunnelBoreMenu::new)));
+
+  public static final RegistryObject<MenuType<TrackLayerMenu>> TRACK_LAYER =
+      deferredRegister.register("track_layer",
+          () -> new MenuType<>(entityMenu(TrackLayer.class, TrackLayerMenu::new)));
 
   private static <T extends AbstractContainerMenu, E extends Entity> IContainerFactory<T> entityMenu(
       Class<E> entityType, CustomMenuFactory<T, E> factory) {

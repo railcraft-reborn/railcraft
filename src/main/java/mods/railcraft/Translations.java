@@ -76,6 +76,8 @@ public class Translations {
         makeKey("screen", "embarking_track.radius");
     public static final String LAUNCHER_TRACK_LAUNCH_FORCE =
         makeKey("screen", "launcher_track.launch_force");
+    public static final String PATTERN = makeKey("screen", "track_layer.patter");
+    public static final String STOCK = makeKey("screen", "track_layer.stock");
   }
 
   public static class Tips {

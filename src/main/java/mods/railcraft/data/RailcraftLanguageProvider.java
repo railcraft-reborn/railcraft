@@ -170,8 +170,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.TICKET, "Ticket");
     this.addItem(RailcraftItems.WHISTLE_TUNER, "Whistle Tuner");
     this.addItem(RailcraftItems.TUNNEL_BORE, "Tunnel Bore");
-    this.addItem(RailcraftItems.TRACK_LAYER, "Track Layer");
-    this.addItem(RailcraftItems.TRACK_REMOVER, "Track Remover");
+    this.addItem(RailcraftItems.TRACK_LAYER, "Track Layer Cart");
+    this.addItem(RailcraftItems.TRACK_REMOVER, "Track Remover Cart");
     this.addItem(RailcraftItems.IRON_SPIKE_MAUL, "Iron Spike Maul");
     this.addItem(RailcraftItems.STEEL_SPIKE_MAUL, "Steel Spike Maul");
     this.addItem(RailcraftItems.DIAMOND_SPIKE_MAUL, "Diamond Spike Maul");
@@ -285,6 +285,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addEntityType(RailcraftEntityTypes.STEAM_LOCOMOTIVE, "Steam Locomotive");
     this.addEntityType(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE, "Electric Locomotive");
     this.addEntityType(RailcraftEntityTypes.TUNNEL_BORE, "Tunnel Bore");
+    this.addEntityType(RailcraftEntityTypes.TRACK_LAYER, "Track Layer Cart");
+    this.addEntityType(RailcraftEntityTypes.TRACK_REMOVER, "Track Remover Cart");
   }
 
   private void fluidTranslations() {
@@ -494,6 +496,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.MULTIBLOCK_ASSEMBLY_FAILED, "Multiblock Assembly Failed");
     this.add(Translations.Screen.EMBARKING_TRACK_RADIUS, "Radius: %s");
     this.add(Translations.Screen.LAUNCHER_TRACK_LAUNCH_FORCE, "Launch Force: %s");
+    this.add(Translations.Screen.PATTERN, "Pattern");
+    this.add(Translations.Screen.STOCK, "Stock");
   }
 
   private void trackTranslations() {

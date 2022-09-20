@@ -23,13 +23,12 @@ public class TrackRemover extends MaintenanceMinecart {
   private final Set<BlockPos> tracksBehind = new HashSet<>();
   private final Set<BlockPos> tracksRemoved = new HashSet<>();
 
-  public TrackRemover(EntityType<?> type, Level world) {
-    super(type, world);
+  public TrackRemover(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
-  public TrackRemover(ItemStack itemStack, double x, double y, double z,
-      ServerLevel world) {
-    super(RailcraftEntityTypes.TRACK_REMOVER.get(), x, y, z, world);
+  public TrackRemover(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
+    super(RailcraftEntityTypes.TRACK_REMOVER.get(), x, y, z, level);
   }
 
   @Override
@@ -78,7 +77,7 @@ public class TrackRemover extends MaintenanceMinecart {
   }
 
   @Override
-  protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
+  protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
     return null;
   }
 

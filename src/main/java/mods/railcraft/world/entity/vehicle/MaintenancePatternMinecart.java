@@ -20,15 +20,15 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
     implements WorldlyContainer {
 
   protected final AdvancedContainer patternContainer =
-      new AdvancedContainer(6).listener((Container) this);
+      new AdvancedContainer(6).listener(this);
 
-  protected MaintenancePatternMinecart(EntityType<?> type, Level world) {
-    super(type, world);
+  protected MaintenancePatternMinecart(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
   protected MaintenancePatternMinecart(EntityType<?> type, double x, double y, double z,
-      Level world) {
-    super(type, x, y, z, world);
+      Level level) {
+    super(type, x, y, z, level);
   }
 
   public Container getPattern() {

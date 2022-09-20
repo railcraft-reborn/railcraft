@@ -3,6 +3,7 @@ package mods.railcraft.world.entity.vehicle;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
+import mods.railcraft.world.inventory.TrackLayerMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -112,7 +113,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
   }
 
   @Override
-  protected AbstractContainerMenu createMenu(int p_213968_1_, Inventory p_213968_2_) {
-    return null;
+  protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
+    return new TrackLayerMenu(id, inventory, this);
   }
 }
