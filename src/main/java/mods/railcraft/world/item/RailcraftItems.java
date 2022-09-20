@@ -7,8 +7,6 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
-import mods.railcraft.world.entity.vehicle.TrackLayer;
-import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
