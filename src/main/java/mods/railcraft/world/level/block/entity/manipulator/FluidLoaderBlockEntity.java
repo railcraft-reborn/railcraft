@@ -127,9 +127,8 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
   @Override
   protected void processCart(AbstractMinecart cart) {
-    if (cart instanceof SteamLocomotive) {
-      SteamLocomotive loco = (SteamLocomotive) cart;
-      if (!loco.isSafeToFill()) {
+    if (cart instanceof SteamLocomotive locomotive) {
+      if (!locomotive.isSafeToFill()) {
         this.retractPipe();
         return;
       }
