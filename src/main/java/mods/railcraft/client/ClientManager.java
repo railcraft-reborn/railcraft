@@ -4,6 +4,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
+import mods.railcraft.client.gui.screen.inventory.CartDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
@@ -131,6 +132,8 @@ public class ClientManager {
         ItemManipulatorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(),
         FluidManipulatorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.CART_DISPENSER.get(),
+        CartDispenserScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(),
         TankMinecartScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);

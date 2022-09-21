@@ -6,10 +6,12 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemUnloaderBlock;
+import mods.railcraft.world.level.block.manipulator.CartDispenserBlock;
 import mods.railcraft.world.level.block.manipulator.FluidLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.FluidUnloaderBlock;
 import mods.railcraft.world.level.block.manipulator.ItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.ItemUnloaderBlock;
+import mods.railcraft.world.level.block.manipulator.TrainDispenserBlock;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.signal.AnalogSignalControllerBoxBlock;
 import mods.railcraft.world.level.block.signal.BlockSignalBlock;
@@ -469,6 +471,16 @@ public class RailcraftBlocks {
   public static final RegistryObject<ItemUnloaderBlock> ITEM_UNLOADER =
       deferredRegister.register("item_unloader",
           () -> new ItemUnloaderBlock(BlockBehaviour.Properties
+              .copy(ADVANCED_ITEM_LOADER.get())));
+
+  public static final RegistryObject<CartDispenserBlock> CART_DISPENSER =
+      deferredRegister.register("cart_dispenser",
+          () -> new CartDispenserBlock(BlockBehaviour.Properties
+              .copy(ADVANCED_ITEM_LOADER.get())));
+
+  public static final RegistryObject<TrainDispenserBlock> TRAIN_DISPENSER =
+      deferredRegister.register("train_dispenser",
+          () -> new TrainDispenserBlock(BlockBehaviour.Properties
               .copy(ADVANCED_ITEM_LOADER.get())));
 
   public static final RegistryObject<SwitchTrackActuatorBlock> SWITCH_TRACK_LEVER =

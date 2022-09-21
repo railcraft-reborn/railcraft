@@ -95,6 +95,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ADVANCED_ITEM_UNLOADER, "Advanced Item Unloader");
     this.addBlock(RailcraftBlocks.ITEM_LOADER, "Item Loader");
     this.addBlock(RailcraftBlocks.ITEM_UNLOADER, "Item Unloader");
+    this.addBlock(RailcraftBlocks.CART_DISPENSER, "Cart Dispenser");
+    this.addBlock(RailcraftBlocks.TRAIN_DISPENSER, "Train Dispenser");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_LEVER, "Switch Track Lever");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR, "Switch Track Motor");
     this.addBlock(RailcraftBlocks.BLOCK_SIGNAL, "Block Signal");
@@ -413,6 +415,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.ITEM_UNLOADER, "Unloads items from carts");
     this.add(Translations.Tips.FLUID_LOADER, "Loads fluids into carts");
     this.add(Translations.Tips.FLUID_UNLOADER, "Unloads fluids from carts");
+    this.add(Translations.Tips.CART_DISPENSER, "Dispenses carts onto tracks");
+    this.add(Translations.Tips.TRAIN_DISPENSER, "Dispenses linked trains onto tracks");
     this.add(Translations.Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
     this.add(Translations.Tips.SIGNAL_TUNER, "Links Controllers to Receivers");
     this.add(Translations.Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");
@@ -426,6 +430,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.APPLY_REDSTONE_TO_OPEN, "- Apply Redstone to open -");
     this.add(Translations.Tips.APPLY_REDSTONE_TO_RELEASE_CARTS,
         "- Apply Redstone to release carts -");
+    this.add(Translations.Tips.APPLY_REDSTONE_TO_DISPENSE_CARTS,
+        "- Apply Redstone to dispense carts -");
+    this.add(Translations.Tips.APPLY_REDSTONE_TO_DISPENSE_TRAINS,
+        "- Apply Redstone to dispense trains -");
     this.add(Translations.Tips.COMPARATOR_OUTPUT_FROM_CARTS,
         "- Can be used to get Comparator output from carts -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_DIRECTION,
@@ -436,6 +444,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_MODE, "- Hit with Crowbar to change mode -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_FORCE, "- Hit with Crowbar to change force -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_ROTATE, "- Hit with Crowbar to rotate -");
+    this.add(Translations.Tips.PAIR_WITH_CONTROL_TRACK, "- Pair with Control track-");
     this.add(Translations.Tips.PLACE_ABOVE_TRACK, "- Place 1-2 blocks above track -");
     this.add(Translations.Tips.PLACE_UNDER_TRACK, "- Place under track -");
     this.add(Translations.Tips.PLACE_OVER_TRACK, "- Place over track -");

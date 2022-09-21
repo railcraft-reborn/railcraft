@@ -872,6 +872,24 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
             has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
         .save(consumer);
+    ShapelessRecipeBuilder.shapeless(RailcraftItems.CART_DISPENSER.get())
+        .requires(Items.DISPENSER)
+        .requires(Items.MINECART)
+        .unlockedBy(getHasName(Items.DISPENSER),
+            has(Items.DISPENSER))
+        .unlockedBy(getHasName(Items.MINECART),
+            has(Items.MINECART))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.TRAIN_DISPENSER.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', Items.REDSTONE)
+        .define('b', RailcraftTags.Items.CROWBAR)
+        .define('c', RailcraftItems.CART_DISPENSER.get())
+        .unlockedBy(getHasName(RailcraftItems.CART_DISPENSER.get()),
+            has(RailcraftItems.CART_DISPENSER.get()))
+        .save(consumer);
   }
 
   private void buildCrowbars(Consumer<FinishedRecipe> consumer) {

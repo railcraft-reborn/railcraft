@@ -391,6 +391,14 @@ public class RailcraftItems {
       deferredRegister.register("item_unloader",
           () -> new BlockItem(RailcraftBlocks.ITEM_UNLOADER.get(), new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<Item> CART_DISPENSER =
+      deferredRegister.register("cart_dispenser",
+          () -> new BlockItem(RailcraftBlocks.CART_DISPENSER.get(), new Item.Properties().tab(TAB)));
+
+  public static final RegistryObject<Item> TRAIN_DISPENSER =
+      deferredRegister.register("train_dispenser",
+          () -> new BlockItem(RailcraftBlocks.TRAIN_DISPENSER.get(), new Item.Properties().tab(TAB)));
+
   public static final RegistryObject<Item> IRON_SPIKE_MAUL =
       deferredRegister.register("iron_spike_maul",
           () -> new SpikeMaulItem(11.0F, -3.5F, Tiers.IRON,

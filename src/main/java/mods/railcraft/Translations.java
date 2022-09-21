@@ -182,6 +182,8 @@ public class Translations {
     public static final String ITEM_UNLOADER = makeKey("tips", "item_unloader");
     public static final String FLUID_LOADER = makeKey("tips", "fluid_loader");
     public static final String FLUID_UNLOADER = makeKey("tips", "fluid_unloader");
+    public static final String CART_DISPENSER = makeKey("tips", "cart_dispenser");
+    public static final String TRAIN_DISPENSER = makeKey("tips", "train_dispenser");
     public static final String SIGNAL_BLOCK_SURVEYOR =
         makeKey("tips", "signal_block_surveyor");
     public static final String SIGNAL_TUNER = makeKey("tips", "signal_tuner");
@@ -204,6 +206,10 @@ public class Translations {
         makeKey("tips", "apply_redstone_to_open");
     public static final String APPLY_REDSTONE_TO_RELEASE_CARTS =
         makeKey("tips", "apply_redstone_to_release_carts");
+    public static final String APPLY_REDSTONE_TO_DISPENSE_CARTS =
+        makeKey("tips", "apply_redstone_to_dispense_carts");
+    public static final String APPLY_REDSTONE_TO_DISPENSE_TRAINS =
+        makeKey("tips", "apply_redstone_to_release_trains");
     public static final String COMPARATOR_OUTPUT_FROM_CARTS =
         makeKey("tips", "comparator_output_from_carts");
     public static final String HIT_CROWBAR_TO_CHANGE_DIRECTION =
@@ -218,6 +224,8 @@ public class Translations {
         makeKey("tips", "hit_crowbar_to_change_force");
     public static final String HIT_CROWBAR_TO_ROTATE =
         makeKey("tips", "hit_crowbar_to_rotate");
+    public static final String PAIR_WITH_CONTROL_TRACK =
+        makeKey("tips", "pair_with_control_track");
     public static final String PLACE_OVER_TRACK = makeKey("tips", "place_over_track");
     public static final String PLACE_UNDER_TRACK = makeKey("tips", "place_under_track");
     public static final String PLACE_ABOVE_TRACK = makeKey("tips", "place_above_track");

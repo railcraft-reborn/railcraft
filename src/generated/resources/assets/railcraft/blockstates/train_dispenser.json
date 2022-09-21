@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "railcraft:block/train_dispenser_down"
+    },
+    "facing=east": {
+      "model": "railcraft:block/train_dispenser",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "railcraft:block/train_dispenser"
+    },
+    "facing=south": {
+      "model": "railcraft:block/train_dispenser",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "railcraft:block/train_dispenser_up"
+    },
+    "facing=west": {
+      "model": "railcraft:block/train_dispenser",
+      "y": 270
+    }
+  }
+}
