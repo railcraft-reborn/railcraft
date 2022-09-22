@@ -16,7 +16,7 @@ public class RailcraftRenderTypes extends RenderStateShard {
           .setLightmapState(LIGHTMAP)
           .createCompositeState(false));
 
-  private RailcraftRenderTypes(String p_110161_, Runnable p_110162_, Runnable p_110163_) {
-    super(p_110161_, p_110162_, p_110163_);
+  private RailcraftRenderTypes(String name, Runnable setupState, Runnable clearState){
+    super(name, setupState, clearState);
   }
 }

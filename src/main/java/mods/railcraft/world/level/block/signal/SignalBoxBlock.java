@@ -61,7 +61,7 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
 
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos,
-      Block neighborBlock, BlockPos neighborPos, boolean p_220069_6_) {
+      Block neighborBlock, BlockPos neighborPos, boolean isMoving) {
     LevelUtil.getBlockEntity(level, pos, AbstractSignalBoxBlockEntity.class)
         .ifPresent(AbstractSignalBoxBlockEntity::neighborChanged);
   }
@@ -69,12 +69,12 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   @SuppressWarnings("deprecation")
   @Override
   public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState,
-      boolean moved) {
+      boolean isMoving) {
     if (!blockState.is(newState.getBlock())) {
       LevelUtil.getBlockEntity(level, blockPos, AbstractSignalBoxBlockEntity.class)
           .ifPresent(AbstractSignalBoxBlockEntity::blockRemoved);
     }
-    super.onRemove(blockState, level, blockPos, newState, moved);
+    super.onRemove(blockState, level, blockPos, newState, isMoving);
   }
 
   @Override
@@ -91,8 +91,8 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   }
 
   @Override
-  public VoxelShape getShape(BlockState p_220053_1_, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-      CollisionContext p_220053_4_) {
+  public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
+      CollisionContext context) {
     return SHAPE;
   }
 

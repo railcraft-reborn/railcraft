@@ -59,8 +59,8 @@ public class SteamLocomotiveModel extends HierarchicalModel<Locomotive> {
   }
 
   @Override
-  public void setupAnim(Locomotive p_225597_1_, float p_225597_2_, float p_225597_3_,
-      float p_225597_4_, float p_225597_5_, float p_225597_6_) {}
+  public void setupAnim(Locomotive entity, float limbSwing, float limbSwingAmount, float ageInTicks,
+      float netHeadYaw, float headPitch) {}
 
   @Override
   public ModelPart root() {

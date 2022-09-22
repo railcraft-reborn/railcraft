@@ -56,10 +56,10 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
   protected void defineSynchedData() {}
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag p_70037_1_) {}
+  protected void readAdditionalSaveData(CompoundTag compound) {}
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag p_213281_1_) {}
+  protected void addAdditionalSaveData(CompoundTag compound) {}
 
   /**
    * Returns true if other Entities should be prevented from moving through this Entity.
@@ -73,9 +73,9 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
    * Called when the entity is attacked.
    */
   @Override
-  public boolean hurt(DamageSource damageSource, float p_70097_2_) {
+  public boolean hurt(DamageSource damageSource, float amount) {
     return !isInvulnerableTo(damageSource)
-        && getParent().attackEntityFromPart(this, damageSource, p_70097_2_);
+        && getParent().attackEntityFromPart(this, damageSource, amount);
   }
 
   /**
