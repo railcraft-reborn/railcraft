@@ -3,6 +3,8 @@ package mods.railcraft.util;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import net.minecraft.core.BlockPos;
@@ -151,5 +153,37 @@ public class LevelUtil {
       }
     }
     return null;
+  }
+
+  public static void spewItem(ItemStack stack, Level level, double x, double y, double z) {
+    if (!stack.isEmpty()) {
+      float xOffset = level.random.nextFloat() * 0.8F + 0.1F;
+      float yOffset = level.random.nextFloat() * 0.8F + 0.1F;
+      float zOffset = level.random.nextFloat() * 0.8F + 0.1F;
+      while (!stack.isEmpty()) {
+        int numToDrop = level.random.nextInt(21) + 10;
+        if (numToDrop > stack.getCount())
+          numToDrop = stack.getCount();
+        ItemStack newStack = stack.copy();
+        setSize(newStack, numToDrop);
+        decSize(stack, numToDrop);
+        var itemEntity = new ItemEntity(level, x + xOffset, y + yOffset, z + zOffset, newStack);
+        level.addFreshEntity(itemEntity);
+      }
+    }
+  }
+
+  private static ItemStack setSize(ItemStack stack, int size) {
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
+    stack.setCount(size);
+    return stack;
+  }
+
+  private static ItemStack decSize(ItemStack stack, int size) {
+    if (stack.isEmpty())
+      return ItemStack.EMPTY;
+    stack.shrink(size);
+    return stack;
   }
 }

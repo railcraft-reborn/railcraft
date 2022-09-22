@@ -13,7 +13,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -69,14 +68,17 @@ public class CartDispenserBlock extends ManipulatorBlock<CartDispenserBlockEntit
   }
 
   @Override
-  public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos,
-      BlockPos neighbor) {
-    super.onNeighborChange(state, level, pos, neighbor);
+  public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
+      BlockPos fromPos, boolean isMoving) {
+
+    boolean flag = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
+    level.setBlock(pos, state.setValue(POWERED, flag), 4);
+
     if (level.isClientSide()) {
       return;
     }
     if (level.getBlockEntity(pos) instanceof CartDispenserBlockEntity cartDispenserBlockEntity) {
-
+      cartDispenserBlockEntity.onNeighborChange();
     }
   }
 

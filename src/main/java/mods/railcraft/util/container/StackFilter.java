@@ -3,6 +3,7 @@ package mods.railcraft.util.container;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
+import mods.railcraft.world.item.CartItem;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.item.MinecartFactory;
@@ -33,8 +34,12 @@ public enum StackFilter implements Predicate<ItemStack> {
   ALL(Predicates.alwaysTrue()),
   FUEL(itemStack -> ForgeHooks.getBurnTime(itemStack, null) > 0),
   TRACK(TrackUtil::isRail),
-  MINECART(itemStack -> itemStack.getItem() instanceof MinecartItem
-      || itemStack.getItem() instanceof MinecartFactory),
+  MINECART(itemStack ->  {
+    var item = itemStack.getItem();
+    return item instanceof MinecartItem ||
+        item instanceof MinecartFactory ||
+        item instanceof CartItem;
+  } ),
   @SuppressWarnings("deprecation")
   BALLAST(itemStack -> itemStack.getItem() instanceof BlockItem blockItem
       && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),

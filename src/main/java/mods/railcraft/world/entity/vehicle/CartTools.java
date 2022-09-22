@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.core.RailcraftFakePlayer;
+import mods.railcraft.api.item.MinecartFactory;
+import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.util.EntitySearcher;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -221,5 +224,27 @@ public final class CartTools {
     entity.setPos(x, y, z);
     entity.setOldPosAndRot();
     entity.setDeltaMovement(Vec3.ZERO);
+  }
+
+  @Nullable
+  public static AbstractMinecart placeCart(MinecartFactory minecartFactory, ItemStack cartStack,
+      ServerLevel level, BlockPos pos) {
+    var blockState = level.getBlockState(pos);
+    if (!TrackUtil.isStraightTrackAt(level, pos)) {
+      return null;
+    }
+
+    if (EntitySearcher.findMinecarts().around(pos).search(level).isEmpty()) {
+      var trackShape = TrackUtil.getTrackDirection(level, pos, blockState);
+      double h = trackShape.isAscending() ? 0.5 : 0.0;
+
+      AbstractMinecart cart = minecartFactory.createMinecart(cartStack, pos.getX() + 0.5,
+          pos.getY() + 0.0625D + h, pos.getZ() + 0.5, level);
+      if (cartStack.hasCustomHoverName())
+        cart.setCustomName(cartStack.getDisplayName());
+      level.addFreshEntity(cart);
+      return cart;
+    }
+    return null;
   }
 }

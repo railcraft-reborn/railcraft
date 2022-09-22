@@ -1,19 +1,23 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import mods.railcraft.RailcraftConfig;
+import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.util.LevelUtil;
+import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.inventory.CartDispenserMenu;
+import mods.railcraft.world.item.CartItem;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,16 +28,15 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
 
   public CartDispenserBlockEntity(BlockPos pos, BlockState state) {
     super(RailcraftBlockEntityTypes.CART_DISPENSER.get(), pos, state);
+    this.setContainerSize(3);
   }
 
-  /*public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       CartDispenserBlockEntity blockEntity) {
     if (blockEntity.timeSinceLastSpawn < Integer.MAX_VALUE) {
       blockEntity.timeSinceLastSpawn++;
     }
-  }*/
-
-
+  }
 
   @Override
   protected boolean hasWorkForCart(AbstractMinecart cart) {
@@ -41,8 +44,68 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
   }
 
   @Override
-  protected void processCart(AbstractMinecart cart) {
+  protected void processCart(AbstractMinecart cart) {}
 
+  public void onNeighborChange() {
+    if (!(this.level instanceof ServerLevel serverLevel)) {
+      return;
+    }
+
+    boolean newPowered = this.isPowered();
+    if (!this.powered && newPowered) {
+      this.powered = true;
+      this.setPowered(true);
+      this.onPulse(serverLevel);
+    } else {
+      this.powered = newPowered;
+      this.setPowered(this.powered);
+    }
+  }
+
+  private void onPulse(ServerLevel serverLevel) {
+
+    var cart = EntitySearcher.findMinecarts()
+        .around(this.getBlockPos().offset(this.getFacing().getNormal()))
+        .search(serverLevel)
+        .any();
+
+    if (cart == null) {
+      if (this.timeSinceLastSpawn > RailcraftConfig.server.cartDispenserDelay.get() * 20) {
+        for (int i = 0; i < this.getContainerSize(); i++) {
+          ItemStack cartStack = this.getItem(i);
+          if (!cartStack.isEmpty()) {
+            BlockPos pos = this.getBlockPos().offset(this.getFacing().getNormal());
+            //boolean minecartItem = cartStack instanceof AbstractMinecart;
+            if (cartStack.getItem() instanceof CartItem cartItem/*|| minecartItem*/) {
+              var placedStack = cartStack.copy();
+              var placedCart = CartTools.placeCart(cartItem.getMinecartFactory(), placedStack,
+                  serverLevel, pos);
+              if (placedCart != null) {
+                this.removeItem(i, 1);
+                this.timeSinceLastSpawn = 0;
+                break;
+              }
+            } else {
+              LevelUtil.spewItem(cartStack, level, pos.getX(), pos.getY(), pos.getZ());
+              this.setItem(i, ItemStack.EMPTY);
+            }
+          }
+        }
+      }
+    } else if (cart.isAlive()) {
+      System.out.println("ELSE IF");
+      /*ContainerCopy testInv = new ContainerCopy(this);
+      ItemStack cartStack = new ItemStack(cart.getDropItem());
+      if (cart.hasCustomName())
+        cartStack.setHoverName(cart.getName());
+      ItemStack remainder = testInv.addStack(cartStack.copy());
+      if (remainder.isEmpty()) {
+        this.addStack(cartStack);
+        if (!cart.getPassengers().isEmpty())
+          CartTools.removePassengers(cart);
+        cart.kill();
+      }*/
+    }
   }
 
   @Nullable

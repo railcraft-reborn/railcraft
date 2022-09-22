@@ -6,28 +6,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class CartDispenserScreen extends ManipulatorScreen<CartDispenserMenu> {
+public class CartDispenserScreen extends RailcraftMenuScreen<CartDispenserMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/cart_slots.png");
 
-  public CartDispenserScreen(CartDispenserMenu menu, Inventory inventory,
-      Component title) {
+  public CartDispenserScreen(CartDispenserMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
+    this.imageHeight = 140;
+    this.inventoryLabelY = this.imageHeight - 94;
   }
-
-  @Override
-  public void init() {
-    super.init();
-    int centreX = (this.width - this.getXSize()) / 2;
-    int centreY = (this.height - this.getYSize()) / 2;
-  }
-
-  @Override
-  protected void sendAttributes() {
-
-  }
-
 
   @Override
   public ResourceLocation getWidgetsTexture() {
