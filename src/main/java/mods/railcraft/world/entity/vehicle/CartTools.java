@@ -240,6 +240,30 @@ public final class CartTools {
 
       AbstractMinecart cart = minecartFactory.createMinecart(cartStack, pos.getX() + 0.5,
           pos.getY() + 0.0625D + h, pos.getZ() + 0.5, level);
+      if (cart != null) {
+        if (cartStack.hasCustomHoverName())
+          cart.setCustomName(cartStack.getDisplayName());
+        level.addFreshEntity(cart);
+      }
+      return cart;
+    }
+    return null;
+  }
+
+  @Nullable
+  public static AbstractMinecart placeCart(AbstractMinecart.Type type, ItemStack cartStack,
+      ServerLevel level, BlockPos pos) {
+    var blockState = level.getBlockState(pos);
+    if (!TrackUtil.isStraightTrackAt(level, pos)) {
+      return null;
+    }
+
+    if (EntitySearcher.findMinecarts().around(pos).search(level).isEmpty()) {
+      var trackShape = TrackUtil.getTrackDirection(level, pos, blockState);
+      double h = trackShape.isAscending() ? 0.5 : 0.0;
+
+      AbstractMinecart cart = AbstractMinecart.createMinecart(level, pos.getX() + 0.5,
+          pos.getY() + 0.0625D + h, pos.getZ() + 0.5, type);
       if (cartStack.hasCustomHoverName())
         cart.setCustomName(cartStack.getDisplayName());
       level.addFreshEntity(cart);

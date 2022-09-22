@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -75,16 +76,20 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
           ItemStack cartStack = this.getItem(i);
           if (!cartStack.isEmpty()) {
             BlockPos pos = this.getBlockPos().offset(this.getFacing().getNormal());
-            //boolean minecartItem = cartStack instanceof AbstractMinecart;
-            if (cartStack.getItem() instanceof CartItem cartItem/*|| minecartItem*/) {
+            AbstractMinecart placedCart = null;
+            if (cartStack.getItem() instanceof CartItem cartItem) {
               var placedStack = cartStack.copy();
-              var placedCart = CartTools.placeCart(cartItem.getMinecartFactory(), placedStack,
+              placedCart = CartTools.placeCart(cartItem.getMinecartFactory(), placedStack,
                   serverLevel, pos);
-              if (placedCart != null) {
-                this.removeItem(i, 1);
-                this.timeSinceLastSpawn = 0;
-                break;
-              }
+            } else if (cartStack.getItem() instanceof MinecartItem minecartItem) {
+              var placedStack = cartStack.copy();
+              placedCart = CartTools.placeCart(minecartItem.type, placedStack, serverLevel, pos);
+            }
+
+            if (placedCart != null) {
+              this.removeItem(i, 1);
+              this.timeSinceLastSpawn = 0;
+              break;
             } else {
               LevelUtil.spewItem(cartStack, level, pos.getX(), pos.getY(), pos.getZ());
               this.setItem(i, ItemStack.EMPTY);
