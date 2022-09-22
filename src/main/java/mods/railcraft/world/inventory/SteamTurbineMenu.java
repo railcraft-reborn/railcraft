@@ -71,7 +71,7 @@ public class SteamTurbineMenu extends RailcraftMenu {
         new ItemFilterSlot(StackFilter.of(RailcraftItems.TURBINE_ROTOR.get()), rotorContainer, 0,
             60, 24).setStackLimit(1));
 
-    this.addPlayerSlots(inventory, GUI_HEIGHT);
+    this.addInventorySlots(inventory, GUI_HEIGHT);
   }
 
   public AnalogGaugeWidget getTurbineWidget() {

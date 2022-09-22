@@ -76,6 +76,8 @@ public class Translations {
         makeKey("screen", "embarking_track.radius");
     public static final String LAUNCHER_TRACK_LAUNCH_FORCE =
         makeKey("screen", "launcher_track.launch_force");
+    public static final String PATTERN = makeKey("screen", "track_layer.patter");
+    public static final String STOCK = makeKey("screen", "track_layer.stock");
   }
 
   public static class Tips {
@@ -96,6 +98,8 @@ public class Translations {
         makeKey("tips", "locomotive.item.secondary");
     public static final String LOCOMOTIVE_ITEM_WHISTLE =
         makeKey("tips", "locomotive.item.whistle");
+    public static final String TRACK_LAYER = makeKey("tips", "track_layer");
+    public static final String TRACK_REMOVER = makeKey("tips", "track_remover");
     public static final String CRUSHED_OBSIDIAN =
         makeKey("tips", "crushed_obsidian");
     public static final String COKE_OVEN =

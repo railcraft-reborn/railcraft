@@ -7,19 +7,18 @@ import mods.railcraft.world.inventory.slot.FluidFilterSlot;
 import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import mods.railcraft.world.inventory.slot.OutputSlot;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
 public class TankMinecartMenu extends RailcraftMenu {
 
-  private final FluidGaugeWidget fluidGuage;
+  private final FluidGaugeWidget fluidGauge;
 
   public TankMinecartMenu(int id, Inventory inventory,
       TankMinecart tankMinecart) {
     super(RailcraftMenuTypes.TANK_MINECART.get(), id, inventory.player, tankMinecart::stillValid);
 
-    this.addWidget(this.fluidGuage =
+    this.addWidget(this.fluidGauge =
         new FluidGaugeWidget(tankMinecart.getTankManager().get(0), 35, 23, 176, 0, 16, 47));
 
     this.addSlot(new FluidFilterSlot(tankMinecart.getFilterInv(), 0, 80, 21));
@@ -40,15 +39,15 @@ public class TankMinecartMenu extends RailcraftMenu {
   }
 
   public FluidGaugeWidget getFluidGauge() {
-    return this.fluidGuage;
+    return this.fluidGauge;
   }
 
   public static TankMinecartMenu create(int id, Inventory playerInventory,
       FriendlyByteBuf data) {
     int entityId = data.readVarInt();
-    Entity entity = playerInventory.player.level.getEntity(entityId);
-    if (entity instanceof TankMinecart) {
-      return new TankMinecartMenu(id, playerInventory, (TankMinecart) entity);
+    var entity = playerInventory.player.level.getEntity(entityId);
+    if (entity instanceof TankMinecart tankMinecart) {
+      return new TankMinecartMenu(id, playerInventory, tankMinecart);
     }
     throw new IllegalStateException("Cannot find tank minecart with ID: " + entityId);
   }

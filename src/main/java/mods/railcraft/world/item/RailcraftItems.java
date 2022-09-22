@@ -7,8 +7,6 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
-import mods.railcraft.world.entity.vehicle.TrackLayer;
-import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
@@ -515,15 +513,17 @@ public class RailcraftItems {
               RailcraftBlocks.TOKEN_SIGNAL.get(),
               new Item.Properties().tab(TAB_TRANSPORTATION)));
 
-  public static final RegistryObject<Item> TRACK_REMOVER =
+  public static final RegistryObject<TrackRemoverCartItem> TRACK_REMOVER =
       deferredRegister.register("track_remover",
-          () -> new CartItem(TrackRemover::new,
-              new Item.Properties().tab(TAB_TRANSPORTATION)));
+          () -> new TrackRemoverCartItem(new Item.Properties()
+                  .rarity(Rarity.UNCOMMON)
+                  .tab(TAB_TRANSPORTATION)));
 
-  public static final RegistryObject<Item> TRACK_LAYER =
+  public static final RegistryObject<TrackLayerCartItem> TRACK_LAYER =
       deferredRegister.register("track_layer",
-          () -> new CartItem(TrackLayer::new,
-              new Item.Properties().tab(TAB_TRANSPORTATION)));
+          () -> new TrackLayerCartItem(new Item.Properties()
+                  .rarity(Rarity.UNCOMMON)
+                  .tab(TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
