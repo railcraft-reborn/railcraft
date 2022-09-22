@@ -489,7 +489,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   }
 
   @Override
-  protected Item getDropItem() {
+  public Item getDropItem() {
     return RailcraftItems.TUNNEL_BORE.get();
   }
 

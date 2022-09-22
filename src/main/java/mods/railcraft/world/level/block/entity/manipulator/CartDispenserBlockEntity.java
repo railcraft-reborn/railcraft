@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity.manipulator;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.LevelUtil;
+import mods.railcraft.util.container.ContainerCopy;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.inventory.CartDispenserMenu;
 import mods.railcraft.world.item.CartItem;
@@ -98,8 +99,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
         }
       }
     } else if (cart.isAlive()) {
-      System.out.println("ELSE IF");
-      /*ContainerCopy testInv = new ContainerCopy(this);
+      ContainerCopy testInv = new ContainerCopy(this);
       ItemStack cartStack = new ItemStack(cart.getDropItem());
       if (cart.hasCustomName())
         cartStack.setHoverName(cart.getName());
@@ -109,7 +109,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
         if (!cart.getPassengers().isEmpty())
           CartTools.removePassengers(cart);
         cart.kill();
-      }*/
+      }
     }
   }
 

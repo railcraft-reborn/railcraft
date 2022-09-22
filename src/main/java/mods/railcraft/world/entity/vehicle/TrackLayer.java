@@ -39,7 +39,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
   }
 
   @Override
-  protected Item getDropItem() {
+  public Item getDropItem() {
     return RailcraftItems.TRACK_LAYER.get();
   }
 
