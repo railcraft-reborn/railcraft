@@ -40,7 +40,7 @@ public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
     this.addSlot(
         new UnmodifiableSlot(locomotive, locomotive.getContainerSize() - 1, 134, guiHeight - 111));
 
-    this.addPlayerSlots(inventory, guiHeight);
+    this.addInventorySlots(inventory, guiHeight);
   }
 
   public static LocomotiveMenu<CreativeLocomotive> creative(int id,

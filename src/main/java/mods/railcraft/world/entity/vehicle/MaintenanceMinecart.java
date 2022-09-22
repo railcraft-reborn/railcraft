@@ -38,13 +38,12 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   public static final EntityDataAccessor<Byte> MODE =
       SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.BYTE);
 
-  protected MaintenanceMinecart(EntityType<?> type, Level world) {
-    super(type, world);
+  protected MaintenanceMinecart(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
-  protected MaintenanceMinecart(EntityType<?> type, double x, double y, double z,
-      Level world) {
-    super(type, x, y, z, world);
+  protected MaintenanceMinecart(EntityType<?> type, double x, double y, double z, Level level) {
+    super(type, x, y, z, level);
   }
 
   @Override
@@ -111,11 +110,10 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     this.setDeltaMovement(this.getDeltaMovement().multiply(DRAG_FACTOR, 1.0D, DRAG_FACTOR));
   }
 
-  protected boolean placeNewTrack(BlockPos pos, int slotStock,
-      RailShape trackShape) {
-    ItemStack trackStock = getItem(slotStock);
-    if (!trackStock.isEmpty()) {
-      if (TrackUtil.placeRailAt(trackStock, (ServerLevel) this.level, pos)) {
+  protected boolean placeNewTrack(BlockPos pos, int slotStock, RailShape railShape) {
+    ItemStack trackStack = getItem(slotStock);
+    if (!trackStack.isEmpty()) {
+      if (TrackUtil.placeRailAt(trackStack, (ServerLevel) this.level, pos, railShape)) {
         this.removeItem(slotStock, 1);
         this.blink();
         return true;
