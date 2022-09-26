@@ -20,6 +20,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +32,10 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
   public CartDispenserBlockEntity(BlockPos pos, BlockState state) {
     super(RailcraftBlockEntityTypes.CART_DISPENSER.get(), pos, state);
     this.setContainerSize(3);
+  }
+
+  protected CartDispenserBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    super(type, pos, state);
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
@@ -64,7 +69,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
     }
   }
 
-  private void onPulse(ServerLevel serverLevel) {
+  protected void onPulse(ServerLevel serverLevel) {
 
     var cart = EntitySearcher.findMinecarts()
         .around(this.getBlockPos().offset(this.getFacing().getNormal()))

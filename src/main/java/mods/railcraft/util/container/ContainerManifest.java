@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import net.minecraft.world.Container;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ForwardingMap;
 import mods.railcraft.util.ItemStackKey;
@@ -92,6 +94,19 @@ public final class ContainerManifest
     for (var filterKey : keys) {
       var filter = StackFilter.anyMatch(filterKey.stack());
       containers.streamItems()
+          .filter(filter)
+          .forEach(stack -> manifest.compute(filterKey, (k, v) -> compute(k, v, stack)));
+    }
+    return manifest;
+  }
+
+  public static ContainerManifest create(Container container, Collection<ItemStackKey> keys) {
+    var manifest = new ContainerManifest();
+    for (var filterKey : keys) {
+      var filter = StackFilter.anyMatch(filterKey.stack());
+      IntStream.range(0, container.getContainerSize())
+          .boxed()
+          .map(container::getItem)
           .filter(filter)
           .forEach(stack -> manifest.compute(filterKey, (k, v) -> compute(k, v, stack)));
     }

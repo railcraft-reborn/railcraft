@@ -20,6 +20,7 @@ import mods.railcraft.client.gui.screen.inventory.SteamTurbineScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TankScreen;
 import mods.railcraft.client.gui.screen.inventory.TrackLayerScreen;
+import mods.railcraft.client.gui.screen.inventory.TrainDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.model.RailcraftLayerDefinitions;
 import mods.railcraft.client.particle.FireSparkParticle;
@@ -137,6 +138,8 @@ public class ClientManager {
         FluidManipulatorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.CART_DISPENSER.get(),
         CartDispenserScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TRAIN_DISPENSER.get(),
+        TrainDispenserScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(),
         TankMinecartScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);

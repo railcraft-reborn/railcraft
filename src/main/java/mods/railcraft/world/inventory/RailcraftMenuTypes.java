@@ -15,6 +15,7 @@ import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -109,6 +110,12 @@ public class RailcraftMenuTypes {
       deferredRegister.register("cart_dispenser",
           () -> new MenuType<>(
               blockEntityMenu(CartDispenserBlockEntity.class, CartDispenserMenu::new)));
+
+  public static final RegistryObject<MenuType<TrainDispenserMenu>> TRAIN_DISPENSER =
+      deferredRegister.register("train_dispenser",
+          () -> new MenuType<>(
+              blockEntityMenu(TrainDispenserBlockEntity.class, TrainDispenserMenu::new)));
+
   public static final RegistryObject<MenuType<TankMinecartMenu>> TANK_MINECART =
       deferredRegister.register("tank_minecart",
           () -> new MenuType<>(entityMenu(TankMinecart.class, TankMinecartMenu::new)));
