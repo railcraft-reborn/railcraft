@@ -78,12 +78,11 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
           if (!cartStack.isEmpty()) {
             BlockPos pos = this.getBlockPos().offset(this.getFacing().getNormal());
             AbstractMinecart placedCart = null;
+            var placedStack = cartStack.copy();
             if (cartStack.getItem() instanceof CartItem cartItem) {
-              var placedStack = cartStack.copy();
               placedCart = CartTools.placeCart(cartItem.getMinecartFactory(), placedStack,
                   serverLevel, pos);
             } else if (cartStack.getItem() instanceof MinecartItem minecartItem) {
-              var placedStack = cartStack.copy();
               placedCart = CartTools.placeCart(minecartItem.type, placedStack, serverLevel, pos);
             }
 
