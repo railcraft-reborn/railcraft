@@ -69,12 +69,12 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    tag.put("container", this.container.createTag());
+    this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
   }
 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
+    tag.put("container", this.container.createTag());
   }
 }
