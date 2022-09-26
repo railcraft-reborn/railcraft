@@ -448,7 +448,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_MODE, "- Hit with Crowbar to change mode -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_FORCE, "- Hit with Crowbar to change force -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_ROTATE, "- Hit with Crowbar to rotate -");
-    this.add(Translations.Tips.PAIR_WITH_CONTROL_TRACK, "- Pair with Control track-");
+    this.add(Translations.Tips.PAIR_WITH_CONTROL_TRACK, "- Pair with Control track -");
     this.add(Translations.Tips.PLACE_ABOVE_TRACK, "- Place 1-2 blocks above track -");
     this.add(Translations.Tips.PLACE_UNDER_TRACK, "- Place under track -");
     this.add(Translations.Tips.PLACE_OVER_TRACK, "- Place over track -");
