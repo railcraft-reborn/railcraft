@@ -89,7 +89,10 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
 
   @Override
   public void clicked(int slotId, int mouseButton, ClickType clickType, Player player) {
-    Slot slot = slotId < 0 ? null : this.slots.get(slotId);
+    if (slotId < 0) {
+      return;
+    }
+    var slot = this.slots.get(slotId);
     if (slot instanceof RailcraftSlot railcraftSlot && railcraftSlot.isPhantom()) {
       this.slotClickPhantom(railcraftSlot, mouseButton, clickType, player);
     }
@@ -98,30 +101,21 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
 
   protected void slotClickPhantom(RailcraftSlot slot, int mouseButton,
       ClickType clickType, Player player) {
-
     if (mouseButton == 2) {
       if (slot.canAdjustPhantom()) {
         slot.set(ItemStack.EMPTY);
       }
     } else if (mouseButton == 0 || mouseButton == 1) {
-      Inventory playerInv = player.getInventory();
+      var containerMenu = player.containerMenu;
       slot.setChanged();
       ItemStack stackSlot = slot.getItem();
-      ItemStack stackHeld = playerInv.getSelected();
+      ItemStack stackHeld = containerMenu.getCarried();
 
-      if (stackSlot.isEmpty()) {
-        if (!stackHeld.isEmpty() && slot.mayPlace(stackHeld)) {
-          fillPhantomSlot(slot, stackHeld, mouseButton);
-        }
+      if (stackSlot.isEmpty() && !stackHeld.isEmpty() && slot.mayPlace(stackHeld)) {
+        fillPhantomSlot(slot, stackHeld, mouseButton);
       } else if (stackHeld.isEmpty()) {
         adjustPhantomSlot(slot, mouseButton, clickType);
-        slot.onTake(player, playerInv.getSelected());
-      } else if (slot.mayPlace(stackHeld)) {
-        if (ContainerTools.isItemEqual(stackSlot, stackHeld)) {
-          adjustPhantomSlot(slot, mouseButton, clickType);
-        } else {
-          fillPhantomSlot(slot, stackHeld, mouseButton);
-        }
+        slot.onTake(player, containerMenu.getCarried());
       }
     }
   }
@@ -233,7 +227,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     ItemStack originalStack = ItemStack.EMPTY;
     Slot slot = this.slots.get(slotIndex);
     int numSlots = this.slots.size();
-    if (slot != null && slot.hasItem()) {
+    if (slot.hasItem()) {
       ItemStack stackInSlot = slot.getItem();
       assert !stackInSlot.isEmpty();
       originalStack = stackInSlot.copy();
