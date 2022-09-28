@@ -50,7 +50,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
   }
 
   private boolean spawnNextCart(ServerLevel serverLevel) {
-    ItemStack spawn = getItem(patternIndex);
+    ItemStack spawn = this.invPattern.getItem(patternIndex);
     if (spawn.isEmpty()) {
       this.resetSpawnSequence();
       return false;
@@ -72,7 +72,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
           }
           this.lastCart = placedCart;
           this.patternIndex++;
-          if (this.patternIndex >= this.getContainerSize()) {
+          if (this.patternIndex >= this.invPattern.getContainerSize()) {
             this.resetSpawnSequence();
           }
           return true;
