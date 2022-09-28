@@ -64,15 +64,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
     if (EntitySearcher.findMinecarts().around(offset).search(serverLevel).isEmpty()) {
       ItemStack cartItem = removeOneItem(filter);
       if (!cartItem.isEmpty()) {
-        AbstractMinecart placedCart = null;
-        var placedStack = cartItem.copy();
-        if (cartItem.getItem() instanceof CartItem railcraftCartItem) {
-          placedCart = CartTools.placeCart(railcraftCartItem.getMinecartFactory(), placedStack,
-              serverLevel, offset);
-        } else if (cartItem.getItem() instanceof MinecartItem minecartItem) {
-          placedCart = CartTools.placeCart(minecartItem.type, placedStack,
-              serverLevel, offset);
-        }
+        AbstractMinecart placedCart = CartTools.placeCart(cartItem, serverLevel, offset);
 
         if (placedCart != null) {
           if (this.lastCart != null) {

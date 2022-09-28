@@ -6,7 +6,6 @@ import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.container.ContainerCopy;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.inventory.CartDispenserMenu;
-import mods.railcraft.world.item.CartItem;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -82,14 +80,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
           ItemStack cartStack = this.getItem(i);
           if (!cartStack.isEmpty()) {
             BlockPos pos = this.getBlockPos().offset(this.getFacing().getNormal());
-            AbstractMinecart placedCart = null;
-            var placedStack = cartStack.copy();
-            if (cartStack.getItem() instanceof CartItem cartItem) {
-              placedCart = CartTools.placeCart(cartItem.getMinecartFactory(), placedStack,
-                  serverLevel, pos);
-            } else if (cartStack.getItem() instanceof MinecartItem minecartItem) {
-              placedCart = CartTools.placeCart(minecartItem.type, placedStack, serverLevel, pos);
-            }
+            AbstractMinecart placedCart = CartTools.placeCart(cartStack, serverLevel, pos);
 
             if (placedCart != null) {
               this.removeItem(i, 1);
