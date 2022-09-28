@@ -11,12 +11,12 @@ public class TrainDispenserMenu extends RailcraftMenu {
     super(RailcraftMenuTypes.TRAIN_DISPENSER.get(), id, inventory.player, manipulator::stillValid);
 
     for (int i = 0; i < 9; i++) {
-      addSlot(new PhantomMinecartSlot(manipulator.getInvPattern(), i, 8 + i * 18, 29));
+      this.addSlot(new PhantomMinecartSlot(manipulator.getInvPattern(), i, 8 + i * 18, 29));
     }
 
     for (int i = 0; i < 2; i++) {
       for (int k = 0; k < 9; k++) {
-        addSlot(new DispensableCartSlot(manipulator, k + i * 9, 8 + k * 18, 61 + i * 18));
+        this.addSlot(new DispensableCartSlot(manipulator, k + i * 9, 8 + k * 18, 61 + i * 18));
       }
     }
 

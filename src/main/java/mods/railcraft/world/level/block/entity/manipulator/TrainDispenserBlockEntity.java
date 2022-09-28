@@ -50,25 +50,25 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
   }
 
   private boolean spawnNextCart(ServerLevel serverLevel) {
-    ItemStack spawn = this.invPattern.getItem(patternIndex);
+    var spawn = this.invPattern.getItem(patternIndex);
     if (spawn.isEmpty()) {
       this.resetSpawnSequence();
       return false;
     }
-    Predicate<ItemStack> filter = new MinecartItemType(spawn);
-    if (countItems(filter) == 0) {
+    Predicate<ItemStack> filter = itemStack -> testMinecart(spawn, itemStack);
+    if (this.countItems(filter) == 0) {
       this.resetSpawnSequence();
       return false;
     }
     var offset = this.getBlockPos().offset(this.getFacing().getNormal());
     if (EntitySearcher.findMinecarts().around(offset).search(serverLevel).isEmpty()) {
-      ItemStack cartItem = removeOneItem(filter);
+      var cartItem = this.removeOneItem(filter);
       if (!cartItem.isEmpty()) {
-        AbstractMinecart placedCart = CartTools.placeCart(cartItem, serverLevel, offset);
+        var placedCart = CartTools.placeCart(cartItem, serverLevel, offset);
 
         if (placedCart != null) {
           if (this.lastCart != null) {
-            CartUtil.linkageManager().createLink(placedCart, lastCart);
+            CartUtil.linkageManager().createLink(placedCart, this.lastCart);
           }
           this.lastCart = placedCart;
           this.patternIndex++;
@@ -135,26 +135,16 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
     return new TrainDispenserMenu(id, inventory, this);
   }
 
-  private static class MinecartItemType implements Predicate<ItemStack> {
-
-    private final ItemStack original;
-
-    public MinecartItemType(ItemStack cart) {
-      original = cart;
-    }
-
-    @Override
-    public boolean test(ItemStack itemStack) {
-      if (itemStack.isEmpty()) {
-        return false;
-      }
-      var item = itemStack.getItem();
-      if (item instanceof MinecartItem ||
-          item instanceof MinecartFactory ||
-          item instanceof CartItem) {
-        return this.original.is(item);
-      }
+  private static boolean testMinecart(ItemStack original, ItemStack itemStack) {
+    if (itemStack.isEmpty()) {
       return false;
     }
+    var item = itemStack.getItem();
+    if (item instanceof MinecartItem ||
+        item instanceof MinecartFactory ||
+        item instanceof CartItem) {
+      return original.is(item);
+    }
+    return false;
   }
 }
