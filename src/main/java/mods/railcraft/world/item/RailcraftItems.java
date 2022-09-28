@@ -359,7 +359,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> TANK_MINECART =
       deferredRegister.register("tank_minecart",
           () -> new CartItem(TankMinecart::new,
-              new Item.Properties().tab(TAB_TRANSPORTATION)));
+              new Item.Properties()
+                  .stacksTo(1)
+                  .tab(TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> FLUID_LOADER =
       deferredRegister.register("fluid_loader",
@@ -516,14 +518,16 @@ public class RailcraftItems {
   public static final RegistryObject<TrackRemoverCartItem> TRACK_REMOVER =
       deferredRegister.register("track_remover",
           () -> new TrackRemoverCartItem(new Item.Properties()
-                  .rarity(Rarity.UNCOMMON)
-                  .tab(TAB_TRANSPORTATION)));
+              .rarity(Rarity.UNCOMMON)
+              .stacksTo(1)
+              .tab(TAB_TRANSPORTATION)));
 
   public static final RegistryObject<TrackLayerCartItem> TRACK_LAYER =
       deferredRegister.register("track_layer",
           () -> new TrackLayerCartItem(new Item.Properties()
-                  .rarity(Rarity.UNCOMMON)
-                  .tab(TAB_TRANSPORTATION)));
+              .rarity(Rarity.UNCOMMON)
+              .stacksTo(1)
+              .tab(TAB_TRANSPORTATION)));
 
   public static final RegistryObject<Item> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
