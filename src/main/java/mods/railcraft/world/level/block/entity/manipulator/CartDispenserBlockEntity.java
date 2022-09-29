@@ -94,7 +94,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
       }
     } else if (cart.isAlive()) {
       var coppiedContainer = new ContainerCopy(this);
-      var cartStack = new ItemStack(cart.getDropItem());
+      var cartStack = cart.getPickResult();
       if (cart.hasCustomName()) {
         cartStack.setHoverName(cart.getName());
       }
