@@ -18,6 +18,8 @@
     "railcraft:item_unloader",
     "railcraft:fluid_loader",
     "railcraft:fluid_unloader",
+    "railcraft:cart_dispenser",
+    "railcraft:train_dispenser",
     "railcraft:steel_block",
     "railcraft:brass_block",
     "railcraft:bronze_block",
