@@ -55,9 +55,10 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   }
 
   public void checkSignal() {
-    if (this.level.isClientSide())
+    if (this.level.isClientSide()) {
       return;
-    boolean powered = this.level.hasNeighborSignal(this.getBlockPos());
+    }
+    var powered = this.level.hasNeighborSignal(this.getBlockPos());
     if (this.isPowered() != powered) {
       this.setPowered(powered);
     }
@@ -141,7 +142,7 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   }
 
   public void clearTracks(BlockPos startPos) {
-    if (this.removingTrack) {
+    if (this.removingTrack || this.trackCount <= 0) {
       return;
     }
 
