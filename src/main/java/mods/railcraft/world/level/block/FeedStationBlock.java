@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block;
 
 import java.util.List;
+import net.minecraft.world.Containers;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
@@ -83,6 +84,19 @@ public class FeedStationBlock extends BaseEntityBlock {
         level.setBlock(blockPos, blockState.setValue(POWERED, neighborSignal),
             Block.UPDATE_CLIENTS);
       }
+    }
+  }
+
+  @Override
+  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
+      boolean isMoving) {
+    if (!state.is(newState.getBlock())) {
+      BlockEntity blockentity = level.getBlockEntity(pos);
+      if (blockentity instanceof FeedStationBlockEntity feedStationBlockEntity) {
+        Containers.dropContents(level, pos, feedStationBlockEntity);
+        level.updateNeighbourForOutputSignal(pos, this);
+      }
+      super.onRemove(state, level, pos, newState, isMoving);
     }
   }
 

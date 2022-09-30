@@ -198,6 +198,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.ITEM_UNLOADER.get())
         .add(RailcraftBlocks.FLUID_LOADER.get())
         .add(RailcraftBlocks.FLUID_UNLOADER.get())
+        .add(RailcraftBlocks.CART_DISPENSER.get())
+        .add(RailcraftBlocks.TRAIN_DISPENSER.get())
         .add(RailcraftBlocks.STEEL_BLOCK.get())
         .add(RailcraftBlocks.BRASS_BLOCK.get())
         .add(RailcraftBlocks.BRONZE_BLOCK.get())
