@@ -57,12 +57,8 @@ public class WaterTankSidingBlockEntity extends MultiblockBlockEntity<WaterTankS
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       WaterTankSidingBlockEntity blockEntity) {
-
     blockEntity.serverTick();
     blockEntity.moduleDispatcher.serverTick();
-    if (blockEntity.isMaster()) {
-      blockEntity.waterCollectionModule.serverTick();
-    }
   }
 
   public WaterCollectionModule getModule() {

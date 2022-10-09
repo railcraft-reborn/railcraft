@@ -61,12 +61,8 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       CrusherBlockEntity blockEntity) {
-
     blockEntity.serverTick();
     blockEntity.moduleDispatcher.serverTick();
-    if (blockEntity.isMaster()) {
-      blockEntity.crusherModule.serverTick();
-    }
   }
 
   public CrusherModule getCrusherModule() {

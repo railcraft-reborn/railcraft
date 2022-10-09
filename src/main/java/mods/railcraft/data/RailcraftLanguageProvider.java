@@ -303,6 +303,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Container.BLAST_FURNACE, "Blast Furnace");
     this.add(Translations.Container.CRUSHER, "Crusher");
     this.add(Translations.Container.TANK, "Tank");
+    this.add(Translations.Container.WATER_TANK_SIDING, "Water Tank");
     this.add(Translations.Container.STEAM_TURBINE, "Steam Turbine");
     this.add(Translations.Container.SOLID_FUELED_STEAM_BOILER, "Solid Fueled Steam Boiler");
     this.add(Translations.Container.FLUID_FUELED_STEAM_BOILER, "Fluid Fueled Steam Boiler");
