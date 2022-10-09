@@ -31,6 +31,8 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.ITEM_UNLOADER.get());
     this.dropSelf(RailcraftBlocks.ADVANCED_ITEM_LOADER.get());
     this.dropSelf(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get());
+    this.dropSelf(RailcraftBlocks.CART_DISPENSER.get());
+    this.dropSelf(RailcraftBlocks.TRAIN_DISPENSER.get());
     this.dropSelf(RailcraftBlocks.STEEL_BLOCK.get());
     this.dropSelf(RailcraftBlocks.BRASS_BLOCK.get());
     this.dropSelf(RailcraftBlocks.BRONZE_BLOCK.get());

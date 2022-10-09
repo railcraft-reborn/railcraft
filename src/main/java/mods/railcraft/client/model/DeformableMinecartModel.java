@@ -58,8 +58,8 @@ public class DeformableMinecartModel<T extends Entity> extends HierarchicalModel
   }
 
   @Override
-  public void setupAnim(T p_103100_, float p_103101_, float p_103102_, float p_103103_,
-      float p_103104_, float p_103105_) {}
+  public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks,
+      float netHeadYaw, float headPitch) {}
 
   @Override
   public ModelPart root() {

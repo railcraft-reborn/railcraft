@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.core.RailcraftFakePlayer;
+import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.world.item.CartItem;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,6 +20,7 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -25,6 +28,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>
@@ -221,5 +225,42 @@ public final class CartTools {
     entity.setPos(x, y, z);
     entity.setOldPosAndRot();
     entity.setDeltaMovement(Vec3.ZERO);
+  }
+
+  @Nullable
+  public static AbstractMinecart placeCart(ItemStack cartItem, ServerLevel level, BlockPos pos) {
+    if (cartItem.isEmpty()) {
+      return null;
+    }
+    var blockState = level.getBlockState(pos);
+    if (!TrackUtil.isStraightTrackAt(level, pos)) {
+      return null;
+    }
+
+    if (EntitySearcher.findMinecarts().around(pos).search(level).isEmpty()) {
+      var trackShape = TrackUtil.getTrackDirection(level, pos, blockState);
+      double h = trackShape.isAscending() ? 0.5 : 0.0;
+
+      var cartStack = cartItem.copy();
+      AbstractMinecart cart = null;
+
+      if (cartItem.getItem() instanceof CartItem railcraftCartItem) {
+        cart = railcraftCartItem.getMinecartFactory().createMinecart(cartStack, pos.getX() + 0.5,
+            pos.getY() + 0.0625D + h, pos.getZ() + 0.5, level);
+      } else if (cartItem.getItem() instanceof MinecartItem minecartItem) {
+        cart = AbstractMinecart.createMinecart(level, pos.getX() + 0.5,
+            pos.getY() + 0.0625D + h, pos.getZ() + 0.5, minecartItem.type);
+      }
+
+      if (cart == null) {
+        return null;
+      }
+
+      if (cartStack.hasCustomHoverName())
+        cart.setCustomName(cartStack.getDisplayName());
+      level.addFreshEntity(cart);
+      return cart;
+    }
+    return null;
   }
 }

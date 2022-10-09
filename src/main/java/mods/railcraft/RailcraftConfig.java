@@ -62,6 +62,8 @@ public class RailcraftConfig {
     public final DoubleValue fuelMultiplier;
     public final DoubleValue fuelPerSteamMultiplier;
 
+    public final IntValue cartDispenserDelay;
+
     private Server(Builder builder) {
       builder.comment("High Speed Track Configuration");
       builder.push("highSpeedTrack");
@@ -167,6 +169,10 @@ public class RailcraftConfig {
       this.maxLauncherTrackForce = builder
           .comment("change the value to your desired max launch rail force")
           .defineInRange("maxLauncherTrackForce", 30, 5, 50);
+
+      this.cartDispenserDelay = builder
+          .comment("Set the minimum number of seconds between cart dispensing")
+          .defineInRange("cartDispenserDelay", 0, 0, Integer.MAX_VALUE);
 
       builder.push("charge");
       {

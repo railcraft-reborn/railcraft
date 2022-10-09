@@ -66,8 +66,8 @@ public class LocomotiveItem extends CartItem implements Filter {
             .withStyle(ChatFormatting.GRAY));
 
     float whistle = getWhistlePitch(stack);
-    var whisteText = whistle < 0 ? "???" : String.format("%.2f", whistle);
-    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, whisteText)
+    var whistleText = whistle < 0 ? "???" : String.format("%.2f", whistle);
+    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, whistleText)
         .withStyle(ChatFormatting.GRAY));
 
     getEmblem(stack)

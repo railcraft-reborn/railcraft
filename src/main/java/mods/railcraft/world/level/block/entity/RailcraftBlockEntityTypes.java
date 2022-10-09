@@ -4,10 +4,12 @@ import java.util.Collection;
 import java.util.stream.Stream;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ItemLoaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ItemUnloaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
@@ -132,6 +134,18 @@ public class RailcraftBlockEntityTypes {
           () -> BlockEntityType.Builder
               .of(ItemUnloaderBlockEntity::new, RailcraftBlocks.ITEM_UNLOADER.get(),
                   RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<CartDispenserBlockEntity>> CART_DISPENSER =
+      deferredRegister.register("cart_dispenser",
+          () -> BlockEntityType.Builder
+              .of(CartDispenserBlockEntity::new, RailcraftBlocks.CART_DISPENSER.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<TrainDispenserBlockEntity>> TRAIN_DISPENSER =
+      deferredRegister.register("train_dispenser",
+          () -> BlockEntityType.Builder
+              .of(TrainDispenserBlockEntity::new, RailcraftBlocks.TRAIN_DISPENSER.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<AnalogSignalControllerBoxBlockEntity>> ANALOG_SIGNAL_CONTROLLER_BOX =

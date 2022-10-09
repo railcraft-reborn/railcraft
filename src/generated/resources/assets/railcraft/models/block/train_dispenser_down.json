@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "railcraft:block/train_dispenser_front",
+    "side": "railcraft:block/train_dispenser_side",
+    "top": "railcraft:block/train_dispenser_top"
+  }
+}

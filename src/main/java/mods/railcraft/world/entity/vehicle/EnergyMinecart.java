@@ -82,7 +82,7 @@ public class EnergyMinecart extends RailcraftMinecart {
   }
 
   @Override
-  protected Item getDropItem() {
+  public Item getDropItem() {
     throw new NotImplementedException();
   }
 

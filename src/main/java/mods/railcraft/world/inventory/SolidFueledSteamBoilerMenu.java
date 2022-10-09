@@ -44,7 +44,7 @@ public class SolidFueledSteamBoilerMenu extends RailcraftMenu {
     this.addSlot(new RailcraftSlot(this.module, 5, 89, 38)); // Fuel
     this.addSlot(new RailcraftSlot(this.module, 6, 89, 56)); // Fuel
 
-    this.addPlayerSlots(inventory, 166);
+    this.addInventorySlots(inventory, 166);
 
     this.addDataSlot(new SimpleDataSlot(
         () -> (int) Math.round(this.module.getBoiler().getBurnTime()),

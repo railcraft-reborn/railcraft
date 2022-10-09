@@ -249,6 +249,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createManipulator(RailcraftBlocks.ITEM_UNLOADER.get());
     this.createDirectionalManipulator(RailcraftBlocks.ADVANCED_ITEM_LOADER.get());
     this.createDirectionalManipulator(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get());
+    this.createDirectionalManipulator(RailcraftBlocks.CART_DISPENSER.get());
+    this.createDirectionalManipulator(RailcraftBlocks.TRAIN_DISPENSER.get());
 
     this.createFirebox(RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
     this.createFirebox(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());

@@ -37,4 +37,8 @@ public class CartItem extends Item {
     }
     return InteractionResult.sidedSuccess(level.isClientSide());
   }
+
+  public MinecartFactory getMinecartFactory() {
+    return this.minecartFactory;
+  }
 }

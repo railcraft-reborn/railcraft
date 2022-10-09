@@ -4,6 +4,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
+import mods.railcraft.client.gui.screen.inventory.CartDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
@@ -18,6 +19,8 @@ import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamTurbineScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TankScreen;
+import mods.railcraft.client.gui.screen.inventory.TrackLayerScreen;
+import mods.railcraft.client.gui.screen.inventory.TrainDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.gui.screen.inventory.WaterTankSidingScreen;
 import mods.railcraft.client.model.RailcraftLayerDefinitions;
@@ -114,6 +117,8 @@ public class ClientManager {
         TankScreen::new);
     MenuScreens.register(RailcraftMenuTypes.WATER_TANK_SIDING.get(),
         WaterTankSidingScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TRACK_LAYER.get(),
+        TrackLayerScreen::new);
     MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(),
         BlastFurnaceScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FEED_STATION.get(),
@@ -134,6 +139,10 @@ public class ClientManager {
         ItemManipulatorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(),
         FluidManipulatorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.CART_DISPENSER.get(),
+        CartDispenserScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TRAIN_DISPENSER.get(),
+        TrainDispenserScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(),
         TankMinecartScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);

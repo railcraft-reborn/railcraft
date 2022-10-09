@@ -112,8 +112,8 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
   public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX,
       double deltaY) {
     Slot slot = this.getSlotUnderMouse();
-    if (button == GLFW.GLFW_MOUSE_BUTTON_1 && slot instanceof RailcraftSlot
-        && ((RailcraftSlot) slot).isPhantom())
+    if (button == GLFW.GLFW_MOUSE_BUTTON_1 && slot instanceof RailcraftSlot railcraftSlot
+        && railcraftSlot.isPhantom())
       return true;
     return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
   }

@@ -200,7 +200,7 @@ public abstract class Locomotive extends RailcraftMinecart
   protected abstract Item getItem();
 
   @Override
-  protected Item getDropItem() {
+  public Item getDropItem() {
     return getItem();
   }
 

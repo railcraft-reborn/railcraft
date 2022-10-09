@@ -5,6 +5,7 @@ import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntit
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -73,6 +74,19 @@ public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends
           || neighborBlockState.is(Blocks.REPEATER);
     }
     return emit ? PowerUtil.FULL_POWER : PowerUtil.NO_POWER;
+  }
+
+  @Override
+  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
+      boolean isMoving) {
+    if (!state.is(newState.getBlock())) {
+      BlockEntity blockentity = level.getBlockEntity(pos);
+      if (this.blockEntityType.isInstance(blockentity)) {
+        Containers.dropContents(level, pos, this.blockEntityType.cast(blockentity));
+        level.updateNeighbourForOutputSignal(pos, this);
+      }
+      super.onRemove(state, level, pos, newState, isMoving);
+    }
   }
 
   public static boolean isPowered(BlockState blockState) {

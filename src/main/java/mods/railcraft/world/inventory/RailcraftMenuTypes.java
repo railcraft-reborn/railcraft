@@ -2,6 +2,7 @@ package mods.railcraft.world.inventory;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
+import mods.railcraft.world.entity.vehicle.TrackLayer;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
@@ -12,8 +13,10 @@ import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -109,6 +112,16 @@ public class RailcraftMenuTypes {
           () -> new MenuType<>(
               blockEntityMenu(FluidManipulatorBlockEntity.class, FluidManipulatorMenu::new)));
 
+  public static final RegistryObject<MenuType<CartDispenserMenu>> CART_DISPENSER =
+      deferredRegister.register("cart_dispenser",
+          () -> new MenuType<>(
+              blockEntityMenu(CartDispenserBlockEntity.class, CartDispenserMenu::new)));
+
+  public static final RegistryObject<MenuType<TrainDispenserMenu>> TRAIN_DISPENSER =
+      deferredRegister.register("train_dispenser",
+          () -> new MenuType<>(
+              blockEntityMenu(TrainDispenserBlockEntity.class, TrainDispenserMenu::new)));
+
   public static final RegistryObject<MenuType<TankMinecartMenu>> TANK_MINECART =
       deferredRegister.register("tank_minecart",
           () -> new MenuType<>(entityMenu(TankMinecart.class, TankMinecartMenu::new)));
@@ -116,6 +129,10 @@ public class RailcraftMenuTypes {
   public static final RegistryObject<MenuType<TunnelBoreMenu>> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
           () -> new MenuType<>(entityMenu(TunnelBore.class, TunnelBoreMenu::new)));
+
+  public static final RegistryObject<MenuType<TrackLayerMenu>> TRACK_LAYER =
+      deferredRegister.register("track_layer",
+          () -> new MenuType<>(entityMenu(TrackLayer.class, TrackLayerMenu::new)));
 
   private static <T extends AbstractContainerMenu, E extends Entity> IContainerFactory<T> entityMenu(
       Class<E> entityType, CustomMenuFactory<T, E> factory) {

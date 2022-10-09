@@ -219,7 +219,7 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
   }
 
   @Override
-  protected Item getDropItem() {
+  public Item getDropItem() {
     return RailcraftItems.TANK_MINECART.get();
   }
 
