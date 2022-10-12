@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block;
 
 import java.util.List;
-import net.minecraft.world.Containers;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
@@ -10,6 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -87,24 +87,25 @@ public class FeedStationBlock extends BaseEntityBlock {
     }
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
       boolean isMoving) {
-    if (!state.is(newState.getBlock())) {
-      BlockEntity blockentity = level.getBlockEntity(pos);
-      if (blockentity instanceof FeedStationBlockEntity feedStationBlockEntity) {
-        Containers.dropContents(level, pos, feedStationBlockEntity);
-        level.updateNeighbourForOutputSignal(pos, this);
-      }
-      super.onRemove(state, level, pos, newState, isMoving);
+    if (!state.is(newState.getBlock())
+        && level.getBlockEntity(pos) instanceof FeedStationBlockEntity feedStation) {
+      Containers.dropContents(level, pos, feedStation);
+      level.updateNeighbourForOutputSignal(pos, this);
     }
+    super.onRemove(state, level, pos, newState, isMoving);
   }
 
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flag) {
     super.appendHoverText(stack, level, tooltip, flag);
-    tooltip.add(Component.translatable(Translations.Tips.FEED_STATION).withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Translations.Tips.APPLY_REDSTONE_TO_DISABLE).withStyle(ChatFormatting.RED));
+    tooltip
+        .add(Component.translatable(Translations.Tips.FEED_STATION).withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.APPLY_REDSTONE_TO_DISABLE)
+        .withStyle(ChatFormatting.RED));
   }
 }

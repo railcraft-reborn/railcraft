@@ -1,7 +1,6 @@
 package mods.railcraft.world.module;
 
 import java.util.Collection;
-import java.util.Objects;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
@@ -23,9 +22,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> {
 
-  public static final int SLOT_INPUT = 0;
-  public static final int SLOT_PROCESS = 1;
-  public static final int SLOT_OUTPUT = 2;
+  private static final int SLOT_INPUT = 0;
+
   private static final int REFILL_INTERVAL = 20;
   private static final float REFILL_PENALTY_FROZEN = 0.5F;
   private static final float REFILL_BOOST_RAIN = 3.0F;
@@ -34,7 +32,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   private final StandardTank tank;
   private final LazyOptional<IFluidHandler> fluidHandler;
 
-  private State state;
+  private State state = State.INACTIVE;
   private int refillTicks;
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
@@ -42,7 +40,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
 
   public WaterCollectionModule(WaterTankSidingBlockEntity provider) {
     super(provider, 3);
-    blockEntity = provider;
+    this.blockEntity = provider;
     var capacity = RailcraftConfig.server.tankCapacityPerBlock.get() * FluidType.BUCKET_VOLUME;
     this.tank = new StandardTank(capacity * 26);
     this.fluidHandler = LazyOptional.of(() -> this.tank);
@@ -59,7 +57,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
       this.refillTicks = 0;
       var above = this.provider.blockPos().above();
       this.state = State.create(level, above);
-      int rate = this.state.calculateRate(calculateMultiplier());
+      int rate = this.state.calculateRate(this.calculateMultiplier());
       if (rate > 0) {
         this.tank.fill(new FluidStack(Fluids.WATER, rate),
             IFluidHandler.FluidAction.EXECUTE);
@@ -77,28 +75,23 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    if (!super.canPlaceItem(slot, stack)) {
-      return false;
-    }
-    if (slot == SLOT_INPUT) {
-      return (!this.tank.isEmpty()
-          && FluidItemHelper.isRoomInContainer(stack, this.tank.getFluidType()))
-          || FluidUtil.getFluidContained(stack).isPresent();
-    }
-    return false;
+    return super.canPlaceItem(slot, stack)
+        && slot == SLOT_INPUT
+        && ((!this.tank.isEmpty()
+            && FluidItemHelper.isRoomInContainer(stack, this.tank.getFluidType()))
+            || FluidUtil.getFluidContained(stack).isPresent());
   }
 
   private int calculateMultiplier() {
-    if (this.blockEntity.getMembers().isPresent()) {
-     return (int) this.blockEntity.getMembers().stream()
-          .flatMap(Collection::stream)
-          .flatMap(member -> member.getModule(WaterCollectionModule.class).stream())
-          .map(WaterCollectionModule::getState)
-          .filter(Objects::nonNull)
-          .filter(State::skyVisible)
-          .count();
+    if (this.blockEntity.getMembers().isEmpty()) {
+      return 1;
     }
-    return 1;
+    return (int) this.blockEntity.getMembers().stream()
+        .flatMap(Collection::stream)
+        .flatMap(member -> member.getModule(WaterCollectionModule.class).stream())
+        .map(WaterCollectionModule::getState)
+        .filter(State::skyVisible)
+        .count();
   }
 
   public StandardTank getTank() {
@@ -140,7 +133,9 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   }
 
   public record State(boolean skyVisible, double temperaturePenalty,
-                      double humidityMultiplier, double precipitationMultiplier) {
+      double humidityMultiplier, double precipitationMultiplier) {
+
+    public static final State INACTIVE = new State(false, 0.0D, 1.0D, 1.0D);
 
     public int calculateRate(int size) {
       return Mth.floor(
@@ -152,28 +147,29 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
     }
 
     public static State create(Level level, BlockPos pos) {
-      if (level.canSeeSky(pos)) {
-        var biome = level.getBiome(pos).value();
-        var humidityMultiplier = biome.getDownfall();
-
-        var precipitationMultiplier = 1.0D;
-        if (biome.coldEnoughToSnow(pos)) {
-          precipitationMultiplier = REFILL_PENALTY_FROZEN;
-        } else if (level.isRainingAt(pos)) {
-          precipitationMultiplier = REFILL_BOOST_RAIN;
-        }
-
-        var temperaturePenalty = 0.0D;
-        var temperature = biome.getTemperature(pos);
-        if (temperature > 1.0D) {
-          temperaturePenalty = temperature - 1.0D;
-        }
-
-        return new State(true, temperaturePenalty, humidityMultiplier,
-            precipitationMultiplier);
-      } else {
-        return new State(false, 0.0D, 1.0D, 1.0D);
+      if (!level.canSeeSky(pos)) {
+        return INACTIVE;
       }
+
+      var biome = level.getBiome(pos).value();
+      var humidityMultiplier = biome.getDownfall();
+
+      var precipitationMultiplier = 1.0D;
+      if (biome.coldEnoughToSnow(pos)) {
+        precipitationMultiplier = REFILL_PENALTY_FROZEN;
+      } else if (level.isRainingAt(pos)) {
+        precipitationMultiplier = REFILL_BOOST_RAIN;
+      }
+
+      var temperaturePenalty = 0.0D;
+      @SuppressWarnings("deprecation")
+      var temperature = biome.getTemperature(pos);
+      if (temperature > 1.0D) {
+        temperaturePenalty = temperature - 1.0D;
+      }
+
+      return new State(true, temperaturePenalty, humidityMultiplier,
+          precipitationMultiplier);
     }
   }
 }

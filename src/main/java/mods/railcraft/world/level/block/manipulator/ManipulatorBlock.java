@@ -76,17 +76,18 @@ public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends
     return emit ? PowerUtil.FULL_POWER : PowerUtil.NO_POWER;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
       boolean isMoving) {
     if (!state.is(newState.getBlock())) {
-      BlockEntity blockentity = level.getBlockEntity(pos);
-      if (this.blockEntityType.isInstance(blockentity)) {
-        Containers.dropContents(level, pos, this.blockEntityType.cast(blockentity));
+      var blockEntity = level.getBlockEntity(pos);
+      if (this.blockEntityType.isInstance(blockEntity)) {
+        Containers.dropContents(level, pos, this.blockEntityType.cast(blockEntity));
         level.updateNeighbourForOutputSignal(pos, this);
       }
-      super.onRemove(state, level, pos, newState, isMoving);
     }
+    super.onRemove(state, level, pos, newState, isMoving);
   }
 
   public static boolean isPowered(BlockState blockState) {

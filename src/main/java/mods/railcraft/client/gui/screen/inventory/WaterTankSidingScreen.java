@@ -2,7 +2,6 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
-import mods.railcraft.world.inventory.TankMenu;
 import mods.railcraft.world.inventory.WaterTankSidingMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
