@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import java.util.Optional;
-import mods.railcraft.client.emblem.EmblemToolsClient;
+import mods.railcraft.client.emblem.EmblemClientUtil;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -32,6 +32,6 @@ public abstract class LocomotiveRenderer<T extends Locomotive>
 
   protected Optional<ResourceLocation> getEmblemTexture(T loco) {
     return loco.getEmblem()
-        .map(EmblemToolsClient.packageManager()::getEmblemTextureLocation);
+        .map(EmblemClientUtil.packageManager()::getEmblemTextureLocation);
   }
 }

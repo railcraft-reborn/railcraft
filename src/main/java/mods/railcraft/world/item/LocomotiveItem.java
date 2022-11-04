@@ -8,7 +8,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;
-import mods.railcraft.client.emblem.EmblemToolsClient;
+import mods.railcraft.client.emblem.EmblemClientUtil;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.ChatFormatting;
@@ -71,7 +71,7 @@ public class LocomotiveItem extends CartItem implements Filter {
         .withStyle(ChatFormatting.GRAY));
 
     getEmblem(stack)
-        .flatMap(EmblemToolsClient.packageManager()::getEmblem)
+        .flatMap(EmblemClientUtil.packageManager()::getEmblem)
         .ifPresent(emblem -> info.add(
             Component.translatable("gui.railcraft.locomotive.tips.item.emblem",
                 emblem.displayName())));

@@ -3,6 +3,8 @@ package mods.railcraft.client;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
+import mods.railcraft.client.emblem.EmblemClientUtil;
+import mods.railcraft.client.emblem.EmblemPackageManagerImpl;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CartDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
@@ -81,6 +83,7 @@ public class ClientManager {
     instance = this;
 
     SignalUtil._setTuningAuraHandler(new TuningAuraHandlerImpl());
+    EmblemClientUtil._setPackageManager(new EmblemPackageManagerImpl());
 
     var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleClientSetup);

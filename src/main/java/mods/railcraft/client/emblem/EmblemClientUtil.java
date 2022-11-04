@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
  *
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public class EmblemToolsClient {
+public class EmblemClientUtil {
 
   private static EmblemPackageManager packageManager;
   private static EmblemItemRenderer renderer;
@@ -20,9 +20,9 @@ public class EmblemToolsClient {
 
   @ApiStatus.Internal
   public static void _setPackageManager(EmblemPackageManager packageManager) {
-    Preconditions.checkState(EmblemToolsClient.packageManager == null,
+    Preconditions.checkState(EmblemClientUtil.packageManager == null,
         "packageManager already set.");
-    EmblemToolsClient.packageManager = packageManager;
+    EmblemClientUtil.packageManager = packageManager;
   }
 
   public static EmblemItemRenderer renderer() {
@@ -32,8 +32,8 @@ public class EmblemToolsClient {
 
   @ApiStatus.Internal
   public static void _setRenderer(EmblemItemRenderer renderer) {
-    Preconditions.checkState(EmblemToolsClient.renderer == null,
+    Preconditions.checkState(EmblemClientUtil.renderer == null,
         "renderer already set.");
-    EmblemToolsClient.renderer = renderer;
+    EmblemClientUtil.renderer = renderer;
   }
 }
