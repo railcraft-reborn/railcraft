@@ -135,6 +135,9 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
           logger.warn("Invalid block @ [{}]", entry.getKey());
           this.disband();
           return;
+        } else if (blockEntity.getMembership().isPresent()) {
+          this.disband();
+          return;
         } else {
           blockEntity.setMembership(new Membership<>(entry.getValue(), this.clazz.cast(this)));
           this.members.put(entry.getKey(), blockEntity);
