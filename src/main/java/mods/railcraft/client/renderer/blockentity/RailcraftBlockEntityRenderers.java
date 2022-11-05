@@ -12,6 +12,8 @@ public class RailcraftBlockEntityRenderers {
   public static void register(EntityRenderersEvent.RegisterRenderers event) {
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.IRON_TANK.get(),
         supply(TankRenderer::new));
+    event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.STEEL_TANK.get(),
+        supply(TankRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.BLOCK_SIGNAL.get(),
         supply(SignalRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.DISTANT_SIGNAL.get(),
