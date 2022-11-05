@@ -62,6 +62,10 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
     this.dropSelf(RailcraftBlocks.FIRESTONE_ORE.get());
 
+    this.dropSelf(RailcraftBlocks.QUARRIED_STONE.get());
+    this.dropSelf(RailcraftBlocks.QUARRIED_COBBLESTONE.get());
+    this.dropSelf(RailcraftBlocks.POLISHED_QUARRIED_STONE.get());
+
     this.add(RailcraftBlocks.SULFUR_ORE.get(),
         block -> createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
     this.add(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get(),

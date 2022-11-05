@@ -1,4 +1,4 @@
-// 1.19.2	2022-10-09T18:06:42.477166426	Railcraft Loot Tables
+// 1.19.2	2022-11-04T21:30:36.267591498	Railcraft Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -207,6 +207,7 @@ b0f49b9667d3aea51d873b7442a0367538daee5d data/railcraft/loot_tables/blocks/pink_
 e96d6b144fd5f438e2303eb7d5e85e18c23a2f72 data/railcraft/loot_tables/blocks/pink_steel_tank_valve.json
 097ff642345a97230fcfe7cf033bc2946be4246e data/railcraft/loot_tables/blocks/pink_steel_tank_wall.json
 29b4b04297e0afa3a76def817558702c14a7bdd4 data/railcraft/loot_tables/blocks/pink_strengthened_glass.json
+d4f60903232c53c503b02d1eb0b4903901d2a499 data/railcraft/loot_tables/blocks/polished_quarried_stone.json
 21fbb89d136848f30ad467149231856a08bca839 data/railcraft/loot_tables/blocks/purple_iron_tank_gauge.json
 caaab80baff74258afd3a90c1fc4d6a7aaba215a data/railcraft/loot_tables/blocks/purple_iron_tank_valve.json
 51569e44db0e248cf7df85f876c268e2f3d73826 data/railcraft/loot_tables/blocks/purple_iron_tank_wall.json
@@ -215,6 +216,8 @@ caaab80baff74258afd3a90c1fc4d6a7aaba215a data/railcraft/loot_tables/blocks/purpl
 080698d0b7a9635c698ae687ca35dcd78557ae1d data/railcraft/loot_tables/blocks/purple_steel_tank_valve.json
 021163a3c38ffcdda6950d8edddb9e2e4835c8e5 data/railcraft/loot_tables/blocks/purple_steel_tank_wall.json
 d8d43b22640c48c800c4eb3303d1fa89d6e414ce data/railcraft/loot_tables/blocks/purple_strengthened_glass.json
+325c64ef799ff9310f984b91ab98c50927d7c64e data/railcraft/loot_tables/blocks/quarried_cobblestone.json
+e7560e56ab6c0c96e8c813e126d279bdd269255b data/railcraft/loot_tables/blocks/quarried_stone.json
 5ff630b285c04e3f45a8b468b04b8bfc8e1fd0d1 data/railcraft/loot_tables/blocks/red_iron_tank_gauge.json
 b5fec8bf20fdb3c96dc1d08b021af4ae4583da19 data/railcraft/loot_tables/blocks/red_iron_tank_valve.json
 9d8af2678648790b6e1bdbc072e24fd7ae1fb3ce data/railcraft/loot_tables/blocks/red_iron_tank_wall.json

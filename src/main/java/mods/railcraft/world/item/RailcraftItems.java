@@ -1464,6 +1464,21 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.WATER_TANK_SIDING.get(),
               new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<BlockItem> QUARRIED_STONE =
+      deferredRegister.register("quarried_stone",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_STONE.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> QUARRIED_COBBLESTONE =
+      deferredRegister.register("quarried_cobblestone",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_COBBLESTONE.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> POLISHED_QUARRIED_STONE =
+      deferredRegister.register("polished_quarried_stone",
+          () -> new BlockItem(RailcraftBlocks.POLISHED_QUARRIED_STONE.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
   // ================================================================================
   // Buckets
   // ================================================================================

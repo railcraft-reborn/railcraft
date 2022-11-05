@@ -18,6 +18,7 @@ import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -71,6 +73,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildLoaders(consumer);
     buildCrowbars(consumer);
     buildFirestones(consumer);
+    buildQuarriedStone(consumer);
   }
 
   private void conversion(Consumer<FinishedRecipe> finishedRecipe, ItemLike from, ItemLike to,
@@ -1574,6 +1577,28 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     coloredBlockVariant(consumer, colorItems, tagItem, DyeColor.BLACK);
   }
 
+  private void buildQuarriedStone(Consumer<FinishedRecipe> consumer) {
+    square2x2(consumer, RailcraftItems.QUARRIED_STONE.get(),
+        RailcraftItems.POLISHED_QUARRIED_STONE.get(), 4, "_from_quarried_stone");
+    square2x2(consumer, RailcraftItems.QUARRIED_COBBLESTONE.get(),
+        RailcraftItems.POLISHED_QUARRIED_STONE.get(), 4, "_from_quarried_cobblestone");
+    SingleItemRecipeBuilder.stonecutting(
+        Ingredient.of(new ItemStack(RailcraftItems.QUARRIED_STONE.get())),
+        RailcraftItems.POLISHED_QUARRIED_STONE.get())
+        .unlockedBy(getHasName(RailcraftItems.QUARRIED_STONE.get()),
+            has(RailcraftItems.QUARRIED_STONE.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID,
+            "polished_quarried_stone_from_quarried_stone_in_stonecutter"));
+    SingleItemRecipeBuilder.stonecutting(
+        Ingredient.of(new ItemStack(RailcraftItems.QUARRIED_COBBLESTONE.get())),
+        RailcraftItems.POLISHED_QUARRIED_STONE.get())
+        .unlockedBy(getHasName(RailcraftItems.QUARRIED_COBBLESTONE.get()),
+            has(RailcraftItems.QUARRIED_COBBLESTONE.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID,
+            "polished_quarried_stone_from_quarried_cobblestone_in_stonecutter"));
+
+  }
+
   private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
       TagKey<Item> ingredient,
       Item result,
@@ -1585,6 +1610,20 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aa")
         .define('a', ingredient)
         .unlockedBy("has_material", has(ingredient))
+        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, name + suffix));
+  }
+
+  private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
+      Item ingredient,
+      Item result,
+      int quantity,
+      String suffix) {
+    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    ShapedRecipeBuilder.shaped(result, quantity)
+        .pattern("aa")
+        .pattern("aa")
+        .define('a', ingredient)
+        .unlockedBy(getHasName(ingredient), has(ingredient))
         .save(finishedRecipe, new ResourceLocation(Railcraft.ID, name + suffix));
   }
 

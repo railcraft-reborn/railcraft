@@ -95,6 +95,8 @@ public class RailcraftTags {
     public static final TagKey<Item> STEEL_TANK_VALVE = tag("steel_tank_valve");
     public static final TagKey<Item> STEEL_TANK_WALL = tag("steel_tank_wall");
 
+    public static final TagKey<Item> QUARRIED = tag("quarried");
+
     public static final TagKey<Item> POST = tag("post");
     public static final TagKey<Item> STRENGTHENED_GLASS = tag("strengthened_glass");
     public static final TagKey<Item> ABANDONED_TRACK = tag("abandoned_track");
@@ -160,6 +162,8 @@ public class RailcraftTags {
     public static final TagKey<Block> STEEL_TANK_GAUGE = tag("steel_tank_gauge");
     public static final TagKey<Block> STEEL_TANK_VALVE = tag("steel_tank_valve");
     public static final TagKey<Block> STEEL_TANK_WALL = tag("steel_tank_wall");
+
+    public static final TagKey<Block> QUARRIED = tag("quarried");
 
     public static final TagKey<Block> MINEABLE_WITH_CROWBAR = tag("mineable/crowbar");
 

@@ -120,6 +120,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.CRUSHED_OBSIDIAN, "Crushed Obsidian");
     this.addBlock(RailcraftBlocks.WATER_TANK_SIDING, "Water Tank Siding");
 
+    this.addBlock(RailcraftBlocks.QUARRIED_STONE, "Quarried Stone");
+    this.addBlock(RailcraftBlocks.QUARRIED_COBBLESTONE, "Quarried Cobblestone");
+    this.addBlock(RailcraftBlocks.POLISHED_QUARRIED_STONE, "Polished Quarried Stone");
+
     this.addBlockColorVariants(RailcraftBlocks.STRENGTHENED_GLASS, "Strengthened Glass");
     this.addBlockColorVariants(RailcraftBlocks.POST, "Post");
     this.addBlockColorVariants(RailcraftBlocks.IRON_TANK_GAUGE, "Iron Tank Gauge");

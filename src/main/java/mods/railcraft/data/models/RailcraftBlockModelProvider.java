@@ -233,6 +233,10 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.simpleBlock(RailcraftBlocks.SALTPETER_ORE.get());
     this.simpleBlock(RailcraftBlocks.FIRESTONE_ORE.get());
 
+    this.simpleBlock(RailcraftBlocks.QUARRIED_STONE.get());
+    this.simpleBlock(RailcraftBlocks.QUARRIED_COBBLESTONE.get());
+    this.simpleBlock(RailcraftBlocks.POLISHED_QUARRIED_STONE.get());
+
     this.fluidBlock(RailcraftBlocks.CREOSOTE.get());
 
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());

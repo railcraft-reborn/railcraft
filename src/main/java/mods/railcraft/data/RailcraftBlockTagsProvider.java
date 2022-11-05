@@ -225,7 +225,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftTags.Blocks.IRON_TANK_WALL,
             RailcraftTags.Blocks.STEEL_TANK_GAUGE,
             RailcraftTags.Blocks.STEEL_TANK_VALVE,
-            RailcraftTags.Blocks.STEEL_TANK_WALL);
+            RailcraftTags.Blocks.STEEL_TANK_WALL,
+            RailcraftTags.Blocks.QUARRIED);
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
@@ -285,6 +286,11 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .forEach(x -> this.tag(RailcraftTags.Blocks.STEEL_TANK_WALL).add(x));
     RailcraftBlocks.POST.resolveVariants()
         .forEach(x -> this.tag(RailcraftTags.Blocks.POST).add(x));
+
+    this.tag(RailcraftTags.Blocks.QUARRIED)
+        .add(RailcraftBlocks.QUARRIED_STONE.get(),
+            RailcraftBlocks.QUARRIED_COBBLESTONE.get(),
+            RailcraftBlocks.POLISHED_QUARRIED_STONE.get());
 
 
     this.tag(Tags.Blocks.ORE_RATES_SINGULAR)

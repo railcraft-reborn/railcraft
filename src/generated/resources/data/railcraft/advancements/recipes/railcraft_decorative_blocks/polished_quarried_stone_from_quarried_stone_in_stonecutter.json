@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_quarried_stone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:quarried_stone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:polished_quarried_stone_from_quarried_stone_in_stonecutter"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_quarried_stone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:polished_quarried_stone_from_quarried_stone_in_stonecutter"
+    ]
+  }
+}

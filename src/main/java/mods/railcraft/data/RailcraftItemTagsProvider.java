@@ -168,7 +168,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.copy(RailcraftTags.Blocks.REINFORCED_TRACK, RailcraftTags.Items.REINFORCED_TRACK);
     this.copy(RailcraftTags.Blocks.STRAP_IRON_TRACK, RailcraftTags.Items.STRAP_IRON_TRACK);
 
-
+    this.copy(RailcraftTags.Blocks.QUARRIED, RailcraftTags.Items.QUARRIED);
 
     // TOOLS
     this.tag(RailcraftTags.Items.TOOLS_AXES_STEEL).add(RailcraftItems.STEEL_AXE.get());

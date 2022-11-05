@@ -73,6 +73,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.LightBlock;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -1512,6 +1513,18 @@ public class RailcraftBlocks {
           () -> new CrushedObsidian(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
               .requiresCorrectToolForDrops()
               .strength(50, 1200)));
+
+  public static final RegistryObject<Block> QUARRIED_STONE =
+      deferredRegister.register("quarried_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+  public static final RegistryObject<Block> QUARRIED_COBBLESTONE =
+      deferredRegister.register("quarried_cobblestone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE)));
+
+  public static final RegistryObject<Block> POLISHED_QUARRIED_STONE =
+      deferredRegister.register("polished_quarried_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
 
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;
