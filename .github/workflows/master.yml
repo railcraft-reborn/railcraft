@@ -24,7 +24,7 @@ jobs:
           java-version: 17
 
       - name: Restore gradle cache
-        uses: actions/cache@v3.0.7
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
