@@ -1613,6 +1613,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.POLISHED_QUARRIED_STONE.get()),
             has(RailcraftItems.POLISHED_QUARRIED_STONE.get()))
         .save(consumer);
+    square2x2(consumer, RailcraftItems.POLISHED_QUARRIED_STONE.get(),
+        RailcraftItems.QUARRIED_BRICKS.get(), 4, "");
+    square2x2(consumer, RailcraftItems.QUARRIED_BRICKS.get(),
+        RailcraftItems.QUARRIED_PAVER.get(), 4, "");
   }
 
   private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,

@@ -1489,6 +1489,16 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ETCHED_QUARRIED_STONE.get(),
               new Item.Properties().tab(DECORATIVE_TAB)));
 
+  public static final RegistryObject<BlockItem> QUARRIED_BRICKS =
+      deferredRegister.register("quarried_bricks",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_BRICKS.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> QUARRIED_PAVER =
+      deferredRegister.register("quarried_paver",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_PAVER.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
   // ================================================================================
   // Buckets
   // ================================================================================

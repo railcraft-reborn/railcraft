@@ -1528,11 +1528,19 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<Block> CHISELED_QUARRIED_STONE =
       deferredRegister.register("chiseled_quarried_stone",
-          () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.CHISELED_STONE_BRICKS)));
 
   public static final RegistryObject<Block> ETCHED_QUARRIED_STONE =
       deferredRegister.register("etched_quarried_stone",
-          () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
+          () -> new Block(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
+  public static final RegistryObject<Block> QUARRIED_BRICKS =
+      deferredRegister.register("quarried_bricks",
+          () -> new Block(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
+  public static final RegistryObject<Block> QUARRIED_PAVER =
+      deferredRegister.register("quarried_paver",
+          () -> new Block(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
 
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;

@@ -238,6 +238,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.simpleBlock(RailcraftBlocks.POLISHED_QUARRIED_STONE.get());
     this.simpleBlock(RailcraftBlocks.CHISELED_QUARRIED_STONE.get());
     this.simpleBlock(RailcraftBlocks.ETCHED_QUARRIED_STONE.get());
+    this.simpleBlock(RailcraftBlocks.QUARRIED_BRICKS.get());
+    this.simpleBlock(RailcraftBlocks.QUARRIED_PAVER.get());
 
     this.fluidBlock(RailcraftBlocks.CREOSOTE.get());
 
