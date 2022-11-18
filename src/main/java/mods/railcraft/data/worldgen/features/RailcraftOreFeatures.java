@@ -99,6 +99,11 @@ public class RailcraftOreFeatures {
       register("silver_ore_buried",
           () -> new OreConfiguration(SILVER_ORE_TARGET_LIST.get(), SILVER_VEIN_DIMENSION, 0.5F));
 
+  public static final RegistryObject<ConfiguredFeature<?, ?>> QUARRIED_STONE =
+      register("quarried_stone",
+          () -> new OreConfiguration(OreFeatures.NATURAL_STONE,
+              RailcraftBlocks.QUARRIED_STONE.get().defaultBlockState(), 32));
+
   private static RegistryObject<ConfiguredFeature<?, ?>> register(String name,
       Supplier<OreConfiguration> oreConfiguration) {
     return deferredRegister.register(name,

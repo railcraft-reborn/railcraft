@@ -1,9 +1,10 @@
-// 1.19.2	2022-09-08T14:28:34.8663379	worldgen/placed_feature generator for railcraft
+// 1.19.2	2022-11-18T21:53:14.848867988	worldgen/placed_feature generator for railcraft
 fbde194bab8757e98ced97faa8a5aa9670997ef5 data/railcraft/worldgen/placed_feature/firestone.json
 d97c6c7ec0885edb64d911db34525e68c0aa9c2a data/railcraft/worldgen/placed_feature/lead_ore.json
 3bc1463aea5830f357a8666316638dabb8b0c3eb data/railcraft/worldgen/placed_feature/nickel_ore_middle.json
 470ba1df3be8f9dc10e775e3d4ef9ac1c631fad9 data/railcraft/worldgen/placed_feature/nickel_ore_small.json
 9ac0e687b2672e54003303e376e490da5bad2d0d data/railcraft/worldgen/placed_feature/nickel_ore_upper.json
+15183edb5def46d6d3e17a7dc1419e8a981cf53f data/railcraft/worldgen/placed_feature/quarried_stone.json
 5aeafe5ffb124bf5819cc01661fa1fa75f9b3c09 data/railcraft/worldgen/placed_feature/saltpeter.json
 cf1f1c1d22eb594f2eaea9d57258ae3fb65b514d data/railcraft/worldgen/placed_feature/silver_ore.json
 ecb3384bad7dbc59b9bfde27fe2d4616a73ef713 data/railcraft/worldgen/placed_feature/silver_ore_lower.json

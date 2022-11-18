@@ -198,12 +198,17 @@ public class Railcraft {
 
     var biomeModifiers = new HashMap<ResourceLocation, BiomeModifier>();
     var biomeRegistry = ops.registry(Registry.BIOME_REGISTRY).get();
-    var biomes = new Named<>(biomeRegistry, BiomeTags.IS_OVERWORLD);
-    var netherBiomes = new Named<>(biomeRegistry, BiomeTags.IS_NETHER);
+    var overworld = new Named<>(biomeRegistry, BiomeTags.IS_OVERWORLD);
+    var nether = new Named<>(biomeRegistry, BiomeTags.IS_NETHER);
+    var forest = new Named<>(biomeRegistry, BiomeTags.IS_FOREST);
+
     for (var placedFeature : placedFeatures.entrySet()) {
       var modifierName = new ResourceLocation(ID, "add_" + placedFeature.getKey().getPath());
-      var modifierBiomes =
-          placedFeature.getKey().getPath().equals("firestone") ? netherBiomes : biomes;
+      var modifierBiomes = switch (placedFeature.getKey().getPath()) {
+        case "firestone" -> nether;
+        case "quarried_stone" -> forest;
+        default -> overworld;
+      };
       biomeModifiers.put(modifierName,
           new ForgeBiomeModifiers.AddFeaturesBiomeModifier(modifierBiomes,
               HolderSet.direct(Holder.direct(placedFeature.getValue())),
