@@ -290,7 +290,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     this.tag(RailcraftTags.Blocks.QUARRIED)
         .add(RailcraftBlocks.QUARRIED_STONE.get(),
             RailcraftBlocks.QUARRIED_COBBLESTONE.get(),
-            RailcraftBlocks.POLISHED_QUARRIED_STONE.get());
+            RailcraftBlocks.POLISHED_QUARRIED_STONE.get(),
+            RailcraftBlocks.CHISELED_QUARRIED_STONE.get(),
+            RailcraftBlocks.ETCHED_QUARRIED_STONE.get());
 
 
     this.tag(Tags.Blocks.ORE_RATES_SINGULAR)

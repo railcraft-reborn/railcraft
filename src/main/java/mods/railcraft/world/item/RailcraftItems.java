@@ -1479,6 +1479,16 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.POLISHED_QUARRIED_STONE.get(),
               new Item.Properties().tab(DECORATIVE_TAB)));
 
+  public static final RegistryObject<BlockItem> CHISELED_QUARRIED_STONE =
+      deferredRegister.register("chiseled_quarried_stone",
+          () -> new BlockItem(RailcraftBlocks.CHISELED_QUARRIED_STONE.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> ETCHED_QUARRIED_STONE =
+      deferredRegister.register("etched_quarried_stone",
+          () -> new BlockItem(RailcraftBlocks.ETCHED_QUARRIED_STONE.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
   // ================================================================================
   // Buckets
   // ================================================================================
@@ -1514,8 +1524,7 @@ public class RailcraftItems {
   // Utils
   // ================================================================================
 
-  private static <B extends Block> Function<Block, BlockItem> blockItemFactory(
-      CreativeModeTab tab) {
+  private static Function<Block, BlockItem> blockItemFactory(CreativeModeTab tab) {
     return block -> new BlockItem(block, new Item.Properties().tab(tab));
   }
 

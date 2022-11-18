@@ -2,6 +2,8 @@
   "values": [
     "railcraft:quarried_stone",
     "railcraft:quarried_cobblestone",
-    "railcraft:polished_quarried_stone"
+    "railcraft:polished_quarried_stone",
+    "railcraft:chiseled_quarried_stone",
+    "railcraft:etched_quarried_stone"
   ]
 }

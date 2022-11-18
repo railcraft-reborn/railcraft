@@ -1526,6 +1526,14 @@ public class RailcraftBlocks {
       deferredRegister.register("polished_quarried_stone",
           () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
 
+  public static final RegistryObject<Block> CHISELED_QUARRIED_STONE =
+      deferredRegister.register("chiseled_quarried_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
+
+  public static final RegistryObject<Block> ETCHED_QUARRIED_STONE =
+      deferredRegister.register("etched_quarried_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
+
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;
   }
@@ -1538,5 +1546,4 @@ public class RailcraftBlocks {
   private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
     return false;
   }
-
 }

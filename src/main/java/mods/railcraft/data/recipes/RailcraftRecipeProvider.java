@@ -1596,7 +1596,23 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.QUARRIED_COBBLESTONE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID,
             "polished_quarried_stone_from_quarried_cobblestone_in_stonecutter"));
-
+    ShapedRecipeBuilder.shaped(RailcraftItems.CHISELED_QUARRIED_STONE.get(), 8)
+        .pattern("aaa")
+        .pattern("a a")
+        .pattern("aaa")
+        .define('a', RailcraftItems.POLISHED_QUARRIED_STONE.get())
+        .unlockedBy(getHasName(RailcraftItems.POLISHED_QUARRIED_STONE.get()),
+            has(RailcraftItems.POLISHED_QUARRIED_STONE.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RailcraftItems.ETCHED_QUARRIED_STONE.get(), 8)
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', RailcraftItems.POLISHED_QUARRIED_STONE.get())
+        .define('b', Items.GUNPOWDER)
+        .unlockedBy(getHasName(RailcraftItems.POLISHED_QUARRIED_STONE.get()),
+            has(RailcraftItems.POLISHED_QUARRIED_STONE.get()))
+        .save(consumer);
   }
 
   private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,

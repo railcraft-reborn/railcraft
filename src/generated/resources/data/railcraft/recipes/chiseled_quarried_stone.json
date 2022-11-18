@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": {
+      "item": "railcraft:polished_quarried_stone"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "a a",
+    "aaa"
+  ],
+  "result": {
+    "count": 8,
+    "item": "railcraft:chiseled_quarried_stone"
+  }
+}
