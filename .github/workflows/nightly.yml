@@ -43,7 +43,7 @@ jobs:
           powershell "Compress-Archive ./build/libs ./railcraft-nightly.zip"
 
       - name: Deploy Windows nightly
-        uses: WebFreak001/deploy-nightly@v1.1.0
+        uses: WebFreak001/deploy-nightly@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
