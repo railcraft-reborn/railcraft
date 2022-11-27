@@ -19,7 +19,7 @@ jobs:
           java-version: 17
 
       - name: Restore gradle cache
-        uses: actions/cache@v3.0.7
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -43,7 +43,7 @@ jobs:
           powershell "Compress-Archive ./build/libs ./railcraft-nightly.zip"
 
       - name: Deploy Windows nightly
-        uses: WebFreak001/deploy-nightly@v1.1.0
+        uses: WebFreak001/deploy-nightly@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
