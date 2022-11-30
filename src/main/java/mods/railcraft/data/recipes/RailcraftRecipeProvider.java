@@ -1395,19 +1395,19 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.COKE_BLOCK.get(), "coke_block_from_coal_coke");
   }
 
-  private static void nineBlockStorageRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer,
-      ItemLike pUnpacked, ItemLike pPacked, String pPackingRecipeName) {
-    ShapelessRecipeBuilder.shapeless(pUnpacked, 9)
-        .requires(pPacked)
-        .unlockedBy(getHasName(pPacked), has(pPacked))
-        .save(pFinishedRecipeConsumer);
-    ShapedRecipeBuilder.shaped(pPacked)
+  private static void nineBlockStorageRecipes(Consumer<FinishedRecipe> consumer,
+      ItemLike unpacked, ItemLike packed, String packingRecipeName) {
+    ShapelessRecipeBuilder.shapeless(unpacked, 9)
+        .requires(packed)
+        .unlockedBy(getHasName(packed), has(packed))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(packed)
         .pattern("aaa")
         .pattern("aaa")
         .pattern("aaa")
-        .define('a', pUnpacked)
-        .unlockedBy(getHasName(pUnpacked), has(pUnpacked))
-        .save(pFinishedRecipeConsumer, new ResourceLocation(Railcraft.ID, pPackingRecipeName));
+        .define('a', unpacked)
+        .unlockedBy(getHasName(unpacked), has(unpacked))
+        .save(consumer, new ResourceLocation(Railcraft.ID, packingRecipeName));
   }
 
   private void buildIngotsRecipes(Consumer<FinishedRecipe> consumer) {
