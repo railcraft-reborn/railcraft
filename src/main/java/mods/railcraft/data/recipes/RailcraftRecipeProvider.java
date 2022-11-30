@@ -47,6 +47,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     buildMultiblockBlocks(consumer);
     buildBlockStorageRecipes(consumer);
+    buildIngotsRecipes(consumer);
     buildGears(consumer);
     buildKits(consumer);
     buildTankBlocks(consumer);
@@ -1407,6 +1408,39 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('a', pUnpacked)
         .unlockedBy(getHasName(pUnpacked), has(pUnpacked))
         .save(pFinishedRecipeConsumer, new ResourceLocation(Railcraft.ID, pPackingRecipeName));
+  }
+
+  private void buildIngotsRecipes(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RailcraftItems.BRONZE_INGOT.get(), 4)
+        .pattern("ab")
+        .pattern("bb")
+        .define('a', RailcraftTags.Items.TIN_INGOT)
+        .define('b', Tags.Items.INGOTS_COPPER)
+        .unlockedBy(getHasName(RailcraftItems.TIN_INGOT.get()),
+            has(RailcraftItems.TIN_INGOT.get()))
+        .unlockedBy(getHasName(Items.COPPER_INGOT),
+            has(Items.COPPER_INGOT))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "bronze_ingot_crafted_with_ingots"));
+    ShapedRecipeBuilder.shaped(RailcraftItems.BRASS_INGOT.get(), 4)
+        .pattern("ab")
+        .pattern("bb")
+        .define('a', RailcraftTags.Items.ZINC_INGOT)
+        .define('b', Tags.Items.INGOTS_COPPER)
+        .unlockedBy(getHasName(RailcraftItems.ZINC_INGOT.get()),
+            has(RailcraftItems.ZINC_INGOT.get()))
+        .unlockedBy(getHasName(Items.COPPER_INGOT),
+            has(Items.COPPER_INGOT))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "brass_ingot_crafted_with_ingots"));
+    ShapedRecipeBuilder.shaped(RailcraftItems.INVAR_INGOT.get(), 3)
+        .pattern("ab")
+        .pattern("b ")
+        .define('a', RailcraftTags.Items.NICKEL_INGOT)
+        .define('b', Tags.Items.INGOTS_IRON)
+        .unlockedBy(getHasName(RailcraftItems.NICKEL_INGOT.get()),
+            has(RailcraftItems.NICKEL_INGOT.get()))
+        .unlockedBy(getHasName(Items.IRON_INGOT),
+            has(Items.IRON_INGOT))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "nickel_ingot_crafted_with_ingots"));
   }
 
   private void buildStrengthenedGlass(Consumer<FinishedRecipe> consumer) {
