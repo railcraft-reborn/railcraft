@@ -1,4 +1,4 @@
-// 1.19.2	2022-09-08T14:26:33.7114882	Item Models: railcraft
+// 1.19.2	2022-11-30T21:10:30.087720366	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -26,8 +26,8 @@ feb0008a66073c2c8402bcf8f53d769f402a3442 assets/railcraft/models/item/charge_mot
 ba33feb545a6dc5bb83a41717262b460a3027317 assets/railcraft/models/item/charge_terminal.json
 7905b6be1c1ce032003660f415ba32f5becfb265 assets/railcraft/models/item/coal_coke.json
 778e40548b2d8dc366a45cdd39d90f22ce2f6977 assets/railcraft/models/item/coal_dust.json
-2fcf6ed374d4197663af5966155721339540d39b assets/railcraft/models/item/controller_circuit.json
 44b4a84edfa58899d608812a5f1033723c59221d assets/railcraft/models/item/control_track_kit.json
+2fcf6ed374d4197663af5966155721339540d39b assets/railcraft/models/item/controller_circuit.json
 0cae294c952e394844ebe6521d51d1b8b4da2562 assets/railcraft/models/item/copper_electrode.json
 1d36647d55c4e48b9aae466834d4774a8701502c assets/railcraft/models/item/copper_gear.json
 fec950cc3c46f7516c1ccccd410dfe4954fe4cf2 assets/railcraft/models/item/copper_plate.json
@@ -92,7 +92,6 @@ d230bac3c81ad3442ab91fe3295583a3cd4297d4 assets/railcraft/models/item/silver_ing
 722b31e198fa40616a7baf97e21fd842247c5de3 assets/railcraft/models/item/silver_nugget.json
 ecb4ee05a820232e34d0553943d06583af6a92ed assets/railcraft/models/item/silver_plate.json
 59d072f529bc0cdc0c4c7e2437c3aa015621464d assets/railcraft/models/item/slag.json
-928f177d1d05a263696449efcf0984704267a6a0 assets/railcraft/models/item/slag_dust.json
 79fa214e407418545d273fa2bd88be6eed08e34f assets/railcraft/models/item/standard_rail.json
 c05b8d44ca4522223a237c4538e9d365876a7e60 assets/railcraft/models/item/steel_axe.json
 7d3777118b6ed39c0b6c3c90f835bdd0e4a29eeb assets/railcraft/models/item/steel_boots.json

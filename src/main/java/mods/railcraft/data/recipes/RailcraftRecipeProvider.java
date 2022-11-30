@@ -1516,8 +1516,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("ca")
         .define('a', Items.GRAVEL)
         .define('b', Items.QUARTZ)
-        .define('c', RailcraftItems.SLAG_DUST.get())
-        .unlockedBy(getHasName(RailcraftItems.SLAG_DUST.get()), has(RailcraftItems.SLAG_DUST.get()))
+        .define('c', RailcraftItems.SLAG.get())
+        .unlockedBy(getHasName(RailcraftItems.SLAG.get()), has(RailcraftItems.SLAG.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "bag_of_cement_slag"));
   }
 
