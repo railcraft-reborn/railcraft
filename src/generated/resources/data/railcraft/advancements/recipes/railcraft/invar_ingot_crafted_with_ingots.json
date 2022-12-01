@@ -27,7 +27,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:nickel_ingot_crafted_with_ingots"
+        "recipe": "railcraft:invar_ingot_crafted_with_ingots"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -41,7 +41,7 @@
   ],
   "rewards": {
     "recipes": [
-      "railcraft:nickel_ingot_crafted_with_ingots"
+      "railcraft:invar_ingot_crafted_with_ingots"
     ]
   }
 }

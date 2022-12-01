@@ -1440,7 +1440,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.NICKEL_INGOT.get()))
         .unlockedBy(getHasName(Items.IRON_INGOT),
             has(Items.IRON_INGOT))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "nickel_ingot_crafted_with_ingots"));
+        .save(consumer, new ResourceLocation(Railcraft.ID, "invar_ingot_crafted_with_ingots"));
   }
 
   private void buildStrengthenedGlass(Consumer<FinishedRecipe> consumer) {
