@@ -211,6 +211,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.TIN_BLOCK.get())
         .add(RailcraftBlocks.ZINC_BLOCK.get())
         .add(RailcraftBlocks.FORCE_TRACK_EMITTER.get())
+        .add(RailcraftBlocks.QUARRIED_BRICK_STAIRS.get())
+        .add(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get())
         .addTags(RailcraftTags.Blocks.LEAD_ORE,
             RailcraftTags.Blocks.NICKEL_ORE,
             RailcraftTags.Blocks.SILVER_ORE,

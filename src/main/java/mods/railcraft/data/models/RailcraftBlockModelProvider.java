@@ -64,6 +64,7 @@ import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -146,6 +147,12 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   public void simpleBlock(Block block) {
     super.simpleBlock(block);
     this.simpleBlockItem(block, this.cubeAll(block));
+  }
+
+  public void simpleStairsBlock(StairBlock stairBlock, Block textureBlock) {
+    var texture = TextureMapping.getBlockTexture(textureBlock);
+    this.stairsBlock(stairBlock, texture);
+    this.itemModels().stairs(name(stairBlock), texture, texture, texture);
   }
 
   public void horizontalBlockPropertyIgnore(Block block,
@@ -240,6 +247,10 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.simpleBlock(RailcraftBlocks.ETCHED_QUARRIED_STONE.get());
     this.simpleBlock(RailcraftBlocks.QUARRIED_BRICKS.get());
     this.simpleBlock(RailcraftBlocks.QUARRIED_PAVER.get());
+    this.simpleStairsBlock(RailcraftBlocks.QUARRIED_BRICK_STAIRS.get(),
+        RailcraftBlocks.QUARRIED_BRICKS.get());
+    this.simpleStairsBlock(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get(),
+        RailcraftBlocks.QUARRIED_PAVER.get());
 
     this.fluidBlock(RailcraftBlocks.CREOSOTE.get());
 

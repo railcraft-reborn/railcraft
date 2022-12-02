@@ -1494,9 +1494,19 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.QUARRIED_BRICKS.get(),
               new Item.Properties().tab(DECORATIVE_TAB)));
 
+  public static final RegistryObject<BlockItem> QUARRIED_BRICK_STAIRS =
+      deferredRegister.register("quarried_brick_stairs",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_BRICK_STAIRS.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
   public static final RegistryObject<BlockItem> QUARRIED_PAVER =
       deferredRegister.register("quarried_paver",
           () -> new BlockItem(RailcraftBlocks.QUARRIED_PAVER.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> QUARRIED_PAVER_STAIRS =
+      deferredRegister.register("quarried_paver_stairs",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get(),
               new Item.Properties().tab(DECORATIVE_TAB)));
 
   // ================================================================================

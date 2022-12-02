@@ -1617,6 +1617,17 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.QUARRIED_BRICKS.get(), 4, "");
     square2x2(consumer, RailcraftItems.QUARRIED_BRICKS.get(),
         RailcraftItems.QUARRIED_PAVER.get(), 4, "");
+
+    stairBuilder(RailcraftItems.QUARRIED_BRICK_STAIRS.get(),
+        Ingredient.of(RailcraftItems.QUARRIED_BRICKS.get()))
+        .unlockedBy(getHasName(RailcraftItems.QUARRIED_BRICKS.get()),
+            has(RailcraftItems.QUARRIED_BRICKS.get()))
+        .save(consumer);
+    stairBuilder(RailcraftItems.QUARRIED_PAVER_STAIRS.get(),
+        Ingredient.of(RailcraftItems.QUARRIED_PAVER.get()))
+        .unlockedBy(getHasName(RailcraftItems.QUARRIED_PAVER.get()),
+            has(RailcraftItems.QUARRIED_PAVER.get()))
+        .save(consumer);
   }
 
   private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,

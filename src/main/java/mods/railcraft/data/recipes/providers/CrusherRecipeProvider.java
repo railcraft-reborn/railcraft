@@ -190,5 +190,11 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.QUARRIED))
         .addResult(RailcraftItems.QUARRIED_COBBLESTONE.get(), 1, 1)
         .save(consumer, "tags_quarried");
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.QUARRIED_BRICK_STAIRS.get()))
+        .addResult(RailcraftItems.QUARRIED_COBBLESTONE.get(), 1, 0.75)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.QUARRIED_PAVER_STAIRS.get()))
+        .addResult(RailcraftItems.QUARRIED_COBBLESTONE.get(), 1, 0.75)
+        .save(consumer);
   }
 }
