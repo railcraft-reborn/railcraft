@@ -168,8 +168,6 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.BLAST_FURNACE_BRICKS.get(),
               new Item.Properties().tab(TAB)));
 
-  public static final RegistryObject<Item> SLAG = registerBasic("slag");
-
   public static final RegistryObject<Item> FEED_STATION =
       deferredRegister.register("feed_station",
           () -> new BlockItem(RailcraftBlocks.FEED_STATION.get(), new Item.Properties().tab(TAB)));
@@ -1382,7 +1380,7 @@ public class RailcraftItems {
   public static final RegistryObject<Item> SALTPETER_DUST = registerBasic("saltpeter_dust");
   public static final RegistryObject<Item> COAL_DUST = registerBasic("coal_dust");
   public static final RegistryObject<Item> CHARCOAL_DUST = registerBasic("charcoal_dust");
-  public static final RegistryObject<Item> SLAG_DUST = registerBasic("slag_dust");
+  public static final RegistryObject<Item> SLAG = registerBasic("slag");
   public static final RegistryObject<Item> ENDER_DUST = registerBasic("ender_dust");
   public static final RegistryObject<Item> SULFUR_DUST = registerBasic("sulfur_dust");
   public static final RegistryObject<Item> OBSIDIAN_DUST = registerBasic("obsidian_dust");

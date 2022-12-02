@@ -148,7 +148,6 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.TURBINE_ROTOR, "Turbine Rotor");
     this.addItem(RailcraftItems.TURBINE_BLADE, "Turbine Blade");
     this.addItem(RailcraftItems.TURBINE_DISK, "Turbine Disk");
-    this.addItem(RailcraftItems.SLAG, "Ground Blast Furnace Slag");
     this.addItem(RailcraftItems.COAL_COKE, "Coal Coke");
     this.addItem(RailcraftItems.STEEL_SHEARS, "Steel Shears");
     this.addItem(RailcraftItems.STEEL_SWORD, "Steel Sword");
@@ -247,7 +246,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SALTPETER_DUST, "Saltpeter Dust");
     this.addItem(RailcraftItems.COAL_DUST, "Coal Dust");
     this.addItem(RailcraftItems.CHARCOAL_DUST, "Charcoal Dust");
-    this.addItem(RailcraftItems.SLAG_DUST, "Slag Dust");
+    this.addItem(RailcraftItems.SLAG, "Ground Blast Furnace Slag");
     this.addItem(RailcraftItems.ENDER_DUST, "Ender Dust");
     this.addItem(RailcraftItems.SULFUR_DUST, "Sulfur Dust");
     this.addItem(RailcraftItems.OBSIDIAN_DUST, "Obsidian Dust");

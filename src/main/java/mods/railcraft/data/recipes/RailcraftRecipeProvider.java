@@ -49,6 +49,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     buildMultiblockBlocks(consumer);
     buildBlockStorageRecipes(consumer);
+    buildIngotsRecipes(consumer);
     buildGears(consumer);
     buildKits(consumer);
     buildTankBlocks(consumer);
@@ -1397,19 +1398,52 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.COKE_BLOCK.get(), "coke_block_from_coal_coke");
   }
 
-  private static void nineBlockStorageRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer,
-      ItemLike pUnpacked, ItemLike pPacked, String pPackingRecipeName) {
-    ShapelessRecipeBuilder.shapeless(pUnpacked, 9)
-        .requires(pPacked)
-        .unlockedBy(getHasName(pPacked), has(pPacked))
-        .save(pFinishedRecipeConsumer);
-    ShapedRecipeBuilder.shaped(pPacked)
+  private static void nineBlockStorageRecipes(Consumer<FinishedRecipe> consumer,
+      ItemLike unpacked, ItemLike packed, String packingRecipeName) {
+    ShapelessRecipeBuilder.shapeless(unpacked, 9)
+        .requires(packed)
+        .unlockedBy(getHasName(packed), has(packed))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(packed)
         .pattern("aaa")
         .pattern("aaa")
         .pattern("aaa")
-        .define('a', pUnpacked)
-        .unlockedBy(getHasName(pUnpacked), has(pUnpacked))
-        .save(pFinishedRecipeConsumer, new ResourceLocation(Railcraft.ID, pPackingRecipeName));
+        .define('a', unpacked)
+        .unlockedBy(getHasName(unpacked), has(unpacked))
+        .save(consumer, new ResourceLocation(Railcraft.ID, packingRecipeName));
+  }
+
+  private void buildIngotsRecipes(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RailcraftItems.BRONZE_INGOT.get(), 4)
+        .pattern("ab")
+        .pattern("bb")
+        .define('a', RailcraftTags.Items.TIN_INGOT)
+        .define('b', Tags.Items.INGOTS_COPPER)
+        .unlockedBy(getHasName(RailcraftItems.TIN_INGOT.get()),
+            has(RailcraftItems.TIN_INGOT.get()))
+        .unlockedBy(getHasName(Items.COPPER_INGOT),
+            has(Items.COPPER_INGOT))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "bronze_ingot_crafted_with_ingots"));
+    ShapedRecipeBuilder.shaped(RailcraftItems.BRASS_INGOT.get(), 4)
+        .pattern("ab")
+        .pattern("bb")
+        .define('a', RailcraftTags.Items.ZINC_INGOT)
+        .define('b', Tags.Items.INGOTS_COPPER)
+        .unlockedBy(getHasName(RailcraftItems.ZINC_INGOT.get()),
+            has(RailcraftItems.ZINC_INGOT.get()))
+        .unlockedBy(getHasName(Items.COPPER_INGOT),
+            has(Items.COPPER_INGOT))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "brass_ingot_crafted_with_ingots"));
+    ShapedRecipeBuilder.shaped(RailcraftItems.INVAR_INGOT.get(), 3)
+        .pattern("ab")
+        .pattern("b ")
+        .define('a', RailcraftTags.Items.NICKEL_INGOT)
+        .define('b', Tags.Items.INGOTS_IRON)
+        .unlockedBy(getHasName(RailcraftItems.NICKEL_INGOT.get()),
+            has(RailcraftItems.NICKEL_INGOT.get()))
+        .unlockedBy(getHasName(Items.IRON_INGOT),
+            has(Items.IRON_INGOT))
+        .save(consumer, new ResourceLocation(Railcraft.ID, "invar_ingot_crafted_with_ingots"));
   }
 
   private void buildStrengthenedGlass(Consumer<FinishedRecipe> consumer) {
@@ -1485,8 +1519,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("ca")
         .define('a', Items.GRAVEL)
         .define('b', Items.QUARTZ)
-        .define('c', RailcraftItems.SLAG_DUST.get())
-        .unlockedBy(getHasName(RailcraftItems.SLAG_DUST.get()), has(RailcraftItems.SLAG_DUST.get()))
+        .define('c', RailcraftItems.SLAG.get())
+        .unlockedBy(getHasName(RailcraftItems.SLAG.get()), has(RailcraftItems.SLAG.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "bag_of_cement_slag"));
   }
 

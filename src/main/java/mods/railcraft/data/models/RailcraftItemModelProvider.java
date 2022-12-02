@@ -68,7 +68,6 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.STONE_RAILBED.get());
         this.basicItem(RailcraftItems.STONE_TIE.get());
         this.basicItem(RailcraftItems.COAL_COKE.get());
-        this.basicItem(RailcraftItems.SLAG.get());
         this.basicItem(RailcraftItems.BRASS_INGOT.get());
         this.basicItem(RailcraftItems.BRASS_NUGGET.get());
         this.basicItem(RailcraftItems.BRONZE_INGOT.get());
@@ -128,7 +127,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.SALTPETER_DUST.get());
         this.basicItem(RailcraftItems.COAL_DUST.get());
         this.basicItem(RailcraftItems.CHARCOAL_DUST.get());
-        this.basicItem(RailcraftItems.SLAG_DUST.get());
+        this.basicItem(RailcraftItems.SLAG.get());
         this.basicItem(RailcraftItems.ENDER_DUST.get());
         this.basicItem(RailcraftItems.SULFUR_DUST.get());
         this.basicItem(RailcraftItems.OBSIDIAN_DUST.get());
