@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_slag_dust": {
+    "has_slag": {
       "conditions": {
         "items": [
           {
             "items": [
-              "railcraft:slag_dust"
+              "railcraft:slag"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_slag_dust",
+      "has_slag",
       "has_the_recipe"
     ]
   ],

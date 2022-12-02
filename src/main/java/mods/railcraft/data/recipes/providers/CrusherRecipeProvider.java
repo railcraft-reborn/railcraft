@@ -146,7 +146,7 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(RailcraftItems.COAL_DUST.get(), 1, 1)
         .save(consumer);
     CrusherRecipeBuilder.crush(Ingredient.of(Items.CHARCOAL))
-        .addResult(RailcraftItems.COAL_DUST.get(), 1, 1)
+        .addResult(RailcraftItems.CHARCOAL_DUST.get(), 1, 1)
         .save(consumer);
     CrusherRecipeBuilder.crush(Ingredient.of(Items.COAL_BLOCK))
         .addResult(RailcraftItems.COAL_DUST.get(), 9, 1)
