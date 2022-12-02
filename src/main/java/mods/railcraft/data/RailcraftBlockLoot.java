@@ -71,6 +71,8 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.QUARRIED_BRICK_STAIRS.get());
     this.dropSelf(RailcraftBlocks.QUARRIED_PAVER.get());
     this.dropSelf(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get());
+    this.add(RailcraftBlocks.QUARRIED_BRICK_SLAB.get(), BlockLoot::createSlabItemTable);
+    this.add(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(), BlockLoot::createSlabItemTable);
 
     this.add(RailcraftBlocks.SULFUR_ORE.get(),
         block -> createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));

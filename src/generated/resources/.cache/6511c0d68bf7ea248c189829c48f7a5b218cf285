@@ -1,4 +1,4 @@
-// 1.19.2	2022-12-02T20:56:22.545699116	Railcraft Loot Tables
+// 1.19.2	2022-12-02T22:10:59.001540828	Railcraft Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -218,10 +218,12 @@ caaab80baff74258afd3a90c1fc4d6a7aaba215a data/railcraft/loot_tables/blocks/purpl
 080698d0b7a9635c698ae687ca35dcd78557ae1d data/railcraft/loot_tables/blocks/purple_steel_tank_valve.json
 021163a3c38ffcdda6950d8edddb9e2e4835c8e5 data/railcraft/loot_tables/blocks/purple_steel_tank_wall.json
 d8d43b22640c48c800c4eb3303d1fa89d6e414ce data/railcraft/loot_tables/blocks/purple_strengthened_glass.json
+8e951034a50a1b00122e2e12c08b18e734aca979 data/railcraft/loot_tables/blocks/quarried_brick_slab.json
 65ff16e552e5f038124c73757080fa982354a0eb data/railcraft/loot_tables/blocks/quarried_brick_stairs.json
 eaf7618cee712ee6b6afd81bbb61d60f755f7c0e data/railcraft/loot_tables/blocks/quarried_bricks.json
 325c64ef799ff9310f984b91ab98c50927d7c64e data/railcraft/loot_tables/blocks/quarried_cobblestone.json
 8b2d9f6e71ab7a8405b5bf1417d2c3cba8125c64 data/railcraft/loot_tables/blocks/quarried_paver.json
+c7641b7a45b8ac1e1761d57c9e43222a6c7b40f7 data/railcraft/loot_tables/blocks/quarried_paver_slab.json
 3ec2f750669330c5a01f01e0217e82848d3dcf33 data/railcraft/loot_tables/blocks/quarried_paver_stairs.json
 e7560e56ab6c0c96e8c813e126d279bdd269255b data/railcraft/loot_tables/blocks/quarried_stone.json
 5ff630b285c04e3f45a8b468b04b8bfc8e1fd0d1 data/railcraft/loot_tables/blocks/red_iron_tank_gauge.json

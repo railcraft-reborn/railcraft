@@ -1662,6 +1662,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.QUARRIED_PAVER.get()),
             has(RailcraftItems.QUARRIED_PAVER.get()))
         .save(consumer);
+    slab(consumer, RailcraftItems.QUARRIED_BRICK_SLAB.get(), RailcraftItems.QUARRIED_BRICKS.get());
+    slab(consumer, RailcraftItems.QUARRIED_PAVER_SLAB.get(), RailcraftItems.QUARRIED_PAVER.get());
   }
 
   private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,

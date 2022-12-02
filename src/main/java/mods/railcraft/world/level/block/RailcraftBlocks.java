@@ -77,6 +77,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.LightBlock;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -1544,6 +1545,10 @@ public class RailcraftBlocks {
           () -> new StairBlock(() -> QUARRIED_BRICKS.get().defaultBlockState(),
               BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
 
+  public static final RegistryObject<SlabBlock> QUARRIED_BRICK_SLAB =
+      deferredRegister.register("quarried_brick_slab",
+          () -> new SlabBlock(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
   public static final RegistryObject<Block> QUARRIED_PAVER =
       deferredRegister.register("quarried_paver",
           () -> new Block(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
@@ -1552,6 +1557,10 @@ public class RailcraftBlocks {
       deferredRegister.register("quarried_paver_stairs",
           () -> new StairBlock(() -> QUARRIED_PAVER.get().defaultBlockState(),
               BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
+  public static final RegistryObject<SlabBlock> QUARRIED_PAVER_SLAB =
+      deferredRegister.register("quarried_paver_slab",
+          () -> new SlabBlock(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
 
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;

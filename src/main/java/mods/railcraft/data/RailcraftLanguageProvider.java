@@ -127,8 +127,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ETCHED_QUARRIED_STONE, "Etched Quarried Stone");
     this.addBlock(RailcraftBlocks.QUARRIED_BRICKS, "Quarried Bricks");
     this.addBlock(RailcraftBlocks.QUARRIED_BRICK_STAIRS, "Quarried Brick Stairs");
+    this.addBlock(RailcraftBlocks.QUARRIED_BRICK_SLAB, "Quarried Brick Slab");
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER, "Quarried Paver");
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_STAIRS, "Quarried Paver Stairs");
+    this.addBlock(RailcraftBlocks.QUARRIED_PAVER_SLAB, "Quarried Paver Slab");
 
     this.addBlockColorVariants(RailcraftBlocks.STRENGTHENED_GLASS, "Strengthened Glass");
     this.addBlockColorVariants(RailcraftBlocks.POST, "Post");
