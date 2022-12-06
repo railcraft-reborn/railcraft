@@ -1,0 +1,16 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "tag": "railcraft:quarried"
+  },
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 1,
+        "item": "railcraft:quarried_cobblestone"
+      }
+    }
+  ],
+  "tickCost": 200
+}

@@ -1462,6 +1462,61 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.WATER_TANK_SIDING.get(),
               new Item.Properties().tab(TAB)));
 
+  public static final RegistryObject<BlockItem> QUARRIED_STONE =
+      deferredRegister.register("quarried_stone",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_STONE.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> QUARRIED_COBBLESTONE =
+      deferredRegister.register("quarried_cobblestone",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_COBBLESTONE.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> POLISHED_QUARRIED_STONE =
+      deferredRegister.register("polished_quarried_stone",
+          () -> new BlockItem(RailcraftBlocks.POLISHED_QUARRIED_STONE.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> CHISELED_QUARRIED_STONE =
+      deferredRegister.register("chiseled_quarried_stone",
+          () -> new BlockItem(RailcraftBlocks.CHISELED_QUARRIED_STONE.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> ETCHED_QUARRIED_STONE =
+      deferredRegister.register("etched_quarried_stone",
+          () -> new BlockItem(RailcraftBlocks.ETCHED_QUARRIED_STONE.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> QUARRIED_BRICKS =
+      deferredRegister.register("quarried_bricks",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_BRICKS.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> QUARRIED_BRICK_STAIRS =
+      deferredRegister.register("quarried_brick_stairs",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_BRICK_STAIRS.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> QUARRIED_BRICK_SLAB =
+      deferredRegister.register("quarried_brick_slab",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_BRICK_SLAB.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> QUARRIED_PAVER =
+      deferredRegister.register("quarried_paver",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_PAVER.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> QUARRIED_PAVER_STAIRS =
+      deferredRegister.register("quarried_paver_stairs",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
+  public static final RegistryObject<BlockItem> QUARRIED_PAVER_SLAB =
+      deferredRegister.register("quarried_paver_slab",
+          () -> new BlockItem(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(),
+              new Item.Properties().tab(DECORATIVE_TAB)));
+
   // ================================================================================
   // Buckets
   // ================================================================================
@@ -1497,8 +1552,7 @@ public class RailcraftItems {
   // Utils
   // ================================================================================
 
-  private static <B extends Block> Function<Block, BlockItem> blockItemFactory(
-      CreativeModeTab tab) {
+  private static Function<Block, BlockItem> blockItemFactory(CreativeModeTab tab) {
     return block -> new BlockItem(block, new Item.Properties().tab(tab));
   }
 

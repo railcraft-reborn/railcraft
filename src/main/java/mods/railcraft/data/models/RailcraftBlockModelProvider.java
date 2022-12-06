@@ -64,6 +64,8 @@ import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -146,6 +148,18 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   public void simpleBlock(Block block) {
     super.simpleBlock(block);
     this.simpleBlockItem(block, this.cubeAll(block));
+  }
+
+  public void simpleStairsBlock(StairBlock stairBlock, Block textureBlock) {
+    var texture = TextureMapping.getBlockTexture(textureBlock);
+    this.stairsBlock(stairBlock, texture);
+    this.itemModels().stairs(name(stairBlock), texture, texture, texture);
+  }
+
+  public void simpleSlabBlock(SlabBlock slabBlock, Block textureBlock) {
+    var texture = TextureMapping.getBlockTexture(textureBlock);
+    this.slabBlock(slabBlock, texture, texture);
+    this.itemModels().slab(name(slabBlock), texture, texture, texture);
   }
 
   public void horizontalBlockPropertyIgnore(Block block,
@@ -232,6 +246,22 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.simpleBlock(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
     this.simpleBlock(RailcraftBlocks.SALTPETER_ORE.get());
     this.simpleBlock(RailcraftBlocks.FIRESTONE_ORE.get());
+
+    this.simpleBlock(RailcraftBlocks.QUARRIED_STONE.get());
+    this.simpleBlock(RailcraftBlocks.QUARRIED_COBBLESTONE.get());
+    this.simpleBlock(RailcraftBlocks.POLISHED_QUARRIED_STONE.get());
+    this.simpleBlock(RailcraftBlocks.CHISELED_QUARRIED_STONE.get());
+    this.simpleBlock(RailcraftBlocks.ETCHED_QUARRIED_STONE.get());
+    this.simpleBlock(RailcraftBlocks.QUARRIED_BRICKS.get());
+    this.simpleBlock(RailcraftBlocks.QUARRIED_PAVER.get());
+    this.simpleStairsBlock(RailcraftBlocks.QUARRIED_BRICK_STAIRS.get(),
+        RailcraftBlocks.QUARRIED_BRICKS.get());
+    this.simpleStairsBlock(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get(),
+        RailcraftBlocks.QUARRIED_PAVER.get());
+    this.simpleSlabBlock(RailcraftBlocks.QUARRIED_BRICK_SLAB.get(),
+        RailcraftBlocks.QUARRIED_BRICKS.get());
+    this.simpleSlabBlock(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(),
+        RailcraftBlocks.QUARRIED_PAVER.get());
 
     this.fluidBlock(RailcraftBlocks.CREOSOTE.get());
 

@@ -73,10 +73,13 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.LightBlock;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -1513,6 +1516,52 @@ public class RailcraftBlocks {
               .requiresCorrectToolForDrops()
               .strength(50, 1200)));
 
+  public static final RegistryObject<Block> QUARRIED_STONE =
+      deferredRegister.register("quarried_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+  public static final RegistryObject<Block> QUARRIED_COBBLESTONE =
+      deferredRegister.register("quarried_cobblestone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE)));
+
+  public static final RegistryObject<Block> POLISHED_QUARRIED_STONE =
+      deferredRegister.register("polished_quarried_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
+
+  public static final RegistryObject<Block> CHISELED_QUARRIED_STONE =
+      deferredRegister.register("chiseled_quarried_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.CHISELED_STONE_BRICKS)));
+
+  public static final RegistryObject<Block> ETCHED_QUARRIED_STONE =
+      deferredRegister.register("etched_quarried_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
+  public static final RegistryObject<Block> QUARRIED_BRICKS =
+      deferredRegister.register("quarried_bricks",
+          () -> new Block(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
+  public static final RegistryObject<StairBlock> QUARRIED_BRICK_STAIRS =
+      deferredRegister.register("quarried_brick_stairs",
+          () -> new StairBlock(() -> QUARRIED_BRICKS.get().defaultBlockState(),
+              BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
+  public static final RegistryObject<SlabBlock> QUARRIED_BRICK_SLAB =
+      deferredRegister.register("quarried_brick_slab",
+          () -> new SlabBlock(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
+  public static final RegistryObject<Block> QUARRIED_PAVER =
+      deferredRegister.register("quarried_paver",
+          () -> new Block(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
+  public static final RegistryObject<StairBlock> QUARRIED_PAVER_STAIRS =
+      deferredRegister.register("quarried_paver_stairs",
+          () -> new StairBlock(() -> QUARRIED_PAVER.get().defaultBlockState(),
+              BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
+  public static final RegistryObject<SlabBlock> QUARRIED_PAVER_SLAB =
+      deferredRegister.register("quarried_paver_slab",
+          () -> new SlabBlock(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;
   }
@@ -1525,5 +1574,4 @@ public class RailcraftBlocks {
   private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
     return false;
   }
-
 }

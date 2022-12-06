@@ -113,6 +113,13 @@ public class RailcraftOrePlacements {
               HeightRangePlacement.uniform(VerticalAnchor.absolute(-64),
                   VerticalAnchor.absolute(-48))));
 
+  public static final RegistryObject<PlacedFeature> QUARRIED_STONE =
+      register("quarried_stone",
+          RailcraftOreFeatures.QUARRIED_STONE, () -> OrePlacements.commonOrePlacement(
+              6, HeightRangePlacement.uniform(VerticalAnchor.absolute(20),
+                  VerticalAnchor.absolute(80))
+          ));
+
   public static final RegistryObject<PlacedFeature> SALTPETER =
       register("saltpeter",
           RailcraftMiscOverworldFeatures.SALTPETER,

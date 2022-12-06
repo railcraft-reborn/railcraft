@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "railcraft:block/quarried_brick_slab"
+    },
+    "type=double": {
+      "model": "railcraft:block/quarried_bricks"
+    },
+    "type=top": {
+      "model": "railcraft:block/quarried_brick_slab_top"
+    }
+  }
+}

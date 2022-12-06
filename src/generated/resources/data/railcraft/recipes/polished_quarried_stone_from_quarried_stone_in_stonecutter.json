@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "railcraft:quarried_stone"
+  },
+  "result": "railcraft:polished_quarried_stone"
+}

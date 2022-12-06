@@ -30,6 +30,10 @@
     "railcraft:tin_block",
     "railcraft:zinc_block",
     "railcraft:force_track_emitter",
+    "railcraft:quarried_brick_stairs",
+    "railcraft:quarried_brick_slab",
+    "railcraft:quarried_paver_stairs",
+    "railcraft:quarried_paver_slab",
     "#forge:ores/lead",
     "#forge:ores/nickel",
     "#forge:ores/silver",
@@ -44,6 +48,7 @@
     "#railcraft:iron_tank_wall",
     "#railcraft:steel_tank_gauge",
     "#railcraft:steel_tank_valve",
-    "#railcraft:steel_tank_wall"
+    "#railcraft:steel_tank_wall",
+    "#railcraft:quarried"
   ]
 }
