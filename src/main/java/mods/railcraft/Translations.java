@@ -4,18 +4,9 @@ public class Translations {
 
   public static class Tab {
 
-    private static final String PREFIX = "itemGroup.";
-
-    public static final String RAILCRAFT =
-        PREFIX + Railcraft.ID;
-    public static final String RAILCRAFT_OUTFITTED_TRACKS =
-        PREFIX + Railcraft.ID + "_outfitted_tracks";
-    public static final String RAILCRAFT_DECORATIVE_BLOCKS =
-        PREFIX + Railcraft.ID + "_decorative_blocks";
-
-    public static String withoutPrefix(String key) {
-      return key.substring(PREFIX.length());
-    }
+    public static final String RAILCRAFT = "itemGroup." + Railcraft.ID;
+    public static final String RAILCRAFT_OUTFITTED_TRACKS = RAILCRAFT + "_outfitted_tracks";
+    public static final String RAILCRAFT_DECORATIVE_BLOCKS = RAILCRAFT + "_decorative_blocks";
   }
 
   public static class Screen {

@@ -8,7 +8,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.data.worldgen.features.RailcraftMiscOverworldFeatures;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.OrePlacements;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -43,7 +43,7 @@ public class RailcraftOrePlacements {
   // private static final int SALTPETER_VEIN_PER_CHUNK = 5;
 
   private static final DeferredRegister<PlacedFeature> deferredRegister =
-      DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, Railcraft.ID);
+      DeferredRegister.create(Registries.PLACED_FEATURE, Railcraft.ID);
 
   public static final RegistryObject<PlacedFeature> LEAD_ORE =
       register("lead_ore",

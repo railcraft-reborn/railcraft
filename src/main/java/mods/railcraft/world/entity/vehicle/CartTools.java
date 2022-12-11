@@ -21,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -47,7 +46,7 @@ public final class CartTools {
     }
     removePassengers(cart, cart.getX(), cart.getY() + 1.5D, cart.getZ());
     cart.level.explode(cart, cart.getX(), cart.getY(), cart.getZ(), 3F,
-        Explosion.BlockInteraction.DESTROY);
+        Level.ExplosionInteraction.TNT);
     if (cart.level.getRandom().nextInt(2) == 0) {
       cart.kill();
     }

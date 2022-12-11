@@ -5,7 +5,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -17,11 +17,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlastFurnaceRecipeProvider extends RecipeProvider {
 
-  private BlastFurnaceRecipeProvider(DataGenerator generator) {
-    super(generator);
+  private BlastFurnaceRecipeProvider(PackOutput packOutput) {
+    super(packOutput);
   }
 
-  public static void buildRecipes(Consumer<FinishedRecipe> consumer) {
+  @Override
+  protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+  }
+
+  public static void genRecipes(Consumer<FinishedRecipe> consumer) {
     BlastFurnaceRecipeBuilder
         .smelting(RailcraftBlocks.STEEL_BLOCK.get(), 1,
             Ingredient.of(Tags.Items.STORAGE_BLOCKS_IRON), 9, 9)

@@ -1,24 +1,29 @@
 package mods.railcraft.data;
 
+import java.util.concurrent.CompletableFuture;
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
-  public RailcraftItemTagsProvider(DataGenerator generator, BlockTagsProvider blockTagsProvider,
+  public RailcraftItemTagsProvider(PackOutput packOutput,
+      CompletableFuture<HolderLookup.Provider> lookupProvider,
+      TagsProvider<Block> blockTagProvider,
       ExistingFileHelper fileHelper) {
-    super(generator, blockTagsProvider, Railcraft.ID, fileHelper);
+    super(packOutput, lookupProvider, blockTagProvider, Railcraft.ID, fileHelper);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  protected void addTags() {
+  protected void addTags(HolderLookup.Provider provider) {
     this.tag(RailcraftTags.Items.STEEL_INGOT)
         .add(RailcraftItems.STEEL_INGOT.get());
     this.tag(RailcraftTags.Items.TIN_INGOT)

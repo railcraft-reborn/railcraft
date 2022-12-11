@@ -4,6 +4,8 @@ import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -15,7 +17,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -190,8 +191,10 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     if (!level.isClientSide()) {
       boolean open = !isOpen(blockState);
       level.setBlockAndUpdate(pos, blockState.setValue(OPEN, open));
-      level.levelEvent(null, open ? LevelEvent.SOUND_OPEN_FENCE_GATE
-          : LevelEvent.SOUND_CLOSE_FENCE_GATE, pos, 0);
+      level.playSound(player, pos, open
+              ? SoundEvents.FENCE_GATE_OPEN
+              : SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0F,
+          level.getRandom().nextFloat() * 0.1F + 0.9F);
     }
 
     return InteractionResult.sidedSuccess(level.isClientSide());
@@ -219,8 +222,10 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
       boolean powered = isPowered(blockState);
       if (powered != isOpen(blockState)) {
         level.setBlock(pos, blockState.setValue(OPEN, powered), Block.UPDATE_CLIENTS);
-        level.levelEvent(null, powered ? LevelEvent.SOUND_OPEN_FENCE_GATE
-            : LevelEvent.SOUND_CLOSE_FENCE_GATE, pos, 0);
+        level.playSound(null, pos, powered
+                ? SoundEvents.FENCE_GATE_OPEN
+                : SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0F,
+            level.getRandom().nextFloat() * 0.1F + 0.9F);
       }
     }
   }

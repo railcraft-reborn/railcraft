@@ -46,8 +46,7 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
     var customResourceLocation = new ResourceLocation(Railcraft.ID, "coke_oven/" + path);
 
     var advancementId = new ResourceLocation(Railcraft.ID,
-        String.format("recipes/%s/%s", this.result.getItemCategory().getRecipeFolderName(),
-            customResourceLocation.getPath()));
+        String.format("recipes/%s", customResourceLocation.getPath()));
 
     finishedRecipe.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,

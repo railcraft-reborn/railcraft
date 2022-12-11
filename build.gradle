@@ -85,7 +85,13 @@ configurations {
 }
 
 minecraft {
-    mappings channel: project.mappings_channel, version: project.mappings_version
+    if (project.mappings_channel == 'parchment_previous') {
+        mappings channel: 'parchment', version: "${project.previous_minecraft_version}-${project.mappings_version}-${project.minecraft_version}"
+    } else if (project.mappings_channel == 'parchment'){
+        mappings channel: 'parchment', version: "${project.mappings_version}-${project.minecraft_version}"
+    } else {
+        mappings channel: 'official', version: "${project.minecraft_version}"
+    }
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -175,6 +181,8 @@ dependencies {
 
     //compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}")
     //compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge-api:${project.jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.2-common-api:${project.jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.2-forge-api:${project.jei_version}")
     //runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
 }
 

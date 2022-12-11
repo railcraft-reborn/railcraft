@@ -12,7 +12,6 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -26,9 +25,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class FirestoneItem extends Item {
 
   public static final Predicate<ItemStack> SPAWNS_FIRE = itemStack -> itemStack.isEmpty()
@@ -62,15 +58,12 @@ public class FirestoneItem extends Item {
     return false;
   }
 
-  @Override
-  public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-    super.fillItemCategory(category, items);
-    if (allowedIn(category)) {
-      var damageItem = new ItemStack(this);
-      if (damageItem.isDamageableItem()) {
-        damageItem.setDamageValue(damageItem.getMaxDamage() - 1);
-        items.add(damageItem);
-      }
+  public void fillItemCategory(CreativeModeTab.Output output) {
+    var item = new ItemStack(this);
+    output.accept(item);
+    if (item.isDamageableItem()) {
+      item.setDamageValue(item.getMaxDamage() - 1);
+      output.accept(item);
     }
   }
 

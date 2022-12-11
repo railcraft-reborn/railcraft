@@ -1,8 +1,10 @@
-package mods.railcraft.data;
+package mods.railcraft.data.loot.packs;
 
+import java.util.Set;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -15,10 +17,14 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
 
-public class RailcraftBlockLoot extends BlockLoot {
+public class RailcraftBlockLoot extends BlockLootSubProvider {
+
+  protected RailcraftBlockLoot() {
+    super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+  }
 
   @Override
-  protected void addTables() {
+  protected void generate() {
     this.dropSelf(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get());
     this.dropSelf(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
     this.dropSelf(RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
@@ -71,8 +77,8 @@ public class RailcraftBlockLoot extends BlockLoot {
     this.dropSelf(RailcraftBlocks.QUARRIED_BRICK_STAIRS.get());
     this.dropSelf(RailcraftBlocks.QUARRIED_PAVER.get());
     this.dropSelf(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get());
-    this.add(RailcraftBlocks.QUARRIED_BRICK_SLAB.get(), BlockLoot::createSlabItemTable);
-    this.add(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(), BlockLoot::createSlabItemTable);
+    this.add(RailcraftBlocks.QUARRIED_BRICK_SLAB.get(), this::createSlabItemTable);
+    this.add(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(), this::createSlabItemTable);
 
     this.add(RailcraftBlocks.SULFUR_ORE.get(),
         block -> createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));

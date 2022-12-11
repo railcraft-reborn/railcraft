@@ -1,7 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
 import mods.railcraft.Railcraft;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftRecipeTypes {
 
   private static final DeferredRegister<RecipeType<?>> deferredRegister =
-      DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, Railcraft.ID);
+      DeferredRegister.create(Registries.RECIPE_TYPE, Railcraft.ID);
 
   public static final RegistryObject<RecipeType<RollingRecipe>> ROLLING =
       register("rolling");

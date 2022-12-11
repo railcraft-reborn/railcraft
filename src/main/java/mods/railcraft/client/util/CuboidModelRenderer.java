@@ -23,6 +23,7 @@ public class CuboidModelRenderer {
    */
   private static final int[] combinedARGB = new int[Direction.values().length];
   private static final Vector3f NORMAL = new Vector3f(1, 1, 1);
+  private static final Vector3f YP = new Vector3f(0, 1, 0);
 
   static {
     NORMAL.normalize();
@@ -61,14 +62,14 @@ public class CuboidModelRenderer {
     PoseStack.Pose lastMatrix = matrix.last();
     Matrix4f matrix4f = lastMatrix.pose();
     Matrix3f normalMatrix = lastMatrix.normal();
-    Vector3f normal = fakeDisableDiffuse ? NORMAL : new Vector3f(0.0F, 1.0F, 0.0F);
+    Vector3f normal = fakeDisableDiffuse ? NORMAL : YP;
     Vector3f from = new Vector3f();
     Vector3f to = new Vector3f();
     // render each side
     for (int y = 0; y <= yDelta; y++) {
       Face upSprite = y == yDelta ? model.get(Direction.UP) : null;
       Face downSprite = y == 0 ? model.get(Direction.DOWN) : null;
-      from.set(yBounds[y]);
+      from.y = yBounds[y];
       to.y = yBounds[y + 1];
       for (int z = 0; z <= zDelta; z++) {
         Face northSprite = z == 0 ? model.get(Direction.NORTH) : null;

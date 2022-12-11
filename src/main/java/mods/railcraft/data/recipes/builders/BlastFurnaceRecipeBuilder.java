@@ -48,8 +48,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
     var customResourceLocation = new ResourceLocation(Railcraft.ID, "blast_furnace/" + path);
 
     var advancementId = new ResourceLocation(Railcraft.ID,
-        String.format("recipes/%s/%s", this.result.getItemCategory().getRecipeFolderName(),
-            customResourceLocation.getPath()));
+        String.format("recipes/%s", customResourceLocation.getPath()));
 
     finishedRecipe.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,

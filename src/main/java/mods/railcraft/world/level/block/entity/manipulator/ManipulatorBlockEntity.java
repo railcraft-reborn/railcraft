@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;

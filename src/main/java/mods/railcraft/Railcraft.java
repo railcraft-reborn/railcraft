@@ -1,7 +1,7 @@
 package mods.railcraft;
 
-import java.util.HashMap;
 import com.mojang.serialization.JsonOps;
+import java.util.HashMap;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.charge.Charge;
@@ -15,8 +15,8 @@ import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
-import mods.railcraft.data.RailcraftLootTableProvider;
 import mods.railcraft.data.RailcraftSoundsProvider;
+import mods.railcraft.data.loot.packs.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
@@ -37,6 +37,7 @@ import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.entity.vehicle.TrainTransferHelperImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
+import mods.railcraft.world.item.CreativeModeTabs;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
@@ -53,8 +54,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.HolderSet.Named;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
@@ -123,6 +124,8 @@ public class Railcraft {
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addListener(this::handleGatherData);
+    modEventBus.addListener(CreativeModeTabs::onCreativeModeTabRegister);
+    modEventBus.addListener(CreativeModeTabs::onCreativeModeTabBuildContents);
 
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientManager::new);
 
@@ -163,17 +166,20 @@ public class Railcraft {
 
   private void handleGatherData(GatherDataEvent event) {
     var generator = event.getGenerator();
+    var packOutput = generator.getPackOutput();
+    var lookupProvider = event.getLookupProvider();
     var fileHelper = event.getExistingFileHelper();
-    var blockTags = new RailcraftBlockTagsProvider(generator, fileHelper);
+
+    var blockTags = new RailcraftBlockTagsProvider(packOutput, lookupProvider, fileHelper);
     generator.addProvider(event.includeServer(), blockTags);
     generator.addProvider(event.includeServer(),
-        new RailcraftItemTagsProvider(generator, blockTags, fileHelper));
+        new RailcraftItemTagsProvider(packOutput, lookupProvider,blockTags, fileHelper));
     generator.addProvider(event.includeServer(),
-        new RailcraftFluidTagsProvider(generator, fileHelper));
-    generator.addProvider(event.includeServer(), new RailcraftLootTableProvider(generator));
+        new RailcraftFluidTagsProvider(packOutput, lookupProvider, fileHelper));
+    generator.addProvider(event.includeServer(), new RailcraftLootTableProvider(packOutput));
     generator.addProvider(event.includeServer(),
         new RailcraftAdvancementProviders(generator, fileHelper));
-    generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(generator));
+    generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(packOutput));
     generator.addProvider(event.includeClient(),
         new RailcraftItemModelProvider(generator, fileHelper));
     generator.addProvider(event.includeClient(),
@@ -190,14 +196,14 @@ public class Railcraft {
     configuredFeatures.putAll(RailcraftOreFeatures.collectEntries());
     configuredFeatures.putAll(RailcraftMiscOverworldFeatures.collectEntries());
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
-        fileHelper, ID, ops, Registry.CONFIGURED_FEATURE_REGISTRY, configuredFeatures));
+        fileHelper, ID, ops, Registries.CONFIGURED_FEATURE, configuredFeatures));
 
     var placedFeatures = new HashMap<>(RailcraftOrePlacements.collectEntries());
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
-        fileHelper, ID, ops, Registry.PLACED_FEATURE_REGISTRY, placedFeatures));
+        fileHelper, ID, ops, Registries.PLACED_FEATURE, placedFeatures));
 
     var biomeModifiers = new HashMap<ResourceLocation, BiomeModifier>();
-    var biomeRegistry = ops.registry(Registry.BIOME_REGISTRY).get();
+    var biomeRegistry = ops.registry(Registries.BIOME).get();
     var overworld = new Named<>(biomeRegistry, BiomeTags.IS_OVERWORLD);
     var nether = new Named<>(biomeRegistry, BiomeTags.IS_NETHER);
     var forest = new Named<>(biomeRegistry, BiomeTags.IS_FOREST);

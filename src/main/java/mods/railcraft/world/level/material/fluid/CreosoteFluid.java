@@ -2,7 +2,6 @@ package mods.railcraft.world.level.material.fluid;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.math.Vector3f;
 import java.util.function.Consumer;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -14,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -27,6 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 public abstract class CreosoteFluid extends FlowingFluid {
 
@@ -145,7 +146,7 @@ public abstract class CreosoteFluid extends FlowingFluid {
   }
 
   @Override
-  protected boolean canConvertToSource() {
+  public boolean canConvertToSource(FluidState state, Level level, BlockPos pos) {
     return false;
   }
 
@@ -174,6 +175,11 @@ public abstract class CreosoteFluid extends FlowingFluid {
     public boolean isSource(FluidState fluidState) {
       return false;
     }
+
+    @Override
+    protected boolean canConvertToSource(Level level) {
+      return false;
+    }
   }
 
   public static class Source extends CreosoteFluid {
@@ -185,6 +191,11 @@ public abstract class CreosoteFluid extends FlowingFluid {
 
     @Override
     public boolean isSource(FluidState fluidState) {
+      return true;
+    }
+
+    @Override
+    protected boolean canConvertToSource(Level level) {
       return true;
     }
   }

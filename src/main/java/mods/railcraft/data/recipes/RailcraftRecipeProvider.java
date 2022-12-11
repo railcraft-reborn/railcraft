@@ -12,9 +12,10 @@ import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
@@ -36,16 +37,16 @@ import net.minecraftforge.common.Tags;
 
 public class RailcraftRecipeProvider extends RecipeProvider {
 
-  public RailcraftRecipeProvider(DataGenerator dataGenerator) {
-    super(dataGenerator);
+  public RailcraftRecipeProvider(PackOutput packOutput) {
+    super(packOutput);
   }
 
   @Override
-  protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-    CokeOvenRecipeProvider.buildRecipes(consumer);
-    BlastFurnaceRecipeProvider.buildRecipes(consumer);
-    CrusherRecipeProvider.buildRecipes(consumer);
-    RollingRecipeProvider.buildRecipes(consumer);
+  protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+    CokeOvenRecipeProvider.genRecipes(consumer);
+    BlastFurnaceRecipeProvider.genRecipes(consumer);
+    CrusherRecipeProvider.genRecipes(consumer);
+    RollingRecipeProvider.genRecipes(consumer);
 
     buildMultiblockBlocks(consumer);
     buildBlockStorageRecipes(consumer);
@@ -85,7 +86,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     } else {
       path = new ResourceLocation(Railcraft.ID, optionalName);
     }
-    ShapelessRecipeBuilder.shapeless(to, count)
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, to, count)
         .requires(from)
         .unlockedBy(getHasName(from), has(from))
         .save(finishedRecipe, path);
@@ -112,25 +113,25 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.ADVANCED_RAIL.get(), RailcraftItems.STANDARD_RAIL.get(),
         Items.REDSTONE);
 
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAIL.get(), 6)
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.WOODEN_RAIL.get(), 6)
         .requires(RailcraftItems.WOODEN_TIE.get())
         .requires(Tags.Items.INGOTS_IRON)
         .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
             has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
 
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.STANDARD_RAIL.get())
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.STANDARD_RAIL.get())
         .requires(Items.RAIL, 8)
         .unlockedBy(getHasName(Items.RAIL), has(Items.RAIL))
         .save(consumer, new ResourceLocation(Railcraft.ID, "standard_rail_from_rail"));
 
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.WOODEN_RAILBED.get())
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.WOODEN_RAILBED.get())
         .requires(RailcraftItems.WOODEN_TIE.get(), 4)
         .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
             has(RailcraftItems.WOODEN_TIE.get()))
         .save(consumer);
 
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.STONE_RAILBED.get())
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.STONE_RAILBED.get())
         .requires(RailcraftItems.STONE_TIE.get(), 4)
         .unlockedBy(getHasName(RailcraftItems.WOODEN_TIE.get()),
             has(RailcraftItems.WOODEN_TIE.get()))
@@ -139,7 +140,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipe,
       Item result, int count,  Item railType, Item railBedType) {
-    ShapedRecipeBuilder.shaped(result, count)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, count)
         .pattern("a a")
         .pattern("aba")
         .pattern("a a")
@@ -154,7 +155,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipe,
       Item result, int count, Item railType, Item railBedType, Item optionalItem) {
-    ShapedRecipeBuilder.shaped(result, count)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, count)
         .pattern("aca")
         .pattern("aba")
         .pattern("aca")
@@ -368,7 +369,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(), 16)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(), 16)
         .pattern("aba")
         .pattern("aac")
         .pattern("aba")
@@ -378,7 +379,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.HIGH_SPEED_RAIL.get()),
             has(RailcraftItems.HIGH_SPEED_RAIL.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(), 16)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(), 16)
         .pattern("aca")
         .pattern("aba")
         .pattern("aba")
@@ -388,7 +389,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.HIGH_SPEED_RAIL.get()),
             has(RailcraftItems.HIGH_SPEED_RAIL.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(), 16)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(), 16)
         .pattern("aba")
         .pattern("aca")
         .pattern("aba")
@@ -402,7 +403,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void tracks(Consumer<FinishedRecipe> finishedRecipe, Item result,
       Item kit, Item baseTrack) {
-      ShapelessRecipeBuilder.shapeless(result)
+      ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
           .requires(kit)
           .requires(baseTrack)
           .unlockedBy(getHasName(kit), has(kit))
@@ -411,7 +412,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void wyeTracks(Consumer<FinishedRecipe> finishedRecipe, Item result,
       Item rail, Item railBed) {
-    ShapedRecipeBuilder.shaped(result, 16)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 16)
         .pattern("aaa")
         .pattern("aab")
         .pattern("aaa")
@@ -423,7 +424,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void turnoutTracks(Consumer<FinishedRecipe> finishedRecipe, Item result,
       Item rail, Item railBed) {
-    ShapedRecipeBuilder.shaped(result, 16)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 16)
         .pattern("aba")
         .pattern("aaa")
         .pattern("aaa")
@@ -435,7 +436,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void junctionTracks(Consumer<FinishedRecipe> finishedRecipe, Item result,
       Item rail, Item railBed) {
-    ShapedRecipeBuilder.shaped(result, 16)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 16)
         .pattern("aaa")
         .pattern("aba")
         .pattern("aaa")
@@ -446,7 +447,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildSteelItems(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_ANVIL.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_ANVIL.get())
         .pattern("aaa")
         .pattern(" b ")
         .pattern("bbb")
@@ -455,14 +456,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_BLOCK.get()),
             has(RailcraftItems.STEEL_BLOCK.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_SHEARS.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_SHEARS.get())
         .pattern(" a")
         .pattern("a ")
         .define('a', RailcraftTags.Items.STEEL_INGOT)
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_SWORD.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_SWORD.get())
         .pattern("a")
         .pattern("a")
         .pattern("b")
@@ -471,7 +472,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_SHOVEL.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_SHOVEL.get())
         .pattern("a")
         .pattern("b")
         .pattern("b")
@@ -480,7 +481,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_PICKAXE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_PICKAXE.get())
         .pattern("aaa")
         .pattern(" b ")
         .pattern(" b ")
@@ -489,7 +490,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_AXE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_AXE.get())
         .pattern("aa")
         .pattern("ab")
         .pattern(" b")
@@ -498,7 +499,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_HOE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_HOE.get())
         .pattern("aa")
         .pattern(" b")
         .pattern(" b")
@@ -507,14 +508,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_BOOTS.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_BOOTS.get())
         .pattern("a a")
         .pattern("a a")
         .define('a', RailcraftTags.Items.STEEL_INGOT)
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_LEGGINGS.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_LEGGINGS.get())
         .pattern("aaa")
         .pattern("a a")
         .pattern("a a")
@@ -522,7 +523,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_CHESTPLATE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_CHESTPLATE.get())
         .pattern("a a")
         .pattern("aaa")
         .pattern("aaa")
@@ -530,7 +531,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
             has(RailcraftItems.STEEL_INGOT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_HELMET.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_HELMET.get())
         .pattern("aaa")
         .pattern("a a")
         .define('a', RailcraftTags.Items.STEEL_INGOT)
@@ -553,7 +554,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   private static void tunnelBoreHead(Consumer<FinishedRecipe> consumer,
       Item result,
       TagKey<Item> center) {
-    ShapedRecipeBuilder.shaped(result)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
         .pattern("aaa")
         .pattern("aba")
         .pattern("aaa")
@@ -565,7 +566,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildMaul(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.IRON_SPIKE_MAUL.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.IRON_SPIKE_MAUL.get())
         .pattern("aca")
         .pattern(" b ")
         .pattern(" b ")
@@ -574,7 +575,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', Tags.Items.STORAGE_BLOCKS_IRON)
         .unlockedBy(getHasName(Items.IRON_BLOCK), has(Items.IRON_BLOCK))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEEL_SPIKE_MAUL.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEEL_SPIKE_MAUL.get())
         .pattern("aca")
         .pattern(" b ")
         .pattern(" b ")
@@ -584,7 +585,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_BLOCK.get()),
             has(RailcraftItems.STEEL_BLOCK.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.DIAMOND_SPIKE_MAUL.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.DIAMOND_SPIKE_MAUL.get())
         .pattern("aca")
         .pattern(" b ")
         .pattern(" b ")
@@ -598,42 +599,42 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   private void buildOreSmelt(Consumer<FinishedRecipe> consumer) {
     ImmutableList<ItemLike> LEAD_SMELTABLES =
         ImmutableList.of(RailcraftItems.LEAD_ORE.get(), RailcraftItems.DEEPSLATE_LEAD_ORE.get());
-    oreSmelting(consumer, LEAD_SMELTABLES, RailcraftItems.LEAD_INGOT.get(), 1, 200,
-        "lead_ingot");
-    oreBlasting(consumer, LEAD_SMELTABLES, RailcraftItems.LEAD_INGOT.get(), 1, 100,
-        "lead_ingot");
+    oreSmelting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, RailcraftItems.LEAD_INGOT.get(),
+        1, 200, "lead_ingot");
+    oreBlasting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, RailcraftItems.LEAD_INGOT.get(),
+        1, 100, "lead_ingot");
 
     ImmutableList<ItemLike> NICKEL_SMELTABLES =
         ImmutableList.of(RailcraftItems.NICKEL_ORE.get(), RailcraftItems.DEEPSLATE_NICKEL_ORE.get());
-    oreSmelting(consumer, NICKEL_SMELTABLES, RailcraftItems.NICKEL_INGOT.get(), 1, 200,
-        "nickel_ingot");
-    oreBlasting(consumer, NICKEL_SMELTABLES, RailcraftItems.NICKEL_INGOT.get(), 1, 100,
-        "nickel_ingot");
+    oreSmelting(consumer, NICKEL_SMELTABLES, RecipeCategory.MISC, RailcraftItems.NICKEL_INGOT.get(),
+        1, 200, "nickel_ingot");
+    oreBlasting(consumer, NICKEL_SMELTABLES, RecipeCategory.MISC, RailcraftItems.NICKEL_INGOT.get(),
+        1, 100, "nickel_ingot");
 
     ImmutableList<ItemLike> SILVER_SMELTABLES =
         ImmutableList.of(RailcraftItems.SILVER_ORE.get(), RailcraftItems.DEEPSLATE_SILVER_ORE.get());
-    oreSmelting(consumer, SILVER_SMELTABLES, RailcraftItems.SILVER_INGOT.get(), 1, 200,
-        "silver_ingot");
-    oreBlasting(consumer, SILVER_SMELTABLES, RailcraftItems.SILVER_INGOT.get(), 1, 100,
-        "silver_ingot");
+    oreSmelting(consumer, SILVER_SMELTABLES, RecipeCategory.MISC, RailcraftItems.SILVER_INGOT.get(),
+        1, 200, "silver_ingot");
+    oreBlasting(consumer, SILVER_SMELTABLES, RecipeCategory.MISC, RailcraftItems.SILVER_INGOT.get(),
+        1, 100, "silver_ingot");
 
     ImmutableList<ItemLike> TIN_SMELTABLES =
         ImmutableList.of(RailcraftItems.TIN_ORE.get(), RailcraftItems.DEEPSLATE_TIN_ORE.get());
-    oreSmelting(consumer, TIN_SMELTABLES, RailcraftItems.TIN_INGOT.get(), 1, 200,
-        "tin_ingot");
-    oreBlasting(consumer, TIN_SMELTABLES, RailcraftItems.TIN_INGOT.get(), 1, 100,
-        "tin_ingot");
+    oreSmelting(consumer, TIN_SMELTABLES, RecipeCategory.MISC, RailcraftItems.TIN_INGOT.get(),
+        1, 200, "tin_ingot");
+    oreBlasting(consumer, TIN_SMELTABLES, RecipeCategory.MISC, RailcraftItems.TIN_INGOT.get(),
+        1, 100, "tin_ingot");
 
     ImmutableList<ItemLike> ZINC_SMELTABLES =
         ImmutableList.of(RailcraftItems.ZINC_ORE.get(), RailcraftItems.DEEPSLATE_ZINC_ORE.get());
-    oreSmelting(consumer, ZINC_SMELTABLES, RailcraftItems.ZINC_INGOT.get(), 1, 200,
-        "zinc_ingot");
-    oreBlasting(consumer, ZINC_SMELTABLES, RailcraftItems.ZINC_INGOT.get(), 1, 100,
-        "zinc_ingot");
+    oreSmelting(consumer, ZINC_SMELTABLES, RecipeCategory.MISC, RailcraftItems.ZINC_INGOT.get(),
+        1, 200, "zinc_ingot");
+    oreBlasting(consumer, ZINC_SMELTABLES, RecipeCategory.MISC, RailcraftItems.ZINC_INGOT.get(),
+        1, 100, "zinc_ingot");
   }
 
   private void buildTurbineParts(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.TURBINE_DISK.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TURBINE_DISK.get())
         .pattern("aaa")
         .pattern("aba")
         .pattern("aaa")
@@ -643,14 +644,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.TURBINE_BLADE.get()))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.TURBINE_ROTOR.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TURBINE_ROTOR.get())
         .pattern("aaa")
         .define('a', RailcraftItems.TURBINE_DISK.get())
         .unlockedBy(getHasName(RailcraftItems.TURBINE_DISK.get()),
             has(RailcraftItems.TURBINE_DISK.get()))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEAM_TURBINE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEAM_TURBINE.get())
         .pattern("aba")
         .pattern("bcb")
         .pattern("aba")
@@ -676,7 +677,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
 
     var circuit = RailcraftItems.CONTROLLER_CIRCUIT.get();
-    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_INTERLOCK_BOX.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.SIGNAL_INTERLOCK_BOX.get())
         .pattern(" d ")
         .pattern("aba")
         .pattern("aca")
@@ -687,7 +688,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(circuit), has(circuit))
         .save(consumer);
     circuit = RailcraftItems.SIGNAL_CIRCUIT.get();
-    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get())
         .pattern(" c ")
         .pattern("aba")
         .pattern("aca")
@@ -700,7 +701,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void signalBox(Consumer<FinishedRecipe> finishedRecipe,
       Item result, Item circuit, Item bottomItem) {
-    ShapedRecipeBuilder.shaped(result)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
         .pattern("aba")
         .pattern("aca")
         .define('a', Items.IRON_INGOT)
@@ -723,7 +724,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     dualSignal(consumer, RailcraftItems.DUAL_TOKEN_SIGNAL.get(),
         RailcraftItems.RADIO_CIRCUIT.get());
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_LAMP.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.SIGNAL_LAMP.get())
         .pattern("ab ")
         .pattern("ace")
         .pattern("adf")
@@ -739,7 +740,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void singleSignal(Consumer<FinishedRecipe> finishedRecipe,
       Item result, Item circuit) {
-    ShapedRecipeBuilder.shaped(result)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
         .pattern("abc")
         .pattern(" dc")
         .define('a', RailcraftItems.SIGNAL_LAMP.get())
@@ -752,7 +753,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void dualSignal(Consumer<FinishedRecipe> finishedRecipe,
       Item result, Item circuit) {
-    ShapedRecipeBuilder.shaped(result)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
         .pattern("abc")
         .pattern(" dc")
         .pattern("aec")
@@ -778,7 +779,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void circuitFromMaterial(Consumer<FinishedRecipe> finishedRecipe,
       Item itemOut, Item woolItem) {
-    ShapedRecipeBuilder.shaped(itemOut)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, itemOut)
         .define('W', woolItem)
         .define('R', Items.REPEATER)
         .define('S', Tags.Items.DUSTS_REDSTONE)
@@ -799,7 +800,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void switchItem(Consumer<FinishedRecipe> finishedRecipe,
       Item result, Item circuit) {
-    ShapedRecipeBuilder.shaped(result)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
         .pattern("abc")
         .pattern("def")
         .define('a', Items.RED_DYE)
@@ -814,7 +815,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void buildLoaders(Consumer<FinishedRecipe> consumer) {
     //TODO: Fix when we implement detector blocks
-    ShapedRecipeBuilder.shaped(RailcraftItems.ITEM_LOADER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ITEM_LOADER.get())
         .pattern("aaa")
         .pattern("aba")
         .pattern("aca")
@@ -824,7 +825,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
             has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.ADVANCED_ITEM_LOADER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ADVANCED_ITEM_LOADER.get())
         .pattern("aba")
         .pattern("bcb")
         .pattern("ada")
@@ -835,7 +836,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.ITEM_LOADER.get()),
             has(RailcraftItems.ITEM_LOADER.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.ITEM_UNLOADER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ITEM_UNLOADER.get())
         .pattern("aaa")
         .pattern("aba")
         .pattern("aca")
@@ -845,7 +846,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
             has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.ADVANCED_ITEM_UNLOADER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ADVANCED_ITEM_UNLOADER.get())
         .pattern("aba")
         .pattern("bcb")
         .pattern("ada")
@@ -856,7 +857,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.ITEM_UNLOADER.get()),
             has(RailcraftItems.ITEM_UNLOADER.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.FLUID_LOADER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.FLUID_LOADER.get())
         .pattern("aba")
         .pattern("a a")
         .pattern("aca")
@@ -866,7 +867,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
             has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.FLUID_UNLOADER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.FLUID_UNLOADER.get())
         .pattern("aba")
         .pattern("a a")
         .pattern("aca")
@@ -876,7 +877,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
             has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
         .save(consumer);
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.CART_DISPENSER.get())
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.CART_DISPENSER.get())
         .requires(Items.DISPENSER)
         .requires(Items.MINECART)
         .unlockedBy(getHasName(Items.DISPENSER),
@@ -884,7 +885,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.MINECART),
             has(Items.MINECART))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.TRAIN_DISPENSER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRAIN_DISPENSER.get())
         .pattern("aba")
         .pattern("bcb")
         .pattern("aba")
@@ -907,7 +908,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void crowbar(Consumer<FinishedRecipe> finishedRecipe, Item itemOut,
       TagKey<Item> materialTag) {
-    ShapedRecipeBuilder.shaped(itemOut)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, itemOut)
         .pattern(" ba")
         .pattern("bab")
         .pattern("ab ")
@@ -918,7 +919,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildFirestones(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.REFINED_FIRESTONE.get())
         .pattern("LRL")
         .pattern("RSR")
         .pattern("LRL")
@@ -929,7 +930,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.CUT_FIRESTONE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "firestone_lava_refinement"));
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.REFINED_FIRESTONE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.REFINED_FIRESTONE.get())
         .pattern("LFL")
         .pattern("RSR")
         .pattern("LRL")
@@ -941,7 +942,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.CRACKED_FIRESTONE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "firestone_cracked_fixing"));
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.CUT_FIRESTONE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CUT_FIRESTONE.get())
         .pattern(" a ")
         .pattern("aba")
         .pattern(" a ")
@@ -953,7 +954,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildMiscItems(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.FEED_STATION.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.FEED_STATION.get())
         .pattern("aba")
         .pattern("bcb")
         .pattern("aba")
@@ -963,7 +964,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()),
             has(RailcraftItems.STEEL_PLATE.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.MANUAL_ROLLING_MACHINE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.MANUAL_ROLLING_MACHINE.get())
         .pattern("aba")
         .pattern("bcb")
         .pattern("aba")
@@ -972,7 +973,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', Items.CRAFTING_TABLE)
         .unlockedBy(getHasName(Items.PISTON), has(Items.PISTON))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(Items.TORCH, 8)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.TORCH, 8)
         .pattern("a")
         .pattern("b")
         .pattern("c")
@@ -982,14 +983,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
             has(RailcraftItems.CREOSOTE_BOTTLE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "torch_creosote"));
-    ShapedRecipeBuilder.shaped(RailcraftItems.OVERALLS.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.OVERALLS.get())
         .pattern("aaa")
         .pattern("a a")
         .pattern("a a")
         .define('a', Items.CYAN_WOOL)
         .unlockedBy(getHasName(Items.CYAN_WOOL), has(Items.CYAN_WOOL))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.WHISTLE_TUNER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WHISTLE_TUNER.get())
         .pattern("a a")
         .pattern("aaa")
         .pattern(" a ")
@@ -997,13 +998,13 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_NUGGET.get()),
             has(RailcraftTags.Items.STEEL_NUGGET))
         .save(consumer);
-    ShapelessRecipeBuilder.shapeless(RailcraftItems.SIGNAL_LABEL.get())
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.SIGNAL_LABEL.get())
         .requires(Items.PAPER)
         .requires(RailcraftTags.Items.STEEL_NUGGET)
         .unlockedBy(getHasName(RailcraftItems.STEEL_NUGGET.get()),
             has(RailcraftItems.STEEL_NUGGET.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.FORCE_TRACK_EMITTER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.FORCE_TRACK_EMITTER.get())
         .pattern("aba")
         .pattern("cdc")
         .pattern("aba")
@@ -1014,7 +1015,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.ENDER_DUST.get()),
             has(RailcraftItems.ENDER_DUST.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get())
         .pattern(" a ")
         .pattern("cbc")
         .pattern(" d ")
@@ -1024,7 +1025,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('d', Tags.Items.DUSTS_REDSTONE)
         .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.SIGNAL_TUNER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.SIGNAL_TUNER.get())
         .define('a', Items.REDSTONE_TORCH)
         .define('b', RailcraftItems.RECEIVER_CIRCUIT.get())
         .define('c', Blocks.STONE_BUTTON)
@@ -1034,7 +1035,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.RECEIVER_CIRCUIT.get()),
             has(RailcraftItems.RECEIVER_CIRCUIT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.GOGGLES.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.GOGGLES.get())
         .pattern("aba")
         .pattern("c c")
         .pattern("ddd")
@@ -1047,7 +1048,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.RECEIVER_CIRCUIT.get()),
             has(RailcraftItems.RECEIVER_CIRCUIT.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.WATER_TANK_SIDING.get(), 6)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WATER_TANK_SIDING.get(), 6)
         .pattern("aaa")
         .pattern("bcb")
         .pattern("aaa")
@@ -1062,7 +1063,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildCartsVariant(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.TANK_MINECART.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TANK_MINECART.get())
         .pattern("a")
         .pattern("b")
         .define('a', RailcraftTags.Items.STRENGTHENED_GLASS)
@@ -1071,7 +1072,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.TUNNEL_BORE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TUNNEL_BORE.get())
         .pattern("aba")
         .pattern("cbc")
         .pattern(" d ")
@@ -1082,7 +1083,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.STEAM_LOCOMOTIVE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEAM_LOCOMOTIVE.get())
         .pattern("aab")
         .pattern("aab")
         .pattern("cdd")
@@ -1093,7 +1094,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.TRACK_LAYER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_LAYER.get())
         .pattern("aba")
         .pattern("cdc")
         .pattern("efe")
@@ -1106,7 +1107,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.TRACK_REMOVER.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_REMOVER.get())
         .pattern("aba")
         .pattern("cdc")
         .pattern("efe")
@@ -1126,7 +1127,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     this.conversion(consumer, RailcraftItems.CHARGE_SPOOL_LARGE.get(),
         RailcraftItems.CHARGE_SPOOL_MEDIUM.get(), 3, "charge_spool_medium_from_large");
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.CHARGE_TERMINAL.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CHARGE_TERMINAL.get())
         .pattern(" b ")
         .pattern("aaa")
         .define('a', RailcraftTags.Items.BRASS_INGOT)
@@ -1135,7 +1136,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.BRASS_INGOT.get()))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.CHARGE_COIL.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CHARGE_COIL.get())
         .pattern("aaa")
         .pattern("bbb")
         .pattern("aaa")
@@ -1145,7 +1146,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.CHARGE_SPOOL_SMALL.get()))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.CHARGE_MOTOR.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CHARGE_MOTOR.get())
         .pattern(" a ")
         .pattern("bcb")
         .pattern(" d ")
@@ -1226,7 +1227,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       int count,
       List<Tuple<Ingredient, Integer>> ingredients) {
 
-      var builder = ShapelessRecipeBuilder.shapeless(result, count)
+      var builder = ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, count)
           .requires(ItemTags.PLANKS)
           .requires(RailcraftItems.TRACK_PARTS.get());
 
@@ -1274,7 +1275,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   private static void gear(Consumer<FinishedRecipe> finishedRecipe,
       Item itemOut,
       TagKey<Item> materialTag) {
-    ShapedRecipeBuilder.shaped(itemOut)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, itemOut)
         .pattern(" a ")
         .pattern("aba")
         .pattern(" a ")
@@ -1285,7 +1286,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildMultiblockBlocks(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.FLUID_FUELED_FIREBOX.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.FLUID_FUELED_FIREBOX.get())
         .pattern("aca")
         .pattern("bdb")
         .pattern("aea")
@@ -1297,7 +1298,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.INVAR_PLATE.get()),
             has(RailcraftItems.INVAR_PLATE.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.SOLID_FUELED_FIREBOX.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.SOLID_FUELED_FIREBOX.get())
         .pattern("aaa")
         .pattern("aba")
         .pattern("aca")
@@ -1307,7 +1308,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.FIRE_CHARGE), has(Items.FIRE_CHARGE))
         .save(consumer);
 
-    ShapedRecipeBuilder.shaped(RailcraftItems.COKE_OVEN_BRICKS.get(), 2)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.COKE_OVEN_BRICKS.get(), 2)
         .pattern("aba")
         .pattern("bcb")
         .pattern("aba")
@@ -1316,7 +1317,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', Items.CLAY)
         .unlockedBy(getHasName(Items.BRICK), has(Items.BRICK))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.BLAST_FURNACE_BRICKS.get(), 4)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.BLAST_FURNACE_BRICKS.get(), 4)
         .pattern("aba")
         .pattern("bcb")
         .pattern("aba")
@@ -1325,7 +1326,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', Items.MAGMA_CREAM)
         .unlockedBy(getHasName(Items.MAGMA_CREAM), has(Items.MAGMA_CREAM))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.CRUSHER.get(), 4)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CRUSHER.get(), 4)
         .pattern("aba")
         .pattern("bcb")
         .pattern("ada")
@@ -1336,7 +1337,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
             has(RailcraftItems.CHARGE_MOTOR.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get(), 2)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get(), 2)
         .pattern("a")
         .pattern("b")
         .pattern("a")
@@ -1344,7 +1345,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', RailcraftTags.Items.INVAR_PLATE)
         .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()), has(RailcraftItems.STEEL_PLATE.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get(), 2)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get(), 2)
         .pattern("a")
         .pattern("b")
         .pattern("a")
@@ -1400,11 +1401,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void nineBlockStorageRecipes(Consumer<FinishedRecipe> consumer,
       ItemLike unpacked, ItemLike packed, String packingRecipeName) {
-    ShapelessRecipeBuilder.shapeless(unpacked, 9)
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, unpacked, 9)
         .requires(packed)
         .unlockedBy(getHasName(packed), has(packed))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(packed)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, packed)
         .pattern("aaa")
         .pattern("aaa")
         .pattern("aaa")
@@ -1414,7 +1415,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildIngotsRecipes(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.BRONZE_INGOT.get(), 4)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.BRONZE_INGOT.get(), 4)
         .pattern("ab")
         .pattern("bb")
         .define('a', RailcraftTags.Items.TIN_INGOT)
@@ -1424,7 +1425,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.COPPER_INGOT),
             has(Items.COPPER_INGOT))
         .save(consumer, new ResourceLocation(Railcraft.ID, "bronze_ingot_crafted_with_ingots"));
-    ShapedRecipeBuilder.shaped(RailcraftItems.BRASS_INGOT.get(), 4)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.BRASS_INGOT.get(), 4)
         .pattern("ab")
         .pattern("bb")
         .define('a', RailcraftTags.Items.ZINC_INGOT)
@@ -1434,7 +1435,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.COPPER_INGOT),
             has(Items.COPPER_INGOT))
         .save(consumer, new ResourceLocation(Railcraft.ID, "brass_ingot_crafted_with_ingots"));
-    ShapedRecipeBuilder.shaped(RailcraftItems.INVAR_INGOT.get(), 3)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.INVAR_INGOT.get(), 3)
         .pattern("ab")
         .pattern("b ")
         .define('a', RailcraftTags.Items.NICKEL_INGOT)
@@ -1462,7 +1463,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     for (var ingredient : ingredients.entrySet()) {
       var recipeName = name.substring(name.indexOf('_') + 1) + "_" + ingredient.getKey();
-      ShapedRecipeBuilder.shaped(result, 6)
+      ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 6)
           .pattern("aba")
           .pattern("aca")
           .pattern("ada")
@@ -1479,7 +1480,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildTie(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.WOODEN_TIE.get(), 3)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WOODEN_TIE.get(), 3)
         .pattern(" a ")
         .pattern("bbb")
         .define('a', RailcraftItems.CREOSOTE_BUCKET.get())
@@ -1487,7 +1488,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BUCKET.get()),
             has(RailcraftItems.CREOSOTE_BUCKET.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.WOODEN_TIE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WOODEN_TIE.get())
         .pattern(" a ")
         .pattern("bbb")
         .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
@@ -1495,7 +1496,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
             has(RailcraftItems.CREOSOTE_BOTTLE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "wooden_tie_bottle"));
-    ShapedRecipeBuilder.shaped(RailcraftItems.STONE_TIE.get())
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STONE_TIE.get())
         .pattern(" a ")
         .pattern("bcb")
         .define('a', Items.WATER_BUCKET)
@@ -1507,14 +1508,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildCement(Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RailcraftItems.BAG_OF_CEMENT.get(), 2)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.BAG_OF_CEMENT.get(), 2)
         .pattern("ab")
         .pattern("ba")
         .define('a', Items.GRAVEL)
         .define('b', Items.QUARTZ)
         .unlockedBy(getHasName(Items.QUARTZ), has(Items.QUARTZ))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.BAG_OF_CEMENT.get(), 2)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.BAG_OF_CEMENT.get(), 2)
         .pattern("ab")
         .pattern("ca")
         .define('a', Items.GRAVEL)
@@ -1530,7 +1531,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    ShapedRecipeBuilder.shaped(result, 8)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 8)
         .pattern("aa")
         .pattern("aa")
         .define('a', ingredient)
@@ -1546,7 +1547,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    ShapedRecipeBuilder.shaped(result, 8)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 8)
         .pattern("aba")
         .pattern("bcb")
         .pattern("aba")
@@ -1565,7 +1566,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    ShapedRecipeBuilder.shaped(result, 8)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 8)
         .pattern("aba")
         .pattern("bab")
         .pattern("aba")
@@ -1618,19 +1619,19 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.POLISHED_QUARRIED_STONE.get(), 4, "_from_quarried_cobblestone");
     SingleItemRecipeBuilder.stonecutting(
         Ingredient.of(new ItemStack(RailcraftItems.QUARRIED_STONE.get())),
-        RailcraftItems.POLISHED_QUARRIED_STONE.get())
+            RecipeCategory.MISC, RailcraftItems.POLISHED_QUARRIED_STONE.get())
         .unlockedBy(getHasName(RailcraftItems.QUARRIED_STONE.get()),
             has(RailcraftItems.QUARRIED_STONE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID,
             "polished_quarried_stone_from_quarried_stone_in_stonecutter"));
     SingleItemRecipeBuilder.stonecutting(
         Ingredient.of(new ItemStack(RailcraftItems.QUARRIED_COBBLESTONE.get())),
-        RailcraftItems.POLISHED_QUARRIED_STONE.get())
+            RecipeCategory.MISC, RailcraftItems.POLISHED_QUARRIED_STONE.get())
         .unlockedBy(getHasName(RailcraftItems.QUARRIED_COBBLESTONE.get()),
             has(RailcraftItems.QUARRIED_COBBLESTONE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID,
             "polished_quarried_stone_from_quarried_cobblestone_in_stonecutter"));
-    ShapedRecipeBuilder.shaped(RailcraftItems.CHISELED_QUARRIED_STONE.get(), 8)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CHISELED_QUARRIED_STONE.get(), 8)
         .pattern("aaa")
         .pattern("a a")
         .pattern("aaa")
@@ -1638,7 +1639,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.POLISHED_QUARRIED_STONE.get()),
             has(RailcraftItems.POLISHED_QUARRIED_STONE.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RailcraftItems.ETCHED_QUARRIED_STONE.get(), 8)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ETCHED_QUARRIED_STONE.get(), 8)
         .pattern("aaa")
         .pattern("aba")
         .pattern("aaa")
@@ -1662,8 +1663,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.QUARRIED_PAVER.get()),
             has(RailcraftItems.QUARRIED_PAVER.get()))
         .save(consumer);
-    slab(consumer, RailcraftItems.QUARRIED_BRICK_SLAB.get(), RailcraftItems.QUARRIED_BRICKS.get());
-    slab(consumer, RailcraftItems.QUARRIED_PAVER_SLAB.get(), RailcraftItems.QUARRIED_PAVER.get());
+    slab(consumer, RecipeCategory.MISC,
+        RailcraftItems.QUARRIED_BRICK_SLAB.get(), RailcraftItems.QUARRIED_BRICKS.get());
+    slab(consumer, RecipeCategory.MISC,
+        RailcraftItems.QUARRIED_PAVER_SLAB.get(), RailcraftItems.QUARRIED_PAVER.get());
   }
 
   private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
@@ -1672,7 +1675,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       int quantity,
       String suffix) {
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    ShapedRecipeBuilder.shaped(result, quantity)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, quantity)
         .pattern("aa")
         .pattern("aa")
         .define('a', ingredient)
@@ -1686,7 +1689,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       int quantity,
       String suffix) {
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    ShapedRecipeBuilder.shaped(result, quantity)
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, quantity)
         .pattern("aa")
         .pattern("aa")
         .define('a', ingredient)
@@ -1706,7 +1709,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       DyeColor baseColor) {
     var base = colorItems.variantFor(baseColor).get();
     for (var dyeColor : DyeColor.values()) {
-      ShapedRecipeBuilder.shaped(colorItems.variantFor(dyeColor).get(), 8)
+      ShapedRecipeBuilder.shaped(RecipeCategory.MISC, colorItems.variantFor(dyeColor).get(), 8)
           .pattern("aaa")
           .pattern("aba")
           .pattern("aaa")
@@ -1715,10 +1718,5 @@ public class RailcraftRecipeProvider extends RecipeProvider {
           .unlockedBy(getHasName(base), has(base))
           .save(consumer);
     }
-  }
-
-  @Override
-  public String getName() {
-    return "Railcraft Recipes";
   }
 }

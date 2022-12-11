@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -23,7 +23,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftMiscOverworldFeatures {
 
   private static final DeferredRegister<ConfiguredFeature<?, ?>> deferredRegister =
-      DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, Railcraft.ID);
+      DeferredRegister.create(Registries.CONFIGURED_FEATURE, Railcraft.ID);
 
   public static final RegistryObject<ConfiguredFeature<?, ?>> SALTPETER =
       register("saltpeter",

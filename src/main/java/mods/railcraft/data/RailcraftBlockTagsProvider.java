@@ -1,23 +1,27 @@
 package mods.railcraft.data;
 
+import java.util.concurrent.CompletableFuture;
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
-  public RailcraftBlockTagsProvider(DataGenerator generator, ExistingFileHelper fileHelper) {
-    super(generator, Railcraft.ID, fileHelper);
+  public RailcraftBlockTagsProvider(PackOutput packOutput,
+      CompletableFuture<HolderLookup.Provider> lookupProvider,
+      ExistingFileHelper fileHelper) {
+    super(packOutput, lookupProvider, Railcraft.ID, fileHelper);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  protected void addTags() {
+  protected void addTags(HolderLookup.Provider provider) {
     this.tag(RailcraftTags.Blocks.BALLAST)
         .addTag(Tags.Blocks.GRAVEL);
     this.tag(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
