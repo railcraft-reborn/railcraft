@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.model.CubeModel;
 import mods.railcraft.client.model.LowSidesMinecartModel;
@@ -68,7 +68,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
         poseStack.pushPose();
         {
           var level = fluidStack.getAmount() / capacity;
-          var fluidMaxY =  fluidStack.getFluid().getFluidType().isLighterThanAir()
+          var fluidMaxY = fluidStack.getFluid().getFluidType().isLighterThanAir()
               ? 1.0F
               : Math.min(1.0F, level);
 
@@ -129,7 +129,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
 
       matrixStack.pushPose();
       {
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+        matrixStack.mulPose(Axis.YP.rotationDegrees(90.0F));
         matrixStack.translate(0.0F, -0.9F, 0.68F);
         matrixStack.scale(scale, scale, scale);
         Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
@@ -138,7 +138,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
       }
       matrixStack.popPose();
 
-      matrixStack.mulPose(Vector3f.YN.rotationDegrees(90.0F));
+      matrixStack.mulPose(Axis.YN.rotationDegrees(90.0F));
       matrixStack.translate(0.0F, -0.9F, 0.68F);
       matrixStack.scale(scale, scale, scale);
       Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,

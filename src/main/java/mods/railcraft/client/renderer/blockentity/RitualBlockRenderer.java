@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RitualBlock;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
@@ -30,7 +30,7 @@ public class RitualBlockRenderer implements BlockEntityRenderer<RitualBlockEntit
 
         float yaw = blockEntity.preRotationYaw +
             (blockEntity.rotationYaw - blockEntity.preRotationYaw) * partialTick;
-        poseStack.mulPose(Vector3f.YP.rotation(yaw));
+        poseStack.mulPose(Axis.YP.rotation(yaw));
 
         poseStack.scale(0.6F, 0.6F, 0.6F);
 

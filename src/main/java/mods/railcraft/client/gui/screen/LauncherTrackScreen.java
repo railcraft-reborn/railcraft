@@ -23,18 +23,22 @@ public class LauncherTrackScreen extends IngameWindowScreen {
   public void init() {
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
-    this.addRenderableWidget(
-        new Button(centredX + 13, centredY + 50, 30, 20, Component.literal("-10"),
-            __ -> this.incrementForce(-10)));
-    this.addRenderableWidget(
-        new Button(centredX + 53, centredY + 50, 30, 20, Component.literal("-1"),
-            __ -> this.incrementForce(-1)));
-    this.addRenderableWidget(
-        new Button(centredX + 93, centredY + 50, 30, 20, Component.literal("+1"),
-            __ -> this.incrementForce(1)));
-    this.addRenderableWidget(
-        new Button(centredX + 133, centredY + 50, 30, 20, Component.literal("+10"),
-            __ -> this.incrementForce(10)));
+    this.addRenderableWidget(Button
+        .builder(Component.literal("-10"), __ -> this.incrementForce(-10))
+        .bounds(centredX + 13, centredY + 50, 30, 20)
+        .build());
+    this.addRenderableWidget(Button
+        .builder(Component.literal("-1"), __ -> this.incrementForce(-1))
+        .bounds(centredX + 53, centredY + 50, 30, 20)
+        .build());
+    this.addRenderableWidget(Button
+        .builder(Component.literal("+1"), __ -> this.incrementForce(1))
+        .bounds(centredX + 93, centredY + 50, 30, 20)
+        .build());
+    this.addRenderableWidget(Button
+        .builder(Component.literal("+10"), __ -> this.incrementForce(10))
+        .bounds(centredX + 133, centredY + 50, 30, 20)
+        .build());
   }
 
   @Override

@@ -1,7 +1,6 @@
 package mods.railcraft.client.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -83,34 +82,34 @@ public class RenderUtil {
   }
 
   public static void renderBlockHoverText(BlockPos blockPos, Component text,
-      PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight) {
+      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
     if (minecraft.hitResult != null
         && minecraft.hitResult.getType() == HitResult.Type.BLOCK
         && ((BlockHitResult) minecraft.hitResult).getBlockPos().equals(blockPos)) {
-      matrixStack.pushPose();
+      poseStack.pushPose();
       {
-        matrixStack.translate(0.5D, 1.5D, 0.5D);
-        renderWorldText(minecraft.font, text, matrixStack, renderTypeBuffer, packedLight);
+        poseStack.translate(0.5D, 1.5D, 0.5D);
+        renderWorldText(minecraft.font, text, poseStack, bufferSource, packedLight);
       }
-      matrixStack.popPose();
+      poseStack.popPose();
     }
   }
 
   public static void renderWorldText(Font font, Component text,
-      PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight) {
-    matrixStack.pushPose();
+      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    poseStack.pushPose();
     {
-      matrixStack.mulPose(minecraft.gameRenderer.getMainCamera().rotation());
-      matrixStack.scale(-0.025F, -0.025F, 0.025F);
-      Matrix4f matrix = matrixStack.last().pose();
+      poseStack.mulPose(minecraft.gameRenderer.getMainCamera().rotation());
+      poseStack.scale(-0.025F, -0.025F, 0.025F);
+      var matrix = poseStack.last().pose();
       float backgroundOpacity = minecraft.options.getBackgroundOpacity(0.25F);
       int packedOverlay = (int) (backgroundOpacity * 255.0F) << 24;
       float x = (float) (-font.width(text) / 2);
-      font.drawInBatch(text, x, 0, 0x20FFFFFF, false, matrix, renderTypeBuffer,
+      font.drawInBatch(text, x, 0, 0x20FFFFFF, false, matrix, bufferSource,
           true, packedOverlay, packedLight);
-      font.drawInBatch(text, x, 0, -1, false, matrix, renderTypeBuffer, false,
+      font.drawInBatch(text, x, 0, -1, false, matrix, bufferSource, false,
           0, packedLight);
     }
-    matrixStack.popPose();
+    poseStack.popPose();
   }
 }

@@ -1,0 +1,9 @@
+{
+    "sources": [
+        {
+            "type": "directory",
+            "source": "entity/signal_box",
+            "prefix": "entity/signal_box/"
+        }
+    ]
+}

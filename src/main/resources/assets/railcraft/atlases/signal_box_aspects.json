@@ -1,0 +1,9 @@
+{
+    "sources": [
+        {
+            "type": "directory",
+            "source": "entity/signal_box_aspect",
+            "prefix": "entity/signal_box_aspect/"
+        }
+    ]
+}

@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.client.model.RailcraftModelLayers;
@@ -44,21 +44,21 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
 
       matrixStack.translate(0F, 0.375F, 0F);
 
-      matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - yaw));
-      matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+      matrixStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
+      matrixStack.mulPose(Axis.YP.rotationDegrees(90.0F));
 
       float roll = (float) bore.getHurtTime() - partialTicks;
       float damage = bore.getDamage() - partialTicks;
       if (damage < 0.0F)
         damage = 0.0F;
       if (roll > 0.0F) {
-        matrixStack.mulPose(Vector3f.XP.rotationDegrees(
+        matrixStack.mulPose(Axis.XP.rotationDegrees(
             Mth.sin(roll) * roll * damage / 10.0F * (float) bore.getHurtDir()));
       }
 
 
-      //float light = bore.getBrightness();
-      //light = light + ((1.0f - light) * 0.4f);
+      // float light = bore.getBrightness();
+      // light = light + ((1.0f - light) * 0.4f);
 
       boolean ghostTrain = Seasons.isGhostTrain(bore);
       float colorIntensity = ghostTrain ? 0.5F : 1.0F;

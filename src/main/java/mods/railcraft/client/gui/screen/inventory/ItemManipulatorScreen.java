@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
+import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
@@ -36,9 +37,13 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
     super.init();
     int centreX = (this.width - this.getXSize()) / 2;
     int centreY = (this.height - this.getYSize()) / 2;
-    this.addRenderableWidget(this.transferModeButton = new MultiButton<>(centreX + 73, centreY + 45, 30, 16,
-        this.menu.getManipulator().getTransferMode(), this::renderComponentTooltip,
-        __ -> this.setTransferMode(this.transferModeButton.getState())));
+
+    this.addRenderableWidget(
+        this.transferModeButton = MultiButton
+            .builder(ButtonTexture.SMALL_BUTTON, this.menu.getManipulator().getTransferMode())
+            .bounds(centreX + 73, centreY + 45, 30, 16)
+            .stateCallback(this::setTransferMode)
+            .build());
   }
 
   private void setTransferMode(ManipulatorBlockEntity.TransferMode transferMode) {

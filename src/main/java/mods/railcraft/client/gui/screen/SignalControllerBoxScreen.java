@@ -27,18 +27,22 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
   public void init() {
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
-    this.addRenderableWidget(
-        new Button(centredX + 10, centredY + 25, 30, 20, Component.literal("<"),
-            __ -> this.defaultAspect = this.defaultAspect.previous()));
-    this.addRenderableWidget(
-        new Button(centredX + 135, centredY + 25, 30, 20, Component.literal(">"),
-            __ -> this.defaultAspect = this.defaultAspect.next()));
-    this.addRenderableWidget(
-        new Button(centredX + 10, centredY + 60, 30, 20, Component.literal("<"),
-            __ -> this.poweredAspect = this.poweredAspect.previous()));
-    this.addRenderableWidget(
-        new Button(centredX + 135, centredY + 60, 30, 20, Component.literal(">"),
-            __ -> this.poweredAspect = this.poweredAspect.next()));
+    this.addRenderableWidget(Button
+        .builder(Component.literal("<"), __ -> this.defaultAspect = this.defaultAspect.previous())
+        .bounds(centredX + 10, centredY + 25, 30, 20)
+        .build());
+    this.addRenderableWidget(Button
+        .builder(Component.literal(">"), __ -> this.defaultAspect = this.defaultAspect.next())
+        .bounds(centredX + 135, centredY + 25, 30, 20)
+        .build());
+    this.addRenderableWidget(Button
+        .builder(Component.literal("<"), __ -> this.poweredAspect = this.poweredAspect.previous())
+        .bounds(centredX + 10, centredY + 60, 30, 20)
+        .build());
+    this.addRenderableWidget(Button
+        .builder(Component.literal(">"), __ -> this.poweredAspect = this.poweredAspect.next())
+        .bounds(centredX + 135, centredY + 60, 30, 20)
+        .build());
   }
 
   @Override

@@ -4,6 +4,7 @@ import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.client.renderer.RailcraftSheets;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.CuboidModelRenderer.FaceDisplay;
@@ -13,20 +14,18 @@ import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 
 public abstract class AbstractSignalBoxRenderer
     implements BlockEntityRenderer<AbstractSignalBoxBlockEntity> {
 
   public static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS = Map.of(
-      SignalAspect.OFF, new ResourceLocation(Railcraft.ID, "entity/signal_box/off_aspect"),
-      SignalAspect.RED, new ResourceLocation(Railcraft.ID, "entity/signal_box/red_aspect"),
-      SignalAspect.YELLOW, new ResourceLocation(Railcraft.ID, "entity/signal_box/yellow_aspect"),
-      SignalAspect.GREEN, new ResourceLocation(Railcraft.ID, "entity/signal_box/green_aspect"));
+      SignalAspect.OFF, new ResourceLocation(Railcraft.ID, "entity/signal_box_aspects/off"),
+      SignalAspect.RED, new ResourceLocation(Railcraft.ID, "entity/signal_box_aspects/red"),
+      SignalAspect.YELLOW, new ResourceLocation(Railcraft.ID, "entity/signal_box_aspects/yellow"),
+      SignalAspect.GREEN, new ResourceLocation(Railcraft.ID, "entity/signal_box_aspects/green"));
 
   public static final ResourceLocation SIDE_TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "entity/signal_box/side");
@@ -57,7 +56,7 @@ public abstract class AbstractSignalBoxRenderer
           blockEntity.getCustomName(), poseStack, bufferSource, packedLight);
     }
 
-    var spriteGetter = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
+    var spriteGetter = Minecraft.getInstance().getTextureAtlas(RailcraftSheets.SIGNAL_BOXES_SHEET);
 
     this.model.setPackedLight(packedLight);
     this.model.setPackedOverlay(packedOverlay);
@@ -81,10 +80,12 @@ public abstract class AbstractSignalBoxRenderer
       }
     }
 
-    var consumer =
-        bufferSource.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
-    CuboidModelRenderer.render(this.model, poseStack, consumer, 0xFFFFFFFF, FaceDisplay.BOTH,
-        false);
+    CuboidModelRenderer.render(this.model, poseStack,
+        bufferSource.getBuffer(RailcraftSheets.SIGNAL_BOXES_TYPE),
+        0xFFFFFFFF, FaceDisplay.BOTH, false);
+
+    spriteGetter =
+        Minecraft.getInstance().getTextureAtlas(RailcraftSheets.SIGNAL_BOX_ASPECTS_SHEET);
 
     for (var direction : Direction.Plane.HORIZONTAL) {
       if (SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction)) {
@@ -101,7 +102,8 @@ public abstract class AbstractSignalBoxRenderer
       }
     }
 
-    CuboidModelRenderer.render(
-        this.model, poseStack, consumer, 0xFFFFFFFF, FaceDisplay.BOTH, false);
+    CuboidModelRenderer.render(this.model, poseStack,
+        bufferSource.getBuffer(RailcraftSheets.SIGNAL_BOX_ASPECTS_TYPE),
+        0xFFFFFFFF, FaceDisplay.BOTH, false);
   }
 }

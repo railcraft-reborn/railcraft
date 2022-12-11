@@ -1,8 +1,10 @@
 package mods.railcraft.client.gui.widget.button;
 
-import java.util.List;
-import com.mojang.blaze3d.vertex.PoseStack;
+import java.util.Optional;
+import java.util.function.Consumer;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.gui.button.ButtonState;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 
 /**
@@ -10,38 +12,22 @@ import net.minecraft.network.chat.Component;
  */
 public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton {
 
-  private static final OnPress NO_PRESS = __ -> {
-  };
-
-  private final TooltipRenderer tooltipRenderer;
+  private final Consumer<T> stateCallback;
+  private final TooltipFactory<? super T> tooltipFactory;
   private T state;
   private boolean locked;
 
-  public MultiButton(int x, int y, int width, int height, T state,
-      TooltipRenderer tooltipRenderer) {
-    this(x, y, width, height, state, tooltipRenderer, NO_PRESS);
-  }
-
-  public MultiButton(int x, int y, int width, int height, T state, TooltipRenderer tooltipRenderer,
-      OnPress actionListener) {
-    super(x, y, width, height, state.getLabel(), actionListener, state.getTexturePosition());
-    this.state = state;
-    this.tooltipRenderer = tooltipRenderer;
-  }
-
-  public MultiButton(int x, int y, int width, int height, T state, TooltipRenderer tooltipRenderer,
-      OnPress actionListener, OnTooltip tooltip) {
-    super(x, y, width, height, state.getLabel(), actionListener, tooltip,
-        state.getTexturePosition());
-    this.state = state;
-    this.tooltipRenderer = tooltipRenderer;
+  private MultiButton(Builder<T> builder) {
+    super(builder);
+    this.stateCallback = builder.stateCallback;
+    this.tooltipFactory = builder.tooltipFactory;
+    this.setState(builder.state);
   }
 
   @Override
   public void onPress() {
     if (!this.locked && this.active) {
       this.setState(this.state.getNext());
-      super.onPress();
     }
   }
 
@@ -50,33 +36,51 @@ public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton
   }
 
   public void setState(T state) {
-    if (this.state != state) {
-      this.state = this.state.getNext();
-      this.setTexturePosition(this.state.getTexturePosition());
-      this.setMessage(this.state.getLabel());
+    this.state = state;
+    this.setTexturePosition(this.state.getTexturePosition());
+    this.setMessage(this.state.getLabel());
+    this.setTooltip(this.tooltipFactory.createTooltip(state).orElse(null));
+    if (this.state != state && this.stateCallback != null) {
+      this.stateCallback.accept(state);
     }
   }
 
-  @Override
-  public void renderButton(PoseStack poseStack, int mouseX, int mouseY,
-      float partialTicks) {
-    super.renderButton(poseStack, mouseX, mouseY, partialTicks);
-    if (this.isHoveredOrFocused()) {
-      this.renderToolTip(poseStack, mouseX, mouseY);
+  public static <T extends ButtonState<T>> Builder<T> builder(
+      TexturePosition texturePosition, T state) {
+    return new Builder<>(texturePosition, state);
+  }
+
+  public static class Builder<T extends ButtonState<T>>
+      extends AbstractBuilder<Builder<T>, MultiButton<T>> {
+
+    private final T state;
+
+    @Nullable
+    private Consumer<T> stateCallback;
+    private TooltipFactory<? super T> tooltipFactory = TooltipFactory.DEFAULT;
+
+    public Builder(TexturePosition texturePosition, T state) {
+      super(MultiButton::new, Component.empty(), null, texturePosition);
+      this.state = state;
+    }
+
+    public Builder<T> stateCallback(@Nullable Consumer<T> stateCallback) {
+      this.stateCallback = stateCallback;
+      return this;
+    }
+
+    public Builder<T> tooltipFactory(TooltipFactory<? super T> tooltipFactory) {
+      this.tooltipFactory = tooltipFactory;
+      return this;
     }
   }
 
-  @Override
-  public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY) {
-    List<Component> tooltip = this.state.getTooltip();
-    if (tooltip == null) {
-      super.renderToolTip(poseStack, mouseX, mouseY);
-      return;
-    }
-    this.tooltipRenderer.renderTooltip(poseStack, tooltip, mouseX, mouseY);
-  }
+  @FunctionalInterface
+  public interface TooltipFactory<T extends ButtonState<?>> {
 
-  public interface TooltipRenderer {
-    void renderTooltip(PoseStack poseStack, List<Component> tooltip, int x, int y);
+    TooltipFactory<ButtonState<?>> DEFAULT =
+        state -> state.getTooltip().map(Tooltip::create);
+
+    Optional<Tooltip> createTooltip(T state);
   }
 }

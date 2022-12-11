@@ -9,7 +9,11 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.client.gui.screen.inventory;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
@@ -22,14 +26,9 @@ import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     extends RailcraftMenuScreen<T> {
@@ -42,28 +41,25 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   private final Map<Locomotive.Speed, Button> speedButtons =
       new EnumMap<>(Locomotive.Speed.class);
   private ToggleButton reverseButton;
-
   private MultiButton<Locomotive.Lock> lockButton;
-  private Component lockButtonTooltip;
 
   private int refreshTimer;
 
   protected LocomotiveScreen(T menu, Inventory inventory, Component title, String typeTag) {
     super(menu, inventory, title);
-    this.typeTag = typeTag;//TODO: Change to an ENUM
+    this.typeTag = typeTag;// TODO: Change to an ENUM
     this.imageHeight = LocomotiveMenu.DEFAULT_HEIGHT;
     this.inventoryLabelY = this.imageHeight - 94;
   }
 
-  private void updateLockButtonTooltip() {
-    final Locomotive.Lock lock = this.lockButton.getState();
-    switch (lock) {
-      case LOCKED -> this.lockButtonTooltip = Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_LOCKED,
-        this.menu.getLocomotive().getOwnerOrThrow().getName());
-      case UNLOCKED -> this.lockButtonTooltip = Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_UNLOCKED);
-      case PRIVATE -> this.lockButtonTooltip = Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_PRIVATE,
-        this.menu.getLocomotive().getOwnerOrThrow().getName());
-    }
+  private Optional<Tooltip> createLockTooltip(Locomotive.Lock lock) {
+    return Optional.of(Tooltip.create(switch (lock) {
+      case LOCKED -> Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_LOCKED,
+          this.menu.getLocomotive().getOwnerOrThrow().getName());
+      case UNLOCKED -> Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_UNLOCKED);
+      case PRIVATE -> Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_PRIVATE,
+          this.menu.getLocomotive().getOwnerOrThrow().getName());
+    }));
   }
 
   @Override
@@ -80,53 +76,60 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
         case SHUTDOWN -> Translations.Screen.LOCOMOTIVE_MODE_SHUTDOWN;
         case RUNNING -> Translations.Screen.LOCOMOTIVE_MODE_RUNNING;
       };
-      var button = new RailcraftButton(0, centreY + this.getYSize() - 129, 55, 16,
-          Component.translatable(text),
-          b -> this.setMode(mode),
-          (btn, matrixStack, mouseX, mouseY) -> this.renderComponentTooltip(
-              matrixStack, Collections.singletonList(Component.translatable(
-                  "screen.locomotive." + typeTag + ".mode.description."
-                      + mode.getSerializedName())),
-              mouseX, mouseY, this.font),
-          ButtonTexture.SMALL_BUTTON);
+      var button = RailcraftButton
+          .builder(
+              Component.translatable(text),
+              __ -> this.setMode(mode),
+              ButtonTexture.SMALL_BUTTON)
+          .pos(0, centreY + this.getYSize() - 129)
+          .size(55, 16)
+          .tooltip(Tooltip.create(Component.translatable(
+              "screen.locomotive." + typeTag + ".mode.description."
+                  + mode.getSerializedName())))
+          .build();
       this.modeButtons.put(mode, button);
     }
-    GuiUtil.newButtonRowAuto(this::addRenderableWidget, centreX + 3, 171, this.modeButtons.values());
+    GuiUtil.newButtonRowAuto(this::addRenderableWidget, centreX + 3, 171,
+        this.modeButtons.values());
 
     // Reverse button
-    this.addRenderableWidget(this.reverseButton =
-        new ToggleButton(centreX + 4, centreY + this.getYSize() - 112, 12, 16,
-            Component.literal("R"), __ -> this.toggleReverse(),
-            ButtonTexture.SMALL_BUTTON, this.getMenu().getLocomotive().isReverse()));
+    this.reverseButton = this.addRenderableWidget(ToggleButton
+        .toggleBuilder(
+            Component.literal("R"),
+            __ -> this.toggleReverse(),
+            ButtonTexture.SMALL_BUTTON)
+        .bounds(centreX + 4, centreY + this.getYSize() - 112, 12, 16)
+        .toggled(this.getMenu().getLocomotive().isReverse())
+        .build());
 
     // Speed buttons
     for (var speed : Speed.values()) {
       var label =
           IntStream.range(0, speed.getLevel()).mapToObj(i -> ">").collect(Collectors.joining());
-      var button = new RailcraftButton(0, centreY + this.getYSize() - 112,
-          7 + speed.getLevel() * 5, 16, Component.literal(label), b -> this.setSpeed(speed),
-          ButtonTexture.SMALL_BUTTON);
+
+      var button = RailcraftButton
+          .builder(
+              Component.literal(label),
+              __ -> this.setSpeed(speed),
+              ButtonTexture.SMALL_BUTTON)
+          .pos(0, centreY + this.getYSize() - 112)
+          .size(7 + speed.getLevel() * 5, 16)
+          .build();
       button.active = this.menu.getLocomotive().getSpeed() == speed;
+
       this.speedButtons.put(speed, button);
     }
     GuiUtil.newButtonRow(this::addRenderableWidget, centreX + 21, 5, this.speedButtons.values());
 
     // Lock button
-    this.addRenderableWidget(this.lockButton =
-        new MultiButton<>(centreX + 152, centreY + this.getYSize() - 111, 16, 16,
-            this.menu.getLocomotive().getLock(),
-            this::renderComponentTooltip,
-            __ -> this.setLock(this.lockButton.getState()),
-            this::renderLockButtonTooltip));
+    this.lockButton = this.addRenderableWidget(
+        MultiButton.builder(ButtonTexture.SMALL_BUTTON, this.menu.getLocomotive().getLock())
+            .bounds(centreX + 152, centreY + this.getYSize() - 111, 16, 16)
+            .tooltipFactory(this::createLockTooltip)
+            .stateCallback(this::setLock)
+            .build());
 
-    this.updateLockButtonTooltip();
     this.updateButtons();
-  }
-
-  private void renderLockButtonTooltip(
-      Button button, PoseStack poseStack, int mouseX, int mouseY) {
-    this.renderComponentTooltip(poseStack, Collections.singletonList(this.lockButtonTooltip),
-        mouseX, mouseY, this.font);
   }
 
   private void setMode(Locomotive.Mode mode) {
@@ -149,7 +152,6 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       this.menu.getLocomotive().setOwner(
           lock == Locomotive.Lock.UNLOCKED ? null
               : this.minecraft.getUser().getGameProfile());
-      this.updateLockButtonTooltip();
       this.sendAttributes();
     }
   }
@@ -161,7 +163,6 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
   protected void sendAttributes() {
     this.updateButtons();
-    this.updateLockButtonTooltip();
     Locomotive locomotive = this.getMenu().getLocomotive();
     NetworkChannel.GAME.sendToServer(
         new SetLocomotiveAttributesMessage(this.menu.getLocomotive().getId(),
@@ -174,7 +175,6 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     super.containerTick();
     if (this.refreshTimer++ >= REFRESH_INTERVAL_TICKS) {
       this.updateButtons();
-      this.updateLockButtonTooltip();
     }
   }
 

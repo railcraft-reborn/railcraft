@@ -1,7 +1,8 @@
 package mods.railcraft.client.renderer.entity.cart;
 
+import org.apache.commons.lang3.StringUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.DirectionalCart;
@@ -12,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;
-import org.apache.commons.lang3.StringUtils;
 
 public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
     extends EntityRenderer<T> {
@@ -90,15 +90,15 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
             packedLight);
     }
 
-    poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - yaw));
-    poseStack.mulPose(Vector3f.ZP.rotationDegrees(-pitch));
+    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
+    poseStack.mulPose(Axis.ZP.rotationDegrees(-pitch));
 
     float roll = (float) cart.getHurtTime() - partialTicks;
     float damage = cart.getDamage() - partialTicks;
     if (damage < 0.0F)
       damage = 0.0F;
     if (roll > 0.0F) {
-      poseStack.mulPose(Vector3f.XP.rotationDegrees(
+      poseStack.mulPose(Axis.XP.rotationDegrees(
           Mth.sin(roll) * roll * damage / 10.0F * (float) cart.getHurtDir()));
     }
 

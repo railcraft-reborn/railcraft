@@ -3,6 +3,7 @@ package mods.railcraft.client.gui.screen.inventory;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
+import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.world.inventory.ManipulatorMenu;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
@@ -30,9 +31,14 @@ public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
     super.init();
     var centreX = (this.width - this.getXSize()) / 2;
     var centreY = (this.height - this.getYSize()) / 2;
-    this.addRenderableWidget(this.redstoneModeButton = new MultiButton<>(centreX + 73, centreY + 62, 30, 16,
-        this.menu.getManipulator().getRedstoneMode(), this::renderComponentTooltip,
-        __ -> this.setRedstoneMode(this.redstoneModeButton.getState())));
+
+    this.redstoneModeButton = this.addRenderableWidget(
+        MultiButton
+            .builder(ButtonTexture.SMALL_BUTTON, this.menu.getManipulator().getRedstoneMode())
+            .bounds(centreX + 73, centreY + 62, 30, 16)
+            .stateCallback(this::setRedstoneMode)
+            .build());
+
     this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
   }
 

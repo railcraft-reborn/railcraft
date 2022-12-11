@@ -2,14 +2,14 @@ package mods.railcraft.client.util;
 
 import java.util.Arrays;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.util.CuboidModel.Face;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 
 /**
  * Adapted from Mantle's FluidRenderer and Tinker's SmelteryTankRenderer
@@ -61,26 +61,26 @@ public class CuboidModelRenderer {
     PoseStack.Pose lastMatrix = matrix.last();
     Matrix4f matrix4f = lastMatrix.pose();
     Matrix3f normalMatrix = lastMatrix.normal();
-    Vector3f normal = fakeDisableDiffuse ? NORMAL : Vector3f.YP;
+    Vector3f normal = fakeDisableDiffuse ? NORMAL : new Vector3f(0.0F, 1.0F, 0.0F);
     Vector3f from = new Vector3f();
     Vector3f to = new Vector3f();
     // render each side
     for (int y = 0; y <= yDelta; y++) {
       Face upSprite = y == yDelta ? model.get(Direction.UP) : null;
       Face downSprite = y == 0 ? model.get(Direction.DOWN) : null;
-      from.setY(yBounds[y]);
-      to.setY(yBounds[y + 1]);
+      from.set(yBounds[y]);
+      to.y = yBounds[y + 1];
       for (int z = 0; z <= zDelta; z++) {
         Face northSprite = z == 0 ? model.get(Direction.NORTH) : null;
         Face southSprite = z == zDelta ? model.get(Direction.SOUTH) : null;
-        from.setZ(zBounds[z]);
-        to.setZ(zBounds[z + 1]);
+        from.z = zBounds[z];
+        to.z = zBounds[z + 1];
         for (int x = 0; x <= xDelta; x++) {
           Face westSprite = x == 0 ? model.get(Direction.WEST) : null;
           Face eastSprite = x == xDelta ? model.get(Direction.EAST) : null;
           // Set bounds
-          from.setX(xBounds[x]);
-          to.setX(xBounds[x + 1]);
+          from.x = xBounds[x];
+          to.x = xBounds[x + 1];
           putTexturedQuad(buffer, matrix4f, normalMatrix, westSprite, from, to, Direction.WEST,
               colors, faceDisplay, normal);
           putTexturedQuad(buffer, matrix4f, normalMatrix, eastSprite, from, to, Direction.EAST,

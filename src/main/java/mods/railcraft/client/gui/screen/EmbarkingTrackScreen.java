@@ -29,12 +29,14 @@ public class EmbarkingTrackScreen extends IngameWindowScreen {
     super.init();
     int centreX = (this.width - this.windowWidth) / 2;
     int centreY = (this.height - this.windowHeight) / 2;
-    this.addRenderableWidget(this.decrementButton =
-        new Button(centreX + 53, centreY + 50, 30, 20, Component.literal("-1"),
-            __ -> this.setRadius(this.radius - 1)));
-    this.addRenderableWidget(this.incrementButton =
-        new Button(centreX + 93, centreY + 50, 30, 20, Component.literal("+1"),
-            __ -> this.setRadius(this.radius + 1)));
+    this.decrementButton = this.addRenderableWidget(Button
+        .builder(Component.literal("-1"), __ -> this.setRadius(this.radius - 1))
+        .bounds(centreX + 53, centreY + 50, 30, 20)
+        .build());
+    this.incrementButton = this.addRenderableWidget(Button
+        .builder(Component.literal("+1"), __ -> this.setRadius(this.radius + 1))
+        .bounds(centreX + 93, centreY + 50, 30, 20)
+        .build());
     this.updateButtons();
   }
 
