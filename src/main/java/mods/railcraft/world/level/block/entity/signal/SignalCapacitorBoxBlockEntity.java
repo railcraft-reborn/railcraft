@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import java.util.Optional;
+import java.util.List;
 import mods.railcraft.Translations;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.util.EnumUtil;
@@ -179,8 +179,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     }
 
     @Override
-    public Optional<Component> getTooltip() {
-      return Optional.of(Component.translatable(this.getDescriptionKey()));
+    public List<Component> getTooltip() {
+      return List.of(Component.translatable(this.getDescriptionKey()));
     }
 
     public String getTranslationKey() {

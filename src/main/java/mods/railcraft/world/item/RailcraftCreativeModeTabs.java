@@ -15,6 +15,8 @@ import net.minecraftforge.common.util.MutableHashedLinkedMap;
 
 public class RailcraftCreativeModeTabs {
 
+  private static final TabVisibility DEFAULT_VISIBILITY = TabVisibility.PARENT_AND_SEARCH_TABS;
+
   public static void register(
       BiConsumer<ResourceLocation, Consumer<CreativeModeTab.Builder>> registrar) {
     registrar.accept(new ResourceLocation(Railcraft.ID, "main_tab"),
@@ -382,182 +384,182 @@ public class RailcraftCreativeModeTabs {
     entries.putAfter(
         new ItemStack(Items.CHEST_MINECART),
         new ItemStack(RailcraftItems.TANK_MINECART.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.TNT_MINECART),
         new ItemStack(RailcraftItems.TRACK_REMOVER.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.TNT_MINECART),
         new ItemStack(RailcraftItems.TRACK_LAYER.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.TNT_MINECART),
         new ItemStack(RailcraftItems.TRACK_LAYER.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.TNT_MINECART),
         new ItemStack(RailcraftItems.TUNNEL_BORE.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.TNT_MINECART),
         new ItemStack(RailcraftItems.STEAM_LOCOMOTIVE.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.TNT_MINECART),
         new ItemStack(RailcraftItems.ELECTRIC_LOCOMOTIVE.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.TNT_MINECART),
         new ItemStack(RailcraftItems.CREATIVE_LOCOMOTIVE.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
 
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.ABANDONED_TRACK.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.ELECTRIC_TRACK.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.HIGH_SPEED_TRACK.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.REINFORCED_TRACK.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.STRAP_IRON_TRACK.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.ELEVATOR_TRACK.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
 
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.TRANSITION_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.LOCKING_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.BUFFER_STOP_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.ACTIVATOR_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.BOOSTER_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.CONTROL_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.GATED_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.DETECTOR_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.COUPLER_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.EMBARKING_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.DISEMBARKING_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.LAUNCHER_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.ONE_WAY_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
 
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.SWITCH_TRACK_LEVER.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.SWITCH_TRACK_MOTOR.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
 
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.ANALOG_SIGNAL_CONTROLLER_BOX.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.SIGNAL_SEQUENCER_BOX.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.SIGNAL_CAPACITOR_BOX.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.SIGNAL_INTERLOCK_BOX.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.SIGNAL_RECEIVER_BOX.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.SIGNAL_CONTROLLER_BOX.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.DUAL_BLOCK_SIGNAL.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.DUAL_DISTANT_SIGNAL.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.DUAL_TOKEN_SIGNAL.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.BLOCK_SIGNAL.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.DISTANT_SIGNAL.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.ACTIVATOR_RAIL),
         new ItemStack(RailcraftItems.TOKEN_SIGNAL.get()),
-        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        DEFAULT_VISIBILITY);
   }
 }

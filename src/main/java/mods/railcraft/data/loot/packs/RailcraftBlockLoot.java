@@ -335,14 +335,13 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
 
     /* === misc === */
-    // TODO: implement this ritual thingy
     this.add(RailcraftBlocks.RITUAL.get(), noDrop());
   }
 
-  protected LootTable.Builder createOreDrop(Block pBlock, Item pItem, int min, int max) {
-    return createSilkTouchDispatchTable(pBlock, this.applyExplosionDecay(pBlock,
+  protected LootTable.Builder createOreDrop(Block block, Item item, int min, int max) {
+    return createSilkTouchDispatchTable(block, this.applyExplosionDecay(block,
         LootItem
-            .lootTableItem(pItem)
+            .lootTableItem(item)
             .apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max)))
             .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))));
   }
