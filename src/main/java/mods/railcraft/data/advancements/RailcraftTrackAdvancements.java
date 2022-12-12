@@ -23,7 +23,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
   @Override
   public void generate(HolderLookup.Provider registries, Consumer<Advancement> consumer,
       ExistingFileHelper fileHelper) {
-    Advancement root = Advancement.Builder.advancement()
+    var root = Advancement.Builder.advancement()
         .display(
             RailcraftItems.REINFORCED_TRACK.get(),
             Component.translatable(Translations.Advancement.Tracks.ROOT),
@@ -74,7 +74,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             .formedMultiBlock(RailcraftBlockEntityTypes.COKE_OVEN.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/coke_oven"), fileHelper);
 
-    Advancement rollingTable = Advancement.Builder.advancement()
+    var rollingTable = Advancement.Builder.advancement()
         .display(
             RailcraftItems.MANUAL_ROLLING_MACHINE.get(),
             Component.translatable(Translations.Advancement.Tracks.MANUAL_ROLLING_MACHINE),
@@ -102,7 +102,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.CRUSHER.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/crusher"), fileHelper);
 
-    Advancement basicTrack = Advancement.Builder.advancement()
+    var basicTrack = Advancement.Builder.advancement()
         .display(
             Items.RAIL,
             Component.translatable(Translations.Advancement.Tracks.REGULAR_TRACK),

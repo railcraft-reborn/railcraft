@@ -59,8 +59,8 @@ public class FirestoneItem extends Item {
   }
 
   public void fillItemCategory(CreativeModeTab.Output output) {
+    output.accept(new ItemStack(this));
     var item = new ItemStack(this);
-    output.accept(item);
     if (item.isDamageableItem()) {
       item.setDamageValue(item.getMaxDamage() - 1);
       output.accept(item);

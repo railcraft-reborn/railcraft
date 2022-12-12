@@ -142,17 +142,6 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.BRONZE_BLOCK.get());
               output.accept(RailcraftItems.INVAR_BLOCK.get());
 
-              output.accept(RailcraftItems.STEEL_SHOVEL.get());
-              output.accept(RailcraftItems.STEEL_PICKAXE.get());
-              output.accept(RailcraftItems.STEEL_AXE.get());
-              output.accept(RailcraftItems.STEEL_HOE.get());
-              output.accept(RailcraftItems.STEEL_SWORD.get());
-              output.accept(RailcraftItems.STEEL_SHEARS.get());
-              output.accept(RailcraftItems.STEEL_HELMET.get());
-              output.accept(RailcraftItems.STEEL_CHESTPLATE.get());
-              output.accept(RailcraftItems.STEEL_LEGGINGS.get());
-              output.accept(RailcraftItems.STEEL_BOOTS.get());
-
               output.accept(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get());
               output.accept(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get());
               output.accept(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get());
@@ -382,6 +371,26 @@ public class RailcraftCreativeModeTabs {
   public static void addToolsAndUtilities(
       MutableHashedLinkedMap<ItemStack, TabVisibility> entries) {
     entries.putAfter(
+        new ItemStack(Items.IRON_HOE),
+        new ItemStack(RailcraftItems.STEEL_SHOVEL.get()),
+        DEFAULT_VISIBILITY
+    );
+    entries.putAfter(
+        new ItemStack(RailcraftItems.STEEL_SHOVEL.get()),
+        new ItemStack(RailcraftItems.STEEL_PICKAXE.get()),
+        DEFAULT_VISIBILITY
+    );
+    entries.putAfter(
+        new ItemStack(RailcraftItems.STEEL_PICKAXE.get()),
+        new ItemStack(RailcraftItems.STEEL_HOE.get()),
+        DEFAULT_VISIBILITY
+    );
+    entries.putAfter(
+        new ItemStack(Items.SHEARS),
+        new ItemStack(RailcraftItems.STEEL_SHEARS.get()),
+        DEFAULT_VISIBILITY
+    );
+    entries.putAfter(
         new ItemStack(Items.CHEST_MINECART),
         new ItemStack(RailcraftItems.TANK_MINECART.get()),
         DEFAULT_VISIBILITY);
@@ -390,11 +399,7 @@ public class RailcraftCreativeModeTabs {
         new ItemStack(RailcraftItems.TRACK_REMOVER.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.TNT_MINECART),
-        new ItemStack(RailcraftItems.TRACK_LAYER.get()),
-        DEFAULT_VISIBILITY);
-    entries.putAfter(
-        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.TRACK_REMOVER.get()),
         new ItemStack(RailcraftItems.TRACK_LAYER.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
@@ -402,15 +407,15 @@ public class RailcraftCreativeModeTabs {
         new ItemStack(RailcraftItems.TUNNEL_BORE.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.TUNNEL_BORE.get()),
         new ItemStack(RailcraftItems.STEAM_LOCOMOTIVE.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.STEAM_LOCOMOTIVE.get()),
         new ItemStack(RailcraftItems.ELECTRIC_LOCOMOTIVE.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.ELECTRIC_LOCOMOTIVE.get()),
         new ItemStack(RailcraftItems.CREATIVE_LOCOMOTIVE.get()),
         DEFAULT_VISIBILITY);
 
@@ -419,147 +424,176 @@ public class RailcraftCreativeModeTabs {
         new ItemStack(RailcraftItems.ABANDONED_TRACK.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ABANDONED_TRACK.get()),
         new ItemStack(RailcraftItems.ELECTRIC_TRACK.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ELECTRIC_TRACK.get()),
         new ItemStack(RailcraftItems.HIGH_SPEED_TRACK.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.HIGH_SPEED_TRACK.get()),
         new ItemStack(RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get()),
         new ItemStack(RailcraftItems.REINFORCED_TRACK.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.REINFORCED_TRACK.get()),
         new ItemStack(RailcraftItems.STRAP_IRON_TRACK.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.STRAP_IRON_TRACK.get()),
         new ItemStack(RailcraftItems.ELEVATOR_TRACK.get()),
         DEFAULT_VISIBILITY);
 
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ELEVATOR_TRACK.get()),
         new ItemStack(RailcraftItems.TRANSITION_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.TRANSITION_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.LOCKING_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.LOCKING_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.BUFFER_STOP_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.BUFFER_STOP_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.ACTIVATOR_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ACTIVATOR_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.BOOSTER_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.BOOSTER_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.CONTROL_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.CONTROL_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.GATED_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.GATED_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.DETECTOR_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DETECTOR_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.COUPLER_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.COUPLER_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.EMBARKING_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.EMBARKING_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.DISEMBARKING_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DISEMBARKING_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.LAUNCHER_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.LAUNCHER_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.ONE_WAY_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ONE_WAY_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get()),
         DEFAULT_VISIBILITY);
 
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get()),
         new ItemStack(RailcraftItems.SWITCH_TRACK_LEVER.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SWITCH_TRACK_LEVER.get()),
         new ItemStack(RailcraftItems.SWITCH_TRACK_MOTOR.get()),
         DEFAULT_VISIBILITY);
 
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SWITCH_TRACK_MOTOR.get()),
         new ItemStack(RailcraftItems.ANALOG_SIGNAL_CONTROLLER_BOX.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ANALOG_SIGNAL_CONTROLLER_BOX.get()),
         new ItemStack(RailcraftItems.SIGNAL_SEQUENCER_BOX.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_SEQUENCER_BOX.get()),
         new ItemStack(RailcraftItems.SIGNAL_CAPACITOR_BOX.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_CAPACITOR_BOX.get()),
         new ItemStack(RailcraftItems.SIGNAL_INTERLOCK_BOX.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_INTERLOCK_BOX.get()),
         new ItemStack(RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get()),
         new ItemStack(RailcraftItems.SIGNAL_RECEIVER_BOX.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_RECEIVER_BOX.get()),
         new ItemStack(RailcraftItems.SIGNAL_CONTROLLER_BOX.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_CONTROLLER_BOX.get()),
         new ItemStack(RailcraftItems.DUAL_BLOCK_SIGNAL.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DUAL_BLOCK_SIGNAL.get()),
         new ItemStack(RailcraftItems.DUAL_DISTANT_SIGNAL.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DUAL_DISTANT_SIGNAL.get()),
         new ItemStack(RailcraftItems.DUAL_TOKEN_SIGNAL.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DUAL_TOKEN_SIGNAL.get()),
         new ItemStack(RailcraftItems.BLOCK_SIGNAL.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.BLOCK_SIGNAL.get()),
         new ItemStack(RailcraftItems.DISTANT_SIGNAL.get()),
         DEFAULT_VISIBILITY);
     entries.putAfter(
-        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DISTANT_SIGNAL.get()),
         new ItemStack(RailcraftItems.TOKEN_SIGNAL.get()),
+        DEFAULT_VISIBILITY);
+  }
+
+  public static void addCombat(
+      MutableHashedLinkedMap<ItemStack, TabVisibility> entries) {
+    entries.putAfter(
+        new ItemStack(Items.IRON_SWORD),
+        new ItemStack(RailcraftItems.STEEL_SWORD.get()),
+        DEFAULT_VISIBILITY);
+    entries.putAfter(
+        new ItemStack(Items.IRON_AXE),
+        new ItemStack(RailcraftItems.STEEL_AXE.get()),
+        DEFAULT_VISIBILITY
+    );
+    entries.putAfter(
+        new ItemStack(Items.IRON_BOOTS),
+        new ItemStack(RailcraftItems.STEEL_HELMET.get()),
+        DEFAULT_VISIBILITY);
+    entries.putAfter(
+        new ItemStack(RailcraftItems.STEEL_HELMET.get()),
+        new ItemStack(RailcraftItems.STEEL_CHESTPLATE.get()),
+        DEFAULT_VISIBILITY);
+    entries.putAfter(
+        new ItemStack(RailcraftItems.STEEL_CHESTPLATE.get()),
+        new ItemStack(RailcraftItems.STEEL_LEGGINGS.get()),
+        DEFAULT_VISIBILITY);
+    entries.putAfter(
+        new ItemStack(RailcraftItems.STEEL_LEGGINGS.get()),
+        new ItemStack(RailcraftItems.STEEL_BOOTS.get()),
         DEFAULT_VISIBILITY);
   }
 }
