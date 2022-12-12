@@ -11,7 +11,6 @@ import mods.railcraft.util.container.ContainerMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -79,7 +78,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
     var season = Season.DEFAULT;
-    if(tag.contains("season"))
+    if (tag.contains("season"))
       season = Season.values()[tag.getInt("season")];
     this.setSeason(season);
   }
@@ -227,10 +226,5 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   public boolean shouldRenderAtSqrDistance(double distance) {
     return CartTools.isInRangeToRenderDist(this, distance);
-  }
-
-  @Override
-  public Packet<?> getAddEntityPacket() {
-    return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

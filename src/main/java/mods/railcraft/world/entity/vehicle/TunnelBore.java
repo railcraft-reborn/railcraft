@@ -29,7 +29,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -68,7 +67,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.network.NetworkHooks;
 
 public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
@@ -1142,10 +1140,5 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   @Override
   protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
     return new TunnelBoreMenu(id, inventory, this);
-  }
-
-  @Override
-  public Packet<?> getAddEntityPacket() {
-    return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -299,13 +298,15 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     }
 
     @Override
-    public List<Component> getTooltip() {
-      return List.of(
-          this.getLabel().copy()
-              .withStyle(ChatFormatting.WHITE),
-          Component.translatable(this.getTranslationKey())
-              .withStyle(ChatFormatting.DARK_GREEN),
-          Component.translatable(this.getDescriptionKey()));
+    public Optional<Component> getTooltip() {
+      return Optional.of(Component.empty()
+          .append(this.getLabel().copy()
+              .withStyle(ChatFormatting.WHITE))
+          .append("\n")
+          .append(Component.translatable(this.getTranslationKey())
+              .withStyle(ChatFormatting.DARK_GREEN))
+          .append("\n")
+          .append(Component.translatable(this.getDescriptionKey())));
     }
 
     public String getTranslationKey() {
@@ -348,13 +349,15 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     }
 
     @Override
-    public List<Component> getTooltip() {
-      return List.of(
-          this.getLabel().copy()
-              .withStyle(ChatFormatting.WHITE),
-          Component.translatable(this.getTranslationKey())
-              .withStyle(ChatFormatting.DARK_GREEN),
-          Component.translatable(this.getDescriptionKey()));
+    public Optional<Component> getTooltip() {
+      return Optional.of(Component.empty()
+          .append(this.getLabel().copy()
+              .withStyle(ChatFormatting.WHITE))
+          .append("\n")
+          .append(Component.translatable(this.getTranslationKey())
+              .withStyle(ChatFormatting.DARK_GREEN))
+          .append("\n")
+          .append(Component.translatable(this.getDescriptionKey())));
     }
 
     public String getTranslationKey() {
