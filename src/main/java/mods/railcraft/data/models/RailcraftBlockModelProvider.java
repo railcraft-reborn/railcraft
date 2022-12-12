@@ -49,7 +49,7 @@ import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.Condition;
 import net.minecraft.data.models.blockstates.Condition.CompositeCondition;
 import net.minecraft.data.models.blockstates.Condition.TerminalCondition;
@@ -127,9 +127,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private StraightTrackModelSet disembarkingTrackRight;
   private StraightTrackModelSet activeDisembarkingTrackRight;
 
-  public RailcraftBlockModelProvider(DataGenerator generator,
-      ExistingFileHelper existingFileHelper) {
-    super(generator, Railcraft.ID, existingFileHelper);
+  public RailcraftBlockModelProvider(PackOutput packOutput, ExistingFileHelper fileHelper) {
+    super(packOutput, Railcraft.ID, fileHelper);
   }
 
   private ResourceLocation key(Block block) {

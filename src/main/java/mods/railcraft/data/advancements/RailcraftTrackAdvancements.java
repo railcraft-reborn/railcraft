@@ -12,22 +12,17 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ForgeAdvancementProvider;
 
-public class RailcraftTrackAdvancements implements AdvancementSubProvider {
-
-  private final ExistingFileHelper fileHelper;
-
-  public RailcraftTrackAdvancements(ExistingFileHelper fileHelper) {
-    this.fileHelper = fileHelper;
-  }
+class RailcraftTrackAdvancements implements ForgeAdvancementProvider.AdvancementGenerator {
 
   @Override
-  public void generate(HolderLookup.Provider lookupProvider, Consumer<Advancement> consumer) {
+  public void generate(HolderLookup.Provider registries, Consumer<Advancement> consumer,
+      ExistingFileHelper fileHelper) {
     Advancement rcRoot = Advancement.Builder.advancement()
         .display(
             RailcraftItems.REINFORCED_TRACK.get(),
@@ -38,7 +33,7 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
             false, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.WOODEN_TIE.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/root"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/root"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -51,7 +46,7 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
         .parent(rcRoot)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.RAW_FIRESTONE.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/firestone"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/firestone"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -64,8 +59,7 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
         .parent(rcRoot)
         .addCriterion("blast_furnace_formed", MultiBlockFormedTrigger.Instance
             .formedMultiBlock(RailcraftBlockEntityTypes.BLAST_FURNACE.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/blast_furnace"),
-            this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/blast_furnace"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -78,7 +72,7 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
         .parent(rcRoot)
         .addCriterion("has_coke_oven", MultiBlockFormedTrigger.Instance
             .formedMultiBlock(RailcraftBlockEntityTypes.COKE_OVEN.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/coke_oven"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/coke_oven"), fileHelper);
 
     Advancement rollingTable = Advancement.Builder.advancement()
         .display(
@@ -93,7 +87,7 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
             InventoryChangeTrigger.TriggerInstance
                 .hasItems(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/manual_rolling_machine"),
-            this.fileHelper);
+            fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -106,7 +100,7 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
         .parent(rcRoot)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.CRUSHER.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/crusher"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/crusher"), fileHelper);
 
     Advancement basicTrack = Advancement.Builder.advancement()
         .display(
@@ -118,8 +112,7 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
             true, false, false)
         .parent(rollingTable)
         .addCriterion("inv_changed", InventoryChangeTrigger.TriggerInstance.hasItems(Items.RAIL))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/regular_track"),
-            this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/regular_track"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -131,7 +124,7 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
             true, true, false)
         .parent(basicTrack)
         .addCriterion("has_used_track_kit", UseTrackKitTrigger.Instance.hasUsedTrackKit())
-        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/track_kit"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/track_kit"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -143,7 +136,7 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
             true, false, false)
         .parent(basicTrack)
         .addCriterion("has_used_spikemaul", SpikeMaulUseTrigger.Instance.hasUsedSpikeMaul())
-        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/junctions"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/junctions"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -156,8 +149,7 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
         .parent(rollingTable)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.HIGH_SPEED_TRACK.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/high_speed_track"),
-            this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/high_speed_track"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -170,6 +162,6 @@ public class RailcraftTrackAdvancements implements AdvancementSubProvider {
         .parent(rollingTable)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STRAP_IRON_TRACK.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/wooden_track"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/wooden_track"), fileHelper);
   }
 }

@@ -3,7 +3,7 @@ package mods.railcraft.data;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.sounds.RailcraftSoundEvents;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinition;
@@ -11,8 +11,8 @@ import net.minecraftforge.common.data.SoundDefinitionsProvider;
 
 public class RailcraftSoundsProvider extends SoundDefinitionsProvider {
 
-  public RailcraftSoundsProvider(DataGenerator generator, ExistingFileHelper helper) {
-    super(generator, Railcraft.ID, helper);
+  public RailcraftSoundsProvider(PackOutput packOutput, ExistingFileHelper fileHelper) {
+    super(packOutput, Railcraft.ID, fileHelper);
   }
 
   @Override

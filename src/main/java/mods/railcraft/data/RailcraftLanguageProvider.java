@@ -15,7 +15,7 @@ import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntit
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.material.fluid.RailcraftFluidTypes;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
@@ -24,10 +24,8 @@ import net.minecraftforge.fluids.FluidType;
 
 public class RailcraftLanguageProvider extends LanguageProvider {
 
-  private static final String LOCALE = "en_us";
-
-  public RailcraftLanguageProvider(DataGenerator gen) {
-    super(gen, Railcraft.ID, LOCALE);
+  public RailcraftLanguageProvider(PackOutput packOutput) {
+    super(packOutput, Railcraft.ID, "en_us");
   }
 
   @Override

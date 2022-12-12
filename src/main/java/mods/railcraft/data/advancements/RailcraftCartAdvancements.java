@@ -13,23 +13,18 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ForgeAdvancementProvider;
 
-public class RailcraftCartAdvancements implements AdvancementSubProvider {
-
-  private final ExistingFileHelper fileHelper;
-
-  public RailcraftCartAdvancements(ExistingFileHelper fileHelper) {
-    this.fileHelper = fileHelper;
-  }
+class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementGenerator {
 
   @Override
-  public void generate(HolderLookup.Provider lookupProvider, Consumer<Advancement> consumer) {
-    var rcRoot = Advancement.Builder.advancement()
+  public void generate(HolderLookup.Provider registries, Consumer<Advancement> consumer,
+      ExistingFileHelper fileHelper) {
+    var root = Advancement.Builder.advancement()
         .display(
             RailcraftItems.DIAMOND_CROWBAR.get(),
             Component.translatable(Translations.Advancement.Carts.ROOT),
@@ -39,7 +34,7 @@ public class RailcraftCartAdvancements implements AdvancementSubProvider {
             true, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.IRON_CROWBAR.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/root"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/root"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -50,8 +45,8 @@ public class RailcraftCartAdvancements implements AdvancementSubProvider {
             FrameType.TASK,
             true, false, false)
         .addCriterion("linked_carts", CartLinkingTrigger.Instance.hasLinked())
-        .parent(rcRoot)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/link_carts"), this.fileHelper);
+        .parent(root)
+        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/link_carts"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -62,8 +57,8 @@ public class RailcraftCartAdvancements implements AdvancementSubProvider {
             FrameType.GOAL,
             true, false, false)
         .addCriterion("on_season_set", SetSeasonTrigger.Instance.onSeasonSet())
-        .parent(rcRoot)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/seasons"), this.fileHelper);
+        .parent(root)
+        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/seasons"), fileHelper);
 
     Advancement rcLocomotive = Advancement.Builder.advancement()
         .display(
@@ -75,8 +70,8 @@ public class RailcraftCartAdvancements implements AdvancementSubProvider {
             true, true, false)
         .addCriterion("has_locomotives",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STEAM_LOCOMOTIVE.get()))
-        .parent(rcRoot)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/locomotive"), this.fileHelper);
+        .parent(root)
+        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/locomotive"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -88,7 +83,7 @@ public class RailcraftCartAdvancements implements AdvancementSubProvider {
             true, false, false)
         .addCriterion("has_slept_in_rc_bed", BedCartSleepTrigger.Instance.hasSlept())
         .parent(rcLocomotive)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/bed_cart"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/bed_cart"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -100,7 +95,7 @@ public class RailcraftCartAdvancements implements AdvancementSubProvider {
             true, false, false)
         .addCriterion("stal_played", JukeboxCartPlayMusicTrigger.Instance.hasPlayedAnyMusic())
         .parent(rcLocomotive)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/jukebox_cart"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/jukebox_cart"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -112,6 +107,6 @@ public class RailcraftCartAdvancements implements AdvancementSubProvider {
             true, true, false)
         .addCriterion("has_exploded_track", SurpriseTrigger.Instance.hasExplodedCart())
         .parent(rcLocomotive)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/surprise"), this.fileHelper);
+        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/surprise"), fileHelper);
   }
 }

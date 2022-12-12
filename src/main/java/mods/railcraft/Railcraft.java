@@ -1,7 +1,6 @@
 package mods.railcraft;
 
 import java.util.HashMap;
-import java.util.List;
 import com.mojang.serialization.JsonOps;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
@@ -16,8 +15,7 @@ import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
 import mods.railcraft.data.RailcraftSoundsProvider;
-import mods.railcraft.data.advancements.RailcraftCartAdvancements;
-import mods.railcraft.data.advancements.RailcraftTrackAdvancements;
+import mods.railcraft.data.advancements.RailcraftAdvancementProvider;
 import mods.railcraft.data.loot.packs.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
@@ -58,7 +56,6 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
@@ -193,17 +190,15 @@ public class Railcraft {
         new RailcraftFluidTagsProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftLootTableProvider(packOutput));
     generator.addProvider(event.includeServer(),
-        new AdvancementProvider(packOutput, lookupProvider, List.of(
-            new RailcraftCartAdvancements(fileHelper),
-            new RailcraftTrackAdvancements(fileHelper)), fileHelper));
+        new RailcraftAdvancementProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(packOutput));
     generator.addProvider(event.includeClient(),
-        new RailcraftItemModelProvider(generator, fileHelper));
+        new RailcraftItemModelProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
-        new RailcraftBlockModelProvider(generator, fileHelper));
-    generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(generator));
+        new RailcraftBlockModelProvider(packOutput, fileHelper));
+    generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(packOutput));
     generator.addProvider(event.includeClient(),
-        new RailcraftSoundsProvider(generator, fileHelper));
+        new RailcraftSoundsProvider(packOutput, fileHelper));
 
     // WORLD GENERATION
     var registries = RegistryAccess.builtinCopy();
@@ -212,11 +207,11 @@ public class Railcraft {
     var configuredFeatures = new HashMap<ResourceLocation, ConfiguredFeature<?, ?>>();
     configuredFeatures.putAll(RailcraftOreFeatures.collectEntries());
     configuredFeatures.putAll(RailcraftMiscOverworldFeatures.collectEntries());
-    generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
+    generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(packOutput,
         fileHelper, ID, ops, Registries.CONFIGURED_FEATURE, configuredFeatures));
 
     var placedFeatures = new HashMap<>(RailcraftOrePlacements.collectEntries());
-    generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
+    generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(packOutput,
         fileHelper, ID, ops, Registries.PLACED_FEATURE, placedFeatures));
 
     var biomeModifiers = new HashMap<ResourceLocation, BiomeModifier>();
@@ -238,7 +233,7 @@ public class Railcraft {
               GenerationStep.Decoration.UNDERGROUND_ORES));
     }
 
-    generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator,
+    generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(packOutput,
         fileHelper, ID, ops, Keys.BIOME_MODIFIERS, biomeModifiers));
   }
 
