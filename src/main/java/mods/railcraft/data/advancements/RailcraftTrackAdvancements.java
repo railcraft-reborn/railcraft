@@ -23,7 +23,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
   @Override
   public void generate(HolderLookup.Provider registries, Consumer<Advancement> consumer,
       ExistingFileHelper fileHelper) {
-    Advancement rcRoot = Advancement.Builder.advancement()
+    Advancement root = Advancement.Builder.advancement()
         .display(
             RailcraftItems.REINFORCED_TRACK.get(),
             Component.translatable(Translations.Advancement.Tracks.ROOT),
@@ -43,7 +43,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             null,
             FrameType.CHALLENGE,
             true, true, false)
-        .parent(rcRoot)
+        .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.RAW_FIRESTONE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/firestone"), fileHelper);
@@ -56,7 +56,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             null,
             FrameType.TASK,
             true, false, false)
-        .parent(rcRoot)
+        .parent(root)
         .addCriterion("blast_furnace_formed", MultiBlockFormedTrigger.Instance
             .formedMultiBlock(RailcraftBlockEntityTypes.BLAST_FURNACE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/blast_furnace"), fileHelper);
@@ -69,7 +69,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             null,
             FrameType.TASK,
             true, true, false)
-        .parent(rcRoot)
+        .parent(root)
         .addCriterion("has_coke_oven", MultiBlockFormedTrigger.Instance
             .formedMultiBlock(RailcraftBlockEntityTypes.COKE_OVEN.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/coke_oven"), fileHelper);
@@ -82,7 +82,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             null,
             FrameType.GOAL,
             true, false, false)
-        .parent(rcRoot)
+        .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance
                 .hasItems(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
@@ -97,7 +97,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             null,
             FrameType.GOAL,
             true, false, false)
-        .parent(rcRoot)
+        .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.CRUSHER.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "tracks/crusher"), fileHelper);
