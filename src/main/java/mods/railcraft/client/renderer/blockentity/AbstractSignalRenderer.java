@@ -1,11 +1,10 @@
 package mods.railcraft.client.renderer.blockentity;
 
 import java.util.Map;
-import java.util.function.Function;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.client.renderer.RailcraftSheets;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.CuboidModelRenderer.FaceDisplay;
@@ -14,41 +13,38 @@ import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 
 public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity>
     implements BlockEntityRenderer<T> {
 
   public static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS = Map.of(
-      SignalAspect.OFF, new ResourceLocation(Railcraft.ID, "entity/signal/off_aspect"),
-      SignalAspect.RED, new ResourceLocation(Railcraft.ID, "entity/signal/red_aspect"),
-      SignalAspect.YELLOW, new ResourceLocation(Railcraft.ID, "entity/signal/yellow_aspect"),
-      SignalAspect.GREEN, new ResourceLocation(Railcraft.ID, "entity/signal/green_aspect"));
+      SignalAspect.OFF, new ResourceLocation(Railcraft.ID, "entity/signal_aspect/off"),
+      SignalAspect.RED, new ResourceLocation(Railcraft.ID, "entity/signal_aspect/red"),
+      SignalAspect.YELLOW, new ResourceLocation(Railcraft.ID, "entity/signal_aspect/yellow"),
+      SignalAspect.GREEN, new ResourceLocation(Railcraft.ID, "entity/signal_aspect/green"));
 
   private final CuboidModel signalAspectModel = new CuboidModel(1.0F);
 
   @Override
-  public void render(T blockEntity, float partialTicks, PoseStack matrixStack,
-      MultiBufferSource renderTypeBuffer, int packedLight, int packedOverlay) {
+  public void render(T blockEntity, float partialTick, PoseStack poseStack,
+      MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
-    SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, matrixStack, renderTypeBuffer);
+    SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, poseStack, bufferSource);
 
     if (blockEntity.hasCustomName()) {
       RenderUtil.renderBlockHoverText(blockEntity.getBlockPos(),
-          blockEntity.getCustomName(), matrixStack, renderTypeBuffer, packedLight);
+          blockEntity.getCustomName(), poseStack, bufferSource, packedLight);
     }
   }
 
-  protected void renderSignalAspect(PoseStack matrixStack, MultiBufferSource renderTypeBuffer,
+  protected void renderSignalAspect(PoseStack poseStack, MultiBufferSource bufferSource,
       int packedLight, int packedOverlay, SignalAspect signalAspect, Direction direction) {
 
-    Function<ResourceLocation, TextureAtlasSprite> spriteGetter = Minecraft.getInstance()
-        .getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
+    var spriteGetter = Minecraft.getInstance()
+        .getTextureAtlas(RailcraftSheets.SIGNAL_ASPECTS_SHEET);
 
     final int skyLight = LightTexture.sky(packedLight);
     packedLight = LightTexture.pack(signalAspect.getLampLight(), skyLight);
@@ -61,9 +57,9 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
             .setSprite(spriteGetter.apply(ASPECT_TEXTURE_LOCATIONS.get(signalAspect)))
             .setSize(16));
 
-    VertexConsumer vertexBuilder =
-        renderTypeBuffer.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
-    CuboidModelRenderer.render(this.signalAspectModel, matrixStack, vertexBuilder, 0xFFFFFFFF,
-        FaceDisplay.FRONT, false);
+    var vertexConsumer =
+        bufferSource.getBuffer(RailcraftSheets.SIGNAL_ASPECTS_TYPE);
+    CuboidModelRenderer.render(this.signalAspectModel, poseStack, vertexConsumer,
+        0xFFFFFFFF, FaceDisplay.FRONT, false);
   }
 }

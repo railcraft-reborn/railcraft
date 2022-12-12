@@ -1,7 +1,8 @@
 package mods.railcraft;
 
-import com.mojang.serialization.JsonOps;
 import java.util.HashMap;
+import java.util.List;
+import com.mojang.serialization.JsonOps;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.charge.Charge;
@@ -10,12 +11,13 @@ import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
 import mods.railcraft.client.ClientManager;
-import mods.railcraft.data.RailcraftAdvancementProviders;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
 import mods.railcraft.data.RailcraftSoundsProvider;
+import mods.railcraft.data.advancements.RailcraftCartAdvancements;
+import mods.railcraft.data.advancements.RailcraftTrackAdvancements;
 import mods.railcraft.data.loot.packs.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
@@ -56,6 +58,7 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
@@ -173,12 +176,14 @@ public class Railcraft {
     var blockTags = new RailcraftBlockTagsProvider(packOutput, lookupProvider, fileHelper);
     generator.addProvider(event.includeServer(), blockTags);
     generator.addProvider(event.includeServer(),
-        new RailcraftItemTagsProvider(packOutput, lookupProvider,blockTags, fileHelper));
+        new RailcraftItemTagsProvider(packOutput, lookupProvider, blockTags, fileHelper));
     generator.addProvider(event.includeServer(),
         new RailcraftFluidTagsProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftLootTableProvider(packOutput));
     generator.addProvider(event.includeServer(),
-        new RailcraftAdvancementProviders(generator, fileHelper));
+        new AdvancementProvider(packOutput, lookupProvider, List.of(
+            new RailcraftCartAdvancements(fileHelper),
+            new RailcraftTrackAdvancements(fileHelper)), fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(packOutput));
     generator.addProvider(event.includeClient(),
         new RailcraftItemModelProvider(generator, fileHelper));

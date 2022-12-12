@@ -81,11 +81,11 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.add(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(), this::createSlabItemTable);
 
     this.add(RailcraftBlocks.SULFUR_ORE.get(),
-        block -> createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
+        block -> this.createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
     this.add(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get(),
-        block -> createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
+        block -> this.createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
     this.add(RailcraftBlocks.SALTPETER_ORE.get(),
-        block -> createOreDrop(block, RailcraftItems.SALTPETER_DUST.get(), 3, 5));
+        block -> this.createOreDrop(block, RailcraftItems.SALTPETER_DUST.get(), 3, 5));
 
     for (var dyeColor : DyeColor.values()) {
       this.dropSelf(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
@@ -339,13 +339,12 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.add(RailcraftBlocks.RITUAL.get(), noDrop());
   }
 
-  protected static LootTable.Builder createOreDrop(Block pBlock, Item pItem, int min, int max) {
-    return createSilkTouchDispatchTable(pBlock, applyExplosionDecay(pBlock,
+  protected LootTable.Builder createOreDrop(Block pBlock, Item pItem, int min, int max) {
+    return createSilkTouchDispatchTable(pBlock, this.applyExplosionDecay(pBlock,
         LootItem
             .lootTableItem(pItem)
             .apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max)))
-            .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
-    ));
+            .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))));
   }
 
   @Override

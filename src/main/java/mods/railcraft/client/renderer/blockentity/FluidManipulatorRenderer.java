@@ -24,7 +24,7 @@ public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
       new CuboidModel(0.011F, 0.01F, 0.011F, 0.989F, 0.99F, 0.989F);
 
   @Override
-  public void render(T blockEntity, float partialTicks,
+  public void render(T blockEntity, float partialTick,
       PoseStack poseStack, MultiBufferSource bufferSource, int packedLight,
       int packedOverlay) {
     interiorModel.setAll(interiorModel.new Face()
