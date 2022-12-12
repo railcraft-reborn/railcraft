@@ -291,8 +291,7 @@ public class Railcraft {
       var linkedCarts = EntitySearcher.findMinecarts()
           .around(player)
           .inflate(32F)
-          .search(player.getLevel())
-          .stream()
+          .stream(player.getLevel())
           .map(MinecartExtension::getOrThrow)
           .map(LinkedCartsMessage.LinkedCart::new)
           .toList();

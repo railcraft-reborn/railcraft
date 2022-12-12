@@ -76,13 +76,12 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     return ((ManipulatorBlock<?>) blockState.getBlock()).getFacing(blockState);
   }
 
-  @Nullable
-  public AbstractMinecart getCart() {
+  public Optional<AbstractMinecart> findCart() {
     return EntitySearcher.findMinecarts()
-        .around(this.getBlockPos().relative(this.getFacing()))
+        .at(this.getBlockPos().relative(this.getFacing()))
         .inflate(-0.1F)
-        .search(this.level)
-        .any();
+        .stream(this.level)
+        .findAny();
   }
 
   public boolean canHandleCart(AbstractMinecart cart) {
@@ -198,7 +197,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     blockEntity.setProcessing(false);
 
     // Find cart to play with
-    AbstractMinecart cart = blockEntity.getCart();
+    var cart = blockEntity.findCart().orElse(null);
 
     blockEntity.setCurrentCart(cart);
 

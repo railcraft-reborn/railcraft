@@ -64,7 +64,7 @@ public class TrackRemover extends MaintenanceMinecart {
       this.tracksRemoved.add(track);
     } else if (this.level.getBlockState(track).is(RailcraftBlocks.FORCE_TRACK.get())) {
       this.tracksRemoved.add(track);
-    } else if (EntitySearcher.findMinecarts().around(track).inflate(0.2f).search(this.level).isEmpty()) {
+    } else if (EntitySearcher.findMinecarts().at(track).inflate(0.2f).list(this.level).isEmpty()) {
       this.removeOldTrack(track, this.level.getBlockState(track));
       this.blink();
       this.tracksRemoved.add(track);

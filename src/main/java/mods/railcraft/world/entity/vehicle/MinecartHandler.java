@@ -79,7 +79,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       var carts = EntitySearcher.findMinecarts()
           .around(cart)
           .and(EntitySelector.ENTITY_STILL_ALIVE, ModEntitySelector.NON_MECHANICAL)
-          .search(level);
+          .list(level);
       if (carts.size() >= 12) {
         extension.primeExplosion();
       }

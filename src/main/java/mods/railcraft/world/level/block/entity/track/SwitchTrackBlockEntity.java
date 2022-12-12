@@ -71,9 +71,9 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     // mainly for visual purposes as the subclass's getRailDirectionRaw()
     // determines which direction the carts actually take.
     List<AbstractMinecart> cartsOnTrack = EntitySearcher.findMinecarts()
-        .around(blockPos)
+        .at(blockPos)
         .inflate(-0.3f)
-        .search(blockEntity.level);
+        .list(blockEntity.getLevel());
     Set<UUID> uuidOnTrack = cartsOnTrack.stream()
         .map(Entity::getUUID)
         .collect(Collectors.toSet());

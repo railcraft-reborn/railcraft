@@ -3,7 +3,6 @@ package mods.railcraft.world.signal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -90,10 +89,12 @@ public class SimpleTokenRing implements TokenRing {
         aabbFactory.expandToCoordinate(pos);
       }
       aabbFactory.inflate(16).clampToWorld();
-      List<AbstractMinecart> carts = EntitySearcher.findMinecarts()
-          .around(aabbFactory.build())
-          .search(this.level);
-      this.trackedCarts.retainAll(carts.stream().map(Entity::getUUID).collect(Collectors.toSet()));
+      this.trackedCarts.retainAll(
+          EntitySearcher.findMinecarts()
+              .in(aabbFactory.build())
+              .stream(this.level)
+              .map(Entity::getUUID)
+              .collect(Collectors.toSet()));
     }
   }
 

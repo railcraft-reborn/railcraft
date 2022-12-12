@@ -1,10 +1,10 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidMinecart;
-import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.Predicates;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
@@ -34,7 +34,6 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
       .toArray(Direction[]::new);
   private float lastPipeLength;
   private float pipeLength;
-  private boolean needsPipe;
 
   public FluidLoaderBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.FLUID_LOADER.get(), blockPos, blockState);
@@ -94,19 +93,15 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
         Predicates.notOfType(FluidLoaderBlockEntity.class), PULL_FROM), 0, TRANSFER_RATE);
   }
 
-  @Nullable
   @Override
-  public AbstractMinecart getCart() {
-    BoxBuilder factory = BoxBuilder.create()
-        .at(this.getBlockPos().below(2))
-        .raiseCeiling(1)
-        .inflate(-0.1F);
-    AbstractMinecart cart = EntitySearcher.findMinecarts()
-        .around(factory)
-        .search(this.level)
-        .any();
-    this.needsPipe = cart != null && this.getBlockPos().getY() - cart.position().y() > 1.0D;
-    return cart;
+  public Optional<AbstractMinecart> findCart() {
+    return EntitySearcher.findMinecarts()
+        .box(builder -> builder
+            .at(this.getBlockPos().below(2))
+            .raiseCeiling(1)
+            .inflate(-0.1F))
+        .stream(this.level)
+        .findAny();
   }
 
   @Override
@@ -138,15 +133,16 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     if (tankCart == null) {
       return;
     }
-    boolean cartNeedsFilling = this.cartNeedsFilling(tankCart);
+    var cartNeedsFilling = this.cartNeedsFilling(tankCart);
+    var needsPipe = cart != null && this.getBlockPos().getY() - cart.position().y() > 1.0D;
 
-    if (cartNeedsFilling && this.needsPipe) {
+    if (cartNeedsFilling && needsPipe) {
       this.extendPipe();
     } else {
       this.retractPipe();
     }
 
-    if (cartNeedsFilling && (!this.needsPipe || this.isPipeExtended())) {
+    if (cartNeedsFilling && (!needsPipe || this.isPipeExtended())) {
       FluidStack moved = FluidUtil.tryFluidTransfer(tankCart, this.tank,
           RailcraftConfig.server.tankCartFluidTransferRate.get(), true);
       this.setProcessing(!moved.isEmpty());

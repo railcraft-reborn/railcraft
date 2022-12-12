@@ -80,12 +80,11 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
     if (blockEntity.trackLocator.trackStatus() == TrackLocator.Status.VALID) {
       var trackPos = blockEntity.trackLocator.trackPos();
       if (trackPos != null) {
-        var carts = EntitySearcher.findMinecarts()
-            .around(trackPos)
-            .search(level);
-        carts.stream().filter(c -> !blockEntity.cartTimers.contains(c.getUUID()))
+        EntitySearcher.findMinecarts()
+            .at(trackPos)
+            .stream(level)
+            .filter(cart -> blockEntity.cartTimers.add(cart.getUUID()))
             .forEach(tokenRing::markCart);
-        carts.forEach(c -> blockEntity.cartTimers.add(c.getUUID()));
       }
     }
 

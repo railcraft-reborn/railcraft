@@ -17,8 +17,8 @@ public class TimerBag<T> {
     this.duration = duration;
   }
 
-  public void add(T object) {
-    this.timers.put(object, this.duration);
+  public boolean add(T object) {
+    return this.timers.put(object, this.duration) <= 0;
   }
 
   public boolean contains(T object) {

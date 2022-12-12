@@ -307,9 +307,9 @@ public class ElevatorTrackBlock extends Block {
     }
 
     return EntitySearcher.findMinecarts()
-        .around(factory.build())
+        .in(factory.build())
         .except(cart)
-        .search(cart.level)
+        .list(cart.level)
         .isEmpty();
   }
 

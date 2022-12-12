@@ -61,7 +61,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
       return false;
     }
     var offset = this.getBlockPos().offset(this.getFacing().getNormal());
-    if (EntitySearcher.findMinecarts().around(offset).search(serverLevel).isEmpty()) {
+    if (EntitySearcher.findMinecarts().at(offset).list(serverLevel).isEmpty()) {
       var cartItem = this.removeOneItem(filter);
       if (!cartItem.isEmpty()) {
         var placedCart = CartTools.placeCart(cartItem, serverLevel, offset);
@@ -93,10 +93,11 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
 
   @Override
   protected void onPulse(ServerLevel serverLevel) {
-    var cart = EntitySearcher.findMinecarts()
-        .around(this.getBlockPos().offset(this.getFacing().getNormal()))
-        .search(serverLevel).any();
-    if (cart != null) {
+    var empty = EntitySearcher.findMinecarts()
+        .at(this.getBlockPos().offset(this.getFacing().getNormal()))
+        .list(serverLevel)
+        .isEmpty();
+    if (!empty) {
       return;
     }
     if (!spawningTrain && this.canBuildTrain()) {

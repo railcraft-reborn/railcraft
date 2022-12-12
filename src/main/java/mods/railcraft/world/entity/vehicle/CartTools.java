@@ -236,7 +236,7 @@ public final class CartTools {
       return null;
     }
 
-    if (EntitySearcher.findMinecarts().around(pos).search(level).isEmpty()) {
+    if (EntitySearcher.findMinecarts().at(pos).list(level).isEmpty()) {
       var trackShape = TrackUtil.getTrackDirection(level, pos, blockState);
       double h = trackShape.isAscending() ? 0.5 : 0.0;
 

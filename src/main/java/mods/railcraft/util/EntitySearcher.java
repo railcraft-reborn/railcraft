@@ -1,17 +1,17 @@
 package mods.railcraft.util;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
-import com.google.common.collect.ForwardingList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.entity.EntityTypeTest;
+import net.minecraft.world.phys.AABB;
 
 /**
  * The EntitySearcher is a utility class for searching for entities in the world.
@@ -32,42 +32,59 @@ import net.minecraft.world.level.Level;
  */
 public final class EntitySearcher {
 
-  public static SearchParameters<AbstractMinecart> findMinecarts() {
-    return new SearchParameters<>(AbstractMinecart.class);
-  }
+  private static final EntityTypeTest<Entity, Entity> ANY_TYPE =
+      new EntityTypeTest<Entity, Entity>() {
 
-  public static <T extends Entity> SearchParameters<T> find(Class<T> entityClass) {
-    return new SearchParameters<>(entityClass);
+        @Override
+        public Entity tryCast(Entity entity) {
+          return entity;
+        }
+
+        @Override
+        public Class<? extends Entity> getBaseClass() {
+          return Entity.class;
+        }
+      };
+
+  public static SearchParameters<AbstractMinecart> findMinecarts() {
+    return find(AbstractMinecart.class);
   }
 
   public static SearchParameters<LivingEntity> findLiving() {
-    return new SearchParameters<>(LivingEntity.class);
+    return find(LivingEntity.class);
   }
 
   public static SearchParameters<Entity> find() {
-    return new SearchParameters<>(Entity.class);
+    return find(ANY_TYPE);
   }
 
-  public static SearchParameters<ItemEntity> findItem() {
-    return new SearchParameters<>(ItemEntity.class);
+  public static <T extends Entity> SearchParameters<T> find(Class<T> clazz) {
+    return find(EntityTypeTest.forClass(clazz));
+  }
+
+  public static <T extends Entity> SearchParameters<T> find(EntityTypeTest<Entity, T> typeTest) {
+    return new SearchParameters<>(typeTest);
   }
 
   public static class SearchParameters<T extends Entity> {
 
-    private final Class<T> entityClass;
+    private final EntityTypeTest<Entity, T> typeTest;
     private BoxBuilder box = BoxBuilder.create();
     private Predicate<T> filter = ModEntitySelector.LIVING::test;
 
-    public SearchParameters(Class<T> entityClass) {
-      this.entityClass = entityClass;
+    public SearchParameters(EntityTypeTest<Entity, T> typeTest) {
+      this.typeTest = typeTest;
     }
 
-    public SearchResult<T> search(Level level) {
+    public Stream<T> stream(Level level) {
+      return this.list(level).stream();
+    }
+
+    public List<T> list(Level level) {
       if (this.box.isUndefined()) {
         throw new NullPointerException("Improperly defined EntitySearcher without a search box");
       }
-      return new SearchResult<>(
-          level.getEntitiesOfClass(this.entityClass, this.box.build(), this.filter::test));
+      return level.getEntities(this.typeTest, this.box.build(), this.filter::test);
     }
 
     public SearchParameters<T> except(Entity entity) {
@@ -75,17 +92,17 @@ public final class EntitySearcher {
       return this;
     }
 
-    public SearchParameters<T> around(AABB area) {
-      this.box.fromAABB(area);
+    public SearchParameters<T> in(AABB aabb) {
+      this.box.fromAABB(aabb);
       return this;
     }
 
-    public SearchParameters<T> around(BoxBuilder factory) {
-      this.box = factory;
+    public SearchParameters<T> box(Consumer<BoxBuilder> consumer) {
+      consumer.accept(this.box);
       return this;
     }
 
-    public SearchParameters<T> around(BlockPos pos) {
+    public SearchParameters<T> at(BlockPos pos) {
       this.box.at(pos);
       return this;
     }
@@ -116,24 +133,6 @@ public final class EntitySearcher {
         this.filter = Predicates.and(this.filter, filters);
       }
       return this;
-    }
-  }
-
-  public static class SearchResult<T extends Entity> extends ForwardingList<T> {
-
-    private final List<T> entities;
-
-    private SearchResult(List<T> entities) {
-      this.entities = entities;
-    }
-
-    @Override
-    protected List<T> delegate() {
-      return entities;
-    }
-
-    public @Nullable T any() {
-      return entities.stream().findAny().orElse(null);
     }
   }
 }

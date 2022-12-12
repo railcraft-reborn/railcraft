@@ -2,7 +2,6 @@ package mods.railcraft.world.entity.vehicle;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +12,6 @@ import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.ModEntitySelector;
@@ -444,12 +442,14 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
       if (isMinecartPowered()) {
         Vec3 headPos = getPositionAhead(3.3);
         double size = 0.8;
-        AABB entitySearchBox = BoxBuilder.create()
-            .setBoundsToPoint(headPos)
-            .inflateHorizontally(size)
-            .raiseCeiling(2).build();
-        List<LivingEntity> entities = EntitySearcher.findLiving().and(ModEntitySelector.KILLABLE)
-            .around(entitySearchBox).search(this.level);
+        var entities = EntitySearcher.findLiving()
+            .and(ModEntitySelector.KILLABLE)
+            .box(builder -> builder
+                .setBoundsToPoint(headPos)
+                .inflateHorizontally(size)
+                .raiseCeiling(2)
+                .build())
+            .list(this.level);
         entities.forEach(e -> e.hurt(RailcraftDamageSource.BORE, 2));
 
         ItemStack head = getItem(0);

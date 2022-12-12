@@ -68,45 +68,47 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
   }
 
   protected void onPulse(ServerLevel serverLevel) {
-    var cart = EntitySearcher.findMinecarts()
-        .around(this.getBlockPos().offset(this.getFacing().getNormal()))
-        .search(serverLevel)
-        .any();
+    EntitySearcher.findMinecarts()
+        .at(this.getBlockPos().offset(this.getFacing().getNormal()))
+        .stream(serverLevel)
+        .findAny()
+        .ifPresentOrElse(cart -> {
+          if (!cart.isAlive()) {
+            return;
+          }
+          var coppiedContainer = new ContainerCopy(this);
+          var cartStack = cart.getPickResult();
+          if (cart.hasCustomName()) {
+            cartStack.setHoverName(cart.getName());
+          }
+          var remainder = coppiedContainer.addStack(cartStack.copy());
+          if (remainder.isEmpty()) {
+            this.addStack(cartStack);
+            if (!cart.getPassengers().isEmpty()) {
+              CartTools.removePassengers(cart);
+            }
+            cart.kill();
+          }
+        }, () -> {
+          if (this.timeSinceLastSpawn > RailcraftConfig.server.cartDispenserDelay.get() * 20) {
+            for (int i = 0; i < this.getContainerSize(); i++) {
+              var cartStack = this.getItem(i);
+              if (!cartStack.isEmpty()) {
+                var pos = this.getBlockPos().offset(this.getFacing().getNormal());
+                var placedCart = CartTools.placeCart(cartStack, serverLevel, pos);
 
-    if (cart == null) {
-      if (this.timeSinceLastSpawn > RailcraftConfig.server.cartDispenserDelay.get() * 20) {
-        for (int i = 0; i < this.getContainerSize(); i++) {
-          var cartStack = this.getItem(i);
-          if (!cartStack.isEmpty()) {
-            var pos = this.getBlockPos().offset(this.getFacing().getNormal());
-            var placedCart = CartTools.placeCart(cartStack, serverLevel, pos);
-
-            if (placedCart != null) {
-              this.removeItem(i, 1);
-              this.timeSinceLastSpawn = 0;
-              break;
-            } else {
-              LevelUtil.spewItem(cartStack, this.level, pos.getX(), pos.getY(), pos.getZ());
-              this.setItem(i, ItemStack.EMPTY);
+                if (placedCart != null) {
+                  this.removeItem(i, 1);
+                  this.timeSinceLastSpawn = 0;
+                  break;
+                } else {
+                  LevelUtil.spewItem(cartStack, this.level, pos.getX(), pos.getY(), pos.getZ());
+                  this.setItem(i, ItemStack.EMPTY);
+                }
+              }
             }
           }
-        }
-      }
-    } else if (cart.isAlive()) {
-      var coppiedContainer = new ContainerCopy(this);
-      var cartStack = cart.getPickResult();
-      if (cart.hasCustomName()) {
-        cartStack.setHoverName(cart.getName());
-      }
-      var remainder = coppiedContainer.addStack(cartStack.copy());
-      if (remainder.isEmpty()) {
-        this.addStack(cartStack);
-        if (!cart.getPassengers().isEmpty()) {
-          CartTools.removePassengers(cart);
-        }
-        cart.kill();
-      }
-    }
+        });
   }
 
   @Nullable
