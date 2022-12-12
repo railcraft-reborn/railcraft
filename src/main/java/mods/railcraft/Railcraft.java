@@ -39,7 +39,7 @@ import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.entity.vehicle.TrainTransferHelperImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
-import mods.railcraft.world.item.CreativeModeTabs;
+import mods.railcraft.world.item.RailcraftCreativeModeTabs;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
@@ -67,6 +67,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraftforge.api.distmarker.Dist;
@@ -80,6 +81,7 @@ import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -127,8 +129,8 @@ public class Railcraft {
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addListener(this::handleGatherData);
-    modEventBus.addListener(CreativeModeTabs::onCreativeModeTabRegister);
-    modEventBus.addListener(CreativeModeTabs::onCreativeModeTabBuildContents);
+    modEventBus.addListener(this::handleCreativeModeTabRegister);
+    modEventBus.addListener(this::handleCreativeModeTabBuildContents);
 
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientManager::new);
 
@@ -165,6 +167,16 @@ public class Railcraft {
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
     event.register(MinecartExtension.class);
+  }
+
+  private void handleCreativeModeTabRegister(CreativeModeTabEvent.Register event) {
+    RailcraftCreativeModeTabs.register(event::registerCreativeModeTab);
+  }
+
+  private void handleCreativeModeTabBuildContents(CreativeModeTabEvent.BuildContents event) {
+    if (event.getTab() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+      RailcraftCreativeModeTabs.addToolsAndUtilities(event.getEntries());
+    }
   }
 
   private void handleGatherData(GatherDataEvent event) {

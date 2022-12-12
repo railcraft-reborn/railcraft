@@ -1,25 +1,26 @@
 package mods.railcraft.world.item;
 
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTab.TabVisibility;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.common.util.MutableHashedLinkedMap;
 
-public class CreativeModeTabs {
+public class RailcraftCreativeModeTabs {
 
-  private static ItemStack i(ItemLike item) { return new ItemStack(item); }
-
-  public static void onCreativeModeTabRegister(CreativeModeTabEvent.Register event) {
-    event.registerCreativeModeTab(new ResourceLocation(Railcraft.ID, "main_tab"),
+  public static void register(
+      BiConsumer<ResourceLocation, Consumer<CreativeModeTab.Builder>> registrar) {
+    registrar.accept(new ResourceLocation(Railcraft.ID, "main_tab"),
         builder -> builder
             .title(Component.translatable(Translations.Tab.RAILCRAFT))
-            .icon(() -> i(RailcraftItems.IRON_CROWBAR.get()))
+            .icon(() -> new ItemStack(RailcraftItems.IRON_CROWBAR.get()))
             .displayItems((features, output, hasPermissions) -> {
               output.accept(RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get());
               output.accept(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
@@ -238,10 +239,10 @@ public class CreativeModeTabs {
               }
             }));
 
-    event.registerCreativeModeTab(new ResourceLocation(Railcraft.ID, "outfitted_tracks"),
+    registrar.accept(new ResourceLocation(Railcraft.ID, "outfitted_tracks"),
         builder -> builder
             .title(Component.translatable(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS))
-            .icon(() -> i(RailcraftItems.IRON_DETECTOR_TRACK.get()))
+            .icon(() -> new ItemStack(RailcraftItems.IRON_DETECTOR_TRACK.get()))
             .displayItems((features, output, hasPermissions) -> {
               output.accept(RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get());
               output.accept(RailcraftItems.ABANDONED_BOOSTER_TRACK.get());
@@ -349,11 +350,11 @@ public class CreativeModeTabs {
               output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get());
             }));
 
-    event.registerCreativeModeTab(new ResourceLocation(Railcraft.ID, "decorative_blocks"),
+    registrar.accept(new ResourceLocation(Railcraft.ID, "decorative_blocks"),
         builder -> builder
             .title(Component.translatable(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS))
-            .icon(() ->
-                i(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.BLACK).get()))
+            .icon(() -> new ItemStack(
+                RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.BLACK).get()))
             .displayItems((features, output, hasPermissions) -> {
               output.accept(RailcraftItems.QUARRIED_STONE.get());
               output.accept(RailcraftItems.QUARRIED_COBBLESTONE.get());
@@ -376,61 +377,187 @@ public class CreativeModeTabs {
             }));
   }
 
-  public static void onCreativeModeTabBuildContents(CreativeModeTabEvent.BuildContents event)
-  {
-    var e = event.getEntries();
-    var vis = CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS;
+  public static void addToolsAndUtilities(
+      MutableHashedLinkedMap<ItemStack, TabVisibility> entries) {
+    entries.putAfter(
+        new ItemStack(Items.CHEST_MINECART),
+        new ItemStack(RailcraftItems.TANK_MINECART.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.TRACK_REMOVER.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.TRACK_LAYER.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.TRACK_LAYER.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.TUNNEL_BORE.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.STEAM_LOCOMOTIVE.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.ELECTRIC_LOCOMOTIVE.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.TNT_MINECART),
+        new ItemStack(RailcraftItems.CREATIVE_LOCOMOTIVE.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
-    if (event.getTab() == net.minecraft.world.item.CreativeModeTabs.TOOLS_AND_UTILITIES)
-    {
-      e.putAfter(i(Items.CHEST_MINECART),i(RailcraftItems.TANK_MINECART.get()), vis);
-      e.putAfter(i(Items.TNT_MINECART),i(RailcraftItems.TRACK_REMOVER.get()), vis);
-      e.putAfter(i(Items.TNT_MINECART),i(RailcraftItems.TRACK_LAYER.get()), vis);
-      e.putAfter(i(Items.TNT_MINECART),i(RailcraftItems.TRACK_LAYER.get()), vis);
-      e.putAfter(i(Items.TNT_MINECART),i(RailcraftItems.TUNNEL_BORE.get()), vis);
-      e.putAfter(i(Items.TNT_MINECART),i(RailcraftItems.STEAM_LOCOMOTIVE.get()), vis);
-      e.putAfter(i(Items.TNT_MINECART),i(RailcraftItems.ELECTRIC_LOCOMOTIVE.get()), vis);
-      e.putAfter(i(Items.TNT_MINECART),i(RailcraftItems.CREATIVE_LOCOMOTIVE.get()), vis);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ABANDONED_TRACK.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ELECTRIC_TRACK.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.HIGH_SPEED_TRACK.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.REINFORCED_TRACK.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.STRAP_IRON_TRACK.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ELEVATOR_TRACK.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.ABANDONED_TRACK.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.ELECTRIC_TRACK.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.HIGH_SPEED_TRACK.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.REINFORCED_TRACK.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.STRAP_IRON_TRACK.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.ELEVATOR_TRACK.get()), vis);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.TRANSITION_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.LOCKING_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.BUFFER_STOP_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ACTIVATOR_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.BOOSTER_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.CONTROL_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.GATED_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DETECTOR_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.COUPLER_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.EMBARKING_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DISEMBARKING_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.LAUNCHER_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ONE_WAY_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.TRANSITION_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.LOCKING_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.BUFFER_STOP_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.ACTIVATOR_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.BOOSTER_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.CONTROL_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.GATED_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.DETECTOR_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.COUPLER_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.EMBARKING_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.DISEMBARKING_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.LAUNCHER_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.ONE_WAY_TRACK_KIT.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get()), vis);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SWITCH_TRACK_LEVER.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SWITCH_TRACK_MOTOR.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.SWITCH_TRACK_LEVER.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.SWITCH_TRACK_MOTOR.get()), vis);
-
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.ANALOG_SIGNAL_CONTROLLER_BOX.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.SIGNAL_SEQUENCER_BOX.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.SIGNAL_CAPACITOR_BOX.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.SIGNAL_INTERLOCK_BOX.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.SIGNAL_RECEIVER_BOX.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.SIGNAL_CONTROLLER_BOX.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.DUAL_BLOCK_SIGNAL.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.DUAL_DISTANT_SIGNAL.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.DUAL_TOKEN_SIGNAL.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.BLOCK_SIGNAL.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.DISTANT_SIGNAL.get()), vis);
-      e.putAfter(i(Items.ACTIVATOR_RAIL),i(RailcraftItems.TOKEN_SIGNAL.get()), vis);
-    }
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.ANALOG_SIGNAL_CONTROLLER_BOX.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_SEQUENCER_BOX.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_CAPACITOR_BOX.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_INTERLOCK_BOX.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_RECEIVER_BOX.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.SIGNAL_CONTROLLER_BOX.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DUAL_BLOCK_SIGNAL.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DUAL_DISTANT_SIGNAL.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DUAL_TOKEN_SIGNAL.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.BLOCK_SIGNAL.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.DISTANT_SIGNAL.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    entries.putAfter(
+        new ItemStack(Items.ACTIVATOR_RAIL),
+        new ItemStack(RailcraftItems.TOKEN_SIGNAL.get()),
+        CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
   }
 }
