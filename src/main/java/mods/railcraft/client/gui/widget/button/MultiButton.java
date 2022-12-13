@@ -2,11 +2,10 @@ package mods.railcraft.client.gui.widget.button;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.gui.button.ButtonState;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
 
 public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton {
 
@@ -76,8 +75,7 @@ public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton
   @FunctionalInterface
   public interface TooltipFactory<T extends ButtonState<?>> {
 
-    TooltipFactory<ButtonState<?>> DEFAULT = state ->
-        Optional.of(Tooltip.create(CommonComponents.joinLines(state.getTooltip())));
+    TooltipFactory<ButtonState<?>> DEFAULT = state -> state.getTooltip().map(Tooltip::create);
 
     Optional<Tooltip> createTooltip(T state);
   }

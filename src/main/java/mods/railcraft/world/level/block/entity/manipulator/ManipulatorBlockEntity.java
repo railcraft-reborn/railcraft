@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -23,6 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -298,13 +298,13 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     }
 
     @Override
-    public List<Component> getTooltip() {
-      return List.of(
+    public Optional<Component> getTooltip() {
+      return Optional.of(CommonComponents.joinLines(
           this.getLabel().copy()
               .withStyle(ChatFormatting.WHITE),
           Component.translatable(this.getTranslationKey())
               .withStyle(ChatFormatting.DARK_GREEN),
-          Component.translatable(this.getDescriptionKey()));
+          Component.translatable(this.getDescriptionKey())));
     }
 
     public String getTranslationKey() {
@@ -347,13 +347,13 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     }
 
     @Override
-    public List<Component> getTooltip() {
-      return List.of(
+    public Optional<Component> getTooltip() {
+      return Optional.of(CommonComponents.joinLines(
           this.getLabel().copy()
               .withStyle(ChatFormatting.WHITE),
           Component.translatable(this.getTranslationKey())
               .withStyle(ChatFormatting.DARK_GREEN),
-          Component.translatable(this.getDescriptionKey()));
+          Component.translatable(this.getDescriptionKey())));
     }
 
     public String getTranslationKey() {

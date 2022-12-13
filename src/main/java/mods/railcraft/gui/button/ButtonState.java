@@ -1,6 +1,6 @@
 package mods.railcraft.gui.button;
 
-import java.util.List;
+import java.util.Optional;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import net.minecraft.network.chat.Component;
 
@@ -10,8 +10,8 @@ public interface ButtonState<T extends ButtonState<T>> {
 
   TexturePosition getTexturePosition();
 
-  default List<Component> getTooltip() {
-    return List.of();
+  default Optional<Component> getTooltip() {
+    return Optional.empty();
   }
 
   T getNext();
