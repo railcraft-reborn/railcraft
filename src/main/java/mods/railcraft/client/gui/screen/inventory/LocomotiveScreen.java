@@ -1,12 +1,3 @@
-/*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2019
- https://railcraft.info
-
- This code is the property of CovertJaguar
- and may only be used with explicit written
- permission unless otherwise specified on the
- license page at https://railcraft.info/wiki/info:license.
- -----------------------------------------------------------------------------*/
 package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.EnumMap;
@@ -149,9 +140,9 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   private void setLock(Locomotive.Lock lock) {
     if (this.getMenu().getLocomotive().getLock() != lock) {
       this.getMenu().getLocomotive().setLock(lock);
-      this.menu.getLocomotive().setOwner(
-          lock == Locomotive.Lock.UNLOCKED ? null
-              : this.minecraft.getUser().getGameProfile());
+      this.menu.getLocomotive().setOwner(lock == Locomotive.Lock.UNLOCKED
+          ? null
+          : this.minecraft.getUser().getGameProfile());
       this.sendAttributes();
     }
   }
