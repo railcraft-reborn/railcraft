@@ -1,12 +1,3 @@
-/*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2019
- https://railcraft.info
-
- This code is the property of CovertJaguar
- and may only be used with explicit written
- permission unless otherwise specified on the
- license page at https://railcraft.info/wiki/info:license.
- -----------------------------------------------------------------------------*/
 package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,7 +6,6 @@ import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
-import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.resources.ResourceLocation;
@@ -26,17 +16,16 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
   private static final ResourceLocation TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/steam_locomotive.png");
 
-  public SteamLocomotiveScreen(SteamLocomotiveMenu menu, Inventory inv,
-      Component title) {
+  public SteamLocomotiveScreen(SteamLocomotiveMenu menu, Inventory inv, Component title) {
     super(menu, inv, title, "steam");
     this.imageHeight = SteamLocomotiveMenu.HEIGHT;
     this.inventoryLabelY = 110;
-    for (Widget w : this.menu.getWidgets()) {
-      if (w instanceof FluidGaugeWidget) {
-        this.registerWidgetRenderer(new FluidGaugeRenderer((FluidGaugeWidget) w));
+    for (var w : this.menu.getWidgets()) {
+      if (w instanceof FluidGaugeWidget fluidGaugeWidget) {
+        this.registerWidgetRenderer(new FluidGaugeRenderer(fluidGaugeWidget));
       }
-      if (w instanceof GaugeWidget) {
-        this.registerWidgetRenderer(new GaugeRenderer((GaugeWidget) w));
+      if (w instanceof GaugeWidget gaugeWidget) {
+        this.registerWidgetRenderer(new GaugeRenderer(gaugeWidget));
       }
     }
   }
@@ -48,7 +37,7 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
 
   @Override
   protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
-    super.renderBg(poseStack, partialTicks, mouseY, mouseY);
+    super.renderBg(poseStack, partialTicks, mouseX, mouseY);
     int x = (width - this.getXSize()) / 2;
     int y = (height - this.getYSize()) / 2;
     if (this.menu.getLocomotive().getBoiler().hasFuel()) {
