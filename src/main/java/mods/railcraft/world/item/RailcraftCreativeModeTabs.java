@@ -373,23 +373,19 @@ public class RailcraftCreativeModeTabs {
     entries.putAfter(
         new ItemStack(Items.IRON_HOE),
         new ItemStack(RailcraftItems.STEEL_SHOVEL.get()),
-        DEFAULT_VISIBILITY
-    );
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(RailcraftItems.STEEL_SHOVEL.get()),
         new ItemStack(RailcraftItems.STEEL_PICKAXE.get()),
-        DEFAULT_VISIBILITY
-    );
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(RailcraftItems.STEEL_PICKAXE.get()),
         new ItemStack(RailcraftItems.STEEL_HOE.get()),
-        DEFAULT_VISIBILITY
-    );
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.SHEARS),
         new ItemStack(RailcraftItems.STEEL_SHEARS.get()),
-        DEFAULT_VISIBILITY
-    );
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.CHEST_MINECART),
         new ItemStack(RailcraftItems.TANK_MINECART.get()),
@@ -577,8 +573,7 @@ public class RailcraftCreativeModeTabs {
     entries.putAfter(
         new ItemStack(Items.IRON_AXE),
         new ItemStack(RailcraftItems.STEEL_AXE.get()),
-        DEFAULT_VISIBILITY
-    );
+        DEFAULT_VISIBILITY);
     entries.putAfter(
         new ItemStack(Items.IRON_BOOTS),
         new ItemStack(RailcraftItems.STEEL_HELMET.get()),
