@@ -109,10 +109,6 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
     super.remove(reason);
   }
 
-  /**
-   * Returns the minecart type.
-   * {@link net.minecraft.world.entity.decoration.ArmorStand#IS_RIDEABLE_MINECART}
-   */
   @Override
   public AbstractMinecart.Type getMinecartType() {
     throw new UnsupportedOperationException();

@@ -163,16 +163,16 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   private final boolean hasInit;
   private final TunnelBorePart[] partArray;
 
-  public TunnelBore(EntityType<?> type, Level world) {
-    this(world, 0, 0, 0, Direction.SOUTH);
+  public TunnelBore(EntityType<?> type, Level level) {
+    this(level, 0, 0, 0, Direction.SOUTH);
   }
 
-  public TunnelBore(Level world, double x, double y, double z) {
-    this(world, x, y, z, Direction.SOUTH);
+  public TunnelBore(Level level, double x, double y, double z) {
+    this(level, x, y, z, Direction.SOUTH);
   }
 
-  public TunnelBore(Level world, double x, double y, double z, Direction f) {
-    super(RailcraftEntityTypes.TUNNEL_BORE.get(), x, y, z, world);
+  public TunnelBore(Level level, double x, double y, double z, Direction f) {
+    super(RailcraftEntityTypes.TUNNEL_BORE.get(), x, y, z, level);
     setFacing(f);
   }
 

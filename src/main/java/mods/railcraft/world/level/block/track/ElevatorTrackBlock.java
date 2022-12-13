@@ -316,13 +316,13 @@ public class ElevatorTrackBlock extends Block {
   /**
    * Pushes a Minecart onto a Railcraft block opposite the elevator if possible.
    */
-  private boolean pushMinecartOntoRail(Level world, BlockPos pos, BlockState state,
+  private boolean pushMinecartOntoRail(Level level, BlockPos pos, BlockState state,
       AbstractMinecart cart, boolean up) {
     cart.setCanUseRail(true);
     Direction.Axis axis = state.getValue(FACING).getAxis();
     for (BlockPos target : new BlockPos[] {pos, up ? pos.above() : pos.below()}) {
       for (Direction.AxisDirection direction : Direction.AxisDirection.values()) {
-        if (BaseRailBlock.isRail(world,
+        if (BaseRailBlock.isRail(level,
             target.relative(Direction.get(direction, axis)))) {
           holdPosition(state, cart, target);
           double vel = direction.getStep() * RIDE_VELOCITY;

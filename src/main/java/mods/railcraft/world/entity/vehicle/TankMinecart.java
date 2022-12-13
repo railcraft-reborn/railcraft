@@ -62,8 +62,8 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
   private int fluidProcessingTimer;
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
-  public TankMinecart(EntityType<?> type, Level world) {
-    super(type, world);
+  public TankMinecart(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
   public TankMinecart(ItemStack itemStack, double x, double y, double z, Level level) {

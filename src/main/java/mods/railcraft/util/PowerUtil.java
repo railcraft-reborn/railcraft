@@ -14,13 +14,13 @@ public final class PowerUtil {
   public static final int NO_POWER = 0;
   public static final int FULL_POWER = 15;
 
-  public static boolean hasRepeaterSignal(Level world, BlockPos pos, Direction from) {
-    Block block = world.getBlockState(pos.relative(from)).getBlock();
-    return block == Blocks.REPEATER && world.hasSignal(pos.relative(from), from);
+  public static boolean hasRepeaterSignal(Level level, BlockPos pos, Direction from) {
+    Block block = level.getBlockState(pos.relative(from)).getBlock();
+    return block == Blocks.REPEATER && level.hasSignal(pos.relative(from), from);
   }
 
-  public static boolean hasRepeaterSignal(Level world, BlockPos pos) {
+  public static boolean hasRepeaterSignal(Level level, BlockPos pos) {
     return Direction.Plane.HORIZONTAL.stream()
-        .anyMatch(side -> hasRepeaterSignal(world, pos, side));
+        .anyMatch(side -> hasRepeaterSignal(level, pos, side));
   }
 }

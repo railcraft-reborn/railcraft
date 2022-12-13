@@ -57,18 +57,18 @@ public class OutfittedTrackBlock extends TrackBlock {
   }
 
   @Override
-  public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player,
+  public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
       boolean willHarvest, FluidState fluid) {
     var newState = TrackUtil.setShape(this.getTrackType().getFlexBlock(),
         TrackUtil.getRailShapeRaw(state));
-    boolean result = world.setBlockAndUpdate(pos, newState);
+    boolean result = level.setBlockAndUpdate(pos, newState);
     // Below is ugly workaround for fluids!
     if (Arrays.stream(Direction.values())
         .map(pos::relative)
-        .map(world::getBlockState)
+        .map(level::getBlockState)
         .map(BlockState::getBlock)
         .anyMatch(block -> block instanceof IFluidBlock || block instanceof LiquidBlock)) {
-      Block.dropResources(newState, world, pos);
+      Block.dropResources(newState, level, pos);
     }
     return result;
   }

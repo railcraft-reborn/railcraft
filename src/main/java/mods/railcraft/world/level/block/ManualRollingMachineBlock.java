@@ -49,8 +49,8 @@ public class ManualRollingMachineBlock extends BaseEntityBlock {
             ManualRollingMachineBlockEntity::serverTick);
   }
 
-  protected void openContainer(Level world, BlockPos blockPos, Player player) {
-    BlockEntity blockEntity = world.getBlockEntity(blockPos);
+  protected void openContainer(Level level, BlockPos blockPos, Player player) {
+    BlockEntity blockEntity = level.getBlockEntity(blockPos);
     if (blockEntity instanceof ManualRollingMachineBlockEntity) {
       player.openMenu((MenuProvider) blockEntity);
       // player.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
@@ -59,12 +59,12 @@ public class ManualRollingMachineBlock extends BaseEntityBlock {
   }
 
   @Override
-  public InteractionResult use(BlockState blockState, Level world,
+  public InteractionResult use(BlockState blockState, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
-    if (world.isClientSide()) {
+    if (level.isClientSide()) {
       return InteractionResult.SUCCESS;
     } else {
-      this.openContainer(world, pos, player);
+      this.openContainer(level, pos, player);
       return InteractionResult.CONSUME;
     }
   }

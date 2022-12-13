@@ -126,9 +126,9 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   }
 
   @Override
-  public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
+  public void animateTick(BlockState stateIn, Level level, BlockPos pos, RandomSource rand) {
     if (stateIn.getValue(POWERED)) {
-      Charge.zapEffectProvider().throwSparks(stateIn, worldIn, pos, rand, 10);
+      Charge.zapEffectProvider().throwSparks(stateIn, level, pos, rand, 10);
     }
   }
 

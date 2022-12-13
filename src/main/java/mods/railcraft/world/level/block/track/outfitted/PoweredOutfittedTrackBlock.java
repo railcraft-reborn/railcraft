@@ -81,20 +81,20 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
     }
   }
 
-  private boolean testPowerPropagation(Level world, BlockPos pos,
+  private boolean testPowerPropagation(Level level, BlockPos pos,
       BlockState state, int maxDist) {
-    return this.isConnectedRailPowered(world, pos, state, true, 0, maxDist)
-        || this.isConnectedRailPowered(world, pos, state, false, 0, maxDist);
+    return this.isConnectedRailPowered(level, pos, state, true, 0, maxDist)
+        || this.isConnectedRailPowered(level, pos, state, false, 0, maxDist);
   }
 
-  private boolean isConnectedRailPowered(Level world, BlockPos pos,
+  private boolean isConnectedRailPowered(Level level, BlockPos pos,
       BlockState state, boolean dir, int dist, int maxDist) {
     if (dist >= maxDist) {
       return false;
     }
     boolean powered = true;
     BlockPos.MutableBlockPos newPos = pos.mutable();
-    RailShape railDirection = this.getRailDirection(state, world, pos, null);
+    RailShape railDirection = this.getRailDirection(state, level, pos, null);
     switch (railDirection) {
       case NORTH_SOUTH: // '\0'
         if (dir)
@@ -154,8 +154,8 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
       default:
         break;
     }
-    return this.testPowered(world, newPos, dir, dist, maxDist, railDirection)
-        || (powered && this.testPowered(world, newPos.below(), dir, dist, maxDist, railDirection));
+    return this.testPowered(level, newPos, dir, dist, maxDist, railDirection)
+        || (powered && this.testPowered(level, newPos.below(), dir, dist, maxDist, railDirection));
   }
 
   private boolean testPowered(Level level, BlockPos blockPos, boolean dir,

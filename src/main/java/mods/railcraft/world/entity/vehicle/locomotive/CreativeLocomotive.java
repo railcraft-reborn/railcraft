@@ -38,8 +38,8 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
 
   private final Container invTicket = new ContainerMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
 
-  public CreativeLocomotive(EntityType<?> type, Level world) {
-    super(type, world);
+  public CreativeLocomotive(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
   public CreativeLocomotive(ItemStack itemStack, double x, double y, double z,

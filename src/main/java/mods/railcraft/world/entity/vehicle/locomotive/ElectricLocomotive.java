@@ -59,13 +59,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   private final LazyOptional<IEnergyStorage> cartBattery =
       LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
 
-  public ElectricLocomotive(EntityType<?> type, Level world) {
-    super(type, world);
+  public ElectricLocomotive(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
   public ElectricLocomotive(ItemStack itemStack, double x, double y, double z,
-      ServerLevel world) {
-    super(itemStack, RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), x, y, z, world);
+      ServerLevel serverLevel) {
+    super(itemStack, RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), x, y, z, serverLevel);
   }
 
   @Override

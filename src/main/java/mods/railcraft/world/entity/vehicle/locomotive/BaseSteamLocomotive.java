@@ -88,13 +88,13 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
-  protected BaseSteamLocomotive(EntityType<?> type, Level world) {
-    super(type, world);
+  protected BaseSteamLocomotive(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
   protected BaseSteamLocomotive(ItemStack itemStack, EntityType<?> type, double x,
-      double y, double z, ServerLevel world) {
-    super(itemStack, type, x, y, z, world);
+      double y, double z, ServerLevel serverLevel) {
+    super(itemStack, type, x, y, z, serverLevel);
   }
 
   @Override

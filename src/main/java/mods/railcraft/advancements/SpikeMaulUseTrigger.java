@@ -46,9 +46,9 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
   /**
    * Invoked when the user successfully uses a spike maul.
    */
-  public void trigger(ServerPlayer playerEntity, ItemStack item,
-      ServerLevel world, BlockPos pos) {
-    this.trigger(playerEntity, (criterionInstance) -> criterionInstance.matches(item, world, pos));
+  public void trigger(ServerPlayer player, ItemStack item,
+      ServerLevel serverLevel, BlockPos pos) {
+    this.trigger(player, (criterionInstance) -> criterionInstance.matches(item, serverLevel, pos));
   }
 
   public static class Instance extends AbstractCriterionTriggerInstance {

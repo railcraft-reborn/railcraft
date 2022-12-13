@@ -118,8 +118,8 @@ public abstract class Locomotive extends RailcraftMinecart
   private int tempIdle;
   private float whistlePitch = getNewWhistlePitch();
 
-  protected Locomotive(EntityType<?> type, Level world) {
-    super(type, world);
+  protected Locomotive(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
   protected Locomotive(ItemStack itemStack, EntityType<?> type, double x,

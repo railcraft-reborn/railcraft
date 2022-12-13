@@ -10,8 +10,8 @@ public class Timer {
 
   private long startTime = Long.MIN_VALUE;
 
-  public boolean hasTriggered(Level world, int ticks) {
-    long currentTime = world.getGameTime();
+  public boolean hasTriggered(Level level, int ticks) {
+    long currentTime = level.getGameTime();
     if (currentTime >= (ticks + startTime) || startTime > currentTime) {
       startTime = currentTime;
       return true;

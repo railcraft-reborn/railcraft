@@ -48,8 +48,8 @@ public class SteamLocomotive extends BaseSteamLocomotive
   private final ContainerMapper ticketInventory =
       new ContainerMapper(this, TICKET_SLOT, 2).ignoreItemChecks();
 
-  public SteamLocomotive(EntityType<?> type, Level world) {
-    super(type, world);
+  public SteamLocomotive(EntityType<?> type, Level level) {
+    super(type, level);
 
     this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
@@ -60,8 +60,8 @@ public class SteamLocomotive extends BaseSteamLocomotive
   }
 
   public SteamLocomotive(ItemStack itemStack, double x, double y, double z,
-      ServerLevel world) {
-    super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, world);
+      ServerLevel serverLevel) {
+    super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, serverLevel);
 
     this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override

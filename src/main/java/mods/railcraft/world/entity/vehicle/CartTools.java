@@ -57,13 +57,13 @@ public final class CartTools {
         && Math.abs(cart.getDeltaMovement().z()) < vel;
   }
 
-  public static List<UUID> getMinecartUUIDsAt(Level world, BlockPos pos, float sensitivity) {
-    return getMinecartUUIDsAt(world, pos.getX(), pos.getY(), pos.getZ(), sensitivity);
+  public static List<UUID> getMinecartUUIDsAt(Level level, BlockPos pos, float sensitivity) {
+    return getMinecartUUIDsAt(level, pos.getX(), pos.getY(), pos.getZ(), sensitivity);
   }
 
-  public static List<UUID> getMinecartUUIDsAt(Level world, int x, int y, int z, float sensitivity) {
+  public static List<UUID> getMinecartUUIDsAt(Level level, int x, int y, int z, float sensitivity) {
     sensitivity = Math.min(sensitivity, 0.49f);
-    return world
+    return level
         .getEntitiesOfClass(AbstractMinecart.class,
             new AABB(x + sensitivity, y + sensitivity, z + sensitivity,
                 x + 1 - sensitivity,
@@ -167,38 +167,39 @@ public final class CartTools {
     return getClientCartFromUUID(level, id);
   }
 
-  private static AbstractMinecart getClientCartFromUUID(Level world, UUID id) {
-    ClientLevel clientWorld = (ClientLevel) world;
+  private static AbstractMinecart getClientCartFromUUID(Level level, UUID id) {
+    if (!(level instanceof ClientLevel clientLevel))
+      return null;
     // for performance reasons
     // noinspection Convert2streamapi
-    for (Entity entity : clientWorld.entitiesForRendering()) {
-      if (entity instanceof AbstractMinecart && entity.isAlive()
+    for (Entity entity : clientLevel.entitiesForRendering()) {
+      if (entity instanceof AbstractMinecart abstractMinecart && entity.isAlive()
           && entity.getUUID().equals(id))
-        return (AbstractMinecart) entity;
+        return abstractMinecart;
     }
     return null;
   }
 
   public static boolean startBoost(AbstractMinecart cart, BlockPos pos,
       RailShape dir, double startBoost) {
-    Level world = cart.level;
+    Level level = cart.level;
     if (dir == RailShape.EAST_WEST) {
-      if (Block.canSupportCenter(world, pos.west(), Direction.EAST)) {
+      if (Block.canSupportCenter(level, pos.west(), Direction.EAST)) {
         Vec3 motion = cart.getDeltaMovement();
         cart.setDeltaMovement(startBoost, motion.y(), motion.z());
         return true;
 
-      } else if (Block.canSupportCenter(world, pos.east(), Direction.WEST)) {
+      } else if (Block.canSupportCenter(level, pos.east(), Direction.WEST)) {
         Vec3 motion = cart.getDeltaMovement();
         cart.setDeltaMovement(-startBoost, motion.y(), motion.z());
         return true;
       }
     } else if (dir == RailShape.NORTH_SOUTH) {
-      if (Block.canSupportCenter(world, pos.north(), Direction.SOUTH)) {
+      if (Block.canSupportCenter(level, pos.north(), Direction.SOUTH)) {
         Vec3 motion = cart.getDeltaMovement();
         cart.setDeltaMovement(motion.x(), motion.y(), startBoost);
         return true;
-      } else if (Block.canSupportCenter(world, pos.south(), Direction.NORTH)) {
+      } else if (Block.canSupportCenter(level, pos.south(), Direction.NORTH)) {
         Vec3 motion = cart.getDeltaMovement();
         cart.setDeltaMovement(motion.x(), motion.y(), -startBoost);
         return true;

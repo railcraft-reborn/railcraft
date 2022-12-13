@@ -41,10 +41,10 @@ public final class PlayerUtil {
     return new GameProfile(ownerUUID, ownerName);
   }
 
-  public static @Nullable Player getPlayer(Level world, GameProfile gameProfile) {
+  public static @Nullable Player getPlayer(Level level, GameProfile gameProfile) {
     UUID playerId = gameProfile.getId();
     if (playerId != null) {
-      Player player = world.getPlayerByUUID(playerId);
+      Player player = level.getPlayerByUUID(playerId);
       if (player != null)
         return player;
     }
@@ -61,19 +61,19 @@ public final class PlayerUtil {
     return player;
   }
 
-  public static Player getOwnerEntity(GameProfile owner, ServerLevel world, BlockPos pos) {
+  public static Player getOwnerEntity(GameProfile owner, ServerLevel serverLevel, BlockPos pos) {
     Player player = null;
     if (!RailcraftConstantsAPI.UNKNOWN_PLAYER.equals(owner.getName()))
-      player = PlayerUtil.getPlayer(world, owner);
+      player = PlayerUtil.getPlayer(serverLevel, owner);
     if (player == null)
-      player = RailcraftFakePlayer.get(world, pos);
+      player = RailcraftFakePlayer.get(serverLevel, pos);
     return player;
   }
 
-  public static Component getUsername(Level world, GameProfile gameProfile) {
+  public static Component getUsername(Level level, GameProfile gameProfile) {
     UUID playerId = gameProfile.getId();
     if (playerId != null) {
-      Player player = world.getPlayerByUUID(playerId);
+      Player player = level.getPlayerByUUID(playerId);
       if (player != null)
         return player.getDisplayName();
     }
@@ -82,9 +82,9 @@ public final class PlayerUtil {
         StringUtils.isEmpty(username) ? RailcraftConstantsAPI.UNKNOWN_PLAYER : username);
   }
 
-  public static Component getUsername(Level world, @Nullable UUID playerId) {
+  public static Component getUsername(Level level, @Nullable UUID playerId) {
     if (playerId != null) {
-      Player player = world.getPlayerByUUID(playerId);
+      Player player = level.getPlayerByUUID(playerId);
       if (player != null)
         return player.getDisplayName();
     }

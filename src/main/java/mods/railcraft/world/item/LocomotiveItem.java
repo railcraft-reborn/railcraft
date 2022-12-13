@@ -46,33 +46,34 @@ public class LocomotiveItem extends CartItem implements Filter {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> info,
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents,
       TooltipFlag adv) {
-    super.appendHoverText(stack, world, info, adv);
+    super.appendHoverText(stack, level, tooltipComponents, adv);
     var owner = getOwner(stack);
     if (owner.getName() != null
         && !RailcraftConstantsAPI.UNKNOWN_PLAYER.equalsIgnoreCase(owner.getName())) {
-      info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, owner.getName())
+      tooltipComponents.add(
+          Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, owner.getName())
           .withStyle(ChatFormatting.GRAY));
     }
 
     var primary = getPrimaryColor(stack);
-    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, primary.getName())
+    tooltipComponents.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, primary.getName())
         .withStyle(ChatFormatting.GRAY));
 
     var secondary = getSecondaryColor(stack);
-    info.add(
+    tooltipComponents.add(
         Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, secondary.getName())
             .withStyle(ChatFormatting.GRAY));
 
     float whistle = getWhistlePitch(stack);
     var whistleText = whistle < 0 ? "???" : String.format("%.2f", whistle);
-    info.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, whistleText)
+    tooltipComponents.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, whistleText)
         .withStyle(ChatFormatting.GRAY));
 
     getEmblem(stack)
         .flatMap(EmblemClientUtil.packageManager()::getEmblem)
-        .ifPresent(emblem -> info.add(
+        .ifPresent(emblem -> tooltipComponents.add(
             Component.translatable("gui.railcraft.locomotive.tips.item.emblem",
                 emblem.displayName())));
   }

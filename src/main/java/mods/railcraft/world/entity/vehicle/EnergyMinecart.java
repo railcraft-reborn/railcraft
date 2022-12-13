@@ -25,8 +25,8 @@ public class EnergyMinecart extends RailcraftMinecart {
   private final LazyOptional<IEnergyStorage> cartBattery =
       LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
 
-  protected EnergyMinecart(EntityType<?> type, Level world) {
-    super(type, world);
+  protected EnergyMinecart(EntityType<?> type, Level level) {
+    super(type, level);
   }
 
   protected EnergyMinecart(EntityType<?> type, double x, double y, double z,

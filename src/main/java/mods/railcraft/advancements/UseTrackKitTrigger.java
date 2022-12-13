@@ -40,7 +40,7 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
   /**
    * Invoked when the user explodes a cart.
    */
-  public void trigger(ServerPlayer playerEntity, ServerLevel world,
+  public void trigger(ServerPlayer playerEntity, ServerLevel serverLevel,
       BlockPos blockPos, ItemStack stack) {
     this.trigger(playerEntity,
         (criterionInstance) -> criterionInstance.matches(playerEntity.getLevel(), blockPos, stack));
