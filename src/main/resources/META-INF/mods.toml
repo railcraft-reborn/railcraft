@@ -17,7 +17,7 @@ issueTrackerURL = "https://github.com/Sm0keySa1m0n/Railcraft/issues"
   modId = "forge"
   ordering = "AFTER"
   side = "BOTH"
-  versionRange = "[44.0.18,)"
+  versionRange = "[44.0.19,)"
 [[dependencies.railcraft]]
   mandatory=true
   modId="minecraft"
