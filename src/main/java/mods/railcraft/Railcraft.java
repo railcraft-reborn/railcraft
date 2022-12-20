@@ -146,9 +146,9 @@ public class Railcraft {
     RailcraftRecipeTypes.register(modEventBus);
     RailcraftGameEvents.register(modEventBus);
     RailcraftDataSerializers.register(modEventBus);
-    RailcraftOreFeatures.register(modEventBus);
-    RailcraftOrePlacements.register(modEventBus);
-    RailcraftMiscOverworldFeatures.register(modEventBus);
+    //RailcraftOreFeatures.register(modEventBus);
+    //RailcraftOrePlacements.register(modEventBus);
+    //RailcraftMiscOverworldFeatures.register(modEventBus);
   }
 
   // ================================================================================
@@ -203,7 +203,7 @@ public class Railcraft {
         new RailcraftSoundsProvider(packOutput, fileHelper));
 
     // WORLD GENERATION
-    var registries = RegistryAccess.builtinCopy();
+    /*var registries = RegistryAccess.builtinCopy();
     var ops = RegistryOps.create(JsonOps.INSTANCE, registries);
 
     var configuredFeatures = new HashMap<ResourceLocation, ConfiguredFeature<?, ?>>();
@@ -236,7 +236,7 @@ public class Railcraft {
     }
 
     generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(packOutput,
-        fileHelper, ID, ops, Keys.BIOME_MODIFIERS, biomeModifiers));
+        fileHelper, ID, ops, Keys.BIOME_MODIFIERS, biomeModifiers));*/
   }
 
   // ================================================================================
