@@ -1,9 +1,0 @@
-{
-    "sources": [
-        {
-            "type": "directory",
-            "source": "entity/signal_aspect",
-            "prefix": "entity/signal_aspect/"
-        }
-    ]
-}

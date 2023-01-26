@@ -3,8 +3,8 @@
 	"parent": "block/block",
 	"ambientocclusion": false,
 	"textures": {
-		"lamp": "railcraft:entity/signal/green_aspect",
-		"particle": "railcraft:entity/signal/green_aspect",
+		"lamp": "railcraft:entity/signal_aspect/green",
+		"particle": "railcraft:entity/signal_aspect/green",
 		"texture": "railcraft:block/signal"
 	},
 	"elements": [

@@ -1,6 +1,6 @@
 {
     "parent": "railcraft:block/signal_inventory",
     "textures": {
-        "lamp": "railcraft:entity/signal/yellow_aspect"
+        "lamp": "railcraft:entity/signal_aspect/yellow"
     }
 }

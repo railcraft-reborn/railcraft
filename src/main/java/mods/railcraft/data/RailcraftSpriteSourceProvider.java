@@ -1,0 +1,21 @@
+package mods.railcraft.data;
+
+import mods.railcraft.Railcraft;
+import net.minecraft.client.renderer.texture.atlas.sources.DirectoryLister;
+import net.minecraft.data.PackOutput;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.SpriteSourceProvider;
+
+public class RailcraftSpriteSourceProvider extends SpriteSourceProvider {
+  public RailcraftSpriteSourceProvider(PackOutput output, ExistingFileHelper fileHelper) {
+    super(output, fileHelper, Railcraft.ID);
+  }
+
+  @Override
+  protected void addSources() {
+    atlas(SpriteSourceProvider.BLOCKS_ATLAS)
+        .addSource(new DirectoryLister("entity/signal_aspect", "entity/signal_aspect/"))
+        .addSource(new DirectoryLister("entity/signal_box_aspect", "entity/signal_box_aspect/"))
+        .addSource(new DirectoryLister("entity/signal_box", "entity/signal_box/"));
+  }
+}

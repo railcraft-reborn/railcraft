@@ -1,0 +1,19 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:directory",
+      "prefix": "entity/signal_aspect/",
+      "source": "entity/signal_aspect"
+    },
+    {
+      "type": "minecraft:directory",
+      "prefix": "entity/signal_box_aspect/",
+      "source": "entity/signal_box_aspect"
+    },
+    {
+      "type": "minecraft:directory",
+      "prefix": "entity/signal_box/",
+      "source": "entity/signal_box"
+    }
+  ]
+}

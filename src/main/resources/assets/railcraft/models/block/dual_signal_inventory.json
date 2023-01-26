@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"top_lamp": "railcraft:entity/signal/green_aspect",
-		"bottom_lamp": "railcraft:entity/signal/red_aspect",
+		"top_lamp": "railcraft:entity/signal_aspect/green",
+		"bottom_lamp": "railcraft:entity/signal_aspect/red",
 		"particle": "railcraft:block/signal",
 		"texture": "railcraft:block/signal"
 	},

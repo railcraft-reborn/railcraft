@@ -14,6 +14,7 @@ import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
 import mods.railcraft.data.RailcraftSoundsProvider;
+import mods.railcraft.data.RailcraftSpriteSourceProvider;
 import mods.railcraft.data.advancements.RailcraftAdvancementProvider;
 import mods.railcraft.data.loot.packs.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftBlockModelProvider;
@@ -188,6 +189,8 @@ public class Railcraft {
     generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(packOutput));
     generator.addProvider(event.includeClient(),
         new RailcraftSoundsProvider(packOutput, fileHelper));
+    generator.addProvider(event.includeClient(),
+        new RailcraftSpriteSourceProvider(packOutput, fileHelper));
 
     // WORLD GENERATION
     var builder = new RegistrySetBuilder()
