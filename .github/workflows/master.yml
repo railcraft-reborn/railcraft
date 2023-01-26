@@ -1,4 +1,4 @@
-name: Railcraft 1.19.x CI
+name: Railcraft CI
 
 on:
   push:
@@ -22,24 +22,13 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 17
-
-      - name: Restore gradle cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          cache: 'gradle'
 
       - name: Compile
-        run: |
-          ./gradlew hideOfficialWarningUntilChanged
-          ./gradlew build --no-daemon --max-workers 1
+        run: ./gradlew build --no-daemon --max-workers 1
 
       - name: Test
-        run: |
-          ./gradlew hideOfficialWarningUntilChanged
-          ./gradlew runGameTestServer --no-daemon --max-workers 1
+        run: ./gradlew runGameTestServer --no-daemon --max-workers 1
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3

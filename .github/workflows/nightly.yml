@@ -17,26 +17,15 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 17
-
-      - name: Restore gradle cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          cache: 'gradle'
 
       - name: Compile
         env:
           GITHUB_NIGHTLY: true
-        run: |
-          ./gradlew hideOfficialWarningUntilChanged
-          ./gradlew build --no-daemon --max-workers 1
+        run: ./gradlew build --no-daemon --max-workers 1
 
       - name: Test
-        run: |
-          ./gradlew hideOfficialWarningUntilChanged
-          ./gradlew runGameTestServer --no-daemon --max-workers 1
+        run: ./gradlew runGameTestServer --no-daemon --max-workers 1
 
       - name: Zip Files
         run : |
