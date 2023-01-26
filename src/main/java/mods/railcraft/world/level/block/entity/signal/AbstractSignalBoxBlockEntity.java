@@ -65,6 +65,6 @@ public abstract class AbstractSignalBoxBlockEntity extends RailcraftBlockEntity 
 
   @Override
   public AABB getRenderBoundingBox() {
-    return BlockEntity.INFINITE_EXTENT_AABB;
+    return new AABB(this.blockPos().offset(-1, 0, -1), this.blockPos().offset(2, 2, 2));
   }
 }
