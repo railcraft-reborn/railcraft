@@ -184,7 +184,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     }
 
     public String getTranslationKey() {
-      return Translations.makeKey("signal", "capacitor.mode." + this.name);
+      return Translations.makeKey("signal", "capacitor." + this.name);
     }
 
     public String getDescriptionKey() {
