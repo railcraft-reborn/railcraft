@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
@@ -75,7 +76,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
           .pos(0, centreY + this.getYSize() - 129)
           .size(55, 16)
           .tooltip(Tooltip.create(Component.translatable(
-              "screen.locomotive." + typeTag + ".mode.description."
+              "screen." + Railcraft.ID + ".locomotive." + typeTag + ".mode.description."
                   + mode.getSerializedName())))
           .build();
       this.modeButtons.put(mode, button);

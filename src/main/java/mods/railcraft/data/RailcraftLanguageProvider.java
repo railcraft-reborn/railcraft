@@ -492,6 +492,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.STEAM_MODE_DESC_RUNNING, "Makes the locomotive move.");
     this.add(Translations.Screen.STEAM_MODE_DESC_SHUTDOWN,
         "Shuts off the locomotive. Halts all movement and begins the cool-down process.");
+    this.add(Translations.Screen.ELECTRIC_MODE_DESC_RUNNING, "Makes the locomotive move.");
+    this.add(Translations.Screen.ELECTRIC_MODE_DESC_SHUTDOWN, "Stops the locomotive.");
+    this.add(Translations.Screen.CREATIVE_MODE_DESC_RUNNING, "Makes the locomotive move.");
+    this.add(Translations.Screen.CREATIVE_MODE_DESC_SHUTDOWN, "Stops the locomotive.");
     this.add(Translations.Screen.LOCOMOTIVE_LOCK_LOCKED,
         "This cart is locked to %s. It will only accept tickets issued by them or an operator.");
     this.add(Translations.Screen.LOCOMOTIVE_LOCK_UNLOCKED,

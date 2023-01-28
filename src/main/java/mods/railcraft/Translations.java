@@ -23,6 +23,14 @@ public class Translations {
         makeKey("screen", "locomotive.steam.mode.description.running");
     public static final String STEAM_MODE_DESC_SHUTDOWN =
         makeKey("screen", "locomotive.steam.mode.description.shutdown");
+    public static final String ELECTRIC_MODE_DESC_RUNNING =
+        makeKey("screen", "locomotive.electric.mode.description.running");
+    public static final String ELECTRIC_MODE_DESC_SHUTDOWN =
+        makeKey("screen", "locomotive.electric.mode.description.shutdown");
+    public static final String CREATIVE_MODE_DESC_RUNNING =
+        makeKey("screen", "locomotive.creative.mode.description.running");
+    public static final String CREATIVE_MODE_DESC_SHUTDOWN =
+        makeKey("screen", "locomotive.creative.mode.description.shutdown");
     public static final String LOCOMOTIVE_LOCK_LOCKED =
         makeKey("screen", "locomotive.lock.locked");
     public static final String LOCOMOTIVE_LOCK_UNLOCKED =
