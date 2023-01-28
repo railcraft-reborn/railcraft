@@ -140,11 +140,11 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   private static final EntityDataAccessor<ItemStack> BORE_HEAD =
       SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.ITEM_STACK);
 
-  public final ContainerMapper invFuel =
+  private final ContainerMapper invFuel =
       ContainerMapper.make(this, 1, 6).addFilters(StackFilter.FUEL);
-  public final ContainerMapper ballastContainer =
+  private final ContainerMapper ballastContainer =
       ContainerMapper.make(this, 7, 9).addFilters(StackFilter.BALLAST);
-  public final ContainerMapper trackContainer =
+  private final ContainerMapper trackContainer =
       ContainerMapper.make(this, 16, 9).addFilters(StackFilter.TRACK);
   // protected static final int WATCHER_ID_BURN_TIME = 22;
 
@@ -171,7 +171,6 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
     float headH = 2.6F;
     float headSO = 0.7F;
     partArray = new TunnelBorePart[] {
-        // ------------------------------------- name, width, height, forwardOffset, sideOffset
         new TunnelBorePart(this, "head1", headW, headH, 1.85F, -headSO),
         new TunnelBorePart(this, "head2", headW, headH, 1.85F, headSO),
         new TunnelBorePart(this, "head3", headW, headH, 2.3F, -headSO),
