@@ -97,8 +97,8 @@ public class TrackLayer extends MaintenancePatternMinecart {
     return (state.isAir() ||
         block instanceof IPlantable ||
         block instanceof IForgeShearable ||
-        TunnelBore.replaceableTags.stream().anyMatch(state::is) ||
-        TunnelBore.replaceableBlocks.contains(block));
+        TunnelBore.REPLACEABLE_TAGS.stream().anyMatch(state::is) ||
+        TunnelBore.REPLACEABLE_BLOCKS.contains(block));
   }
 
   @Override

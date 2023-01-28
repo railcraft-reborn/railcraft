@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 import org.jetbrains.annotations.Nullable;
-import com.google.common.collect.Sets;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.LinkageHandler;
@@ -54,6 +53,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -80,8 +80,8 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   public static final int FUEL_CONSUMPTION = 12;
   public static final float HARDNESS_MULTIPLIER = 8;
 
-  public static final Set<BlockState> mineableStates = new HashSet<>();
-  public static final Set<Block> mineableBlocks = Sets.newHashSet(
+  public static final Set<BlockState> MINEABLE_STATES = new HashSet<>();
+  public static final Set<Block> MINEABLE_BLOCKS = Set.of(
       Blocks.CLAY,
       Blocks.SNOW,
       Blocks.CACTUS,
@@ -107,7 +107,6 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
       Blocks.SAND,
       Blocks.SANDSTONE,
       Blocks.SOUL_SAND,
-      Blocks.SNOW,
       Blocks.STONE,
       Blocks.FARMLAND,
       Blocks.TORCH,
@@ -115,8 +114,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
       Blocks.COBWEB,
       Blocks.END_STONE);
 
-  @SuppressWarnings("unchecked")
-  public static final Set<TagKey<Block>> mineableTags = Sets.newHashSet(
+  public static final Set<TagKey<Block>> MINEABLE_TAGS = Set.of(
       Tags.Blocks.ORES,
       Tags.Blocks.NETHERRACK,
       Tags.Blocks.COBBLESTONE,
@@ -129,10 +127,9 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
       BlockTags.FLOWERS,
       RailcraftTags.Blocks.MAGIC_ORE);
 
-  public static final Set<Block> replaceableBlocks = Sets.newHashSet(Blocks.TORCH);
+  public static final Set<Block> REPLACEABLE_BLOCKS = Set.of(Blocks.TORCH);
 
-  @SuppressWarnings("unchecked")
-  public static final Set<TagKey<Block>> replaceableTags = Sets.newHashSet(BlockTags.FLOWERS);
+  public static final Set<TagKey<Block>> REPLACEABLE_TAGS = Set.of(BlockTags.FLOWERS);
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =
       SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.BOOLEAN);
@@ -163,20 +160,13 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   private final boolean hasInit;
   private final TunnelBorePart[] partArray;
 
-  public TunnelBore(EntityType<?> type, Level level) {
+  public TunnelBore(EntityType<TunnelBore> type, Level level) {
     this(level, 0, 0, 0, Direction.SOUTH);
   }
-
-  public TunnelBore(Level level, double x, double y, double z) {
-    this(level, x, y, z, Direction.SOUTH);
-  }
-
-  public TunnelBore(Level level, double x, double y, double z, Direction f) {
+  public TunnelBore(Level level, double x, double y, double z, Direction facing) {
     super(RailcraftEntityTypes.TUNNEL_BORE.get(), x, y, z, level);
-    setFacing(f);
-  }
+    setFacing(facing);
 
-  {
     float headW = 1.5F;
     float headH = 2.6F;
     float headSO = 0.7F;
@@ -204,7 +194,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   }
 
   public static void addMineableBlock(BlockState blockState) {
-    mineableStates.add(blockState);
+    MINEABLE_STATES.add(blockState);
   }
 
   public boolean canHeadHarvestBlock(ItemStack head, BlockState targetState) {
@@ -214,9 +204,9 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
   private boolean isMineableBlock(BlockState blockState) {
     return RailcraftConfig.server.boreMinesAllBlocks.get()
-        || mineableBlocks.contains(blockState.getBlock())
-        || mineableStates.contains(blockState)
-        || mineableTags.stream().anyMatch(blockState::is);
+        || MINEABLE_BLOCKS.contains(blockState.getBlock())
+        || MINEABLE_STATES.contains(blockState)
+        || MINEABLE_TAGS.stream().anyMatch(blockState::is);
   }
 
   @Override
@@ -239,27 +229,24 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
   @Override
   public boolean hurt(DamageSource source, float damage) {
-    if (!this.level.isClientSide() && this.isAlive()) {
-      if (isInvulnerableTo(source)) {
+    if (!this.level.isClientSide() && !this.isRemoved()) {
+      if (this.isInvulnerableTo(source)) {
         return false;
       } else {
-        setHurtDir(-getHurtDir());
-        setHurtTime(10);
-        markHurt();
-        setDamage(getDamage() + damage * 10);
-        boolean flag = (source.getEntity() instanceof Player)
-            && ((Player) source.getEntity()).isCreative();
-
-        if (flag || getDamage() > 120) {
-          ejectPassengers();
-
-          if (flag && !hasCustomName()) {
+        this.setHurtDir(-this.getHurtDir());
+        this.setHurtTime(10);
+        this.markHurt();
+        this.setDamage(this.getDamage() + damage * 10);
+        this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
+        boolean flag = (source.getEntity() instanceof Player player) && player.getAbilities().instabuild;
+        if (flag || this.getDamage() > 120) {
+          this.ejectPassengers();
+          if (flag && !this.hasCustomName()) {
             this.remove(RemovalReason.KILLED);
           } else {
             this.destroy(source);
           }
         }
-
         return true;
       }
     } else {
@@ -270,20 +257,10 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   private void setYaw() {
     float yaw = 0;
     switch (getFacing()) {
-      case NORTH:
-        yaw = 180;
-        break;
-      case EAST:
-        yaw = 270;
-        break;
-      case SOUTH:
-        yaw = 0;
-        break;
-      case WEST:
-        yaw = 90;
-        break;
-      default:
-        break;
+      case NORTH -> yaw = 180;
+      case EAST -> yaw = 270;
+      case SOUTH -> yaw = 0;
+      case WEST -> yaw = 90;
     }
     this.setRot(yaw, this.getXRot());
   }
@@ -405,7 +382,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
               setDelay(STANDARD_DELAY);
             }
           } else if (existingState.isAir()
-              || replaceableBlocks.contains(existingState.getBlock())) {
+              || REPLACEABLE_BLOCKS.contains(existingState.getBlock())) {
             placeRail = true;
             setDelay(STANDARD_DELAY);
           } else {
@@ -524,35 +501,23 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   }
 
   protected double getOffsetX(double x, double forwardOffset, double sideOffset) {
-    switch (getFacing()) {
-      case NORTH:
-        return x + sideOffset;
-      case SOUTH:
-        return x - sideOffset;
-      case EAST:
-        return x + forwardOffset;
-      case WEST:
-        return x - forwardOffset;
-      default:
-        break;
-    }
-    return x;
+    return switch (getFacing()) {
+      case NORTH -> x + sideOffset;
+      case SOUTH -> x - sideOffset;
+      case EAST -> x + forwardOffset;
+      case WEST -> x - forwardOffset;
+      default -> x;
+    };
   }
 
   protected double getOffsetZ(double z, double forwardOffset, double sideOffset) {
-    switch (getFacing()) {
-      case NORTH:
-        return z - forwardOffset;
-      case SOUTH:
-        return z + forwardOffset;
-      case EAST:
-        return z - sideOffset;
-      case WEST:
-        return z + sideOffset;
-      default:
-        break;
-    }
-    return z;
+    return switch (getFacing()) {
+      case NORTH -> z - forwardOffset;
+      case SOUTH -> z + forwardOffset;
+      case EAST -> z - sideOffset;
+      case WEST -> z + sideOffset;
+      default -> z;
+    };
   }
 
   protected void emitParticles() {
@@ -691,7 +656,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   protected boolean placeTrack(BlockPos targetPos, BlockState oldState, RailShape shape) {
     Player owner = CartTools.getFakePlayer(this);
 
-    if (replaceableBlocks.contains(oldState.getBlock())) {
+    if (REPLACEABLE_BLOCKS.contains(oldState.getBlock())) {
       LevelUtil.destroyBlock(this.level, targetPos, owner, true);
     }
 
@@ -1049,8 +1014,8 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   @Nullable
   public TunnelBoreHead getBoreHead() {
     ItemStack boreStack = entityData.get(BORE_HEAD);
-    if (boreStack.getItem() instanceof TunnelBoreHead) {
-      return (TunnelBoreHead) boreStack.getItem();
+    if (boreStack.getItem() instanceof TunnelBoreHead head) {
+      return head;
     }
     return null;
   }

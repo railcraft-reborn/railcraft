@@ -14,9 +14,9 @@ import net.minecraftforge.entity.PartEntity;
  */
 public class TunnelBorePart extends PartEntity<TunnelBore> {
 
-  public final String partName;
-  public final float forwardOffset;
-  public final float sideOffset;
+  private final String partName;
+  private final float forwardOffset;
+  private final float sideOffset;
 
   private final EntityDimensions size;
 
