@@ -76,9 +76,8 @@ import net.minecraft.world.phys.Vec3;
  *
  * @author CovertJaguar (https://www.railcraft.info)
  */
-public abstract class Locomotive extends RailcraftMinecart
-    implements DirectionalCart, LinkageHandler, Lockable,
-    IPaintedCart, IRoutableCart {
+public abstract class Locomotive extends RailcraftMinecart implements DirectionalCart,
+    LinkageHandler, Lockable, IPaintedCart, IRoutableCart {
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BOOLEAN);
@@ -777,8 +776,8 @@ public abstract class Locomotive extends RailcraftMinecart
     }
   }
 
-  public static void applyAction(Player player, AbstractMinecart cart,
-      boolean single, Consumer<Locomotive> action) {
+  public static void applyAction(Player player, AbstractMinecart cart, boolean single,
+      Consumer<Locomotive> action) {
     var locos = Train.streamCarts(cart)
         .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(loco -> loco.canControl(player));

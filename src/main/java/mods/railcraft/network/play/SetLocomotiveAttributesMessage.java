@@ -26,18 +26,20 @@ public record SetLocomotiveAttributesMessage(int entityId, Locomotive.Mode mode,
   public boolean handle(Supplier<NetworkEvent.Context> ctx) {
     var player = ctx.get().getSender();
     var entity = player.getLevel().getEntity(this.entityId);
-    if (entity instanceof Locomotive loco && loco.canControl(player)) {
-      loco.setMode(this.mode);
-      loco.setSpeed(this.speed);
-      if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.getGameProfile())) {
-        loco.setLock(this.lock);
-        if (this.lock == Locomotive.Lock.UNLOCKED) {
-          loco.setOwner(null);
-        } else {
-          loco.setOwner(player.getGameProfile());
+    if (entity instanceof Locomotive locomotive && locomotive.canControl(player)) {
+      Locomotive.applyAction(player, locomotive, false, loco -> {
+        loco.setMode(this.mode);
+        loco.setSpeed(this.speed);
+        loco.setReverse(this.reverse);
+        if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.getGameProfile())) {
+          loco.setLock(this.lock);
+          if (this.lock == Locomotive.Lock.UNLOCKED) {
+            loco.setOwner(null);
+          } else {
+            loco.setOwner(player.getGameProfile());
+          }
         }
-      }
-      loco.setReverse(this.reverse);
+      });
     }
     return true;
   }
