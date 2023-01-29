@@ -30,6 +30,7 @@ import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
 import mods.railcraft.world.entity.vehicle.MinecartExtension;
@@ -57,9 +58,13 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -72,6 +77,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -295,6 +301,24 @@ public class Railcraft {
       Train.killTrain(cart);
       LinkageManagerImpl.INSTANCE.breakLinks(cart);
     }
+  }
+
+  @SubscribeEvent
+  public void modifyDrops(LivingDropsEvent event) {
+    if (event.getSource() == RailcraftDamageSource.STEAM)
+      for (var entityItem : event.getDrops()) {
+        var drop = entityItem.getItem();
+        var level = event.getEntity().getLevel();
+        var cooked = level.getRecipeManager()
+            .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
+            .map(SmeltingRecipe::getResultItem)
+            .orElse(ItemStack.EMPTY);
+        if (!cooked.isEmpty() && level.getRandom().nextDouble() < 0.5) {
+          cooked = cooked.copy();
+          cooked.setCount(drop.getCount());
+          entityItem.setItem(cooked);
+        }
+      }
   }
 
   @SubscribeEvent

@@ -1,19 +1,10 @@
 package mods.railcraft.world.damagesource;
 
+import mods.railcraft.Translations;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-/**
- *
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class RailcraftDamageSource extends DamageSource {
 
   public static final RailcraftDamageSource BORE = new RailcraftDamageSource("bore");
@@ -35,42 +26,19 @@ public class RailcraftDamageSource extends DamageSource {
 
   private final int numMessages;
 
-  private RailcraftDamageSource(String tag) {
-    this(tag, 6);
+  private RailcraftDamageSource(String msgId) {
+    this(msgId, 6);
   }
 
-  private RailcraftDamageSource(String tag, int numMessages) {
-    super(tag);
+  private RailcraftDamageSource(String msgId, int numMessages) {
+    super(msgId);
     this.numMessages = numMessages;
   }
 
   @Override
   public Component getLocalizedDeathMessage(LivingEntity entity) {
-    String locTag =
-        "death.railcraft." + this.msgId + "." + (entity.getRandom().nextInt(this.numMessages) + 1);
-    return Component.translatable(locTag, entity.getName());
-  }
-
-  public static final EventHandler EVENT_HANDLER = new EventHandler();
-
-  public static class EventHandler {
-
-    @SubscribeEvent
-    public void modifyDrops(LivingDropsEvent event) {
-      if (event.getSource() == STEAM)
-        for (var entityItem : event.getDrops()) {
-          var drop = entityItem.getItem();
-          var level = event.getEntity().getLevel();
-          var cooked = level.getRecipeManager()
-              .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
-              .map(SmeltingRecipe::getResultItem)
-              .orElse(ItemStack.EMPTY);
-          if (!cooked.isEmpty() && level.getRandom().nextDouble() < 0.5) {
-            cooked = cooked.copy();
-            cooked.setCount(drop.getCount());
-            entityItem.setItem(cooked);
-          }
-        }
-    }
+    int randomMessage = entity.getRandom().nextInt(this.numMessages) + 1;
+    var reason = Translations.makeKey("death", this.msgId + "." + randomMessage);
+    return Component.translatable(reason, entity.getName());
   }
 }

@@ -48,6 +48,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.signalAspectTranslations();
     this.signalCapacitorTranslations();
     this.subtitleTranslations();
+    this.damageSourceTranslations();
   }
 
   private void blockTranslations() {
@@ -766,6 +767,65 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Subtitle.STEAM_BURST, "Machine Steam Burst");
     this.add(Translations.Subtitle.STEAM_HISS, "Machine Steam Hiss");
     this.add(Translations.Subtitle.MACHINE_ZAP, "Machine Zap");
+  }
+
+  private void damageSourceTranslations() {
+    this.add(Translations.DamageSource.BORE.get(0), "%s got in the way of progress");
+    this.add(Translations.DamageSource.BORE.get(1), "%s tried to stop the Bore");
+    this.add(Translations.DamageSource.BORE.get(2), "%s was crushed by the Bore");
+    this.add(Translations.DamageSource.BORE.get(3),
+        "%s thought they could do better than John Henry");
+    this.add(Translations.DamageSource.BORE.get(4), "%s got stuck between a rock and a hard place");
+    this.add(Translations.DamageSource.BORE.get(5), "%s was on the wrong side of progress");
+
+    this.add(Translations.DamageSource.CRUSHER.get(0), "%s tripped near heavy machinery");
+    this.add(Translations.DamageSource.CRUSHER.get(1),
+        "%s is not the man of steel, they crush just like the rest of us");
+    this.add(Translations.DamageSource.CRUSHER.get(2),
+        "%s stared into the abyss, then they slipped");
+    this.add(Translations.DamageSource.CRUSHER.get(3),
+        "%s is going to need to replace their stuff");
+    this.add(Translations.DamageSource.CRUSHER.get(4), "%s ignored the \"Watch Your Step!\" signs");
+    this.add(Translations.DamageSource.CRUSHER.get(5), "On sale now! %s Blood Jelly");
+    this.add(Translations.DamageSource.CRUSHER.get(6), "%s was turned into paste");
+    this.add(Translations.DamageSource.CRUSHER.get(7), "%s should have read the manual");
+
+    this.add(Translations.DamageSource.ELECTRIC.get(0), "%s is saying hello to Nikola Tesla");
+    this.add(Translations.DamageSource.ELECTRIC.get(1),
+        "%s discovered the meaning of \"High Voltage\"");
+    this.add(Translations.DamageSource.ELECTRIC.get(2),
+        "%s was enlightened to wonders of electrification");
+    this.add(Translations.DamageSource.ELECTRIC.get(3), "%s should have read the warning label");
+    this.add(Translations.DamageSource.ELECTRIC.get(4), "%s made a shocking revelation");
+    this.add(Translations.DamageSource.ELECTRIC.get(5),
+        "%s learned something about electricity, IT HURTS!");
+
+    this.add(Translations.DamageSource.STEAM.get(0), "%s got cooked, nice and juicy");
+    this.add(Translations.DamageSource.STEAM.get(1),
+        "%s is not immune to high temperatures, despite claims to the contrary");
+    this.add(Translations.DamageSource.STEAM.get(2), "%s discovered how painful Steam can be");
+    this.add(Translations.DamageSource.STEAM.get(3), "%s had an industrial accident");
+    this.add(Translations.DamageSource.STEAM.get(4), "%s probably shouldn't have stepped there");
+    this.add(Translations.DamageSource.STEAM.get(5),
+        "%s discovered that Steam baths are best left to saunas");
+
+    this.add(Translations.DamageSource.TRACK_ELECTRIC.get(0), "%s pissed on an electrified track");
+    this.add(Translations.DamageSource.TRACK_ELECTRIC.get(1),
+        "%s discovered the meaning of \"High Voltage\"");
+    this.add(Translations.DamageSource.TRACK_ELECTRIC.get(2),
+        "%s was enlightened to wonders of electrification");
+    this.add(Translations.DamageSource.TRACK_ELECTRIC.get(3), "%s tripped on the third rail");
+    this.add(Translations.DamageSource.TRACK_ELECTRIC.get(4), "%s made a shocking revelation");
+    this.add(Translations.DamageSource.TRACK_ELECTRIC.get(5),
+        "%s learned something about electricity, IT HURTS!");
+
+    this.add(Translations.DamageSource.TRAIN.get(0), "%s got hit by a train");
+    this.add(Translations.DamageSource.TRAIN.get(1), "%s was playing on the tracks");
+    this.add(Translations.DamageSource.TRAIN.get(2),
+        "%s played chicken with a train; the train won");
+    this.add(Translations.DamageSource.TRAIN.get(3), "%s caught the wrong train");
+    this.add(Translations.DamageSource.TRAIN.get(4), "%s bought a one-way ticket to the afterlife");
+    this.add(Translations.DamageSource.TRAIN.get(5), "%s should have worn their Overalls");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {
