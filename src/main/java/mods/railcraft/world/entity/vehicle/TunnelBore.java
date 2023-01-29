@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.LinkageHandler;
@@ -65,6 +64,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.level.BlockEvent;
+import org.jetbrains.annotations.Nullable;
 
 public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
@@ -181,6 +181,17 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
     };
     hasInit = true;
     invMappers = Arrays.asList(invFuel, ballastContainer, trackContainer);
+
+    // Forge: Fix MC-158205: Make sure part ids are successors of parent mob id
+    this.setId(ENTITY_COUNTER.getAndAdd(this.partArray.length + 1) + 1);
+  }
+
+  @Override
+  public void setId(int id) {
+    super.setId(id);
+    // Forge: Fix MC-158205: Set part ids to successor of parent mob id
+    for (int i = 0; i < this.partArray.length; i++)
+      this.partArray[i].setId(id + i + 1);
   }
 
   @Override
@@ -1094,6 +1105,11 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   @Override
   public PartEntity<?>[] getParts() {
     return this.partArray;
+  }
+
+  @Override
+  public boolean isMultipartEntity() {
+    return true;
   }
 
   public boolean attackEntityFromPart(TunnelBorePart part, DamageSource damageSource,

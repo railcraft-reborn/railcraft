@@ -1,17 +1,12 @@
 package mods.railcraft.world.entity.vehicle;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraftforge.entity.PartEntity;
 
-/**
- * Pseudo-Entity used to refine the Tunnel Bore collision boxes.
- *
- * Created by CovertJaguar on 11/19/2015.
- */
 public class TunnelBorePart extends PartEntity<TunnelBore> {
 
   private final String partName;
@@ -29,6 +24,7 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
       float forwardOffset, float sideOffset) {
     super(parent);
     this.size = EntityDimensions.scalable(width, height);
+    this.refreshDimensions();
     this.partName = partName;
     this.forwardOffset = forwardOffset;
     this.sideOffset = sideOffset;
@@ -61,26 +57,17 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
   @Override
   protected void addAdditionalSaveData(CompoundTag compound) {}
 
-  /**
-   * Returns true if other Entities should be prevented from moving through this Entity.
-   */
   @Override
   public boolean canBeCollidedWith() {
     return true;
   }
 
-  /**
-   * Called when the entity is attacked.
-   */
   @Override
   public boolean hurt(DamageSource damageSource, float amount) {
     return !isInvulnerableTo(damageSource)
         && getParent().attackEntityFromPart(this, damageSource, amount);
   }
 
-  /**
-   * Returns true if Entity argument is equal to this Entity
-   */
   @Override
   public boolean is(Entity entity) {
     return this == entity || getParent() == entity;

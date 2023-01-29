@@ -484,6 +484,7 @@ public class RailcraftItems {
   public static final RegistryObject<Item> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
           () -> new TunnelBoreItem(new Item.Properties()
+              .rarity(Rarity.UNCOMMON)
               .stacksTo(1)));
 
   public static final RegistryObject<Item> CREATIVE_LOCOMOTIVE =
