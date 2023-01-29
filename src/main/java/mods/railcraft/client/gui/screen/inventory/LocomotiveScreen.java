@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
@@ -63,21 +62,18 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
     // Mode buttons
     for (var mode : this.getMenu().getLocomotive().getSupportedModes()) {
-      var text = switch (mode) {
+      var text = Component.translatable(switch (mode) {
         case IDLE -> Translations.Screen.LOCOMOTIVE_MODE_IDLE;
         case SHUTDOWN -> Translations.Screen.LOCOMOTIVE_MODE_SHUTDOWN;
         case RUNNING -> Translations.Screen.LOCOMOTIVE_MODE_RUNNING;
-      };
+      });
+      var tooltip = Component.translatable(Translations.makeKey("screen",
+          String.format("locomotive.%s.mode.description.%s", typeTag, mode.getSerializedName())));
       var button = RailcraftButton
-          .builder(
-              Component.translatable(text),
-              __ -> this.setMode(mode),
-              ButtonTexture.SMALL_BUTTON)
+          .builder(text, __ -> this.setMode(mode), ButtonTexture.SMALL_BUTTON)
           .pos(0, centreY + this.getYSize() - 129)
           .size(55, 16)
-          .tooltip(Tooltip.create(Component.translatable(
-              "screen." + Railcraft.ID + ".locomotive." + typeTag + ".mode.description."
-                  + mode.getSerializedName())))
+          .tooltip(Tooltip.create(tooltip))
           .build();
       this.modeButtons.put(mode, button);
     }
