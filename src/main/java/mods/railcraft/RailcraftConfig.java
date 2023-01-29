@@ -95,7 +95,7 @@ public class RailcraftConfig {
           .define("chestAllowFluids", false);
 
       this.cargoBlacklist = builder
-          .comment("Lits of items that the cargo loader will ignore")
+          .comment("List of items that the cargo loader will ignore")
           .defineList("cargoBlacklist", ArrayList::new,
               obj -> ResourceLocation.isValidResourceLocation(obj.toString()));
 
