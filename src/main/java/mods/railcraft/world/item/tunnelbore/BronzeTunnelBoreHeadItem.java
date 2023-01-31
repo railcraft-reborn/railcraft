@@ -1,15 +1,16 @@
-package mods.railcraft.world.item;
+package mods.railcraft.world.item.tunnelbore;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.world.item.RailcraftItemTier;
 import net.minecraft.resources.ResourceLocation;
 
-public class SteelTunnelBoreHeadItem extends TunnelBoreHeadItem {
+public class BronzeTunnelBoreHeadItem extends TunnelBoreHeadItem {
 
   private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Railcraft.ID,
-      "textures/entity/tunnel_bore/steel_tunnel_bore.png");
+      "textures/entity/tunnel_bore/bronze_tunnel_bore.png");
 
-  public SteelTunnelBoreHeadItem(Properties properties) {
-    super(RailcraftItemTier.STEEL, properties);
+  public BronzeTunnelBoreHeadItem(Properties properties) {
+    super(RailcraftItemTier.BRONZE, properties);
   }
 
   @Override

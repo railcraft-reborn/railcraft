@@ -1,6 +1,5 @@
 package mods.railcraft.world.item;
 
-import static mods.railcraft.world.item.CoalCokeItem.BURN_TIME;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
@@ -21,7 +20,7 @@ public class CoalCokeBlockItem extends BlockItem {
 
   @Override
   public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-    return BURN_TIME * 10;
+    return CoalCokeItem.BURN_TIME * 10;
   }
 
   @Override

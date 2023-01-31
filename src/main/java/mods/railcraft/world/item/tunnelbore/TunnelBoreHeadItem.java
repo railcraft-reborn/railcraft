@@ -1,4 +1,4 @@
-package mods.railcraft.world.item;
+package mods.railcraft.world.item.tunnelbore;
 
 import java.util.Set;
 import java.util.stream.Collectors;

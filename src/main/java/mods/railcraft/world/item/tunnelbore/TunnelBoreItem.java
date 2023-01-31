@@ -1,4 +1,4 @@
-package mods.railcraft.world.item;
+package mods.railcraft.world.item.tunnelbore;
 
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackUtil;

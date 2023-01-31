@@ -1,4 +1,4 @@
-package mods.railcraft.world.item;
+package mods.railcraft.world.item.tunnelbore;
 
 import mods.railcraft.Railcraft;
 import net.minecraft.resources.ResourceLocation;
