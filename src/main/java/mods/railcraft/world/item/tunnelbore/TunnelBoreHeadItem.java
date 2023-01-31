@@ -15,7 +15,7 @@ import net.minecraftforge.common.ToolActions;
 
 public abstract class TunnelBoreHeadItem extends TieredItem implements TunnelBoreHead {
 
-  private static final Set<ToolAction> toolActions =
+  private static final Set<ToolAction> TOOL_ACTIONS =
       Stream.of(ToolActions.AXE_DIG, ToolActions.PICKAXE_DIG, ToolActions.SHOVEL_DIG)
           .collect(Collectors.toCollection(Sets::newIdentityHashSet));
 
@@ -30,7 +30,7 @@ public abstract class TunnelBoreHeadItem extends TieredItem implements TunnelBor
 
   @Override
   public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-    return toolActions.contains(toolAction);
+    return TOOL_ACTIONS.contains(toolAction);
   }
 
   @Override

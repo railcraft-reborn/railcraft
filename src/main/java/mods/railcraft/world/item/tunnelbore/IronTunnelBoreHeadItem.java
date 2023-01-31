@@ -6,7 +6,7 @@ import net.minecraft.world.item.Tiers;
 
 public class IronTunnelBoreHeadItem extends TunnelBoreHeadItem {
 
-  public static final ResourceLocation TEXTURE_LOCATION =
+  private static final ResourceLocation TEXTURE_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/entity/tunnel_bore/iron_tunnel_bore.png");
 
   public IronTunnelBoreHeadItem(Properties properties) {
