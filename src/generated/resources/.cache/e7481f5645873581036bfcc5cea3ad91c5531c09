@@ -1,4 +1,4 @@
-// 1.19.3	2022-12-20T20:13:58.016027362	Item Models: railcraft
+// 1.19.3	2023-02-01T12:59:08.834259	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -47,6 +47,7 @@ a316dff6851bed398cdc0215ee39f4da055e89bf assets/railcraft/models/item/detector_t
 482a065ec291f6cf851961bc8a70ac1b6fc7af05 assets/railcraft/models/item/gold_electrode.json
 c33eb623bc15ad465743213397a57e92e1602de1 assets/railcraft/models/item/gold_gear.json
 11505e800b8e65037cfc20639ffae70a638384c1 assets/railcraft/models/item/gold_plate.json
+d02316104096c64120a23807a3f3716918cc2ac2 assets/railcraft/models/item/gold_ticket.json
 11b043114f0371d43fc89bbefa5632e3808330f6 assets/railcraft/models/item/high_speed_rail.json
 43894cda953b9431361d97bf79d8f7971caecda7 assets/railcraft/models/item/invar_electrode.json
 38e5f609b4f4dbe3083a8066a0ad62037d3ebc23 assets/railcraft/models/item/invar_gear.json

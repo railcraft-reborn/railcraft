@@ -1,4 +1,4 @@
-// 1.19.3	2022-12-20T20:13:58.026947141	Recipes
+// 1.19.3	2023-02-01T12:59:08.836468	Recipes
 b5a17571ce39881697d539ab8e2e6830c430e652 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 3159a4cc9361689702fc1dee383096849bfdb726 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
 9293038e4f6a21d986adfd45b476c5538ab7a56a data/minecraft/advancements/recipes/misc/lead_ingot_from_smelting_deepslate_lead_ore.json
@@ -201,6 +201,7 @@ b0edfd70c93996fd95920ab1c9ce3556397d9dbd data/railcraft/advancements/recipes/mis
 5f1858e504db80866d1ed9394f5569520950d76b data/railcraft/advancements/recipes/misc/gated_track_kit.json
 421454c7caf6768e805c139635096e32462c37cd data/railcraft/advancements/recipes/misc/goggles.json
 654c15f629c5f53fcec644c04e865bd0e8516784 data/railcraft/advancements/recipes/misc/gold_gear.json
+0b54daca46017d790204954070b79628fa9666e1 data/railcraft/advancements/recipes/misc/gold_ticket.json
 d8a8e29ae6f7304b3051b4bbf7f72befaa8197c2 data/railcraft/advancements/recipes/misc/gray_iron_tank_gauge.json
 8b0dc5d8e65283b2d691b11606e56e40d6dc10e0 data/railcraft/advancements/recipes/misc/gray_iron_tank_valve.json
 2ee0038877a902cde34e5988efea94c9adc59902 data/railcraft/advancements/recipes/misc/gray_iron_tank_wall.json
@@ -446,6 +447,7 @@ bb47d77672963b5b6f022bda8be88d30999ff2a8 data/railcraft/advancements/recipes/mis
 5b004b4e53409b138a697913a343dc18c5f1c538 data/railcraft/advancements/recipes/misc/switch_track_lever.json
 4aafb61b780c194fab84f320ddbcaa61904eaa01 data/railcraft/advancements/recipes/misc/switch_track_motor.json
 b780d48c46555608d12bfc42ef6ba34531775b33 data/railcraft/advancements/recipes/misc/tank_minecart.json
+3e66184a4767a8665b2fc95335879285a370451e data/railcraft/advancements/recipes/misc/ticket.json
 3285ca347e5fbf26f36079d2bc804cb89b7af2e2 data/railcraft/advancements/recipes/misc/tin_block_from_tin_ingot.json
 3a06425b0d2a6052d5dca41d4714bba58767c2dc data/railcraft/advancements/recipes/misc/tin_gear.json
 a9e87eb8de74338277bfe8d9b0c9ca21457a7884 data/railcraft/advancements/recipes/misc/tin_ingot.json
@@ -689,6 +691,7 @@ c11a5855483b3ac94a69b7e0ff06f6f90df3f46b data/railcraft/recipes/force_track_emit
 a8e7ca8292cc90ea4317317afecfe2694b315d40 data/railcraft/recipes/gated_track_kit.json
 fdbaa07547fea73565ff22ab524cc88443255408 data/railcraft/recipes/goggles.json
 081762c236be63a0107c13ee3cd83e1e31c69856 data/railcraft/recipes/gold_gear.json
+dee73ce32e59441718be603a3034edee61d85512 data/railcraft/recipes/gold_ticket.json
 5616c40ad5cb882afa70bcdfec9038a77d9d87c6 data/railcraft/recipes/gray_iron_tank_gauge.json
 8ca5c818b2c27c485cd0a2839616800c5bcd2082 data/railcraft/recipes/gray_iron_tank_valve.json
 194f7c5fab91f328a6a03d49a641f319f5565e58 data/railcraft/recipes/gray_iron_tank_wall.json
@@ -986,6 +989,7 @@ acd3299a07b73324938b143cdd50e74e92d63cc4 data/railcraft/recipes/strap_iron_wye_t
 9580b1e0874743f6da50f5aeeca7bd6736d0d5db data/railcraft/recipes/switch_track_lever.json
 3bfa0ffdea112b528d2c3b339d6fef51bdaf5f92 data/railcraft/recipes/switch_track_motor.json
 4aa3edf792e85325f5dcdf30157d2aaf4b395553 data/railcraft/recipes/tank_minecart.json
+199e7db2927022c972538c190de72c13ff60f117 data/railcraft/recipes/ticket.json
 d49b9c5bb70fdb36a4579f5f97c8d9f59234a89c data/railcraft/recipes/tin_block_from_tin_ingot.json
 245ea1f3fd05c9287e7798750dd1fb1bac0b4b1b data/railcraft/recipes/tin_gear.json
 b73689779c93dd658c851d01b3e180ff02b00138 data/railcraft/recipes/tin_ingot.json

@@ -180,6 +180,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SIGNAL_BLOCK_SURVEYOR, "Signal Block Surveyor");
     this.addItem(RailcraftItems.SIGNAL_TUNER, "Signal Tuner");
     this.addItem(RailcraftItems.OVERALLS, "Overalls");
+    this.addItem(RailcraftItems.GOLD_TICKET, "Gold Ticket");
     this.addItem(RailcraftItems.TICKET, "Ticket");
     this.addItem(RailcraftItems.WHISTLE_TUNER, "Whistle Tuner");
     this.addItem(RailcraftItems.TUNNEL_BORE, "Tunnel Bore");

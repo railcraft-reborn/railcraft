@@ -517,6 +517,10 @@ public class RailcraftItems {
       deferredRegister.register("whistle_tuner",
           () -> new Item(new Item.Properties().durability(250)));
 
+  public static final RegistryObject<Item> GOLD_TICKET =
+      deferredRegister.register("gold_ticket",
+          () -> new GoldTicketItem(new Item.Properties()));
+
   public static final RegistryObject<Item> TICKET =
       deferredRegister.register("ticket",
           () -> new TicketItem(new Item.Properties()));
