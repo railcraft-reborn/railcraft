@@ -1,5 +1,8 @@
 package mods.railcraft.world.item;
 
+import java.util.List;
+import java.util.function.Predicate;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
@@ -14,13 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-import org.jetbrains.annotations.Nullable;
-import java.util.List;
-import java.util.function.Predicate;
-
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class TicketItem extends Item {
 
   public static final Predicate<ItemStack> FILTER =
@@ -35,30 +31,24 @@ public class TicketItem extends Item {
     String dest = nbt.getString("dest");
     return dest.length() < LINE_LENGTH;
   }
+  @Override
+  public Component getName(ItemStack stack) {
+    var name = super.getName(stack);
+    var dest = getDestination(stack);
+    if (!dest.isEmpty()) {
+      var pretty_dest = dest.substring(dest.lastIndexOf("/") + 1);
+      name = name.copy().append(" - " + pretty_dest).withStyle(ChatFormatting.YELLOW);
+    }
+    return name;
+  }
 
-  // @Override
-  // public String getItemDisplayName(ItemStack stack) {
-  // String dest = getDestination(stack);
-  //
-  // if (!dest.equals("")) {
-  // return super.getItemDisplayName(stack) + " - " + dest.substring(dest.lastIndexOf("/") + 1);
-  // }
-  //
-  // return super.getItemDisplayName(stack);
-  // }
-
-  /**
-   * allows items to add custom lines of information to the mouse over description
-   */
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list,
       TooltipFlag flag) {
     if (stack.hasTag()) {
       GameProfile owner = getOwner(stack);
-      if (owner.getId() != null) {
-        list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER));
-        list.add(PlayerUtil.getUsername(level, owner).copy().withStyle(ChatFormatting.GRAY));
-      }
+      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER));
+      list.add(PlayerUtil.getUsername(level, owner).copy().withStyle(ChatFormatting.GRAY));
 
       String dest = getDestination(stack);
       if (!dest.isEmpty()) {
@@ -66,7 +56,8 @@ public class TicketItem extends Item {
         list.add(Component.literal(dest).withStyle(ChatFormatting.GRAY));
       }
     } else
-      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_BLANK));
+      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_BLANK)
+          .withStyle(ChatFormatting.GRAY));
   }
 
   public static boolean isNBTValid(@Nullable CompoundTag nbt) {

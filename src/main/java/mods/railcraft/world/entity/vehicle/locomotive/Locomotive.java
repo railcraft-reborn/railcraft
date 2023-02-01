@@ -71,11 +71,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * Locmotive class, for trains that does the push/pulling.
- *
- * @author CovertJaguar (https://www.railcraft.info)
- */
 public abstract class Locomotive extends RailcraftMinecart implements DirectionalCart,
     LinkageHandler, Lockable, IPaintedCart, IRoutableCart {
 
@@ -322,12 +317,13 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
    * destination based on the ticket the user has.
    */
   public boolean setDestination(ItemStack ticket) {
+    if (!(this.level instanceof ServerLevel serverLevel))
+      return false;
     if (ticket.getItem() instanceof TicketItem) {
       if (this.isLocked()) {
         var ticketOwner = TicketItem.getOwner(ticket);
-        if (!this.getOwnerOrThrow().equals(ticketOwner)
-            && (!(this.level instanceof ServerLevel serverLevel)
-                || !serverLevel.getServer().getPlayerList().isOp(ticketOwner))) {
+        if (!this.getOwnerOrThrow().equals(ticketOwner) &&
+            !serverLevel.getServer().getPlayerList().isOp(ticketOwner)) {
           return false;
         }
       }
@@ -528,7 +524,8 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
     Container invTicket = this.getTicketInventory();
     ItemStack stack = invTicket.getItem(0);
     if (stack.getItem() instanceof TicketItem) {
-      if (setDestination(stack)) {
+      // TODO: Remove the false once the ticket system is implemented
+      if (false && setDestination(stack)) {
         invTicket.setItem(0, ContainerTools.depleteItem(stack));
       }
     } else {
