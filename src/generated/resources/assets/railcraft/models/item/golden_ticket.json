@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "railcraft:item/gold_ticket"
+    "layer0": "railcraft:item/golden_ticket"
   }
 }

@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_gold_ticket": {
+    "has_golden_ticket": {
       "conditions": {
         "items": [
           {
             "items": [
-              "railcraft:gold_ticket"
+              "railcraft:golden_ticket"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_gold_ticket",
+      "has_golden_ticket",
       "has_the_recipe"
     ]
   ],

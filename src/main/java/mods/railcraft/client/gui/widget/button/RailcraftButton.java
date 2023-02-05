@@ -60,6 +60,11 @@ public class RailcraftButton extends Button {
     return new Builder(message, onPress, texturePosition);
   }
 
+  public static Builder builder(String translationKey, OnPress onPress,
+      TexturePosition texturePosition) {
+    return new Builder(Component.translatable(translationKey), onPress, texturePosition);
+  }
+
   public static class Builder extends AbstractBuilder<Builder, RailcraftButton> {
 
     public Builder(Component message, OnPress onPress, TexturePosition texturePosition) {

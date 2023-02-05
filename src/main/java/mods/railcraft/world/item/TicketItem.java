@@ -37,7 +37,7 @@ public class TicketItem extends Item {
     var dest = getDestination(stack);
     if (!dest.isEmpty()) {
       var pretty_dest = dest.substring(dest.lastIndexOf("/") + 1);
-      name = name.copy().append(" - " + pretty_dest).withStyle(ChatFormatting.YELLOW);
+      name = name.copy().append(" - " + pretty_dest);
     }
     return name;
   }

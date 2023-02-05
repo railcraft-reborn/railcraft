@@ -983,15 +983,15 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
             has(RailcraftItems.CREOSOTE_BOTTLE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "torch_creosote"));
-    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.GOLD_TICKET.get())
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.GOLDEN_TICKET.get())
         .requires(Items.PAPER)
         .requires(Tags.Items.NUGGETS_GOLD)
         .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
         .save(consumer);
     ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.TICKET.get())
         .requires(Items.PAPER)
-        .requires(RailcraftItems.GOLD_TICKET.get())
-        .unlockedBy(getHasName(RailcraftItems.GOLD_TICKET.get()), has(RailcraftItems.GOLD_TICKET.get()))
+        .requires(RailcraftItems.GOLDEN_TICKET.get())
+        .unlockedBy(getHasName(RailcraftItems.GOLDEN_TICKET.get()), has(RailcraftItems.GOLDEN_TICKET.get()))
         .save(consumer);
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.OVERALLS.get())
         .pattern("aaa")

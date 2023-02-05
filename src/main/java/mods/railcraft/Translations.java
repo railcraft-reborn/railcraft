@@ -92,6 +92,10 @@ public class Translations {
         makeKey("screen", "water_tank.final_rate");
     public static final String PATTERN = makeKey("screen", "track_layer.patter");
     public static final String STOCK = makeKey("screen", "track_layer.stock");
+    public static final String HELP = makeKey("screen", "help");
+    public static final String GOLDEN_TICKET_TITLE = makeKey("screen", "golden_ticket.title");
+    public static final String GOLDEN_TICKET_DESC_1 = makeKey("screen", "golden_ticket.desc1");
+    public static final String GOLDEN_TICKET_DESC_2 = makeKey("screen", "golden_ticket.desc2");
   }
 
   public static class Tips {

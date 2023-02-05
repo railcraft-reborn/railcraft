@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:gold_ticket"
+        "recipe": "railcraft:golden_ticket"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "railcraft:gold_ticket"
+      "railcraft:golden_ticket"
     ]
   }
 }

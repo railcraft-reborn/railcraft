@@ -180,7 +180,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SIGNAL_BLOCK_SURVEYOR, "Signal Block Surveyor");
     this.addItem(RailcraftItems.SIGNAL_TUNER, "Signal Tuner");
     this.addItem(RailcraftItems.OVERALLS, "Overalls");
-    this.addItem(RailcraftItems.GOLD_TICKET, "Gold Ticket");
+    this.addItem(RailcraftItems.GOLDEN_TICKET, "Golden Ticket");
     this.addItem(RailcraftItems.TICKET, "Ticket");
     this.addItem(RailcraftItems.WHISTLE_TUNER, "Whistle Tuner");
     this.addItem(RailcraftItems.TUNNEL_BORE, "Tunnel Bore");
@@ -533,6 +533,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.WATER_TANK_FINAL_RATE, "Final rate: %s mB/sec");
     this.add(Translations.Screen.PATTERN, "Pattern");
     this.add(Translations.Screen.STOCK, "Stock");
+    this.add(Translations.Screen.HELP, "Help");
+    this.add(Translations.Screen.GOLDEN_TICKET_TITLE, "Golden Ticket");
+    this.add(Translations.Screen.GOLDEN_TICKET_DESC_1, "This ticket is valid");
+    this.add(Translations.Screen.GOLDEN_TICKET_DESC_2, "for the following destination:");
   }
 
   private void trackTranslations() {

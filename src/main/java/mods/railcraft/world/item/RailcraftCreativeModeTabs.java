@@ -171,7 +171,7 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.WHISTLE_TUNER.get());
               output.accept(RailcraftItems.SIGNAL_TUNER.get());
               output.accept(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get());
-              output.accept(RailcraftItems.GOLD_TICKET.get());
+              output.accept(RailcraftItems.GOLDEN_TICKET.get());
               output.accept(RailcraftItems.TICKET.get());
               output.accept(RailcraftItems.GOGGLES.get());
               output.accept(RailcraftItems.OVERALLS.get());
