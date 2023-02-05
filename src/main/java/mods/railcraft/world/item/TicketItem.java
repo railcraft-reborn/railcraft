@@ -8,6 +8,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.util.PlayerUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -77,7 +78,7 @@ public class TicketItem extends Item {
       return false;
     var tag = ticket.getOrCreateTag();
     tag.putString("dest", dest);
-    PlayerUtil.writeOwnerToNBT(tag, owner);
+    NbtUtils.writeGameProfile(tag, owner);
     return true;
   }
 
@@ -96,6 +97,6 @@ public class TicketItem extends Item {
     var tag = ticket.getTag();
     if (tag == null)
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
-    return PlayerUtil.readOwnerFromNBT(tag);
+    return NbtUtils.readGameProfile(tag);
   }
 }

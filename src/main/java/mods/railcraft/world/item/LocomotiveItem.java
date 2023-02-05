@@ -9,9 +9,8 @@ import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.client.emblem.EmblemClientUtil;
-import mods.railcraft.util.PlayerUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.DyeColor;
@@ -76,38 +75,38 @@ public class LocomotiveItem extends CartItem implements Filter {
 
   public static void setItemColorData(ItemStack stack, DyeColor primaryColor,
       DyeColor secondaryColor) {
-    CompoundTag nbt = stack.getOrCreateTag();
-    nbt.putInt("primaryColor", primaryColor.getId());
-    nbt.putInt("secondaryColor", secondaryColor.getId());
+    var tag = stack.getOrCreateTag();
+    tag.putInt("primaryColor", primaryColor.getId());
+    tag.putInt("secondaryColor", secondaryColor.getId());
   }
 
   public static void setItemWhistleData(ItemStack stack, float whistlePitch) {
-    CompoundTag nbt = stack.getOrCreateTag();
-    nbt.putFloat("whistlePitch", whistlePitch);
+    var tag = stack.getOrCreateTag();
+    tag.putFloat("whistlePitch", whistlePitch);
   }
 
   public static float getWhistlePitch(ItemStack stack) {
-    CompoundTag nbt = stack.getTag();
-    if (nbt == null || !nbt.contains("whistlePitch", Tag.TAG_FLOAT))
+    var tag = stack.getTag();
+    if (tag == null || !tag.contains("whistlePitch", Tag.TAG_FLOAT))
       return -1;
-    return nbt.getFloat("whistlePitch");
+    return tag.getFloat("whistlePitch");
   }
 
   public static void setOwnerData(ItemStack stack, GameProfile owner) {
-    CompoundTag nbt = stack.getOrCreateTag();
-    PlayerUtil.writeOwnerToNBT(nbt, owner);
+    var tag = stack.getOrCreateTag();
+    NbtUtils.writeGameProfile(tag, owner);
   }
 
   public static GameProfile getOwner(ItemStack stack) {
-    CompoundTag nbt = stack.getTag();
-    if (nbt == null)
+    var tag = stack.getTag();
+    if (tag == null)
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
-    return PlayerUtil.readOwnerFromNBT(nbt);
+    return NbtUtils.readGameProfile(tag);
   }
 
   public static void setEmblem(ItemStack stack, String emblemIdentifier) {
-    CompoundTag nbt = stack.getOrCreateTag();
-    nbt.putString("emblem", emblemIdentifier);
+    var tag = stack.getOrCreateTag();
+    tag.putString("emblem", emblemIdentifier);
   }
 
   public static Optional<String> getEmblem(ItemStack stack) {
@@ -118,30 +117,30 @@ public class LocomotiveItem extends CartItem implements Filter {
   }
 
   public static void setModel(ItemStack stack, String modelTag) {
-    CompoundTag nbt = stack.getOrCreateTag();
-    nbt.putString("model", modelTag);
+    var tag = stack.getOrCreateTag();
+    tag.putString("model", modelTag);
   }
 
   public static String getModel(ItemStack stack) {
-    CompoundTag nbt = stack.getTag();
-    if (nbt == null || !nbt.contains("model", Tag.TAG_STRING))
+    var tag = stack.getTag();
+    if (tag == null || !tag.contains("model", Tag.TAG_STRING))
       return "default";
-    return nbt.getString("model");
+    return tag.getString("model");
   }
 
   public static DyeColor getPrimaryColor(ItemStack stack) {
-    CompoundTag nbt = stack.getOrCreateTag();
-    if (nbt.contains("primaryColor", Tag.TAG_INT)) {
-      return DyeColor.byId(nbt.getInt("primaryColor"));
+    var tag = stack.getOrCreateTag();
+    if (tag.contains("primaryColor", Tag.TAG_INT)) {
+      return DyeColor.byId(tag.getInt("primaryColor"));
     } else {
       return ((LocomotiveItem) stack.getItem()).defaultPrimary;
     }
   }
 
   public static DyeColor getSecondaryColor(ItemStack stack) {
-    CompoundTag nbt = stack.getOrCreateTag();
-    if (nbt.contains("secondaryColor", Tag.TAG_INT)) {
-      return DyeColor.byId(nbt.getInt("secondaryColor"));
+    var tag = stack.getOrCreateTag();
+    if (tag.contains("secondaryColor", Tag.TAG_INT)) {
+      return DyeColor.byId(tag.getInt("secondaryColor"));
     } else {
       return ((LocomotiveItem) stack.getItem()).defaultSecondary;
     }

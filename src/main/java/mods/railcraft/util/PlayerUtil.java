@@ -1,16 +1,14 @@
 package mods.railcraft.util;
 
 import java.util.UUID;
-import org.jetbrains.annotations.Nullable;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.item.ActivationBlockingItem;
 import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -20,23 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public final class PlayerUtil {
-
-  public static void writeOwnerToNBT(CompoundTag tag, GameProfile owner) {
-    if (owner.getName() != null)
-      tag.putString("owner", owner.getName());
-    if (owner.getId() != null)
-      tag.putUUID("ownerId", owner.getId());
-  }
-
-  public static GameProfile readOwnerFromNBT(CompoundTag tag) {
-    String ownerName = RailcraftConstantsAPI.UNKNOWN_PLAYER;
-    if (tag.contains("owner", Tag.TAG_STRING))
-      ownerName = tag.getString("owner");
-    UUID ownerUUID = null;
-    if (tag.hasUUID("ownerId"))
-      ownerUUID = tag.getUUID("ownerId");
-    return new GameProfile(ownerUUID, ownerName);
-  }
 
   @Nullable
   public static Player getPlayer(Level level, GameProfile gameProfile) {
