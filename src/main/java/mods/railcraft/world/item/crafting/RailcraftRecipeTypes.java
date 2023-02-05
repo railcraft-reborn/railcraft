@@ -26,6 +26,9 @@ public class RailcraftRecipeTypes {
   public static final RegistryObject<RecipeType<CrusherRecipe>> CRUSHING =
       register("crushing");
 
+  public static final RegistryObject<RecipeType<TicketDuplicateRecipe>> TICKET_DUPLICATE =
+      register("ticket_duplicate");
+
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }

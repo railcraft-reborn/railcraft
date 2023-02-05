@@ -1,15 +1,4 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "minecraft:paper"
-    },
-    {
-      "item": "railcraft:golden_ticket"
-    }
-  ],
-  "result": {
-    "item": "railcraft:ticket"
-  }
+  "type": "railcraft:ticket_duplicate",
+  "category": "misc"
 }

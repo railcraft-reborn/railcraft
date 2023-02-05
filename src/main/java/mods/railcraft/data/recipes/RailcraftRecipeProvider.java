@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
+import mods.railcraft.data.recipes.builders.RailcraftSpecialRecipeBuilder;
 import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
 import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
 import mods.railcraft.data.recipes.providers.CrusherRecipeProvider;
@@ -12,6 +13,7 @@ import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -988,11 +990,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .requires(Tags.Items.NUGGETS_GOLD)
         .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
         .save(consumer);
-    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.TICKET.get())
-        .requires(Items.PAPER)
-        .requires(RailcraftItems.GOLDEN_TICKET.get())
-        .unlockedBy(getHasName(RailcraftItems.GOLDEN_TICKET.get()), has(RailcraftItems.GOLDEN_TICKET.get()))
-        .save(consumer);
+    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.TICKET_DUPLICATE.get())
+        .save(consumer, getItemName(RailcraftItems.TICKET.get()));
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.OVERALLS.get())
         .pattern("aaa")
         .pattern("a a")
