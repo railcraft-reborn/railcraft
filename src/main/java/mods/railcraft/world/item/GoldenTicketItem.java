@@ -26,7 +26,11 @@ public class GoldenTicketItem extends TicketItem {
 
   @Override
   public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
-    return new ItemStack(this);
+    var newItemStack = new ItemStack(this);
+    var dest = TicketItem.getDestination(itemStack);
+    var owner = TicketItem.getOwner(itemStack);
+    TicketItem.setTicketData(newItemStack, dest, owner);
+    return newItemStack;
   }
 
   @Override
