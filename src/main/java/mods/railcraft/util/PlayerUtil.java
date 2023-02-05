@@ -21,29 +21,28 @@ import net.minecraft.world.level.Level;
 
 public final class PlayerUtil {
 
-  public static void writeOwnerToNBT(CompoundTag nbt, GameProfile owner) {
+  public static void writeOwnerToNBT(CompoundTag tag, GameProfile owner) {
     if (owner.getName() != null)
-      nbt.putString("owner", owner.getName());
+      tag.putString("owner", owner.getName());
     if (owner.getId() != null)
-      nbt.putString("ownerId", owner.getId().toString());
+      tag.putUUID("ownerId", owner.getId());
   }
 
-  public static GameProfile readOwnerFromNBT(CompoundTag nbt) {
+  public static GameProfile readOwnerFromNBT(CompoundTag tag) {
     String ownerName = RailcraftConstantsAPI.UNKNOWN_PLAYER;
-    if (nbt.contains("owner", Tag.TAG_STRING))
-      ownerName = nbt.getString("owner");
+    if (tag.contains("owner", Tag.TAG_STRING))
+      ownerName = tag.getString("owner");
     UUID ownerUUID = null;
-    if (nbt.hasUUID("ownerId"))
-      ownerUUID = nbt.getUUID("ownerId");
+    if (tag.hasUUID("ownerId"))
+      ownerUUID = tag.getUUID("ownerId");
     return new GameProfile(ownerUUID, ownerName);
   }
 
-  public static @Nullable Player getPlayer(Level level, GameProfile gameProfile) {
-    UUID playerId = gameProfile.getId();
+  @Nullable
+  public static Player getPlayer(Level level, GameProfile gameProfile) {
+    var playerId = gameProfile.getId();
     if (playerId != null) {
-      Player player = level.getPlayerByUUID(playerId);
-      if (player != null)
-        return player;
+      return level.getPlayerByUUID(playerId);
     }
     return null;
   }
@@ -93,6 +92,8 @@ public final class PlayerUtil {
   }
 
   public static boolean isSamePlayer(GameProfile a, GameProfile b) {
+    if (a.isComplete() && b.isComplete())
+      return a.equals(b);
     if (a.getId() != null && b.getId() != null)
       return a.getId().equals(b.getId());
     return a.getName() != null && a.getName().equals(b.getName());

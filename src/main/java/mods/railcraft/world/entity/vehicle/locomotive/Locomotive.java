@@ -524,8 +524,7 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
     Container invTicket = this.getTicketInventory();
     ItemStack stack = invTicket.getItem(0);
     if (stack.getItem() instanceof TicketItem) {
-      // TODO: Remove the false once the ticket system is implemented
-      if (false && setDestination(stack)) {
+      if (setDestination(stack)) {
         invTicket.setItem(0, ContainerTools.depleteItem(stack));
       }
     } else {

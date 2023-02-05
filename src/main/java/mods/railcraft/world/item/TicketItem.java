@@ -8,8 +8,6 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.util.PlayerUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -53,21 +51,6 @@ public class TicketItem extends Item {
     } else
       list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_BLANK)
           .withStyle(ChatFormatting.GRAY));
-  }
-
-  public boolean validateNBT(CompoundTag tag) {
-    String dest = tag.getString("dest");
-    return dest.length() < LINE_LENGTH;
-  }
-
-  public static boolean isNBTValid(@Nullable CompoundTag tag) {
-    if (tag == null)
-      return false;
-    else if (!tag.contains("dest", Tag.TAG_STRING))
-      return false;
-
-    String dest = tag.getString("dest");
-    return !dest.isEmpty() && dest.length() <= LINE_LENGTH;
   }
 
   public static ItemStack copyTicket(ItemStack source) {
