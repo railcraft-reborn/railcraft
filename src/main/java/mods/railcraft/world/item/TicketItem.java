@@ -7,7 +7,6 @@ import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.util.PlayerUtil;
-import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -25,11 +24,6 @@ public class TicketItem extends Item {
 
   public TicketItem(Properties properties) {
     super(properties);
-  }
-
-  public boolean validateNBT(CompoundTag nbt) {
-    String dest = nbt.getString("dest");
-    return dest.length() < LINE_LENGTH;
   }
 
   @Override
@@ -61,13 +55,18 @@ public class TicketItem extends Item {
           .withStyle(ChatFormatting.GRAY));
   }
 
-  public static boolean isNBTValid(@Nullable CompoundTag nbt) {
-    if (nbt == null)
+  public boolean validateNBT(CompoundTag tag) {
+    String dest = tag.getString("dest");
+    return dest.length() < LINE_LENGTH;
+  }
+
+  public static boolean isNBTValid(@Nullable CompoundTag tag) {
+    if (tag == null)
       return false;
-    else if (!nbt.contains("dest", Tag.TAG_STRING))
+    else if (!tag.contains("dest", Tag.TAG_STRING))
       return false;
 
-    String dest = nbt.getString("dest");
+    String dest = tag.getString("dest");
     return !dest.isEmpty() && dest.length() <= LINE_LENGTH;
   }
 
@@ -78,44 +77,42 @@ public class TicketItem extends Item {
       ItemStack ticket = RailcraftItems.TICKET.get().getDefaultInstance();
       if (ticket.isEmpty())
         return ItemStack.EMPTY;
-      CompoundTag nbt = source.getTag();
-      if (nbt != null)
-        ticket.setTag(nbt.copy());
+      var tag = source.getTag();
+      if (tag != null)
+        ticket.setTag(tag.copy());
       return ticket;
     }
     return ItemStack.EMPTY;
   }
 
-  public static boolean setTicketData(ItemStack ticket, String dest, String title,
-      @Nullable GameProfile owner) {
+  public static boolean setTicketData(ItemStack ticket, String dest, @Nullable GameProfile owner) {
     if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
       return false;
     if (dest.length() > LINE_LENGTH)
       return false;
     if (owner == null)
       return false;
-    CompoundTag data = ContainerTools.getItemData(ticket);
-    data.putString("dest", dest);
-    data.putString("title", title);
-    PlayerUtil.writeOwnerToNBT(data, owner);
+    var tag = ticket.getOrCreateTag();
+    tag.putString("dest", dest);
+    PlayerUtil.writeOwnerToNBT(tag, owner);
     return true;
   }
 
   public static String getDestination(ItemStack ticket) {
     if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
       return "";
-    CompoundTag nbt = ticket.getTag();
-    if (nbt == null)
+    var tag = ticket.getTag();
+    if (tag == null)
       return "";
-    return nbt.getString("dest");
+    return tag.getString("dest");
   }
 
   public static GameProfile getOwner(ItemStack ticket) {
     if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
-    CompoundTag nbt = ticket.getTag();
-    if (nbt == null)
+    var tag = ticket.getTag();
+    if (tag == null)
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
-    return PlayerUtil.readOwnerFromNBT(nbt);
+    return PlayerUtil.readOwnerFromNBT(tag);
   }
 }

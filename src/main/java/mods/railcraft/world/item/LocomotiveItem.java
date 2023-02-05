@@ -10,7 +10,6 @@ import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.client.emblem.EmblemClientUtil;
 import mods.railcraft.util.PlayerUtil;
-import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -20,9 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class LocomotiveItem extends CartItem implements Filter {
 
   private final DyeColor defaultPrimary;
@@ -80,13 +76,13 @@ public class LocomotiveItem extends CartItem implements Filter {
 
   public static void setItemColorData(ItemStack stack, DyeColor primaryColor,
       DyeColor secondaryColor) {
-    CompoundTag nbt = ContainerTools.getItemData(stack);
+    CompoundTag nbt = stack.getOrCreateTag();
     nbt.putInt("primaryColor", primaryColor.getId());
     nbt.putInt("secondaryColor", secondaryColor.getId());
   }
 
   public static void setItemWhistleData(ItemStack stack, float whistlePitch) {
-    CompoundTag nbt = ContainerTools.getItemData(stack);
+    CompoundTag nbt = stack.getOrCreateTag();
     nbt.putFloat("whistlePitch", whistlePitch);
   }
 
@@ -98,7 +94,7 @@ public class LocomotiveItem extends CartItem implements Filter {
   }
 
   public static void setOwnerData(ItemStack stack, GameProfile owner) {
-    CompoundTag nbt = ContainerTools.getItemData(stack);
+    CompoundTag nbt = stack.getOrCreateTag();
     PlayerUtil.writeOwnerToNBT(nbt, owner);
   }
 
@@ -110,7 +106,7 @@ public class LocomotiveItem extends CartItem implements Filter {
   }
 
   public static void setEmblem(ItemStack stack, String emblemIdentifier) {
-    CompoundTag nbt = ContainerTools.getItemData(stack);
+    CompoundTag nbt = stack.getOrCreateTag();
     nbt.putString("emblem", emblemIdentifier);
   }
 
@@ -122,7 +118,7 @@ public class LocomotiveItem extends CartItem implements Filter {
   }
 
   public static void setModel(ItemStack stack, String modelTag) {
-    CompoundTag nbt = ContainerTools.getItemData(stack);
+    CompoundTag nbt = stack.getOrCreateTag();
     nbt.putString("model", modelTag);
   }
 
@@ -134,7 +130,7 @@ public class LocomotiveItem extends CartItem implements Filter {
   }
 
   public static DyeColor getPrimaryColor(ItemStack stack) {
-    CompoundTag nbt = ContainerTools.getItemData(stack);
+    CompoundTag nbt = stack.getOrCreateTag();
     if (nbt.contains("primaryColor", Tag.TAG_INT)) {
       return DyeColor.byId(nbt.getInt("primaryColor"));
     } else {
@@ -143,7 +139,7 @@ public class LocomotiveItem extends CartItem implements Filter {
   }
 
   public static DyeColor getSecondaryColor(ItemStack stack) {
-    CompoundTag nbt = ContainerTools.getItemData(stack);
+    CompoundTag nbt = stack.getOrCreateTag();
     if (nbt.contains("secondaryColor", Tag.TAG_INT)) {
       return DyeColor.byId(nbt.getInt("secondaryColor"));
     } else {

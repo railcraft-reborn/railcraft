@@ -1,8 +1,8 @@
 package mods.railcraft.world.entity.vehicle;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.RailcraftNBTUtil;
-import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
@@ -16,7 +16,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
-import org.apache.commons.lang3.NotImplementedException;
 
 public class EnergyMinecart extends RailcraftMinecart {
 
@@ -76,7 +75,7 @@ public class EnergyMinecart extends RailcraftMinecart {
   public ItemStack getPickResult() {
     ItemStack itemStack = super.getPickResult();
     this.cartBattery.ifPresent(cell -> {
-      ContainerTools.getItemData(itemStack).putInt("batteryEnergy",  cell.getEnergyStored());
+      itemStack.getOrCreateTag().putInt("batteryEnergy",  cell.getEnergyStored());
     });
     return itemStack;
   }

@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.item.Filter;
-import mods.railcraft.api.item.InvToolsAPI;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -74,26 +73,12 @@ public abstract class ContainerTools {
   // }
 
   public static void addItemToolTip(ItemStack stack, String msg) {
-    CompoundTag nbt = getItemData(stack);
+    CompoundTag nbt = stack.getOrCreateTag();
     CompoundTag display = nbt.getCompound("display");
     nbt.put("display", display);
     ListTag lore = display.getList("Lore", 8);
     display.put("Lore", lore);
     lore.add(StringTag.valueOf(msg));
-  }
-
-  /**
-   * Use this for manipulating top level NBT data only.
-   *
-   * In most cases you should use {@link InvToolsAPI#getRailcraftData(ItemStack, boolean)}
-   */
-  public static CompoundTag getItemData(ItemStack stack) {
-    CompoundTag nbt = stack.getTag();
-    if (nbt == null) {
-      nbt = new CompoundTag();
-      stack.setTag(nbt);
-    }
-    return nbt;
   }
 
   public static ItemStack depleteItem(ItemStack stack) {

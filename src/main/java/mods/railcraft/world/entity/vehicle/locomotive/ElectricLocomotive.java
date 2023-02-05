@@ -205,7 +205,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   public ItemStack getPickResult() {
     ItemStack itemStack = super.getPickResult();
     this.cartBattery.ifPresent(cell -> {
-      ContainerTools.getItemData(itemStack).putInt("batteryEnergy", cell.getEnergyStored());
+      itemStack.getOrCreateTag().putInt("batteryEnergy", cell.getEnergyStored());
     });
     return itemStack;
   }

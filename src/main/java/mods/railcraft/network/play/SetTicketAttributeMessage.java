@@ -1,8 +1,8 @@
 package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
-import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.world.item.GoldenTicketItem;
+import mods.railcraft.world.item.TicketItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.network.NetworkEvent;
@@ -24,10 +24,7 @@ public record SetTicketAttributeMessage(InteractionHand hand, String dest) {
 
     var itemStackToUpdate = player.getItemInHand(this.hand);
     if (itemStackToUpdate.getItem() instanceof GoldenTicketItem) {
-      var tag = itemStackToUpdate.getOrCreateTag().copy();
-      PlayerUtil.writeOwnerToNBT(tag, senderProfile);
-      tag.putString("dest", this.dest);
-      itemStackToUpdate.setTag(tag);
+      TicketItem.setTicketData(itemStackToUpdate, this.dest, senderProfile);
     }
     return true;
   }
