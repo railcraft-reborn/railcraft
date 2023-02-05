@@ -19,9 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public final class PlayerUtil {
 
   public static void writeOwnerToNBT(CompoundTag nbt, GameProfile owner) {

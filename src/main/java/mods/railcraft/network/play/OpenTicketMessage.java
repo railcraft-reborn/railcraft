@@ -29,7 +29,7 @@ public record OpenTicketMessage (InteractionHand hand, ItemStack itemStack) {
     var minecraft = Minecraft.getInstance();
     var item = minecraft.player.getItemInHand(message.hand);
     if (item.is(RailcraftItems.GOLDEN_TICKET.get())) {
-      minecraft.setScreen(new GoldenTicketScreen());
+      minecraft.setScreen(new GoldenTicketScreen(item, message.hand));
     }
   }
 }

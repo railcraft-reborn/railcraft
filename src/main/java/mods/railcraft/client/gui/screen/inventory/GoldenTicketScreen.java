@@ -8,15 +8,19 @@ import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.util.GuiUtil;
+import mods.railcraft.network.NetworkChannel;
+import mods.railcraft.network.play.SetTicketAttributeMessage;
+import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.ScreenUtil;
+import mods.railcraft.world.item.TicketItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.GameNarrator;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.ScreenUtils;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemStack;
 
 public class GoldenTicketScreen extends IngameWindowScreen {
 
@@ -25,10 +29,17 @@ public class GoldenTicketScreen extends IngameWindowScreen {
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 136;
 
+  private final ItemStack itemStack;
+  private final InteractionHand hand;
+  private String dest;
   private EditBox editBoxDest;
+  private boolean readingManual = false;
 
-  public GoldenTicketScreen() {
+  public GoldenTicketScreen(ItemStack itemStack, InteractionHand hand) {
     super(GameNarrator.NO_TITLE, TICKET_LOCATION, IMAGE_WIDTH, IMAGE_HEIGHT);
+    this.itemStack = itemStack;
+    this.hand = hand;
+    this.dest = "Dest=" + TicketItem.getDestination(this.itemStack);
   }
 
   @Override
@@ -36,8 +47,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
     var buttons = List.of(
         RailcraftButton
             .builder(CommonComponents.GUI_DONE, button -> {
-              this.minecraft.player
-                  .displayClientMessage(Component.literal(editBoxDest.getValue()), false);
+              sendMessageToServer();
               this.minecraft.setScreen(null);
             }, ButtonTexture.LARGE_BUTTON)
             .pos(0, this.height / 2 + 75)
@@ -45,7 +55,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
             .build(),
         RailcraftButton
             .builder(Translations.Screen.HELP, button -> {
-              //this.minecraft.setScreen(null);
+              readingManual = !readingManual;
             }, ButtonTexture.LARGE_BUTTON)
             .pos(0, this.height / 2 + 75)
             .size(65, 20)
@@ -62,14 +72,12 @@ public class GoldenTicketScreen extends IngameWindowScreen {
 
     editBoxDest = new EditBox(font, this.width / 2 - (234 / 2), this.height / 2 + 17,
         234, 20, Component.empty());
-    editBoxDest.setValue("Dest=");
+    editBoxDest.setValue(dest);
     this.addRenderableWidget(editBoxDest);
   }
 
   @Override
-  public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-    return false;
-  }
+  public void onClose() {}
 
   @Override
   protected void renderContent(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
@@ -86,5 +94,19 @@ public class GoldenTicketScreen extends IngameWindowScreen {
         IngameWindowScreen.TEXT_COLOR, false);
     ScreenUtil.drawCenteredString(poseStack, desc2, font, IMAGE_WIDTH, 60,
         IngameWindowScreen.TEXT_COLOR, false);
+  }
+
+  private void sendMessageToServer() {
+    this.dest = editBoxDest.getValue();
+    var modified = this.dest.startsWith("Dest=") && !this.dest.equals("Dest=");
+    if (!modified)
+      return;
+
+    var destWithoutPrefix = this.dest.substring("Dest=".length());
+    var tag = itemStack.getOrCreateTag().copy();
+    PlayerUtil.writeOwnerToNBT(tag, this.minecraft.player.getGameProfile());
+    tag.putString("dest", destWithoutPrefix);
+    itemStack.setTag(tag);
+    NetworkChannel.GAME.sendToServer(new SetTicketAttributeMessage(this.hand, destWithoutPrefix));
   }
 }

@@ -31,6 +31,7 @@ public class TicketItem extends Item {
     String dest = nbt.getString("dest");
     return dest.length() < LINE_LENGTH;
   }
+
   @Override
   public Component getName(ItemStack stack) {
     var name = super.getName(stack);
