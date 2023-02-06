@@ -1,4 +1,4 @@
-package mods.railcraft.client.gui.screen.inventory;
+package mods.railcraft.client.gui.screen;
 
 import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;

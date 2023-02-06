@@ -1,7 +1,7 @@
 package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
-import mods.railcraft.client.gui.screen.inventory.GoldenTicketScreen;
+import mods.railcraft.client.gui.screen.GoldenTicketScreen;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
