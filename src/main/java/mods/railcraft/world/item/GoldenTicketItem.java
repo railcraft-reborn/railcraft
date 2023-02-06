@@ -12,9 +12,6 @@ import net.minecraft.world.level.Level;
 
 public class GoldenTicketItem extends TicketItem {
 
-  public static final Predicate<ItemStack> FILTER =
-      stack -> stack != null && stack.getItem() instanceof GoldenTicketItem;
-
   public GoldenTicketItem(Properties properties) {
     super(properties);
   }
@@ -27,9 +24,10 @@ public class GoldenTicketItem extends TicketItem {
   @Override
   public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
     var newItemStack = new ItemStack(this);
-    var dest = TicketItem.getDestination(itemStack);
-    var owner = TicketItem.getOwner(itemStack);
-    TicketItem.setTicketData(newItemStack, dest, owner);
+    var tag = itemStack.getTag();
+    if (tag != null) {
+      newItemStack.setTag(tag);
+    }
     return newItemStack;
   }
 
