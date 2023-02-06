@@ -96,6 +96,8 @@ public class Translations {
     public static final String GOLDEN_TICKET_TITLE = makeKey("screen", "golden_ticket.title");
     public static final String GOLDEN_TICKET_DESC_1 = makeKey("screen", "golden_ticket.desc1");
     public static final String GOLDEN_TICKET_DESC_2 = makeKey("screen", "golden_ticket.desc2");
+    public static final String GOLDEN_TICKET_ABOUT = makeKey("screen", "golden_ticket.about");
+    public static final String GOLDEN_TICKET_HELP = makeKey("screen", "golden_ticket.help");
   }
 
   public static class Tips {

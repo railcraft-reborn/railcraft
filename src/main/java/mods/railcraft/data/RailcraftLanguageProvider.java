@@ -537,6 +537,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.GOLDEN_TICKET_TITLE, "Golden Ticket");
     this.add(Translations.Screen.GOLDEN_TICKET_DESC_1, "This ticket is valid");
     this.add(Translations.Screen.GOLDEN_TICKET_DESC_2, "for the following destination:");
+    this.add(Translations.Screen.GOLDEN_TICKET_ABOUT, "About the Golden Ticket");
+    this.add(Translations.Screen.GOLDEN_TICKET_HELP, """
+        The Golden Ticket is an unlimited use Ticket that can be used to ride any public train \
+        or train owned by the issuer. It can also be combined with paper to produce single \
+        use tickets.""");
   }
 
   private void trackTranslations() {

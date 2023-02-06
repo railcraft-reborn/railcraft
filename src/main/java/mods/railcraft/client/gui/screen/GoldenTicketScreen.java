@@ -31,14 +31,16 @@ public class GoldenTicketScreen extends IngameWindowScreen {
   private final ItemStack itemStack;
   private final InteractionHand hand;
   private String dest;
+  private RailcraftButton helpButton;
   private EditBox editBoxDest;
-  private boolean readingManual = false;
+  private boolean readingManual;
 
   public GoldenTicketScreen(ItemStack itemStack, InteractionHand hand) {
     super(GameNarrator.NO_TITLE, TICKET_LOCATION, IMAGE_WIDTH, IMAGE_HEIGHT);
     this.itemStack = itemStack;
     this.hand = hand;
     this.dest = "Dest=" + TicketItem.getDestination(this.itemStack);
+    this.readingManual = false;
   }
 
   @Override
@@ -52,7 +54,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
             .pos(0, this.height / 2 + 75)
             .size(65, 20)
             .build(),
-        RailcraftButton
+        helpButton = RailcraftButton
             .builder(Translations.Screen.HELP, button -> {
               readingManual = !readingManual;
             }, ButtonTexture.LARGE_BUTTON)
@@ -80,19 +82,34 @@ public class GoldenTicketScreen extends IngameWindowScreen {
 
   @Override
   protected void renderContent(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-    var title = Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE)
-        .withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD);
-    var desc1 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_1);
-    var desc2 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_2);
-    poseStack.pushPose();
-    poseStack.scale(2, 2, 2);
-    ScreenUtil.drawCenteredString(poseStack, title, font, IMAGE_WIDTH / 2, 8,
-        IngameWindowScreen.TEXT_COLOR, true);
-    poseStack.popPose();
-    ScreenUtil.drawCenteredString(poseStack, desc1, font, IMAGE_WIDTH, 45,
-        IngameWindowScreen.TEXT_COLOR, false);
-    ScreenUtil.drawCenteredString(poseStack, desc2, font, IMAGE_WIDTH, 60,
-        IngameWindowScreen.TEXT_COLOR, false);
+    if (readingManual) {
+      editBoxDest.setVisible(false);
+      var about = Component.translatable(Translations.Screen.GOLDEN_TICKET_ABOUT);
+      var help = Component.translatable(Translations.Screen.GOLDEN_TICKET_HELP)
+          .withStyle(ChatFormatting.BLACK);
+
+      ScreenUtil.drawCenteredString(poseStack, about, font, IMAGE_WIDTH, 15,
+          IngameWindowScreen.TEXT_COLOR, false);
+      font.drawWordWrap(help, this.width / 2 - 110, this.height / 2 - 40, 230,
+          IngameWindowScreen.TEXT_COLOR);
+      helpButton.setMessage(CommonComponents.GUI_BACK);
+    } else {
+      var title = Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE)
+          .withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD);
+      var desc1 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_1);
+      var desc2 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_2);
+      poseStack.pushPose();
+      poseStack.scale(2, 2, 2);
+      ScreenUtil.drawCenteredString(poseStack, title, font, IMAGE_WIDTH / 2, 8,
+          IngameWindowScreen.TEXT_COLOR, true);
+      poseStack.popPose();
+      ScreenUtil.drawCenteredString(poseStack, desc1, font, IMAGE_WIDTH, 45,
+          IngameWindowScreen.TEXT_COLOR, false);
+      ScreenUtil.drawCenteredString(poseStack, desc2, font, IMAGE_WIDTH, 60,
+          IngameWindowScreen.TEXT_COLOR, false);
+      editBoxDest.setVisible(true);
+      helpButton.setMessage(Component.translatable(Translations.Screen.HELP));
+    }
   }
 
   private void sendMessageToServer() {
