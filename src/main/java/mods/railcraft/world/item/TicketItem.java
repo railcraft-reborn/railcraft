@@ -54,6 +54,11 @@ public class TicketItem extends Item {
           .withStyle(ChatFormatting.GRAY));
   }
 
+  @Override
+  public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+    return false;
+  }
+
   public static ItemStack copyTicket(ItemStack source) {
     if (source.isEmpty())
       return ItemStack.EMPTY;

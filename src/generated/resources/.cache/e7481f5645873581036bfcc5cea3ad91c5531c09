@@ -1,4 +1,4 @@
-// 1.19.3	2023-02-05T13:36:27.944593	Item Models: railcraft
+// 1.19.3	2023-02-08T11:55:24.220414	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -80,6 +80,7 @@ c3bf8523326e7bc181f4e12e5a66e16c3319f40c assets/railcraft/models/item/one_way_tr
 98e9bd5c31e8711afd536b5f9ac9f38ac8474133 assets/railcraft/models/item/rebar.json
 93e6f5d1cad0dae72ead237d05f1de1485f1bc79 assets/railcraft/models/item/receiver_circuit.json
 9ca066160a55f459935fb2f395bc67608188f36a assets/railcraft/models/item/reinforced_rail.json
+7b263160ff342328226a2e1141728755f941e3c4 assets/railcraft/models/item/routing_table_book.json
 3b04c08465f407f302890dc95847399e57b73acf assets/railcraft/models/item/saltpeter_dust.json
 ec0fd04fb906c68d11d61e5f868cfb7118f56b75 assets/railcraft/models/item/seasons_crowbar.json
 7090f3d13d11fef57764d5be581705beb57a1cb0 assets/railcraft/models/item/signal_block_surveyor.json

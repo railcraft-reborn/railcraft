@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:writable_book"
+    },
+    {
+      "tag": "forge:dyes/blue"
+    }
+  ],
+  "result": {
+    "item": "railcraft:routing_table_book"
+  }
+}

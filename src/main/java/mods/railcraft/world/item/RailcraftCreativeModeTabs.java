@@ -173,6 +173,7 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get());
               output.accept(RailcraftItems.GOLDEN_TICKET.get());
               output.accept(RailcraftItems.TICKET.get());
+              output.accept(RailcraftItems.ROUTING_TABLE_BOOK.get());
               output.accept(RailcraftItems.GOGGLES.get());
               output.accept(RailcraftItems.OVERALLS.get());
 

@@ -1,6 +1,5 @@
 package mods.railcraft.world.item;
 
-import java.util.function.Predicate;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.OpenTicketMessage;
 import net.minecraft.server.level.ServerPlayer;

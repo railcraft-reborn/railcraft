@@ -526,6 +526,10 @@ public class RailcraftItems {
       deferredRegister.register("ticket",
           () -> new TicketItem(new Item.Properties()));
 
+  public static final RegistryObject<Item> ROUTING_TABLE_BOOK =
+      deferredRegister.register("routing_table_book",
+          () -> new RoutingTableBookItem(new Item.Properties()));
+
   public static final RegistryObject<Item> OVERALLS =
       deferredRegister.register("overalls",
           () -> new OverallsItem(new Item.Properties()));

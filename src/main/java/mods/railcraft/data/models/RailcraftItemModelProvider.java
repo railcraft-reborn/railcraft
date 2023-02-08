@@ -59,6 +59,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.CREOSOTE_BOTTLE.get());
         this.basicItem(RailcraftItems.GOLDEN_TICKET.get());
         this.basicItem(RailcraftItems.TICKET.get());
+        this.basicItem(RailcraftItems.ROUTING_TABLE_BOOK.get());
         this.basicItem(RailcraftItems.CONTROLLER_CIRCUIT.get());
         this.basicItem(RailcraftItems.RECEIVER_CIRCUIT.get());
         this.basicItem(RailcraftItems.SIGNAL_CIRCUIT.get());

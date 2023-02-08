@@ -182,6 +182,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.OVERALLS, "Overalls");
     this.addItem(RailcraftItems.GOLDEN_TICKET, "Golden Ticket");
     this.addItem(RailcraftItems.TICKET, "Ticket");
+    this.addItem(RailcraftItems.ROUTING_TABLE_BOOK, "Routing Table Book");
     this.addItem(RailcraftItems.WHISTLE_TUNER, "Whistle Tuner");
     this.addItem(RailcraftItems.TUNNEL_BORE, "Tunnel Bore");
     this.addItem(RailcraftItems.TRACK_LAYER, "Track Layer Cart");
@@ -327,6 +328,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.ROUTING_TICKET_ISSUER, "Issuer:");
     this.add(Translations.Tips.ROUTING_TICKET_DEST, "Destination:");
     this.add(Translations.Tips.ROUTING_TICKET_BLANK, "Blank Ticket");
+    this.add(Translations.Tips.ROUTING_TABLE_BOOK_LAST_EDIT, "Last edited by %s");
     this.add(Translations.Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");

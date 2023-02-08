@@ -108,6 +108,8 @@ public class Translations {
         makeKey("tips", "routing.ticket.dest");
     public static final String ROUTING_TICKET_BLANK =
         makeKey("tips", "routing.ticket.blank");
+    public static final String ROUTING_TABLE_BOOK_LAST_EDIT =
+        makeKey("tips", "routing.routing_table_book.last_edit");
     public static final String LOCOMOTIVE_SLOT_TICKET =
         makeKey("tips", "locomotive.slot.ticket");
     public static final String LOCOMOTIVE_ITEM_OWNER =

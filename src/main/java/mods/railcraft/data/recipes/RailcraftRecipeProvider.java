@@ -992,6 +992,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(consumer);
     RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.TICKET_DUPLICATE.get())
         .save(consumer, getItemName(RailcraftItems.TICKET.get()));
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.ROUTING_TABLE_BOOK.get())
+        .requires(Items.WRITABLE_BOOK)
+        .requires(Tags.Items.DYES_BLUE)
+        .unlockedBy(getHasName(Items.WRITABLE_BOOK), has(Items.WRITABLE_BOOK))
+        .save(consumer);
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.OVERALLS.get())
         .pattern("aaa")
         .pattern("a a")

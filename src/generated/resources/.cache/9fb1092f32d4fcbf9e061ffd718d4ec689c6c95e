@@ -1,4 +1,4 @@
-// 1.19.3	2023-02-05T19:04:00.051925	Recipes
+// 1.19.3	2023-02-08T11:55:24.222606	Recipes
 b5a17571ce39881697d539ab8e2e6830c430e652 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 3159a4cc9361689702fc1dee383096849bfdb726 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
 9293038e4f6a21d986adfd45b476c5538ab7a56a data/minecraft/advancements/recipes/misc/lead_ingot_from_smelting_deepslate_lead_ore.json
@@ -378,6 +378,7 @@ ca08412595458231caa7f8cd343c80ff852a5672 data/railcraft/advancements/recipes/mis
 c42395dd4fb089cfa051c5210d73e2e90357651a data/railcraft/advancements/recipes/misc/reinforced_track.json
 84d10234298b2c4804b2070f84257bd241347b6a data/railcraft/advancements/recipes/misc/reinforced_turnout_track.json
 3a85fb9aa4977b07ab59336d38e2aa0db4b27381 data/railcraft/advancements/recipes/misc/reinforced_wye_track.json
+2ca5a451c38080530a47b9de87294afe24ad0d2b data/railcraft/advancements/recipes/misc/routing_table_book.json
 ed97d84516b7c7c1d1278095159ac3e8c0346657 data/railcraft/advancements/recipes/misc/signal_block_relay_box.json
 2a949226796bb08448b7078dee5d7b47dc830117 data/railcraft/advancements/recipes/misc/signal_block_surveyor.json
 154f90139e3d595980713dcb12d68906a31c5dc0 data/railcraft/advancements/recipes/misc/signal_capacitor_box.json
@@ -919,6 +920,7 @@ e44981204e7f1e51f76ee301185cd5070090ec6e data/railcraft/recipes/rolling/tin_elec
 23e9a48fe6a289eb121dd58172fd3be318116294 data/railcraft/recipes/rolling/track_parts_steel_nugget.json
 1551ab77792253a681c5a68c965a6078d1b456a9 data/railcraft/recipes/rolling/zinc_electrode.json
 85f5f46e39b9890d6a78e14adb60349339dba28f data/railcraft/recipes/rolling/zinc_plate.json
+a41aff79d305b212593fcab4a1962340300c5567 data/railcraft/recipes/routing_table_book.json
 bb1d2869608a81aa2656c4565a34c1e9b45c3dcd data/railcraft/recipes/signal_block_relay_box.json
 f49e123945dea0c35579ad5fbc96ede39d070b6d data/railcraft/recipes/signal_block_surveyor.json
 175ad0c71129bd16b2ab6af50604cd70f566d86a data/railcraft/recipes/signal_capacitor_box.json
