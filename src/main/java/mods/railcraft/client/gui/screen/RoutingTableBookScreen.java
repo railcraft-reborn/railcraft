@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -21,6 +22,8 @@ import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
 import mods.railcraft.client.util.GuiUtil;
+import mods.railcraft.network.NetworkChannel;
+import mods.railcraft.network.play.EditRoutingTableBookMessage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.Util;
@@ -272,10 +275,8 @@ public class RoutingTableBookScreen extends Screen {
     if (this.isModified) {
       this.eraseEmptyTrailingPages();
       this.updateLocalCopy();
-      /*int i = this.hand == InteractionHand.MAIN_HAND ? this.owner.getInventory().selected : 40;
-      this.minecraft.getConnection()
-          .send(new ServerboundEditBookPacket(i, this.pages, publish ? Optional.of(this.title
-          .trim()) : Optional.empty()));*/
+      NetworkChannel.GAME.sendToServer(new EditRoutingTableBookMessage(this.hand, this.pages,
+          Optional.of(this.title.trim())));
     }
   }
 

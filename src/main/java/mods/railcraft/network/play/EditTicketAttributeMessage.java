@@ -7,15 +7,15 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.network.NetworkEvent;
 
-public record SetTicketAttributeMessage(InteractionHand hand, String dest) {
+public record EditTicketAttributeMessage(InteractionHand hand, String dest) {
 
   public void encode(FriendlyByteBuf out) {
     out.writeEnum(this.hand);
     out.writeUtf(dest);
   }
 
-  public static SetTicketAttributeMessage decode(FriendlyByteBuf in) {
-    return new SetTicketAttributeMessage(in.readEnum(InteractionHand.class), in.readUtf());
+  public static EditTicketAttributeMessage decode(FriendlyByteBuf in) {
+    return new EditTicketAttributeMessage(in.readEnum(InteractionHand.class), in.readUtf());
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {

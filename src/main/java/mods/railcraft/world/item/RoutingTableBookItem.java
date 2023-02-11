@@ -39,7 +39,6 @@ public class RoutingTableBookItem extends Item {
     return name;
   }
 
-
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list,
       TooltipFlag flag) {
