@@ -32,7 +32,7 @@ public final class PlayerUtil {
     UUID thrower = item.getThrower();
     Player player = null;
     if (thrower != null)
-      player = item.level.getPlayerByUUID(item.getThrower());
+      player = item.level.getPlayerByUUID(thrower);
     if (player == null)
       player = RailcraftFakePlayer.get((ServerLevel) item.level, item.blockPosition());
     return player;

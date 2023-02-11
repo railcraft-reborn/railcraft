@@ -536,6 +536,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.PATTERN, "Pattern");
     this.add(Translations.Screen.STOCK, "Stock");
     this.add(Translations.Screen.HELP, "Help");
+    this.add(Translations.Screen.NAME, "Name");
     this.add(Translations.Screen.GOLDEN_TICKET_TITLE, "Golden Ticket");
     this.add(Translations.Screen.GOLDEN_TICKET_DESC_1, "This ticket is valid");
     this.add(Translations.Screen.GOLDEN_TICKET_DESC_2, "for the following destination:");

@@ -586,6 +586,7 @@
   "screen.railcraft.locomotive.steam.mode.description.shutdown": "Shuts off the locomotive. Halts all movement and begins the cool-down process.",
   "screen.railcraft.manipulator.cart_filters": "Carts",
   "screen.railcraft.multiblock.assembly_failed": "Multiblock Assembly Failed",
+  "screen.railcraft.name": "Name",
   "screen.railcraft.signal_capacitor_box.duration": "Duration: %s",
   "screen.railcraft.signal_controller_box.default_aspect": "Default aspect:",
   "screen.railcraft.signal_controller_box.powered_aspect": "Powered aspect:",

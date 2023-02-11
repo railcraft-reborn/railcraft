@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.OpenTicketMessage;
+import mods.railcraft.network.play.OpenItemScreenMessage;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -35,7 +35,7 @@ public class GoldenTicketItem extends TicketItem {
       InteractionHand usedHand) {
     var itemStack = player.getItemInHand(usedHand);
     if (player instanceof ServerPlayer serverPlayer) {
-      NetworkChannel.GAME.sendTo(new OpenTicketMessage(usedHand, itemStack), serverPlayer);
+      NetworkChannel.GAME.sendTo(new OpenItemScreenMessage(usedHand, itemStack), serverPlayer);
     }
     return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
   }

@@ -3,7 +3,7 @@ package mods.railcraft.network;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.network.play.LinkedCartsMessage;
-import mods.railcraft.network.play.OpenTicketMessage;
+import mods.railcraft.network.play.OpenItemScreenMessage;
 import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetEmbarkingTrackAttributesMessage;
@@ -115,11 +115,11 @@ public enum NetworkChannel {
           .consumerMainThread(SetEmbarkingTrackAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(OpenTicketMessage.class, 0x0C,
+          .messageBuilder(OpenItemScreenMessage.class, 0x0C,
               NetworkDirection.PLAY_TO_CLIENT)
-          .encoder(OpenTicketMessage::encode)
-          .decoder(OpenTicketMessage::decode)
-          .consumerMainThread(OpenTicketMessage::handle)
+          .encoder(OpenItemScreenMessage::encode)
+          .decoder(OpenItemScreenMessage::decode)
+          .consumerMainThread(OpenItemScreenMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetTicketAttributeMessage.class, 0x0D,
