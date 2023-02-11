@@ -13,22 +13,24 @@ import net.minecraftforge.network.NetworkEvent;
 
 public record EditRoutingTableBookMessage(InteractionHand hand, List<String> pages,
                                           Optional<String> title) {
+  private static final int BOOK_MAX_PAGES = 50;
 
   public void encode(FriendlyByteBuf out) {
     out.writeEnum(this.hand);
     out.writeCollection(this.pages, (friendlyByteBuf, s) -> {
-      friendlyByteBuf.writeUtf(s, 8192);
+      friendlyByteBuf.writeUtf(s);
     });
     out.writeOptional(this.title, (friendlyByteBuf, s) -> {
-      friendlyByteBuf.writeUtf(s, 128);
+      friendlyByteBuf.writeUtf(s);
     });
   }
 
   public static EditRoutingTableBookMessage decode(FriendlyByteBuf in) {
     var hand = in.readEnum(InteractionHand.class);
-    var pages = in.readCollection(FriendlyByteBuf.limitValue(Lists::newArrayListWithCapacity, 200),
-        friendlyByteBuf -> friendlyByteBuf.readUtf(8192));
-    var title = in.readOptional(friendlyByteBuf -> friendlyByteBuf.readUtf(128));
+    var pages = in.readCollection(FriendlyByteBuf
+            .limitValue(Lists::newArrayListWithCapacity, BOOK_MAX_PAGES),
+        friendlyByteBuf -> friendlyByteBuf.readUtf());
+    var title = in.readOptional(friendlyByteBuf -> friendlyByteBuf.readUtf());
     return new EditRoutingTableBookMessage(hand, pages, title);
   }
 
