@@ -85,4 +85,19 @@ public class IngameWindowScreen extends Screen {
     FormattedCharSequence orderedText = text.getVisualOrderText();
     this.font.draw(poseStack, orderedText, x - this.font.width(orderedText) / 2, y, TEXT_COLOR);
   }
+
+  public void drawCenteredString(PoseStack poseStack, Component component, int y, boolean shadow) {
+    drawCenteredString(poseStack, component, windowWidth, y, shadow);
+  }
+
+  public void drawCenteredString(PoseStack poseStack, Component component, int width, int y,
+      boolean shadow) {
+    int length = font.width(component);
+    int x = width / 2 - length / 2;
+    if (shadow) {
+      font.drawShadow(poseStack, component, x, y, TEXT_COLOR);
+    } else {
+      font.draw(poseStack, component, x, y, TEXT_COLOR);
+    }
+  }
 }

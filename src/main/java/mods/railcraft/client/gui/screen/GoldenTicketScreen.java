@@ -4,13 +4,11 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
-import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetTicketAttributeMessage;
-import mods.railcraft.util.ScreenUtil;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.GameNarrator;
@@ -88,8 +86,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       var help = Component.translatable(Translations.Screen.GOLDEN_TICKET_HELP)
           .withStyle(ChatFormatting.BLACK);
 
-      ScreenUtil.drawCenteredString(poseStack, about, font, IMAGE_WIDTH, 15,
-          IngameWindowScreen.TEXT_COLOR, false);
+      drawCenteredString(poseStack, about, 15, false);
       font.drawWordWrap(help, this.width / 2 - 110, this.height / 2 - 40, 230,
           IngameWindowScreen.TEXT_COLOR);
       helpButton.setMessage(CommonComponents.GUI_BACK);
@@ -100,13 +97,10 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       var desc2 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_2);
       poseStack.pushPose();
       poseStack.scale(2, 2, 2);
-      ScreenUtil.drawCenteredString(poseStack, title, font, IMAGE_WIDTH / 2, 8,
-          IngameWindowScreen.TEXT_COLOR, true);
+      drawCenteredString(poseStack, title, IMAGE_WIDTH / 2, 8, true);
       poseStack.popPose();
-      ScreenUtil.drawCenteredString(poseStack, desc1, font, IMAGE_WIDTH, 45,
-          IngameWindowScreen.TEXT_COLOR, false);
-      ScreenUtil.drawCenteredString(poseStack, desc2, font, IMAGE_WIDTH, 60,
-          IngameWindowScreen.TEXT_COLOR, false);
+      drawCenteredString(poseStack, desc1, 45, false);
+      drawCenteredString(poseStack, desc2, 60, false);
       editBoxDest.setVisible(true);
       helpButton.setMessage(Component.translatable(Translations.Screen.HELP));
     }
