@@ -28,8 +28,6 @@ import net.minecraft.client.GameNarrator;
 import net.minecraft.client.StringSplitter;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
@@ -487,9 +485,7 @@ public class RoutingTableBookScreen extends Screen {
       this.font.draw(poseStack, this.pageMsg, xOffset - j1 + 225, yOffset + 15, 0);
       var displayCache = this.getDisplayCache();
       for(var lineinfo : displayCache.lines) {
-
-        this.font.draw(poseStack, lineinfo.asComponent, /*xOffset - 100 + */lineinfo.x,
-            /*yOffset + */lineinfo.y, -16777216);
+        this.font.draw(poseStack, lineinfo.asComponent, lineinfo.x, lineinfo.y, -16777216);
       }
       this.renderHighlight(displayCache.selection);
       this.renderCursor(poseStack, displayCache.cursor, displayCache.cursorAtEnd);
@@ -535,7 +531,6 @@ public class RoutingTableBookScreen extends Screen {
   }
 
   private Pos2i convertScreenToLocal(Pos2i screenPos) {
-    // x:36 y:32
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
     int x = screenPos.x - xOffset - 20;
@@ -678,8 +673,8 @@ public class RoutingTableBookScreen extends Screen {
     }
   }
 
-  static int findLineFromPos(int[] pLineStarts, int pFind) {
-    int i = Arrays.binarySearch(pLineStarts, pFind);
+  static int findLineFromPos(int[] lineStarts, int find) {
+    int i = Arrays.binarySearch(lineStarts, find);
     return i < 0 ? -(i + 2) : i;
   }
 
