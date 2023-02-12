@@ -47,6 +47,7 @@ import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackLeverBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackMotorBlock;
+import mods.railcraft.world.level.block.track.actuator.SwitchTrackRoutingBlock;
 import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
@@ -503,6 +504,13 @@ public class RailcraftBlocks {
   public static final RegistryObject<SwitchTrackActuatorBlock> SWITCH_TRACK_MOTOR =
       deferredRegister.register("switch_track_motor",
           () -> new SwitchTrackMotorBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+              .strength(8.0F, 50.0F)
+              .sound(SoundType.METAL)
+              .noOcclusion()));
+
+  public static final RegistryObject<SwitchTrackRoutingBlock> SWITCH_TRACK_ROUTING =
+      deferredRegister.register("switch_track_routing",
+          () -> new SwitchTrackRoutingBlock(BlockBehaviour.Properties.of(Material.DECORATION)
               .strength(8.0F, 50.0F)
               .sound(SoundType.METAL)
               .noOcclusion()));

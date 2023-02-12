@@ -1,4 +1,4 @@
-// 1.19.3	2022-12-20T20:13:58.061399937	Railcraft Block Tags
+// 1.19.3	2023-02-12T17:24:50.154875	Railcraft Block Tags
 e36857f35c1bac4bde5a8450008b92cf82656216 data/forge/tags/blocks/ore_rates/dense.json
 8ce5fa4b4f1c2619e124ef387b086d72f9c26f04 data/forge/tags/blocks/ore_rates/singular.json
 c31435450cdbffad0151b7e26a9cc131bf672a75 data/forge/tags/blocks/ores.json
@@ -31,7 +31,7 @@ e428d6ae724c5108f98185295926eb14c6510c44 data/railcraft/tags/blocks/iron_tank_ga
 ad43ddea7185867f695a872b9110aff36104b44d data/railcraft/tags/blocks/iron_tank_valve.json
 c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/blocks/iron_tank_wall.json
 ab9715c86d116076ee3b1a98094674f18b844d35 data/railcraft/tags/blocks/iron_track.json
-62487393a6476fbb98d9cb780840805398d6c248 data/railcraft/tags/blocks/mineable/crowbar.json
+7e63a96f1bf4a035e6939816c0b09cf8bdf2398d data/railcraft/tags/blocks/mineable/crowbar.json
 5c3ee0c8b144c2b48d062bca01cdc96427bb6c26 data/railcraft/tags/blocks/post.json
 1ecaf64f7b17425064c50cdd01fd826d38f37db5 data/railcraft/tags/blocks/quarried.json
 d7c59b9622d54a016514e0ee2b499f287afac0f6 data/railcraft/tags/blocks/reinforced_track.json
@@ -41,4 +41,4 @@ cef2fe722cdf4386365bd961d925fa5aeb2e244e data/railcraft/tags/blocks/signal.json
 39074036a3b8c8bbad74fcad7dce1c559f82f107 data/railcraft/tags/blocks/steel_tank_wall.json
 f0e14462c62ae3868201a4d069718f4077346a94 data/railcraft/tags/blocks/strap_iron_track.json
 3a7becb38c8d1c2314b0c3b33165fbb0a8abea1e data/railcraft/tags/blocks/strengthened_glass.json
-b4ddcd8b12c10cbe6bad6a5ac76264b9ce2cf0e1 data/railcraft/tags/blocks/switch_track_actuator.json
+0a2c4747582864640e0b953be8de808a99beb1f2 data/railcraft/tags/blocks/switch_track_actuator.json

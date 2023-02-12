@@ -99,6 +99,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.TRAIN_DISPENSER, "Train Dispenser");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_LEVER, "Switch Track Lever");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR, "Switch Track Motor");
+    this.addBlock(RailcraftBlocks.SWITCH_TRACK_ROUTING, "Switch Track Routing");
     this.addBlock(RailcraftBlocks.BLOCK_SIGNAL, "Block Signal");
     this.addBlock(RailcraftBlocks.DISTANT_SIGNAL, "Distant Signal");
     this.addBlock(RailcraftBlocks.TOKEN_SIGNAL, "Token Signal");
@@ -546,6 +547,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         The Golden Ticket is an unlimited use Ticket that can be used to ride any public train \
         or train owned by the issuer. It can also be combined with paper to produce single \
         use tickets.""");
+    this.add(Translations.Screen.ROUTING_TABLE_BOOK, "Routing Table Book");
   }
 
   private void trackTranslations() {

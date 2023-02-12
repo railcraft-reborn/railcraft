@@ -302,6 +302,12 @@ public class RailcraftBlockEntityTypes {
               .of(SwitchTrackMotorBlockEntity::new, RailcraftBlocks.SWITCH_TRACK_MOTOR.get())
               .build(null));
 
+  public static final RegistryObject<BlockEntityType<SwitchTrackRoutingBlockEntity>> SWITCH_TRACK_ROUTING =
+      deferredRegister.register("switch_track_routing",
+          () -> BlockEntityType.Builder
+              .of(SwitchTrackRoutingBlockEntity::new, RailcraftBlocks.SWITCH_TRACK_ROUTING.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<LockingTrackBlockEntity>> LOCKING_TRACK =
       deferredRegister.register("locking_track",
           () -> BlockEntityType.Builder

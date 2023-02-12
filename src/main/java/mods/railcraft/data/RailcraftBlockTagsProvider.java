@@ -26,7 +26,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTag(Tags.Blocks.GRAVEL);
     this.tag(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
         .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get())
-        .add(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
+        .add(RailcraftBlocks.SWITCH_TRACK_MOTOR.get())
+        .add(RailcraftBlocks.SWITCH_TRACK_ROUTING.get());
     this.tag(BlockTags.RAILS)
         .addTag(RailcraftTags.Blocks.ABANDONED_TRACK)
         .addTag(RailcraftTags.Blocks.ELECTRIC_TRACK)
@@ -162,6 +163,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     this.tag(RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR)
         .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get(),
             RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
+            RailcraftBlocks.SWITCH_TRACK_ROUTING.get(),
             RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
             RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
             RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),

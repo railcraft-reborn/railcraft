@@ -2,6 +2,7 @@
   "values": [
     "railcraft:switch_track_lever",
     "railcraft:switch_track_motor",
+    "railcraft:switch_track_routing",
     "railcraft:analog_signal_controller_box",
     "railcraft:signal_block_relay_box",
     "railcraft:dual_block_signal",

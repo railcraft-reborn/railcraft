@@ -326,6 +326,7 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.FORCE_TRACK_EMITTER.get());
     this.dropSelf(RailcraftBlocks.SWITCH_TRACK_LEVER.get());
     this.dropSelf(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
+    this.dropSelf(RailcraftBlocks.SWITCH_TRACK_ROUTING.get());//TODO: DROP ALSO THE BOOK
     this.dropSelf(RailcraftBlocks.TOKEN_SIGNAL.get());
 
     /* === machines === */
