@@ -52,7 +52,7 @@ public class RoutingTableBookScreen extends Screen {
 
   public static final ResourceLocation BOOK_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/gui/item/routing_table_book.png");
-  public static final int TEXT_WIDTH = 226;
+  public static final int TEXT_WIDTH = 220;
   public static final int TEXT_HEIGHT = 128;
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 192;
@@ -96,17 +96,10 @@ public class RoutingTableBookScreen extends Screen {
   private DisplayCache displayCache = DisplayCache.EMPTY;
   private Component pageMsg = CommonComponents.EMPTY;
   private final Component ownerText;
-  /** EXTRA */
-
-  private String locTag;
-  private String manualLocTag;
-  /**
-   * Whether the book is signed or can still be edited
-   */
-  private final boolean editable;
+  /** If I am reading the manual */
   private boolean readingManual;
 
-  private int numManualPages;
+  private final int numManualPages;
 
 
   public RoutingTableBookScreen(Player owner, ItemStack book, InteractionHand hand) {
@@ -124,23 +117,7 @@ public class RoutingTableBookScreen extends Screen {
     if (this.pages.isEmpty()) {
       this.pages.add("");
     }
-    this.editable = true;
-
-    /*this.locTag = locTag;
-    this.manualLocTag = locTag + "manual.";
-
-    if (editable) {
-      String pageLocTag = manualLocTag + "numPages";
-      int manualPages = 16;
-      if (LocalizationPlugin.hasTag(pageLocTag))
-        try {
-          manualPages = Integer.valueOf(LocalizationPlugin.translate(pageLocTag));
-        } catch (NumberFormatException ignored) {
-        }
-      numManualPages = manualPages;
-    } else {
-      numManualPages = 0;
-    }*/
+    this.numManualPages = Translations.RoutingTableManual.PAGES.size();
   }
 
   private void setClipboard(String s) {
@@ -166,46 +143,37 @@ public class RoutingTableBookScreen extends Screen {
   @Override
   protected void init() {
     this.clearDisplayCache();
-    if (editable) {
-      var buttons = List.of(
-          this.titleButton = RailcraftButton
-              .builder(Translations.Screen.NAME, button -> {
-                this.editingTitle = !this.editingTitle;
-                this.readingManual = false;
-                currentPage = 0;
-                this.updateButtonVisibility();
-          }, ButtonTexture.LARGE_BUTTON)
-              .pos(0, this.height / 2 + 90)
-              .size(65, 20)
-              .build(),
-          this.helpButton = RailcraftButton
-              .builder(Translations.Screen.HELP, button -> {
-                readingManual = !readingManual;
-                editingTitle = false;
-                currentPage = 0;
-              }, ButtonTexture.LARGE_BUTTON)
-              .pos(0, this.height / 2 + 90)
-              .size(65, 20)
-              .build(),
-          RailcraftButton
-              .builder(CommonComponents.GUI_DONE, button -> {
-                this.saveChanges();
-                this.minecraft.setScreen(null);
-              }, ButtonTexture.LARGE_BUTTON)
-              .pos(0, this.height / 2 + 90)
-              .size(65, 20)
-              .build());
-      GuiUtil.newButtonRowAuto(this::addRenderableWidget, this.width / 2 - 100, 200, buttons);
-
-    } else {
-      this.addRenderableWidget(RailcraftButton
-          .builder(CommonComponents.GUI_DONE, button -> {
-            this.minecraft.setScreen(null);
-          }, ButtonTexture.LARGE_BUTTON)
-          .pos(this.width / 2 - 65 / 2, this.height / 2 + 90)
-          .size(65, 20)
-          .build());
-    }
+    var buttons = List.of(
+        this.titleButton = RailcraftButton
+            .builder(Translations.Screen.NAME, button -> {
+              this.editingTitle = !this.editingTitle;
+              this.readingManual = false;
+              currentPage = 0;
+              this.updateButtonVisibility();
+              this.clearDisplayCacheAfterPageChange();
+            }, ButtonTexture.LARGE_BUTTON)
+            .pos(0, this.height / 2 + 90)
+            .size(65, 20)
+            .build(),
+        this.helpButton = RailcraftButton
+            .builder(Translations.Screen.HELP, button -> {
+              readingManual = !readingManual;
+              editingTitle = false;
+              currentPage = 0;
+              this.clearDisplayCacheAfterPageChange();
+            }, ButtonTexture.LARGE_BUTTON)
+            .pos(0, this.height / 2 + 90)
+            .size(65, 20)
+            .build(),
+        RailcraftButton
+            .builder(CommonComponents.GUI_DONE, button -> {
+              this.saveChanges();
+              this.minecraft.setScreen(null);
+            }, ButtonTexture.LARGE_BUTTON)
+            .pos(0, this.height / 2 + 90)
+            .size(65, 20)
+            .build());
+    GuiUtil.newButtonRowAuto(this::addRenderableWidget, this.width / 2 - 100, 200, buttons);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
     forwardButton = this.addRenderableWidget(
@@ -222,6 +190,12 @@ public class RoutingTableBookScreen extends Screen {
   }
 
   private void pageForward() {
+    if (this.readingManual) {
+      if (this.currentPage < this.getMaxPages() - 1) {
+        this.currentPage++;
+      }
+      return;
+    }
     if (this.currentPage < this.getNumPages() - 1) {
       this.currentPage++;
     } else {
@@ -238,22 +212,20 @@ public class RoutingTableBookScreen extends Screen {
     if (this.currentPage > 0) {
       this.currentPage--;
     }
-    this.updateButtonVisibility();
-    this.clearDisplayCacheAfterPageChange();
+    if (!this.readingManual) {
+      this.updateButtonVisibility();
+      this.clearDisplayCacheAfterPageChange();
+    }
   }
 
   private void updateButtonVisibility() {
-    this.forwardButton.visible = !this.editingTitle &&
-        (this.currentPage < this.getMaxPages() - 1) &&
-        (this.editable || this.currentPage < this.getNumPages() - 1);
+    this.forwardButton.visible = !this.editingTitle && this.currentPage < this.getMaxPages() - 1;
     this.backButton.visible = !this.editingTitle && this.currentPage > 0;
 
-    if (editable) {
-      helpButton.setMessage(readingManual ? CommonComponents.GUI_BACK :
-          Component.translatable(Translations.Screen.HELP));
-      titleButton.setMessage(editingTitle ? CommonComponents.GUI_BACK :
-          Component.translatable(Translations.Screen.NAME));
-    }
+    helpButton.setMessage(readingManual ? CommonComponents.GUI_BACK :
+        Component.translatable(Translations.Screen.HELP));
+    titleButton.setMessage(editingTitle ? CommonComponents.GUI_BACK :
+        Component.translatable(Translations.Screen.NAME));
   }
 
   private int getMaxPages() {
@@ -478,12 +450,20 @@ public class RoutingTableBookScreen extends Screen {
       int l = this.font.width(EDIT_TITLE_LABEL);
       this.font.draw(poseStack, EDIT_TITLE_LABEL, xOffset + 160 - l, yOffset + 34.0F, 0);
       int l1 = this.font.width(formattedcharsequence);
-      this.font.draw(poseStack, formattedcharsequence, xOffset + 120 - l1, yOffset + 50.0F, 0);
+      this.font.draw(poseStack, formattedcharsequence, xOffset + 120 - l1 / 2, yOffset + 50.0F, 0);
       int l2 = this.font.width(this.ownerText);
       this.font.draw(poseStack, this.ownerText, xOffset + 130 - l2, yOffset + 60.0F, 0);
+    } else if (this.readingManual) {
+      var manualPageIndicator = Component.translatable("book.pageIndicator", this.currentPage + 1,
+          this.getMaxPages());
+      int l = this.font.width(manualPageIndicator);
+      this.font.draw(poseStack, manualPageIndicator, xOffset - l + 225, yOffset + 15, 0);
+      var page = Component.translatable(Translations.RoutingTableManual.PAGES.get(currentPage));
+      font.drawWordWrap(page, xOffset + 20, yOffset + 27, TEXT_WIDTH,
+          IngameWindowScreen.TEXT_COLOR);
     } else {
-      int j1 = this.font.width(this.pageMsg);
-      this.font.draw(poseStack, this.pageMsg, xOffset - j1 + 225, yOffset + 15, 0);
+      int l = this.font.width(this.pageMsg);
+      this.font.draw(poseStack, this.pageMsg, xOffset - l + 225, yOffset + 15, 0);
       var displayCache = this.getDisplayCache();
       for(var lineinfo : displayCache.lines) {
         this.font.draw(poseStack, lineinfo.asComponent, lineinfo.x, lineinfo.y, -16777216);
@@ -555,7 +535,8 @@ public class RoutingTableBookScreen extends Screen {
       if (button == 0) {
         long i = Util.getMillis();
         var displayCache = this.getDisplayCache();
-        int j = displayCache.getIndexAtPosition(this.font, this.convertScreenToLocal(new Pos2i((int)mouseX, (int)mouseY)));
+        int j = displayCache.getIndexAtPosition(this.font,
+            this.convertScreenToLocal(new Pos2i((int)mouseX, (int)mouseY)));
         if (j >= 0) {
           if (j == this.lastIndex && i - this.lastClickTime < 250L) {
             if (!this.pageEdit.isSelecting()) {
@@ -599,7 +580,8 @@ public class RoutingTableBookScreen extends Screen {
   private DisplayCache getDisplayCache() {
     if (this.displayCache == null) {
       this.displayCache = this.rebuildDisplayCache();
-      this.pageMsg = Component.translatable("book.pageIndicator", this.currentPage + 1, this.getNumPages());
+      this.pageMsg = Component.translatable("book.pageIndicator",
+          this.currentPage + 1, this.getNumPages());
     }
     return this.displayCache;
   }
@@ -680,7 +662,8 @@ public class RoutingTableBookScreen extends Screen {
   }
 
 
-  private Rect2i createPartialLineSelection(String input, StringSplitter splitter, int p_98122_, int p_98123_, int p_98124_, int p_98125_) {
+  private Rect2i createPartialLineSelection(String input, StringSplitter splitter, int p_98122_,
+      int p_98123_, int p_98124_, int p_98125_) {
     String s = input.substring(p_98125_, p_98122_);
     String s1 = input.substring(p_98125_, p_98123_);
     var corner1 = new Pos2i((int)splitter.stringWidth(s), p_98124_);

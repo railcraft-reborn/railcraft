@@ -460,6 +460,11 @@ public class Translations {
         .map(i -> makeKey("death", "train." + i)).toList();
   }
 
+  public static class RoutingTableManual {
+    public static final List<String> PAGES = IntStream.rangeClosed(1, 12).boxed()
+        .map(i -> makeKey("manual", "routing_table.page." + i)).toList();
+  }
+
   public static String makeKey(String type, String name) {
     return type + "." + Railcraft.ID + "." + name;
   }

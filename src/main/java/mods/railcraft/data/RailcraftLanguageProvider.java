@@ -49,6 +49,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.signalCapacitorTranslations();
     this.subtitleTranslations();
     this.damageSourceTranslations();
+    this.routingTableManualTranslations();
   }
 
   private void blockTranslations() {
@@ -839,6 +840,136 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.DamageSource.TRAIN.get(3), "%s caught the wrong train");
     this.add(Translations.DamageSource.TRAIN.get(4), "%s bought a one-way ticket to the afterlife");
     this.add(Translations.DamageSource.TRAIN.get(5), "%s should have worn their Overalls");
+  }
+
+  private void routingTableManualTranslations() {
+    this.add(Translations.RoutingTableManual.PAGES.get(0), """
+        The Routing Table when placed in a Routing Detector or Switch will define a set of rules \
+        that are used to match against any passing Locomotive. These rules are define using a \
+        simple logic syntax that allows you to create rules as simple or complex as you like. \
+        The syntax is a Prefix Notation script, the Operators are followed by the Operands. \
+        Only one keyword is allowed per line. If no Operator is specified, OR is assumed. \
+        Routing Tables can be copied by placing two or more in a crafting grid.""");
+    this.add(Translations.RoutingTableManual.PAGES.get(1), """
+        Operator Keywords:
+          AND - Two Operands, both must be true.
+          OR - Two Operands, one must be true.
+          NOT - Invert the following Operand.
+          IF - Three Operands: cond, then, else.
+               If cond is true, use then;
+               otherwise, use else.
+        """);
+    this.add(Translations.RoutingTableManual.PAGES.get(2), """
+        Condition Keywords:
+          Dest=<string>
+            If the Locomotive's Destination
+            string starts with this string,
+            the condition is true.
+            "Dest=null" will match carts
+            with no destination.
+          Owner=<username>
+            True if the Locomotive belongs
+            to this person.
+        """);
+    this.add(Translations.RoutingTableManual.PAGES.get(3), """
+        Condition Keywords:
+          Name=<entityname>
+            True if it matches the
+            Minecart's name.
+            "Name=null" will match carts
+            with no custom name.
+          Type=<modid:itemname>
+            True if it matches the
+            Minecart's item name.
+        """);
+    this.add(Translations.RoutingTableManual.PAGES.get(4), """
+        Condition Keywords:
+          Rider=<type>[:<qualifier>]
+            True if the Train contains
+                a matching passenger
+                Simple Types:
+                  any, none, mob, animal, unnamed
+                Qualifier Capable Types:
+                  player, named, entity
+                Regex Capable Types:
+                  player, named
+                See GitHub Issue #844 for examples
+        """);
+    this.add(Translations.RoutingTableManual.PAGES.get(5), """
+        Condition Keywords:
+          Color=<primary>,<secondary>
+            True if the Locomotive's primary
+            and secondary colors match.
+            Accepts "Any" as a wildcard.
+            Colors: Black, Red, Green, Brown, Blue,
+            Purple, Cyan, LightGray, Gray, Pink, Lime,
+            Yellow, LightBlue, Magenta, Orange, White
+          NeedsRefuel=<true/false>
+            If the Locomotive is low on Fuel
+            or Water this will divert it.
+        """);
+    this.add(Translations.RoutingTableManual.PAGES.get(6), """
+        Condition Keywords:
+          Redstone=<true/false>
+            True if the Routing Block
+            is being powered by Redstone.
+        """);
+    this.add(Translations.RoutingTableManual.PAGES.get(7), """
+        Condition Keywords:
+          Loco=<string>
+            True if locomotive matches
+            parameter string.
+            Accepted strings: electric, steam,
+            creative, none.
+            Using parameter none will only return
+            true if there is no locomotive.
+        """);
+    this.add(Translations.RoutingTableManual.PAGES.get(8), """
+        Example Script:
+          Dest=TheFarLands
+          Color=Black,Red
+          AND
+          NOT
+          Owner=Steve
+          Dest=SecretHideout/OceanEntrance
+        """);
+    this.add(Translations.RoutingTableManual.PAGES.get(9), """
+        Result:
+          The script on the previous page will
+          match a Locomotive with a destination
+          of "TheFarLands/Milliways",
+          or that is painted black and red,
+          or that has a destination of
+          "SecretHideout/OceanEntrance",
+          but only if its not owned by Steve.
+        """);
+    this.add(Translations.RoutingTableManual.PAGES.get(10), """
+        Regular Expressions:
+          Some Conditions support
+          Regular Expressions.
+          To use a regex, add a '?' before the '='.
+          Rules are standard Java Patterns.
+        Supporting Conditions:
+          Dest, Name
+        Example:
+          Dest?=.*Hill
+        """);
+    this.add(Translations.RoutingTableManual.PAGES.get(11), """
+        Analog Output:
+          IF can be used with integer constants
+          for analog output. Ints and IF can
+          only be used at top level, or as
+          then or else to IF. TRUE and FALSE
+          are usable anywhere.
+        Example:
+          IF
+          Dest=Town
+          8
+          IF
+          Dest=City
+          4
+          FALSE
+        """);
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {
