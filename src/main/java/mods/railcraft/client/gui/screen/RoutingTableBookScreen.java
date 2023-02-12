@@ -117,7 +117,7 @@ public class RoutingTableBookScreen extends Screen {
     if (this.pages.isEmpty()) {
       this.pages.add("");
     }
-    this.numManualPages = Translations.RoutingTableManual.PAGES.size();
+    this.numManualPages = Translations.RoutingTable.MANUAL_PAGES.size();
   }
 
   private void setClipboard(String s) {
@@ -458,7 +458,7 @@ public class RoutingTableBookScreen extends Screen {
           this.getMaxPages());
       int l = this.font.width(manualPageIndicator);
       this.font.draw(poseStack, manualPageIndicator, xOffset - l + 225, yOffset + 15, 0);
-      var page = Component.translatable(Translations.RoutingTableManual.PAGES.get(currentPage));
+      var page = Component.translatable(Translations.RoutingTable.MANUAL_PAGES.get(currentPage));
       font.drawWordWrap(page, xOffset + 20, yOffset + 27, TEXT_WIDTH,
           IngameWindowScreen.TEXT_COLOR);
     } else {

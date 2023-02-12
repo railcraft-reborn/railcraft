@@ -49,7 +49,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.signalCapacitorTranslations();
     this.subtitleTranslations();
     this.damageSourceTranslations();
-    this.routingTableManualTranslations();
+    this.routingTableTranslations();
   }
 
   private void blockTranslations() {
@@ -842,15 +842,24 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.DamageSource.TRAIN.get(5), "%s should have worn their Overalls");
   }
 
-  private void routingTableManualTranslations() {
-    this.add(Translations.RoutingTableManual.PAGES.get(0), """
+  private void routingTableTranslations() {
+    this.add(Translations.RoutingTable.ERROR_BLANK, "Blank Table");
+    this.add(Translations.RoutingTable.ERROR_INVALID_CONSTANT, "Invalid Constant");
+    this.add(Translations.RoutingTable.ERROR_MALFORMED_SYNTAX, "Malformed Syntax");
+    this.add(Translations.RoutingTable.ERROR_INSUFFICIENT_OPERAND, "Insufficient Operands");
+    this.add(Translations.RoutingTable.ERROR_INVALID_OPERAND, "Invalid Operand");
+    this.add(Translations.RoutingTable.ERROR_INVALID_REGEX, "Invalid Regex Pattern");
+    this.add(Translations.RoutingTable.ERROR_UNSUPPORTED_REGEX, "Regex Unsupported");
+    this.add(Translations.RoutingTable.UNRECOGNIZED_KEYWORD, "Unrecognized Keyword");
+
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(0), """
         The Routing Table when placed in a Routing Detector or Switch will define a set of rules \
         that are used to match against any passing Locomotive. These rules are define using a \
         simple logic syntax that allows you to create rules as simple or complex as you like. \
         The syntax is a Prefix Notation script, the Operators are followed by the Operands. \
         Only one keyword is allowed per line. If no Operator is specified, OR is assumed. \
         Routing Tables can be copied by placing two or more in a crafting grid.""");
-    this.add(Translations.RoutingTableManual.PAGES.get(1), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(1), """
         Operator Keywords:
           AND - Two Operands, both must be true.
           OR - Two Operands, one must be true.
@@ -859,7 +868,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
                If cond is true, use then;
                otherwise, use else.
         """);
-    this.add(Translations.RoutingTableManual.PAGES.get(2), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(2), """
         Condition Keywords:
           Dest=<string>
             If the Locomotive's Destination
@@ -871,7 +880,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
             True if the Locomotive belongs
             to this person.
         """);
-    this.add(Translations.RoutingTableManual.PAGES.get(3), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(3), """
         Condition Keywords:
           Name=<entityname>
             True if it matches the
@@ -882,7 +891,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
             True if it matches the
             Minecart's item name.
         """);
-    this.add(Translations.RoutingTableManual.PAGES.get(4), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(4), """
         Condition Keywords:
           Rider=<type>[:<qualifier>]
             True if the Train contains
@@ -895,7 +904,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
                   player, named
                 See GitHub Issue #844 for examples
         """);
-    this.add(Translations.RoutingTableManual.PAGES.get(5), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(5), """
         Condition Keywords:
           Color=<primary>,<secondary>
             True if the Locomotive's primary
@@ -908,13 +917,13 @@ public class RailcraftLanguageProvider extends LanguageProvider {
             If the Locomotive is low on Fuel
             or Water this will divert it.
         """);
-    this.add(Translations.RoutingTableManual.PAGES.get(6), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(6), """
         Condition Keywords:
           Redstone=<true/false>
             True if the Routing Block
             is being powered by Redstone.
         """);
-    this.add(Translations.RoutingTableManual.PAGES.get(7), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(7), """
         Condition Keywords:
           Loco=<string>
             True if locomotive matches
@@ -924,7 +933,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
             Using parameter none will only return
             true if there is no locomotive.
         """);
-    this.add(Translations.RoutingTableManual.PAGES.get(8), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(8), """
         Example Script:
           Dest=TheFarLands
           Color=Black,Red
@@ -933,7 +942,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
           Owner=Steve
           Dest=SecretHideout/OceanEntrance
         """);
-    this.add(Translations.RoutingTableManual.PAGES.get(9), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(9), """
         Result:
           The script on the previous page will
           match a Locomotive with a destination
@@ -943,7 +952,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
           "SecretHideout/OceanEntrance",
           but only if its not owned by Steve.
         """);
-    this.add(Translations.RoutingTableManual.PAGES.get(10), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(10), """
         Regular Expressions:
           Some Conditions support
           Regular Expressions.
@@ -954,7 +963,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         Example:
           Dest?=.*Hill
         """);
-    this.add(Translations.RoutingTableManual.PAGES.get(11), """
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(11), """
         Analog Output:
           IF can be used with integer constants
           for analog output. Ints and IF can

@@ -2,6 +2,7 @@ package mods.railcraft.util.routing.expression.condition;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import mods.railcraft.Translations;
 import mods.railcraft.util.routing.IBlockEntityRouting;
 import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.util.routing.RoutingLogicException;
@@ -16,11 +17,11 @@ public abstract class ParsedCondition implements Condition {
       throws RoutingLogicException {
     String keywordMatch = keyword + RoutingLogic.REGEX_SYMBOL + "?=";
     if (!line.matches(keywordMatch + ".*")) {
-      throw new RoutingLogicException("gui.railcraft.routing.logic.unrecognized.keyword", line);
+      throw new RoutingLogicException(Translations.RoutingTable.UNRECOGNIZED_KEYWORD, line);
     }
     this.isRegex = line.matches(keyword + RoutingLogic.REGEX_SYMBOL + "=.*");
     if (!supportsRegex && isRegex) {
-      throw new RoutingLogicException("gui.railcraft.routing.logic.regex.unsupported", line);
+      throw new RoutingLogicException(Translations.RoutingTable.ERROR_UNSUPPORTED_REGEX, line);
     }
     this.value = line.replaceFirst(keywordMatch, "");
     if (isRegex) {
@@ -32,7 +33,7 @@ public abstract class ParsedCondition implements Condition {
     try {
       Pattern.compile(value);
     } catch (PatternSyntaxException ex) {
-      throw new RoutingLogicException("gui.railcraft.routing.logic.regex.invalid", line);
+      throw new RoutingLogicException(Translations.RoutingTable.ERROR_INVALID_REGEX, line);
     }
   }
 

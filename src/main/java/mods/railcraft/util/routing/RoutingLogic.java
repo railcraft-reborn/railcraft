@@ -5,6 +5,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.NoSuchElementException;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import mods.railcraft.api.carts.IPaintedCart;
 import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.api.fuel.INeedsFuel;
@@ -41,7 +42,7 @@ public class RoutingLogic {
       if (data != null) {
         this.parseTable(data);
       } else {
-        throw new RoutingLogicException("gui.railcraft.routing.logic.blank", null);
+        throw new RoutingLogicException(Translations.RoutingTable.ERROR_BLANK);
       }
     } catch (RoutingLogicException ex) {
       this.error = ex;
@@ -148,7 +149,7 @@ public class RoutingLogic {
     } catch (RoutingLogicException ex) {
       throw ex;
     } catch (Exception ex) {
-      throw new RoutingLogicException("gui.railcraft.routing.logic.malformed.syntax", line);
+      throw new RoutingLogicException(Translations.RoutingTable.ERROR_MALFORMED_SYNTAX, line);
     }
     if (line.equals("TRUE")) {
       return ConstantCondition.TRUE;
@@ -161,7 +162,7 @@ public class RoutingLogic {
     } catch (NumberFormatException ignored) {
       // not an integer; pass through
     } catch (IllegalArgumentException ex) {
-      throw new RoutingLogicException("gui.railcraft.routing.logic.constant.invalid", line);
+      throw new RoutingLogicException(Translations.RoutingTable.ERROR_INVALID_CONSTANT, line);
     }
     try {
       if (line.equals("NOT")) {
@@ -177,10 +178,10 @@ public class RoutingLogic {
         return new IF((Condition) stack.pop(), stack.pop(), stack.pop());
       }
     } catch (NoSuchElementException ex) {
-      throw new RoutingLogicException("gui.railcraft.routing.logic.insufficient.operands", line);
+      throw new RoutingLogicException(Translations.RoutingTable.ERROR_INSUFFICIENT_OPERAND, line);
     } catch (ClassCastException ex) {
-      throw new RoutingLogicException("gui.railcraft.routing.logic.operand.invalid", line);
+      throw new RoutingLogicException(Translations.RoutingTable.ERROR_INVALID_OPERAND, line);
     }
-    throw new RoutingLogicException("gui.railcraft.routing.logic.unrecognized.keyword", line);
+    throw new RoutingLogicException(Translations.RoutingTable.UNRECOGNIZED_KEYWORD, line);
   }
 }

@@ -460,9 +460,25 @@ public class Translations {
         .map(i -> makeKey("death", "train." + i)).toList();
   }
 
-  public static class RoutingTableManual {
-    public static final List<String> PAGES = IntStream.rangeClosed(1, 12).boxed()
+  public static class RoutingTable {
+    public static final List<String> MANUAL_PAGES = IntStream.rangeClosed(1, 12).boxed()
         .map(i -> makeKey("manual", "routing_table.page." + i)).toList();
+
+    public static final String ERROR_BLANK = makeKey("error.routing", "blank");
+    public static final String ERROR_INVALID_CONSTANT =
+        makeKey("error.routing", "invalid_constant");
+    public static final String ERROR_MALFORMED_SYNTAX =
+        makeKey("error.routing", "malformed_syntax");
+    public static final String ERROR_INSUFFICIENT_OPERAND =
+        makeKey("error.routing", "insufficient_operand");
+    public static final String ERROR_INVALID_OPERAND =
+        makeKey("error.routing", "invalid_operand");
+    public static final String ERROR_INVALID_REGEX =
+        makeKey("error.routing", "invalid_regex");
+    public static final String ERROR_UNSUPPORTED_REGEX =
+        makeKey("error.routing", "unsupported_regex");
+    public static final String UNRECOGNIZED_KEYWORD =
+        makeKey("error.routing", "unrecognized_keyword");
   }
 
   public static String makeKey(String type, String name) {

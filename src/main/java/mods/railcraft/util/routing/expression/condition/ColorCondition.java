@@ -1,5 +1,6 @@
 package mods.railcraft.util.routing.expression.condition;
 
+import mods.railcraft.Translations;
 import mods.railcraft.api.carts.IPaintedCart;
 import mods.railcraft.util.routing.IBlockEntityRouting;
 import mods.railcraft.util.routing.RoutingLogicException;
@@ -18,8 +19,7 @@ public class ColorCondition extends ParsedCondition {
     } else {
       primary = DyeColor.byName(colors[0], null);
       if (primary == null) {
-        throw new RoutingLogicException("gui.railcraft.routing.logic.unrecognized.keyword",
-            colors[0]);
+        throw new RoutingLogicException(Translations.RoutingTable.UNRECOGNIZED_KEYWORD, colors[0]);
       }
     }
     if (colors.length == 1 || colors[1].equals("Any") || colors[1].equals("*")) {
@@ -27,8 +27,7 @@ public class ColorCondition extends ParsedCondition {
     } else {
       secondary = DyeColor.byName(colors[1], null);
       if (secondary == null) {
-        throw new RoutingLogicException("gui.railcraft.routing.logic.unrecognized.keyword",
-            colors[1]);
+        throw new RoutingLogicException(Translations.RoutingTable.UNRECOGNIZED_KEYWORD, colors[1]);
       }
     }
   }

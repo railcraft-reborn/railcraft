@@ -8,7 +8,7 @@ public class RoutingLogicException extends Exception {
 
   private final Component tooltip;
 
-  RoutingLogicException(String errorKey) {
+  public RoutingLogicException(String errorKey) {
     tooltip = Component.translatable(errorKey).withStyle(ChatFormatting.RED);
   }
 

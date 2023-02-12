@@ -3,6 +3,7 @@ package mods.railcraft.util.routing.expression.condition;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import mods.railcraft.Translations;
 import mods.railcraft.util.routing.IBlockEntityRouting;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.world.entity.vehicle.Train;
@@ -23,10 +24,10 @@ public class RiderCondition extends ParsedCondition {
     if (isRegex) {
       switch (tokens[0].toLowerCase(Locale.ROOT)) {
         case "any", "none", "mob", "animal", "unnamed", "entity" ->
-            throw new RoutingLogicException("gui.railcraft.routing.logic.regex.unsupported", line);
+            throw new RoutingLogicException(Translations.RoutingTable.ERROR_UNSUPPORTED_REGEX, line);
         case "named", "player" -> {
           if (tokens.length == 1) {
-            throw new RoutingLogicException("gui.railcraft.routing.logic.regex.unsupported", line);
+            throw new RoutingLogicException(Translations.RoutingTable.ERROR_UNSUPPORTED_REGEX, line);
           }
         }
       }
@@ -34,21 +35,21 @@ public class RiderCondition extends ParsedCondition {
     switch (tokens[0].toLowerCase(Locale.ROOT)) {
       case "any", "none", "mob", "animal", "unnamed" -> {
         if (tokens.length > 1) {
-          throw new RoutingLogicException("gui.railcraft.routing.logic.malformed.syntax", line);
+          throw new RoutingLogicException(Translations.RoutingTable.ERROR_MALFORMED_SYNTAX, line);
         }
       }
       case "entity" -> {
         if (tokens.length == 1) {
-          throw new RoutingLogicException("gui.railcraft.routing.logic.malformed.syntax", line);
+          throw new RoutingLogicException(Translations.RoutingTable.ERROR_MALFORMED_SYNTAX, line);
         }
       }
       case "named", "player" -> {
         if (tokens.length > 2) {
-          throw new RoutingLogicException("gui.railcraft.routing.logic.malformed.syntax", line);
+          throw new RoutingLogicException(Translations.RoutingTable.ERROR_MALFORMED_SYNTAX, line);
         }
       }
       default ->
-          throw new RoutingLogicException("gui.railcraft.routing.logic.unrecognized.keyword", line);
+          throw new RoutingLogicException(Translations.RoutingTable.UNRECOGNIZED_KEYWORD, line);
     }
   }
 
