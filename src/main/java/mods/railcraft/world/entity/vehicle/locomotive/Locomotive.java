@@ -20,6 +20,7 @@ import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.carts.LinkageHandler;
 import mods.railcraft.api.core.Lockable;
+import mods.railcraft.api.fuel.INeedsFuel;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
@@ -72,7 +73,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class Locomotive extends RailcraftMinecart implements DirectionalCart,
-    LinkageHandler, Lockable, IPaintedCart, IRoutableCart {
+    LinkageHandler, Lockable, IPaintedCart, IRoutableCart, INeedsFuel {
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BOOLEAN);
@@ -848,8 +849,8 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
   }
 
   @Override
-  public final float[] getPrimaryColor() {
-    return DyeColor.byId(this.entityData.get(PRIMARY_COLOR)).getTextureDiffuseColors();
+  public final DyeColor getPrimaryDyeColor() {
+    return DyeColor.byId(this.entityData.get(PRIMARY_COLOR));
   }
 
   public final void setPrimaryColor(DyeColor color) {
@@ -857,8 +858,8 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
   }
 
   @Override
-  public final float[] getSecondaryColor() {
-    return DyeColor.byId(this.entityData.get(SECONDARY_COLOR)).getTextureDiffuseColors();
+  public final DyeColor getSecondaryDyeColor() {
+    return DyeColor.byId(this.entityData.get(SECONDARY_COLOR));
   }
 
   public final void setSecondaryColor(DyeColor color) {

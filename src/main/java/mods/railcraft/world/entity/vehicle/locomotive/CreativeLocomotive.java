@@ -123,6 +123,11 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
+  public boolean needsFuel() {
+    return false;
+  }
+
+  @Override
   protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
     return new LocomotiveMenu<>(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), id,
         playerInventory, this);

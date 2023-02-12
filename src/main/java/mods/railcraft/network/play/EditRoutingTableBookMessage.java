@@ -17,20 +17,15 @@ public record EditRoutingTableBookMessage(InteractionHand hand, List<String> pag
 
   public void encode(FriendlyByteBuf out) {
     out.writeEnum(this.hand);
-    out.writeCollection(this.pages, (friendlyByteBuf, s) -> {
-      friendlyByteBuf.writeUtf(s);
-    });
-    out.writeOptional(this.title, (friendlyByteBuf, s) -> {
-      friendlyByteBuf.writeUtf(s);
-    });
+    out.writeCollection(this.pages, FriendlyByteBuf::writeUtf);
+    out.writeOptional(this.title, FriendlyByteBuf::writeUtf);
   }
 
   public static EditRoutingTableBookMessage decode(FriendlyByteBuf in) {
     var hand = in.readEnum(InteractionHand.class);
     var pages = in.readCollection(FriendlyByteBuf
-            .limitValue(Lists::newArrayListWithCapacity, BOOK_MAX_PAGES),
-        friendlyByteBuf -> friendlyByteBuf.readUtf());
-    var title = in.readOptional(friendlyByteBuf -> friendlyByteBuf.readUtf());
+        .limitValue(Lists::newArrayListWithCapacity, BOOK_MAX_PAGES), FriendlyByteBuf::readUtf);
+    var title = in.readOptional(FriendlyByteBuf::readUtf);
     return new EditRoutingTableBookMessage(hand, pages, title);
   }
 

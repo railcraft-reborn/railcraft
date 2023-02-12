@@ -105,6 +105,7 @@ public class SteamLocomotive extends BaseSteamLocomotive
     }
   }
 
+  @Override
   public boolean needsFuel() {
     var water = this.waterTank.getFluid();
     if (water.isEmpty() || water.getAmount() < this.waterTank.getCapacity() / 3) {

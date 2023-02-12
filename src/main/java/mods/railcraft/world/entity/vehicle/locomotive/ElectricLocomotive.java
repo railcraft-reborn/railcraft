@@ -165,6 +165,12 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
     }
   }
 
+  @Override
+  public boolean needsFuel() {
+    float charge = getBatteryCart().getEnergyStored() / getBatteryCart().getMaxEnergyStored();
+    return charge < 0.80;
+  }
+
   public IEnergyStorage getBatteryCart() {
     return this.getCapability(ForgeCapabilities.ENERGY)
         .orElseThrow(IllegalStateException::new);

@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import mods.railcraft.api.carts.Link;
+import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.item.CartItem;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -27,11 +29,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.authlib.GameProfile;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class CartTools {
 
   public static void explodeCart(AbstractMinecart cart) {
@@ -260,6 +261,26 @@ public final class CartTools {
         cart.setCustomName(cartStack.getDisplayName());
       level.addFreshEntity(cart);
       return cart;
+    }
+    return null;
+  }
+
+  @Nullable
+  public static GameProfile getCartOwner(AbstractMinecart cart) {
+    if (cart instanceof Locomotive loco) {
+      var owner = loco.getOwner();
+      if (owner.isPresent()) {
+        if (owner.get().isComplete())
+          return owner.get();
+        String ownerName = RailcraftConstantsAPI.UNKNOWN_PLAYER;
+        if (!StringUtils.isBlank(owner.get().getName()))
+          ownerName = owner.get().getName();
+
+        UUID ownerId = null;
+        if (owner.get().getId() != null)
+          ownerId = owner.get().getId();
+        return new GameProfile(ownerId, ownerName);
+      }
     }
     return null;
   }

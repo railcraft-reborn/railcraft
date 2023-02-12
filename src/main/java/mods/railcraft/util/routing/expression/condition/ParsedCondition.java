@@ -1,0 +1,41 @@
+package mods.railcraft.util.routing.expression.condition;
+
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RoutingLogic;
+import mods.railcraft.util.routing.RoutingLogicException;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+
+public abstract class ParsedCondition implements Condition {
+
+  public final String value;
+  protected final boolean isRegex;
+
+  protected ParsedCondition(String keyword, boolean supportsRegex, String line)
+      throws RoutingLogicException {
+    String keywordMatch = keyword + RoutingLogic.REGEX_SYMBOL + "?=";
+    if (!line.matches(keywordMatch + ".*")) {
+      throw new RoutingLogicException("gui.railcraft.routing.logic.unrecognized.keyword", line);
+    }
+    this.isRegex = line.matches(keyword + RoutingLogic.REGEX_SYMBOL + "=.*");
+    if (!supportsRegex && isRegex) {
+      throw new RoutingLogicException("gui.railcraft.routing.logic.regex.unsupported", line);
+    }
+    this.value = line.replaceFirst(keywordMatch, "");
+    if (isRegex) {
+      this.validateRegex(line);
+    }
+  }
+
+  protected void validateRegex(String line) throws RoutingLogicException {
+    try {
+      Pattern.compile(value);
+    } catch (PatternSyntaxException ex) {
+      throw new RoutingLogicException("gui.railcraft.routing.logic.regex.invalid", line);
+    }
+  }
+
+  @Override
+  public abstract boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart);
+}
