@@ -61,17 +61,6 @@ public class IngameWindowScreen extends Screen {
   protected void renderContent(PoseStack poseStack, int mouseX, int mouseY,
       float partialTicks) {}
 
-  @Override
-  public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-    if (super.keyPressed(keyCode, scanCode, modifiers)) {
-      return true;
-    }
-    if (this.minecraft.options.keyInventory.matches(keyCode, scanCode)) {
-      this.onClose();
-      return true;
-    }
-    return false;
-  }
 
   @Override
   public void tick() {

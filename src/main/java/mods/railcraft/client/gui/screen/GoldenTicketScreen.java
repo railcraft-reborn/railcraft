@@ -76,9 +76,6 @@ public class GoldenTicketScreen extends IngameWindowScreen {
   }
 
   @Override
-  public void onClose() {}
-
-  @Override
   protected void renderContent(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
     if (readingManual) {
       editBoxDest.setVisible(false);
