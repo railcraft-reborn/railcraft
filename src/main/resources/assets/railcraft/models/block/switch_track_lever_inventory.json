@@ -159,6 +159,12 @@
 			}
 		}
 	],
+	"display": {
+		"ground": {
+			"translation": [0, 2.5, 0],
+			"scale": [0.50, 0.50, 0.50]
+		}
+	},
 	"groups": [0, 1, 2, 3,
 		{
 			"name": "switch_track_actuator_lever_off",

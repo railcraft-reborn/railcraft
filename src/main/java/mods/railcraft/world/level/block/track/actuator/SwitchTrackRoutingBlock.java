@@ -4,6 +4,7 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SwitchTrackRoutingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -42,5 +43,16 @@ public class SwitchTrackRoutingBlock extends SwitchTrackActuatorBlock implements
   @Override
   public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
     return new SwitchTrackRoutingBlockEntity(blockPos, blockState);
+  }
+
+  @Override
+  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
+      boolean isMoving) {
+    if (!state.is(newState.getBlock())
+        && level.getBlockEntity(pos) instanceof SwitchTrackRoutingBlockEntity trackRouting) {
+      Containers.dropContents(level, pos, trackRouting);
+      level.updateNeighbourForOutputSignal(pos, this);
+    }
+    super.onRemove(state, level, pos, newState, isMoving);
   }
 }
