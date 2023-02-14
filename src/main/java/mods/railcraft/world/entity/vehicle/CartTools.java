@@ -270,15 +270,16 @@ public final class CartTools {
     if (cart instanceof Locomotive loco) {
       var owner = loco.getOwner();
       if (owner.isPresent()) {
-        if (owner.get().isComplete())
-          return owner.get();
+        var gameProfile = owner.get();
+        if (gameProfile.isComplete())
+          return gameProfile;
         String ownerName = RailcraftConstantsAPI.UNKNOWN_PLAYER;
-        if (!StringUtils.isBlank(owner.get().getName()))
-          ownerName = owner.get().getName();
+        if (!StringUtils.isBlank(gameProfile.getName()))
+          ownerName = gameProfile.getName();
 
         UUID ownerId = null;
-        if (owner.get().getId() != null)
-          ownerId = owner.get().getId();
+        if (gameProfile.getId() != null)
+          ownerId = gameProfile.getId();
         return new GameProfile(ownerId, ownerName);
       }
     }
