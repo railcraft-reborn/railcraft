@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:tin_ingot_from_smelting_tin_raw"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tin_raw": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:tin_raw"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_tin_raw",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:tin_ingot_from_smelting_tin_raw"
+    ]
+  }
+}

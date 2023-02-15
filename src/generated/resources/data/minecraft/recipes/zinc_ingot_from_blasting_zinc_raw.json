@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "zinc_ingot",
+  "ingredient": {
+    "item": "railcraft:zinc_raw"
+  },
+  "result": "railcraft:zinc_ingot"
+}
