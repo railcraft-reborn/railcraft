@@ -775,9 +775,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
   }
 
-  public static void applyAction(Player player, RollingStock cart, boolean single,
-      Consumer<Locomotive> action) {
-    var locos = cart.train().stream()
+  public void applyAction(Player player, boolean single, Consumer<Locomotive> action) {
+    var locos = RollingStock.getOrThrow(this).train().stream()
         .map(RollingStock::entity)
         .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(loco -> loco.canControl(player));
