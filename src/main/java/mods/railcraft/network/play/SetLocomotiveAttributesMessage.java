@@ -28,7 +28,7 @@ public record SetLocomotiveAttributesMessage(int entityId, Locomotive.Mode mode,
     var player = ctx.get().getSender();
     var entity = player.getLevel().getEntity(this.entityId);
     if (entity instanceof Locomotive locomotive && locomotive.canControl(player)) {
-      Locomotive.applyAction(player, RollingStock.getOrThrow(locomotive), false, loco -> {
+      locomotive.applyAction(player, false, loco -> {
         loco.setMode(this.mode);
         loco.setSpeed(this.speed);
         loco.setReverse(this.reverse);
