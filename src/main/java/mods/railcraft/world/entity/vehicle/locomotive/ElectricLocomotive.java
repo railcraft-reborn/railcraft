@@ -1,9 +1,8 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.container.ContainerMapper;
@@ -21,7 +20,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -51,8 +49,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   private static final int SLOT_TICKET = 0;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
 
-  private static final Set<Mode> ALLOWED_MODES =
-      Collections.unmodifiableSet(EnumSet.of(Mode.RUNNING, Mode.SHUTDOWN));
+  private static final Set<Mode> ALLOWED_MODES = Set.of(Mode.RUNNING, Mode.SHUTDOWN);
 
   private final Container ticketInventory =
       new ContainerMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
@@ -110,24 +107,18 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public float getOptimalDistance(AbstractMinecart cart) {
+  public float getOptimalDistance(RollingStock cart) {
     return 0.92F;
   }
 
   @Override
   public void tick() {
     super.tick();
-    if (this.level.isClientSide()) {
-      return;
-    }
   }
 
   @Override
   protected void moveAlongTrack(BlockPos pos, BlockState state) {
     super.moveAlongTrack(pos, state);
-    if (this.level.isClientSide()) {
-      return;
-    }
   }
 
   @Override

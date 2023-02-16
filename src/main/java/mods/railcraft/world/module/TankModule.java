@@ -7,7 +7,7 @@ import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
-import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
@@ -28,7 +28,7 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   public static final int SLOT_INPUT = 0;
   public static final int SLOT_PROCESS = 1;
   public static final int SLOT_OUTPUT = 2;
-  private final FilteredTank tank;
+  private final StandardTank tank;
 
   private final LazyOptional<IItemHandler> itemHandler =
       LazyOptional.of(() -> new InvWrapper(this) {
@@ -50,13 +50,13 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
 
   public TankModule(TankBlockEntity provider, int capacity, @Nullable Supplier<Fluid> filter) {
     super(provider, 3);
-    this.tank = new FilteredTank(capacity);
+    this.tank = StandardTank.ofCapacity(capacity);
     if (filter != null) {
-      this.tank.setFilterFluid(filter);
+      this.tank.filter(filter);
     }
   }
 
-  public FilteredTank getTank() {
+  public StandardTank getTank() {
     return this.tank;
   }
 

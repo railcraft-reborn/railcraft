@@ -87,7 +87,8 @@ public class RailcraftOreFeatures {
       createKey("sulfur_ore_buried");
   public static final ResourceKey<ConfiguredFeature<?, ?>> ZINC_ORE = createKey("zinc_ore");
   public static final ResourceKey<ConfiguredFeature<?, ?>> NICKEL_ORE = createKey("nickel_ore");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> NICKEL_ORE_SMALL = createKey("nickel_ore_small");
+  public static final ResourceKey<ConfiguredFeature<?, ?>> NICKEL_ORE_SMALL =
+      createKey("nickel_ore_small");
   public static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_ORE = createKey("silver_ore");
   public static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_ORE_BURIED =
       createKey("silver_ore_buried");

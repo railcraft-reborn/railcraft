@@ -18,7 +18,7 @@ public class ContainerMapper implements Container, VanillaContainerManipulator {
   private boolean checkItems = true;
   private final int start;
   private final int size;
-  private int stackSizeLimit = -1;
+  private int maxStackSize = -1;
   private Predicate<ItemStack> filter = StackFilter.ALL;
 
   public static ContainerMapper make(Container container) {
@@ -47,7 +47,7 @@ public class ContainerMapper implements Container, VanillaContainerManipulator {
    * If called the container will ignore isItemValidForSlot checks.
    */
   public ContainerMapper ignoreItemChecks() {
-    checkItems = false;
+    this.checkItems = false;
     return this;
   }
 
@@ -58,46 +58,47 @@ public class ContainerMapper implements Container, VanillaContainerManipulator {
   }
 
   public Predicate<ItemStack> filter() {
-    return filter;
+    return this.filter;
   }
 
   public ContainerMapper withStackSizeLimit(int limit) {
-    stackSizeLimit = limit;
+    this.maxStackSize = limit;
     return this;
   }
 
   @Override
   public int getContainerSize() {
-    return size;
+    return this.size;
   }
 
   @Override
   public ItemStack getItem(int slot) {
-    validSlot(slot);
-    return container.getItem(start + slot);
+    this.validSlot(slot);
+    return container.getItem(this.start + slot);
   }
 
   @Override
   public ItemStack removeItem(int slot, int amount) {
-    validSlot(slot);
+    this.validSlot(slot);
     return container.removeItem(start + slot, amount);
   }
 
   @Override
   public void setItem(int slot, ItemStack itemstack) {
-    validSlot(slot);
-    container.setItem(start + slot, itemstack);
+    this.validSlot(slot);
+    this.container.setItem(this.start + slot, itemstack);
   }
 
   @Override
   public int getMaxStackSize() {
-    return stackSizeLimit > 0 ? stackSizeLimit : container.getMaxStackSize();
+    return this.maxStackSize > 0 ? this.maxStackSize : this.container.getMaxStackSize();
   }
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    validSlot(slot);
-    return !this.checkItems || (filter.test(stack) && container.canPlaceItem(start + slot, stack));
+    this.validSlot(slot);
+    return !this.checkItems
+        || (this.filter.test(stack) && this.container.canPlaceItem(this.start + slot, stack));
   }
 
   @Override
@@ -145,11 +146,12 @@ public class ContainerMapper implements Container, VanillaContainerManipulator {
   }
 
   public boolean containsSlot(int absoluteIndex) {
-    return absoluteIndex >= start && absoluteIndex < start + size;
+    return absoluteIndex >= this.start && absoluteIndex < this.start + this.size;
   }
 
   private void validSlot(int slot) {
-    if (slot < 0 || slot >= size)
+    if (slot < 0 || slot >= this.size) {
       throw new IllegalArgumentException("Slot index out of bounds.");
+    }
   }
 }

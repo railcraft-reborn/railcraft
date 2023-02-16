@@ -6,13 +6,9 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.carts;
 
-import java.util.Optional;
 import java.util.function.Predicate;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 
 /**
  * This interface is the API facing wrapper for an internal helper class that makes it simple to
@@ -24,13 +20,14 @@ import net.minecraftforge.items.IItemHandlerModifiable;
  * Created by CovertJaguar on 5/11/2015.
  *
  * @see CartUtil
- * @see mods.railcraft.api.carts.IItemCart
+ * @see mods.railcraft.api.carts.ItemTransferHandler
  * @see mods.railcraft.api.carts.FluidMinecart
  */
-public interface TrainTransferHelper {
-  // ***************************************************************************************************************************
+public interface TrainTransferService {
+
+  // ==================================================
   // Items
-  // ***************************************************************************************************************************
+  // ==================================================
 
   /**
    * Will attempt to push an ItemStack to the Train.
@@ -41,7 +38,7 @@ public interface TrainTransferHelper {
    *         pushed
    * @see mods.railcraft.api.carts.FluidMinecart
    */
-  default ItemStack pushStack(AbstractMinecart requester, ItemStack stack) {
+  default ItemStack pushStack(RollingStock requester, ItemStack stack) {
     return stack;
   }
 
@@ -51,9 +48,9 @@ public interface TrainTransferHelper {
    * @param requester the source AbstractMinecartEntity
    * @param filter a Predicate<ItemStack> that defines the requested item
    * @return the ItemStack pulled from the Train, or null if the request cannot be met
-   * @see mods.railcraft.api.carts.IItemCart
+   * @see mods.railcraft.api.carts.ItemTransferHandler
    */
-  default ItemStack pullStack(AbstractMinecart requester, Predicate<ItemStack> filter) {
+  default ItemStack pullStack(RollingStock requester, Predicate<ItemStack> filter) {
     return ItemStack.EMPTY;
   }
 
@@ -63,21 +60,11 @@ public interface TrainTransferHelper {
    * @param requester the source AbstractMinecartEntity
    * @param stack the ItemStack to be offered
    */
-  default void offerOrDropItem(AbstractMinecart requester, ItemStack stack) {}
+  default void offerOrDropItem(RollingStock requester, ItemStack stack) {}
 
-  /**
-   * Returns an IItemHandlerModifiable with represents the entire train.
-   *
-   * @param cart a cart in the train
-   */
-  default Optional<IItemHandlerModifiable> getTrainItemHandler(AbstractMinecart cart) {
-    return Optional.empty();
-  }
-
-
-  // ***************************************************************************************************************************
+  // ==================================================
   // Fluids
-  // ***************************************************************************************************************************
+  // ==================================================
 
   /**
    * Will attempt to push fluid to the Train.
@@ -88,7 +75,7 @@ public interface TrainTransferHelper {
    *         fully pushed
    * @see mods.railcraft.api.carts.FluidMinecart
    */
-  default FluidStack pushFluid(AbstractMinecart requester, FluidStack fluidStack) {
+  default FluidStack pushFluid(RollingStock requester, FluidStack fluidStack) {
     return fluidStack;
   }
 
@@ -100,16 +87,7 @@ public interface TrainTransferHelper {
    * @return the FluidStack pulled from the Train, or empty if the request cannot be met
    * @see mods.railcraft.api.carts.FluidMinecart
    */
-  default FluidStack pullFluid(AbstractMinecart requester, FluidStack fluidStack) {
+  default FluidStack pullFluid(RollingStock requester, FluidStack fluidStack) {
     return null;
-  }
-
-  /**
-   * Returns an IFluidHandler with represents the entire train.
-   *
-   * @param cart a cart in the train
-   */
-  default Optional<IFluidHandler> getTrainFluidHandler(AbstractMinecart cart) {
-    return Optional.empty();
   }
 }

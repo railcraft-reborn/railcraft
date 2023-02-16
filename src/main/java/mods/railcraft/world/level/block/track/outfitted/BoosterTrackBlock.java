@@ -1,9 +1,9 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.entity.vehicle.CartTools;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.core.BlockPos;
@@ -80,7 +80,7 @@ public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
       return;
     }
 
-    if (MinecartExtension.getOrThrow(cart).isHighSpeed()) {
+    if (RollingStock.getOrThrow(cart).isHighSpeed()) {
       if (cart instanceof Locomotive locomotive) {
         locomotive.forceIdle(20);
       }

@@ -1,6 +1,7 @@
 package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -27,7 +28,7 @@ public record SetLocomotiveAttributesMessage(int entityId, Locomotive.Mode mode,
     var player = ctx.get().getSender();
     var entity = player.getLevel().getEntity(this.entityId);
     if (entity instanceof Locomotive locomotive && locomotive.canControl(player)) {
-      Locomotive.applyAction(player, locomotive, false, loco -> {
+      Locomotive.applyAction(player, RollingStock.getOrThrow(locomotive), false, loco -> {
         loco.setMode(this.mode);
         loco.setSpeed(this.speed);
         loco.setReverse(this.reverse);

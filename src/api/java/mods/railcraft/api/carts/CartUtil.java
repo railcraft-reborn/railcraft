@@ -18,33 +18,19 @@ import net.minecraft.world.phys.Vec3;
 
 public final class CartUtil {
 
-  private static LinkageManager linkageManager;
-  private static TrainTransferHelper transferHelper;
+  private static TrainTransferService transferService;
 
-  public static TrainTransferHelper transferHelper() {
-    Objects.requireNonNull(transferHelper);
-    return transferHelper;
+  public static TrainTransferService transferService() {
+    Objects.requireNonNull(transferService);
+    return transferService;
   }
 
   @ApiStatus.Internal
-  public static void _setTransferHelper(TrainTransferHelper transferHelper) {
-    if (CartUtil.transferHelper != null) {
-      throw new IllegalStateException("transferHelper already set.");
+  public static void _setTransferService(TrainTransferService transferService) {
+    if (CartUtil.transferService != null) {
+      throw new IllegalStateException("transferService already set.");
     }
-    CartUtil.transferHelper = transferHelper;
-  }
-
-  public static LinkageManager linkageManager() {
-    Objects.requireNonNull(linkageManager);
-    return linkageManager;
-  }
-
-  @ApiStatus.Internal
-  public static void _setLinkageManager(LinkageManager linkageManager) {
-    if (CartUtil.linkageManager != null) {
-      throw new IllegalStateException("linkageManager already set.");
-    }
-    CartUtil.linkageManager = linkageManager;
+    CartUtil.transferService = transferService;
   }
 
   public static List<AbstractMinecart> getMinecartsIn(Level level, BlockPos p1, BlockPos p2) {

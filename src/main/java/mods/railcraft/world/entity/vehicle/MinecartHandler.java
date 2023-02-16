@@ -2,6 +2,8 @@ package mods.railcraft.world.entity.vehicle;
 
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
+import mods.railcraft.api.carts.Side;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.ModEntitySelector;
@@ -41,29 +43,33 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       return;
     }
 
-    var link = LinkageManagerImpl.INSTANCE.getLinkedCartA(cart).orElse(null);
+    var rollingStock = RollingStock.getOrThrow(cart);
+
+    var link = rollingStock.linkAt(Side.BACK)
+        .map(RollingStock::entity)
+        .orElse(null);
     if (link != null && (link == other || link.hasPassenger(other))) {
       return;
     }
-    link = LinkageManagerImpl.INSTANCE.getLinkedCartB(cart).orElse(null);
+    link = rollingStock.linkAt(Side.FRONT)
+        .map(RollingStock::entity)
+        .orElse(null);
     if (link != null && (link == other || link.hasPassenger(other))) {
       return;
     }
 
-    boolean isLiving = other instanceof LivingEntity;
-    boolean isPlayer = other instanceof Player;
+    var isLiving = other instanceof LivingEntity;
+    var isPlayer = other instanceof Player;
 
     if (other instanceof Player otherPlayer && otherPlayer.isSpectator()) {
       return;
     }
 
     if (other instanceof AbstractMinecart otherCart) {
-      LinkageManagerImpl.INSTANCE.tryAutoLink(cart, otherCart);
+      rollingStock.tryAutoLink(RollingStock.getOrThrow(otherCart));
     }
 
-    var extension = MinecartExtension.getOrThrow(cart);
-
-    this.testHighSpeedCollision(extension, other);
+    this.testHighSpeedCollision(rollingStock, other);
 
     if (isLiving
         && level.getBlockState(cart.blockPosition())
@@ -81,7 +87,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
           .and(EntitySelector.ENTITY_STILL_ALIVE, ModEntitySelector.NON_MECHANICAL)
           .list(level);
       if (carts.size() >= 12) {
-        extension.primeExplosion();
+        rollingStock.primeExplosion();
       }
     }
 
@@ -93,7 +99,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         && cartMotion.x() * cartMotion.x() + cartMotion.z() * cartMotion.z() > 0.001D
         && !cart.isVehicle()
         && !other.isPassenger()) {
-      if (extension.isMountable()) {
+      if (rollingStock.isMountable()) {
         other.startRiding(cart);
       }
     }
@@ -179,19 +185,25 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     }
   }
 
-  private void testHighSpeedCollision(MinecartExtension extension, Entity other) {
-    var cart = extension.getMinecart();
+  private void testHighSpeedCollision(RollingStock extension, Entity other) {
+    var cart = extension.entity();
     if (extension.isHighSpeed()) {
-      if (other instanceof AbstractMinecart
-          && Train.areInSameTrain(cart, (AbstractMinecart) other)) {
-        return;
-      }
-      if (Train.streamCarts(cart).anyMatch(c -> c.hasPassenger(other))) {
+      var otherExtension = other instanceof AbstractMinecart otherCart
+          ? RollingStock.getOrThrow(otherCart)
+          : null;
+
+      if (otherExtension != null && extension.isSameTrainAs(otherExtension)) {
         return;
       }
 
-      if (other instanceof AbstractMinecart otherCart) {
-        var otherHighSpeed = MinecartExtension.getOrThrow(otherCart).isHighSpeed();
+      if (extension.train().stream()
+          .map(RollingStock::entity)
+          .anyMatch(c -> c.hasPassenger(other))) {
+        return;
+      }
+
+      if (otherExtension != null) {
+        var otherHighSpeed = otherExtension.isHighSpeed();
         if (!otherHighSpeed || (cart.getDeltaMovement().x() > 0 ^ other.getDeltaMovement().x() > 0)
             || (cart.getDeltaMovement().z() > 0 ^ other.getDeltaMovement().z() > 0)) {
           extension.primeExplosion();

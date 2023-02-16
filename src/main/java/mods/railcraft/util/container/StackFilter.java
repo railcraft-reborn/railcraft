@@ -34,12 +34,12 @@ public enum StackFilter implements Predicate<ItemStack> {
   ALL(Predicates.alwaysTrue()),
   FUEL(itemStack -> ForgeHooks.getBurnTime(itemStack, null) > 0),
   TRACK(TrackUtil::isRail),
-  MINECART(itemStack ->  {
+  MINECART(itemStack -> {
     var item = itemStack.getItem();
     return item instanceof MinecartItem ||
         item instanceof MinecartFactory ||
         item instanceof CartItem;
-  } ),
+  }),
   @SuppressWarnings("deprecation")
   BALLAST(itemStack -> itemStack.getItem() instanceof BlockItem blockItem
       && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),
@@ -65,13 +65,6 @@ public enum StackFilter implements Predicate<ItemStack> {
   @Override
   public boolean test(ItemStack itemStack) {
     return !itemStack.isEmpty() && this.predicate.test(itemStack);
-  }
-
-  /**
-   * Matches against the provided ItemStack.
-   */
-  public static Predicate<ItemStack> of(ItemStack itemStack) {
-    return stack1 -> ContainerTools.isItemEqual(stack1, itemStack);
   }
 
   /**

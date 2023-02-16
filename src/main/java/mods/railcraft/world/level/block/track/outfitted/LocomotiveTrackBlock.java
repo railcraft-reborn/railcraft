@@ -1,9 +1,9 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.FunctionalUtil;
-import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -42,7 +42,8 @@ public class LocomotiveTrackBlock extends PoweredOutfittedTrackBlock {
   public void onMinecartPass(BlockState state, Level level, BlockPos pos, AbstractMinecart cart) {
     super.onMinecartPass(state, level, pos, cart);
     if (isPowered(state)) {
-      Train.streamCarts(cart)
+      RollingStock.getOrThrow(cart).train().stream()
+          .map(RollingStock::entity)
           .flatMap(FunctionalUtil.ofType(Locomotive.class))
           .forEach(locomotive -> locomotive.setMode(state.getValue(LOCOMOTIVE_MODE)));
     }

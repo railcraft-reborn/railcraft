@@ -1,18 +1,14 @@
 package mods.railcraft.world.level.material.fluid;
 
-import com.google.common.collect.ForwardingList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -24,43 +20,32 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 /**
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class TankManager extends ForwardingList<StandardTank>
-    implements IFluidHandler, INBTSerializable<ListTag> {
+public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
 
-  public static final TankManager EMPTY = new TankManager() {
-    @Override
-    protected List<StandardTank> delegate() {
-      return Collections.emptyList();
-    }
-  };
+  public static final TankManager EMPTY = new TankManager(List.of());
 
   public static final BiFunction<BlockEntity, Direction, Boolean> TANK_FILTER =
       (t, f) -> t.getCapability(ForgeCapabilities.FLUID_HANDLER, f).isPresent();
-  private final List<StandardTank> tanks = new ArrayList<>();
+  private final List<StandardTank> tanks;
 
   public TankManager(StandardTank... tanks) {
-    this.addAll(Arrays.asList(tanks));
+    this(new ArrayList<>(Arrays.asList(tanks)));
   }
 
-  @Override
-  protected List<StandardTank> delegate() {
-    return this.tanks;
+  private TankManager(List<StandardTank> tanks) {
+    this.tanks = tanks;
   }
 
-  @Override
   public boolean add(StandardTank tank) {
-    this.tanks.add(tank);
-    int index = this.tanks.indexOf(tank);
-    tank.setTankIndex(index);
-    return true;
+    return this.tanks.add(tank);
   }
 
   @Override
   public ListTag serializeNBT() {
-    ListTag tanksTag = new ListTag();
+    var tanksTag = new ListTag();
     for (byte i = 0; i < this.tanks.size(); i++) {
-      StandardTank tank = this.tanks.get(i);
-      CompoundTag tankTag = new CompoundTag();
+      var tank = this.tanks.get(i);
+      var tankTag = new CompoundTag();
       tankTag.putByte("index", i);
       tank.writeToNBT(tankTag);
       tanksTag.add(tankTag);
@@ -70,7 +55,7 @@ public class TankManager extends ForwardingList<StandardTank>
 
   @Override
   public void deserializeNBT(ListTag tanksTag) {
-    for (Tag tankTag : tanksTag) {
+    for (var tankTag : tanksTag) {
       int index = ((CompoundTag) tankTag).getByte("index");
       if (index >= 0 && index < this.tanks.size()) {
         this.tanks.get(index).readFromNBT(((CompoundTag) tankTag));
@@ -79,13 +64,13 @@ public class TankManager extends ForwardingList<StandardTank>
   }
 
   public void writePacketData(FriendlyByteBuf data) {
-    for (StandardTank tank : tanks) {
+    for (var tank : this.tanks) {
       data.writeFluidStack(tank.getFluid());
     }
   }
 
   public void readPacketData(FriendlyByteBuf data) {
-    for (StandardTank tank : tanks) {
+    for (var tank : this.tanks) {
       tank.setFluid(data.readFluidStack());
     }
   }
@@ -129,7 +114,6 @@ public class TankManager extends ForwardingList<StandardTank>
     return this.tanks.get(tankIndex).drain(maxDrain, doDrain);
   }
 
-  @Override
   public StandardTank get(int tankIndex) {
     return this.tanks.get(tankIndex);
   }

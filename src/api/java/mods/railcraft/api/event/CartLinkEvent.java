@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.event;
 
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import mods.railcraft.api.carts.RollingStock;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
@@ -20,32 +20,32 @@ import net.minecraftforge.eventbus.api.Event;
  */
 public class CartLinkEvent extends Event {
 
-  private final AbstractMinecart one;
-  private final AbstractMinecart two;
+  private final RollingStock one;
+  private final RollingStock two;
 
-  protected CartLinkEvent(AbstractMinecart one, AbstractMinecart two) {
+  protected CartLinkEvent(RollingStock one, RollingStock two) {
     this.one = one;
     this.two = two;
   }
 
-  public AbstractMinecart getCartOne() {
+  public RollingStock getCartOne() {
     return this.one;
   }
 
-  public AbstractMinecart getCartTwo() {
+  public RollingStock getCartTwo() {
     return this.two;
   }
 
   public static final class Link extends CartLinkEvent {
 
-    public Link(AbstractMinecart one, AbstractMinecart two) {
+    public Link(RollingStock one, RollingStock two) {
       super(one, two);
     }
   }
 
   public static final class Unlink extends CartLinkEvent {
 
-    public Unlink(AbstractMinecart one, AbstractMinecart two) {
+    public Unlink(RollingStock one, RollingStock two) {
       super(one, two);
     }
   }

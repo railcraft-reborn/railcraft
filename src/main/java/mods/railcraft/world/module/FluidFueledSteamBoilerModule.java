@@ -4,9 +4,8 @@ import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.world.level.block.entity.steamboiler.FluidFueledSteamBoilerBlockEntity;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import mods.railcraft.world.level.material.fluid.steam.FluidFuelProvider;
-import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -15,7 +14,7 @@ import net.minecraftforge.fluids.FluidUtil;
 public class FluidFueledSteamBoilerModule
     extends SteamBoilerModule<FluidFueledSteamBoilerBlockEntity> {
 
-  protected final StandardTank fuelTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 16)
+  protected final StandardTank fuelTank = StandardTank.ofBuckets(16)
       .disableDrain()
       .setValidator(fluidStack -> !fluidStack.isEmpty()
           && FuelUtil.fuelManager().getFuelValue(fluidStack.getFluid()) > 0);
@@ -26,7 +25,7 @@ public class FluidFueledSteamBoilerModule
     super(provider, 3);
     this.tankManager.add(this.fuelTank);
 
-    this.fuelTank.setChangeListener(provider::setChanged);
+    this.fuelTank.changeCallback(provider::setChanged);
 
     this.boiler.setFuelProvider(new FluidFuelProvider(this.fuelTank));
   }

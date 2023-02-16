@@ -13,10 +13,9 @@ import net.minecraft.world.item.ItemStack;
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public interface IRoutableCart extends Ownable {
+public interface Routable extends Ownable {
 
-    String getDestination();
+  String getDestination();
 
-    boolean setDestination(ItemStack ticket);
-
+  boolean setDestination(ItemStack ticket);
 }

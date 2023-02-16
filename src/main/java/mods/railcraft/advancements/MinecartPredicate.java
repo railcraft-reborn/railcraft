@@ -4,9 +4,9 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.util.JsonUtil;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.server.level.ServerPlayer;
@@ -51,7 +51,7 @@ public final class MinecartPredicate {
   }
 
   public boolean test(ServerPlayer player, AbstractMinecart cart) {
-    var extension = MinecartExtension.getOrThrow(cart);
+    var extension = RollingStock.getOrThrow(cart);
 
     if (this.highSpeed != null && extension.isHighSpeed() != this.highSpeed) {
       return false;

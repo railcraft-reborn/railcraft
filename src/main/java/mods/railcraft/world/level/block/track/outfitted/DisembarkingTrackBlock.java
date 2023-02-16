@@ -1,9 +1,9 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.entity.vehicle.CartTools;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -67,7 +67,7 @@ public class DisembarkingTrackBlock extends PoweredOutfittedTrackBlock {
         z -= offset;
       }
       CartTools.removePassengers(cart, x + 0.5D, blockPos.getY() + 1.0D, z + 0.5D);
-      MinecartExtension.getOrThrow(cart).setPreventMountRemainingTicks(TIME_TILL_NEXT_MOUNT);
+      RollingStock.getOrThrow(cart).setPreventMountRemainingTicks(TIME_TILL_NEXT_MOUNT);
     }
   }
 
