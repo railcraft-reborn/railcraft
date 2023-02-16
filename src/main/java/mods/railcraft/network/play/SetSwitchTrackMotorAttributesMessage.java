@@ -36,20 +36,18 @@ public record SetSwitchTrackMotorAttributesMessage(BlockPos blockPos,
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().getLevel();
-    var senderProfile = context.get().getSender().getGameProfile();
+    var player = context.get().getSender();
+    var level = player.getLevel();
+    var senderProfile = player.getGameProfile();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get())
         .filter(signalBox -> signalBox.canAccess(senderProfile))
         .ifPresent(signalBox -> {
           signalBox.getActionSignalAspects().clear();
           signalBox.getActionSignalAspects().addAll(this.actionSignalAspects);
           signalBox.setRedstoneTriggered(this.redstoneTriggered);
-          signalBox.setLock(this.lock);
-          if (this.lock == LockableSwitchTrackActuatorBlockEntity.Lock.LOCKED) {
-            signalBox.setOwner(senderProfile);
-          } else {
-            signalBox.setOwner(null);
-          }
+          signalBox.setLock(
+              this.lock.equals(LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED)
+                  ? null : senderProfile);
           signalBox.syncToClient();
         });
     return true;

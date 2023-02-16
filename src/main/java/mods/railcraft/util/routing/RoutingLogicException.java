@@ -1,24 +1,24 @@
 package mods.railcraft.util.routing;
 
+import java.util.List;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
 public class RoutingLogicException extends Exception {
 
-  private final Component tooltip;
+  private final List<Component> tooltip;
 
   public RoutingLogicException(String errorKey) {
-    tooltip = Component.translatable(errorKey).withStyle(ChatFormatting.RED);
+    tooltip = List.of(Component.translatable(errorKey).withStyle(ChatFormatting.RED));
   }
 
   public RoutingLogicException(String errorKey, String line) {
     var error = Component.translatable(errorKey).withStyle(ChatFormatting.RED);
     var lineLiteral = Component.literal("\"" + line + "\"");
-    tooltip = CommonComponents.joinLines(error, lineLiteral);
+    tooltip = List.of(error, lineLiteral);
   }
 
-  public Component getToolTip() {
+  public List<Component> getToolTip() {
     return this.tooltip;
   }
 }

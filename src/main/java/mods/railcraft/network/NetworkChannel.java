@@ -16,6 +16,7 @@ import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
 import mods.railcraft.network.play.EditTicketAttributeMessage;
+import mods.railcraft.network.play.SetSwitchTrackRoutingAttributesMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -135,6 +136,13 @@ public enum NetworkChannel {
           .encoder(EditRoutingTableBookMessage::encode)
           .decoder(EditRoutingTableBookMessage::decode)
           .consumerMainThread(EditRoutingTableBookMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetSwitchTrackRoutingAttributesMessage.class, 0x0F,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetSwitchTrackRoutingAttributesMessage::encode)
+          .decoder(SetSwitchTrackRoutingAttributesMessage::decode)
+          .consumerMainThread(SetSwitchTrackRoutingAttributesMessage::handle)
           .add();
     }
   };

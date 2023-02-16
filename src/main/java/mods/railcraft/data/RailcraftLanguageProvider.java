@@ -548,6 +548,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         or train owned by the issuer. It can also be combined with paper to produce single \
         use tickets.""");
     this.add(Translations.Screen.ROUTING_TABLE_BOOK, "Routing Table Book");
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTING_PUBLIC_RAILWAY, "Public Railway");
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTING_PUBLIC_RAILWAY_DESC,
+        "Will route any locomotive");
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTING_PRIVATE_RAILWAY, "Private Railway");
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTING_PRIVATE_RAILWAY_DESC,
+        "Will only route locomotive that belong to %s");
   }
 
   private void trackTranslations() {
