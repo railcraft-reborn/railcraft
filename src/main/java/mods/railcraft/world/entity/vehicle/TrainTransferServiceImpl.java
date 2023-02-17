@@ -23,7 +23,7 @@ import net.minecraftforge.items.IItemHandler;
  *
  * Created by CovertJaguar on 5/9/2015.
  */
-public enum TrainTransferHandlerImpl implements TrainTransferService {
+public enum TrainTransferServiceImpl implements TrainTransferService {
 
   INSTANCE;
 
