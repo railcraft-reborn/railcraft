@@ -6,8 +6,9 @@ import java.util.Deque;
 import java.util.NoSuchElementException;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
-import mods.railcraft.api.carts.IPaintedCart;
-import mods.railcraft.api.carts.IRoutableCart;
+import mods.railcraft.api.carts.Paintable;
+import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.carts.Routable;
 import mods.railcraft.api.fuel.INeedsFuel;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.util.routing.expression.ConstantExpression;
@@ -27,7 +28,6 @@ import mods.railcraft.util.routing.expression.condition.RedstoneCondition;
 import mods.railcraft.util.routing.expression.condition.RefuelCondition;
 import mods.railcraft.util.routing.expression.condition.RiderCondition;
 import mods.railcraft.util.routing.expression.condition.TypeCondition;
-import mods.railcraft.world.entity.vehicle.Train;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class RoutingLogic {
@@ -76,29 +76,23 @@ public class RoutingLogic {
   }
 
   private AbstractMinecart getRoutableCart(AbstractMinecart cart) {
-    // FIXME Train: Will this cause desync?
-    // Note that this doesn't actually change the behavior as link information has never been available on the client.
-    return Train.get(cart)
-        .map(train -> {
-          if (train.size() <= 1) {
-            return cart;
-          }
-          if (train.isTrainEnd(cart)) {
-            if (cart instanceof IRoutableCart) {
-              return cart;
-            }
-            if (cart instanceof IPaintedCart) {
-              return cart;
-            }
-            if (cart instanceof INeedsFuel) {
-              return cart;
-            }
-          }
-          if (train.getHeadLocomotive().isPresent()) {
-            return train.getHeadLocomotive().get();
-          }
-          return cart;
-        }).orElse(cart);
+    var rollingStock = RollingStock.getOrThrow(cart);
+    var train = rollingStock.train();
+    if (train.size() <= 1) {
+      return cart;
+    }
+    if (rollingStock.isEnd()) {
+      if (cart instanceof Routable) {
+        return cart;
+      }
+      if (cart instanceof Paintable) {
+        return cart;
+      }
+      if (cart instanceof INeedsFuel) {
+        return cart;
+      }
+    }
+    return train.front().entity();
   }
 
   public boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {

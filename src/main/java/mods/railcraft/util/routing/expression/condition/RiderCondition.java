@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import mods.railcraft.Translations;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.routing.IBlockEntityRouting;
 import mods.railcraft.util.routing.RoutingLogicException;
-import mods.railcraft.world.entity.vehicle.Train;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
@@ -111,7 +111,10 @@ public class RiderCondition extends ParsedCondition {
   }
 
   private List<Entity> getPassengers(AbstractMinecart cart) {
-    return Train.streamCarts(cart)
+    return RollingStock.getOrThrow(cart)
+        .train()
+        .stream()
+        .map(RollingStock::entity)
         .flatMap(c -> c.getPassengers().stream())
         .collect(Collectors.toList());
   }
