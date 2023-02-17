@@ -138,7 +138,7 @@ public class ClientManager {
         TrainDispenserScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(),
         TankMinecartScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTING.get(),
+    MenuScreens.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(),
         SwitchTrackRouterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
   }

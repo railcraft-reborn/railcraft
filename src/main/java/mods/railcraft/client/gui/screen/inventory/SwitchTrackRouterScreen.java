@@ -8,7 +8,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetSwitchTrackRoutingAttributesMessage;
+import mods.railcraft.network.play.SetSwitchTrackRouterAttributesMessage;
 import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.world.inventory.SwitchTrackRouterMenu;
@@ -138,7 +138,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
       return;
     }
     NetworkChannel.GAME.sendToServer(
-        new SetSwitchTrackRoutingAttributesMessage(this.switchTrackRouting.getBlockPos(),
+        new SetSwitchTrackRouterAttributesMessage(this.switchTrackRouting.getBlockPos(),
             this.railwayButton.getState(), this.lockButton.getState()));
   }
 

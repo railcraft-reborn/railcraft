@@ -109,7 +109,7 @@
                 "facing": "north"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_actuator_routing"
+                "model": "railcraft:block/switch_track_actuator_router"
             }
         },
         {
@@ -117,7 +117,7 @@
                 "facing": "east"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_actuator_routing",
+                "model": "railcraft:block/switch_track_actuator_router",
                 "y": 90
             }
         },
@@ -126,7 +126,7 @@
                 "facing": "south"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_actuator_routing",
+                "model": "railcraft:block/switch_track_actuator_router",
                 "y": 180
             }
         },
@@ -135,7 +135,7 @@
                 "facing": "west"
             },
             "apply": {
-                "model": "railcraft:block/switch_track_actuator_routing",
+                "model": "railcraft:block/switch_track_actuator_router",
                 "y": 270
             }
         }

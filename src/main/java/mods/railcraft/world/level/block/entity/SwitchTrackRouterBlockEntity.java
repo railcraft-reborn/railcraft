@@ -48,7 +48,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
   private Railway railway = Railway.PUBLIC;
 
   public SwitchTrackRouterBlockEntity(BlockPos blockPos, BlockState blockState) {
-    super(RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTING.get(), blockPos, blockState);
+    super(RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get(), blockPos, blockState);
     this.container = new AdvancedContainer(1).listener((Container) this);
   }
 
@@ -178,7 +178,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     @Override
     public Component getLabel() {
       return Component.translatable(Translations.makeKey("screen",
-          String.format("switch_track_routing.%s_railway", this.name)));
+          String.format("switch_track_router.%s_railway", this.name)));
     }
 
     @Override

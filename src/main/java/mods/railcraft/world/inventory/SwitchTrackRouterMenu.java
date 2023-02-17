@@ -17,7 +17,7 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
 
   public SwitchTrackRouterMenu(int id, Inventory inventory,
       SwitchTrackRouterBlockEntity blockEntity) {
-    super(RailcraftMenuTypes.SWITCH_TRACK_ROUTING.get(), id, inventory.player, blockEntity::stillValid);
+    super(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(), id, inventory.player, blockEntity::stillValid);
     this.switchTrackRouting = blockEntity;
 
     var routingTableBookSlot = new Slot(switchTrackRouting, 0, 35, 24) {

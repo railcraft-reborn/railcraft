@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "railcraft:switch_track_routing"
+          "name": "railcraft:switch_track_router"
         }
       ],
       "rolls": 1.0

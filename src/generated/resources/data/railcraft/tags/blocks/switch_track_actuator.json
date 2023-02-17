@@ -2,6 +2,6 @@
   "values": [
     "railcraft:switch_track_lever",
     "railcraft:switch_track_motor",
-    "railcraft:switch_track_routing"
+    "railcraft:switch_track_router"
   ]
 }

@@ -76,7 +76,7 @@ public class RailcraftMenuTypes {
           () -> new MenuType<>(
               blockEntityMenu(FeedStationBlockEntity.class, FeedStationMenu::new)));
 
-  public static final RegistryObject<MenuType<SwitchTrackRouterMenu>> SWITCH_TRACK_ROUTING =
+  public static final RegistryObject<MenuType<SwitchTrackRouterMenu>> SWITCH_TRACK_ROUTER =
       deferredRegister.register("switch_track_routing",
           () -> new MenuType<>(
               blockEntityMenu(SwitchTrackRouterBlockEntity.class, SwitchTrackRouterMenu::new)));

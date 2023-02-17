@@ -1,4 +1,4 @@
-// 1.19.3	2023-02-17T12:48:46.702752	Loot Tables
+// 1.19.3	2023-02-17T21:35:08.4326	Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -285,7 +285,7 @@ ac4f0cd894dc3739a02de69a5458de48e356b40d data/railcraft/loot_tables/blocks/strap
 df087daaa282b2dd2d2a04c482caee6a141f5f2e data/railcraft/loot_tables/blocks/sulfur_ore.json
 4a44e7364fd26422c184e1994eefa665cfbbc61a data/railcraft/loot_tables/blocks/switch_track_lever.json
 194a6f30f98357e584b7381523fbd9242acdbf3e data/railcraft/loot_tables/blocks/switch_track_motor.json
-2a2b18146e8e9000bc0d64593874f7e14e74e4a7 data/railcraft/loot_tables/blocks/switch_track_routing.json
+59c17f12e70df2c485f70f6df5bd6452e477648e data/railcraft/loot_tables/blocks/switch_track_router.json
 1cfba089df4bcac5891dd654a3dffe4f3baf3d84 data/railcraft/loot_tables/blocks/tin_block.json
 67bbb0d08e0b82af083c4308f50af7e1baaea0f6 data/railcraft/loot_tables/blocks/tin_ore.json
 1d050a0f9e12f58ac448bf9fd4c3e24672644658 data/railcraft/loot_tables/blocks/token_signal.json

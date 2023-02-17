@@ -7,16 +7,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public record SetSwitchTrackRoutingAttributesMessage(
+public record SetSwitchTrackRouterAttributesMessage(
     BlockPos blockPos,
     SwitchTrackRouterBlockEntity.Railway railway,
     SwitchTrackRouterBlockEntity.Lock lock) {
 
-  public static SetSwitchTrackRoutingAttributesMessage decode(FriendlyByteBuf in) {
+  public static SetSwitchTrackRouterAttributesMessage decode(FriendlyByteBuf in) {
     var blockPos = in.readBlockPos();
     var railway = in.readEnum(SwitchTrackRouterBlockEntity.Railway.class);
     var lock = in.readEnum(SwitchTrackRouterBlockEntity.Lock.class);
-    return new SetSwitchTrackRoutingAttributesMessage(blockPos, railway, lock);
+    return new SetSwitchTrackRouterAttributesMessage(blockPos, railway, lock);
   }
 
   public void encode(FriendlyByteBuf out) {

@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:switch_track_routing"
+        "recipe": "railcraft:switch_track_router"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "railcraft:switch_track_routing"
+      "railcraft:switch_track_router"
     ]
   }
 }

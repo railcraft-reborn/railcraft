@@ -3,7 +3,7 @@
 	"parent": "block/block",
 	"textures": {
 		"cap": "railcraft:block/switch_track_actuator_cap",
-		"side_long": "railcraft:block/switch_track_actuator_routing_side_long",
+		"side_long": "railcraft:block/switch_track_actuator_router_side_long",
 		"side_short": "railcraft:block/switch_track_actuator_side_short",
 		"red_flag": "railcraft:block/switch_track_actuator_flag_red",
 		"white_flag": "railcraft:block/switch_track_actuator_flag_white",
