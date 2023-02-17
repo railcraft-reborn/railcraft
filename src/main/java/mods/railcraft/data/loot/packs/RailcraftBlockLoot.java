@@ -56,16 +56,26 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
     this.dropSelf(RailcraftBlocks.WATER_TANK_SIDING.get());
 
-    this.dropSelf(RailcraftBlocks.LEAD_ORE.get());
-    this.dropSelf(RailcraftBlocks.NICKEL_ORE.get());
-    this.dropSelf(RailcraftBlocks.SILVER_ORE.get());
-    this.dropSelf(RailcraftBlocks.TIN_ORE.get());
-    this.dropSelf(RailcraftBlocks.ZINC_ORE.get());
-    this.dropSelf(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get());
-    this.dropSelf(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get());
-    this.dropSelf(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get());
-    this.dropSelf(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
-    this.dropSelf(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+    this.add(RailcraftBlocks.LEAD_ORE.get(), block ->
+        this.createOreDrop(block, RailcraftItems.LEAD_RAW.get()));
+    this.add(RailcraftBlocks.NICKEL_ORE.get(), block ->
+        this.createOreDrop(block, RailcraftItems.NICKEL_RAW.get()));
+    this.add(RailcraftBlocks.SILVER_ORE.get(), block ->
+        this.createOreDrop(block, RailcraftItems.SILVER_RAW.get()));
+    this.add(RailcraftBlocks.TIN_ORE.get(), block ->
+        this.createOreDrop(block, RailcraftItems.TIN_RAW.get()));
+    this.add(RailcraftBlocks.ZINC_ORE.get(), block ->
+        this.createOreDrop(block, RailcraftItems.ZINC_RAW.get()));
+    this.add(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get(), block ->
+        this.createOreDrop(block, RailcraftItems.LEAD_RAW.get()));
+    this.add(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get(), block ->
+        this.createOreDrop(block, RailcraftItems.NICKEL_RAW.get()));
+    this.add(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get(), block ->
+        this.createOreDrop(block, RailcraftItems.SILVER_RAW.get()));
+    this.add(RailcraftBlocks.DEEPSLATE_TIN_ORE.get(), block ->
+        this.createOreDrop(block, RailcraftItems.TIN_RAW.get()));
+    this.add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get(), block ->
+        this.createOreDrop(block, RailcraftItems.ZINC_RAW.get()));
     this.dropSelf(RailcraftBlocks.FIRESTONE_ORE.get());
 
     this.dropSelf(RailcraftBlocks.QUARRIED_STONE.get());

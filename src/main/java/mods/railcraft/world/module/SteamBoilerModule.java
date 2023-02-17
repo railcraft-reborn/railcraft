@@ -1,15 +1,15 @@
 package mods.railcraft.world.module;
 
+import org.jetbrains.annotations.NotNull;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import mods.railcraft.world.level.material.fluid.TankManager;
 import mods.railcraft.world.level.material.fluid.steam.SteamBoiler;
-import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
@@ -17,10 +17,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     extends ContainerModule<T> {
@@ -35,8 +35,8 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   protected final SteamBoiler boiler;
 
   private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> this.tankManager);
-  private final LazyOptional<IItemHandler> itemHandler =
-      LazyOptional.of(() -> new InvWrapper(this) {
+  private final LazyOptional<
+      IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
         @NotNull
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -48,15 +48,13 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
 
   protected final TankManager tankManager = new TankManager();
 
-  private final FilteredTank waterTank = new FilteredTank(4 * FluidTools.BUCKET_VOLUME) {
-    @Override
-    public int internalFill(FluidStack resource, FluidAction action) {
-      return super.internalFill(SteamBoilerModule.this.checkFill(resource), action);
-    }
-  }.setFilterFluid(() -> Fluids.WATER);
+  private final StandardTank waterTank =
+      StandardTank.ofBuckets(4)
+          .fillProcessor(this::checkFill)
+          .filter(Fluids.WATER);
 
-  private final FilteredTank steamTank = new FilteredTank(16 * FluidTools.BUCKET_VOLUME)
-      .setFilterTag(RailcraftTags.Fluids.STEAM);
+  private final StandardTank steamTank = StandardTank.ofBuckets(16)
+      .filter(RailcraftTags.Fluids.STEAM);
 
   protected final ContainerMapper fluidContainer =
       ContainerMapper.make(this.container, SLOT_LIQUID_INPUT, 3).ignoreItemChecks();
@@ -69,8 +67,8 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   public SteamBoilerModule(T provider, int containerSize) {
     super(provider, containerSize);
 
-    this.waterTank.setChangeListener(provider::setChanged);
-    this.steamTank.setChangeListener(provider::setChanged);
+    this.waterTank.changeCallback(provider::setChanged);
+    this.steamTank.changeCallback(provider::setChanged);
 
     this.tankManager.add(this.waterTank);
     this.tankManager.add(this.steamTank);
@@ -103,7 +101,7 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   }
 
   public void update(SteamBoilerBlockEntity.Metadata metadata) {
-    int capacity = metadata.tanks() * FluidTools.BUCKET_VOLUME;
+    int capacity = metadata.tanks() * FluidType.BUCKET_VOLUME;
     this.tankManager.setCapacity(TANK_STEAM, capacity * metadata.steamCapacityPerTank());
     this.tankManager.setCapacity(TANK_WATER, capacity * 4);
     this.boiler.setMaxTemperature(metadata.maxTemperature());

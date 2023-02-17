@@ -5,7 +5,7 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.world.level.material.fluid.FuelProvider;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.util.INBTSerializable;

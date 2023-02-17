@@ -1,13 +1,10 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.jetbrains.annotations.Nullable;
-import mods.railcraft.api.carts.IItemCart;
+import mods.railcraft.api.carts.ItemTransferHandler;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.season.Season;
-import mods.railcraft.util.container.ContainerMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +31,7 @@ import net.minecraftforge.network.NetworkHooks;
  * @author CovertJaguar (https://www.railcraft.info)
  */
 public abstract class RailcraftMinecart extends AbstractMinecartContainer
-    implements SeasonalCart, IItemCart {
+    implements SeasonalCart, ItemTransferHandler {
 
   private static final EntityDataAccessor<Byte> SEASON =
       SynchedEntityData.defineId(RailcraftMinecart.class, EntityDataSerializers.BYTE);
@@ -42,7 +39,6 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   private final Direction[] travelDirectionHistory = new Direction[2];
   protected @Nullable Direction travelDirection;
   protected @Nullable Direction verticalTravelDirection;
-  protected List<ContainerMapper> invMappers = new ArrayList<>();
 
   protected RailcraftMinecart(EntityType<?> type, Level level) {
     super(type, level);
@@ -208,12 +204,6 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   public boolean canProvidePulledItem(AbstractMinecart requester, ItemStack stack) {
     return false;
-  }
-
-  @Override
-  public boolean canPlaceItem(int index, ItemStack stack) {
-    return this.invMappers.stream().filter(m -> m.containsSlot(index))
-        .allMatch(m -> m.filter().test(stack));
   }
 
   /**

@@ -4,11 +4,10 @@ import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
-import mods.railcraft.world.entity.vehicle.Train;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
@@ -29,14 +28,12 @@ public enum SpeedController implements TrackType.EventHandler {
       return 0.36D;
     }
 
-    private boolean isDerailing(AbstractMinecart cart) {
-      if (CartUtil.getCartSpeedUncapped(cart.getDeltaMovement()) > 0.35F
-          && cart.getLevel().getRandom().nextInt(500) == 250) {
+    private boolean isDerailing(RollingStock cart) {
+      if (CartUtil.getCartSpeedUncapped(cart.entity().getDeltaMovement()) > 0.35F
+          && cart.level().getRandom().nextInt(500) == 250) {
         return true;
       }
-      return Train.streamCarts(cart)
-          .map(MinecartExtension::getOrThrow)
-          .anyMatch(MinecartExtension::isDerailed);
+      return cart.train().stream().anyMatch(RollingStock::isDerailed);
     }
 
     @Override
@@ -55,11 +52,12 @@ public enum SpeedController implements TrackType.EventHandler {
         return Optional.empty();
       }
 
-      if (!this.isDerailing(cart)) {
+      var extension = RollingStock.getOrThrow(cart);
+      if (!this.isDerailing(extension)) {
         return Optional.empty();
       }
 
-      MinecartExtension.getOrThrow(cart).setDerailedRemainingTicks(100);
+      extension.setDerailedRemainingTicks(100);
       var motion = cart.getDeltaMovement();
       if (Math.abs(motion.x()) > Math.abs(motion.z())) {
         cart.setDeltaMovement(motion.x(), motion.y(), motion.x());
@@ -79,7 +77,7 @@ public enum SpeedController implements TrackType.EventHandler {
 
     @Override
     public void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {
-      HighSpeedTools.performHighSpeedChecks(level, pos, cart);
+      HighSpeedTools.performHighSpeedChecks(level, pos, RollingStock.getOrThrow(cart));
     }
 
     @Override

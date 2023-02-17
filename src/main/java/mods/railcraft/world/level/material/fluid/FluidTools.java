@@ -11,7 +11,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.container.ContainerMapper;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -48,8 +47,7 @@ public final class FluidTools {
 
   public static final int BUCKET_FILL_TIME = 8;
   public static final int NETWORK_UPDATE_INTERVAL = 128;
-  public static final int BUCKET_VOLUME = 1000;
-  public static final int PROCESS_VOLUME = BUCKET_VOLUME * 4;
+  public static final int PROCESS_VOLUME = FluidType.BUCKET_VOLUME * 4;
 
   private FluidTools() {}
 

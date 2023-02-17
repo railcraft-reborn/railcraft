@@ -1,8 +1,7 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.Set;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
@@ -11,19 +10,18 @@ import mods.railcraft.world.inventory.LocomotiveMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>
@@ -33,8 +31,7 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
   private static final int SLOT_TICKET = 0;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
 
-  private static final Set<Mode> ALLOWED_MODES =
-      Collections.unmodifiableSet(EnumSet.of(Mode.RUNNING, Mode.SHUTDOWN));
+  private static final Set<Mode> ALLOWED_MODES = Set.of(Mode.RUNNING, Mode.SHUTDOWN);
 
   private final Container invTicket = new ContainerMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
 
@@ -83,7 +80,7 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public float getOptimalDistance(AbstractMinecart cart) {
+  public float getOptimalDistance(RollingStock cart) {
     return 0.92f;
   }
 

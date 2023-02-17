@@ -43,6 +43,17 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(RailcraftTags.Items.SILVER_INGOT)
         .add(RailcraftItems.SILVER_INGOT.get());
 
+    this.tag(RailcraftTags.Items.TIN_RAW)
+        .add(RailcraftItems.TIN_RAW.get());
+    this.tag(RailcraftTags.Items.ZINC_RAW)
+        .add(RailcraftItems.ZINC_RAW.get());
+    this.tag(RailcraftTags.Items.NICKEL_RAW)
+        .add(RailcraftItems.NICKEL_RAW.get());
+    this.tag(RailcraftTags.Items.SILVER_RAW)
+        .add(RailcraftItems.SILVER_RAW.get());
+    this.tag(RailcraftTags.Items.LEAD_RAW)
+        .add(RailcraftItems.LEAD_RAW.get());
+
     this.tag(RailcraftTags.Items.STEEL_NUGGET)
         .add(RailcraftItems.STEEL_NUGGET.get());
     this.tag(RailcraftTags.Items.TIN_NUGGET)

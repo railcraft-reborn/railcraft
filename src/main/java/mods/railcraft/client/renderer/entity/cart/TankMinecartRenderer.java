@@ -60,7 +60,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
   private void renderTank(TankMinecart cart, float partialTicks, PoseStack poseStack,
       MultiBufferSource renderTypeBuffer, int packedLight, float red,
       float green, float blue, float alpha) {
-    var tank = cart.getTankManager().get(0);
+    var tank = cart.getTankManager();
     if (tank != null) {
       var fluidStack = tank.getFluid();
       float capacity = tank.getCapacity();

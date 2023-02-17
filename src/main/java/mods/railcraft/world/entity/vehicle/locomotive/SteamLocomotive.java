@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -91,14 +92,16 @@ public class SteamLocomotive extends BaseSteamLocomotive
     extraFuelInventory.moveOneItemTo(fuelInventory);
     // fuelInventory.moveOneItemTo(invWaterOutput,
     // (ItemStack item) -> (ForgeHooks.getBurnTime(item) > 0));
+
+    var extension = RollingStock.getOrThrow(this);
     ItemStack stack =
-        CartUtil.transferHelper().pullStack(this, this.extraFuelInventory::canFit);
+        CartUtil.transferService().pullStack(extension, this.extraFuelInventory::canFit);
     if (!stack.isEmpty()) {
       extraFuelInventory.addStack(stack);
     }
     if (isSafeToFill() && waterTank.getFluidAmount() < waterTank.getCapacity() / 2) {
-      FluidStack pulled =
-          CartUtil.transferHelper().pullFluid(this, new FluidStack(Fluids.WATER, 1));
+      var pulled =
+          CartUtil.transferService().pullFluid(extension, new FluidStack(Fluids.WATER, 1));
       if (pulled != null) {
         waterTank.fill(pulled, FluidAction.EXECUTE);
       }

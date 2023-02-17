@@ -5,9 +5,7 @@ import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
-import mods.railcraft.world.level.material.fluid.FluidTools;
-import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.tags.FluidTags;
@@ -41,14 +39,14 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   public SteamTurbineModule(SteamTurbineBlockEntity provider, Charge network) {
     super(provider, network);
     this.rotorContainer.listener(this.provider);
-    this.steamTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 4)
-        .setFilterTag(RailcraftTags.Fluids.STEAM)
+    this.steamTank = StandardTank.ofBuckets(4)
+        .filter(RailcraftTags.Fluids.STEAM)
         .disableDrain()
-        .setChangeListener(provider::setChanged);
-    this.waterTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 4)
-        .setFilterTag(FluidTags.WATER)
+        .changeCallback(provider::setChanged);
+    this.waterTank = StandardTank.ofBuckets(4)
+        .filter(FluidTags.WATER)
         .disableFill()
-        .setChangeListener(provider::setChanged);
+        .changeCallback(provider::setChanged);
   }
 
   public LazyOptional<IFluidHandler> getFluidHandler() {

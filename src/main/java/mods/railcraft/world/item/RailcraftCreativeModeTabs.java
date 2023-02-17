@@ -63,6 +63,12 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.ZINC_ORE.get());
               output.accept(RailcraftItems.DEEPSLATE_ZINC_ORE.get());
 
+              output.accept(RailcraftItems.LEAD_RAW.get());
+              output.accept(RailcraftItems.NICKEL_RAW.get());
+              output.accept(RailcraftItems.SILVER_RAW.get());
+              output.accept(RailcraftItems.TIN_RAW.get());
+              output.accept(RailcraftItems.ZINC_RAW.get());
+
               output.accept(RailcraftItems.LEAD_BLOCK.get());
               output.accept(RailcraftItems.NICKEL_BLOCK.get());
               output.accept(RailcraftItems.SILVER_BLOCK.get());

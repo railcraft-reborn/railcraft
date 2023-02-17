@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.track;
 
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
 import net.minecraft.core.BlockPos;
@@ -36,7 +36,7 @@ public class LauncherTrackBlockEntity extends BlockEntity {
       cart.setMaxSpeedAirLateral(0.6F);
       cart.setMaxSpeedAirVertical(0.5F);
       cart.setDragAir(0.99999);
-      MinecartExtension.getOrThrow(cart).launch();
+      RollingStock.getOrThrow(cart).launch();
       cart.setDeltaMovement(newMotionX, this.getLaunchForce() * 0.1D, newMotionZ);
       cart.move(MoverType.SELF, cart.getDeltaMovement());
     }

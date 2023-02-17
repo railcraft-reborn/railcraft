@@ -1,6 +1,7 @@
 package mods.railcraft.data.models;
 
 import java.util.function.Function;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
@@ -78,7 +79,6 @@ import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.Nullable;
 
 public class RailcraftBlockModelProvider extends BlockStateProvider {
 

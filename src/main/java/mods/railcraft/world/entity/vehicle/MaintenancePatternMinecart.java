@@ -1,9 +1,9 @@
 package mods.railcraft.world.entity.vehicle;
 
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.StackFilter;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -55,8 +55,10 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
 
     ItemStack stackStock = getItem(slotStock);
 
+    var extension = RollingStock.getOrThrow(this);
+
     if (!stackStock.isEmpty() && !ContainerTools.isItemEqual(stackReplace, stackStock)) {
-      CartUtil.transferHelper().offerOrDropItem(this, stackStock);
+      CartUtil.transferService().offerOrDropItem(extension, stackStock);
       this.setItem(slotStock, ItemStack.EMPTY);
       stackStock = ItemStack.EMPTY;
     }
@@ -66,8 +68,8 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
 
     if (!ContainerTools.isStackFull(stackStock) && stackStock.getCount() < getMaxStackSize())
       this.setItem(slotStock,
-          ContainerTools.copy(stackReplace, stackStock.getCount() + CartUtil.transferHelper()
-              .pullStack(this, StackFilter.of(stackReplace)).getCount()));
+          ContainerTools.copy(stackReplace, stackStock.getCount() + CartUtil.transferService()
+              .pullStack(extension, stackReplace::sameItem).getCount()));
   }
 
   @Override

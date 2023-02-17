@@ -5,14 +5,12 @@ import com.google.common.collect.MapMaker;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
-import mods.railcraft.api.carts.LinkageHandler;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.world.entity.vehicle.CartTools;
-import mods.railcraft.world.entity.vehicle.DirectionalCart;
-import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
+import mods.railcraft.world.entity.vehicle.Directional;
 import mods.railcraft.world.entity.vehicle.SeasonalCart;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
-import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import net.minecraft.ChatFormatting;
@@ -31,7 +29,7 @@ public class CrowbarHandler {
 
   public static final float SMACK_VELOCITY = 0.07f;
 
-  private static final Map<Player, AbstractMinecart> linkMap =
+  private static final Map<Player, RollingStock> linkMap =
       new MapMaker()
           .weakKeys()
           .weakValues()
@@ -70,26 +68,22 @@ public class CrowbarHandler {
 
   private void linkCart(Player player, InteractionHand hand, ItemStack stack,
       AbstractMinecart cart, Crowbar crowbar) {
-    if (cart instanceof LinkageHandler handler && !handler.isLinkable()) {
-      return;
-    }
-
+    var extension = RollingStock.getOrThrow(cart);
     var last = linkMap.remove(player);
-    if (last == null || !last.isAlive()) {
-      linkMap.put(player, cart);
+    if (last == null || !last.entity().isAlive()) {
+      linkMap.put(player, extension);
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_STARTED)
           .withStyle(ChatFormatting.LIGHT_PURPLE);
       player.displayClientMessage(message, true);
       return;
     }
 
-    if (LinkageManagerImpl.INSTANCE.areLinked(cart, last, false)) {
-      LinkageManagerImpl.INSTANCE.breakLink(cart, last);
+    if (extension.unlink(last)) {
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_BROKEN)
           .withStyle(ChatFormatting.LIGHT_PURPLE);
       player.displayClientMessage(message, true);
     } else {
-      if (!LinkageManagerImpl.INSTANCE.createLink(last, cart)) {
+      if (!last.link(extension)) {
         var message = Component.translatable(Translations.Tips.CROWBAR_LINK_FAILED)
             .withStyle(ChatFormatting.RED);
         player.displayClientMessage(message, true);
@@ -97,7 +91,7 @@ public class CrowbarHandler {
       }
 
       if (!player.getLevel().isClientSide()) {
-        RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayer) player, last, cart);
+        RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayer) player, last.entity(), cart);
       }
 
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_CREATED)
@@ -116,7 +110,7 @@ public class CrowbarHandler {
       // NOOP
     } else if (cart instanceof TunnelBore) {
       // NOOP
-    } else if (cart instanceof DirectionalCart directional) {
+    } else if (cart instanceof Directional directional) {
       directional.reverse();
     } else if (cart instanceof TrackRemover trackRemover) {
       trackRemover.setMode(trackRemover.getMode().getNext());
@@ -125,14 +119,12 @@ public class CrowbarHandler {
       if (lvl == 0) {
         CartTools.smackCart(cart, player, SMACK_VELOCITY);
       }
-
-      Train.get(cart).ifPresent(train -> {
-        float smackVelocity = SMACK_VELOCITY * (float) Math.pow(1.7, lvl);
-        smackVelocity /= (float) Math.pow(train.size(), 1D / (1 + lvl));
-        for (var each : train) {
-          CartTools.smackCart(cart, each, player, smackVelocity);
-        }
-      });
+      var extension = RollingStock.getOrThrow(cart);
+      var train = extension.train();
+      var smackVelocity = (SMACK_VELOCITY * (float) Math.pow(1.7, lvl))
+          / (float) Math.pow(train.size(), 1D / (1 + lvl));
+      train.stream().forEach(
+          each -> CartTools.smackCart(cart, each.entity(), player, smackVelocity));
     }
     crowbar.onBoost(player, hand, stack, cart);
   }

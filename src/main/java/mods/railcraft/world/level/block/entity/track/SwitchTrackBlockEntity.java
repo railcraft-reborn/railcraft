@@ -8,17 +8,18 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Sets;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.world.entity.vehicle.CartTools;
-import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
@@ -35,7 +36,10 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
   private byte sprung;
   private byte locked;
   @Nullable
-  private UUID currentCart;
+  private RollingStock currentCart;
+
+  @Nullable
+  private UUID unresolvedCurrentCart;
 
   public SwitchTrackBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     super(type, blockPos, blockState);
@@ -91,9 +95,9 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     // Only allow cartsOnTrack to actually spring or lock the track
     if (bestCart != null && uuidOnTrack.contains(bestCart.getUUID())) {
       if (blockEntity.shouldSwitchForCart(bestCart)) {
-        blockEntity.springTrack(bestCart.getUUID());
+        blockEntity.springTrack(RollingStock.getOrThrow(bestCart));
       } else {
-        blockEntity.lockTrack(bestCart.getUUID());
+        blockEntity.lockTrack(RollingStock.getOrThrow(bestCart));
       }
     }
 
@@ -175,7 +179,8 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     if (this.lockingCarts.contains(cart.getUUID()))
       return false; // Carts at the locking entrance always are on locked tracks
 
-    boolean sameTrain = Train.get(cart).map(t -> t.contains(currentCart)).orElse(false);
+    var sameTrain = this.currentCart() != null && RollingStock.getOrThrow(cart)
+        .isSameTrainAs(this.currentCart());
 
     BlockState actuatorBlockState = this.level.getBlockState(this.getActuatorBlockPos());
     boolean shouldSwitch = actuatorBlockState.is(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
@@ -197,13 +202,25 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     return shouldSwitch;
   }
 
-  private void springTrack(UUID cartOnTrack) {
+  @Nullable
+  private RollingStock currentCart() {
+    if (this.unresolvedCurrentCart != null) {
+      var entity = ((ServerLevel) this.level).getEntity(this.unresolvedCurrentCart);
+      if (entity instanceof AbstractMinecart minecart) {
+        this.currentCart = RollingStock.getOrThrow(minecart);
+      }
+      this.unresolvedCurrentCart = null;
+    }
+    return this.currentCart;
+  }
+
+  private void springTrack(RollingStock cartOnTrack) {
     this.sprung = SPRING_DURATION;
     this.locked = 0;
     this.currentCart = cartOnTrack;
   }
 
-  private void lockTrack(UUID cartOnTrack) {
+  private void lockTrack(RollingStock cartOnTrack) {
     this.locked = SPRING_DURATION;
     this.sprung = 0;
     this.currentCart = cartOnTrack;
@@ -226,7 +243,7 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     tag.put("lockingCarts", RailcraftNBTUtil.createUUIDArray(this.lockingCarts));
     tag.put("decidingCarts", RailcraftNBTUtil.createUUIDArray(this.decidingCarts));
     if (this.currentCart != null) {
-      tag.putUUID("currentCart", this.currentCart);
+      tag.putUUID("currentCart", this.currentCart.entity().getUUID());
     }
   }
 
@@ -244,7 +261,7 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     this.decidingCarts = Sets.newHashSet(
         RailcraftNBTUtil
             .loadUUIDArray(tag.getList("decidingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
-    this.currentCart = tag.hasUUID("currentCart") ? tag.getUUID("currentCart") : null;
+    this.unresolvedCurrentCart = tag.hasUUID("currentCart") ? tag.getUUID("currentCart") : null;
   }
 
   private void updateSet(Set<UUID> setToUpdate, List<UUID> potentialUpdates, Set<UUID> reject1,

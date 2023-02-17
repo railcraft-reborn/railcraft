@@ -1,9 +1,9 @@
 package mods.railcraft.world.level.material.fluid.steam;
 
 import mods.railcraft.api.fuel.FuelUtil;
-import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FuelProvider;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
+import mods.railcraft.world.level.material.fluid.StandardTank;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
@@ -25,14 +25,14 @@ public class FluidFuelProvider implements FuelProvider {
 
   @Override
   public float consumeFuel() {
-    var fuel = this.fuelTank.internalDrain(FluidTools.BUCKET_VOLUME, FluidAction.SIMULATE);
+    var fuel = this.fuelTank.internalDrain(FluidType.BUCKET_VOLUME, FluidAction.SIMULATE);
     if (fuel.isEmpty()) {
       return 0.0F;
     }
 
     var heatValue = FuelUtil.fuelManager().getFuelValueForSize(fuel);
     if (heatValue > 0.0F) {
-      this.fuelTank.internalDrain(FluidTools.BUCKET_VOLUME, FluidAction.EXECUTE);
+      this.fuelTank.internalDrain(FluidType.BUCKET_VOLUME, FluidAction.EXECUTE);
     }
     return heatValue;
   }

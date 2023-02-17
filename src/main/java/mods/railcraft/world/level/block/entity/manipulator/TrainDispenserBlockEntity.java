@@ -1,8 +1,9 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.function.Predicate;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.container.AdvancedContainer;
@@ -18,13 +19,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
 
@@ -34,7 +33,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
       new AdvancedContainer(PATTERN_SIZE).listener((Container) this).phantom();
   private byte patternIndex;
   private boolean spawningTrain;
-  private @Nullable AbstractMinecart lastCart;
+  private @Nullable RollingStock lastCart;
 
   public TrainDispenserBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.TRAIN_DISPENSER.get(), blockPos, blockState);
@@ -67,10 +66,11 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
         var placedCart = CartTools.placeCart(cartItem, serverLevel, offset);
 
         if (placedCart != null) {
+          var extension = RollingStock.getOrThrow(placedCart);
           if (this.lastCart != null) {
-            CartUtil.linkageManager().createLink(placedCart, this.lastCart);
+            extension.link(this.lastCart);
           }
-          this.lastCart = placedCart;
+          this.lastCart = extension;
           this.patternIndex++;
           if (this.patternIndex >= this.invPattern.getContainerSize()) {
             this.resetSpawnSequence();

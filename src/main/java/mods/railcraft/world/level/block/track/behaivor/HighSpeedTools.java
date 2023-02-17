@@ -2,12 +2,12 @@ package mods.railcraft.world.level.block.track.behaivor;
 
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.track.TypedTrack;
 import mods.railcraft.world.entity.vehicle.CartTools;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -75,8 +75,8 @@ public final class HighSpeedTools {
   }
 
   public static void performHighSpeedChecks(Level level, BlockPos pos,
-      AbstractMinecart cart) {
-    var extension = MinecartExtension.getOrThrow(cart);
+      RollingStock extension) {
+    var cart = extension.entity();
     var highSpeed = extension.isHighSpeed();
     var currentMotion = cart.getDeltaMovement();
     if (highSpeed) {

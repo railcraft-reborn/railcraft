@@ -3,9 +3,9 @@ package mods.railcraft.client.renderer.entity.cart;
 import org.apache.commons.lang3.StringUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import mods.railcraft.api.carts.IRoutableCart;
+import mods.railcraft.api.carts.Routable;
 import mods.railcraft.season.Seasons;
-import mods.railcraft.world.entity.vehicle.DirectionalCart;
+import mods.railcraft.world.entity.vehicle.Directional;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -73,8 +73,8 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
       pitch = -pitch;
     }
 
-    if (cart instanceof DirectionalCart) {
-      ((DirectionalCart) cart).setRenderYaw(yaw);
+    if (cart instanceof Directional) {
+      ((Directional) cart).setRenderYaw(yaw);
     }
     poseStack.translate(0.0D, 0.375D, 0.0D);
 
@@ -83,8 +83,8 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
       this.renderNameTag(cart, cart.getCustomName(), poseStack, bufferSource, packedLight);
     }
 
-    if (cart instanceof IRoutableCart) {
-      String dest = ((IRoutableCart) cart).getDestination();
+    if (cart instanceof Routable routable) {
+      String dest = routable.getDestination();
       if (!StringUtils.isBlank(dest))
         this.renderNameTag(cart, Component.literal(dest), poseStack, bufferSource,
             packedLight);

@@ -2,7 +2,6 @@ package mods.railcraft;
 
 import java.util.ArrayList;
 import java.util.List;
-import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -69,8 +68,9 @@ public class RailcraftConfig {
       builder.push("highSpeedTrack");
       {
         this.highSpeedTrackMaxSpeed = builder
-            .comment("Change to limit max speed on high speed rails, useful if your computer can't keep up with chunk loading",
-              "iron tracks operate at 0.4 blocks per tick")
+            .comment(
+                "Change to limit max speed on high speed rails, useful if your computer can't keep up with chunk loading",
+                "iron tracks operate at 0.4 blocks per tick")
             // .translation("forge.configgui.fullBoundingBoxLadders")
             .defineInRange("maxSpeed", 1.0D, 0.6D, 1.2D);
 
@@ -80,14 +80,16 @@ public class RailcraftConfig {
             "minecraft:spider", "minecraft:vex", "minecraft:bee");
 
         this.highSpeedTrackIgnoredEntities = builder
-            .comment("Add entity names to exclude them from explosions caused by high speed collisions")
+            .comment(
+                "Add entity names to exclude them from explosions caused by high speed collisions")
             .defineList("ignoredEntities", defaultEntities,
                 obj -> ResourceLocation.isValidResourceLocation(obj.toString()));
       }
       builder.pop();
 
       this.strapIronTrackMaxSpeed = builder
-          .comment("Change to limit max speed on strap iron rails. Vanilla iron rails goes as fast as 0.4D/tick")
+          .comment(
+              "Change to limit max speed on strap iron rails. Vanilla iron rails goes as fast as 0.4D/tick")
           .defineInRange("maxSpeed", 0.12D, 0.1D, 0.3D);
 
       this.chestAllowFluids = builder
@@ -110,9 +112,10 @@ public class RailcraftConfig {
           .defineInRange("horsepower", 15.0D, 15.0D, 45.0D);
 
       this.solidCarts = builder
-          .comment("Change to false to return minecarts to vanilla player vs cart collision behavior",
-            "In vanilla minecarts are ghost-like can be walked through",
-            "but making carts solid also makes them harder to push by hand")
+          .comment(
+              "Change to false to return minecarts to vanilla player vs cart collision behavior",
+              "In vanilla minecarts are ghost-like can be walked through",
+              "but making carts solid also makes them harder to push by hand")
           .define("solidCarts", true);
 
       this.cartsCollideWithItems = builder
@@ -120,15 +123,18 @@ public class RailcraftConfig {
           .define("cartsCollideWithItems", false);
 
       this.boreMininigSpeedMultiplier = builder
-          .comment("Adjust the speed at which the Bore mines blocks, min=0.1, default=1.0, max=50.0")
+          .comment(
+              "Adjust the speed at which the Bore mines blocks, min=0.1, default=1.0, max=50.0")
           .defineInRange("boreMininigSpeedMultiplier", 1.0D, 0.1D, 50.0D);
 
       this.boreDestorysBlocks = builder
-          .comment("Change to true to cause the Bore to destroy the blocks it mines instead of dropping them")
+          .comment(
+              "Change to true to cause the Bore to destroy the blocks it mines instead of dropping them")
           .define("boreDestorysBlocks", false);
 
       this.boreMinesAllBlocks = builder
-          .comment("Change to false to enable mining checks, use true setting with caution, especially on servers")
+          .comment(
+              "Change to false to enable mining checks, use true setting with caution, especially on servers")
           .define("boreMinesAllBlocks", true);
 
       this.cartsBreakOnDrop = builder
@@ -153,7 +159,8 @@ public class RailcraftConfig {
           .define("tankStackingEnabled", false);
 
       this.maxTankSize = builder
-          .comment("Allows you to set the max tank base dimension, valid values are 3, 5, 7, and 9.")
+          .comment(
+              "Allows you to set the max tank base dimension, valid values are 3, 5, 7, and 9.")
           .defineInRange("maxTankSize", 9, 3, 9);
 
       this.tankCapacityPerBlock = builder
@@ -192,10 +199,6 @@ public class RailcraftConfig {
             .defineInRange("fuelPerSteamMultiplier", 1.0F, 0.2F, 6.0F);
       }
       builder.pop();
-    }
-
-    public int getTankCartFluidCapacity() {
-      return this.tankCartFluidCapacity.get() * FluidTools.BUCKET_VOLUME;
     }
   }
 
@@ -249,8 +252,9 @@ public class RailcraftConfig {
           .define("polarExpressEnabled", true);
 
       this.locomotiveLightLevel = builder
-          .comment("Change '14' to a number ranging from '0' to '15' to represent the dynamic lighting of the locomotive when Dynamic Lights mod is present.",
-            "If it is '0' then locomotive lightning will be disabled.")
+          .comment(
+              "Change '14' to a number ranging from '0' to '15' to represent the dynamic lighting of the locomotive when Dynamic Lights mod is present.",
+              "If it is '0' then locomotive lightning will be disabled.")
           .defineInRange("locomotiveLightLevel", 14, 0, 15);
 
       builder.pop();

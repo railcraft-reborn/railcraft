@@ -3,12 +3,12 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.world.entity.vehicle.CartTools;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -81,7 +81,7 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
   public void onMinecartPass(BlockState blockState, Level level, BlockPos blockPos,
       AbstractMinecart cart) {
     super.onMinecartPass(blockState, level, blockPos, cart);
-    var extension = MinecartExtension.getOrThrow(cart);
+    var extension = RollingStock.getOrThrow(cart);
     if (isPowered(blockState) && cart.canBeRidden() && !cart.isVehicle()
         && extension.isMountable()) {
       int radius = getRadius(blockState);

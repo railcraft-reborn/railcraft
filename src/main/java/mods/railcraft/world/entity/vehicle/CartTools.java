@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import mods.railcraft.api.carts.Link;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.api.carts.Side;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
@@ -39,7 +40,7 @@ public final class CartTools {
     if (!cart.isAlive()) {
       return;
     }
-    MinecartExtension.getOrThrow(cart).setHighSpeed(false);
+    RollingStock.getOrThrow(cart).setHighSpeed(false);
     cart.setDeltaMovement(0, cart.getDeltaMovement().y(), 0);
 
     if (cart.level.isClientSide()) {
@@ -128,22 +129,29 @@ public final class CartTools {
     } else {
       cartInfo = cart.toString();
     }
+
+    var extension = RollingStock.getOrThrow(cart);
+
     debug.add("Object: " + cartInfo);
     debug.add("UUID: " + cart.getUUID());
-    debug.add("LinkA: " + MinecartExtension.getOrThrow(cart).getLinkedMinecart(Link.FRONT)
+    debug.add("LinkA: " + extension.linkAt(Side.BACK)
+        .map(RollingStock::entity)
         .map(AbstractMinecart::getUUID)
         .orElse(null));
-    debug.add("LinkB: " + MinecartExtension.getOrThrow(cart).getLinkedMinecart(Link.BACK)
+    debug.add("LinkB: " + extension.linkAt(Side.FRONT)
+        .map(RollingStock::entity)
         .map(AbstractMinecart::getUUID)
         .orElse(null));
-    debug.add(
-        "Train: " + Train.get(cart).map(Train::getId).map(UUID::toString).orElse("NA on Client"));
-    Train.get(cart).ifPresent(train -> {
-      debug.add("Train Carts:");
-      for (UUID uuid : train.getCarts()) {
-        debug.add("  " + uuid);
-      }
-    });
+    debug.add("Train: " + (cart.getLevel().isClientSide()
+        ? "NA on Client"
+        : extension.train().id()));
+    if (!cart.getLevel().isClientSide()) {
+      debug.add(extension.train().stream()
+          .map(RollingStock::entity)
+          .map(AbstractMinecart::getUUID)
+          .map(UUID::toString)
+          .collect(Collectors.joining(", ", "Train Carts: ", "")));
+    }
     return debug;
   }
 

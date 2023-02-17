@@ -1348,6 +1348,12 @@ public class RailcraftItems {
   public static final RegistryObject<Item> SILVER_NUGGET = registerBasic("silver_nugget");
   public static final RegistryObject<Item> LEAD_NUGGET = registerBasic("lead_nugget");
 
+  public static final RegistryObject<Item> TIN_RAW = registerBasic("tin_raw");
+  public static final RegistryObject<Item> ZINC_RAW = registerBasic("zinc_raw");
+  public static final RegistryObject<Item> NICKEL_RAW = registerBasic("nickel_raw");
+  public static final RegistryObject<Item> SILVER_RAW = registerBasic("silver_raw");
+  public static final RegistryObject<Item> LEAD_RAW = registerBasic("lead_raw");
+
   public static final RegistryObject<Item> BUSHING_GEAR = registerBasic("bushing_gear");
   public static final RegistryObject<Item> TIN_GEAR = registerBasic("tin_gear");
   public static final RegistryObject<Item> GOLD_GEAR = registerBasic("gold_gear");
