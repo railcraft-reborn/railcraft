@@ -9,6 +9,7 @@ import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.util.CompositeFluidHandler;
 import mods.railcraft.util.FunctionalUtil;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -65,6 +66,14 @@ final class TrainImpl implements Train {
   public void copyTo(Train train) {
     this.locks.forEach(train::addLock);
     train.setStateIfHigherPriority(this.state);
+  }
+
+  @Override
+  public int getNumRunningLocomotives() {
+    return (int)this.stream()
+        .flatMap(FunctionalUtil.ofType(Locomotive.class))
+        .filter(Locomotive::isRunning)
+        .count();
   }
 
   @Override

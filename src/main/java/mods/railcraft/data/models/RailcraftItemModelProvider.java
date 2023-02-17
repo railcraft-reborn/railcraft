@@ -86,6 +86,11 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.LEAD_NUGGET.get());
         this.basicItem(RailcraftItems.SILVER_INGOT.get());
         this.basicItem(RailcraftItems.SILVER_NUGGET.get());
+        this.basicItem(RailcraftItems.TIN_RAW.get());
+        this.basicItem(RailcraftItems.ZINC_RAW.get());
+        this.basicItem(RailcraftItems.NICKEL_RAW.get());
+        this.basicItem(RailcraftItems.SILVER_RAW.get());
+        this.basicItem(RailcraftItems.LEAD_RAW.get());
         this.basicItem(RailcraftItems.STEEL_PLATE.get());
         this.basicItem(RailcraftItems.IRON_PLATE.get());
         this.basicItem(RailcraftItems.TIN_PLATE.get());

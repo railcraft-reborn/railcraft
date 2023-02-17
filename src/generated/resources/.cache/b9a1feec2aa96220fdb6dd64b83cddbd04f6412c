@@ -1,4 +1,4 @@
-// 1.19.3	2022-12-20T20:13:58.019959612	Railcraft Item Tags
+// 1.19.3	2023-02-15T09:05:39.176536036	Railcraft Item Tags
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -61,6 +61,11 @@ a7ccebcdf1b41bc019d4ad2b6877842880b59e8c data/forge/tags/items/plates/copper.jso
 b1fe6bdc870219686421c34b2da9aa2ca0d430eb data/forge/tags/items/plates/steel.json
 c575c0d7111690d959b7c02ea3f0c90f9ba1f71c data/forge/tags/items/plates/tin.json
 2372c4063156cb52654545a3800f2000a85c20d7 data/forge/tags/items/plates/zinc.json
+cb884e9e2d81ae8f3c727477640a978e19230d73 data/forge/tags/items/raw_materials/lead.json
+3314b30b66e729f47e099a54fb1a1c76d57a7c6b data/forge/tags/items/raw_materials/nickel.json
+aff7016ddb8fcd0b4eab937ab3cd56340f084a30 data/forge/tags/items/raw_materials/silver.json
+ac5c7196c250262e53b9cac65eb85f65fb3d4236 data/forge/tags/items/raw_materials/tin.json
+283191211029190cffef9a23ea90717adb634bc5 data/forge/tags/items/raw_materials/zinc.json
 d8a0afa9468fa132e645cb46a5cafa2846bc640e data/forge/tags/items/storage_blocks/brass.json
 6ec964a4c8a1091ef58477715200410dc4973e43 data/forge/tags/items/storage_blocks/bronze.json
 669fbe41c4cd7a363bf95870b313586076ca664a data/forge/tags/items/storage_blocks/invar.json

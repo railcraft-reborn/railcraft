@@ -598,35 +598,40 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void buildOreSmelt(Consumer<FinishedRecipe> consumer) {
     ImmutableList<ItemLike> LEAD_SMELTABLES =
-        ImmutableList.of(RailcraftItems.LEAD_ORE.get(), RailcraftItems.DEEPSLATE_LEAD_ORE.get());
+        ImmutableList.of(RailcraftItems.LEAD_ORE.get(), RailcraftItems.DEEPSLATE_LEAD_ORE.get(),
+            RailcraftItems.LEAD_RAW.get());
     oreSmelting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, RailcraftItems.LEAD_INGOT.get(),
         1, 200, "lead_ingot");
     oreBlasting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, RailcraftItems.LEAD_INGOT.get(),
         1, 100, "lead_ingot");
 
     ImmutableList<ItemLike> NICKEL_SMELTABLES =
-        ImmutableList.of(RailcraftItems.NICKEL_ORE.get(), RailcraftItems.DEEPSLATE_NICKEL_ORE.get());
+        ImmutableList.of(RailcraftItems.NICKEL_ORE.get(), RailcraftItems.DEEPSLATE_NICKEL_ORE.get(),
+            RailcraftItems.NICKEL_RAW.get());
     oreSmelting(consumer, NICKEL_SMELTABLES, RecipeCategory.MISC, RailcraftItems.NICKEL_INGOT.get(),
         1, 200, "nickel_ingot");
     oreBlasting(consumer, NICKEL_SMELTABLES, RecipeCategory.MISC, RailcraftItems.NICKEL_INGOT.get(),
         1, 100, "nickel_ingot");
 
     ImmutableList<ItemLike> SILVER_SMELTABLES =
-        ImmutableList.of(RailcraftItems.SILVER_ORE.get(), RailcraftItems.DEEPSLATE_SILVER_ORE.get());
+        ImmutableList.of(RailcraftItems.SILVER_ORE.get(), RailcraftItems.DEEPSLATE_SILVER_ORE.get(),
+            RailcraftItems.SILVER_RAW.get());
     oreSmelting(consumer, SILVER_SMELTABLES, RecipeCategory.MISC, RailcraftItems.SILVER_INGOT.get(),
         1, 200, "silver_ingot");
     oreBlasting(consumer, SILVER_SMELTABLES, RecipeCategory.MISC, RailcraftItems.SILVER_INGOT.get(),
         1, 100, "silver_ingot");
 
     ImmutableList<ItemLike> TIN_SMELTABLES =
-        ImmutableList.of(RailcraftItems.TIN_ORE.get(), RailcraftItems.DEEPSLATE_TIN_ORE.get());
+        ImmutableList.of(RailcraftItems.TIN_ORE.get(), RailcraftItems.DEEPSLATE_TIN_ORE.get(),
+            RailcraftItems.TIN_RAW.get());
     oreSmelting(consumer, TIN_SMELTABLES, RecipeCategory.MISC, RailcraftItems.TIN_INGOT.get(),
         1, 200, "tin_ingot");
     oreBlasting(consumer, TIN_SMELTABLES, RecipeCategory.MISC, RailcraftItems.TIN_INGOT.get(),
         1, 100, "tin_ingot");
 
     ImmutableList<ItemLike> ZINC_SMELTABLES =
-        ImmutableList.of(RailcraftItems.ZINC_ORE.get(), RailcraftItems.DEEPSLATE_ZINC_ORE.get());
+        ImmutableList.of(RailcraftItems.ZINC_ORE.get(), RailcraftItems.DEEPSLATE_ZINC_ORE.get(),
+            RailcraftItems.ZINC_RAW.get());
     oreSmelting(consumer, ZINC_SMELTABLES, RecipeCategory.MISC, RailcraftItems.ZINC_INGOT.get(),
         1, 200, "zinc_ingot");
     oreBlasting(consumer, ZINC_SMELTABLES, RecipeCategory.MISC, RailcraftItems.ZINC_INGOT.get(),

@@ -116,6 +116,12 @@ public class RailcraftTags {
     public static final TagKey<Item> ZINC_ORE = forgeTag("ores/zinc");
     public static final TagKey<Item> SALTPETER_ORE = forgeTag("ores/salt");
 
+    public static final TagKey<Item> TIN_RAW = forgeTag("raw_materials/tin");
+    public static final TagKey<Item> ZINC_RAW = forgeTag("raw_materials/zinc");
+    public static final TagKey<Item> NICKEL_RAW = forgeTag("raw_materials/nickel");
+    public static final TagKey<Item> SILVER_RAW = forgeTag("raw_materials/silver");
+    public static final TagKey<Item> LEAD_RAW = forgeTag("raw_materials/lead");
+
     public static final TagKey<Item> TOOLS_SWORDS_STEEL = forgeTag("tools/swords/steel");
     public static final TagKey<Item> TOOLS_AXES_STEEL = forgeTag("tools/axes/steel");
     public static final TagKey<Item> TOOLS_PICKAXES_STEEL = forgeTag("tools/pickaxes/steel");
