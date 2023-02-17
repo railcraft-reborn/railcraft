@@ -19,7 +19,7 @@ import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.SolidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamTurbineScreen;
-import mods.railcraft.client.gui.screen.inventory.SwitchTrackRoutingScreen;
+import mods.railcraft.client.gui.screen.inventory.SwitchTrackRouterScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TankScreen;
 import mods.railcraft.client.gui.screen.inventory.TrackLayerScreen;
@@ -139,7 +139,7 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(),
         TankMinecartScreen::new);
     MenuScreens.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTING.get(),
-        SwitchTrackRoutingScreen::new);
+        SwitchTrackRouterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
   }
 

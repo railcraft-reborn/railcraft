@@ -100,14 +100,14 @@ public class Translations {
     public static final String GOLDEN_TICKET_ABOUT = makeKey("screen", "golden_ticket.about");
     public static final String GOLDEN_TICKET_HELP = makeKey("screen", "golden_ticket.help");
     public static final String ROUTING_TABLE_BOOK = makeKey("screen", "routing_table_book");
-    public static final String SWITCH_TRACK_ROUTING_PUBLIC_RAILWAY =
-        makeKey("screen", "switch_track_routing.public_railway");
-    public static final String SWITCH_TRACK_ROUTING_PUBLIC_RAILWAY_DESC =
-        makeKey("screen", "switch_track_routing.public_railway.desc");
-    public static final String SWITCH_TRACK_ROUTING_PRIVATE_RAILWAY =
-        makeKey("screen", "switch_track_routing.private_railway");
-    public static final String SWITCH_TRACK_ROUTING_PRIVATE_RAILWAY_DESC =
-        makeKey("screen", "switch_track_routing.private_railway.desc");
+    public static final String SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY =
+        makeKey("screen", "switch_track_router.public_railway");
+    public static final String SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY_DESC =
+        makeKey("screen", "switch_track_router.public_railway.desc");
+    public static final String SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY =
+        makeKey("screen", "switch_track_router.private_railway");
+    public static final String SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC =
+        makeKey("screen", "switch_track_router.private_railway.desc");
   }
 
   public static class Tips {

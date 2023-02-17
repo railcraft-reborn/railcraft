@@ -1,7 +1,6 @@
 package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
-import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;

@@ -430,7 +430,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(),
         RailcraftItems.SWITCH_TRACK_LEVER.get(),
         RailcraftItems.SWITCH_TRACK_MOTOR.get(),
-        RailcraftItems.SWITCH_TRACK_ROUTING.get(),
+        RailcraftItems.SWITCH_TRACK_ROUTER.get(),
         RailcraftItems.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
         RailcraftItems.SIGNAL_SEQUENCER_BOX.get(),
         RailcraftItems.SIGNAL_CAPACITOR_BOX.get(),

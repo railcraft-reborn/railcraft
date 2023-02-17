@@ -815,7 +815,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     switchItem(consumer, RailcraftItems.SWITCH_TRACK_LEVER.get(), Items.LEVER);
     switchItem(consumer, RailcraftItems.SWITCH_TRACK_MOTOR.get(), RailcraftItems.RECEIVER_CIRCUIT.get());
     ShapelessRecipeBuilder
-        .shapeless(RecipeCategory.MISC, RailcraftItems.SWITCH_TRACK_ROUTING.get())
+        .shapeless(RecipeCategory.MISC, RailcraftItems.SWITCH_TRACK_ROUTER.get())
         .requires(RailcraftItems.SWITCH_TRACK_MOTOR.get())
         .requires(Items.COMPARATOR)
         .unlockedBy(getHasName(RailcraftItems.SWITCH_TRACK_MOTOR.get()),

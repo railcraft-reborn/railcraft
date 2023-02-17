@@ -19,7 +19,7 @@ import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.util.routing.IBlockEntityRouting;
 import mods.railcraft.util.routing.IRouter;
 import mods.railcraft.util.routing.RoutingLogic;
-import mods.railcraft.world.inventory.SwitchTrackRoutingMenu;
+import mods.railcraft.world.inventory.SwitchTrackRouterMenu;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -35,7 +35,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBlockEntity
+public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlockEntity
     implements ForwardingContainer, MenuProvider, IBlockEntityRouting, IRouter {
 
   private AdvancedContainer container;
@@ -47,8 +47,8 @@ public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBl
 
   private boolean powered;
 
-  public SwitchTrackRoutingBlockEntity(BlockPos blockPos, BlockState blockState) {
-    super(RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTING.get(), blockPos, blockState);
+  public SwitchTrackRouterBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get(), blockPos, blockState);
     this.container = new AdvancedContainer(1).listener((Container) this);
   }
 
@@ -153,7 +153,7 @@ public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBl
   @Nullable
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-    return new SwitchTrackRoutingMenu(id, inventory, this);
+    return new SwitchTrackRouterMenu(id, inventory, this);
   }
 
   public enum Railway implements ButtonState<Railway>, StringRepresentable {

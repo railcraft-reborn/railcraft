@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.track.actuator;
 
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import mods.railcraft.world.level.block.entity.SwitchTrackRoutingBlockEntity;
+import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
@@ -15,9 +15,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-public class SwitchTrackRoutingBlock extends SwitchTrackActuatorBlock implements EntityBlock {
+public class SwitchTrackRouterBlock extends SwitchTrackActuatorBlock implements EntityBlock {
 
-  public SwitchTrackRoutingBlock(Properties properties) {
+  public SwitchTrackRouterBlock(Properties properties) {
     super(properties);
   }
 
@@ -27,21 +27,21 @@ public class SwitchTrackRoutingBlock extends SwitchTrackActuatorBlock implements
     if (level.isClientSide()) {
       return InteractionResult.SUCCESS;
     }
-    level.getBlockEntity(pos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTING.get())
+    level.getBlockEntity(pos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get())
         .ifPresent(blockEntity -> NetworkHooks.openScreen((ServerPlayer) player, blockEntity, pos));
     return InteractionResult.CONSUME;
   }
 
   @Override
   public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-    return new SwitchTrackRoutingBlockEntity(blockPos, blockState);
+    return new SwitchTrackRouterBlockEntity(blockPos, blockState);
   }
 
   @Override
   public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
       boolean isMoving) {
     if (!state.is(newState.getBlock())
-        && level.getBlockEntity(pos) instanceof SwitchTrackRoutingBlockEntity trackRouting) {
+        && level.getBlockEntity(pos) instanceof SwitchTrackRouterBlockEntity trackRouting) {
       Containers.dropContents(level, pos, trackRouting);
       level.updateNeighbourForOutputSignal(pos, this);
     }

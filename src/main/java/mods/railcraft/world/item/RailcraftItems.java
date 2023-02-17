@@ -388,9 +388,9 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
               new Item.Properties()));
 
-  public static final RegistryObject<Item> SWITCH_TRACK_ROUTING =
-      deferredRegister.register("switch_track_routing",
-          () -> new BlockItem(RailcraftBlocks.SWITCH_TRACK_ROUTING.get(),
+  public static final RegistryObject<Item> SWITCH_TRACK_ROUTER =
+      deferredRegister.register("switch_track_router",
+          () -> new BlockItem(RailcraftBlocks.SWITCH_TRACK_ROUTER.get(),
               new Item.Properties()));
 
   public static final RegistryObject<Item> SIGNAL_TUNER =
