@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/switch_track_actuator",
+  "textures": {
+    "side_long": "railcraft:block/switch_track_actuator_routing_side_long"
+  }
+}

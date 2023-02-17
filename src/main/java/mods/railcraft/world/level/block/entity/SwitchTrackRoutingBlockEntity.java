@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
+import mods.railcraft.api.track.SwitchActuator;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
@@ -31,12 +32,13 @@ import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBlockEntity
-    implements ForwardingContainer, MenuProvider, IBlockEntityRouting, IRouter {
+    implements ForwardingContainer, MenuProvider, IBlockEntityRouting, IRouter, SwitchActuator {
 
   private AdvancedContainer container;
 
@@ -44,8 +46,6 @@ public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBl
   private RoutingLogic logic;
 
   private Railway railway = Railway.PUBLIC;
-
-  private boolean powered;
 
   public SwitchTrackRoutingBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTING.get(), blockPos, blockState);
@@ -61,11 +61,6 @@ public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBl
     if (!this.isLocked()) {
       this.setOwner(gameProfile);
     }
-  }
-
-  private void updateSwitched() {
-    SwitchTrackActuatorBlock.setSwitched(
-        this.getBlockState(), this.level, this.getBlockPos(), this.powered);
   }
 
   @Override
@@ -111,7 +106,7 @@ public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBl
 
   @Override
   public boolean isPowered() {
-    return this.powered;
+    return false;
   }
 
   @Override
@@ -133,6 +128,16 @@ public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBl
         logic = RoutingLogic.buildLogic(content);
       }
     }
+  }
+
+  @Override
+  public boolean shouldSwitch(@Nullable AbstractMinecart cart) {
+    var shouldSwitch = getLogic()
+        .map(l -> cart != null && l.isValid() && l.matches(this, cart))
+        .orElse(false);
+    SwitchTrackActuatorBlock.setSwitched(
+        this.getBlockState(), this.level, this.getBlockPos(), shouldSwitch);
+    return shouldSwitch;
   }
 
   private static Deque<String> loadPages(CompoundTag tag) {

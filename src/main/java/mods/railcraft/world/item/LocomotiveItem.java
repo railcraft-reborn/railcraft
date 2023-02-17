@@ -101,7 +101,11 @@ public class LocomotiveItem extends CartItem implements Filter {
     var tag = stack.getTag();
     if (tag == null)
       return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
-    return NbtUtils.readGameProfile(tag);
+    var player = NbtUtils.readGameProfile(tag);
+    if (player == null) {
+      return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
+    }
+    return player;
   }
 
   public static void setEmblem(ItemStack stack, String emblemIdentifier) {
