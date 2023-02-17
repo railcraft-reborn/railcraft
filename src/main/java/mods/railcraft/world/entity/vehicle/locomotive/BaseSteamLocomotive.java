@@ -10,11 +10,10 @@ import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import mods.railcraft.world.level.material.fluid.TankManager;
 import mods.railcraft.world.level.material.fluid.steam.SteamBoiler;
 import mods.railcraft.world.level.material.fluid.steam.SteamConstants;
-import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -57,18 +56,16 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   private static final byte TICKS_PER_BOILER_CYCLE = 2;
   private static final int FUEL_PER_REQUEST = 3;
 
-  protected final StandardTank waterTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 6) {
-    @Override
-    public int fill(FluidStack resource, FluidAction doFill) {
-      // handles boiler explotion
-      return super.fill(BaseSteamLocomotive.this.checkFill(resource), doFill);
-    }
-  }.setFilterFluid(() -> Fluids.WATER);
+  protected final StandardTank waterTank =
+      StandardTank.ofBuckets(6)
+          .fillProcessor(this::checkFill)
+          .filter(() -> Fluids.WATER);
 
-  protected final StandardTank steamTank = new FilteredTank(FluidTools.BUCKET_VOLUME * 16)
-      .setFilterFluid(RailcraftFluids.STEAM)
-      .disableDrain()
-      .disableFill();
+  protected final StandardTank steamTank =
+      StandardTank.ofBuckets(16)
+          .filter(RailcraftFluids.STEAM)
+          .disableDrain()
+          .disableFill();
 
   private final SteamBoiler boiler = new SteamBoiler(this.waterTank, this.steamTank)
       .setEfficiencyModifier(RailcraftConfig.server.fuelPerSteamMultiplier.get())
@@ -132,7 +129,8 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == ForgeCapabilities.FLUID_HANDLER ? this.tankManager.cast()
+    return capability == ForgeCapabilities.FLUID_HANDLER
+        ? this.tankManager.cast()
         : super.getCapability(capability, facing);
   }
 

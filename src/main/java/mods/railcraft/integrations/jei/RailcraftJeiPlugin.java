@@ -1,6 +1,5 @@
 package mods.railcraft.integrations.jei;
 
-import java.util.Objects;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
@@ -71,7 +70,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
   @Override
   public void registerRecipes(IRecipeRegistration registration) {
     var minecraft = Minecraft.getInstance();
-    var recipeManager = Objects.requireNonNull(minecraft.level).getRecipeManager();
+    var recipeManager = minecraft.level.getRecipeManager();
     registration.addRecipes(RecipeTypes.ROLLING_MACHINE,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()));
     registration.addRecipes(RecipeTypes.COKE_OVEN,

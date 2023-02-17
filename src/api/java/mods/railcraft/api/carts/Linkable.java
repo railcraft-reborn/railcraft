@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.carts;
 
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import java.util.Optional;
 
 /**
  * This interface should be implemented by any minecart that wishes to change the default linkage
@@ -16,38 +16,20 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public interface LinkageHandler {
+public interface Linkable {
 
-  /**
-   * To disable linking altogether, return false here.
-   *
-   * @return True if this cart is linkable.
-   */
-  default boolean isLinkable() {
-    return true;
+  default Optional<Side> disabledSide() {
+    return Optional.empty();
   }
 
   /**
    * Check called when attempting to link carts.
    *
-   * @param cart The cart that we are attempting to link with.
+   * @param rollingStock The cart that we are attempting to link with.
    * @return True if we can link with this cart.
    */
-  default boolean canLink(AbstractMinecart cart) {
-    return isLinkable();
-  }
-
-  /**
-   * Returns true if this cart has two links or false if it can only link with one cart.
-   *
-   * <p>
-   * If {@link #isLinkable()} returns false, this method must return false, too.
-   * </p>
-   *
-   * @return True if two links
-   */
-  default boolean hasTwoLinks() {
-    return isLinkable();
+  default boolean isLinkableWith(RollingStock rollingStock) {
+    return true;
   }
 
   /**
@@ -55,11 +37,11 @@ public interface LinkageHandler {
    * together to determine how close two carts need to be for a successful link. Default =
    * LinkageManager.LINKAGE_DISTANCE
    *
-   * @param cart The cart that you are attempting to link with.
+   * @param rollingStock The cart that you are attempting to link with.
    * @return The linkage distance
    */
-  default float getLinkageDistance(AbstractMinecart cart) {
-    return LinkageManager.LINKAGE_DISTANCE;
+  default float getLinkageDistance(RollingStock rollingStock) {
+    return RollingStock.MAX_LINK_DISTANCE;
   }
 
   /**
@@ -68,35 +50,35 @@ public interface LinkageHandler {
    * maintain this distance between linked carts at all times. Default =
    * LinkageManager.OPTIMAL_DISTANCE
    *
-   * @param cart The cart that you are linked with.
+   * @param rollingStock The cart that you are linked with.
    * @return The optimal rest distance
    */
-  default float getOptimalDistance(AbstractMinecart cart) {
-    return LinkageManager.OPTIMAL_DISTANCE;
+  default float getOptimalDistance(RollingStock rollingStock) {
+    return RollingStock.OPTIMAL_LINK_DISTANCE;
   }
 
   /**
    * Return false if linked carts have no effect on the velocity of this cart. Use carefully, if you
    * link two carts that can't be adjusted, it will behave as if they are not linked.
    *
-   * @param cart The cart doing the adjusting.
-   * @return Whether the cart can have its velocity adjusted.
+   * @param rollingStock - the rolling stock doing the adjusting.
+   * @return Whether the rolling stock can have its velocity adjusted.
    */
-  default boolean canBeAdjusted(AbstractMinecart cart) {
-    return isLinkable();
+  default boolean canBeAdjusted(RollingStock rollingStock) {
+    return true;
   }
 
   /**
    * Called upon successful link creation.
    *
-   * @param cart The cart we linked with.
+   * @param rollingStock - the rolling stock we linked with.
    */
-  default void onLinkCreated(AbstractMinecart cart) {}
+  default void linked(RollingStock rollingStock) {}
 
   /**
    * Called when a link is broken (usually).
    *
-   * @param cart The cart we were linked with.
+   * @param rollingStock - the rolling stock we were linked with.
    */
-  default void onLinkBroken(AbstractMinecart cart) {}
+  default void unlinked(RollingStock rollingStock) {}
 }

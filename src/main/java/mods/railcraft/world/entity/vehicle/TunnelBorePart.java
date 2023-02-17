@@ -9,23 +9,21 @@ import net.minecraftforge.entity.PartEntity;
 
 public class TunnelBorePart extends PartEntity<TunnelBore> {
 
-  private final String partName;
   private final float forwardOffset;
   private final float sideOffset;
 
   private final EntityDimensions size;
 
-  public TunnelBorePart(TunnelBore parent, String partName, float width, float height,
+  public TunnelBorePart(TunnelBore parent, float width, float height,
       float forwardOffset) {
-    this(parent, partName, width, height, forwardOffset, 0.0F);
+    this(parent, width, height, forwardOffset, 0.0F);
   }
 
-  public TunnelBorePart(TunnelBore parent, String partName, float width, float height,
+  public TunnelBorePart(TunnelBore parent, float width, float height,
       float forwardOffset, float sideOffset) {
     super(parent);
     this.size = EntityDimensions.scalable(width, height);
     this.refreshDimensions();
-    this.partName = partName;
     this.forwardOffset = forwardOffset;
     this.sideOffset = sideOffset;
     this.updatePosition();

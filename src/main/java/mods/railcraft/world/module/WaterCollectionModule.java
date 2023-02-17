@@ -6,7 +6,7 @@ import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
@@ -41,8 +40,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   public WaterCollectionModule(WaterTankSidingBlockEntity provider) {
     super(provider, 3);
     this.blockEntity = provider;
-    var capacity = RailcraftConfig.server.tankCapacityPerBlock.get() * FluidType.BUCKET_VOLUME;
-    this.tank = new StandardTank(capacity * 26);
+    this.tank = StandardTank.ofBuckets(RailcraftConfig.server.tankCapacityPerBlock.get() * 26);
     this.fluidHandler = LazyOptional.of(() -> this.tank);
   }
 

@@ -1,12 +1,17 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartUtil;
-import mods.railcraft.api.carts.LinkageHandler;
+import mods.railcraft.api.carts.Linkable;
+import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.carts.Side;
+import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
@@ -39,7 +44,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -64,9 +68,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.level.BlockEvent;
-import org.jetbrains.annotations.Nullable;
 
-public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
+public class TunnelBore extends RailcraftMinecart implements Linkable {
 
   public static final float SPEED = 0.03F;
   public static final float LENGTH = 6.2f;
@@ -140,7 +143,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   private static final EntityDataAccessor<ItemStack> BORE_HEAD =
       SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.ITEM_STACK);
 
-  private final ContainerMapper invFuel =
+  private final ContainerMapper fuelContainer =
       ContainerMapper.make(this, 1, 6).addFilters(StackFilter.FUEL);
   private final ContainerMapper ballastContainer =
       ContainerMapper.make(this, 7, 9).addFilters(StackFilter.BALLAST);
@@ -157,12 +160,14 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   private int clock;
   private int burnTime;
   private int fuel;
-  private final boolean hasInit;
-  private final TunnelBorePart[] partArray;
+  private final boolean constructed;
+  private final TunnelBorePart[] parts;
+  private final List<ContainerMapper> containers;
 
   public TunnelBore(EntityType<TunnelBore> type, Level level) {
     this(level, 0, 0, 0, Direction.SOUTH);
   }
+
   public TunnelBore(Level level, double x, double y, double z, Direction facing) {
     super(RailcraftEntityTypes.TUNNEL_BORE.get(), x, y, z, level);
     setFacing(facing);
@@ -170,28 +175,28 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
     float headW = 1.5F;
     float headH = 2.6F;
     float headSO = 0.7F;
-    partArray = new TunnelBorePart[] {
-        new TunnelBorePart(this, "head1", headW, headH, 1.85F, -headSO),
-        new TunnelBorePart(this, "head2", headW, headH, 1.85F, headSO),
-        new TunnelBorePart(this, "head3", headW, headH, 2.3F, -headSO),
-        new TunnelBorePart(this, "head4", headW, headH, 2.3F, headSO),
-        new TunnelBorePart(this, "body", 2.0F, 1.9F, 0.6F),
-        new TunnelBorePart(this, "tail1", 1.6F, 1.4F, -1F),
-        new TunnelBorePart(this, "tail2", 1.6F, 1.4F, -2.2F),
+    this.parts = new TunnelBorePart[] {
+        new TunnelBorePart(this, headW, headH, 1.85F, -headSO), // head1
+        new TunnelBorePart(this, headW, headH, 1.85F, headSO), // head2
+        new TunnelBorePart(this, headW, headH, 2.3F, -headSO), // head3
+        new TunnelBorePart(this, headW, headH, 2.3F, headSO), // head4
+        new TunnelBorePart(this, 2.0F, 1.9F, 0.6F), // body
+        new TunnelBorePart(this, 1.6F, 1.4F, -1F), // tail1
+        new TunnelBorePart(this, 1.6F, 1.4F, -2.2F), // tail2
     };
-    hasInit = true;
-    invMappers = Arrays.asList(invFuel, ballastContainer, trackContainer);
+    this.constructed = true;
+    this.containers = List.of(this.fuelContainer, this.ballastContainer, this.trackContainer);
 
     // Forge: Fix MC-158205: Make sure part ids are successors of parent mob id
-    this.setId(ENTITY_COUNTER.getAndAdd(this.partArray.length + 1) + 1);
+    this.setId(ENTITY_COUNTER.getAndAdd(this.parts.length + 1) + 1);
   }
 
   @Override
   public void setId(int id) {
     super.setId(id);
     // Forge: Fix MC-158205: Set part ids to successor of parent mob id
-    for (int i = 0; i < this.partArray.length; i++)
-      this.partArray[i].setId(id + i + 1);
+    for (int i = 0; i < this.parts.length; i++)
+      this.parts[i].setId(id + i + 1);
   }
 
   @Override
@@ -248,7 +253,8 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
         this.markHurt();
         this.setDamage(this.getDamage() + damage * 10);
         this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
-        boolean flag = (source.getEntity() instanceof Player player) && player.getAbilities().instabuild;
+        boolean flag =
+            (source.getEntity() instanceof Player player) && player.getAbilities().instabuild;
         if (flag || this.getDamage() > 120) {
           this.ejectPassengers();
           if (flag && !this.hasCustomName()) {
@@ -265,13 +271,13 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   }
 
   private void setYaw() {
-    float yaw = 0;
-    switch (getFacing()) {
-      case NORTH -> yaw = 180;
-      case EAST -> yaw = 270;
-      case SOUTH -> yaw = 0;
-      case WEST -> yaw = 90;
-    }
+    var yaw = switch (this.getFacing()) {
+      case NORTH -> 180;
+      case EAST -> 270;
+      case SOUTH -> 0;
+      case WEST -> 90;
+      default -> 0;
+    };
     this.setRot(yaw, this.getXRot());
   }
 
@@ -287,7 +293,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
   @Override
   public void setPos(double x, double y, double z) {
-    if (!hasInit) {
+    if (!this.constructed) {
       super.setPos(x, y, z);
       return;
     }
@@ -301,7 +307,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
     double maxX = x;
     double minZ = z;
     double maxZ = z;
-    if (getFacing() == Direction.WEST || getFacing() == Direction.EAST) {
+    if (this.getFacing() == Direction.WEST || this.getFacing() == Direction.EAST) {
       minX -= len;
       maxX += len;
       minZ -= halfWidth;
@@ -333,7 +339,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
     super.tick();
 
-    for (Entity part : partArray) {
+    for (Entity part : parts) {
       part.tick();
     }
 
@@ -610,8 +616,8 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   }
 
   protected void stockBallast() {
-    var stack =
-        CartUtil.transferHelper().pullStack(this, this.ballastContainer::canFit);
+    var stack = CartUtil.transferService()
+        .pullStack(RollingStock.getOrThrow(this), this.ballastContainer::canFit);
     if (!stack.isEmpty()) {
       this.ballastContainer.addStack(stack);
     }
@@ -657,7 +663,8 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   }
 
   protected void stockTracks() {
-    var stack = CartUtil.transferHelper().pullStack(this, this.trackContainer::canFit);
+    var stack = CartUtil.transferService()
+        .pullStack(RollingStock.getOrThrow(this), this.trackContainer::canFit);
     if (!stack.isEmpty()) {
       this.trackContainer.addStack(stack);
     }
@@ -799,7 +806,7 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
               .withParameter(LootContextParams.ORIGIN, this.position()))
           .forEach(stack -> {
             if (StackFilter.FUEL.test(stack)) {
-              stack = invFuel.addStack(stack);
+              stack = fuelContainer.addStack(stack);
             }
 
             if (!stack.isEmpty() && ContainerTools.isStackEqualToBlock(stack, Blocks.GRAVEL)) {
@@ -807,7 +814,8 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
             }
 
             if (!stack.isEmpty()) {
-              stack = CartUtil.transferHelper().pushStack(this, stack);
+              stack = CartUtil.transferService()
+                  .pushStack(RollingStock.getOrThrow(this), stack);
             }
 
             if (!stack.isEmpty()) {
@@ -930,100 +938,99 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
   protected void setActive(boolean active) {
     this.active = active;
-    Train.State state = active ? Train.State.STOPPED : Train.State.NORMAL;
-    Train.get(this).ifPresent(t -> t.setTrainState(state));
+    var state = active ? Train.State.STOPPED : Train.State.NORMAL;
+    if (!this.level.isClientSide()) {
+      RollingStock.getOrThrow(this).train().setState(state);
+    }
     // entityData.set(WATCHER_ID_ACTIVE, Byte.valueOf((byte)(active ? 1 : 0)));
   }
 
   protected boolean isMoving() {
-    return entityData.get(MOVING);
+    return this.entityData.get(MOVING);
   }
 
-  protected void setMoving(boolean move) {
-    entityData.set(MOVING, move);
+  protected void setMoving(boolean moving) {
+    this.entityData.set(MOVING, moving);
   }
 
   public int getBurnTime() {
-    return burnTime;
-    // return entityData.get(WATCHER_ID_BURN_TIME);
+    return this.burnTime;
   }
 
   public void setBurnTime(int burnTime) {
     this.burnTime = burnTime;
-    // entityData.set(WATCHER_ID_BURN_TIME, Integer.valueOf(burnTime));
   }
 
   public int getFuel() {
-    return fuel;
-    // return entityData.get(WATCHER_ID_FUEL);
+    return this.fuel;
   }
 
-  public void setFuel(int i) {
-    fuel = i;
-    // entityData.set(WATCHER_ID_FUEL, Integer.valueOf(i));
+  public void setFuel(int fuel) {
+    this.fuel = fuel;
   }
 
   public boolean outOfFuel() {
-    return getFuel() <= FUEL_CONSUMPTION;
+    return this.getFuel() <= FUEL_CONSUMPTION;
   }
 
   public boolean hasFuel() {
-    return getFuel() > 0;
+    return this.getFuel() > 0;
   }
 
   protected void stockFuel() {
-    ItemStack stack = CartUtil.transferHelper().pullStack(this, this.invFuel::canFit);
+    var stack = CartUtil.transferService()
+        .pullStack(RollingStock.getOrThrow(this), this.fuelContainer::canFit);
     if (!stack.isEmpty()) {
-      invFuel.addStack(stack);
+      this.fuelContainer.addStack(stack);
     }
   }
 
   protected void addFuel() {
     int burn = 0;
-    for (int slot = 0; slot < invFuel.getContainerSize(); slot++) {
-      ItemStack stack = invFuel.getItem(slot);
+    for (int slot = 0; slot < this.fuelContainer.getContainerSize(); slot++) {
+      var stack = this.fuelContainer.getItem(slot);
       if (!stack.isEmpty()) {
         burn = ForgeHooks.getBurnTime(stack, null);
         if (burn > 0) {
           if (stack.getItem().hasCraftingRemainingItem(stack)) {
-            invFuel.setItem(slot, stack.getItem().getCraftingRemainingItem(stack));
+            this.fuelContainer.setItem(slot, stack.getItem().getCraftingRemainingItem(stack));
           } else {
-            invFuel.removeItem(slot, 1);
+            this.fuelContainer.removeItem(slot, 1);
           }
           break;
         }
       }
     }
     if (burn > 0) {
-      setBurnTime(burn + getFuel());
-      setFuel(getFuel() + burn);
+      this.setBurnTime(burn + this.getFuel());
+      this.setFuel(this.getFuel() + burn);
     }
   }
 
   public int getBurnProgressScaled(int i) {
-    int burn = getBurnTime();
+    int burn = this.getBurnTime();
     if (burn == 0) {
       return 0;
     }
 
-    return getFuel() * i / burn;
+    return this.getFuel() * i / burn;
   }
 
   protected void spendFuel() {
-    setFuel(getFuel() - FUEL_CONSUMPTION);
+    this.setFuel(this.getFuel() - FUEL_CONSUMPTION);
   }
 
   protected void forceUpdateBoreHead() {
-    ItemStack boreStack = getItem(0);
+    var boreStack = this.getItem(0);
     if (!boreStack.isEmpty()) {
       boreStack = boreStack.copy();
     }
-    entityData.set(BORE_HEAD, boreStack);
+    this.entityData.set(BORE_HEAD, boreStack);
   }
 
   @Nullable
   public TunnelBoreHead getBoreHead() {
-    ItemStack boreStack = entityData.get(BORE_HEAD);
+    var boreStack = this.entityData.get(BORE_HEAD);
     if (boreStack.getItem() instanceof TunnelBoreHead head) {
       return head;
     }
@@ -1032,9 +1039,8 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
   @Override
   protected void applyNaturalSlowdown() {
-    this.setDeltaMovement(
-        this.getDeltaMovement()
-            .multiply(CartConstants.STANDARD_DRAG, 0.0D, CartConstants.STANDARD_DRAG));
+    this.setDeltaMovement(this.getDeltaMovement()
+        .multiply(CartConstants.STANDARD_DRAG, 0.0D, CartConstants.STANDARD_DRAG));
   }
 
   @Override
@@ -1059,41 +1065,36 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
   }
 
   @Override
-  public boolean isLinkable() {
-    return true;
+  public Optional<Side> disabledSide() {
+    return Optional.of(Side.FRONT);
   }
 
   @Override
-  public boolean canLink(AbstractMinecart cart) {
+  public boolean isLinkableWith(RollingStock cart) {
     Vec3 pos = getPositionAhead(-LENGTH / 2.0);
-    float dist = LinkageManagerImpl.LINKAGE_DISTANCE * 2;
+    float dist = RollingStock.MAX_LINK_DISTANCE * 2;
     dist = dist * dist;
-    return cart.distanceToSqr(pos.x, pos.y, pos.z) < dist;
+    return cart.entity().distanceToSqr(pos.x, pos.y, pos.z) < dist;
   }
 
   @Override
-  public boolean hasTwoLinks() {
-    return false;
-  }
-
-  @Override
-  public float getLinkageDistance(AbstractMinecart cart) {
+  public float getLinkageDistance(RollingStock cart) {
     return 4f;
   }
 
   @Override
-  public float getOptimalDistance(AbstractMinecart cart) {
+  public float getOptimalDistance(RollingStock cart) {
     return 3.1f;
   }
 
   @Override
-  public void onLinkCreated(AbstractMinecart cart) {}
+  public void linked(RollingStock cart) {}
 
   @Override
-  public void onLinkBroken(AbstractMinecart cart) {}
+  public void unlinked(RollingStock cart) {}
 
   @Override
-  public boolean canBeAdjusted(AbstractMinecart cart) {
+  public boolean canBeAdjusted(RollingStock cart) {
     return !isActive();
   }
 
@@ -1104,12 +1105,19 @@ public class TunnelBore extends RailcraftMinecart implements LinkageHandler {
 
   @Override
   public PartEntity<?>[] getParts() {
-    return this.partArray;
+    return this.parts;
   }
 
   @Override
   public boolean isMultipartEntity() {
     return true;
+  }
+
+  @Override
+  public boolean canPlaceItem(int index, ItemStack stack) {
+    return this.containers.stream()
+        .filter(m -> m.containsSlot(index))
+        .allMatch(m -> m.filter().test(stack));
   }
 
   public boolean attackEntityFromPart(TunnelBorePart part, DamageSource damageSource,

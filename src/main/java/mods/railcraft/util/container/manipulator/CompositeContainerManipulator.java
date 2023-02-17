@@ -15,14 +15,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 /**
- * Primary interface for inventories of all types.
+ * Primary interface for item containers of all types.
  *
  * Supports treating multiple containers as a single object, enabling one-to-one, many-to-many,
  * many-to-one, and one-to-many interactions between inventories.
- *
- * Created by CovertJaguar on 5/28/2017 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
  */
 @FunctionalInterface
 public interface CompositeContainerManipulator<T extends SlotAccessor>
@@ -50,11 +46,11 @@ public interface CompositeContainerManipulator<T extends SlotAccessor>
   }
 
   static <T extends SlotAccessor> CompositeContainerManipulator<T> of(
-      Collection<ContainerManipulator<? extends T>> containers) {
+      Collection<? extends ContainerManipulator<? extends T>> containers) {
     return containers::stream;
   }
 
-  Stream<ContainerManipulator<? extends T>> streamContainers();
+  Stream<? extends ContainerManipulator<? extends T>> streamContainers();
 
   @Override
   default Stream<T> stream() {

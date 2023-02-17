@@ -9,16 +9,15 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
-import mods.railcraft.api.carts.IPaintedCart;
-import mods.railcraft.api.carts.IRoutableCart;
-import mods.railcraft.api.carts.Link;
-import mods.railcraft.api.carts.LinkageHandler;
+import mods.railcraft.api.carts.Paintable;
+import mods.railcraft.api.carts.Routable;
+import mods.railcraft.api.carts.Linkable;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -34,12 +33,8 @@ import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.vehicle.CartTools;
-import mods.railcraft.world.entity.vehicle.DirectionalCart;
-import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
-import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
+import mods.railcraft.world.entity.vehicle.Directional;
 import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
-import mods.railcraft.world.entity.vehicle.Train;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
@@ -64,15 +59,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class Locomotive extends RailcraftMinecart implements DirectionalCart,
-    LinkageHandler, Lockable, IPaintedCart, IRoutableCart {
+public abstract class Locomotive extends RailcraftMinecart implements
+    Linkable, Directional, Lockable, Paintable, Routable {
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BOOLEAN);
@@ -445,11 +439,14 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
   public boolean isIdle() {
     return !this.isShutdown()
         && (this.tempIdle > 0 || this.getMode() == Mode.IDLE
-            || Train.get(this).map(Train::isIdle).orElse(false));
+            || !this.level.isClientSide()
+                && RollingStock.getOrThrow(this).train().isIdle());
   }
 
   public boolean isShutdown() {
-    return this.getMode() == Mode.SHUTDOWN || Train.get(this).map(Train::isStopped).orElse(false);
+    return this.getMode() == Mode.SHUTDOWN
+        || !this.level.isClientSide()
+            && RollingStock.getOrThrow(this).train().state().isStopped();
   }
 
   public void forceIdle(int ticks) {
@@ -549,7 +546,7 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
       }
       switch (speed) {
         case MAX:
-          if (MinecartExtension.getOrThrow(this).isHighSpeed()) {
+          if (RollingStock.getOrThrow(this).isHighSpeed()) {
             force *= HS_FORCE_BONUS;
           }
           break;
@@ -646,8 +643,13 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
       if (!entity.isAlive()) {
         return;
       }
-      if (Train.streamCarts(this).noneMatch(t -> t.hasPassenger(entity))
-          && (isVelocityHigherThan(0.2f) || MinecartExtension.getOrThrow(this).isHighSpeed())
+
+      var extension = RollingStock.getOrThrow(this);
+
+      if (extension.train().stream()
+          .map(RollingStock::entity)
+          .noneMatch(t -> t.hasPassenger(entity))
+          && (isVelocityHigherThan(0.2f) || extension.isHighSpeed())
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
         if (RailcraftConfig.server.locomotiveDamageMobs.get()) {
@@ -686,7 +688,7 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
     if (getUUID().equals(entity.getUUID())) {
       return false;
     }
-    if (Train.areInSameTrain(this, otherLoco)) {
+    if (RollingStock.getOrThrow(this).isSameTrainAs(RollingStock.getOrThrow(otherLoco))) {
       return false;
     }
 
@@ -773,9 +775,9 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
     }
   }
 
-  public static void applyAction(Player player, AbstractMinecart cart, boolean single,
-      Consumer<Locomotive> action) {
-    var locos = Train.streamCarts(cart)
+  public void applyAction(Player player, boolean single, Consumer<Locomotive> action) {
+    var locos = RollingStock.getOrThrow(this).train().stream()
+        .map(RollingStock::entity)
         .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(loco -> loco.canControl(player));
     if (single) {
@@ -801,42 +803,12 @@ public abstract class Locomotive extends RailcraftMinecart implements Directiona
   }
 
   @Override
-  public boolean isLinkable() {
-    return true;
+  public float getOptimalDistance(RollingStock cart) {
+    return 0.9F;
   }
 
   @Override
-  public boolean canLink(AbstractMinecart cart) {
-    if (isExemptFromLinkLimits(cart)) {
-      return true;
-    }
-
-    if (StreamSupport
-        .stream(LinkageManagerImpl.INSTANCE.linkIterator(this, Link.FRONT).spliterator(), false)
-        .anyMatch(linked -> !isExemptFromLinkLimits(linked))) {
-      return false;
-    }
-    return StreamSupport
-        .stream(LinkageManagerImpl.INSTANCE.linkIterator(this, Link.BACK).spliterator(), false)
-        .allMatch(this::isExemptFromLinkLimits);
-  }
-
-  private boolean isExemptFromLinkLimits(AbstractMinecart cart) {
-    return cart instanceof Locomotive || cart instanceof MaintenanceMinecart;
-  }
-
-  @Override
-  public float getLinkageDistance(AbstractMinecart cart) {
-    return LinkageManagerImpl.LINKAGE_DISTANCE;
-  }
-
-  @Override
-  public float getOptimalDistance(AbstractMinecart cart) {
-    return 0.9f;
-  }
-
-  @Override
-  public void onLinkCreated(AbstractMinecart cart) {
+  public void linked(RollingStock cart) {
     // Moved from linkage manager - this should not be there
     if (getSpeed().compareTo(Speed.SLOWEST) > 0) {
       setSpeed(Speed.SLOWEST);

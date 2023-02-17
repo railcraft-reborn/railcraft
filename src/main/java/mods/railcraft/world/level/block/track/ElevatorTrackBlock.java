@@ -1,9 +1,9 @@
 package mods.railcraft.world.level.block.track;
 
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -206,7 +206,7 @@ public class ElevatorTrackBlock extends Block {
    *        is within the area of effect of the block
    */
   protected void minecartInteraction(Level level, AbstractMinecart cart, BlockPos pos) {
-    MinecartExtension.getOrThrow(cart).setElevatorRemainingTicks(ELEVATOR_TIMER);
+    RollingStock.getOrThrow(cart).setElevatorRemainingTicks(ELEVATOR_TIMER);
     cart.setNoGravity(true);
     BlockState state = level.getBlockState(pos);
     keepMinecartConnected(pos, state, cart);

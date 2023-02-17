@@ -1,9 +1,6 @@
 package mods.railcraft.world.item.tunnelbore;
 
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import com.google.common.collect.Sets;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -16,8 +13,7 @@ import net.minecraftforge.common.ToolActions;
 public abstract class TunnelBoreHeadItem extends TieredItem implements TunnelBoreHead {
 
   private static final Set<ToolAction> TOOL_ACTIONS =
-      Stream.of(ToolActions.AXE_DIG, ToolActions.PICKAXE_DIG, ToolActions.SHOVEL_DIG)
-          .collect(Collectors.toCollection(Sets::newIdentityHashSet));
+      Set.of(ToolActions.AXE_DIG, ToolActions.PICKAXE_DIG, ToolActions.SHOVEL_DIG);
 
   public TunnelBoreHeadItem(Tier tier, Properties properties) {
     super(tier, properties);

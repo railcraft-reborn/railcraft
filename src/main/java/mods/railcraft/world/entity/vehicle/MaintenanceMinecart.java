@@ -1,8 +1,8 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.List;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -123,12 +123,13 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   }
 
   protected RailShape removeOldTrack(BlockPos pos, BlockState state) {
-    List<ItemStack> drops = state.getDrops(new LootContext.Builder((ServerLevel) this.level)
+    var drops = state.getDrops(new LootContext.Builder((ServerLevel) this.level)
         .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
         .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)));
 
-    for (ItemStack stack : drops) {
-      CartUtil.transferHelper().offerOrDropItem(this, stack);
+    var extension = RollingStock.getOrThrow(this);
+    for (var stack : drops) {
+      CartUtil.transferService().offerOrDropItem(extension, stack);
     }
     var trackShape = TrackUtil.getRailShapeRaw(state);
     this.level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());

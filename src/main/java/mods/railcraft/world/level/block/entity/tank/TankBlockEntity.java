@@ -1,11 +1,11 @@
 package mods.railcraft.world.level.block.entity.tank;
 
-import com.google.common.collect.ImmutableList;
-import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.google.common.collect.ImmutableList;
+import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.TankMenu;
@@ -38,12 +38,13 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEntity, Void> {
 
-  private static final int FLOW_RATE = FluidTools.BUCKET_VOLUME;
+  private static final int FLOW_RATE = FluidType.BUCKET_VOLUME;
 
   private final TankModule module;
 
@@ -59,7 +60,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
       Collection<MultiblockPattern<Void>> patterns) {
     super(type, blockPos, blockState, TankBlockEntity.class, patterns);
     this.module = this.moduleDispatcher.registerModule("tank", new TankModule(this, 0));
-    this.module.getTank().setChangeListener(this::tankChanged);
+    this.module.getTank().changeCallback(this::tankChanged);
   }
 
   @Override

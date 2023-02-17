@@ -3,8 +3,8 @@ package mods.railcraft;
 import java.util.Set;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
@@ -30,13 +30,12 @@ import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.util.capability.CapabilityUtil;
 import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
-import mods.railcraft.world.entity.vehicle.LinkageManagerImpl;
-import mods.railcraft.world.entity.vehicle.MinecartExtension;
+import mods.railcraft.world.entity.vehicle.RollingStockImpl;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
-import mods.railcraft.world.entity.vehicle.Train;
-import mods.railcraft.world.entity.vehicle.TrainTransferHelperImpl;
+import mods.railcraft.world.entity.vehicle.TrainTransferHandlerImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftCreativeModeTabs;
@@ -51,7 +50,6 @@ import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.material.fluid.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
-import net.minecraft.core.Direction;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataProvider;
@@ -67,11 +65,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.CreativeModeTabEvent;
@@ -80,7 +75,6 @@ import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -99,8 +93,7 @@ public class Railcraft {
 
   static {
     FuelUtil._setFuelManager(FuelManagerImpl.INSTANCE);
-    CartUtil._setLinkageManager(LinkageManagerImpl.INSTANCE);
-    CartUtil._setTransferHelper(TrainTransferHelperImpl.INSTANCE);
+    CartUtil._setTransferService(TrainTransferHandlerImpl.INSTANCE);
     Charge._setZapEffectProvider(new ZapEffectProviderImpl());
     for (var value : ChargeProviderImpl.values()) {
       value.getCharge()._setProvider(value);
@@ -157,7 +150,7 @@ public class Railcraft {
   }
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
-    event.register(MinecartExtension.class);
+    event.register(RollingStock.class);
   }
 
   private void handleCreativeModeTabRegister(CreativeModeTabEvent.Register event) {
@@ -205,8 +198,9 @@ public class Railcraft {
         .add(ForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap);
 
     generator.addProvider(event.includeServer(),
-        (DataProvider.Factory<DatapackBuiltinEntriesProvider>) output ->
-            new DatapackBuiltinEntriesProvider(output, lookupProvider, builder, Set.of(ID)));
+        (DataProvider.Factory<
+            DatapackBuiltinEntriesProvider>) output -> new DatapackBuiltinEntriesProvider(output,
+                lookupProvider, builder, Set.of(ID)));
   }
 
   // ================================================================================
@@ -216,26 +210,11 @@ public class Railcraft {
   @SubscribeEvent
   public void handleAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
     if (event.getObject() instanceof AbstractMinecart minecart) {
-      event.addCapability(MinecartExtension.KEY, new ICapabilitySerializable<CompoundTag>() {
-
-        private final LazyOptional<MinecartExtension> instance =
-            LazyOptional.of(() -> MinecartExtension.create(minecart));
-
-        @Override
-        public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-          return cap == MinecartExtension.CAPABILITY ? this.instance.cast() : LazyOptional.empty();
-        }
-
-        @Override
-        public CompoundTag serializeNBT() {
-          return this.instance.map(MinecartExtension::serializeNBT).orElseGet(CompoundTag::new);
-        }
-
-        @Override
-        public void deserializeNBT(CompoundTag tag) {
-          this.instance.ifPresent(cap -> cap.deserializeNBT(tag));
-        }
-      });
+      event.addCapability(RollingStockImpl.KEY,
+          CapabilityUtil.serializableProvider(
+              CompoundTag::new,
+              () -> new RollingStockImpl(minecart),
+              RollingStock.CAPABILITY));
     }
   }
 
@@ -246,9 +225,6 @@ public class Railcraft {
         provider.network(level).tick();
       }
       TokenRingManager.get(level).tick(level);
-      if (level.getServer().getTickCount() % 32 == 0) {
-        Train.getManager(level).tick();
-      }
     }
   }
 
@@ -259,23 +235,12 @@ public class Railcraft {
           .around(player)
           .inflate(32F)
           .stream(player.getLevel())
-          .map(MinecartExtension::getOrThrow)
+          .map(RollingStock::getOrThrow)
           .map(LinkedCartsMessage.LinkedCart::new)
           .toList();
       NetworkChannel.GAME.simpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
           player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
     }
-  }
-
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public void handleCartLink(CartLinkEvent.Link event) {
-    Train.repairTrain(event.getCartOne(), event.getCartTwo());
-  }
-
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public void handleCartUnlink(CartLinkEvent.Unlink event) {
-    Train.killTrain(event.getCartOne());
-    Train.killTrain(event.getCartTwo());
   }
 
   @SubscribeEvent
@@ -296,10 +261,8 @@ public class Railcraft {
   public void handleEntityLeaveWorld(EntityLeaveLevelEvent event) {
     if (event.getEntity() instanceof AbstractMinecart cart
         && !event.getEntity().getLevel().isClientSide()
-        && event.getEntity().getRemovalReason() != null
-        && event.getEntity().getRemovalReason().shouldDestroy()) {
-      Train.killTrain(cart);
-      LinkageManagerImpl.INSTANCE.breakLinks(cart);
+        && event.getEntity().isRemoved()) {
+      RollingStock.getOrThrow(cart).removed(event.getEntity().getRemovalReason());
     }
   }
 

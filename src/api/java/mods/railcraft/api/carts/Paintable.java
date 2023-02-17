@@ -11,7 +11,7 @@ package mods.railcraft.api.carts;
  *
  * @author CovertJaguar <https://www.railcraft.info/>
  */
-public interface IPaintedCart {
+public interface Paintable {
 
   float[] getPrimaryColor();
 

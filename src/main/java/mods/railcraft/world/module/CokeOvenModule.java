@@ -7,7 +7,7 @@ import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -24,7 +24,6 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   public static final int SLOT_LIQUID_INPUT = 2;
   public static final int SLOT_PROCESSING_FLUID = 3;
   public static final int SLOT_OUTPUT_FLUID = 4;
-  public static final int TANK_CAPACITY = 64 * FluidTools.BUCKET_VOLUME;
   private final ContainerMapper outputContainer;
   private int multiplier = 1;
 
@@ -38,9 +37,9 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
-    this.tank = new StandardTank(TANK_CAPACITY)
+    this.tank = StandardTank.ofBuckets(64)
         .disableFill()
-        .setChangeListener(this::setChanged);
+        .changeCallback(this::setChanged);
 
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
     fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_OUTPUT_FLUID);

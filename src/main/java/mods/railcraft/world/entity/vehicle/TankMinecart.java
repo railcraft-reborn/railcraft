@@ -11,12 +11,9 @@ import mods.railcraft.world.inventory.TankMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
-import mods.railcraft.world.level.material.fluid.TankManager;
-import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -38,6 +35,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class TankMinecart extends FilteredMinecart implements WorldlyContainer, FluidMinecart {
 
@@ -52,12 +50,14 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
   private static final int SLOT_OUTPUT = 2;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 3);
   private final StandardTank tank =
-      (StandardTank) new FilteredTank(RailcraftConfig.server.getTankCartFluidCapacity())
-          .setChangeListener(this::tankChanged)
+      StandardTank
+          .ofBuckets(RailcraftConfig.server.tankCartFluidCapacity.get())
+          .changeCallback(this::tankChanged)
           .setValidator(fluidStack -> this.getFilterFluid()
               .map(fluidStack::isFluidEqual)
               .orElse(true));
-  private final TankManager tankManager = new TankManager(this.tank);
+  private final LazyOptional<IFluidHandler> fluidHandlerCapability =
+      LazyOptional.of(() -> this.tank);
   private final ContainerMapper invLiquids = ContainerMapper.make(this).ignoreItemChecks();
   private int fluidProcessingTimer;
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
@@ -69,6 +69,7 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
   public TankMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
     super(itemStack, RailcraftEntityTypes.TANK_MINECART.get(), x, y, z, level);
   }
+
   @Override
   protected void defineSynchedData() {
     super.defineSynchedData();
@@ -92,14 +93,14 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
     }
   }
 
-  public TankManager getTankManager() {
-    return this.tankManager;
+  public StandardTank getTankManager() {
+    return this.tank;
   }
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
     return capability == ForgeCapabilities.FLUID_HANDLER
-        ? LazyOptional.of(() -> this.tankManager).cast()
+        ? this.fluidHandlerCapability.cast()
         : super.getCapability(capability, facing);
   }
 
@@ -149,14 +150,16 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
     super.readAdditionalSaveData(data);
     this.processState = FluidTools.ProcessState.getByName(data.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);
-    this.tankManager.deserializeNBT(data.getList("tankManager", Tag.TAG_COMPOUND));
+    this.tank.readFromNBT(data.getCompound("tank"));
   }
 
   @Override
   protected void addAdditionalSaveData(CompoundTag data) {
     super.addAdditionalSaveData(data);
     data.putString("processState", this.processState.getSerializedName());
-    data.put("tankManager", this.tankManager.serializeNBT());
+    var tankTag = new CompoundTag();
+    this.tank.writeToNBT(tankTag);
+    data.put("tank", tankTag);
   }
 
   public boolean isFilling() {

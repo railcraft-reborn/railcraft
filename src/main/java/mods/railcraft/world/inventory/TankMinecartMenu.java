@@ -19,7 +19,7 @@ public class TankMinecartMenu extends RailcraftMenu {
     super(RailcraftMenuTypes.TANK_MINECART.get(), id, inventory.player, tankMinecart::stillValid);
 
     this.addWidget(this.fluidGauge =
-        new FluidGaugeWidget(tankMinecart.getTankManager().get(0), 35, 23, 176, 0, 16, 47));
+        new FluidGaugeWidget(tankMinecart.getTankManager(), 35, 23, 176, 0, 16, 47));
 
     this.addSlot(new FluidFilterSlot(tankMinecart.getFilterInv(), 0, 80, 21));
     this.addSlot(new ItemFilterSlot(

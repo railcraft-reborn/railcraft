@@ -7,9 +7,8 @@ import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import mods.railcraft.world.level.material.fluid.TankManager;
-import mods.railcraft.world.level.material.fluid.tank.FilteredTank;
-import mods.railcraft.world.level.material.fluid.tank.StandardTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -40,13 +39,12 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   protected static final int SLOT_PROCESSING = 1;
   protected static final int SLOT_OUTPUT = 2;
   protected static final int[] SLOTS = ContainerTools.buildSlotArray(0, 3);
-  protected static final int CAPACITY = FluidTools.BUCKET_VOLUME * 32;
 
   protected final AdvancedContainer fluidFilterContainer =
       new AdvancedContainer(1).listener((Container) this).phantom();
   protected final TankManager tankManager = new TankManager();
   private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> this.tankManager);
-  protected final StandardTank tank = new FilteredTank(CAPACITY);
+  protected final StandardTank tank = StandardTank.ofBuckets(32);
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private int fluidProcessingTimer;
 
@@ -57,7 +55,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     this.tankManager.add(this.tank);
     this.tank.setValidator(
         fluidStack -> this.getFilterFluid().map(fluidStack::isFluidEqual).orElse(true));
-    this.tank.setChangeListener(this::tankChanged);
+    this.tank.changeCallback(this::tankChanged);
   }
 
   protected void tankChanged() {
