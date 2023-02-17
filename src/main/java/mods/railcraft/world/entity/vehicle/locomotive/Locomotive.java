@@ -19,7 +19,7 @@ import mods.railcraft.api.carts.Routable;
 import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.Lockable;
-import mods.railcraft.api.fuel.INeedsFuel;
+import mods.railcraft.api.carts.NeedsFuel;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
@@ -67,7 +67,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class Locomotive extends RailcraftMinecart implements
-    Linkable, Directional, Lockable, Paintable, Routable, INeedsFuel {
+    Linkable, Directional, Lockable, Paintable, Routable, NeedsFuel {
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BOOLEAN);

@@ -1,7 +1,7 @@
 package mods.railcraft.util.routing.expression.condition;
 
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.api.fuel.INeedsFuel;
+import mods.railcraft.api.carts.NeedsFuel;
 import mods.railcraft.util.routing.IBlockEntityRouting;
 import mods.railcraft.util.routing.RoutingLogicException;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -21,8 +21,8 @@ public class RefuelCondition extends ParsedCondition {
         .train()
         .stream()
         .map(RollingStock::entity)
-        .filter(x -> x instanceof INeedsFuel)
-        .map(x -> (INeedsFuel) x)
+        .filter(x -> x instanceof NeedsFuel)
+        .map(x -> (NeedsFuel) x)
         .anyMatch(x -> x.needsFuel() == this.needsRefuel);
   }
 }

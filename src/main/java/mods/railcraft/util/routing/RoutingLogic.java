@@ -9,7 +9,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.carts.Paintable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Routable;
-import mods.railcraft.api.fuel.INeedsFuel;
+import mods.railcraft.api.carts.NeedsFuel;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.util.routing.expression.ConstantExpression;
 import mods.railcraft.util.routing.expression.Expression;
@@ -88,7 +88,7 @@ public class RoutingLogic {
       if (cart instanceof Paintable) {
         return cart;
       }
-      if (cart instanceof INeedsFuel) {
+      if (cart instanceof NeedsFuel) {
         return cart;
       }
     }
