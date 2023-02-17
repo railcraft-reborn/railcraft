@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -205,7 +206,7 @@ public interface RollingStock {
 
   Train train();
 
-  default boolean isSameTrainAs(RollingStock minecart) {
+  default boolean isSameTrainAs(@NotNull RollingStock minecart) {
     Objects.requireNonNull(minecart, "minecart cannot be null.");
     return this.train() == minecart.train();
   }

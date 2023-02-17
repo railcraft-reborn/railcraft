@@ -179,7 +179,8 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     if (this.lockingCarts.contains(cart.getUUID()))
       return false; // Carts at the locking entrance always are on locked tracks
 
-    var sameTrain = RollingStock.getOrThrow(cart).isSameTrainAs(this.currentCart());
+    var sameTrain = this.currentCart() == null ? false :
+        RollingStock.getOrThrow(cart).isSameTrainAs(this.currentCart());
 
     BlockState actuatorBlockState = this.level.getBlockState(this.getActuatorBlockPos());
     boolean shouldSwitch = actuatorBlockState.is(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
