@@ -9,7 +9,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,13 +19,6 @@ public class SwitchTrackRoutingBlock extends SwitchTrackActuatorBlock implements
 
   public SwitchTrackRoutingBlock(Properties properties) {
     super(properties);
-  }
-
-  @Override
-  public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
-      Block neighborBlock, BlockPos neighborBlockPos, boolean moved) {
-    level.getBlockEntity(blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTING.get())
-        .ifPresent(SwitchTrackRoutingBlockEntity::neighborChanged);
   }
 
   @Override

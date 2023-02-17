@@ -45,7 +45,6 @@ public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBl
 
   private Railway railway = Railway.PUBLIC;
 
-  private boolean redstoneTriggered;
   private boolean powered;
 
   public SwitchTrackRoutingBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -64,18 +63,9 @@ public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBl
     }
   }
 
-  public void neighborChanged() {
-    boolean lastPowered = this.powered;
-    this.powered = this.level.hasNeighborSignal(this.getBlockPos());
-    if (this.redstoneTriggered && lastPowered != this.powered) {
-      this.updateSwitched();
-    }
-  }
-
   private void updateSwitched() {
-    boolean switched = this.powered;
     SwitchTrackActuatorBlock.setSwitched(
-        this.getBlockState(), this.level, this.getBlockPos(), switched);
+        this.getBlockState(), this.level, this.getBlockPos(), this.powered);
   }
 
   @Override
@@ -88,7 +78,6 @@ public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBl
     super.saveAdditional(tag);
     tag.put("container", this.container.createTag());
     tag.putString("railway", this.railway.getSerializedName());
-    tag.putBoolean("redstoneTriggered", this.redstoneTriggered);
   }
 
   @Override
@@ -96,21 +85,18 @@ public class SwitchTrackRoutingBlockEntity extends LockableSwitchTrackActuatorBl
     super.load(tag);
     this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
     this.railway = Railway.getByName(tag.getString("railway")).orElse(Railway.PUBLIC);
-    this.redstoneTriggered = tag.getBoolean("redstoneTriggered");
   }
 
   @Override
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
     data.writeEnum(this.railway);
-    data.writeBoolean(this.redstoneTriggered);
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf data) {
     super.readFromBuf(data);
     this.railway = data.readEnum(Railway.class);
-    this.redstoneTriggered = data.readBoolean();
   }
 
   @Override
