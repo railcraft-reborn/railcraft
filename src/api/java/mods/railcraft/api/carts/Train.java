@@ -7,10 +7,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import mods.railcraft.util.FunctionalUtil;
-import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -29,13 +26,7 @@ public interface Train {
     return this.front().traverseTrainWithSelf(Side.BACK);
   }
 
-  default <T extends AbstractMinecart> Stream<T> streamOf(Class<T> type) {
-    return this.stream().flatMap(FunctionalUtil.ofType(type));
-  }
-
-  default int getNumRunningLocomotives() {
-    return (int) this.streamOf(Locomotive.class).filter(Locomotive::isRunning).count();
-  }
+  int getNumRunningLocomotives();
 
   default int size() {
     return (int) this.stream().count();
