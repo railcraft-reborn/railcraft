@@ -11,27 +11,27 @@ import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSwitchTrackRoutingAttributesMessage;
 import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.util.routing.RoutingLogicException;
-import mods.railcraft.world.inventory.SwitchTrackRoutingMenu;
-import mods.railcraft.world.level.block.entity.SwitchTrackRoutingBlockEntity;
+import mods.railcraft.world.inventory.SwitchTrackRouterMenu;
+import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class SwitchTrackRoutingScreen extends RailcraftMenuScreen<SwitchTrackRoutingMenu> {
+public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRouterMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/routing.png");
   private static final Component ROUTING_TABLE =
       Component.translatable(Translations.Screen.ROUTING_TABLE_BOOK);
   private static final int REFRESH_INTERVAL_TICKS = 20;
-  private final SwitchTrackRoutingBlockEntity switchTrackRouting;
+  private final SwitchTrackRouterBlockEntity switchTrackRouting;
 
-  private MultiButton<SwitchTrackRoutingBlockEntity.Lock> lockButton;
-  private MultiButton<SwitchTrackRoutingBlockEntity.Railway> railwayButton;
+  private MultiButton<SwitchTrackRouterBlockEntity.Lock> lockButton;
+  private MultiButton<SwitchTrackRouterBlockEntity.Railway> railwayButton;
   private int refreshTimer;
 
-  public SwitchTrackRoutingScreen(SwitchTrackRoutingMenu menu, Inventory inventory,
+  public SwitchTrackRouterScreen(SwitchTrackRouterMenu menu, Inventory inventory,
       Component title) {
     super(menu, inventory, title);
     this.imageHeight = 158;
@@ -81,25 +81,25 @@ public class SwitchTrackRoutingScreen extends RailcraftMenuScreen<SwitchTrackRou
     this.updateButtons();
   }
 
-  private void setLock(SwitchTrackRoutingBlockEntity.Lock lock) {
+  private void setLock(SwitchTrackRouterBlockEntity.Lock lock) {
     if (this.switchTrackRouting.getLock() != lock) {
       this.switchTrackRouting.setLock(
-          lock.equals(SwitchTrackRoutingBlockEntity.Lock.UNLOCKED)
+          lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
           ? null : this.minecraft.getUser().getGameProfile());
       this.sendAttributes();
     }
   }
 
-  private void setRailway(SwitchTrackRoutingBlockEntity.Railway railway) {
+  private void setRailway(SwitchTrackRouterBlockEntity.Railway railway) {
     if (this.switchTrackRouting.getRailway() != railway) {
       this.switchTrackRouting.setRailway(
-          railway.equals(SwitchTrackRoutingBlockEntity.Railway.PUBLIC)
+          railway.equals(SwitchTrackRouterBlockEntity.Railway.PUBLIC)
           ? null : this.minecraft.getUser().getGameProfile());
       this.sendAttributes();
     }
   }
 
-  private Optional<Tooltip> updateLockButtonTooltip(SwitchTrackRoutingBlockEntity.Lock lock) {
+  private Optional<Tooltip> updateLockButtonTooltip(SwitchTrackRouterBlockEntity.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
           this.switchTrackRouting.getOwnerOrThrow().getName());
@@ -108,11 +108,11 @@ public class SwitchTrackRoutingScreen extends RailcraftMenuScreen<SwitchTrackRou
   }
 
   private Optional<Tooltip> updateRailwayButtonTooltip(
-      SwitchTrackRoutingBlockEntity.Railway railway) {
+      SwitchTrackRouterBlockEntity.Railway railway) {
     return Optional.of(Tooltip.create(switch (railway) {
-      case PRIVATE -> Component.translatable(Translations.Screen.SWITCH_TRACK_ROUTING_PRIVATE_RAILWAY_DESC,
+      case PRIVATE -> Component.translatable(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC,
           this.switchTrackRouting.getOwnerOrThrow().getName());
-      case PUBLIC -> Component.translatable(Translations.Screen.SWITCH_TRACK_ROUTING_PUBLIC_RAILWAY_DESC);
+      case PUBLIC -> Component.translatable(Translations.Screen.SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY_DESC);
     }));
   }
 

@@ -1,6 +1,5 @@
 package mods.railcraft.data.recipes;
 
-import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -141,7 +140,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private static void railsFromMaterials(Consumer<FinishedRecipe> finishedRecipe,
-      Item result, int count,  Item railType, Item railBedType) {
+      Item result, int count, Item railType, Item railBedType) {
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, count)
         .pattern("a a")
         .pattern("aba")
@@ -371,7 +370,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.HIGH_SPEED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
 
 
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(), 16)
+    ShapedRecipeBuilder
+        .shaped(RecipeCategory.MISC, RailcraftItems.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(), 16)
         .pattern("aba")
         .pattern("aac")
         .pattern("aba")
@@ -381,7 +381,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.HIGH_SPEED_RAIL.get()),
             has(RailcraftItems.HIGH_SPEED_RAIL.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(), 16)
+    ShapedRecipeBuilder
+        .shaped(RecipeCategory.MISC, RailcraftItems.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(), 16)
         .pattern("aca")
         .pattern("aba")
         .pattern("aba")
@@ -391,7 +392,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.HIGH_SPEED_RAIL.get()),
             has(RailcraftItems.HIGH_SPEED_RAIL.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(), 16)
+    ShapedRecipeBuilder
+        .shaped(RecipeCategory.MISC, RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(), 16)
         .pattern("aba")
         .pattern("aca")
         .pattern("aba")
@@ -405,11 +407,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void tracks(Consumer<FinishedRecipe> finishedRecipe, Item result,
       Item kit, Item baseTrack) {
-      ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
-          .requires(kit)
-          .requires(baseTrack)
-          .unlockedBy(getHasName(kit), has(kit))
-          .save(finishedRecipe);
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result)
+        .requires(kit)
+        .requires(baseTrack)
+        .unlockedBy(getHasName(kit), has(kit))
+        .save(finishedRecipe);
   }
 
   private static void wyeTracks(Consumer<FinishedRecipe> finishedRecipe, Item result,
@@ -599,44 +601,53 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildOreSmelt(Consumer<FinishedRecipe> consumer) {
-    ImmutableList<ItemLike> LEAD_SMELTABLES =
-        ImmutableList.of(RailcraftItems.LEAD_ORE.get(), RailcraftItems.DEEPSLATE_LEAD_ORE.get(),
-            RailcraftItems.LEAD_RAW.get());
-    oreSmelting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, RailcraftItems.LEAD_INGOT.get(),
+    List<ItemLike> leadSmeltables = List.of(
+        RailcraftItems.LEAD_ORE.get(),
+        RailcraftItems.DEEPSLATE_LEAD_ORE.get(),
+        RailcraftItems.LEAD_RAW.get());
+    oreSmelting(consumer, leadSmeltables, RecipeCategory.MISC, RailcraftItems.LEAD_INGOT.get(),
         1, 200, "lead_ingot");
-    oreBlasting(consumer, LEAD_SMELTABLES, RecipeCategory.MISC, RailcraftItems.LEAD_INGOT.get(),
+    oreBlasting(consumer, leadSmeltables, RecipeCategory.MISC, RailcraftItems.LEAD_INGOT.get(),
         1, 100, "lead_ingot");
 
-    ImmutableList<ItemLike> NICKEL_SMELTABLES =
-        ImmutableList.of(RailcraftItems.NICKEL_ORE.get(), RailcraftItems.DEEPSLATE_NICKEL_ORE.get(),
+    List<ItemLike> nickelSmeltables =
+        List.of(
+            RailcraftItems.NICKEL_ORE.get(),
+            RailcraftItems.DEEPSLATE_NICKEL_ORE.get(),
             RailcraftItems.NICKEL_RAW.get());
-    oreSmelting(consumer, NICKEL_SMELTABLES, RecipeCategory.MISC, RailcraftItems.NICKEL_INGOT.get(),
+    oreSmelting(consumer, nickelSmeltables, RecipeCategory.MISC, RailcraftItems.NICKEL_INGOT.get(),
         1, 200, "nickel_ingot");
-    oreBlasting(consumer, NICKEL_SMELTABLES, RecipeCategory.MISC, RailcraftItems.NICKEL_INGOT.get(),
+    oreBlasting(consumer, nickelSmeltables, RecipeCategory.MISC, RailcraftItems.NICKEL_INGOT.get(),
         1, 100, "nickel_ingot");
 
-    ImmutableList<ItemLike> SILVER_SMELTABLES =
-        ImmutableList.of(RailcraftItems.SILVER_ORE.get(), RailcraftItems.DEEPSLATE_SILVER_ORE.get(),
+    List<ItemLike> silverSmeltables =
+        List.of(
+            RailcraftItems.SILVER_ORE.get(),
+            RailcraftItems.DEEPSLATE_SILVER_ORE.get(),
             RailcraftItems.SILVER_RAW.get());
-    oreSmelting(consumer, SILVER_SMELTABLES, RecipeCategory.MISC, RailcraftItems.SILVER_INGOT.get(),
+    oreSmelting(consumer, silverSmeltables, RecipeCategory.MISC, RailcraftItems.SILVER_INGOT.get(),
         1, 200, "silver_ingot");
-    oreBlasting(consumer, SILVER_SMELTABLES, RecipeCategory.MISC, RailcraftItems.SILVER_INGOT.get(),
+    oreBlasting(consumer, silverSmeltables, RecipeCategory.MISC, RailcraftItems.SILVER_INGOT.get(),
         1, 100, "silver_ingot");
 
-    ImmutableList<ItemLike> TIN_SMELTABLES =
-        ImmutableList.of(RailcraftItems.TIN_ORE.get(), RailcraftItems.DEEPSLATE_TIN_ORE.get(),
+    List<ItemLike> tinSmeltables =
+        List.of(
+            RailcraftItems.TIN_ORE.get(),
+            RailcraftItems.DEEPSLATE_TIN_ORE.get(),
             RailcraftItems.TIN_RAW.get());
-    oreSmelting(consumer, TIN_SMELTABLES, RecipeCategory.MISC, RailcraftItems.TIN_INGOT.get(),
+    oreSmelting(consumer, tinSmeltables, RecipeCategory.MISC, RailcraftItems.TIN_INGOT.get(),
         1, 200, "tin_ingot");
-    oreBlasting(consumer, TIN_SMELTABLES, RecipeCategory.MISC, RailcraftItems.TIN_INGOT.get(),
+    oreBlasting(consumer, tinSmeltables, RecipeCategory.MISC, RailcraftItems.TIN_INGOT.get(),
         1, 100, "tin_ingot");
 
-    ImmutableList<ItemLike> ZINC_SMELTABLES =
-        ImmutableList.of(RailcraftItems.ZINC_ORE.get(), RailcraftItems.DEEPSLATE_ZINC_ORE.get(),
+    List<ItemLike> zincSmeltables =
+        List.of(
+            RailcraftItems.ZINC_ORE.get(),
+            RailcraftItems.DEEPSLATE_ZINC_ORE.get(),
             RailcraftItems.ZINC_RAW.get());
-    oreSmelting(consumer, ZINC_SMELTABLES, RecipeCategory.MISC, RailcraftItems.ZINC_INGOT.get(),
+    oreSmelting(consumer, zincSmeltables, RecipeCategory.MISC, RailcraftItems.ZINC_INGOT.get(),
         1, 200, "zinc_ingot");
-    oreBlasting(consumer, ZINC_SMELTABLES, RecipeCategory.MISC, RailcraftItems.ZINC_INGOT.get(),
+    oreBlasting(consumer, zincSmeltables, RecipeCategory.MISC, RailcraftItems.ZINC_INGOT.get(),
         1, 100, "zinc_ingot");
   }
 
@@ -804,7 +815,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     switchItem(consumer, RailcraftItems.SWITCH_TRACK_LEVER.get(), Items.LEVER);
     switchItem(consumer, RailcraftItems.SWITCH_TRACK_MOTOR.get(), RailcraftItems.RECEIVER_CIRCUIT.get());
     ShapelessRecipeBuilder
-        .shapeless(RecipeCategory.MISC, RailcraftItems.SWITCH_TRACK_ROUTING.get())
+        .shapeless(RecipeCategory.MISC, RailcraftItems.SWITCH_TRACK_ROUTER.get())
         .requires(RailcraftItems.SWITCH_TRACK_MOTOR.get())
         .requires(Items.COMPARATOR)
         .unlockedBy(getHasName(RailcraftItems.SWITCH_TRACK_MOTOR.get()),
@@ -823,12 +834,12 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('d', Items.PISTON)
         .define('e', circuit)
         .define('f', Items.IRON_INGOT)
-        .unlockedBy(getHasName(circuit),has(circuit))
+        .unlockedBy(getHasName(circuit), has(circuit))
         .save(finishedRecipe);
   }
 
   private void buildLoaders(Consumer<FinishedRecipe> consumer) {
-    //TODO: Fix when we implement detector blocks
+    // TODO: Fix when we implement detector blocks
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ITEM_LOADER.get())
         .pattern("aaa")
         .pattern("aba")
@@ -1187,83 +1198,67 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void buildKits(Consumer<FinishedRecipe> consumer) {
     kits(consumer, RailcraftItems.ACTIVATOR_TRACK_KIT.get(), 8, List.of(
-            new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 2)
-        ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 2)));
     kits(consumer, RailcraftItems.BOOSTER_TRACK_KIT.get(), 16, List.of(
         new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 2),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), 2, List.of(
-        new Tuple<>(Ingredient.of(Tags.Items.INGOTS_IRON), 2)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.INGOTS_IRON), 2)));
     kits(consumer, RailcraftItems.CONTROL_TRACK_KIT.get(), 16, List.of(
         new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.DETECTOR_TRACK_KIT.get(), 8, List.of(
         new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.DISEMBARKING_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
         new Tuple<>(Ingredient.of(Items.LEAD), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.EMBARKING_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(Items.ENDER_PEARL), 1),
         new Tuple<>(Ingredient.of(Items.LEAD), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.GATED_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(Tags.Items.FENCE_GATES), 1),
         new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.LOCKING_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
         new Tuple<>(Ingredient.of(Items.STICKY_PISTON), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.ONE_WAY_TRACK_KIT.get(), 8, List.of(
         new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
         new Tuple<>(Ingredient.of(Items.PISTON), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.LAUNCHER_TRACK_KIT.get(), 1, List.of(
         new Tuple<>(Ingredient.of(Items.PISTON), 1),
         new Tuple<>(Ingredient.of(RailcraftTags.Items.STEEL_BLOCK), 2),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(RailcraftItems.SIGNAL_LAMP.get()), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.TRANSITION_TRACK_KIT.get(), 8, List.of(
         new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 2),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 2)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 2)));
     kits(consumer, RailcraftItems.COUPLER_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(Items.LEAD), 1),
-        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)
-    ));
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
   }
 
   private static void kits(Consumer<FinishedRecipe> finishedRecipe,
-      Item result,
-      int count,
-      List<Tuple<Ingredient, Integer>> ingredients) {
+      Item result, int count, List<Tuple<Ingredient, Integer>> ingredients) {
 
-      var builder = ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, count)
-          .requires(ItemTags.PLANKS)
-          .requires(RailcraftItems.TRACK_PARTS.get());
+    var builder = ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, count)
+        .requires(ItemTags.PLANKS)
+        .requires(RailcraftItems.TRACK_PARTS.get());
 
-      for(var ingredient : ingredients) {
-        builder = builder.requires(ingredient.getA(), ingredient.getB());
-      }
-      builder
-          .unlockedBy(getHasName(RailcraftItems.TRACK_PARTS.get()),
-              has(RailcraftItems.TRACK_PARTS.get()))
-          .save(finishedRecipe);
+    for (var ingredient : ingredients) {
+      builder = builder.requires(ingredient.getA(), ingredient.getB());
+    }
+    builder
+        .unlockedBy(getHasName(RailcraftItems.TRACK_PARTS.get()),
+            has(RailcraftItems.TRACK_PARTS.get()))
+        .save(finishedRecipe);
   }
 
   private void buildGears(Consumer<FinishedRecipe> consumer) {
@@ -1363,21 +1358,25 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
             has(RailcraftItems.CHARGE_MOTOR.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get(), 2)
+    ShapedRecipeBuilder
+        .shaped(RecipeCategory.MISC, RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get(), 2)
         .pattern("a")
         .pattern("b")
         .pattern("a")
         .define('a', RailcraftTags.Items.STEEL_PLATE)
         .define('b', RailcraftTags.Items.INVAR_PLATE)
-        .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()), has(RailcraftItems.STEEL_PLATE.get()))
+        .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()),
+            has(RailcraftItems.STEEL_PLATE.get()))
         .save(consumer);
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get(), 2)
+    ShapedRecipeBuilder
+        .shaped(RecipeCategory.MISC, RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get(), 2)
         .pattern("a")
         .pattern("b")
         .pattern("a")
         .define('a', RailcraftTags.Items.IRON_PLATE)
         .define('b', RailcraftTags.Items.INVAR_PLATE)
-        .unlockedBy(getHasName(RailcraftItems.IRON_PLATE.get()), has(RailcraftItems.IRON_PLATE.get()))
+        .unlockedBy(getHasName(RailcraftItems.IRON_PLATE.get()),
+            has(RailcraftItems.IRON_PLATE.get()))
         .save(consumer);
   }
 
@@ -1645,14 +1644,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.POLISHED_QUARRIED_STONE.get(), 4, "_from_quarried_cobblestone");
     SingleItemRecipeBuilder.stonecutting(
         Ingredient.of(new ItemStack(RailcraftItems.QUARRIED_STONE.get())),
-            RecipeCategory.MISC, RailcraftItems.POLISHED_QUARRIED_STONE.get())
+        RecipeCategory.MISC, RailcraftItems.POLISHED_QUARRIED_STONE.get())
         .unlockedBy(getHasName(RailcraftItems.QUARRIED_STONE.get()),
             has(RailcraftItems.QUARRIED_STONE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID,
             "polished_quarried_stone_from_quarried_stone_in_stonecutter"));
     SingleItemRecipeBuilder.stonecutting(
         Ingredient.of(new ItemStack(RailcraftItems.QUARRIED_COBBLESTONE.get())),
-            RecipeCategory.MISC, RailcraftItems.POLISHED_QUARRIED_STONE.get())
+        RecipeCategory.MISC, RailcraftItems.POLISHED_QUARRIED_STONE.get())
         .unlockedBy(getHasName(RailcraftItems.QUARRIED_COBBLESTONE.get()),
             has(RailcraftItems.QUARRIED_COBBLESTONE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID,
@@ -1681,14 +1680,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     stairBuilder(RailcraftItems.QUARRIED_BRICK_STAIRS.get(),
         Ingredient.of(RailcraftItems.QUARRIED_BRICKS.get()))
-        .unlockedBy(getHasName(RailcraftItems.QUARRIED_BRICKS.get()),
-            has(RailcraftItems.QUARRIED_BRICKS.get()))
-        .save(consumer);
+            .unlockedBy(getHasName(RailcraftItems.QUARRIED_BRICKS.get()),
+                has(RailcraftItems.QUARRIED_BRICKS.get()))
+            .save(consumer);
     stairBuilder(RailcraftItems.QUARRIED_PAVER_STAIRS.get(),
         Ingredient.of(RailcraftItems.QUARRIED_PAVER.get()))
-        .unlockedBy(getHasName(RailcraftItems.QUARRIED_PAVER.get()),
-            has(RailcraftItems.QUARRIED_PAVER.get()))
-        .save(consumer);
+            .unlockedBy(getHasName(RailcraftItems.QUARRIED_PAVER.get()),
+                has(RailcraftItems.QUARRIED_PAVER.get()))
+            .save(consumer);
     slab(consumer, RecipeCategory.MISC,
         RailcraftItems.QUARRIED_BRICK_SLAB.get(), RailcraftItems.QUARRIED_BRICKS.get());
     slab(consumer, RecipeCategory.MISC,

@@ -99,7 +99,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.TRAIN_DISPENSER, "Train Dispenser");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_LEVER, "Switch Track Lever");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR, "Switch Track Motor");
-    this.addBlock(RailcraftBlocks.SWITCH_TRACK_ROUTING, "Switch Track Routing");
+    this.addBlock(RailcraftBlocks.SWITCH_TRACK_ROUTER, "Switch Track Router");
     this.addBlock(RailcraftBlocks.BLOCK_SIGNAL, "Block Signal");
     this.addBlock(RailcraftBlocks.DISTANT_SIGNAL, "Distant Signal");
     this.addBlock(RailcraftBlocks.TOKEN_SIGNAL, "Token Signal");
@@ -553,11 +553,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         or train owned by the issuer. It can also be combined with paper to produce single \
         use tickets.""");
     this.add(Translations.Screen.ROUTING_TABLE_BOOK, "Routing Table Book");
-    this.add(Translations.Screen.SWITCH_TRACK_ROUTING_PUBLIC_RAILWAY, "Public Railway");
-    this.add(Translations.Screen.SWITCH_TRACK_ROUTING_PUBLIC_RAILWAY_DESC,
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY, "Public Railway");
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY_DESC,
         "Will route any locomotive");
-    this.add(Translations.Screen.SWITCH_TRACK_ROUTING_PRIVATE_RAILWAY, "Private Railway");
-    this.add(Translations.Screen.SWITCH_TRACK_ROUTING_PRIVATE_RAILWAY_DESC,
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY, "Private Railway");
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC,
         "Will only route locomotive that belong to %s");
   }
 

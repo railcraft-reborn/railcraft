@@ -12,7 +12,7 @@ import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
-import mods.railcraft.world.level.block.entity.SwitchTrackRoutingBlockEntity;
+import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
@@ -76,10 +76,10 @@ public class RailcraftMenuTypes {
           () -> new MenuType<>(
               blockEntityMenu(FeedStationBlockEntity.class, FeedStationMenu::new)));
 
-  public static final RegistryObject<MenuType<SwitchTrackRoutingMenu>> SWITCH_TRACK_ROUTING =
+  public static final RegistryObject<MenuType<SwitchTrackRouterMenu>> SWITCH_TRACK_ROUTING =
       deferredRegister.register("switch_track_routing",
           () -> new MenuType<>(
-              blockEntityMenu(SwitchTrackRoutingBlockEntity.class, SwitchTrackRoutingMenu::new)));
+              blockEntityMenu(SwitchTrackRouterBlockEntity.class, SwitchTrackRouterMenu::new)));
 
   public static final RegistryObject<MenuType<LocomotiveMenu<CreativeLocomotive>>> CREATIVE_LOCOMOTIVE =
       deferredRegister.register("creative_locomotive",

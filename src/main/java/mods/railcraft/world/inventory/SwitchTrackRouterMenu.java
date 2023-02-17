@@ -4,19 +4,19 @@ import java.util.Optional;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.world.item.RoutingTableBookItem;
-import mods.railcraft.world.level.block.entity.SwitchTrackRoutingBlockEntity;
+import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public class SwitchTrackRoutingMenu extends RailcraftMenu {
+public class SwitchTrackRouterMenu extends RailcraftMenu {
 
   private final Widget error;
-  private final SwitchTrackRoutingBlockEntity switchTrackRouting;
+  private final SwitchTrackRouterBlockEntity switchTrackRouting;
 
-  public SwitchTrackRoutingMenu(int id, Inventory inventory,
-      SwitchTrackRoutingBlockEntity blockEntity) {
+  public SwitchTrackRouterMenu(int id, Inventory inventory,
+      SwitchTrackRouterBlockEntity blockEntity) {
     super(RailcraftMenuTypes.SWITCH_TRACK_ROUTING.get(), id, inventory.player, blockEntity::stillValid);
     this.switchTrackRouting = blockEntity;
 
@@ -54,7 +54,7 @@ public class SwitchTrackRoutingMenu extends RailcraftMenu {
     this.addInventorySlots(inventory, 160);
   }
 
-  public SwitchTrackRoutingBlockEntity getSwitchTrackRouting() {
+  public SwitchTrackRouterBlockEntity getSwitchTrackRouting() {
     return this.switchTrackRouting;
   }
 
