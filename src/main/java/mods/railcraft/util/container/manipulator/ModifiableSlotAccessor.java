@@ -24,7 +24,7 @@ public interface ModifiableSlotAccessor extends SlotAccessor {
   void setItem(ItemStack itemStack);
 
   default ItemStack clear() {
-    var itemStack = this.getItem();
+    var itemStack = this.item();
     this.setItem(ItemStack.EMPTY);
     return itemStack;
   }
@@ -34,7 +34,7 @@ public interface ModifiableSlotAccessor extends SlotAccessor {
   }
 
   default void drop(Level level, BlockPos blockPos, Predicate<ItemStack> predicate) {
-    var item = this.getItem();
+    var item = this.item();
     if (!item.isEmpty() && !predicate.test(item)) {
       this.clear();
       ContainerTools.dropItem(item, level, blockPos);

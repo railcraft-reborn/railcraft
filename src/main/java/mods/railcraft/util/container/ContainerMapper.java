@@ -1,8 +1,12 @@
 package mods.railcraft.util.container;
 
+import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 import mods.railcraft.util.Predicates;
-import mods.railcraft.util.container.manipulator.VanillaContainerManipulator;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import mods.railcraft.util.container.manipulator.ContainerSlotAccessor;
+import mods.railcraft.util.container.manipulator.ModifiableSlotAccessor;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -12,8 +16,9 @@ import net.minecraft.world.item.ItemStack;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public class ContainerMapper implements Container, VanillaContainerManipulator {
+public class ContainerMapper implements Container, ContainerManipulator<ModifiableSlotAccessor> {
 
+  private final List<ModifiableSlotAccessor> slots;
   private final Container container;
   private boolean checkItems = true;
   private final int start;
@@ -38,6 +43,7 @@ public class ContainerMapper implements Container, VanillaContainerManipulator {
    *        container
    */
   public ContainerMapper(Container container, int start, int size) {
+    this.slots = ContainerSlotAccessor.createSlots(container).toList();
     this.container = container;
     this.start = start;
     this.size = size;
@@ -80,7 +86,7 @@ public class ContainerMapper implements Container, VanillaContainerManipulator {
   @Override
   public ItemStack removeItem(int slot, int amount) {
     this.validSlot(slot);
-    return container.removeItem(start + slot, amount);
+    return container.removeItem(this.start + slot, amount);
   }
 
   @Override
@@ -102,8 +108,8 @@ public class ContainerMapper implements Container, VanillaContainerManipulator {
   }
 
   @Override
-  public Container getContainer() {
-    return this;
+  public Stream<ModifiableSlotAccessor> stream() {
+    return this.slots.stream();
   }
 
   @Override

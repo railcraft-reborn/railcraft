@@ -1,10 +1,9 @@
 package mods.railcraft.world.module;
 
 import static mods.railcraft.data.recipes.builders.CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME;
-
 import java.util.Optional;
 import mods.railcraft.util.MachineEnergyStorage;
-import mods.railcraft.util.container.ContainerCopy;
+import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.FilteredInvWrapper;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
@@ -102,15 +101,15 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   @Override
   protected boolean craftAndPush() {
     final var recipe = currentRecipe.orElseThrow(NullPointerException::new);
-    var tempInv = new ContainerCopy(outputContainer);
+    var tempInv = AdvancedContainer.copyOf(outputContainer);
     var outputs = recipe.pollOutputs(provider.getLevel().getRandom());
     var hasSpace = outputs.stream()
-        .map(tempInv::addStack)
+        .map(tempInv::insert)
         .allMatch(ItemStack::isEmpty);
 
     if (hasSpace) {
-      outputs.forEach(outputContainer::addStack);
-      inputContainer.removeOneItem(recipe.getIngredients().get(0));
+      outputs.forEach(outputContainer::insert);
+      inputContainer.extract(recipe.getIngredients().get(0));
       provider.getLevel().playSound(null, provider.blockPos(),
           SoundEvents.IRON_GOLEM_DEATH, SoundSource.BLOCKS, 1.0f,
           provider.getLevel().getRandom().nextFloat() * 0.25f + 0.7f);

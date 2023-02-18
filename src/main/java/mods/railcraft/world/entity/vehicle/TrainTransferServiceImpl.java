@@ -1,14 +1,13 @@
 package mods.railcraft.world.entity.vehicle;
 
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 import mods.railcraft.api.carts.FluidMinecart;
 import mods.railcraft.api.carts.ItemTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.TrainTransferService;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
-import net.minecraft.core.Direction;
+import mods.railcraft.util.container.manipulator.SlotAccessor;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
@@ -48,99 +47,88 @@ public enum TrainTransferServiceImpl implements TrainTransferService {
   // ==================================================
 
   @Override
-  public ItemStack pushStack(RollingStock requester, ItemStack stack) {
-    Iterable<RollingStock> carts =
-        () -> Stream.concat(
-            requester.traverseTrain(Side.BACK),
-            requester.traverseTrain(Side.FRONT)).iterator();
-    for (var extension : carts) {
-      var cart = extension.entity();
-      var adaptor = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
-          .map(ContainerManipulator::of)
-          .orElse(null);
-      if (adaptor != null && this.canAcceptPushedItem(requester.entity(), cart, stack)) {
-        stack = adaptor.addStack(stack);
-      }
-
-      if (stack.isEmpty() || this.blocksItemRequests(cart, stack)) {
-        break;
-      }
-    }
-    return stack;
-  }
-
-  @Override
-  public ItemStack pullStack(RollingStock rollingStock, Predicate<ItemStack> filter) {
-    ItemStack result = ItemStack.EMPTY;
-    AbstractMinecart upTo = null;
-    ContainerManipulator<?> targetInv = null;
-    Iterable<RollingStock> carts =
-        () -> Stream.concat(
-            rollingStock.traverseTrain(Side.FRONT),
-            rollingStock.traverseTrain(Side.BACK)).iterator();
-    for (var extension : carts) {
-      var cart = extension.entity();
-      var inv = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
-          .map(ContainerManipulator::of)
-          .orElse(null);
-      if (inv == null) {
-        continue;
-      }
-
-      for (var stackKey : inv.findAll(filter)) {
-        var stack = stackKey.copyStack();
-        if (!this.canProvidePulledItem(rollingStock.entity(), cart, stack)) {
-          continue;
+  public ItemStack pushStack(RollingStock requester, ItemStack itemStack) {
+    for (var side : Side.values()) {
+      Iterable<RollingStock> targets =
+          () -> requester.traverseTrain(side).iterator();
+      for (var target : targets) {
+        var cart = target.entity();
+        var adaptor = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+            .map(ContainerManipulator::of)
+            .orElse(null);
+        if (adaptor != null && canAcceptPushedItem(requester.entity(), cart, itemStack)) {
+          itemStack = adaptor.insert(itemStack);
         }
 
-        var toRemove = inv.findOne(stack::sameItem);
-        if (toRemove.isEmpty()) {
-          continue;
+        if (itemStack.isEmpty() || blocksItemRequests(cart, itemStack)) {
+          break;
         }
-
-        result = toRemove;
-        upTo = cart;
-        targetInv = inv;
-        break;
       }
-    }
 
-    if (result.isEmpty()) {
-      return ItemStack.EMPTY;
-    }
-
-    for (var extension : carts) {
-      var entity = extension.entity();
-      if (entity == upTo) {
-        break;
-      }
-      if (this.blocksItemRequests(entity, result)) {
+      if (itemStack.isEmpty()) {
         return ItemStack.EMPTY;
       }
     }
+    return itemStack;
+  }
 
-    if (targetInv != null) {
-      return targetInv.removeOneItem(result);
+  @Override
+  public ItemStack pullStack(RollingStock requester, Predicate<ItemStack> filter) {
+    for (var side : Side.values()) {
+      Iterable<RollingStock> targets =
+          () -> requester.traverseTrain(side).iterator();
+      RollingStock resultProvider = null;
+      SlotAccessor result = null;
+      for (var target : targets) {
+        var cart = target.entity();
+        var slot = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+            .map(ContainerManipulator::of)
+            .flatMap(manipulator -> manipulator.findFirstExtractable(
+                filter.and(stack -> canProvidePulledItem(requester.entity(), cart, stack))))
+            .orElse(null);
+        if (slot != null) {
+          resultProvider = target;
+          result = slot;
+        }
+      }
+
+      if (result == null) {
+        continue;
+      }
+
+      for (var target : targets) {
+        if (target == resultProvider) {
+          break;
+        }
+        if (blocksItemRequests(target.entity(), result.item())) {
+          result = null;
+          break;
+        }
+      }
+
+      if (result != null) {
+        return result.extract();
+      }
     }
 
     return ItemStack.EMPTY;
   }
 
-  private boolean canAcceptPushedItem(AbstractMinecart requester, AbstractMinecart cart,
+  private static boolean canAcceptPushedItem(AbstractMinecart requester, AbstractMinecart cart,
       ItemStack stack) {
-    return !(cart instanceof ItemTransferHandler) || ((ItemTransferHandler) cart).canAcceptPushedItem(requester, stack);
+    return !(cart instanceof ItemTransferHandler handler)
+        || handler.canAcceptPushedItem(requester, stack);
   }
 
-  private boolean canProvidePulledItem(AbstractMinecart requester,
-      AbstractMinecart cart,
-      ItemStack stack) {
-    return !(cart instanceof ItemTransferHandler)
-        || ((ItemTransferHandler) cart).canProvidePulledItem(requester, stack);
+  private static boolean canProvidePulledItem(AbstractMinecart requester,
+      AbstractMinecart cart, ItemStack stack) {
+    return !(cart instanceof ItemTransferHandler handler)
+        || handler.canProvidePulledItem(requester, stack);
   }
 
-  private boolean blocksItemRequests(AbstractMinecart cart, ItemStack stack) {
-    return cart instanceof ItemTransferHandler itemCart
-        ? !itemCart.canPassItemRequests(stack)
+  private static boolean blocksItemRequests(AbstractMinecart cart, ItemStack stack) {
+    return cart instanceof ItemTransferHandler handler
+        ? !handler.canPassItemRequests(stack)
         : cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
             .map(IItemHandler::getSlots)
             .orElse(0) < NUM_SLOTS;
@@ -152,23 +140,28 @@ public enum TrainTransferServiceImpl implements TrainTransferService {
 
   @Override
   public FluidStack pushFluid(RollingStock requester, FluidStack fluidStack) {
-    Iterable<RollingStock> carts =
-        () -> Stream.concat(
-            requester.traverseTrain(Side.BACK),
-            requester.traverseTrain(Side.FRONT)).iterator();
-    for (var extension : carts) {
-      var cart = extension.entity();
-      if (this.canAcceptPushedFluid(requester.entity(), cart, fluidStack)) {
-        cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP)
-            .ifPresent(fluidHandler -> fluidStack.setAmount(
-                fluidStack.getAmount()
-                    - fluidHandler.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE)));
+    var remainder = fluidStack.copy();
+    for (var side : Side.values()) {
+      Iterable<RollingStock> targets = () -> requester.traverseTrain(side).iterator();
+      for (var target : targets) {
+        var cart = target.entity();
+        if (canAcceptPushedFluid(requester.entity(), cart, remainder)) {
+          var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
+          if (fluidHandler != null) {
+            var filled = fluidHandler.fill(remainder, IFluidHandler.FluidAction.EXECUTE);
+            remainder.setAmount(remainder.getAmount() - filled);
+          }
+        }
+        if (remainder.isEmpty() || blocksFluidRequests(cart, remainder)) {
+          break;
+        }
       }
-      if (fluidStack.getAmount() <= 0 || this.blocksFluidRequests(cart, fluidStack)) {
-        break;
+
+      if (remainder.isEmpty()) {
+        return FluidStack.EMPTY;
       }
     }
-    return fluidStack;
+    return remainder;
   }
 
   @Override
@@ -176,66 +169,52 @@ public enum TrainTransferServiceImpl implements TrainTransferService {
     if (fluidStack.isEmpty()) {
       return FluidStack.EMPTY;
     }
-    Iterable<RollingStock> carts =
-        () -> Stream.concat(
-            requester.traverseTrain(Side.BACK),
-            requester.traverseTrain(Side.FRONT)).iterator();
-    for (var extension : carts) {
-      var cart = extension.entity();
-      if (this.canProvidePulledFluid(requester.entity(), cart, fluidStack)) {
-        var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN)
-            .orElse(null);
-        if (fluidHandler != null) {
-          var drained = fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-          if (!drained.isEmpty()) {
-            return drained;
+
+    for (var side : Side.values()) {
+      Iterable<RollingStock> targets = () -> requester.traverseTrain(side).iterator();
+      for (var target : targets) {
+        var cart = target.entity();
+        if (canProvidePulledFluid(requester.entity(), cart, fluidStack)) {
+          var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
+          if (fluidHandler != null) {
+            var drained = fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+            if (!drained.isEmpty()) {
+              return drained;
+            }
           }
         }
-      }
 
-      if (this.blocksFluidRequests(cart, fluidStack)) {
-        break;
+        if (blocksFluidRequests(cart, fluidStack)) {
+          break;
+        }
       }
     }
+
+
     return FluidStack.EMPTY;
   }
 
-  private boolean canAcceptPushedFluid(AbstractMinecart requester,
+  private static boolean canAcceptPushedFluid(AbstractMinecart requester,
       AbstractMinecart cart, FluidStack fluid) {
-    var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP)
-        .orElse(null);
-    if (fluidHandler == null) {
-      return false;
-    }
-    if (cart instanceof FluidMinecart fluidMinecart) {
-      return fluidMinecart.canAcceptPushedFluid(requester, fluid);
-    }
-    return fluidHandler.fill(new FluidStack(fluid, 1), IFluidHandler.FluidAction.SIMULATE) > 0;
+    return !(cart instanceof FluidMinecart fluidMinecart)
+        || fluidMinecart.canAcceptPushedFluid(requester, fluid);
   }
 
-  private boolean canProvidePulledFluid(AbstractMinecart requester,
+  private static boolean canProvidePulledFluid(AbstractMinecart requester,
       AbstractMinecart cart, FluidStack fluid) {
-    var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN)
-        .orElse(null);
-    if (fluidHandler == null) {
-      return false;
-    }
-    if (cart instanceof FluidMinecart fluidMinecart) {
-      return fluidMinecart.canProvidePulledFluid(requester, fluid);
-    }
-    return !fluidHandler.drain(new FluidStack(fluid, 1), IFluidHandler.FluidAction.SIMULATE)
-        .isEmpty();
+    return !(cart instanceof FluidMinecart fluidMinecart)
+        || fluidMinecart.canProvidePulledFluid(requester, fluid);
   }
 
-  private boolean blocksFluidRequests(AbstractMinecart cart, FluidStack fluid) {
+  private static boolean blocksFluidRequests(AbstractMinecart cart, FluidStack fluid) {
     return cart instanceof FluidMinecart fluidMinecart
         ? !fluidMinecart.canPassFluidRequests(fluid)
         : cart.getCapability(ForgeCapabilities.FLUID_HANDLER)
-            .map(fluidHandler -> !this.hasMatchingTank(fluidHandler, fluid))
+            .map(fluidHandler -> !hasMatchingTank(fluidHandler, fluid))
             .orElse(true);
   }
 
-  private boolean hasMatchingTank(IFluidHandler handler, FluidStack fluid) {
+  private static boolean hasMatchingTank(IFluidHandler handler, FluidStack fluid) {
     for (int i = 0; i < handler.getTanks(); i++) {
       if (handler.getTankCapacity(i) >= TANK_CAPACITY) {
         var tankFluid = handler.getFluidInTank(i);

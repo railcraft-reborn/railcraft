@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class AnvilBlockMixin {
 
   @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-  private static void damage(BlockState blockState,
+  private static void railcraft$damageSteelAnvil(BlockState blockState,
       CallbackInfoReturnable<BlockState> callbackInfo) {
     if (blockState.is(RailcraftBlocks.STEEL_ANVIL.get())) {
       callbackInfo.setReturnValue(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get().defaultBlockState()

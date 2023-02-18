@@ -61,7 +61,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
     }
     var offset = this.getBlockPos().offset(this.getFacing().getNormal());
     if (EntitySearcher.findMinecarts().at(offset).list(serverLevel).isEmpty()) {
-      var cartItem = this.removeOneItem(filter);
+      var cartItem = this.extract(filter);
       if (!cartItem.isEmpty()) {
         var placedCart = CartTools.placeCart(cartItem, serverLevel, offset);
 
@@ -77,7 +77,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
           }
           return true;
         } else {
-          this.addStack(cartItem);
+          this.insert(cartItem);
         }
       }
     }
@@ -109,7 +109,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
 
   private boolean canBuildTrain() {
     var pattern = ContainerManifest.create(this.invPattern);
-    var buffer = ContainerManifest.create(this.getContainer(), pattern.keySet());
+    var buffer = ContainerManifest.create(this.container(), pattern.keySet());
 
     return pattern.values().stream().anyMatch(e -> buffer.count(e.key()) >= e.count());
   }

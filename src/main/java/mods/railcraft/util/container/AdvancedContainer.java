@@ -1,8 +1,11 @@
 package mods.railcraft.util.container;
 
+import java.util.List;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
-import mods.railcraft.util.container.manipulator.VanillaContainerManipulator;
+import mods.railcraft.util.container.manipulator.ContainerSlotAccessor;
+import mods.railcraft.util.container.manipulator.ModifiableSlotAccessor;
 import mods.railcraft.world.module.ModuleProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,7 +21,10 @@ import net.minecraft.world.item.ItemStack;
  * 
  * @author Sm0keySa1m0n
  */
-public class AdvancedContainer extends SimpleContainer implements VanillaContainerManipulator {
+public class AdvancedContainer extends SimpleContainer
+    implements ContainerManipulator<ModifiableSlotAccessor> {
+
+  private final List<ModifiableSlotAccessor> slots;
 
   @Nullable
   private Listener listener;
@@ -26,11 +32,12 @@ public class AdvancedContainer extends SimpleContainer implements VanillaContain
 
   public AdvancedContainer(int size) {
     super(size);
+    this.slots = ContainerSlotAccessor.createSlots(this).toList();
   }
 
   @Override
-  public Container getContainer() {
-    return this;
+  public Stream<ModifiableSlotAccessor> stream() {
+    return this.slots.stream();
   }
 
   public AdvancedContainer listener(Container container) {
@@ -98,6 +105,17 @@ public class AdvancedContainer extends SimpleContainer implements VanillaContain
       tag.add(slotTag);
     }
     return tag;
+  }
+
+  public static AdvancedContainer copyOf(Container original) {
+    var copy = new AdvancedContainer(original.getContainerSize());
+    for (int i = 0; i < original.getContainerSize(); i++) {
+      var itemStack = original.getItem(i);
+      if (!itemStack.isEmpty()) {
+        copy.setItem(i, itemStack.copy());
+      }
+    }
+    return copy;
   }
 
   public interface Listener extends ContainerListener {

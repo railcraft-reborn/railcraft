@@ -1,9 +1,10 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.LevelUtil;
-import mods.railcraft.util.container.ContainerCopy;
+import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.inventory.CartDispenserMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -20,7 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements MenuProvider {
 
@@ -76,14 +76,14 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
           if (!cart.isAlive()) {
             return;
           }
-          var coppiedContainer = new ContainerCopy(this);
+          var coppiedContainer = AdvancedContainer.copyOf(this);
           var cartStack = cart.getPickResult();
           if (cart.hasCustomName()) {
             cartStack.setHoverName(cart.getName());
           }
-          var remainder = coppiedContainer.addStack(cartStack.copy());
+          var remainder = coppiedContainer.insert(cartStack.copy());
           if (remainder.isEmpty()) {
-            this.addStack(cartStack);
+            this.insert(cartStack);
             if (!cart.getPassengers().isEmpty()) {
               CartTools.removePassengers(cart);
             }

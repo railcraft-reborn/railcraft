@@ -282,7 +282,7 @@ public abstract class ContainerTools {
 
   public static double calculateFullness(ContainerManipulator<?> manipulator) {
     return manipulator.stream()
-        .mapToDouble(slot -> slot.getItem().getCount() / (double) slot.maxStackSize()).average()
+        .mapToDouble(slot -> slot.item().getCount() / (double) slot.maxStackSize()).average()
         .orElse(0.0);
   }
 

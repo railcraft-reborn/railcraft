@@ -619,7 +619,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     var stack = CartUtil.transferService()
         .pullStack(RollingStock.getOrThrow(this), this.ballastContainer::canFit);
     if (!stack.isEmpty()) {
-      this.ballastContainer.addStack(stack);
+      this.ballastContainer.insert(stack);
     }
   }
 
@@ -628,7 +628,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     if (!Block.canSupportRigidBlock(this.level, targetPos)) {
       return this.ballastContainer.stream()
           .filter(slot -> slot.hasItem()
-              && slot.getItem().getItem() instanceof BlockItem blockItem
+              && slot.item().getItem() instanceof BlockItem blockItem
               && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST))
           .findFirst()
           .map(slot -> {
@@ -638,9 +638,9 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
               if (Block.canSupportRigidBlock(this.level, searchPos)) {
                 // Fill ballast
                 var state =
-                    ContainerTools.getBlockStateFromStack(slot.getItem(), this.level, targetPos);
+                    ContainerTools.getBlockStateFromStack(slot.item(), this.level, targetPos);
                 if (state != null) {
-                  slot.shrink();
+                  slot.extract();
                   this.level.setBlockAndUpdate(targetPos, state);
                   return true;
                 }
@@ -666,7 +666,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     var stack = CartUtil.transferService()
         .pullStack(RollingStock.getOrThrow(this), this.trackContainer::canFit);
     if (!stack.isEmpty()) {
-      this.trackContainer.addStack(stack);
+      this.trackContainer.insert(stack);
     }
   }
 
@@ -683,9 +683,9 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
           .filter(SlotAccessor::hasItem)
           .peek(slot -> {
             var placed =
-                TrackUtil.placeRailAt(slot.getItem(), (ServerLevel) this.level, targetPos, shape);
+                TrackUtil.placeRailAt(slot.item(), (ServerLevel) this.level, targetPos, shape);
             if (placed) {
-              slot.shrink();
+              slot.extract();
             }
           })
           .findFirst()
@@ -806,11 +806,11 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
               .withParameter(LootContextParams.ORIGIN, this.position()))
           .forEach(stack -> {
             if (StackFilter.FUEL.test(stack)) {
-              stack = fuelContainer.addStack(stack);
+              stack = fuelContainer.insert(stack);
             }
 
             if (!stack.isEmpty() && ContainerTools.isStackEqualToBlock(stack, Blocks.GRAVEL)) {
-              stack = ballastContainer.addStack(stack);
+              stack = ballastContainer.insert(stack);
             }
 
             if (!stack.isEmpty()) {
@@ -981,7 +981,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     var stack = CartUtil.transferService()
         .pullStack(RollingStock.getOrThrow(this), this.fuelContainer::canFit);
     if (!stack.isEmpty()) {
-      this.fuelContainer.addStack(stack);
+      this.fuelContainer.insert(stack);
     }
   }
 

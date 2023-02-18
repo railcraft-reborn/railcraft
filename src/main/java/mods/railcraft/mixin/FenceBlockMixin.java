@@ -15,7 +15,7 @@ import net.minecraft.core.Direction;
 public class FenceBlockMixin {
 
   @Inject(method = "connectsTo", at = @At("HEAD"), cancellable = true)
-  public void connectsTo(BlockState blockState, boolean sturdy, Direction face,
+  public void railcraft$connectToGatedTrack(BlockState blockState, boolean sturdy, Direction face,
       CallbackInfoReturnable<Boolean> callbackInfo) {
     if (blockState.getBlock() instanceof GatedTrackBlock) {
       RailShape railShape = TrackBlock.getRailShapeRaw(blockState);

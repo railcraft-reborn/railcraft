@@ -1,6 +1,7 @@
 package mods.railcraft.api.carts;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,7 +15,7 @@ import net.minecraftforge.items.IItemHandler;
 /**
  * @author Sm0keySa1m0n
  */
-public interface Train {
+public interface Train extends Iterable<RollingStock> {
 
   UUID id();
 
@@ -24,6 +25,11 @@ public interface Train {
 
   default Stream<RollingStock> stream() {
     return this.front().traverseTrainWithSelf(Side.BACK);
+  }
+
+  @Override
+  default Iterator<RollingStock> iterator() {
+    return this.stream().iterator();
   }
 
   int getNumRunningLocomotives();

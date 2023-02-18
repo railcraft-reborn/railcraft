@@ -6,6 +6,11 @@
     "refmap": "railcraft.refmap.json",
     "mixins": [
         "AbstractMinecartMixin",
+        "MinecartMixin",
+        "MinecartChestMixin",
+        "MinecartFurnaceMixin",
+        "MinecartHopperMixin",
+        "SlotMixin",
         "FenceBlockMixin",
         "WallBlockMixin",
         "AnvilBlockMixin"

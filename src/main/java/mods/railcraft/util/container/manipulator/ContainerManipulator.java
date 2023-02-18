@@ -1,19 +1,26 @@
 package mods.railcraft.util.container.manipulator;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.base.Predicates;
-import mods.railcraft.util.ItemStackKey;
+import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -28,23 +35,70 @@ import net.minecraftforge.items.IItemHandlerModifiable;
  *
  * @author CovertJaguar <https://www.railcraft.info>
  */
-public interface ContainerManipulator<T extends SlotAccessor> {
+public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T> {
+
+  static <T extends SlotAccessor> ContainerManipulator<T> empty() {
+    return Stream::empty;
+  }
+
+  static ContainerManipulator<ModifiableSlotAccessor> of(Container container) {
+    var slots = ContainerSlotAccessor.createSlots(container).toList();
+    return slots::stream;
+  }
+
+  static ContainerManipulator<ModifiableSlotAccessor> of(
+      WorldlyContainer container, Direction face) {
+    var slots = ContainerSlotAccessor.createSlots(container, face).toList();
+    return slots::stream;
+  }
 
   static ContainerManipulator<SlotAccessor> of(IItemHandler itemHandler) {
-    return new ItemHandlerManipulator.Standard(itemHandler);
+    var slots = ItemHandlerSlotAccessor.createSlots(itemHandler).toList();
+    return slots::stream;
   }
 
-  /**
-   * Only use this on inventories we control.
-   */
   static ContainerManipulator<ModifiableSlotAccessor> of(IItemHandlerModifiable itemHandler) {
-    return new ItemHandlerManipulator.Modifiable(itemHandler);
+    var slots = ItemHandlerSlotAccessor.createSlots(itemHandler).toList();
+    return slots::stream;
   }
 
-  /**
-   * Returns the number of slots the inventory contains.
-   */
-  int slotCount();
+  static ContainerManipulator<?> findAdjacent(Level level, BlockPos blockPos) {
+    return findAdjacent(level, blockPos, Predicates.alwaysTrue());
+  }
+
+  static ContainerManipulator<?> findAdjacent(Level level, BlockPos blockPos,
+      Predicate<BlockEntity> filter) {
+    return () -> Arrays.stream(Direction.values())
+        .flatMap(direction -> LevelUtil.getBlockEntity(level, blockPos.relative(direction))
+            .filter(filter)
+            .flatMap(blockEntity -> blockEntity
+                .getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite())
+                .map(ContainerManipulator::of))
+            .stream())
+        .flatMap(ContainerManipulator::stream);
+  }
+
+  @SafeVarargs
+  static <T extends SlotAccessor> ContainerManipulator<T> of(
+      ContainerManipulator<? extends T>... containers) {
+    return () -> Arrays.stream(containers).flatMap(ContainerManipulator::stream);
+  }
+
+  static <T extends SlotAccessor> ContainerManipulator<T> of(
+      Collection<? extends ContainerManipulator<? extends T>> containers) {
+    return () -> containers.stream().flatMap(ContainerManipulator::stream);
+  }
+
+  Stream<T> stream();
+
+  @Override
+  default Iterator<T> iterator() {
+    return this.stream().iterator();
+  }
+
+  default Stream<ItemStack> streamItems() {
+    return this.stream().filter(SlotAccessor::hasItem).map(SlotAccessor::item);
+  }
 
   /**
    * Attempt to add the stack to the inventory returning the remainder.
@@ -53,66 +107,72 @@ public interface ContainerManipulator<T extends SlotAccessor> {
    *
    * @return The remainder
    */
-  default ItemStack addStack(ItemStack stack, boolean simulate) {
+  default ItemStack insert(ItemStack stack, boolean simulate) {
     if (stack.isEmpty()) {
       return ItemStack.EMPTY;
     }
-    var newStack = stack.copy();
-    List<SlotAccessor> filledSlots = new ArrayList<>();
-    List<SlotAccessor> emptySlots = new ArrayList<>();
-    this.stream().forEach(slot -> {
-      if (slot.isValid(newStack)) {
-        if (slot.getItem().isEmpty()) {
-          emptySlots.add(slot);
-        } else {
-          filledSlots.add(slot);
-        }
-      }
-    });
 
-    int injected = 0;
-    injected = ManipulatorUtil.tryPut(filledSlots, newStack, injected, simulate);
-    injected = ManipulatorUtil.tryPut(emptySlots, newStack, injected, simulate);
-    newStack.shrink(injected);
-    return newStack.isEmpty() ? ItemStack.EMPTY : newStack;
+    var it = this.stream()
+        .sorted(Comparator.comparingInt(SlotAccessor::count).reversed())
+        .iterator();
+    var remainder = stack;
+
+    while (it.hasNext()) {
+      var slot = it.next();
+      remainder = slot.insert(remainder, simulate);
+      if (remainder.isEmpty()) {
+        return ItemStack.EMPTY;
+      }
+    }
+
+    return remainder;
   }
 
   /**
    * Removes up to maxAmount items in one slot matching the filter.
    */
-  default ItemStack removeStack(int maxAmount, Predicate<ItemStack> filter, boolean simulate) {
+  default ItemStack extract(int maxAmount, Predicate<ItemStack> filter, boolean simulate) {
     return this.stream()
-        .filter(slot -> slot.hasItem() && slot.canRemoveItem() && slot.matches(filter))
-        .map(slot -> slot.shrink(maxAmount, simulate))
+        .filter(slot -> slot.matches(filter))
+        .map(slot -> slot.extract(maxAmount, simulate))
+        .filter(item -> !item.isEmpty())
         .findFirst()
         .orElse(ItemStack.EMPTY);
   }
 
-  default List<ItemStack> extractItems(int maxAmount, Predicate<ItemStack> filter,
-      boolean simulate) {
-    var amountNeeded = new AtomicInteger(maxAmount);
-    return this.stream()
-        .takeWhile(__ -> amountNeeded.getPlain() > 0)
-        .filter(slot -> slot.hasItem() && slot.canRemoveItem() && slot.matches(filter))
-        .map(slot -> slot.shrink(amountNeeded.getPlain(), simulate))
-        .filter(item -> !item.isEmpty())
-        .peek(item -> amountNeeded.addAndGet(-item.getCount()))
-        .toList();
+  /**
+   * Removed an item matching the filter.
+   */
+  default ItemStack extract(Predicate<ItemStack> filter) {
+    return this.extract(1, filter, false);
+  }
+
+  /**
+   * Removes and returns a single item from the inventory.
+   *
+   * @return An ItemStack
+   */
+  default ItemStack extract() {
+    return this.extract(StackFilter.ALL);
+  }
+
+  /**
+   * Removes and returns a single item from the inventory that matches the filter.
+   *
+   * @param filter the filter to match against
+   * @return An ItemStack
+   */
+  default ItemStack extract(ItemStack... filter) {
+    return this.extract(StackFilter.anyOf(filter));
   }
 
   default ItemStack moveOneItemTo(ContainerManipulator<?> dest, Predicate<ItemStack> filter) {
     return this.stream()
-        .filter(slot -> slot.hasItem() && slot.canRemoveItem() && slot.matches(filter))
-        .filter(slot -> dest.addStack(ContainerTools.copyOne(slot.getItem())).isEmpty())
-        .map(T::shrink)
+        .filter(slot -> slot.matches(filter))
+        .filter(slot -> dest.insert(slot.simulateExtract()).isEmpty())
+        .map(T::extract)
         .findFirst()
         .orElse(ItemStack.EMPTY);
-  }
-
-  Stream<T> stream();
-
-  default Stream<ItemStack> streamItems() {
-    return this.stream().filter(SlotAccessor::hasItem).map(SlotAccessor::getItem);
   }
 
   /**
@@ -146,7 +206,7 @@ public interface ContainerManipulator<T extends SlotAccessor> {
    * @return true if room for stack
    */
   default boolean canFit(ItemStack stack) {
-    return this.addStack(stack, true).isEmpty();
+    return this.insert(stack, true).isEmpty();
   }
 
   /**
@@ -156,42 +216,14 @@ public interface ContainerManipulator<T extends SlotAccessor> {
    *
    * @return The remainder
    */
-  default ItemStack addStack(ItemStack stack) {
-    return addStack(stack, false);
+  default ItemStack insert(ItemStack stack) {
+    return this.insert(stack, false);
   }
 
-  /**
-   * Removed an item matching the filter.
-   */
-  default ItemStack removeOneItem(Predicate<ItemStack> filter) {
-    return removeStack(1, filter, false);
-  }
-
-  /**
-   * Removes and returns a single item from the inventory.
-   *
-   * @return An ItemStack
-   */
-  default ItemStack removeOneItem() {
-    return removeOneItem(StackFilter.ALL);
-  }
-
-  /**
-   * Removes and returns a single item from the inventory that matches the filter.
-   *
-   * @param filter the filter to match against
-   * @return An ItemStack
-   */
-  default ItemStack removeOneItem(ItemStack... filter) {
-    return removeOneItem(StackFilter.anyOf(filter));
-  }
-
-  /**
-   * Returns the item that would be returned if an item matching the filter was removed. Does not
-   * modify the inventory.
-   */
-  default ItemStack findOne(Predicate<ItemStack> filter) {
-    return removeStack(1, filter, true);
+  default Optional<T> findFirstExtractable(Predicate<ItemStack> filter) {
+    return this.stream()
+        .filter(slot -> slot.matches(filter) && !slot.simulateExtract().isEmpty())
+        .findFirst();
   }
 
   /**
@@ -288,8 +320,8 @@ public interface ContainerManipulator<T extends SlotAccessor> {
    * @param filter EnumItemType to match against
    * @return A Set of ItemStacks
    */
-  default Set<ItemStackKey> findAll(Predicate<ItemStack> filter) {
-    return streamItems().filter(filter).map(ItemStackKey::make).collect(Collectors.toSet());
+  default Stream<T> findAll(Predicate<ItemStack> filter) {
+    return this.stream().filter(slot -> slot.matches(filter));
   }
 
   /**

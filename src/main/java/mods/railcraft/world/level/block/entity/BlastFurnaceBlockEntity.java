@@ -83,7 +83,7 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
 
           if (blockEntity.fuelMoveTicks++ >= 128) {
             blockEntity.fuelMoveTicks = 0;
-            blockEntity.getAdjacentContainers().moveOneItemTo(
+            blockEntity.findAdjacentContainers().moveOneItemTo(
                 master.getBlastFurnaceModule().getFuelContainer(),
                 master.blastFurnaceModule::isFuel);
           }

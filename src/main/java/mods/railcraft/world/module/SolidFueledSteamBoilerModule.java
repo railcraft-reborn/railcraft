@@ -41,7 +41,7 @@ public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledS
       var masterModule = membership.master().getModule(SolidFueledSteamBoilerModule.class).get();
       if (masterModule.needsFuel && this.fuelMoveTicks++ >= 128) {
         this.fuelMoveTicks = 0;
-        this.provider.getAdjacentContainers().moveOneItemTo(
+        this.provider.findAdjacentContainers().moveOneItemTo(
             masterModule.fuelContainer,
             SolidFueledSteamBoilerModule::isFuel);
       }

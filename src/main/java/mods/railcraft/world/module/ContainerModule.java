@@ -23,7 +23,7 @@ public abstract class ContainerModule<T extends ModuleProvider> extends BaseModu
   }
 
   @Override
-  public Container getContainer() {
+  public Container container() {
     return this.container;
   }
 

@@ -1,6 +1,5 @@
 package mods.railcraft.util.container;
 
-import mods.railcraft.util.container.manipulator.VanillaContainerManipulator;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -10,15 +9,14 @@ import net.minecraft.world.item.ItemStack;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
-public interface ForwardingContainer extends Container, VanillaContainerManipulator {
+public interface ForwardingContainer extends Container {
 
   /**
    * Gets the container to delegate to.
    *
    * @return the delegate
    */
-  @Override
-  Container getContainer();
+  Container container();
 
   /**
    * {@inheritDoc}
@@ -36,37 +34,37 @@ public interface ForwardingContainer extends Container, VanillaContainerManipula
 
   @Override
   default int getContainerSize() {
-    return this.getContainer().getContainerSize();
+    return this.container().getContainerSize();
   }
 
   @Override
   default boolean isEmpty() {
-    return this.getContainer().isEmpty();
+    return this.container().isEmpty();
   }
 
   @Override
   default ItemStack getItem(int index) {
-    return this.getContainer().getItem(index);
+    return this.container().getItem(index);
   }
 
   @Override
   default ItemStack removeItem(int index, int count) {
-    return this.getContainer().removeItem(index, count);
+    return this.container().removeItem(index, count);
   }
 
   @Override
   default ItemStack removeItemNoUpdate(int index) {
-    return this.getContainer().removeItemNoUpdate(index);
+    return this.container().removeItemNoUpdate(index);
   }
 
   @Override
   default void setItem(int index, ItemStack stack) {
-    this.getContainer().setItem(index, stack);
+    this.container().setItem(index, stack);
   }
 
   @Override
   default int getMaxStackSize() {
-    return this.getContainer().getMaxStackSize();
+    return this.container().getMaxStackSize();
   }
 
   @Override
@@ -80,11 +78,11 @@ public interface ForwardingContainer extends Container, VanillaContainerManipula
 
   @Override
   default boolean canPlaceItem(int index, ItemStack stack) {
-    return this.getContainer().canPlaceItem(index, stack);
+    return this.container().canPlaceItem(index, stack);
   }
 
   @Override
   default void clearContent() {
-    this.getContainer().clearContent();
+    this.container().clearContent();
   }
 }
