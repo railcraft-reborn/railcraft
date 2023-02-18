@@ -445,7 +445,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.CART_DISPENSER, "Dispenses carts onto tracks");
     this.add(Translations.Tips.TRAIN_DISPENSER, "Dispenses linked trains onto tracks");
     this.add(Translations.Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
-    this.add(Translations.Tips.SIGNAL_TUNER, "Links Controllers to Receivers");
+    this.add(Translations.Tips.LINKS_CONTROLLERS_TO_RECEIVERS, "Links Controllers to Receivers");
     this.add(Translations.Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");
     this.add(Translations.Tips.PRESSURE_BOILER_TANK, "Multi-Block: Variable Size, Above Firebox");
     this.add(Translations.Tips.PRESSURE_BOILER_TANK_PRODUCTION, "Produces %smB of Steam per tick");
@@ -492,6 +492,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.LOCOMOTIVE_TRACK, "Starts/Stops locomotive");
     this.add(Translations.Tips.LOCKING_TRACK, "Stops and holds carts");
     this.add(Translations.Tips.TRANSITION_TRACK, "Transitions to/from high speed");
+    this.add(Translations.Tips.SWITCH_TRACKS, "Controls adjacent switch tracks");
+    this.add(Translations.Tips.MANUAL_OPERATION, "Manual Operation");
+    this.add(Translations.Tips.SCRIPTED_LOGIC_OPERATION, "Scripted Logic Operation");
+    this.add(Translations.Tips.RELEVANT_TOOLS, "Relevant tools:");
+    this.add(Translations.Tips.SIGNAL_TUNER, "Signal Tuner");
+    this.add(Translations.Tips.AERIAL_LINKAGES, "Aerial linkages:");
+    this.add(Translations.Tips.RECEIVERS, "%sx Receivers");
+    this.add(Translations.Tips.REDSTONE_LINKAGE, "Redstone linkage:");
+    this.add(Translations.Tips.LISTEN, "Listen");
   }
 
   private void screenTranslations() {

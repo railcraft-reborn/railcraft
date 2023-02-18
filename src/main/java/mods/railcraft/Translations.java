@@ -226,7 +226,8 @@ public class Translations {
     public static final String TRAIN_DISPENSER = makeKey("tips", "train_dispenser");
     public static final String SIGNAL_BLOCK_SURVEYOR =
         makeKey("tips", "signal_block_surveyor");
-    public static final String SIGNAL_TUNER = makeKey("tips", "signal_tuner");
+    public static final String LINKS_CONTROLLERS_TO_RECEIVERS =
+        makeKey("tips", "links_controllers_to_receivers");
     public static final String FUELED_BOILER_FIREBOX =
         makeKey("tips", "fueled_boiler_firebox");
     public static final String PRESSURE_BOILER_TANK =
@@ -284,6 +285,16 @@ public class Translations {
     public static final String LOCOMOTIVE_TRACK = makeKey("tips", "locomotive_track");
     public static final String LOCKING_TRACK = makeKey("tips", "locking_track");
     public static final String TRANSITION_TRACK = makeKey("tips", "transition_track");
+    public static final String SWITCH_TRACKS = makeKey("tips", "switch_track_lever");
+    public static final String MANUAL_OPERATION = makeKey("tips", "manual_operation");
+    public static final String SCRIPTED_LOGIC_OPERATION =
+        makeKey("tips", "scripted_logic_operation");
+    public static final String RELEVANT_TOOLS = makeKey("tips", "relevant_tools");
+    public static final String SIGNAL_TUNER = makeKey("tips", "signal_tuner");
+    public static final String AERIAL_LINKAGES = makeKey("tips", "aerial_linkages");
+    public static final String RECEIVERS = makeKey("tips", "receivers");
+    public static final String REDSTONE_LINKAGE = makeKey("tips", "redstone_linkage");
+    public static final String LISTEN = makeKey("tips", "listen");
   }
 
   public static class Container {
