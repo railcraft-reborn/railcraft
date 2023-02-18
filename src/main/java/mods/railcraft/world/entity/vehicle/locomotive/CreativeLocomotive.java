@@ -23,9 +23,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
 
   private static final int SLOT_TICKET = 0;
@@ -111,12 +108,10 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    switch (slot) {
-      case SLOT_TICKET:
-        return TicketItem.FILTER.test(stack);
-      default:
-        return false;
+    if (slot == SLOT_TICKET) {
+      return TicketItem.FILTER.test(stack);
     }
+    return false;
   }
 
   @Override

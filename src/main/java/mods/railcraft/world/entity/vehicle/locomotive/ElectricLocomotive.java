@@ -32,14 +32,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 
-/**
- * The electric locomotive.
- * 
- * @author CovertJaguar (https://www.railcraft.info/)
- */
 public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
-  // as of 2021 all of the numbers have been increased due to RF/FE usage
+  // as of 2021 all the numbers have been increased due to RF/FE usage
   private static final int ACTUAL_FUEL_GAIN_PER_REQUEST = 20; // the original value
   private static final int FUEL_PER_REQUEST = 1;
   // multiplied by 4 because rf
@@ -112,16 +107,6 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public void tick() {
-    super.tick();
-  }
-
-  @Override
-  protected void moveAlongTrack(BlockPos pos, BlockState state) {
-    super.moveAlongTrack(pos, state);
-  }
-
-  @Override
   protected Container getTicketInventory() {
     return this.ticketInventory;
   }
@@ -148,17 +133,16 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
   @Override
   public boolean canPlaceItem(int slot, @Nullable ItemStack stack) {
-    switch (slot) {
-      case SLOT_TICKET:
-        return TicketItem.FILTER.test(stack);
-      default:
-        return false;
+    if (slot == SLOT_TICKET) {
+      return TicketItem.FILTER.test(stack);
     }
+    return false;
   }
 
   @Override
   public boolean needsFuel() {
-    float charge = getBatteryCart().getEnergyStored() / getBatteryCart().getMaxEnergyStored();
+    var battery = getBatteryCart();
+    float charge = (float) battery.getEnergyStored() / (float) battery.getMaxEnergyStored();
     return charge < 0.80;
   }
 
@@ -176,25 +160,26 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag data) {
-    super.readAdditionalSaveData(data);
+  public void readAdditionalSaveData(CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
     this.cartBattery
-        .ifPresent(cell -> RailcraftNBTUtil.loadEnergyCell(data.getCompound("battery"), cell));
+        .ifPresent(cell -> RailcraftNBTUtil.loadEnergyCell(tag.getCompound("battery"), cell));
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag data) {
-    super.addAdditionalSaveData(data);
-    this.cartBattery.ifPresent(cell -> data.put("battery", RailcraftNBTUtil.saveEnergyCell(cell)));
+  public void addAdditionalSaveData(CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    this.cartBattery.ifPresent(cell -> tag.put("battery", RailcraftNBTUtil.saveEnergyCell(cell)));
   }
 
   @Override
   protected void loadFromItemStack(ItemStack itemStack) {
     super.loadFromItemStack(itemStack);
-    CompoundTag tag = itemStack.getTag();
-
+    CompoundTag tag = itemStack.getOrCreateTag();
     if (tag.contains("batteryEnergy")) {
-      this.cartBattery.ifPresent(cell -> cell.receiveEnergy(tag.getInt("batteryEnergy"), false));
+      this.cartBattery.ifPresent(cell -> {
+        cell.receiveEnergy(tag.getInt("batteryEnergy"), false);
+      });
     }
   }
 

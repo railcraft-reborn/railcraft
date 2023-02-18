@@ -132,7 +132,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.entityData.define(OWNER, Optional.empty());
   }
 
-  // purple and black, no ""texture"".
   protected DyeColor getDefaultPrimaryColor() {
     return DyeColor.PURPLE;
   }
@@ -161,7 +160,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     if (tag.contains("lock", Tag.TAG_STRING)) {
-      this.setLock(Lock.getByName(tag.getString("lock")).get());
+      Lock.getByName(tag.getString("lock")).ifPresent(this::setLock);
     }
 
     if (tag.contains("emblem", Tag.TAG_STRING)) {
@@ -199,6 +198,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
     if (this.isLocked()) {
       LocomotiveItem.setOwnerData(itemStack, this.getOwnerOrThrow());
     }
+    LocomotiveItem.setItemColorData(itemStack,
+        this.getPrimaryDyeColor(), this.getSecondaryDyeColor());
     LocomotiveItem.setItemWhistleData(itemStack, this.whistlePitch);
     this.getEmblem().ifPresent(emblem -> LocomotiveItem.setEmblem(itemStack, emblem));
     if (this.hasCustomName()) {
@@ -251,10 +252,10 @@ public abstract class Locomotive extends RailcraftMinecart implements
   /**
    * Can the user use this locomotive?.
    *
-   * @param gameProfile The user.
+   * @param player The user.
    * @return TRUE if they can.
-   * @see mods.railcraft.world.entity.vehicle.locomotive.Locomotive#isSecure isSecure
-   * @see mods.railcraft.world.entity.vehicle.locomotive.Locomotive#isPrivate isPrivate
+   * @see mods.railcraft.world.entity.vehicle.locomotive.Locomotive#isPrivate
+   * @see mods.railcraft.util.PlayerUtil#isOwnerOrOp
    */
   public boolean canControl(Player player) {
     return !this.isPrivate()
@@ -283,7 +284,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   public void setEmblem(@Nullable String emblem) {
-    if (!getEmblem().equals(emblem)) {
+    if (getEmblem().isEmpty()) {
+      this.getEntityData().set(EMBLEM, emblem);
+    } else if (!getEmblem().get().equals(emblem)) {
       this.getEntityData().set(EMBLEM, emblem);
     }
   }
@@ -561,17 +564,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
     if (speed != Speed.MAX) {
       float limit = 0.4f;
       switch (speed) {
-        case SLOWEST:
-          limit = 0.1f;
-          break;
-        case SLOWER:
-          limit = 0.2f;
-          break;
-        case NORMAL:
-          limit = 0.3f;
-          break;
-        default:
-          break;
+        case SLOWEST -> limit = 0.1f;
+        case SLOWER -> limit = 0.2f;
+        case NORMAL -> limit = 0.3f;
       }
 
       Vec3 motion = this.getDeltaMovement();
@@ -585,17 +580,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   private int getFuelUse() {
     if (isRunning()) {
-      Speed speed = getSpeed();
-      switch (speed) {
-        case SLOWEST:
-          return 2;
-        case SLOWER:
-          return 4;
-        case NORMAL:
-          return 6;
-        default:
-          return 8;
-      }
+      return switch (getSpeed()) {
+        case SLOWEST -> 2;
+        case SLOWER -> 4;
+        case NORMAL -> 6;
+        default -> 8;
+      };
     } else if (isIdle()) {
       return getIdleFuelUse();
     }
@@ -661,9 +651,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
               this.getDeltaMovement().add(-Mth.sin(yaw) * KNOCKBACK * 0.5F, 0.2D,
                   Mth.cos(yaw) * KNOCKBACK * 0.5F));
         } else {
-          if (living instanceof ServerPlayer) {
-            RailcraftCriteriaTriggers.KILLED_BY_LOCOMOTIVE.trigger(
-                (ServerPlayer) living, this);
+          if (living instanceof ServerPlayer serverPlayer) {
+            RailcraftCriteriaTriggers.KILLED_BY_LOCOMOTIVE.trigger(serverPlayer, this);
           }
         }
         return;
@@ -681,10 +670,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   private boolean collidedWithOtherLocomotive(Entity entity) {
-    if (!(entity instanceof Locomotive)) {
+    if (!(entity instanceof Locomotive otherLoco)) {
       return false;
     }
-    Locomotive otherLoco = (Locomotive) entity;
     if (getUUID().equals(entity.getUUID())) {
       return false;
     }
@@ -720,58 +708,56 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag data) {
-    super.addAdditionalSaveData(data);
+  public void addAdditionalSaveData(CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
 
-    data.putBoolean("flipped", this.flipped);
+    tag.putBoolean("flipped", this.flipped);
 
-    this.getEmblem().ifPresent(emblem -> data.putString("emblem", emblem));
+    this.getEmblem().ifPresent(emblem -> tag.putString("emblem", emblem));
 
-    data.putString("dest", StringUtils.defaultIfBlank(getDestination(), ""));
+    tag.putString("dest", StringUtils.defaultIfBlank(getDestination(), ""));
 
-    data.putString("mode", this.getMode().getSerializedName());
-    data.putString("speed", this.getSpeed().getSerializedName());
-    data.putString("lock", this.getLock().getSerializedName());
+    tag.putString("mode", this.getMode().getSerializedName());
+    tag.putString("speed", this.getSpeed().getSerializedName());
+    tag.putString("lock", this.getLock().getSerializedName());
 
-    data.putString("primaryColor",
+    tag.putString("primaryColor",
         DyeColor.byId(this.entityData.get(PRIMARY_COLOR)).getSerializedName());
-    data.putString("secondaryColor",
+    tag.putString("secondaryColor",
         DyeColor.byId(this.entityData.get(SECONDARY_COLOR)).getSerializedName());
 
-    data.putFloat("whistlePitch", this.whistlePitch);
+    tag.putFloat("whistlePitch", this.whistlePitch);
 
-    data.putInt("fuel", this.fuel);
+    tag.putInt("fuel", this.fuel);
 
-    data.putBoolean("reverse", this.isReverse());
+    tag.putBoolean("reverse", this.isReverse());
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag data) {
-    super.readAdditionalSaveData(data);
+  public void readAdditionalSaveData(CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
 
-    this.flipped = data.getBoolean("flipped");
+    this.flipped = tag.getBoolean("flipped");
 
-    this.setEmblem(data.getString("emblem"));
+    this.setEmblem(tag.getString("emblem"));
 
-    this.setDestination(data.getString("dest"));
+    this.setDestination(tag.getString("dest"));
 
-    this.setMode(Mode.getByName(data.getString("mode")).orElse(Mode.IDLE));
-    this.setSpeed(Speed.getByName(data.getString("speed")).orElse(Speed.NORMAL));
-    this.setLock(Lock.getByName(data.getString("lock")).orElse(Lock.UNLOCKED));
+    this.setMode(Mode.getByName(tag.getString("mode")).orElse(Mode.IDLE));
+    this.setSpeed(Speed.getByName(tag.getString("speed")).orElse(Speed.NORMAL));
+    this.setLock(Lock.getByName(tag.getString("lock")).orElse(Lock.UNLOCKED));
 
-    this.setPrimaryColor(data.contains("primaryColor", Tag.TAG_STRING)
-        ? DyeColor.byName(data.getString("primaryColor"), this.getDefaultPrimaryColor())
-        : this.getDefaultPrimaryColor());
-    this.setSecondaryColor(data.contains("secondaryColor", Tag.TAG_STRING)
-        ? DyeColor.byName(data.getString("secondaryColor"), this.getDefaultSecondaryColor())
-        : this.getDefaultSecondaryColor());
+    this.setPrimaryColor(
+        DyeColor.byName(tag.getString("primaryColor"), this.getDefaultPrimaryColor()));
+    this.setSecondaryColor(
+        DyeColor.byName(tag.getString("secondaryColor"), this.getDefaultSecondaryColor()));
 
-    this.whistlePitch = data.getFloat("whistlePitch");
+    this.whistlePitch = tag.getFloat("whistlePitch");
 
-    this.fuel = data.getInt("fuel");
+    this.fuel = tag.getInt("fuel");
 
-    if (data.contains("reverse", Tag.TAG_BYTE)) {
-      this.getEntityData().set(REVERSE, data.getBoolean("reverse"));
+    if (tag.contains("reverse", Tag.TAG_BYTE)) {
+      this.getEntityData().set(REVERSE, tag.getBoolean("reverse"));
     }
   }
 

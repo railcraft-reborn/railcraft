@@ -37,11 +37,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-/**
- * The steam locomotive.
- * 
- * @author CovertJaguar (https://www.railcraft.info)
- */
 public abstract class BaseSteamLocomotive extends Locomotive implements FluidMinecart {
 
   public static final int SLOT_WATER_INPUT = 0;
@@ -241,19 +236,19 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag data) {
-    super.addAdditionalSaveData(data);
-    data.put("tankManager", this.getTankManager().serializeNBT());
-    data.put("boiler", this.boiler.serializeNBT());
-    data.putString("processState", this.processState.getSerializedName());
+  public void addAdditionalSaveData(CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.put("tankManager", this.getTankManager().serializeNBT());
+    tag.put("boiler", this.boiler.serializeNBT());
+    tag.putString("processState", this.processState.getSerializedName());
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag data) {
-    super.readAdditionalSaveData(data);
-    this.getTankManager().deserializeNBT(data.getList("tankManager", Tag.TAG_COMPOUND));
-    this.boiler.deserializeNBT(data.getCompound("boiler"));
-    this.processState = FluidTools.ProcessState.getByName(data.getString("processState"))
+  public void readAdditionalSaveData(CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    this.getTankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
+    this.boiler.deserializeNBT(tag.getCompound("boiler"));
+    this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);
   }
 

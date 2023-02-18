@@ -338,8 +338,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.ROUTING_TABLE_BOOK_LAST_EDIT, "Last edited by %s");
     this.add(Translations.Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary color:");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary color:");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
     this.add(Translations.Tips.TRACK_LAYER, "Lays track as it moves");
     this.add(Translations.Tips.TRACK_REMOVER, "Removes tracks it passes over");

@@ -27,13 +27,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-/**
- * The actual steam locomotive.
- * 
- * @author CovertJaguar (https://www.railcraft.info/)
- */
-public class SteamLocomotive extends BaseSteamLocomotive
-    implements WorldlyContainer {
+public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyContainer {
 
   private static final int FUEL_SLOT = 3;
   private static final int EXTRA_FUEL_SLOT_A = 4;
@@ -149,26 +143,18 @@ public class SteamLocomotive extends BaseSteamLocomotive
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    switch (slot) {
-      case FUEL_SLOT:
-        return ForgeHooks.getBurnTime(stack, null) > 0;
-      case EXTRA_FUEL_SLOT_A:
-        return ForgeHooks.getBurnTime(stack, null) > 0;
-      case EXTRA_FUEL_SLOT_B:
-        return ForgeHooks.getBurnTime(stack, null) > 0;
-      case EXTRA_FUEL_SLOT_C:
-        return ForgeHooks.getBurnTime(stack, null) > 0;
-      case SLOT_WATER_INPUT:
+    return switch (slot) {
+      case FUEL_SLOT, EXTRA_FUEL_SLOT_A, EXTRA_FUEL_SLOT_B, EXTRA_FUEL_SLOT_C ->
+          ForgeHooks.getBurnTime(stack, null) > 0;
+      case SLOT_WATER_INPUT ->
         // if (FluidItemHelper.getFluidStackInContainer(stack)
         // .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
         // return false;
         // } we allow tanks instafilling.
-        return FluidItemHelper.containsFluid(stack, Fluids.WATER);
-      case TICKET_SLOT:
-        return TicketItem.FILTER.test(stack);
-      default:
-        return false;
-    }
+          FluidItemHelper.containsFluid(stack, Fluids.WATER);
+      case TICKET_SLOT -> TicketItem.FILTER.test(stack);
+      default -> false;
+    };
   }
 
   @Override
