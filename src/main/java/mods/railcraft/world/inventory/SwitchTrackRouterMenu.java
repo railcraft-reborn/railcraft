@@ -23,7 +23,7 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
     var routingTableBookSlot = new Slot(switchTrackRouting, 0, 35, 24) {
       @Override
       public boolean mayPlace(ItemStack stack) {
-        return RoutingTableBookItem.FILTER.test(stack);
+        return RoutingTableBookItem.FILTER.test(stack) && stack.getCount() == 1;
       }
 
       @Override
@@ -43,9 +43,7 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
       public void setChanged() {
         super.setChanged();
         switchTrackRouting.resetLogic();
-        if (switchTrackRouting.getLogic().isPresent()) {
-          error.hidden = switchTrackRouting.getLogic().get().getError() == null;
-        }
+        switchTrackRouting.getLogic().ifPresent(logic -> error.hidden = logic.getError() == null);
       }
     };
 

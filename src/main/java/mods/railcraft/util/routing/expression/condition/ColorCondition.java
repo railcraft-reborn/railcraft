@@ -2,7 +2,7 @@ package mods.railcraft.util.routing.expression.condition;
 
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.Paintable;
-import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.DyeColor;
@@ -33,7 +33,7 @@ public class ColorCondition extends ParsedCondition {
   }
 
   @Override
-  public boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
+  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     if (cart instanceof Paintable paintedCart) {
       return (primary == null || primary.equals(paintedCart.getPrimaryDyeColor())) &&
           (secondary == null || secondary.equals(paintedCart.getSecondaryDyeColor()));

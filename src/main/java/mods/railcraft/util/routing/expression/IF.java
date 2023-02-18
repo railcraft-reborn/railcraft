@@ -1,6 +1,6 @@
 package mods.railcraft.util.routing.expression;
 
-import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.expression.condition.Condition;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
@@ -16,8 +16,8 @@ public class IF implements Expression {
   }
 
   @Override
-  public int evaluate(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
-    return (cond.matches(blockEntityRouting, cart) ? then : else_)
-        .evaluate(blockEntityRouting, cart);
+  public int evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
+    return (cond.matches(routerBlockEntity, cart) ? then : else_)
+        .evaluate(routerBlockEntity, cart);
   }
 }

@@ -1,6 +1,6 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class AND implements Condition {
@@ -13,7 +13,7 @@ public class AND implements Condition {
   }
 
   @Override
-  public boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
-    return a.matches(blockEntityRouting, cart) && b.matches(blockEntityRouting, cart);
+  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
+    return a.matches(routerBlockEntity, cart) && b.matches(routerBlockEntity, cart);
   }
 }

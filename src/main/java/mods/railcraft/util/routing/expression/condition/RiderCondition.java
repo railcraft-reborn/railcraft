@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
@@ -54,7 +54,7 @@ public class RiderCondition extends ParsedCondition {
   }
 
   @Override
-  public boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
+  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     switch (tokens[0].toLowerCase(Locale.ROOT)) {
       case "any" -> {
         return !getPassengers(cart).isEmpty();

@@ -1,6 +1,6 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class ConstantCondition implements Condition {
@@ -14,7 +14,7 @@ public class ConstantCondition implements Condition {
   }
 
   @Override
-  public boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
+  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     return this.value;
   }
 }

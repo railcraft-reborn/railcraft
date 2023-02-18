@@ -95,11 +95,11 @@ public class RoutingLogic {
     return train.front().entity();
   }
 
-  public boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
+  public boolean matches(RouterBlockEntity blockEntityRouting, AbstractMinecart cart) {
     return evaluate(blockEntityRouting, cart) != PowerUtil.NO_POWER;
   }
 
-  public int evaluate(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
+  public int evaluate(RouterBlockEntity blockEntityRouting, AbstractMinecart cart) {
     if (expressions == null) {
       return PowerUtil.NO_POWER;
     }

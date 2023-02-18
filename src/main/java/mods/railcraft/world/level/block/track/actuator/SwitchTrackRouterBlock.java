@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,5 +47,12 @@ public class SwitchTrackRouterBlock extends SwitchTrackActuatorBlock implements 
       level.updateNeighbourForOutputSignal(pos, this);
     }
     super.onRemove(state, level, pos, newState, isMoving);
+  }
+
+  @Override
+  public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
+      Block neighborBlock, BlockPos neighborBlockPos, boolean moved) {
+    level.getBlockEntity(blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get())
+        .ifPresent(SwitchTrackRouterBlockEntity::neighborChanged);
   }
 }

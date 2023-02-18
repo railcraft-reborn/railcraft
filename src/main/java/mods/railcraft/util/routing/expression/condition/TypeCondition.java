@@ -1,6 +1,6 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -12,7 +12,7 @@ public class TypeCondition extends ParsedCondition {
   }
 
   @Override
-  public boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
+  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     var cartType = ForgeRegistries.ENTITY_TYPES.getKey(cart.getType()).toString();
     return value.equalsIgnoreCase(cartType);
   }

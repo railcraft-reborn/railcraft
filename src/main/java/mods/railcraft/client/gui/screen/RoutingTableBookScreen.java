@@ -141,6 +141,11 @@ public class RoutingTableBookScreen extends Screen {
   }
 
   @Override
+  public boolean isPauseScreen() {
+    return false;
+  }
+
+  @Override
   protected void init() {
     this.clearDisplayCache();
     var buttons = List.of(

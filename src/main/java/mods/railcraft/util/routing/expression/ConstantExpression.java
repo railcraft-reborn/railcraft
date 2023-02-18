@@ -1,7 +1,7 @@
 package mods.railcraft.util.routing.expression;
 
 import mods.railcraft.util.PowerUtil;
-import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class ConstantExpression implements Expression {
@@ -16,7 +16,7 @@ public class ConstantExpression implements Expression {
   }
 
   @Override
-  public int evaluate(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
+  public int evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     return value;
   }
 }

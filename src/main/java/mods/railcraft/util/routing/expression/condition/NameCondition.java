@@ -1,7 +1,7 @@
 package mods.railcraft.util.routing.expression.condition;
 
 import org.apache.commons.lang3.StringUtils;
-import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
@@ -12,7 +12,7 @@ public class NameCondition extends ParsedCondition {
   }
 
   @Override
-  public boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
+  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     if (!cart.hasCustomName()) {
       return StringUtils.equalsIgnoreCase("null", value);
     }

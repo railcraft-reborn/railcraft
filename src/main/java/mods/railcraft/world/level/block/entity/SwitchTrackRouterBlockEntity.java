@@ -17,8 +17,8 @@ import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ForwardingContainer;
-import mods.railcraft.util.routing.IBlockEntityRouting;
-import mods.railcraft.util.routing.IRouter;
+import mods.railcraft.util.routing.RouterBlockEntity;
+import mods.railcraft.util.routing.RouterLogic;
 import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.world.inventory.SwitchTrackRouterMenu;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
@@ -34,22 +34,24 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlockEntity
-    implements ForwardingContainer, MenuProvider, IBlockEntityRouting, IRouter, SwitchActuator {
+    implements ForwardingContainer, MenuProvider, RouterBlockEntity, RouterLogic, SwitchActuator {
 
   private AdvancedContainer container;
-
   @Nullable
   private RoutingLogic logic;
-
   private Railway railway = Railway.PUBLIC;
+  private boolean powered;
 
   public SwitchTrackRouterBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get(), blockPos, blockState);
     this.container = new AdvancedContainer(1).listener((Container) this);
+  }
+
+  public void neighborChanged() {
+    this.powered = this.level.hasNeighborSignal(this.getBlockPos());
   }
 
   public Railway getRailway() {
@@ -95,18 +97,8 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
   }
 
   @Override
-  public ItemStack getRoutingTable() {
-    return this.container.getItem(0);
-  }
-
-  @Override
-  public void setRoutingTable(ItemStack stack) {
-    this.container.setItem(0, stack);
-  }
-
-  @Override
   public boolean isPowered() {
-    return false;
+    return this.powered;
   }
 
   @Override

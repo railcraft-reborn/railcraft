@@ -1,6 +1,6 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -13,7 +13,7 @@ public class LocomotiveCondition extends ParsedCondition {
   }
 
   @Override
-  public boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart) {
+  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     if (cart instanceof Locomotive loco) {
       if (value.equalsIgnoreCase("Electric")) {
         return loco.getType() == RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get();

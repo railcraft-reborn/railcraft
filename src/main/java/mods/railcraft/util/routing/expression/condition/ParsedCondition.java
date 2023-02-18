@@ -3,7 +3,7 @@ package mods.railcraft.util.routing.expression.condition;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import mods.railcraft.Translations;
-import mods.railcraft.util.routing.IBlockEntityRouting;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.util.routing.RoutingLogicException;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -38,5 +38,5 @@ public abstract class ParsedCondition implements Condition {
   }
 
   @Override
-  public abstract boolean matches(IBlockEntityRouting blockEntityRouting, AbstractMinecart cart);
+  public abstract boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart);
 }

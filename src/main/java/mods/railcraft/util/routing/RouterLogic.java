@@ -3,7 +3,7 @@ package mods.railcraft.util.routing;
 
 import java.util.Optional;
 
-public interface IRouter {
+public interface RouterLogic {
 
   void resetLogic();
 
