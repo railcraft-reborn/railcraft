@@ -1,5 +1,6 @@
 package mods.railcraft.util.routing.expression.condition;
 
+import java.util.Locale;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.Paintable;
 import mods.railcraft.util.routing.RouterBlockEntity;
@@ -13,7 +14,7 @@ public class ColorCondition extends ParsedCondition {
 
   public ColorCondition(String line) throws RoutingLogicException {
     super("Color", false, line);
-    String[] colors = value.split(",");
+    String[] colors = value.toLowerCase(Locale.ROOT).split(",");
     if ("Any".equals(colors[0]) || "*".equals(colors[0])) {
       primary = null;
     } else {
