@@ -1,4 +1,4 @@
-// 1.19.3	2023-02-17T21:35:08.434902	Recipes
+// 1.19.3	2023-02-18T18:52:37.44973	Recipes
 b5a17571ce39881697d539ab8e2e6830c430e652 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 3159a4cc9361689702fc1dee383096849bfdb726 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
 9e43f76515912931ca12626a2fa1c5bf15bcf4fb data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_raw.json
@@ -812,6 +812,7 @@ fab6a62613b16b6e164a52a1cff12d729794fd2d data/railcraft/recipes/lime_steel_tank_
 520bcf632189f9b0fd8cef767fa160b25f532bd5 data/railcraft/recipes/lime_steel_tank_wall.json
 d67141b44dd797679be76b4e104cc9fcfedbe904 data/railcraft/recipes/lime_strengthened_glass.json
 72654da4379107095c7b9f8a04227de885a7a2c1 data/railcraft/recipes/locking_track_kit.json
+5571f7c218834b36e1e79d95771fa994e743c33f data/railcraft/recipes/locomotive_color_variant.json
 8c1b819b84dc918ab359e392f14bee6fbbf0af2c data/railcraft/recipes/locomotive_track_kit.json
 77bf19edbd210f5433d1a752f9ac3edd981bf9c0 data/railcraft/recipes/low_pressure_steam_boiler_tank.json
 c187958865756a8fe170364235de5105207b6bfd data/railcraft/recipes/magenta_iron_tank_gauge.json

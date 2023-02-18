@@ -48,7 +48,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
   private final Container ticketInventory =
       new ContainerMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
-  private final LazyOptional<IEnergyStorage> cartBattery =
+  private LazyOptional<IEnergyStorage> cartBattery =
       LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
 
   public ElectricLocomotive(EntityType<?> type, Level level) {
@@ -177,6 +177,9 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
     super.loadFromItemStack(itemStack);
     CompoundTag tag = itemStack.getOrCreateTag();
     if (tag.contains("batteryEnergy")) {
+      if (this.cartBattery == null) {
+        this.cartBattery = LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
+      }
       this.cartBattery.ifPresent(cell -> {
         cell.receiveEnergy(tag.getInt("batteryEnergy"), false);
       });

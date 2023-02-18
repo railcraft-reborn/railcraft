@@ -55,6 +55,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -63,6 +64,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -190,6 +192,19 @@ public abstract class Locomotive extends RailcraftMinecart implements
   @Override
   public Item getDropItem() {
     return getItem();
+  }
+
+  @Override
+  public void destroy(DamageSource source) {
+    this.kill();
+    if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+      ItemStack itemstack = getPickResult().copy();
+      if (this.hasCustomName()) {
+        itemstack.setHoverName(this.getCustomName());
+      }
+      this.spawnAtLocation(itemstack);
+    }
+    this.chestVehicleDestroyed(source, this.level, this);
   }
 
   @Override

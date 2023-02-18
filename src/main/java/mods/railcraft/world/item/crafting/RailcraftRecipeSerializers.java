@@ -29,6 +29,10 @@ public class RailcraftRecipeSerializers {
       deferredRegister.register("ticket_duplicate",
           () -> new SimpleCraftingRecipeSerializer<>(TicketDuplicateRecipe::new));
 
+  public static final RegistryObject<RecipeSerializer<LocomotivePaintingRecipe>> LOCOMOTIVE_PAINTING =
+      deferredRegister.register("locomotive_painting",
+          () -> new SimpleCraftingRecipeSerializer<>(LocomotivePaintingRecipe::new));
+
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }

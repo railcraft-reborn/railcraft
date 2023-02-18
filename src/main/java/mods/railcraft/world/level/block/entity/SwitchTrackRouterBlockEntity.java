@@ -52,6 +52,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
 
   public void neighborChanged() {
     this.powered = this.level.hasNeighborSignal(this.getBlockPos());
+    this.setChanged();
   }
 
   public Railway getRailway() {
@@ -75,6 +76,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     super.saveAdditional(tag);
     tag.put("container", this.container.createTag());
     tag.putString("railway", this.railway.getSerializedName());
+    tag.putBoolean("powered", this.powered);
   }
 
   @Override
@@ -82,18 +84,21 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     super.load(tag);
     this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
     this.railway = Railway.getByName(tag.getString("railway")).orElse(Railway.PUBLIC);
+    this.powered = tag.getBoolean("powered");
   }
 
   @Override
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
     data.writeEnum(this.railway);
+    data.writeBoolean(this.powered);
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf data) {
     super.readFromBuf(data);
     this.railway = data.readEnum(Railway.class);
+    this.powered = data.readBoolean();
   }
 
   @Override
