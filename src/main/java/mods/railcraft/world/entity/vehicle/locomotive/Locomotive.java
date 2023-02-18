@@ -743,6 +743,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
     data.putInt("fuel", this.fuel);
 
     data.putBoolean("reverse", this.isReverse());
+
+    this.getOwner()
+        .ifPresent(owner -> data.put("owner", NbtUtils.writeGameProfile(new CompoundTag(), owner)));
   }
 
   @Override
@@ -772,6 +775,10 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     if (data.contains("reverse", Tag.TAG_BYTE)) {
       this.getEntityData().set(REVERSE, data.getBoolean("reverse"));
+    }
+
+    if (data.contains("owner", Tag.TAG_COMPOUND)) {
+      this.setOwner(NbtUtils.readGameProfile(data.getCompound("owner")));;
     }
   }
 
