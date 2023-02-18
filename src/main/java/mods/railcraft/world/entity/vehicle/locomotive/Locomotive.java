@@ -779,8 +779,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
       this.setOwner(NbtUtils.readGameProfile(tag.getCompound("owner")));;
     }
 
-    if (data.contains("owner", Tag.TAG_COMPOUND)) {
-      this.setOwner(NbtUtils.readGameProfile(data.getCompound("owner")));;
+    if (tag.contains("owner", Tag.TAG_COMPOUND)) {
+      this.setOwner(NbtUtils.readGameProfile(tag.getCompound("owner")));;
     }
   }
 

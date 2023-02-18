@@ -148,7 +148,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
   }
 
   @Override
-  public Container getContainer() {
+  public Container container() {
     return this.container;
   }
 
