@@ -90,8 +90,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   private static final EntityDataAccessor<String> DESTINATION =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.STRING);
   private static final EntityDataAccessor<Optional<GameProfile>> OWNER =
-      SynchedEntityData.defineId(Locomotive.class,
-          RailcraftDataSerializers.OPTIONAL_GAME_PROFILE);
+      SynchedEntityData.defineId(Locomotive.class, RailcraftDataSerializers.OPTIONAL_GAME_PROFILE);
 
   private static final double DRAG_FACTOR = 0.9;
   private static final float HS_FORCE_BONUS = 3.5F;
@@ -746,6 +745,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
     tag.putInt("fuel", this.fuel);
 
     tag.putBoolean("reverse", this.isReverse());
+    this.getOwner()
+        .ifPresent(owner -> tag.put("owner", NbtUtils.writeGameProfile(new CompoundTag(), owner)));
   }
 
   @Override
@@ -773,6 +774,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     if (tag.contains("reverse", Tag.TAG_BYTE)) {
       this.getEntityData().set(REVERSE, tag.getBoolean("reverse"));
+    }
+    if (tag.contains("owner", Tag.TAG_COMPOUND)) {
+      this.setOwner(NbtUtils.readGameProfile(tag.getCompound("owner")));;
     }
   }
 

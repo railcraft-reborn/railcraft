@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
-import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
@@ -73,36 +72,15 @@ public abstract class RailcraftBlockEntity extends BlockEntity
 
   @Override
   public void writeToBuf(FriendlyByteBuf out) {
-    if (this.owner == null) {
-      out.writeBoolean(true);
-    } else {
-      out.writeBoolean(false);
-      out.writeUUID(this.owner.getId());
-      out.writeUtf(this.owner.getName(), 16);
-    }
-
-    if (this.customName == null) {
-      out.writeBoolean(true);
-    } else {
-      out.writeBoolean(false);
-      out.writeComponent(this.customName);
-    }
-
+    out.writeNullable(this.owner, FriendlyByteBuf::writeGameProfile);
+    out.writeNullable(this.customName, FriendlyByteBuf::writeComponent);
     this.moduleDispatcher.writeToBuf(out);
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf in) {
-    if (in.readBoolean()) {
-      this.owner = null;
-    } else {
-      UUID ownerId = in.readUUID();
-      String ownerName = in.readUtf(16);
-      this.owner = new GameProfile(ownerId, ownerName);
-    }
-
-    this.customName = in.readBoolean() ? null : in.readComponent();
-
+    this.owner = in.readNullable(FriendlyByteBuf::readGameProfile);
+    this.customName = in.readNullable(FriendlyByteBuf::readComponent);
     this.moduleDispatcher.readFromBuf(in);
   }
 

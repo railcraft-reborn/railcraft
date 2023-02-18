@@ -1,7 +1,6 @@
 package mods.railcraft.network.play;
 
 import java.util.BitSet;
-import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import mods.railcraft.api.signal.SignalAspect;
@@ -15,23 +14,15 @@ public record SetAnalogSignalControllerBoxAttributesMessage(BlockPos blockPos,
 
   public void encode(FriendlyByteBuf out) {
     out.writeBlockPos(this.blockPos);
-    out.writeVarInt(this.signalAspectTriggerSignals.size());
-    for (var entry : this.signalAspectTriggerSignals.entrySet()) {
-      out.writeEnum(entry.getKey());
-      out.writeByteArray(entry.getValue().toByteArray());
-    }
+    out.writeMap(this.signalAspectTriggerSignals,
+        FriendlyByteBuf::writeEnum, FriendlyByteBuf::writeBitSet);
   }
 
   public static SetAnalogSignalControllerBoxAttributesMessage decode(FriendlyByteBuf in) {
     var blockPos = in.readBlockPos();
-    var size = in.readVarInt();
-    Map<SignalAspect, BitSet> signalAspectTriggerSignals = new EnumMap<>(SignalAspect.class);
-    for (var i = 0; i < size; i++) {
-      signalAspectTriggerSignals.put(in.readEnum(SignalAspect.class),
-          BitSet.valueOf(in.readByteArray(2048)));
-    }
-    return new SetAnalogSignalControllerBoxAttributesMessage(blockPos,
-        signalAspectTriggerSignals);
+    var signalAspectTriggerSignals =
+        in.readMap(buf -> buf.readEnum(SignalAspect.class), FriendlyByteBuf::readBitSet);
+    return new SetAnalogSignalControllerBoxAttributesMessage(blockPos, signalAspectTriggerSignals);
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {

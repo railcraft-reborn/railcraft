@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.EnumSet;
-import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
@@ -25,7 +24,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   private final SingleSignalReceiver signalReceiver =
       new SingleSignalReceiver(this, this::syncToClient, __ -> this.updateSwitched());
 
-  private final Set<SignalAspect> actionSignalAspects = EnumSet.of(SignalAspect.GREEN);
+  private final EnumSet<SignalAspect> actionSignalAspects = EnumSet.of(SignalAspect.GREEN);
 
   private boolean redstoneTriggered;
   private boolean powered;
@@ -54,7 +53,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
     return SwitchTrackActuatorBlock.isSwitched(this.getBlockState());
   }
 
-  public Set<SignalAspect> getActionSignalAspects() {
+  public EnumSet<SignalAspect> getActionSignalAspects() {
     return this.actionSignalAspects;
   }
 
@@ -103,8 +102,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
     this.signalReceiver.writeToBuf(data);
-    data.writeVarInt(this.actionSignalAspects.size());
-    this.actionSignalAspects.forEach(data::writeEnum);
+    data.writeEnumSet(this.actionSignalAspects, SignalAspect.class);
     data.writeBoolean(this.redstoneTriggered);
   }
 
@@ -113,10 +111,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
     super.readFromBuf(data);
     this.signalReceiver.readFromBuf(data);
     this.actionSignalAspects.clear();
-    int size = data.readVarInt();
-    for (int i = 0; i < size; i++) {
-      this.actionSignalAspects.add(data.readEnum(SignalAspect.class));
-    }
+    this.actionSignalAspects.addAll(data.readEnumSet(SignalAspect.class));
     this.redstoneTriggered = data.readBoolean();
   }
 }

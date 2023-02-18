@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import org.jetbrains.annotations.Nullable;
+import com.google.common.collect.Lists;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.core.BlockPos;
@@ -103,7 +104,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
 
   @Override
   public void refresh() {
-    this.peers.removeIf(peerPos -> !this.peerAt(peerPos).filter(this::refreshPeer).isPresent());
+    this.peers.removeIf(peerPos -> this.peerAt(peerPos).filter(this::refreshPeer).isEmpty());
   }
 
   protected boolean refreshPeer(T peer) {
@@ -158,20 +159,15 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   @Override
   public void writeToBuf(FriendlyByteBuf data) {
     data.writeBoolean(this.linking);
-    data.writeVarInt(this.peers.size());
-    for (var peerPos : this.peers) {
-      data.writeBlockPos(peerPos);
-    }
+    data.writeCollection(this.peers, FriendlyByteBuf::writeBlockPos);
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf data) {
     this.linking = data.readBoolean();
-    var peersSize = data.readVarInt();
     this.peers.clear();
-    for (var i = 0; i < peersSize; i++) {
-      this.peers.add(data.readBlockPos());
-    }
+    this.peers.addAll(
+        data.readCollection(Lists::newArrayListWithCapacity, FriendlyByteBuf::readBlockPos));
   }
 
   public void syncToClient() {
