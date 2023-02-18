@@ -105,8 +105,8 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
       return false;
     }
 
-    this.outputContainer.addStack(output);
-    this.slagContainer.addStack(nextSlag);
+    this.outputContainer.insert(output);
+    this.slagContainer.insert(nextSlag);
     this.removeItem(SLOT_INPUT, 1);
 
     this.setProgress(0);

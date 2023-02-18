@@ -1,9 +1,8 @@
 package mods.railcraft.util.container.manipulator;
 
+import java.util.function.Predicate;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.function.Predicate;
 
 /**
  * This interface represents an abstract container slot. It provides a unified interface for
@@ -15,38 +14,62 @@ public interface SlotAccessor {
 
   boolean isValid(ItemStack itemStack);
 
-  boolean canRemoveItem();
+  default boolean isEmpty() {
+    return this.item().isEmpty();
+  }
 
   default boolean hasItem() {
-    return !this.getItem().isEmpty();
+    return !this.isEmpty();
   }
 
   default boolean is(Item item) {
-    return this.getItem().is(item);
+    return this.item().is(item);
   }
 
   default boolean matches(Predicate<ItemStack> filter) {
-    return filter.test(this.getItem());
+    return filter.test(this.item());
   }
 
   /**
    * Removes a single item from an inventory slot and returns it in a new stack.
    */
-  ItemStack shrink();
+  default ItemStack extract() {
+    return this.extract(1, false);
+  }
 
-  ItemStack shrink(int amount, boolean simulate);
+  default ItemStack simulateExtract() {
+    return this.extract(1, true);
+  }
+
+  ItemStack extract(int amount, boolean simulate);
+
+  default ItemStack insert(ItemStack itemStack) {
+    return this.insert(itemStack, false);
+  }
+
+  default ItemStack simulateInsert(ItemStack itemStack) {
+    return this.insert(itemStack, true);
+  }
 
   /**
    * Add as much of the given ItemStack to the slot as possible.
    *
    * @return the remaining items that were not added
    */
-  ItemStack grow(ItemStack stack, boolean simulate);
+  ItemStack insert(ItemStack stack, boolean simulate);
 
   /**
    * It is not legal to edit the stack returned from this function.
    */
-  ItemStack getItem();
+  ItemStack item();
+
+  default int count() {
+    return this.item().getCount();
+  }
 
   int maxStackSize();
+
+  default boolean isFull() {
+    return this.item().getCount() == this.maxStackSize();
+  }
 }

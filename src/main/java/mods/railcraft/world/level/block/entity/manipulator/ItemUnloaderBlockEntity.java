@@ -61,7 +61,7 @@ public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
 
   private void clearContainer() {
     if (this.bufferContainer.hasItems()) {
-      this.bufferContainer.moveOneItemTo(this.getAdjacentContainers());
+      this.bufferContainer.moveOneItemTo(this.findAdjacentContainers());
     }
   }
 }

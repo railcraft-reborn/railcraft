@@ -1,18 +1,17 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerManifest;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
-import mods.railcraft.util.container.manipulator.CompositeContainerManipulator;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.util.container.manipulator.SlotAccessor;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
@@ -94,7 +93,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     });
   }
 
-  protected CompositeContainerManipulator<? extends SlotAccessor> chests = Stream::empty;
+  protected ContainerManipulator<? extends SlotAccessor> chests = ContainerManipulator.empty();
   protected final Multiset<ItemStackKey> transferredItems = HashMultiset.create();
   protected final ContainerMapper bufferContainer;
   private final AdvancedContainer filtersContainer =
@@ -105,7 +104,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
       BlockState blockState) {
     super(type, blockPos, blockState);
     this.setContainerSize(9);
-    this.bufferContainer = ContainerMapper.make(this.getContainer()).ignoreItemChecks();
+    this.bufferContainer = ContainerMapper.make(this.container()).ignoreItemChecks();
   }
 
   public abstract ContainerManipulator<?> getSource();
@@ -143,8 +142,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   protected void processCart(AbstractMinecart cart) {
-    this.chests =
-        CompositeContainerManipulator.of(this.bufferContainer, this.getAdjacentContainers());
+    this.chests = ContainerManipulator.of(this.bufferContainer, this.findAdjacentContainers());
 
     var cartInv = cart.getCapability(ForgeCapabilities.ITEM_HANDLER,
         this.getFacing().getOpposite()).map(ContainerManipulator::of).orElse(null);
@@ -201,7 +199,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
             this.getFacing().getOpposite())
         .map(ContainerManipulator::of)
         .orElse(null);
-    if (cartInv == null || cartInv.slotCount() <= 0) {
+    if (cartInv == null) {
       return false;
     }
     switch (this.getRedstoneMode()) {

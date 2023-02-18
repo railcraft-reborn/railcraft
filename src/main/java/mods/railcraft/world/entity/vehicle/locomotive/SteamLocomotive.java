@@ -91,7 +91,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
     ItemStack stack =
         CartUtil.transferService().pullStack(extension, this.extraFuelInventory::canFit);
     if (!stack.isEmpty()) {
-      extraFuelInventory.addStack(stack);
+      extraFuelInventory.insert(stack);
     }
     if (isSafeToFill() && waterTank.getFluidAmount() < waterTank.getCapacity() / 2) {
       var pulled =

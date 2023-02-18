@@ -80,7 +80,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
             IFluidHandler.FluidAction.SIMULATE) >= fluidOutput.getAmount())) {
       this.removeItem(SLOT_INPUT, 1);
 
-      this.outputContainer.addStack(output);
+      this.outputContainer.insert(output);
       this.tank.internalFill(fluidOutput, IFluidHandler.FluidAction.EXECUTE);
       return true;
     }

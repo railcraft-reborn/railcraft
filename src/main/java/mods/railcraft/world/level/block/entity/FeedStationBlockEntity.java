@@ -39,7 +39,7 @@ public class FeedStationBlockEntity extends ContainerBlockEntity implements Menu
 
     if (blockEntity.processingTicks++ >= (MIN_FEED_INTERVAL / 4)
         && (feed.isEmpty() || feed.getCount() < feed.getMaxStackSize())) {
-      blockEntity.getAdjacentContainers().moveOneItemTo(blockEntity, StackFilter.FEED);
+      blockEntity.findAdjacentContainers().moveOneItemTo(blockEntity, StackFilter.FEED);
       blockEntity.save();
     }
 
