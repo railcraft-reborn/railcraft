@@ -30,18 +30,18 @@ public record SetSwitchTrackRouterAttributesMessage(
     var level = player.getLevel();
     var senderProfile = player.getGameProfile();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get())
-        .filter(switchTrackRouting -> switchTrackRouting.canAccess(senderProfile))
-        .ifPresent(switchTrackRouting -> {
-          switchTrackRouting.setLock(
+        .filter(switchTrackRouter -> switchTrackRouter.canAccess(senderProfile))
+        .ifPresent(switchTrackRouter -> {
+          switchTrackRouter.setLock(
               this.lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
                   ? null
                   : senderProfile);
-          switchTrackRouting.setRailway(
+          switchTrackRouter.setRailway(
               this.railway.equals(SwitchTrackRouterBlockEntity.Railway.PUBLIC)
                   ? null
                   : senderProfile);
-          switchTrackRouting.syncToClient();
-          switchTrackRouting.setChanged();
+          switchTrackRouter.syncToClient();
+          switchTrackRouter.setChanged();
         });
     return true;
   }

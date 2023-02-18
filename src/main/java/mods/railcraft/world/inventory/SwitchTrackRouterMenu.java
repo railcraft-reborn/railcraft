@@ -13,14 +13,14 @@ import net.minecraft.world.item.ItemStack;
 public class SwitchTrackRouterMenu extends RailcraftMenu {
 
   private final Widget error;
-  private final SwitchTrackRouterBlockEntity switchTrackRouting;
+  private final SwitchTrackRouterBlockEntity switchTrackRouter;
 
   public SwitchTrackRouterMenu(int id, Inventory inventory,
       SwitchTrackRouterBlockEntity blockEntity) {
     super(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(), id, inventory.player, blockEntity::stillValid);
-    this.switchTrackRouting = blockEntity;
+    this.switchTrackRouter = blockEntity;
 
-    var routingTableBookSlot = new Slot(switchTrackRouting, 0, 35, 24) {
+    var routingTableBookSlot = new Slot(switchTrackRouter, 0, 35, 24) {
       @Override
       public boolean mayPlace(ItemStack stack) {
         return RoutingTableBookItem.FILTER.test(stack) && stack.getCount() == 1;
@@ -28,12 +28,12 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
 
       @Override
       public boolean mayPickup(Player player) {
-        return switchTrackRouting.canAccess(player.getGameProfile());
+        return switchTrackRouter.canAccess(player.getGameProfile());
       }
 
       @Override
       public boolean allowModification(Player player) {
-        if (switchTrackRouting.canAccess(player.getGameProfile())) {
+        if (switchTrackRouter.canAccess(player.getGameProfile())) {
           return super.allowModification(player);
         }
         return false;
@@ -42,8 +42,8 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
       @Override
       public void setChanged() {
         super.setChanged();
-        switchTrackRouting.resetLogic();
-        switchTrackRouting.getLogic().ifPresent(logic -> error.hidden = logic.getError() == null);
+        switchTrackRouter.resetLogic();
+        switchTrackRouter.getLogic().ifPresent(logic -> error.hidden = logic.getError() == null);
       }
     };
 
@@ -52,8 +52,8 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
     this.addInventorySlots(inventory, 160);
   }
 
-  public SwitchTrackRouterBlockEntity getSwitchTrackRouting() {
-    return this.switchTrackRouting;
+  public SwitchTrackRouterBlockEntity getSwitchTrackRouter() {
+    return this.switchTrackRouter;
   }
 
   public Widget getErrorWidget() {
@@ -61,6 +61,6 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
   }
 
   public Optional<RoutingLogic> getLogic() {
-    return this.switchTrackRouting.getLogic();
+    return this.switchTrackRouter.getLogic();
   }
 }

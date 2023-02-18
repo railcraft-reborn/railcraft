@@ -25,7 +25,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   private static final Component ROUTING_TABLE =
       Component.translatable(Translations.Screen.ROUTING_TABLE_BOOK);
   private static final int REFRESH_INTERVAL_TICKS = 20;
-  private final SwitchTrackRouterBlockEntity switchTrackRouting;
+  private final SwitchTrackRouterBlockEntity switchTrackRouter;
 
   private MultiButton<SwitchTrackRouterBlockEntity.Lock> lockButton;
   private MultiButton<SwitchTrackRouterBlockEntity.Railway> railwayButton;
@@ -37,7 +37,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
     this.imageHeight = 158;
     this.imageWidth = 176;
     this.inventoryLabelY = this.imageHeight - 94;
-    this.switchTrackRouting = menu.getSwitchTrackRouting();
+    this.switchTrackRouter = menu.getSwitchTrackRouter();
 
     this.registerWidgetRenderer(new WidgetRenderer<>(menu.getErrorWidget()) {
       @Override
@@ -67,13 +67,13 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   protected void init() {
     super.init();
     this.lockButton = this.addRenderableWidget(MultiButton
-        .builder(ButtonTexture.SMALL_BUTTON, this.switchTrackRouting.getLock())
+        .builder(ButtonTexture.SMALL_BUTTON, this.switchTrackRouter.getLock())
         .bounds(this.leftPos + 152, this.topPos + 8, 16, 16)
         .tooltipFactory(this::updateLockButtonTooltip)
         .stateCallback(this::setLock)
         .build());
     this.railwayButton = this.addRenderableWidget(MultiButton
-        .builder(ButtonTexture.SMALL_BUTTON, this.switchTrackRouting.getRailway())
+        .builder(ButtonTexture.SMALL_BUTTON, this.switchTrackRouter.getRailway())
         .bounds(this.leftPos + 68, this.topPos + 50, 100, 16)
         .tooltipFactory(this::updateRailwayButtonTooltip)
         .stateCallback(this::setRailway)
@@ -82,8 +82,8 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   }
 
   private void setLock(SwitchTrackRouterBlockEntity.Lock lock) {
-    if (this.switchTrackRouting.getLock() != lock) {
-      this.switchTrackRouting.setLock(
+    if (this.switchTrackRouter.getLock() != lock) {
+      this.switchTrackRouter.setLock(
           lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
           ? null : this.minecraft.getUser().getGameProfile());
       this.sendAttributes();
@@ -91,8 +91,8 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   }
 
   private void setRailway(SwitchTrackRouterBlockEntity.Railway railway) {
-    if (this.switchTrackRouting.getRailway() != railway) {
-      this.switchTrackRouting.setRailway(
+    if (this.switchTrackRouter.getRailway() != railway) {
+      this.switchTrackRouter.setRailway(
           railway.equals(SwitchTrackRouterBlockEntity.Railway.PUBLIC)
           ? null : this.minecraft.getUser().getGameProfile());
       this.sendAttributes();
@@ -102,7 +102,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   private Optional<Tooltip> updateLockButtonTooltip(SwitchTrackRouterBlockEntity.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
-          this.switchTrackRouting.getOwnerOrThrow().getName());
+          this.switchTrackRouter.getOwnerOrThrow().getName());
       case UNLOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }));
   }
@@ -111,7 +111,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
       SwitchTrackRouterBlockEntity.Railway railway) {
     return Optional.of(Tooltip.create(switch (railway) {
       case PRIVATE -> Component.translatable(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC,
-          this.switchTrackRouting.getOwnerOrThrow().getName());
+          this.switchTrackRouter.getOwnerOrThrow().getName());
       case PUBLIC -> Component.translatable(Translations.Screen.SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY_DESC);
     }));
   }
@@ -126,19 +126,19 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   }
 
   private void updateButtons() {
-    var canAccess = this.switchTrackRouting.canAccess(this.minecraft.getUser().getGameProfile());
+    var canAccess = this.switchTrackRouter.canAccess(this.minecraft.getUser().getGameProfile());
     this.lockButton.active = canAccess;
-    this.lockButton.setState(this.switchTrackRouting.getLock());
+    this.lockButton.setState(this.switchTrackRouter.getLock());
     this.railwayButton.active = canAccess;
-    this.railwayButton.setState(this.switchTrackRouting.getRailway());
+    this.railwayButton.setState(this.switchTrackRouter.getRailway());
   }
 
   private void sendAttributes() {
-    if (!this.switchTrackRouting.canAccess(this.minecraft.getUser().getGameProfile())) {
+    if (!this.switchTrackRouter.canAccess(this.minecraft.getUser().getGameProfile())) {
       return;
     }
     NetworkChannel.GAME.sendToServer(
-        new SetSwitchTrackRouterAttributesMessage(this.switchTrackRouting.getBlockPos(),
+        new SetSwitchTrackRouterAttributesMessage(this.switchTrackRouter.getBlockPos(),
             this.railwayButton.getState(), this.lockButton.getState()));
   }
 
