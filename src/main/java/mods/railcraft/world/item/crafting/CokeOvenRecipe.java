@@ -55,7 +55,7 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
       var cookingTime = GsonHelper.getAsInt(json, "cookingTime",
           CokeOvenRecipeBuilder.DEFAULT_COOKING_TIME);
       var creosoteOutput = GsonHelper.getAsInt(json, "creosoteOutput", 1000); // 1 bucket
-      var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "ingredient"));
+      var ingredient = Ingredient.fromJson(json.get("ingredient"));
       var result = itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
       var experience = GsonHelper.getAsFloat(json, "experience", 0.0F);
       return new CokeOvenRecipe(recipeId, group, ingredient, result, experience, cookingTime,

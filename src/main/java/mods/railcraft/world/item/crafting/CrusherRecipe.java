@@ -123,7 +123,7 @@ public class CrusherRecipe implements Recipe<Container> {
     @Override
     public CrusherRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
       int tickCost = GsonHelper.getAsInt(json, "tickCost", DEFAULT_PROCESSING_TIME);
-      var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json,"ingredient"));
+      var ingredient = Ingredient.fromJson(json.get("ingredient"));
       var probabilityItems = new ArrayList<Tuple<ItemStack, Double>>();
 
       var outputs = GsonHelper.getAsJsonArray(json, "output");
