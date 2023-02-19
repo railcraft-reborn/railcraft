@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import org.jetbrains.annotations.Nullable;
-import com.google.common.collect.Lists;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.core.BlockPos;
@@ -166,8 +165,7 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   public void readFromBuf(FriendlyByteBuf data) {
     this.linking = data.readBoolean();
     this.peers.clear();
-    this.peers.addAll(
-        data.readCollection(Lists::newArrayListWithCapacity, FriendlyByteBuf::readBlockPos));
+    this.peers.addAll(data.readList(FriendlyByteBuf::readBlockPos));
   }
 
   public void syncToClient() {
