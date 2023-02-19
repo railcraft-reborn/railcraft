@@ -778,10 +778,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     if (tag.contains("owner", Tag.TAG_COMPOUND)) {
       this.setOwner(NbtUtils.readGameProfile(tag.getCompound("owner")));;
     }
-
-    if (tag.contains("owner", Tag.TAG_COMPOUND)) {
-      this.setOwner(NbtUtils.readGameProfile(tag.getCompound("owner")));;
-    }
   }
 
   public void applyAction(Player player, boolean single, Consumer<Locomotive> action) {
