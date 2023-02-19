@@ -11,11 +11,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * Railcraft particle types.
- *
- * @author LetterN (https://github.com/LetterN)
- */
 public class RailcraftParticleTypes {
 
   private static final DeferredRegister<ParticleType<?>> deferredRegister =
@@ -30,7 +25,7 @@ public class RailcraftParticleTypes {
   public static final RegistryObject<ParticleType<FireSparkParticleOptions>> FIRE_SPARK =
       deferredRegister.register("fire_spark",
           () -> create(FireSparkParticleOptions.DESERIALIZER,
-          __ -> FireSparkParticleOptions.CODEC));
+              __ -> FireSparkParticleOptions.CODEC));
 
   public static final RegistryObject<SimpleParticleType> PUMPKIN =
       deferredRegister.register("pumpkin", () -> new SimpleParticleType(false));

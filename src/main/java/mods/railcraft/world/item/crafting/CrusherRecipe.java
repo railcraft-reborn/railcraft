@@ -1,11 +1,10 @@
 package mods.railcraft.world.item.crafting;
 
-import static mods.railcraft.data.recipes.builders.CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
@@ -79,7 +78,7 @@ public class CrusherRecipe implements Recipe<Container> {
   }
 
   public List<ItemStack> pollOutputs(RandomSource random) {
-    List<ItemStack> result = new ArrayList<>();
+    var result = new ArrayList<ItemStack>();
     for(var item : probabilityItems) {
       if(random.nextDouble() < item.getB()) {
         result.add(item.getA().copy());
@@ -122,7 +121,8 @@ public class CrusherRecipe implements Recipe<Container> {
 
     @Override
     public CrusherRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-      int tickCost = GsonHelper.getAsInt(json, "tickCost", DEFAULT_PROCESSING_TIME);
+      int tickCost = GsonHelper
+          .getAsInt(json, "tickCost", CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME);
       var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json,"ingredient"));
       var probabilityItems = new ArrayList<Tuple<ItemStack, Double>>();
 
@@ -141,13 +141,11 @@ public class CrusherRecipe implements Recipe<Container> {
     public CrusherRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
       var tickCost = buffer.readVarInt();
       var ingredient = Ingredient.fromNetwork(buffer);
-      var probabilityItems = new ArrayList<Tuple<ItemStack, Double>>();
-      var size = buffer.readVarInt();
-      for(int i = 0; i < size; i++) {
-        var result = buffer.readItem();
-        var probability = buffer.readDouble();
-        probabilityItems.add(new Tuple<>(result, probability));
-      }
+      var probabilityItems = buffer.readList(buf -> {
+        var result = buf.readItem();
+        var probability = buf.readDouble();
+        return new Tuple<>(result, probability);
+      });
       return new CrusherRecipe(recipeId, ingredient, probabilityItems, tickCost);
     }
 
@@ -155,11 +153,10 @@ public class CrusherRecipe implements Recipe<Container> {
     public void toNetwork(FriendlyByteBuf buffer, CrusherRecipe recipe) {
       buffer.writeVarInt(recipe.tickCost);
       recipe.ingredient.toNetwork(buffer);
-      buffer.writeVarInt(recipe.probabilityItems.size());
-      for(var item : recipe.probabilityItems) {
-        buffer.writeItem(item.getA());
-        buffer.writeDouble(item.getB());
-      }
+      buffer.writeCollection(recipe.probabilityItems, (buf, item) -> {
+        buf.writeItem(item.getA());
+        buf.writeDouble(item.getB());
+      });
     }
 
     public static ItemStack itemFromJson(JsonObject json) {

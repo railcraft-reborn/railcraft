@@ -17,15 +17,15 @@ public class TuningAuraParticle extends DimmableParticle {
   private TuningAuraParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
       double dz, TuningAuraParticleOptions options, SpriteSet sprites) {
     super(level, x, y, z, dx, dy, dz);
-    this.destination = options.getDestination();
+    this.destination = options.destination();
     this.source = new Vec3(x, y, z);
     this.calculateVector();
 
     this.scale(0.5F);
 
-    float c1 = (float) (options.getColor() >> 16 & 255) / 255.0F;
-    float c2 = (float) (options.getColor() >> 8 & 255) / 255.0F;
-    float c3 = (float) (options.getColor() & 255) / 255.0F;
+    float c1 = (float) (options.color() >> 16 & 255) / 255.0F;
+    float c2 = (float) (options.color() >> 8 & 255) / 255.0F;
+    float c3 = (float) (options.color() & 255) / 255.0F;
 
     float variant = this.random.nextFloat() * 0.6F + 0.4F;
     this.rCol = c1 * variant;
