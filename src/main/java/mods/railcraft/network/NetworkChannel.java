@@ -5,7 +5,6 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.network.play.EditRoutingTableBookMessage;
 import mods.railcraft.network.play.EditTicketAttributeMessage;
 import mods.railcraft.network.play.LinkedCartsMessage;
-import mods.railcraft.network.play.OpenItemScreenMessage;
 import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetEmbarkingTrackAttributesMessage;
@@ -117,28 +116,21 @@ public enum NetworkChannel {
           .consumerMainThread(SetEmbarkingTrackAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(OpenItemScreenMessage.class, 0x0C,
-              NetworkDirection.PLAY_TO_CLIENT)
-          .encoder(OpenItemScreenMessage::encode)
-          .decoder(OpenItemScreenMessage::decode)
-          .consumerMainThread(OpenItemScreenMessage::handle)
-          .add();
-      simpleChannel
-          .messageBuilder(EditTicketAttributeMessage.class, 0x0D,
+          .messageBuilder(EditTicketAttributeMessage.class, 0x0C,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(EditTicketAttributeMessage::encode)
           .decoder(EditTicketAttributeMessage::decode)
           .consumerMainThread(EditTicketAttributeMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(EditRoutingTableBookMessage.class, 0x0E,
+          .messageBuilder(EditRoutingTableBookMessage.class, 0x0D,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(EditRoutingTableBookMessage::encode)
           .decoder(EditRoutingTableBookMessage::decode)
           .consumerMainThread(EditRoutingTableBookMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(SetSwitchTrackRouterAttributesMessage.class, 0x0F,
+          .messageBuilder(SetSwitchTrackRouterAttributesMessage.class, 0x0E,
               NetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSwitchTrackRouterAttributesMessage::encode)
           .decoder(SetSwitchTrackRouterAttributesMessage::decode)

@@ -3,7 +3,9 @@ package mods.railcraft.client;
 import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
 import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.EmbarkingTrackScreen;
+import mods.railcraft.client.gui.screen.GoldenTicketScreen;
 import mods.railcraft.client.gui.screen.LauncherTrackScreen;
+import mods.railcraft.client.gui.screen.RoutingTableBookScreen;
 import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
 import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.SwitchTrackMotorScreen;
@@ -15,6 +17,7 @@ import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEn
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ScreenFactories {
@@ -46,5 +49,19 @@ public class ScreenFactories {
 
   public static void openLauncherTrackScreen(LauncherTrackBlockEntity track) {
     Minecraft.getInstance().setScreen(new LauncherTrackScreen(track));
+  }
+
+  public static void openGoldenTicketScreen(InteractionHand hand) {
+    var minecraft = Minecraft.getInstance();
+    var player = minecraft.player;
+    var item = player.getItemInHand(hand);
+    minecraft.setScreen(new GoldenTicketScreen(item, hand));
+  }
+
+  public static void openRoutingTableBookScreen(InteractionHand hand) {
+    var minecraft = Minecraft.getInstance();
+    var player = minecraft.player;
+    var item = player.getItemInHand(hand);
+    minecraft.setScreen(new RoutingTableBookScreen(player, item, hand));
   }
 }
