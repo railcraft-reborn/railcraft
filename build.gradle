@@ -77,6 +77,10 @@ sourceSets {
             srcDir 'src/generated/resources'
         }
     }
+    test {
+        compileClasspath += sourceSets.api.output
+        runtimeClasspath += sourceSets.api.output
+    }
 }
 
 configurations {
