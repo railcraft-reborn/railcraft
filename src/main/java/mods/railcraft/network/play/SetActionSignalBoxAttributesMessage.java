@@ -35,11 +35,9 @@ public record SetActionSignalBoxAttributesMessage(BlockPos blockPos,
           signalBox.getActionSignalAspects().clear();
           signalBox.getActionSignalAspects().addAll(this.actionSignalAspects);
           signalBox.setLock(this.lock);
-          if (this.lock == LockableSignalBoxBlockEntity.Lock.LOCKED) {
-            signalBox.setOwner(senderProfile);
-          } else {
-            signalBox.setOwner(null);
-          }
+          signalBox.setOwner(this.lock == LockableSignalBoxBlockEntity.Lock.LOCKED
+              ? senderProfile
+              : null);
           signalBox.syncToClient();
         });
     return true;

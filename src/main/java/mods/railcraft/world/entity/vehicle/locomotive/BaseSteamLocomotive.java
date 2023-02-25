@@ -192,8 +192,8 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
           0.02 + (this.random.nextDouble() * 0.01), vz);
 
       this.level.addParticle(RailcraftParticleTypes.STEAM.get(),
-          this.getX() - Math.cos(rads + -ninetyDeg) * offset, ycoord,
-          this.getZ() - Math.sin(rads + -ninetyDeg) * offset, vx,
+          this.getX() - Math.cos(rads - ninetyDeg) * offset, ycoord,
+          this.getZ() - Math.sin(rads - ninetyDeg) * offset, vx,
           0.02 + (this.random.nextDouble() * 0.01), vz);
     }
   }

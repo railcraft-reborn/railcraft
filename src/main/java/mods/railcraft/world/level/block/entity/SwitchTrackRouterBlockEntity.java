@@ -39,7 +39,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlockEntity
     implements ForwardingContainer, MenuProvider, RouterBlockEntity, RouterLogic, SwitchActuator {
 
-  private AdvancedContainer container;
+  private final AdvancedContainer container;
   @Nullable
   private RoutingLogic logic;
   private Railway railway = Railway.PUBLIC;
@@ -129,7 +129,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
 
   @Override
   public boolean shouldSwitch(@Nullable AbstractMinecart cart) {
-    var shouldSwitch = getLogic()
+    boolean shouldSwitch = getLogic()
         .map(l -> cart != null && l.isValid() && l.matches(this, cart))
         .orElse(false);
     SwitchTrackActuatorBlock.setSwitched(

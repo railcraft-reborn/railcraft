@@ -14,7 +14,7 @@ public class ColorCondition extends ParsedCondition {
 
   public ColorCondition(String line) throws RoutingLogicException {
     super("Color", false, line);
-    String[] colors = value.toLowerCase(Locale.ROOT).split(",");
+    var colors = value.toLowerCase(Locale.ROOT).split(",");
     if ("Any".equals(colors[0]) || "*".equals(colors[0])) {
       primary = null;
     } else {
