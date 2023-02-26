@@ -15,11 +15,13 @@ import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
+import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RouterLogic;
 import mods.railcraft.util.routing.RoutingLogic;
+import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.inventory.SwitchTrackRouterMenu;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import net.minecraft.core.BlockPos;
@@ -132,6 +134,14 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     boolean shouldSwitch = getLogic()
         .map(l -> cart != null && l.isValid() && l.matches(this, cart))
         .orElse(false);
+    if (cart != null && railway.equals(Railway.PRIVATE)) {
+      var cartOwner = CartTools.getCartOwner(cart);
+      if (cartOwner == null) {
+        shouldSwitch = false;
+      } else {
+        shouldSwitch = shouldSwitch && PlayerUtil.isSamePlayer(cartOwner, this.getOwnerOrThrow());
+      }
+    }
     SwitchTrackActuatorBlock.setSwitched(
         this.getBlockState(), this.level, this.getBlockPos(), shouldSwitch);
     return shouldSwitch;
