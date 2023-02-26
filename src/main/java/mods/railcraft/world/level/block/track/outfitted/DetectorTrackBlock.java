@@ -1,12 +1,18 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import mods.railcraft.Translations;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.entity.vehicle.CartConstants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
@@ -14,6 +20,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -23,10 +30,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
-
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class DetectorTrackBlock extends OutfittedTrackBlock {
 
@@ -79,6 +82,17 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
   public int getSignal(BlockState blockState, BlockGetter level, BlockPos blockPos,
       Direction direction) {
     return blockState.getValue(POWERED) ? PowerUtil.FULL_POWER : PowerUtil.NO_POWER;
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, BlockGetter level, List<Component> lines,
+      TooltipFlag flag) {
+    lines.add(Component.translatable(Translations.Tips.DETECTOR_TRACK)
+        .withStyle(ChatFormatting.GRAY));
+    lines.add(Component.translatable(Translations.Tips.HIT_CROWBAR_TO_CHANGE_DETECTION_DIRECTION)
+        .withStyle(ChatFormatting.BLUE));
+    lines.add(Component.translatable(Translations.Tips.COMPARATOR_OUTPUT_FROM_CARTS)
+        .withStyle(ChatFormatting.RED));
   }
 
   public enum Mode implements StringRepresentable {
