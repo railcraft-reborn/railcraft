@@ -1,6 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.container.ContainerTools;
@@ -30,11 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class RefinedFirestoneItem extends FirestoneItem {
 
   public static final int CHARGES = 5000;

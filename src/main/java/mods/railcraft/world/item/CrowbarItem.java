@@ -114,24 +114,6 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
     stack.hurtAndBreak(2, attacker, __ -> attacker.broadcastBreakEvent(EquipmentSlot.MAINHAND));
     return true;
   }
-  // @Override
-  // public EnumAction getItemUseAction(ItemStack stack) {
-  // return EnumAction.BLOCK;
-  // }
-
-  // @Override
-  // public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-  // return 72000;
-  // }
-
-  // @Override
-  // public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, PlayerEntity
-  // player, Hand hand) {
-  // player.setActiveHand(hand);
-  // return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
-  // }
-
-
 
   @Override
   public boolean canWhack(Player player, InteractionHand hand, ItemStack crowbar, BlockPos pos) {

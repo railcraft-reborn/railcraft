@@ -3,9 +3,6 @@ package mods.railcraft.world.item;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class CrackedFirestoneItem extends RefinedFirestoneItem {
 
   public static final int HEAT = 100;
@@ -13,10 +10,6 @@ public class CrackedFirestoneItem extends RefinedFirestoneItem {
   public CrackedFirestoneItem(Properties properties) {
     super(properties);
     this.heat = HEAT;
-  }
-
-  public static ItemStack getItemCharged() {
-    return RailcraftItems.CRACKED_FIRESTONE.get().getDefaultInstance();
   }
 
   public static ItemStack getItemEmpty() {
