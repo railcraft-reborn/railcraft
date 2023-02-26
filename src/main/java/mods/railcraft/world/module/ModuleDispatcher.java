@@ -48,14 +48,15 @@ public class ModuleDispatcher implements NetworkSerializable, INBTSerializable<C
 
   @Override
   public void readFromBuf(FriendlyByteBuf in) {
-    in.readMap(buf -> {
-      var name = buf.readUtf();
+    var size = in.readVarInt();
+    for (int i = 0; i < size; i++) {
+      var name = in.readUtf();
       var module = this.moduleByName.get(name);
       if (module == null) {
         throw new IllegalStateException("Missing module: " + name);
       }
-      return name;
-    }, FriendlyByteBuf::readUtf);
+      module.readFromBuf(in);
+    }
   }
 
   @Override
