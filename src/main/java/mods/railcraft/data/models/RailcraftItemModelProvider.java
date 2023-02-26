@@ -153,6 +153,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.LAUNCHER_TRACK_KIT.get());
         this.basicItem(RailcraftItems.ONE_WAY_TRACK_KIT.get());
         this.basicItem(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
+        this.basicItem(RailcraftItems.ROUTING_TRACK_KIT.get());
         this.basicItem(RailcraftItems.CHARGE_SPOOL_LARGE.get());
         this.basicItem(RailcraftItems.CHARGE_SPOOL_MEDIUM.get());
         this.basicItem(RailcraftItems.CHARGE_SPOOL_SMALL.get());

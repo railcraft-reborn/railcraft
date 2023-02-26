@@ -69,7 +69,7 @@ public class ControlTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
       }
     }
 
-    if (cart instanceof Locomotive && ((Locomotive) cart).isShutdown()) {
+    if (cart instanceof Locomotive locomotive && locomotive.isShutdown()) {
       double yaw = cart.getYRot() * Math.PI / 180D;
       double cos = Math.cos(yaw);
       double sin = Math.sin(yaw);

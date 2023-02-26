@@ -15,6 +15,7 @@
     "railcraft:reinforced_junction_track",
     "railcraft:reinforced_launcher_track",
     "railcraft:reinforced_one_way_track",
-    "railcraft:reinforced_locomotive_track"
+    "railcraft:reinforced_locomotive_track",
+    "railcraft:reinforced_routing_track"
   ]
 }

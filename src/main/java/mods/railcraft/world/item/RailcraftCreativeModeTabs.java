@@ -257,6 +257,7 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.ABANDONED_LAUNCHER_TRACK.get());
               output.accept(RailcraftItems.ABANDONED_LOCKING_TRACK.get());
               output.accept(RailcraftItems.ABANDONED_LOCOMOTIVE_TRACK.get());
+              output.accept(RailcraftItems.ABANDONED_ROUTING_TRACK.get());
               output.accept(RailcraftItems.ABANDONED_ONE_WAY_TRACK.get());
               output.accept(RailcraftItems.ABANDONED_WYE_TRACK.get());
               output.accept(RailcraftItems.ABANDONED_TURNOUT_TRACK.get());
@@ -274,6 +275,7 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.IRON_LAUNCHER_TRACK.get());
               output.accept(RailcraftItems.IRON_LOCKING_TRACK.get());
               output.accept(RailcraftItems.IRON_LOCOMOTIVE_TRACK.get());
+              output.accept(RailcraftItems.IRON_ROUTING_TRACK.get());
               output.accept(RailcraftItems.IRON_ONE_WAY_TRACK.get());
               output.accept(RailcraftItems.IRON_WYE_TRACK.get());
               output.accept(RailcraftItems.IRON_TURNOUT_TRACK.get());
@@ -291,6 +293,7 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.STRAP_IRON_LAUNCHER_TRACK.get());
               output.accept(RailcraftItems.STRAP_IRON_LOCKING_TRACK.get());
               output.accept(RailcraftItems.STRAP_IRON_LOCOMOTIVE_TRACK.get());
+              output.accept(RailcraftItems.STRAP_IRON_ROUTING_TRACK.get());
               output.accept(RailcraftItems.STRAP_IRON_ONE_WAY_TRACK.get());
               output.accept(RailcraftItems.STRAP_IRON_WYE_TRACK.get());
               output.accept(RailcraftItems.STRAP_IRON_TURNOUT_TRACK.get());
@@ -308,6 +311,7 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.REINFORCED_LAUNCHER_TRACK.get());
               output.accept(RailcraftItems.REINFORCED_LOCKING_TRACK.get());
               output.accept(RailcraftItems.REINFORCED_LOCOMOTIVE_TRACK.get());
+              output.accept(RailcraftItems.REINFORCED_ROUTING_TRACK.get());
               output.accept(RailcraftItems.REINFORCED_ONE_WAY_TRACK.get());
               output.accept(RailcraftItems.REINFORCED_WYE_TRACK.get());
               output.accept(RailcraftItems.REINFORCED_TURNOUT_TRACK.get());
@@ -325,6 +329,7 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.ELECTRIC_LAUNCHER_TRACK.get());
               output.accept(RailcraftItems.ELECTRIC_LOCKING_TRACK.get());
               output.accept(RailcraftItems.ELECTRIC_LOCOMOTIVE_TRACK.get());
+              output.accept(RailcraftItems.ELECTRIC_ROUTING_TRACK.get());
               output.accept(RailcraftItems.ELECTRIC_ONE_WAY_TRACK.get());
               output.accept(RailcraftItems.ELECTRIC_WYE_TRACK.get());
               output.accept(RailcraftItems.ELECTRIC_TURNOUT_TRACK.get());
@@ -428,6 +433,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.LAUNCHER_TRACK_KIT.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(),
+        RailcraftItems.ROUTING_TRACK_KIT.get(),
         RailcraftItems.SWITCH_TRACK_LEVER.get(),
         RailcraftItems.SWITCH_TRACK_MOTOR.get(),
         RailcraftItems.SWITCH_TRACK_ROUTER.get(),

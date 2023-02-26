@@ -645,6 +645,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK.get(),
               new Item.Properties()));
 
+  public static final RegistryObject<Item> ABANDONED_ROUTING_TRACK =
+      deferredRegister.register("abandoned_routing_track",
+          () -> new BlockItem(RailcraftBlocks.ABANDONED_ROUTING_TRACK.get(),
+              new Item.Properties()));
+
   public static final RegistryObject<Item> ELECTRIC_TRACK =
       deferredRegister.register("electric_track",
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_TRACK.get(),
@@ -728,6 +733,11 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ELECTRIC_LOCOMOTIVE_TRACK =
       deferredRegister.register("electric_locomotive_track",
           () -> new BlockItem(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get(),
+              new Item.Properties()));
+
+  public static final RegistryObject<Item> ELECTRIC_ROUTING_TRACK =
+      deferredRegister.register("electric_routing_track",
+          () -> new BlockItem(RailcraftBlocks.ELECTRIC_ROUTING_TRACK.get(),
               new Item.Properties()));
 
   public static final RegistryObject<Item> HIGH_SPEED_TRACK =
@@ -910,6 +920,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK.get(),
               new Item.Properties()));
 
+  public static final RegistryObject<Item> IRON_ROUTING_TRACK =
+      deferredRegister.register("iron_routing_track",
+          () -> new BlockItem(RailcraftBlocks.IRON_ROUTING_TRACK.get(),
+              new Item.Properties()));
+
   public static final RegistryObject<Item> REINFORCED_TRACK =
       deferredRegister.register("reinforced_track",
           () -> new BlockItem(RailcraftBlocks.REINFORCED_TRACK.get(),
@@ -995,6 +1010,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK.get(),
               new Item.Properties()));
 
+  public static final RegistryObject<Item> REINFORCED_ROUTING_TRACK =
+      deferredRegister.register("reinforced_routing_track",
+          () -> new BlockItem(RailcraftBlocks.REINFORCED_ROUTING_TRACK.get(),
+              new Item.Properties()));
+
   public static final RegistryObject<Item> STRAP_IRON_TRACK =
       deferredRegister.register("strap_iron_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_TRACK.get(),
@@ -1078,6 +1098,11 @@ public class RailcraftItems {
   public static final RegistryObject<Item> STRAP_IRON_LOCOMOTIVE_TRACK =
       deferredRegister.register("strap_iron_locomotive_track",
           () -> new BlockItem(RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
+              new Item.Properties()));
+
+  public static final RegistryObject<Item> STRAP_IRON_ROUTING_TRACK =
+      deferredRegister.register("strap_iron_routing_track",
+          () -> new BlockItem(RailcraftBlocks.STRAP_IRON_ROUTING_TRACK.get(),
               new Item.Properties()));
 
   public static final RegistryObject<Item> ELEVATOR_TRACK =
@@ -1261,6 +1286,15 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_LOCOMOTIVE_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK)));
+
+  public static final RegistryObject<Item> ROUTING_TRACK_KIT =
+      deferredRegister.register("routing_track_kit",
+          () -> new TrackKitItem(new TrackKitItem.Properties()
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_ROUTING_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_ROUTING_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_ROUTING_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_ROUTING_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_ROUTING_TRACK)));
 
   public static final RegistryObject<Item> GOGGLES =
       deferredRegister.register("goggles",

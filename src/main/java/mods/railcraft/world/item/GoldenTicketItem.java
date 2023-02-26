@@ -1,5 +1,6 @@
 package mods.railcraft.world.item;
 
+import java.util.function.Predicate;
 import mods.railcraft.client.ScreenFactories;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -8,6 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class GoldenTicketItem extends TicketItem {
+
+  public static final Predicate<ItemStack> FILTER =
+      stack -> stack != null && stack.getItem() instanceof GoldenTicketItem;
 
   public GoldenTicketItem(Properties properties) {
     super(properties);

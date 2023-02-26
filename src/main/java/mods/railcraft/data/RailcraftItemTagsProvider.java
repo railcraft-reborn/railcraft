@@ -159,6 +159,10 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.IRON_CROWBAR.get())
         .add(RailcraftItems.DIAMOND_CROWBAR.get());
 
+    this.tag(RailcraftTags.Items.TICKET)
+        .add(RailcraftItems.TICKET.get(),
+            RailcraftItems.GOLDEN_TICKET.get());
+
     this.copy(RailcraftTags.Blocks.IRON_TANK_WALL, RailcraftTags.Items.IRON_TANK_WALL);
     this.copy(RailcraftTags.Blocks.IRON_TANK_GAUGE, RailcraftTags.Items.IRON_TANK_GAUGE);
     this.copy(RailcraftTags.Blocks.IRON_TANK_VALVE, RailcraftTags.Items.IRON_TANK_VALVE);

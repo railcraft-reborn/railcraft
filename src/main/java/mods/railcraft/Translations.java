@@ -263,6 +263,8 @@ public class Translations {
         makeKey("tips", "hit_crowbar_to_change_mode");
     public static final String HIT_CROWBAR_TO_CHANGE_FORCE =
         makeKey("tips", "hit_crowbar_to_change_force");
+    public static final String HIT_CROWBAR_TO_CHANGE_TICKET =
+        makeKey("tips", "hit_crowbar_to_change_ticket");
     public static final String HIT_CROWBAR_TO_ROTATE =
         makeKey("tips", "hit_crowbar_to_rotate");
     public static final String PAIR_WITH_CONTROL_TRACK =
@@ -285,6 +287,7 @@ public class Translations {
     public static final String LOCOMOTIVE_TRACK = makeKey("tips", "locomotive_track");
     public static final String LOCKING_TRACK = makeKey("tips", "locking_track");
     public static final String TRANSITION_TRACK = makeKey("tips", "transition_track");
+    public static final String ROUTING_TRACK = makeKey("tips", "routing_track");
     public static final String SWITCH_TRACKS = makeKey("tips", "switch_track_lever");
     public static final String MANUAL_OPERATION = makeKey("tips", "manual_operation");
     public static final String SCRIPTED_LOGIC_OPERATION =

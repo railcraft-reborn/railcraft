@@ -16,6 +16,7 @@ import mods.railcraft.client.gui.screen.inventory.FluidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
+import mods.railcraft.client.gui.screen.inventory.RoutingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.SolidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamTurbineScreen;
@@ -141,6 +142,7 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(),
         SwitchTrackRouterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
   }
 
   private void handleItemColors(RegisterColorHandlersEvent.Item event) {

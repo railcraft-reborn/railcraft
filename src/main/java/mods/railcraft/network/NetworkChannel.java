@@ -12,6 +12,7 @@ import mods.railcraft.network.play.SetFluidManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetLauncherTrackAttributesMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
+import mods.railcraft.network.play.SetRoutingTrackAttributesMessage;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
@@ -135,6 +136,13 @@ public enum NetworkChannel {
           .encoder(SetSwitchTrackRouterAttributesMessage::encode)
           .decoder(SetSwitchTrackRouterAttributesMessage::decode)
           .consumerMainThread(SetSwitchTrackRouterAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetRoutingTrackAttributesMessage.class, 0x0F,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetRoutingTrackAttributesMessage::encode)
+          .decoder(SetRoutingTrackAttributesMessage::decode)
+          .consumerMainThread(SetRoutingTrackAttributesMessage::handle)
           .add();
     }
   };

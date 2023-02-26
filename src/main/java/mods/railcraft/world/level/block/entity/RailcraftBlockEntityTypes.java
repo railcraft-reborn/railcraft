@@ -32,6 +32,7 @@ import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
+import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
 import net.minecraft.world.level.block.Block;
@@ -347,6 +348,17 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
                   RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
                   RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<RoutingTrackBlockEntity>> ROUTING_TRACK =
+      deferredRegister.register("routing_track",
+          () -> BlockEntityType.Builder
+              .of(RoutingTrackBlockEntity::new,
+                  RailcraftBlocks.ABANDONED_ROUTING_TRACK.get(),
+                  RailcraftBlocks.ELECTRIC_ROUTING_TRACK.get(),
+                  RailcraftBlocks.IRON_ROUTING_TRACK.get(),
+                  RailcraftBlocks.REINFORCED_ROUTING_TRACK.get(),
+                  RailcraftBlocks.STRAP_IRON_ROUTING_TRACK.get())
               .build(null));
 
   @SafeVarargs
