@@ -24,7 +24,7 @@ public class RoutingTest {
   private static final BlockPos TRAIN_A_C = new BlockPos(12, 2, 14);
 
   @GameTest(template = "complex_routing", timeoutTicks = 300)
-  public static void complex_routing(GameTestHelper helper) {
+  public static void complexRouting(GameTestHelper helper) {
     var train_A = spawnNewLocomotive(helper, SPAWN_POINT_A, "A");
     var train_B = spawnNewLocomotive(helper, SPAWN_POINT_B, "B");
     var train_A_B = spawnNewLocomotive(helper, SPAWN_POINT_A_B, "A/B");
