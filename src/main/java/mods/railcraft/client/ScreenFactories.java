@@ -18,6 +18,8 @@ import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ScreenFactories {
@@ -51,17 +53,12 @@ public class ScreenFactories {
     Minecraft.getInstance().setScreen(new LauncherTrackScreen(track));
   }
 
-  public static void openGoldenTicketScreen(InteractionHand hand) {
-    var minecraft = Minecraft.getInstance();
-    var player = minecraft.player;
-    var item = player.getItemInHand(hand);
-    minecraft.setScreen(new GoldenTicketScreen(item, hand));
+  public static void openGoldenTicketScreen(ItemStack itemStack, InteractionHand hand) {
+    Minecraft.getInstance().setScreen(new GoldenTicketScreen(itemStack, hand));
   }
 
-  public static void openRoutingTableBookScreen(InteractionHand hand) {
-    var minecraft = Minecraft.getInstance();
-    var player = minecraft.player;
-    var item = player.getItemInHand(hand);
-    minecraft.setScreen(new RoutingTableBookScreen(player, item, hand));
+  public static void openRoutingTableBookScreen(Player player, ItemStack itemStack,
+      InteractionHand hand) {
+    Minecraft.getInstance().setScreen(new RoutingTableBookScreen(player, itemStack, hand));
   }
 }

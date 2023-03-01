@@ -58,10 +58,10 @@ public class RoutingTableBookItem extends Item {
   @Override
   public InteractionResultHolder<ItemStack> use(Level level, Player player,
       InteractionHand usedHand) {
-    if (level.isClientSide()) {
-      ScreenFactories.openRoutingTableBookScreen(usedHand);
-    }
     var itemStack = player.getItemInHand(usedHand);
+    if (level.isClientSide()) {
+      ScreenFactories.openRoutingTableBookScreen(player, itemStack, usedHand);
+    }
     return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
   }
 }

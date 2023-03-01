@@ -35,10 +35,10 @@ public class GoldenTicketItem extends TicketItem {
   @Override
   public InteractionResultHolder<ItemStack> use(Level level, Player player,
       InteractionHand usedHand) {
-    if (level.isClientSide()) {
-      ScreenFactories.openGoldenTicketScreen(usedHand);
-    }
     var itemStack = player.getItemInHand(usedHand);
+    if (level.isClientSide()) {
+      ScreenFactories.openGoldenTicketScreen(itemStack, usedHand);
+    }
     return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
   }
 }
