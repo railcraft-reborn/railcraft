@@ -52,9 +52,9 @@ public class GoldenTicketScreen extends IngameWindowScreen {
             .pos(0, this.height / 2 + 75)
             .size(65, 20)
             .build(),
-        helpButton = RailcraftButton
+        this.helpButton = RailcraftButton
             .builder(Translations.Screen.HELP, button -> {
-              readingManual = !readingManual;
+              this.readingManual = !this.readingManual;
             }, ButtonTexture.LARGE_BUTTON)
             .pos(0, this.height / 2 + 75)
             .size(65, 20)
@@ -69,24 +69,25 @@ public class GoldenTicketScreen extends IngameWindowScreen {
     );
     GuiUtil.newButtonRowAuto(this::addRenderableWidget, this.width / 2 - 100, 200, buttons);
 
-    editBoxDest = new EditBox(font, this.width / 2 - (234 / 2), this.height / 2 + 17,
+    this.editBoxDest = new EditBox(font, this.width / 2 - (234 / 2), this.height / 2 + 23,
         234, 20, Component.empty());
-    editBoxDest.setValue(dest);
-    this.addRenderableWidget(editBoxDest);
+    this.editBoxDest.setValue(this.dest);
+    this.editBoxDest.setBordered(false);
+    this.addRenderableWidget(this.editBoxDest);
   }
 
   @Override
   protected void renderContent(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-    if (readingManual) {
-      editBoxDest.setVisible(false);
+    if (this.readingManual) {
+      this.editBoxDest.setVisible(false);
       var about = Component.translatable(Translations.Screen.GOLDEN_TICKET_ABOUT);
       var help = Component.translatable(Translations.Screen.GOLDEN_TICKET_HELP)
           .withStyle(ChatFormatting.BLACK);
 
       drawCenteredString(poseStack, about, 15, false);
-      font.drawWordWrap(help, this.width / 2 - 110, this.height / 2 - 40, 230,
+      this.font.drawWordWrap(help, this.width / 2 - 110, this.height / 2 - 40, 230,
           IngameWindowScreen.TEXT_COLOR);
-      helpButton.setMessage(CommonComponents.GUI_BACK);
+      this.helpButton.setMessage(CommonComponents.GUI_BACK);
     } else {
       var title = Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE)
           .withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD);
@@ -98,19 +99,19 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       poseStack.popPose();
       drawCenteredString(poseStack, desc1, 45, false);
       drawCenteredString(poseStack, desc2, 60, false);
-      editBoxDest.setVisible(true);
-      helpButton.setMessage(Component.translatable(Translations.Screen.HELP));
+      this.editBoxDest.setVisible(true);
+      this.helpButton.setMessage(Component.translatable(Translations.Screen.HELP));
     }
   }
 
   private void sendMessageToServer() {
-    this.dest = editBoxDest.getValue();
+    this.dest = this.editBoxDest.getValue();
     var modified = this.dest.startsWith("Dest=") && !this.dest.equals("Dest=");
     if (!modified)
       return;
 
     var destWithoutPrefix = this.dest.substring("Dest=".length());
-    var success = TicketItem.setTicketData(itemStack, destWithoutPrefix,
+    var success = TicketItem.setTicketData(this.itemStack, destWithoutPrefix,
         this.minecraft.player.getGameProfile());
     if (success) {
       NetworkChannel.GAME.sendToServer(new EditTicketAttributeMessage(this.hand, destWithoutPrefix));
