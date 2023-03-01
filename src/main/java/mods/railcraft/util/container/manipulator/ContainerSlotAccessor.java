@@ -92,8 +92,7 @@ public class ContainerSlotAccessor<T extends Container> implements ModifiableSlo
   }
 
   public static Stream<ModifiableSlotAccessor> createSlots(Container container) {
-    return IntStream.range(0, container.getContainerSize())
-        .mapToObj(i -> new ContainerSlotAccessor<>(container, i));
+    return createSlots(container, 0, container.getContainerSize());
   }
 
   public static Stream<ModifiableSlotAccessor> createSlots(Container container,
