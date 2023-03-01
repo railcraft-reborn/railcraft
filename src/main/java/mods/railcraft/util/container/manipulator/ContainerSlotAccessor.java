@@ -96,6 +96,12 @@ public class ContainerSlotAccessor<T extends Container> implements ModifiableSlo
         .mapToObj(i -> new ContainerSlotAccessor<>(container, i));
   }
 
+  public static Stream<ModifiableSlotAccessor> createSlots(Container container,
+      int start, int size) {
+    return IntStream.range(start, size)
+        .mapToObj(i -> new ContainerSlotAccessor<>(container, i));
+  }
+
   public static Stream<ModifiableSlotAccessor> createSlots(WorldlyContainer container,
       Direction face) {
     return Arrays.stream(container.getSlotsForFace(face))

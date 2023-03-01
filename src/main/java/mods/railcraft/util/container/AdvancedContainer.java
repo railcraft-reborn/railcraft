@@ -32,7 +32,7 @@ public class AdvancedContainer extends SimpleContainer
 
   public AdvancedContainer(int size) {
     super(size);
-    this.slots = ContainerSlotAccessor.createSlots(this).toList();
+    this.slots = ContainerSlotAccessor.createSlots(this, 0, size).toList();
   }
 
   @Override

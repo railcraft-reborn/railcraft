@@ -63,7 +63,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     if (index < 9 && super.canPlaceItem(index, stack)) {
       return getRecipe(stack).isPresent();
     }
-    return false;
+    return true;
   }
 
   @Override
