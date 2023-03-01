@@ -25,6 +25,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       new ResourceLocation(Railcraft.ID, "textures/gui/item/golden_ticket.png");
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 136;
+  private static final String PREFIX = "Dest=";
 
   private final ItemStack itemStack;
   private final InteractionHand hand;
@@ -37,7 +38,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
     super(GameNarrator.NO_TITLE, TICKET_LOCATION, IMAGE_WIDTH, IMAGE_HEIGHT);
     this.itemStack = itemStack;
     this.hand = hand;
-    this.dest = "Dest=" + TicketItem.getDestination(this.itemStack);
+    this.dest = PREFIX + TicketItem.getDestination(this.itemStack);
     this.readingManual = false;
   }
 
@@ -106,11 +107,11 @@ public class GoldenTicketScreen extends IngameWindowScreen {
 
   private void sendMessageToServer() {
     this.dest = this.editBoxDest.getValue();
-    var modified = this.dest.startsWith("Dest=") && !this.dest.equals("Dest=");
+    var modified = this.dest.startsWith(PREFIX) && !this.dest.equals(PREFIX);
     if (!modified)
       return;
 
-    var destWithoutPrefix = this.dest.substring("Dest=".length());
+    var destWithoutPrefix = this.dest.substring(PREFIX.length());
     var success = TicketItem.setTicketData(this.itemStack, destWithoutPrefix,
         this.minecraft.player.getGameProfile());
     if (success) {
