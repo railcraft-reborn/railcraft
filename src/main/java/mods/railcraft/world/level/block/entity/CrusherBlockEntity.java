@@ -4,6 +4,8 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations.Container;
+import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.world.inventory.CrusherMenu;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -56,7 +58,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
     super(RailcraftBlockEntityTypes.CRUSHER.get(), blockPos, blockState,
         CrusherBlockEntity.class, List.of(pattern, rotatedPattern));
     this.crusherModule = this.moduleDispatcher.registerModule("crusher",
-        new CrusherModule(this));
+        new CrusherModule(this, Charge.distribution));
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
@@ -77,6 +79,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
   @Override
   protected void membershipChanged(@Nullable Membership<CrusherBlockEntity> membership) {
     if (membership == null) {
+      this.crusherModule.storage().setState(ChargeStorage.State.DISABLED);
       this.level.setBlockAndUpdate(this.getBlockPos(),
           this.getBlockState()
               .setValue(CrusherMultiblockBlock.TYPE, CrusherMultiblockBlock.Type.NONE)
@@ -84,6 +87,9 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
               .setValue(CrusherMultiblockBlock.OUTPUT, false));
       Containers.dropContents(this.level, this.getBlockPos(), this.crusherModule);
       return;
+    }
+    if (membership.master() == this) {
+      this.crusherModule.storage().setState(ChargeStorage.State.RECHARGEABLE);
     }
 
     var type = switch (membership.patternElement().marker()) {

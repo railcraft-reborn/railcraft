@@ -1543,6 +1543,7 @@ public class RailcraftBlocks {
       deferredRegister.register("crusher",
           () -> new CrusherMultiblockBlock(BlockBehaviour.Properties.of(Material.STONE)
               .requiresCorrectToolForDrops()
+              .randomTicks()
               .strength(3.5F)
               .sound(SoundType.STONE)));
 

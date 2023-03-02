@@ -365,6 +365,10 @@ public class ChargeNetworkImpl implements Charge.Network {
       return activeBatteries().mapToInt(ChargeStorage::getMaxEnergyStored).sum();
     }
 
+    public float getChargeLevel() {
+      return (float) getCharge() / (float) getCapacity();
+    }
+
     public int getAvailableCharge() {
       return activeBatteries().mapToInt(ChargeStorage::getAvailableCharge).sum();
     }

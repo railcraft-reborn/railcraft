@@ -1,32 +1,23 @@
 package mods.railcraft.gui.widget;
 
+import java.util.Collections;
+import java.util.List;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.charge.ChargeNetworkImpl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
+public class ChargeNetworkUtilizationIndicator implements Gauge {
 
-/**
- * @author CovertJaguar <http://www.railcraft.info/>
- */
-public class ChargeNetworkIndicator implements Gauge {
-
+  @Nullable
+  protected final ServerLevel level;
+  protected final BlockPos pos;
   private float chargePercent;
   private List<Component> tooltip = Collections.emptyList();
 
-  @Nullable
-  private final ServerLevel level;
-  private final BlockPos pos;
-
-  public ChargeNetworkIndicator(BlockPos pos) {
-    this(null, pos);
-  }
-
-  public ChargeNetworkIndicator(@Nullable ServerLevel level, BlockPos pos) {
+  public ChargeNetworkUtilizationIndicator(@Nullable ServerLevel level, BlockPos pos) {
     this.level = level;
     this.pos = pos;
   }
@@ -48,12 +39,12 @@ public class ChargeNetworkIndicator implements Gauge {
   }
 
   @Override
-  public void setClientValue(float value) {
-    this.chargePercent = value;
+  public float getClientValue() {
+    return this.chargePercent;
   }
 
   @Override
-  public float getClientValue() {
-    return this.chargePercent;
+  public void setClientValue(float value) {
+    this.chargePercent = value;
   }
 }

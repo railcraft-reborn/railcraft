@@ -3,7 +3,7 @@ package mods.railcraft.world.inventory;
 import java.util.Collections;
 import java.util.List;
 import mods.railcraft.gui.widget.AnalogGaugeWidget;
-import mods.railcraft.gui.widget.ChargeNetworkIndicator;
+import mods.railcraft.gui.widget.ChargeNetworkUtilizationIndicator;
 import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.inventory.slot.ItemFilterSlot;
@@ -62,7 +62,7 @@ public class SteamTurbineMenu extends RailcraftMenu {
       }
     }, 137, 19, 28, 14, 99, 65));
     this.addWidget(this.chargeWidget = new AnalogGaugeWidget(
-        new ChargeNetworkIndicator(
+        new ChargeNetworkUtilizationIndicator(
             steamTurbine.getLevel() instanceof ServerLevel level ? level : null,
             steamTurbine.getBlockPos()),
         137, 38, 28, 14, 99, 65));

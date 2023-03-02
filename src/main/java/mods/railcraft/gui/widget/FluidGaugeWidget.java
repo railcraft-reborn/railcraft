@@ -8,9 +8,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fluids.FluidStack;
 
 
-/**
- * @author CovertJaguar (https://www.railcraft.info)
- */
 public class FluidGaugeWidget extends Widget {
 
   public final StandardTank tank;
