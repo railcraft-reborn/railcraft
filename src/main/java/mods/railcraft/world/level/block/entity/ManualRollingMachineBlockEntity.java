@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import net.minecraft.core.BlockPos;
@@ -11,11 +12,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
-public class ManualRollingMachineBlockEntity extends BlockEntity implements MenuProvider {
+public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implements MenuProvider {
 
   private int recipieRequiredTime = 12222222;
   private int currentTick = 0;
@@ -73,13 +72,6 @@ public class ManualRollingMachineBlockEntity extends BlockEntity implements Menu
     this.callback = callback;
   }
 
-  /**
-   * Progress of the current recipie, in "float percent" ie: 10% == 0.1, 50% = 0.5%
-   *
-   * @return The progress, used by
-   *         {@link mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen
-   *         RollingTableScreen}
-   */
   public float rollingProgress() {
     return Mth.clamp((float) this.currentTick / (float) this.recipieRequiredTime, 0.0F, 1.0F);
   }

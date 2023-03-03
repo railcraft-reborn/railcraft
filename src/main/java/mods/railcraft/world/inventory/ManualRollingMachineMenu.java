@@ -9,7 +9,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -20,15 +19,13 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
-public class ManualRollingMachineMenu extends AbstractContainerMenu {
+public class ManualRollingMachineMenu extends RailcraftMenu {
 
   private final CraftingContainer craftSlots;
   private final ResultContainer resultSlots, resultSlotClickyBox;
   private final RollingResultSlot craftingResultSlot;
   private final Level level;
-  private final Player player;
   private ItemStack cachedFinishItem;
   // KEY INFO:
   // 1. required time | 2. currentTick (UNSETTABLE)
@@ -37,26 +34,29 @@ public class ManualRollingMachineMenu extends AbstractContainerMenu {
 
   private final RecipeManager.CachedCheck<CraftingContainer, RollingRecipe> quickCheck;
 
-  public ManualRollingMachineMenu(int containerID, Inventory playerInventory) {
-    this(containerID, playerInventory, new SimpleContainerData(3), null);
+  public ManualRollingMachineMenu(int id, Inventory inventory,
+      ManualRollingMachineBlockEntity blockEntity) {
+    this(id, inventory, new SimpleContainerData(3), blockEntity);
   }
 
-  public ManualRollingMachineMenu(int containerID, Inventory inventory, ContainerData data,
-      @Nullable ManualRollingMachineBlockEntity manualRollingMachine) {
-    super(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(), containerID);
-    this.player = inventory.player;
-    this.level = player.level;
+  public ManualRollingMachineMenu(int id, Inventory inventory, ContainerData data,
+      ManualRollingMachineBlockEntity blockEntity) {
+    super(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(), id, inventory.player,
+        blockEntity::stillValid);
+    this.level = this.getPlayer().level;
     this.data = data;
     this.quickCheck = RecipeManager.createCheck(RailcraftRecipeTypes.ROLLING.get());
 
     craftSlots = new CraftingContainer(this, 3, 3);
     resultSlots = new ResultContainer();
     resultSlotClickyBox = new ResultContainer();
-    this.craftingResultSlot = new RollingResultSlot(player, this.craftSlots, this.resultSlots, 0, 124, 35);
+    this.craftingResultSlot = new RollingResultSlot(getPlayer(), this.craftSlots, this.resultSlots,
+        0, 124, 35);
 
     this.addSlot(craftingResultSlot);
 
-    this.addSlot(new ResultSlot(player, this.craftSlots, this.resultSlotClickyBox, 1, 93, 27));
+    this.addSlot(new ResultSlot(getPlayer(), this.craftSlots, this.resultSlotClickyBox,
+        1, 93, 27));
 
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 3; x++) {
@@ -64,33 +64,13 @@ public class ManualRollingMachineMenu extends AbstractContainerMenu {
       }
     }
 
-    this.addPlayerSlots(inventory);
+    this.addInventorySlots(inventory);
     this.addDataSlots(data);
 
     // assign callback
-    if (manualRollingMachine != null) {
-      manualRollingMachine.setOnFinishedCallback(this::onFinishedCallback);
-    }
+    blockEntity.setOnFinishedCallback(this::onFinishedCallback);
   }
 
-  private void addPlayerSlots(Inventory inventory) {
-    for (int i = 0; i < 3; i++) {
-      for (int k = 0; k < 9; k++) {
-        this.addSlot(new Slot(inventory, k + i * 9 + 9, 8 + k * 18, 84 + i * 18));
-      }
-    }
-    for (int j = 0; j < 9; j++) {
-      this.addSlot(new Slot(inventory, j, 8 + j * 18, 142));
-    }
-  }
-
-  /**
-   * Progress of the current recipie, in "float percent" ie: 10% == 0.1, 50% = 0.5%
-   *
-   * @return The progress, used by
-   *         {@link mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen
-   *         RollingTableScreen}
-   */
   public float rollingProgress() {
     int requiredTime = this.data.get(0);
     int currentTick = this.data.get(1);
@@ -99,14 +79,10 @@ public class ManualRollingMachineMenu extends AbstractContainerMenu {
 
   /**
    * Callback when RollingTableEntity finished ticking away. does:
-   *
-   * <p>
-   * - Adds the item to the resultSlots
-   *
-   * <p>
-   * - Resets the TileEntity's timings
-   *
-   * @param devnull This Parameter does Not Exist
+   * <ul>
+   *   <li>Adds the item to the resultSlots</li>
+   *   <li>Resets the TileEntity's timings</li>
+   * </ul>
    */
   private void onFinishedCallback() {
     if (!this.cachedFinishItem.equals(ItemStack.EMPTY, false) && !this.level.isClientSide) {
@@ -116,7 +92,7 @@ public class ManualRollingMachineMenu extends AbstractContainerMenu {
       }
       ItemStack finishedItem = this.cachedFinishItem.copy();
       this.resultSlots.setItem(0, finishedItem);
-      this.craftingResultSlot.takeCraftingItems(this.player);
+      this.craftingResultSlot.takeCraftingItems(this.getPlayer());
       this.setData(2, 0); // reset timings onfinish, keep the time
     }
   }
@@ -132,7 +108,7 @@ public class ManualRollingMachineMenu extends AbstractContainerMenu {
     this.setData(2, 0);
     if (optionalRollingRecipe.isPresent()) {
       var recipe = optionalRollingRecipe.get();
-      if (this.resultSlotClickyBox.setRecipeUsed(this.level, (ServerPlayer) player, recipe)) {
+      if (this.resultSlotClickyBox.setRecipeUsed(this.level, (ServerPlayer) this.getPlayer(), recipe)) {
         itemstack = recipe.assemble(this.craftSlots);
         this.setData(0, recipe.getTickCost());
       }

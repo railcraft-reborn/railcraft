@@ -20,9 +20,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public abstract class RailcraftMenu extends AbstractContainerMenu {
 
   private final Player player;
@@ -35,6 +32,10 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     super(type, id);
     this.player = player;
     this.validator = validator;
+  }
+
+  public Player getPlayer() {
+    return player;
   }
 
   @Override

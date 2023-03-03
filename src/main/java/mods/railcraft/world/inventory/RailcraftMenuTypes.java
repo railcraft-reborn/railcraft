@@ -11,6 +11,7 @@ import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
+import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
@@ -99,7 +100,8 @@ public class RailcraftMenuTypes {
 
   public static final RegistryObject<MenuType<ManualRollingMachineMenu>> MANUAL_ROLLING_MACHINE =
       deferredRegister.register("manual_rolling_machine",
-          () -> new MenuType<>(ManualRollingMachineMenu::new));
+          () -> new MenuType<>(
+              blockEntityMenu(ManualRollingMachineBlockEntity.class, ManualRollingMachineMenu::new)));
 
   public static final RegistryObject<MenuType<CokeOvenMenu>> COKE_OVEN =
       deferredRegister.register("coke_oven",
@@ -166,8 +168,7 @@ public class RailcraftMenuTypes {
       BlockEntity entity = inventory.player.level.getBlockEntity(blockPos);
       if (!entityType.isInstance(entity)) {
         throw new IllegalStateException(
-            "Cannot find block entity of type " + entityType.getName() + " at ["
-                + blockPos.toString() + "]");
+            "Cannot find block entity of type " + entityType.getName() + " at [" + blockPos + "]");
       }
       return factory.create(id, inventory, entityType.cast(entity));
     };
