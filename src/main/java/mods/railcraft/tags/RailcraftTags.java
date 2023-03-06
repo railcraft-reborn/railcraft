@@ -194,6 +194,7 @@ public class RailcraftTags {
   public static class Fluids {
 
     public static final TagKey<Fluid> STEAM = forgeTag("steam");
+    public static final TagKey<Fluid> CREOSOTE = forgeTag("creosote");
     public static final TagKey<Fluid> GASEOUS = forgeTag("gaseous");
 
     private static TagKey<Fluid> forgeTag(String name) {
