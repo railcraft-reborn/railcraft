@@ -4,9 +4,9 @@
   "creosoteOutput": 4500,
   "experience": 0.0,
   "ingredient": {
-    "item": "railcraft:coal_coke_block"
+    "item": "minecraft:coal_block"
   },
   "result": {
-    "item": "minecraft:coal_block"
+    "item": "railcraft:coal_coke_block"
   }
 }
