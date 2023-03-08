@@ -1008,6 +1008,17 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', Items.CRAFTING_TABLE)
         .unlockedBy(getHasName(Items.PISTON), has(Items.PISTON))
         .save(consumer);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.POWERED_ROLLING_MACHINE.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("ada")
+        .define('a', RailcraftTags.Items.STEEL_GEAR)
+        .define('b', Items.PISTON)
+        .define('c', Items.CRAFTING_TABLE)
+        .define('d', RailcraftItems.CHARGE_MOTOR.get())
+        .unlockedBy(getHasName(RailcraftItems.MANUAL_ROLLING_MACHINE.get()),
+            has(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
+        .save(consumer);
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.TORCH, 8)
         .pattern("a")
         .pattern("b")

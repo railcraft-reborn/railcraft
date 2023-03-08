@@ -1305,6 +1305,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
               new Item.Properties()));
 
+  public static final RegistryObject<BlockItem> POWERED_ROLLING_MACHINE =
+      deferredRegister.register("powered_rolling_machine",
+          () -> new BlockItem(RailcraftBlocks.POWERED_ROLLING_MACHINE.get(),
+              new Item.Properties()));
+
   public static final RegistryObject<BlockItem> CRUSHER =
       deferredRegister.register("crusher",
           () -> new BlockItem(RailcraftBlocks.CRUSHER.get(),

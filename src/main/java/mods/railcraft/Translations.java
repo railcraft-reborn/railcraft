@@ -216,8 +216,7 @@ public class Translations {
     public static final String COAL_COKE_BLOCK = makeKey("tips", "coal_coke_block");
     public static final String FORCE_TRACK_EMITTER = makeKey("tips", "force_track_emitter");
     public static final String FEED_STATION = makeKey("tips", "feed_station");
-    public static final String MANUAL_ROLLING_MACHINE =
-        makeKey("tips", "manual_rolling_machine");
+    public static final String ROLLING_MACHINE = makeKey("tips", "rolling_machine");
     public static final String ITEM_LOADER = makeKey("tips", "item_loader");
     public static final String ITEM_UNLOADER = makeKey("tips", "item_unloader");
     public static final String FLUID_LOADER = makeKey("tips", "fluid_loader");
@@ -301,9 +300,6 @@ public class Translations {
   }
 
   public static class Container {
-
-    public static final String MANUAL_ROLLING_MACHINE =
-        makeKey("container", "manual_rolling_machine");
     public static final String COKE_OVEN =
         makeKey("container", "coke_oven");
     public static final String BLAST_FURNACE =

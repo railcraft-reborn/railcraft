@@ -16,6 +16,7 @@ import mods.railcraft.client.gui.screen.inventory.FluidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
+import mods.railcraft.client.gui.screen.inventory.PoweredRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.RoutingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.SolidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
@@ -125,6 +126,8 @@ public class ClientManager {
         SteamLocomotiveScreen::new);
     MenuScreens.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
         ManualRollingMachineScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.POWERED_ROLLING_MACHINE.get(),
+        PoweredRollingMachineScreen::new);
     MenuScreens.register(RailcraftMenuTypes.COKE_OVEN.get(),
         CokeOvenScreen::new);
     MenuScreens.register(RailcraftMenuTypes.CRUSHER.get(),

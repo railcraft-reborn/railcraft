@@ -114,6 +114,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX, "Signal Sequencer Box");
     this.addBlock(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX, "Signal Block Relay Box");
     this.addBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
+    this.addBlock(RailcraftBlocks.POWERED_ROLLING_MACHINE, "Powered Rolling Machine");
     this.addBlock(RailcraftBlocks.CRUSHER, "Crusher");
     this.addBlock(RailcraftBlocks.COKE_OVEN_BRICKS, "Coke Oven Bricks");
     this.addBlock(RailcraftBlocks.FORCE_TRACK_EMITTER, "Force Track Emitter");
@@ -318,7 +319,6 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void containerTranslations() {
-    this.add(Translations.Container.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
     this.add(Translations.Container.COKE_OVEN, "Coke Oven");
     this.add(Translations.Container.BLAST_FURNACE, "Blast Furnace");
     this.add(Translations.Container.CRUSHER, "Crusher");
@@ -438,7 +438,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.COAL_COKE_BLOCK, "%s Fuel Units");
     this.add(Translations.Tips.FORCE_TRACK_EMITTER, "Projects energy-based tracks");
     this.add(Translations.Tips.FEED_STATION, "Feeds animals");
-    this.add(Translations.Tips.MANUAL_ROLLING_MACHINE, "Crafting bench for various metal items");
+    this.add(Translations.Tips.ROLLING_MACHINE, "Crafting bench for various metal items");
     this.add(Translations.Tips.ITEM_LOADER, "Loads items into carts");
     this.add(Translations.Tips.ITEM_UNLOADER, "Unloads items from carts");
     this.add(Translations.Tips.FLUID_LOADER, "Loads fluids into carts");

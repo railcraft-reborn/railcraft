@@ -12,6 +12,7 @@ import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
+import mods.railcraft.client.gui.screen.inventory.PoweredRollingMachineScreen;
 import mods.railcraft.integrations.jei.category.BlastFurnaceRecipeCategory;
 import mods.railcraft.integrations.jei.category.CokeOvenRecipeCategory;
 import mods.railcraft.integrations.jei.category.CrusherRecipeCategory;
@@ -20,6 +21,7 @@ import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.inventory.CrusherMenu;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
+import mods.railcraft.world.inventory.PoweredRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
@@ -48,6 +50,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
   public void registerGuiHandlers(IGuiHandlerRegistration registration) {
     registration.addRecipeClickArea(ManualRollingMachineScreen.class, 90, 45, 23, 9,
         RecipeTypes.ROLLING_MACHINE);
+    registration.addRecipeClickArea(PoweredRollingMachineScreen.class, 90, 36, 23, 9,
+        RecipeTypes.ROLLING_MACHINE);
     registration.addRecipeClickArea(CokeOvenScreen.class, 34, 43, 20, 16, RecipeTypes.COKE_OVEN);
     registration.addRecipeClickArea(BlastFurnaceScreen.class, 80, 36, 22, 15,
         RecipeTypes.BLAST_FURNACE);
@@ -58,6 +62,9 @@ public class RailcraftJeiPlugin implements IModPlugin {
   public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
     registration.addRecipeTransferHandler(ManualRollingMachineMenu.class,
         RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
+        RecipeTypes.ROLLING_MACHINE, 2, 9, 11, 36);
+    registration.addRecipeTransferHandler(PoweredRollingMachineMenu.class,
+        RailcraftMenuTypes.POWERED_ROLLING_MACHINE.get(),
         RecipeTypes.ROLLING_MACHINE, 2, 9, 11, 36);
     registration.addRecipeTransferHandler(CokeOvenMenu.class, RailcraftMenuTypes.COKE_OVEN.get(),
         RecipeTypes.COKE_OVEN, 0, 1, 4, 36);
@@ -84,6 +91,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
   @Override
   public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
     registration.addRecipeCatalyst(new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get()),
+        RecipeTypes.ROLLING_MACHINE);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.POWERED_ROLLING_MACHINE.get()),
         RecipeTypes.ROLLING_MACHINE);
     registration.addRecipeCatalyst(new ItemStack(RailcraftItems.COKE_OVEN_BRICKS.get()),
         RecipeTypes.COKE_OVEN);

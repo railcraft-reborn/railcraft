@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "railcraft:block/powered_rolling_machine"
+    }
+  }
+}

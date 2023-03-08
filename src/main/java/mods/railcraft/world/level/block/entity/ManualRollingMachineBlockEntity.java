@@ -1,10 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
 import org.jetbrains.annotations.Nullable;
-import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -88,11 +86,6 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     }
     blockEntity.currentTick++;
     blockEntity.updateRollingStatus();
-  }
-
-  @Override
-  public Component getDisplayName() {
-    return Component.translatable(Translations.Container.MANUAL_ROLLING_MACHINE);
   }
 
   @Nullable

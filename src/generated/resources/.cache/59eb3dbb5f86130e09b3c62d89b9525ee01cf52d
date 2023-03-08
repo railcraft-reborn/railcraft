@@ -1,4 +1,4 @@
-// 1.19.3	2023-02-26T19:17:34.81162	Loot Tables
+// 1.19.3	2023-03-03T19:37:09.638456	Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -213,6 +213,7 @@ e96d6b144fd5f438e2303eb7d5e85e18c23a2f72 data/railcraft/loot_tables/blocks/pink_
 097ff642345a97230fcfe7cf033bc2946be4246e data/railcraft/loot_tables/blocks/pink_steel_tank_wall.json
 29b4b04297e0afa3a76def817558702c14a7bdd4 data/railcraft/loot_tables/blocks/pink_strengthened_glass.json
 d4f60903232c53c503b02d1eb0b4903901d2a499 data/railcraft/loot_tables/blocks/polished_quarried_stone.json
+58da0a78f8f0e8a3a1fd2f2baeb647c22d17c143 data/railcraft/loot_tables/blocks/powered_rolling_machine.json
 21fbb89d136848f30ad467149231856a08bca839 data/railcraft/loot_tables/blocks/purple_iron_tank_gauge.json
 caaab80baff74258afd3a90c1fc4d6a7aaba215a data/railcraft/loot_tables/blocks/purple_iron_tank_valve.json
 51569e44db0e248cf7df85f876c268e2f3d73826 data/railcraft/loot_tables/blocks/purple_iron_tank_wall.json

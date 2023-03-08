@@ -1,13 +1,18 @@
 package mods.railcraft.world.level.block;
 
 import java.util.List;
+import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
-import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
+import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.charge.ChargeBlock;
+import mods.railcraft.api.charge.ChargeStorage;
+import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,9 +30,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-public class ManualRollingMachineBlock extends BaseEntityBlock {
+public class PoweredRollingMachineBlock extends BaseEntityBlock implements ChargeBlock {
 
-  public ManualRollingMachineBlock(Properties properties) {
+  private static final Map<Charge, Spec> CHARGE_SPECS =
+      Spec.make(Charge.distribution, ConnectType.BLOCK, 0,
+          new ChargeStorage.Spec(ChargeStorage.State.RECHARGEABLE, 1000, 1000, 1));
+
+  public PoweredRollingMachineBlock(Properties properties) {
     super(properties);
   }
 
@@ -38,7 +47,7 @@ public class ManualRollingMachineBlock extends BaseEntityBlock {
 
   @Override
   public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-    return new ManualRollingMachineBlockEntity(blockPos, blockState);
+    return new PoweredRollingMachineBlockEntity(blockPos, blockState);
   }
 
   @Nullable
@@ -46,8 +55,8 @@ public class ManualRollingMachineBlock extends BaseEntityBlock {
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
       BlockEntityType<T> type) {
     return level.isClientSide() ? null
-        : createTickerHelper(type, RailcraftBlockEntityTypes.MANUAL_ROLLING_MACHINE.get(),
-            ManualRollingMachineBlockEntity::serverTick);
+        : createTickerHelper(type, RailcraftBlockEntityTypes.POWERED_ROLLING_MACHINE.get(),
+            PoweredRollingMachineBlockEntity::serverTick);
   }
 
   @Override
@@ -56,9 +65,14 @@ public class ManualRollingMachineBlock extends BaseEntityBlock {
     if (level.isClientSide()) {
       return InteractionResult.SUCCESS;
     }
-    level.getBlockEntity(pos, RailcraftBlockEntityTypes.MANUAL_ROLLING_MACHINE.get())
+    level.getBlockEntity(pos, RailcraftBlockEntityTypes.POWERED_ROLLING_MACHINE.get())
         .ifPresent(blockEntity -> NetworkHooks.openScreen((ServerPlayer) player, blockEntity, pos));
     return InteractionResult.CONSUME;
+  }
+
+  @Override
+  public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level, BlockPos pos) {
+    return CHARGE_SPECS;
   }
 
   @Override

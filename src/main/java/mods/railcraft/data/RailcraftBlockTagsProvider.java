@@ -200,6 +200,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.STEAM_TURBINE.get())
         .add(RailcraftBlocks.COKE_OVEN_BRICKS.get())
         .add(RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
+        .add(RailcraftBlocks.POWERED_ROLLING_MACHINE.get())
         .add(RailcraftBlocks.CRUSHER.get())
         .add(RailcraftBlocks.FEED_STATION.get())
         .add(RailcraftBlocks.COKE_BLOCK.get())

@@ -279,6 +279,13 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
               .build(null));
 
+  public static final RegistryObject<BlockEntityType<PoweredRollingMachineBlockEntity>> POWERED_ROLLING_MACHINE =
+      deferredRegister.register("powered_rolling_machine",
+          () -> BlockEntityType.Builder
+              .of(PoweredRollingMachineBlockEntity::new,
+                  RailcraftBlocks.POWERED_ROLLING_MACHINE.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<CokeOvenBlockEntity>> COKE_OVEN =
       deferredRegister.register("coke_oven",
           () -> BlockEntityType.Builder

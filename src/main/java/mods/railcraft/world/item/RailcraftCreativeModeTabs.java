@@ -36,6 +36,7 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.TURBINE_ROTOR.get());
               output.accept(RailcraftItems.STEAM_TURBINE.get());
               output.accept(RailcraftItems.MANUAL_ROLLING_MACHINE.get());
+              output.accept(RailcraftItems.POWERED_ROLLING_MACHINE.get());
               output.accept(RailcraftItems.CRUSHER.get());
               output.accept(RailcraftItems.COKE_OVEN_BRICKS.get());
               output.accept(RailcraftItems.BLAST_FURNACE_BRICKS.get());
