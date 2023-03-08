@@ -125,6 +125,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
       case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
       case SLOT_LIQUID_INPUT -> FluidItemHelper.isRoomInContainer(itemStack,
           RailcraftFluids.CREOSOTE.get());
+      case SLOT_OUTPUT, SLOT_OUTPUT_FLUID -> true;
       default -> false;
     } && super.canPlaceItem(slot, itemStack);
   }
