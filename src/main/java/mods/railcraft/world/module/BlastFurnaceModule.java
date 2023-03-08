@@ -170,6 +170,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     return switch (slot) {
       case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
       case SLOT_FUEL -> this.isFuel(itemStack);
+      case SLOT_OUTPUT, SLOT_SLAG -> true;
       default -> false;
     } && super.canPlaceItem(slot, itemStack);
   }
