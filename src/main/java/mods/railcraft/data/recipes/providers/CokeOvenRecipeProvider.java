@@ -22,17 +22,17 @@ public class CokeOvenRecipeProvider extends RecipeProvider {
 
   public static void genRecipes(Consumer<FinishedRecipe> consumer) {
     CokeOvenRecipeBuilder
-        .coking(Items.CHARCOAL, Ingredient.of(ItemTags.LOGS), 0.0F, 250)
+        .coking(Items.CHARCOAL, Ingredient.of(ItemTags.LOGS), 0, 250)
         .unlockedBy("has_logs", has(ItemTags.LOGS))
         .save(consumer);
 
     CokeOvenRecipeBuilder
-        .coking(RailcraftItems.COAL_COKE.get(), Ingredient.of(Items.COAL), 0.0F, 500)
+        .coking(RailcraftItems.COAL_COKE.get(), Ingredient.of(Items.COAL), 0, 500)
         .unlockedBy(getHasName(Items.COAL), has(Items.COAL))
         .save(consumer);
 
     CokeOvenRecipeBuilder
-        .coking(Items.COAL_BLOCK, Ingredient.of(RailcraftItems.COKE_BLOCK.get()), 0.0F, 16200, 4500)
+        .coking(RailcraftItems.COKE_BLOCK.get(), Ingredient.of(Items.COAL_BLOCK), 0, 16200, 4500)
         .unlockedBy(getHasName(Items.COAL_BLOCK), has(Items.COAL_BLOCK))
         .save(consumer);
   }

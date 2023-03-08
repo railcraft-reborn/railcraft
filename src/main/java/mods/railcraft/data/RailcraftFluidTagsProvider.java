@@ -24,6 +24,8 @@ public class RailcraftFluidTagsProvider extends FluidTagsProvider {
     //https://forge.gemwire.uk/wiki/User:ChampionAsh5357/Sandbox/Fluids_API#Gaseous_Fluids
     this.tag(RailcraftTags.Fluids.GASEOUS)
         .add(RailcraftFluids.STEAM.get());
+    this.tag(RailcraftTags.Fluids.CREOSOTE)
+        .add(RailcraftFluids.CREOSOTE.get());
   }
 
   @Override
