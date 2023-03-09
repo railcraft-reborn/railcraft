@@ -1,8 +1,6 @@
 package mods.railcraft.world.module;
 
-import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -11,7 +9,6 @@ import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.IItemHandler;
@@ -44,16 +41,10 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private int processTicks;
 
-  public TankModule(TankBlockEntity provider, int capacity) {
-    this(provider, capacity, null);
-  }
 
-  public TankModule(TankBlockEntity provider, int capacity, @Nullable Supplier<Fluid> filter) {
+  public TankModule(TankBlockEntity provider, StandardTank tank) {
     super(provider, 3);
-    this.tank = StandardTank.ofCapacity(capacity);
-    if (filter != null) {
-      this.tank.filter(filter);
-    }
+    this.tank = tank;
   }
 
   public StandardTank getTank() {
