@@ -16,6 +16,7 @@ import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
 import mods.railcraft.world.level.block.tank.TankGaugeBlock;
 import mods.railcraft.world.level.block.tank.TankValveBlock;
 import mods.railcraft.world.level.material.fluid.FluidTools;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import mods.railcraft.world.module.TankModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -59,7 +60,8 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   public TankBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Collection<MultiblockPattern<Void>> patterns) {
     super(type, blockPos, blockState, TankBlockEntity.class, patterns);
-    this.module = this.moduleDispatcher.registerModule("tank", new TankModule(this, 0));
+    this.module = this.moduleDispatcher.registerModule("tank",
+        new TankModule(this, StandardTank.ofCapacity(0)));
     this.module.getTank().changeCallback(this::tankChanged);
   }
 
