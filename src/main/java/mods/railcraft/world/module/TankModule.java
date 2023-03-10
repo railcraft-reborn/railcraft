@@ -16,7 +16,6 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class TankModule extends ContainerModule<TankBlockEntity> {
 
-  public static final int TANK_INDEX = 0;
   public static final int SLOT_INPUT = 0;
   public static final int SLOT_PROCESS = 1;
   public static final int SLOT_OUTPUT = 2;
