@@ -21,9 +21,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> {
 
-  private static final int SLOT_INPUT = 0;
-  private static final int SLOT_PROCESS = 1;
-  private static final int SLOT_OUTPUT = 2;
+  public static final int SLOT_INPUT = 0;
+  public static final int SLOT_PROCESS = 1;
+  public static final int SLOT_OUTPUT = 2;
 
   private static final int REFILL_INTERVAL = 20;
   private static final float REFILL_PENALTY_FROZEN = 0.5F;
