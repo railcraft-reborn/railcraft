@@ -45,9 +45,9 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
       SynchedEntityData.defineId(TankMinecart.class, EntityDataSerializers.COMPOUND_TAG);
   private static final EntityDataAccessor<Boolean> FILLING =
       SynchedEntityData.defineId(TankMinecart.class, EntityDataSerializers.BOOLEAN);
-  private static final int SLOT_INPUT = 0;
-  private static final int SLOT_PROCESSING = 1;
-  private static final int SLOT_OUTPUT = 2;
+  public static final int SLOT_INPUT = 0;
+  public static final int SLOT_PROCESSING = 1;
+  public static final int SLOT_OUTPUT = 2;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 3);
   private final StandardTank tank =
       StandardTank
@@ -127,7 +127,7 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
     if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {
       this.fluidProcessingTimer = 0;
       this.processState = FluidTools.processContainer(
-          this.invLiquids, this.tank, FluidTools.ProcessType.DRAIN_ONLY, this.processState);
+          this.invLiquids, this.tank, FluidTools.ProcessType.DRAIN_THEN_FILL, this.processState);
     }
   }
 
