@@ -1,8 +1,6 @@
 package mods.railcraft.world.module;
 
-import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -11,20 +9,13 @@ import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-/**
- * Created by CovertJaguar on 1/28/2019 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public class TankModule extends ContainerModule<TankBlockEntity> {
 
-  public static final int TANK_INDEX = 0;
   public static final int SLOT_INPUT = 0;
   public static final int SLOT_PROCESS = 1;
   public static final int SLOT_OUTPUT = 2;
@@ -44,16 +35,10 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private int processTicks;
 
-  public TankModule(TankBlockEntity provider, int capacity) {
-    this(provider, capacity, null);
-  }
 
-  public TankModule(TankBlockEntity provider, int capacity, @Nullable Supplier<Fluid> filter) {
+  public TankModule(TankBlockEntity provider, StandardTank tank) {
     super(provider, 3);
-    this.tank = StandardTank.ofCapacity(capacity);
-    if (filter != null) {
-      this.tank.filter(filter);
-    }
+    this.tank = tank;
   }
 
   public StandardTank getTank() {
@@ -71,15 +56,13 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    if (!super.canPlaceItem(slot, stack)) {
-      return false;
-    }
-    if (slot == SLOT_INPUT) {
-      return (!this.tank.isEmpty()
+    return switch (slot) {
+      case SLOT_INPUT -> (!this.tank.isEmpty()
           && FluidItemHelper.isRoomInContainer(stack, this.tank.getFluidType()))
           || FluidUtil.getFluidContained(stack).isPresent();
-    }
-    return false;
+      case SLOT_PROCESS, SLOT_OUTPUT -> true;
+      default -> false;
+    } && super.canPlaceItem(slot, stack);
   }
 
   public LazyOptional<IItemHandler> getItemHandler() {

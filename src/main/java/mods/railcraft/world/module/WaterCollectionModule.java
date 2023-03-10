@@ -21,7 +21,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> {
 
-  private static final int SLOT_INPUT = 0;
+  public static final int SLOT_INPUT = 0;
+  public static final int SLOT_PROCESS = 1;
+  public static final int SLOT_OUTPUT = 2;
 
   private static final int REFILL_INTERVAL = 20;
   private static final float REFILL_PENALTY_FROZEN = 0.5F;
@@ -73,11 +75,13 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    return super.canPlaceItem(slot, stack)
-        && slot == SLOT_INPUT
-        && ((!this.tank.isEmpty()
-            && FluidItemHelper.isRoomInContainer(stack, this.tank.getFluidType()))
-            || FluidUtil.getFluidContained(stack).isPresent());
+    return switch (slot) {
+      case SLOT_INPUT -> (!this.tank.isEmpty()
+          && FluidItemHelper.isRoomInContainer(stack, this.tank.getFluidType()))
+          || FluidUtil.getFluidContained(stack).isPresent();
+      case SLOT_PROCESS, SLOT_OUTPUT -> true;
+      default -> false;
+    } && super.canPlaceItem(slot, stack);
   }
 
   private int calculateMultiplier() {

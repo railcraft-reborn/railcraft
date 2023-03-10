@@ -168,13 +168,16 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     var tag = super.serializeNBT();
     tag.put("tankManager", this.tankManager.serializeNBT());
     tag.put("boiler", this.boiler.serializeNBT());
+    tag.putString("processState", this.waterProcessState.getSerializedName());
     return tag;
   }
 
   @Override
-  public void deserializeNBT(CompoundTag data) {
-    super.deserializeNBT(data);
-    this.tankManager.deserializeNBT(data.getList("tankManager", Tag.TAG_COMPOUND));
-    this.boiler.deserializeNBT(data.getCompound("boiler"));
+  public void deserializeNBT(CompoundTag tag) {
+    super.deserializeNBT(tag);
+    this.tankManager.deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
+    this.boiler.deserializeNBT(tag.getCompound("boiler"));
+    this.waterProcessState = FluidTools.ProcessState.getByName(tag.getString("processState"))
+        .orElse(FluidTools.ProcessState.RESET);
   }
 }

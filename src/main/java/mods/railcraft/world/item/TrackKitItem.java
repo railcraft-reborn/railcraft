@@ -11,23 +11,17 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.RegistryObject;
 
 public class TrackKitItem extends Item {
@@ -43,16 +37,13 @@ public class TrackKitItem extends Item {
 
   @Override
   public InteractionResult useOn(UseOnContext context) {
-    Player player = context.getPlayer();
-    Level level = context.getLevel();
-    ItemStack itemStack = player.getItemInHand(context.getHand());
-    BlockPos blockPos = context.getClickedPos();
+    var player = context.getPlayer();
+    var level = context.getLevel();
+    var hand = context.getHand();
+    var itemStack = player.getItemInHand(hand);
+    var blockPos = context.getClickedPos();
 
-    if (level.isClientSide()) {
-      return InteractionResult.SUCCESS;
-    }
-
-    BlockState oldState = level.getBlockState(blockPos);
+    var oldState = level.getBlockState(blockPos);
     if (!BaseRailBlock.isRail(oldState)) {
       return InteractionResult.PASS;
     }
@@ -80,24 +71,23 @@ public class TrackKitItem extends Item {
       return InteractionResult.PASS;
     }
 
-    BaseRailBlock outfittedBlock =
-        this.outfittedBlocks.getOrDefault(TrackTypes.registry.get().getKey(trackType), () -> null).get();
+    var outfittedBlock = this.outfittedBlocks
+        .getOrDefault(TrackTypes.REGISTRY.get().getKey(trackType), () -> null).get();
     if (outfittedBlock == null) {
       player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_INVALID_TRACK_TYPE)
           .withStyle(ChatFormatting.RED), true);
       return InteractionResult.PASS;
     }
 
-    BlockState outfittedBlockState =
-        outfittedBlock.getStateForPlacement(new BlockPlaceContext(context));
+    var outfittedBlockState = outfittedBlock.getStateForPlacement(new BlockPlaceContext(context));
     if (level.setBlockAndUpdate(blockPos, outfittedBlockState)) {
-      SoundType soundType =
-          outfittedBlock.getSoundType(outfittedBlockState, level, blockPos, player);
+      var soundType = outfittedBlock.getSoundType(outfittedBlockState, level, blockPos, player);
       level.playSound(player, blockPos, soundType.getPlaceSound(), SoundSource.BLOCKS,
           soundType.getVolume(), soundType.getPitch());
-
-      RailcraftCriteriaTriggers.TRACK_KIT_USE.trigger(
-          (ServerPlayer) player, (ServerLevel) level, blockPos, itemStack);
+      if (!level.isClientSide()) {
+        RailcraftCriteriaTriggers.TRACK_KIT_USE.trigger(
+            (ServerPlayer) player, (ServerLevel) level, blockPos, itemStack);
+      }
 
       if (!player.getAbilities().instabuild) {
         itemStack.shrink(1);

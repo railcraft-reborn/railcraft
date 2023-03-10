@@ -1,5 +1,10 @@
 package mods.railcraft.world.item;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
+import java.util.function.Supplier;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Lists;
@@ -35,19 +40,13 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-import org.jetbrains.annotations.Nullable;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
-import java.util.function.Supplier;
-
 public class SpikeMaulItem extends TieredItem {
 
   private final float attackDamage;
   private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
   public SpikeMaulItem(float attackDamage, float attackSpeed, Tier tier, Properties properties) {
-    super(tier, properties);
+    super(tier, properties.durability(tier.getUses()));
     this.attackDamage = attackDamage + tier.getAttackDamageBonus();
     Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
     builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID,
@@ -113,27 +112,27 @@ public class SpikeMaulItem extends TieredItem {
       return InteractionResult.PASS;
     }
 
-    if (level.isClientSide()) {
-      return InteractionResult.SUCCESS;
-    }
-
     if (!level.setBlockAndUpdate(blockPos,
         found.get().getStateForPlacement(new BlockPlaceContext(context)))) {
       level.setBlockAndUpdate(blockPos, existingBlockState);
       return InteractionResult.FAIL;
     }
 
-    var heldStack = player.getItemInHand(context.getHand());
+    var hand = context.getHand();
+    var heldStack = player.getItemInHand(hand);
     var newBlockState = level.getBlockState(blockPos);
     var soundtype = newBlockState.getSoundType(level, blockPos, player);
-    level.playSound(player, blockPos,
-        newBlockState.getSoundType(level, blockPos, player).getPlaceSound(),
-        SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+    level.playSound(player, blockPos, soundtype.getPlaceSound(), SoundSource.BLOCKS,
+        (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+
+    if (level.isClientSide()) {
+      return InteractionResult.SUCCESS;
+    }
 
     RailcraftCriteriaTriggers.SPIKE_MAUL_USE.trigger(
         (ServerPlayer) player, heldStack, (ServerLevel) level, blockPos);
 
-    heldStack.shrink(1);
+    heldStack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
     return InteractionResult.SUCCESS;
   }
 

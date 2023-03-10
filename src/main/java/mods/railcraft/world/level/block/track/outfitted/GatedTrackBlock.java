@@ -196,7 +196,7 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     if (!level.isClientSide()) {
       boolean open = !isOpen(blockState);
       level.setBlockAndUpdate(pos, blockState.setValue(OPEN, open));
-      level.playSound(player, pos, open
+      level.playSound(null, pos, open
               ? SoundEvents.FENCE_GATE_OPEN
               : SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0F,
           level.getRandom().nextFloat() * 0.1F + 0.9F);

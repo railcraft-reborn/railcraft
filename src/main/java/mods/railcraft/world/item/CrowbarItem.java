@@ -83,7 +83,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
       if (newBlockState != blockState) {
         level.setBlockAndUpdate(pos, newBlockState);
         player.swing(hand);
-        stack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        stack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
         return InteractionResult.SUCCESS;
       }
     }
@@ -122,7 +122,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
 
   @Override
   public void onWhack(Player player, InteractionHand hand, ItemStack crowbar, BlockPos pos) {
-    crowbar.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+    crowbar.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
     player.swing(hand);
   }
 
@@ -135,7 +135,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   @Override
   public void onLink(Player player, InteractionHand hand, ItemStack crowbar,
       AbstractMinecart cart) {
-    crowbar.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+    crowbar.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
     player.swing(hand);
   }
 
@@ -148,8 +148,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   @Override
   public void onBoost(Player player, InteractionHand hand, ItemStack crowbar,
       AbstractMinecart cart) {
-    crowbar.hurtAndBreak(BOOST_DAMAGE, player,
-        __ -> player.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+    crowbar.hurtAndBreak(BOOST_DAMAGE, player, __ -> player.broadcastBreakEvent(hand));
     player.swing(hand);
   }
 
@@ -161,7 +160,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   }
 
   private static void removeExtraBlocks(Level level, int enchantmentLevel, BlockPos pos,
-      BlockState state, Player player) {
+      Player player) {
     if (enchantmentLevel > 0) {
       LevelUtil.playerRemoveBlock(level, pos, player);
       checkBlocks(level, enchantmentLevel, pos, player);
@@ -171,7 +170,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   private static void checkBlock(Level level, int enchantmentLevel, BlockPos pos, Player player) {
     var state = level.getBlockState(pos);
     if (player.hasCorrectToolForDrops(state)) {
-      removeExtraBlocks(level, enchantmentLevel - 1, pos, state, player);
+      removeExtraBlocks(level, enchantmentLevel - 1, pos, player);
     }
   }
 
