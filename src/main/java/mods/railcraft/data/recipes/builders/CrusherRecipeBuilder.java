@@ -26,21 +26,20 @@ public class CrusherRecipeBuilder {
 
   private final Ingredient ingredient;
   private final List<Tuple<ItemStack, Double>> probabilityItems;
-  private final int recipeDelay;
+  private final int processTime;
 
-  private CrusherRecipeBuilder(Ingredient ingredient,
-      List<Tuple<ItemStack, Double>> probabilityItems, int recipeDelay) {
+  private CrusherRecipeBuilder(Ingredient ingredient, int processTime) {
     this.ingredient = ingredient;
-    this.probabilityItems = probabilityItems;
-    this.recipeDelay = recipeDelay;
+    this.probabilityItems = new ArrayList<>();
+    this.processTime = processTime;
   }
 
   public static CrusherRecipeBuilder crush(Ingredient ingredient) {
     return crush(ingredient, DEFAULT_PROCESSING_TIME);
   }
 
-  public static CrusherRecipeBuilder crush(Ingredient ingredient, int recipeDelay) {
-    return new CrusherRecipeBuilder(ingredient, new ArrayList<>(), recipeDelay);
+  public static CrusherRecipeBuilder crush(Ingredient ingredient, int processTime) {
+    return new CrusherRecipeBuilder(ingredient, processTime);
   }
 
   public CrusherRecipeBuilder addResult(ItemLike item, int quantity, double probability) {
@@ -71,7 +70,7 @@ public class CrusherRecipeBuilder {
     var customResourceLocation = new ResourceLocation(Railcraft.ID, "crusher/crushing_" + path);
 
     finishedRecipe.accept(new Result(customResourceLocation, this.ingredient, this.probabilityItems,
-        this.recipeDelay));
+        this.processTime));
   }
 
   private static class Result implements FinishedRecipe {
@@ -79,22 +78,22 @@ public class CrusherRecipeBuilder {
     private final ResourceLocation id;
     private final Ingredient ingredient;
     private final List<Tuple<ItemStack, Double>> probabilityItems;
-    private final int recipeDelay;
+    private final int processTime;
 
     public Result(ResourceLocation resourceLocation, Ingredient ingredient,
         List<Tuple<ItemStack, Double>> probabilityItems,
-        int recipeDelay) {
+        int processTime) {
       this.id = resourceLocation;
       this.ingredient = ingredient;
       this.probabilityItems = probabilityItems;
-      this.recipeDelay = recipeDelay;
+      this.processTime = processTime;
     }
 
     public void serializeRecipeData(JsonObject jsonOut) {
-      jsonOut.addProperty("tickCost", recipeDelay);
+      jsonOut.addProperty("processTime", processTime);
       jsonOut.add("ingredient", ingredient.toJson());
 
-      JsonArray result = new JsonArray();
+      var result = new JsonArray();
       for (var item : probabilityItems) {
         var pattern = new JsonObject();
 

@@ -77,7 +77,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   @Override
   protected int calculateDuration() {
     return currentRecipe
-        .map(CrusherRecipe::getTickCost)
+        .map(CrusherRecipe::getProcessTime)
         .orElse(CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME);
   }
 

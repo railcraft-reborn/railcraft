@@ -1,15 +1,14 @@
 package mods.railcraft.data.recipes.builders;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -23,29 +22,29 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class RollingRecipeBuilder {
 
+  public static final int DEFAULT_PROCESSING_TIME = 100;
   private final Item result;
   private final int count;
-  private final int delay;
+  private final int processTime;
   private final List<String> rows = Lists.newArrayList();
   private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
 
-  private RollingRecipeBuilder(ItemLike resultItem, int resultCount, int recipeDelay) {
-    this.result = resultItem.asItem();
-    this.count = resultCount;
-    this.delay = recipeDelay;
+  private RollingRecipeBuilder(ItemLike result, int count, int processTime) {
+    this.result = result.asItem();
+    this.count = count;
+    this.processTime = processTime;
   }
 
-  public static RollingRecipeBuilder rolled(ItemLike resultItem) {
-    return rolled(resultItem, 1, 100);
+  public static RollingRecipeBuilder rolled(ItemLike result) {
+    return rolled(result, 1);
   }
 
-  public static RollingRecipeBuilder rolled(ItemLike resultItem, int resultCount) {
-    return rolled(resultItem, resultCount, 100);
+  public static RollingRecipeBuilder rolled(ItemLike result, int count) {
+    return rolled(result, count, DEFAULT_PROCESSING_TIME);
   }
 
-  public static RollingRecipeBuilder rolled(ItemLike resultItem,
-      int resultCount, int recipeDelay) {
-    return new RollingRecipeBuilder(resultItem, resultCount, recipeDelay);
+  public static RollingRecipeBuilder rolled(ItemLike result, int count, int processTime) {
+    return new RollingRecipeBuilder(result, count, processTime);
   }
 
   public RollingRecipeBuilder define(Character key, TagKey<Item> itemTagValue) {
@@ -56,13 +55,6 @@ public class RollingRecipeBuilder {
     return this.define(key, Ingredient.of(itemValue));
   }
 
-  /**
-   * Define a key for the recipie.
-   *
-   * @param key       A charachter used by the pattern
-   * @param itemValue The ingredient, can be an {@link net.minecraft.tags.TagKey<Item> ItemTag}
-   * @return this, for chaning functions.
-   */
   public RollingRecipeBuilder define(Character key, Ingredient itemValue) {
     if (this.key.containsKey(key)) {
       throw new IllegalArgumentException("Symbol '" + key + "' is already defined!");
@@ -75,9 +67,6 @@ public class RollingRecipeBuilder {
     }
   }
 
-  /**
-   * Defines a row of the recipie's pattern.
-   */
   public RollingRecipeBuilder pattern(String pattern) {
     if (!this.rows.isEmpty() && pattern.length() != this.rows.get(0).length()) {
       throw new IllegalArgumentException("Pattern must be the same width on every line!");
@@ -91,30 +80,22 @@ public class RollingRecipeBuilder {
     this.save(finishedRecipe, ForgeRegistries.ITEMS.getKey(this.result));
   }
 
-  /**
-   * Saves the item for registration.
-   *
-   * @param key Custom filename for multiple recipies creating a single item
-   */
   public void save(Consumer<FinishedRecipe> finishedRecipe, String key) {
-    ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
+    var resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
     if ((new ResourceLocation(key)).equals(resourcelocation)) {
-      throw new IllegalStateException("Shaped Recipe "
-          + key + " should remove its 'save' argument");
+      throw new IllegalStateException(
+          "Shaped Recipe %s should remove its 'save' argument".formatted(key));
     } else {
       this.save(finishedRecipe, new ResourceLocation(key));
     }
   }
 
-  /**
-   * Saves the item for registration.
-   */
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
     var customResourceLocation = new ResourceLocation(Railcraft.ID, "rolling/" + path);
     finishedRecipe.accept(
         new Result(customResourceLocation, this.result, this.count,
-            this.delay, this.rows, this.key));
+            this.processTime, this.rows, this.key));
   }
 
   private static class Result implements FinishedRecipe {
@@ -137,28 +118,28 @@ public class RollingRecipeBuilder {
     }
 
     public void serializeRecipeData(JsonObject jsonOut) {
-      JsonArray jsonarray = new JsonArray();
+      var jsonarray = new JsonArray();
 
-      for (String s : this.pattern) {
+      for (var s : this.pattern) {
         jsonarray.add(s);
       }
 
       jsonOut.add("pattern", jsonarray);
-      JsonObject jsonobject = new JsonObject();
+      var jsonobject = new JsonObject();
 
-      for (Entry<Character, Ingredient> entry : this.key.entrySet()) {
+      for (var entry : this.key.entrySet()) {
         jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
       }
 
       jsonOut.add("key", jsonobject);
-      JsonObject jsonobject1 = new JsonObject();
+      var jsonobject1 = new JsonObject();
       jsonobject1.addProperty("item", ForgeRegistries.ITEMS.getKey(this.resultItem).toString());
       if (this.count > 1) {
         jsonobject1.addProperty("count", this.count);
       }
 
       jsonOut.add("result", jsonobject1);
-      jsonOut.add("tickCost", new JsonPrimitive(delay));
+      jsonOut.add("processTime", new JsonPrimitive(delay));
     }
 
     public RecipeSerializer<?> getType() {
