@@ -13,9 +13,9 @@
     "a b",
     "a b"
   ],
+  "processTime": 100,
   "result": {
     "count": 12,
     "item": "railcraft:standard_rail"
-  },
-  "tickCost": 100
+  }
 }

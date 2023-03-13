@@ -13,9 +13,9 @@
     "a b",
     "a b"
   ],
+  "processTime": 100,
   "result": {
     "count": 6,
     "item": "railcraft:electric_rail"
-  },
-  "tickCost": 100
+  }
 }

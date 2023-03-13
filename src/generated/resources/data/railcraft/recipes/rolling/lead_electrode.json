@@ -10,8 +10,8 @@
     " a ",
     " a "
   ],
+  "processTime": 100,
   "result": {
     "item": "railcraft:lead_electrode"
-  },
-  "tickCost": 100
+  }
 }
