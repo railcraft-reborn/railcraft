@@ -1543,7 +1543,8 @@ public class RailcraftBlocks {
       deferredRegister.register("powered_rolling_machine",
           () -> new PoweredRollingMachineBlock(BlockBehaviour.Properties.of(Material.METAL)
               .sound(SoundType.METAL)
-              .strength(3.0F)));
+              .strength(3.0F)
+              .randomTicks()));
 
   public static final RegistryObject<CrusherMultiblockBlock> CRUSHER =
       deferredRegister.register("crusher",

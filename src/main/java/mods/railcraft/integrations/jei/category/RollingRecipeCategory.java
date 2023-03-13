@@ -1,10 +1,11 @@
 package mods.railcraft.integrations.jei.category;
 
+import java.util.List;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mods.railcraft.Translations;
@@ -24,11 +25,13 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
       new ResourceLocation("textures/gui/container/crafting_table.png");
 
   private final IDrawable background, icon;
+  private final ICraftingGridHelper craftingGridHelper;
 
   public RollingRecipeCategory(IGuiHelper guiHelper) {
     this.background = guiHelper.createDrawable(CRAFTING_TABLE, 29, 16, WIDTH, HEIGHT);
     var itemStack = new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get());
     this.icon = guiHelper.createDrawableItemStack(itemStack);
+    this.craftingGridHelper = guiHelper.createCraftingGridHelper();
   }
 
   @Override
@@ -53,21 +56,12 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
 
   @Override
   public void setRecipe(IRecipeLayoutBuilder builder, RollingRecipe recipe, IFocusGroup focuses) {
-    builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 19).addItemStack(recipe.getResultItem());
-    var ingredients = recipe.getIngredients();
-
-    int heightOffset = Math.floorDiv(3 - recipe.getHeight(), 2);
-    int widthOffset = Math.floorDiv(3 - recipe.getWidth(), 2);
-    int stackIndex = 0;
-
-    for (int y = heightOffset; y < recipe.getHeight() + heightOffset; y++) {
-      for (int x = widthOffset; x < recipe.getWidth() + widthOffset; x++) {
-        var ingredient = ingredients.get(stackIndex);
-        builder
-            .addSlot(RecipeIngredientRole.INPUT, x * 18 + 1, y * 18 + 1)
-            .addIngredients(ingredient);
-        stackIndex++;
-      }
-    }
+    this.craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem()));
+    int width = recipe.getWidth();
+    int height = recipe.getHeight();
+    var inputs = recipe.getIngredients().stream()
+        .map(ingredient -> List.of(ingredient.getItems()))
+        .toList();
+    this.craftingGridHelper.createAndSetInputs(builder, inputs, width, height);
   }
 }

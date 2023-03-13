@@ -5,7 +5,6 @@ import mods.railcraft.gui.widget.ChargeNetworkLevelIndicator;
 import mods.railcraft.world.inventory.slot.OutputSlot;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
 
 public class CrusherMenu extends CrafterMenu {
@@ -20,9 +19,8 @@ public class CrusherMenu extends CrafterMenu {
 
     var logic = crusher.getCrusherModule();
 
-    var chargeIndicator = new ChargeNetworkLevelIndicator(
-        crusher.getLevel() instanceof ServerLevel level ? level : null,
-        crusher.getBlockPos());
+    var chargeIndicator =
+        new ChargeNetworkLevelIndicator(crusher.getLevel(), crusher.getBlockPos());
     this.energyWidget = new AnalogGaugeWidget(chargeIndicator, 74, 59, 28, 14, 99, 65);
     addWidget(energyWidget);
 

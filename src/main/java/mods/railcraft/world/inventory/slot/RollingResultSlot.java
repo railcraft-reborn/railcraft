@@ -1,64 +1,32 @@
 package mods.railcraft.world.inventory.slot;
 
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * Alternate to CraftingResultSlot.
- */
-public class RollingResultSlot extends Slot {
+public class RollingResultSlot extends ResultSlot {
+
   private final CraftingContainer craftSlots;
   private final Player player;
 
-  public RollingResultSlot(Player player, CraftingContainer craftingContainer,
-      Container outputInventory, int slotID, int x, int y) {
-    super(outputInventory, slotID, x, y);
+  public RollingResultSlot(Player player, CraftingContainer craftSlots, Container container,
+      int slot, int xPos, int yPos) {
+    super(player, craftSlots, container, slot, xPos, yPos);
     this.player = player;
-    this.craftSlots = craftingContainer;
+    this.craftSlots = craftSlots;
   }
 
   @Override
-  public boolean mayPlace(ItemStack itemStack) {
-    return false;
-  }
-
-  @Override
-  protected void onQuickCraft(ItemStack itemStack, int count) {
-    this.checkTakeAchievements(itemStack);
-  }
-
-  @Override
-  protected void checkTakeAchievements(ItemStack itemStack) {
-    // if (this.removeCount > 0) {
-    // itemStack.onCraftedBy(this.player.level, this.player, this.removeCount);
-    // net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerCraftingEvent(this.player, itemStack,
-    // this.craftSlots);
-    // }
-
-    // if (this.container instanceof IRecipeHolder) {
-    // ((IRecipeHolder)this.container).awardUsedRecipes(this.player);
-    // }
-    // TODO: achievments
-  }
-
-  @Override
-  public void onTake(Player playerEntity, ItemStack itemStack) {
-    this.checkTakeAchievements(itemStack);
-  }
-
-  public void takeCraftingItems(Player playerEntity) {
-    NonNullList<ItemStack> recipieRemaningItems =
-        playerEntity.level.getRecipeManager().getRemainingItemsFor(
-            RailcraftRecipeTypes.ROLLING.get(),
-            this.craftSlots, playerEntity.level);
-    for (int i = 0; i < recipieRemaningItems.size(); ++i) {
-      ItemStack itemstack = this.craftSlots.getItem(i);
-      ItemStack itemstack1 = recipieRemaningItems.get(i);
+  public void onTake(Player player, ItemStack stack) {
+    this.checkTakeAchievements(stack);
+    var recipeRemainingItems = player.level.getRecipeManager()
+        .getRemainingItemsFor(RailcraftRecipeTypes.ROLLING.get(), this.craftSlots, player.level);
+    for (int i = 0; i < recipeRemainingItems.size(); ++i) {
+      var itemstack = this.craftSlots.getItem(i);
+      var itemstack1 = recipeRemainingItems.get(i);
       if (!itemstack.isEmpty()) {
         this.craftSlots.removeItem(i, 1);
         itemstack = this.craftSlots.getItem(i);

@@ -14,6 +14,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -34,7 +36,7 @@ public class PoweredRollingMachineBlock extends BaseEntityBlock implements Charg
 
   private static final Map<Charge, Spec> CHARGE_SPECS =
       Spec.make(Charge.distribution, ConnectType.BLOCK, 0,
-          new ChargeStorage.Spec(ChargeStorage.State.RECHARGEABLE, 1000, 1000, 1));
+          new ChargeStorage.Spec(ChargeStorage.State.RECHARGEABLE, 8000, 1000, 1));
 
   public PoweredRollingMachineBlock(Properties properties) {
     super(properties);
@@ -73,6 +75,34 @@ public class PoweredRollingMachineBlock extends BaseEntityBlock implements Charg
   @Override
   public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level, BlockPos pos) {
     return CHARGE_SPECS;
+  }
+
+  @Override
+  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    this.registerNode(state, level, pos);
+  }
+
+  @Override
+  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
+      boolean isMoving) {
+    if (!state.is(oldState.getBlock())) {
+      this.registerNode(state, (ServerLevel) level, pos);
+    }
+  }
+
+  @Override
+  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
+      boolean moved) {
+    if (!state.is(newState.getBlock())
+        && level.getBlockEntity(pos) instanceof PoweredRollingMachineBlockEntity rollingMachine) {
+      Containers.dropContents(level, pos, rollingMachine.getInvResult());
+      Containers.dropContents(level, pos, rollingMachine.getInvMatrix());
+      level.updateNeighbourForOutputSignal(pos, this);
+    }
+    super.onRemove(state, level, pos, newState, moved);
+    if (!state.is(newState.getBlock())) {
+      this.deregisterNode((ServerLevel) level, pos);
+    }
   }
 
   @Override
