@@ -21,7 +21,7 @@ public class ManualRollingMachineMenu extends RailcraftMenu {
   private final ResultContainer craftResult;
   private final ContainerMapper resultSlot;
 
-  public ManualRollingMachineMenu(MenuType<?> type, int id, Inventory inventory,
+  protected ManualRollingMachineMenu(MenuType<?> type, int id, Inventory inventory,
       ManualRollingMachineBlockEntity blockEntity, int xs, int xy) {
     super(type, id, inventory.player, blockEntity::stillValid);
     this.blockEntity = blockEntity;
@@ -58,8 +58,8 @@ public class ManualRollingMachineMenu extends RailcraftMenu {
 
   @Override
   public void slotsChanged(Container container) {
-    craftResult.setItem(0, blockEntity.getRecipe()
-        .map(r -> r.assemble(craftMatrix))
+    this.craftResult.setItem(0, this.blockEntity.getRecipe()
+        .map(r -> r.assemble(this.craftMatrix))
         .orElse(ItemStack.EMPTY));
   }
 

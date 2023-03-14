@@ -26,9 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implements MenuProvider {
 
-  public static final int SLOT_RESULT = 0;
-  public static final int[] SLOTS = ContainerTools.buildSlotArray(0, 10);
-
+  private static final int SLOT_RESULT = 0;
   private AdvancedContainer container;
   private final FakeRollingContainer matrixListener = new FakeRollingContainer();
   protected final RollingCraftingContainer craftMatrix =
@@ -200,6 +198,15 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
 
     public Stream<ItemStack> getItems() {
       return IntStream.range(0, this.getContainerSize()).mapToObj(this::getItem);
+    }
+
+    @Override
+    public boolean canPlaceItem(int index, ItemStack stack) {
+      if (stack.isEmpty())
+        return false;
+      if (!stack.isStackable())
+        return false;
+      return !getItem(index).isEmpty();
     }
   }
 
