@@ -297,6 +297,7 @@ public class Translations {
     public static final String RECEIVERS = makeKey("tips", "receivers");
     public static final String REDSTONE_LINKAGE = makeKey("tips", "redstone_linkage");
     public static final String LISTEN = makeKey("tips", "listen");
+    public static final String CLICK_TO_CRAFT = makeKey("tips", "click_to_craft");
   }
 
   public static class Container {

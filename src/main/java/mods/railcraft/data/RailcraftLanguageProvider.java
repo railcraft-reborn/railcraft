@@ -505,6 +505,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.RECEIVERS, "%sx Receivers");
     this.add(Translations.Tips.REDSTONE_LINKAGE, "Redstone linkage:");
     this.add(Translations.Tips.LISTEN, "Listen");
+    this.add(Translations.Tips.CLICK_TO_CRAFT, "- Click to craft -");
   }
 
   private void screenTranslations() {

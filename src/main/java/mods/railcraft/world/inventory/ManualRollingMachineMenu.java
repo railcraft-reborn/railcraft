@@ -4,8 +4,6 @@ import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.inventory.slot.RollingResultSlot;
 import mods.railcraft.world.inventory.slot.UnmodifiableSlot;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ManualRollingMachineMenu extends RailcraftMenu {
 
+  public static final String CLICK_TO_CRAFT_TAG = "clickToCraft";
   private final ManualRollingMachineBlockEntity blockEntity;
   private final ManualRollingMachineBlockEntity.RollingCraftingContainer craftMatrix;
   private final ResultContainer craftResult;
@@ -33,11 +32,7 @@ public class ManualRollingMachineMenu extends RailcraftMenu {
       @Override
       public void setItem(int index, ItemStack stack) {
         super.setItem(index, stack);
-        if (blockEntity.level().isClientSide) {
-          var itemName = stack.getHoverName().copy();
-          var clickMe = Component.literal("CLICK ME").withStyle(ChatFormatting.YELLOW);
-          stack.setHoverName(itemName.append(" - ").append(clickMe));
-        }
+        stack.getOrCreateTag().putBoolean(CLICK_TO_CRAFT_TAG, true);
       }
     };
     this.addSlot(new SlotRollingMachine(this.craftResult, 0, xs, xy));

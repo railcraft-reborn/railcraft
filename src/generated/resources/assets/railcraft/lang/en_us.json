@@ -690,6 +690,7 @@
   "tips.railcraft.cart.maintenance.mode.service": "Service",
   "tips.railcraft.cart.maintenance.mode.transport": "Transport",
   "tips.railcraft.cart_dispenser": "Dispenses carts onto tracks",
+  "tips.railcraft.click_to_craft": "- Click to craft -",
   "tips.railcraft.coal_coke_block": "%s Fuel Units",
   "tips.railcraft.coke_oven": "Multi-Block: 3x3x3 (Hollow)",
   "tips.railcraft.comparator_output_from_carts": "- Can be used to get Comparator output from carts -",

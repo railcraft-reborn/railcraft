@@ -1,6 +1,7 @@
 package mods.railcraft.client;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.Translations;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
 import mods.railcraft.client.emblem.EmblemClientUtil;
@@ -39,6 +40,7 @@ import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
 import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
 import mods.railcraft.particle.RailcraftParticleTypes;
+import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
@@ -60,6 +62,7 @@ import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -67,9 +70,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class ClientManager {
 
   private static ClientManager instance;
-
-  private final Minecraft minecraft;
-
   private final ShuntingAuraRenderer shuntingAuraRenderer;
 
   public ClientManager() {
@@ -88,7 +88,6 @@ public class ClientManager {
 
     MinecraftForge.EVENT_BUS.register(this);
 
-    this.minecraft = Minecraft.getInstance();
     this.shuntingAuraRenderer = new ShuntingAuraRenderer();
   }
 
@@ -203,7 +202,7 @@ public class ClientManager {
   @SubscribeEvent
   public void handleClientTick(TickEvent.ClientTickEvent event) {
     if (event.phase == TickEvent.Phase.START
-        && (this.minecraft.level != null && !this.minecraft.isPaused())) {
+        && (Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused())) {
       SignalAspect.tickBlinkState();
     }
   }
@@ -241,6 +240,20 @@ public class ClientManager {
         Component.literal("- CovertJaguar, Sm0keySa1m0n, 3divad99")
             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     event.getPlayer().displayClientMessage(message, false);
+  }
+
+  @SubscribeEvent
+  public void onItemTooltip(ItemTooltipEvent event) {
+    var itemStack = event.getItemStack();
+    var tag = itemStack.getTag();
+    if (tag == null) {
+      return;
+    }
+    if (tag.contains(ManualRollingMachineMenu.CLICK_TO_CRAFT_TAG) &&
+        tag.getBoolean(ManualRollingMachineMenu.CLICK_TO_CRAFT_TAG)) {
+      event.getToolTip().add(Component.translatable(Translations.Tips.CLICK_TO_CRAFT)
+              .withStyle(ChatFormatting.YELLOW));
+    }
   }
 
   // ================================================================================
