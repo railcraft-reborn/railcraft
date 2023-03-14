@@ -75,7 +75,7 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(Items.BRICK, 1, 0.5)
         .addResult(Items.BRICK, 1, 0.5)
         .save(consumer);
-    CrusherRecipeBuilder.crush(Ingredient.of(Items.STONE_SLAB))
+    CrusherRecipeBuilder.crush(Ingredient.of(Items.STONE_SLAB, Items.STONE_BRICK_SLAB))
         .addResult(Items.COBBLESTONE, 1, 0.45)
         .save(consumer);
     CrusherRecipeBuilder.crush(Ingredient.of(Items.SANDSTONE_SLAB))
@@ -87,9 +87,6 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Ingredient.of(Items.BRICK_SLAB))
         .addResult(Items.BRICK, 1, 1)
         .addResult(Items.BRICK, 1, 0.75)
-        .save(consumer);
-    CrusherRecipeBuilder.crush(Ingredient.of(Items.STONE_BRICK_SLAB))
-        .addResult(Items.COBBLESTONE, 1, 0.45)
         .save(consumer);
     CrusherRecipeBuilder.crush(Ingredient.of(Items.ICE))
         .addResult(Items.SNOW_BLOCK, 1, 0.85)
@@ -194,16 +191,12 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.QUARRIED))
         .addResult(RailcraftItems.QUARRIED_COBBLESTONE.get(), 1, 1)
         .save(consumer, "tags_quarried");
-    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.QUARRIED_BRICK_STAIRS.get()))
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.QUARRIED_BRICK_STAIRS.get(),
+            RailcraftItems.QUARRIED_PAVER_STAIRS.get()))
         .addResult(RailcraftItems.QUARRIED_COBBLESTONE.get(), 1, 0.75)
         .save(consumer);
-    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.QUARRIED_PAVER_STAIRS.get()))
-        .addResult(RailcraftItems.QUARRIED_COBBLESTONE.get(), 1, 0.75)
-        .save(consumer);
-    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.QUARRIED_BRICK_SLAB.get()))
-        .addResult(RailcraftItems.QUARRIED_COBBLESTONE.get(), 1, 0.5)
-        .save(consumer);
-    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.QUARRIED_PAVER_SLAB.get()))
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.QUARRIED_BRICK_SLAB.get(),
+            RailcraftItems.QUARRIED_PAVER_SLAB.get()))
         .addResult(RailcraftItems.QUARRIED_COBBLESTONE.get(), 1, 0.5)
         .save(consumer);
   }

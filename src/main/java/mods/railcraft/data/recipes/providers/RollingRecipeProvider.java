@@ -92,10 +92,8 @@ public class RollingRecipeProvider extends RecipeProvider {
   }
 
   private static void buildElectrodes(Consumer<FinishedRecipe> consumer) {
-    RollingRecipePattern.line(consumer, Ingredient.of(Items.COAL),
-        RailcraftItems.CARBON_ELECTRODE.get(), 1, "coal_carbon_electrode");
-    RollingRecipePattern.line(consumer, Ingredient.of(Items.CHARCOAL),
-        RailcraftItems.CARBON_ELECTRODE.get(), 1, "charcoal_carbon_electrode");
+    RollingRecipePattern.line(consumer, Ingredient.of(Items.COAL, Items.CHARCOAL),
+        RailcraftItems.CARBON_ELECTRODE.get(), 1);
     RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.NICKEL_PLATE),
         RailcraftItems.NICKEL_ELECTRODE.get(), 1);
     RollingRecipePattern.line(consumer, Ingredient.of(RailcraftTags.Items.IRON_PLATE),

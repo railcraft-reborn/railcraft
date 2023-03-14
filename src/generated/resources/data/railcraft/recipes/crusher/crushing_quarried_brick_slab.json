@@ -1,8 +1,13 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "railcraft:quarried_brick_slab"
-  },
+  "ingredient": [
+    {
+      "item": "railcraft:quarried_brick_slab"
+    },
+    {
+      "item": "railcraft:quarried_paver_slab"
+    }
+  ],
   "output": [
     {
       "probability": 0.5,
