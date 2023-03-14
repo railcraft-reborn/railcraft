@@ -35,12 +35,9 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
       new RollingCraftingContainer(matrixListener, 3, 3);
   protected final ContainerMapper invResult, invMatrix;
 
-  public boolean useLast;
-  protected boolean isWorking, paused;
+  protected boolean isWorking, useLast;
   private Optional<RollingRecipe> currentRecipe = Optional.empty();
-  private int progress;
-  private int clock = 0;
-  private int processTime = 100;
+  private int progress, clock = 0, processTime = 100;
 
   public ManualRollingMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos,
       BlockState blockState) {
@@ -117,9 +114,6 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
 
     blockEntity.balanceSlots();
 
-    if (blockEntity.paused)
-      return;
-
     if (blockEntity.clock++ % 8 == 0) {
       blockEntity.currentRecipe = blockEntity.getRecipe();
       blockEntity.processTime = blockEntity.currentRecipe
@@ -178,8 +172,8 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     }
   }
 
-  public void setPaused(boolean p) {
-    paused = p;
+  public void setUseLast() {
+    this.useLast = true;
   }
 
   public boolean canMakeMore() {

@@ -85,7 +85,7 @@ public class ManualRollingMachineMenu extends RailcraftMenu {
     @Override
     public void onTake(Player player, ItemStack stack) {
       super.onTake(player, stack);
-      blockEntity.useLast = true;
+      blockEntity.setUseLast();
     }
   }
 }

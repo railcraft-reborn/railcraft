@@ -25,7 +25,7 @@ public class PoweredRollingMachineMenu extends ManualRollingMachineMenu {
   @Override
   public void removed(Player player) {
     if (player instanceof ServerPlayer serverPlayer) {
-      ItemStack itemstack = this.getCarried();
+      var itemstack = this.getCarried();
       if (!itemstack.isEmpty()) {
         if (player.isAlive() && !serverPlayer.hasDisconnected()) {
           player.getInventory().placeItemBackInInventory(itemstack);
