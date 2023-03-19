@@ -350,6 +350,13 @@ public class Translations {
         makeKey("jei", "desc.dual_token_signal");
     public static final String TUNNEL_BORE =
         makeKey("jei", "desc.tunnel_bore");
+
+    public static final String PAINT =
+        makeKey("jei.gui", "paint");
+    public static final String COPY_TAG =
+        makeKey("jei.gui", "copy_tag");
+    public static final String REPAIR =
+        makeKey("jei.gui", "repair");
   }
 
   public static class Signal {

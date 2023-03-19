@@ -744,6 +744,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         It is both a Controller and a Receiver.""");
     this.add(Translations.Jei.TUNNEL_BORE,
         "Machine designed for digging tunnels and laying track.");
+    this.add(Translations.Jei.PAINT, "Paint");
+    this.add(Translations.Jei.COPY_TAG, "Copy Tag");
+    this.add(Translations.Jei.REPAIR, "Repair");
   }
 
   private void signalTranslations() {

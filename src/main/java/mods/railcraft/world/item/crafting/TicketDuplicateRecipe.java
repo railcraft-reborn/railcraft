@@ -2,6 +2,7 @@ package mods.railcraft.world.item.crafting;
 
 import java.util.stream.IntStream;
 import mods.railcraft.world.item.RailcraftItems;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -56,6 +57,14 @@ public class TicketDuplicateRecipe extends CustomRecipe {
       return copy;
     }
     return getResultItem();
+  }
+
+  @Override
+  public NonNullList<Ingredient> getIngredients() {
+    NonNullList<Ingredient> ingredients = NonNullList.create();
+    ingredients.add(Ingredient.of(RailcraftItems.GOLDEN_TICKET.get()));
+    ingredients.add(Ingredient.of(Items.PAPER));
+    return ingredients;
   }
 
   @Override

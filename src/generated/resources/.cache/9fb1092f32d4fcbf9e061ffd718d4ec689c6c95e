@@ -1,4 +1,4 @@
-// 1.19.3	2023-03-14T19:54:04.438177	Recipes
+// 1.19.3	2023-03-19T22:03:31.943243	Recipes
 b5a17571ce39881697d539ab8e2e6830c430e652 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 3159a4cc9361689702fc1dee383096849bfdb726 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
 9e43f76515912931ca12626a2fa1c5bf15bcf4fb data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_raw.json
@@ -950,6 +950,7 @@ cd22c2d73f87139857d442ee23bb79f5caf35dea data/railcraft/recipes/rolling/track_pa
 956d5a68955a9b8e31125313f18cf73321745e28 data/railcraft/recipes/rolling/track_parts_steel_nugget.json
 d7c8c23757a599a48b0e3b9d275ebed4284ca61b data/railcraft/recipes/rolling/zinc_electrode.json
 b992c4423251127845654fcefee20026b597fcf0 data/railcraft/recipes/rolling/zinc_plate.json
+e36a611a5a38263bc3a7ec44dd47055af890b2ef data/railcraft/recipes/rotor_repair.json
 a41aff79d305b212593fcab4a1962340300c5567 data/railcraft/recipes/routing_table_book.json
 8dbabcb09c1fafead8d800dea318a9a16f5c3025 data/railcraft/recipes/routing_track_kit.json
 bb1d2869608a81aa2656c4565a34c1e9b45c3dcd data/railcraft/recipes/signal_block_relay_box.json

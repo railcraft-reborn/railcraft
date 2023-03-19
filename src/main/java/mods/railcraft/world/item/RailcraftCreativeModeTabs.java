@@ -30,7 +30,6 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
               output.accept(RailcraftItems.SOLID_FUELED_FIREBOX.get());
               output.accept(RailcraftItems.FLUID_FUELED_FIREBOX.get());
-              output.accept(RailcraftItems.SIGNAL_LABEL.get());
               output.accept(RailcraftItems.TURBINE_BLADE.get());
               output.accept(RailcraftItems.TURBINE_DISK.get());
               output.accept(RailcraftItems.TURBINE_ROTOR.get());
@@ -178,6 +177,7 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.WHISTLE_TUNER.get());
               output.accept(RailcraftItems.SIGNAL_TUNER.get());
               output.accept(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get());
+              output.accept(RailcraftItems.SIGNAL_LABEL.get());
               output.accept(RailcraftItems.GOLDEN_TICKET.get());
               output.accept(RailcraftItems.TICKET.get());
               output.accept(RailcraftItems.ROUTING_TABLE_BOOK.get());

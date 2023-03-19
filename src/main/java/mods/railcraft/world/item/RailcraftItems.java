@@ -118,7 +118,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> TURBINE_ROTOR =
       deferredRegister.register("turbine_rotor",
-          () -> new TurbineRotorItem(new Item.Properties()));
+          () -> new TurbineRotorItem(new Item.Properties().stacksTo(1)));
 
   public static final RegistryObject<Item> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",

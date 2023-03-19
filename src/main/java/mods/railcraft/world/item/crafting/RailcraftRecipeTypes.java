@@ -29,6 +29,12 @@ public class RailcraftRecipeTypes {
   public static final RegistryObject<RecipeType<TicketDuplicateRecipe>> TICKET_DUPLICATE =
       register("ticket_duplicate");
 
+  public static final RegistryObject<RecipeType<LocomotivePaintingRecipe>> LOCOMOTIVE_PAINTING =
+      register("locomotive_painting");
+
+  public static final RegistryObject<RecipeType<RotorRepairRecipe>> ROTOR_REPAIR =
+      register("rotor_repair");
+
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }

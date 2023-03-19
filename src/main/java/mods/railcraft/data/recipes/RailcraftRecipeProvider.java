@@ -21,6 +21,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -689,6 +690,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
             has(RailcraftItems.CHARGE_MOTOR.get()))
         .save(consumer);
+    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.ROTOR_REPAIR.get())
+        .save(consumer, "rotor_repair");
   }
 
   private void buildSignalBox(Consumer<FinishedRecipe> consumer) {

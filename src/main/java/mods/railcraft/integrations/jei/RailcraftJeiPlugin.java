@@ -7,7 +7,9 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
+import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import mods.railcraft.Railcraft;
+import mods.railcraft.Translations;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
@@ -24,9 +26,13 @@ import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.PoweredRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
+import mods.railcraft.world.item.crafting.RotorRepairRecipe;
+import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
@@ -101,6 +107,23 @@ public class RailcraftJeiPlugin implements IModPlugin {
         .map(RegistryObject::get)
         .forEach(x ->
             registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).addJeiInfo()));
+  }
+
+
+  @Override
+  public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
+    var craftingCategory = registration.getCraftingCategory();
+    craftingCategory.addCategoryExtension(LocomotivePaintingRecipe.class,
+        r -> new DefaultRecipeWrapper(r, false, Component.translatable(Translations.Jei.PAINT)));
+    craftingCategory.addCategoryExtension(TicketDuplicateRecipe.class,
+        r -> new DefaultRecipeWrapper(r, true, Component.translatable(Translations.Jei.COPY_TAG)));
+    craftingCategory.addCategoryExtension(RotorRepairRecipe.class,
+        r -> new DefaultRecipeWrapper(r, true, Component.translatable(Translations.Jei.REPAIR))
+            .modifyInputs(stack -> {
+              if (stack.is(RailcraftItems.TURBINE_ROTOR.get())) {
+                stack.setDamageValue(RotorRepairRecipe.REPAIR_PER_BLADE);
+              }
+            }));
   }
 
   @Override
