@@ -25,9 +25,11 @@ import mods.railcraft.world.inventory.PoweredRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
+import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.RegistryObject;
 
 @JeiPlugin
 public class RailcraftJeiPlugin implements IModPlugin {
@@ -86,6 +88,19 @@ public class RailcraftJeiPlugin implements IModPlugin {
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.BLASTING.get()));
     registration.addRecipes(RecipeTypes.CRUSHER,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()));
+
+    RailcraftBlocks.entries()
+        .stream()
+        .filter(x -> x.get() instanceof JeiSearchable)
+        .map(RegistryObject::get)
+        .forEach(x ->
+            registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).addJeiInfo()));
+    RailcraftItems.entries()
+        .stream()
+        .filter(x -> x.get() instanceof JeiSearchable)
+        .map(RegistryObject::get)
+        .forEach(x ->
+            registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).addJeiInfo()));
   }
 
   @Override

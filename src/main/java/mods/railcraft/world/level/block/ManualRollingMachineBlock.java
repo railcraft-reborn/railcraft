@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
+import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
@@ -25,7 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-public class ManualRollingMachineBlock extends BaseEntityBlock {
+public class ManualRollingMachineBlock extends BaseEntityBlock implements JeiSearchable {
 
   public ManualRollingMachineBlock(Properties properties) {
     super(properties);
@@ -66,5 +67,10 @@ public class ManualRollingMachineBlock extends BaseEntityBlock {
       TooltipFlag flag) {
     super.appendHoverText(stack, level, tooltip, flag);
     tooltip.add(Component.translatable(Translations.Tips.ROLLING_MACHINE).withStyle(ChatFormatting.GRAY));
+  }
+
+  @Override
+  public Component addJeiInfo() {
+    return Component.translatable(Translations.Jei.MANUAL_ROLLING_MACHINE);
   }
 }

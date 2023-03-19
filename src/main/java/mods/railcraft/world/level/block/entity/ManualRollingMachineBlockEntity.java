@@ -214,6 +214,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
 
     @Nullable
     AbstractContainerMenu listener;
+
     public FakeRollingContainer() {
       super(null, 0);
       this.listener = null;

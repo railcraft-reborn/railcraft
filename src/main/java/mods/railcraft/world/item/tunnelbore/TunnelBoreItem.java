@@ -1,17 +1,20 @@
 package mods.railcraft.world.item.tunnelbore;
 
+import mods.railcraft.Translations;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-public class TunnelBoreItem extends Item {
+public class TunnelBoreItem extends Item implements JeiSearchable {
 
   public TunnelBoreItem(Properties properties) {
     super(properties);
@@ -52,5 +55,10 @@ public class TunnelBoreItem extends Item {
       return InteractionResult.sidedSuccess(level.isClientSide());
     }
     return InteractionResult.CONSUME;
+  }
+
+  @Override
+  public Component addJeiInfo() {
+    return Component.translatable(Translations.Jei.TUNNEL_BORE);
   }
 }

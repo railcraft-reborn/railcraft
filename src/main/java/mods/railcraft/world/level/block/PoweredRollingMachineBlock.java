@@ -7,6 +7,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
+import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
@@ -32,7 +33,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-public class PoweredRollingMachineBlock extends BaseEntityBlock implements ChargeBlock {
+public class PoweredRollingMachineBlock extends BaseEntityBlock
+    implements ChargeBlock, JeiSearchable {
 
   private static final Map<Charge, Spec> CHARGE_SPECS =
       Spec.make(Charge.distribution, ConnectType.BLOCK, 0,
@@ -110,5 +112,10 @@ public class PoweredRollingMachineBlock extends BaseEntityBlock implements Charg
       TooltipFlag flag) {
     super.appendHoverText(stack, level, tooltip, flag);
     tooltip.add(Component.translatable(Translations.Tips.ROLLING_MACHINE).withStyle(ChatFormatting.GRAY));
+  }
+
+  @Override
+  public Component addJeiInfo() {
+    return Component.translatable(Translations.Jei.POWERED_ROLLING_MACHINE);
   }
 }

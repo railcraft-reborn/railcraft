@@ -1,5 +1,6 @@
 package mods.railcraft.world.item;
 
+import java.util.Collection;
 import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
@@ -52,6 +53,9 @@ public class RailcraftItems {
     deferredRegister.register(modEventBus);
   }
 
+  public static Collection<RegistryObject<Item>> entries() {
+    return deferredRegister.getEntries();
+  }
 
   public static final VariantRegistrar<DyeColor, BlockItem> STRENGTHENED_GLASS =
       VariantRegistrar.from(DyeColor.class, deferredRegister);

@@ -712,6 +712,38 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.BLAST_FURNACE, "Blast Furnace Smelting");
     this.add(Translations.Jei.CRUSHER, "Rock Crushing");
     this.add(Translations.Jei.CRUSHER_TIP, "(%s%% chance)");
+    this.add(Translations.Jei.MANUAL_ROLLING_MACHINE, """
+        Machine for rolling various shapes of metal. If there is only enough items in the grid \
+        for one cycle, you can click the output display to force crafting.""");
+    this.add(Translations.Jei.POWERED_ROLLING_MACHINE, """
+        Machine for rolling various shapes of metal. Can be automated by simply piping items \
+        in and out. If there is only enough items in the grid for one cycle, you can click the \
+        output display to force crafting.""");
+    this.add(Translations.Jei.FEED_STATION, """
+        Allows you to feed nearby animals automatically. Can be disabled with Redstone. \
+        Will stop feeding if there are too many animals nearby to prevent over-population.""");
+    this.add(Translations.Jei.BLOCK_SIGNAL, """
+        This is the basic signal used for cart detection. It pairs one-to-one with an adjacent \
+        Block Signal and will detect any carts between the two and sends the resulting aspect to \
+        a paired Receiver.""");
+    this.add(Translations.Jei.DISTANT_SIGNAL, """
+        This type of signal is primarily intended for cosmetic usage. It doesn't interface with \
+        carts at all and simply displays the aspect sent to it from a paired Controller.""");
+    this.add(Translations.Jei.TOKEN_SIGNAL, """
+        This signal can be used to define an area to monitor for carts entering and leaving. \
+        It pairs into a net of signals, with no particular limit to the number of signals \
+        defining the area. Recommended for junctions and diagonals. It will send the resulting \
+        aspect to a paired Receiver.""");
+    this.add(Translations.Jei.DUAL_BLOCK_SIGNAL, """
+        This signal contains a standard Block Signal on the upper lamp and a Distant Signal on \
+        the lower. It is both a Controller and a Receiver.""");
+    this.add(Translations.Jei.DUAL_DISTANT_SIGNAL,
+        "This signal contains two Distant Signals. They can be paired to different Controllers.");
+    this.add(Translations.Jei.DUAL_TOKEN_SIGNAL, """
+        This signal a Token Signal on the upper lamp and Distant Signal on the lower. \
+        It is both a Controller and a Receiver.""");
+    this.add(Translations.Jei.TUNNEL_BORE,
+        "Machine designed for digging tunnels and laying track.");
   }
 
   private void signalTranslations() {
