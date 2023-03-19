@@ -29,13 +29,9 @@ public final class PlayerUtil {
   }
 
   public static Player getItemThrower(ItemEntity item) {
-    UUID thrower = item.getThrower();
-    Player player = null;
-    if (thrower != null)
-      player = item.level.getPlayerByUUID(thrower);
-    if (player == null)
-      player = RailcraftFakePlayer.get((ServerLevel) item.level, item.blockPosition());
-    return player;
+    if (item.getOwner() instanceof Player player)
+      return player;
+    return RailcraftFakePlayer.get((ServerLevel) item.level, item.blockPosition());
   }
 
   public static Player getOwnerEntity(GameProfile owner, ServerLevel serverLevel, BlockPos pos) {
@@ -48,9 +44,9 @@ public final class PlayerUtil {
   }
 
   public static Component getUsername(Level level, GameProfile gameProfile) {
-    UUID playerId = gameProfile.getId();
+    var playerId = gameProfile.getId();
     if (playerId != null) {
-      Player player = level.getPlayerByUUID(playerId);
+      var player = level.getPlayerByUUID(playerId);
       if (player != null)
         return player.getDisplayName();
     }
@@ -61,7 +57,7 @@ public final class PlayerUtil {
 
   public static Component getUsername(Level level, @Nullable UUID playerId) {
     if (playerId != null) {
-      Player player = level.getPlayerByUUID(playerId);
+      var player = level.getPlayerByUUID(playerId);
       if (player != null)
         return player.getDisplayName();
     }

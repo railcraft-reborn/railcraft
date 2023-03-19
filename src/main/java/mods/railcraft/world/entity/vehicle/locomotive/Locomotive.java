@@ -32,7 +32,7 @@ import mods.railcraft.util.MathUtil;
 import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.world.damagesource.RailcraftDamageSource;
+import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.Directional;
 import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
@@ -657,7 +657,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
         if (RailcraftConfig.server.locomotiveDamageMobs.get()) {
-          living.hurt(RailcraftDamageSource.TRAIN, getDamageToRoadKill(living));
+          living.hurt(RailcraftDamageSources.train(level.registryAccess()),
+              getDamageToRoadKill(living));
         }
         if (living.getHealth() > 0) {
           float yaw = (this.getYRot() - 90) * (float) Math.PI / 180.0F;

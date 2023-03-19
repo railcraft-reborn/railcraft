@@ -17,5 +17,6 @@
   "result": {
     "count": 16,
     "item": "railcraft:high_speed_wye_track"
-  }
+  },
+  "show_notification": true
 }

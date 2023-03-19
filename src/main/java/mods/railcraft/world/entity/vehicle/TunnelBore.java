@@ -22,7 +22,7 @@ import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.util.container.manipulator.SlotAccessor;
-import mods.railcraft.world.damagesource.RailcraftDamageSource;
+import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TunnelBoreMenu;
 import mods.railcraft.world.item.RailcraftItems;
@@ -433,7 +433,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
       }
 
       if (isMinecartPowered()) {
-        Vec3 headPos = getPositionAhead(3.3);
+        var headPos = getPositionAhead(3.3);
         double size = 0.8;
         var entities = EntitySearcher.findLiving()
             .and(ModEntitySelector.KILLABLE)
@@ -443,7 +443,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
                 .raiseCeiling(2)
                 .build())
             .list(this.level);
-        entities.forEach(e -> e.hurt(RailcraftDamageSource.BORE, 2));
+        entities.forEach(e -> e.hurt(RailcraftDamageSources.bore(level.registryAccess()), 2));
 
         ItemStack head = getItem(0);
         if (!head.isEmpty()) {
@@ -497,7 +497,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     }
   }
 
-  protected Vec3 getPositionAhead(double offset) {
+  protected BlockPos getPositionAhead(double offset) {
     double x = this.getX();
     double z = this.getZ();
 
@@ -512,8 +512,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     } else if (getFacing() == Direction.SOUTH) {
       z += offset;
     }
-
-    return new Vec3(x, this.getY(), z);
+    return BlockPos.containing(x, this.getY(), z);
   }
 
   protected double getOffsetX(double x, double forwardOffset, double sideOffset) {
@@ -1071,10 +1070,10 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
 
   @Override
   public boolean isLinkableWith(RollingStock cart) {
-    Vec3 pos = getPositionAhead(-LENGTH / 2.0);
+    var pos = getPositionAhead(-LENGTH / 2.0);
     float dist = RollingStock.MAX_LINK_DISTANCE * 2;
     dist = dist * dist;
-    return cart.entity().distanceToSqr(pos.x, pos.y, pos.z) < dist;
+    return cart.entity().distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < dist;
   }
 
   @Override

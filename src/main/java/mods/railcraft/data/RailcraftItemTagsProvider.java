@@ -16,7 +16,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
   public RailcraftItemTagsProvider(PackOutput packOutput,
       CompletableFuture<HolderLookup.Provider> lookupProvider,
-      TagsProvider<Block> blockTagProvider,
+      CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider,
       ExistingFileHelper fileHelper) {
     super(packOutput, lookupProvider, blockTagProvider, Railcraft.ID, fileHelper);
   }

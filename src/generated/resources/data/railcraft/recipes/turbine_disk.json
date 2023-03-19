@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:turbine_disk"
-  }
+  },
+  "show_notification": true
 }

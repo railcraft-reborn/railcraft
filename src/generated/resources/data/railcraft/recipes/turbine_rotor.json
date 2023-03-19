@@ -11,5 +11,6 @@
   ],
   "result": {
     "item": "railcraft:turbine_rotor"
-  }
+  },
+  "show_notification": true
 }

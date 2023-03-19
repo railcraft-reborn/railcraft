@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "railcraft:steel_chestplate"
-  }
+  },
+  "show_notification": true
 }

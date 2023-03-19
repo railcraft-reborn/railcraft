@@ -22,9 +22,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class RitualBlockEntity extends RailcraftBlockEntity {
 
   public static final int[] REBUILD_DELAY = Util.make(new int[8], delay -> {
@@ -95,8 +92,8 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
     if (fluid.is(Fluids.LAVA)) {
       boolean placed = level.setBlockAndUpdate(lavaPos, Blocks.OBSIDIAN.defaultBlockState());
       if (placed) {
-        var startPosition = lavaPos.offset(0.5, 0.5, 0.5);
-        var endPosition = getBlockPos().offset(0.5, 0.8, 0.5);
+        var startPosition = Vec3.atLowerCornerWithOffset(lavaPos, 0.5, 0.5, 0.5);
+        var endPosition = Vec3.atLowerCornerWithOffset(getBlockPos(), 0.5, 0.8, 0.5);
         fireSparkEffect(level, startPosition, endPosition);
         queueAdjacent(lavaPos);
         expandQueue();
@@ -106,9 +103,9 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
     return false;
   }
 
-  private void fireSparkEffect(ServerLevel level, BlockPos start, BlockPos end) {
-    level.sendParticles(new FireSparkParticleOptions(Vec3.atCenterOf(end)),
-        start.getX(), start.getY(), start.getZ(), 1, 0, 0, 0, 0);
+  private void fireSparkEffect(ServerLevel level, Vec3 start, Vec3 end) {
+    level.sendParticles(new FireSparkParticleOptions(end),
+        start.x, start.y, start.z, 1, 0, 0, 0, 0);
   }
 
   @Nullable

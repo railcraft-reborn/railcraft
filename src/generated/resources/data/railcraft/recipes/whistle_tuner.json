@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "railcraft:whistle_tuner"
-  }
+  },
+  "show_notification": true
 }

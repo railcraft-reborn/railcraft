@@ -17,5 +17,6 @@
   "result": {
     "count": 8,
     "item": "railcraft:magenta_strengthened_glass"
-  }
+  },
+  "show_notification": true
 }

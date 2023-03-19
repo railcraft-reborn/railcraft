@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "railcraft:signal_interlock_box"
-  }
+  },
+  "show_notification": true
 }

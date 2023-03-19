@@ -7,6 +7,7 @@ import com.google.gson.JsonParseException;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -54,8 +55,8 @@ public class CrusherRecipe implements Recipe<Container> {
   }
 
   @Override
-  public ItemStack assemble(Container inventory) {
-    return this.getResultItem().copy();
+  public ItemStack assemble(Container inventory, RegistryAccess registryAccess) {
+    return this.getResultItem(registryAccess).copy();
   }
 
   @Override
@@ -69,7 +70,7 @@ public class CrusherRecipe implements Recipe<Container> {
    */
   @Override
   @Deprecated(forRemoval = false)
-  public ItemStack getResultItem() {
+  public ItemStack getResultItem(RegistryAccess registryAccess) {
     return ItemStack.EMPTY;
   }
 

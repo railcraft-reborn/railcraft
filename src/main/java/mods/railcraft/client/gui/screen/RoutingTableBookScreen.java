@@ -10,10 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import mods.railcraft.Railcraft;
@@ -35,7 +32,6 @@ import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -441,12 +437,10 @@ public class RoutingTableBookScreen extends Screen {
   public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
     this.renderBackground(poseStack);
     this.setFocused(null);
-    RenderSystem.setShader(GameRenderer::getPositionTexShader);
-    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     RenderSystem.setShaderTexture(0, BOOK_LOCATION);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    this.blit(poseStack, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+    blit(poseStack, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
     if (this.editingTitle) {
       boolean flag = this.frameTick / 6 % 2 == 0;
       var formattedcharsequence = FormattedCharSequence.composite(
@@ -464,7 +458,7 @@ public class RoutingTableBookScreen extends Screen {
       int l = this.font.width(manualPageIndicator);
       this.font.draw(poseStack, manualPageIndicator, xOffset - l + 225, yOffset + 15, 0);
       var page = Component.translatable(Translations.RoutingTable.MANUAL_PAGES.get(currentPage));
-      font.drawWordWrap(page, xOffset + 20, yOffset + 27, TEXT_WIDTH,
+      font.drawWordWrap(poseStack, page, xOffset + 20, yOffset + 27, TEXT_WIDTH,
           IngameWindowScreen.TEXT_COLOR);
     } else {
       int l = this.font.width(this.pageMsg);
@@ -473,7 +467,7 @@ public class RoutingTableBookScreen extends Screen {
       for(var lineinfo : displayCache.lines) {
         this.font.draw(poseStack, lineinfo.asComponent, lineinfo.x, lineinfo.y, -16777216);
       }
-      this.renderHighlight(displayCache.selection);
+      this.renderHighlight(poseStack, displayCache.selection);
       this.renderCursor(poseStack, displayCache.cursor, displayCache.cursorAtEnd);
     }
     this.updateButtonVisibility();
@@ -492,28 +486,17 @@ public class RoutingTableBookScreen extends Screen {
     }
   }
 
-  private void renderHighlight(Rect2i[] selected) {
-    var tesselator = Tesselator.getInstance();
-    var bufferbuilder = tesselator.getBuilder();
-    RenderSystem.setShader(GameRenderer::getPositionShader);
-    RenderSystem.setShaderColor(0.0F, 0.0F, 255.0F, 255.0F);
-    RenderSystem.disableTexture();
+  private void renderHighlight(PoseStack poseStack, Rect2i[] selected) {
     RenderSystem.enableColorLogicOp();
     RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
-    bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
     for(var rect2i : selected) {
       int i = rect2i.getX();
       int j = rect2i.getY();
       int k = i + rect2i.getWidth();
       int l = j + rect2i.getHeight();
-      bufferbuilder.vertex(i, l, 0.0D).endVertex();
-      bufferbuilder.vertex(k, l, 0.0D).endVertex();
-      bufferbuilder.vertex(k, j, 0.0D).endVertex();
-      bufferbuilder.vertex(i, j, 0.0D).endVertex();
+      fill(poseStack, i, j, k, l, -16776961);
     }
-    tesselator.end();
     RenderSystem.disableColorLogicOp();
-    RenderSystem.enableTexture();
   }
 
   private Pos2i convertScreenToLocal(Pos2i screenPos) {

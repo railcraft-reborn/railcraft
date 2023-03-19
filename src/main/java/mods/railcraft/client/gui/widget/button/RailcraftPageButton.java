@@ -16,7 +16,7 @@ public class RailcraftPageButton extends PageButton {
   }
 
   @Override
-  public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+  public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
     RenderSystem.setShader(GameRenderer::getPositionTexShader);
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     RenderSystem.setShaderTexture(0, RoutingTableBookScreen.BOOK_LOCATION);
@@ -30,6 +30,6 @@ public class RailcraftPageButton extends PageButton {
       j += 13;
     }
 
-    this.blit(poseStack, this.getX(), this.getY(), i, j, 23, 13);
+    blit(poseStack, this.getX(), this.getY(), i, j, 23, 13);
   }
 }

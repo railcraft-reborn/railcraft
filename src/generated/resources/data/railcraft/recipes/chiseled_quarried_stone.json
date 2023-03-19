@@ -14,5 +14,6 @@
   "result": {
     "count": 8,
     "item": "railcraft:chiseled_quarried_stone"
-  }
+  },
+  "show_notification": true
 }

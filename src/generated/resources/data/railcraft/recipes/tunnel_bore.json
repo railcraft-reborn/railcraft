@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "railcraft:tunnel_bore"
-  }
+  },
+  "show_notification": true
 }

@@ -13,5 +13,6 @@
   "result": {
     "count": 4,
     "item": "railcraft:polished_quarried_stone"
-  }
+  },
+  "show_notification": true
 }

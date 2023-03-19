@@ -33,10 +33,10 @@ public class ManualRollingMachineScreen extends AbstractContainerScreen<ManualRo
     final int x = this.leftPos;
     final int y = this.topPos;
     // initial draw
-    this.blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
+    blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
     // prog bar
     float prog = this.menu.rollingProgress();
     // 24*0.1, basicaly 10% of 24. Rounded for safety!
-    this.blit(poseStack, x + 89, y + 47, 176, 0, Math.round(24.00F * prog), 12);
+    blit(poseStack, x + 89, y + 47, 176, 0, Math.round(24.00F * prog), 12);
   }
 }

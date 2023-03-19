@@ -63,7 +63,7 @@ public final class RayTraceUtil {
       if (flag && entityHitDistance > 9.0D) {
         return BlockHitResult.miss(entityHitLocation,
             Direction.getNearest(viewVector.x, viewVector.y, viewVector.z),
-            new BlockPos(entityHitLocation));
+            BlockPos.containing(entityHitLocation));
       } else if (entityHitDistance < distance || hitResult == null) {
         return entityRayTraceResult;
       }

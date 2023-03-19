@@ -46,7 +46,7 @@ public class TunnelBoreScreen extends RailcraftMenuScreen<TunnelBoreMenu> {
 
     if (this.menu.getTunnelBore().getFuel() > 0) {
       int burnProgress = this.menu.getTunnelBore().getBurnProgressScaled(12);
-      this.blit(poseStack, centredX + 44, (centredY + 48) - burnProgress, 176, 12 - burnProgress,
+      blit(poseStack, centredX + 44, (centredY + 48) - burnProgress, 176, 12 - burnProgress,
           14, burnProgress + 2);
     }
   }

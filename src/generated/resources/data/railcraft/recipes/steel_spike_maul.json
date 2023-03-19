@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "railcraft:steel_spike_maul"
-  }
+  },
+  "show_notification": true
 }

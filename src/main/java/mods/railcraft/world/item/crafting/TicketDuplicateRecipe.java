@@ -2,6 +2,7 @@ package mods.railcraft.world.item.crafting;
 
 import java.util.stream.IntStream;
 import mods.railcraft.world.item.RailcraftItems;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -26,7 +27,7 @@ public class TicketDuplicateRecipe extends CustomRecipe {
     int numBlank = 0;
     int numSource = 0;
     for (int slot = 0; slot < container.getContainerSize(); slot++) {
-      ItemStack stack = container.getItem(slot);
+      var stack = container.getItem(slot);
       if (!stack.isEmpty()) {
         if (numSource == 0 && SOURCE.test(stack)) {
           numSource++;
@@ -41,25 +42,23 @@ public class TicketDuplicateRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer container) {
+  public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
     var source = IntStream.range(0, container.getContainerSize())
-        .boxed()
-        .map(container::getItem)
+        .mapToObj(container::getItem)
         .filter(TicketDuplicateRecipe.SOURCE)
         .findFirst()
         .orElse(ItemStack.EMPTY);
+    var result = getResultItem(registryAccess);
     if (!source.isEmpty()) {
-      var copy = getResultItem();
       var nbt = source.getTag();
       if (nbt != null)
-        copy.setTag(nbt.copy());
-      return copy;
+        result.setTag(nbt.copy());
     }
-    return getResultItem();
+    return result;
   }
 
   @Override
-  public ItemStack getResultItem() {
+  public ItemStack getResultItem(RegistryAccess registryAccess) {
     return new ItemStack(RailcraftItems.TICKET.get());
   }
 

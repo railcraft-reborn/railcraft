@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:silver_gear"
-  }
+  },
+  "show_notification": true
 }

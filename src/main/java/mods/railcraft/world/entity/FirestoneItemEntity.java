@@ -18,9 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class FirestoneItemEntity extends ItemEntity {
 
   private int clock;

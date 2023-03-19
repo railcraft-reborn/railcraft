@@ -9,18 +9,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import net.minecraft.world.Container;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ForwardingMap;
 import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * Created by CovertJaguar on 6/22/2017 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public final class ContainerManifest
     extends ForwardingMap<ItemStackKey, ContainerManifest.ManifestEntry> {
 
@@ -105,8 +100,7 @@ public final class ContainerManifest
     for (var filterKey : keys) {
       var filter = StackFilter.anyMatch(filterKey.stack());
       IntStream.range(0, container.getContainerSize())
-          .boxed()
-          .map(container::getItem)
+          .mapToObj(container::getItem)
           .filter(filter)
           .forEach(stack -> manifest.compute(filterKey, (k, v) -> compute(k, v, stack)));
     }

@@ -64,13 +64,13 @@ public class TuningAuraParticle extends DimmableParticle {
       return;
     }
 
-    if (!level.isLoaded(new BlockPos(source)) ||
-        !level.isLoaded(new BlockPos(destination))) {
+    if (!level.isLoaded(BlockPos.containing(source)) ||
+        !level.isLoaded(BlockPos.containing(destination))) {
       this.remove();
     }
 
-    var sourceBE = level.getBlockEntity(new BlockPos(source));
-    var destBE = level.getBlockEntity(new BlockPos(source));
+    var sourceBE = level.getBlockEntity(BlockPos.containing(source));
+    var destBE = level.getBlockEntity(BlockPos.containing(source));
     if((sourceBE == null || sourceBE.isRemoved()) || (destBE == null || destBE.isRemoved())) {
       this.remove();
     }

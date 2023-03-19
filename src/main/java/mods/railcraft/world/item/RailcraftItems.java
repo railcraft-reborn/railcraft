@@ -17,7 +17,6 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
@@ -268,22 +267,22 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> STEEL_BOOTS =
       deferredRegister.register("steel_boots",
-          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, EquipmentSlot.FEET,
+          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, ArmorItem.Type.BOOTS,
               new Item.Properties()));
 
   public static final RegistryObject<Item> STEEL_CHESTPLATE =
       deferredRegister.register("steel_chestplate",
-          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, EquipmentSlot.CHEST,
+          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, ArmorItem.Type.CHESTPLATE,
               new Item.Properties()));
 
   public static final RegistryObject<Item> STEEL_HELMET =
       deferredRegister.register("steel_helmet",
-          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, EquipmentSlot.HEAD,
+          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, ArmorItem.Type.HELMET,
               new Item.Properties()));
 
   public static final RegistryObject<Item> STEEL_LEGGINGS =
       deferredRegister.register("steel_leggings",
-          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, EquipmentSlot.LEGS,
+          () -> new ArmorItem(RailcraftArmorMaterial.STEEL, ArmorItem.Type.LEGGINGS,
               new Item.Properties()));
 
   public static final RegistryObject<Item> IRON_TUNNEL_BORE_HEAD =

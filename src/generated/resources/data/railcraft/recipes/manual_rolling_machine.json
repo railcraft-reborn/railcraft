@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "railcraft:manual_rolling_machine"
-  }
+  },
+  "show_notification": true
 }

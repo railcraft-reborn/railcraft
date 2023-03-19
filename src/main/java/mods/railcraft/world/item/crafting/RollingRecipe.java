@@ -3,6 +3,7 @@ package mods.railcraft.world.item.crafting;
 import com.google.gson.JsonObject;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -98,8 +99,8 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer inventory) {
-    return this.getResultItem().copy();
+  public ItemStack assemble(CraftingContainer inventory, RegistryAccess registryAccess) {
+    return this.getResultItem(registryAccess).copy();
   }
 
   @Override
@@ -108,7 +109,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   }
 
   @Override
-  public ItemStack getResultItem() {
+  public ItemStack getResultItem(RegistryAccess registryAccess) {
     return this.result;
   }
 

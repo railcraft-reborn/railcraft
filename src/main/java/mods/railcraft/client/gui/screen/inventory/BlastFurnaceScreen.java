@@ -25,12 +25,12 @@ public class BlastFurnaceScreen extends RailcraftMenuScreen<BlastFurnaceMenu> {
     var logic = this.menu.getBlastFurnace().getBlastFurnaceModule();
     if (logic.isBurning()) {
       int burnProgressScale = logic.getBurnProgressScaled(12);
-      this.blit(poseStack, x + 56, y + 36 + 12 - burnProgressScale, 176, 12 - burnProgressScale, 14,
+      blit(poseStack, x + 56, y + 36 + 12 - burnProgressScale, 176, 12 - burnProgressScale, 14,
           burnProgressScale + 2);
     }
 
     int progressScale = (int) (logic.getProgressPercent() * 24);
-    this.blit(poseStack, x + 79, y + 34, 176, 14, progressScale + 1, 16);
+    blit(poseStack, x + 79, y + 34, 176, 14, progressScale + 1, 16);
   }
 
   @Override

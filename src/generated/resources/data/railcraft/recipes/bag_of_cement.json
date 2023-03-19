@@ -16,5 +16,6 @@
   "result": {
     "count": 2,
     "item": "railcraft:bag_of_cement"
-  }
+  },
+  "show_notification": true
 }

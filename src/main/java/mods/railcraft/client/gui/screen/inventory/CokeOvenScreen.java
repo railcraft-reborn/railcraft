@@ -29,10 +29,10 @@ public class CokeOvenScreen extends RailcraftMenuScreen<CokeOvenMenu> {
     if (logic.getProgress() > 0) {
       var progressPercent = logic.getProgressPercent();
       int burnProgress = (int) ((1.0 - progressPercent) * 12);
-      this.blit(poseStack, x + 16, (y + 38) - burnProgress, 176, 59 - burnProgress, 14,
+      blit(poseStack, x + 16, (y + 38) - burnProgress, 176, 59 - burnProgress, 14,
           burnProgress + 2);
       int cookProgress = (int) (progressPercent * 20);
-      this.blit(poseStack, x + 34, y + 43, 176, 61, cookProgress + 1, 16);
+      blit(poseStack, x + 34, y + 43, 176, 61, cookProgress + 1, 16);
     }
   }
 

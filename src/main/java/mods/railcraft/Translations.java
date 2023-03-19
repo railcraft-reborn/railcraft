@@ -469,18 +469,18 @@ public class Translations {
   }
 
   public static class DamageSource {
-    public static final List<String> BORE = IntStream.rangeClosed(1, 6).boxed()
-        .map(i -> makeKey("death", "bore." + i)).toList();
-    public static final List<String> CRUSHER = IntStream.rangeClosed(1, 8).boxed()
-        .map(i -> makeKey("death", "crusher." + i)).toList();
-    public static final List<String> ELECTRIC = IntStream.rangeClosed(1, 6).boxed()
-        .map(i -> makeKey("death", "electric." + i)).toList();
-    public static final List<String> STEAM = IntStream.rangeClosed(1, 6).boxed()
-        .map(i -> makeKey("death", "steam." + i)).toList();
-    public static final List<String> TRACK_ELECTRIC = IntStream.rangeClosed(1, 6).boxed()
-        .map(i -> makeKey("death", "track_electric." + i)).toList();
-    public static final List<String> TRAIN = IntStream.rangeClosed(1, 6).boxed()
-        .map(i -> makeKey("death", "train." + i)).toList();
+    public static final List<String> BORE = IntStream.rangeClosed(1, 6)
+        .mapToObj(i -> makeKey("death", "bore." + i)).toList();
+    public static final List<String> CRUSHER = IntStream.rangeClosed(1, 8)
+        .mapToObj(i -> makeKey("death", "crusher." + i)).toList();
+    public static final List<String> ELECTRIC = IntStream.rangeClosed(1, 6)
+        .mapToObj(i -> makeKey("death", "electric." + i)).toList();
+    public static final List<String> STEAM = IntStream.rangeClosed(1, 6)
+        .mapToObj(i -> makeKey("death", "steam." + i)).toList();
+    public static final List<String> TRACK_ELECTRIC = IntStream.rangeClosed(1, 6)
+        .mapToObj(i -> makeKey("death", "track_electric." + i)).toList();
+    public static final List<String> TRAIN = IntStream.rangeClosed(1, 6)
+        .mapToObj(i -> makeKey("death", "train." + i)).toList();
   }
 
   public static class RoutingTable {

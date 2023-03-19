@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:steel_pickaxe"
-  }
+  },
+  "show_notification": true
 }

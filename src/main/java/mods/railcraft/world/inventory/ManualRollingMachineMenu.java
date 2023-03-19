@@ -133,7 +133,7 @@ public class ManualRollingMachineMenu extends AbstractContainerMenu {
     if (optionalRollingRecipe.isPresent()) {
       var recipe = optionalRollingRecipe.get();
       if (this.resultSlotClickyBox.setRecipeUsed(this.level, (ServerPlayer) player, recipe)) {
-        itemstack = recipe.assemble(this.craftSlots);
+        itemstack = recipe.assemble(this.craftSlots, this.level.registryAccess());
         this.setData(0, recipe.getTickCost());
       }
     }

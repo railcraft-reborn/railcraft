@@ -15,7 +15,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -71,7 +70,7 @@ public class FirestoneItem extends Item {
   public static FirestoneItemEntity createEntityItem(Level level, Entity entity,
       ItemStack itemStack) {
     var firestone = new FirestoneItemEntity(level, entity.position(), itemStack);
-    firestone.setThrower(((ItemEntity) entity).getThrower());
+    firestone.setThrower(entity.getUUID());
     firestone.setDeltaMovement(entity.getDeltaMovement());
     firestone.setDefaultPickUpDelay();
     return firestone;

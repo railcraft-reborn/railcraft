@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:invar_gear"
-  }
+  },
+  "show_notification": true
 }

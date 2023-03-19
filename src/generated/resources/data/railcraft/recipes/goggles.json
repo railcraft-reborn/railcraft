@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "railcraft:goggles"
-  }
+  },
+  "show_notification": true
 }
