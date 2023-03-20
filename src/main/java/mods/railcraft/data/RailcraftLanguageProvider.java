@@ -506,6 +506,22 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.REDSTONE_LINKAGE, "Redstone linkage:");
     this.add(Translations.Tips.LISTEN, "Listen");
     this.add(Translations.Tips.CLICK_TO_CRAFT, "- Click to craft -");
+    this.add(Translations.Tips.ABANDONED_TRACK, "Can be suspended over gaps in terrain");
+    this.add(Translations.Tips.REINFORCED_TRACK, "125% of the speed of normal track");
+    this.add(Translations.Tips.STRAP_IRON_TRACK, "30% of the speed of iron track");
+    this.add(Translations.Tips.DANGER, "Danger:");
+    this.add(Translations.Tips.DERAILMENT_RISK, "Derailment Risk");
+    this.add(Translations.Tips.HIGH_VOLTAGE, "High Voltage");
+    this.add(Translations.Tips.HIGH_SPEED, "High Speed");
+    this.add(Translations.Tips.HIGH_VOLTAGE_SPEED, "High Voltage/Speed");
+    this.add(Translations.Tips.POWERED_BY_ELECTRICITY, "Powered by electricity");
+    this.add(Translations.Tips.USE_ELECTRIC_LOCOMOTIVE, "Use with Electric Locomotive");
+    this.add(Translations.Tips.VERY_FAST, "Very fast");
+    this.add(Translations.Tips.REQUIRE_BOOSTERS_TRANSITION,
+        "Requires Boosters/Transitions to reach speed");
+    this.add(Translations.Tips.CANNOT_MAKE_CORNERS_HIGH_SPEED,
+        "Cannot make corners at High Speed");
+    this.add(Translations.Tips.EXPLOSION_RESISTANT, "Explosion resistant");
   }
 
   private void screenTranslations() {

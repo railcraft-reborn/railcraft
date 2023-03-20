@@ -298,6 +298,23 @@ public class Translations {
     public static final String REDSTONE_LINKAGE = makeKey("tips", "redstone_linkage");
     public static final String LISTEN = makeKey("tips", "listen");
     public static final String CLICK_TO_CRAFT = makeKey("tips", "click_to_craft");
+    public static final String ABANDONED_TRACK = makeKey("tips", "abandoned_track");
+    public static final String REINFORCED_TRACK = makeKey("tips", "reinforced_track");
+    public static final String STRAP_IRON_TRACK = makeKey("tips", "strap_iron_track");
+    public static final String DANGER = makeKey("tips", "danger");
+    public static final String DERAILMENT_RISK = makeKey("tips", "derailment_risk");
+    public static final String HIGH_VOLTAGE = makeKey("tips", "high_voltage");
+    public static final String HIGH_SPEED = makeKey("tips", "high_speed");
+    public static final String HIGH_VOLTAGE_SPEED = makeKey("tips", "high_voltage_speed");
+    public static final String POWERED_BY_ELECTRICITY = makeKey("tips", "powered_by_electricity");
+    public static final String USE_ELECTRIC_LOCOMOTIVE =
+        makeKey("tips", "use_electric_locomotive");
+    public static final String VERY_FAST = makeKey("tips", "very_fast");
+    public static final String REQUIRE_BOOSTERS_TRANSITION =
+        makeKey("tips", "require_boosters_transition");
+    public static final String CANNOT_MAKE_CORNERS_HIGH_SPEED =
+        makeKey("tips", "cannot_make_corners_high_speed");
+    public static final String EXPLOSION_RESISTANT = makeKey("tips", "explosion_resistant");
   }
 
   public static class Container {

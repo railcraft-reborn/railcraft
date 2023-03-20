@@ -1,26 +1,27 @@
 package mods.railcraft.world.level.block.track;
 
-import java.util.function.Supplier;
-import mods.railcraft.api.track.TrackType;
+import java.util.List;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
-/**
- * Created by CovertJaguar on 8/2/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class AbandonedTrackBlock extends TrackBlock {
 
   public static final BooleanProperty GRASS = BooleanProperty.create("grass");
 
-  public AbandonedTrackBlock(Supplier<? extends TrackType> trackType, Properties properties) {
-    super(trackType, properties);
+  public AbandonedTrackBlock(Properties properties) {
+    super(TrackTypes.ABANDONED, properties);
   }
 
   @Override
@@ -41,5 +42,16 @@ public class AbandonedTrackBlock extends TrackBlock {
         .anyMatch(s -> context.getLevel().getBlockState(context.getClickedPos().relative(s))
             .is(Blocks.TALL_GRASS));
     return super.getStateForPlacement(context).setValue(GRASS, grass);
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
+      List<Component> tooltip, TooltipFlag flag) {
+    tooltip.add(Component.translatable(Translations.Tips.DANGER)
+        .append(" ")
+        .append(Component.translatable(Translations.Tips.DERAILMENT_RISK))
+        .withStyle(ChatFormatting.BLUE));
+    tooltip.add(Component.translatable(Translations.Tips.ABANDONED_TRACK)
+        .withStyle(ChatFormatting.GRAY));
   }
 }
