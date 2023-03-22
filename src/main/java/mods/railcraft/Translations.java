@@ -336,44 +336,32 @@ public class Translations {
 
   public static class Jei {
 
-    public static final String METAL_ROLLING =
-        makeKey("jei", "category.rolling");
-    public static final String COKE_OVEN =
-        makeKey("jei", "category.coke_oven");
-    public static final String BLAST_FURNACE =
-        makeKey("jei", "category.blast_furnace");
-    public static final String CRUSHER =
-        makeKey("jei", "category.crusher");
-    public static final String CRUSHER_TIP =
-        makeKey("jei", "tips.crusher");
+    public static final String METAL_ROLLING = makeKey("jei", "category.rolling");
+    public static final String COKE_OVEN = makeKey("jei", "category.coke_oven");
+    public static final String BLAST_FURNACE = makeKey("jei", "category.blast_furnace");
+    public static final String CRUSHER = makeKey("jei", "category.crusher");
+    public static final String CRUSHER_TIP = makeKey("jei", "tips.crusher");
 
     public static final String MANUAL_ROLLING_MACHINE =
         makeKey("jei", "desc.manual_rolling_machine");
     public static final String POWERED_ROLLING_MACHINE =
         makeKey("jei", "desc.powered_rolling_machine");
-    public static final String FEED_STATION =
-        makeKey("jei", "desc.feed_station");
-    public static final String BLOCK_SIGNAL =
-        makeKey("jei", "desc.block_signal");
-    public static final String DISTANT_SIGNAL =
-        makeKey("jei", "desc.distant_signal");
-    public static final String TOKEN_SIGNAL =
-        makeKey("jei", "desc.token_signal");
+    public static final String FEED_STATION = makeKey("jei", "desc.feed_station");
+    public static final String BLOCK_SIGNAL = makeKey("jei", "desc.block_signal");
+    public static final String DISTANT_SIGNAL = makeKey("jei", "desc.distant_signal");
+    public static final String TOKEN_SIGNAL = makeKey("jei", "desc.token_signal");
     public static final String DUAL_BLOCK_SIGNAL =
         makeKey("jei", "desc.dual_block_signal");
     public static final String DUAL_DISTANT_SIGNAL =
         makeKey("jei", "desc.dual_distant_signal");
     public static final String DUAL_TOKEN_SIGNAL =
         makeKey("jei", "desc.dual_token_signal");
-    public static final String TUNNEL_BORE =
-        makeKey("jei", "desc.tunnel_bore");
+    public static final String TUNNEL_BORE = makeKey("jei", "desc.tunnel_bore");
 
-    public static final String PAINT =
-        makeKey("jei.gui", "paint");
-    public static final String COPY_TAG =
-        makeKey("jei.gui", "copy_tag");
-    public static final String REPAIR =
-        makeKey("jei.gui", "repair");
+    public static final String PAINT = makeKey("jei.gui", "paint");
+    public static final String COPY_TAG = makeKey("jei.gui", "copy_tag");
+    public static final String REPAIR = makeKey("jei.gui", "repair");
+    public static final String SPLIT = makeKey("jei.gui", "split");
   }
 
   public static class Signal {

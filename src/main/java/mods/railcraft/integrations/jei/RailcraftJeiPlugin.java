@@ -1,5 +1,6 @@
 package mods.railcraft.integrations.jei;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
@@ -26,6 +27,7 @@ import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.PoweredRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
@@ -124,6 +126,17 @@ public class RailcraftJeiPlugin implements IModPlugin {
                 stack.setDamageValue(RotorRepairRecipe.REPAIR_PER_BLADE);
               }
             }));
+    craftingCategory.addCategoryExtension(CartDisassemblyRecipe.class,
+        r -> new DefaultRecipeWrapper(r, true, Component.translatable(Translations.Jei.SPLIT)) {
+          @Override
+          public void drawInfo(int recipeWidth, int recipeHeight, PoseStack stack, double mouseX,
+              double mouseY) {
+            super.drawInfo(recipeWidth, recipeHeight, stack, mouseX, mouseY);
+            /*var drawable = registration.getJeiHelpers().getGuiHelper()
+                    .createDrawableItemStack(new ItemStack(Items.MINECART));
+            drawable.draw(stack, 65, 35);*/
+          }
+        });
   }
 
   @Override

@@ -763,6 +763,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.PAINT, "Paint");
     this.add(Translations.Jei.COPY_TAG, "Copy Tag");
     this.add(Translations.Jei.REPAIR, "Repair");
+    this.add(Translations.Jei.SPLIT, "Split");
   }
 
   private void signalTranslations() {
