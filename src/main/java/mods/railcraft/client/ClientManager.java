@@ -146,8 +146,7 @@ public class ClientManager {
   }
 
   private void handleItemColors(RegisterColorHandlersEvent.Item event) {
-    event.register(
-        (stack, tintIndex) -> switch (tintIndex) {
+    event.register((stack, tintIndex) -> switch (tintIndex) {
           case 0 -> LocomotiveItem.getPrimaryColor(stack).getMaterialColor().col;
           case 1 -> LocomotiveItem.getSecondaryColor(stack).getMaterialColor().col;
           default -> 0xFFFFFFFF;
@@ -158,18 +157,15 @@ public class ClientManager {
   }
 
   private void handleBlockColors(RegisterColorHandlersEvent.Block event) {
-    event.register(
-        (state, level, pos,
-            tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR).getMaterialColor().col,
+    event.register((state, level, pos, tintIndex) ->
+            state.getValue(ForceTrackEmitterBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
-    event.register(
-        (state, level, pos,
-            tintIndex) -> state.getValue(ForceTrackBlock.COLOR).getMaterialColor().col,
+    event.register((state, level, pos, tintIndex) ->
+            state.getValue(ForceTrackBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK.get());
 
-    event.register(
-        (state, level, pos, tintIndex) -> level != null && pos != null
+    event.register((state, level, pos, tintIndex) -> level != null && pos != null
             ? BiomeColors.getAverageGrassColor(level, pos)
             : GrassColor.get(0.5D, 1.0D),
         RailcraftBlocks.ABANDONED_TRACK.get());
