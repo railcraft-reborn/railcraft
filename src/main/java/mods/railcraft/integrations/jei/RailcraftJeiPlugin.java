@@ -37,6 +37,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.RegistryObject;
 
 @JeiPlugin
@@ -132,9 +133,9 @@ public class RailcraftJeiPlugin implements IModPlugin {
           public void drawInfo(int recipeWidth, int recipeHeight, PoseStack stack, double mouseX,
               double mouseY) {
             super.drawInfo(recipeWidth, recipeHeight, stack, mouseX, mouseY);
-            /*var drawable = registration.getJeiHelpers().getGuiHelper()
+            var drawable = registration.getJeiHelpers().getGuiHelper()
                     .createDrawableItemStack(new ItemStack(Items.MINECART));
-            drawable.draw(stack, 65, 35);*/
+            drawable.draw(stack, 65, 35);
           }
         });
   }
