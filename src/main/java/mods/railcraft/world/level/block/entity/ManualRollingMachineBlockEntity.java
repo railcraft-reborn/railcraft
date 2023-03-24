@@ -112,7 +112,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
 
     blockEntity.balanceSlots();
 
-    if (blockEntity.clock++ % 8 == 0) {
+    if (++blockEntity.clock % 8 == 0) {
       blockEntity.currentRecipe = blockEntity.getRecipe();
       blockEntity.processTime = blockEntity.currentRecipe
           .map(RollingRecipe::getProcessTime)

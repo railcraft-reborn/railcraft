@@ -64,8 +64,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
 
     blockEntity.moduleDispatcher.serverTick();
 
-    blockEntity.getMembership()
-        .map(Membership::master)
+    blockEntity.getMasterBlockEntity()
         .ifPresent(master -> {
           var lit = master.cokeOvenModule.isProcessing();
           if (lit != blockState.getValue(CokeOvenBricksBlock.LIT)) {
@@ -115,8 +114,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    var masterModule = this.getMembership()
-        .map(Membership::master)
+    var masterModule = this.getMasterBlockEntity()
         .map(CokeOvenBlockEntity::getCokeOvenModule);
     if (cap == ForgeCapabilities.ITEM_HANDLER) {
       return masterModule

@@ -85,8 +85,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
     blockEntity.moduleDispatcher.serverTick();
 
     blockEntity.masterOperatingRatio = 0;
-    blockEntity.getMembership()
-        .map(Membership::master)
+    blockEntity.getMasterBlockEntity()
         .map(SteamTurbineBlockEntity::getSteamTurbineModule)
         .ifPresent(master -> {
           blockEntity.masterOperatingRatio = master.getOperatingRatio();
@@ -141,8 +140,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    var masterModule = this.getMembership()
-        .map(Membership::master)
+    var masterModule = this.getMasterBlockEntity()
         .map(SteamTurbineBlockEntity::getSteamTurbineModule);
     if (cap == ForgeCapabilities.FLUID_HANDLER) {
       return masterModule

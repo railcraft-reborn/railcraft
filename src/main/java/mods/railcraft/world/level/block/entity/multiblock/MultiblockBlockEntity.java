@@ -245,6 +245,10 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
     return Optional.ofNullable(this.membership);
   }
 
+  public Optional<T> getMasterBlockEntity() {
+    return this.getMembership().map(Membership::master);
+  }
+
   public Optional<MultiblockPattern<M>> getCurrentPattern() {
     return Optional.ofNullable(this.currentPattern);
   }

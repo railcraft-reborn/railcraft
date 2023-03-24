@@ -90,8 +90,7 @@ public class WaterTankSidingBlockEntity extends MultiblockBlockEntity<WaterTankS
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
     if (cap == ForgeCapabilities.FLUID_HANDLER) {
-      return this.getMembership()
-          .map(Membership::master)
+      return this.getMasterBlockEntity()
           .map(WaterTankSidingBlockEntity::getModule)
           .map(WaterCollectionModule::getFluidHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)
