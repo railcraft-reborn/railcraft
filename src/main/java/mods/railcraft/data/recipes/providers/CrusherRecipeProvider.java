@@ -155,6 +155,31 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Ingredient.of(Items.ENDER_PEARL))
         .addResult(RailcraftItems.ENDER_DUST.get(), 1, 1)
         .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.ORES_QUARTZ))
+        .addResult(Items.QUARTZ, 3, 1)
+        .addResult(RailcraftItems.SULFUR_DUST.get(), 1, 0.25)
+        .save(consumer, "tags_ores_quartz");
+    CrusherRecipeBuilder.crush(Ingredient.of(Items.DARK_PRISMARINE))
+        .addResult(Items.PRISMARINE_SHARD, 8, 1)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(Items.PRISMARINE_BRICKS))
+        .addResult(Items.PRISMARINE_SHARD, 9, 1)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(Items.PRISMARINE))
+        .addResult(Items.PRISMARINE_SHARD, 4, 1)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(Items.AMETHYST_BLOCK))
+        .addResult(Items.AMETHYST_SHARD, 4, 1)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(Items.NETHER_WART_BLOCK))
+        .addResult(Items.NETHER_WART, 9, 1)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(ItemTags.WOOL))
+        .addResult(Items.STRING, 4, 1)
+        .save(consumer, "tags_wool");
+    CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.STORAGE_BLOCKS_QUARTZ))
+        .addResult(Items.QUARTZ, 4, 1)
+        .save(consumer, "tags_quartz_blocks");
   }
 
   private static void buildRailcraft(Consumer<FinishedRecipe> consumer) {

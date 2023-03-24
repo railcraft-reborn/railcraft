@@ -1,4 +1,4 @@
-// 1.19.3	2023-02-26T19:26:55.196159	Railcraft Item Tags
+// 1.19.3	2023-03-24T19:21:55.047152	Railcraft Item Tags
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -7,6 +7,7 @@ c528a3d5c53bec7a776fcfec265d9168d7524675 data/forge/tags/items/armors/helmets.js
 e17d210ae3b04c5e5696fab17c38c94dcb437f75 data/forge/tags/items/armors/helmets/steel.json
 e806153edbe9426532130484c3f7c8fab51b274b data/forge/tags/items/armors/leggings.json
 7d0d4397207e7b1f0ad989437709d6cf04823431 data/forge/tags/items/armors/leggings/steel.json
+80c9c8b25164675ff5415691211783f71c38107f data/forge/tags/items/coal_coke.json
 300d1cc507f1bf874a5931bfa35e08cf1eb1d286 data/forge/tags/items/dusts/charcoal.json
 a02497735a6ef3531075c69c738d773ae344a9d4 data/forge/tags/items/dusts/coal.json
 289fb003679ca3b81c9fa60b0289ba9d0c8d6c8e data/forge/tags/items/dusts/obsidian.json

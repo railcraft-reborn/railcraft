@@ -148,6 +148,8 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.COAL_DUST.get());
     this.tag(RailcraftTags.Items.CHARCOAL_DUST)
         .add(RailcraftItems.CHARCOAL_DUST.get());
+    this.tag(RailcraftTags.Items.COAL_COKE)
+        .add(RailcraftItems.COAL_COKE.get());
     this.tag(RailcraftTags.Items.SULFUR_DUST)
         .add(RailcraftItems.SULFUR_DUST.get());
     this.tag(RailcraftTags.Items.OBSIDIAN_DUST)
