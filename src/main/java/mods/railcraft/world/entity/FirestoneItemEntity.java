@@ -1,20 +1,16 @@
 package mods.railcraft.world.entity;
 
 import mods.railcraft.util.LevelUtil;
-import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.world.item.CrackedFirestoneItem;
 import mods.railcraft.world.item.FirestoneItem;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.RitualBlock;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 
@@ -40,12 +36,11 @@ public class FirestoneItemEntity extends ItemEntity {
   @Override
   public void tick() {
     super.tick();
-    if (!this.level.isClientSide()) {
-      clock++;
-      if (clock % 4 == 0) {
-        FirestoneItem.trySpawnFire(this.level, this.blockPosition(), getItem(),
-            PlayerUtil.getItemThrower(this));
-      }
+    if (this.level.isClientSide) {
+      return;
+    }
+    if (++clock % 4 == 0) {
+      FirestoneItem.trySpawnFire(this.level, this.blockPosition(), getItem(), this.getOwner());
     }
   }
 
@@ -53,8 +48,8 @@ public class FirestoneItemEntity extends ItemEntity {
   public void lavaHurt() {
     if (!this.refined || !this.isAlive() || this.level.isClientSide())
       return;
-    BlockState firestoneBlock = RailcraftBlocks.RITUAL.get().defaultBlockState();
-    BlockPos surface = this.blockPosition();
+    var firestoneBlock = RailcraftBlocks.RITUAL.get().defaultBlockState();
+    var surface = this.blockPosition();
     if (this.level.getBlockState(surface).getMaterial() == Material.LAVA
         || this.level.getBlockState(surface.above()).getMaterial() == Material.LAVA)
       for (int i = 0; i < 10; i++) {
@@ -63,11 +58,10 @@ public class FirestoneItemEntity extends ItemEntity {
             && this.level.getBlockState(surface.below()).getMaterial() == Material.LAVA) {
           boolean cracked = getItem().getItem() instanceof CrackedFirestoneItem;
           if (LevelUtil.setBlockState(this.level, surface,
-              firestoneBlock.setValue(RitualBlock.CRACKED, cracked),
-              PlayerUtil.getItemThrower(this))) {
-            BlockEntity tile = this.level.getBlockEntity(surface);
-            if (tile instanceof RitualBlockEntity fireTile) {
-              ItemStack firestone = getItem();
+              firestoneBlock.setValue(RitualBlock.CRACKED, cracked), this.getOwner())) {
+            var blockEntity = this.level.getBlockEntity(surface);
+            if (blockEntity instanceof RitualBlockEntity fireTile) {
+              var firestone = getItem();
               fireTile.charge = firestone.getMaxDamage() - firestone.getDamageValue();
               if (firestone.hasCustomHoverName())
                 fireTile.setItemName(firestone.getDisplayName());

@@ -85,20 +85,21 @@ public class FirestoneItem extends Item {
     }
   }
 
-  public static boolean trySpawnFire(Level level, BlockPos pos, ItemStack stack, Player player) {
+  public static boolean trySpawnFire(Level level, BlockPos pos, ItemStack stack, Entity entity) {
     if (!SPAWNS_FIRE.test(stack))
       return false;
     boolean spawnedFire = false;
     for (int i = 0; i < stack.getCount(); i++) {
-      spawnedFire |= spawnFire(level, pos, player);
+      spawnedFire |= spawnFire(level, pos, entity);
     }
-    if (spawnedFire && stack.isDamageableItem()
-        && stack.getDamageValue() < stack.getMaxDamage() - 1)
-      stack.hurtAndBreak(1, player, t -> {});
+    if (spawnedFire && stack.isDamageableItem() && stack.getDamageValue() < stack.getMaxDamage() - 1) {
+      if (entity instanceof Player player)
+        stack.hurtAndBreak(1, player, t -> {});
+    }
     return spawnedFire;
   }
 
-  public static boolean spawnFire(Level level, BlockPos pos, @Nullable Player player) {
+  public static boolean spawnFire(Level level, BlockPos pos, @Nullable Entity entity) {
     var random = level.getRandom();
     int x = pos.getX() - 5 + random.nextInt(12);
     int y = pos.getY() - 5 + random.nextInt(12);
@@ -108,7 +109,7 @@ public class FirestoneItem extends Item {
 
     BlockPos firePos = new BlockPos(x, y, z);
     return canBurn(level, firePos)
-        && LevelUtil.setBlockState(level, firePos, Blocks.FIRE.defaultBlockState(), player);
+        && LevelUtil.setBlockState(level, firePos, Blocks.FIRE.defaultBlockState(), entity);
   }
 
   private static boolean canBurn(Level level, BlockPos pos) {

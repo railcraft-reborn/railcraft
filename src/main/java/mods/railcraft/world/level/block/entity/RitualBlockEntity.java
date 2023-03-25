@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.particle.FireSparkParticleOptions;
 import mods.railcraft.world.item.RefinedFirestoneItem;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 public class RitualBlockEntity extends RailcraftBlockEntity {
 
@@ -43,7 +43,6 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   public float yOffset = -2, preYOffset = -2;
   private int rebuildDelay;
   private Component itemName;
-
   private int tick = 0;
 
   public RitualBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -141,9 +140,7 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   public void queueAdjacent(BlockPos pos) {
     // No idea if it matters which order these are added,
     // but I figured it best to keep them in the same order.
-    for (Direction side : Direction.Plane.HORIZONTAL) {
-      queueForFilling(pos.relative(side));
-    }
+    Direction.Plane.HORIZONTAL.forEach(side -> queueForFilling(pos.relative(side)));
     queueForFilling(pos.above());
     queueForFilling(pos.below());
   }
@@ -156,8 +153,8 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
               * (index.getZ() - this.worldPosition.getZ()) > 64 * 64)
         return;
 
-      BlockState state = this.level.getBlockState(index);
-      if (state.getBlock() == Blocks.OBSIDIAN || FluidTools.getFluid(state).isSame(Fluids.LAVA)) {
+      var state = this.level.getBlockState(index);
+      if (state.is(Blocks.OBSIDIAN) || FluidTools.getFluid(state).isSame(Fluids.LAVA)) {
         lavaFound.add(index);
         if (FluidTools.isFullFluidBlock(state, this.level, index))
           queue.addLast(index);
