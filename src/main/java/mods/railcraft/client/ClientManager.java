@@ -172,12 +172,15 @@ public class ClientManager {
   }
 
   private void handleParticleRegistration(RegisterParticleProvidersEvent event) {
-    event.register(RailcraftParticleTypes.STEAM.get(), SteamParticle.Provider::new);
-    event.register(RailcraftParticleTypes.SPARK.get(), SparkParticle.Provider::new);
-    event.register(RailcraftParticleTypes.PUMPKIN.get(), PumpkinParticle.Provider::new);
-    event.register(RailcraftParticleTypes.TUNING_AURA.get(), TuningAuraParticle.Provider::new);
-    event.register(RailcraftParticleTypes.FIRE_SPARK.get(), FireSparkParticle.Provider::new);
-    event.register(RailcraftParticleTypes.FORCE_SPAWN.get(), ForceSpawnParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.STEAM.get(), SteamParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.SPARK.get(), SparkParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.PUMPKIN.get(), PumpkinParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.TUNING_AURA.get(),
+        TuningAuraParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.FIRE_SPARK.get(),
+        FireSparkParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.FORCE_SPAWN.get(),
+        ForceSpawnParticle.Provider::new);
   }
 
   private void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
