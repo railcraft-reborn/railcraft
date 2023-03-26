@@ -596,11 +596,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
               .rotationY(((int) facing.toYRot() + 180) % 360)
               .build();
         });
-    //this.horizontalBlock(block, sideTexture, frontTexture, topTexture);
-    this.itemModels().withExistingParent(this.name(block),
-        this.modLoc(ModelProvider.BLOCK_FOLDER + "/" + this.name(block)));
-    //this.simpleBlockItem(block, baseModel);
-
+    this.simpleBlockItem(block, defaultModel);
   }
 
   private void createFirebox(FireboxBlock block) {
