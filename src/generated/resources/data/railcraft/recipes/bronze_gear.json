@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:bronze_gear"
-  }
+  },
+  "show_notification": true
 }

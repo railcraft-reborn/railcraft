@@ -25,7 +25,7 @@ public class RailcraftCreativeModeTabs {
         builder -> builder
             .title(Component.translatable(Translations.Tab.RAILCRAFT))
             .icon(() -> new ItemStack(RailcraftItems.IRON_CROWBAR.get()))
-            .displayItems((features, output, hasPermissions) -> {
+            .displayItems((params, output) -> {
               output.accept(RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get());
               output.accept(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get());
               output.accept(RailcraftItems.SOLID_FUELED_FIREBOX.get());
@@ -246,7 +246,7 @@ public class RailcraftCreativeModeTabs {
         builder -> builder
             .title(Component.translatable(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS))
             .icon(() -> new ItemStack(RailcraftItems.IRON_DETECTOR_TRACK.get()))
-            .displayItems((features, output, hasPermissions) -> {
+            .displayItems((params, output) -> {
               output.accept(RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get());
               output.accept(RailcraftItems.ABANDONED_BOOSTER_TRACK.get());
               output.accept(RailcraftItems.ABANDONED_BUFFER_STOP_TRACK.get());
@@ -363,7 +363,7 @@ public class RailcraftCreativeModeTabs {
             .title(Component.translatable(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS))
             .icon(() -> new ItemStack(
                 RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.BLACK).get()))
-            .displayItems((features, output, hasPermissions) -> {
+            .displayItems((params, output) -> {
               output.accept(RailcraftItems.QUARRIED_STONE.get());
               output.accept(RailcraftItems.QUARRIED_COBBLESTONE.get());
               output.accept(RailcraftItems.POLISHED_QUARRIED_STONE.get());

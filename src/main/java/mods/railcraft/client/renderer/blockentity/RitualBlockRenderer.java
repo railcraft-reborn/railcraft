@@ -6,10 +6,10 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RitualBlock;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RitualBlockRenderer implements BlockEntityRenderer<RitualBlockEntity> {
@@ -39,8 +39,8 @@ public class RitualBlockRenderer implements BlockEntityRenderer<RitualBlockEntit
             : RailcraftItems.REFINED_FIRESTONE.get());
 
         int id = (int) blockEntity.getBlockPos().asLong();
-        itemRenderer.renderStatic(firestone, TransformType.NONE, packedLight, packedOverlay,
-            poseStack, bufferSource, id);
+        itemRenderer.renderStatic(firestone, ItemDisplayContext.NONE, packedLight, packedOverlay,
+            poseStack, bufferSource, blockEntity.level(), id);
         poseStack.popPose();
     }
 }

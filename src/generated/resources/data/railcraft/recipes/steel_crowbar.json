@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:steel_crowbar"
-  }
+  },
+  "show_notification": true
 }

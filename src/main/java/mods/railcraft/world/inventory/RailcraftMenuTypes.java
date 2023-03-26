@@ -27,6 +27,7 @@ import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -47,143 +48,129 @@ public class RailcraftMenuTypes {
 
   public static final RegistryObject<MenuType<SolidFueledSteamBoilerMenu>> SOLID_FUELED_STEAM_BOILER =
       deferredRegister.register("solid_fueled_steam_boiler",
-          () -> new MenuType<>(
-              blockEntityMenu(SteamBoilerBlockEntity.class, SolidFueledSteamBoilerMenu::new)));
+          () -> blockEntityMenu(SteamBoilerBlockEntity.class, SolidFueledSteamBoilerMenu::new));
 
   public static final RegistryObject<MenuType<FluidFueledSteamBoilerMenu>> FLUID_FUELED_STEAM_BOILER =
       deferredRegister.register("fluid_fueled_steam_boiler",
-          () -> new MenuType<>(
-              blockEntityMenu(SteamBoilerBlockEntity.class, FluidFueledSteamBoilerMenu::new)));
+          () -> blockEntityMenu(SteamBoilerBlockEntity.class, FluidFueledSteamBoilerMenu::new));
 
 
   public static final RegistryObject<MenuType<SteamTurbineMenu>> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
-          () -> new MenuType<>(
-              blockEntityMenu(SteamTurbineBlockEntity.class, SteamTurbineMenu::new)));
+          () -> blockEntityMenu(SteamTurbineBlockEntity.class, SteamTurbineMenu::new));
 
   public static final RegistryObject<MenuType<TankMenu>> TANK =
       deferredRegister.register("tank",
-          () -> new MenuType<>(blockEntityMenu(TankBlockEntity.class, TankMenu::new)));
+          () -> blockEntityMenu(TankBlockEntity.class, TankMenu::new));
 
   public static final RegistryObject<MenuType<WaterTankSidingMenu>> WATER_TANK_SIDING =
       deferredRegister.register("water_tank_siding",
-          () -> new MenuType<>(
-              blockEntityMenu(WaterTankSidingBlockEntity.class, WaterTankSidingMenu::new)));
+          () -> blockEntityMenu(WaterTankSidingBlockEntity.class, WaterTankSidingMenu::new));
 
   public static final RegistryObject<MenuType<BlastFurnaceMenu>> BLAST_FURNACE =
       deferredRegister.register("blast_furnace",
-          () -> new MenuType<>(
-              blockEntityMenu(BlastFurnaceBlockEntity.class, BlastFurnaceMenu::new)));
+          () -> blockEntityMenu(BlastFurnaceBlockEntity.class, BlastFurnaceMenu::new));
 
   public static final RegistryObject<MenuType<FeedStationMenu>> FEED_STATION =
       deferredRegister.register("feed_station",
-          () -> new MenuType<>(
-              blockEntityMenu(FeedStationBlockEntity.class, FeedStationMenu::new)));
+          () -> blockEntityMenu(FeedStationBlockEntity.class, FeedStationMenu::new));
 
   public static final RegistryObject<MenuType<SwitchTrackRouterMenu>> SWITCH_TRACK_ROUTER =
       deferredRegister.register("switch_track_routing",
-          () -> new MenuType<>(
-              blockEntityMenu(SwitchTrackRouterBlockEntity.class, SwitchTrackRouterMenu::new)));
+          () -> blockEntityMenu(SwitchTrackRouterBlockEntity.class, SwitchTrackRouterMenu::new));
 
   public static final RegistryObject<MenuType<LocomotiveMenu<CreativeLocomotive>>> CREATIVE_LOCOMOTIVE =
       deferredRegister.register("creative_locomotive",
-          () -> new MenuType<>(
-              entityMenu(CreativeLocomotive.class, LocomotiveMenu::creative)));
+          () -> entityMenu(CreativeLocomotive.class, LocomotiveMenu::creative));
 
   public static final RegistryObject<MenuType<ElectricLocomotiveMenu>> ELECTRIC_LOCOMOTIVE =
       deferredRegister.register("electric_locomotive",
-          () -> new MenuType<>(
-              entityMenu(ElectricLocomotive.class, ElectricLocomotiveMenu::new)));
+          () -> entityMenu(ElectricLocomotive.class, ElectricLocomotiveMenu::new));
 
   public static final RegistryObject<MenuType<SteamLocomotiveMenu>> STEAM_LOCOMOTIVE =
       deferredRegister.register("steam_locomotive",
-          () -> new MenuType<>(
-              entityMenu(SteamLocomotive.class, SteamLocomotiveMenu::new)));
+          () -> entityMenu(SteamLocomotive.class, SteamLocomotiveMenu::new));
 
   public static final RegistryObject<MenuType<ManualRollingMachineMenu>> MANUAL_ROLLING_MACHINE =
       deferredRegister.register("manual_rolling_machine",
-          () -> new MenuType<>(
-              blockEntityMenu(ManualRollingMachineBlockEntity.class, ManualRollingMachineMenu::new)));
+          () -> blockEntityMenu(
+              ManualRollingMachineBlockEntity.class, ManualRollingMachineMenu::new));
 
   public static final RegistryObject<MenuType<PoweredRollingMachineMenu>> POWERED_ROLLING_MACHINE =
       deferredRegister.register("powered_rolling_machine",
-          () -> new MenuType<>(
-              blockEntityMenu(PoweredRollingMachineBlockEntity.class, PoweredRollingMachineMenu::new)));
+          () -> blockEntityMenu(
+              PoweredRollingMachineBlockEntity.class, PoweredRollingMachineMenu::new));
 
   public static final RegistryObject<MenuType<CokeOvenMenu>> COKE_OVEN =
       deferredRegister.register("coke_oven",
-          () -> new MenuType<>(blockEntityMenu(CokeOvenBlockEntity.class, CokeOvenMenu::new)));
+          () -> blockEntityMenu(CokeOvenBlockEntity.class, CokeOvenMenu::new));
 
   public static final RegistryObject<MenuType<CrusherMenu>> CRUSHER =
       deferredRegister.register("crusher",
-          () -> new MenuType<>(blockEntityMenu(CrusherBlockEntity.class, CrusherMenu::new)));
+          () -> blockEntityMenu(CrusherBlockEntity.class, CrusherMenu::new));
 
   public static final RegistryObject<MenuType<SteamOvenMenu>> STEAM_OVEN =
       deferredRegister.register("steam_oven",
-          () -> new MenuType<>(
-              blockEntityMenu(SteamOvenBlockEntity.class, SteamOvenMenu::new)));
+          () -> blockEntityMenu(SteamOvenBlockEntity.class, SteamOvenMenu::new));
 
   public static final RegistryObject<MenuType<ItemManipulatorMenu>> ITEM_MANIPULATOR =
       deferredRegister.register("item_manipulator",
-          () -> new MenuType<>(
-              blockEntityMenu(ItemManipulatorBlockEntity.class, ItemManipulatorMenu::new)));
+          () -> blockEntityMenu(ItemManipulatorBlockEntity.class, ItemManipulatorMenu::new));
 
   public static final RegistryObject<MenuType<FluidManipulatorMenu>> FLUID_MANIPULATOR =
       deferredRegister.register("fluid_manipulator",
-          () -> new MenuType<>(
-              blockEntityMenu(FluidManipulatorBlockEntity.class, FluidManipulatorMenu::new)));
+          () -> blockEntityMenu(FluidManipulatorBlockEntity.class, FluidManipulatorMenu::new));
 
   public static final RegistryObject<MenuType<CartDispenserMenu>> CART_DISPENSER =
       deferredRegister.register("cart_dispenser",
-          () -> new MenuType<>(
-              blockEntityMenu(CartDispenserBlockEntity.class, CartDispenserMenu::new)));
+          () -> blockEntityMenu(CartDispenserBlockEntity.class, CartDispenserMenu::new));
 
   public static final RegistryObject<MenuType<TrainDispenserMenu>> TRAIN_DISPENSER =
       deferredRegister.register("train_dispenser",
-          () -> new MenuType<>(
-              blockEntityMenu(TrainDispenserBlockEntity.class, TrainDispenserMenu::new)));
+          () -> blockEntityMenu(TrainDispenserBlockEntity.class, TrainDispenserMenu::new));
 
   public static final RegistryObject<MenuType<TankMinecartMenu>> TANK_MINECART =
       deferredRegister.register("tank_minecart",
-          () -> new MenuType<>(entityMenu(TankMinecart.class, TankMinecartMenu::new)));
+          () -> entityMenu(TankMinecart.class, TankMinecartMenu::new));
 
   public static final RegistryObject<MenuType<TunnelBoreMenu>> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
-          () -> new MenuType<>(entityMenu(TunnelBore.class, TunnelBoreMenu::new)));
+          () -> entityMenu(TunnelBore.class, TunnelBoreMenu::new));
 
   public static final RegistryObject<MenuType<TrackLayerMenu>> TRACK_LAYER =
       deferredRegister.register("track_layer",
-          () -> new MenuType<>(entityMenu(TrackLayer.class, TrackLayerMenu::new)));
+          () -> entityMenu(TrackLayer.class, TrackLayerMenu::new));
 
   public static final RegistryObject<MenuType<RoutingTrackMenu>> ROUTING_TRACK =
       deferredRegister.register("routing_track",
-          () -> new MenuType<>(
-              blockEntityMenu(RoutingTrackBlockEntity.class, RoutingTrackMenu::new)));
+          () -> blockEntityMenu(RoutingTrackBlockEntity.class, RoutingTrackMenu::new));
 
-  private static <T extends AbstractContainerMenu, E extends Entity> IContainerFactory<T> entityMenu(
+  private static <T extends AbstractContainerMenu, E extends Entity> MenuType<T> entityMenu(
       Class<E> entityType, CustomMenuFactory<T, E> factory) {
-    return (id, inventory, packetBuffer) -> {
+    IContainerFactory<T> containerFactory = (id, inventory, packetBuffer) -> {
       int entityId = packetBuffer.readVarInt();
       Entity entity = inventory.player.level.getEntity(entityId);
-      if (!entityType.isInstance(entity)) {
-        throw new IllegalStateException(
-            "Cannot find entity of type " + entityType.getName() + " with ID " + entityId);
+      if (entityType.isInstance(entity)) {
+        return factory.create(id, inventory, entityType.cast(entity));
       }
-      return factory.create(id, inventory, entityType.cast(entity));
+      throw new IllegalStateException(
+          "Cannot find entity of type %s with ID %s".formatted(entityType.getName(), entityId));
     };
+    return new MenuType<>(containerFactory, FeatureFlags.DEFAULT_FLAGS);
   }
 
-  private static <T extends AbstractContainerMenu, E extends BlockEntity> IContainerFactory<T> blockEntityMenu(
-      Class<E> entityType, CustomMenuFactory<T, E> factory) {
-    return (id, inventory, packetBuffer) -> {
+  private static <T extends AbstractContainerMenu, E extends BlockEntity> MenuType<T>
+  blockEntityMenu(Class<E> entityType, CustomMenuFactory<T, E> factory) {
+    IContainerFactory<T> containerFactory =  (id, inventory, packetBuffer) -> {
       BlockPos blockPos = packetBuffer.readBlockPos();
       BlockEntity entity = inventory.player.level.getBlockEntity(blockPos);
-      if (!entityType.isInstance(entity)) {
-        throw new IllegalStateException(
-            "Cannot find block entity of type " + entityType.getName() + " at [" + blockPos + "]");
+      if (entityType.isInstance(entity)) {
+        return factory.create(id, inventory, entityType.cast(entity));
       }
-      return factory.create(id, inventory, entityType.cast(entity));
+      throw new IllegalStateException(
+          "Cannot find block entity of type %s at [%s]".formatted(entityType.getName(), blockPos));
     };
+    return new MenuType<>(containerFactory, FeatureFlags.DEFAULT_FLAGS);
   }
 
   private interface CustomMenuFactory<C extends AbstractContainerMenu, T> {

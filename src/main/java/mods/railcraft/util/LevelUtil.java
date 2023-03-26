@@ -3,6 +3,7 @@ package mods.railcraft.util;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -23,9 +24,6 @@ import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.level.BlockEvent;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class LevelUtil {
 
   @Nullable
@@ -45,12 +43,12 @@ public class LevelUtil {
   }
 
   public static boolean setBlockState(Level level, BlockPos pos, BlockState blockState,
-      @Nullable Player actor) {
-    if (actor == null)
-      actor = RailcraftFakePlayer.get((ServerLevel) level, pos);
+      @Nullable Entity entity) {
+    if (entity == null)
+      entity = RailcraftFakePlayer.get((ServerLevel) level, pos);
     BlockSnapshot snapshot = BlockSnapshot.create(level.dimension(), level, pos);
     boolean result = level.setBlockAndUpdate(pos, blockState);
-    if (ForgeEventFactory.onBlockPlace(actor, snapshot, Direction.UP)) {
+    if (ForgeEventFactory.onBlockPlace(entity, snapshot, Direction.UP)) {
       snapshot.restore(true, false);
       return false;
     }

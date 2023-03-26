@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "railcraft:steam_turbine"
-  }
+  },
+  "show_notification": true
 }

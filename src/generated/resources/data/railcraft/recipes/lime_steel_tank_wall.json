@@ -17,5 +17,6 @@
   "result": {
     "count": 8,
     "item": "railcraft:lime_steel_tank_wall"
-  }
+  },
+  "show_notification": true
 }

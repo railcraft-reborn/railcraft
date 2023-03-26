@@ -139,7 +139,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
   private ItemStack cookedItem(Level level, ItemStack ingredient) {
     return level.getRecipeManager()
         .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(ingredient), level)
-        .map(SmeltingRecipe::getResultItem)
+        .map(x -> x.getResultItem(level.registryAccess()))
         .orElse(ItemStack.EMPTY);
   }
 

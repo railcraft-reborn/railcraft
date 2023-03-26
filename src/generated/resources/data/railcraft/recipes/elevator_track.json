@@ -20,5 +20,6 @@
   "result": {
     "count": 8,
     "item": "railcraft:elevator_track"
-  }
+  },
+  "show_notification": true
 }

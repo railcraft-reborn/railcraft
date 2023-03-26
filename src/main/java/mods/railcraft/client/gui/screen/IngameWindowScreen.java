@@ -47,7 +47,7 @@ public class IngameWindowScreen extends Screen {
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
     RenderSystem.setShaderTexture(0, this.backgroundTexture);
-    this.blit(poseStack, centredX, centredY, 0, 0, this.windowWidth, this.windowHeight);
+    blit(poseStack, centredX, centredY, 0, 0, this.windowWidth, this.windowHeight);
     poseStack.pushPose();
     {
       poseStack.translate(centredX, centredY, 0.0F);

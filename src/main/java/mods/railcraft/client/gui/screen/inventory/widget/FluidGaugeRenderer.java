@@ -56,7 +56,7 @@ public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
     for (var col = 0; col < this.widget.w / 16; col++) {
       for (var row = 0; row <= this.widget.h / 16; row++) {
         blit(poseStack, centreX + this.widget.x + col * 16, centreY + this.widget.y + row * 16 - 1,
-            this.getBlitOffset(), 16, 16, fluidIcon);
+            0, 16, 16, fluidIcon);
       }
     }
 

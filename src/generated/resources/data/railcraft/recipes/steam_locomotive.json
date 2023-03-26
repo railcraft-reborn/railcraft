@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "railcraft:steam_locomotive"
-  }
+  },
+  "show_notification": true
 }

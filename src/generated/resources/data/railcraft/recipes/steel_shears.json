@@ -12,5 +12,6 @@
   ],
   "result": {
     "item": "railcraft:steel_shears"
-  }
+  },
+  "show_notification": true
 }

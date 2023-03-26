@@ -60,7 +60,7 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
     int blue = 0;
     int alpha = 255;
 
-    float z = screen.getBlitOffset();
+    float z = 0;
     float gx = centreX + this.widget.x;
     float gy = centreY + this.widget.y - 1;
 
@@ -87,7 +87,7 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
 
     tesselator.end();
 
-    this.blit(poseStack, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
+    blit(poseStack, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
         this.widget.ov, 4, 3);
   }
 }

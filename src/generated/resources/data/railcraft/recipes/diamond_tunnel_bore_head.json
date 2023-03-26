@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:diamond_tunnel_bore_head"
-  }
+  },
+  "show_notification": true
 }

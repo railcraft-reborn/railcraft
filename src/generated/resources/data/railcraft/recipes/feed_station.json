@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "railcraft:feed_station"
-  }
+  },
+  "show_notification": true
 }

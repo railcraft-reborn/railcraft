@@ -59,7 +59,7 @@ public class ManualRollingMachineMenu extends RailcraftMenu {
   @Override
   public void slotsChanged(Container container) {
     this.craftResult.setItem(0, this.blockEntity.getRecipe()
-        .map(r -> r.assemble(this.craftMatrix))
+        .map(r -> r.assemble(this.craftMatrix, this.blockEntity.level().registryAccess()))
         .orElse(ItemStack.EMPTY));
   }
 

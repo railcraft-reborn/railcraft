@@ -52,7 +52,7 @@ public final class MathUtil {
     x /= size;
     y /= size;
     z /= size;
-    return new BlockPos(x, y, z);
+    return BlockPos.containing(x, y, z);
   }
 
   public static double gaussian() {

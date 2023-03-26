@@ -52,6 +52,7 @@ import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
+import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.Condition;
 import net.minecraft.data.models.blockstates.Condition.CompositeCondition;
@@ -529,7 +530,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.getVariantBuilder(block)
         .forAllStatesExcept(blockState -> {
-          var facing = blockState.getValue(BlockStateProperties.FACING);
+          Direction facing = blockState.getValue(BlockStateProperties.FACING);
           int yRot = 0;
 
           switch (facing) {
@@ -1140,7 +1141,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.getVariantBuilder(block)
         .forAllStatesExcept(blockState -> {
-          var shape = blockState.getValue(BlockStateProperties.RAIL_SHAPE);
+          RailShape shape = blockState.getValue(BlockStateProperties.RAIL_SHAPE);
           int rotY = 0;
           BlockModelBuilder model = null;
           switch (shape) {

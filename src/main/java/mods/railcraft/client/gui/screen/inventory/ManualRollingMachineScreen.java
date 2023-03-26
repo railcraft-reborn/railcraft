@@ -26,7 +26,7 @@ public class ManualRollingMachineScreen extends RailcraftMenuScreen<ManualRollin
   protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
     super.renderBg(poseStack, partialTicks, mouseX, mouseY);
     float progress = this.menu.rollingProgress();
-    this.blit(poseStack, this.leftPos + 89, this.topPos + 47, 176, 0,
+    blit(poseStack, this.leftPos + 89, this.topPos + 47, 176, 0,
         Math.round(24.00F * progress), 12);
   }
 }

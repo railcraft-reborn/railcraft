@@ -17,5 +17,6 @@
   "result": {
     "count": 8,
     "item": "railcraft:lime_iron_tank_valve"
-  }
+  },
+  "show_notification": true
 }

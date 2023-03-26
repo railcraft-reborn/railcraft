@@ -46,18 +46,13 @@ public class TankRenderer implements BlockEntityRenderer<TankBlockEntity> {
 
     var model = FluidRenderer.getFluidModel(fluidStack, fluidMaxX, fluidMaxY, fluidMaxZ,
         FluidRenderer.FluidType.STILL);
-    if (model == null) {
-      return;
-    }
 
     poseStack.pushPose();
-    {
-      model.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
-      model.setPackedOverlay(packedOverlay);
-      CuboidModelRenderer.render(model, poseStack, consumer,
-          RenderUtil.getColorARGB(fluidStack, 1.0F),
-          CuboidModelRenderer.FaceDisplay.FRONT, true);
-    }
+    model.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
+    model.setPackedOverlay(packedOverlay);
+    CuboidModelRenderer.render(model, poseStack, consumer,
+        RenderUtil.getColorARGB(fluidStack, 1.0F),
+        CuboidModelRenderer.FaceDisplay.FRONT, true);
     poseStack.popPose();
   }
 }

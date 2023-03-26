@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "railcraft:fluid_unloader"
-  }
+  },
+  "show_notification": true
 }

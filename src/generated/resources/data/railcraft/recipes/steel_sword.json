@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:steel_sword"
-  }
+  },
+  "show_notification": true
 }

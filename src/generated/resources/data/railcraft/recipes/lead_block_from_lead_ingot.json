@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "railcraft:lead_block"
-  }
+  },
+  "show_notification": true
 }

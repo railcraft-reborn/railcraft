@@ -19,10 +19,10 @@ public class GaugeRenderer extends WidgetRenderer<GaugeWidget> {
     int scale = Math.round((float) (this.widget.getMeasurement()
         * (double) (this.widget.isVertical() ? this.widget.h : this.widget.w)));
     if (this.widget.isVertical())
-      this.blit(poseStack, centreX + this.widget.x, centreY + this.widget.y + this.widget.h - scale,
+      blit(poseStack, centreX + this.widget.x, centreY + this.widget.y + this.widget.h - scale,
           this.widget.u, this.widget.v + this.widget.h - scale, this.widget.w, scale);
     else
-      this.blit(poseStack, centreX + this.widget.x, centreY + this.widget.y, this.widget.u,
+      blit(poseStack, centreX + this.widget.x, centreY + this.widget.y, this.widget.u,
           this.widget.v, scale, this.widget.h);
   }
 

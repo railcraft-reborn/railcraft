@@ -154,7 +154,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
       }
 
       var biome = level.getBiome(pos).value();
-      var humidityMultiplier = biome.getDownfall();
+      var humidityMultiplier = biome.getModifiedClimateSettings().downfall();
 
       var precipitationMultiplier = 1.0D;
       if (biome.coldEnoughToSnow(pos)) {

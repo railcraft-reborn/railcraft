@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:brass_gear"
-  }
+  },
+  "show_notification": true
 }

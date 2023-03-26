@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "railcraft:refined_firestone"
-  }
+  },
+  "show_notification": true
 }

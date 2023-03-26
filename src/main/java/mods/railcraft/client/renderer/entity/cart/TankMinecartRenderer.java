@@ -16,10 +16,10 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart> {
@@ -133,8 +133,8 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
         matrixStack.translate(0.0F, -0.9F, 0.68F);
         matrixStack.scale(scale, scale, scale);
         Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
-            ItemTransforms.TransformType.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-            matrixStack, renderTypeBuffer, 0);
+            ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
+            matrixStack, renderTypeBuffer, cart.level, 0);
       }
       matrixStack.popPose();
 
@@ -142,8 +142,8 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
       matrixStack.translate(0.0F, -0.9F, 0.68F);
       matrixStack.scale(scale, scale, scale);
       Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
-          ItemTransforms.TransformType.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-          matrixStack, renderTypeBuffer, 0);
+          ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
+          matrixStack, renderTypeBuffer, cart.level, 0);
     }
     matrixStack.popPose();
   }

@@ -27,7 +27,7 @@ public class WidgetRenderer<T extends Widget> extends GuiComponent {
 
   public void render(RailcraftMenuScreen<?> screen, PoseStack poseStack, int centreX, int centreY,
       int mouseX, int mouseY) {
-    this.blit(poseStack, centreX + this.widget.x, centreY + this.widget.y, this.widget.u,
+    blit(poseStack, centreX + this.widget.x, centreY + this.widget.y, this.widget.u,
         this.widget.v, this.widget.w, this.widget.h);
   }
 

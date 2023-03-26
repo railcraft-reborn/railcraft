@@ -71,7 +71,7 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     int x = (this.width - this.getXSize()) / 2;
     int y = (this.height - this.getYSize()) / 2;
 
-    this.blit(poseStack, x, y, 0, 0, this.getXSize(), this.getYSize());
+    blit(poseStack, x, y, 0, 0, this.getXSize(), this.getYSize());
 
     int relativeMouseX = mouseX - this.leftPos;
     int relativeMouseY = mouseY - this.topPos;

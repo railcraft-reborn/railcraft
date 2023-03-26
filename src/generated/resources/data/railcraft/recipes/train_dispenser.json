@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "railcraft:train_dispenser"
-  }
+  },
+  "show_notification": true
 }

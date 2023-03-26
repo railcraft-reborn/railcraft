@@ -12,6 +12,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.RollingRecipe;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -56,7 +57,8 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
 
   @Override
   public void setRecipe(IRecipeLayoutBuilder builder, RollingRecipe recipe, IFocusGroup focuses) {
-    this.craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem()));
+    var registryAccess = Minecraft.getInstance().level.registryAccess();
+    this.craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem(registryAccess)));
     int width = recipe.getWidth();
     int height = recipe.getHeight();
     var inputs = recipe.getIngredients().stream()

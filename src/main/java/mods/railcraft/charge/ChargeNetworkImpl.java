@@ -39,7 +39,7 @@ import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeProtectionItem;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.util.ModEntitySelector;
-import mods.railcraft.world.damagesource.RailcraftDamageSource;
+import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -714,8 +714,8 @@ public class ChargeNetworkImpl implements Charge.Network {
         }
         if (remainingDamage > 0.1F
             && entity.hurt(origin == Charge.DamageOrigin.BLOCK
-                ? RailcraftDamageSource.ELECTRIC
-                : RailcraftDamageSource.TRACK_ELECTRIC, remainingDamage)) {
+                ? RailcraftDamageSources.electric(level.registryAccess())
+                : RailcraftDamageSources.trackElectric(level.registryAccess()), remainingDamage)) {
           this.removeCharge(chargeCost, false);
           Charge.zapEffectProvider().zapEffectDeath(entity.getLevel(),
               entity.getX(), entity.getY(), entity.getZ());

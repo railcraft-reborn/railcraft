@@ -12,5 +12,6 @@
   ],
   "result": {
     "item": "railcraft:bushing_gear"
-  }
+  },
+  "show_notification": true
 }

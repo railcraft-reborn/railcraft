@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:iron_tunnel_bore_head"
-  }
+  },
+  "show_notification": true
 }

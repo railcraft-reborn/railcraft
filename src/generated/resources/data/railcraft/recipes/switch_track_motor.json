@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "railcraft:switch_track_motor"
-  }
+  },
+  "show_notification": true
 }

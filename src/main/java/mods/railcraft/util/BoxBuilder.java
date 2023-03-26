@@ -10,11 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * Created by CovertJaguar on 3/9/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class BoxBuilder {
@@ -57,13 +52,13 @@ public class BoxBuilder {
     return this;
   }
 
-  public BoxBuilder setBoundsToPoint(Vec3 vector) {
-    this.minX = vector.x;
-    this.minY = vector.y;
-    this.minZ = vector.z;
-    this.maxX = vector.x;
-    this.maxY = vector.y;
-    this.maxZ = vector.z;
+  public BoxBuilder setBoundsToPoint(Vec3i vector) {
+    this.minX = vector.getX();
+    this.minY = vector.getY();
+    this.minZ = vector.getZ();
+    this.maxX = vector.getX();
+    this.maxY = vector.getY();
+    this.maxZ = vector.getZ();
     return this;
   }
 

@@ -23,5 +23,6 @@
   "result": {
     "count": 6,
     "item": "railcraft:white_strengthened_glass"
-  }
+  },
+  "show_notification": true
 }

@@ -86,8 +86,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
           .withStyle(ChatFormatting.BLACK);
 
       drawCenteredString(poseStack, about, 15, false);
-      this.font.drawWordWrap(help, this.width / 2 - 110, this.height / 2 - 40, 230,
-          IngameWindowScreen.TEXT_COLOR);
+      this.font.drawWordWrap(poseStack, help, 15, 30, 230, IngameWindowScreen.TEXT_COLOR);
       this.helpButton.setMessage(CommonComponents.GUI_BACK);
     } else {
       var title = Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE)
