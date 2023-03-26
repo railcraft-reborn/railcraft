@@ -10,7 +10,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -39,6 +42,12 @@ public abstract class TankGaugeBlock extends AbstractStrengthenedGlassBlock impl
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(LEVEL);
+  }
+
+  @Override
+  public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos,
+      SpawnPlacements.Type type, EntityType<?> entityType) {
+    return false;
   }
 
   @Nullable
