@@ -1410,6 +1410,15 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.IRON_PLATE.get()),
             has(RailcraftItems.IRON_PLATE.get()))
         .save(consumer);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STEAM_OVEN.get(), 4)
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', RailcraftItems.STEEL_PLATE.get())
+        .define('b', Items.FURNACE)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()),
+            has(RailcraftItems.STEEL_PLATE.get()))
+        .save(consumer);
   }
 
   private void buildBlockStorageRecipes(Consumer<FinishedRecipe> consumer) {

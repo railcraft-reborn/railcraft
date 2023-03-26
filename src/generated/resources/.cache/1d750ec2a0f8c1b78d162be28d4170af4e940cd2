@@ -1,4 +1,4 @@
-// 1.19.3	2023-03-03T19:37:09.642052	Block States: railcraft
+// 1.19.3	2023-03-26T17:30:20.419635	Block States: railcraft
 add6c7b9a50c93a0ccd9ba6e317c1464c29ff9f0 assets/railcraft/blockstates/abandoned_activator_track.json
 141e735829ad3c7798b22e3fcc73490d9a9602ac assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -255,6 +255,7 @@ b080e5991639b33b30601ee3e173b61ab4ac64ab assets/railcraft/blockstates/saltpeter_
 9a2d71cd2078dcc845054058e414dbed2b7a8ea4 assets/railcraft/blockstates/silver_block.json
 8b5f3b731a15cb43e624da7df5a0a2a3ad4b30ee assets/railcraft/blockstates/silver_ore.json
 7385aa54756d1d47e15e13cfa3a664d5f777a498 assets/railcraft/blockstates/solid_fueled_firebox.json
+7e0963af1e94a18a91cd0d86bad3614f1077e552 assets/railcraft/blockstates/steam_oven.json
 3fa9e8577fec559a21beffa6c1f5ad40095a1de0 assets/railcraft/blockstates/steam_turbine.json
 3a28650fbe79f71ccbde7e4823d9e78ea4a3a9b5 assets/railcraft/blockstates/steel_anvil.json
 0d6914a2c9d2d8fda43ea40753ce0efa55dcbd2c assets/railcraft/blockstates/steel_block.json
@@ -957,6 +958,11 @@ f6903bd57f9cc0df49dead6127a6c5029e362e7a assets/railcraft/models/block/silver_bl
 2851892f123a0937d6cb1b50839d27305fc7eb01 assets/railcraft/models/block/silver_ore.json
 a4ca043fced22cfee6f9bf50f6dd109766903c42 assets/railcraft/models/block/solid_fueled_firebox.json
 0815cb466abb7720fa077797928e6158881d5098 assets/railcraft/models/block/solid_fueled_firebox_lit.json
+e233432d2fd81778685b79a98f78e06e1298962e assets/railcraft/models/block/steam_oven.json
+02cfdb087130eaf89e3d791558b99daa3cf05824 assets/railcraft/models/block/steam_oven_bottom_left.json
+ab8279fab1397f7a2ddf58e93b528e359d154127 assets/railcraft/models/block/steam_oven_bottom_right.json
+2d8a67209c1ea4f7c4def17f96655ca4cb40ae48 assets/railcraft/models/block/steam_oven_top_left.json
+a2316d536d46494f346bb0b253a3d3fd2c518354 assets/railcraft/models/block/steam_oven_top_right.json
 cde64bce8f046f0b06ab36daf6e46fe3b925f3a1 assets/railcraft/models/block/steam_turbine_bottom_left.json
 a9e87b0ca384c1ebe23785decff8e5cb6ec3874f assets/railcraft/models/block/steam_turbine_bottom_right.json
 eed67876193f2d130e2fe4a9e5ecc7bbdf2fa28e assets/railcraft/models/block/steam_turbine_inventory.json
@@ -1300,6 +1306,7 @@ eaa05d69d9ce71a8309c6908a8416d9b09131209 assets/railcraft/models/item/reinforced
 4188711a4dde8eacc76e62126f5695bf96e2a300 assets/railcraft/models/item/silver_block.json
 72a5e1c8292f488919cccd79badb511f473d3fac assets/railcraft/models/item/silver_ore.json
 3e61fa5c647cd93d37019afee702b4a9535f8dec assets/railcraft/models/item/solid_fueled_firebox.json
+fc016f89a9efdfc90996c87980bf19b7b1979ca9 assets/railcraft/models/item/steam_oven.json
 b02b8ebfda05b52ec7704bbff50b2c81f6921e6e assets/railcraft/models/item/steam_turbine.json
 5e0eed0d43b6ba5695b778157ae686de8ea1d7c8 assets/railcraft/models/item/steel_anvil.json
 04684d7a3401a9f487571d5b0c1e9f0b2220ea24 assets/railcraft/models/item/steel_block.json

@@ -1559,6 +1559,13 @@ public class RailcraftBlocks {
               .lightLevel(litBlockEmission(13))
               .strength(2F, 6.0F)));
 
+  public static final RegistryObject<SteamOvenBlock> STEAM_OVEN =
+      deferredRegister.register("steam_oven",
+          () -> new SteamOvenBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .requiresCorrectToolForDrops()
+              .sound(SoundType.STONE)
+              .strength(3.5F)));
+
   public static final RegistryObject<LiquidBlock> CREOSOTE =
       deferredRegister.register("creosote",
           () -> new LiquidBlock(RailcraftFluids.CREOSOTE,

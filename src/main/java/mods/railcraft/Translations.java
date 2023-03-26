@@ -142,6 +142,8 @@ public class Translations {
         makeKey("tips", "crusher");
     public static final String WATER_TANK_SIDING =
         makeKey("tips", "water_tank_siding");
+    public static final String MULTIBLOCK2X2X2 =
+        makeKey("tips", "multiblock2x2x2");
     public static final String MULTIBLOCK3X2X2 =
         makeKey("tips", "multiblock3x2x2");
     public static final String STEAM_TURBINE_DESC_1 =
@@ -323,6 +325,7 @@ public class Translations {
     public static final String BLAST_FURNACE =
         makeKey("container", "blast_furnace");
     public static final String CRUSHER = makeKey("container", "crusher");
+    public static final String STEAM_OVEN = makeKey("container", "steam_oven");
     public static final String WATER_TANK_SIDING = makeKey("container", "water_tank_siding");
     public static final String TANK =
         makeKey("container", "tank");

@@ -1,0 +1,79 @@
+{
+  "variants": {
+    "facing=east,type=default": {
+      "model": "railcraft:block/steam_oven",
+      "y": 90
+    },
+    "facing=east,type=door_bottom_left": {
+      "model": "railcraft:block/steam_oven_bottom_left",
+      "y": 90
+    },
+    "facing=east,type=door_bottom_right": {
+      "model": "railcraft:block/steam_oven_bottom_right",
+      "y": 90
+    },
+    "facing=east,type=door_top_left": {
+      "model": "railcraft:block/steam_oven_top_left",
+      "y": 90
+    },
+    "facing=east,type=door_top_right": {
+      "model": "railcraft:block/steam_oven_top_right",
+      "y": 90
+    },
+    "facing=north,type=default": {
+      "model": "railcraft:block/steam_oven"
+    },
+    "facing=north,type=door_bottom_left": {
+      "model": "railcraft:block/steam_oven_bottom_left"
+    },
+    "facing=north,type=door_bottom_right": {
+      "model": "railcraft:block/steam_oven_bottom_right"
+    },
+    "facing=north,type=door_top_left": {
+      "model": "railcraft:block/steam_oven_top_left"
+    },
+    "facing=north,type=door_top_right": {
+      "model": "railcraft:block/steam_oven_top_right"
+    },
+    "facing=south,type=default": {
+      "model": "railcraft:block/steam_oven",
+      "y": 180
+    },
+    "facing=south,type=door_bottom_left": {
+      "model": "railcraft:block/steam_oven_bottom_left",
+      "y": 180
+    },
+    "facing=south,type=door_bottom_right": {
+      "model": "railcraft:block/steam_oven_bottom_right",
+      "y": 180
+    },
+    "facing=south,type=door_top_left": {
+      "model": "railcraft:block/steam_oven_top_left",
+      "y": 180
+    },
+    "facing=south,type=door_top_right": {
+      "model": "railcraft:block/steam_oven_top_right",
+      "y": 180
+    },
+    "facing=west,type=default": {
+      "model": "railcraft:block/steam_oven",
+      "y": 270
+    },
+    "facing=west,type=door_bottom_left": {
+      "model": "railcraft:block/steam_oven_bottom_left",
+      "y": 270
+    },
+    "facing=west,type=door_bottom_right": {
+      "model": "railcraft:block/steam_oven_bottom_right",
+      "y": 270
+    },
+    "facing=west,type=door_top_left": {
+      "model": "railcraft:block/steam_oven_top_left",
+      "y": 270
+    },
+    "facing=west,type=door_top_right": {
+      "model": "railcraft:block/steam_oven_top_right",
+      "y": 270
+    }
+  }
+}

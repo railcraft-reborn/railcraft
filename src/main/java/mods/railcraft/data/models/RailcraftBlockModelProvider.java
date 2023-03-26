@@ -9,6 +9,7 @@ import mods.railcraft.world.level.block.CrusherMultiblockBlock;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.SteamOvenBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock.Type;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
@@ -275,6 +276,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createCubeColumnBlock(RailcraftBlocks.WATER_TANK_SIDING.get());
     this.createCubeTopBottomBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
     this.createCubeTopBottomBlock(RailcraftBlocks.POWERED_ROLLING_MACHINE.get());
+    this.createSteamOven(RailcraftBlocks.STEAM_OVEN.get());
 
     this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
     this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
@@ -556,6 +558,49 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         }, AdvancedItemLoaderBlock.POWERED);
 
     simpleBlockItem(block, horizontalModel);
+  }
+
+  private void createSteamOven(SteamOvenBlock block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    var frontTexture = TextureMapping.getBlockTexture(block, "_front");
+    var topTexture = TextureMapping.getBlockTexture(block, "_top");
+
+    var bottomLeftTexture = TextureMapping.getBlockTexture(block, "_bottom_left");
+    var bottomRightTexture = TextureMapping.getBlockTexture(block, "_bottom_right");
+    var topLeftTexture = TextureMapping.getBlockTexture(block, "_top_left");
+    var topRightTexture = TextureMapping.getBlockTexture(block, "_top_right");
+
+    var defaultModel = this.models()
+        .orientable(name(block), sideTexture, frontTexture, topTexture);
+    var bottomLeftModel = this.models()
+        .orientable(name(block, "_bottom_left"), sideTexture, bottomLeftTexture, topTexture);
+    var bottomRightModel = this.models()
+        .orientable(name(block, "_bottom_right"), sideTexture, bottomRightTexture, topTexture);
+    var topLeftModel = this.models()
+        .orientable(name(block, "_top_left"), sideTexture, topLeftTexture, topTexture);
+    var topRightModel = this.models()
+        .orientable(name(block, "_top_right"), sideTexture, topRightTexture, topTexture);
+
+    this.getVariantBuilder(block)
+        .forAllStates(blockState -> {
+          var type = blockState.getValue(SteamOvenBlock.TYPE);
+          var facing = blockState.getValue(SteamOvenBlock.FACING);
+          return ConfiguredModel.builder()
+              .modelFile(switch (type) {
+                case DEFAULT -> defaultModel;
+                case DOOR_TOP_LEFT -> topLeftModel;
+                case DOOR_TOP_RIGHT -> topRightModel;
+                case DOOR_BOTTOM_LEFT -> bottomLeftModel;
+                case DOOR_BOTTOM_RIGHT -> bottomRightModel;
+              })
+              .rotationY(((int) facing.toYRot() + 180) % 360)
+              .build();
+        });
+    //this.horizontalBlock(block, sideTexture, frontTexture, topTexture);
+    this.itemModels().withExistingParent(this.name(block),
+        this.modLoc(ModelProvider.BLOCK_FOLDER + "/" + this.name(block)));
+    //this.simpleBlockItem(block, baseModel);
+
   }
 
   private void createFirebox(FireboxBlock block) {

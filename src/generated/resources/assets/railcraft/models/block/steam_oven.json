@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "railcraft:block/steam_oven_front",
+    "side": "railcraft:block/steam_oven_side",
+    "top": "railcraft:block/steam_oven_top"
+  }
+}

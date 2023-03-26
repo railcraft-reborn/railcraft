@@ -354,6 +354,7 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.POWERED_ROLLING_MACHINE.get());
     this.dropSelf(RailcraftBlocks.CRUSHER.get());
     this.dropSelf(RailcraftBlocks.COKE_OVEN_BRICKS.get());
+    this.dropSelf(RailcraftBlocks.STEAM_OVEN.get());
     this.dropSelf(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
 
     /* === misc === */

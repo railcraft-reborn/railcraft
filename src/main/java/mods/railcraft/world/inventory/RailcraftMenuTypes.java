@@ -13,6 +13,7 @@ import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
+import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
@@ -116,6 +117,11 @@ public class RailcraftMenuTypes {
   public static final RegistryObject<MenuType<CrusherMenu>> CRUSHER =
       deferredRegister.register("crusher",
           () -> new MenuType<>(blockEntityMenu(CrusherBlockEntity.class, CrusherMenu::new)));
+
+  public static final RegistryObject<MenuType<SteamOvenMenu>> STEAM_OVEN =
+      deferredRegister.register("steam_oven",
+          () -> new MenuType<>(
+              blockEntityMenu(SteamOvenBlockEntity.class, SteamOvenMenu::new)));
 
   public static final RegistryObject<MenuType<ItemManipulatorMenu>> ITEM_MANIPULATOR =
       deferredRegister.register("item_manipulator",

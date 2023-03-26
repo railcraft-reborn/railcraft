@@ -117,6 +117,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.POWERED_ROLLING_MACHINE, "Powered Rolling Machine");
     this.addBlock(RailcraftBlocks.CRUSHER, "Crusher");
     this.addBlock(RailcraftBlocks.COKE_OVEN_BRICKS, "Coke Oven Bricks");
+    this.addBlock(RailcraftBlocks.STEAM_OVEN, "Steam Oven");
     this.addBlock(RailcraftBlocks.FORCE_TRACK_EMITTER, "Force Track Emitter");
     this.addBlock(RailcraftBlocks.FORCE_TRACK, "Force Track");
     this.addBlock(RailcraftBlocks.CRUSHED_OBSIDIAN, "Crushed Obsidian");
@@ -322,6 +323,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Container.COKE_OVEN, "Coke Oven");
     this.add(Translations.Container.BLAST_FURNACE, "Blast Furnace");
     this.add(Translations.Container.CRUSHER, "Crusher");
+    this.add(Translations.Container.STEAM_OVEN, "Steam Oven");
     this.add(Translations.Container.TANK, "Tank");
     this.add(Translations.Container.WATER_TANK_SIDING, "Water Tank");
     this.add(Translations.Container.STEAM_TURBINE, "Steam Turbine");
@@ -348,6 +350,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.COKE_OVEN, "Multi-Block: 3x3x3 (Hollow)");
     this.add(Translations.Tips.WATER_TANK_SIDING, "Multi-Block: 3x3x3 (Hollow)");
     this.add(Translations.Tips.BLAST_FURNACE, "Multi-Block: 3x4x3 (Hollow)");
+    this.add(Translations.Tips.MULTIBLOCK2X2X2, "Multi-Block: 2x2x2");
     this.add(Translations.Tips.MULTIBLOCK3X2X2, "Multi-Block: 3x2x2");
     this.add(Translations.Tips.STEAM_TURBINE_DESC_1, "Generates FE from Steam");
     this.add(Translations.Tips.STEAM_TURBINE_DESC_2, "Outputs water to the bottom");

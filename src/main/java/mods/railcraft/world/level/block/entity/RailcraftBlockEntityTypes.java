@@ -298,6 +298,12 @@ public class RailcraftBlockEntityTypes {
               .of(CrusherBlockEntity::new, RailcraftBlocks.CRUSHER.get())
               .build(null));
 
+  public static final RegistryObject<BlockEntityType<SteamOvenBlockEntity>> STEAM_OVEN =
+      deferredRegister.register("steam_oven",
+          () -> BlockEntityType.Builder
+              .of(SteamOvenBlockEntity::new, RailcraftBlocks.STEAM_OVEN.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<WaterTankSidingBlockEntity>> WATER_TANK_SIDING =
       deferredRegister.register("water_tank_siding",
           () -> BlockEntityType.Builder

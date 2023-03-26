@@ -1,4 +1,4 @@
-// 1.19.3	2023-03-24T20:46:38.679667	Recipes
+// 1.19.3	2023-03-26T12:29:37.89064	Recipes
 b5a17571ce39881697d539ab8e2e6830c430e652 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 3159a4cc9361689702fc1dee383096849bfdb726 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
 9e43f76515912931ca12626a2fa1c5bf15bcf4fb data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_raw.json
@@ -424,6 +424,7 @@ b1e28c3997e0046537159fcb907ed828c95832b1 data/railcraft/advancements/recipes/mis
 801e7a6d3588d989e49aade880dccef8886f7eaa data/railcraft/advancements/recipes/misc/solid_fueled_firebox.json
 781a17dd01ff09926391328530e7d177f5a6978a data/railcraft/advancements/recipes/misc/standard_rail_from_rail.json
 3c48b4f9d9f97536b6fa789d98a8879e0118fcca data/railcraft/advancements/recipes/misc/steam_locomotive.json
+2f70bc77e1019fa661ec093f1f85b2eacf60ef68 data/railcraft/advancements/recipes/misc/steam_oven.json
 1c4ffdef31d2a5cb19b1c21ec026151205d81407 data/railcraft/advancements/recipes/misc/steam_turbine.json
 a7ec18baec7a6d6ad47339e22f80a12b244a0fa7 data/railcraft/advancements/recipes/misc/steel_anvil.json
 2ceb461089b54ea54167b3a97c7cc35c35f2f642 data/railcraft/advancements/recipes/misc/steel_axe.json
@@ -981,6 +982,7 @@ b2d4393a7190569a1a87def39e995567bb972478 data/railcraft/recipes/silver_ingot.jso
 0008d00e81f60c85ad1ad31a5562e33ca72a1943 data/railcraft/recipes/solid_fueled_firebox.json
 dd9387a97bac1a13d147e02d822cf96c64b95af7 data/railcraft/recipes/standard_rail_from_rail.json
 193f4aac0c331d8248507ee3237b1ada87848fce data/railcraft/recipes/steam_locomotive.json
+41ee1cd17657442c51be32238c869b559b12dfa5 data/railcraft/recipes/steam_oven.json
 eb33eac11390e8408b32abb4954dfae9fb3cc791 data/railcraft/recipes/steam_turbine.json
 86d69edfe0881f42dccdcead94373b51d6120302 data/railcraft/recipes/steel_anvil.json
 84fe4bca725e6d5c7ab108e67a53f17dc1bca0bc data/railcraft/recipes/steel_axe.json

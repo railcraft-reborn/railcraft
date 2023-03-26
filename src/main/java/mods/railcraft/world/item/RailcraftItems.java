@@ -1324,6 +1324,11 @@ public class RailcraftItems {
           () -> new BlockItem(RailcraftBlocks.COKE_OVEN_BRICKS.get(),
               new Item.Properties()));
 
+  public static final RegistryObject<BlockItem> STEAM_OVEN =
+      deferredRegister.register("steam_oven",
+          () -> new BlockItem(RailcraftBlocks.STEAM_OVEN.get(),
+              new Item.Properties()));
+
   public static final RegistryObject<BlockItem> CRUSHED_OBSIDIAN =
       deferredRegister.register("crushed_obsidian",
           () -> new BlockItem(RailcraftBlocks.CRUSHED_OBSIDIAN.get(),

@@ -1,4 +1,4 @@
-// 1.19.3	2023-03-03T19:37:09.638456	Loot Tables
+// 1.19.3	2023-03-26T12:29:37.888675	Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -267,6 +267,7 @@ e654aaf4bfcffb59514d4d19893f4e4c6be791a0 data/railcraft/loot_tables/blocks/signa
 edfab3e3d5f1f30786bb9e37f74e3f523dcc4c18 data/railcraft/loot_tables/blocks/silver_block.json
 13377e17e34e237904b21db8cbb04f820c5b3cee data/railcraft/loot_tables/blocks/silver_ore.json
 d808b3b398f18978016184b7683771d1689f83d5 data/railcraft/loot_tables/blocks/solid_fueled_firebox.json
+a93b581b68c4b17bb239a4f8f8bf3b87771f95da data/railcraft/loot_tables/blocks/steam_oven.json
 e1aa9979dabaf79e349f55f3bad46ce66526c538 data/railcraft/loot_tables/blocks/steam_turbine.json
 7d66f0191d7b92388e7d117732e06f53775a2944 data/railcraft/loot_tables/blocks/steel_anvil.json
 194de3381cb9a9f752a4f5119ac127312bb2f321 data/railcraft/loot_tables/blocks/steel_block.json

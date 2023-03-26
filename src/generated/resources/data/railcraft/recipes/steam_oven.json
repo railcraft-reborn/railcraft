@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "railcraft:steel_plate"
+    },
+    "b": {
+      "item": "minecraft:furnace"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "result": {
+    "count": 4,
+    "item": "railcraft:steam_oven"
+  }
+}
