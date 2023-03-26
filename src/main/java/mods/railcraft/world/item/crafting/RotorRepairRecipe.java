@@ -3,6 +3,7 @@ package mods.railcraft.world.item.crafting;
 import java.util.stream.IntStream;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +30,7 @@ public class RotorRepairRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer container) {
+  public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
     var rotor = IntStream.range(0, container.getContainerSize())
         .mapToObj(container::getItem)
         .filter(ROTOR)
@@ -62,7 +63,7 @@ public class RotorRepairRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack getResultItem() {
+  public ItemStack getResultItem(RegistryAccess registryAccess) {
     return new ItemStack(RailcraftItems.TURBINE_ROTOR.get());
   }
 

@@ -8,7 +8,7 @@ import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.ModEntitySelector;
-import mods.railcraft.world.damagesource.RailcraftDamageSource;
+import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.inventory.CrusherMenu;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -84,7 +84,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
                 .forEach(livingEntity -> {
                   energyCap.ifPresent(energyStorage -> {
                     if (energyStorage.getEnergyStored() >= KILLING_POWER_COST) {
-                      livingEntity.hurt(RailcraftDamageSource.CRUSHER, 5);
+                      livingEntity.hurt(RailcraftDamageSources.crusher(level.registryAccess()), 5);
                       energyStorage.extractEnergy(KILLING_POWER_COST, false);
                     }
                   });

@@ -2,6 +2,7 @@ package mods.railcraft.world.item.crafting;
 
 import java.util.stream.IntStream;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -28,8 +29,8 @@ public class CartDisassemblyRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer container) {
-    return this.getResultItem().copy();
+  public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+    return this.getResultItem(registryAccess).copy();
   }
 
   @Override
@@ -38,7 +39,7 @@ public class CartDisassemblyRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack getResultItem() {
+  public ItemStack getResultItem(RegistryAccess registryAccess) {
     return new ItemStack(Items.CHEST);
   }
 

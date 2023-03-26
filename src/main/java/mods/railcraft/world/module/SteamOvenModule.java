@@ -81,7 +81,7 @@ public class SteamOvenModule extends CookingModule<BlastingRecipe, SteamOvenBloc
 
   @Override
   protected boolean craftAndPush() {
-    var output = this.recipe.getResultItem();
+    var output = this.recipe.getResultItem(this.provider.level().registryAccess());
 
     if (!this.outputContainer.canFit(output)) {
       return false;

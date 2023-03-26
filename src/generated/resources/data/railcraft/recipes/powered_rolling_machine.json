@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "railcraft:powered_rolling_machine"
-  }
+  },
+  "show_notification": true
 }

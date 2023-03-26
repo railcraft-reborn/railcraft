@@ -54,8 +54,8 @@ public class DefaultRecipeWrapper implements ICraftingCategoryExtension {
         .map(ingredient -> List.of(ingredient.getItems()))
         .toList();
     inputs.forEach(l -> l.forEach(stackModifier));
-
-    craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem()));
+    var registryAccess = Minecraft.getInstance().level.registryAccess();
+    craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem(registryAccess)));
     craftingGridHelper.createAndSetInputs(builder, inputs, getWidth(), getHeight());
   }
 
