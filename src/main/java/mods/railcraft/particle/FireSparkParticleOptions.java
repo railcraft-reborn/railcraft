@@ -11,13 +11,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class FireSparkParticleOptions implements ParticleOptions {
+public record FireSparkParticleOptions(Vec3 destination) implements ParticleOptions {
 
   public static final Codec<FireSparkParticleOptions> CODEC =
       RecordCodecBuilder.create(instance -> instance
           .group(Vec3.CODEC
               .fieldOf("destination")
-              .forGetter(FireSparkParticleOptions::getDestination))
+              .forGetter(FireSparkParticleOptions::destination))
           .apply(instance, FireSparkParticleOptions::new));
 
   @SuppressWarnings("deprecation")
@@ -43,12 +43,6 @@ public class FireSparkParticleOptions implements ParticleOptions {
         }
       };
 
-  private final Vec3 destination;
-
-  public FireSparkParticleOptions(Vec3 destination) {
-    this.destination = destination;
-  }
-
   @Override
   public void writeToNetwork(FriendlyByteBuf buf) {
     buf.writeDouble(this.destination.x());
@@ -63,10 +57,6 @@ public class FireSparkParticleOptions implements ParticleOptions {
         this.destination.x(),
         this.destination.y(),
         this.destination.z());
-  }
-
-  public Vec3 getDestination() {
-    return this.destination;
   }
 
 

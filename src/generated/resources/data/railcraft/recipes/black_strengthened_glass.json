@@ -17,5 +17,6 @@
   "result": {
     "count": 8,
     "item": "railcraft:black_strengthened_glass"
-  }
+  },
+  "show_notification": true
 }

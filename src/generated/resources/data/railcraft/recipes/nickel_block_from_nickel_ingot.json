@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "railcraft:nickel_block"
-  }
+  },
+  "show_notification": true
 }

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Sets;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.ArrowDirection;
+import mods.railcraft.api.track.SwitchActuator;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.RailcraftNBTUtil;
@@ -182,9 +183,11 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     var sameTrain = this.currentCart() != null && RollingStock.getOrThrow(cart)
         .isSameTrainAs(this.currentCart());
 
-    BlockState actuatorBlockState = this.level.getBlockState(this.getActuatorBlockPos());
-    boolean shouldSwitch = actuatorBlockState.is(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
-        && SwitchTrackActuatorBlock.isSwitched(actuatorBlockState);
+    boolean shouldSwitch = false;
+    var actuatorBlockEntity =  this.level.getBlockEntity(this.getActuatorBlockPos());
+    if (actuatorBlockEntity instanceof SwitchActuator switchActuator) {
+      shouldSwitch = switchActuator.shouldSwitch(cart);
+    }
 
     if (this.isSprung()) {
       // we're either same train or switched so return true

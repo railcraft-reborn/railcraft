@@ -35,7 +35,7 @@ public class FilteredInvWrapper extends InvWrapper {
   @NotNull
   public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
       if (!allowInsert) {
-          return ItemStack.EMPTY;
+          return stack;
       }
     return super.insertItem(slot, stack, simulate);
   }

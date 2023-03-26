@@ -81,10 +81,9 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
 
   private void setLock(LockableSwitchTrackActuatorBlockEntity.Lock lock) {
     if (this.switchTrackMotor.getLock() != lock) {
-      this.switchTrackMotor.setLock(lock);
-      this.switchTrackMotor.setOwner(lock == LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED
-          ? null
-          : this.minecraft.getUser().getGameProfile());
+      this.switchTrackMotor.setLock(
+          lock == LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED
+          ? null : this.minecraft.getUser().getGameProfile());
       this.sendAttributes();
     }
   }

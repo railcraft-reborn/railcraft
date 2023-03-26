@@ -1,5 +1,8 @@
 package mods.railcraft.gui.widget;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.util.HumanReadableNumberFormatter;
@@ -9,10 +12,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
 
@@ -68,15 +67,15 @@ public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
             HumanReadableNumberFormatter.format(humidityMultiplier))
         .withStyle(ChatFormatting.GRAY));
     this.tooltip.add(Component.translatable(Translations.Screen.WATER_TANK_PRECIPITATION,
-                HumanReadableNumberFormatter.format(precipitationMultiplier))
+            HumanReadableNumberFormatter.format(precipitationMultiplier))
         .withStyle(ChatFormatting.GRAY));
     this.tooltip.add(Component.translatable(Translations.Screen.WATER_TANK_TEMP,
-                HumanReadableNumberFormatter.format(-temperaturePenalty))
+            HumanReadableNumberFormatter.format(-temperaturePenalty))
         .withStyle(ChatFormatting.GRAY));
     this.tooltip.add(Component.translatable(Translations.Screen.WATER_TANK_FINAL_RATE,
-        HumanReadableNumberFormatter.format(
-            (baseRate * count * humidityMultiplier * precipitationMultiplier)
-                - temperaturePenalty))
+            HumanReadableNumberFormatter.format(
+                (baseRate * count * humidityMultiplier * precipitationMultiplier)
+                    - temperaturePenalty))
         .withStyle(ChatFormatting.GRAY));
   }
 
@@ -84,17 +83,12 @@ public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
   public void writeToBuf(ServerPlayer player, FriendlyByteBuf out) {
     super.writeToBuf(player, out);
     this.refresh();
-    out.writeVarInt(this.tooltip.size());
-    this.tooltip.forEach(out::writeComponent);
+    out.writeCollection(this.tooltip, FriendlyByteBuf::writeComponent);
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf in) {
     super.readFromBuf(in);
-    this.tooltip = new ArrayList<>();
-    var size = in.readVarInt();
-    for (int i = 0; i < size; i++) {
-      this.tooltip.add(in.readComponent());
-    }
+    this.tooltip = in.readList(FriendlyByteBuf::readComponent);
   }
 }

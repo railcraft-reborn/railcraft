@@ -12,5 +12,6 @@
   ],
   "result": {
     "item": "railcraft:steel_helmet"
-  }
+  },
+  "show_notification": true
 }

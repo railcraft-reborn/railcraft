@@ -42,7 +42,7 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
     int y = (height - this.getYSize()) / 2;
     if (this.menu.getLocomotive().getBoiler().hasFuel()) {
       int scale = this.menu.getLocomotive().getBoiler().getBurnProgressScaled(12);
-      this.blit(poseStack, x + 99, y + 33 - scale, 176, 59 - scale, 14, scale + 2);
+      blit(poseStack, x + 99, y + 33 - scale, 176, 59 - scale, 14, scale + 2);
     }
   }
 }

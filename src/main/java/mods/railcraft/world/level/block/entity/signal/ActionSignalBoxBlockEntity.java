@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity.signal;
 
 import java.util.EnumSet;
-import java.util.Set;
 import mods.railcraft.api.signal.SignalAspect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -12,19 +11,16 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockEntity {
 
-  private final Set<SignalAspect> actionSignalAspects = EnumSet.of(SignalAspect.GREEN);
+  private final EnumSet<SignalAspect> actionSignalAspects = EnumSet.of(SignalAspect.GREEN);
 
   public ActionSignalBoxBlockEntity(BlockEntityType<?> type, BlockPos blockPos,
       BlockState blockState) {
     super(type, blockPos, blockState);
   }
 
-  public final Set<SignalAspect> getActionSignalAspects() {
+  public final EnumSet<SignalAspect> getActionSignalAspects() {
     return this.actionSignalAspects;
   }
 
@@ -63,17 +59,13 @@ public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockE
   @Override
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
-    data.writeVarInt(this.actionSignalAspects.size());
-    this.actionSignalAspects.forEach(data::writeEnum);
+    data.writeEnumSet(this.actionSignalAspects, SignalAspect.class);
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf data) {
     super.readFromBuf(data);
     this.actionSignalAspects.clear();
-    int size = data.readVarInt();
-    for (int i = 0; i < size; i++) {
-      this.actionSignalAspects.add(data.readEnum(SignalAspect.class));
-    }
+    this.actionSignalAspects.addAll(data.readEnumSet(SignalAspect.class));
   }
 }

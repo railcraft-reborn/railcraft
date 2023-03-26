@@ -92,7 +92,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   @Override
   protected boolean craftAndPush() {
-    var output = this.recipe.getResultItem();
+    var output = this.recipe.getResultItem(this.provider.level().registryAccess());
 
     if (!this.outputContainer.canFit(output)) {
       return false;
@@ -170,6 +170,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     return switch (slot) {
       case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
       case SLOT_FUEL -> this.isFuel(itemStack);
+      case SLOT_OUTPUT, SLOT_SLAG -> true;
       default -> false;
     } && super.canPlaceItem(slot, itemStack);
   }

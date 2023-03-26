@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "railcraft:track_layer"
-  }
+  },
+  "show_notification": true
 }

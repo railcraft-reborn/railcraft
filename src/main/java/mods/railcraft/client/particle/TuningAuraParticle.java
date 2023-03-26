@@ -17,15 +17,15 @@ public class TuningAuraParticle extends DimmableParticle {
   private TuningAuraParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
       double dz, TuningAuraParticleOptions options, SpriteSet sprites) {
     super(level, x, y, z, dx, dy, dz);
-    this.destination = options.getDestination();
+    this.destination = options.destination();
     this.source = new Vec3(x, y, z);
     this.calculateVector();
 
     this.scale(0.5F);
 
-    float c1 = (float) (options.getColor() >> 16 & 255) / 255.0F;
-    float c2 = (float) (options.getColor() >> 8 & 255) / 255.0F;
-    float c3 = (float) (options.getColor() & 255) / 255.0F;
+    float c1 = (float) (options.color() >> 16 & 255) / 255.0F;
+    float c2 = (float) (options.color() >> 8 & 255) / 255.0F;
+    float c3 = (float) (options.color() & 255) / 255.0F;
 
     float variant = this.random.nextFloat() * 0.6F + 0.4F;
     this.rCol = c1 * variant;
@@ -64,13 +64,13 @@ public class TuningAuraParticle extends DimmableParticle {
       return;
     }
 
-    if (!level.isLoaded(new BlockPos(source)) ||
-        !level.isLoaded(new BlockPos(destination))) {
+    if (!level.isLoaded(BlockPos.containing(source)) ||
+        !level.isLoaded(BlockPos.containing(destination))) {
       this.remove();
     }
 
-    var sourceBE = level.getBlockEntity(new BlockPos(source));
-    var destBE = level.getBlockEntity(new BlockPos(source));
+    var sourceBE = level.getBlockEntity(BlockPos.containing(source));
+    var destBE = level.getBlockEntity(BlockPos.containing(source));
     if((sourceBE == null || sourceBE.isRemoved()) || (destBE == null || destBE.isRemoved())) {
       this.remove();
     }

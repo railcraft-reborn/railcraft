@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "railcraft:charge_motor"
-  }
+  },
+  "show_notification": true
 }

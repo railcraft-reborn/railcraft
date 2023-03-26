@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "railcraft:routing_track_kit"
+    },
+    {
+      "item": "railcraft:electric_track"
+    }
+  ],
+  "result": {
+    "item": "railcraft:electric_routing_track"
+  }
+}

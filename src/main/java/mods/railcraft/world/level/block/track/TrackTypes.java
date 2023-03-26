@@ -30,13 +30,13 @@ import java.util.function.Supplier;
 
 public class TrackTypes {
 
-  public static final ResourceKey<Registry<TrackType>> REGISTRY_KEY =
+  private static final ResourceKey<Registry<TrackType>> REGISTRY_KEY =
       ResourceKey.createRegistryKey(new ResourceLocation(Railcraft.ID, "track_type"));
 
   private static final DeferredRegister<TrackType> deferredRegister =
       DeferredRegister.create(REGISTRY_KEY, Railcraft.ID);
 
-  public static final Supplier<IForgeRegistry<TrackType>> registry =
+  public static final Supplier<IForgeRegistry<TrackType>> REGISTRY =
       deferredRegister.makeRegistry(RegistryBuilder::new);
 
   public static void register(IEventBus modEventBus) {

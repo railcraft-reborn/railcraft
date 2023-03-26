@@ -14,14 +14,8 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-/**
- * Created by CovertJaguar on 1/28/2019 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public class TankModule extends ContainerModule<TankBlockEntity> {
 
-  public static final int TANK_INDEX = 0;
   public static final int SLOT_INPUT = 0;
   public static final int SLOT_PROCESS = 1;
   public static final int SLOT_OUTPUT = 2;
@@ -62,15 +56,13 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    if (!super.canPlaceItem(slot, stack)) {
-      return false;
-    }
-    if (slot == SLOT_INPUT) {
-      return (!this.tank.isEmpty()
+    return switch (slot) {
+      case SLOT_INPUT -> (!this.tank.isEmpty()
           && FluidItemHelper.isRoomInContainer(stack, this.tank.getFluidType()))
           || FluidUtil.getFluidContained(stack).isPresent();
-    }
-    return false;
+      case SLOT_PROCESS, SLOT_OUTPUT -> true;
+      default -> false;
+    } && super.canPlaceItem(slot, stack);
   }
 
   public LazyOptional<IItemHandler> getItemHandler() {

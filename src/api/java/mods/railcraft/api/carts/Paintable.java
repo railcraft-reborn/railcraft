@@ -7,13 +7,19 @@
 
 package mods.railcraft.api.carts;
 
-/**
- *
- * @author CovertJaguar <https://www.railcraft.info/>
- */
+import net.minecraft.world.item.DyeColor;
+
 public interface Paintable {
 
-  float[] getPrimaryColor();
+  default float[] getPrimaryColor() {
+    return getPrimaryDyeColor().getTextureDiffuseColors();
+  }
 
-  float[] getSecondaryColor();
+  default float[] getSecondaryColor() {
+    return getSecondaryDyeColor().getTextureDiffuseColors();
+  }
+
+  DyeColor getPrimaryDyeColor();
+
+  DyeColor getSecondaryDyeColor();
 }

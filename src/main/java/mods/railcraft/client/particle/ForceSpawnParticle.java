@@ -37,7 +37,7 @@ public class ForceSpawnParticle extends BaseShrinkingSmokeParticle {
     @Override
     public Particle createParticle(ForceSpawnParticleOptions options, ClientLevel level,
         double x, double y, double z, double dx, double dy, double dz) {
-      return new ForceSpawnParticle(level, x, y, z, dx, dy, dz, options.getColor(), this.spriteSet);
+      return new ForceSpawnParticle(level, x, y, z, dx, dy, dz, options.color(), this.spriteSet);
     }
   }
 }

@@ -47,7 +47,7 @@ public class IngameWindowScreen extends Screen {
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
     RenderSystem.setShaderTexture(0, this.backgroundTexture);
-    this.blit(poseStack, centredX, centredY, 0, 0, this.windowWidth, this.windowHeight);
+    blit(poseStack, centredX, centredY, 0, 0, this.windowWidth, this.windowHeight);
     poseStack.pushPose();
     {
       poseStack.translate(centredX, centredY, 0.0F);
@@ -61,17 +61,6 @@ public class IngameWindowScreen extends Screen {
   protected void renderContent(PoseStack poseStack, int mouseX, int mouseY,
       float partialTicks) {}
 
-  @Override
-  public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-    if (super.keyPressed(keyCode, scanCode, modifiers)) {
-      return true;
-    }
-    if (this.minecraft.options.keyInventory.matches(keyCode, scanCode)) {
-      this.onClose();
-      return true;
-    }
-    return false;
-  }
 
   @Override
   public void tick() {
@@ -84,5 +73,20 @@ public class IngameWindowScreen extends Screen {
   public void drawCenteredString(PoseStack poseStack, Component text, float x, float y) {
     FormattedCharSequence orderedText = text.getVisualOrderText();
     this.font.draw(poseStack, orderedText, x - this.font.width(orderedText) / 2, y, TEXT_COLOR);
+  }
+
+  public void drawCenteredString(PoseStack poseStack, Component component, int y, boolean shadow) {
+    drawCenteredString(poseStack, component, windowWidth, y, shadow);
+  }
+
+  public void drawCenteredString(PoseStack poseStack, Component component, int width, int y,
+      boolean shadow) {
+    int length = font.width(component);
+    int x = width / 2 - length / 2;
+    if (shadow) {
+      font.drawShadow(poseStack, component, x, y, TEXT_COLOR);
+    } else {
+      font.draw(poseStack, component, x, y, TEXT_COLOR);
+    }
   }
 }

@@ -10,9 +10,6 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * @author CovertJaguar <http://www.railcraft.info/>
- */
 public class HoldingLockingProfile implements LockingModeController {
 
   protected static final float DIR_THRESHOLD = 0.01F;

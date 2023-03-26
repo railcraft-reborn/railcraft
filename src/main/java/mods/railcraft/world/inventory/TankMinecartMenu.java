@@ -21,11 +21,14 @@ public class TankMinecartMenu extends RailcraftMenu {
     this.addWidget(this.fluidGauge =
         new FluidGaugeWidget(tankMinecart.getTankManager(), 35, 23, 176, 0, 16, 47));
 
-    this.addSlot(new FluidFilterSlot(tankMinecart.getFilterInv(), 0, 80, 21));
-    this.addSlot(new ItemFilterSlot(
-        StackFilter.FLUID_CONTAINER, tankMinecart.getInvLiquids(), 0, 116, 21));
-    this.addSlot(new OutputSlot(tankMinecart.getInvLiquids(), 1, 116, 57));
-    this.addSlot(new OutputSlot(tankMinecart.getInvLiquids(), 2, 80, 57));
+    this.addSlot(new FluidFilterSlot(tankMinecart.getFilterInv(),
+        TankMinecart.SLOT_INPUT, 80, 21));
+    this.addSlot(new ItemFilterSlot(StackFilter.FLUID_CONTAINER, tankMinecart.getInvLiquids(),
+        TankMinecart.SLOT_INPUT, 116, 21));
+    this.addSlot(new OutputSlot(tankMinecart.getInvLiquids(),
+        TankMinecart.SLOT_PROCESSING, 116, 57));
+    this.addSlot(new OutputSlot(tankMinecart.getInvLiquids(),
+        TankMinecart.SLOT_OUTPUT, 80, 57));
 
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 9; x++) {
@@ -42,8 +45,7 @@ public class TankMinecartMenu extends RailcraftMenu {
     return this.fluidGauge;
   }
 
-  public static TankMinecartMenu create(int id, Inventory playerInventory,
-      FriendlyByteBuf data) {
+  public static TankMinecartMenu create(int id, Inventory playerInventory, FriendlyByteBuf data) {
     int entityId = data.readVarInt();
     var entity = playerInventory.player.level.getEntity(entityId);
     if (entity instanceof TankMinecart tankMinecart) {

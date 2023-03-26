@@ -35,7 +35,7 @@ public class FluidFueledSteamBoilerScreen extends RailcraftMenuScreen<FluidFuele
     int y = (this.height - this.getYSize()) / 2;
     if (this.menu.getModule().getBoiler().hasFuel()) {
       int scale = this.menu.getModule().getBoiler().getBurnProgressScaled(12);
-      this.blit(poseStack, x + 62, y + 50 - scale, 176, 59 - scale, 14, scale + 2);
+      blit(poseStack, x + 62, y + 50 - scale, 176, 59 - scale, 14, scale + 2);
     }
   }
 }

@@ -70,7 +70,8 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   private void setLock(LockableSignalBoxBlockEntity.Lock lock) {
     if (this.signalBox.getLock() != lock) {
       this.signalBox.setLock(lock);
-      this.signalBox.setOwner(lock == LockableSignalBoxBlockEntity.Lock.UNLOCKED ? null
+      this.signalBox.setOwner(lock == LockableSignalBoxBlockEntity.Lock.UNLOCKED
+          ? null
           : this.minecraft.getUser().getGameProfile());
       this.sendAttributes();
     }

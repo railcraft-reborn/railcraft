@@ -17,5 +17,6 @@
   "result": {
     "count": 8,
     "item": "railcraft:green_steel_tank_gauge"
-  }
+  },
+  "show_notification": true
 }

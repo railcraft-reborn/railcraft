@@ -57,7 +57,9 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.STEEL_HELMET.get());
         this.basicItem(RailcraftItems.CREOSOTE_BUCKET.get());
         this.basicItem(RailcraftItems.CREOSOTE_BOTTLE.get());
+        this.basicItem(RailcraftItems.GOLDEN_TICKET.get());
         this.basicItem(RailcraftItems.TICKET.get());
+        this.basicItem(RailcraftItems.ROUTING_TABLE_BOOK.get());
         this.basicItem(RailcraftItems.CONTROLLER_CIRCUIT.get());
         this.basicItem(RailcraftItems.RECEIVER_CIRCUIT.get());
         this.basicItem(RailcraftItems.SIGNAL_CIRCUIT.get());
@@ -151,6 +153,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.LAUNCHER_TRACK_KIT.get());
         this.basicItem(RailcraftItems.ONE_WAY_TRACK_KIT.get());
         this.basicItem(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
+        this.basicItem(RailcraftItems.ROUTING_TRACK_KIT.get());
         this.basicItem(RailcraftItems.CHARGE_SPOOL_LARGE.get());
         this.basicItem(RailcraftItems.CHARGE_SPOOL_MEDIUM.get());
         this.basicItem(RailcraftItems.CHARGE_SPOOL_SMALL.get());

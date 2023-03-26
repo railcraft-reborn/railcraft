@@ -1,5 +1,6 @@
 package mods.railcraft.world.module;
 
+import org.jetbrains.annotations.NotNull;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
@@ -15,15 +16,14 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import org.jetbrains.annotations.NotNull;
 
 public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockEntity> {
 
   public static final int SLOT_INPUT = 0;
   public static final int SLOT_OUTPUT = 1;
   public static final int SLOT_LIQUID_INPUT = 2;
-  public static final int SLOT_PROCESSING_FLUID = 3;
-  public static final int SLOT_OUTPUT_FLUID = 4;
+  public static final int SLOT_LIQUID_PROCESSING = 3;
+  public static final int SLOT_LIQUID_OUTPUT = 4;
   private final ContainerMapper outputContainer;
   private int multiplier = 1;
 
@@ -42,7 +42,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
         .changeCallback(this::setChanged);
 
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
-    fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_OUTPUT_FLUID);
+    fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_LIQUID_OUTPUT);
 
     itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
       @Override
@@ -73,7 +73,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   }
 
   private boolean craftAndPushImp() {
-    var output = this.recipe.getResultItem();
+    var output = this.recipe.getResultItem(this.provider.level().registryAccess());
     var fluidOutput = this.recipe.getCreosote();
     if (this.outputContainer.canFit(output)
         && (fluidOutput.isEmpty() || this.tank.internalFill(fluidOutput,
@@ -97,9 +97,9 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
       this.provider.dropItem(topSlot);
     }
 
-    var bottomSlot = this.getItem(SLOT_OUTPUT_FLUID);
+    var bottomSlot = this.getItem(SLOT_LIQUID_OUTPUT);
     if (!bottomSlot.isEmpty() && !FluidItemHelper.isContainer(bottomSlot)) {
-      this.setItem(SLOT_OUTPUT_FLUID, ItemStack.EMPTY);
+      this.setItem(SLOT_LIQUID_OUTPUT, ItemStack.EMPTY);
       this.provider.dropItem(bottomSlot);
     }
 
@@ -125,6 +125,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
       case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
       case SLOT_LIQUID_INPUT -> FluidItemHelper.isRoomInContainer(itemStack,
           RailcraftFluids.CREOSOTE.get());
+      case SLOT_OUTPUT, SLOT_LIQUID_PROCESSING, SLOT_LIQUID_OUTPUT -> true;
       default -> false;
     } && super.canPlaceItem(slot, itemStack);
   }
@@ -146,6 +147,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   public CompoundTag serializeNBT() {
     var tag = super.serializeNBT();
     tag.put("tank", this.tank.writeToNBT(new CompoundTag()));
+    tag.putString("processState", this.processState.getSerializedName());
     return tag;
   }
 
@@ -153,5 +155,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   public void deserializeNBT(CompoundTag tag) {
     super.deserializeNBT(tag);
     this.tank.readFromNBT(tag.getCompound("tank"));
+    this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
+        .orElse(FluidTools.ProcessState.RESET);
   }
 }

@@ -1,4 +1,3 @@
-
 package mods.railcraft.network;
 
 import mods.railcraft.api.core.DimensionPos;
@@ -31,7 +30,6 @@ public class NetworkUtil {
           throw new IllegalStateException("Sender is not instance of: " + clazz.getName());
         }
       }
-      default -> throw new IllegalStateException("Invalid side");
     };
   }
 

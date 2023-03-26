@@ -1,12 +1,12 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.EnumSet;
-import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
 import mods.railcraft.api.signal.SingleSignalReceiver;
 import mods.railcraft.api.signal.entity.SignalReceiverEntity;
+import mods.railcraft.api.track.SwitchActuator;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -15,15 +15,16 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBlockEntity
-    implements SignalReceiverEntity {
+    implements SignalReceiverEntity, SwitchActuator {
 
   private final SingleSignalReceiver signalReceiver =
       new SingleSignalReceiver(this, this::syncToClient, __ -> this.updateSwitched());
 
-  private final Set<SignalAspect> actionSignalAspects = EnumSet.of(SignalAspect.GREEN);
+  private final EnumSet<SignalAspect> actionSignalAspects = EnumSet.of(SignalAspect.GREEN);
 
   private boolean redstoneTriggered;
   private boolean powered;
@@ -47,7 +48,12 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
         this.getBlockState(), this.level, this.getBlockPos(), switched);
   }
 
-  public Set<SignalAspect> getActionSignalAspects() {
+  @Override
+  public boolean shouldSwitch(@Nullable AbstractMinecart cart) {
+    return SwitchTrackActuatorBlock.isSwitched(this.getBlockState());
+  }
+
+  public EnumSet<SignalAspect> getActionSignalAspects() {
     return this.actionSignalAspects;
   }
 
@@ -96,8 +102,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
     this.signalReceiver.writeToBuf(data);
-    data.writeVarInt(this.actionSignalAspects.size());
-    this.actionSignalAspects.forEach(data::writeEnum);
+    data.writeEnumSet(this.actionSignalAspects, SignalAspect.class);
     data.writeBoolean(this.redstoneTriggered);
   }
 
@@ -106,10 +111,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
     super.readFromBuf(data);
     this.signalReceiver.readFromBuf(data);
     this.actionSignalAspects.clear();
-    int size = data.readVarInt();
-    for (int i = 0; i < size; i++) {
-      this.actionSignalAspects.add(data.readEnum(SignalAspect.class));
-    }
+    this.actionSignalAspects.addAll(data.readEnumSet(SignalAspect.class));
     this.redstoneTriggered = data.readBoolean();
   }
 }

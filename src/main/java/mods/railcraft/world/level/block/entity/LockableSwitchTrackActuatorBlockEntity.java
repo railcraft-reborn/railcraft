@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.jetbrains.annotations.Nullable;
 
 public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     implements Lockable {
@@ -34,8 +35,9 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     return this.lock;
   }
 
-  public void setLock(Lock lock) {
-    this.lock = lock;
+  public void setLock(@Nullable GameProfile gameProfile) {
+    this.lock = gameProfile == null ? Lock.UNLOCKED : Lock.LOCKED;
+    this.setOwner(gameProfile);
   }
 
   @Override

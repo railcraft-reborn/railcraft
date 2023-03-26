@@ -43,7 +43,7 @@ public class ContainerMapper implements Container, ContainerManipulator<Modifiab
    *        container
    */
   public ContainerMapper(Container container, int start, int size) {
-    this.slots = ContainerSlotAccessor.createSlots(container).toList();
+    this.slots = ContainerSlotAccessor.createSlots(container, start, start + size).toList();
     this.container = container;
     this.start = start;
     this.size = size;

@@ -17,5 +17,6 @@
   "result": {
     "count": 8,
     "item": "railcraft:black_steel_tank_valve"
-  }
+  },
+  "show_notification": true
 }

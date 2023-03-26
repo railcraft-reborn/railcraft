@@ -26,6 +26,6 @@ public class FeedStationScreen extends AbstractContainerScreen<FeedStationMenu> 
     RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
     final int x = this.leftPos;
     final int y = this.topPos;
-    this.blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
+    blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
   }
 }

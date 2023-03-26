@@ -150,8 +150,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       }
     }
 
-    if (other instanceof AbstractMinecart) {
-      AbstractMinecart otherCart = (AbstractMinecart) other;
+    if (other instanceof AbstractMinecart otherCart) {
       if (!cart.isPoweredCart() || otherCart.isPoweredCart()) {
         if (!TrackUtil.isCartLocked(cart)) {
           cart.setDeltaMovement(cart.getDeltaMovement().add(forceX, 0, forceZ));

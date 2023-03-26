@@ -92,6 +92,22 @@ public class Translations {
         makeKey("screen", "water_tank.final_rate");
     public static final String PATTERN = makeKey("screen", "track_layer.patter");
     public static final String STOCK = makeKey("screen", "track_layer.stock");
+    public static final String HELP = makeKey("screen", "help");
+    public static final String NAME = makeKey("screen", "name");
+    public static final String GOLDEN_TICKET_TITLE = makeKey("screen", "golden_ticket.title");
+    public static final String GOLDEN_TICKET_DESC_1 = makeKey("screen", "golden_ticket.desc1");
+    public static final String GOLDEN_TICKET_DESC_2 = makeKey("screen", "golden_ticket.desc2");
+    public static final String GOLDEN_TICKET_ABOUT = makeKey("screen", "golden_ticket.about");
+    public static final String GOLDEN_TICKET_HELP = makeKey("screen", "golden_ticket.help");
+    public static final String ROUTING_TABLE_BOOK = makeKey("screen", "routing_table_book");
+    public static final String SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY =
+        makeKey("screen", "switch_track_router.public_railway");
+    public static final String SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY_DESC =
+        makeKey("screen", "switch_track_router.public_railway.desc");
+    public static final String SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY =
+        makeKey("screen", "switch_track_router.private_railway");
+    public static final String SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC =
+        makeKey("screen", "switch_track_router.private_railway.desc");
   }
 
   public static class Tips {
@@ -102,6 +118,8 @@ public class Translations {
         makeKey("tips", "routing.ticket.dest");
     public static final String ROUTING_TICKET_BLANK =
         makeKey("tips", "routing.ticket.blank");
+    public static final String ROUTING_TABLE_BOOK_LAST_EDIT =
+        makeKey("tips", "routing.routing_table_book.last_edit");
     public static final String LOCOMOTIVE_SLOT_TICKET =
         makeKey("tips", "locomotive.slot.ticket");
     public static final String LOCOMOTIVE_ITEM_OWNER =
@@ -208,7 +226,8 @@ public class Translations {
     public static final String TRAIN_DISPENSER = makeKey("tips", "train_dispenser");
     public static final String SIGNAL_BLOCK_SURVEYOR =
         makeKey("tips", "signal_block_surveyor");
-    public static final String SIGNAL_TUNER = makeKey("tips", "signal_tuner");
+    public static final String LINKS_CONTROLLERS_TO_RECEIVERS =
+        makeKey("tips", "links_controllers_to_receivers");
     public static final String FUELED_BOILER_FIREBOX =
         makeKey("tips", "fueled_boiler_firebox");
     public static final String PRESSURE_BOILER_TANK =
@@ -244,6 +263,8 @@ public class Translations {
         makeKey("tips", "hit_crowbar_to_change_mode");
     public static final String HIT_CROWBAR_TO_CHANGE_FORCE =
         makeKey("tips", "hit_crowbar_to_change_force");
+    public static final String HIT_CROWBAR_TO_CHANGE_TICKET =
+        makeKey("tips", "hit_crowbar_to_change_ticket");
     public static final String HIT_CROWBAR_TO_ROTATE =
         makeKey("tips", "hit_crowbar_to_rotate");
     public static final String PAIR_WITH_CONTROL_TRACK =
@@ -266,6 +287,17 @@ public class Translations {
     public static final String LOCOMOTIVE_TRACK = makeKey("tips", "locomotive_track");
     public static final String LOCKING_TRACK = makeKey("tips", "locking_track");
     public static final String TRANSITION_TRACK = makeKey("tips", "transition_track");
+    public static final String ROUTING_TRACK = makeKey("tips", "routing_track");
+    public static final String SWITCH_TRACKS = makeKey("tips", "switch_track_lever");
+    public static final String MANUAL_OPERATION = makeKey("tips", "manual_operation");
+    public static final String SCRIPTED_LOGIC_OPERATION =
+        makeKey("tips", "scripted_logic_operation");
+    public static final String RELEVANT_TOOLS = makeKey("tips", "relevant_tools");
+    public static final String SIGNAL_TUNER = makeKey("tips", "signal_tuner");
+    public static final String AERIAL_LINKAGES = makeKey("tips", "aerial_linkages");
+    public static final String RECEIVERS = makeKey("tips", "receivers");
+    public static final String REDSTONE_LINKAGE = makeKey("tips", "redstone_linkage");
+    public static final String LISTEN = makeKey("tips", "listen");
   }
 
   public static class Container {
@@ -437,18 +469,39 @@ public class Translations {
   }
 
   public static class DamageSource {
-    public static final List<String> BORE = IntStream.rangeClosed(1, 6).boxed()
-        .map(i -> makeKey("death", "bore." + i)).toList();
-    public static final List<String> CRUSHER = IntStream.rangeClosed(1, 8).boxed()
-        .map(i -> makeKey("death", "crusher." + i)).toList();
-    public static final List<String> ELECTRIC = IntStream.rangeClosed(1, 6).boxed()
-        .map(i -> makeKey("death", "electric." + i)).toList();
-    public static final List<String> STEAM = IntStream.rangeClosed(1, 6).boxed()
-        .map(i -> makeKey("death", "steam." + i)).toList();
-    public static final List<String> TRACK_ELECTRIC = IntStream.rangeClosed(1, 6).boxed()
-        .map(i -> makeKey("death", "track_electric." + i)).toList();
-    public static final List<String> TRAIN = IntStream.rangeClosed(1, 6).boxed()
-        .map(i -> makeKey("death", "train." + i)).toList();
+    public static final List<String> BORE = IntStream.rangeClosed(1, 6)
+        .mapToObj(i -> makeKey("death", "bore." + i)).toList();
+    public static final List<String> CRUSHER = IntStream.rangeClosed(1, 8)
+        .mapToObj(i -> makeKey("death", "crusher." + i)).toList();
+    public static final List<String> ELECTRIC = IntStream.rangeClosed(1, 6)
+        .mapToObj(i -> makeKey("death", "electric." + i)).toList();
+    public static final List<String> STEAM = IntStream.rangeClosed(1, 6)
+        .mapToObj(i -> makeKey("death", "steam." + i)).toList();
+    public static final List<String> TRACK_ELECTRIC = IntStream.rangeClosed(1, 6)
+        .mapToObj(i -> makeKey("death", "track_electric." + i)).toList();
+    public static final List<String> TRAIN = IntStream.rangeClosed(1, 6)
+        .mapToObj(i -> makeKey("death", "train." + i)).toList();
+  }
+
+  public static class RoutingTable {
+    public static final List<String> MANUAL_PAGES = IntStream.rangeClosed(1, 12).boxed()
+        .map(i -> makeKey("manual", "routing_table.page." + i)).toList();
+
+    public static final String ERROR_BLANK = makeKey("error.routing", "blank");
+    public static final String ERROR_INVALID_CONSTANT =
+        makeKey("error.routing", "invalid_constant");
+    public static final String ERROR_MALFORMED_SYNTAX =
+        makeKey("error.routing", "malformed_syntax");
+    public static final String ERROR_INSUFFICIENT_OPERAND =
+        makeKey("error.routing", "insufficient_operand");
+    public static final String ERROR_INVALID_OPERAND =
+        makeKey("error.routing", "invalid_operand");
+    public static final String ERROR_INVALID_REGEX =
+        makeKey("error.routing", "invalid_regex");
+    public static final String ERROR_UNSUPPORTED_REGEX =
+        makeKey("error.routing", "unsupported_regex");
+    public static final String UNRECOGNIZED_KEYWORD =
+        makeKey("error.routing", "unrecognized_keyword");
   }
 
   public static String makeKey(String type, String name) {

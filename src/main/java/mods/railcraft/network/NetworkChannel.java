@@ -2,6 +2,8 @@
 package mods.railcraft.network;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.network.play.EditRoutingTableBookMessage;
+import mods.railcraft.network.play.EditTicketAttributeMessage;
 import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
@@ -10,9 +12,11 @@ import mods.railcraft.network.play.SetFluidManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetLauncherTrackAttributesMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
+import mods.railcraft.network.play.SetRoutingTrackAttributesMessage;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
+import mods.railcraft.network.play.SetSwitchTrackRouterAttributesMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -111,6 +115,34 @@ public enum NetworkChannel {
           .encoder(SetEmbarkingTrackAttributesMessage::encode)
           .decoder(SetEmbarkingTrackAttributesMessage::decode)
           .consumerMainThread(SetEmbarkingTrackAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(EditTicketAttributeMessage.class, 0x0C,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(EditTicketAttributeMessage::encode)
+          .decoder(EditTicketAttributeMessage::decode)
+          .consumerMainThread(EditTicketAttributeMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(EditRoutingTableBookMessage.class, 0x0D,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(EditRoutingTableBookMessage::encode)
+          .decoder(EditRoutingTableBookMessage::decode)
+          .consumerMainThread(EditRoutingTableBookMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetSwitchTrackRouterAttributesMessage.class, 0x0E,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetSwitchTrackRouterAttributesMessage::encode)
+          .decoder(SetSwitchTrackRouterAttributesMessage::decode)
+          .consumerMainThread(SetSwitchTrackRouterAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetRoutingTrackAttributesMessage.class, 0x0F,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetRoutingTrackAttributesMessage::encode)
+          .decoder(SetRoutingTrackAttributesMessage::decode)
+          .consumerMainThread(SetRoutingTrackAttributesMessage::handle)
           .add();
     }
   };

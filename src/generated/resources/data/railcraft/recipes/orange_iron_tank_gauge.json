@@ -17,5 +17,6 @@
   "result": {
     "count": 8,
     "item": "railcraft:orange_iron_tank_gauge"
-  }
+  },
+  "show_notification": true
 }

@@ -33,11 +33,9 @@ public record SetLocomotiveAttributesMessage(int entityId, Locomotive.Mode mode,
         loco.setReverse(this.reverse);
         if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.getGameProfile())) {
           loco.setLock(this.lock);
-          if (this.lock == Locomotive.Lock.UNLOCKED) {
-            loco.setOwner(null);
-          } else {
-            loco.setOwner(player.getGameProfile());
-          }
+          loco.setOwner(this.lock == Locomotive.Lock.UNLOCKED
+              ? null
+              : player.getGameProfile());
         }
       });
     }

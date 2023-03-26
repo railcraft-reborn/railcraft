@@ -16,7 +16,7 @@ final class TrackItemPredicate extends ItemPredicate {
   static final Function<JsonObject, ItemPredicate> DESERIALIZER = (json) -> {
     var highSpeed = JsonUtil.getAsBoolean(json, "high_speed").orElse(null);
     var electric = JsonUtil.getAsBoolean(json, "electric").orElse(null);
-    var type = JsonUtil.getFromRegistry(json, "track_type", TrackTypes.registry.get())
+    var type = JsonUtil.getFromRegistry(json, "track_type", TrackTypes.REGISTRY.get())
         .orElse(null);
     return new TrackItemPredicate(highSpeed, electric, type);
   };

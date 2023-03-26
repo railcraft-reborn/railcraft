@@ -19,7 +19,7 @@ public class FireSparkParticle extends TextureSheetParticle {
     private FireSparkParticle(ClientLevel level, double x, double y, double z, double dx,
         double dy, double dz, FireSparkParticleOptions options, SpriteSet sprites) {
         super(level, x, y, z, dx, dy, dz);
-        this.destination = options.getDestination();
+        this.destination = options.destination();
 
         this.maxHorizontalDist = getHorizontalDistSq(destination);
         calculateVector(maxHorizontalDist);

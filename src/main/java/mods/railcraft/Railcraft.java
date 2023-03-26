@@ -31,7 +31,8 @@ import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.capability.CapabilityUtil;
-import mods.railcraft.world.damagesource.RailcraftDamageSource;
+import mods.railcraft.world.damagesource.RailcraftDamageSources;
+import mods.railcraft.world.damagesource.RailcraftDamageType;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.RollingStockImpl;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
@@ -62,7 +63,6 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -172,9 +172,10 @@ public class Railcraft {
     var fileHelper = event.getExistingFileHelper();
 
     var blockTags = new RailcraftBlockTagsProvider(packOutput, lookupProvider, fileHelper);
+    var blockTagsLookup = blockTags.contentsGetter();
     generator.addProvider(event.includeServer(), blockTags);
     generator.addProvider(event.includeServer(),
-        new RailcraftItemTagsProvider(packOutput, lookupProvider, blockTags, fileHelper));
+        new RailcraftItemTagsProvider(packOutput, lookupProvider, blockTagsLookup, fileHelper));
     generator.addProvider(event.includeServer(),
         new RailcraftFluidTagsProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftLootTableProvider(packOutput));
@@ -191,16 +192,15 @@ public class Railcraft {
     generator.addProvider(event.includeClient(),
         new RailcraftSpriteSourceProvider(packOutput, fileHelper));
 
-    // WORLD GENERATION
     var builder = new RegistrySetBuilder()
         .add(Registries.CONFIGURED_FEATURE, RailcraftOreFeatures::bootstrap)
         .add(Registries.PLACED_FEATURE, RailcraftOrePlacements::bootstrap)
-        .add(ForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap);
+        .add(ForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap)
+        .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap);
 
     generator.addProvider(event.includeServer(),
-        (DataProvider.Factory<
-            DatapackBuiltinEntriesProvider>) output -> new DatapackBuiltinEntriesProvider(output,
-                lookupProvider, builder, Set.of(ID)));
+        (DataProvider.Factory<DatapackBuiltinEntriesProvider>) output ->
+            new DatapackBuiltinEntriesProvider(output, lookupProvider, builder, Set.of(ID)));
   }
 
   // ================================================================================
@@ -239,7 +239,7 @@ public class Railcraft {
           .map(LinkedCartsMessage.LinkedCart::new)
           .toList();
       NetworkChannel.GAME.simpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
-          player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+          player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
   }
 
@@ -268,13 +268,13 @@ public class Railcraft {
 
   @SubscribeEvent
   public void modifyDrops(LivingDropsEvent event) {
-    if (event.getSource() == RailcraftDamageSource.STEAM)
+    var level = event.getEntity().getLevel();
+    if (event.getSource() == RailcraftDamageSources.steam(level.registryAccess()))
       for (var entityItem : event.getDrops()) {
         var drop = entityItem.getItem();
-        var level = event.getEntity().getLevel();
         var cooked = level.getRecipeManager()
             .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
-            .map(SmeltingRecipe::getResultItem)
+            .map(x -> x.getResultItem(level.registryAccess()))
             .orElse(ItemStack.EMPTY);
         if (!cooked.isEmpty() && level.getRandom().nextDouble() < 0.5) {
           cooked = cooked.copy();

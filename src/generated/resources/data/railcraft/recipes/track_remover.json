@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "railcraft:track_remover"
-  }
+  },
+  "show_notification": true
 }

@@ -133,13 +133,10 @@ public class SwitchTrackActuatorBlock extends HorizontalDirectionalBlock
       return;
     }
     level.setBlockAndUpdate(blockPos, blockState.setValue(SWITCHED, switched));
-    if (switched) {
-      level.playSound(null, blockPos, SoundEvents.PISTON_CONTRACT,
-          SoundSource.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
-    } else {
-      level.playSound(null, blockPos, SoundEvents.PISTON_EXTEND,
-          SoundSource.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
-    }
+    level.playSound(null, blockPos, switched
+            ? SoundEvents.PISTON_CONTRACT
+            : SoundEvents.PISTON_EXTEND,
+        SoundSource.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
     Direction.Plane.HORIZONTAL.forEach(direction -> {
       BlockPos neighborPos = blockPos.relative(direction);
       if (level.getBlockState(neighborPos).getBlock() instanceof ComparatorBlock) {

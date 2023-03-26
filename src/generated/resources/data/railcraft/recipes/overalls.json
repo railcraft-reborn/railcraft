@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "railcraft:overalls"
-  }
+  },
+  "show_notification": true
 }

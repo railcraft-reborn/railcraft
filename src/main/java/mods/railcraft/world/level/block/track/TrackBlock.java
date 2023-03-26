@@ -154,19 +154,19 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
       return;
     }
     this.updateState(blockState, level, pos, neighborBlock);
-    TrackUtil.traverseConnectedTracks(level, pos, (w, p) -> {
-      BlockState s = w.getBlockState(p);
-      Block b = s.getBlock();
-      if (!BaseRailBlock.isRail(s)) {
+    TrackUtil.traverseConnectedTracks(level, pos, (l, p) -> {
+      var state = l.getBlockState(p);
+      var block = state.getBlock();
+      if (!BaseRailBlock.isRail(state)) {
         return false;
       }
-      if (b instanceof TrackBlock track) {
-        int maxSupportedDistance = track.getMaxSupportedDistance(w, p);
-        if (maxSupportedDistance <= 0 || TrackSupportTools.isSupportedDirectly(w, p)) {
+      if (block instanceof TrackBlock track) {
+        int maxSupportedDistance = track.getMaxSupportedDistance(l, p);
+        if (maxSupportedDistance <= 0 || TrackSupportTools.isSupportedDirectly(l, p)) {
           return false;
         }
-        if (!track.isRailValid(s, w, p, maxSupportedDistance)) {
-          w.destroyBlock(p, true);
+        if (!track.isRailValid(state, l, p, maxSupportedDistance)) {
+          l.destroyBlock(p, true);
           return false;
         }
       }

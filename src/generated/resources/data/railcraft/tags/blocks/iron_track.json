@@ -14,6 +14,7 @@
     "railcraft:iron_junction_track",
     "railcraft:iron_launcher_track",
     "railcraft:iron_one_way_track",
-    "railcraft:iron_locomotive_track"
+    "railcraft:iron_locomotive_track",
+    "railcraft:iron_routing_track"
   ]
 }

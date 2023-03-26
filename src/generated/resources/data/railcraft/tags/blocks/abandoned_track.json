@@ -15,6 +15,7 @@
     "railcraft:abandoned_junction_track",
     "railcraft:abandoned_launcher_track",
     "railcraft:abandoned_one_way_track",
-    "railcraft:abandoned_locomotive_track"
+    "railcraft:abandoned_locomotive_track",
+    "railcraft:abandoned_routing_track"
   ]
 }

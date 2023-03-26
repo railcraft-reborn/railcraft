@@ -31,9 +31,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class RitualBlock extends BaseEntityBlock {
 
   public static final BooleanProperty CRACKED = BooleanProperty.create("cracked");
@@ -68,9 +65,9 @@ public class RitualBlock extends BaseEntityBlock {
     return RefinedFirestoneItem.getItemCharged();
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-    @SuppressWarnings("deprecation")
     var drops = super.getDrops(state, builder);
     var tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
     if (tile instanceof RitualBlockEntity firestone) {

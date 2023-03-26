@@ -14,10 +14,8 @@ import net.minecraft.world.Nameable;
 /**
  * Implemented by objects that can be owned.
  * <p/>
- * Among other uses, when used on a Tile Entity, the Magnifying Glass can be used to inspect the
+ * Among other uses, when used on a BlockEntity, the Magnifying Glass can be used to inspect the
  * owner.
- *
- * @author CovertJaguar <https://www.railcraft.info/>
  */
 public interface Ownable extends Nameable {
 

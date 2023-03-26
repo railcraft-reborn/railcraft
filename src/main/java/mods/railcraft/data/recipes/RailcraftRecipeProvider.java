@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
+import mods.railcraft.data.recipes.builders.RailcraftSpecialRecipeBuilder;
 import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
 import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
 import mods.railcraft.data.recipes.providers.CrusherRecipeProvider;
@@ -11,6 +12,7 @@ import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -193,6 +195,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
     tracks(consumer, RailcraftItems.ABANDONED_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
+    tracks(consumer, RailcraftItems.ABANDONED_ROUTING_TRACK.get(),
+        RailcraftItems.ROUTING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
 
     tracks(consumer, RailcraftItems.IRON_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), Items.RAIL);
@@ -220,6 +224,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), Items.RAIL);
     tracks(consumer, RailcraftItems.IRON_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), Items.RAIL);
+    tracks(consumer, RailcraftItems.IRON_ROUTING_TRACK.get(),
+        RailcraftItems.ROUTING_TRACK_KIT.get(), Items.RAIL);
 
     tracks(consumer, RailcraftItems.STRAP_IRON_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
@@ -247,6 +253,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
     tracks(consumer, RailcraftItems.STRAP_IRON_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
+    tracks(consumer, RailcraftItems.STRAP_IRON_ROUTING_TRACK.get(),
+        RailcraftItems.ROUTING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
 
     tracks(consumer, RailcraftItems.REINFORCED_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
@@ -274,6 +282,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
     tracks(consumer, RailcraftItems.REINFORCED_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
+    tracks(consumer, RailcraftItems.REINFORCED_ROUTING_TRACK.get(),
+        RailcraftItems.ROUTING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
 
     tracks(consumer, RailcraftItems.ELECTRIC_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
@@ -301,6 +311,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
     tracks(consumer, RailcraftItems.ELECTRIC_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
+    tracks(consumer, RailcraftItems.ELECTRIC_ROUTING_TRACK.get(),
+        RailcraftItems.ROUTING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
 
     tracks(consumer, RailcraftItems.HIGH_SPEED_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
@@ -811,8 +823,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void buildSwitch(Consumer<FinishedRecipe> consumer) {
     switchItem(consumer, RailcraftItems.SWITCH_TRACK_LEVER.get(), Items.LEVER);
-    switchItem(consumer, RailcraftItems.SWITCH_TRACK_MOTOR.get(),
-        RailcraftItems.RECEIVER_CIRCUIT.get());
+    switchItem(consumer, RailcraftItems.SWITCH_TRACK_MOTOR.get(), RailcraftItems.RECEIVER_CIRCUIT.get());
+    ShapelessRecipeBuilder
+        .shapeless(RecipeCategory.MISC, RailcraftItems.SWITCH_TRACK_ROUTER.get())
+        .requires(RailcraftItems.SWITCH_TRACK_MOTOR.get())
+        .requires(Items.COMPARATOR)
+        .unlockedBy(getHasName(RailcraftItems.SWITCH_TRACK_MOTOR.get()),
+            has(RailcraftItems.SWITCH_TRACK_MOTOR.get()))
+        .save(consumer);
   }
 
   private static void switchItem(Consumer<FinishedRecipe> finishedRecipe,
@@ -1000,6 +1018,18 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
             has(RailcraftItems.CREOSOTE_BOTTLE.get()))
         .save(consumer, new ResourceLocation(Railcraft.ID, "torch_creosote"));
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.GOLDEN_TICKET.get())
+        .requires(Items.PAPER)
+        .requires(Tags.Items.NUGGETS_GOLD)
+        .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
+        .save(consumer);
+    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.TICKET_DUPLICATE.get())
+        .save(consumer, getItemName(RailcraftItems.TICKET.get()));
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.ROUTING_TABLE_BOOK.get())
+        .requires(Items.WRITABLE_BOOK)
+        .requires(Tags.Items.DYES_BLUE)
+        .unlockedBy(getHasName(Items.WRITABLE_BOOK), has(Items.WRITABLE_BOOK))
+        .save(consumer);
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.OVERALLS.get())
         .pattern("aaa")
         .pattern("a a")
@@ -1110,6 +1140,9 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('d', Items.MINECART)
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
+
+    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.LOCOMOTIVE_PAINTING.get())
+        .save(consumer, "locomotive_color_variant");
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_LAYER.get())
         .pattern("aba")
@@ -1222,6 +1255,9 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 2)));
     kits(consumer, RailcraftItems.COUPLER_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(Items.LEAD), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
+    kits(consumer, RailcraftItems.ROUTING_TRACK_KIT.get(), 8, List.of(
+        new Tuple<>(Ingredient.of(RailcraftTags.Items.TICKET), 1),
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
   }
 

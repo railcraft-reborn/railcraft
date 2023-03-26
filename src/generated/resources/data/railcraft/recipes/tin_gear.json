@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:tin_gear"
-  }
+  },
+  "show_notification": true
 }

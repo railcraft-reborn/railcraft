@@ -16,9 +16,11 @@ import mods.railcraft.client.gui.screen.inventory.FluidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
+import mods.railcraft.client.gui.screen.inventory.RoutingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.SolidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamTurbineScreen;
+import mods.railcraft.client.gui.screen.inventory.SwitchTrackRouterScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TankScreen;
 import mods.railcraft.client.gui.screen.inventory.TrackLayerScreen;
@@ -137,12 +139,14 @@ public class ClientManager {
         TrainDispenserScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(),
         TankMinecartScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(),
+        SwitchTrackRouterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
   }
 
   private void handleItemColors(RegisterColorHandlersEvent.Item event) {
-    event.register(
-        (stack, tintIndex) -> switch (tintIndex) {
+    event.register((stack, tintIndex) -> switch (tintIndex) {
           case 0 -> LocomotiveItem.getPrimaryColor(stack).getMaterialColor().col;
           case 1 -> LocomotiveItem.getSecondaryColor(stack).getMaterialColor().col;
           default -> 0xFFFFFFFF;
@@ -153,30 +157,30 @@ public class ClientManager {
   }
 
   private void handleBlockColors(RegisterColorHandlersEvent.Block event) {
-    event.register(
-        (state, level, pos,
-            tintIndex) -> state.getValue(ForceTrackEmitterBlock.COLOR).getMaterialColor().col,
+    event.register((state, level, pos, tintIndex) ->
+            state.getValue(ForceTrackEmitterBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
-    event.register(
-        (state, level, pos,
-            tintIndex) -> state.getValue(ForceTrackBlock.COLOR).getMaterialColor().col,
+    event.register((state, level, pos, tintIndex) ->
+            state.getValue(ForceTrackBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK.get());
 
-    event.register(
-        (state, level, pos, tintIndex) -> level != null && pos != null
+    event.register((state, level, pos, tintIndex) -> level != null && pos != null
             ? BiomeColors.getAverageGrassColor(level, pos)
             : GrassColor.get(0.5D, 1.0D),
         RailcraftBlocks.ABANDONED_TRACK.get());
   }
 
   private void handleParticleRegistration(RegisterParticleProvidersEvent event) {
-    event.register(RailcraftParticleTypes.STEAM.get(), SteamParticle.Provider::new);
-    event.register(RailcraftParticleTypes.SPARK.get(), SparkParticle.Provider::new);
-    event.register(RailcraftParticleTypes.PUMPKIN.get(), PumpkinParticle.Provider::new);
-    event.register(RailcraftParticleTypes.TUNING_AURA.get(), TuningAuraParticle.Provider::new);
-    event.register(RailcraftParticleTypes.FIRE_SPARK.get(), FireSparkParticle.Provider::new);
-    event.register(RailcraftParticleTypes.FORCE_SPAWN.get(), ForceSpawnParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.STEAM.get(), SteamParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.SPARK.get(), SparkParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.PUMPKIN.get(), PumpkinParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.TUNING_AURA.get(),
+        TuningAuraParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.FIRE_SPARK.get(),
+        FireSparkParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.FORCE_SPAWN.get(),
+        ForceSpawnParticle.Provider::new);
   }
 
   private void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {

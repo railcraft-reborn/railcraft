@@ -16,6 +16,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -68,6 +69,17 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
       double mouseX, double mouseY) {
     flame.draw(stack, 1, 3);
     arrow.draw(stack, 19, 21);
+
+    int cookTime = recipe.getCookingTime();
+    if (cookTime > 0) {
+      int cookTimeSeconds = cookTime / 20;
+      var timeString = Component.translatable("gui.jei.category.smelting.time.seconds",
+          cookTimeSeconds);
+      var minecraft = Minecraft.getInstance();
+      var font = minecraft.font;
+      int stringWidth = font.width(timeString);
+      font.draw(stack, timeString, getBackground().getWidth() - stringWidth - 80, 43, 0xFF808080);
+    }
   }
 
   @Override
@@ -78,7 +90,7 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
         .addIngredients(ingredients.get(0));
     builder
         .addSlot(RecipeIngredientRole.OUTPUT, 46, 20)
-        .addItemStack(recipe.getResultItem());
+        .addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
     // Not the actual capacity, but is 10000 for a better visibility
     builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 1)
         .addIngredient(ForgeTypes.FLUID_STACK, recipe.getCreosote())

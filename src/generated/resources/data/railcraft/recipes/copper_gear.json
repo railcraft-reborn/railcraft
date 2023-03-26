@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:copper_gear"
-  }
+  },
+  "show_notification": true
 }

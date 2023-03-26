@@ -280,23 +280,19 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   @Override
   public void writeToBuf(FriendlyByteBuf out) {
     super.writeToBuf(out);
-    if (this.membership == null) {
-      out.writeBoolean(true);
-    } else {
-      out.writeBoolean(false);
-      out.writeBlockPos(this.membership.patternElement().relativePos());
-      out.writeChar(this.membership.patternElement().marker());
-      out.writeBlockPos(this.membership.master().getBlockPos());
-    }
+    out.writeNullable(this.membership, (buf, membership) -> {
+      var patternElement = membership.patternElement();
+      buf.writeBlockPos(patternElement.relativePos());
+      buf.writeChar(patternElement.marker());
+      buf.writeBlockPos(membership.master().getBlockPos());
+    });
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf in) {
     super.readFromBuf(in);
-    this.unresolvedMembership = in.readBoolean() ? null
-        : new UnresolvedMembership(
-            new MultiblockPattern.Element(in.readBlockPos(), in.readChar()),
-            in.readBlockPos());
+    this.unresolvedMembership = in.readNullable(buf -> new UnresolvedMembership(
+        new MultiblockPattern.Element(in.readBlockPos(), in.readChar()), in.readBlockPos()));
   }
 
   /**

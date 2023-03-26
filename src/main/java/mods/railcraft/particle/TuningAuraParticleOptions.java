@@ -14,7 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.List;
 import java.util.Locale;
 
-public class TuningAuraParticleOptions implements ParticleOptions {
+public record TuningAuraParticleOptions(Vec3 destination, int color) implements ParticleOptions {
 
   public static final Codec<TuningAuraParticleOptions> CODEC =
       RecordCodecBuilder.create(instance -> instance
@@ -26,15 +26,15 @@ public class TuningAuraParticleOptions implements ParticleOptions {
                           fixedList.get(0), fixedList.get(1), fixedList.get(2))),
                       vec -> List.of(vec.x(), vec.y(), vec.z()))
                   .fieldOf("destination")
-                  .forGetter(TuningAuraParticleOptions::getDestination),
+                  .forGetter(TuningAuraParticleOptions::destination),
               Codec.INT
                   .fieldOf("color")
-                  .forGetter(TuningAuraParticleOptions::getColor))
+                  .forGetter(TuningAuraParticleOptions::color))
           .apply(instance, TuningAuraParticleOptions::new));
 
   @SuppressWarnings("deprecation")
-  public static final ParticleOptions.Deserializer<TuningAuraParticleOptions> DESERIALIZER =
-      new ParticleOptions.Deserializer<>() {
+  public static final Deserializer<TuningAuraParticleOptions> DESERIALIZER =
+      new Deserializer<>() {
         @Override
         public TuningAuraParticleOptions fromCommand(ParticleType<TuningAuraParticleOptions> type,
             StringReader reader) throws CommandSyntaxException {
@@ -57,14 +57,6 @@ public class TuningAuraParticleOptions implements ParticleOptions {
         }
       };
 
-  private final Vec3 destination;
-  private final int color;
-
-  public TuningAuraParticleOptions(Vec3 destination, int color) {
-    this.destination = destination;
-    this.color = color;
-  }
-
   @Override
   public void writeToNetwork(FriendlyByteBuf buf) {
     buf.writeDouble(this.destination.x());
@@ -75,20 +67,12 @@ public class TuningAuraParticleOptions implements ParticleOptions {
 
   @Override
   public String writeToString() {
-    return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f",
+    return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %d",
         ForgeRegistries.PARTICLE_TYPES.getKey(this.getType()),
         this.destination.x(),
         this.destination.y(),
         this.destination.z(),
         this.color);
-  }
-
-  public Vec3 getDestination() {
-    return this.destination;
-  }
-
-  public int getColor() {
-    return this.color;
   }
 
   @Override

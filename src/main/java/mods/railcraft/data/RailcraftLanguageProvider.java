@@ -49,6 +49,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.signalCapacitorTranslations();
     this.subtitleTranslations();
     this.damageSourceTranslations();
+    this.routingTableTranslations();
   }
 
   private void blockTranslations() {
@@ -98,6 +99,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.TRAIN_DISPENSER, "Train Dispenser");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_LEVER, "Switch Track Lever");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR, "Switch Track Motor");
+    this.addBlock(RailcraftBlocks.SWITCH_TRACK_ROUTER, "Switch Track Router");
     this.addBlock(RailcraftBlocks.BLOCK_SIGNAL, "Block Signal");
     this.addBlock(RailcraftBlocks.DISTANT_SIGNAL, "Distant Signal");
     this.addBlock(RailcraftBlocks.TOKEN_SIGNAL, "Token Signal");
@@ -180,7 +182,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SIGNAL_BLOCK_SURVEYOR, "Signal Block Surveyor");
     this.addItem(RailcraftItems.SIGNAL_TUNER, "Signal Tuner");
     this.addItem(RailcraftItems.OVERALLS, "Overalls");
+    this.addItem(RailcraftItems.GOLDEN_TICKET, "Golden Ticket");
     this.addItem(RailcraftItems.TICKET, "Ticket");
+    this.addItem(RailcraftItems.ROUTING_TABLE_BOOK, "Routing Table Book");
     this.addItem(RailcraftItems.WHISTLE_TUNER, "Whistle Tuner");
     this.addItem(RailcraftItems.TUNNEL_BORE, "Tunnel Bore");
     this.addItem(RailcraftItems.TRACK_LAYER, "Track Layer Cart");
@@ -289,6 +293,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.LAUNCHER_TRACK_KIT, "Launcher Track Kit");
     this.addItem(RailcraftItems.ONE_WAY_TRACK_KIT, "One-Way Track Kit");
     this.addItem(RailcraftItems.LOCOMOTIVE_TRACK_KIT, "Locomotive Track Kit");
+    this.addItem(RailcraftItems.ROUTING_TRACK_KIT, "Routing Track Kit");
     this.addItem(RailcraftItems.CHARGE_SPOOL_LARGE, "Large Charge Wire Spool");
     this.addItem(RailcraftItems.CHARGE_SPOOL_MEDIUM, "Medium Charge Wire Spool");
     this.addItem(RailcraftItems.CHARGE_SPOOL_SMALL, "Small Charge Wire Spool");
@@ -331,10 +336,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.ROUTING_TICKET_ISSUER, "Issuer:");
     this.add(Translations.Tips.ROUTING_TICKET_DEST, "Destination:");
     this.add(Translations.Tips.ROUTING_TICKET_BLANK, "Blank Ticket");
+    this.add(Translations.Tips.ROUTING_TABLE_BOOK_LAST_EDIT, "Last edited by %s");
     this.add(Translations.Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary descriptor.(EDIT ME)");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary descriptor.(EDIT ME)");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary color:");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary color:");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
     this.add(Translations.Tips.TRACK_LAYER, "Lays track as it moves");
     this.add(Translations.Tips.TRACK_REMOVER, "Removes tracks it passes over");
@@ -440,7 +446,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.CART_DISPENSER, "Dispenses carts onto tracks");
     this.add(Translations.Tips.TRAIN_DISPENSER, "Dispenses linked trains onto tracks");
     this.add(Translations.Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
-    this.add(Translations.Tips.SIGNAL_TUNER, "Links Controllers to Receivers");
+    this.add(Translations.Tips.LINKS_CONTROLLERS_TO_RECEIVERS, "Links Controllers to Receivers");
     this.add(Translations.Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");
     this.add(Translations.Tips.PRESSURE_BOILER_TANK, "Multi-Block: Variable Size, Above Firebox");
     this.add(Translations.Tips.PRESSURE_BOILER_TANK_PRODUCTION, "Produces %smB of Steam per tick");
@@ -465,6 +471,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_RANGE, "- Hit with Crowbar to change range -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_MODE, "- Hit with Crowbar to change mode -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_FORCE, "- Hit with Crowbar to change force -");
+    this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_TICKET,
+        "- Hit with Crowbar to change ticket -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_ROTATE, "- Hit with Crowbar to rotate -");
     this.add(Translations.Tips.PAIR_WITH_CONTROL_TRACK, "- Pair with Control track -");
     this.add(Translations.Tips.PLACE_ABOVE_TRACK, "- Place 1-2 blocks above track -");
@@ -487,6 +495,16 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.LOCOMOTIVE_TRACK, "Starts/Stops locomotive");
     this.add(Translations.Tips.LOCKING_TRACK, "Stops and holds carts");
     this.add(Translations.Tips.TRANSITION_TRACK, "Transitions to/from high speed");
+    this.add(Translations.Tips.ROUTING_TRACK, "Sets a passing locomotive's ticket");
+    this.add(Translations.Tips.SWITCH_TRACKS, "Controls adjacent switch tracks");
+    this.add(Translations.Tips.MANUAL_OPERATION, "Manual Operation");
+    this.add(Translations.Tips.SCRIPTED_LOGIC_OPERATION, "Scripted Logic Operation");
+    this.add(Translations.Tips.RELEVANT_TOOLS, "Relevant tools:");
+    this.add(Translations.Tips.SIGNAL_TUNER, "Signal Tuner");
+    this.add(Translations.Tips.AERIAL_LINKAGES, "Aerial linkages:");
+    this.add(Translations.Tips.RECEIVERS, "%sx Receivers");
+    this.add(Translations.Tips.REDSTONE_LINKAGE, "Redstone linkage:");
+    this.add(Translations.Tips.LISTEN, "Listen");
   }
 
   private void screenTranslations() {
@@ -537,6 +555,23 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.WATER_TANK_FINAL_RATE, "Final rate: %s mB/sec");
     this.add(Translations.Screen.PATTERN, "Pattern");
     this.add(Translations.Screen.STOCK, "Stock");
+    this.add(Translations.Screen.HELP, "Help");
+    this.add(Translations.Screen.NAME, "Name");
+    this.add(Translations.Screen.GOLDEN_TICKET_TITLE, "Golden Ticket");
+    this.add(Translations.Screen.GOLDEN_TICKET_DESC_1, "This ticket is valid");
+    this.add(Translations.Screen.GOLDEN_TICKET_DESC_2, "for the following destination:");
+    this.add(Translations.Screen.GOLDEN_TICKET_ABOUT, "About the Golden Ticket");
+    this.add(Translations.Screen.GOLDEN_TICKET_HELP, """
+        The Golden Ticket is an unlimited use Ticket that can be used to ride any public train \
+        or train owned by the issuer. It can also be combined with paper to produce single \
+        use tickets.""");
+    this.add(Translations.Screen.ROUTING_TABLE_BOOK, "Routing Table Book");
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY, "Public Railway");
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY_DESC,
+        "Will route any locomotive");
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY, "Private Railway");
+    this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC,
+        "Will only route locomotive that belong to %s");
   }
 
   private void trackTranslations() {
@@ -557,6 +592,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ABANDONED_LAUNCHER_TRACK, "Abandoned Launcher Track");
     this.addBlock(RailcraftBlocks.ABANDONED_ONE_WAY_TRACK, "Abandoned One-Way Track");
     this.addBlock(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK, "Abandoned Locomotive Track");
+    this.addBlock(RailcraftBlocks.ABANDONED_ROUTING_TRACK, "Abandoned Routing Track");
 
     this.addBlock(RailcraftBlocks.ELECTRIC_TRACK, "Electric Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_LOCKING_TRACK, "Electric Locking Track");
@@ -575,6 +611,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK, "Electric Launcher Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK, "Electric One-Way Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK, "Electric Locomotive Track");
+    this.addBlock(RailcraftBlocks.ELECTRIC_ROUTING_TRACK, "Electric Routing Track");
 
     this.addBlock(RailcraftBlocks.HIGH_SPEED_TRACK, "High Speed Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK, "High Speed Locking Track");
@@ -625,6 +662,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.REINFORCED_LAUNCHER_TRACK, "Reinforced Launcher Track");
     this.addBlock(RailcraftBlocks.REINFORCED_ONE_WAY_TRACK, "Reinforced One-Way Track");
     this.addBlock(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK, "Reinforced Locomotive Track");
+    this.addBlock(RailcraftBlocks.REINFORCED_ROUTING_TRACK, "Reinforced Routing Track");
+
 
     this.addBlock(RailcraftBlocks.STRAP_IRON_TRACK, "Strap Iron Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK, "Strap Iron Locking Track");
@@ -643,6 +682,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK, "Strap Iron Launcher Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK, "Strap Iron One-Way Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK, "Strap Iron Locomotive Track");
+    this.addBlock(RailcraftBlocks.STRAP_IRON_ROUTING_TRACK, "Strap Iron Routing Track");
 
     this.addBlock(RailcraftBlocks.IRON_LOCKING_TRACK, "Iron Locking Track");
     this.addBlock(RailcraftBlocks.IRON_BUFFER_STOP_TRACK, "Iron Buffer Stop Track");
@@ -660,6 +700,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.IRON_LAUNCHER_TRACK, "Iron Launcher Track");
     this.addBlock(RailcraftBlocks.IRON_ONE_WAY_TRACK, "Iron One-Way Track");
     this.addBlock(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK, "Iron Locomotive Track");
+    this.addBlock(RailcraftBlocks.IRON_ROUTING_TRACK, "Iron Routing Track");
 
     this.addBlock(RailcraftBlocks.ELEVATOR_TRACK, "Elevator Track");
   }
@@ -831,6 +872,145 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.DamageSource.TRAIN.get(3), "%s caught the wrong train");
     this.add(Translations.DamageSource.TRAIN.get(4), "%s bought a one-way ticket to the afterlife");
     this.add(Translations.DamageSource.TRAIN.get(5), "%s should have worn their Overalls");
+  }
+
+  private void routingTableTranslations() {
+    this.add(Translations.RoutingTable.ERROR_BLANK, "Blank Table");
+    this.add(Translations.RoutingTable.ERROR_INVALID_CONSTANT, "Invalid Constant");
+    this.add(Translations.RoutingTable.ERROR_MALFORMED_SYNTAX, "Malformed Syntax");
+    this.add(Translations.RoutingTable.ERROR_INSUFFICIENT_OPERAND, "Insufficient Operands");
+    this.add(Translations.RoutingTable.ERROR_INVALID_OPERAND, "Invalid Operand");
+    this.add(Translations.RoutingTable.ERROR_INVALID_REGEX, "Invalid Regex Pattern");
+    this.add(Translations.RoutingTable.ERROR_UNSUPPORTED_REGEX, "Regex Unsupported");
+    this.add(Translations.RoutingTable.UNRECOGNIZED_KEYWORD, "Unrecognized Keyword");
+
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(0), """
+        The Routing Table when placed in a Routing Detector or Switch will define a set of rules \
+        that are used to match against any passing Locomotive. These rules are define using a \
+        simple logic syntax that allows you to create rules as simple or complex as you like. \
+        The syntax is a Prefix Notation script, the Operators are followed by the Operands. \
+        Only one keyword is allowed per line. If no Operator is specified, OR is assumed. \
+        Routing Tables can be copied by placing two or more in a crafting grid.""");
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(1), """
+        Operator Keywords:
+          AND - Two Operands, both must be true.
+          OR - Two Operands, one must be true.
+          NOT - Invert the following Operand.
+          IF - Three Operands: cond, then, else.
+               If cond is true, use then;
+               otherwise, use else.
+        """);
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(2), """
+        Condition Keywords:
+          Dest=<string>
+            If the Locomotive's Destination
+            string starts with this string,
+            the condition is true.
+            "Dest=null" will match carts
+            with no destination.
+          Owner=<username>
+            True if the Locomotive belongs
+            to this person.
+        """);
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(3), """
+        Condition Keywords:
+          Name=<entityname>
+            True if it matches the
+            Minecart's name.
+            "Name=null" will match carts
+            with no custom name.
+          Type=<modid:itemname>
+            True if it matches the
+            Minecart's item name.
+        """);
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(4), """
+        Condition Keywords:
+          Rider=<type>[:<qualifier>]
+            True if the Train contains
+                a matching passenger
+                Simple Types:
+                  any, none, mob, animal, unnamed
+                Qualifier Capable Types:
+                  player, named, entity
+                Regex Capable Types:
+                  player, named
+                See GitHub Issue #844 for examples
+        """);
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(5), """
+        Condition Keywords:
+          Color=<primary>,<secondary>
+            True if the Locomotive's primary
+            and secondary colors match.
+            Accepts "Any" as a wildcard.
+            Colors: Black, Red, Green, Brown, Blue,
+            Purple, Cyan, LightGray, Gray, Pink, Lime,
+            Yellow, LightBlue, Magenta, Orange, White
+          NeedsRefuel=<true/false>
+            If the Locomotive is low on Fuel
+            or Water this will divert it.
+        """);
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(6), """
+        Condition Keywords:
+          Redstone=<true/false>
+            True if the Routing Block
+            is being powered by Redstone.
+        """);
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(7), """
+        Condition Keywords:
+          Loco=<string>
+            True if locomotive matches
+            parameter string.
+            Accepted strings: electric, steam,
+            creative, none.
+            Using parameter none will only return
+            true if there is no locomotive.
+        """);
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(8), """
+        Example Script:
+          Dest=TheFarLands
+          Color=Black,Red
+          AND
+          NOT
+          Owner=Steve
+          Dest=SecretHideout/OceanEntrance
+        """);
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(9), """
+        Result:
+          The script on the previous page will
+          match a Locomotive with a destination
+          of "TheFarLands/Milliways",
+          or that is painted black and red,
+          or that has a destination of
+          "SecretHideout/OceanEntrance",
+          but only if its not owned by Steve.
+        """);
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(10), """
+        Regular Expressions:
+          Some Conditions support
+          Regular Expressions.
+          To use a regex, add a '?' before the '='.
+          Rules are standard Java Patterns.
+        Supporting Conditions:
+          Dest, Name
+        Example:
+          Dest?=.*Hill
+        """);
+    this.add(Translations.RoutingTable.MANUAL_PAGES.get(11), """
+        Analog Output:
+          IF can be used with integer constants
+          for analog output. Ints and IF can
+          only be used at top level, or as
+          then or else to IF. TRUE and FALSE
+          are usable anywhere.
+        Example:
+          IF
+          Dest=Town
+          8
+          IF
+          Dest=City
+          4
+          FALSE
+        """);
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {

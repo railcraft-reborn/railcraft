@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "railcraft:bronze_block"
-  }
+  },
+  "show_notification": true
 }

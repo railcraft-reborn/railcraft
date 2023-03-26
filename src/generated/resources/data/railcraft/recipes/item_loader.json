@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "railcraft:item_loader"
-  }
+  },
+  "show_notification": true
 }

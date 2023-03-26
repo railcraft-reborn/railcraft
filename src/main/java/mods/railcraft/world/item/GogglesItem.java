@@ -16,13 +16,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class GogglesItem extends ArmorItem {
 
   public GogglesItem(Properties properties) {
-    super(RailcraftArmorMaterial.GOGGLES, EquipmentSlot.HEAD, properties);
+    super(RailcraftArmorMaterial.GOGGLES, Type.HELMET, properties);
   }
 
   @Override

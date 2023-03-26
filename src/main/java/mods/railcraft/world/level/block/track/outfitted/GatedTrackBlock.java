@@ -1,9 +1,13 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
+import java.util.List;
 import java.util.function.Supplier;
+import mods.railcraft.Translations;
 import mods.railcraft.api.track.TrackType;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -12,6 +16,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -191,7 +196,7 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     if (!level.isClientSide()) {
       boolean open = !isOpen(blockState);
       level.setBlockAndUpdate(pos, blockState.setValue(OPEN, open));
-      level.playSound(player, pos, open
+      level.playSound(null, pos, open
               ? SoundEvents.FENCE_GATE_OPEN
               : SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0F,
           level.getRandom().nextFloat() * 0.1F + 0.9F);
@@ -236,5 +241,16 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
   public static boolean isOneWay(BlockState blockState) {
     return blockState.getValue(ONE_WAY);
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, BlockGetter level, List<Component> lines,
+      TooltipFlag flag) {
+    lines.add(Component.translatable(Translations.Tips.GATED_TRACK)
+        .withStyle(ChatFormatting.GRAY));
+    lines.add(Component.translatable(Translations.Tips.HIT_CROWBAR_TO_CHANGE_MODE)
+        .withStyle(ChatFormatting.BLUE));
+    lines.add(Component.translatable(Translations.Tips.APPLY_REDSTONE_TO_OPEN)
+        .withStyle(ChatFormatting.RED));
   }
 }

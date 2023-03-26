@@ -106,9 +106,9 @@ public class RenderUtil {
       int packedOverlay = (int) (backgroundOpacity * 255.0F) << 24;
       float x = (float) (-font.width(text) / 2);
       font.drawInBatch(text, x, 0, 0x20FFFFFF, false, matrix, bufferSource,
-          true, packedOverlay, packedLight);
-      font.drawInBatch(text, x, 0, -1, false, matrix, bufferSource, false,
-          0, packedLight);
+          Font.DisplayMode.SEE_THROUGH, packedOverlay, packedLight);
+      font.drawInBatch(text, x, 0, -1, false, matrix, bufferSource,
+          Font.DisplayMode.NORMAL, 0, packedLight);
     }
     poseStack.popPose();
   }

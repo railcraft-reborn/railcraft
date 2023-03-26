@@ -7,11 +7,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.EntitySelector;
 
-/**
- * Created by CovertJaguar on 10/19/2018 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public enum ModEntitySelector implements Predicate<Entity> {
 
   LIVING {
@@ -30,13 +25,13 @@ public enum ModEntitySelector implements Predicate<Entity> {
       return LIVING.test(entity)
           && entity.isAttackable()
           && !(entity.getVehicle() instanceof AbstractMinecart)
-          && entity instanceof LivingEntity
-          && ((LivingEntity) entity).getMaxHealth() < 100;
+          && entity instanceof LivingEntity livingEntity
+          && livingEntity.getMaxHealth() < 100;
     }
   },
   /**
-   * Checks if an entity does not form a part of the core game mechanics, e.g. pre-generation of map
-   * via command block minecarts.
+   * Checks if an entity does not form a part of the core game mechanics,
+   * e.g. pre-generation of map via command block minecarts.
    */
   NON_MECHANICAL {
     @Override

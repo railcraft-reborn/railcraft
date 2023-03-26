@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.particle.FireSparkParticleOptions;
 import mods.railcraft.world.item.RefinedFirestoneItem;
 import mods.railcraft.world.level.material.fluid.FluidTools;
@@ -20,11 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class RitualBlockEntity extends RailcraftBlockEntity {
 
   public static final int[] REBUILD_DELAY = Util.make(new int[8], delay -> {
@@ -46,7 +43,6 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   public float yOffset = -2, preYOffset = -2;
   private int rebuildDelay;
   private Component itemName;
-
   private int tick = 0;
 
   public RitualBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -95,8 +91,8 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
     if (fluid.is(Fluids.LAVA)) {
       boolean placed = level.setBlockAndUpdate(lavaPos, Blocks.OBSIDIAN.defaultBlockState());
       if (placed) {
-        var startPosition = lavaPos.offset(0.5, 0.5, 0.5);
-        var endPosition = getBlockPos().offset(0.5, 0.8, 0.5);
+        var startPosition = Vec3.atLowerCornerWithOffset(lavaPos, 0.5, 0.5, 0.5);
+        var endPosition = Vec3.atLowerCornerWithOffset(getBlockPos(), 0.5, 0.8, 0.5);
         fireSparkEffect(level, startPosition, endPosition);
         queueAdjacent(lavaPos);
         expandQueue();
@@ -106,9 +102,9 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
     return false;
   }
 
-  private void fireSparkEffect(ServerLevel level, BlockPos start, BlockPos end) {
-    level.sendParticles(new FireSparkParticleOptions(Vec3.atCenterOf(end)),
-        start.getX(), start.getY(), start.getZ(), 1, 0, 0, 0, 0);
+  private void fireSparkEffect(ServerLevel level, Vec3 start, Vec3 end) {
+    level.sendParticles(new FireSparkParticleOptions(end),
+        start.x, start.y, start.z, 1, 0, 0, 0, 0);
   }
 
   @Nullable
@@ -144,9 +140,7 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   public void queueAdjacent(BlockPos pos) {
     // No idea if it matters which order these are added,
     // but I figured it best to keep them in the same order.
-    for (Direction side : Direction.Plane.HORIZONTAL) {
-      queueForFilling(pos.relative(side));
-    }
+    Direction.Plane.HORIZONTAL.forEach(side -> queueForFilling(pos.relative(side)));
     queueForFilling(pos.above());
     queueForFilling(pos.below());
   }
@@ -159,8 +153,8 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
               * (index.getZ() - this.worldPosition.getZ()) > 64 * 64)
         return;
 
-      BlockState state = this.level.getBlockState(index);
-      if (state.getBlock() == Blocks.OBSIDIAN || FluidTools.getFluid(state).isSame(Fluids.LAVA)) {
+      var state = this.level.getBlockState(index);
+      if (state.is(Blocks.OBSIDIAN) || FluidTools.getFluid(state).isSame(Fluids.LAVA)) {
         lavaFound.add(index);
         if (FluidTools.isFullFluidBlock(state, this.level, index))
           queue.addLast(index);

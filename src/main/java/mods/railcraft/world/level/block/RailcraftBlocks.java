@@ -47,6 +47,7 @@ import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackLeverBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackMotorBlock;
+import mods.railcraft.world.level.block.track.actuator.SwitchTrackRouterBlock;
 import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
@@ -61,6 +62,7 @@ import mods.railcraft.world.level.block.track.outfitted.LauncherTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LocomotiveTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.OneWayTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.RoutingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
@@ -507,6 +509,13 @@ public class RailcraftBlocks {
               .sound(SoundType.METAL)
               .noOcclusion()));
 
+  public static final RegistryObject<SwitchTrackRouterBlock> SWITCH_TRACK_ROUTER =
+      deferredRegister.register("switch_track_router",
+          () -> new SwitchTrackRouterBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+              .strength(8.0F, 50.0F)
+              .sound(SoundType.METAL)
+              .noOcclusion()));
+
   public static final RegistryObject<SignalBoxBlock> ANALOG_SIGNAL_CONTROLLER_BOX =
       deferredRegister.register("analog_signal_controller_box",
           () -> new AnalogSignalControllerBoxBlock(
@@ -745,6 +754,14 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
+  public static final RegistryObject<RoutingTrackBlock> ABANDONED_ROUTING_TRACK =
+      deferredRegister.register("abandoned_routing_track",
+          () -> new RoutingTrackBlock(TrackTypes.ABANDONED,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
   public static final RegistryObject<TrackBlock> ELECTRIC_TRACK =
       deferredRegister.register("electric_track",
           () -> new TrackBlock(TrackTypes.ELECTRIC,
@@ -883,6 +900,14 @@ public class RailcraftBlocks {
   public static final RegistryObject<LocomotiveTrackBlock> ELECTRIC_LOCOMOTIVE_TRACK =
       deferredRegister.register("electric_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.ELECTRIC,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
+  public static final RegistryObject<RoutingTrackBlock> ELECTRIC_ROUTING_TRACK =
+      deferredRegister.register("electric_routing_track",
+          () -> new RoutingTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
@@ -1193,6 +1218,14 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
+  public static final RegistryObject<RoutingTrackBlock> IRON_ROUTING_TRACK =
+      deferredRegister.register("iron_routing_track",
+          () -> new RoutingTrackBlock(TrackTypes.IRON,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
   public static final RegistryObject<TrackBlock> REINFORCED_TRACK =
       deferredRegister.register("reinforced_track",
           () -> new TrackBlock(TrackTypes.REINFORCED,
@@ -1329,6 +1362,14 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
+  public static final RegistryObject<RoutingTrackBlock> REINFORCED_ROUTING_TRACK =
+      deferredRegister.register("reinforced_routing_track",
+          () -> new RoutingTrackBlock(TrackTypes.REINFORCED,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
+                  .sound(SoundType.METAL)));
+
   public static final RegistryObject<TrackBlock> STRAP_IRON_TRACK =
       deferredRegister.register("strap_iron_track",
           () -> new TrackBlock(TrackTypes.STRAP_IRON,
@@ -1460,6 +1501,14 @@ public class RailcraftBlocks {
   public static final RegistryObject<LocomotiveTrackBlock> STRAP_IRON_LOCOMOTIVE_TRACK =
       deferredRegister.register("strap_iron_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.STRAP_IRON,
+              BlockBehaviour.Properties.of(Material.DECORATION)
+                  .noCollission()
+                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+                  .sound(SoundType.METAL)));
+
+  public static final RegistryObject<RoutingTrackBlock> STRAP_IRON_ROUTING_TRACK =
+      deferredRegister.register("strap_iron_routing_track",
+          () -> new RoutingTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)

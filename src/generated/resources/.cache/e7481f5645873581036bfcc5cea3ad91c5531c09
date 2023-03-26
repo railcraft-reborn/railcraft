@@ -1,4 +1,4 @@
-// 1.19.3	2023-02-15T08:46:31.354423023	Item Models: railcraft
+// 1.19.4	2023-03-15T17:34:41.727862	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -47,6 +47,7 @@ a316dff6851bed398cdc0215ee39f4da055e89bf assets/railcraft/models/item/detector_t
 482a065ec291f6cf851961bc8a70ac1b6fc7af05 assets/railcraft/models/item/gold_electrode.json
 c33eb623bc15ad465743213397a57e92e1602de1 assets/railcraft/models/item/gold_gear.json
 11505e800b8e65037cfc20639ffae70a638384c1 assets/railcraft/models/item/gold_plate.json
+e1dad4b4d00047ed0a702f0774fc7d800a6a64dd assets/railcraft/models/item/golden_ticket.json
 11b043114f0371d43fc89bbefa5632e3808330f6 assets/railcraft/models/item/high_speed_rail.json
 43894cda953b9431361d97bf79d8f7971caecda7 assets/railcraft/models/item/invar_electrode.json
 38e5f609b4f4dbe3083a8066a0ad62037d3ebc23 assets/railcraft/models/item/invar_gear.json
@@ -81,6 +82,8 @@ c3bf8523326e7bc181f4e12e5a66e16c3319f40c assets/railcraft/models/item/one_way_tr
 98e9bd5c31e8711afd536b5f9ac9f38ac8474133 assets/railcraft/models/item/rebar.json
 93e6f5d1cad0dae72ead237d05f1de1485f1bc79 assets/railcraft/models/item/receiver_circuit.json
 9ca066160a55f459935fb2f395bc67608188f36a assets/railcraft/models/item/reinforced_rail.json
+7b263160ff342328226a2e1141728755f941e3c4 assets/railcraft/models/item/routing_table_book.json
+86ed1dabca72c8758f38b8c002b6a0a04fa94dcb assets/railcraft/models/item/routing_track_kit.json
 3b04c08465f407f302890dc95847399e57b73acf assets/railcraft/models/item/saltpeter_dust.json
 ec0fd04fb906c68d11d61e5f868cfb7118f56b75 assets/railcraft/models/item/seasons_crowbar.json
 7090f3d13d11fef57764d5be581705beb57a1cb0 assets/railcraft/models/item/signal_block_surveyor.json

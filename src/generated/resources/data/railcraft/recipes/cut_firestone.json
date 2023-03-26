@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "railcraft:cut_firestone"
-  }
+  },
+  "show_notification": true
 }

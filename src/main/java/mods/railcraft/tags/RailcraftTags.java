@@ -96,6 +96,7 @@ public class RailcraftTags {
     public static final TagKey<Item> STEEL_TANK_WALL = tag("steel_tank_wall");
 
     public static final TagKey<Item> QUARRIED = tag("quarried");
+    public static final TagKey<Item> TICKET = tag("ticket");
 
     public static final TagKey<Item> POST = tag("post");
     public static final TagKey<Item> STRENGTHENED_GLASS = tag("strengthened_glass");
@@ -193,6 +194,7 @@ public class RailcraftTags {
   public static class Fluids {
 
     public static final TagKey<Fluid> STEAM = forgeTag("steam");
+    public static final TagKey<Fluid> CREOSOTE = forgeTag("creosote");
     public static final TagKey<Fluid> GASEOUS = forgeTag("gaseous");
 
     private static TagKey<Fluid> forgeTag(String name) {
