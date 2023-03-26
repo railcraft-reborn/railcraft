@@ -16,6 +16,7 @@ import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.PoweredRollingMachineScreen;
+import mods.railcraft.client.gui.screen.inventory.SteamOvenScreen;
 import mods.railcraft.integrations.jei.category.BlastFurnaceRecipeCategory;
 import mods.railcraft.integrations.jei.category.CokeOvenRecipeCategory;
 import mods.railcraft.integrations.jei.category.CrusherRecipeCategory;
@@ -26,6 +27,7 @@ import mods.railcraft.world.inventory.CrusherMenu;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.PoweredRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
+import mods.railcraft.world.inventory.SteamOvenMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
@@ -67,6 +69,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
     registration.addRecipeClickArea(BlastFurnaceScreen.class, 80, 36, 22, 15,
         RecipeTypes.BLAST_FURNACE);
     registration.addRecipeClickArea(CrusherScreen.class, 73, 20, 30, 38, RecipeTypes.CRUSHER);
+    registration.addRecipeClickArea(SteamOvenScreen.class, 65, 18, 23, 50,
+        mezz.jei.api.constants.RecipeTypes.SMELTING);
   }
 
   @Override
@@ -83,6 +87,9 @@ public class RailcraftJeiPlugin implements IModPlugin {
         RailcraftMenuTypes.BLAST_FURNACE.get(), RecipeTypes.BLAST_FURNACE, 0, 1, 4, 36);
     registration.addRecipeTransferHandler(CrusherMenu.class, RailcraftMenuTypes.CRUSHER.get(),
         RecipeTypes.CRUSHER, 0, 9, 17, 36);
+    registration.addRecipeTransferHandler(SteamOvenMenu.class,
+        RailcraftMenuTypes.STEAM_OVEN.get(),
+        mezz.jei.api.constants.RecipeTypes.SMELTING, 0, 9, 9, 36);
   }
 
   @Override
@@ -151,5 +158,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
         RecipeTypes.BLAST_FURNACE);
     registration.addRecipeCatalyst(new ItemStack(RailcraftItems.CRUSHER.get()),
         RecipeTypes.CRUSHER);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.STEAM_OVEN.get()),
+        mezz.jei.api.constants.RecipeTypes.SMELTING);
   }
 }
