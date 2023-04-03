@@ -1,4 +1,4 @@
-// 1.19.4	2023-03-26T21:01:05.202891	Railcraft Item Tags
+// 1.19.4	2023-04-03T20:46:38.310099	Railcraft Item Tags
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -76,16 +76,16 @@ d8a0afa9468fa132e645cb46a5cafa2846bc640e data/forge/tags/items/storage_blocks/br
 f34843bfb7b650f383c4d01e491bd1059bfad784 data/forge/tags/items/storage_blocks/steel.json
 61ec7aa57313c2ddde898c774799d7378bcbd659 data/forge/tags/items/storage_blocks/tin.json
 f20e839f832dcea6925586af038aa6dd6fcae88a data/forge/tags/items/storage_blocks/zinc.json
-e3ba2fab927d9f5cba4296693574f0ca9cac69eb data/forge/tags/items/tools/axes.json
 e3ba2fab927d9f5cba4296693574f0ca9cac69eb data/forge/tags/items/tools/axes/steel.json
-88e186f1e72ff7a1d3bfbcb969ef18b8a7acbb5f data/forge/tags/items/tools/hoes.json
 88e186f1e72ff7a1d3bfbcb969ef18b8a7acbb5f data/forge/tags/items/tools/hoes/steel.json
-c12118bda87efc5274515a86a0a7f3b189982de6 data/forge/tags/items/tools/pickaxes.json
 c12118bda87efc5274515a86a0a7f3b189982de6 data/forge/tags/items/tools/pickaxes/steel.json
-15360ef6012773af817ef8496de52353494b4db3 data/forge/tags/items/tools/shovels.json
 15360ef6012773af817ef8496de52353494b4db3 data/forge/tags/items/tools/shovels/steel.json
-05168ea5fb65c2a597f1ca271644789e1dd9aa9c data/forge/tags/items/tools/swords.json
 05168ea5fb65c2a597f1ca271644789e1dd9aa9c data/forge/tags/items/tools/swords/steel.json
+e3ba2fab927d9f5cba4296693574f0ca9cac69eb data/minecraft/tags/items/axes.json
+88e186f1e72ff7a1d3bfbcb969ef18b8a7acbb5f data/minecraft/tags/items/hoes.json
+c12118bda87efc5274515a86a0a7f3b189982de6 data/minecraft/tags/items/pickaxes.json
+15360ef6012773af817ef8496de52353494b4db3 data/minecraft/tags/items/shovels.json
+05168ea5fb65c2a597f1ca271644789e1dd9aa9c data/minecraft/tags/items/swords.json
 2b2955fa389820ec52c1706de20e6cab5fafaba8 data/railcraft/tags/items/abandoned_track.json
 3f5ccd47db2e1f5b813e0f1e606034d2ba9b53e6 data/railcraft/tags/items/crowbar.json
 45833512f843d57d71eae98f523d98899ee1cd2c data/railcraft/tags/items/electric_track.json

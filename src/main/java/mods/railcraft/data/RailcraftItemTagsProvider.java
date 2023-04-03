@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -205,11 +206,11 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(RailcraftTags.Items.ARMORS_BOOTS_STEEL).add(RailcraftItems.STEEL_BOOTS.get());
 
 
-    this.tag(Tags.Items.TOOLS_AXES).add(RailcraftItems.STEEL_AXE.get());
-    this.tag(Tags.Items.TOOLS_HOES).add(RailcraftItems.STEEL_HOE.get());
-    this.tag(Tags.Items.TOOLS_PICKAXES).add(RailcraftItems.STEEL_PICKAXE.get());
-    this.tag(Tags.Items.TOOLS_SHOVELS).add(RailcraftItems.STEEL_SHOVEL.get());
-    this.tag(Tags.Items.TOOLS_SWORDS).add(RailcraftItems.STEEL_SWORD.get());
+    this.tag(ItemTags.AXES).add(RailcraftItems.STEEL_AXE.get());
+    this.tag(ItemTags.HOES).add(RailcraftItems.STEEL_HOE.get());
+    this.tag(ItemTags.PICKAXES).add(RailcraftItems.STEEL_PICKAXE.get());
+    this.tag(ItemTags.SHOVELS).add(RailcraftItems.STEEL_SHOVEL.get());
+    this.tag(ItemTags.SWORDS).add(RailcraftItems.STEEL_SWORD.get());
 
     this.tag(Tags.Items.ARMORS_HELMETS).addTags(RailcraftTags.Items.ARMORS_HELMETS_STEEL);
     this.tag(Tags.Items.ARMORS_CHESTPLATES).addTags(RailcraftTags.Items.ARMORS_CHESTPLATES_STEEL);
