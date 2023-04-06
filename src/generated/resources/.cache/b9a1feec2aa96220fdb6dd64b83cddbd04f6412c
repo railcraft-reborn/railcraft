@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-03T20:46:38.310099	Railcraft Item Tags
+// 1.19.4	2023-04-06T16:50:50.116236	Railcraft Item Tags
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -103,4 +103,3 @@ c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/items/iron_tank_wal
 39074036a3b8c8bbad74fcad7dce1c559f82f107 data/railcraft/tags/items/steel_tank_wall.json
 08e79753fd20737e2a20c9f230cbe90faaf8bc12 data/railcraft/tags/items/strap_iron_track.json
 3a7becb38c8d1c2314b0c3b33165fbb0a8abea1e data/railcraft/tags/items/strengthened_glass.json
-7b44e7576a6d3f1145f35bae825b1906c04bcbe7 data/railcraft/tags/items/ticket.json

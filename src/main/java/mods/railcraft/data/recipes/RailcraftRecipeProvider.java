@@ -1272,7 +1272,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         new Tuple<>(Ingredient.of(Items.LEAD), 1),
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.ROUTING_TRACK_KIT.get(), 8, List.of(
-        new Tuple<>(Ingredient.of(RailcraftTags.Items.TICKET), 1),
+        new Tuple<>(Ingredient.of(
+            RailcraftItems.TICKET.get(), RailcraftItems.GOLDEN_TICKET.get()), 1),
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
   }
 

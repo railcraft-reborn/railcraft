@@ -97,7 +97,6 @@ public class RailcraftTags {
     public static final TagKey<Item> STEEL_TANK_WALL = tag("steel_tank_wall");
 
     public static final TagKey<Item> QUARRIED = tag("quarried");
-    public static final TagKey<Item> TICKET = tag("ticket");
 
     public static final TagKey<Item> POST = tag("post");
     public static final TagKey<Item> STRENGTHENED_GLASS = tag("strengthened_glass");
