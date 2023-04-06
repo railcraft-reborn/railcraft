@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": {
-      "item": "railcraft:steel_plate"
+      "tag": "forge:plates/steel"
     },
     "b": {
       "item": "minecraft:furnace"

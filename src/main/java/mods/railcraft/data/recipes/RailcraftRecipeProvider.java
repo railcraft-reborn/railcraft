@@ -36,6 +36,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class RailcraftRecipeProvider extends RecipeProvider {
 
@@ -684,7 +685,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aba")
         .pattern("bcb")
         .pattern("aba")
-        .define('a', RailcraftItems.STEEL_BLOCK.get())
+        .define('a', RailcraftTags.Items.STEEL_BLOCK)
         .define('b', RailcraftTags.Items.STEEL_PLATE)
         .define('c', RailcraftItems.CHARGE_MOTOR.get())
         .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
@@ -1414,7 +1415,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aaa")
         .pattern("aba")
         .pattern("aaa")
-        .define('a', RailcraftItems.STEEL_PLATE.get())
+        .define('a', RailcraftTags.Items.STEEL_PLATE)
         .define('b', Items.FURNACE)
         .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()),
             has(RailcraftItems.STEEL_PLATE.get()))
@@ -1592,53 +1593,59 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private static void tankWall(Consumer<FinishedRecipe> consumer,
-      ItemLike ingredient,
+      TagKey<Item> ingredientTag,
       VariantRegistrar<DyeColor, BlockItem> colorItems,
       TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    var ingredient = ingredientTag.equals(RailcraftTags.Items.IRON_PLATE)
+        ? "has_iron_plate" : "has_steel_plate";
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 8)
         .pattern("aa")
         .pattern("aa")
-        .define('a', ingredient)
-        .unlockedBy(getHasName(ingredient), has(ingredient))
+        .define('a', ingredientTag)
+        .unlockedBy(ingredient, has(ingredientTag))
         .save(consumer, Railcraft.ID + ":" + name.substring(name.indexOf('_') + 1));
 
     coloredBlockVariant(consumer, colorItems, tagItem);
   }
 
   private static void tankValve(Consumer<FinishedRecipe> consumer,
-      ItemLike ingredient,
+      TagKey<Item> ingredientTag,
       VariantRegistrar<DyeColor, BlockItem> colorItems,
       TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    var ingredient = ingredientTag.equals(RailcraftTags.Items.IRON_PLATE)
+        ? "has_iron_plate" : "has_steel_plate";
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 8)
         .pattern("aba")
         .pattern("bcb")
         .pattern("aba")
         .define('a', Items.IRON_BARS)
-        .define('b', ingredient)
+        .define('b', ingredientTag)
         .define('c', Items.LEVER)
-        .unlockedBy(getHasName(ingredient), has(ingredient))
+        .unlockedBy(ingredient, has(ingredientTag))
         .save(consumer, new ResourceLocation(Railcraft.ID, name.substring(name.indexOf('_') + 1)));
 
     coloredBlockVariant(consumer, colorItems, tagItem);
   }
 
   private static void tankGauge(Consumer<FinishedRecipe> consumer,
-      ItemLike ingredient,
+      TagKey<Item> ingredientTag,
       VariantRegistrar<DyeColor, BlockItem> colorItems,
       TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    var ingredient = ingredientTag.equals(RailcraftTags.Items.IRON_PLATE)
+        ? "has_iron_plate" : "has_steel_plate";
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 8)
         .pattern("aba")
         .pattern("bab")
         .pattern("aba")
         .define('a', Items.GLASS_PANE)
-        .define('b', ingredient)
-        .unlockedBy(getHasName(ingredient), has(ingredient))
+        .define('b', ingredientTag)
+        .unlockedBy(ingredient, has(ingredientTag))
         .save(consumer, new ResourceLocation(Railcraft.ID, name.substring(name.indexOf('_') + 1)));
 
     coloredBlockVariant(consumer, colorItems, tagItem);
@@ -1646,28 +1653,27 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void buildTankBlocks(Consumer<FinishedRecipe> consumer) {
     tankWall(consumer,
-        RailcraftItems.IRON_PLATE.get(),
+        RailcraftTags.Items.IRON_PLATE,
         RailcraftItems.IRON_TANK_WALL,
         RailcraftTags.Items.IRON_TANK_WALL);
     tankWall(consumer,
-        RailcraftItems.STEEL_PLATE.get(),
+        RailcraftTags.Items.STEEL_PLATE,
         RailcraftItems.STEEL_TANK_WALL,
         RailcraftTags.Items.STEEL_TANK_WALL);
     tankValve(consumer,
-        RailcraftItems.IRON_PLATE.get(),
+        RailcraftTags.Items.IRON_PLATE,
         RailcraftItems.IRON_TANK_VALVE,
         RailcraftTags.Items.IRON_TANK_VALVE);
     tankValve(consumer,
-        RailcraftItems.STEEL_PLATE.get(),
+        RailcraftTags.Items.STEEL_PLATE,
         RailcraftItems.STEEL_TANK_VALVE,
         RailcraftTags.Items.STEEL_TANK_VALVE);
-
     tankGauge(consumer,
-        RailcraftItems.IRON_PLATE.get(),
+        RailcraftTags.Items.IRON_PLATE,
         RailcraftItems.IRON_TANK_GAUGE,
         RailcraftTags.Items.IRON_TANK_GAUGE);
     tankGauge(consumer,
-        RailcraftItems.STEEL_PLATE.get(),
+        RailcraftTags.Items.STEEL_PLATE,
         RailcraftItems.STEEL_TANK_GAUGE,
         RailcraftTags.Items.STEEL_TANK_GAUGE);
   }

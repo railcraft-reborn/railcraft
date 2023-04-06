@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
@@ -116,7 +117,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
       blockEntity.currentRecipe = blockEntity.getRecipe();
       blockEntity.processTime = blockEntity.currentRecipe
           .map(RollingRecipe::getProcessTime)
-          .orElse(100);
+          .orElse(RollingRecipeBuilder.DEFAULT_PROCESSING_TIME);
       blockEntity.clock = 0;
     }
 

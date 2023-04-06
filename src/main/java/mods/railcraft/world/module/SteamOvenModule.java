@@ -11,8 +11,6 @@ import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraftforge.common.util.LazyOptional;
@@ -97,6 +95,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
     int count = 0;
     boolean changed = true;
     boolean smelted = false;
+    var registryAccess = provider.getLevel().registryAccess();
     while (count < ITEMS_SMELTED && changed) {
       changed = false;
       for (int slot = 0; slot < 9 && count < ITEMS_SMELTED; slot++) {
@@ -105,7 +104,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
           continue;
         }
         var output = getRecipe(stack)
-            .map(x -> x.getResultItem(provider.getLevel().registryAccess()))
+            .map(x -> x.getResultItem(registryAccess))
             .orElse(ItemStack.EMPTY);
         if (!output.isEmpty() &&
             outputContainer.canFit(output) &&

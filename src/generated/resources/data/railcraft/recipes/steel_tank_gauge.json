@@ -6,7 +6,7 @@
       "item": "minecraft:glass_pane"
     },
     "b": {
-      "item": "railcraft:steel_plate"
+      "tag": "forge:plates/steel"
     }
   },
   "pattern": [
