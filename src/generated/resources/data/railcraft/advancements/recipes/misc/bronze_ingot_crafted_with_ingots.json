@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:copper_ingot"
-            ]
+            "tag": "forge:ingots/copper"
           }
         ]
       },
@@ -23,9 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "railcraft:tin_ingot"
-            ]
+            "tag": "forge:ingots/tin"
           }
         ]
       },

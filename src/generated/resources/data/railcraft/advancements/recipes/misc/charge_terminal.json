@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "railcraft:brass_ingot"
-            ]
+            "tag": "forge:ingots/brass"
           }
         ]
       },
