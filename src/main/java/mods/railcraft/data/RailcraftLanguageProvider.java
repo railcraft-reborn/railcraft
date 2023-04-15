@@ -778,6 +778,18 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         It is both a Controller and a Receiver.""");
     this.add(Translations.Jei.TUNNEL_BORE,
         "Machine designed for digging tunnels and laying track.");
+    this.add(Translations.Jei.NICKEL_IRON_BATTERY,
+        "A battery designed to work with the charge network. Good for general purpose usage.");
+    this.add(Translations.Jei.NICKEL_ZINC_BATTERY, """
+            A battery designed to work with the charge network. \
+            Good for low draw, long term storage.""");
+    this.add(Translations.Jei.DISPOSABLE_BATTERY, """
+            A battery designed to work with the charge network. \
+            Good for cheap, single use storage. Comes fully charged.""");
+    this.add(Translations.Jei.DISPOSABLE_BATTERY_EMPTY, """
+            A battery designed to work with the charge network. \
+            Good for cheap, single use storage. \
+            This one is empty and can be recycled in the Crusher.""");
     this.add(Translations.Jei.PAINT, "Paint");
     this.add(Translations.Jei.COPY_TAG, "Copy Tag");
     this.add(Translations.Jei.REPAIR, "Repair");

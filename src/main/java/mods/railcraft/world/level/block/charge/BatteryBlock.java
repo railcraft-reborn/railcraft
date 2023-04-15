@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
+import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -26,7 +27,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public abstract class BatteryBlock extends ChargeBlock implements EntityBlock {
+public abstract class BatteryBlock extends ChargeBlock implements EntityBlock, JeiSearchable {
 
   private static final VoxelShape SHAPE = Shapes.create(BoxBuilder.create()
       .box()

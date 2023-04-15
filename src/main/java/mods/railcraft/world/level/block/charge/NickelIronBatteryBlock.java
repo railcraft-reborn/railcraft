@@ -1,6 +1,8 @@
 package mods.railcraft.world.level.block.charge;
 
+import mods.railcraft.Translations;
 import mods.railcraft.api.charge.ChargeStorage;
+import net.minecraft.network.chat.Component;
 
 public class NickelIronBatteryBlock extends BatteryBlock {
 
@@ -14,5 +16,10 @@ public class NickelIronBatteryBlock extends BatteryBlock {
   @Override
   protected Spec getChargeSpec() {
     return CHARGE_SPEC;
+  }
+
+  @Override
+  public Component addJeiInfo() {
+    return Component.translatable(Translations.Jei.NICKEL_IRON_BATTERY);
   }
 }

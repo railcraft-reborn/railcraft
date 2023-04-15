@@ -369,6 +369,14 @@ public class Translations {
     public static final String DUAL_TOKEN_SIGNAL =
         makeKey("jei", "desc.dual_token_signal");
     public static final String TUNNEL_BORE = makeKey("jei", "desc.tunnel_bore");
+    public static final String NICKEL_IRON_BATTERY =
+        makeKey("jei", "desc.nickel_iron_battery");
+    public static final String NICKEL_ZINC_BATTERY =
+        makeKey("jei", "desc.nickel_zinc_battery");
+    public static final String DISPOSABLE_BATTERY =
+        makeKey("jei", "desc.disposable_battery");
+    public static final String DISPOSABLE_BATTERY_EMPTY =
+        makeKey("jei", "desc.disposable_battery_empty");
 
     public static final String PAINT = makeKey("jei.gui", "paint");
     public static final String COPY_TAG = makeKey("jei.gui", "copy_tag");
