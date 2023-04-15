@@ -1,7 +1,7 @@
 package mods.railcraft.client.particle;
 
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.ParticleRenderType;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info/>

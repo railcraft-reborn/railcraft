@@ -1,5 +1,7 @@
 package mods.railcraft.world.level.material.fluid.steam;
 
+import java.util.List;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.primitives.Floats;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.gui.widget.Gauge;
@@ -12,9 +14,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /**
  * The boiler itself. Used to simulate turning water into steam.

@@ -3,9 +3,9 @@ package mods.railcraft.client.gui.screen.inventory;
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.world.inventory.TankMinecartMenu;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 public class TankMinecartScreen extends RailcraftMenuScreen<TankMinecartMenu> {
 

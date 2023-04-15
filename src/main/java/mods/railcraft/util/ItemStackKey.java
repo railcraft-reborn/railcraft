@@ -9,9 +9,9 @@
 
 package mods.railcraft.util;
 
-import net.minecraft.world.item.ItemStack;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Created by CovertJaguar on 10/28/2016 for Railcraft.

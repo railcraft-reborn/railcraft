@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.List;
 import java.util.function.Supplier;
-
 import mods.railcraft.Translations;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.client.ScreenFactories;

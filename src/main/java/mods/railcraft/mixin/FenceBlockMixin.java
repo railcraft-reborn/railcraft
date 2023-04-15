@@ -6,10 +6,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
 @Mixin(FenceBlock.class)
 public class FenceBlockMixin {

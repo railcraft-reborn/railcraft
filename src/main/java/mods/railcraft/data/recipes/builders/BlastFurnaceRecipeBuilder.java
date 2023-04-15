@@ -1,7 +1,7 @@
 package mods.railcraft.data.recipes.builders;
 
-import com.google.gson.JsonObject;
 import java.util.function.Consumer;
+import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.Advancement;

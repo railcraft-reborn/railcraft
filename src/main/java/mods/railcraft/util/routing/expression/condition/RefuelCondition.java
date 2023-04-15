@@ -1,7 +1,7 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.NeedsFuel;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;

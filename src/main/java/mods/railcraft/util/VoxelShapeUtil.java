@@ -2,10 +2,10 @@ package mods.railcraft.util;
 
 import java.util.EnumMap;
 import java.util.Map;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.core.Direction;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * 

@@ -1,9 +1,9 @@
 package mods.railcraft.world.item;
 
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import org.jetbrains.annotations.Nullable;
 
 public class CoalCokeItem extends Item {
 

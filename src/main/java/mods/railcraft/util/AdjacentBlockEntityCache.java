@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>

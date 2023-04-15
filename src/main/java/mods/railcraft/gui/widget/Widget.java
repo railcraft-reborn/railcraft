@@ -1,8 +1,8 @@
 package mods.railcraft.gui.widget;
 
 import mods.railcraft.world.inventory.RailcraftMenu;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 
 public class Widget {
 

@@ -4,9 +4,9 @@ import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 
 public class BoardingLockingProfile implements LockingModeController {

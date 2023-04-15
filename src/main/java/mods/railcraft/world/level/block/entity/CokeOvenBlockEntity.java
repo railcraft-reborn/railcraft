@@ -1,8 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
-import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.level.block.CokeOvenBricksBlock;

@@ -1,8 +1,9 @@
 package mods.railcraft.world.level.block.entity;
 
-import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.List;
 import java.util.function.Predicate;
+import org.jetbrains.annotations.Nullable;
+import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -30,7 +31,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidUtil;
-import org.jetbrains.annotations.Nullable;
 
 public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineBlockEntity, Void> {
 

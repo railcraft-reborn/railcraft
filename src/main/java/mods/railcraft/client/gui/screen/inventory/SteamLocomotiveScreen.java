@@ -7,9 +7,9 @@ import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu> {
 

@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.tank;
 
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
@@ -24,8 +25,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.phys.BlockHitResult;
-
-import org.jetbrains.annotations.Nullable;
 
 public abstract class TankGaugeBlock extends AbstractStrengthenedGlassBlock implements EntityBlock {
 

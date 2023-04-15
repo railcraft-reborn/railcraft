@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block;
 
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockListener;
@@ -16,8 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.phys.BlockHitResult;
-
-import org.jetbrains.annotations.Nullable;
 
 public abstract class MultiblockBlock extends BaseEntityBlock {
 

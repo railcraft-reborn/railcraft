@@ -1,7 +1,7 @@
 package mods.railcraft.client.particle;
 
-import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.TextureSheetParticle;
 
 public abstract class DimmableParticle extends TextureSheetParticle {
 

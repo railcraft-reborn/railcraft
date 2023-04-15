@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
-import mods.railcraft.api.carts.Side;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
+import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.carts.Side;
+import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
@@ -30,9 +33,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
 
 public final class CartTools {
 
