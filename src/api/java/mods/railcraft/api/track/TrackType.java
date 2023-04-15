@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -23,11 +23,6 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-/**
- * Created by CovertJaguar on 8/10/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class TrackType {
 
   private final Supplier<? extends BaseRailBlock> flexBlock;

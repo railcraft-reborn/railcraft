@@ -3,11 +3,6 @@ package mods.railcraft.api.track;
 import javax.annotation.Nullable;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-/**
- * Created by CovertJaguar on 3/29/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class RailShapeUtil {
 
   private RailShapeUtil() {}

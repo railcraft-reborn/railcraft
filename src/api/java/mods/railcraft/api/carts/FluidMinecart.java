@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -12,7 +12,6 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * Replaces ILiquidTransfer with a simpler interface for moving Fluids between Minecarts.
  * <p/>
- * Created by CovertJaguar on 5/9/2015.
  *
  * @see mods.railcraft.api.carts.TrainTransferService
  */

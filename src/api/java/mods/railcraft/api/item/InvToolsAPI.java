@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -9,15 +9,10 @@ package mods.railcraft.api.item;
 
 import java.util.Optional;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.ItemStack;
 
-/**
- * Created by CovertJaguar on 6/7/2017 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class InvToolsAPI {
 
   private InvToolsAPI() {}

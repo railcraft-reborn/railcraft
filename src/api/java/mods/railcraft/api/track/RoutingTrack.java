@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -13,8 +13,6 @@ import com.mojang.authlib.GameProfile;
  * This interface provides a means for addons to hook into Routing Tracks and
  * change the ticket on the fly. Be warned, security is the responsibility of
  * the addon.
- *
- * @author CovertJaguar <https://www.railcraft.info/>
  */
 public interface RoutingTrack {
 

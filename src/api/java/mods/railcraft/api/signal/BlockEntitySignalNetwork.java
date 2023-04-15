@@ -1,9 +1,9 @@
 package mods.railcraft.api.signal;
 
 import mods.railcraft.api.core.BlockEntityLike;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public abstract class BlockEntitySignalNetwork<T extends BlockEntityLike>
     extends AbstractSignalNetwork<T> {

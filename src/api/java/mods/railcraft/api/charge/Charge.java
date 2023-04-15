@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -194,11 +194,6 @@ public enum Charge implements StringRepresentable {
     Network network(ServerLevel level);
   }
 
-  /**
-   * Created by CovertJaguar on 10/19/2018 for Railcraft.
-   *
-   * @author CovertJaguar (https://www.railcraft.info)
-   */
   public interface Network {
 
     /**
@@ -223,11 +218,6 @@ public enum Charge implements StringRepresentable {
 
   /**
    * The access interface used onto interacting with a network.
-   *
-   * <p>
-   * Created by CovertJaguar on 11/2/2018 for Railcraft.
-   *
-   * @author CovertJaguar (https://www.railcraft.info)
    */
   public interface Access {
     /**

@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -7,15 +7,10 @@
 
 package mods.railcraft.api.track;
 
-import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
 
-/**
- * Created by CovertJaguar on 3/19/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class TrackScanUtil {
 
   private TrackScanUtil() {}
