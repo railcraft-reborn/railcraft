@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.stream.Stream;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEntity;
@@ -238,6 +239,16 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("force_track",
           () -> BlockEntityType.Builder
               .of(ForceTrackBlockEntity::new, RailcraftBlocks.FORCE_TRACK.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<BatteryBlockEntity>> BATTERY =
+      deferredRegister.register("battery",
+          () -> BlockEntityType.Builder
+              .of(BatteryBlockEntity::new,
+                  RailcraftBlocks.NICKEL_IRON_BATTERY.get(),
+                  RailcraftBlocks.NICKEL_ZINC_BATTERY.get(),
+                  RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
+                  RailcraftBlocks.ZINC_CARBON_BATTERY.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<TurnoutTrackBlockEntity>> TURNOUT_TRACK =

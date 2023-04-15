@@ -228,6 +228,12 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.QUARRIED_BRICK_SLAB.get())
         .add(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get())
         .add(RailcraftBlocks.QUARRIED_PAVER_SLAB.get())
+        .add(RailcraftBlocks.NICKEL_IRON_BATTERY.get())
+        .add(RailcraftBlocks.NICKEL_ZINC_BATTERY.get())
+        .add(RailcraftBlocks.ZINC_SILVER_BATTERY.get())
+        .add(RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get())
+        .add(RailcraftBlocks.ZINC_CARBON_BATTERY.get())
+        .add(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get())
         .addTags(RailcraftTags.Blocks.LEAD_ORE,
             RailcraftTags.Blocks.NICKEL_ORE,
             RailcraftTags.Blocks.SILVER_ORE,
