@@ -1154,6 +1154,19 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('d', Items.MINECART)
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ELECTRIC_LOCOMOTIVE.get())
+        .pattern("ab ")
+        .pattern("cdc")
+        .pattern("efe")
+        .define('a', Items.REDSTONE_LAMP)
+        .define('b', RailcraftTags.Items.STEEL_PLATE)
+        .define('c', RailcraftItems.CHARGE_MOTOR.get())
+        .define('d', Ingredient.of(RailcraftItems.NICKEL_IRON_BATTERY.get(),
+            RailcraftItems.NICKEL_ZINC_BATTERY.get()))
+        .define('e', RailcraftTags.Items.STEEL_GEAR)
+        .define('f', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
 
     RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.LOCOMOTIVE_PAINTING.get())
         .save(consumer, "locomotive_color_variant");

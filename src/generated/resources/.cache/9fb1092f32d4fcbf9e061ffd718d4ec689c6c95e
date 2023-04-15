@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-15T12:23:13.879277	Recipes
+// 1.19.4	2023-04-15T14:31:33.396311	Recipes
 b5a17571ce39881697d539ab8e2e6830c430e652 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 3159a4cc9361689702fc1dee383096849bfdb726 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
 9e43f76515912931ca12626a2fa1c5bf15bcf4fb data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_raw.json
@@ -204,6 +204,7 @@ ff864567254606f591754f5f36c20e721de71518 data/railcraft/advancements/recipes/mis
 9644842af9039a04f177035abbae7120723cf2d7 data/railcraft/advancements/recipes/misc/electric_junction_track.json
 64b82e9bf46f8b85d396cca75b83438583c039b3 data/railcraft/advancements/recipes/misc/electric_launcher_track.json
 3c8da21148469cff7e8b83cc07f6a765953fe78b data/railcraft/advancements/recipes/misc/electric_locking_track.json
+59d690715ce4ab907670c016058b097a4cb216b4 data/railcraft/advancements/recipes/misc/electric_locomotive.json
 5475f6cb7691915c27f08b9e4b153a661e475285 data/railcraft/advancements/recipes/misc/electric_locomotive_track.json
 dd48b2fb87119773be070b763b9b008a73952724 data/railcraft/advancements/recipes/misc/electric_one_way_track.json
 9ffb9807bfac891135e4d2ec9567e9f70fd1f870 data/railcraft/advancements/recipes/misc/electric_routing_track.json
@@ -714,6 +715,7 @@ a8836faa121d10b95d5b0ed33f06eac1b57cfa30 data/railcraft/recipes/electric_gated_t
 fe5ef4fe47bef86c02259d7e551e6e66085147f8 data/railcraft/recipes/electric_junction_track.json
 2fc1823e84f0cf8fed2e999d8e1e50e9d2469b4d data/railcraft/recipes/electric_launcher_track.json
 f54bfca663ea3a28b5fde5bc598e06f0576f5673 data/railcraft/recipes/electric_locking_track.json
+79a152622df00ff9d2dca6d99835231a94047f89 data/railcraft/recipes/electric_locomotive.json
 121c8309620ea144703136014d6a8f7d49d5441b data/railcraft/recipes/electric_locomotive_track.json
 f1e9a8392af47d0e92d202b96f07d29828828499 data/railcraft/recipes/electric_one_way_track.json
 1d6dca2341abb7ca7a3893f8a8fabbfcde198024 data/railcraft/recipes/electric_routing_track.json
