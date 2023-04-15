@@ -4,6 +4,11 @@ import java.util.Collection;
 import java.util.function.ToIntFunction;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.VariantRegistrar;
+import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
+import mods.railcraft.world.level.block.charge.NickelIronBatteryBlock;
+import mods.railcraft.world.level.block.charge.NickelZincBatteryBlock;
+import mods.railcraft.world.level.block.charge.ZincCarbonBatteryBlock;
+import mods.railcraft.world.level.block.charge.ZincSilverBatteryBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemUnloaderBlock;
 import mods.railcraft.world.level.block.manipulator.CartDispenserBlock;
@@ -277,6 +282,40 @@ public class RailcraftBlocks {
                   .strength(1F)
                   .requiresCorrectToolForDrops()
                   .sound(SoundType.WOOD)));
+
+  public static final RegistryObject<NickelZincBatteryBlock> NICKEL_ZINC_BATTERY =
+      deferredRegister.register("nickel_zinc_battery",
+          () -> new NickelZincBatteryBlock(
+              BlockBehaviour.Properties.of(Material.METAL)
+                  .strength(3F)
+                  .randomTicks()
+                  .requiresCorrectToolForDrops()
+                  .sound(SoundType.METAL)));
+
+  public static final RegistryObject<NickelIronBatteryBlock> NICKEL_IRON_BATTERY =
+      deferredRegister.register("nickel_iron_battery",
+          () -> new NickelIronBatteryBlock(
+              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+
+  public static final RegistryObject<ZincCarbonBatteryBlock> ZINC_CARBON_BATTERY =
+      deferredRegister.register("zinc_carbon_battery",
+          () -> new ZincCarbonBatteryBlock(
+              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+
+  public static final RegistryObject<EmptyBatteryBlock> ZINC_CARBON_BATTERY_EMPTY =
+      deferredRegister.register("zinc_carbon_battery_empty",
+          () -> new EmptyBatteryBlock(
+              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+
+  public static final RegistryObject<ZincSilverBatteryBlock> ZINC_SILVER_BATTERY =
+      deferredRegister.register("zinc_silver_battery",
+          () -> new ZincSilverBatteryBlock(
+              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+
+  public static final RegistryObject<EmptyBatteryBlock> ZINC_SILVER_BATTERY_EMPTY =
+      deferredRegister.register("zinc_silver_battery_empty",
+          () -> new EmptyBatteryBlock(
+              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
 
   public static final RegistryObject<AnvilBlock> STEEL_ANVIL =
       deferredRegister.register("steel_anvil",

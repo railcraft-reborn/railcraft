@@ -135,6 +135,13 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_STAIRS, "Quarried Paver Stairs");
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_SLAB, "Quarried Paver Slab");
 
+    this.addBlock(RailcraftBlocks.NICKEL_IRON_BATTERY, "Nickel-Iron Battery");
+    this.addBlock(RailcraftBlocks.NICKEL_ZINC_BATTERY, "Nickel-Zinc Battery");
+    this.addBlock(RailcraftBlocks.ZINC_CARBON_BATTERY, "Zinc-Carbon Battery");
+    this.addBlock(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY, "Zinc-Carbon Empty Battery");
+    this.addBlock(RailcraftBlocks.ZINC_SILVER_BATTERY, "Zinc-Silver Battery");
+    this.addBlock(RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY, "Zinc-Silver Empty Battery");
+
     this.addBlockColorVariants(RailcraftBlocks.STRENGTHENED_GLASS, "Strengthened Glass");
     this.addBlockColorVariants(RailcraftBlocks.POST, "Post");
     this.addBlockColorVariants(RailcraftBlocks.IRON_TANK_GAUGE, "Iron Tank Gauge");
@@ -258,7 +265,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SALTPETER_DUST, "Saltpeter Dust");
     this.addItem(RailcraftItems.COAL_DUST, "Coal Dust");
     this.addItem(RailcraftItems.CHARCOAL_DUST, "Charcoal Dust");
-    this.addItem(RailcraftItems.SLAG, "Ground Blast Furnace Slag");
+    this.addItem(RailcraftItems.SLAG, "Granulated Slag");
     this.addItem(RailcraftItems.ENDER_DUST, "Ender Dust");
     this.addItem(RailcraftItems.SULFUR_DUST, "Sulfur Dust");
     this.addItem(RailcraftItems.OBSIDIAN_DUST, "Obsidian Dust");
@@ -525,6 +532,14 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.CANNOT_MAKE_CORNERS_HIGH_SPEED,
         "Cannot make corners at High Speed");
     this.add(Translations.Tips.EXPLOSION_RESISTANT, "Explosion resistant");
+    this.add(Translations.Tips.CHARGE_NETWORK_BATTERY, "Charge Network Battery");
+    this.add(Translations.Tips.CHARGE_NETWORK_EMPTY_BATTERY, "Charge Network Empty Battery");
+    this.add(Translations.Tips.CAPACITY, "Capacity: %sKFE");
+    this.add(Translations.Tips.MAX_DRAW, "Max Draw: %s FE/t");
+    this.add(Translations.Tips.LOSS, "Loss: %s FE/t");
+    this.add(Translations.Tips.EFFICIENCY, "Efficiency: %s%%");
+    this.add(Translations.Tips.TYPE_DISPOSABLE, "Type: Disposable");
+    this.add(Translations.Tips.TYPE_RECHARGEABLE, "Type: Rechargeable");
   }
 
   private void screenTranslations() {

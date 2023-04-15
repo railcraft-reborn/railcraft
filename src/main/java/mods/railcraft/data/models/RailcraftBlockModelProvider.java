@@ -8,6 +8,9 @@ import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
+import mods.railcraft.world.level.block.charge.BatteryBlock;
+import mods.railcraft.world.level.block.charge.DisposableBatteryBlock;
+import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamOvenBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
@@ -302,6 +305,12 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
     this.createForceTrackEmitter(RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
+    this.createRechargeableBattery(RailcraftBlocks.NICKEL_ZINC_BATTERY.get());
+    this.createRechargeableBattery(RailcraftBlocks.NICKEL_IRON_BATTERY.get());
+    this.createDisposableBattery(RailcraftBlocks.ZINC_CARBON_BATTERY.get(),
+        RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get());
+    this.createDisposableBattery(RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
+        RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get());
 
     // Not put in the constructor!
     this.activatorTrackModels = this.createTrackModelSet("activator_track");
@@ -899,6 +908,38 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.horizontalBlock(block, model, 0);
 
     this.simpleBlockItem(block, model);
+  }
+
+  private void createRechargeableBattery(BatteryBlock battery) {
+    var top = TextureMapping.getBlockTexture(battery, "_top");
+    var bottom = TextureMapping.getBlockTexture(battery, "_bottom");
+    var sideA = TextureMapping.getBlockTexture(battery, "_side_a");
+    var sideB = TextureMapping.getBlockTexture(battery, "_side_b");
+
+    var model = this.models().withExistingParent(name(battery), modLoc("battery"))
+        .texture("bottom", bottom)
+        .texture("top", top)
+        .texture("side_a", sideA)
+        .texture("side_b", sideB);
+
+    this.simpleBlockWithItem(battery, model);
+  }
+
+  private void createDisposableBattery(DisposableBatteryBlock battery,
+      EmptyBatteryBlock emptyBattery) {
+    this.createRechargeableBattery(battery);
+    var top = TextureMapping.getBlockTexture(battery, "_top_burned");
+    var bottom = TextureMapping.getBlockTexture(battery, "_bottom");
+    var sideA = TextureMapping.getBlockTexture(battery, "_side_a_burned");
+    var sideB = TextureMapping.getBlockTexture(battery, "_side_b_burned");
+
+    var model = this.models().withExistingParent(name(emptyBattery), modLoc("battery"))
+        .texture("bottom", bottom)
+        .texture("top", top)
+        .texture("side_a", sideA)
+        .texture("side_b", sideB);
+
+    this.simpleBlockWithItem(emptyBattery, model);
   }
 
   public void fluidBlock(LiquidBlock block) {

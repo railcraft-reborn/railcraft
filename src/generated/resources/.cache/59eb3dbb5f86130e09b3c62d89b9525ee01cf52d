@@ -1,4 +1,4 @@
-// 1.19.4	2023-03-26T21:01:05.205882	Loot Tables
+// 1.19.4	2023-04-14T22:27:14.238678	Loot Tables
 82847eeaa36129643943d6c5dda3d53a242d8a56 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 a4dc36e39bd75bd2446da67b0b530a6c0fb04a4a data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 ce1778a0786f16d031559eea457ffd1bc9ea9bff data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -195,7 +195,9 @@ a4cdc58954387cfd4044663b233ad1917ad6e936 data/railcraft/loot_tables/blocks/magen
 8d1ff8ac03f0a748ba11106e783b381ffe97fc87 data/railcraft/loot_tables/blocks/magenta_strengthened_glass.json
 6361e4361e4f74dab7c61120098d813f15099a72 data/railcraft/loot_tables/blocks/manual_rolling_machine.json
 5d9dadc995b261cd69f767324a860e91afecfa75 data/railcraft/loot_tables/blocks/nickel_block.json
+54f6792c3bccc3ab4325c6061100ad01679df2d9 data/railcraft/loot_tables/blocks/nickel_iron_battery.json
 6876a0174fa1229bbc45dc80771d44fc659ef8ef data/railcraft/loot_tables/blocks/nickel_ore.json
+7d15053b2e3e45e6717d03f5923e5736bf7f23f8 data/railcraft/loot_tables/blocks/nickel_zinc_battery.json
 64b659d80264c6507e6fd302abd3020d6928e9f0 data/railcraft/loot_tables/blocks/orange_iron_tank_gauge.json
 503d8a9d5b4389b8d82ea14b0cf2337227fab0df data/railcraft/loot_tables/blocks/orange_iron_tank_valve.json
 616c0abbc5d4497f75951f273127cc5aa10ef250 data/railcraft/loot_tables/blocks/orange_iron_tank_wall.json
@@ -315,4 +317,8 @@ f457592393189e78089fc99c1a91293d7b044b73 data/railcraft/loot_tables/blocks/yello
 25d0e6904a0c76fb4514071ba5b6068e8977b5e3 data/railcraft/loot_tables/blocks/yellow_steel_tank_wall.json
 9006d6d7c0b9036192ef4c288f9e322c08b71156 data/railcraft/loot_tables/blocks/yellow_strengthened_glass.json
 4829e5445821c6ba616cfe8a3756e1b416c7fcd4 data/railcraft/loot_tables/blocks/zinc_block.json
+1e217c01730a916b3206114985f871ee74e7786f data/railcraft/loot_tables/blocks/zinc_carbon_battery.json
+a17c2dcc26824d4c6fbf19d73d9aa11528e1d89f data/railcraft/loot_tables/blocks/zinc_carbon_battery_empty.json
 c3c9bc39ec3f39eb41817084ecdf033c1a5e884b data/railcraft/loot_tables/blocks/zinc_ore.json
+625ced2cfdf45916fadc5984173b8fd9258e0dbd data/railcraft/loot_tables/blocks/zinc_silver_battery.json
+7da6c7a9236aaa7e2b763f8b357bd2e055e27aa8 data/railcraft/loot_tables/blocks/zinc_silver_battery_empty.json

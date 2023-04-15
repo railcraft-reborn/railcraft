@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_silver_electrode": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:silver_electrode"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:zinc_silver_battery"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_zinc_electrode": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:zinc_electrode"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_zinc_electrode",
+      "has_silver_electrode",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:zinc_silver_battery"
+    ]
+  }
+}

@@ -133,6 +133,30 @@ public class RailcraftItems {
       deferredRegister.register("feed_station",
           () -> new BlockItem(RailcraftBlocks.FEED_STATION.get(), new Item.Properties()));
 
+  public static final RegistryObject<Item> NICKEL_ZINC_BATTERY =
+      deferredRegister.register("nickel_zinc_battery",
+          () -> new BlockItem(RailcraftBlocks.NICKEL_ZINC_BATTERY.get(), new Item.Properties()));
+
+  public static final RegistryObject<Item> NICKEL_IRON_BATTERY =
+      deferredRegister.register("nickel_iron_battery",
+          () -> new BlockItem(RailcraftBlocks.NICKEL_IRON_BATTERY.get(), new Item.Properties()));
+
+  public static final RegistryObject<Item> ZINC_CARBON_BATTERY =
+      deferredRegister.register("zinc_carbon_battery",
+          () -> new BlockItem(RailcraftBlocks.ZINC_CARBON_BATTERY.get(), new Item.Properties()));
+
+  public static final RegistryObject<Item> ZINC_CARBON_BATTERY_EMPTY =
+      deferredRegister.register("zinc_carbon_battery_empty",
+          () -> new BlockItem(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get(), new Item.Properties()));
+
+  public static final RegistryObject<Item> ZINC_SILVER_BATTERY =
+      deferredRegister.register("zinc_silver_battery",
+          () -> new BlockItem(RailcraftBlocks.ZINC_SILVER_BATTERY.get(), new Item.Properties()));
+
+  public static final RegistryObject<Item> ZINC_SILVER_BATTERY_EMPTY =
+      deferredRegister.register("zinc_silver_battery_empty",
+          () -> new BlockItem(RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get(), new Item.Properties()));
+
   public static final RegistryObject<Item> STEEL_ANVIL =
       deferredRegister.register("steel_anvil",
           () -> new BlockItem(RailcraftBlocks.STEEL_ANVIL.get(), new Item.Properties()));

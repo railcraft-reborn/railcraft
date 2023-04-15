@@ -42,6 +42,12 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.BLAST_FURNACE_BRICKS.get());
               output.accept(RailcraftItems.WATER_TANK_SIDING.get());
               output.accept(RailcraftItems.FEED_STATION.get());
+              output.accept(RailcraftItems.NICKEL_ZINC_BATTERY.get());
+              output.accept(RailcraftItems.NICKEL_IRON_BATTERY.get());
+              output.accept(RailcraftItems.ZINC_CARBON_BATTERY.get());
+              output.accept(RailcraftItems.ZINC_CARBON_BATTERY_EMPTY.get());
+              output.accept(RailcraftItems.ZINC_SILVER_BATTERY.get());
+              output.accept(RailcraftItems.ZINC_SILVER_BATTERY_EMPTY.get());
               output.accept(RailcraftItems.STEEL_ANVIL.get());
               output.accept(RailcraftItems.CHIPPED_STEEL_ANVIL.get());
               output.accept(RailcraftItems.DAMAGED_STEEL_ANVIL.get());

@@ -317,6 +317,15 @@ public class Translations {
     public static final String CANNOT_MAKE_CORNERS_HIGH_SPEED =
         makeKey("tips", "cannot_make_corners_high_speed");
     public static final String EXPLOSION_RESISTANT = makeKey("tips", "explosion_resistant");
+    public static final String CHARGE_NETWORK_BATTERY = makeKey("tips", "charge_network_battery");
+    public static final String CHARGE_NETWORK_EMPTY_BATTERY =
+        makeKey("tips", "charge_network_empty_battery");
+    public static final String CAPACITY = makeKey("tips", "capacity");
+    public static final String MAX_DRAW = makeKey("tips", "max_draw");
+    public static final String LOSS = makeKey("tips", "loss");
+    public static final String EFFICIENCY = makeKey("tips", "efficiency");
+    public static final String TYPE_RECHARGEABLE = makeKey("tips", "type_rechargeable");
+    public static final String TYPE_DISPOSABLE = makeKey("tips", "type_disposable");
   }
 
   public static class Container {

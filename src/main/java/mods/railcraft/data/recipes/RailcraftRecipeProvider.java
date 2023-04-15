@@ -77,6 +77,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildCrowbars(consumer);
     buildFirestones(consumer);
     buildQuarriedStone(consumer);
+    buildBattery(consumer);
   }
 
   private void conversion(Consumer<FinishedRecipe> finishedRecipe, ItemLike from, ItemLike to,
@@ -1735,7 +1736,35 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.QUARRIED_PAVER_SLAB.get(), RailcraftItems.QUARRIED_PAVER.get());
   }
 
-  private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
+  private void buildBattery(Consumer<FinishedRecipe> consumer) {
+    battery(consumer, RailcraftItems.NICKEL_ZINC_BATTERY.get(),
+        RailcraftItems.NICKEL_ELECTRODE.get(), RailcraftItems.ZINC_ELECTRODE.get());
+    battery(consumer, RailcraftItems.NICKEL_IRON_BATTERY.get(),
+        RailcraftItems.NICKEL_ELECTRODE.get(), RailcraftItems.IRON_ELECTRODE.get());
+    battery(consumer, RailcraftItems.ZINC_SILVER_BATTERY.get(),
+        RailcraftItems.ZINC_ELECTRODE.get(), RailcraftItems.SILVER_ELECTRODE.get());
+    battery(consumer, RailcraftItems.ZINC_CARBON_BATTERY.get(),
+        RailcraftItems.ZINC_ELECTRODE.get(), RailcraftItems.CARBON_ELECTRODE.get());
+  }
+
+  private static void battery(Consumer<FinishedRecipe> consumer, Item result,
+      Item left, Item right) {
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
+        .pattern("aba")
+        .pattern("cde")
+        .pattern("cfe")
+        .define('a', RailcraftItems.CHARGE_TERMINAL.get())
+        .define('b', RailcraftItems.CHARGE_SPOOL_MEDIUM.get())
+        .define('c', left)
+        .define('d', RailcraftTags.Items.SALTPETER_DUST)
+        .define('e', right)
+        .define('f', Items.WATER_BUCKET)
+        .unlockedBy(getHasName(left), has(left))
+        .unlockedBy(getHasName(right), has(right))
+        .save(consumer);
+  }
+
+    private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
       TagKey<Item> ingredient,
       Item result,
       int quantity,

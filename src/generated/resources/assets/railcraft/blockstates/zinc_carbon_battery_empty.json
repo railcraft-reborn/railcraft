@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "railcraft:block/zinc_carbon_battery_empty"
+    }
+  }
+}

@@ -224,5 +224,12 @@ public class CrusherRecipeProvider extends RecipeProvider {
             RailcraftItems.QUARRIED_PAVER_SLAB.get()))
         .addResult(RailcraftItems.QUARRIED_COBBLESTONE.get(), 1, 0.5)
         .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.ZINC_SILVER_BATTERY_EMPTY.get(),
+            RailcraftItems.ZINC_CARBON_BATTERY_EMPTY.get()))
+        .addResult(RailcraftItems.CHARGE_TERMINAL.get(), 2, 1)
+        .addResult(RailcraftItems.CHARGE_SPOOL_MEDIUM.get(), 1, 1)
+        .addResult(RailcraftItems.SLAG.get(), 4, 1)
+        .addResult(RailcraftItems.SLAG.get(), 2, 0.5)
+        .save(consumer, "battery_empty");
   }
 }
