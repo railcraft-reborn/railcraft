@@ -9,28 +9,34 @@ import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 
 public class RailcraftConfig {
 
-  public static final ForgeConfigSpec clientSpec;
-  public static final Client client;
-  public static final ForgeConfigSpec commonSpec;
-  public static final Common common;
-  public static final ForgeConfigSpec serverSpec;
-  public static final Server server;
+  public static final Client CLIENT;
+  public static final Common COMMON;
+  public static final Server SERVER;
+  private static final ForgeConfigSpec CLIENT_SPEC, COMMON_SPEC, SERVER_SPEC;
 
   static {
     final var commonPair = new ForgeConfigSpec.Builder().configure(Common::new);
-    commonSpec = commonPair.getRight();
-    common = commonPair.getLeft();
+    COMMON_SPEC = commonPair.getRight();
+    COMMON = commonPair.getLeft();
 
     final var clientPair = new ForgeConfigSpec.Builder().configure(Client::new);
-    clientSpec = clientPair.getRight();
-    client = clientPair.getLeft();
+    CLIENT_SPEC = clientPair.getRight();
+    CLIENT = clientPair.getLeft();
 
     final var serverPair = new ForgeConfigSpec.Builder().configure(Server::new);
-    serverSpec = serverPair.getRight();
-    server = serverPair.getLeft();
+    SERVER_SPEC = serverPair.getRight();
+    SERVER = serverPair.getLeft();
+  }
+
+  public static void registerConfig(ModLoadingContext context) {
+    context.registerConfig(ModConfig.Type.CLIENT, RailcraftConfig.CLIENT_SPEC);
+    context.registerConfig(ModConfig.Type.COMMON, RailcraftConfig.COMMON_SPEC);
+    context.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.SERVER_SPEC);
   }
 
   public static class Server {

@@ -144,7 +144,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
     if (cartNeedsFilling && (!needsPipe || this.isPipeExtended())) {
       FluidStack moved = FluidUtil.tryFluidTransfer(tankCart, this.tank,
-          RailcraftConfig.server.tankCartFluidTransferRate.get(), true);
+          RailcraftConfig.SERVER.tankCartFluidTransferRate.get(), true);
       this.setProcessing(!moved.isEmpty());
     } else {
       this.setProcessing(false);

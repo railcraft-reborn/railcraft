@@ -201,7 +201,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
         * (this.getMaxTemperature() / SteamConstants.MAX_HEAT_HIGH);
     fuel *= numTanks;
     fuel *= this.efficiencyModifier;
-    fuel *= RailcraftConfig.server.fuelPerSteamMultiplier.get();
+    fuel *= RailcraftConfig.SERVER.fuelPerSteamMultiplier.get();
     return fuel;
   }
 

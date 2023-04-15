@@ -232,7 +232,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
 
     // 5x5
-    if (RailcraftConfig.server.maxTankSize.get() >= 5) {
+    if (RailcraftConfig.SERVER.maxTankSize.get() >= 5) {
       bottom = List.of(
           CharList.of('B', 'B', 'B', 'B', 'B'),
           CharList.of('B', 'W', 'W', 'W', 'B'),
@@ -262,7 +262,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
 
     // 7x7
-    if (RailcraftConfig.server.maxTankSize.get() >= 7) {
+    if (RailcraftConfig.SERVER.maxTankSize.get() >= 7) {
       bottom = List.of(
           CharList.of('B', 'B', 'B', 'B', 'B', 'B', 'B'),
           CharList.of('B', 'W', 'W', 'W', 'W', 'W', 'B'),
@@ -298,7 +298,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
 
     // 9x9
-    if (RailcraftConfig.server.maxTankSize.get() >= 9) {
+    if (RailcraftConfig.SERVER.maxTankSize.get() >= 9) {
       bottom = List.of(
           CharList.of('B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'),
           CharList.of('B', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'B'),

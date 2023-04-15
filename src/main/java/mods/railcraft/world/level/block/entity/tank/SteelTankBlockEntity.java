@@ -29,6 +29,6 @@ public class SteelTankBlockEntity extends TankBlockEntity {
 
   @Override
   protected int getCapacityPerBlock() {
-    return 2 * RailcraftConfig.server.tankCapacityPerBlock.get() * FluidType.BUCKET_VOLUME;
+    return 2 * RailcraftConfig.SERVER.tankCapacityPerBlock.get() * FluidType.BUCKET_VOLUME;
   }
 }

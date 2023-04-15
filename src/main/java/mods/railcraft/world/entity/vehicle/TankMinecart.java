@@ -51,7 +51,7 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 3);
   private final StandardTank tank =
       StandardTank
-          .ofBuckets(RailcraftConfig.server.tankCartFluidCapacity.get())
+          .ofBuckets(RailcraftConfig.SERVER.tankCartFluidCapacity.get())
           .changeCallback(this::tankChanged)
           .setValidator(fluidStack -> this.getFilterFluid()
               .map(fluidStack::isFluidEqual)

@@ -557,7 +557,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     Speed speed = getSpeed();
     if (isRunning()) {
-      double force = RailcraftConfig.server.locomotiveHorsepower.get() * 0.01F;
+      double force = RailcraftConfig.SERVER.locomotiveHorsepower.get() * 0.01F;
       if (isReverse()) {
         force = -force;
       }
@@ -656,7 +656,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
           && (isVelocityHigherThan(0.2f) || extension.isHighSpeed())
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
-        if (RailcraftConfig.server.locomotiveDamageMobs.get()) {
+        if (RailcraftConfig.SERVER.locomotiveDamageMobs.get()) {
           living.hurt(RailcraftDamageSources.train(level.registryAccess()),
               getDamageToRoadKill(living));
         }

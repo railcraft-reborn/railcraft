@@ -50,9 +50,9 @@ public enum StackFilter implements Predicate<ItemStack> {
       || itemStack.getItem() == Items.WHEAT
       || itemStack.getItem() instanceof BlockItem blockItem
           && blockItem.getBlock() instanceof StemBlock),
-  CARGO(itemStack -> (RailcraftConfig.server.chestAllowFluids.get()
+  CARGO(itemStack -> (RailcraftConfig.SERVER.chestAllowFluids.get()
       || !FluidItemHelper.isContainer(itemStack))
-      && !RailcraftConfig.server.cargoBlacklist.get()
+      && !RailcraftConfig.SERVER.cargoBlacklist.get()
           .contains(ForgeRegistries.ITEMS.getKey(itemStack.getItem()).toString())),
   RAW_METAL(itemStack -> itemStack.is(RailcraftTags.Items.METAL));
 

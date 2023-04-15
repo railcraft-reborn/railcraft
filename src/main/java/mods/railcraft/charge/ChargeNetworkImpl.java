@@ -397,7 +397,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     }
 
     public float getLosses() {
-      return totalLosses * RailcraftConfig.server.lossMultiplier.get().floatValue();
+      return totalLosses * RailcraftConfig.SERVER.lossMultiplier.get().floatValue();
     }
 
     public float getAverageUsagePerTick() {

@@ -210,7 +210,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         }
       }
 
-      if (!other.isAlive() || RailcraftConfig.server.highSpeedTrackIgnoredEntities.get()
+      if (!other.isAlive() || RailcraftConfig.SERVER.highSpeedTrackIgnoredEntities.get()
           .contains(ForgeRegistries.ENTITY_TYPES.getKey(other.getType()).toString())) {
         return;
       }
@@ -222,7 +222,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
   @Override
   @Nullable
   public AABB getCollisionBox(AbstractMinecart cart, Entity other) {
-    if (other instanceof ItemEntity && RailcraftConfig.server.cartsCollideWithItems.get()) {
+    if (other instanceof ItemEntity && RailcraftConfig.SERVER.cartsCollideWithItems.get()) {
       return other.getBoundingBox().inflate(-0.01);
     }
     return other.isPushable() ? other.getBoundingBox().inflate(-COLLISION_EXPANSION) : null;
@@ -243,7 +243,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     if (cart == null || !cart.isAlive()) {
       return null;
     }
-    if (RailcraftConfig.server.solidCarts.get()) {
+    if (RailcraftConfig.SERVER.solidCarts.get()) {
       return cart.getBoundingBox();
     }
     return null;

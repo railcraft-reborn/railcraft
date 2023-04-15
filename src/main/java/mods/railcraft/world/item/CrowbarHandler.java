@@ -48,7 +48,7 @@ public class CrowbarHandler {
 
     if ((stack.getItem() instanceof SeasonsCrowbarItem)
         && cart instanceof SeasonalCart seasonalCart
-        && RailcraftConfig.common.seasonsEnabled.get()) {
+        && RailcraftConfig.COMMON.seasonsEnabled.get()) {
       var season = SeasonsCrowbarItem.getSeason(stack);
       seasonalCart.setSeason(season);
       RailcraftCriteriaTriggers.SEASON_SET.trigger((ServerPlayer) player, cart, season);

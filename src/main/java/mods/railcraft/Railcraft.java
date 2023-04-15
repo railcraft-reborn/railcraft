@@ -79,7 +79,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkDirection;
@@ -107,10 +106,7 @@ public class Railcraft {
     MinecraftForge.EVENT_BUS.register(this.minecartHandler);
     MinecraftForge.EVENT_BUS.register(this);
 
-    var context = ModLoadingContext.get();
-    context.registerConfig(ModConfig.Type.CLIENT, RailcraftConfig.clientSpec);
-    context.registerConfig(ModConfig.Type.COMMON, RailcraftConfig.commonSpec);
-    context.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.serverSpec);
+    RailcraftConfig.registerConfig(ModLoadingContext.get());
 
     var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleCommonSetup);

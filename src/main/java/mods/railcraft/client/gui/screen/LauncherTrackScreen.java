@@ -53,7 +53,7 @@ public class LauncherTrackScreen extends IngameWindowScreen {
   private void incrementForce(int incrementAmount) {
     var force = (byte) Mth.clamp(this.track.getLaunchForce() + incrementAmount,
         LauncherTrackBlockEntity.MIN_LAUNCH_FORCE,
-        RailcraftConfig.server.maxLauncherTrackForce.get());
+        RailcraftConfig.SERVER.maxLauncherTrackForce.get());
     if (this.track.getLaunchForce() != force) {
       this.track.setLaunchForce(force);
       this.sendAttributes();
