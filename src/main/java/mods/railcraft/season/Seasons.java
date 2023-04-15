@@ -5,11 +5,6 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.world.entity.vehicle.SeasonalCart;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-/**
- * Created by CovertJaguar on 10/7/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class Seasons {
 
   public static final boolean HARVEST;
@@ -20,47 +15,28 @@ public final class Seasons {
 
   static {
     if (RailcraftConfig.common.seasonsEnabled.get()) {
-      Calendar cal = Calendar.getInstance();
+      var cal = Calendar.getInstance();
       int month = cal.get(Calendar.MONTH);
       int day = cal.get(Calendar.DAY_OF_MONTH);
 
       switch (RailcraftConfig.common.christmas.get()) {
-        case 1:
-          CHRISTMAS = true;
-          break;
-        case 2:
-          CHRISTMAS = false;
-          break;
-        default:
-          CHRISTMAS = (month == Calendar.DECEMBER) || (month == Calendar.JANUARY);
-          break;
+        case 1 -> CHRISTMAS = true;
+        case 2 -> CHRISTMAS = false;
+        default -> CHRISTMAS = (month == Calendar.DECEMBER) || (month == Calendar.JANUARY);
       }
 
       switch (RailcraftConfig.common.harvest.get()) {
-        case 1:
-          HARVEST = true;
-          break;
-        case 2:
-          HARVEST = false;
-          break;
-        default:
-          HARVEST = (month == Calendar.OCTOBER) || (month == Calendar.NOVEMBER);
-          break;
+        case 1 -> HARVEST = true;
+        case 2 -> HARVEST = false;
+        default -> HARVEST = (month == Calendar.OCTOBER) || (month == Calendar.NOVEMBER);
       }
 
       switch (RailcraftConfig.common.halloween.get()) {
-        case 1:
-          HALLOWEEN = true;
-          break;
-        case 2:
-          HALLOWEEN = false;
-          break;
-        default:
-          HALLOWEEN =
-              (month == Calendar.OCTOBER && day >= 21) || (month == Calendar.NOVEMBER && day <= 10);
-          break;
+        case 1 -> HALLOWEEN = true;
+        case 2 -> HALLOWEEN = false;
+        default -> HALLOWEEN =
+            (month == Calendar.OCTOBER && day >= 21) || (month == Calendar.NOVEMBER && day <= 10);
       }
-
     } else {
       HARVEST = false;
       HALLOWEEN = false;
@@ -71,12 +47,10 @@ public final class Seasons {
   /**
    * Clientside only.
    * 
-   * @param cart - The cart.
-   * @return
+   * @param cart The cart.
    */
   public static boolean isGhostTrain(AbstractMinecart cart) {
-    Season season =
-        cart instanceof SeasonalCart ? ((SeasonalCart) cart).getSeason() : Season.DEFAULT;
+    var season = cart instanceof SeasonalCart seasonal ? seasonal.getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT) {
       return (RailcraftConfig.client.ghostTrainEnabled.get() && HALLOWEEN)
           || cart.hasCustomName() && GHOST_TRAIN.equals(cart.getCustomName().getContents());
@@ -87,8 +61,7 @@ public final class Seasons {
   /**
    * Clientside only.
    * 
-   * @param cart - The cart.
-   * @return
+   * @param cart The cart.
    */
   public static boolean isPolarExpress(AbstractMinecart cart) {
     var season = cart instanceof SeasonalCart seasonal ? seasonal.getSeason() : Season.DEFAULT;

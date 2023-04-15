@@ -35,7 +35,7 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  * <p>
  * General Charge Network Overview: The Charge Network is unique in that component blocks aren't
- * required to have a {@link net.minecraft.tileentity.TileEntity}.
+ * required to have a {@link net.minecraft.world.level.block.EntityBlock}.
  *
  * <p>
  * This means the vast majority of the network is made up of dumb static blocks resulting in very
@@ -69,7 +69,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * <p>
  * When a consumer asks to remove Charge from the grid, it goes to the list of batteries and tries
  * to remove from each in turn. The batteries are sorted based on their {@link ChargeStorage.State}.
- * The order batteries are drawn from is as such: source->rechargeable->disposable. Additionally
+ * The order batteries are drawn from is as such: source->rechargeable->disposable. Additionally,
  * they are further sorted based on efficiency. Each battery has an efficiency value associated with
  * it. This efficiency value defines how expensive it is to extract charge from the battery.
  * Generators have perfect efficiency and are more efficient than batteries which are more efficient
@@ -106,10 +106,6 @@ import net.minecraft.world.level.block.state.BlockState;
  * <p>
  * As of 2021, Charge changed from 1 Charge unit to 1 IC2 EU to 1 Charge unit to 1 FE/RF
  *
- * <p>
- * Created by CovertJaguar on 10/19/2018 for Railcraft.
- *
- * @author CovertJaguar (https://www.railcraft.info)
  */
 public enum Charge implements StringRepresentable {
   /**
@@ -284,7 +280,8 @@ public enum Charge implements StringRepresentable {
 
     /**
      * Can be returned from
-     * {@link net.minecraft.block.Block#getComparatorInputOverride(BlockState, World, BlockPos)}.
+     * <p>
+     * {@link net.minecraft.world.level.block.state.BlockBehaviour#getAnalogOutputSignal(BlockState, Level, BlockPos)}
      *
      * @return The current storage percentage of the entire grid.
      */
@@ -305,16 +302,16 @@ public enum Charge implements StringRepresentable {
   }
 
   /**
-   * Interface used by clientparticles.
+   * Interface used by client particles.
    */
   public interface ZapEffectProvider {
 
     /**
      * Helper method that most blocks can use for spark effects. It has a chance of calling
-     * {@link #zapEffectSurface(BlockState, World, BlockPos)}.
+     * {@link #zapEffectSurface(BlockState, Level, BlockPos)}.
      *
      * <p>
-     * The chance is increased if its raining.
+     * The chance is increased if it's raining.
      *
      * @param chance Integer value such that chance of sparking is defined by
      *        {@code rand.nextInt(chance) == 0} Most blocks use 50, tracks use 75. Lower numbers
