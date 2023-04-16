@@ -19,24 +19,24 @@ public final class Seasons {
       int month = cal.get(Calendar.MONTH);
       int day = cal.get(Calendar.DAY_OF_MONTH);
 
-      switch (RailcraftConfig.COMMON.christmas.get()) {
-        case 1 -> CHRISTMAS = true;
-        case 2 -> CHRISTMAS = false;
-        default -> CHRISTMAS = (month == Calendar.DECEMBER) || (month == Calendar.JANUARY);
-      }
+      CHRISTMAS = switch (RailcraftConfig.COMMON.christmas.get()) {
+        case 1 ->  true;
+        case 2 ->  false;
+        default -> (month == Calendar.DECEMBER) || (month == Calendar.JANUARY);
+      };
 
-      switch (RailcraftConfig.COMMON.harvest.get()) {
-        case 1 -> HARVEST = true;
-        case 2 -> HARVEST = false;
-        default -> HARVEST = (month == Calendar.OCTOBER) || (month == Calendar.NOVEMBER);
-      }
+      HARVEST = switch (RailcraftConfig.COMMON.harvest.get()) {
+        case 1 -> true;
+        case 2 -> false;
+        default -> (month == Calendar.OCTOBER) || (month == Calendar.NOVEMBER);
+      };
 
-      switch (RailcraftConfig.COMMON.halloween.get()) {
-        case 1 -> HALLOWEEN = true;
-        case 2 -> HALLOWEEN = false;
-        default -> HALLOWEEN =
+      HALLOWEEN = switch (RailcraftConfig.COMMON.halloween.get()) {
+        case 1 -> true;
+        case 2 -> false;
+        default ->
             (month == Calendar.OCTOBER && day >= 21) || (month == Calendar.NOVEMBER && day <= 10);
-      }
+      };
     } else {
       HARVEST = false;
       HALLOWEEN = false;

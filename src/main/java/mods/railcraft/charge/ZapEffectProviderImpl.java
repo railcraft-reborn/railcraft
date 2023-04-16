@@ -48,23 +48,14 @@ public class ZapEffectProviderImpl implements Charge.ZapEffectProvider {
       var vel = normal.add(variance);
       // TODO This should probably use the bounding box or something.
       // Its got to be wrong for tracks atm.
-      var start =
-          new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5).add(normal.scale(0.5));
-      switch (side.getAxis()) {
-        case X:
-          start = start.add(new Vec3(0.0, rand.nextDouble() - 0.5, rand.nextDouble() - 0.5));
-          break;
-        case Y:
-          start = start.add(new Vec3(rand.nextDouble() - 0.5, 0.0, rand.nextDouble() - 0.5));
-          break;
-        case Z:
-          start = start.add(new Vec3(rand.nextDouble() - 0.5, rand.nextDouble() - 0.5, 0.0));
-          break;
-        default:
-          break;
-      }
-      level.addParticle(
-          RailcraftParticleTypes.SPARK.get(), start.x(), start.y(), start.z(),
+      var start = new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5)
+              .add(normal.scale(0.5));
+      start = start.add(switch (side.getAxis()) {
+        case X -> new Vec3(0.0, rand.nextDouble() - 0.5, rand.nextDouble() - 0.5);
+        case Y -> new Vec3(rand.nextDouble() - 0.5, 0.0, rand.nextDouble() - 0.5);
+        case Z -> new Vec3(rand.nextDouble() - 0.5, rand.nextDouble() - 0.5, 0.0);
+      });
+      level.addParticle(RailcraftParticleTypes.SPARK.get(), start.x(), start.y(), start.z(),
           vel.x(), vel.y(), vel.z());
     }
   }
