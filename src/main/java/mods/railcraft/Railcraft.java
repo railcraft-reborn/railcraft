@@ -265,7 +265,7 @@ public class Railcraft {
   @SubscribeEvent
   public void modifyDrops(LivingDropsEvent event) {
     var level = event.getEntity().getLevel();
-    if (event.getSource() == RailcraftDamageSources.steam(level.registryAccess()))
+    if (event.getSource().equals(RailcraftDamageSources.steam(level.registryAccess())))
       for (var entityItem : event.getDrops()) {
         var drop = entityItem.getItem();
         var cooked = level.getRecipeManager()
