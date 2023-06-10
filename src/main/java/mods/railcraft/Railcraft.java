@@ -34,8 +34,8 @@ import mods.railcraft.util.capability.CapabilityUtil;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.damagesource.RailcraftDamageType;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
-import mods.railcraft.world.entity.vehicle.RollingStockImpl;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
+import mods.railcraft.world.entity.vehicle.RollingStockImpl;
 import mods.railcraft.world.entity.vehicle.TrainTransferServiceImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.CrowbarHandler;
@@ -79,7 +79,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkDirection;
@@ -107,10 +106,7 @@ public class Railcraft {
     MinecraftForge.EVENT_BUS.register(this.minecartHandler);
     MinecraftForge.EVENT_BUS.register(this);
 
-    var context = ModLoadingContext.get();
-    context.registerConfig(ModConfig.Type.CLIENT, RailcraftConfig.clientSpec);
-    context.registerConfig(ModConfig.Type.COMMON, RailcraftConfig.commonSpec);
-    context.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.serverSpec);
+    RailcraftConfig.registerConfig(ModLoadingContext.get());
 
     var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleCommonSetup);
@@ -269,7 +265,7 @@ public class Railcraft {
   @SubscribeEvent
   public void modifyDrops(LivingDropsEvent event) {
     var level = event.getEntity().getLevel();
-    if (event.getSource() == RailcraftDamageSources.steam(level.registryAccess()))
+    if (event.getSource().equals(RailcraftDamageSources.steam(level.registryAccess())))
       for (var entityItem : event.getDrops()) {
         var drop = entityItem.getItem();
         var cooked = level.getRecipeManager()

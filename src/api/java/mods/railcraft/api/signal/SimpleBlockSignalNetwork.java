@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -22,9 +22,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSignalEntity>
     implements BlockSignal {
 

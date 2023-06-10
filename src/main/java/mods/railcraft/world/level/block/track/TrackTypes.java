@@ -1,5 +1,8 @@
 package mods.railcraft.world.level.block.track;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -23,10 +26,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
-
-import org.jetbrains.annotations.Nullable;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public class TrackTypes {
 

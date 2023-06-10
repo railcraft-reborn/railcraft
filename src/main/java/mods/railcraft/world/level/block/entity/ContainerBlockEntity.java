@@ -32,8 +32,7 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
       new EnumMap<>(Direction.class);
 
   public ContainerBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
-    super(type, blockPos, blockState);
-    this.container = new AdvancedContainer(0).listener((Container) this);
+    this(type, blockPos, blockState, 0);
   }
 
   protected ContainerBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,

@@ -4,6 +4,11 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations.Container;
+import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.charge.ChargeStorage;
+import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.util.ModEntitySelector;
+import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.inventory.CrusherMenu;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -49,20 +54,43 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
   });
 
   private static final MultiblockPattern<Void> rotatedPattern = pattern.rotateClockwise();
+  private static final int KILLING_POWER_COST = 5000;
 
   private final CrusherModule crusherModule;
+  private int tick = 0;
 
   public CrusherBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.CRUSHER.get(), blockPos, blockState,
         CrusherBlockEntity.class, List.of(pattern, rotatedPattern));
     this.crusherModule = this.moduleDispatcher.registerModule("crusher",
-        new CrusherModule(this));
+        new CrusherModule(this, Charge.distribution));
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       CrusherBlockEntity blockEntity) {
     blockEntity.serverTick();
     blockEntity.moduleDispatcher.serverTick();
+
+    if (++blockEntity.tick % 8 == 0) {
+      blockEntity.tick = 0;
+      blockEntity.getMasterBlockEntity()
+          .ifPresent(master -> {
+            var target = blockPos.above();
+            var energyCap = master.getCapability(ForgeCapabilities.ENERGY);
+            EntitySearcher.findLiving()
+                .at(target)
+                .and(ModEntitySelector.KILLABLE)
+                .list(level)
+                .forEach(livingEntity -> {
+                  energyCap.ifPresent(energyStorage -> {
+                    if (energyStorage.getEnergyStored() >= KILLING_POWER_COST) {
+                      livingEntity.hurt(RailcraftDamageSources.crusher(level.registryAccess()), 5);
+                      energyStorage.extractEnergy(KILLING_POWER_COST, false);
+                    }
+                  });
+                });
+          });
+    }
   }
 
   public CrusherModule getCrusherModule() {
@@ -77,6 +105,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
   @Override
   protected void membershipChanged(@Nullable Membership<CrusherBlockEntity> membership) {
     if (membership == null) {
+      this.crusherModule.storage().setState(ChargeStorage.State.DISABLED);
       this.level.setBlockAndUpdate(this.getBlockPos(),
           this.getBlockState()
               .setValue(CrusherMultiblockBlock.TYPE, CrusherMultiblockBlock.Type.NONE)
@@ -84,6 +113,9 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
               .setValue(CrusherMultiblockBlock.OUTPUT, false));
       Containers.dropContents(this.level, this.getBlockPos(), this.crusherModule);
       return;
+    }
+    if (membership.master() == this) {
+      this.crusherModule.storage().setState(ChargeStorage.State.RECHARGEABLE);
     }
 
     var type = switch (membership.patternElement().marker()) {
@@ -117,8 +149,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    var masterModule = this.getMembership()
-        .map(Membership::master)
+    var masterModule = this.getMasterBlockEntity()
         .map(CrusherBlockEntity::getCrusherModule);
     if (cap == ForgeCapabilities.ITEM_HANDLER) {
       return masterModule

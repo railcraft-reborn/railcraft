@@ -1,16 +1,13 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
-public class ManualRollingMachineScreen extends AbstractContainerScreen<ManualRollingMachineMenu> {
+public class ManualRollingMachineScreen extends RailcraftMenuScreen<ManualRollingMachineMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
       new ResourceLocation(Railcraft.ID, "textures/gui/container/manual_rolling_machine.png");
@@ -21,22 +18,15 @@ public class ManualRollingMachineScreen extends AbstractContainerScreen<ManualRo
   }
 
   @Override
-  public void render(PoseStack poseStack, int x, int y, float partialTicks) {
-    this.renderBackground(poseStack);
-    super.render(poseStack, x, y, partialTicks);
-    this.renderTooltip(poseStack, x, y);
+  public ResourceLocation getWidgetsTexture() {
+    return BACKGROUND_TEXTURE;
   }
 
   @Override
   protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
-    RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-    final int x = this.leftPos;
-    final int y = this.topPos;
-    // initial draw
-    blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
-    // prog bar
-    float prog = this.menu.rollingProgress();
-    // 24*0.1, basicaly 10% of 24. Rounded for safety!
-    blit(poseStack, x + 89, y + 47, 176, 0, Math.round(24.00F * prog), 12);
+    super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+    float progress = this.menu.rollingProgress();
+    blit(poseStack, this.leftPos + 89, this.topPos + 47, 176, 0,
+        Math.round(24.00F * progress), 12);
   }
 }

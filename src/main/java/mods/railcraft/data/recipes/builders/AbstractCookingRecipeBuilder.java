@@ -1,7 +1,7 @@
 package mods.railcraft.data.recipes.builders;
 
-import com.google.gson.JsonObject;
 import org.jetbrains.annotations.Nullable;
+import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.recipes.FinishedRecipe;

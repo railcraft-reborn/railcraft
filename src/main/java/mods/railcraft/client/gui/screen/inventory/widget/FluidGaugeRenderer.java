@@ -1,5 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory.widget;
 
+import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
@@ -9,8 +10,6 @@ import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.InventoryMenu;
-
-import java.util.List;
 
 public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
 

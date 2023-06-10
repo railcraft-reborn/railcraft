@@ -1,7 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
-import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
+import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations.Container;
 import mods.railcraft.world.inventory.WaterTankSidingMenu;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.Nullable;
 
 public class WaterTankSidingBlockEntity extends MultiblockBlockEntity<WaterTankSidingBlockEntity, Void> {
 
@@ -90,8 +90,7 @@ public class WaterTankSidingBlockEntity extends MultiblockBlockEntity<WaterTankS
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
     if (cap == ForgeCapabilities.FLUID_HANDLER) {
-      return this.getMembership()
-          .map(Membership::master)
+      return this.getMasterBlockEntity()
           .map(WaterTankSidingBlockEntity::getModule)
           .map(WaterCollectionModule::getFluidHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)

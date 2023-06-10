@@ -48,6 +48,6 @@ public class LauncherTrackBlockEntity extends BlockEntity {
 
   public void setLaunchForce(byte launchForce) {
     this.launchForce = (byte) Mth.clamp(launchForce, MIN_LAUNCH_FORCE,
-        RailcraftConfig.server.maxLauncherTrackForce.get());
+        RailcraftConfig.SERVER.maxLauncherTrackForce.get());
   }
 }

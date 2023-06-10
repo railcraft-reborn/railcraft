@@ -1,8 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
-import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
@@ -72,8 +72,7 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
 
     blockEntity.moduleDispatcher.serverTick();
 
-    blockEntity.getMembership()
-        .map(Membership::master)
+    blockEntity.getMasterBlockEntity()
         .ifPresent(master -> {
           var lit = master.blastFurnaceModule.isBurning();
           if (lit != blockState.getValue(FurnaceMultiblockBlock.LIT)) {
@@ -129,8 +128,7 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
     if (cap == ForgeCapabilities.ITEM_HANDLER) {
-      return this.getMembership()
-          .map(Membership::master)
+      return this.getMasterBlockEntity()
           .map(BlastFurnaceBlockEntity::getBlastFurnaceModule)
           .map(BlastFurnaceModule::getItemHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)

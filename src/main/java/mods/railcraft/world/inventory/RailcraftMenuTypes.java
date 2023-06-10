@@ -11,6 +11,9 @@ import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
+import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
+import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
+import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
@@ -90,7 +93,13 @@ public class RailcraftMenuTypes {
 
   public static final RegistryObject<MenuType<ManualRollingMachineMenu>> MANUAL_ROLLING_MACHINE =
       deferredRegister.register("manual_rolling_machine",
-          () -> new MenuType<>(ManualRollingMachineMenu::new, FeatureFlags.DEFAULT_FLAGS));
+          () -> blockEntityMenu(
+              ManualRollingMachineBlockEntity.class, ManualRollingMachineMenu::new));
+
+  public static final RegistryObject<MenuType<PoweredRollingMachineMenu>> POWERED_ROLLING_MACHINE =
+      deferredRegister.register("powered_rolling_machine",
+          () -> blockEntityMenu(
+              PoweredRollingMachineBlockEntity.class, PoweredRollingMachineMenu::new));
 
   public static final RegistryObject<MenuType<CokeOvenMenu>> COKE_OVEN =
       deferredRegister.register("coke_oven",
@@ -99,6 +108,10 @@ public class RailcraftMenuTypes {
   public static final RegistryObject<MenuType<CrusherMenu>> CRUSHER =
       deferredRegister.register("crusher",
           () -> blockEntityMenu(CrusherBlockEntity.class, CrusherMenu::new));
+
+  public static final RegistryObject<MenuType<SteamOvenMenu>> STEAM_OVEN =
+      deferredRegister.register("steam_oven",
+          () -> blockEntityMenu(SteamOvenBlockEntity.class, SteamOvenMenu::new));
 
   public static final RegistryObject<MenuType<ItemManipulatorMenu>> ITEM_MANIPULATOR =
       deferredRegister.register("item_manipulator",

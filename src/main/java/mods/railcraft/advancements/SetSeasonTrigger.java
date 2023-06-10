@@ -1,7 +1,7 @@
 package mods.railcraft.advancements;
 
-import com.google.gson.JsonObject;
 import org.jetbrains.annotations.Nullable;
+import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.JsonUtil;

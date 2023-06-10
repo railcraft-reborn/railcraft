@@ -31,7 +31,7 @@ public enum FuelManagerImpl implements FuelManager {
   @Override
   public float getFuelValue(Fluid fluid) {
     var resourceLocation = ForgeRegistries.FLUIDS.getKey(fluid);
-    return RailcraftConfig.server.fuelMultiplier.get().floatValue()
+    return RailcraftConfig.SERVER.fuelMultiplier.get().floatValue()
         * boilerFuel.getOrDefault(resourceLocation, 0);
   }
 }

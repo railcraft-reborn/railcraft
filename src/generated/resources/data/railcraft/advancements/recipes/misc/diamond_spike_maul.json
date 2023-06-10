@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:diamond_block"
-            ]
+            "tag": "forge:storage_blocks/diamond"
           }
         ]
       },

@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.tank;
 
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
@@ -10,7 +11,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -21,8 +25,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.phys.BlockHitResult;
-
-import org.jetbrains.annotations.Nullable;
 
 public abstract class TankGaugeBlock extends AbstractStrengthenedGlassBlock implements EntityBlock {
 
@@ -39,6 +41,12 @@ public abstract class TankGaugeBlock extends AbstractStrengthenedGlassBlock impl
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(LEVEL);
+  }
+
+  @Override
+  public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos,
+      SpawnPlacements.Type type, EntityType<?> entityType) {
+    return false;
   }
 
   @Nullable

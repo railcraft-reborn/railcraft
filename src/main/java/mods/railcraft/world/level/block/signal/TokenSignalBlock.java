@@ -1,16 +1,19 @@
 package mods.railcraft.world.level.block.signal;
 
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
+import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TokenSignalBlock extends SingleSignalBlock {
+public class TokenSignalBlock extends SingleSignalBlock implements JeiSearchable {
 
   public TokenSignalBlock(Properties properties) {
     super(properties);
@@ -40,5 +43,10 @@ public class TokenSignalBlock extends SingleSignalBlock {
         level.isClientSide()
             ? TokenSignalBlockEntity::clientTick
             : TokenSignalBlockEntity::serverTick);
+  }
+
+  @Override
+  public Component addJeiInfo() {
+    return Component.translatable(Translations.Jei.TOKEN_SIGNAL);
   }
 }

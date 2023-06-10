@@ -1,8 +1,9 @@
 package mods.railcraft.world.level.block.entity;
 
-import it.unimi.dsi.fastutil.chars.CharList;
 import java.util.List;
 import java.util.function.Predicate;
+import org.jetbrains.annotations.Nullable;
+import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -30,7 +31,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidUtil;
-import org.jetbrains.annotations.Nullable;
 
 public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineBlockEntity, Void> {
 
@@ -85,8 +85,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
     blockEntity.moduleDispatcher.serverTick();
 
     blockEntity.masterOperatingRatio = 0;
-    blockEntity.getMembership()
-        .map(Membership::master)
+    blockEntity.getMasterBlockEntity()
         .map(SteamTurbineBlockEntity::getSteamTurbineModule)
         .ifPresent(master -> {
           blockEntity.masterOperatingRatio = master.getOperatingRatio();
@@ -141,8 +140,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    var masterModule = this.getMembership()
-        .map(Membership::master)
+    var masterModule = this.getMasterBlockEntity()
         .map(SteamTurbineBlockEntity::getSteamTurbineModule);
     if (cap == ForgeCapabilities.FLUID_HANDLER) {
       return masterModule

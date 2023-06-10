@@ -1,0 +1,9 @@
+{
+  "parent": "railcraft:block/battery",
+  "textures": {
+    "bottom": "railcraft:block/zinc_silver_battery_bottom",
+    "side_a": "railcraft:block/zinc_silver_battery_side_a",
+    "side_b": "railcraft:block/zinc_silver_battery_side_b",
+    "top": "railcraft:block/zinc_silver_battery_top"
+  }
+}

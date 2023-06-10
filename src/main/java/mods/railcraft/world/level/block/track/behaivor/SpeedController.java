@@ -102,7 +102,7 @@ public enum SpeedController implements TrackType.EventHandler {
   STRAP_IRON {
     @Override
     public double getMaxSpeed(Level level, @Nullable AbstractMinecart cart, BlockPos pos) {
-      return RailcraftConfig.server.strapIronTrackMaxSpeed.get();
+      return RailcraftConfig.SERVER.strapIronTrackMaxSpeed.get();
     }
   };
 }

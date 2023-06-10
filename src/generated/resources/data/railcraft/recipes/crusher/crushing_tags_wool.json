@@ -1,0 +1,16 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "tag": "minecraft:wool"
+  },
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 4,
+        "item": "minecraft:string"
+      }
+    }
+  ],
+  "processTime": 200
+}

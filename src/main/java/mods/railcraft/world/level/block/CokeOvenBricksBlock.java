@@ -8,6 +8,8 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -35,6 +37,12 @@ public class CokeOvenBricksBlock extends FurnaceMultiblockBlock {
     return level.isClientSide() ? null
         : createTickerHelper(type, RailcraftBlockEntityTypes.COKE_OVEN.get(),
             CokeOvenBlockEntity::serverTick);
+  }
+
+  @Override
+  public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos,
+      SpawnPlacements.Type type, EntityType<?> entityType) {
+    return false;
   }
 
   @Override

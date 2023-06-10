@@ -43,7 +43,7 @@ public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
     IFluidHandler tankCart = getFluidHandler(cart, Direction.DOWN);
     if (tankCart != null) {
       FluidStack moved = FluidUtil.tryFluidTransfer(tank, tankCart,
-          RailcraftConfig.server.tankCartFluidTransferRate.get(), true);
+          RailcraftConfig.SERVER.tankCartFluidTransferRate.get(), true);
       this.setProcessing(!moved.isEmpty());
     }
   }

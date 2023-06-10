@@ -63,7 +63,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
           .disableFill();
 
   private final SteamBoiler boiler = new SteamBoiler(this.waterTank, this.steamTank)
-      .setEfficiencyModifier(RailcraftConfig.server.fuelPerSteamMultiplier.get())
+      .setEfficiencyModifier(RailcraftConfig.SERVER.fuelPerSteamMultiplier.get())
       .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
 
   protected final ContainerMapper invWaterInput =

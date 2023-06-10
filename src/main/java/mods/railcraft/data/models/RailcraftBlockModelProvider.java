@@ -9,8 +9,12 @@ import mods.railcraft.world.level.block.CrusherMultiblockBlock;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.SteamOvenBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock.Type;
+import mods.railcraft.world.level.block.charge.BatteryBlock;
+import mods.railcraft.world.level.block.charge.DisposableBatteryBlock;
+import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.FluidManipulatorBlock;
@@ -275,6 +279,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createCubeColumnBlock(RailcraftBlocks.FEED_STATION.get());
     this.createCubeColumnBlock(RailcraftBlocks.WATER_TANK_SIDING.get());
     this.createCubeTopBottomBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
+    this.createCubeTopBottomBlock(RailcraftBlocks.POWERED_ROLLING_MACHINE.get());
+    this.createSteamOven(RailcraftBlocks.STEAM_OVEN.get());
 
     this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
     this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
@@ -299,6 +305,12 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createForceTrack(RailcraftBlocks.FORCE_TRACK.get());
     this.createForceTrackEmitter(RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
+    this.createRechargeableBattery(RailcraftBlocks.NICKEL_ZINC_BATTERY.get());
+    this.createRechargeableBattery(RailcraftBlocks.NICKEL_IRON_BATTERY.get());
+    this.createDisposableBattery(RailcraftBlocks.ZINC_CARBON_BATTERY.get(),
+        RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get());
+    this.createDisposableBattery(RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
+        RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get());
 
     // Not put in the constructor!
     this.activatorTrackModels = this.createTrackModelSet("activator_track");
@@ -556,6 +568,45 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         }, AdvancedItemLoaderBlock.POWERED);
 
     simpleBlockItem(block, horizontalModel);
+  }
+
+  private void createSteamOven(SteamOvenBlock block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    var frontTexture = TextureMapping.getBlockTexture(block, "_front");
+    var topTexture = TextureMapping.getBlockTexture(block, "_top");
+
+    var bottomLeftTexture = TextureMapping.getBlockTexture(block, "_bottom_left");
+    var bottomRightTexture = TextureMapping.getBlockTexture(block, "_bottom_right");
+    var topLeftTexture = TextureMapping.getBlockTexture(block, "_top_left");
+    var topRightTexture = TextureMapping.getBlockTexture(block, "_top_right");
+
+    var defaultModel = this.models()
+        .orientable(name(block), sideTexture, frontTexture, topTexture);
+    var bottomLeftModel = this.models()
+        .orientable(name(block, "_bottom_left"), sideTexture, bottomLeftTexture, topTexture);
+    var bottomRightModel = this.models()
+        .orientable(name(block, "_bottom_right"), sideTexture, bottomRightTexture, topTexture);
+    var topLeftModel = this.models()
+        .orientable(name(block, "_top_left"), sideTexture, topLeftTexture, topTexture);
+    var topRightModel = this.models()
+        .orientable(name(block, "_top_right"), sideTexture, topRightTexture, topTexture);
+
+    this.getVariantBuilder(block)
+        .forAllStates(blockState -> {
+          var type = blockState.getValue(SteamOvenBlock.TYPE);
+          var facing = blockState.getValue(SteamOvenBlock.FACING);
+          return ConfiguredModel.builder()
+              .modelFile(switch (type) {
+                case DEFAULT -> defaultModel;
+                case DOOR_TOP_LEFT -> topLeftModel;
+                case DOOR_TOP_RIGHT -> topRightModel;
+                case DOOR_BOTTOM_LEFT -> bottomLeftModel;
+                case DOOR_BOTTOM_RIGHT -> bottomRightModel;
+              })
+              .rotationY(((int) facing.toYRot() + 180) % 360)
+              .build();
+        });
+    this.simpleBlockItem(block, defaultModel);
   }
 
   private void createFirebox(FireboxBlock block) {
@@ -857,6 +908,38 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.horizontalBlock(block, model, 0);
 
     this.simpleBlockItem(block, model);
+  }
+
+  private void createRechargeableBattery(BatteryBlock battery) {
+    var top = TextureMapping.getBlockTexture(battery, "_top");
+    var bottom = TextureMapping.getBlockTexture(battery, "_bottom");
+    var sideA = TextureMapping.getBlockTexture(battery, "_side_a");
+    var sideB = TextureMapping.getBlockTexture(battery, "_side_b");
+
+    var model = this.models().withExistingParent(name(battery), modLoc("battery"))
+        .texture("bottom", bottom)
+        .texture("top", top)
+        .texture("side_a", sideA)
+        .texture("side_b", sideB);
+
+    this.simpleBlockWithItem(battery, model);
+  }
+
+  private void createDisposableBattery(DisposableBatteryBlock battery,
+      EmptyBatteryBlock emptyBattery) {
+    this.createRechargeableBattery(battery);
+    var top = TextureMapping.getBlockTexture(battery, "_top_burned");
+    var bottom = TextureMapping.getBlockTexture(battery, "_bottom");
+    var sideA = TextureMapping.getBlockTexture(battery, "_side_a_burned");
+    var sideB = TextureMapping.getBlockTexture(battery, "_side_b_burned");
+
+    var model = this.models().withExistingParent(name(emptyBattery), modLoc("battery"))
+        .texture("bottom", bottom)
+        .texture("top", top)
+        .texture("side_a", sideA)
+        .texture("side_b", sideB);
+
+    this.simpleBlockWithItem(emptyBattery, model);
   }
 
   public void fluidBlock(LiquidBlock block) {

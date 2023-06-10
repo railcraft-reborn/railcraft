@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -7,16 +7,12 @@
 
 package mods.railcraft.api.charge;
 
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 /**
  * Implemented by items like the Overalls to prevent Charge based damage.
- *
- * <p>Created by CovertJaguar on 10/18/2018 for Railcraft.
- *
- * @author CovertJaguar (https://www.railcraft.info)
  */
 public interface ChargeProtectionItem {
 
@@ -40,24 +36,13 @@ public interface ChargeProtectionItem {
    * @return A ZapResult object with the resulting stack and damage prevented.
    */
   default ZapResult zap(ItemStack stack, LivingEntity owner, float attackDamage) {
-    ItemStack resultStack;
+    var resultStack = stack;
     if (owner.getRandom().nextInt(150) == 0 && stack.hurt(1, owner.getRandom(),
-          owner instanceof ServerPlayer ? (ServerPlayer) owner : null)) {
+          owner instanceof ServerPlayer serverPlayer ? serverPlayer : null)) {
       resultStack = ItemStack.EMPTY;
-    } else {
-      resultStack = stack;
     }
     return new ZapResult(resultStack, attackDamage);
   }
 
-  class ZapResult {
-
-    public final ItemStack stack;
-    public final float damagePrevented;
-
-    public ZapResult(ItemStack stack, float damagePrevented) {
-      this.stack = stack;
-      this.damagePrevented = damagePrevented;
-    }
-  }
+  record ZapResult(ItemStack stack, float damagePrevented) {}
 }

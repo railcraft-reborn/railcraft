@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -7,13 +7,10 @@
 
 package mods.railcraft.api.event;
 
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraftforge.eventbus.api.Event;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public abstract class CartLockdownEvent extends Event {
 
   public final AbstractMinecart cart;

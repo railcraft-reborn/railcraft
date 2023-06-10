@@ -142,6 +142,8 @@ public class Translations {
         makeKey("tips", "crusher");
     public static final String WATER_TANK_SIDING =
         makeKey("tips", "water_tank_siding");
+    public static final String MULTIBLOCK2X2X2 =
+        makeKey("tips", "multiblock2x2x2");
     public static final String MULTIBLOCK3X2X2 =
         makeKey("tips", "multiblock3x2x2");
     public static final String STEAM_TURBINE_DESC_1 =
@@ -216,8 +218,7 @@ public class Translations {
     public static final String COAL_COKE_BLOCK = makeKey("tips", "coal_coke_block");
     public static final String FORCE_TRACK_EMITTER = makeKey("tips", "force_track_emitter");
     public static final String FEED_STATION = makeKey("tips", "feed_station");
-    public static final String MANUAL_ROLLING_MACHINE =
-        makeKey("tips", "manual_rolling_machine");
+    public static final String ROLLING_MACHINE = makeKey("tips", "rolling_machine");
     public static final String ITEM_LOADER = makeKey("tips", "item_loader");
     public static final String ITEM_UNLOADER = makeKey("tips", "item_unloader");
     public static final String FLUID_LOADER = makeKey("tips", "fluid_loader");
@@ -298,17 +299,42 @@ public class Translations {
     public static final String RECEIVERS = makeKey("tips", "receivers");
     public static final String REDSTONE_LINKAGE = makeKey("tips", "redstone_linkage");
     public static final String LISTEN = makeKey("tips", "listen");
+    public static final String CLICK_TO_CRAFT = makeKey("tips", "click_to_craft");
+    public static final String ABANDONED_TRACK = makeKey("tips", "abandoned_track");
+    public static final String REINFORCED_TRACK = makeKey("tips", "reinforced_track");
+    public static final String STRAP_IRON_TRACK = makeKey("tips", "strap_iron_track");
+    public static final String DANGER = makeKey("tips", "danger");
+    public static final String DERAILMENT_RISK = makeKey("tips", "derailment_risk");
+    public static final String HIGH_VOLTAGE = makeKey("tips", "high_voltage");
+    public static final String HIGH_SPEED = makeKey("tips", "high_speed");
+    public static final String HIGH_VOLTAGE_SPEED = makeKey("tips", "high_voltage_speed");
+    public static final String POWERED_BY_ELECTRICITY = makeKey("tips", "powered_by_electricity");
+    public static final String USE_ELECTRIC_LOCOMOTIVE =
+        makeKey("tips", "use_electric_locomotive");
+    public static final String VERY_FAST = makeKey("tips", "very_fast");
+    public static final String REQUIRE_BOOSTERS_TRANSITION =
+        makeKey("tips", "require_boosters_transition");
+    public static final String CANNOT_MAKE_CORNERS_HIGH_SPEED =
+        makeKey("tips", "cannot_make_corners_high_speed");
+    public static final String EXPLOSION_RESISTANT = makeKey("tips", "explosion_resistant");
+    public static final String CHARGE_NETWORK_BATTERY = makeKey("tips", "charge_network_battery");
+    public static final String CHARGE_NETWORK_EMPTY_BATTERY =
+        makeKey("tips", "charge_network_empty_battery");
+    public static final String CAPACITY = makeKey("tips", "capacity");
+    public static final String MAX_DRAW = makeKey("tips", "max_draw");
+    public static final String LOSS = makeKey("tips", "loss");
+    public static final String EFFICIENCY = makeKey("tips", "efficiency");
+    public static final String TYPE_RECHARGEABLE = makeKey("tips", "type_rechargeable");
+    public static final String TYPE_DISPOSABLE = makeKey("tips", "type_disposable");
   }
 
   public static class Container {
-
-    public static final String MANUAL_ROLLING_MACHINE =
-        makeKey("container", "manual_rolling_machine");
     public static final String COKE_OVEN =
         makeKey("container", "coke_oven");
     public static final String BLAST_FURNACE =
         makeKey("container", "blast_furnace");
     public static final String CRUSHER = makeKey("container", "crusher");
+    public static final String STEAM_OVEN = makeKey("container", "steam_oven");
     public static final String WATER_TANK_SIDING = makeKey("container", "water_tank_siding");
     public static final String TANK =
         makeKey("container", "tank");
@@ -322,16 +348,40 @@ public class Translations {
 
   public static class Jei {
 
-    public static final String METAL_ROLLING =
-        makeKey("jei", "category.rolling");
-    public static final String COKE_OVEN =
-        makeKey("jei", "category.coke_oven");
-    public static final String BLAST_FURNACE =
-        makeKey("jei", "category.blast_furnace");
-    public static final String CRUSHER =
-        makeKey("jei", "category.crusher");
-    public static final String CRUSHER_TIP =
-        makeKey("jei", "tips.crusher");
+    public static final String METAL_ROLLING = makeKey("jei", "category.rolling");
+    public static final String COKE_OVEN = makeKey("jei", "category.coke_oven");
+    public static final String BLAST_FURNACE = makeKey("jei", "category.blast_furnace");
+    public static final String CRUSHER = makeKey("jei", "category.crusher");
+    public static final String CRUSHER_TIP = makeKey("jei", "tips.crusher");
+
+    public static final String MANUAL_ROLLING_MACHINE =
+        makeKey("jei", "desc.manual_rolling_machine");
+    public static final String POWERED_ROLLING_MACHINE =
+        makeKey("jei", "desc.powered_rolling_machine");
+    public static final String FEED_STATION = makeKey("jei", "desc.feed_station");
+    public static final String BLOCK_SIGNAL = makeKey("jei", "desc.block_signal");
+    public static final String DISTANT_SIGNAL = makeKey("jei", "desc.distant_signal");
+    public static final String TOKEN_SIGNAL = makeKey("jei", "desc.token_signal");
+    public static final String DUAL_BLOCK_SIGNAL =
+        makeKey("jei", "desc.dual_block_signal");
+    public static final String DUAL_DISTANT_SIGNAL =
+        makeKey("jei", "desc.dual_distant_signal");
+    public static final String DUAL_TOKEN_SIGNAL =
+        makeKey("jei", "desc.dual_token_signal");
+    public static final String TUNNEL_BORE = makeKey("jei", "desc.tunnel_bore");
+    public static final String NICKEL_IRON_BATTERY =
+        makeKey("jei", "desc.nickel_iron_battery");
+    public static final String NICKEL_ZINC_BATTERY =
+        makeKey("jei", "desc.nickel_zinc_battery");
+    public static final String DISPOSABLE_BATTERY =
+        makeKey("jei", "desc.disposable_battery");
+    public static final String DISPOSABLE_BATTERY_EMPTY =
+        makeKey("jei", "desc.disposable_battery_empty");
+
+    public static final String PAINT = makeKey("jei.gui", "paint");
+    public static final String COPY_TAG = makeKey("jei.gui", "copy_tag");
+    public static final String REPAIR = makeKey("jei.gui", "repair");
+    public static final String SPLIT = makeKey("jei.gui", "split");
   }
 
   public static class Signal {

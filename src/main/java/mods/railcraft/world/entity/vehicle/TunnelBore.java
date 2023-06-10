@@ -218,7 +218,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   private boolean isMineableBlock(BlockState blockState) {
-    return RailcraftConfig.server.boreMinesAllBlocks.get()
+    return RailcraftConfig.SERVER.boreMinesAllBlocks.get()
         || MINEABLE_BLOCKS.contains(blockState.getBlock())
         || MINEABLE_STATES.contains(blockState)
         || MINEABLE_TAGS.stream().anyMatch(blockState::is);
@@ -650,7 +650,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
                   LevelUtil.playerRemoveBlock(this.level, searchPos.immutable(),
                       CartTools.getFakePlayer(this),
                       this.level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
-                          && !RailcraftConfig.server.boreDestorysBlocks.get());
+                          && !RailcraftConfig.SERVER.boreDestorysBlocks.get());
                 }
               }
             }
@@ -796,7 +796,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
       return false;
     }
 
-    if (!RailcraftConfig.server.boreDestorysBlocks.get()
+    if (!RailcraftConfig.SERVER.boreDestorysBlocks.get()
         && this.level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
       targetState
           .getDrops(new LootContext.Builder((ServerLevel) this.level)
@@ -852,7 +852,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
       hardness /= (e * e * 0.2d + 1);
     }
 
-    hardness /= RailcraftConfig.server.boreMininigSpeedMultiplier.get();
+    hardness /= RailcraftConfig.SERVER.boreMininigSpeedMultiplier.get();
 
     return hardness;
   }

@@ -1,5 +1,7 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.HashSet;
+import java.util.Set;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
@@ -14,9 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class TrackRemover extends MaintenanceMinecart {
 

@@ -101,7 +101,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
       return;
     }
     if (!spawningTrain && this.canBuildTrain()) {
-      if (timeSinceLastSpawn > RailcraftConfig.server.cartDispenserDelay.get() * 20) {
+      if (timeSinceLastSpawn > RailcraftConfig.SERVER.cartDispenserDelay.get() * 20) {
         spawningTrain = true;
       }
     }

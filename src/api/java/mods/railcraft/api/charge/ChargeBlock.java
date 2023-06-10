@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -10,22 +10,15 @@ package mods.railcraft.api.charge;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
-import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * This interface must be implement by any {@link net.minecraft.block.Block Block} that wants to
- * interface with any of the charge networks.
- *
- * <p>
- * Created by CovertJaguar on 7/25/2016 for Railcraft.
- *
- * @author CovertJaguar (https://www.railcraft.info)
+ * This interface must be implemented by any {@link net.minecraft.world.level.block.Block} that
+ * wants to interface with any of the charge networks.
  */
 public interface ChargeBlock {
 
@@ -67,12 +60,12 @@ public interface ChargeBlock {
    *
    * <p>
    * This function must be called from the following functions:
-   * {@link net.minecraft.block.Block#onBlockAdded(World, BlockPos, BlockState)}
-   * {@link net.minecraft.block.Block#updateTick(World, BlockPos, BlockState, Random)}
-   *
+   * <ul>
+   *   <li>{@link BlockBehaviour#onPlace}</li>
+   *   <li>{@link BlockBehaviour#tick}</li>
+   * </ul>
    * <p>
-   * The block must set {@link net.minecraft.block.Block#setTickRandomly(boolean)} to true in the
-   * constructor.
+   * The block must set {@link BlockBehaviour.Properties#randomTicks()} in the properties.
    */
   default void registerNode(BlockState state, ServerLevel level, BlockPos pos) {
     EnumSet.allOf(Charge.class).forEach(n -> n.network(level).addNode(pos, state));
@@ -83,7 +76,7 @@ public interface ChargeBlock {
    *
    * <p>
    * This function must be called from the following function:
-   * {@link BlockBehaviour#onRemove(BlockState, Level, BlockPos, BlockState, boolean)}.
+   * {@link BlockBehaviour#onRemove}.
    */
   default void deregisterNode(ServerLevel level, BlockPos pos) {
     // FLATTENING make sure this not called during state changes

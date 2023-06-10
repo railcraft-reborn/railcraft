@@ -1,9 +1,9 @@
 package mods.railcraft.util.container;
 
+import org.jetbrains.annotations.NotNull;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import org.jetbrains.annotations.NotNull;
 
 public class FilteredInvWrapper extends InvWrapper {
 

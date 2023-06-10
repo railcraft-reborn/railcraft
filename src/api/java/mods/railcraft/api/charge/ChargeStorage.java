@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -29,22 +29,16 @@ import net.minecraftforge.energy.IEnergyStorage;
  * guarantee that the battery object assigned to a specific coordinate will always be the same
  * object.
  *
- *
  * <p>
  * Such that sometimes:
  * 
  * <pre>
  * {@code
- * IBatteryBlock bat1 = Charge.distribution.network(world).access(pos).getBattery();
- * IBatteryBlock bat2 = Charge.distribution.network(world).access(pos).getBattery();
+ * ChargeStorage bat1 = Charge.distribution.network(level).access(pos).storage().get();
+ * ChargeStorage bat2 = Charge.distribution.network(level).access(pos).storage().get();
  * bat1 != bat2
  * }
  * </pre>
- *
- * <p>
- * Created by CovertJaguar on 10/27/2018 for Railcraft.
- *
- * @author CovertJaguar (https://www.railcraft.info)
  */
 public interface ChargeStorage extends IEnergyStorage {
 

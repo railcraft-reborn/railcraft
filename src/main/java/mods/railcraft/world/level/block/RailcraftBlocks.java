@@ -4,6 +4,11 @@ import java.util.Collection;
 import java.util.function.ToIntFunction;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.VariantRegistrar;
+import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
+import mods.railcraft.world.level.block.charge.NickelIronBatteryBlock;
+import mods.railcraft.world.level.block.charge.NickelZincBatteryBlock;
+import mods.railcraft.world.level.block.charge.ZincCarbonBatteryBlock;
+import mods.railcraft.world.level.block.charge.ZincSilverBatteryBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemUnloaderBlock;
 import mods.railcraft.world.level.block.manipulator.CartDispenserBlock;
@@ -15,12 +20,12 @@ import mods.railcraft.world.level.block.manipulator.TrainDispenserBlock;
 import mods.railcraft.world.level.block.post.PostBlock;
 import mods.railcraft.world.level.block.signal.AnalogSignalControllerBoxBlock;
 import mods.railcraft.world.level.block.signal.BlockSignalBlock;
-import mods.railcraft.world.level.block.signal.SignalBlockRelayBoxBlock;
 import mods.railcraft.world.level.block.signal.DistantSignalBlock;
 import mods.railcraft.world.level.block.signal.DualBlockSignalBlock;
 import mods.railcraft.world.level.block.signal.DualDistantSignalBlock;
 import mods.railcraft.world.level.block.signal.DualSignalBlock;
 import mods.railcraft.world.level.block.signal.DualTokenSignalBlock;
+import mods.railcraft.world.level.block.signal.SignalBlockRelayBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalCapacitorBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalControllerBoxBlock;
@@ -39,9 +44,13 @@ import mods.railcraft.world.level.block.tank.SteelTankGaugeBlock;
 import mods.railcraft.world.level.block.tank.SteelTankValveBlock;
 import mods.railcraft.world.level.block.tank.SteelTankWallBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
+import mods.railcraft.world.level.block.track.ElectricTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
-import mods.railcraft.world.level.block.track.TrackBlock;
+import mods.railcraft.world.level.block.track.HighSpeedElectricTrackBlock;
+import mods.railcraft.world.level.block.track.HighSpeedTrackBlock;
+import mods.railcraft.world.level.block.track.ReinforcedTrackBlock;
+import mods.railcraft.world.level.block.track.StrapIronTrackBlock;
 import mods.railcraft.world.level.block.track.TrackConstants;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
@@ -273,6 +282,40 @@ public class RailcraftBlocks {
                   .strength(1F)
                   .requiresCorrectToolForDrops()
                   .sound(SoundType.WOOD)));
+
+  public static final RegistryObject<NickelZincBatteryBlock> NICKEL_ZINC_BATTERY =
+      deferredRegister.register("nickel_zinc_battery",
+          () -> new NickelZincBatteryBlock(
+              BlockBehaviour.Properties.of(Material.METAL)
+                  .strength(3F)
+                  .randomTicks()
+                  .requiresCorrectToolForDrops()
+                  .sound(SoundType.METAL)));
+
+  public static final RegistryObject<NickelIronBatteryBlock> NICKEL_IRON_BATTERY =
+      deferredRegister.register("nickel_iron_battery",
+          () -> new NickelIronBatteryBlock(
+              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+
+  public static final RegistryObject<ZincCarbonBatteryBlock> ZINC_CARBON_BATTERY =
+      deferredRegister.register("zinc_carbon_battery",
+          () -> new ZincCarbonBatteryBlock(
+              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+
+  public static final RegistryObject<EmptyBatteryBlock> ZINC_CARBON_BATTERY_EMPTY =
+      deferredRegister.register("zinc_carbon_battery_empty",
+          () -> new EmptyBatteryBlock(
+              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+
+  public static final RegistryObject<ZincSilverBatteryBlock> ZINC_SILVER_BATTERY =
+      deferredRegister.register("zinc_silver_battery",
+          () -> new ZincSilverBatteryBlock(
+              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+
+  public static final RegistryObject<EmptyBatteryBlock> ZINC_SILVER_BATTERY_EMPTY =
+      deferredRegister.register("zinc_silver_battery_empty",
+          () -> new EmptyBatteryBlock(
+              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
 
   public static final RegistryObject<AnvilBlock> STEEL_ANVIL =
       deferredRegister.register("steel_anvil",
@@ -620,11 +663,10 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<AbandonedTrackBlock> ABANDONED_TRACK =
       deferredRegister.register("abandoned_track",
-          () -> new AbandonedTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.of(Material.DECORATION)
-                  .noCollission()
-                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
-                  .sound(SoundType.METAL)));
+          () -> new AbandonedTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+              .noCollission()
+              .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+              .sound(SoundType.METAL)));
 
   public static final RegistryObject<LockingTrackBlock> ABANDONED_LOCKING_TRACK =
       deferredRegister.register("abandoned_locking_track",
@@ -762,14 +804,13 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> ELECTRIC_TRACK =
+  public static final RegistryObject<ElectricTrackBlock> ELECTRIC_TRACK =
       deferredRegister.register("electric_track",
-          () -> new TrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.of(Material.DECORATION)
-                  .randomTicks()
-                  .noCollission()
-                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
-                  .sound(SoundType.METAL)));
+          () -> new ElectricTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+              .randomTicks()
+              .noCollission()
+              .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+              .sound(SoundType.METAL)));
 
   public static final RegistryObject<LockingTrackBlock> ELECTRIC_LOCKING_TRACK =
       deferredRegister.register("electric_locking_track",
@@ -913,13 +954,12 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_TRACK =
+  public static final RegistryObject<HighSpeedTrackBlock> HIGH_SPEED_TRACK =
       deferredRegister.register("high_speed_track",
-          () -> new TrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.of(Material.DECORATION)
-                  .noCollission()
-                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
-                  .sound(SoundType.METAL)));
+          () -> new HighSpeedTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+              .noCollission()
+              .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+              .sound(SoundType.METAL)));
 
   public static final RegistryObject<TransitionTrackBlock> HIGH_SPEED_TRANSITION_TRACK =
       deferredRegister.register("high_speed_transition_track",
@@ -993,14 +1033,13 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> HIGH_SPEED_ELECTRIC_TRACK =
+  public static final RegistryObject<HighSpeedElectricTrackBlock> HIGH_SPEED_ELECTRIC_TRACK =
       deferredRegister.register("high_speed_electric_track",
-          () -> new TrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.of(Material.DECORATION)
-                  .noCollission()
-                  .randomTicks()
-                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
-                  .sound(SoundType.METAL)));
+          () -> new HighSpeedElectricTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+              .noCollission()
+              .randomTicks()
+              .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+              .sound(SoundType.METAL)));
 
   public static final RegistryObject<TransitionTrackBlock> HIGH_SPEED_ELECTRIC_TRANSITION_TRACK =
       deferredRegister.register("high_speed_electric_transition_track",
@@ -1226,13 +1265,12 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> REINFORCED_TRACK =
+  public static final RegistryObject<ReinforcedTrackBlock> REINFORCED_TRACK =
       deferredRegister.register("reinforced_track",
-          () -> new TrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.of(Material.DECORATION)
-                  .noCollission()
-                  .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
-                  .sound(SoundType.METAL)));
+          () -> new ReinforcedTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+              .noCollission()
+              .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
+              .sound(SoundType.METAL)));
 
   public static final RegistryObject<LockingTrackBlock> REINFORCED_LOCKING_TRACK =
       deferredRegister.register("reinforced_locking_track",
@@ -1370,13 +1408,12 @@ public class RailcraftBlocks {
                   .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
                   .sound(SoundType.METAL)));
 
-  public static final RegistryObject<TrackBlock> STRAP_IRON_TRACK =
+  public static final RegistryObject<StrapIronTrackBlock> STRAP_IRON_TRACK =
       deferredRegister.register("strap_iron_track",
-          () -> new TrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.of(Material.DECORATION)
-                  .noCollission()
-                  .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
-                  .sound(SoundType.METAL)));
+          () -> new StrapIronTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+              .noCollission()
+              .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
+              .sound(SoundType.METAL)));
 
   public static final RegistryObject<LockingTrackBlock> STRAP_IRON_LOCKING_TRACK =
       deferredRegister.register("strap_iron_locking_track",
@@ -1539,10 +1576,18 @@ public class RailcraftBlocks {
               .sound(SoundType.WOOD)
               .strength(2.5F)));
 
+  public static final RegistryObject<PoweredRollingMachineBlock> POWERED_ROLLING_MACHINE =
+      deferredRegister.register("powered_rolling_machine",
+          () -> new PoweredRollingMachineBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .sound(SoundType.METAL)
+              .strength(3.0F)
+              .randomTicks()));
+
   public static final RegistryObject<CrusherMultiblockBlock> CRUSHER =
       deferredRegister.register("crusher",
           () -> new CrusherMultiblockBlock(BlockBehaviour.Properties.of(Material.STONE)
               .requiresCorrectToolForDrops()
+              .randomTicks()
               .strength(3.5F)
               .sound(SoundType.STONE)));
 
@@ -1552,6 +1597,13 @@ public class RailcraftBlocks {
               .sound(SoundType.STONE)
               .lightLevel(litBlockEmission(13))
               .strength(2F, 6.0F)));
+
+  public static final RegistryObject<SteamOvenBlock> STEAM_OVEN =
+      deferredRegister.register("steam_oven",
+          () -> new SteamOvenBlock(BlockBehaviour.Properties.of(Material.STONE)
+              .requiresCorrectToolForDrops()
+              .sound(SoundType.STONE)
+              .strength(3.5F)));
 
   public static final RegistryObject<LiquidBlock> CREOSOTE =
       deferredRegister.register("creosote",

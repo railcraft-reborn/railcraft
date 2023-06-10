@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -8,14 +8,11 @@
 package mods.railcraft.api.helper;
 
 import java.util.List;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public interface StructureHelper {
 
   void placeBlastFurnace(Level world, BlockPos pos, ItemStack input, ItemStack output,

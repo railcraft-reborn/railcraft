@@ -1,8 +1,8 @@
 package mods.railcraft.api.signal;
 
 import java.util.function.Consumer;
-import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;

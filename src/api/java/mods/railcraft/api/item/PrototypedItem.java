@@ -1,17 +1,12 @@
 package mods.railcraft.api.item;
 
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * This interface marks an item that can have another item "added" to its NBT. Filter Items and Tank
  * Carts and Cargo Carts all do this. The benefit is that PrototypeRecipe can then be used to set
  * the prototype item.
- *
- *
- * Created by CovertJaguar on 6/7/2017 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
  */
 public interface PrototypedItem {
 

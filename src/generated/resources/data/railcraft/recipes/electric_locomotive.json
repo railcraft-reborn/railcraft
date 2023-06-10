@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "minecraft:redstone_lamp"
+    },
+    "b": {
+      "tag": "forge:plates/steel"
+    },
+    "c": {
+      "item": "railcraft:charge_motor"
+    },
+    "d": [
+      {
+        "item": "railcraft:nickel_iron_battery"
+      },
+      {
+        "item": "railcraft:nickel_zinc_battery"
+      }
+    ],
+    "e": {
+      "tag": "forge:gears/steel"
+    },
+    "f": {
+      "item": "minecraft:minecart"
+    }
+  },
+  "pattern": [
+    "ab ",
+    "cdc",
+    "efe"
+  ],
+  "result": {
+    "item": "railcraft:electric_locomotive"
+  },
+  "show_notification": true
+}

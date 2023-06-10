@@ -33,6 +33,14 @@ public class RailcraftRecipeSerializers {
       deferredRegister.register("locomotive_painting",
           () -> new SimpleCraftingRecipeSerializer<>(LocomotivePaintingRecipe::new));
 
+  public static final RegistryObject<RecipeSerializer<RotorRepairRecipe>> ROTOR_REPAIR =
+      deferredRegister.register("rotor_repair",
+          () -> new SimpleCraftingRecipeSerializer<>(RotorRepairRecipe::new));
+
+  public static final RegistryObject<RecipeSerializer<CartDisassemblyRecipe>> CART_DISASSEMBLY =
+      deferredRegister.register("cart_disassembly",
+          () -> new SimpleCraftingRecipeSerializer<>(CartDisassemblyRecipe::new));
+
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }

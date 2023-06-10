@@ -3,14 +3,15 @@ package mods.railcraft.world.level.block;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
+import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,8 +24,9 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 
-public class ManualRollingMachineBlock extends BaseEntityBlock {
+public class ManualRollingMachineBlock extends BaseEntityBlock implements JeiSearchable {
 
   public ManualRollingMachineBlock(Properties properties) {
     super(properties);
@@ -49,30 +51,26 @@ public class ManualRollingMachineBlock extends BaseEntityBlock {
             ManualRollingMachineBlockEntity::serverTick);
   }
 
-  protected void openContainer(Level level, BlockPos blockPos, Player player) {
-    BlockEntity blockEntity = level.getBlockEntity(blockPos);
-    if (blockEntity instanceof ManualRollingMachineBlockEntity) {
-      player.openMenu((MenuProvider) blockEntity);
-      // player.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
-      // TODO: interaction stats
-    }
-  }
-
   @Override
   public InteractionResult use(BlockState blockState, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
       return InteractionResult.SUCCESS;
-    } else {
-      this.openContainer(level, pos, player);
-      return InteractionResult.CONSUME;
     }
+    level.getBlockEntity(pos, RailcraftBlockEntityTypes.MANUAL_ROLLING_MACHINE.get())
+        .ifPresent(blockEntity -> NetworkHooks.openScreen((ServerPlayer) player, blockEntity, pos));
+    return InteractionResult.CONSUME;
   }
 
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flag) {
     super.appendHoverText(stack, level, tooltip, flag);
-    tooltip.add(Component.translatable(Translations.Tips.MANUAL_ROLLING_MACHINE).withStyle(ChatFormatting.GRAY));
+    tooltip.add(Component.translatable(Translations.Tips.ROLLING_MACHINE).withStyle(ChatFormatting.GRAY));
+  }
+
+  @Override
+  public Component addJeiInfo() {
+    return Component.translatable(Translations.Jei.MANUAL_ROLLING_MACHINE);
   }
 }

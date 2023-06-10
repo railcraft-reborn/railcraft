@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
+import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
@@ -30,7 +31,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-public class FeedStationBlock extends BaseEntityBlock {
+public class FeedStationBlock extends BaseEntityBlock implements JeiSearchable {
 
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -107,5 +108,10 @@ public class FeedStationBlock extends BaseEntityBlock {
         .add(Component.translatable(Translations.Tips.FEED_STATION).withStyle(ChatFormatting.GRAY));
     tooltip.add(Component.translatable(Translations.Tips.APPLY_REDSTONE_TO_DISABLE)
         .withStyle(ChatFormatting.RED));
+  }
+
+  @Override
+  public Component addJeiInfo() {
+    return Component.translatable(Translations.Jei.FEED_STATION);
   }
 }

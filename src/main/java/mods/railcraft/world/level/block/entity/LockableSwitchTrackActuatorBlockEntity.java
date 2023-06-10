@@ -1,5 +1,11 @@
 package mods.railcraft.world.level.block.entity;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.api.util.EnumUtil;
@@ -13,13 +19,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
 
 public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     implements Lockable {

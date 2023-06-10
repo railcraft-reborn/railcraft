@@ -10,9 +10,9 @@
     " a ",
     "a  "
   ],
+  "processTime": 100,
   "result": {
     "count": 4,
     "item": "railcraft:rebar"
-  },
-  "tickCost": 100
+  }
 }

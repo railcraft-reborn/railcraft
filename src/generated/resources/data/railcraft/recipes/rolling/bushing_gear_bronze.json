@@ -9,9 +9,9 @@
     "aa",
     "aa"
   ],
+  "processTime": 100,
   "result": {
     "count": 4,
     "item": "railcraft:bushing_gear"
-  },
-  "tickCost": 100
+  }
 }

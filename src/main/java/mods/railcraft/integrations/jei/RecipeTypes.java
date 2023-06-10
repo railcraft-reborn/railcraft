@@ -9,12 +9,15 @@ import mods.railcraft.world.item.crafting.RollingRecipe;
 
 public class RecipeTypes {
 
-  public static final RecipeType<RollingRecipe> ROLLING_MACHINE = RecipeType.create(Railcraft.ID,
-      "rolling_machine", RollingRecipe.class);
-  public static final RecipeType<CokeOvenRecipe> COKE_OVEN = RecipeType.create(Railcraft.ID,
-      "coke_oven", CokeOvenRecipe.class);
-  public static final RecipeType<BlastFurnaceRecipe> BLAST_FURNACE = RecipeType.create(Railcraft.ID,
-      "blast_furnace", BlastFurnaceRecipe.class);
-  public static final RecipeType<CrusherRecipe> CRUSHER = RecipeType.create(Railcraft.ID,
-      "crusher", CrusherRecipe.class);
+  public static final RecipeType<RollingRecipe> ROLLING_MACHINE =
+      RecipeType.create(Railcraft.ID, "rolling_machine", RollingRecipe.class);
+
+  public static final RecipeType<CokeOvenRecipe> COKE_OVEN =
+      RecipeType.create(Railcraft.ID, "coke_oven", CokeOvenRecipe.class);
+
+  public static final RecipeType<BlastFurnaceRecipe> BLAST_FURNACE =
+      RecipeType.create(Railcraft.ID, "blast_furnace", BlastFurnaceRecipe.class);
+
+  public static final RecipeType<CrusherRecipe> CRUSHER =
+      RecipeType.create(Railcraft.ID, "crusher", CrusherRecipe.class);
 }

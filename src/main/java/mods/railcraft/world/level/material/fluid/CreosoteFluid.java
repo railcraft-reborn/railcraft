@@ -1,8 +1,10 @@
 package mods.railcraft.world.level.material.fluid;
 
+import java.util.function.Consumer;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import java.util.function.Consumer;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.client.Camera;
@@ -26,8 +28,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
-import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
 
 public abstract class CreosoteFluid extends FlowingFluid {
 

@@ -3,9 +3,9 @@ package mods.railcraft.client.gui.screen.inventory;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.inventory.LocomotiveMenu;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 public class CreativeLocomotiveScreen
     extends LocomotiveScreen<LocomotiveMenu<CreativeLocomotive>> {

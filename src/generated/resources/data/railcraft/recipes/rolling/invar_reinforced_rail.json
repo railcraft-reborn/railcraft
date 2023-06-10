@@ -16,9 +16,9 @@
     "abc",
     "abc"
   ],
+  "processTime": 100,
   "result": {
     "count": 4,
     "item": "railcraft:reinforced_rail"
-  },
-  "tickCost": 100
+  }
 }

@@ -3,9 +3,9 @@ package mods.railcraft.util;
 import java.util.Objects;
 import java.util.function.Predicate;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.EntitySelector;
 
 public enum ModEntitySelector implements Predicate<Entity> {
 

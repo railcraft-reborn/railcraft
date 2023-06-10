@@ -27,7 +27,7 @@ public class CrusherRecipe implements Recipe<Container> {
   private final ResourceLocation recipeId;
   private final Ingredient ingredient;
   private final List<Tuple<ItemStack, Double>> probabilityItems;
-  private final int tickCost;
+  private final int processTime;
 
   /**
    * Creates a new recipe.
@@ -35,18 +35,18 @@ public class CrusherRecipe implements Recipe<Container> {
    * @param recipeId         - The id of the recipe
    * @param ingredient       - Ingredient of the object
    * @param probabilityItems - A list represents ItemStack - Probability
-   * @param tickCost         - The time cost of the recipe
+   * @param processTime      - The time cost of the recipe
    */
   public CrusherRecipe(ResourceLocation recipeId, Ingredient ingredient,
-      List<Tuple<ItemStack, Double>> probabilityItems, int tickCost) {
+      List<Tuple<ItemStack, Double>> probabilityItems, int processTime) {
     this.recipeId = recipeId;
     this.ingredient = ingredient;
     this.probabilityItems = probabilityItems;
-    this.tickCost = tickCost;
+    this.processTime = processTime;
   }
 
-  public int getTickCost() {
-    return this.tickCost;
+  public int getProcessTime() {
+    return this.processTime;
   }
 
   @Override
@@ -122,8 +122,8 @@ public class CrusherRecipe implements Recipe<Container> {
 
     @Override
     public CrusherRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-      int tickCost = GsonHelper
-          .getAsInt(json, "tickCost", CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME);
+      int processTime = GsonHelper
+          .getAsInt(json, "processTime", CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME);
       var ingredient = Ingredient.fromJson(json.get("ingredient"));
       var probabilityItems = new ArrayList<Tuple<ItemStack, Double>>();
 
@@ -135,7 +135,7 @@ public class CrusherRecipe implements Recipe<Container> {
         var result = itemFromJson(GsonHelper.getAsJsonObject(outputObj, "result"));
         probabilityItems.add(new Tuple<>(result, probability));
       }
-      return new CrusherRecipe(recipeId, ingredient, probabilityItems, tickCost);
+      return new CrusherRecipe(recipeId, ingredient, probabilityItems, processTime);
     }
 
     @Override
@@ -152,7 +152,7 @@ public class CrusherRecipe implements Recipe<Container> {
 
     @Override
     public void toNetwork(FriendlyByteBuf buffer, CrusherRecipe recipe) {
-      buffer.writeVarInt(recipe.tickCost);
+      buffer.writeVarInt(recipe.processTime);
       recipe.ingredient.toNetwork(buffer);
       buffer.writeCollection(recipe.probabilityItems, (buf, item) -> {
         buf.writeItem(item.getA());

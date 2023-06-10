@@ -56,6 +56,14 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
     this.dropSelf(RailcraftBlocks.WATER_TANK_SIDING.get());
 
+    this.dropSelf(RailcraftBlocks.NICKEL_ZINC_BATTERY.get());
+    this.dropSelf(RailcraftBlocks.NICKEL_IRON_BATTERY.get());
+
+    this.dropSelf(RailcraftBlocks.ZINC_CARBON_BATTERY.get());
+    this.dropSelf(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get());
+    this.dropSelf(RailcraftBlocks.ZINC_SILVER_BATTERY.get());
+    this.dropSelf(RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get());
+
     this.add(RailcraftBlocks.LEAD_ORE.get(), block ->
         this.createOreDrop(block, RailcraftItems.LEAD_RAW.get()));
     this.add(RailcraftBlocks.NICKEL_ORE.get(), block ->
@@ -351,8 +359,10 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
 
     /* === machines === */
     this.dropSelf(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
+    this.dropSelf(RailcraftBlocks.POWERED_ROLLING_MACHINE.get());
     this.dropSelf(RailcraftBlocks.CRUSHER.get());
     this.dropSelf(RailcraftBlocks.COKE_OVEN_BRICKS.get());
+    this.dropSelf(RailcraftBlocks.STEAM_OVEN.get());
     this.dropSelf(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
 
     /* === misc === */

@@ -1,6 +1,7 @@
 package mods.railcraft.world.inventory;
 
 import java.util.Collections;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -12,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import org.jetbrains.annotations.Nullable;
 
 public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
 

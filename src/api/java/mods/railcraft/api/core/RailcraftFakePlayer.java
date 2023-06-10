@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -7,21 +7,15 @@
 
 package mods.railcraft.api.core;
 
+import java.util.UUID;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
-import java.util.UUID;
-
-/**
- * Created by CovertJaguar on 3/31/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class RailcraftFakePlayer {
   private RailcraftFakePlayer() {}
 

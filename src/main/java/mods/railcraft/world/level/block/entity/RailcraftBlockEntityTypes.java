@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.stream.Stream;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEntity;
@@ -240,6 +241,16 @@ public class RailcraftBlockEntityTypes {
               .of(ForceTrackBlockEntity::new, RailcraftBlocks.FORCE_TRACK.get())
               .build(null));
 
+  public static final RegistryObject<BlockEntityType<BatteryBlockEntity>> BATTERY =
+      deferredRegister.register("battery",
+          () -> BlockEntityType.Builder
+              .of(BatteryBlockEntity::new,
+                  RailcraftBlocks.NICKEL_IRON_BATTERY.get(),
+                  RailcraftBlocks.NICKEL_ZINC_BATTERY.get(),
+                  RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
+                  RailcraftBlocks.ZINC_CARBON_BATTERY.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<TurnoutTrackBlockEntity>> TURNOUT_TRACK =
       deferredRegister.register("turnout_track",
           () -> BlockEntityType.Builder
@@ -279,6 +290,13 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
               .build(null));
 
+  public static final RegistryObject<BlockEntityType<PoweredRollingMachineBlockEntity>> POWERED_ROLLING_MACHINE =
+      deferredRegister.register("powered_rolling_machine",
+          () -> BlockEntityType.Builder
+              .of(PoweredRollingMachineBlockEntity::new,
+                  RailcraftBlocks.POWERED_ROLLING_MACHINE.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<CokeOvenBlockEntity>> COKE_OVEN =
       deferredRegister.register("coke_oven",
           () -> BlockEntityType.Builder
@@ -289,6 +307,12 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("crusher",
           () -> BlockEntityType.Builder
               .of(CrusherBlockEntity::new, RailcraftBlocks.CRUSHER.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<SteamOvenBlockEntity>> STEAM_OVEN =
+      deferredRegister.register("steam_oven",
+          () -> BlockEntityType.Builder
+              .of(SteamOvenBlockEntity::new, RailcraftBlocks.STEAM_OVEN.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<WaterTankSidingBlockEntity>> WATER_TANK_SIDING =

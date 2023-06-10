@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": {
-      "item": "railcraft:steel_block"
+      "tag": "forge:storage_blocks/steel"
     },
     "b": {
       "tag": "forge:plates/steel"

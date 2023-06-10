@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -52,33 +51,6 @@ public abstract class ContainerTools {
 
   public static int[] buildSlotArray(int start, int size) {
     return IntStream.range(0, size).map(i -> start + i).toArray();
-  }
-
-  // @Deprecated
-  // public static boolean isSynthetic(ItemStack stack) {
-  // CompoundNBT nbt = stack.getTag();
-  // return nbt != null && nbt.hasKey("synthetic");
-  // }
-  //
-  // @SuppressWarnings("unused")
-  // public static void markItemSynthetic(ItemStack stack) {
-  // CompoundNBT nbt = getItemData(stack);
-  // nbt.setBoolean("synthetic", true);
-  // CompoundNBT display = nbt.getCompound("display");
-  // nbt.put("display", display);
-  // ListNBT lore = display.getList("Lore", 8);
-  // display.put("Lore", lore);
-  // lore.add(StringNBT.valueOf("\u00a77\u00a7o" +
-  // LocalizationPlugin.translate("item.synthetic")));
-  // }
-
-  public static void addItemToolTip(ItemStack stack, String msg) {
-    CompoundTag nbt = stack.getOrCreateTag();
-    CompoundTag display = nbt.getCompound("display");
-    nbt.put("display", display);
-    ListTag lore = display.getList("Lore", 8);
-    display.put("Lore", lore);
-    lore.add(StringTag.valueOf(msg));
   }
 
   public static ItemStack depleteItem(ItemStack stack) {

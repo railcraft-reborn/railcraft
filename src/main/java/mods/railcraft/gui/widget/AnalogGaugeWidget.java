@@ -1,8 +1,5 @@
 package mods.railcraft.gui.widget;
 
-/**
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public class AnalogGaugeWidget extends GaugeWidget {
 
   public final int ox;

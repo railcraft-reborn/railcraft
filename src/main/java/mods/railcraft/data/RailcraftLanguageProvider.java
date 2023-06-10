@@ -114,8 +114,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX, "Signal Sequencer Box");
     this.addBlock(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX, "Signal Block Relay Box");
     this.addBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
+    this.addBlock(RailcraftBlocks.POWERED_ROLLING_MACHINE, "Powered Rolling Machine");
     this.addBlock(RailcraftBlocks.CRUSHER, "Crusher");
     this.addBlock(RailcraftBlocks.COKE_OVEN_BRICKS, "Coke Oven Bricks");
+    this.addBlock(RailcraftBlocks.STEAM_OVEN, "Steam Oven");
     this.addBlock(RailcraftBlocks.FORCE_TRACK_EMITTER, "Force Track Emitter");
     this.addBlock(RailcraftBlocks.FORCE_TRACK, "Force Track");
     this.addBlock(RailcraftBlocks.CRUSHED_OBSIDIAN, "Crushed Obsidian");
@@ -132,6 +134,13 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER, "Quarried Paver");
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_STAIRS, "Quarried Paver Stairs");
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_SLAB, "Quarried Paver Slab");
+
+    this.addBlock(RailcraftBlocks.NICKEL_IRON_BATTERY, "Nickel-Iron Battery");
+    this.addBlock(RailcraftBlocks.NICKEL_ZINC_BATTERY, "Nickel-Zinc Battery");
+    this.addBlock(RailcraftBlocks.ZINC_CARBON_BATTERY, "Zinc-Carbon Battery");
+    this.addBlock(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY, "Zinc-Carbon Empty Battery");
+    this.addBlock(RailcraftBlocks.ZINC_SILVER_BATTERY, "Zinc-Silver Battery");
+    this.addBlock(RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY, "Zinc-Silver Empty Battery");
 
     this.addBlockColorVariants(RailcraftBlocks.STRENGTHENED_GLASS, "Strengthened Glass");
     this.addBlockColorVariants(RailcraftBlocks.POST, "Post");
@@ -256,7 +265,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SALTPETER_DUST, "Saltpeter Dust");
     this.addItem(RailcraftItems.COAL_DUST, "Coal Dust");
     this.addItem(RailcraftItems.CHARCOAL_DUST, "Charcoal Dust");
-    this.addItem(RailcraftItems.SLAG, "Ground Blast Furnace Slag");
+    this.addItem(RailcraftItems.SLAG, "Granulated Slag");
     this.addItem(RailcraftItems.ENDER_DUST, "Ender Dust");
     this.addItem(RailcraftItems.SULFUR_DUST, "Sulfur Dust");
     this.addItem(RailcraftItems.OBSIDIAN_DUST, "Obsidian Dust");
@@ -318,10 +327,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void containerTranslations() {
-    this.add(Translations.Container.MANUAL_ROLLING_MACHINE, "Manual Rolling Machine");
     this.add(Translations.Container.COKE_OVEN, "Coke Oven");
     this.add(Translations.Container.BLAST_FURNACE, "Blast Furnace");
     this.add(Translations.Container.CRUSHER, "Crusher");
+    this.add(Translations.Container.STEAM_OVEN, "Steam Oven");
     this.add(Translations.Container.TANK, "Tank");
     this.add(Translations.Container.WATER_TANK_SIDING, "Water Tank");
     this.add(Translations.Container.STEAM_TURBINE, "Steam Turbine");
@@ -348,6 +357,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.COKE_OVEN, "Multi-Block: 3x3x3 (Hollow)");
     this.add(Translations.Tips.WATER_TANK_SIDING, "Multi-Block: 3x3x3 (Hollow)");
     this.add(Translations.Tips.BLAST_FURNACE, "Multi-Block: 3x4x3 (Hollow)");
+    this.add(Translations.Tips.MULTIBLOCK2X2X2, "Multi-Block: 2x2x2");
     this.add(Translations.Tips.MULTIBLOCK3X2X2, "Multi-Block: 3x2x2");
     this.add(Translations.Tips.STEAM_TURBINE_DESC_1, "Generates FE from Steam");
     this.add(Translations.Tips.STEAM_TURBINE_DESC_2, "Outputs water to the bottom");
@@ -438,7 +448,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.COAL_COKE_BLOCK, "%s Fuel Units");
     this.add(Translations.Tips.FORCE_TRACK_EMITTER, "Projects energy-based tracks");
     this.add(Translations.Tips.FEED_STATION, "Feeds animals");
-    this.add(Translations.Tips.MANUAL_ROLLING_MACHINE, "Crafting bench for various metal items");
+    this.add(Translations.Tips.ROLLING_MACHINE, "Crafting bench for various metal items");
     this.add(Translations.Tips.ITEM_LOADER, "Loads items into carts");
     this.add(Translations.Tips.ITEM_UNLOADER, "Unloads items from carts");
     this.add(Translations.Tips.FLUID_LOADER, "Loads fluids into carts");
@@ -505,6 +515,31 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.RECEIVERS, "%sx Receivers");
     this.add(Translations.Tips.REDSTONE_LINKAGE, "Redstone linkage:");
     this.add(Translations.Tips.LISTEN, "Listen");
+    this.add(Translations.Tips.CLICK_TO_CRAFT, "- Click to craft -");
+    this.add(Translations.Tips.ABANDONED_TRACK, "Can be suspended over gaps in terrain");
+    this.add(Translations.Tips.REINFORCED_TRACK, "125% of the speed of normal track");
+    this.add(Translations.Tips.STRAP_IRON_TRACK, "30% of the speed of iron track");
+    this.add(Translations.Tips.DANGER, "Danger:");
+    this.add(Translations.Tips.DERAILMENT_RISK, "Derailment Risk");
+    this.add(Translations.Tips.HIGH_VOLTAGE, "High Voltage");
+    this.add(Translations.Tips.HIGH_SPEED, "High Speed");
+    this.add(Translations.Tips.HIGH_VOLTAGE_SPEED, "High Voltage/Speed");
+    this.add(Translations.Tips.POWERED_BY_ELECTRICITY, "Powered by electricity");
+    this.add(Translations.Tips.USE_ELECTRIC_LOCOMOTIVE, "Use with Electric Locomotive");
+    this.add(Translations.Tips.VERY_FAST, "Very fast");
+    this.add(Translations.Tips.REQUIRE_BOOSTERS_TRANSITION,
+        "Requires Boosters/Transitions to reach speed");
+    this.add(Translations.Tips.CANNOT_MAKE_CORNERS_HIGH_SPEED,
+        "Cannot make corners at High Speed");
+    this.add(Translations.Tips.EXPLOSION_RESISTANT, "Explosion resistant");
+    this.add(Translations.Tips.CHARGE_NETWORK_BATTERY, "Charge Network Battery");
+    this.add(Translations.Tips.CHARGE_NETWORK_EMPTY_BATTERY, "Charge Network Empty Battery");
+    this.add(Translations.Tips.CAPACITY, "Capacity: %sKFE");
+    this.add(Translations.Tips.MAX_DRAW, "Max Draw: %s FE/t");
+    this.add(Translations.Tips.LOSS, "Loss: %s FE/t");
+    this.add(Translations.Tips.EFFICIENCY, "Efficiency: %s%%");
+    this.add(Translations.Tips.TYPE_DISPOSABLE, "Type: Disposable");
+    this.add(Translations.Tips.TYPE_RECHARGEABLE, "Type: Rechargeable");
   }
 
   private void screenTranslations() {
@@ -711,6 +746,54 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.BLAST_FURNACE, "Blast Furnace Smelting");
     this.add(Translations.Jei.CRUSHER, "Rock Crushing");
     this.add(Translations.Jei.CRUSHER_TIP, "(%s%% chance)");
+    this.add(Translations.Jei.MANUAL_ROLLING_MACHINE, """
+        Machine for rolling various shapes of metal. If there is only enough items in the grid \
+        for one cycle, you can click the output display to force crafting.""");
+    this.add(Translations.Jei.POWERED_ROLLING_MACHINE, """
+        Machine for rolling various shapes of metal. Can be automated by simply piping items \
+        in and out. If there is only enough items in the grid for one cycle, you can click the \
+        output display to force crafting.""");
+    this.add(Translations.Jei.FEED_STATION, """
+        Allows you to feed nearby animals automatically. Can be disabled with Redstone. \
+        Will stop feeding if there are too many animals nearby to prevent over-population.""");
+    this.add(Translations.Jei.BLOCK_SIGNAL, """
+        This is the basic signal used for cart detection. It pairs one-to-one with an adjacent \
+        Block Signal and will detect any carts between the two and sends the resulting aspect to \
+        a paired Receiver.""");
+    this.add(Translations.Jei.DISTANT_SIGNAL, """
+        This type of signal is primarily intended for cosmetic usage. It doesn't interface with \
+        carts at all and simply displays the aspect sent to it from a paired Controller.""");
+    this.add(Translations.Jei.TOKEN_SIGNAL, """
+        This signal can be used to define an area to monitor for carts entering and leaving. \
+        It pairs into a net of signals, with no particular limit to the number of signals \
+        defining the area. Recommended for junctions and diagonals. It will send the resulting \
+        aspect to a paired Receiver.""");
+    this.add(Translations.Jei.DUAL_BLOCK_SIGNAL, """
+        This signal contains a standard Block Signal on the upper lamp and a Distant Signal on \
+        the lower. It is both a Controller and a Receiver.""");
+    this.add(Translations.Jei.DUAL_DISTANT_SIGNAL,
+        "This signal contains two Distant Signals. They can be paired to different Controllers.");
+    this.add(Translations.Jei.DUAL_TOKEN_SIGNAL, """
+        This signal a Token Signal on the upper lamp and Distant Signal on the lower. \
+        It is both a Controller and a Receiver.""");
+    this.add(Translations.Jei.TUNNEL_BORE,
+        "Machine designed for digging tunnels and laying track.");
+    this.add(Translations.Jei.NICKEL_IRON_BATTERY,
+        "A battery designed to work with the charge network. Good for general purpose usage.");
+    this.add(Translations.Jei.NICKEL_ZINC_BATTERY, """
+            A battery designed to work with the charge network. \
+            Good for low draw, long term storage.""");
+    this.add(Translations.Jei.DISPOSABLE_BATTERY, """
+            A battery designed to work with the charge network. \
+            Good for cheap, single use storage. Comes fully charged.""");
+    this.add(Translations.Jei.DISPOSABLE_BATTERY_EMPTY, """
+            A battery designed to work with the charge network. \
+            Good for cheap, single use storage. \
+            This one is empty and can be recycled in the Crusher.""");
+    this.add(Translations.Jei.PAINT, "Paint");
+    this.add(Translations.Jei.COPY_TAG, "Copy Tag");
+    this.add(Translations.Jei.REPAIR, "Repair");
+    this.add(Translations.Jei.SPLIT, "Split");
   }
 
   private void signalTranslations() {

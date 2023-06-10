@@ -114,7 +114,7 @@ public final class HighSpeedTools {
 
   public static double speedForNextTrack(Level level, BlockPos pos, int dist,
       @Nullable AbstractMinecart cart) {
-    double maxSpeed = RailcraftConfig.server.highSpeedTrackMaxSpeed.get();
+    double maxSpeed = RailcraftConfig.SERVER.highSpeedTrackMaxSpeed.get();
     if (dist < LOOK_AHEAD_DIST) {
       for (Direction side : Direction.Plane.HORIZONTAL) {
         BlockPos nextPos = pos.relative(side);

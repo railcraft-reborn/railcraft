@@ -42,7 +42,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   public WaterCollectionModule(WaterTankSidingBlockEntity provider) {
     super(provider, 3);
     this.blockEntity = provider;
-    this.tank = StandardTank.ofBuckets(RailcraftConfig.server.tankCapacityPerBlock.get() * 26);
+    this.tank = StandardTank.ofBuckets(RailcraftConfig.SERVER.tankCapacityPerBlock.get() * 26);
     this.fluidHandler = LazyOptional.of(() -> this.tank);
   }
 
@@ -141,7 +141,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
 
     public int calculateRate(int size) {
       return Mth.floor(
-          (RailcraftConfig.server.waterCollectionRate.get()
+          (RailcraftConfig.SERVER.waterCollectionRate.get()
               * size
               * this.humidityMultiplier
               * this.precipitationMultiplier)

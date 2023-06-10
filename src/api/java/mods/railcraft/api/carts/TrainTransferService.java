@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -17,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
  * The helper object can be accessed from CartTools and is aware of the IItemCart and IFluidCart
  * interfaces.
  * <p/>
- * Created by CovertJaguar on 5/11/2015.
  *
  * @see CartUtil
  * @see mods.railcraft.api.carts.ItemTransferHandler

@@ -3,7 +3,6 @@ package mods.railcraft.util.container;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
-import mods.railcraft.world.item.CartItem;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.item.MinecartFactory;
@@ -11,6 +10,7 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.Predicates;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import mods.railcraft.world.item.CartItem;
 import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.BlockItem;
@@ -50,9 +50,9 @@ public enum StackFilter implements Predicate<ItemStack> {
       || itemStack.getItem() == Items.WHEAT
       || itemStack.getItem() instanceof BlockItem blockItem
           && blockItem.getBlock() instanceof StemBlock),
-  CARGO(itemStack -> (RailcraftConfig.server.chestAllowFluids.get()
+  CARGO(itemStack -> (RailcraftConfig.SERVER.chestAllowFluids.get()
       || !FluidItemHelper.isContainer(itemStack))
-      && !RailcraftConfig.server.cargoBlacklist.get()
+      && !RailcraftConfig.SERVER.cargoBlacklist.get()
           .contains(ForgeRegistries.ITEMS.getKey(itemStack.getItem()).toString())),
   RAW_METAL(itemStack -> itemStack.is(RailcraftTags.Items.METAL));
 

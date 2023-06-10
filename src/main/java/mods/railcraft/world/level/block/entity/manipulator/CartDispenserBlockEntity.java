@@ -90,7 +90,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
             cart.kill();
           }
         }, () -> {
-          if (this.timeSinceLastSpawn > RailcraftConfig.server.cartDispenserDelay.get() * 20) {
+          if (this.timeSinceLastSpawn > RailcraftConfig.SERVER.cartDispenserDelay.get() * 20) {
             for (int i = 0; i < this.getContainerSize(); i++) {
               var cartStack = this.getItem(i);
               if (!cartStack.isEmpty()) {

@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
-import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
+import mods.railcraft.client.gui.screen.inventory.widget.AnalogGaugeRenderer;
 import mods.railcraft.world.inventory.CrusherMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +18,7 @@ public class CrusherScreen extends RailcraftMenuScreen<CrusherMenu> {
     this.imageHeight = 171;
     this.inventoryLabelY = this.imageHeight - 94;
 
-    this.registerWidgetRenderer(new GaugeRenderer(menu.getEnergyWidget()));
+    this.registerWidgetRenderer(new AnalogGaugeRenderer(menu.getEnergyWidget()));
   }
 
   @Override
@@ -30,7 +30,7 @@ public class CrusherScreen extends RailcraftMenuScreen<CrusherMenu> {
     var logic = this.menu.getCrusher().getCrusherModule();
     if (logic.getProgress() > 0) {
       var progressPercent = (int) (logic.getProgressPercent() * 29 + 1);
-      blit(poseStack, x + 64, y + 20, 176, 0, progressPercent, 53);
+      blit(poseStack, x + 73, y + 20, 176, 0, progressPercent, 38);
     }
   }
 

@@ -200,7 +200,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.STEAM_TURBINE.get())
         .add(RailcraftBlocks.COKE_OVEN_BRICKS.get())
         .add(RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
+        .add(RailcraftBlocks.POWERED_ROLLING_MACHINE.get())
         .add(RailcraftBlocks.CRUSHER.get())
+        .add(RailcraftBlocks.STEAM_OVEN.get())
         .add(RailcraftBlocks.FEED_STATION.get())
         .add(RailcraftBlocks.COKE_BLOCK.get())
         .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get())
@@ -226,6 +228,12 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.QUARRIED_BRICK_SLAB.get())
         .add(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get())
         .add(RailcraftBlocks.QUARRIED_PAVER_SLAB.get())
+        .add(RailcraftBlocks.NICKEL_IRON_BATTERY.get())
+        .add(RailcraftBlocks.NICKEL_ZINC_BATTERY.get())
+        .add(RailcraftBlocks.ZINC_SILVER_BATTERY.get())
+        .add(RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get())
+        .add(RailcraftBlocks.ZINC_CARBON_BATTERY.get())
+        .add(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get())
         .addTags(RailcraftTags.Blocks.LEAD_ORE,
             RailcraftTags.Blocks.NICKEL_ORE,
             RailcraftTags.Blocks.SILVER_ORE,
@@ -267,6 +275,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.STEAM_TURBINE.get())
         .add(RailcraftBlocks.COKE_BLOCK.get())
         .add(RailcraftBlocks.CRUSHER.get())
+        .add(RailcraftBlocks.STEAM_OVEN.get())
         .add(RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
         .add(RailcraftBlocks.FEED_STATION.get())
         .addTags(RailcraftTags.Blocks.LEAD_ORE,

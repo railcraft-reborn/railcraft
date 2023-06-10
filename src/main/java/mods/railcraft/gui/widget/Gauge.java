@@ -4,9 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public interface Gauge {
 
   void refresh();

@@ -1,17 +1,16 @@
 package mods.railcraft.advancements;
 
 import com.google.gson.JsonObject;
-
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigger.Instance> {
 

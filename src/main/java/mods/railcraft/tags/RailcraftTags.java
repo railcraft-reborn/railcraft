@@ -81,6 +81,7 @@ public class RailcraftTags {
     public static final TagKey<Item> SILVER_GEAR = forgeTag("gears/silver");
 
 
+    public static final TagKey<Item> COAL_COKE = forgeTag("coal_coke");
     public static final TagKey<Item> SALTPETER_DUST = forgeTag("dusts/salt");
     public static final TagKey<Item> COAL_DUST = forgeTag("dusts/coal");
     public static final TagKey<Item> CHARCOAL_DUST = forgeTag("dusts/charcoal");
@@ -96,7 +97,6 @@ public class RailcraftTags {
     public static final TagKey<Item> STEEL_TANK_WALL = tag("steel_tank_wall");
 
     public static final TagKey<Item> QUARRIED = tag("quarried");
-    public static final TagKey<Item> TICKET = tag("ticket");
 
     public static final TagKey<Item> POST = tag("post");
     public static final TagKey<Item> STRENGTHENED_GLASS = tag("strengthened_glass");

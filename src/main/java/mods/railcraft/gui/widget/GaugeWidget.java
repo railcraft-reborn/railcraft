@@ -5,9 +5,6 @@ import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class GaugeWidget extends Widget {
 
   private final Gauge gauge;

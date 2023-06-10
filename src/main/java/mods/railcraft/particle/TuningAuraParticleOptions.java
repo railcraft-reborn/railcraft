@@ -1,5 +1,7 @@
 package mods.railcraft.particle;
 
+import java.util.List;
+import java.util.Locale;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
@@ -10,9 +12,6 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.List;
-import java.util.Locale;
 
 public record TuningAuraParticleOptions(Vec3 destination, int color) implements ParticleOptions {
 

@@ -365,6 +365,10 @@ public class ChargeNetworkImpl implements Charge.Network {
       return activeBatteries().mapToInt(ChargeStorage::getMaxEnergyStored).sum();
     }
 
+    public float getChargeLevel() {
+      return (float) getCharge() / (float) getCapacity();
+    }
+
     public int getAvailableCharge() {
       return activeBatteries().mapToInt(ChargeStorage::getAvailableCharge).sum();
     }
@@ -393,7 +397,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     }
 
     public float getLosses() {
-      return totalLosses * RailcraftConfig.server.lossMultiplier.get().floatValue();
+      return totalLosses * RailcraftConfig.SERVER.lossMultiplier.get().floatValue();
     }
 
     public float getAverageUsagePerTick() {
@@ -692,7 +696,7 @@ public class ChargeNetworkImpl implements Charge.Network {
         if (entity instanceof LivingEntity livingEntity) {
           Map<EquipmentSlot, ChargeProtectionItem> protections = new EnumMap<>(EquipmentSlot.class);
           for (var slot : EquipmentSlot.values()) {
-            ChargeProtectionItem protection = getChargeProtection(livingEntity, slot);
+            var protection = getChargeProtection(livingEntity, slot);
             if (protection != null) {
               protections.put(slot, protection);
             }
@@ -701,8 +705,8 @@ public class ChargeNetworkImpl implements Charge.Network {
             if (remainingDamage > 0.1F) {
               var result = entry.getValue().zap(livingEntity.getItemBySlot(entry.getKey()),
                   livingEntity, remainingDamage);
-              entity.setItemSlot(entry.getKey(), result.stack);
-              remainingDamage -= result.damagePrevented;
+              entity.setItemSlot(entry.getKey(), result.stack());
+              remainingDamage -= result.damagePrevented();
             } else {
               break;
             }
@@ -719,19 +723,14 @@ public class ChargeNetworkImpl implements Charge.Network {
       }
     }
 
-    private @Nullable ChargeProtectionItem getChargeProtection(LivingEntity entity,
-        EquipmentSlot slot) {
+    @Nullable
+    private ChargeProtectionItem getChargeProtection(LivingEntity entity, EquipmentSlot slot) {
       var stack = entity.getItemBySlot(slot);
       var item = stack.getItem();
       if (item instanceof ChargeProtectionItem protectionItem
           && protectionItem.isZapProtectionActive(stack, entity)) {
         return protectionItem;
       }
-      // TODO implement this
-      // if (ModItems.RUBBER_BOOTS.isEqual(stack, false, false)
-      // || ModItems.STATIC_BOOTS.isEqual(stack, false, false)) {
-      // return new ChargeProtectionItem() {};
-      // }
       return null;
     }
 

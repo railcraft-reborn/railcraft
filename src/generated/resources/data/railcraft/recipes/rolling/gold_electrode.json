@@ -10,8 +10,8 @@
     " a ",
     " a "
   ],
+  "processTime": 100,
   "result": {
     "item": "railcraft:gold_electrode"
-  },
-  "tickCost": 100
+  }
 }

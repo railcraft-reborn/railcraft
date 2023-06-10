@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
  * accept or provide items you should implement Container or provide an IItemHandler capability.
  *
  * <p/>
- * Created by CovertJaguar on 5/9/2015.
  *
  * @see mods.railcraft.api.carts.TrainTransferService
  */

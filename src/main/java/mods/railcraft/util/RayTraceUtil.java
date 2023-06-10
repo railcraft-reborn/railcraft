@@ -11,6 +11,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.ForgeMod;
 
 public final class RayTraceUtil {
 
@@ -33,7 +34,7 @@ public final class RayTraceUtil {
 
   public static @Nullable HitResult rayTracePlayerLook(Player player) {
     float reachAttribute = (float) player
-        .getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
+        .getAttribute(ForgeMod.BLOCK_REACH.get()).getValue();
     double reachDistance = player.isCreative() ? reachAttribute : reachAttribute - 0.5F;
     HitResult hitResult = player.pick(reachDistance, 1.0F, false);
     Vec3 eyePosition = player.getEyePosition(1.0F);

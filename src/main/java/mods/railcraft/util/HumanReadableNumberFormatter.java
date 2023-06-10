@@ -4,22 +4,17 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-/**
- * Created by CovertJaguar on 7/31/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class HumanReadableNumberFormatter {
 
-  private static final DecimalFormat smallNumberFormatter =
+  private static final DecimalFormat SMALL_NUMBER_FORMATTER =
       (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
-  private static final DecimalFormat largeNumberFormatter =
+  private static final DecimalFormat LARGE_NUMBER_FORMATTER =
       (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
-  private static String[] suffix = {"", "K", "M", "B", "T", "Q"};
+  private static final String[] SUFFIX = {"", "K", "M", "B", "T", "Q"};
 
   static {
-    smallNumberFormatter.applyPattern("#,##0.###");
-    largeNumberFormatter.applyPattern("#,##0.#");
+    SMALL_NUMBER_FORMATTER.applyPattern("#,##0.###");
+    LARGE_NUMBER_FORMATTER.applyPattern("#,##0.#");
   }
 
   public static String format(double number) {
@@ -29,9 +24,9 @@ public class HumanReadableNumberFormatter {
   private static String format(double number, int iteration) {
     boolean negative = number < 0.0;
     number = Math.abs(number);
-    if (number < 1_000.0 || iteration == suffix.length - 1) {
-      DecimalFormat formatter = iteration > 0 ? largeNumberFormatter : smallNumberFormatter;
-      return (negative ? "-" : "") + formatter.format(number) + " " + suffix[iteration];
+    if (number < 1_000.0 || iteration == SUFFIX.length - 1) {
+      var formatter = iteration > 0 ? LARGE_NUMBER_FORMATTER : SMALL_NUMBER_FORMATTER;
+      return (negative ? "-" : "") + formatter.format(number) + " " + SUFFIX[iteration];
     }
     return (negative ? "-" : "") + format(number / 1000.0, iteration + 1);
   }

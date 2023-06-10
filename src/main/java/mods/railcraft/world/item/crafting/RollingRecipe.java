@@ -1,6 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
 import com.google.gson.JsonObject;
+import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -21,24 +22,16 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   private final int width, height;
   private final NonNullList<Ingredient> ingredients;
   private final ItemStack result;
-  private final int tickCost;
+  private final int processTime;
 
-  /**
-   * Creates a new recipe.
-   *
-   * @param recipeId        - The id of the recipe
-   * @param ingredients     - Ingredients list of the object
-   * @param result          - The result
-   * @param tickCost        - The time cost of the recipe
-   */
   public RollingRecipe(ResourceLocation recipeId, int width, int height,
-      NonNullList<Ingredient> ingredients, ItemStack result, int tickCost) {
+      NonNullList<Ingredient> ingredients, ItemStack result, int processTime) {
     this.recipeId = recipeId;
     this.width = width;
     this.height = height;
     this.ingredients = ingredients;
     this.result = result;
-    this.tickCost = tickCost;
+    this.processTime = processTime;
   }
 
   /**
@@ -46,8 +39,8 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
    *
    * @return tick cost, in int.
    */
-  public int getTickCost() {
-    return this.tickCost;
+  public int getProcessTime() {
+    return this.processTime;
   }
 
   public int getWidth() {
@@ -152,7 +145,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
       int width = patterns[0].length();
       int height = patterns.length;
 
-      int tickCost = GsonHelper.getAsInt(json, "tickCost", 100); // 5 seconds
+      int tickCost = GsonHelper.getAsInt(json, "processTime", RollingRecipeBuilder.DEFAULT_PROCESSING_TIME);
       var ingredients = ShapedRecipe.dissolvePattern(patterns, map, width, height);
       var resultItemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json,"result"));
       return new RollingRecipe(recipeId, width, height, ingredients, resultItemStack, tickCost);
@@ -174,7 +167,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
     public void toNetwork(FriendlyByteBuf buffer, RollingRecipe recipe) {
       buffer.writeVarInt(recipe.width);
       buffer.writeVarInt(recipe.height);
-      buffer.writeVarInt(recipe.tickCost);
+      buffer.writeVarInt(recipe.processTime);
       buffer.writeCollection(recipe.ingredients, (buf, ingredient) -> ingredient.toNetwork(buffer));
       buffer.writeItem(recipe.result);
     }

@@ -1,0 +1,42 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": [
+    {
+      "item": "railcraft:zinc_silver_battery_empty"
+    },
+    {
+      "item": "railcraft:zinc_carbon_battery_empty"
+    }
+  ],
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 2,
+        "item": "railcraft:charge_terminal"
+      }
+    },
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 1,
+        "item": "railcraft:charge_spool_medium"
+      }
+    },
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 4,
+        "item": "railcraft:slag"
+      }
+    },
+    {
+      "probability": 0.5,
+      "result": {
+        "count": 2,
+        "item": "railcraft:slag"
+      }
+    }
+  ],
+  "processTime": 200
+}

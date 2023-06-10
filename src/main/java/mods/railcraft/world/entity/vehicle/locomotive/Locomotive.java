@@ -14,12 +14,12 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
-import mods.railcraft.api.carts.Paintable;
-import mods.railcraft.api.carts.Routable;
 import mods.railcraft.api.carts.Linkable;
-import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.api.core.Lockable;
 import mods.railcraft.api.carts.NeedsFuel;
+import mods.railcraft.api.carts.Paintable;
+import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.carts.Routable;
+import mods.railcraft.api.core.Lockable;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
@@ -557,7 +557,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     Speed speed = getSpeed();
     if (isRunning()) {
-      double force = RailcraftConfig.server.locomotiveHorsepower.get() * 0.01F;
+      double force = RailcraftConfig.SERVER.locomotiveHorsepower.get() * 0.01F;
       if (isReverse()) {
         force = -force;
       }
@@ -656,7 +656,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
           && (isVelocityHigherThan(0.2f) || extension.isHighSpeed())
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
-        if (RailcraftConfig.server.locomotiveDamageMobs.get()) {
+        if (RailcraftConfig.SERVER.locomotiveDamageMobs.get()) {
           living.hurt(RailcraftDamageSources.train(level.registryAccess()),
               getDamageToRoadKill(living));
         }

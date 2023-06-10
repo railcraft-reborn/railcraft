@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -27,8 +27,6 @@ import net.minecraft.world.phys.Vec3;
  * the Tunnel Bore or Track Relayer.
  * <p/>
  * If you defined your rails with a TrackSpec, you don't need to worry about this.
- *
- * @author CovertJaguar <https://www.railcraft.info>
  */
 @ActivationBlockingItem
 public interface TrackPlacer {

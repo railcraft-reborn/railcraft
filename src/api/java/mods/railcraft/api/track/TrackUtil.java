@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
+ Copyright (c) Railcraft, 2011-2023
 
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
@@ -38,8 +38,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * A number of utility functions related to rails.
- *
- * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class TrackUtil {
 

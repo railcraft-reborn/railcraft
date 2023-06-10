@@ -8,9 +8,14 @@
     {
       "item": "railcraft:track_parts"
     },
-    {
-      "tag": "railcraft:ticket"
-    },
+    [
+      {
+        "item": "railcraft:ticket"
+      },
+      {
+        "item": "railcraft:golden_ticket"
+      }
+    ],
     {
       "tag": "forge:dusts/redstone"
     }

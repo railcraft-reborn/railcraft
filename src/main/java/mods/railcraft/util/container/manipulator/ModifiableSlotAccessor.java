@@ -1,11 +1,10 @@
 package mods.railcraft.util.container.manipulator;
 
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-
 import java.util.function.Predicate;
 import mods.railcraft.util.container.ContainerTools;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 /**
  * This interface extends IInvSlot by allowing you to modify a slot directly. This is only valid on
