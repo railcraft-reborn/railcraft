@@ -111,6 +111,7 @@ public class Railcraft {
     var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleRegisterCapabilities);
+    modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
 
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientManager::new);
@@ -146,6 +147,14 @@ public class Railcraft {
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
     event.register(RollingStock.class);
+  }
+
+  public void buildContents(BuildCreativeModeTabContentsEvent event) {
+    if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+      RailcraftCreativeModeTabs.addToolsAndUtilities(event.getEntries());
+    } else if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+      RailcraftCreativeModeTabs.addCombat(event.getEntries());
+    }
   }
 
   private void handleGatherData(GatherDataEvent event) {
@@ -189,15 +198,6 @@ public class Railcraft {
   // ================================================================================
   // Forge Events
   // ================================================================================
-
-  @SubscribeEvent
-  public void buildContents(BuildCreativeModeTabContentsEvent event) {
-    if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-      RailcraftCreativeModeTabs.addToolsAndUtilities(event.getEntries());
-    } else if (event.getTabKey() == CreativeModeTabs.COMBAT) {
-      RailcraftCreativeModeTabs.addCombat(event.getEntries());
-    }
-  }
 
   @SubscribeEvent
   public void handleAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
