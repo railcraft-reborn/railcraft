@@ -151,7 +151,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
       player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F,
           player.getRandom().nextFloat() * 0.4F + 0.8F);
       player.swing(hand);
-      player.level.setBlockAndUpdate(player.blockPosition(), Blocks.FIRE.defaultBlockState());
+      player.level().setBlockAndUpdate(player.blockPosition(), Blocks.FIRE.defaultBlockState());
       return InteractionResult.SUCCESS;
     }
     return InteractionResult.CONSUME;

@@ -13,6 +13,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Material;
 
 public class FirestoneItem extends Item {
 
@@ -81,7 +81,7 @@ public class FirestoneItem extends Item {
       boolean isSelected) {
     if (entity instanceof Player player
         && level.getRandom().nextInt(12) % 4 == 0) {
-      trySpawnFire(player.getLevel(), player.blockPosition(), stack, player);
+      trySpawnFire(player.level(), player.blockPosition(), stack, player);
     }
   }
 
@@ -119,7 +119,7 @@ public class FirestoneItem extends Item {
     for (var side : Direction.values()) {
       var offset = pos.relative(side);
       var offsetBlockState = level.getBlockState(offset);
-      if (!offsetBlockState.isAir() && offsetBlockState.getMaterial() != Material.FIRE) {
+      if (!offsetBlockState.isAir() && !offsetBlockState.is(BlockTags.FIRE)) {
         return true;
       }
     }

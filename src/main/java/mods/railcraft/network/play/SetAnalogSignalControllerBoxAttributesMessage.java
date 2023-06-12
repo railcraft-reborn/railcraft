@@ -26,7 +26,7 @@ public record SetAnalogSignalControllerBoxAttributesMessage(BlockPos blockPos,
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().getLevel();
+    var level = context.get().getSender().level();
     level
         .getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get())
         .ifPresent(

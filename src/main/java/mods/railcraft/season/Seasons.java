@@ -65,7 +65,7 @@ public final class Seasons {
    */
   public static boolean isPolarExpress(AbstractMinecart cart) {
     var season = cart instanceof SeasonalCart seasonal ? seasonal.getSeason() : Season.DEFAULT;
-    var level = cart.getLevel();
+    var level = cart.level();
     return season == Season.DEFAULT
         ? (RailcraftConfig.CLIENT.polarExpressEnabled.get() && CHRISTMAS)
             || cart.hasCustomName() && POLAR_EXPRESS.equals(cart.getCustomName().getContents())

@@ -1,6 +1,5 @@
 package mods.railcraft.integrations.jei.category;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -16,6 +15,7 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -61,9 +61,9 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
   }
 
   @Override
-  public void draw(CrusherRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack,
+  public void draw(CrusherRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
       double mouseX, double mouseY) {
-    arrow.draw(stack, 58, 0);
+    arrow.draw(guiGraphics, 58, 0);
   }
 
   @Override

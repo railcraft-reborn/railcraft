@@ -18,7 +18,7 @@ public record SetLauncherTrackAttributesMessage(BlockPos blockPos, byte force) {
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().getLevel();
+    var level = context.get().getSender().level();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.LAUNCHER_TRACK.get())
         .ifPresent(track -> track.setLaunchForce(this.force));
     return true;

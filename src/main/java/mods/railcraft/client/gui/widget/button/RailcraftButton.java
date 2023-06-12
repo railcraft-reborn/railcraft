@@ -3,9 +3,9 @@ package mods.railcraft.client.gui.widget.button;
 import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
@@ -37,7 +37,7 @@ public class RailcraftButton extends Button {
   }
 
   @Override
-  public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+  public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
     var font = Minecraft.getInstance().font;
     RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
@@ -51,11 +51,12 @@ public class RailcraftButton extends Button {
     int h = this.texturePosition.getHeight();
     int w = this.texturePosition.getWidth();
 
-    blit(poseStack, this.getX(), this.getY(), xOffset, yOffset + i * h, this.width / 2, h);
-    blit(poseStack, this.getX() + this.width / 2, this.getY(), xOffset + w - this.width / 2,
+    guiGraphics.blit(WIDGETS_LOCATION, this.getX(), this.getY(), xOffset, yOffset + i * h, this.width / 2, h);
+    guiGraphics.blit(WIDGETS_LOCATION, this.getX() + this.width / 2, this.getY(),
+        xOffset + w - this.width / 2,
         yOffset + i * h, this.width / 2, h);
     int j = getFGColor();
-    drawCenteredString(poseStack, font, this.getMessage(), this.getX() + this.width / 2,
+    guiGraphics.drawCenteredString(font, this.getMessage(), this.getX() + this.width / 2,
         this.getY() + (this.height - 8) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
   }
 

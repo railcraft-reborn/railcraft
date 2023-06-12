@@ -54,6 +54,6 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
       this.zPush = this.getZ() - pPlayer.getZ();
     }
 
-    return InteractionResult.sidedSuccess(this.level.isClientSide);
+    return InteractionResult.sidedSuccess(this.level().isClientSide);
   }
 }

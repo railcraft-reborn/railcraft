@@ -1,11 +1,11 @@
 package mods.railcraft.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetLauncherTrackAttributesMessage;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -42,7 +42,7 @@ public class LauncherTrackScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(PoseStack matrixStack, int mouseX, int mouseY,
+  protected void renderContent(GuiGraphics matrixStack, int mouseX, int mouseY,
       float partialTicks) {
     this.drawCenteredString(matrixStack,
         Component.translatable(Translations.Screen.LAUNCHER_TRACK_LAUNCH_FORCE,

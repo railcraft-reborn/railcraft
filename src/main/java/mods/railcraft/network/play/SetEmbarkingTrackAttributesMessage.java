@@ -18,7 +18,7 @@ public record SetEmbarkingTrackAttributesMessage(BlockPos blockPos, int radius) 
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().getLevel();
+    var level = context.get().getSender().level();
     var blockState = level.getBlockState(this.blockPos);
     if (blockState.getBlock() instanceof EmbarkingTrackBlock) {
       level.setBlockAndUpdate(this.blockPos,

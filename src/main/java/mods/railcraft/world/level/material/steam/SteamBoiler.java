@@ -1,13 +1,13 @@
-package mods.railcraft.world.level.material.fluid.steam;
+package mods.railcraft.world.level.material.steam;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.primitives.Floats;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.gui.widget.Gauge;
-import mods.railcraft.world.level.material.fluid.FuelProvider;
-import mods.railcraft.world.level.material.fluid.RailcraftFluids;
-import mods.railcraft.world.level.material.fluid.StandardTank;
+import mods.railcraft.world.level.material.FuelProvider;
+import mods.railcraft.world.level.material.RailcraftFluids;
+import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.util.INBTSerializable;

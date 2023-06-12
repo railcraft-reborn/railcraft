@@ -3,10 +3,10 @@ name: Railcraft CI
 on:
   push:
     branches:
-    - 1.19.x
+    - 1.20.x
   pull_request:
     branches:
-    - 1.19.x
+    - 1.20.x
   workflow_dispatch:
 
 jobs:
@@ -33,5 +33,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Railcraft-1.19.x-GitHub
+          name: Railcraft-1.20.x-GitHub
           path: build/libs
