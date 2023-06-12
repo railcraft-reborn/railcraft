@@ -176,14 +176,6 @@ repositories {
         name 'JEI'
         url 'https://maven.blamejared.com/'
     }
-    maven {
-        name 'curseforge'
-        url 'https://www.cursemaven.com'
-    }
-    maven {
-        name 'TOP'
-        url 'https://maven.k-4u.nl'
-    }
 }
 
 dependencies {
@@ -195,13 +187,6 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge-api:${project.jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
-
-    //runtimeOnly fg.deobf("curse.maven:edivadlib-638508:4438326")
-    //runtimeOnly fg.deobf("curse.maven:solargeneration-336538:4458961")
-    //runtimeOnly fg.deobf("curse.maven:pipez-443900:4438557")
-    runtimeOnly fg.deobf("mcjty.theoneprobe:theoneprobe:1.20.0-9.0.0-1") {
-        transitive = false
-    }
 }
 
 tasks.withType(JavaCompile).configureEach {
