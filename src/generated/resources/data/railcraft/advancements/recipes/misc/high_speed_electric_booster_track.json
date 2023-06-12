@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:high_speed_electric_booster_track"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

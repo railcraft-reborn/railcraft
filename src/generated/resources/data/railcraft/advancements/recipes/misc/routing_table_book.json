@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:routing_table_book"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

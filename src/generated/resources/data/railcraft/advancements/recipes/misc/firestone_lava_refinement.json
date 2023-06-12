@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:firestone_lava_refinement"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

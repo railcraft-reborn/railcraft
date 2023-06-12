@@ -28,5 +28,6 @@
     "recipes": [
       "railcraft:copper_gear"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -17,5 +17,6 @@
     [
       "has_coal_block"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

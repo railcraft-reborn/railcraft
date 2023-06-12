@@ -27,5 +27,6 @@
     [
       "has_exploded_track"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

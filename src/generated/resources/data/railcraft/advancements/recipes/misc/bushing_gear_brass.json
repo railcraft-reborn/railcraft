@@ -28,5 +28,6 @@
     "recipes": [
       "railcraft:bushing_gear_brass"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

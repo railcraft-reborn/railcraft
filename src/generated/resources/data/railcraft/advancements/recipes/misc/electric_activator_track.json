@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:electric_activator_track"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

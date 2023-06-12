@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:tin_block_from_tin_ingot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

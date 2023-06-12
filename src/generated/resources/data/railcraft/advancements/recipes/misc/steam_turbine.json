@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:steam_turbine"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:brass_block_from_brass_ingot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

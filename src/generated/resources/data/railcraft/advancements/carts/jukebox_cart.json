@@ -27,5 +27,6 @@
     [
       "stal_played"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

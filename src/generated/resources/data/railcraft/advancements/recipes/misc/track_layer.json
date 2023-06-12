@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:track_layer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "minecraft:zinc_ingot_from_blasting_zinc_ore"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

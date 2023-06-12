@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:light_blue_post"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

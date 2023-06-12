@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:blast_furnace_bricks"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

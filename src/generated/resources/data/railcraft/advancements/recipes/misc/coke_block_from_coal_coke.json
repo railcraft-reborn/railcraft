@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:coke_block_from_coal_coke"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

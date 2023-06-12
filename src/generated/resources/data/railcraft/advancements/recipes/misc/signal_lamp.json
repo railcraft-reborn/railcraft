@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:signal_lamp"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

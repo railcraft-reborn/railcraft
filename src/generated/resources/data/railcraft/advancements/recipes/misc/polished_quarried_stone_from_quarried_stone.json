@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:polished_quarried_stone_from_quarried_stone"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

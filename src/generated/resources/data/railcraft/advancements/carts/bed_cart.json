@@ -27,5 +27,6 @@
     [
       "has_slept_in_rc_bed"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

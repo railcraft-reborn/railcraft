@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:train_dispenser"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
