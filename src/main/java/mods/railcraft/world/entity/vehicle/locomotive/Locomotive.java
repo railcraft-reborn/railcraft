@@ -334,6 +334,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
     if (ticket.getItem() instanceof TicketItem) {
       if (this.isLocked()) {
         var ticketOwner = TicketItem.getOwner(ticket);
+        if (ticketOwner == null) {
+          return false;
+        }
         if (!this.getOwnerOrThrow().equals(ticketOwner) &&
             !serverLevel.getServer().getPlayerList().isOp(ticketOwner)) {
           return false;
