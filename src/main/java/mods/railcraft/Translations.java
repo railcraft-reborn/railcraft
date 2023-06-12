@@ -155,6 +155,7 @@ public class Translations {
     public static final String SPIKE_MAUL =
         makeKey("tips", "spike_maul");
     public static final String OVERALLS = makeKey("tips", "overalls");
+    public static final String CLEAR = makeKey("tips", "clear");
     public static final String GOOGLES_DESC =
         makeKey("tips", "googles.desc");
     public static final String GOOGLES_AURA =

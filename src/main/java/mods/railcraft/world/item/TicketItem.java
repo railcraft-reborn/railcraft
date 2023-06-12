@@ -46,8 +46,10 @@ public class TicketItem extends Item {
       }
 
       String dest = getDestination(stack);
-      if (!dest.isEmpty()) {
-        list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST));
+      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST));
+      if (dest.isEmpty()) {
+        list.add(Component.translatable(Translations.Tips.CLEAR).withStyle(ChatFormatting.GRAY));
+      } else {
         list.add(Component.literal(dest).withStyle(ChatFormatting.GRAY));
       }
     } else
