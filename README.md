@@ -1,4 +1,4 @@
-# Railcraft for Minecraft 1.19
+# Railcraft for Minecraft 1.20
 
 [![Deploy Nightly](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/nightly.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/releases/tag/nightly)
 [![CI Suite](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/master.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/master.yml)
@@ -17,8 +17,8 @@ Some contributors who participated in the development for the most recent versio
   - [LetterN](https://github.com/LetterN)
 
 ## Official Links
-* The Blog, Forums, and main download page: <https://www.railcraft.info>
-* The Wiki: <https://railcraft.info/wiki>
+[comment]: <> (* The Blog, Forums, and main download page: <https://www.railcraft.info>)
+[comment]: <> (* The Wiki: <https://railcraft.info/wiki>)
 * Discord: [Invite](https://discord.gg/VyaUt2r)
 
 ## Issues

@@ -50,12 +50,11 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics matrixStack, int mouseX, int mouseY,
+  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
       float partialTicks) {
-    this.drawCenteredString(matrixStack,
+    this.drawCenteredString(guiGraphics,
         Component.translatable(Translations.Screen.SIGNAL_CAPACITOR_BOX_DURATION,
-            this.signalBox.getTicksToPower() / 20),
-        this.windowWidth / 2, 25);
+            this.signalBox.getTicksToPower() / 20), this.windowWidth / 2, 25);
   }
 
   @Override

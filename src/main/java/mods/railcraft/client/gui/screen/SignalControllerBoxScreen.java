@@ -46,17 +46,17 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics matrixStack, int mouseX, int mouseY,
+  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
       float partialTicks) {
-    this.drawCenteredString(matrixStack,
+    this.drawCenteredString(guiGraphics,
         Component.translatable(Translations.Screen.SINGAL_CONTROLLER_BOX_DEFAULT),
         this.windowWidth / 2, 25);
-    this.drawCenteredString(matrixStack, this.defaultAspect.getDisplayName(),
+    this.drawCenteredString(guiGraphics, this.defaultAspect.getDisplayName(),
         this.windowWidth / 2, 35);
-    this.drawCenteredString(matrixStack,
+    this.drawCenteredString(guiGraphics,
         Component.translatable(Translations.Screen.SINGAL_CONTROLLER_BOX_POWERED),
         this.windowWidth / 2, 60);
-    this.drawCenteredString(matrixStack, this.poweredAspect.getDisplayName(),
+    this.drawCenteredString(guiGraphics, this.poweredAspect.getDisplayName(),
         this.windowWidth / 2, 70);
   }
 
