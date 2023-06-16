@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
@@ -23,14 +23,14 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
 
   @Override
   public CartLinkingTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
+      EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
     var owned = JsonUtil.getAsJsonObject(json, "owned")
         .map(MinecartPredicate::deserialize)
         .orElse(MinecartPredicate.ANY);
     var other = JsonUtil.getAsJsonObject(json, "other")
         .map(MinecartPredicate::deserialize)
         .orElse(MinecartPredicate.ANY);
-    return new CartLinkingTrigger.Instance(contextAwarePredicate, owned, other);
+    return new CartLinkingTrigger.Instance(entityPredicate, owned, other);
   }
 
   /**
@@ -47,15 +47,15 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
     private final MinecartPredicate owned;
     private final MinecartPredicate other;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate,
+    private Instance(EntityPredicate.Composite entityPredicate,
         MinecartPredicate owned, MinecartPredicate other) {
-      super(CartLinkingTrigger.ID, contextAwarePredicate);
+      super(CartLinkingTrigger.ID, entityPredicate);
       this.owned = owned;
       this.other = other;
     }
 
     public static CartLinkingTrigger.Instance hasLinked() {
-      return new CartLinkingTrigger.Instance(ContextAwarePredicate.ANY,
+      return new CartLinkingTrigger.Instance(EntityPredicate.Composite.ANY,
           MinecartPredicate.ANY, MinecartPredicate.ANY);
     }
 

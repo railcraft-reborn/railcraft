@@ -43,6 +43,5 @@
     "recipes": [
       "railcraft:zinc_carbon_battery"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

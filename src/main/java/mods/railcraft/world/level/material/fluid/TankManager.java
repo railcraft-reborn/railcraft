@@ -1,4 +1,4 @@
-package mods.railcraft.world.level.material;
+package mods.railcraft.world.level.material.fluid;
 
 import java.util.ArrayList;
 import java.util.Arrays;

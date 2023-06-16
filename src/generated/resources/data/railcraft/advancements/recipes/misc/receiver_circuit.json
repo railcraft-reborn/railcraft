@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:receiver_circuit"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

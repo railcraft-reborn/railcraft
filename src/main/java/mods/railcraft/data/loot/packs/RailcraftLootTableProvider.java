@@ -6,9 +6,8 @@ import java.util.Set;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.storage.loot.LootDataId;
-import net.minecraft.world.level.storage.loot.LootDataType;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
@@ -29,8 +28,6 @@ public class RailcraftLootTableProvider extends LootTableProvider {
   protected void validate(Map<ResourceLocation, LootTable> map,
       ValidationContext validationcontext) {
     map.forEach((location, lootTable) ->
-        lootTable.validate(validationcontext
-            .setParams(lootTable.getParamSet())
-            .enterElement("{" + location + "}", new LootDataId<>(LootDataType.TABLE, location))));
+        LootTables.validate(validationcontext, location, lootTable));
   }
 }

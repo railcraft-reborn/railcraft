@@ -1,4 +1,4 @@
-package mods.railcraft.world.level.material;
+package mods.railcraft.world.level.material.fluid;
 
 import mods.railcraft.Railcraft;
 import net.minecraftforge.eventbus.api.IEventBus;

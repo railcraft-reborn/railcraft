@@ -20,7 +20,7 @@ public class FirestoneOreBlockItem extends BlockItem {
         if (entity instanceof Player player) {
             if (level.getRandom().nextInt(12) % 4 == 0) {
                 var pos = BlockPos.containing(player.position());
-                FirestoneItem.trySpawnFire(player.level(), pos, stack, player);
+                FirestoneItem.trySpawnFire(player.level, pos, stack, player);
             }
         }
     }

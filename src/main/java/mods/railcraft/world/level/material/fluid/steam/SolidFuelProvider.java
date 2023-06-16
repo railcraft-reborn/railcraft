@@ -1,8 +1,8 @@
-package mods.railcraft.world.level.material.steam;
+package mods.railcraft.world.level.material.fluid.steam;
 
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.item.RefinedFirestoneItem;
-import mods.railcraft.world.level.material.FuelProvider;
+import mods.railcraft.world.level.material.fluid.FuelProvider;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

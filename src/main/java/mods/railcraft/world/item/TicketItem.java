@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.util.PlayerUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.NbtUtils;
@@ -40,16 +41,12 @@ public class TicketItem extends Item {
       TooltipFlag flag) {
     if (stack.hasTag()) {
       GameProfile owner = getOwner(stack);
-      if (owner != null) {
-        list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER));
-        list.add(PlayerUtil.getUsername(level, owner).copy().withStyle(ChatFormatting.GRAY));
-      }
+      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER));
+      list.add(PlayerUtil.getUsername(level, owner).copy().withStyle(ChatFormatting.GRAY));
 
       String dest = getDestination(stack);
-      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST));
-      if (dest.isEmpty()) {
-        list.add(Component.translatable(Translations.Tips.CLEAR).withStyle(ChatFormatting.GRAY));
-      } else {
+      if (!dest.isEmpty()) {
+        list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST));
         list.add(Component.literal(dest).withStyle(ChatFormatting.GRAY));
       }
     } else
@@ -99,13 +96,12 @@ public class TicketItem extends Item {
     return tag.getString("dest");
   }
 
-  @Nullable
   public static GameProfile getOwner(ItemStack ticket) {
     if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
-      return null;
+      return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
     var tag = ticket.getTag();
     if (tag == null)
-      return null;
+      return new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
     return NbtUtils.readGameProfile(tag);
   }
 }

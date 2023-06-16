@@ -19,7 +19,7 @@ public class MinecartHopperMixin {
   @Inject(method = "tick", at = @At("RETURN"))
   private void railcraft$pushItems(CallbackInfo callbackInfo) {
     var self = (MinecartHopper) (Object) this;
-    if (!self.level().isClientSide()
+    if (!self.getLevel().isClientSide()
         && self.isAlive()
         && this.pushTime-- == 0) {
       tryPushItem(self);

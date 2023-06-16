@@ -196,14 +196,14 @@ public abstract class Locomotive extends RailcraftMinecart implements
   @Override
   public void destroy(DamageSource source) {
     this.kill();
-    if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+    if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
       ItemStack itemstack = getPickResult().copy();
       if (this.hasCustomName()) {
         itemstack.setHoverName(this.getCustomName());
       }
       this.spawnAtLocation(itemstack);
     }
-    this.chestVehicleDestroyed(source, this.level(), this);
+    this.chestVehicleDestroyed(source, this.level, this);
   }
 
   @Override
@@ -224,7 +224,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    if (this.level().isClientSide()) {
+    if (this.level.isClientSide()) {
       return InteractionResult.CONSUME;
     }
 
@@ -329,14 +329,11 @@ public abstract class Locomotive extends RailcraftMinecart implements
    * destination based on the ticket the user has.
    */
   public boolean setDestination(ItemStack ticket) {
-    if (!(this.level() instanceof ServerLevel serverLevel))
+    if (!(this.level instanceof ServerLevel serverLevel))
       return false;
     if (ticket.getItem() instanceof TicketItem) {
       if (this.isLocked()) {
         var ticketOwner = TicketItem.getOwner(ticket);
-        if (ticketOwner == null) {
-          return false;
-        }
         if (!this.getOwnerOrThrow().equals(ticketOwner) &&
             !serverLevel.getServer().getPlayerList().isOp(ticketOwner)) {
           return false;
@@ -460,13 +457,13 @@ public abstract class Locomotive extends RailcraftMinecart implements
   public boolean isIdle() {
     return !this.isShutdown()
         && (this.tempIdle > 0 || this.getMode() == Mode.IDLE
-            || !this.level().isClientSide()
+            || !this.level.isClientSide()
                 && RollingStock.getOrThrow(this).train().isIdle());
   }
 
   public boolean isShutdown() {
     return this.getMode() == Mode.SHUTDOWN
-        || !this.level().isClientSide()
+        || !this.level.isClientSide()
             && RollingStock.getOrThrow(this).train().state().isStopped();
   }
 
@@ -492,7 +489,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
    */
   public final void whistle() {
     if (this.whistleDelay <= 0) {
-      this.level().playSound(null, this, this.getWhistleSound(), this.getSoundSource(),
+      this.level.playSound(null, this, this.getWhistleSound(), this.getSoundSource(),
           1.0F, 1.0F);
       this.whistleDelay = WHISTLE_DELAY;
     }
@@ -502,7 +499,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   public void tick() {
     super.tick();
 
-    if (this.level().isClientSide()) {
+    if (this.level.isClientSide()) {
       if (Seasons.isPolarExpress(this)
           && (!MathUtil.nearZero(this.getDeltaMovement().x())
               || !MathUtil.nearZero(this.getDeltaMovement().z()))) {
@@ -533,7 +530,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     double vx = this.random.nextGaussian() * 0.1;
     double vy = this.random.nextDouble() * 0.01;
     double vz = this.random.nextGaussian() * 0.1;
-    this.level().addParticle(ParticleTypes.ITEM_SNOWBALL, x, y, z, vx, vy, vz);
+    this.level.addParticle(ParticleTypes.ITEM_SNOWBALL, x, y, z, vx, vy, vz);
   }
 
   protected abstract Container getTicketInventory();
@@ -646,7 +643,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public void push(Entity entity) {
-    if (!this.level().isClientSide()) {
+    if (!this.level.isClientSide()) {
       if (!entity.isAlive()) {
         return;
       }
@@ -660,7 +657,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
         if (RailcraftConfig.SERVER.locomotiveDamageMobs.get()) {
-          living.hurt(RailcraftDamageSources.train(this.level().registryAccess()),
+          living.hurt(RailcraftDamageSources.train(level.registryAccess()),
               getDamageToRoadKill(living));
         }
         if (living.getHealth() > 0) {

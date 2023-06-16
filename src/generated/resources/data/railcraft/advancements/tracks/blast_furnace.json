@@ -27,6 +27,5 @@
     [
       "blast_furnace_formed"
     ]
-  ],
-  "sends_telemetry_event": true
+  ]
 }

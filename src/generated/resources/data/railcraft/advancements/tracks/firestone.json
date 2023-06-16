@@ -33,6 +33,5 @@
     [
       "inv_changed"
     ]
-  ],
-  "sends_telemetry_event": true
+  ]
 }

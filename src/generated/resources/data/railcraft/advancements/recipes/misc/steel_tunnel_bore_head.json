@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:steel_tunnel_bore_head"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

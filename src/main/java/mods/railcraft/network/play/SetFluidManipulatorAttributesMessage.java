@@ -22,7 +22,7 @@ public record SetFluidManipulatorAttributesMessage(BlockPos blockPos,
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().level();
+    var level = context.get().getSender().getLevel();
     LevelUtil.getBlockEntity(level, this.blockPos, FluidManipulatorBlockEntity.class)
         .ifPresent(manipulator -> manipulator.setRedstoneMode(this.redstoneMode));
     return true;

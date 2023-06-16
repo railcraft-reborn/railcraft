@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:dual_distant_signal"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

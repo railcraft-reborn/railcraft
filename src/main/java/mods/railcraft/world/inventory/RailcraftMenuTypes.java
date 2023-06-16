@@ -149,7 +149,7 @@ public class RailcraftMenuTypes {
       Class<E> entityType, CustomMenuFactory<T, E> factory) {
     IContainerFactory<T> containerFactory = (id, inventory, packetBuffer) -> {
       int entityId = packetBuffer.readVarInt();
-      Entity entity = inventory.player.level().getEntity(entityId);
+      Entity entity = inventory.player.level.getEntity(entityId);
       if (entityType.isInstance(entity)) {
         return factory.create(id, inventory, entityType.cast(entity));
       }
@@ -163,7 +163,7 @@ public class RailcraftMenuTypes {
   blockEntityMenu(Class<E> entityType, CustomMenuFactory<T, E> factory) {
     IContainerFactory<T> containerFactory =  (id, inventory, packetBuffer) -> {
       BlockPos blockPos = packetBuffer.readBlockPos();
-      BlockEntity entity = inventory.player.level().getBlockEntity(blockPos);
+      BlockEntity entity = inventory.player.level.getBlockEntity(blockPos);
       if (entityType.isInstance(entity)) {
         return factory.create(id, inventory, entityType.cast(entity));
       }

@@ -1,10 +1,10 @@
 package mods.railcraft.client.gui.screen.inventory;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.screen.inventory.widget.AnalogGaugeRenderer;
 import mods.railcraft.world.inventory.SteamTurbineMenu;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -29,13 +29,13 @@ public class SteamTurbineScreen extends RailcraftMenuScreen<SteamTurbineMenu> {
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font,
-        Component.translatable(Translations.Screen.STEAM_TURBINE_ROTOR), 20, 29, 0x404040, false);
-    guiGraphics.drawString(this.font,
-        Component.translatable(Translations.Screen.STEAM_TURBINE_OUTPUT), 93, 24, 0x404040, false);
-    guiGraphics.drawString(this.font,
-        Component.translatable(Translations.Screen.STEAM_TURBINE_USAGE), 95, 43, 0x404040, false);
+  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    super.renderLabels(poseStack, mouseX, mouseY);
+    this.font.draw(poseStack, Component.translatable(Translations.Screen.STEAM_TURBINE_ROTOR), 20,
+        29, 0x404040);
+    this.font.draw(poseStack,
+        Component.translatable(Translations.Screen.STEAM_TURBINE_OUTPUT), 93, 24, 0x404040);
+    this.font.draw(poseStack,
+        Component.translatable(Translations.Screen.STEAM_TURBINE_USAGE), 95, 43, 0x404040);
   }
 }

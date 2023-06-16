@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:lead_block_from_lead_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

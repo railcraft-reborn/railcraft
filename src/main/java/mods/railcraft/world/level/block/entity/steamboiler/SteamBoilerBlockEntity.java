@@ -13,7 +13,7 @@ import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
-import mods.railcraft.world.level.material.steam.SteamConstants;
+import mods.railcraft.world.level.material.fluid.steam.SteamConstants;
 import mods.railcraft.world.module.SteamBoilerModule;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;

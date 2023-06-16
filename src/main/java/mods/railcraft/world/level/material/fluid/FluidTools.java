@@ -1,4 +1,4 @@
-package mods.railcraft.world.level.material;
+package mods.railcraft.world.level.material.fluid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +69,7 @@ public final class FluidTools {
    */
   public static boolean interactWithFluidHandler(Player player, InteractionHand hand,
       IFluidHandler fluidHandler) {
-    return player.level().isClientSide()
+    return player.getLevel().isClientSide()
         ? FluidItemHelper.isContainer(player.getItemInHand(hand))
         : FluidUtil.interactWithFluidHandler(player, hand, fluidHandler);
   }

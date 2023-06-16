@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:track_remover"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

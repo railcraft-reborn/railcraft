@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:torch_creosote"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

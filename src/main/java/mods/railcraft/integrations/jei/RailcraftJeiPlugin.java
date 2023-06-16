@@ -1,5 +1,6 @@
 package mods.railcraft.integrations.jei;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
@@ -35,7 +36,6 @@ import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -136,12 +136,12 @@ public class RailcraftJeiPlugin implements IModPlugin {
     craftingCategory.addCategoryExtension(CartDisassemblyRecipe.class,
         r -> new DefaultRecipeWrapper(r, true, Component.translatable(Translations.Jei.SPLIT)) {
           @Override
-          public void drawInfo(int recipeWidth, int recipeHeight, GuiGraphics guiGraphics, double mouseX,
+          public void drawInfo(int recipeWidth, int recipeHeight, PoseStack stack, double mouseX,
               double mouseY) {
-            super.drawInfo(recipeWidth, recipeHeight, guiGraphics, mouseX, mouseY);
+            super.drawInfo(recipeWidth, recipeHeight, stack, mouseX, mouseY);
             var drawable = registration.getJeiHelpers().getGuiHelper()
                     .createDrawableItemStack(new ItemStack(Items.MINECART));
-            drawable.draw(guiGraphics, 65, 35);
+            drawable.draw(stack, 65, 35);
           }
         });
   }

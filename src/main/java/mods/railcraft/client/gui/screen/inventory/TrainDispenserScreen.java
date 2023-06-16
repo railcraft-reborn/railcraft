@@ -1,10 +1,10 @@
 package mods.railcraft.client.gui.screen.inventory;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.world.inventory.TrainDispenserMenu;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,12 +26,10 @@ public class TrainDispenserScreen extends RailcraftMenuScreen<TrainDispenserMenu
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, PATTERN, this.titleLabelX, 18,
-        IngameWindowScreen.TEXT_COLOR, false);
-    guiGraphics.drawString(this.font, BUFFER, this.titleLabelX, 50,
-        IngameWindowScreen.TEXT_COLOR, false);
+  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    super.renderLabels(poseStack, mouseX, mouseY);
+    this.font.draw(poseStack, PATTERN, this.titleLabelX, 18, IngameWindowScreen.TEXT_COLOR);
+    this.font.draw(poseStack, BUFFER, this.titleLabelX, 50, IngameWindowScreen.TEXT_COLOR);
   }
 
   @Override

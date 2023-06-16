@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:golden_ticket"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

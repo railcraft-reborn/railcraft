@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:analog_signal_controller_box"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

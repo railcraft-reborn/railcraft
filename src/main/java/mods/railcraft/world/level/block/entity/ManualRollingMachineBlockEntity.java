@@ -1,6 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.util.container.AdvancedContainer;
@@ -17,7 +19,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.TransientCraftingContainer;
+import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -157,7 +159,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
         var stackB = this.craftMatrix.getItem(j);
         if (stackB.isEmpty())
           continue;
-        if (ItemStack.isSameItem(stackA, stackB))
+        if (stackA.sameItem(stackB))
           if (stackA.getCount() > stackB.getCount() + 1) {
             stackA.shrink(1);
             stackB.grow(1);
@@ -179,7 +181,6 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     if (this.useLast)
       return true;
     return this.craftMatrix.getItems()
-        .stream()
         .filter(x -> !x.isEmpty())
         .allMatch(x -> x.getCount() > 1);
   }
@@ -190,10 +191,14 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     return new ManualRollingMachineMenu(containerId, inventory, this);
   }
 
-  public class RollingCraftingContainer extends TransientCraftingContainer {
+  public class RollingCraftingContainer extends CraftingContainer {
 
     public RollingCraftingContainer(FakeRollingContainer menu, int width, int height) {
       super(menu, width, height);
+    }
+
+    public Stream<ItemStack> getItems() {
+      return IntStream.range(0, this.getContainerSize()).mapToObj(this::getItem);
     }
 
     @Override

@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:cut_firestone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

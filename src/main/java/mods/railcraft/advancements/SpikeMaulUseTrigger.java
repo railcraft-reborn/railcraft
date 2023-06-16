@@ -5,8 +5,8 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import mods.railcraft.util.LevelUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.NbtPredicate;
@@ -30,7 +30,7 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
 
   @Override
   public SpikeMaulUseTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
+      EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
     var tag = JsonUtil.getAsJsonObject(json, "nbt")
         .map(NbtPredicate::fromJson)
         .orElse(NbtPredicate.ANY);
@@ -40,7 +40,7 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
     var locationPredicate = JsonUtil.getAsJsonObject(json, "location")
         .map(LocationPredicate::fromJson)
         .orElse(LocationPredicate.ANY);
-    return new SpikeMaulUseTrigger.Instance(contextAwarePredicate, tag, tool, locationPredicate);
+    return new SpikeMaulUseTrigger.Instance(entityPredicate, tag, tool, locationPredicate);
   }
 
   /**
@@ -57,16 +57,16 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
     private final ItemPredicate tool;
     private final LocationPredicate location;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate, NbtPredicate nbt,
+    private Instance(EntityPredicate.Composite entityPredicate, NbtPredicate nbt,
         ItemPredicate tool, LocationPredicate predicate) {
-      super(SpikeMaulUseTrigger.ID, contextAwarePredicate);
+      super(SpikeMaulUseTrigger.ID, entityPredicate);
       this.nbt = nbt;
       this.tool = tool;
       this.location = predicate;
     }
 
     public static SpikeMaulUseTrigger.Instance hasUsedSpikeMaul() {
-      return new SpikeMaulUseTrigger.Instance(ContextAwarePredicate.ANY,
+      return new SpikeMaulUseTrigger.Instance(EntityPredicate.Composite.ANY,
           NbtPredicate.ANY, ItemPredicate.ANY, LocationPredicate.ANY);
     }
 

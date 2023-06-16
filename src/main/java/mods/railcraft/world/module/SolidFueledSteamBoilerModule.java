@@ -2,7 +2,7 @@ package mods.railcraft.world.module;
 
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.block.entity.steamboiler.SolidFueledSteamBoilerBlockEntity;
-import mods.railcraft.world.level.material.steam.SolidFuelProvider;
+import mods.railcraft.world.level.material.fluid.steam.SolidFuelProvider;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks;

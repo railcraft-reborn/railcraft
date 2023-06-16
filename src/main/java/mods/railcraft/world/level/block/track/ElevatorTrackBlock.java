@@ -267,8 +267,8 @@ public class ElevatorTrackBlock extends Block {
    */
   protected void keepMinecartConnected(BlockPos pos, BlockState state,
       AbstractMinecart cart) {
-    if (BaseRailBlock.isRail(cart.level(), pos.below())
-        || BaseRailBlock.isRail(cart.level(), pos.below(2)))
+    if (BaseRailBlock.isRail(cart.level, pos.below())
+        || BaseRailBlock.isRail(cart.level, pos.below(2)))
       cart.setCanUseRail(false);
     else
       cart.setCanUseRail(true);
@@ -294,7 +294,7 @@ public class ElevatorTrackBlock extends Block {
 
   private boolean isPathEmpty(BlockState state, AbstractMinecart cart, BlockPos pos,
       boolean up) {
-    if (cart.level().getBlockState(pos).isSolid())
+    if (cart.level.getBlockState(pos).getMaterial().isSolid())
       return false;
     Direction.Axis axis = state.getValue(FACING).getAxis();
     BoxBuilder factory = BoxBuilder.create().at(pos).expandAxis(axis, 1.0);
@@ -309,7 +309,7 @@ public class ElevatorTrackBlock extends Block {
     return EntitySearcher.findMinecarts()
         .in(factory.build())
         .except(cart)
-        .list(cart.level())
+        .list(cart.level)
         .isEmpty();
   }
 

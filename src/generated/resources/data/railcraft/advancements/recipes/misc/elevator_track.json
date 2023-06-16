@@ -43,6 +43,5 @@
     "recipes": [
       "railcraft:elevator_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -2,7 +2,6 @@ package mods.railcraft.util;
 
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstantsAPI;
@@ -24,7 +23,7 @@ public final class PlayerUtil {
     return null;
   }
 
-  public static Component getUsername(Level level, @NotNull GameProfile gameProfile) {
+  public static Component getUsername(Level level, GameProfile gameProfile) {
     var playerId = gameProfile.getId();
     if (playerId != null) {
       var player = level.getPlayerByUUID(playerId);

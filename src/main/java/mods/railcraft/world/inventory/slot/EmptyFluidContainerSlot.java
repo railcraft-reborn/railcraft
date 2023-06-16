@@ -1,6 +1,6 @@
 package mods.railcraft.world.inventory.slot;
 
-import mods.railcraft.world.level.material.FluidItemHelper;
+import mods.railcraft.world.level.material.fluid.FluidItemHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;

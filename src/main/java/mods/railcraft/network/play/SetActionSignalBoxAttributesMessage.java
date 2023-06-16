@@ -27,7 +27,7 @@ public record SetActionSignalBoxAttributesMessage(BlockPos blockPos,
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().level();
+    var level = context.get().getSender().getLevel();
     var senderProfile = context.get().getSender().getGameProfile();
     LevelUtil.getBlockEntity(level, this.blockPos, ActionSignalBoxBlockEntity.class)
         .filter(signalBox -> signalBox.canAccess(senderProfile))

@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:magenta_iron_tank_valve"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
