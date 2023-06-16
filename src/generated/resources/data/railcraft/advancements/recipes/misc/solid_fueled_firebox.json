@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:solid_fueled_firebox"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

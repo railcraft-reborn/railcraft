@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:strap_iron_embarking_track"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

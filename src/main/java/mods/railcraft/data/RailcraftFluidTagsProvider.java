@@ -3,7 +3,7 @@ package mods.railcraft.data;
 import java.util.concurrent.CompletableFuture;
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.world.level.material.fluid.RailcraftFluids;
+import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;

@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:strap_iron_coupler_track"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

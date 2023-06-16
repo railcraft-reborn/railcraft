@@ -1,10 +1,10 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.world.inventory.TrackLayerMenu;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,10 +24,10 @@ public class TrackLayerScreen extends RailcraftMenuScreen<TrackLayerMenu> {
   }
 
   @Override
-  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-    super.renderLabels(poseStack, mouseX, mouseY);
-    this.font.draw(poseStack, PATTERN, 38, 30, IngameWindowScreen.TEXT_COLOR);
-    this.font.draw(poseStack, STOCK, 125, 25, IngameWindowScreen.TEXT_COLOR);
+  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    super.renderLabels(guiGraphics, mouseX, mouseY);
+    guiGraphics.drawString(this.font, PATTERN, 38, 30, IngameWindowScreen.TEXT_COLOR, false);
+    guiGraphics.drawString(this.font, STOCK, 125, 25, IngameWindowScreen.TEXT_COLOR, false);
   }
 
   @Override

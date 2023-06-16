@@ -1,4 +1,4 @@
-package mods.railcraft.world.level.material.fluid;
+package mods.railcraft.world.level.material;
 
 import mods.railcraft.Railcraft;
 import net.minecraft.world.level.material.FlowingFluid;

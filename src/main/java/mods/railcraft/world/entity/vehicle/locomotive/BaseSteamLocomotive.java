@@ -7,13 +7,13 @@ import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.container.ContainerMapper;
-import mods.railcraft.world.level.material.fluid.FluidTools;
-import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
-import mods.railcraft.world.level.material.fluid.RailcraftFluids;
-import mods.railcraft.world.level.material.fluid.StandardTank;
-import mods.railcraft.world.level.material.fluid.TankManager;
-import mods.railcraft.world.level.material.fluid.steam.SteamBoiler;
-import mods.railcraft.world.level.material.fluid.steam.SteamConstants;
+import mods.railcraft.world.level.material.FluidTools;
+import mods.railcraft.world.level.material.FluidTools.ProcessType;
+import mods.railcraft.world.level.material.RailcraftFluids;
+import mods.railcraft.world.level.material.StandardTank;
+import mods.railcraft.world.level.material.TankManager;
+import mods.railcraft.world.level.material.steam.SteamBoiler;
+import mods.railcraft.world.level.material.steam.SteamConstants;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -133,7 +133,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   public void tick() {
     super.tick();
 
-    if (!this.level.isClientSide()) {
+    if (!this.level().isClientSide()) {
       if (this.waterTank.isEmpty()) {
         this.setMode(Mode.SHUTDOWN);
       }
@@ -169,10 +169,10 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
       var z = this.getZ() - Math.sin(rads) * offset;
 
       if (Seasons.HALLOWEEN && this.random.nextInt(4) == 0) { // 20%?
-        this.level.addParticle(RailcraftParticleTypes.PUMPKIN.get(), x, y, z, 0, 0.02, 0);
+        this.level().addParticle(RailcraftParticleTypes.PUMPKIN.get(), x, y, z, 0, 0.02, 0);
       } else {
         // smog obviously.
-        this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0, 0.02, 0);
+        this.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0, 0.02, 0);
       }
     }
     // steam spawns ON the engine itself, spreading left or right
@@ -186,12 +186,12 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
       var vx = steamAngularSpeed * Math.cos(rads - ninetyDeg);
       var vz = steamAngularSpeed * Math.sin(rads - ninetyDeg);
 
-      this.level.addParticle(RailcraftParticleTypes.STEAM.get(),
+      this.level().addParticle(RailcraftParticleTypes.STEAM.get(),
           this.getX() - Math.cos(rads + ninetyDeg) * offset, ycoord,
           this.getZ() - Math.sin(rads + ninetyDeg) * offset, vx,
           0.02 + (this.random.nextDouble() * 0.01), vz);
 
-      this.level.addParticle(RailcraftParticleTypes.STEAM.get(),
+      this.level().addParticle(RailcraftParticleTypes.STEAM.get(),
           this.getX() - Math.cos(rads - ninetyDeg) * offset, ycoord,
           this.getZ() - Math.sin(rads - ninetyDeg) * offset, vx,
           0.02 + (this.random.nextDouble() * 0.01), vz);

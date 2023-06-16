@@ -36,7 +36,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
 
   @Override
   public void onEntityCollision(AbstractMinecart cart, Entity other) {
-    var level = cart.getLevel();
+    var level = cart.level();
 
     if (level.isClientSide() || cart.hasPassenger(other)
         || !other.isAlive() || !cart.isAlive()) {

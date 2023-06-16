@@ -11,7 +11,7 @@ import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.Predicates;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.item.CartItem;
-import mods.railcraft.world.level.material.fluid.FluidItemHelper;
+import mods.railcraft.world.level.material.FluidItemHelper;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -191,7 +191,7 @@ public enum StackFilter implements Predicate<ItemStack> {
       }
 
       ItemStack cartItem = cart.getPickResult();
-      boolean matches = !itemStack.isEmpty() && cartItem.sameItem(itemStack);
+      boolean matches = !itemStack.isEmpty() && ItemStack.isSameItem(cartItem, itemStack);
 
       if (itemStack.hasCustomHoverName()) {
         return matches && itemStack.getDisplayName().getContents()

@@ -119,7 +119,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   }
 
   private Optional<RollingStock> resolveLink(UUID minecartId) {
-    var level = (ServerLevel) this.minecart.getLevel();
+    var level = (ServerLevel) this.minecart.level();
     var entity = level.getEntity(minecartId);
     return entity instanceof AbstractMinecart minecart
         ? minecart.getCapability(CAPABILITY)
@@ -495,7 +495,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     } else if (this.launchState == LaunchState.LAUNCHING) {
       this.launchState = LaunchState.LAUNCHED;
       this.minecart.setCanUseRail(true);
-    } else if (this.launchState == LaunchState.LAUNCHED && this.minecart.isOnGround()) {
+    } else if (this.launchState == LaunchState.LAUNCHED && this.minecart.onGround()) {
       this.land();
     }
 
@@ -573,7 +573,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
 
     var cart2Entity = cart2.entity();
 
-    var sameDimension = this.level().dimension().equals(cart2Entity.getLevel().dimension());
+    var sameDimension = this.level().dimension().equals(cart2Entity.level().dimension());
 
     var unlink = false;
     switch (linkType) {

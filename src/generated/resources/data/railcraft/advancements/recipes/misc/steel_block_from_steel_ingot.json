@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:steel_block_from_steel_ingot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

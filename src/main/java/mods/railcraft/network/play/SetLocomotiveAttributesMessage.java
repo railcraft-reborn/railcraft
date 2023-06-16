@@ -25,7 +25,7 @@ public record SetLocomotiveAttributesMessage(int entityId, Locomotive.Mode mode,
 
   public boolean handle(Supplier<NetworkEvent.Context> ctx) {
     var player = ctx.get().getSender();
-    var entity = player.getLevel().getEntity(this.entityId);
+    var entity = player.level().getEntity(this.entityId);
     if (entity instanceof Locomotive locomotive && locomotive.canControl(player)) {
       locomotive.applyAction(player, false, loco -> {
         loco.setMode(this.mode);

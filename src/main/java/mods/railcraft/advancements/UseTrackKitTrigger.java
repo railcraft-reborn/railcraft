@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
@@ -27,14 +27,14 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
 
   @Override
   public UseTrackKitTrigger.Instance createInstance(JsonObject json,
-      EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
+      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
     var used = JsonUtil.getAsJsonObject(json, "item")
         .map(ItemPredicate::fromJson)
         .orElse(ItemPredicate.ANY);
     var location = JsonUtil.getAsJsonObject(json, "location")
         .map(LocationPredicate::fromJson)
         .orElse(LocationPredicate.ANY);
-    return new UseTrackKitTrigger.Instance(entityPredicate, used, location);
+    return new UseTrackKitTrigger.Instance(contextAwarePredicate, used, location);
   }
 
   /**
@@ -43,7 +43,7 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
   public void trigger(ServerPlayer playerEntity, ServerLevel serverLevel,
       BlockPos blockPos, ItemStack stack) {
     this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(playerEntity.getLevel(), blockPos, stack));
+        (criterionInstance) -> criterionInstance.matches(playerEntity.serverLevel(), blockPos, stack));
   }
 
   public static class Instance extends AbstractCriterionTriggerInstance {
@@ -51,15 +51,15 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
     private final ItemPredicate item;
     private final LocationPredicate location;
 
-    private Instance(EntityPredicate.Composite entityPredicate,
+    private Instance(ContextAwarePredicate contextAwarePredicate,
         ItemPredicate itemPredicate, LocationPredicate locationPredicate) {
-      super(UseTrackKitTrigger.ID, entityPredicate);
+      super(UseTrackKitTrigger.ID, contextAwarePredicate);
       this.item = itemPredicate;
       this.location = locationPredicate;
     }
 
     public static UseTrackKitTrigger.Instance hasUsedTrackKit() {
-      return new UseTrackKitTrigger.Instance(EntityPredicate.Composite.ANY,
+      return new UseTrackKitTrigger.Instance(ContextAwarePredicate.ANY,
           ItemPredicate.ANY, LocationPredicate.ANY);
     }
 

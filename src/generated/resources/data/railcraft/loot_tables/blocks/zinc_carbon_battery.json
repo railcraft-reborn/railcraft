@@ -16,5 +16,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "railcraft:blocks/zinc_carbon_battery"
 }

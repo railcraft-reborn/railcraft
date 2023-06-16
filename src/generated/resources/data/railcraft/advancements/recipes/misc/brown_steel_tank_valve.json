@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:brown_steel_tank_valve"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -22,7 +22,7 @@ public record SetSignalControllerBoxAttributesMessage(BlockPos blockPos, SignalA
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().getLevel();
+    var level = context.get().getSender().level();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get())
         .ifPresent(signalBox -> {
           signalBox.setDefaultAspect(this.defaultAspect);

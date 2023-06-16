@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
@@ -23,11 +23,11 @@ public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Inst
 
   @Override
   public SurpriseTrigger.Instance createInstance(JsonObject json,
-      EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
+      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
     var predicate = JsonUtil.getAsJsonObject(json, "cart")
         .map(MinecartPredicate::deserialize)
         .orElse(MinecartPredicate.ANY);
-    return new SurpriseTrigger.Instance(entityPredicate, predicate);
+    return new SurpriseTrigger.Instance(contextAwarePredicate, predicate);
   }
 
   /**
@@ -42,13 +42,13 @@ public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Inst
 
     private final MinecartPredicate cartPredicate;
 
-    private Instance(EntityPredicate.Composite entityPredicate, MinecartPredicate predicate) {
-      super(SurpriseTrigger.ID, entityPredicate);
+    private Instance(ContextAwarePredicate contextAwarePredicate, MinecartPredicate predicate) {
+      super(SurpriseTrigger.ID, contextAwarePredicate);
       this.cartPredicate = predicate;
     }
 
     public static SurpriseTrigger.Instance hasExplodedCart() {
-      return new SurpriseTrigger.Instance(EntityPredicate.Composite.ANY, MinecartPredicate.ANY);
+      return new SurpriseTrigger.Instance(ContextAwarePredicate.ANY, MinecartPredicate.ANY);
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {

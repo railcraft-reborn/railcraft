@@ -3,12 +3,12 @@ package mods.railcraft.integrations.jei;
 import java.util.List;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -40,11 +40,11 @@ public class DefaultRecipeWrapper implements ICraftingCategoryExtension {
   }
 
   @Override
-  public void drawInfo(int recipeWidth, int recipeHeight, PoseStack stack, double mouseX,
+  public void drawInfo(int recipeWidth, int recipeHeight, GuiGraphics guiGraphics, double mouseX,
       double mouseY) {
     var font = Minecraft.getInstance().font;
-    float stringWidth = font.width(this.info) / 2.0f;
-    font.draw(stack, this.info, 82 - stringWidth, 0, 0xFF808080);
+    int stringWidth = font.width(this.info) / 2;
+    guiGraphics.drawString(font, this.info, 82 - stringWidth, 0, 0xFF808080, false);
   }
 
   @Override

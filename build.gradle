@@ -7,8 +7,9 @@ buildscript {
 
 plugins {
     id 'eclipse'
+    id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'net.covers1624.signing' version '1.1.4'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
@@ -44,7 +45,9 @@ if (isCI || nightly) {
 }
 
 group = 'mods.railcraft'
-archivesBaseName = 'railcraft'
+base {
+    archivesName = 'railcraft'
+}
 
 java {
     toolchain {
@@ -91,6 +94,8 @@ configurations {
 minecraft {
     mappings channel: project.mappings_channel, version: project.mappings_version
 
+    copyIdeResources = true
+
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -98,6 +103,8 @@ minecraft {
             workingDirectory project.file('run/client')
 
             property 'forge.logging.console.level', 'debug'
+
+            property 'forge.enabledGameTestNamespaces', 'railcraft'
 
             args '--mixin', 'railcraft.mixins.json'
 
@@ -114,6 +121,8 @@ minecraft {
             workingDirectory project.file('run/server')
 
             property 'forge.logging.console.level', 'debug'
+
+            property 'forge.enabledGameTestNamespaces', 'railcraft'
 
             args '--mixin', 'railcraft.mixins.json'
 
@@ -146,8 +155,6 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             property 'forge.enabledGameTestNamespaces', 'railcraft'
-
-            forceExit false
 
             mods {
                 railcraft {
@@ -182,7 +189,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
@@ -190,11 +197,15 @@ jar {
     from([sourceSets.api.output, sourceSets.main.output])
     manifest {
         attributes([
-            'Implementation-Title': project.name,
-            'Implementation-Version': project.version,
-            'Implementation-Commit': 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
-            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            'MixinConfigs': 'railcraft.mixins.json'
+            'Specification-Title'       : project.name,
+            'Specification-Vendor'      : 'Sm0keySa1m0n, 3divad99',
+            'Specification-Version'     : '1',
+            'Implementation-Title'      : project.name,
+            'Implementation-Version'    : project.version,
+            'Implementation-Vendor'     : 'Sm0keySa1m0n, 3divad99',
+            'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
+            'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'MixinConfigs'              : 'railcraft.mixins.json'
         ])
     }
     finalizedBy('reobfJar')

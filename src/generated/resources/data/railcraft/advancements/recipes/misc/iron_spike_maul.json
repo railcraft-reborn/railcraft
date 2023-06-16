@@ -28,5 +28,6 @@
     "recipes": [
       "railcraft:iron_spike_maul"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

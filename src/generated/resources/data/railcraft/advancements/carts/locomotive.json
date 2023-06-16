@@ -33,5 +33,6 @@
     [
       "has_locomotives"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

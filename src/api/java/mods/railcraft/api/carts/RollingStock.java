@@ -270,6 +270,6 @@ public interface RollingStock {
   AbstractMinecart entity();
 
   default Level level() {
-    return this.entity().getLevel();
+    return this.entity().level();
   }
 }

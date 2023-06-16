@@ -28,5 +28,6 @@
     "recipes": [
       "railcraft:radio_circuit"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

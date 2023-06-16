@@ -8,9 +8,7 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import mods.railcraft.Railcraft;
@@ -27,12 +25,13 @@ import net.minecraft.Util;
 import net.minecraft.client.GameNarrator;
 import net.minecraft.client.StringSplitter;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.CommonComponents;
@@ -434,69 +433,69 @@ public class RoutingTableBookScreen extends Screen {
   }
 
   @Override
-  public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(poseStack);
+  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    this.renderBackground(guiGraphics);
     this.setFocused(null);
     RenderSystem.setShaderTexture(0, BOOK_LOCATION);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    blit(poseStack, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+    guiGraphics.blit(BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
     if (this.editingTitle) {
       boolean flag = this.frameTick / 6 % 2 == 0;
       var formattedcharsequence = FormattedCharSequence.composite(
           FormattedCharSequence.forward(this.title, Style.EMPTY),
           flag ? BLACK_CURSOR : GRAY_CURSOR);
       int l = this.font.width(EDIT_TITLE_LABEL);
-      this.font.draw(poseStack, EDIT_TITLE_LABEL, xOffset + 160 - l, yOffset + 34.0F, 0);
+      guiGraphics.drawString(this.font, EDIT_TITLE_LABEL, xOffset + 160 - l,
+          yOffset + 34, 0, false);
       int l1 = this.font.width(formattedcharsequence);
-      this.font.draw(poseStack, formattedcharsequence, xOffset + 120 - l1 / 2, yOffset + 50.0F, 0);
+      guiGraphics.drawString(this.font, formattedcharsequence, xOffset + 120 - l1 / 2,
+          yOffset + 50, 0, false);
       int l2 = this.font.width(this.ownerText);
-      this.font.draw(poseStack, this.ownerText, xOffset + 130 - l2, yOffset + 60.0F, 0);
+      guiGraphics.drawString(this.font, this.ownerText, xOffset + 130 - l2, yOffset + 60, 0, false);
     } else if (this.readingManual) {
       var manualPageIndicator = Component.translatable("book.pageIndicator", this.currentPage + 1,
           this.getMaxPages());
       int l = this.font.width(manualPageIndicator);
-      this.font.draw(poseStack, manualPageIndicator, xOffset - l + 225, yOffset + 15, 0);
+      guiGraphics.drawString(this.font, manualPageIndicator, xOffset - l + 225,
+          yOffset + 15, 0, false);
       var page = Component.translatable(Translations.RoutingTable.MANUAL_PAGES.get(currentPage));
-      font.drawWordWrap(poseStack, page, xOffset + 20, yOffset + 27, TEXT_WIDTH,
-          IngameWindowScreen.TEXT_COLOR);
+      guiGraphics.drawWordWrap(this.font, page, xOffset + 20,
+          yOffset + 27, TEXT_WIDTH, IngameWindowScreen.TEXT_COLOR);
     } else {
       int l = this.font.width(this.pageMsg);
-      this.font.draw(poseStack, this.pageMsg, xOffset - l + 225, yOffset + 15, 0);
+      guiGraphics.drawString(this.font, this.pageMsg, xOffset - l + 225, yOffset + 15, 0, false);
       var displayCache = this.getDisplayCache();
       for(var lineinfo : displayCache.lines) {
-        this.font.draw(poseStack, lineinfo.asComponent, lineinfo.x, lineinfo.y, -16777216);
+        guiGraphics.drawString(this.font, lineinfo.asComponent, lineinfo.x, lineinfo.y,
+            -16777216, false);
       }
-      this.renderHighlight(poseStack, displayCache.selection);
-      this.renderCursor(poseStack, displayCache.cursor, displayCache.cursorAtEnd);
+      this.renderHighlight(guiGraphics, displayCache.selection);
+      this.renderCursor(guiGraphics, displayCache.cursor, displayCache.cursorAtEnd);
     }
     this.updateButtonVisibility();
-    super.render(poseStack, mouseX, mouseY, partialTicks);
+    super.render(guiGraphics, mouseX, mouseY, partialTicks);
   }
 
-  private void renderCursor(PoseStack poseStack, Pos2i cursorPos, boolean isEndOfText) {
+  private void renderCursor(GuiGraphics guiGraphics, Pos2i cursorPos, boolean isEndOfText) {
     if (this.frameTick / 6 % 2 == 0) {
       cursorPos = this.convertLocalToScreen(cursorPos);
       if (!isEndOfText) {
-        GuiComponent.fill(poseStack, cursorPos.x, cursorPos.y - 1,
-            cursorPos.x + 1, cursorPos.y + 9, -16777216);
+        guiGraphics.fill(cursorPos.x, cursorPos.y - 1, cursorPos.x + 1, cursorPos.y + 9, -16777216);
       } else {
-        this.font.draw(poseStack, "_", (float)cursorPos.x, (float)cursorPos.y, 0);
+        guiGraphics.drawString(this.font, "_", cursorPos.x, cursorPos.y, 0, false);
       }
     }
   }
 
-  private void renderHighlight(PoseStack poseStack, Rect2i[] selected) {
-    RenderSystem.enableColorLogicOp();
-    RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
+  private void renderHighlight(GuiGraphics guiGraphics, Rect2i[] selected) {
     for(var rect2i : selected) {
       int i = rect2i.getX();
       int j = rect2i.getY();
       int k = i + rect2i.getWidth();
       int l = j + rect2i.getHeight();
-      fill(poseStack, i, j, k, l, -16776961);
+      guiGraphics.fill(RenderType.guiTextHighlight(), i, j, k, l, -16776961);
     }
-    RenderSystem.disableColorLogicOp();
   }
 
   private Pos2i convertScreenToLocal(Pos2i screenPos) {

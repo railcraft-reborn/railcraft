@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.util.container.manipulator.ContainerManipulator;
@@ -154,8 +155,8 @@ public abstract class ContainerTools {
    * @param matches the ItemStacks to test against
    * @return true if a match is found
    */
-  public static boolean isItemEqual(@Nullable ItemStack stack, ItemStack... matches) {
-    return Arrays.stream(matches).anyMatch(match -> ItemStack.isSame(match, stack));
+  public static boolean isItemEqual(@NotNull ItemStack stack, ItemStack... matches) {
+    return Arrays.stream(matches).anyMatch(match -> ItemStack.isSameItem(match, stack));
   }
 
   /**
@@ -165,18 +166,18 @@ public abstract class ContainerTools {
    * @param matches the ItemStacks to test against
    * @return true if a match is found
    */
-  public static boolean isItemEqual(@Nullable ItemStack stack, Collection<ItemStack> matches) {
-    return matches.stream().anyMatch(match -> ItemStack.isSame(stack, match));
+  public static boolean isItemEqual(@NotNull ItemStack stack, Collection<ItemStack> matches) {
+    return matches.stream().anyMatch(match -> ItemStack.isSameItem(stack, match));
   }
 
-  public static boolean isItemGreaterOrEqualThan(@Nullable ItemStack stackA,
-      @Nullable ItemStack stackB) {
-    return ItemStack.isSame(stackA, stackB) && stackA.getCount() >= stackB.getCount();
+  public static boolean isItemGreaterOrEqualThan(@NotNull ItemStack stackA,
+      @NotNull ItemStack stackB) {
+    return ItemStack.isSameItem(stackA, stackB) && stackA.getCount() >= stackB.getCount();
   }
 
-  public static boolean isItemLessThanOrEqualTo(@Nullable ItemStack stackA,
-      @Nullable ItemStack stackB) {
-    return ItemStack.isSame(stackA, stackB) && stackA.getCount() <= stackB.getCount();
+  public static boolean isItemLessThanOrEqualTo(@NotNull ItemStack stackA,
+      @NotNull ItemStack stackB) {
+    return ItemStack.isSameItem(stackA, stackB) && stackA.getCount() <= stackB.getCount();
   }
 
   public static ListTag writeInventory(Container inventory) {

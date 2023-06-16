@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:reinforced_embarking_track"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

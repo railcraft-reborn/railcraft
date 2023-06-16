@@ -28,5 +28,6 @@
     "recipes": [
       "railcraft:controller_circuit"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -17,5 +17,6 @@
     [
       "has_iron_crowbar"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

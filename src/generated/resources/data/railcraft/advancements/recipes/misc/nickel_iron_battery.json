@@ -43,5 +43,6 @@
     "recipes": [
       "railcraft:nickel_iron_battery"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

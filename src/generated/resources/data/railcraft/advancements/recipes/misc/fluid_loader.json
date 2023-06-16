@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:fluid_loader"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

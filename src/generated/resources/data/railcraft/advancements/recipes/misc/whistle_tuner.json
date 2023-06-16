@@ -28,5 +28,6 @@
     "recipes": [
       "railcraft:whistle_tuner"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:silver_ingot_from_silver_nugget"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
