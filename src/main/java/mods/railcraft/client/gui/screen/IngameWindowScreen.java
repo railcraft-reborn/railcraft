@@ -1,7 +1,8 @@
 package mods.railcraft.client.gui.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -41,22 +42,23 @@ public class IngameWindowScreen extends Screen {
   }
 
   @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(guiGraphics);
+  public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    this.renderBackground(poseStack);
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
-    guiGraphics.blit(this.backgroundTexture, centredX, centredY, 0, 0,
-        this.windowWidth, this.windowHeight);
-    var poseStack = guiGraphics.pose();
+    RenderSystem.setShaderTexture(0, this.backgroundTexture);
+    blit(poseStack, centredX, centredY, 0, 0, this.windowWidth, this.windowHeight);
     poseStack.pushPose();
-    poseStack.translate(centredX, centredY, 0.0F);
-    this.drawCenteredString(guiGraphics, this.title, this.windowWidth / 2, this.font.lineHeight);
-    this.renderContent(guiGraphics, mouseX, mouseY, partialTicks);
+    {
+      poseStack.translate(centredX, centredY, 0.0F);
+      this.drawCenteredString(poseStack, this.title, this.windowWidth / 2, this.font.lineHeight);
+      this.renderContent(poseStack, mouseX, mouseY, partialTicks);
+    }
     poseStack.popPose();
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
+    super.render(poseStack, mouseX, mouseY, partialTicks);
   }
 
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+  protected void renderContent(PoseStack poseStack, int mouseX, int mouseY,
       float partialTicks) {}
 
 
@@ -68,20 +70,23 @@ public class IngameWindowScreen extends Screen {
     }
   }
 
-  public void drawCenteredString(GuiGraphics guiGraphics, Component text, float x, float y) {
+  public void drawCenteredString(PoseStack poseStack, Component text, float x, float y) {
     FormattedCharSequence orderedText = text.getVisualOrderText();
-    guiGraphics.drawString(this.font, orderedText, x - (float) this.font.width(orderedText) / 2, y,
-        TEXT_COLOR, false);
+    this.font.draw(poseStack, orderedText, x - this.font.width(orderedText) / 2, y, TEXT_COLOR);
   }
 
-  public void drawCenteredString(GuiGraphics guiGraphics, Component component, int y, boolean shadow) {
-    drawCenteredString(guiGraphics, component, windowWidth, y, shadow);
+  public void drawCenteredString(PoseStack poseStack, Component component, int y, boolean shadow) {
+    drawCenteredString(poseStack, component, windowWidth, y, shadow);
   }
 
-  public void drawCenteredString(GuiGraphics guiGraphics, Component component, int width, int y,
+  public void drawCenteredString(PoseStack poseStack, Component component, int width, int y,
       boolean shadow) {
     int length = font.width(component);
     int x = width / 2 - length / 2;
-    guiGraphics.drawString(font, component, x, y, TEXT_COLOR, shadow);
+    if (shadow) {
+      font.drawShadow(poseStack, component, x, y, TEXT_COLOR);
+    } else {
+      font.draw(poseStack, component, x, y, TEXT_COLOR);
+    }
   }
 }

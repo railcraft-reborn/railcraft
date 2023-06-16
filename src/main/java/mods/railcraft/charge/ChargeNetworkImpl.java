@@ -681,7 +681,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     @Override
     public void zap(Entity entity, Charge.DamageOrigin origin, float damage) {
-      if (entity.level().isClientSide()) {
+      if (entity.getLevel().isClientSide()) {
         return;
       }
       // logical server
@@ -717,7 +717,7 @@ public class ChargeNetworkImpl implements Charge.Network {
                 ? RailcraftDamageSources.electric(level.registryAccess())
                 : RailcraftDamageSources.trackElectric(level.registryAccess()), remainingDamage)) {
           this.removeCharge(chargeCost, false);
-          Charge.zapEffectProvider().zapEffectDeath(entity.level(),
+          Charge.zapEffectProvider().zapEffectDeath(entity.getLevel(),
               entity.getX(), entity.getY(), entity.getZ());
         }
       }

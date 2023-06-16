@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:manual_rolling_machine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

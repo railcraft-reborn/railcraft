@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:nickel_nugget"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

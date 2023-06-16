@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
@@ -27,12 +27,12 @@ public class KilledByLocomotiveTrigger
   }
 
   @Override
-  protected Instance createInstance(JsonObject json, ContextAwarePredicate contextAwarePredicate,
-      DeserializationContext deserializationContext) {
+  public KilledByLocomotiveTrigger.Instance createInstance(JsonObject json,
+      EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
     var predicate = JsonUtil.getAsJsonObject(json, "cart")
         .map(MinecartPredicate::deserialize)
         .orElse(MinecartPredicate.ANY);
-    return new KilledByLocomotiveTrigger.Instance(contextAwarePredicate, predicate);
+    return new KilledByLocomotiveTrigger.Instance(entityPredicate, predicate);
   }
 
   /**
@@ -48,8 +48,8 @@ public class KilledByLocomotiveTrigger
 
     private final MinecartPredicate cart;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate, MinecartPredicate cart) {
-      super(KilledByLocomotiveTrigger.ID, contextAwarePredicate);
+    private Instance(EntityPredicate.Composite entityPredicate, MinecartPredicate cart) {
+      super(KilledByLocomotiveTrigger.ID, entityPredicate);
       this.cart = cart;
     }
 

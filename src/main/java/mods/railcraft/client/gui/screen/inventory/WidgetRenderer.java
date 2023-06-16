@@ -2,12 +2,12 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.gui.widget.Widget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 
-public class WidgetRenderer<T extends Widget> {
+public class WidgetRenderer<T extends Widget> extends GuiComponent {
 
   protected final T widget;
 
@@ -25,9 +25,9 @@ public class WidgetRenderer<T extends Widget> {
     return false;
   }
 
-  public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX, int centreY,
+  public void render(RailcraftMenuScreen<?> screen, PoseStack poseStack, int centreX, int centreY,
       int mouseX, int mouseY) {
-    guiGraphics.blit(widgetLocation, centreX + this.widget.x, centreY + this.widget.y, this.widget.u,
+    blit(poseStack, centreX + this.widget.x, centreY + this.widget.y, this.widget.u,
         this.widget.v, this.widget.w, this.widget.h);
   }
 

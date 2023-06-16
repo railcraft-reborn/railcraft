@@ -1,7 +1,7 @@
 package mods.railcraft.gui.widget;
 
 import java.util.List;
-import mods.railcraft.world.level.material.StandardTank;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

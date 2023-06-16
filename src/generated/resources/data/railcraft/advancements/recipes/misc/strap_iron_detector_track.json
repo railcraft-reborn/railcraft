@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:strap_iron_detector_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

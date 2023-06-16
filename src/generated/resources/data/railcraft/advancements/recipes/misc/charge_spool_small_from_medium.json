@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:charge_spool_small_from_medium"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

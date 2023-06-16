@@ -42,7 +42,7 @@ public class CrowbarHandler {
       return InteractionResult.PASS;
     }
 
-    if (player.level().isClientSide()) {
+    if (player.getLevel().isClientSide()) {
       return InteractionResult.SUCCESS;
     }
 
@@ -90,7 +90,7 @@ public class CrowbarHandler {
         return;
       }
 
-      if (!player.level().isClientSide()) {
+      if (!player.getLevel().isClientSide()) {
         RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayer) player, last.entity(), cart);
       }
 

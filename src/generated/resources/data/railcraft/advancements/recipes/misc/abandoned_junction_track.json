@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:abandoned_junction_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

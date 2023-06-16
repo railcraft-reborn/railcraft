@@ -152,8 +152,8 @@ public class ClientManager {
 
   private void handleItemColors(RegisterColorHandlersEvent.Item event) {
     event.register((stack, tintIndex) -> switch (tintIndex) {
-          case 0 -> LocomotiveItem.getPrimaryColor(stack).getMapColor().col;
-          case 1 -> LocomotiveItem.getSecondaryColor(stack).getMapColor().col;
+          case 0 -> LocomotiveItem.getPrimaryColor(stack).getMaterialColor().col;
+          case 1 -> LocomotiveItem.getSecondaryColor(stack).getMaterialColor().col;
           default -> 0xFFFFFFFF;
         },
         RailcraftItems.CREATIVE_LOCOMOTIVE.get(),
@@ -163,11 +163,11 @@ public class ClientManager {
 
   private void handleBlockColors(RegisterColorHandlersEvent.Block event) {
     event.register((state, level, pos, tintIndex) ->
-            state.getValue(ForceTrackEmitterBlock.COLOR).getMapColor().col,
+            state.getValue(ForceTrackEmitterBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
     event.register((state, level, pos, tintIndex) ->
-            state.getValue(ForceTrackBlock.COLOR).getMapColor().col,
+            state.getValue(ForceTrackBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK.get());
 
     event.register((state, level, pos, tintIndex) -> level != null && pos != null

@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:low_pressure_steam_boiler_tank"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

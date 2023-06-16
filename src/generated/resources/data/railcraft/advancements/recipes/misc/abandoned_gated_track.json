@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:abandoned_gated_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

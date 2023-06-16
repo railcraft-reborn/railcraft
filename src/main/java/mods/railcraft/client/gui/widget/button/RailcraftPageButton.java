@@ -1,8 +1,10 @@
 package mods.railcraft.client.gui.widget.button;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.gui.screen.RoutingTableBookScreen;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.PageButton;
+import net.minecraft.client.renderer.GameRenderer;
 
 public class RailcraftPageButton extends PageButton {
 
@@ -14,7 +16,10 @@ public class RailcraftPageButton extends PageButton {
   }
 
   @Override
-  public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+  public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    RenderSystem.setShaderTexture(0, RoutingTableBookScreen.BOOK_LOCATION);
     int i = 0;
     int j = 192;
     if (this.isHoveredOrFocused()) {
@@ -25,6 +30,6 @@ public class RailcraftPageButton extends PageButton {
       j += 13;
     }
 
-    guiGraphics.blit(RoutingTableBookScreen.BOOK_LOCATION, this.getX(), this.getY(), i, j, 23, 13);
+    blit(poseStack, this.getX(), this.getY(), i, j, 23, 13);
   }
 }

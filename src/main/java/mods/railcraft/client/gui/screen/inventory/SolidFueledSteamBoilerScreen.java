@@ -1,10 +1,10 @@
 package mods.railcraft.client.gui.screen.inventory;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.world.inventory.SolidFueledSteamBoilerMenu;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -28,13 +28,13 @@ public class SolidFueledSteamBoilerScreen extends RailcraftMenuScreen<SolidFuele
   }
 
   @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-    super.renderBg(guiGraphics, partialTick, mouseX, mouseY);
+  protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
+    super.renderBg(poseStack, partialTick, mouseX, mouseY);
     int x = (this.width - this.getXSize()) / 2;
     int y = (this.height - this.getYSize()) / 2;
     if (this.menu.getModule().getBoiler().hasFuel()) {
       int scale = this.menu.getModule().getBoiler().getBurnProgressScaled(12);
-      guiGraphics.blit(WIDGETS_LOCATION, x + 62, y + 34 - scale, 176, 59 - scale, 14, scale + 2);
+      blit(poseStack, x + 62, y + 34 - scale, 176, 59 - scale, 14, scale + 2);
     }
   }
 }

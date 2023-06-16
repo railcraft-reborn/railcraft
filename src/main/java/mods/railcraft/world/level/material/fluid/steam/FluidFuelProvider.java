@@ -1,8 +1,8 @@
-package mods.railcraft.world.level.material.steam;
+package mods.railcraft.world.level.material.fluid.steam;
 
 import mods.railcraft.api.fuel.FuelUtil;
-import mods.railcraft.world.level.material.FuelProvider;
-import mods.railcraft.world.level.material.StandardTank;
+import mods.railcraft.world.level.material.fluid.FuelProvider;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 

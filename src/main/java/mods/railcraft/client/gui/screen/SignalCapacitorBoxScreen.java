@@ -1,5 +1,6 @@
 package mods.railcraft.client.gui.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
@@ -7,7 +8,6 @@ import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -50,11 +50,12 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+  protected void renderContent(PoseStack matrixStack, int mouseX, int mouseY,
       float partialTicks) {
-    this.drawCenteredString(guiGraphics,
+    this.drawCenteredString(matrixStack,
         Component.translatable(Translations.Screen.SIGNAL_CAPACITOR_BOX_DURATION,
-            this.signalBox.getTicksToPower() / 20), this.windowWidth / 2, 25);
+            this.signalBox.getTicksToPower() / 20),
+        this.windowWidth / 2, 25);
   }
 
   @Override

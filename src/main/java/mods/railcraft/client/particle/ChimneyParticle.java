@@ -2,12 +2,12 @@ package mods.railcraft.client.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.MaterialColor;
 
 public class ChimneyParticle extends BaseSmokeParticle {
 
   public ChimneyParticle(ClientLevel level, double x, double y, double z) {
-    this(level, x, y, z, MapColor.COLOR_BLACK.col);
+    this(level, x, y, z, MaterialColor.COLOR_BLACK.col);
   }
 
   public ChimneyParticle(ClientLevel level, double x, double y, double z, int color) {

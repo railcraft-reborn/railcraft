@@ -1,4 +1,4 @@
-package mods.railcraft.world.level.material;
+package mods.railcraft.world.level.material.fluid;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;

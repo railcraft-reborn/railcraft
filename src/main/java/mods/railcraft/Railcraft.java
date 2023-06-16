@@ -48,8 +48,8 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
-import mods.railcraft.world.level.material.RailcraftFluidTypes;
-import mods.railcraft.world.level.material.RailcraftFluids;
+import mods.railcraft.world.level.material.fluid.RailcraftFluidTypes;
+import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -69,7 +69,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -111,15 +111,15 @@ public class Railcraft {
     var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleRegisterCapabilities);
-    modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
+    modEventBus.addListener(this::handleCreativeModeTabRegister);
+    modEventBus.addListener(this::handleCreativeModeTabBuildContents);
 
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientManager::new);
 
     RailcraftEntityTypes.register(modEventBus);
     RailcraftBlocks.register(modEventBus);
     RailcraftItems.register(modEventBus);
-    RailcraftCreativeModeTabs.register(modEventBus);
     RailcraftBlockEntityTypes.register(modEventBus);
     TrackTypes.register(modEventBus);
     RailcraftFluids.register(modEventBus);
@@ -149,10 +149,14 @@ public class Railcraft {
     event.register(RollingStock.class);
   }
 
-  public void buildContents(BuildCreativeModeTabContentsEvent event) {
-    if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+  private void handleCreativeModeTabRegister(CreativeModeTabEvent.Register event) {
+    RailcraftCreativeModeTabs.register(event::registerCreativeModeTab);
+  }
+
+  private void handleCreativeModeTabBuildContents(CreativeModeTabEvent.BuildContents event) {
+    if (event.getTab() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
       RailcraftCreativeModeTabs.addToolsAndUtilities(event.getEntries());
-    } else if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+    } else if (event.getTab() == CreativeModeTabs.COMBAT) {
       RailcraftCreativeModeTabs.addCombat(event.getEntries());
     }
   }
@@ -226,7 +230,7 @@ public class Railcraft {
       var linkedCarts = EntitySearcher.findMinecarts()
           .around(player)
           .inflate(32F)
-          .stream(player.level())
+          .stream(player.getLevel())
           .map(RollingStock::getOrThrow)
           .map(LinkedCartsMessage.LinkedCart::new)
           .toList();
@@ -252,7 +256,7 @@ public class Railcraft {
   @SubscribeEvent
   public void handleEntityLeaveWorld(EntityLeaveLevelEvent event) {
     if (event.getEntity() instanceof AbstractMinecart cart
-        && !event.getEntity().level().isClientSide()
+        && !event.getEntity().getLevel().isClientSide()
         && event.getEntity().isRemoved()) {
       RollingStock.getOrThrow(cart).removed(event.getEntity().getRemovalReason());
     }
@@ -260,7 +264,7 @@ public class Railcraft {
 
   @SubscribeEvent
   public void modifyDrops(LivingDropsEvent event) {
-    var level = event.getEntity().level();
+    var level = event.getEntity().getLevel();
     if (event.getSource().equals(RailcraftDamageSources.steam(level.registryAccess())))
       for (var entityItem : event.getDrops()) {
         var drop = entityItem.getItem();

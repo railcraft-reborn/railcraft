@@ -43,6 +43,5 @@
     "recipes": [
       "railcraft:abandoned_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -29,6 +29,5 @@
     [
       "linked_carts"
     ]
-  ],
-  "sends_telemetry_event": true
+  ]
 }

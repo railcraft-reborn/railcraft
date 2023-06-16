@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
@@ -36,11 +36,11 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
 
   @Override
   public CartRidingTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
+      EntityPredicate.Composite entityPredicate, DeserializationContext parser) {
     var predicate = JsonUtil.getAsJsonObject(json, "cart")
         .map(MinecartPredicate::deserialize)
         .orElse(MinecartPredicate.ANY);
-    return new CartRidingTrigger.Instance(contextAwarePredicate, predicate);
+    return new CartRidingTrigger.Instance(entityPredicate, predicate);
   }
 
   /**
@@ -85,13 +85,13 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
 
     private final MinecartPredicate cartPredicate;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate, MinecartPredicate predicate) {
-      super(CartRidingTrigger.ID, contextAwarePredicate);
+    private Instance(EntityPredicate.Composite entityPredicate, MinecartPredicate predicate) {
+      super(CartRidingTrigger.ID, entityPredicate);
       this.cartPredicate = predicate;
     }
 
     public static CartRidingTrigger.Instance hasRidden() {
-      return new CartRidingTrigger.Instance(ContextAwarePredicate.ANY, MinecartPredicate.ANY);
+      return new CartRidingTrigger.Instance(EntityPredicate.Composite.ANY, MinecartPredicate.ANY);
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {

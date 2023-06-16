@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:electric_locomotive"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:steel_tank_wall"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

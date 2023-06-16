@@ -43,13 +43,13 @@ public final class CartTools {
     RollingStock.getOrThrow(cart).setHighSpeed(false);
     cart.setDeltaMovement(0, cart.getDeltaMovement().y(), 0);
 
-    if (cart.level().isClientSide()) {
+    if (cart.level.isClientSide()) {
       return;
     }
     removePassengers(cart, cart.getX(), cart.getY() + 1.5D, cart.getZ());
-    cart.level().explode(cart, cart.getX(), cart.getY(), cart.getZ(), 3F,
+    cart.level.explode(cart, cart.getX(), cart.getY(), cart.getZ(), 3F,
         Level.ExplosionInteraction.TNT);
-    if (cart.level().getRandom().nextInt(2) == 0) {
+    if (cart.level.getRandom().nextInt(2) == 0) {
       cart.kill();
     }
   }
@@ -96,7 +96,7 @@ public final class CartTools {
   }
 
   public static ServerPlayer getFakePlayer(AbstractMinecart cart) {
-    return RailcraftFakePlayer.get((ServerLevel) cart.level(), cart.getX(), cart.getY(), cart.getZ());
+    return RailcraftFakePlayer.get((ServerLevel) cart.level, cart.getX(), cart.getY(), cart.getZ());
   }
 
   public static ServerPlayer getFakePlayerWith(AbstractMinecart cart, ItemStack stack) {
@@ -123,9 +123,9 @@ public final class CartTools {
     List<String> debug = new ArrayList<>();
     debug.add("Railcraft Minecart Data Dump");
     String cartInfo;
-    if (cart.level().getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO)) {
+    if (cart.level.getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO)) {
       cartInfo = String.format("%s[\'%s\'/%d, l=\'%s\']", cart.getClass().getSimpleName(),
-          cart.getName(), cart.getId(), cart.level().dimension().toString());
+          cart.getName(), cart.getId(), cart.level.dimension().toString());
     } else {
       cartInfo = cart.toString();
     }
@@ -142,10 +142,10 @@ public final class CartTools {
         .map(RollingStock::entity)
         .map(AbstractMinecart::getUUID)
         .orElse(null));
-    debug.add("Train: " + (cart.level().isClientSide()
+    debug.add("Train: " + (cart.getLevel().isClientSide()
         ? "NA on Client"
         : extension.train().id()));
-    if (!cart.level().isClientSide()) {
+    if (!cart.getLevel().isClientSide()) {
       debug.add(extension.train().stream()
           .map(RollingStock::entity)
           .map(AbstractMinecart::getUUID)
@@ -191,7 +191,7 @@ public final class CartTools {
 
   public static boolean startBoost(AbstractMinecart cart, BlockPos pos,
       RailShape dir, double startBoost) {
-    var level = cart.level();
+    Level level = cart.level;
     if (dir == RailShape.EAST_WEST) {
       if (Block.canSupportCenter(level, pos.west(), Direction.EAST)) {
         Vec3 motion = cart.getDeltaMovement();

@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:turbine_rotor"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

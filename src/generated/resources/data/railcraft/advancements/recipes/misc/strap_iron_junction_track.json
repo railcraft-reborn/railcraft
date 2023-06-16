@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:strap_iron_junction_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

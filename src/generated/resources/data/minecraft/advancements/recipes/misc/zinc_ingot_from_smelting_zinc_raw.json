@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:zinc_ingot_from_smelting_zinc_raw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

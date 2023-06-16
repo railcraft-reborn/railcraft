@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:high_speed_detector_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

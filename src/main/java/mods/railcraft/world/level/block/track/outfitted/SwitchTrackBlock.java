@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
 
@@ -46,7 +46,7 @@ public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
   }
 
   @Override
-  public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+  public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
     return Collections.emptyList();
   }
 

@@ -17,6 +17,5 @@
     [
       "has_shears"
     ]
-  ],
-  "sends_telemetry_event": true
+  ]
 }

@@ -117,11 +117,11 @@ public final class TrackUtil {
    */
   public static boolean isCartLocked(AbstractMinecart cart) {
     var pos = cart.blockPosition();
-    if (BaseRailBlock.isRail(cart.level(), pos.below())) {
+    if (BaseRailBlock.isRail(cart.level, pos.below())) {
       pos = pos.below();
     }
 
-    var blockState = cart.level().getBlockState(pos);
+    var blockState = cart.level.getBlockState(pos);
     return blockState.getBlock() instanceof LockingTrack lockingTrack &&
         lockingTrack.isCartLocked(cart);
   }

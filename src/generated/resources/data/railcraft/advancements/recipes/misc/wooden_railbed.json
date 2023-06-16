@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:wooden_railbed"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

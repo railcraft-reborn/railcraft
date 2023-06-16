@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:lead_ingot_from_smelting_lead_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

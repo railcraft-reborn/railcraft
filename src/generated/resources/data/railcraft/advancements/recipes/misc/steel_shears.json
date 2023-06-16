@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:steel_shears"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

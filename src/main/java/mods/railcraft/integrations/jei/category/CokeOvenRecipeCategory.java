@@ -1,5 +1,6 @@
 package mods.railcraft.integrations.jei.category;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -16,7 +17,6 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -65,10 +65,10 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
   }
 
   @Override
-  public void draw(CokeOvenRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
+  public void draw(CokeOvenRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack,
       double mouseX, double mouseY) {
-    flame.draw(guiGraphics, 1, 3);
-    arrow.draw(guiGraphics, 19, 21);
+    flame.draw(stack, 1, 3);
+    arrow.draw(stack, 19, 21);
 
     int cookTime = recipe.getCookingTime();
     if (cookTime > 0) {
@@ -78,8 +78,7 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
       var minecraft = Minecraft.getInstance();
       var font = minecraft.font;
       int stringWidth = font.width(timeString);
-      guiGraphics.drawString(font, timeString, getBackground().getWidth() - stringWidth - 80, 43,
-          0xFF808080, false);
+      font.draw(stack, timeString, getBackground().getWidth() - stringWidth - 80, 43, 0xFF808080);
     }
   }
 

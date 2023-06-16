@@ -1,10 +1,10 @@
 package mods.railcraft.client.gui.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetEmbarkingTrackAttributesMessage;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -53,8 +53,8 @@ public class EmbarkingTrackScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.drawCenteredString(guiGraphics,
+  protected void renderContent(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    this.drawCenteredString(poseStack,
         Component.translatable(Translations.Screen.EMBARKING_TRACK_RADIUS, this.radius),
         this.windowWidth / 2, 25);
   }

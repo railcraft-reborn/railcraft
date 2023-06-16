@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:purple_strengthened_glass"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -134,7 +134,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
         matrixStack.scale(scale, scale, scale);
         Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
             ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-            matrixStack, renderTypeBuffer, cart.level(), 0);
+            matrixStack, renderTypeBuffer, cart.level, 0);
       }
       matrixStack.popPose();
 
@@ -143,7 +143,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
       matrixStack.scale(scale, scale, scale);
       Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
           ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-          matrixStack, renderTypeBuffer, cart.level(), 0);
+          matrixStack, renderTypeBuffer, cart.level, 0);
     }
     matrixStack.popPose();
   }

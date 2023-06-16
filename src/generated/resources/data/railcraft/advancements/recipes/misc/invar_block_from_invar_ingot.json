@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:invar_block_from_invar_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

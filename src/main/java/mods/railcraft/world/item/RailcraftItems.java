@@ -16,7 +16,7 @@ import mods.railcraft.world.item.tunnelbore.SteelTunnelBoreHeadItem;
 import mods.railcraft.world.item.tunnelbore.TunnelBoreItem;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import mods.railcraft.world.level.material.RailcraftFluids;
+import mods.railcraft.world.level.material.fluid.RailcraftFluids;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;

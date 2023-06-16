@@ -41,6 +41,5 @@
     "recipes": [
       "railcraft:goggles"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

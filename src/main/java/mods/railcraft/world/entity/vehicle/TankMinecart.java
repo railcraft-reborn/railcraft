@@ -9,9 +9,9 @@ import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TankMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.level.material.FluidItemHelper;
-import mods.railcraft.world.level.material.FluidTools;
-import mods.railcraft.world.level.material.StandardTank;
+import mods.railcraft.world.level.material.fluid.FluidItemHelper;
+import mods.railcraft.world.level.material.fluid.FluidTools;
+import mods.railcraft.world.level.material.fluid.StandardTank;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -85,7 +85,7 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
   public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
     super.onSyncedDataUpdated(key);
 
-    if (!this.level().isClientSide()) {
+    if (!this.level.isClientSide()) {
       return;
     }
     if (key.equals(FLUID_STACK_TAG)) {
@@ -107,21 +107,21 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
   @Override
   public void remove(RemovalReason reason) {
     super.remove(reason);
-    Containers.dropContents(this.level(), this, this.invLiquids);
+    Containers.dropContents(this.level, this, this.invLiquids);
   }
 
   @Override
   public void tick() {
     super.tick();
 
-    if (this.level().isClientSide()) {
+    if (this.level.isClientSide()) {
       return;
     }
 
-    ContainerTools.dropIfInvalid(this.level(), this.blockPosition(), this, SLOT_INPUT);
-    ContainerTools.drop(this.level(), this.blockPosition(), this, SLOT_PROCESSING,
+    ContainerTools.dropIfInvalid(this.level, this.blockPosition(), this, SLOT_INPUT);
+    ContainerTools.drop(this.level, this.blockPosition(), this, SLOT_PROCESSING,
         FluidItemHelper::isContainer);
-    ContainerTools.drop(this.level(), this.blockPosition(), this, SLOT_OUTPUT,
+    ContainerTools.drop(this.level, this.blockPosition(), this, SLOT_OUTPUT,
         FluidItemHelper::isContainer);
 
     if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {

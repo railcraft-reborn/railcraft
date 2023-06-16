@@ -37,7 +37,7 @@ public enum TrainTransferServiceImpl implements TrainTransferService {
     stack = this.pushStack(cart, stack);
     if (!stack.isEmpty()) {
       var entity = cart.entity();
-      Containers.dropItemStack(entity.level(),
+      Containers.dropItemStack(entity.getLevel(),
           entity.getX(), entity.getY(), entity.getZ(), stack);
     }
   }

@@ -41,6 +41,5 @@
     "recipes": [
       "railcraft:water_tank_siding"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -7,11 +7,11 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.RitualBlock;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 
 public class FirestoneItemEntity extends ItemEntity {
@@ -36,30 +36,30 @@ public class FirestoneItemEntity extends ItemEntity {
   @Override
   public void tick() {
     super.tick();
-    if (this.level().isClientSide) {
+    if (this.level.isClientSide) {
       return;
     }
     if (++clock % 4 == 0) {
-      FirestoneItem.trySpawnFire(this.level(), this.blockPosition(), getItem(), this.getOwner());
+      FirestoneItem.trySpawnFire(this.level, this.blockPosition(), getItem(), this.getOwner());
     }
   }
 
   @Override
   public void lavaHurt() {
-    if (!this.refined || !this.isAlive() || this.level().isClientSide())
+    if (!this.refined || !this.isAlive() || this.level.isClientSide())
       return;
     var firestoneBlock = RailcraftBlocks.RITUAL.get().defaultBlockState();
     var surface = this.blockPosition();
-    if (this.level().getFluidState(surface).is(FluidTags.LAVA)
-        || this.level().getFluidState(surface.above()).is(FluidTags.LAVA))
+    if (this.level.getBlockState(surface).getMaterial() == Material.LAVA
+        || this.level.getBlockState(surface.above()).getMaterial() == Material.LAVA)
       for (int i = 0; i < 10; i++) {
         surface = surface.above();
-        if (this.level().getBlockState(surface).isAir()
-            && this.level().getFluidState(surface.below()).is(FluidTags.LAVA)) {
+        if (this.level.getBlockState(surface).isAir()
+            && this.level.getBlockState(surface.below()).getMaterial() == Material.LAVA) {
           boolean cracked = getItem().getItem() instanceof CrackedFirestoneItem;
-          if (LevelUtil.setBlockState(this.level(), surface,
+          if (LevelUtil.setBlockState(this.level, surface,
               firestoneBlock.setValue(RitualBlock.CRACKED, cracked), this.getOwner())) {
-            var blockEntity = this.level().getBlockEntity(surface);
+            var blockEntity = this.level.getBlockEntity(surface);
             if (blockEntity instanceof RitualBlockEntity fireTile) {
               var firestone = getItem();
               fireTile.charge = firestone.getMaxDamage() - firestone.getDamageValue();

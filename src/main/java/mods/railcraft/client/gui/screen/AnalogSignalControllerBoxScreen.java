@@ -4,11 +4,11 @@ import java.util.BitSet;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 
 public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
@@ -102,11 +102,11 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+  protected void renderContent(PoseStack poseStack, int mouseX, int mouseY,
       float partialTicks) {
     for (var aspect : SignalAspect.values()) {
-      guiGraphics.drawString(this.font, aspect.getDisplayName(), 10,
-          getYPosFromIndex(aspect.ordinal()) + 1, TEXT_COLOR, false);
+      this.font.draw(poseStack, aspect.getDisplayName(), 10,
+          getYPosFromIndex(aspect.ordinal()) + 1, TEXT_COLOR);
     }
   }
 

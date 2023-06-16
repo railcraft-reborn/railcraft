@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.util.Predicates;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import mods.railcraft.world.level.material.FluidTools;
+import mods.railcraft.world.level.material.fluid.FluidTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;

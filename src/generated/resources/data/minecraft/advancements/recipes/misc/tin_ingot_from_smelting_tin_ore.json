@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:tin_ingot_from_smelting_tin_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
