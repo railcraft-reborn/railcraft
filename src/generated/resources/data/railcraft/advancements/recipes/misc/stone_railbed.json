@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:stone_railbed"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

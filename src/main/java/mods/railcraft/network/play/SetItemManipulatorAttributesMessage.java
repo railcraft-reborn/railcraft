@@ -25,7 +25,7 @@ public record SetItemManipulatorAttributesMessage(BlockPos blockPos,
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().getLevel();
+    var level = context.get().getSender().level();
     LevelUtil.getBlockEntity(level, this.blockPos, ItemManipulatorBlockEntity.class)
         .ifPresent(manipulator -> {
           manipulator.setRedstoneMode(this.redstoneMode);

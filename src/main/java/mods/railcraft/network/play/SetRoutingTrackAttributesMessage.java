@@ -23,7 +23,7 @@ public record SetRoutingTrackAttributesMessage(BlockPos blockPos,
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
     var player = context.get().getSender();
-    var level = player.getLevel();
+    var level = player.level();
     var senderProfile = player.getGameProfile();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.ROUTING_TRACK.get())
         .filter(routingTrack -> routingTrack.canAccess(senderProfile))

@@ -43,7 +43,7 @@ public enum SpeedController implements TrackType.EventHandler {
     public Optional<RailShape> getRailShapeOverride(BlockGetter level, BlockPos pos,
         BlockState state,
         @Nullable AbstractMinecart cart) {
-      if (cart == null || cart.getLevel().isClientSide()) {
+      if (cart == null || cart.level().isClientSide()) {
         return Optional.empty();
       }
 

@@ -41,5 +41,6 @@
     "recipes": [
       "railcraft:signal_tuner"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

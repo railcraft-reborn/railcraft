@@ -6,7 +6,7 @@ import java.util.List;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.util.HumanReadableNumberFormatter;
-import mods.railcraft.world.level.material.fluid.StandardTank;
+import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.module.WaterCollectionModule;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;

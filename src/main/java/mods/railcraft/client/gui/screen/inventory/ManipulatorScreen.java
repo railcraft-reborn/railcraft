@@ -1,12 +1,12 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.world.inventory.ManipulatorMenu;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -65,10 +65,11 @@ public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
   }
 
   @Override
-  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-    this.font.draw(poseStack, this.title, this.titleLabelX, this.titleLabelY, 0x333333);
+  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0x333333);
     if (this.getMenu().hasCartFilter()) {
-      this.font.draw(poseStack, CART_FILTER_TEXT, 75, 16, IngameWindowScreen.TEXT_COLOR);
+      guiGraphics.drawString(this.font, CART_FILTER_TEXT, 75, 16,
+          IngameWindowScreen.TEXT_COLOR, false);
     }
   }
 }

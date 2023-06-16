@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:powered_rolling_machine"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

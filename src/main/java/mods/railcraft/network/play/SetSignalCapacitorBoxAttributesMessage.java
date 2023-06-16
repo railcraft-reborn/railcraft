@@ -22,7 +22,7 @@ public record SetSignalCapacitorBoxAttributesMessage(BlockPos blockPos, short ti
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().getLevel();
+    var level = context.get().getSender().level();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.SIGNAL_CAPACITOR_BOX.get())
         .ifPresent(signalBox -> {
           signalBox.setTicksToPower(this.ticksToPower);

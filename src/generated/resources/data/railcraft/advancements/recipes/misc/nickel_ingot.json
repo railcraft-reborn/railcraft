@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:nickel_ingot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

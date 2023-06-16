@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:turbine_disk"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

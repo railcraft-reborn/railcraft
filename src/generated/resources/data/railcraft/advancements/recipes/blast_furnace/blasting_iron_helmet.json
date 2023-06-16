@@ -17,5 +17,6 @@
     [
       "has_iron_helmet"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

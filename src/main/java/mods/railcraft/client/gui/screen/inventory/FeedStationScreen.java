@@ -1,9 +1,8 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.inventory.FeedStationMenu;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -21,11 +20,10 @@ public class FeedStationScreen extends AbstractContainerScreen<FeedStationMenu> 
   }
 
   @Override
-  protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
-    this.renderBackground(poseStack);
-    RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
+  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+    this.renderBackground(guiGraphics);
     final int x = this.leftPos;
     final int y = this.topPos;
-    blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
+    guiGraphics.blit(BACKGROUND_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);
   }
 }

@@ -47,7 +47,7 @@ public class TankMinecartMenu extends RailcraftMenu {
 
   public static TankMinecartMenu create(int id, Inventory playerInventory, FriendlyByteBuf data) {
     int entityId = data.readVarInt();
-    var entity = playerInventory.player.level.getEntity(entityId);
+    var entity = playerInventory.player.level().getEntity(entityId);
     if (entity instanceof TankMinecart tankMinecart) {
       return new TankMinecartMenu(id, playerInventory, tankMinecart);
     }

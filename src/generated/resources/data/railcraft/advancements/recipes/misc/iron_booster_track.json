@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:iron_booster_track"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

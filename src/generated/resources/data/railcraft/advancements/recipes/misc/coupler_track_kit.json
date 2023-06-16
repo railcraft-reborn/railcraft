@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:coupler_track_kit"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

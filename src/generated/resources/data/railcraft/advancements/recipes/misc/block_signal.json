@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:block_signal"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

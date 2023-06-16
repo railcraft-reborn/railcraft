@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:quarried_paver_slab"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

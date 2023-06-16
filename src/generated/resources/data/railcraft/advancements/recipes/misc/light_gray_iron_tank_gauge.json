@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:light_gray_iron_tank_gauge"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

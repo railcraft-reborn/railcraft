@@ -2,10 +2,10 @@ package mods.railcraft.world.module;
 
 import org.jetbrains.annotations.NotNull;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
-import mods.railcraft.world.level.material.fluid.FluidItemHelper;
-import mods.railcraft.world.level.material.fluid.FluidTools;
-import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
-import mods.railcraft.world.level.material.fluid.StandardTank;
+import mods.railcraft.world.level.material.FluidItemHelper;
+import mods.railcraft.world.level.material.FluidTools;
+import mods.railcraft.world.level.material.FluidTools.ProcessType;
+import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;

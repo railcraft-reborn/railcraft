@@ -14,7 +14,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
-import mods.railcraft.world.level.material.fluid.RailcraftFluidTypes;
+import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import net.minecraft.data.PackOutput;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
@@ -364,6 +364,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.STEAM_TURBINE_DESC_3, "Requires a Turbine Rotor");
     this.add(Translations.Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
     this.add(Translations.Tips.OVERALLS, "Protection against the dangers of track-working");
+    this.add(Translations.Tips.CLEAR, "Clear");
     this.add(Translations.Tips.GOOGLES_DESC, "Right-click to change aura.");
     this.add(Translations.Tips.GOOGLES_AURA, "Current Aura: %s");
     this.add(Translations.Tips.GOOGLES_AURA_NONE, "None");

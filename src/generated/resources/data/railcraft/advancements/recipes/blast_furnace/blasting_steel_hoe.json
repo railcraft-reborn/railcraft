@@ -17,5 +17,6 @@
     [
       "has_steel_hoe"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

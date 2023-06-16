@@ -1,4 +1,4 @@
-package mods.railcraft.world.level.material.fluid.steam;
+package mods.railcraft.world.level.material.steam;
 
 /**
  * @author CovertJaguar <https://www.railcraft.info>

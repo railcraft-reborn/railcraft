@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:switch_track_lever"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

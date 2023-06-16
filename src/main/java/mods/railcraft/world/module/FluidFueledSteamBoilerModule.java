@@ -2,10 +2,10 @@ package mods.railcraft.world.module;
 
 import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.world.level.block.entity.steamboiler.FluidFueledSteamBoilerBlockEntity;
-import mods.railcraft.world.level.material.fluid.FluidTools;
-import mods.railcraft.world.level.material.fluid.FluidTools.ProcessType;
-import mods.railcraft.world.level.material.fluid.StandardTank;
-import mods.railcraft.world.level.material.fluid.steam.FluidFuelProvider;
+import mods.railcraft.world.level.material.FluidTools;
+import mods.railcraft.world.level.material.FluidTools.ProcessType;
+import mods.railcraft.world.level.material.StandardTank;
+import mods.railcraft.world.level.material.steam.FluidFuelProvider;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;

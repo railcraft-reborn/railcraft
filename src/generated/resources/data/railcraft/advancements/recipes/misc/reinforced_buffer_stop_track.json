@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:reinforced_buffer_stop_track"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

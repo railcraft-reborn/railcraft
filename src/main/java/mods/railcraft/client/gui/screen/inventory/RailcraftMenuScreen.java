@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.world.inventory.RailcraftMenu;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -30,9 +30,9 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
   }
 
   @Override
-  public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(poseStack);
-    super.render(poseStack, mouseX, mouseY, partialTicks);
+  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    this.renderBackground(guiGraphics);
+    super.render(guiGraphics, mouseX, mouseY, partialTicks);
     var left = this.leftPos;
     var top = this.topPos;
 
@@ -43,7 +43,7 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
         if (!renderer.widget.hidden) {
           var tooltip = renderer.getTooltip();
           if (tooltip != null && renderer.isMouseOver(mouseX - left, mouseY - top)) {
-            this.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY, this.font);
+            guiGraphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
           }
         }
       }
@@ -52,33 +52,30 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
         if (slot instanceof RailcraftSlot railcraftSlot && slot.getItem().isEmpty()) {
           var tooltip = railcraftSlot.getTooltip();
           if (tooltip != null && this.isMouseOverSlot(slot, mouseX, mouseY)) {
-            this.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY, this.font);
+            guiGraphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
           }
         }
       }
     }
 
-    this.renderTooltip(poseStack, mouseX, mouseY);
+    this.renderTooltip(guiGraphics, mouseX, mouseY);
   }
 
   public abstract ResourceLocation getWidgetsTexture();
 
   @Override
-  protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
-    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderSystem.setShaderTexture(0, this.getWidgetsTexture());
-
+  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
     int x = (this.width - this.getXSize()) / 2;
     int y = (this.height - this.getYSize()) / 2;
 
-    blit(poseStack, x, y, 0, 0, this.getXSize(), this.getYSize());
+    guiGraphics.blit(getWidgetsTexture(), x, y, 0, 0, this.getXSize(), this.getYSize());
 
     int relativeMouseX = mouseX - this.leftPos;
     int relativeMouseY = mouseY - this.topPos;
 
     for (var renderer : this.widgetRenderers) {
       if (!renderer.widget.hidden) {
-        renderer.render(this, poseStack, x, y, relativeMouseX, relativeMouseY);
+        renderer.render(getWidgetsTexture(), guiGraphics, x, y, relativeMouseX, relativeMouseY);
       }
     }
   }

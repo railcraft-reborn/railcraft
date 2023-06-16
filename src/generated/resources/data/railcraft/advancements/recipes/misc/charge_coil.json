@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:charge_coil"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "minecraft:tin_ingot_from_blasting_deepslate_tin_ore"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

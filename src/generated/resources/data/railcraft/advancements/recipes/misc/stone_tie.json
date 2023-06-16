@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:stone_tie"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

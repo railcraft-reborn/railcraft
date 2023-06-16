@@ -43,5 +43,6 @@
     "recipes": [
       "railcraft:reinforced_track"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

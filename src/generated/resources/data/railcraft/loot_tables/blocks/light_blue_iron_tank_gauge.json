@@ -16,5 +16,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "railcraft:blocks/light_blue_iron_tank_gauge"
 }

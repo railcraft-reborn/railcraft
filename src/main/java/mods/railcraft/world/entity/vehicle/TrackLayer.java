@@ -47,7 +47,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
   @Override
   protected void moveAlongTrack(BlockPos pos, BlockState state) {
     super.moveAlongTrack(pos, state);
-    if (this.level.isClientSide())
+    if (this.level().isClientSide())
       return;
 
     stockItems(SLOT_REPLACE, SLOT_STOCK);
@@ -80,19 +80,19 @@ public class TrackLayer extends MaintenancePatternMinecart {
     }
 
     if (isValidNewTrackPosition(pos)) {
-      BlockState targetState = this.level.getBlockState(pos);
+      BlockState targetState = this.level().getBlockState(pos);
       if (placeNewTrack(pos, SLOT_STOCK, trackShape)) {
-        Block.dropResources(targetState, this.level, pos);
+        Block.dropResources(targetState, this.level(), pos);
       }
     }
   }
 
   private boolean isValidNewTrackPosition(BlockPos pos) {
-    return isValidReplacementBlock(pos) && Block.canSupportRigidBlock(this.level, pos.below());
+    return isValidReplacementBlock(pos) && Block.canSupportRigidBlock(this.level(), pos.below());
   }
 
   private boolean isValidReplacementBlock(BlockPos pos) {
-    BlockState state = this.level.getBlockState(pos);
+    BlockState state = this.level().getBlockState(pos);
     Block block = state.getBlock();
     return (state.isAir() ||
         block instanceof IPlantable ||

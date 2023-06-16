@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:reinforced_one_way_track"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

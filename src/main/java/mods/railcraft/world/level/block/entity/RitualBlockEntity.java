@@ -7,7 +7,7 @@ import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.particle.FireSparkParticleOptions;
 import mods.railcraft.world.item.RefinedFirestoneItem;
-import mods.railcraft.world.level.material.fluid.FluidTools;
+import mods.railcraft.world.level.material.FluidTools;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

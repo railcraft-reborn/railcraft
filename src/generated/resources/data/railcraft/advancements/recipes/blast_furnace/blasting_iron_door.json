@@ -17,5 +17,6 @@
     [
       "has_iron_door"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

@@ -1,4 +1,4 @@
-package mods.railcraft.world.level.material.fluid;
+package mods.railcraft.world.level.material;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -138,9 +138,9 @@ public class StandardTank extends FluidTank {
   /**
    * Disables draning of our tank. Blocks drain() from draining.
    *
-   * @see mods.railcraft.world.level.material.fluid.StandardTank#drain(FluidStack, FluidAction)
+   * @see StandardTank#drain(FluidStack, FluidAction)
    *      Drain Function
-   * @see mods.railcraft.world.level.material.fluid.StandardTank#internalDrain(FluidStack,
+   * @see StandardTank#internalDrain(FluidStack,
    *      FluidAction) Bypassed Drain Function
    */
   public StandardTank disableDrain() {
@@ -151,9 +151,9 @@ public class StandardTank extends FluidTank {
   /**
    * Disables filling of our tank.
    *
-   * @see mods.railcraft.world.level.material.fluid.StandardTank#fill(FluidStack, FluidAction) Fill
+   * @see StandardTank#fill(FluidStack, FluidAction) Fill
    *      Function
-   * @see mods.railcraft.world.level.material.fluid.StandardTank#internalFill(FluidStack,
+   * @see StandardTank#internalFill(FluidStack,
    *      FluidAction) Bypassed Fill Function
    */
   public StandardTank disableFill() {

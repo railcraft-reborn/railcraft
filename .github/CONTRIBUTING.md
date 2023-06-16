@@ -56,4 +56,4 @@ To build, run:
 gradlew build
 ```
 
-More information [here](https://mcforge.readthedocs.io/en/1.19.x/gettingstarted/).
+More information [here](https://docs.minecraftforge.net/en/1.20.x/gettingstarted/).

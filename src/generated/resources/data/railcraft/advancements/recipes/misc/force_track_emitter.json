@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:force_track_emitter"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

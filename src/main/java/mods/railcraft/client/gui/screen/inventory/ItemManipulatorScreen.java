@@ -1,6 +1,5 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
@@ -11,6 +10,7 @@ import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
 import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -54,10 +54,10 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
   }
 
   @Override
-  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-    super.renderLabels(poseStack, mouseX, mouseY);
-    this.font.draw(poseStack, FILTERS_TEXT, 18, 16, IngameWindowScreen.TEXT_COLOR);
-    this.font.draw(poseStack, BUFFER_TEXT, 126, 16, IngameWindowScreen.TEXT_COLOR);
+  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    super.renderLabels(guiGraphics, mouseX, mouseY);
+    guiGraphics.drawString(this.font, FILTERS_TEXT, 18, 16, IngameWindowScreen.TEXT_COLOR, false);
+    guiGraphics.drawString(this.font, BUFFER_TEXT, 126, 16, IngameWindowScreen.TEXT_COLOR, false);
   }
 
   @Override

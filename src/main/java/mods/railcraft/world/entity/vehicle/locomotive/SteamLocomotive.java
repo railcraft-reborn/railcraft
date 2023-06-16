@@ -8,8 +8,8 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
-import mods.railcraft.world.level.material.fluid.FluidItemHelper;
-import mods.railcraft.world.level.material.fluid.steam.SolidFuelProvider;
+import mods.railcraft.world.level.material.FluidItemHelper;
+import mods.railcraft.world.level.material.steam.SolidFuelProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -80,7 +80,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   public void tick() {
     super.tick();
 
-    if (this.level.isClientSide()) {
+    if (this.level().isClientSide()) {
       return;
     }
     extraFuelInventory.moveOneItemTo(fuelInventory);

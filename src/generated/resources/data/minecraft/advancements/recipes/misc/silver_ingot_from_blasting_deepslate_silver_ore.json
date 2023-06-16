@@ -30,5 +30,6 @@
     "recipes": [
       "minecraft:silver_ingot_from_blasting_deepslate_silver_ore"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -7,9 +7,8 @@ import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.EntityPredicate.Composite;
 import net.minecraft.advancements.critereon.NbtPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
@@ -31,13 +30,13 @@ public class MultiBlockFormedTrigger extends
 
   @Override
   protected MultiBlockFormedTrigger.Instance createInstance(JsonObject json,
-      EntityPredicate.Composite andPredicate, DeserializationContext parser) {
+      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
     var type = JsonUtil.getFromRegistry(json, "type", ForgeRegistries.BLOCK_ENTITY_TYPES)
         .orElse(null);
     var nbt = JsonUtil.getAsJsonObject(json, "nbt")
         .map(NbtPredicate::fromJson)
         .orElse(NbtPredicate.ANY);
-    return new MultiBlockFormedTrigger.Instance(andPredicate, type, nbt);
+    return new MultiBlockFormedTrigger.Instance(contextAwarePredicate, type, nbt);
   }
 
   /**
@@ -53,9 +52,9 @@ public class MultiBlockFormedTrigger extends
     private final BlockEntityType<?> type;
     private final NbtPredicate predicate;
 
-    private Instance(EntityPredicate.Composite entityPredicate,
+    private Instance(ContextAwarePredicate contextAwarePredicate,
         @Nullable BlockEntityType<?> type, NbtPredicate predicate) {
-      super(MultiBlockFormedTrigger.ID, entityPredicate);
+      super(MultiBlockFormedTrigger.ID, contextAwarePredicate);
       this.type = type;
       this.predicate = predicate;
     }
@@ -67,7 +66,8 @@ public class MultiBlockFormedTrigger extends
 
     public static MultiBlockFormedTrigger.Instance formedMultiBlock(
         BlockEntityType<?> tileEntityType, NbtPredicate nbtPredicate) {
-      return new MultiBlockFormedTrigger.Instance(Composite.ANY, tileEntityType, nbtPredicate);
+      return new MultiBlockFormedTrigger.Instance(ContextAwarePredicate.ANY, tileEntityType,
+          nbtPredicate);
     }
 
     public boolean matches(RailcraftBlockEntity blockEntity) {

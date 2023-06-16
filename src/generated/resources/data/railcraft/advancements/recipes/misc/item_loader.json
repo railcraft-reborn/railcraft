@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:item_loader"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

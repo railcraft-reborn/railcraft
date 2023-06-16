@@ -30,5 +30,6 @@
     "recipes": [
       "railcraft:switch_track_router"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

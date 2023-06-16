@@ -27,5 +27,6 @@
     [
       "has_coke_oven"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

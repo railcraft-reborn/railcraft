@@ -28,5 +28,6 @@
     [
       "on_season_set"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

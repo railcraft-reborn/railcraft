@@ -69,7 +69,7 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
     if (!ContainerTools.isStackFull(stackStock) && stackStock.getCount() < getMaxStackSize())
       this.setItem(slotStock,
           ContainerTools.copy(stackReplace, stackStock.getCount() + CartUtil.transferService()
-              .pullStack(extension, stackReplace::sameItem).getCount()));
+              .pullStack(extension, x -> ItemStack.isSameItem(stackReplace, x)).getCount()));
   }
 
   @Override

@@ -22,8 +22,8 @@ public class RollingResultSlot extends ResultSlot {
   @Override
   public void onTake(Player player, ItemStack stack) {
     this.checkTakeAchievements(stack);
-    var recipeRemainingItems = player.level.getRecipeManager()
-        .getRemainingItemsFor(RailcraftRecipeTypes.ROLLING.get(), this.craftSlots, player.level);
+    var recipeRemainingItems = player.level().getRecipeManager()
+        .getRemainingItemsFor(RailcraftRecipeTypes.ROLLING.get(), this.craftSlots, player.level());
     for (int i = 0; i < recipeRemainingItems.size(); ++i) {
       var itemstack = this.craftSlots.getItem(i);
       var itemstack1 = recipeRemainingItems.get(i);
@@ -35,8 +35,8 @@ public class RollingResultSlot extends ResultSlot {
       if (!itemstack1.isEmpty()) {
         if (itemstack.isEmpty()) {
           this.craftSlots.setItem(i, itemstack1);
-        } else if (ItemStack.isSame(itemstack, itemstack1)
-            && ItemStack.tagMatches(itemstack, itemstack1)) {
+        } else if (ItemStack.isSameItem(itemstack, itemstack1)
+            && ItemStack.isSameItemSameTags(itemstack, itemstack1)) {
           itemstack1.grow(itemstack.getCount());
           this.craftSlots.setItem(i, itemstack1);
         } else if (!this.player.getInventory().add(itemstack1)) {
