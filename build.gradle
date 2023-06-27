@@ -99,11 +99,8 @@ minecraft {
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
-        client {
-            workingDirectory project.file('run/client')
-
+        configureEach {
             property 'forge.logging.console.level', 'debug'
-
             property 'forge.enabledGameTestNamespaces', 'railcraft'
 
             args '--mixin', 'railcraft.mixins.json'
@@ -115,54 +112,24 @@ minecraft {
                     source sourceSets.test
                 }
             }
+        }    
+
+        client {
+            workingDirectory project.file('run/client')
         }
 
         server {
             workingDirectory project.file('run/server')
-
-            property 'forge.logging.console.level', 'debug'
-
-            property 'forge.enabledGameTestNamespaces', 'railcraft'
-
-            args '--mixin', 'railcraft.mixins.json'
-
-            mods {
-                railcraft {
-                    source sourceSets.main
-                    source sourceSets.api
-                }
-            }
         }
 
         data {
             workingDirectory project.file('run/data')
 
-            property 'forge.logging.console.level', 'debug'
-
             args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                railcraft {
-                    source sourceSets.main
-                    source sourceSets.api
-                }
-            }
         }
 
         gameTestServer {
             workingDirectory project.file('run/test')
-
-            property 'forge.logging.console.level', 'debug'
-
-            property 'forge.enabledGameTestNamespaces', 'railcraft'
-
-            mods {
-                railcraft {
-                    source sourceSets.main
-                    source sourceSets.api
-                    source sourceSets.test
-                }
-            }
         }
     }
 }
