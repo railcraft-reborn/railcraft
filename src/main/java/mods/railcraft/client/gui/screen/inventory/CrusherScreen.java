@@ -23,6 +23,7 @@ public class CrusherScreen extends RailcraftMenuScreen<CrusherMenu> {
 
   @Override
   protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+    super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
     int x = (this.width - this.imageWidth) / 2;
     int y = (this.height - this.imageHeight) / 2;
 
