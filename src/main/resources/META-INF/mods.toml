@@ -5,7 +5,7 @@ issueTrackerURL = "https://github.com/Sm0keySa1m0n/Railcraft/issues"
 
 [[mods]]
   modId = "railcraft"
-  version = "${file.jarVersion}"
+  version = "${mod_version}"
   displayName = "Railcraft"
   logoFile = "pack.png"
   credits = "Created by CovertJaguar and other contributions at Github"

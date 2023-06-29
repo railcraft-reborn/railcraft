@@ -160,6 +160,17 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            mod_version: project.mod_version
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
 tasks.named('jar', Jar).configure {
     from([sourceSets.api.output, sourceSets.main.output])
     manifest {
