@@ -146,7 +146,7 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.neoforged', name: 'forge', version: "${project.minecraft_version}-${project.neoforge_version}"
+    minecraft group: 'net.neoforged', name: 'forge', version: "${project.minecraft_version}-${project.neo_version}"
 
     annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
     testAnnotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'

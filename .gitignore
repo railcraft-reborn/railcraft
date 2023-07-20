@@ -84,9 +84,6 @@ gradle/
 bin
 run
 
-# Files from Forge MDK
-forge*changelog.txt
-
 #Visual studio stuff
 *.vscode/*
 
