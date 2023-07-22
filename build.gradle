@@ -9,7 +9,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
     id 'net.covers1624.signing' version '1.1.4'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
@@ -112,7 +112,7 @@ minecraft {
                     source sourceSets.test
                 }
             }
-        }    
+        }
 
         client {
             workingDirectory project.file('run/client')
@@ -146,7 +146,7 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: "${project.minecraft_version}-${project.forge_version}"
+    minecraft group: 'net.neoforged', name: 'forge', version: "${project.minecraft_version}-${project.neo_version}"
 
     annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
     testAnnotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
@@ -160,22 +160,33 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
-jar {
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            mod_version: project.mod_version
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+tasks.named('jar', Jar).configure {
     from([sourceSets.api.output, sourceSets.main.output])
     manifest {
         attributes([
-            'Specification-Title'       : project.name,
-            'Specification-Vendor'      : 'Sm0keySa1m0n, 3divad99',
-            'Specification-Version'     : '1',
-            'Implementation-Title'      : project.name,
-            'Implementation-Version'    : project.version,
-            'Implementation-Vendor'     : 'Sm0keySa1m0n, 3divad99',
-            'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
-            'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            'MixinConfigs'              : 'railcraft.mixins.json'
+                'Specification-Title'       : project.name,
+                'Specification-Vendor'      : 'Sm0keySa1m0n, 3divad99',
+                'Specification-Version'     : '1',
+                'Implementation-Title'      : project.name,
+                'Implementation-Version'    : project.version,
+                'Implementation-Vendor'     : 'Sm0keySa1m0n, 3divad99',
+                'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
+                'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'MixinConfigs'              : 'railcraft.mixins.json'
         ])
     }
-    finalizedBy('reobfJar')
+    finalizedBy 'reobfJar'
 }
 
 mixin {

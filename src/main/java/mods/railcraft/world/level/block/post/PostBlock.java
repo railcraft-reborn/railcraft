@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.post;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.function.ToIntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.tags.RailcraftTags;
@@ -120,8 +119,7 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
   }
 
   public final int getShapeIndex(BlockState blockState) {
-    return this.stateToIndex.computeIfAbsent(blockState,
-        (ToIntFunction<BlockState>) this::computeShapeIndex);
+    return this.stateToIndex.computeIfAbsent(blockState, this::computeShapeIndex);
   }
 
   protected int computeShapeIndex(BlockState blockState) {
@@ -158,9 +156,9 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
 
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
-    BlockGetter level = context.getLevel();
+    Level level = context.getLevel();
     BlockPos blockPos = context.getClickedPos();
-    FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+    FluidState fluidState = level.getFluidState(context.getClickedPos());
     BlockPos northPos = blockPos.north();
     BlockPos eastPos = blockPos.east();
     BlockPos southPos = blockPos.south();

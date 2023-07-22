@@ -1,7 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory.widget;
 
 import java.util.List;
-import com.mojang.blaze3d.systems.RenderSystem;
 import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
@@ -9,7 +8,6 @@ import mods.railcraft.gui.widget.FluidGaugeWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 
 public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
 
@@ -44,18 +42,15 @@ public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
         / (float) this.widget.tank.getCapacity();
 
     var color = RenderUtil.getColorARGB(fluidStack);
-    var alpha = (float) (color >> 24 & 255) / 255.0F;
-    var red = (float) (color >> 16 & 255) / 255.0F;
-    var green = (float) (color >> 8 & 255) / 255.0F;
-    var blue = (float) (color & 255) / 255.0F;
-
-    RenderSystem.setShaderColor(red, green, blue, alpha);
-    RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+    var alpha = RenderUtil.getAlpha(color);
+    var red = RenderUtil.getRed(color);
+    var green = RenderUtil.getGreen(color);
+    var blue = RenderUtil.getBlue(color);
 
     for (var col = 0; col < this.widget.w / 16; col++) {
       for (var row = 0; row <= this.widget.h / 16; row++) {
         guiGraphics.blit(centreX + this.widget.x + col * 16, centreY + this.widget.y + row * 16 - 1,
-            0, 16, 16, fluidIcon);
+            0, 16, 16, fluidIcon, red, green, blue, alpha);
       }
     }
 

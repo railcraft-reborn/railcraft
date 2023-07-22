@@ -66,7 +66,7 @@ public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
 
   @Override
   protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0x333333);
+    guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0x333333, false);
     if (this.getMenu().hasCartFilter()) {
       guiGraphics.drawString(this.font, CART_FILTER_TEXT, 75, 16,
           IngameWindowScreen.TEXT_COLOR, false);
