@@ -6,7 +6,7 @@
 Here you will find the source and issue tracker for the **Official Railcraft Project**.
 
 ## What is Railcraft?
-Railcraft is a mod written for the hit game [Minecraft](https://minecraft.net/). It is built on top of the [Minecraft Forge](https://github.com/MinecraftForge) API.
+Railcraft is a mod written for the hit game [Minecraft](https://minecraft.net/). It is built on top of the [NeoForged](https://github.com/neoforged) API.
 
 It greatly expands and improves the Minecart system in Minecraft. Adding many new blocks, entities, and features. It has been in development since 2012 and contains over 800 class files and hundreds of thousands of lines of code.
 The mod was created by the user going by the name **CovertJaguar**.
