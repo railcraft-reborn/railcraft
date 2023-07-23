@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-29T09:24:52.478685	Recipes
+// 1.20.1	2023-07-22T22:48:01.784046	Recipes
 4a6e67942b0734508f9373351ab324c6cdd81244 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 33c838f63222211d4d44845f4f963dfe2cec8fc9 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
 cbb6c74576aab2b84f82e392a720143892a4c548 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_raw.json
@@ -221,6 +221,10 @@ bac69a30cd725278dc2ac0effc6c93a4ea32dee8 data/railcraft/advancements/recipes/mis
 74a178bbe4b5305ef697b3df94340101996476c1 data/railcraft/advancements/recipes/misc/fluid_loader.json
 a93db500e67bc65a948d3af26400281e980c0cbd data/railcraft/advancements/recipes/misc/fluid_unloader.json
 511015044ce011179a0f35c8e290d97455f689d4 data/railcraft/advancements/recipes/misc/force_track_emitter.json
+e041c2d985d4e4ea3fa7da4d3780de615322643a data/railcraft/advancements/recipes/misc/frame_brass_plate.json
+1f77a4a1e9146745ccc85afa64e11baf4e03622b data/railcraft/advancements/recipes/misc/frame_bronze_plate.json
+3bf4198a0a456f8950f2b52a455bf6edae17adc2 data/railcraft/advancements/recipes/misc/frame_iron_plate.json
+437592575eadede2f7b30e7dd4fa8ca9f5008727 data/railcraft/advancements/recipes/misc/frame_steel_plate.json
 dc74da327c35814a233327b47e370895f0c29b0e data/railcraft/advancements/recipes/misc/gated_track_kit.json
 3627b07fd008546b5212f597c379b9b617d7ae58 data/railcraft/advancements/recipes/misc/goggles.json
 55e63e2ca0e9ecd690c751fbbfd153ad4d03d757 data/railcraft/advancements/recipes/misc/gold_gear.json
@@ -732,6 +736,10 @@ c3d7d117524195195cd15277f073c6468899d281 data/railcraft/recipes/firestone_cracke
 3ccbc02a8deee4fa03279254c4cd2a7e25456e4e data/railcraft/recipes/fluid_loader.json
 0aafcfcdb249c73bd7fabf5b8014b114bcda5e1a data/railcraft/recipes/fluid_unloader.json
 e96d17e1bb87e87a786dd4ac7860ff3a182b7899 data/railcraft/recipes/force_track_emitter.json
+87b60654c8f78a7e5be0767f617bc8ce6d84317c data/railcraft/recipes/frame_brass_plate.json
+b5cd806389857b4c2d4ba386acaa6151bb2bfba6 data/railcraft/recipes/frame_bronze_plate.json
+5ecfe9b0c1e69d92d51d5bd819a464d35e6052c4 data/railcraft/recipes/frame_iron_plate.json
+2784d0f840f296af07d5d4fb7601745ae5f08cfa data/railcraft/recipes/frame_steel_plate.json
 a8e7ca8292cc90ea4317317afecfe2694b315d40 data/railcraft/recipes/gated_track_kit.json
 8d026ef9abbb0dce49ef50db8e1a2c38ba92cd22 data/railcraft/recipes/goggles.json
 abb651182939b54d9e1441bbfc44d57e5349e3d2 data/railcraft/recipes/gold_gear.json

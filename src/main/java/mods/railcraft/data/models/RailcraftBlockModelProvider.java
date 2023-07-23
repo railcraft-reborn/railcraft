@@ -15,6 +15,7 @@ import mods.railcraft.world.level.block.SteamTurbineBlock.Type;
 import mods.railcraft.world.level.block.charge.BatteryBlock;
 import mods.railcraft.world.level.block.charge.DisposableBatteryBlock;
 import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
+import mods.railcraft.world.level.block.charge.FrameBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.FluidManipulatorBlock;
@@ -226,7 +227,6 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       this.createPost(RailcraftBlocks.POST.variantFor(dyeColor).get());
     }
 
-
     this.simpleBlock(RailcraftBlocks.STEEL_BLOCK.get());
     this.simpleBlock(RailcraftBlocks.BRASS_BLOCK.get());
     this.simpleBlock(RailcraftBlocks.BRONZE_BLOCK.get());
@@ -281,6 +281,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createCubeTopBottomBlock(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
     this.createCubeTopBottomBlock(RailcraftBlocks.POWERED_ROLLING_MACHINE.get());
     this.createSteamOven(RailcraftBlocks.STEAM_OVEN.get());
+
+    this.createFrameBlock(RailcraftBlocks.FRAME.get());
 
     this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
     this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
@@ -476,13 +478,13 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var singleModel = this.models().cubeAll(this.name(block, "_single"), endTexture)
         .renderType(CUTOUT);
     var topModel = this.models().cubeColumn(this.name(block, "_top"),
-        TextureMapping.getBlockTexture(block, "_side_top"), endTexture)
+            TextureMapping.getBlockTexture(block, "_side_top"), endTexture)
         .renderType(CUTOUT);
     var centerModel = this.models().cubeColumn(this.name(block, "_center"),
-        TextureMapping.getBlockTexture(block, "_side_center"), endTexture)
+            TextureMapping.getBlockTexture(block, "_side_center"), endTexture)
         .renderType(CUTOUT);
     var bottomModel = this.models().cubeColumn(this.name(block, "_bottom"),
-        TextureMapping.getBlockTexture(block, "_side_bottom"), endTexture)
+            TextureMapping.getBlockTexture(block, "_side_bottom"), endTexture)
         .renderType(CUTOUT);
 
     this.getVariantBuilder(block)
@@ -501,7 +503,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private void createFluidManipulator(FluidManipulatorBlock<?> block) {
     var texture = TextureMapping.cubeBottomTop(block);
     var model = this.models().cubeBottomTop(this.name(block), texture.get(TextureSlot.SIDE),
-        texture.get(TextureSlot.BOTTOM), texture.get(TextureSlot.TOP))
+            texture.get(TextureSlot.BOTTOM), texture.get(TextureSlot.TOP))
         .renderType(CUTOUT);
 
     this.simpleBlock(block, model);
@@ -777,6 +779,34 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.models().cubeBottomTop(this.name(block), sideTexture, bottomTexture, topTexture);
     this.simpleBlock(block, model);
     this.simpleBlockItem(block, model);
+  }
+
+  private void createFrameBlock(FrameBlock block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    var topTexture = TextureMapping.getBlockTexture(block, "_top");
+    var topPoweredTexture = TextureMapping.getBlockTexture(block, "_top_powered");
+
+    var frameTemplate = this.modLoc("frame_template");
+
+    var model =
+        this.models().withExistingParent(name(block), frameTemplate)
+        .texture("side", sideTexture)
+        .texture("top", topTexture)
+        .renderType(CUTOUT);
+
+    var modelPowered =
+        this.models().withExistingParent(name(block, "_powered"), frameTemplate)
+        .texture("side", sideTexture)
+        .texture("top", topPoweredTexture)
+        .renderType(CUTOUT);
+
+    this.getVariantBuilder(block)
+        .forAllStates(blockState -> {
+          var powered = blockState.getValue(FrameBlock.POWERED);
+          return ConfiguredModel.builder().modelFile(powered ? modelPowered : model).build();
+        });
+
+    simpleBlockItem(block, model);
   }
 
   private void createPost(PostBlock block) {
@@ -1125,7 +1155,6 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         .singleTexture(this.name(block, "_west_switched"), FLAT_TEMPLATE, "rail",
             westSwitchedTexture)
         .renderType(CUTOUT);
-
 
     getVariantBuilder(block)
         .forAllStatesExcept(blockState -> {
@@ -1819,11 +1848,6 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       ModelFile raisedNorthEastModel,
       ModelFile raisedSouthWestModel) {
 
-    private void apply(MultiPartBlockStateBuilder builder, Property<RailShape> shapeProperty,
-        boolean includeRaised, boolean reversed) {
-      this.apply(builder, shapeProperty, includeRaised, reversed, null);
-    }
-
     private static MultiPartBlockStateBuilder.PartBuilder conditions(
         MultiPartBlockStateBuilder.PartBuilder.ConditionGroup partialBuilder,
         @Nullable Condition conditions) {
@@ -1837,6 +1861,11 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .ifPresent(v -> partialBuilder.conditions.put(key, v)));
       }
       return partialBuilder.end();
+    }
+
+    private void apply(MultiPartBlockStateBuilder builder, Property<RailShape> shapeProperty,
+        boolean includeRaised, boolean reversed) {
+      this.apply(builder, shapeProperty, includeRaised, reversed, null);
     }
 
     private void apply(MultiPartBlockStateBuilder builder, Property<RailShape> shapeProperty,

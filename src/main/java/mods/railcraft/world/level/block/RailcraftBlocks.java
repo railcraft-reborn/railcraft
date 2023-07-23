@@ -5,6 +5,7 @@ import java.util.function.ToIntFunction;
 import mods.railcraft.Railcraft;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
+import mods.railcraft.world.level.block.charge.FrameBlock;
 import mods.railcraft.world.level.block.charge.NickelIronBatteryBlock;
 import mods.railcraft.world.level.block.charge.NickelZincBatteryBlock;
 import mods.railcraft.world.level.block.charge.ZincCarbonBatteryBlock;
@@ -298,6 +299,16 @@ public class RailcraftBlocks {
                   .strength(1F)
                   .requiresCorrectToolForDrops()
                   .sound(SoundType.WOOD)));
+
+  public static final RegistryObject<FrameBlock> FRAME =
+      deferredRegister.register("frame",
+          () -> new FrameBlock(
+              BlockBehaviour.Properties.of()
+                  .mapColor(MapColor.METAL)
+                  .strength(3F)
+                  .requiresCorrectToolForDrops()
+                  .noOcclusion()
+                  .sound(SoundType.METAL)));
 
   public static final RegistryObject<NickelZincBatteryBlock> NICKEL_ZINC_BATTERY =
       deferredRegister.register("nickel_zinc_battery",

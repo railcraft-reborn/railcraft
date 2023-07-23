@@ -1,0 +1,8 @@
+{
+  "parent": "railcraft:block/frame_template",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "side": "railcraft:block/frame_side",
+    "top": "railcraft:block/frame_top"
+  }
+}

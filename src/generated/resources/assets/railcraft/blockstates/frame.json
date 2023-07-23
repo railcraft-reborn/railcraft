@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "railcraft:block/frame"
+    },
+    "powered=true": {
+      "model": "railcraft:block/frame_powered"
+    }
+  }
+}

@@ -78,6 +78,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildFirestones(consumer);
     buildQuarriedStone(consumer);
     buildBattery(consumer);
+    buildFrame(consumer);
   }
 
   private void conversion(Consumer<FinishedRecipe> finishedRecipe, ItemLike from, ItemLike to,
@@ -1777,19 +1778,36 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(consumer);
   }
 
-    private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
-      TagKey<Item> ingredient,
-      Item result,
-      int quantity,
-      String suffix) {
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, quantity)
-        .pattern("aa")
-        .pattern("aa")
-        .define('a', ingredient)
-        .unlockedBy("has_material", has(ingredient))
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, name + suffix));
+  private void buildFrame(Consumer<FinishedRecipe> consumer) {
+    frame(6, RailcraftTags.Items.IRON_PLATE, "_iron_plate", consumer);
+    frame(6, RailcraftTags.Items.BRONZE_PLATE, "_bronze_plate", consumer);
+    frame(6, RailcraftTags.Items.BRASS_PLATE, "_brass_plate", consumer);
+    frame(10, RailcraftTags.Items.STEEL_PLATE, "_steel_plate", consumer);
   }
+
+  private void frame(int count, TagKey<Item> tag, String suffix,
+      Consumer<FinishedRecipe> consumer) {
+    var name = RecipeBuilder.getDefaultRecipeId(RailcraftItems.FRAME_BLOCK.get()).getPath();
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.FRAME_BLOCK.get(), count)
+        .pattern("aaa")
+        .pattern("b b")
+        .pattern("bbb")
+        .define('a', tag)
+        .define('b', RailcraftItems.REBAR.get())
+        .unlockedBy(getHasName(RailcraftItems.REBAR.get()), has(RailcraftItems.REBAR.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID, name + suffix));
+  }
+
+  private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
+    TagKey<Item> ingredient, Item result, int quantity, String suffix) {
+  var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+  ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, quantity)
+      .pattern("aa")
+      .pattern("aa")
+      .define('a', ingredient)
+      .unlockedBy("has_material", has(ingredient))
+      .save(finishedRecipe, new ResourceLocation(Railcraft.ID, name + suffix));
+}
 
   private static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
       Item ingredient,

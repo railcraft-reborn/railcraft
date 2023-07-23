@@ -133,6 +133,10 @@ public class RailcraftItems {
       deferredRegister.register("feed_station",
           () -> new BlockItem(RailcraftBlocks.FEED_STATION.get(), new Item.Properties()));
 
+  public static final RegistryObject<Item> FRAME_BLOCK =
+      deferredRegister.register("frame",
+          () -> new BlockItem(RailcraftBlocks.FRAME.get(), new Item.Properties()));
+
   public static final RegistryObject<Item> NICKEL_ZINC_BATTERY =
       deferredRegister.register("nickel_zinc_battery",
           () -> new BlockItem(RailcraftBlocks.NICKEL_ZINC_BATTERY.get(), new Item.Properties()));

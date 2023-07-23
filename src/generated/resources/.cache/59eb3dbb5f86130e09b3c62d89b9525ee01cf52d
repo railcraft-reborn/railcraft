@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-29T09:24:52.477122	Loot Tables
+// 1.20.1	2023-07-22T22:06:34.606624	Loot Tables
 2368bf4f9231f79e11c75fe244dd7a820a896d65 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 9097789b3b5eebaff6d62020fecf494c96348ac7 data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 fbbe6fc8014502014e25452e15f95dc665234e15 data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -101,6 +101,7 @@ d98980ff384d1eeb300a6effdb3af3ba77ce9bf6 data/railcraft/loot_tables/blocks/fluid
 9ca1fa303222f3604ab1954c6b807ca5ffc2ceb5 data/railcraft/loot_tables/blocks/fluid_unloader.json
 b183b2521cdbe2ae02ab194ca4468e03be89d71b data/railcraft/loot_tables/blocks/force_track.json
 e98e3a67c8656cd6fb1fc94333e386b4de2ce556 data/railcraft/loot_tables/blocks/force_track_emitter.json
+fb0b0afbe05ed4b95f29a753a2325e06f2764408 data/railcraft/loot_tables/blocks/frame.json
 3c977abc95842291e35db2dc82e4ec649a6a3603 data/railcraft/loot_tables/blocks/gray_iron_tank_gauge.json
 77c0b434acea4b563336b83ac1e84462e4867366 data/railcraft/loot_tables/blocks/gray_iron_tank_valve.json
 1c244acf31d3a21427be7a7fd31ea5a4fd1fc4b3 data/railcraft/loot_tables/blocks/gray_iron_tank_wall.json

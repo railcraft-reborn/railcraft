@@ -226,6 +226,7 @@ public class Translations {
     public static final String FLUID_UNLOADER = makeKey("tips", "fluid_unloader");
     public static final String CART_DISPENSER = makeKey("tips", "cart_dispenser");
     public static final String TRAIN_DISPENSER = makeKey("tips", "train_dispenser");
+    public static final String FRAME = makeKey("tips", "frame");
     public static final String SIGNAL_BLOCK_SURVEYOR =
         makeKey("tips", "signal_block_surveyor");
     public static final String LINKS_CONTROLLERS_TO_RECEIVERS =

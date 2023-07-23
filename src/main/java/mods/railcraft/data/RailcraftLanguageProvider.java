@@ -135,6 +135,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_STAIRS, "Quarried Paver Stairs");
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_SLAB, "Quarried Paver Slab");
 
+    this.addBlock(RailcraftBlocks.FRAME, "Frame");
     this.addBlock(RailcraftBlocks.NICKEL_IRON_BATTERY, "Nickel-Iron Battery");
     this.addBlock(RailcraftBlocks.NICKEL_ZINC_BATTERY, "Nickel-Zinc Battery");
     this.addBlock(RailcraftBlocks.ZINC_CARBON_BATTERY, "Zinc-Carbon Battery");
@@ -456,6 +457,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.FLUID_UNLOADER, "Unloads fluids from carts");
     this.add(Translations.Tips.CART_DISPENSER, "Dispenses carts onto tracks");
     this.add(Translations.Tips.TRAIN_DISPENSER, "Dispenses linked trains onto tracks");
+    this.add(Translations.Tips.FRAME, "Use to power track");
     this.add(Translations.Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
     this.add(Translations.Tips.LINKS_CONTROLLERS_TO_RECEIVERS, "Links Controllers to Receivers");
     this.add(Translations.Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");

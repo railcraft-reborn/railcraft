@@ -44,6 +44,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.BLAST_FURNACE_BRICKS.get());
             output.accept(RailcraftItems.WATER_TANK_SIDING.get());
             output.accept(RailcraftItems.FEED_STATION.get());
+            output.accept(RailcraftItems.FRAME_BLOCK.get());
             output.accept(RailcraftItems.NICKEL_ZINC_BATTERY.get());
             output.accept(RailcraftItems.NICKEL_IRON_BATTERY.get());
             output.accept(RailcraftItems.ZINC_CARBON_BATTERY.get());

@@ -234,6 +234,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get())
         .add(RailcraftBlocks.ZINC_CARBON_BATTERY.get())
         .add(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get())
+        .add(RailcraftBlocks.FRAME.get())
         .addTags(RailcraftTags.Blocks.LEAD_ORE,
             RailcraftTags.Blocks.NICKEL_ORE,
             RailcraftTags.Blocks.SILVER_ORE,

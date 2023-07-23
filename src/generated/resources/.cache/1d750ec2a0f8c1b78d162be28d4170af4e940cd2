@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-29T09:24:52.482802	Block States: railcraft
+// 1.20.1	2023-07-22T22:10:10.05346	Block States: railcraft
 add6c7b9a50c93a0ccd9ba6e317c1464c29ff9f0 assets/railcraft/blockstates/abandoned_activator_track.json
 141e735829ad3c7798b22e3fcc73490d9a9602ac assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -96,6 +96,7 @@ d0033564ba044554fcc76cb596c8d74885f593bb assets/railcraft/blockstates/fluid_load
 c3270a2e6ac073d9c9a5484f583d9a2ff9d0072f assets/railcraft/blockstates/fluid_unloader.json
 74e9f4984b906cd933f4cf1c527b755a81c3ec04 assets/railcraft/blockstates/force_track.json
 84d4c400fc7146d6f29d5d8b02492494fff75dec assets/railcraft/blockstates/force_track_emitter.json
+6a067aea0e87a1228abf0655f8741be5474463bd assets/railcraft/blockstates/frame.json
 d0ea4fa2d82deaa6e0deabf79a6ea400e62b05bf assets/railcraft/blockstates/gray_iron_tank_gauge.json
 f031f2e6d17f66f99ecb3666ce3eff97d36f242d assets/railcraft/blockstates/gray_iron_tank_valve.json
 138f3f538d691f284323b94b27e3a2b5da3ab2c6 assets/railcraft/blockstates/gray_iron_tank_wall.json
@@ -553,6 +554,8 @@ c3b8848c4e8a9a253dbe117f6f36ac1ff11f5619 assets/railcraft/models/block/fluid_unl
 cb77a749abb7fe1348215fc8806fa5bceab4c529 assets/railcraft/models/block/force_track.json
 5794c2641d3d2997487a004a74b7757cdc3097dd assets/railcraft/models/block/force_track_emitter_powered.json
 07b9742b923247d319bbcced3bf0a61b07c30722 assets/railcraft/models/block/force_track_emitter_unpowered.json
+9d196d9a5f531313276bd1e38602ef2acf17aaf0 assets/railcraft/models/block/frame.json
+2f7e97f347e808560ec94cbac23185f0d55957e9 assets/railcraft/models/block/frame_powered.json
 50644b781592545375efcc89d32e63ed44da5753 assets/railcraft/models/block/gray_iron_tank_gauge_bottom.json
 8a41eaf5f5b359e2911dadeaf388b736121d38c1 assets/railcraft/models/block/gray_iron_tank_gauge_center.json
 fa9f4feb0a03871b8704bca29535a456073264b2 assets/railcraft/models/block/gray_iron_tank_gauge_single.json
@@ -1159,6 +1162,7 @@ dad3f4e446f374d6518227841b1779389e9efca1 assets/railcraft/models/item/feed_stati
 c501cb646a7a13dcdbd7da80916bfdb1a7d2b7a7 assets/railcraft/models/item/fluid_fueled_firebox.json
 090e59272a7eb9f6ab90eb582d30981a04b60b61 assets/railcraft/models/item/fluid_loader.json
 4cd92a11d29f7f3c5627f236052c9c807ca994e5 assets/railcraft/models/item/fluid_unloader.json
+28058e34a3bf3e81d30ef5f70d61a664e049af5d assets/railcraft/models/item/frame.json
 70fc47360d97d2fa51b26427b56b6db3a7de4a81 assets/railcraft/models/item/gray_iron_tank_gauge.json
 347a56945ea3a49d657263a6ce1621674ef524c3 assets/railcraft/models/item/gray_iron_tank_valve.json
 f1180f75562818dfad62d03091448392d705e90f assets/railcraft/models/item/gray_iron_tank_wall.json
