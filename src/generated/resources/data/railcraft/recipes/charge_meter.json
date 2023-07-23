@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/copper"
+    },
+    "b": {
+      "item": "minecraft:stone_button"
+    },
+    "c": {
+      "item": "minecraft:glass_pane"
+    },
+    "d": {
+      "tag": "forge:ingots/brass"
+    }
+  },
+  "pattern": [
+    "a a",
+    "bcb",
+    " d "
+  ],
+  "result": {
+    "item": "railcraft:charge_meter"
+  },
+  "show_notification": true
+}

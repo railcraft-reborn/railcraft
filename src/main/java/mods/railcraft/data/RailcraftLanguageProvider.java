@@ -50,6 +50,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.subtitleTranslations();
     this.damageSourceTranslations();
     this.routingTableTranslations();
+    this.chargeMeterTranslations();
   }
 
   private void blockTranslations() {
@@ -310,6 +311,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.CHARGE_COIL, "Charge Coil");
     this.addItem(RailcraftItems.CHARGE_TERMINAL, "Charge Terminal");
     this.addItem(RailcraftItems.CHARGE_MOTOR, "Charge Motor");
+    this.addItem(RailcraftItems.CHARGE_METER, "Charge Meter");
   }
 
   private void entityTranslations() {
@@ -1097,6 +1099,17 @@ public class RailcraftLanguageProvider extends LanguageProvider {
           4
           FALSE
         """);
+  }
+
+  private void chargeMeterTranslations() {
+    this.add(Translations.ChargeMeter.START, "Recording data over %s seconds...");
+    this.add(Translations.ChargeMeter.NETWORK, """
+        Network -> Size: %s | Charge: %s FE | Draw: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
+        Eff: %s%%""");
+    this.add(Translations.ChargeMeter.NODE, "Node -> Draw: %s FE/t | Loss: %s FE/t");
+    this.add(Translations.ChargeMeter.PRODUCER, """
+        Supply -> Charge: %s FE | Production: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
+        Eff: %s%%""");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {

@@ -1,4 +1,4 @@
-// 1.20.1	2023-07-22T22:48:01.784046	Recipes
+// 1.20.1	2023-07-23T11:09:10.530554	Recipes
 4a6e67942b0734508f9373351ab324c6cdd81244 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 33c838f63222211d4d44845f4f963dfe2cec8fc9 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
 cbb6c74576aab2b84f82e392a720143892a4c548 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_raw.json
@@ -161,6 +161,7 @@ c4806b4b888ba0934fc0212c5f351e12f367dc4b data/railcraft/advancements/recipes/mis
 b6c215eb7e04c589136fed04756a9d1d7d2168a0 data/railcraft/advancements/recipes/misc/bushing_gear_bronze.json
 04080ab80ed4ed48bd6d87e8643cfa554768a4c0 data/railcraft/advancements/recipes/misc/cart_dispenser.json
 341e2e5dfc6b230b24ee10c51fa6731794f84593 data/railcraft/advancements/recipes/misc/charge_coil.json
+8e9de22f99259e230d94f28d1724accd3cb24b86 data/railcraft/advancements/recipes/misc/charge_meter.json
 6cd1e6fd6a3c2cfdaf36028481c3f55f32bedab9 data/railcraft/advancements/recipes/misc/charge_motor.json
 0d4c93364c7a7080452491aa04a96d0f8b714fa5 data/railcraft/advancements/recipes/misc/charge_spool_medium_from_large.json
 ede6f401e507bf45d05b80c02e907d0f88fde344 data/railcraft/advancements/recipes/misc/charge_spool_small_from_medium.json
@@ -623,6 +624,7 @@ f5891a9e5be986da88df8bc38efd22c96b8d94fa data/railcraft/recipes/brown_strengthen
 0b1dc4b353502890c85854284eb583363cbac6a6 data/railcraft/recipes/cart_disassembly.json
 12950433ff4099542ce9910669679ea24bab628c data/railcraft/recipes/cart_dispenser.json
 3b7860ac675f913c591bbd7cf72b6f3dd6cdbd1e data/railcraft/recipes/charge_coil.json
+fbbf9cd636919bc0256914078feeec32d9877d42 data/railcraft/recipes/charge_meter.json
 a553dbfae5f17c774bfad15126426a86f3ed1bfd data/railcraft/recipes/charge_motor.json
 0c7fe03cdfbfe3dab1dc5130b70b56277615d16b data/railcraft/recipes/charge_spool_medium_from_large.json
 2350956a71ea929f2bd5698dfd7461eaf2ba2113 data/railcraft/recipes/charge_spool_small_from_medium.json

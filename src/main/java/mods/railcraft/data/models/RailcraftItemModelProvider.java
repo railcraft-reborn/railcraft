@@ -160,6 +160,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.CHARGE_COIL.get());
         this.basicItem(RailcraftItems.CHARGE_TERMINAL.get());
         this.basicItem(RailcraftItems.CHARGE_MOTOR.get());
+        this.basicItem(RailcraftItems.CHARGE_METER.get());
 
         this.basicHandheldItem(RailcraftItems.STEEL_SWORD.get());
         this.basicHandheldItem(RailcraftItems.STEEL_SHOVEL.get());

@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-29T09:24:52.474043	Item Models: railcraft
+// 1.20.1	2023-07-23T11:09:10.528286	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -19,6 +19,7 @@ b11c82dbe18806a4c3634ece13fd12ce97bbb9e3 assets/railcraft/models/item/bronze_pla
 5fe026f023c54d2f56719260eb0e673515710337 assets/railcraft/models/item/carbon_electrode.json
 b78986baf137bb0e6a9dc922d8b54caf71abb12b assets/railcraft/models/item/charcoal_dust.json
 32227b01f19ae25a4cee098cdc48b2747f2e68d0 assets/railcraft/models/item/charge_coil.json
+293bf4189f82fe7a715912c7387048b0cf84d636 assets/railcraft/models/item/charge_meter.json
 feb0008a66073c2c8402bcf8f53d769f402a3442 assets/railcraft/models/item/charge_motor.json
 17a35bb835ad6b86205d327f8142734bcd51d944 assets/railcraft/models/item/charge_spool_large.json
 7ef14f34cd846d824bb04dc39bd709e59d69b541 assets/railcraft/models/item/charge_spool_medium.json

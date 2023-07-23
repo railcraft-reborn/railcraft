@@ -1237,6 +1237,18 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CHARGE_SPOOL_SMALL.get()),
             has(RailcraftItems.CHARGE_SPOOL_SMALL.get()))
         .save(consumer);
+
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CHARGE_METER.get())
+        .pattern("a a")
+        .pattern("bcb")
+        .pattern(" d ")
+        .define('a', Tags.Items.INGOTS_COPPER)
+        .define('b', Items.STONE_BUTTON)
+        .define('c', Items.GLASS_PANE)
+        .define('d', RailcraftTags.Items.BRASS_INGOT)
+        .unlockedBy(getHasName(RailcraftItems.BRASS_INGOT.get()),
+            has(RailcraftItems.BRASS_INGOT.get()))
+        .save(consumer);
   }
 
   private void buildKits(Consumer<FinishedRecipe> consumer) {
