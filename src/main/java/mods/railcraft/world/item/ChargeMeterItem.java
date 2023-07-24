@@ -1,8 +1,5 @@
 package mods.railcraft.world.item;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
@@ -10,7 +7,6 @@ import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.charge.ChargeNetworkImpl;
 import mods.railcraft.util.HumanReadableNumberFormatter;
-import mods.railcraft.world.level.block.charge.BatteryBlock;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -20,13 +16,7 @@ import net.minecraft.world.item.context.UseOnContext;
 
 public class ChargeMeterItem extends Item {
 
-  private static final DecimalFormat CHARGE_FORMATTER =
-      (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
   private static final int SECONDS_TO_RECORD = 5;
-
-  static {
-    CHARGE_FORMATTER.applyPattern("#,##0.###");
-  }
 
   public ChargeMeterItem(Properties properties) {
     super(properties);

@@ -79,6 +79,15 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     return this.trackType.get().getSpikeMaulVariants();
   }
 
+  @SuppressWarnings("deprecation")
+  @Override
+  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    super.tick(state, level, pos, random);
+    if (this.getTrackType().isElectric()) {
+      this.registerNode(state, level, pos);
+    }
+  }
+
   @Override
   public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
     if (this.getTrackType().isElectric()) {
