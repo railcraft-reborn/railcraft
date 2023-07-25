@@ -1,12 +1,3 @@
-/*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2020
- https://railcraft.info
- This code is the property of CovertJaguar
- and may only be used with explicit written
- permission unless otherwise specified on the
- license page at https://railcraft.info/wiki/info:license.
- -----------------------------------------------------------------------------*/
-
 package mods.railcraft.util;
 
 import java.util.ArrayList;
@@ -19,9 +10,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 
-/**
- * @author CovertJaguar (https://www.railcraft.info/)
- */
 public final class RailcraftNBTUtil {
 
   public static final int UUID_TAG_TYPE = Tag.TAG_INT_ARRAY;

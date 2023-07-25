@@ -74,17 +74,17 @@ public class RailcraftItems {
       VariantRegistrar.from(DyeColor.class, deferredRegister);
 
   static {
-    var tabFactory = blockItemFactory();
-    STRENGTHENED_GLASS.registerUsing(RailcraftBlocks.STRENGTHENED_GLASS, tabFactory);
-    POST.registerUsing(RailcraftBlocks.POST, tabFactory);
+    Function<Block, BlockItem> itemFactory = block -> new BlockItem(block, new Item.Properties());
+    STRENGTHENED_GLASS.registerUsing(RailcraftBlocks.STRENGTHENED_GLASS, itemFactory);
+    POST.registerUsing(RailcraftBlocks.POST, itemFactory);
 
-    IRON_TANK_GAUGE.registerUsing(RailcraftBlocks.IRON_TANK_GAUGE, tabFactory);
-    IRON_TANK_VALVE.registerUsing(RailcraftBlocks.IRON_TANK_VALVE, tabFactory);
-    IRON_TANK_WALL.registerUsing(RailcraftBlocks.IRON_TANK_WALL, tabFactory);
+    IRON_TANK_GAUGE.registerUsing(RailcraftBlocks.IRON_TANK_GAUGE, itemFactory);
+    IRON_TANK_VALVE.registerUsing(RailcraftBlocks.IRON_TANK_VALVE, itemFactory);
+    IRON_TANK_WALL.registerUsing(RailcraftBlocks.IRON_TANK_WALL, itemFactory);
 
-    STEEL_TANK_GAUGE.registerUsing(RailcraftBlocks.STEEL_TANK_GAUGE, tabFactory);
-    STEEL_TANK_VALVE.registerUsing(RailcraftBlocks.STEEL_TANK_VALVE, tabFactory);
-    STEEL_TANK_WALL.registerUsing(RailcraftBlocks.STEEL_TANK_WALL, tabFactory);
+    STEEL_TANK_GAUGE.registerUsing(RailcraftBlocks.STEEL_TANK_GAUGE, itemFactory);
+    STEEL_TANK_VALVE.registerUsing(RailcraftBlocks.STEEL_TANK_VALVE, itemFactory);
+    STEEL_TANK_WALL.registerUsing(RailcraftBlocks.STEEL_TANK_WALL, itemFactory);
   }
 
   public static final RegistryObject<PressureBoilerTankBlockItem> LOW_PRESSURE_STEAM_BOILER_TANK =
@@ -1576,12 +1576,7 @@ public class RailcraftItems {
   // Utils
   // ================================================================================
 
-  private static Function<Block, BlockItem> blockItemFactory() {
-    return block -> new BlockItem(block, new Item.Properties());
-  }
-
   private static RegistryObject<Item> registerBasic(String name) {
-    return deferredRegister.register(name,
-        () -> new Item(new Item.Properties()));
+    return deferredRegister.register(name, () -> new Item(new Item.Properties()));
   }
 }
