@@ -151,6 +151,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.ONE_WAY_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ABANDONED_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_ROUTING_TRACK.get(),
         RailcraftItems.ROUTING_TRACK_KIT.get());
 
@@ -187,6 +189,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.ONE_WAY_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ELECTRIC_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_ROUTING_TRACK.get(),
         RailcraftItems.ROUTING_TRACK_KIT.get());
 
@@ -209,6 +213,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftBlocks.HIGH_SPEED_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get());
 
     this.dropSelf(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
@@ -229,6 +235,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get());
 
     this.dropOther(RailcraftBlocks.IRON_LOCKING_TRACK.get(),
         RailcraftItems.LOCKING_TRACK_KIT.get());
@@ -259,6 +267,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.ONE_WAY_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.IRON_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_ROUTING_TRACK.get(),
         RailcraftItems.ROUTING_TRACK_KIT.get());
 
@@ -295,6 +305,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.ONE_WAY_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.REINFORCED_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_ROUTING_TRACK.get(),
         RailcraftItems.ROUTING_TRACK_KIT.get());
 
@@ -331,6 +343,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.ONE_WAY_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_ROUTING_TRACK.get(),
         RailcraftItems.ROUTING_TRACK_KIT.get());
 

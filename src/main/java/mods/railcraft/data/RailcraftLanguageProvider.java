@@ -304,6 +304,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.LAUNCHER_TRACK_KIT, "Launcher Track Kit");
     this.addItem(RailcraftItems.ONE_WAY_TRACK_KIT, "One-Way Track Kit");
     this.addItem(RailcraftItems.LOCOMOTIVE_TRACK_KIT, "Locomotive Track Kit");
+    this.addItem(RailcraftItems.THROTTLE_TRACK_KIT, "Throttle Track Kit");
     this.addItem(RailcraftItems.ROUTING_TRACK_KIT, "Routing Track Kit");
     this.addItem(RailcraftItems.CHARGE_SPOOL_LARGE, "Large Charge Wire Spool");
     this.addItem(RailcraftItems.CHARGE_SPOOL_MEDIUM, "Medium Charge Wire Spool");
@@ -508,6 +509,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.LAUNCHER_TRACK, "Makes carts fly!");
     this.add(Translations.Tips.ONE_WAY_TRACK, "Carts can only pass in the direction of the arrow");
     this.add(Translations.Tips.LOCOMOTIVE_TRACK, "Starts/Stops locomotive");
+    this.add(Translations.Tips.THROTTLE_TRACK, "Adjusts the speed of passing locomotive");
     this.add(Translations.Tips.LOCKING_TRACK, "Stops and holds carts");
     this.add(Translations.Tips.TRANSITION_TRACK, "Transitions to/from high speed");
     this.add(Translations.Tips.ROUTING_TRACK, "Sets a passing locomotive's ticket");
@@ -632,6 +634,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ABANDONED_LAUNCHER_TRACK, "Abandoned Launcher Track");
     this.addBlock(RailcraftBlocks.ABANDONED_ONE_WAY_TRACK, "Abandoned One-Way Track");
     this.addBlock(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK, "Abandoned Locomotive Track");
+    this.addBlock(RailcraftBlocks.ABANDONED_THROTTLE_TRACK, "Abandoned Throttle Track");
     this.addBlock(RailcraftBlocks.ABANDONED_ROUTING_TRACK, "Abandoned Routing Track");
 
     this.addBlock(RailcraftBlocks.ELECTRIC_TRACK, "Electric Track");
@@ -651,6 +654,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK, "Electric Launcher Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK, "Electric One-Way Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK, "Electric Locomotive Track");
+    this.addBlock(RailcraftBlocks.ELECTRIC_THROTTLE_TRACK, "Electric Throttle Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_ROUTING_TRACK, "Electric Routing Track");
 
     this.addBlock(RailcraftBlocks.HIGH_SPEED_TRACK, "High Speed Track");
@@ -663,6 +667,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK, "High Speed Junction Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK, "High Speed Transition Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK, "High Speed Locomotive Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK, "High Speed Throttle Track");
 
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK,
         "High Speed Electric Track");
@@ -684,6 +689,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         "High Speed Electric Junction Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK,
         "High Speed Electric Locomotive Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK,
+        "High Speed Electric Throttle Track");
 
     this.addBlock(RailcraftBlocks.REINFORCED_TRACK, "Reinforced Track");
     this.addBlock(RailcraftBlocks.REINFORCED_LOCKING_TRACK, "Reinforced Locking Track");
@@ -702,8 +709,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.REINFORCED_LAUNCHER_TRACK, "Reinforced Launcher Track");
     this.addBlock(RailcraftBlocks.REINFORCED_ONE_WAY_TRACK, "Reinforced One-Way Track");
     this.addBlock(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK, "Reinforced Locomotive Track");
+    this.addBlock(RailcraftBlocks.REINFORCED_THROTTLE_TRACK, "Reinforced Throttle Track");
     this.addBlock(RailcraftBlocks.REINFORCED_ROUTING_TRACK, "Reinforced Routing Track");
-
 
     this.addBlock(RailcraftBlocks.STRAP_IRON_TRACK, "Strap Iron Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK, "Strap Iron Locking Track");
@@ -722,6 +729,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK, "Strap Iron Launcher Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK, "Strap Iron One-Way Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK, "Strap Iron Locomotive Track");
+    this.addBlock(RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK, "Strap Iron Throttle Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_ROUTING_TRACK, "Strap Iron Routing Track");
 
     this.addBlock(RailcraftBlocks.IRON_LOCKING_TRACK, "Iron Locking Track");
@@ -740,6 +748,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.IRON_LAUNCHER_TRACK, "Iron Launcher Track");
     this.addBlock(RailcraftBlocks.IRON_ONE_WAY_TRACK, "Iron One-Way Track");
     this.addBlock(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK, "Iron Locomotive Track");
+    this.addBlock(RailcraftBlocks.IRON_THROTTLE_TRACK, "Iron Throttle Track");
     this.addBlock(RailcraftBlocks.IRON_ROUTING_TRACK, "Iron Routing Track");
 
     this.addBlock(RailcraftBlocks.ELEVATOR_TRACK, "Elevator Track");

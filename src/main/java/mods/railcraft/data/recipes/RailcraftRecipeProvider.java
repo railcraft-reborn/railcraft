@@ -195,6 +195,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
     tracks(consumer, RailcraftItems.ABANDONED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
+    tracks(consumer, RailcraftItems.ABANDONED_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
     tracks(consumer, RailcraftItems.ABANDONED_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
     tracks(consumer, RailcraftItems.ABANDONED_ROUTING_TRACK.get(),
@@ -224,6 +226,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get(), Items.RAIL);
     tracks(consumer, RailcraftItems.IRON_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), Items.RAIL);
+    tracks(consumer, RailcraftItems.IRON_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get(), Items.RAIL);
     tracks(consumer, RailcraftItems.IRON_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), Items.RAIL);
     tracks(consumer, RailcraftItems.IRON_ROUTING_TRACK.get(),
@@ -253,6 +257,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
     tracks(consumer, RailcraftItems.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
+    tracks(consumer, RailcraftItems.STRAP_IRON_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
     tracks(consumer, RailcraftItems.STRAP_IRON_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
     tracks(consumer, RailcraftItems.STRAP_IRON_ROUTING_TRACK.get(),
@@ -282,6 +288,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
     tracks(consumer, RailcraftItems.REINFORCED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
+    tracks(consumer, RailcraftItems.REINFORCED_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
     tracks(consumer, RailcraftItems.REINFORCED_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
     tracks(consumer, RailcraftItems.REINFORCED_ROUTING_TRACK.get(),
@@ -311,6 +319,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
     tracks(consumer, RailcraftItems.ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
+    tracks(consumer, RailcraftItems.ELECTRIC_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
     tracks(consumer, RailcraftItems.ELECTRIC_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
     tracks(consumer, RailcraftItems.ELECTRIC_ROUTING_TRACK.get(),
@@ -326,6 +336,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
     tracks(consumer, RailcraftItems.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
+    tracks(consumer, RailcraftItems.HIGH_SPEED_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
     tracks(consumer, RailcraftItems.HIGH_SPEED_TRANSITION_TRACK.get(),
         RailcraftItems.TRANSITION_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_TRACK.get());
 
@@ -339,6 +351,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
     tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
+    tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get(),
+        RailcraftItems.THROTTLE_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
     tracks(consumer, RailcraftItems.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
         RailcraftItems.TRANSITION_TRACK_KIT.get(), RailcraftItems.HIGH_SPEED_ELECTRIC_TRACK.get());
 
@@ -1301,6 +1315,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     kits(consumer, RailcraftItems.ROUTING_TRACK_KIT.get(), 8, List.of(
         new Tuple<>(Ingredient.of(
             RailcraftItems.TICKET.get(), RailcraftItems.GOLDEN_TICKET.get()), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
+    kits(consumer, RailcraftItems.THROTTLE_TRACK_KIT.get(), 4, List.of(
+        new Tuple<>(Ingredient.of(Tags.Items.DYES_YELLOW), 1),
+        new Tuple<>(Ingredient.of(Items.INK_SAC), 1),
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
   }
 

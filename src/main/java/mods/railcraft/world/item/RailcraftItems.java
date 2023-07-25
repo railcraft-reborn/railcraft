@@ -650,6 +650,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ABANDONED_LOCOMOTIVE_TRACK =
       itemTrack("abandoned_locomotive_track", RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK);
 
+  public static final RegistryObject<Item> ABANDONED_THROTTLE_TRACK =
+      itemTrack("abandoned_throttle_track", RailcraftBlocks.ABANDONED_THROTTLE_TRACK);
+
   public static final RegistryObject<Item> ABANDONED_ROUTING_TRACK =
       itemTrack("abandoned_routing_track", RailcraftBlocks.ABANDONED_ROUTING_TRACK);
 
@@ -704,6 +707,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ELECTRIC_LOCOMOTIVE_TRACK =
       itemTrack("electric_locomotive_track", RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK);
 
+  public static final RegistryObject<Item> ELECTRIC_THROTTLE_TRACK =
+      itemTrack("electric_throttle_track", RailcraftBlocks.ELECTRIC_THROTTLE_TRACK);
+
   public static final RegistryObject<Item> ELECTRIC_ROUTING_TRACK =
       itemTrack("electric_routing_track", RailcraftBlocks.ELECTRIC_ROUTING_TRACK);
 
@@ -736,6 +742,9 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> HIGH_SPEED_LOCOMOTIVE_TRACK =
       itemTrack("high_speed_locomotive_track", RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK);
+
+  public static final RegistryObject<Item> HIGH_SPEED_THROTTLE_TRACK =
+      itemTrack("high_speed_throttle_track", RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TRACK =
       itemTrack("high_speed_electric_track", RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK);
@@ -774,6 +783,10 @@ public class RailcraftItems {
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK =
       itemTrack("high_speed_electric_locomotive_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK);
+
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_THROTTLE_TRACK =
+      itemTrack("high_speed_electric_throttle_track",
+          RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> IRON_LOCKING_TRACK =
       itemTrack("iron_locking_track", RailcraftBlocks.IRON_LOCKING_TRACK);
@@ -822,6 +835,9 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> IRON_LOCOMOTIVE_TRACK =
       itemTrack("iron_locomotive_track", RailcraftBlocks.IRON_LOCOMOTIVE_TRACK);
+
+  public static final RegistryObject<Item> IRON_THROTTLE_TRACK =
+      itemTrack("iron_throttle_track", RailcraftBlocks.IRON_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> IRON_ROUTING_TRACK =
       itemTrack("iron_routing_track", RailcraftBlocks.IRON_ROUTING_TRACK);
@@ -877,6 +893,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> REINFORCED_LOCOMOTIVE_TRACK =
       itemTrack("reinforced_locomotive_track", RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK);
 
+  public static final RegistryObject<Item> REINFORCED_THROTTLE_TRACK =
+      itemTrack("reinforced_throttle_track", RailcraftBlocks.REINFORCED_THROTTLE_TRACK);
+
   public static final RegistryObject<Item> REINFORCED_ROUTING_TRACK =
       itemTrack("reinforced_routing_track", RailcraftBlocks.REINFORCED_ROUTING_TRACK);
 
@@ -930,6 +949,9 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> STRAP_IRON_LOCOMOTIVE_TRACK =
       itemTrack("strap_iron_locomotive_track", RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK);
+
+  public static final RegistryObject<Item> STRAP_IRON_THROTTLE_TRACK =
+      itemTrack("strap_iron_throttle_track", RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_ROUTING_TRACK =
       itemTrack("strap_iron_routing_track", RailcraftBlocks.STRAP_IRON_ROUTING_TRACK);
@@ -1115,6 +1137,18 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_LOCOMOTIVE_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK)));
+
+  public static final RegistryObject<Item> THROTTLE_TRACK_KIT =
+      deferredRegister.register("throttle_track_kit",
+          () -> new TrackKitItem(new TrackKitItem.Properties()
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_THROTTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_THROTTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_THROTTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_THROTTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK)));
 
   public static final RegistryObject<Item> ROUTING_TRACK_KIT =
       deferredRegister.register("routing_track_kit",

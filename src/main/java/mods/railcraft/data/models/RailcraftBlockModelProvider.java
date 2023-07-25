@@ -53,6 +53,7 @@ import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlo
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.RoutingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.ThrottleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
@@ -371,6 +372,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get(),
         RailcraftBlocks.ABANDONED_ONE_WAY_TRACK.get(),
         RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.ABANDONED_THROTTLE_TRACK.get(),
         RailcraftBlocks.ABANDONED_ROUTING_TRACK.get());
 
     this.createOutfittedTracks(Blocks.RAIL,
@@ -390,6 +392,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
         RailcraftBlocks.IRON_ONE_WAY_TRACK.get(),
         RailcraftBlocks.IRON_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.IRON_THROTTLE_TRACK.get(),
         RailcraftBlocks.IRON_ROUTING_TRACK.get());
 
     this.createTracks(RailcraftBlocks.STRAP_IRON_TRACK.get(),
@@ -409,6 +412,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_ROUTING_TRACK.get());
 
     this.createTracks(RailcraftBlocks.REINFORCED_TRACK.get(),
@@ -428,6 +432,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
         RailcraftBlocks.REINFORCED_ONE_WAY_TRACK.get(),
         RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.REINFORCED_THROTTLE_TRACK.get(),
         RailcraftBlocks.REINFORCED_ROUTING_TRACK.get());
 
     this.createTracks(RailcraftBlocks.ELECTRIC_TRACK.get(),
@@ -447,6 +452,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
         RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK.get(),
         RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.ELECTRIC_THROTTLE_TRACK.get(),
         RailcraftBlocks.ELECTRIC_ROUTING_TRACK.get());
 
     this.createHighSpeedTracks(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
@@ -458,7 +464,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get());
+        RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK.get());
 
     this.createHighSpeedTracks(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
@@ -469,7 +476,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get());
+        RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get());
   }
 
   private void createStrengthenedGlass(Block block) {
@@ -1318,13 +1326,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       DisembarkingTrackBlock disembarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
       WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
       LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-      LocomotiveTrackBlock locomotiveTrackBlock, RoutingTrackBlock routingTrackBlock) {
+      LocomotiveTrackBlock locomotiveTrackBlock, ThrottleTrackBlock throttleTrackBlock,
+      RoutingTrackBlock routingTrackBlock) {
     this.createAbandonedFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
         boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
         couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, turnoutTrackBlock,
         wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
-        locomotiveTrackBlock, routingTrackBlock);
+        locomotiveTrackBlock, throttleTrackBlock, routingTrackBlock);
   }
 
   private void createTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
@@ -1335,13 +1344,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       DisembarkingTrackBlock disembarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
       WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
       LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-      LocomotiveTrackBlock locomotiveTrackBlock, RoutingTrackBlock routingTrackBlock) {
+      LocomotiveTrackBlock locomotiveTrackBlock, ThrottleTrackBlock throttleTrackBlock,
+      RoutingTrackBlock routingTrackBlock) {
     this.createFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
         boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
         couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, turnoutTrackBlock,
         wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
-        locomotiveTrackBlock, routingTrackBlock);
+        locomotiveTrackBlock, throttleTrackBlock, routingTrackBlock);
   }
 
   private void createOutfittedTracks(Block block, LockingTrackBlock lockingTrackBlock,
@@ -1352,7 +1362,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       DisembarkingTrackBlock disembarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
       WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
       LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-      LocomotiveTrackBlock locomotiveTrackBlock, RoutingTrackBlock routingTrackBlock) {
+      LocomotiveTrackBlock locomotiveTrackBlock, ThrottleTrackBlock throttleTrackBlock,
+      RoutingTrackBlock routingTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
 
     this.createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
@@ -1395,6 +1406,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.activeDisembarkingTrackRight);
 
     this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
+    this.createThrottleTrack(throttleTrackBlock, outfittedTrackModels.flatModel());
     this.createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.flatModel());
     this.createTurnoutTrack(turnoutTrackBlock);
     this.createWyeTrack(wyeTrackBlock);
@@ -1405,7 +1417,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       LockingTrackBlock lockingTrackBlock, ActivatorTrackBlock activatorTrackBlock,
       BoosterTrackBlock boosterTrackBlock, DetectorTrackBlock detectorTrackBlock,
       TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
-      JunctionTrackBlock junctionTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
+      JunctionTrackBlock junctionTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock,
+      ThrottleTrackBlock throttleTrackBlock) {
     this.createFlexTrack(block);
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
 
@@ -1431,6 +1444,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.activeLocomotiveTrackRunningModel);
 
     this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
+    this.createThrottleTrack(throttleTrackBlock, outfittedTrackModels.flatModel());
     this.createTurnoutTrack(turnoutTrackBlock);
     this.createWyeTrack(wyeTrackBlock);
     this.createJunctionTrack(junctionTrackBlock);
@@ -1506,6 +1520,78 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         .condition(LockingTrackBlock.POWERED, true)
         .condition(LockingTrackBlock.SHAPE, RailShape.EAST_WEST).end();
   }
+
+  private void createThrottleTrack(ThrottleTrackBlock block, ModelFile trackModel) {
+    var speed1 = this.createPassiveRail("throttle_track_1");
+    var speed2 = this.createPassiveRail("throttle_track_2");
+    var speed3 = this.createPassiveRail("throttle_track_3");
+    var speed4 = this.createPassiveRail("throttle_track_4");
+    var speed1Reverse = this.createPassiveRail("throttle_track_1_reverse");
+    var speed2Reverse = this.createPassiveRail("throttle_track_2_reverse");
+    var speed3Reverse = this.createPassiveRail("throttle_track_3_reverse");
+    var speed4Reverse = this.createPassiveRail("throttle_track_4_reverse");
+
+    var activeSpeed1 = this.createActiveRail("throttle_track_1");
+    var activeSpeed2 = this.createActiveRail("throttle_track_2");
+    var activeSpeed3 = this.createActiveRail("throttle_track_3");
+    var activeSpeed4 = this.createActiveRail("throttle_track_4");
+    var activeSpeed1Reverse = this.createActiveRail("throttle_track_1_reverse");
+    var activeSpeed2Reverse = this.createActiveRail("throttle_track_2_reverse");
+    var activeSpeed3Reverse = this.createActiveRail("throttle_track_3_reverse");
+    var activeSpeed4Reverse = this.createActiveRail("throttle_track_4_reverse");
+
+    var builder = this.getMultipartBuilder(block)
+        .part()
+        .modelFile(trackModel).addModel()
+        .condition(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH).end()
+        .part()
+        .modelFile(trackModel).rotationY(90).addModel()
+        .condition(LockingTrackBlock.SHAPE, RailShape.EAST_WEST).end();
+
+    this.addSpeedMode(Locomotive.Speed.SLOWEST, speed1, activeSpeed1, false, builder);
+    this.addSpeedMode(Locomotive.Speed.SLOWER, speed2, activeSpeed2, false, builder);
+    this.addSpeedMode(Locomotive.Speed.NORMAL, speed3, activeSpeed3, false, builder);
+    this.addSpeedMode(Locomotive.Speed.MAX, speed4, activeSpeed4, false, builder);
+
+    this.addSpeedMode(Locomotive.Speed.SLOWEST, speed1Reverse, activeSpeed1Reverse, true, builder);
+    this.addSpeedMode(Locomotive.Speed.SLOWER, speed2Reverse, activeSpeed2Reverse, true, builder);
+    this.addSpeedMode(Locomotive.Speed.NORMAL, speed3Reverse, activeSpeed3Reverse, true, builder);
+    this.addSpeedMode(Locomotive.Speed.MAX, speed4Reverse, activeSpeed4Reverse, true, builder);
+
+    this.itemModels().basicItem(block.asItem());
+  }
+
+  private void addSpeedMode(Locomotive.Speed speed, BlockModelBuilder model,
+      BlockModelBuilder poweredModel, boolean reverse, MultiPartBlockStateBuilder builder) {
+    builder
+        .part()
+        .modelFile(model).addModel()
+        .condition(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+        .condition(ThrottleTrackBlock.REVERSE, reverse)
+        .condition(ThrottleTrackBlock.POWERED, false)
+        .condition(ThrottleTrackBlock.SHAPE, RailShape.NORTH_SOUTH).end()
+        .part()
+        .modelFile(poweredModel).addModel()
+        .condition(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+        .condition(ThrottleTrackBlock.REVERSE, reverse)
+        .condition(ThrottleTrackBlock.POWERED, true)
+        .condition(ThrottleTrackBlock.SHAPE, RailShape.NORTH_SOUTH).end()
+        .part()
+        .modelFile(model).rotationY(90).addModel()
+        .condition(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+        .condition(ThrottleTrackBlock.REVERSE, reverse)
+        .condition(ThrottleTrackBlock.POWERED, false)
+        .condition(ThrottleTrackBlock.SHAPE, RailShape.EAST_WEST).end()
+        .part()
+        .modelFile(poweredModel).rotationY(90).addModel()
+        .condition(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+        .condition(ThrottleTrackBlock.REVERSE, reverse)
+        .condition(ThrottleTrackBlock.POWERED, true)
+        .condition(ThrottleTrackBlock.SHAPE, RailShape.EAST_WEST).end();
+  }
+
+
+
 
   private void createBufferStopTrack(BufferStopTrackBlock block, ModelFile trackModel) {
     var bufferStop = new ModelFile.UncheckedModelFile(this.modLoc("block/buffer_stop"));

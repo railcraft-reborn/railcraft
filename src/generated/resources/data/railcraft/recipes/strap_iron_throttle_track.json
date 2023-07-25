@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "railcraft:throttle_track_kit"
+    },
+    {
+      "item": "railcraft:strap_iron_track"
+    }
+  ],
+  "result": {
+    "item": "railcraft:strap_iron_throttle_track"
+  }
+}

@@ -288,6 +288,7 @@ public class Translations {
     public static final String LAUNCHER_TRACK = makeKey("tips", "launcher_track");
     public static final String ONE_WAY_TRACK = makeKey("tips", "one_way_track");
     public static final String LOCOMOTIVE_TRACK = makeKey("tips", "locomotive_track");
+    public static final String THROTTLE_TRACK = makeKey("tips", "throttle_track");
     public static final String LOCKING_TRACK = makeKey("tips", "locking_track");
     public static final String TRANSITION_TRACK = makeKey("tips", "transition_track");
     public static final String ROUTING_TRACK = makeKey("tips", "routing_track");

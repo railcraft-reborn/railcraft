@@ -1,4 +1,4 @@
-// 1.20.1	2023-07-23T11:09:10.528286	Item Models: railcraft
+// 1.20.1	2023-07-25T19:11:38.885759	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -122,6 +122,7 @@ bf6ab77a592fe47522f767fdb40eea83daa29654 assets/railcraft/models/item/stone_rail
 d09c40ece8346371f32f9de6c7003597c7da616e assets/railcraft/models/item/stone_tie.json
 df2d20137c3ed09bfd996c4860fb566f328dff54 assets/railcraft/models/item/sulfur_dust.json
 74bc16c4a2844490d22922e6525cba7394fda212 assets/railcraft/models/item/tank_minecart.json
+6d762241749515334140f5f39a9f1306fe9ed5c1 assets/railcraft/models/item/throttle_track_kit.json
 a2d0c82dedb26272b4ba1cbaa2660a9880ae031f assets/railcraft/models/item/ticket.json
 9992ce25a341f848952d4b2bf03dfe69aa2769be assets/railcraft/models/item/tin_electrode.json
 afe0c98c6d7c96d82299b5c4027d6602155a1132 assets/railcraft/models/item/tin_gear.json

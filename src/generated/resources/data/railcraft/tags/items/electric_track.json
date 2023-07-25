@@ -16,6 +16,7 @@
     "railcraft:electric_launcher_track",
     "railcraft:electric_one_way_track",
     "railcraft:electric_locomotive_track",
+    "railcraft:electric_throttle_track",
     "railcraft:electric_routing_track"
   ]
 }

@@ -73,6 +73,7 @@ import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LocomotiveTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.OneWayTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.RoutingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.ThrottleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
@@ -766,6 +767,11 @@ public class RailcraftBlocks {
           () -> new LocomotiveTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
 
+  public static final RegistryObject<ThrottleTrackBlock> ABANDONED_THROTTLE_TRACK =
+      deferredRegister.register("abandoned_throttle_track",
+          () -> new ThrottleTrackBlock(TrackTypes.ABANDONED,
+              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+
   public static final RegistryObject<RoutingTrackBlock> ABANDONED_ROUTING_TRACK =
       deferredRegister.register("abandoned_routing_track",
           () -> new RoutingTrackBlock(TrackTypes.ABANDONED,
@@ -859,6 +865,11 @@ public class RailcraftBlocks {
           () -> new LocomotiveTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
 
+  public static final RegistryObject<ThrottleTrackBlock> ELECTRIC_THROTTLE_TRACK =
+      deferredRegister.register("electric_throttle_track",
+          () -> new ThrottleTrackBlock(TrackTypes.ELECTRIC,
+              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+
   public static final RegistryObject<RoutingTrackBlock> ELECTRIC_ROUTING_TRACK =
       deferredRegister.register("electric_routing_track",
           () -> new RoutingTrackBlock(TrackTypes.ELECTRIC,
@@ -916,6 +927,11 @@ public class RailcraftBlocks {
           () -> new LocomotiveTrackBlock(TrackTypes.HIGH_SPEED,
               BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
 
+  public static final RegistryObject<ThrottleTrackBlock> HIGH_SPEED_THROTTLE_TRACK =
+      deferredRegister.register("high_speed_throttle_track",
+          () -> new ThrottleTrackBlock(TrackTypes.HIGH_SPEED,
+              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+
   public static final RegistryObject<HighSpeedElectricTrackBlock> HIGH_SPEED_ELECTRIC_TRACK =
       deferredRegister.register("high_speed_electric_track",
           () -> new HighSpeedElectricTrackBlock(BlockBehaviour.Properties.of()
@@ -967,6 +983,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<LocomotiveTrackBlock> HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK =
       deferredRegister.register("high_speed_electric_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+
+  public static final RegistryObject<ThrottleTrackBlock> HIGH_SPEED_ELECTRIC_THROTTLE_TRACK =
+      deferredRegister.register("high_speed_electric_throttle_track",
+          () -> new ThrottleTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
               BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final RegistryObject<LockingTrackBlock> IRON_LOCKING_TRACK =
@@ -1050,6 +1071,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<LocomotiveTrackBlock> IRON_LOCOMOTIVE_TRACK =
       deferredRegister.register("iron_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.IRON,
+              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+
+  public static final RegistryObject<ThrottleTrackBlock> IRON_THROTTLE_TRACK =
+      deferredRegister.register("iron_throttle_track",
+          () -> new ThrottleTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
 
   public static final RegistryObject<RoutingTrackBlock> IRON_ROUTING_TRACK =
@@ -1144,6 +1170,11 @@ public class RailcraftBlocks {
           () -> new LocomotiveTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
 
+  public static final RegistryObject<ThrottleTrackBlock> REINFORCED_THROTTLE_TRACK =
+      deferredRegister.register("reinforced_throttle_track",
+          () -> new ThrottleTrackBlock(TrackTypes.REINFORCED,
+              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+
   public static final RegistryObject<RoutingTrackBlock> REINFORCED_ROUTING_TRACK =
       deferredRegister.register("reinforced_routing_track",
           () -> new RoutingTrackBlock(TrackTypes.REINFORCED,
@@ -1234,6 +1265,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<LocomotiveTrackBlock> STRAP_IRON_LOCOMOTIVE_TRACK =
       deferredRegister.register("strap_iron_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.STRAP_IRON,
+              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+
+  public static final RegistryObject<ThrottleTrackBlock> STRAP_IRON_THROTTLE_TRACK =
+      deferredRegister.register("strap_iron_throttle_track",
+          () -> new ThrottleTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
 
   public static final RegistryObject<RoutingTrackBlock> STRAP_IRON_ROUTING_TRACK =
