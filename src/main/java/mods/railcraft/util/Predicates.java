@@ -11,11 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * Created by CovertJaguar on 9/9/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class Predicates {
 
   @SafeVarargs

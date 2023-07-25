@@ -19,9 +19,6 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public abstract class LockableSignalBoxBlockEntity extends AbstractSignalBoxBlockEntity
     implements Lockable {
 

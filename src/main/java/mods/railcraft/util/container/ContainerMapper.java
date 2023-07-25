@@ -13,8 +13,6 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * Wraps a {@link Container}, treating a specific portion of it as a separate {@link Container}.
- *
- * @author CovertJaguar <https://www.railcraft.info>
  */
 public class ContainerMapper implements Container, ContainerManipulator<ModifiableSlotAccessor> {
 

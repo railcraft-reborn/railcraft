@@ -11,9 +11,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class ZapEffectProviderImpl implements Charge.ZapEffectProvider {
 
   public static final short TRACKING_DISTANCE = 32 * 32;

@@ -4,10 +4,6 @@ import java.util.Objects;
 import org.jetbrains.annotations.ApiStatus;
 import com.google.common.base.Preconditions;
 
-/**
- *
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class EmblemClientUtil {
 
   private static EmblemPackageManager packageManager;

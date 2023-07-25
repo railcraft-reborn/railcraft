@@ -7,11 +7,6 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
-/**
- * Created by CovertJaguar on 7/31/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class PumpkinParticle extends SteamParticle {
 
   private PumpkinParticle(ClientLevel level, double x, double y, double z, double dx, double dy,

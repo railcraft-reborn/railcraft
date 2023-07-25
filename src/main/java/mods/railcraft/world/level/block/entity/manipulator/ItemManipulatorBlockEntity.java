@@ -31,9 +31,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
-/**
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     implements MenuProvider {
 

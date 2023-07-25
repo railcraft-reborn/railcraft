@@ -7,11 +7,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * Created by CovertJaguar on 8/7/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public enum CollisionHandler {
 
   NULL,

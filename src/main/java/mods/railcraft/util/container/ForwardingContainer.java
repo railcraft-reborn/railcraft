@@ -4,11 +4,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * Created by CovertJaguar on 11/18/2018 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public interface ForwardingContainer extends Container {
 
   /**

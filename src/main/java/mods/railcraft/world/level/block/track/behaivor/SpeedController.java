@@ -15,9 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-/**
- * @author CovertJaguar (https://www.railcraft.info)
- */
 public enum SpeedController implements TrackType.EventHandler {
 
   IRON, // 0.4 vanilla

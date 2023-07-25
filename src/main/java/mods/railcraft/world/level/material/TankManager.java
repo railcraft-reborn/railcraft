@@ -17,9 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
 
   public static final TankManager EMPTY = new TankManager(List.of());

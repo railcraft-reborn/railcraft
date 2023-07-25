@@ -6,11 +6,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Created by CovertJaguar on 8/28/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class FunctionalUtil {
 
   /**

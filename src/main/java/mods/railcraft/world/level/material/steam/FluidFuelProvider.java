@@ -6,10 +6,6 @@ import mods.railcraft.world.level.material.StandardTank;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-/**
- *
- * @author CovertJaguar <http://www.railcraft.info/>
- */
 public class FluidFuelProvider implements FuelProvider {
 
   private final StandardTank fuelTank;

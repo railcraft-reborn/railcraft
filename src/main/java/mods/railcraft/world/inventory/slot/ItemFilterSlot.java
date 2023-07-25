@@ -4,10 +4,6 @@ import java.util.function.Predicate;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
-/**
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class ItemFilterSlot extends RailcraftSlot {
 
   private final Predicate<ItemStack> filter;

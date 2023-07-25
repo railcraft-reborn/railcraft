@@ -14,9 +14,6 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class SeasonsCrowbarItem extends CrowbarItem {
 
   public SeasonsCrowbarItem(Properties properties) {

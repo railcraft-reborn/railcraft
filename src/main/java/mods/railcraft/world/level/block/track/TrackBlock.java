@@ -33,11 +33,6 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-/**
- * Created by CovertJaguar on 8/29/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock, SpikeMaulTarget {
 
   public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE;

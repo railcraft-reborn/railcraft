@@ -22,11 +22,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-/**
- * Created by CovertJaguar on 9/8/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public abstract class SignalBoxBlock extends CrossCollisionBlock {
 
   private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 15, 14);

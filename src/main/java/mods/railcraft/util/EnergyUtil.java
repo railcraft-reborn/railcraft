@@ -9,11 +9,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 
-/**
- * Created by CovertJaguar on 5/12/2016 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public class EnergyUtil {
 
   public static final IEnergyStorage DUMMY_STORAGE = new IEnergyStorage() {

@@ -40,9 +40,6 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
-/**
- * @author CovertJaguar (https://www.railcraft.info)
- */
 public final class FluidTools {
 
   public static final int BUCKET_FILL_TIME = 8;

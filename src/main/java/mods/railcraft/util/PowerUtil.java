@@ -6,9 +6,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class PowerUtil {
 
   public static final int NO_POWER = 0;

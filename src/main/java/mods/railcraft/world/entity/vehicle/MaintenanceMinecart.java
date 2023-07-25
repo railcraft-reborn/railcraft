@@ -26,9 +26,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
   private static final EntityDataAccessor<Byte> BLINK =

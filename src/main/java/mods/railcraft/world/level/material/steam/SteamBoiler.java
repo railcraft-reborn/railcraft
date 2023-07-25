@@ -17,8 +17,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
  * The boiler itself. Used to simulate turning water into steam.
- *
- * @author CovertJaguar (https://www.railcraft.info/)
  */
 public class SteamBoiler implements INBTSerializable<CompoundTag> {
 

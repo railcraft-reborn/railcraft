@@ -9,10 +9,6 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-/**
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class CubeModel extends SimpleModel {
 
   public CubeModel(ModelPart root) {

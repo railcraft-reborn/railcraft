@@ -7,11 +7,6 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 
-/**
- * Created by CovertJaguar on 7/31/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class SparkParticle extends DimmableParticle {
 
   private SparkParticle(ClientLevel level, double x, double y, double z, double dx, double dy,

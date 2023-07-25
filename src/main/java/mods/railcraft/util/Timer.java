@@ -2,10 +2,6 @@ package mods.railcraft.util;
 
 import net.minecraft.world.level.Level;
 
-/**
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class Timer {
 
   private long startTime = Long.MIN_VALUE;

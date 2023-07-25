@@ -8,9 +8,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public abstract class LocomotiveRenderer<T extends Locomotive>
     extends CustomMinecartRenderer<T> {
 

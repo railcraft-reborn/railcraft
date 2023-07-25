@@ -50,11 +50,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * Created by CovertJaguar on 7/23/2016 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public class ChargeNetworkImpl implements Charge.Network {
 
   private static final Logger logger = LogUtils.getLogger();

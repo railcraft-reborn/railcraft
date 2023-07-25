@@ -7,11 +7,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 
-/**
- * Created by CovertJaguar on 10/30/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class MathUtil {
 
   public static final UUID NIL_UUID = new UUID(0, 0);
