@@ -248,7 +248,8 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.NICKEL_IRON_BATTERY.get(),
                   RailcraftBlocks.NICKEL_ZINC_BATTERY.get(),
                   RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
-                  RailcraftBlocks.ZINC_CARBON_BATTERY.get())
+                  RailcraftBlocks.ZINC_CARBON_BATTERY.get(),
+                  RailcraftBlocks.FRAME.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<TurnoutTrackBlockEntity>> TURNOUT_TRACK =

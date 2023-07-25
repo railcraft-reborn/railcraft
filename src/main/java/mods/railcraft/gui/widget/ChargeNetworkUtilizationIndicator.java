@@ -1,6 +1,6 @@
 package mods.railcraft.gui.widget;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
@@ -15,7 +15,7 @@ public class ChargeNetworkUtilizationIndicator implements Gauge {
   protected final ServerLevel level;
   protected final BlockPos pos;
   private float chargePercent;
-  private List<Component> tooltip = Collections.emptyList();
+  private final List<Component> tooltip = new ArrayList<>(1);
 
   public ChargeNetworkUtilizationIndicator(@Nullable ServerLevel level, BlockPos pos) {
     this.level = level;
@@ -24,7 +24,8 @@ public class ChargeNetworkUtilizationIndicator implements Gauge {
 
   @Override
   public void refresh() {
-    this.tooltip = List.of(Component.literal(String.format("%.0f%%", this.chargePercent * 100.0)));
+    this.tooltip.clear();
+    this.tooltip.add(Component.literal(String.format("%.0f%%", this.chargePercent * 100.0)));
   }
 
   @Override

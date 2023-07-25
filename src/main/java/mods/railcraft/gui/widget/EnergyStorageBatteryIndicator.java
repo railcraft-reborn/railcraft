@@ -11,7 +11,6 @@ public class EnergyStorageBatteryIndicator implements Gauge {
   private float charge;
   private final IEnergyStorage battery;
 
-  // alloc 2, charge% and nRF / mnRF CU
   private final List<Component> tooltip = new ArrayList<>(2);
 
   public EnergyStorageBatteryIndicator(IEnergyStorage battery) {
@@ -21,12 +20,12 @@ public class EnergyStorageBatteryIndicator implements Gauge {
   @Override
   public void refresh() {
     int capacity = this.battery.getMaxEnergyStored();
-    float current = Math.min(this.charge, capacity);
-    float chargeLevel = capacity <= 0.0F ? 0.0F : (current / capacity) * 100.0F;
+    float chargeLevel = charge * 100.0F;
+    float energyStorage = charge * capacity;
     this.tooltip.clear();
     this.tooltip.add(Component.literal(String.format("%.0f%%", chargeLevel)));
     this.tooltip.add(Component.literal(String.format("%sFE / %sFE",
-            HumanReadableNumberFormatter.format(current),
+            HumanReadableNumberFormatter.format(energyStorage),
             HumanReadableNumberFormatter.format(capacity))));
   }
 

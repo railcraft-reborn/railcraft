@@ -7,12 +7,16 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class ElectricLocomotiveMenu extends LocomotiveMenu<ElectricLocomotive> {
 
-  private final EnergyStorageBatteryIndicator chargeIndicator;
+  private final GaugeWidget energyGauge;
 
-  public ElectricLocomotiveMenu(int id, Inventory playerInv,
-      ElectricLocomotive loco) {
+  public ElectricLocomotiveMenu(int id, Inventory playerInv, ElectricLocomotive loco) {
     super(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(), id, playerInv, loco);
-    this.chargeIndicator = new EnergyStorageBatteryIndicator(loco.getBatteryCart());
-    this.addWidget(new GaugeWidget(this.chargeIndicator, 57, 20, 176, 0, 62, 8, false));
+    var chargeIndicator = new EnergyStorageBatteryIndicator(loco.getBatteryCart());
+    this.addWidget(
+        this.energyGauge = new GaugeWidget(chargeIndicator, 57, 20, 176, 0, 62, 8, false));
+  }
+
+  public GaugeWidget getEnergyGauge() {
+    return energyGauge;
   }
 }

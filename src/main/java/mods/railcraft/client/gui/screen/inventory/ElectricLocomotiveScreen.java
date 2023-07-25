@@ -1,15 +1,7 @@
-/*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2019
- https://railcraft.info
-
- This code is the property of CovertJaguar
- and may only be used with explicit written
- permission unless otherwise specified on the
- license page at https://railcraft.info/wiki/info:license.
- -----------------------------------------------------------------------------*/
 package mods.railcraft.client.gui.screen.inventory;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +15,7 @@ public class ElectricLocomotiveScreen extends LocomotiveScreen<ElectricLocomotiv
   public ElectricLocomotiveScreen(ElectricLocomotiveMenu menu, Inventory inventory,
       Component title) {
     super(menu, inventory, title, "electric");
+    this.registerWidgetRenderer(new GaugeRenderer(menu.getEnergyGauge()));
   }
 
   @Override
