@@ -298,6 +298,7 @@ public class RailcraftBlocks {
               BlockBehaviour.Properties.of()
                   .mapColor(MapColor.METAL)
                   .strength(3F)
+                  .randomTicks()
                   .requiresCorrectToolForDrops()
                   .noOcclusion()
                   .sound(SoundType.METAL)));

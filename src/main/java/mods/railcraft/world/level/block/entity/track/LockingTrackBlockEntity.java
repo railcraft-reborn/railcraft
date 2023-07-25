@@ -196,17 +196,18 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   private boolean isSameTrainOrCart() {
     final LockingMode lockingMode = LockingTrackBlock.getLockingMode(this.getBlockState());
     if (lockingMode.getLockType().isTrain()) {
-      var extension = RollingStock.getOrThrow(this.currentCart);
-      var prevExtension = RollingStock.getOrThrow(this.prevCart);
-      if (this.currentCart != null) {
+      if (this.currentCart != null && this.prevCart != null) {
+        var extension = RollingStock.getOrThrow(this.currentCart);
+        var prevExtension = RollingStock.getOrThrow(this.prevCart);
         if (extension.isSameTrainAs(prevExtension)) {
           // reset trainDelay
           this.trainDelay = TRAIN_LOCKDOWN_DELAY;
         } else {
-          // We've encountered a new train, force the delay to 0 so we return false
+          // We've encountered a new train, force the delay to 0, so we return false
           this.trainDelay = 0;
         }
-      } else if (this.trainLeaving) {
+      } else if (this.trainLeaving && this.prevCart != null) {
+        var prevExtension = RollingStock.getOrThrow(this.prevCart);
         if (EntitySearcher.findMinecarts()
             .at(this.getBlockPos())
             .stream(this.level)

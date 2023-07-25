@@ -51,15 +51,15 @@ public class FrameBlock extends ChargeBlock implements EntityBlock {
     return Collections.singletonMap(Charge.distribution, CHARGE_SPEC);
   }
 
-  @Override
-  public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
-      List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable(Translations.Tips.FRAME).withStyle(ChatFormatting.GRAY));
-  }
-
   @Nullable
   @Override
   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
     return new BatteryBlockEntity(pos, state);
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, @Nullable BlockGetter level,
+      List<Component> tooltip, TooltipFlag flag) {
+    tooltip.add(Component.translatable(Translations.Tips.FRAME).withStyle(ChatFormatting.GRAY));
   }
 }
