@@ -1,10 +1,10 @@
-// 1.20.1	2023-06-29T09:24:52.48133	Registries
+// 1.20.1	2023-07-26T15:10:45.011469	Registries
 febb98aea6d16a6b3ef939bd3fb613f874ea974a data/railcraft/damage_type/bore.json
 bd26d74b84c1805b9ee7dabf21ed62cf44609f5e data/railcraft/damage_type/creosote.json
 bcc0737ada4e58124e8650c74c9e1a9aae4813b2 data/railcraft/damage_type/crusher.json
 00b2074c8c759bdb01538d7640460bb908c2d360 data/railcraft/damage_type/electric.json
 1444a65777cfdc35e3778e343d11b1958dd80c8f data/railcraft/damage_type/steam.json
-20470f9c99cf302ca989ae1a06405a2a45169b04 data/railcraft/damage_type/track.electric.json
+6976b75fbcb163b1b96bbccecf2344d84c398c53 data/railcraft/damage_type/track_electric.json
 ca8ad0e8cdf246947e9204b3a80b30c15c6aabff data/railcraft/damage_type/train.json
 e919070d80f775a03a619d5befa77dfdccde9cfd data/railcraft/forge/biome_modifier/add_firestone.json
 28c48973acffb656de5005407a534a8e0252a4b9 data/railcraft/forge/biome_modifier/add_lead_ore.json

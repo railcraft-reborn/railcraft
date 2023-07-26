@@ -29,7 +29,7 @@ public class FrameBlock extends ChargeBlock implements EntityBlock {
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
   private static final Spec CHARGE_SPEC = new Spec(ConnectType.BLOCK, 0.5f,
-      new ChargeStorage.Spec(ChargeStorage.State.RECHARGEABLE, 1000, 16, 1));
+      new ChargeStorage.Spec(ChargeStorage.State.RECHARGEABLE, 12000, 4000, 1));
 
   public FrameBlock(Properties properties) {
     super(properties);

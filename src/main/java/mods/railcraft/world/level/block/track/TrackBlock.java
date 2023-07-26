@@ -110,7 +110,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newBlockState,
       boolean moved) {
     super.onRemove(blockState, level, pos, newBlockState, moved);
-    if (!blockState.is(newBlockState.getBlock())) {
+    if (this.getTrackType().isElectric() && !blockState.is(newBlockState.getBlock())) {
       this.deregisterNode((ServerLevel) level, pos);
     }
   }
