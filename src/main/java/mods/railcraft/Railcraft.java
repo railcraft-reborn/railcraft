@@ -10,6 +10,7 @@ import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
 import mods.railcraft.client.ClientManager;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
+import mods.railcraft.data.RailcraftDamageTypeTagsProvider;
 import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
@@ -51,7 +52,9 @@ import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataProvider;
 import net.minecraft.nbt.CompoundTag;
@@ -193,6 +196,11 @@ public class Railcraft {
     generator.addProvider(event.includeServer(),
         (DataProvider.Factory<DatapackBuiltinEntriesProvider>) output ->
             new DatapackBuiltinEntriesProvider(output, lookupProvider, builder, Set.of(ID)));
+
+    generator.addProvider(event.includeServer(),
+        new RailcraftDamageTypeTagsProvider(packOutput, lookupProvider.thenApply(provider ->
+            builder.buildPatch(RegistryAccess
+                .fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), provider)), fileHelper));
   }
 
   // ================================================================================

@@ -9,13 +9,13 @@ import net.minecraft.world.damagesource.DamageType;
 
 public class RailcraftDamageType {
 
-  static final ResourceKey<DamageType> BORE = createKey("bore");
-  static final ResourceKey<DamageType> CRUSHER = createKey("crusher");
-  static final ResourceKey<DamageType> ELECTRIC = createKey("electric");
-  static final ResourceKey<DamageType> STEAM = createKey("steam");
-  static final ResourceKey<DamageType> TRACK_ELECTRIC = createKey("track_electric");
-  static final ResourceKey<DamageType> TRAIN = createKey("train");
-  static final ResourceKey<DamageType> CREOSOTE = createKey("creosote");
+  public static final ResourceKey<DamageType> BORE = createKey("bore");
+  public static final ResourceKey<DamageType> CRUSHER = createKey("crusher");
+  public static final ResourceKey<DamageType> ELECTRIC = createKey("electric");
+  public static final ResourceKey<DamageType> STEAM = createKey("steam");
+  public static final ResourceKey<DamageType> TRACK_ELECTRIC = createKey("track_electric");
+  public static final ResourceKey<DamageType> TRAIN = createKey("train");
+  public static final ResourceKey<DamageType> CREOSOTE = createKey("creosote");
 
   public static void bootstrap(BootstapContext<DamageType> context) {
     context.register(BORE, new DamageType("bore", 0));
