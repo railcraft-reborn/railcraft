@@ -78,6 +78,7 @@ import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -106,7 +107,6 @@ public class Railcraft {
   private final MinecartHandler minecartHandler = new MinecartHandler();
 
   public Railcraft() {
-    MinecraftForge.EVENT_BUS.register(this.minecartHandler);
     MinecraftForge.EVENT_BUS.register(this);
 
     RailcraftConfig.registerConfig(ModLoadingContext.get());
@@ -206,6 +206,13 @@ public class Railcraft {
   // ================================================================================
   // Forge Events
   // ================================================================================
+
+  @SubscribeEvent
+  public void handleServerStarted(ServerStartedEvent event) {
+    if (RailcraftConfig.SERVER.solidCarts.get()) {
+      AbstractMinecart.registerCollisionHandler(this.minecartHandler);
+    }
+  }
 
   @SubscribeEvent
   public void handleAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
