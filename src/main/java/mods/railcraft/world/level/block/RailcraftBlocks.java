@@ -76,6 +76,7 @@ import mods.railcraft.world.level.block.track.outfitted.RoutingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ThrottleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -760,6 +761,11 @@ public class RailcraftBlocks {
           () -> new OneWayTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
 
+  public static final RegistryObject<WhistleTrackBlock> ABANDONED_WHISTLE_TRACK =
+      deferredRegister.register("abandoned_whistle_track",
+          () -> new WhistleTrackBlock(TrackTypes.ABANDONED,
+              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+
   public static final RegistryObject<LocomotiveTrackBlock> ABANDONED_LOCOMOTIVE_TRACK =
       deferredRegister.register("abandoned_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.ABANDONED,
@@ -858,6 +864,10 @@ public class RailcraftBlocks {
           () -> new OneWayTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
 
+  public static final RegistryObject<WhistleTrackBlock> ELECTRIC_WHISTLE_TRACK =
+      deferredRegister.register("electric_whistle_track",
+          () -> new WhistleTrackBlock(TrackTypes.ELECTRIC,
+              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
   public static final RegistryObject<LocomotiveTrackBlock> ELECTRIC_LOCOMOTIVE_TRACK =
       deferredRegister.register("electric_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.ELECTRIC,
@@ -920,6 +930,11 @@ public class RailcraftBlocks {
           () -> new JunctionTrackBlock(TrackTypes.HIGH_SPEED,
               BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
 
+  public static final RegistryObject<WhistleTrackBlock> HIGH_SPEED_WHISTLE_TRACK =
+      deferredRegister.register("high_speed_whistle_track",
+          () -> new WhistleTrackBlock(TrackTypes.HIGH_SPEED,
+              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+
   public static final RegistryObject<LocomotiveTrackBlock> HIGH_SPEED_LOCOMOTIVE_TRACK =
       deferredRegister.register("high_speed_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.HIGH_SPEED,
@@ -976,6 +991,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<JunctionTrackBlock> HIGH_SPEED_ELECTRIC_JUNCTION_TRACK =
       deferredRegister.register("high_speed_electric_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+
+  public static final RegistryObject<WhistleTrackBlock> HIGH_SPEED_ELECTRIC_WHISTLE_TRACK =
+      deferredRegister.register("high_speed_electric_whistle_track",
+          () -> new WhistleTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
               BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final RegistryObject<LocomotiveTrackBlock> HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK =
@@ -1064,6 +1084,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<OneWayTrackBlock> IRON_ONE_WAY_TRACK =
       deferredRegister.register("iron_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.IRON,
+              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+
+  public static final RegistryObject<WhistleTrackBlock> IRON_WHISTLE_TRACK =
+      deferredRegister.register("iron_whistle_track",
+          () -> new WhistleTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
 
   public static final RegistryObject<LocomotiveTrackBlock> IRON_LOCOMOTIVE_TRACK =
@@ -1163,6 +1188,11 @@ public class RailcraftBlocks {
           () -> new OneWayTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
 
+  public static final RegistryObject<WhistleTrackBlock> REINFORCED_WHISTLE_TRACK =
+      deferredRegister.register("reinforced_whistle_track",
+          () -> new WhistleTrackBlock(TrackTypes.REINFORCED,
+              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+
   public static final RegistryObject<LocomotiveTrackBlock> REINFORCED_LOCOMOTIVE_TRACK =
       deferredRegister.register("reinforced_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.REINFORCED,
@@ -1258,6 +1288,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<OneWayTrackBlock> STRAP_IRON_ONE_WAY_TRACK =
       deferredRegister.register("strap_iron_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.STRAP_IRON,
+              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+
+  public static final RegistryObject<WhistleTrackBlock> STRAP_IRON_WHISTLE_TRACK =
+      deferredRegister.register("strap_iron_whistle_track",
+          () -> new WhistleTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
 
   public static final RegistryObject<LocomotiveTrackBlock> STRAP_IRON_LOCOMOTIVE_TRACK =

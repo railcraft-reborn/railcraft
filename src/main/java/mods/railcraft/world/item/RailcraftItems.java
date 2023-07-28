@@ -16,7 +16,6 @@ import mods.railcraft.world.item.tunnelbore.IronTunnelBoreHeadItem;
 import mods.railcraft.world.item.tunnelbore.SteelTunnelBoreHeadItem;
 import mods.railcraft.world.item.tunnelbore.TunnelBoreItem;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.nbt.CompoundTag;
@@ -549,6 +548,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ABANDONED_ONE_WAY_TRACK =
       blockItem("abandoned_one_way_track", RailcraftBlocks.ABANDONED_ONE_WAY_TRACK);
 
+  public static final RegistryObject<Item> ABANDONED_WHISTLE_TRACK =
+      blockItem("abandoned_whistle_track", RailcraftBlocks.ABANDONED_WHISTLE_TRACK);
+
   public static final RegistryObject<Item> ABANDONED_LOCOMOTIVE_TRACK =
       blockItem("abandoned_locomotive_track", RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK);
 
@@ -606,6 +608,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ELECTRIC_ONE_WAY_TRACK =
       blockItem("electric_one_way_track", RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK);
 
+  public static final RegistryObject<Item> ELECTRIC_WHISTLE_TRACK =
+      blockItem("electric_whistle_track", RailcraftBlocks.ELECTRIC_WHISTLE_TRACK);
+
   public static final RegistryObject<Item> ELECTRIC_LOCOMOTIVE_TRACK =
       blockItem("electric_locomotive_track", RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK);
 
@@ -641,6 +646,9 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> HIGH_SPEED_JUNCTION_TRACK =
       blockItem("high_speed_junction_track", RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK);
+
+  public static final RegistryObject<Item> HIGH_SPEED_WHISTLE_TRACK =
+      blockItem("high_speed_whistle_track", RailcraftBlocks.HIGH_SPEED_WHISTLE_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_LOCOMOTIVE_TRACK =
       blockItem("high_speed_locomotive_track", RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK);
@@ -681,6 +689,10 @@ public class RailcraftItems {
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_JUNCTION_TRACK =
       blockItem("high_speed_electric_junction_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK);
+
+  public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_WHISTLE_TRACK =
+      blockItem("high_speed_electric_whistle_track",
+          RailcraftBlocks.HIGH_SPEED_ELECTRIC_WHISTLE_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK =
       blockItem("high_speed_electric_locomotive_track",
@@ -734,6 +746,9 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> IRON_ONE_WAY_TRACK =
       blockItem("iron_one_way_track", RailcraftBlocks.IRON_ONE_WAY_TRACK);
+
+  public static final RegistryObject<Item> IRON_WHISTLE_TRACK =
+      blockItem("iron_whistle_track", RailcraftBlocks.IRON_WHISTLE_TRACK);
 
   public static final RegistryObject<Item> IRON_LOCOMOTIVE_TRACK =
       blockItem("iron_locomotive_track", RailcraftBlocks.IRON_LOCOMOTIVE_TRACK);
@@ -792,6 +807,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> REINFORCED_ONE_WAY_TRACK =
       blockItem("reinforced_one_way_track", RailcraftBlocks.REINFORCED_ONE_WAY_TRACK);
 
+  public static final RegistryObject<Item> REINFORCED_WHISTLE_TRACK =
+      blockItem("reinforced_whistle_track", RailcraftBlocks.REINFORCED_WHISTLE_TRACK);
+
   public static final RegistryObject<Item> REINFORCED_LOCOMOTIVE_TRACK =
       blockItem("reinforced_locomotive_track", RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK);
 
@@ -848,6 +866,9 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> STRAP_IRON_ONE_WAY_TRACK =
       blockItem("strap_iron_one_way_track", RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK);
+
+  public static final RegistryObject<Item> STRAP_IRON_WHISTLE_TRACK =
+      blockItem("strap_iron_whistle_track", RailcraftBlocks.STRAP_IRON_WHISTLE_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_LOCOMOTIVE_TRACK =
       blockItem("strap_iron_locomotive_track", RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK);
@@ -1025,6 +1046,18 @@ public class RailcraftItems {
                   RailcraftBlocks.REINFORCED_ONE_WAY_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
                   RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK)));
+
+  public static final RegistryObject<Item> WHISTLE_TRACK_KIT =
+      deferredRegister.register("whistle_track_kit",
+          () -> new TrackKitItem(new TrackKitItem.Properties()
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_WHISTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_WHISTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_WHISTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_WHISTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_WHISTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_WHISTLE_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_WHISTLE_TRACK)));
 
   public static final RegistryObject<Item> LOCOMOTIVE_TRACK_KIT =
       deferredRegister.register("locomotive_track_kit",

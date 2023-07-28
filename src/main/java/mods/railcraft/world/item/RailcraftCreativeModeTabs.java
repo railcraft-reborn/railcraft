@@ -263,7 +263,6 @@ public class RailcraftCreativeModeTabs {
               - Messenger track
               - Delayed locking track
               - Priming track
-              - Whistle track
              */
             output.accept(RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_BOOSTER_TRACK.get());
@@ -276,6 +275,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.ABANDONED_GATED_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_LOCKING_TRACK.get());
+            output.accept(RailcraftItems.ABANDONED_WHISTLE_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_LOCOMOTIVE_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_THROTTLE_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_ROUTING_TRACK.get());
@@ -295,6 +295,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.IRON_GATED_TRACK.get());
             output.accept(RailcraftItems.IRON_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.IRON_LOCKING_TRACK.get());
+            output.accept(RailcraftItems.IRON_WHISTLE_TRACK.get());
             output.accept(RailcraftItems.IRON_LOCOMOTIVE_TRACK.get());
             output.accept(RailcraftItems.IRON_THROTTLE_TRACK.get());
             output.accept(RailcraftItems.IRON_ROUTING_TRACK.get());
@@ -314,6 +315,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.STRAP_IRON_GATED_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_LOCKING_TRACK.get());
+            output.accept(RailcraftItems.STRAP_IRON_WHISTLE_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_LOCOMOTIVE_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_THROTTLE_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_ROUTING_TRACK.get());
@@ -333,6 +335,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.REINFORCED_GATED_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_LOCKING_TRACK.get());
+            output.accept(RailcraftItems.REINFORCED_WHISTLE_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_LOCOMOTIVE_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_THROTTLE_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_ROUTING_TRACK.get());
@@ -352,6 +355,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.ELECTRIC_GATED_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_LOCKING_TRACK.get());
+            output.accept(RailcraftItems.ELECTRIC_WHISTLE_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_LOCOMOTIVE_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_THROTTLE_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_ROUTING_TRACK.get());
@@ -364,6 +368,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.HIGH_SPEED_BOOSTER_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_DETECTOR_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_LOCKING_TRACK.get());
+            output.accept(RailcraftItems.HIGH_SPEED_WHISTLE_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_LOCOMOTIVE_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_THROTTLE_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_TRANSITION_TRACK.get());
@@ -375,6 +380,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get());
+            output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_WHISTLE_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get());
@@ -462,6 +468,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(),
+        RailcraftItems.WHISTLE_TRACK_KIT.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(),
         RailcraftItems.THROTTLE_TRACK_KIT.get(),
         RailcraftItems.ROUTING_TRACK_KIT.get(),

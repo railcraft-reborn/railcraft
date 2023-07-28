@@ -149,6 +149,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LAUNCHER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ABANDONED_WHISTLE_TRACK.get(),
+        RailcraftItems.WHISTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_THROTTLE_TRACK.get(),
@@ -187,6 +189,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LAUNCHER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ELECTRIC_WHISTLE_TRACK.get(),
+        RailcraftItems.WHISTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_THROTTLE_TRACK.get(),
@@ -211,6 +215,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftBlocks.HIGH_SPEED_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_TRACK.get());
+    this.dropOther(RailcraftBlocks.HIGH_SPEED_WHISTLE_TRACK.get(),
+        RailcraftItems.WHISTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK.get(),
@@ -233,6 +239,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get());
+    this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WHISTLE_TRACK.get(),
+        RailcraftItems.WHISTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get(),
@@ -265,6 +273,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LAUNCHER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.IRON_WHISTLE_TRACK.get(),
+        RailcraftItems.WHISTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_THROTTLE_TRACK.get(),
@@ -303,6 +313,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LAUNCHER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.REINFORCED_WHISTLE_TRACK.get(),
+        RailcraftItems.WHISTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_THROTTLE_TRACK.get(),
@@ -341,6 +353,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LAUNCHER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.STRAP_IRON_WHISTLE_TRACK.get(),
+        RailcraftItems.WHISTLE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
         RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK.get(),

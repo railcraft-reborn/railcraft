@@ -1,4 +1,4 @@
-// 1.20.1	2023-07-25T19:11:38.885759	Item Models: railcraft
+// 1.20.1	2023-07-28T21:56:56.556627	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -138,6 +138,7 @@ b8ee3f30a0947add5c16ac4e9642896b7513f0a1 assets/railcraft/models/item/transition
 96b6d43295f0885600b2862daabd7ce152d679fc assets/railcraft/models/item/turbine_blade.json
 1661dbebd2453a40e97b9ebad718687bd3cdae08 assets/railcraft/models/item/turbine_disk.json
 e8838ab9c684e06d9c5aa4afb22d1fef73808f4f assets/railcraft/models/item/turbine_rotor.json
+f149bdfae1a9848b1a630636285872e23dddab3b assets/railcraft/models/item/whistle_track_kit.json
 3ea3596bd7cb8e4018f134c86a7c89d67b20ed5d assets/railcraft/models/item/whistle_tuner.json
 a23458d7b292eebb148578f4372e3980f19f31ee assets/railcraft/models/item/wooden_rail.json
 54f23932c8d03f68259e3528c58ab2479a0a1a61 assets/railcraft/models/item/wooden_railbed.json
