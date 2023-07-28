@@ -21,6 +21,7 @@ import mods.railcraft.data.loot.packs.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
+import mods.railcraft.data.recipes.builders.BrewingRecipe;
 import mods.railcraft.data.worldgen.RailcraftBiomeModifiers;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
 import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
@@ -34,6 +35,7 @@ import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.capability.CapabilityUtil;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.damagesource.RailcraftDamageType;
+import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.entity.vehicle.RollingStockImpl;
@@ -42,6 +44,7 @@ import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftCreativeModeTabs;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.alchemy.RailcraftPotions;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
@@ -65,9 +68,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -122,6 +127,8 @@ public class Railcraft {
     RailcraftEntityTypes.register(modEventBus);
     RailcraftBlocks.register(modEventBus);
     RailcraftItems.register(modEventBus);
+    RailcraftPotions.register(modEventBus);
+    RailcraftMobEffects.register(modEventBus);
     RailcraftCreativeModeTabs.register(modEventBus);
     RailcraftBlockEntityTypes.register(modEventBus);
     TrackTypes.register(modEventBus);
@@ -144,7 +151,11 @@ public class Railcraft {
   private void handleCommonSetup(FMLCommonSetupEvent event) {
     NetworkChannel.registerAll();
 
-    event.enqueueWork(RailcraftCriteriaTriggers::register);
+    event.enqueueWork(() -> {
+      RailcraftCriteriaTriggers.register();
+      BrewingRecipeRegistry.addRecipe(new BrewingRecipe(Potions.AWKWARD,
+          RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE.get()));
+    });
     FuelUtil.fuelManager().addFuel(RailcraftFluids.CREOSOTE.get(), 4800);
   }
 

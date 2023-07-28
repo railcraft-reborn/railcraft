@@ -77,7 +77,6 @@ import mods.railcraft.world.level.block.track.outfitted.ThrottleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
-import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
@@ -88,7 +87,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.LightBlock;
-import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
@@ -1338,16 +1336,17 @@ public class RailcraftBlocks {
               .sound(SoundType.STONE)
               .strength(3.5F)));
 
-  public static final RegistryObject<LiquidBlock> CREOSOTE =
+  public static final RegistryObject<CreosoteLiquidBlock> CREOSOTE =
       deferredRegister.register("creosote",
-          () -> new LiquidBlock(RailcraftFluids.CREOSOTE,
+          () -> new CreosoteLiquidBlock(
               BlockBehaviour.Properties.of()
                   .mapColor(MapColor.WATER)
                   .liquid()
                   .noCollission()
                   .strength(50.0F)
                   .pushReaction(PushReaction.DESTROY)
-                  .noLootTable()));
+                  .noLootTable()
+                  .sound(SoundType.EMPTY)));
 
   public static final RegistryObject<CrushedObsidian> CRUSHED_OBSIDIAN =
       deferredRegister.register("crushed_obsidian",
