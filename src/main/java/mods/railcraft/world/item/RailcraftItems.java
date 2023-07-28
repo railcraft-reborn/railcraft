@@ -122,22 +122,17 @@ public class RailcraftItems {
           () -> new TurbineRotorItem(new Item.Properties().stacksTo(1)));
 
   public static final RegistryObject<Item> STEAM_TURBINE =
-      deferredRegister.register("steam_turbine",
-          () -> new BlockItem(RailcraftBlocks.STEAM_TURBINE.get(), new Item.Properties()));
+      blockItem("steam_turbine", RailcraftBlocks.STEAM_TURBINE);
 
 
   public static final RegistryObject<Item> BLAST_FURNACE_BRICKS =
-      deferredRegister.register("blast_furnace_bricks",
-          () -> new BlockItem(RailcraftBlocks.BLAST_FURNACE_BRICKS.get(),
-              new Item.Properties()));
+      blockItem("blast_furnace_bricks", RailcraftBlocks.BLAST_FURNACE_BRICKS);
 
   public static final RegistryObject<Item> FEED_STATION =
-      deferredRegister.register("feed_station",
-          () -> new BlockItem(RailcraftBlocks.FEED_STATION.get(), new Item.Properties()));
+      blockItem("feed_station", RailcraftBlocks.FEED_STATION);
 
   public static final RegistryObject<Item> FRAME_BLOCK =
-      deferredRegister.register("frame",
-          () -> new BlockItem(RailcraftBlocks.FRAME.get(), new Item.Properties()));
+      blockItem("frame", RailcraftBlocks.FRAME);
 
   public static final RegistryObject<Item> CHARGE_METER =
       deferredRegister.register("charge_meter",
@@ -146,130 +141,97 @@ public class RailcraftItems {
               .stacksTo(1)));
 
   public static final RegistryObject<Item> NICKEL_ZINC_BATTERY =
-      deferredRegister.register("nickel_zinc_battery",
-          () -> new BlockItem(RailcraftBlocks.NICKEL_ZINC_BATTERY.get(), new Item.Properties()));
+      blockItem("nickel_zinc_battery", RailcraftBlocks.NICKEL_ZINC_BATTERY);
 
   public static final RegistryObject<Item> NICKEL_IRON_BATTERY =
-      deferredRegister.register("nickel_iron_battery",
-          () -> new BlockItem(RailcraftBlocks.NICKEL_IRON_BATTERY.get(), new Item.Properties()));
+      blockItem("nickel_iron_battery", RailcraftBlocks.NICKEL_IRON_BATTERY);
 
   public static final RegistryObject<Item> ZINC_CARBON_BATTERY =
-      deferredRegister.register("zinc_carbon_battery",
-          () -> new BlockItem(RailcraftBlocks.ZINC_CARBON_BATTERY.get(), new Item.Properties()));
+      blockItem("zinc_carbon_battery", RailcraftBlocks.ZINC_CARBON_BATTERY);
 
   public static final RegistryObject<Item> ZINC_CARBON_BATTERY_EMPTY =
-      deferredRegister.register("zinc_carbon_battery_empty",
-          () -> new BlockItem(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get(), new Item.Properties()));
+      blockItem("zinc_carbon_battery_empty", RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY);
 
   public static final RegistryObject<Item> ZINC_SILVER_BATTERY =
-      deferredRegister.register("zinc_silver_battery",
-          () -> new BlockItem(RailcraftBlocks.ZINC_SILVER_BATTERY.get(), new Item.Properties()));
+      blockItem("zinc_silver_battery", RailcraftBlocks.ZINC_SILVER_BATTERY);
 
   public static final RegistryObject<Item> ZINC_SILVER_BATTERY_EMPTY =
-      deferredRegister.register("zinc_silver_battery_empty",
-          () -> new BlockItem(RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get(), new Item.Properties()));
+      blockItem("zinc_silver_battery_empty", RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY);
 
   public static final RegistryObject<Item> STEEL_ANVIL =
-      deferredRegister.register("steel_anvil",
-          () -> new BlockItem(RailcraftBlocks.STEEL_ANVIL.get(), new Item.Properties()));
+      blockItem("steel_anvil", RailcraftBlocks.STEEL_ANVIL);
 
   public static final RegistryObject<Item> CHIPPED_STEEL_ANVIL =
-      deferredRegister.register("chipped_steel_anvil",
-          () -> new BlockItem(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get(),
-              new Item.Properties()));
+      blockItem("chipped_steel_anvil", RailcraftBlocks.CHIPPED_STEEL_ANVIL);
 
   public static final RegistryObject<Item> DAMAGED_STEEL_ANVIL =
-      deferredRegister.register("damaged_steel_anvil",
-          () -> new BlockItem(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get(),
-              new Item.Properties()));
+      blockItem("damaged_steel_anvil", RailcraftBlocks.DAMAGED_STEEL_ANVIL);
 
   public static final RegistryObject<Item> STEEL_BLOCK =
-      deferredRegister.register("steel_block",
-          () -> new BlockItem(RailcraftBlocks.STEEL_BLOCK.get(), new Item.Properties()));
+      blockItem("steel_block", RailcraftBlocks.STEEL_BLOCK);
 
   public static final RegistryObject<Item> BRASS_BLOCK =
-      deferredRegister.register("brass_block",
-          () -> new BlockItem(RailcraftBlocks.BRASS_BLOCK.get(), new Item.Properties()));
+      blockItem("brass_block", RailcraftBlocks.BRASS_BLOCK);
 
   public static final RegistryObject<Item> BRONZE_BLOCK =
-      deferredRegister.register("bronze_block",
-          () -> new BlockItem(RailcraftBlocks.BRONZE_BLOCK.get(), new Item.Properties()));
+      blockItem("bronze_block", RailcraftBlocks.BRONZE_BLOCK);
 
   public static final RegistryObject<Item> INVAR_BLOCK =
-      deferredRegister.register("invar_block",
-          () -> new BlockItem(RailcraftBlocks.INVAR_BLOCK.get(), new Item.Properties()));
+      blockItem("invar_block", RailcraftBlocks.INVAR_BLOCK);
 
   public static final RegistryObject<Item> LEAD_BLOCK =
-      deferredRegister.register("lead_block",
-          () -> new BlockItem(RailcraftBlocks.LEAD_BLOCK.get(), new Item.Properties()));
+      blockItem("lead_block", RailcraftBlocks.LEAD_BLOCK);
 
   public static final RegistryObject<Item> NICKEL_BLOCK =
-      deferredRegister.register("nickel_block",
-          () -> new BlockItem(RailcraftBlocks.NICKEL_BLOCK.get(), new Item.Properties()));
+      blockItem("nickel_block", RailcraftBlocks.NICKEL_BLOCK);
 
   public static final RegistryObject<Item> SILVER_BLOCK =
-      deferredRegister.register("silver_block",
-          () -> new BlockItem(RailcraftBlocks.SILVER_BLOCK.get(), new Item.Properties()));
+      blockItem("silver_block", RailcraftBlocks.SILVER_BLOCK);
 
   public static final RegistryObject<Item> TIN_BLOCK =
-      deferredRegister.register("tin_block",
-          () -> new BlockItem(RailcraftBlocks.TIN_BLOCK.get(), new Item.Properties()));
+      blockItem("tin_block", RailcraftBlocks.TIN_BLOCK);
 
   public static final RegistryObject<Item> ZINC_BLOCK =
-      deferredRegister.register("zinc_block",
-          () -> new BlockItem(RailcraftBlocks.ZINC_BLOCK.get(), new Item.Properties()));
+      blockItem("zinc_block", RailcraftBlocks.ZINC_BLOCK);
 
   public static final RegistryObject<Item> LEAD_ORE =
-      deferredRegister.register("lead_ore",
-          () -> new BlockItem(RailcraftBlocks.LEAD_ORE.get(), new Properties()));
+      blockItem("lead_ore", RailcraftBlocks.LEAD_ORE);
 
   public static final RegistryObject<Item> NICKEL_ORE =
-      deferredRegister.register("nickel_ore",
-          () -> new BlockItem(RailcraftBlocks.NICKEL_ORE.get(), new Properties()));
+      blockItem("nickel_ore", RailcraftBlocks.NICKEL_ORE);
 
   public static final RegistryObject<Item> SILVER_ORE =
-      deferredRegister.register("silver_ore",
-          () -> new BlockItem(RailcraftBlocks.SILVER_ORE.get(), new Properties()));
+      blockItem("silver_ore", RailcraftBlocks.SILVER_ORE);
 
   public static final RegistryObject<Item> TIN_ORE =
-      deferredRegister.register("tin_ore",
-          () -> new BlockItem(RailcraftBlocks.TIN_ORE.get(), new Properties()));
+      blockItem("tin_ore", RailcraftBlocks.TIN_ORE);
 
   public static final RegistryObject<Item> ZINC_ORE =
-      deferredRegister.register("zinc_ore",
-          () -> new BlockItem(RailcraftBlocks.ZINC_ORE.get(), new Properties()));
+      blockItem("zinc_ore", RailcraftBlocks.ZINC_ORE);
 
   public static final RegistryObject<Item> DEEPSLATE_LEAD_ORE =
-      deferredRegister.register("deepslate_lead_ore",
-          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get(), new Properties()));
+      blockItem("deepslate_lead_ore", RailcraftBlocks.DEEPSLATE_LEAD_ORE);
 
   public static final RegistryObject<Item> DEEPSLATE_NICKEL_ORE =
-      deferredRegister.register("deepslate_nickel_ore",
-          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get(), new Properties()));
+      blockItem("deepslate_nickel_ore", RailcraftBlocks.DEEPSLATE_NICKEL_ORE);
 
   public static final RegistryObject<Item> DEEPSLATE_SILVER_ORE =
-      deferredRegister.register("deepslate_silver_ore",
-          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get(), new Properties()));
+      blockItem("deepslate_silver_ore", RailcraftBlocks.DEEPSLATE_SILVER_ORE);
 
   public static final RegistryObject<Item> DEEPSLATE_TIN_ORE =
-      deferredRegister.register("deepslate_tin_ore",
-          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_TIN_ORE.get(), new Properties()));
+      blockItem("deepslate_tin_ore", RailcraftBlocks.DEEPSLATE_TIN_ORE);
 
   public static final RegistryObject<Item> DEEPSLATE_ZINC_ORE =
-      deferredRegister.register("deepslate_zinc_ore",
-          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get(), new Properties()));
+      blockItem("deepslate_zinc_ore", RailcraftBlocks.DEEPSLATE_ZINC_ORE);
 
   public static final RegistryObject<Item> SULFUR_ORE =
-      deferredRegister.register("sulfur_ore",
-          () -> new BlockItem(RailcraftBlocks.SULFUR_ORE.get(), new Properties()));
+      blockItem("sulfur_ore", RailcraftBlocks.SULFUR_ORE);
 
   public static final RegistryObject<Item> DEEPSLATE_SULFUR_ORE =
-      deferredRegister.register("deepslate_sulfur_ore",
-          () -> new BlockItem(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get(), new Properties()));
+      blockItem("deepslate_sulfur_ore", RailcraftBlocks.DEEPSLATE_SULFUR_ORE);
 
   public static final RegistryObject<Item> SALTPETER_ORE =
-      deferredRegister.register("saltpeter_ore",
-          () -> new BlockItem(RailcraftBlocks.SALTPETER_ORE.get(), new Properties()));
+      blockItem("saltpeter_ore", RailcraftBlocks.SALTPETER_ORE);
 
   public static final RegistryObject<Item> COKE_BLOCK =
       deferredRegister.register("coal_coke_block",
@@ -353,40 +315,28 @@ public class RailcraftItems {
                   .stacksTo(1)));
 
   public static final RegistryObject<Item> FLUID_LOADER =
-      deferredRegister.register("fluid_loader",
-          () -> new BlockItem(RailcraftBlocks.FLUID_LOADER.get(),
-              new Item.Properties()));
+      blockItem("fluid_loader", RailcraftBlocks.FLUID_LOADER);
 
   public static final RegistryObject<Item> FLUID_UNLOADER =
-      deferredRegister.register("fluid_unloader",
-          () -> new BlockItem(RailcraftBlocks.FLUID_UNLOADER.get(),
-              new Item.Properties()));
+      blockItem("fluid_unloader", RailcraftBlocks.FLUID_UNLOADER);
 
   public static final RegistryObject<Item> ADVANCED_ITEM_LOADER =
-      deferredRegister.register("advanced_item_loader",
-          () -> new BlockItem(RailcraftBlocks.ADVANCED_ITEM_LOADER.get(),
-              new Item.Properties()));
+      blockItem("advanced_item_loader", RailcraftBlocks.ADVANCED_ITEM_LOADER);
 
   public static final RegistryObject<Item> ADVANCED_ITEM_UNLOADER =
-      deferredRegister.register("advanced_item_unloader",
-          () -> new BlockItem(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get(),
-              new Item.Properties()));
+      blockItem("advanced_item_unloader", RailcraftBlocks.ADVANCED_ITEM_UNLOADER);
 
   public static final RegistryObject<Item> ITEM_LOADER =
-      deferredRegister.register("item_loader",
-          () -> new BlockItem(RailcraftBlocks.ITEM_LOADER.get(), new Item.Properties()));
+      blockItem("item_loader", RailcraftBlocks.ITEM_LOADER);
 
   public static final RegistryObject<Item> ITEM_UNLOADER =
-      deferredRegister.register("item_unloader",
-          () -> new BlockItem(RailcraftBlocks.ITEM_UNLOADER.get(), new Item.Properties()));
+      blockItem("item_unloader", RailcraftBlocks.ITEM_UNLOADER);
 
   public static final RegistryObject<Item> CART_DISPENSER =
-      deferredRegister.register("cart_dispenser",
-          () -> new BlockItem(RailcraftBlocks.CART_DISPENSER.get(), new Item.Properties()));
+      blockItem("cart_dispenser", RailcraftBlocks.CART_DISPENSER);
 
   public static final RegistryObject<Item> TRAIN_DISPENSER =
-      deferredRegister.register("train_dispenser",
-          () -> new BlockItem(RailcraftBlocks.TRAIN_DISPENSER.get(), new Item.Properties()));
+      blockItem("train_dispenser", RailcraftBlocks.TRAIN_DISPENSER);
 
   public static final RegistryObject<Item> IRON_SPIKE_MAUL =
       deferredRegister.register("iron_spike_maul",
@@ -404,19 +354,13 @@ public class RailcraftItems {
               new Item.Properties()));
 
   public static final RegistryObject<Item> SWITCH_TRACK_LEVER =
-      deferredRegister.register("switch_track_lever",
-          () -> new BlockItem(RailcraftBlocks.SWITCH_TRACK_LEVER.get(),
-              new Item.Properties()));
+      blockItem("switch_track_lever", RailcraftBlocks.SWITCH_TRACK_LEVER);
 
   public static final RegistryObject<Item> SWITCH_TRACK_MOTOR =
-      deferredRegister.register("switch_track_motor",
-          () -> new BlockItem(RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
-              new Item.Properties()));
+      blockItem("switch_track_motor", RailcraftBlocks.SWITCH_TRACK_MOTOR);
 
   public static final RegistryObject<Item> SWITCH_TRACK_ROUTER =
-      deferredRegister.register("switch_track_router",
-          () -> new BlockItem(RailcraftBlocks.SWITCH_TRACK_ROUTER.get(),
-              new Item.Properties()));
+      blockItem("switch_track_router", RailcraftBlocks.SWITCH_TRACK_ROUTER);
 
   public static final RegistryObject<Item> SIGNAL_TUNER =
       deferredRegister.register("signal_tuner",
@@ -427,82 +371,43 @@ public class RailcraftItems {
           () -> new SignalBlockSurveyorItem(new Item.Properties().stacksTo(1)));
 
   public static final RegistryObject<Item> ANALOG_SIGNAL_CONTROLLER_BOX =
-      deferredRegister.register("analog_signal_controller_box",
-          () -> new BlockItem(
-              RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
-              new Item.Properties()));
+      blockItem("analog_signal_controller_box", RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX);
 
   public static final RegistryObject<Item> SIGNAL_SEQUENCER_BOX =
-      deferredRegister.register("signal_sequencer_box",
-          () -> new BlockItem(
-              RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get(),
-              new Item.Properties()));
+      blockItem("signal_sequencer_box", RailcraftBlocks.SIGNAL_SEQUENCER_BOX);
 
   public static final RegistryObject<Item> SIGNAL_CAPACITOR_BOX =
-      deferredRegister.register("signal_capacitor_box",
-          () -> new BlockItem(
-              RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
-              new Item.Properties()));
+      blockItem("signal_capacitor_box", RailcraftBlocks.SIGNAL_CAPACITOR_BOX);
 
   public static final RegistryObject<Item> SIGNAL_INTERLOCK_BOX =
-      deferredRegister.register("signal_interlock_box",
-          () -> new BlockItem(
-              RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get(),
-              new Item.Properties()));
+      blockItem("signal_interlock_box", RailcraftBlocks.SIGNAL_INTERLOCK_BOX);
 
   public static final RegistryObject<Item> SIGNAL_BLOCK_RELAY_BOX =
-      deferredRegister.register("signal_block_relay_box",
-          () -> new BlockItem(
-              RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
-              new Item.Properties()));
+      blockItem("signal_block_relay_box", RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX);
 
   public static final RegistryObject<Item> SIGNAL_RECEIVER_BOX =
-      deferredRegister.register("signal_receiver_box",
-          () -> new BlockItem(
-              RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
-              new Item.Properties()));
+      blockItem("signal_receiver_box", RailcraftBlocks.SIGNAL_RECEIVER_BOX);
 
   public static final RegistryObject<Item> SIGNAL_CONTROLLER_BOX =
-      deferredRegister.register("signal_controller_box",
-          () -> new BlockItem(
-              RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(),
-              new Item.Properties()));
+      blockItem("signal_controller_box", RailcraftBlocks.SIGNAL_CONTROLLER_BOX);
 
   public static final RegistryObject<Item> DUAL_BLOCK_SIGNAL =
-      deferredRegister.register("dual_block_signal",
-          () -> new BlockItem(
-              RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
-              new Item.Properties()));
+      blockItem("dual_block_signal", RailcraftBlocks.DUAL_BLOCK_SIGNAL);
 
   public static final RegistryObject<Item> DUAL_DISTANT_SIGNAL =
-      deferredRegister.register("dual_distant_signal",
-          () -> new BlockItem(
-              RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(),
-              new Item.Properties()));
+      blockItem("dual_distant_signal", RailcraftBlocks.DUAL_DISTANT_SIGNAL);
 
   public static final RegistryObject<Item> DUAL_TOKEN_SIGNAL =
-      deferredRegister.register("dual_token_signal",
-          () -> new BlockItem(
-              RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
-              new Item.Properties()));
+      blockItem("dual_token_signal", RailcraftBlocks.DUAL_TOKEN_SIGNAL);
 
   public static final RegistryObject<Item> BLOCK_SIGNAL =
-      deferredRegister.register("block_signal",
-          () -> new BlockItem(
-              RailcraftBlocks.BLOCK_SIGNAL.get(),
-              new Item.Properties()));
+      blockItem("block_signal", RailcraftBlocks.BLOCK_SIGNAL);
 
   public static final RegistryObject<Item> DISTANT_SIGNAL =
-      deferredRegister.register("distant_signal",
-          () -> new BlockItem(
-              RailcraftBlocks.DISTANT_SIGNAL.get(),
-              new Item.Properties()));
+      blockItem("distant_signal", RailcraftBlocks.DISTANT_SIGNAL);
 
   public static final RegistryObject<Item> TOKEN_SIGNAL =
-      deferredRegister.register("token_signal",
-          () -> new BlockItem(
-              RailcraftBlocks.TOKEN_SIGNAL.get(),
-              new Item.Properties()));
+      blockItem("token_signal", RailcraftBlocks.TOKEN_SIGNAL);
 
   public static final RegistryObject<TrackRemoverCartItem> TRACK_REMOVER =
       deferredRegister.register("track_remover",
@@ -593,373 +498,368 @@ public class RailcraftItems {
               .durability(RefinedFirestoneItem.CHARGES)
               .rarity(Rarity.RARE)));
 
-  public static final RegistryObject<BlockItem> FORCE_TRACK_EMITTER =
-      deferredRegister.register("force_track_emitter",
-          () -> new BlockItem(
-              RailcraftBlocks.FORCE_TRACK_EMITTER.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> FORCE_TRACK_EMITTER =
+      blockItem("force_track_emitter", RailcraftBlocks.FORCE_TRACK_EMITTER);
 
   public static final RegistryObject<Item> ABANDONED_TRACK =
-      itemTrack("abandoned_track", RailcraftBlocks.ABANDONED_TRACK);
+      blockItem("abandoned_track", RailcraftBlocks.ABANDONED_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_LOCKING_TRACK =
-      itemTrack("abandoned_locking_track", RailcraftBlocks.ABANDONED_LOCKING_TRACK);
+      blockItem("abandoned_locking_track", RailcraftBlocks.ABANDONED_LOCKING_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_BUFFER_STOP_TRACK =
-      itemTrack("abandoned_buffer_stop_track", RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK);
+      blockItem("abandoned_buffer_stop_track", RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_ACTIVATOR_TRACK =
-      itemTrack("abandoned_activator_track", RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK);
+      blockItem("abandoned_activator_track", RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_BOOSTER_TRACK =
-      itemTrack("abandoned_booster_track", RailcraftBlocks.ABANDONED_BOOSTER_TRACK);
+      blockItem("abandoned_booster_track", RailcraftBlocks.ABANDONED_BOOSTER_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_CONTROL_TRACK =
-      itemTrack("abandoned_control_track", RailcraftBlocks.ABANDONED_CONTROL_TRACK);
+      blockItem("abandoned_control_track", RailcraftBlocks.ABANDONED_CONTROL_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_GATED_TRACK =
-      itemTrack("abandoned_gated_track", RailcraftBlocks.ABANDONED_GATED_TRACK);
+      blockItem("abandoned_gated_track", RailcraftBlocks.ABANDONED_GATED_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_DETECTOR_TRACK =
-      itemTrack("abandoned_detector_track", RailcraftBlocks.ABANDONED_DETECTOR_TRACK);
+      blockItem("abandoned_detector_track", RailcraftBlocks.ABANDONED_DETECTOR_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_COUPLER_TRACK =
-      itemTrack("abandoned_coupler_track", RailcraftBlocks.ABANDONED_COUPLER_TRACK);
+      blockItem("abandoned_coupler_track", RailcraftBlocks.ABANDONED_COUPLER_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_EMBARKING_TRACK =
-      itemTrack("abandoned_embarking_track", RailcraftBlocks.ABANDONED_EMBARKING_TRACK);
+      blockItem("abandoned_embarking_track", RailcraftBlocks.ABANDONED_EMBARKING_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_DISEMBARKING_TRACK =
-      itemTrack("abandoned_disembarking_track", RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK);
+      blockItem("abandoned_disembarking_track", RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_WYE_TRACK =
-      itemTrack("abandoned_wye_track", RailcraftBlocks.ABANDONED_WYE_TRACK);
+      blockItem("abandoned_wye_track", RailcraftBlocks.ABANDONED_WYE_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_TURNOUT_TRACK =
-      itemTrack("abandoned_turnout_track", RailcraftBlocks.ABANDONED_TURNOUT_TRACK);
+      blockItem("abandoned_turnout_track", RailcraftBlocks.ABANDONED_TURNOUT_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_JUNCTION_TRACK =
-      itemTrack("abandoned_junction_track", RailcraftBlocks.ABANDONED_JUNCTION_TRACK);
+      blockItem("abandoned_junction_track", RailcraftBlocks.ABANDONED_JUNCTION_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_LAUNCHER_TRACK =
-      itemTrack("abandoned_launcher_track", RailcraftBlocks.ABANDONED_LAUNCHER_TRACK);
+      blockItem("abandoned_launcher_track", RailcraftBlocks.ABANDONED_LAUNCHER_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_ONE_WAY_TRACK =
-      itemTrack("abandoned_one_way_track", RailcraftBlocks.ABANDONED_ONE_WAY_TRACK);
+      blockItem("abandoned_one_way_track", RailcraftBlocks.ABANDONED_ONE_WAY_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_LOCOMOTIVE_TRACK =
-      itemTrack("abandoned_locomotive_track", RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK);
+      blockItem("abandoned_locomotive_track", RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_THROTTLE_TRACK =
-      itemTrack("abandoned_throttle_track", RailcraftBlocks.ABANDONED_THROTTLE_TRACK);
+      blockItem("abandoned_throttle_track", RailcraftBlocks.ABANDONED_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> ABANDONED_ROUTING_TRACK =
-      itemTrack("abandoned_routing_track", RailcraftBlocks.ABANDONED_ROUTING_TRACK);
+      blockItem("abandoned_routing_track", RailcraftBlocks.ABANDONED_ROUTING_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_TRACK =
-      itemTrack("electric_track", RailcraftBlocks.ELECTRIC_TRACK);
+      blockItem("electric_track", RailcraftBlocks.ELECTRIC_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_LOCKING_TRACK =
-      itemTrack("electric_locking_track", RailcraftBlocks.ELECTRIC_LOCKING_TRACK);
+      blockItem("electric_locking_track", RailcraftBlocks.ELECTRIC_LOCKING_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_BUFFER_STOP_TRACK =
-      itemTrack("electric_buffer_stop_track", RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK);
+      blockItem("electric_buffer_stop_track", RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_ACTIVATOR_TRACK =
-      itemTrack("electric_activator_track", RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK);
+      blockItem("electric_activator_track", RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_BOOSTER_TRACK =
-      itemTrack("electric_booster_track", RailcraftBlocks.ELECTRIC_BOOSTER_TRACK);
+      blockItem("electric_booster_track", RailcraftBlocks.ELECTRIC_BOOSTER_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_CONTROL_TRACK =
-      itemTrack("electric_control_track", RailcraftBlocks.ELECTRIC_CONTROL_TRACK);
+      blockItem("electric_control_track", RailcraftBlocks.ELECTRIC_CONTROL_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_GATED_TRACK =
-      itemTrack("electric_gated_track", RailcraftBlocks.ELECTRIC_GATED_TRACK);
+      blockItem("electric_gated_track", RailcraftBlocks.ELECTRIC_GATED_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_DETECTOR_TRACK =
-      itemTrack("electric_detector_track", RailcraftBlocks.ELECTRIC_DETECTOR_TRACK);
+      blockItem("electric_detector_track", RailcraftBlocks.ELECTRIC_DETECTOR_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_COUPLER_TRACK =
-      itemTrack("electric_coupler_track", RailcraftBlocks.ELECTRIC_COUPLER_TRACK);
+      blockItem("electric_coupler_track", RailcraftBlocks.ELECTRIC_COUPLER_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_EMBARKING_TRACK =
-      itemTrack("electric_embarking_track", RailcraftBlocks.ELECTRIC_EMBARKING_TRACK);
+      blockItem("electric_embarking_track", RailcraftBlocks.ELECTRIC_EMBARKING_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_DISEMBARKING_TRACK =
-      itemTrack("electric_disembarking_track", RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK);
+      blockItem("electric_disembarking_track", RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_WYE_TRACK =
-      itemTrack("electric_wye_track", RailcraftBlocks.ELECTRIC_WYE_TRACK);
+      blockItem("electric_wye_track", RailcraftBlocks.ELECTRIC_WYE_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_TURNOUT_TRACK =
-      itemTrack("electric_turnout_track", RailcraftBlocks.ELECTRIC_TURNOUT_TRACK);
+      blockItem("electric_turnout_track", RailcraftBlocks.ELECTRIC_TURNOUT_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_JUNCTION_TRACK =
-      itemTrack("electric_junction_track", RailcraftBlocks.ELECTRIC_JUNCTION_TRACK);
+      blockItem("electric_junction_track", RailcraftBlocks.ELECTRIC_JUNCTION_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_LAUNCHER_TRACK =
-      itemTrack("electric_launcher_track", RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK);
+      blockItem("electric_launcher_track", RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_ONE_WAY_TRACK =
-      itemTrack("electric_one_way_track", RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK);
+      blockItem("electric_one_way_track", RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_LOCOMOTIVE_TRACK =
-      itemTrack("electric_locomotive_track", RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK);
+      blockItem("electric_locomotive_track", RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_THROTTLE_TRACK =
-      itemTrack("electric_throttle_track", RailcraftBlocks.ELECTRIC_THROTTLE_TRACK);
+      blockItem("electric_throttle_track", RailcraftBlocks.ELECTRIC_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_ROUTING_TRACK =
-      itemTrack("electric_routing_track", RailcraftBlocks.ELECTRIC_ROUTING_TRACK);
+      blockItem("electric_routing_track", RailcraftBlocks.ELECTRIC_ROUTING_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_TRACK =
-      itemTrack("high_speed_track", RailcraftBlocks.HIGH_SPEED_TRACK);
+      blockItem("high_speed_track", RailcraftBlocks.HIGH_SPEED_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_TRANSITION_TRACK =
-      itemTrack("high_speed_transition_track", RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK);
+      blockItem("high_speed_transition_track", RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_LOCKING_TRACK =
-      itemTrack("high_speed_locking_track", RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK);
+      blockItem("high_speed_locking_track", RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ACTIVATOR_TRACK =
-      itemTrack("high_speed_activator_track", RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK);
+      blockItem("high_speed_activator_track", RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_BOOSTER_TRACK =
-      itemTrack("high_speed_booster_track", RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK);
+      blockItem("high_speed_booster_track", RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_DETECTOR_TRACK =
-      itemTrack("high_speed_detector_track", RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK);
+      blockItem("high_speed_detector_track", RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_WYE_TRACK =
-      itemTrack("high_speed_wye_track", RailcraftBlocks.HIGH_SPEED_WYE_TRACK);
+      blockItem("high_speed_wye_track", RailcraftBlocks.HIGH_SPEED_WYE_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_TURNOUT_TRACK =
-      itemTrack("high_speed_turnout_track", RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK);
+      blockItem("high_speed_turnout_track", RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_JUNCTION_TRACK =
-      itemTrack("high_speed_junction_track", RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK);
+      blockItem("high_speed_junction_track", RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_LOCOMOTIVE_TRACK =
-      itemTrack("high_speed_locomotive_track", RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK);
+      blockItem("high_speed_locomotive_track", RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_THROTTLE_TRACK =
-      itemTrack("high_speed_throttle_track", RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK);
+      blockItem("high_speed_throttle_track", RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TRACK =
-      itemTrack("high_speed_electric_track", RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK);
+      blockItem("high_speed_electric_track", RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TRANSITION_TRACK =
-      itemTrack("high_speed_electric_transition_track",
+      blockItem("high_speed_electric_transition_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_LOCKING_TRACK =
-      itemTrack("high_speed_electric_locking_track",
+      blockItem("high_speed_electric_locking_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK =
-      itemTrack("high_speed_electric_activator_track",
+      blockItem("high_speed_electric_activator_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_BOOSTER_TRACK =
-      itemTrack("high_speed_electric_booster_track",
+      blockItem("high_speed_electric_booster_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_DETECTOR_TRACK =
-      itemTrack("high_speed_electric_detector_track",
+      blockItem("high_speed_electric_detector_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_WYE_TRACK =
-      itemTrack("high_speed_electric_wye_track", RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK);
+      blockItem("high_speed_electric_wye_track", RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_TURNOUT_TRACK =
-      itemTrack("high_speed_electric_turnout_track",
+      blockItem("high_speed_electric_turnout_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_JUNCTION_TRACK =
-      itemTrack("high_speed_electric_junction_track",
+      blockItem("high_speed_electric_junction_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK =
-      itemTrack("high_speed_electric_locomotive_track",
+      blockItem("high_speed_electric_locomotive_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK);
 
   public static final RegistryObject<Item> HIGH_SPEED_ELECTRIC_THROTTLE_TRACK =
-      itemTrack("high_speed_electric_throttle_track",
+      blockItem("high_speed_electric_throttle_track",
           RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> IRON_LOCKING_TRACK =
-      itemTrack("iron_locking_track", RailcraftBlocks.IRON_LOCKING_TRACK);
+      blockItem("iron_locking_track", RailcraftBlocks.IRON_LOCKING_TRACK);
 
   public static final RegistryObject<Item> IRON_BUFFER_STOP_TRACK =
-      itemTrack("iron_buffer_stop_track", RailcraftBlocks.IRON_BUFFER_STOP_TRACK);
+      blockItem("iron_buffer_stop_track", RailcraftBlocks.IRON_BUFFER_STOP_TRACK);
 
   public static final RegistryObject<Item> IRON_ACTIVATOR_TRACK =
-      itemTrack("iron_activator_track", RailcraftBlocks.IRON_ACTIVATOR_TRACK);
+      blockItem("iron_activator_track", RailcraftBlocks.IRON_ACTIVATOR_TRACK);
 
   public static final RegistryObject<Item> IRON_BOOSTER_TRACK =
-      itemTrack("iron_booster_track", RailcraftBlocks.IRON_BOOSTER_TRACK);
+      blockItem("iron_booster_track", RailcraftBlocks.IRON_BOOSTER_TRACK);
 
   public static final RegistryObject<Item> IRON_CONTROL_TRACK =
-      itemTrack("iron_control_track", RailcraftBlocks.IRON_CONTROL_TRACK);
+      blockItem("iron_control_track", RailcraftBlocks.IRON_CONTROL_TRACK);
 
   public static final RegistryObject<Item> IRON_GATED_TRACK =
-      itemTrack("iron_gated_track", RailcraftBlocks.IRON_GATED_TRACK);
+      blockItem("iron_gated_track", RailcraftBlocks.IRON_GATED_TRACK);
 
   public static final RegistryObject<Item> IRON_DETECTOR_TRACK =
-      itemTrack("iron_detector_track", RailcraftBlocks.IRON_DETECTOR_TRACK);
+      blockItem("iron_detector_track", RailcraftBlocks.IRON_DETECTOR_TRACK);
 
   public static final RegistryObject<Item> IRON_COUPLER_TRACK =
-      itemTrack("iron_coupler_track", RailcraftBlocks.IRON_COUPLER_TRACK);
+      blockItem("iron_coupler_track", RailcraftBlocks.IRON_COUPLER_TRACK);
 
   public static final RegistryObject<Item> IRON_EMBARKING_TRACK =
-      itemTrack("iron_embarking_track", RailcraftBlocks.IRON_EMBARKING_TRACK);
+      blockItem("iron_embarking_track", RailcraftBlocks.IRON_EMBARKING_TRACK);
 
   public static final RegistryObject<Item> IRON_DISEMBARKING_TRACK =
-      itemTrack("iron_disembarking_track", RailcraftBlocks.IRON_DISEMBARKING_TRACK);
+      blockItem("iron_disembarking_track", RailcraftBlocks.IRON_DISEMBARKING_TRACK);
 
   public static final RegistryObject<Item> IRON_WYE_TRACK =
-      itemTrack("iron_wye_track", RailcraftBlocks.IRON_WYE_TRACK);
+      blockItem("iron_wye_track", RailcraftBlocks.IRON_WYE_TRACK);
 
   public static final RegistryObject<Item> IRON_TURNOUT_TRACK =
-      itemTrack("iron_turnout_track", RailcraftBlocks.IRON_TURNOUT_TRACK);
+      blockItem("iron_turnout_track", RailcraftBlocks.IRON_TURNOUT_TRACK);
 
   public static final RegistryObject<Item> IRON_JUNCTION_TRACK =
-      itemTrack("iron_junction_track", RailcraftBlocks.IRON_JUNCTION_TRACK);
+      blockItem("iron_junction_track", RailcraftBlocks.IRON_JUNCTION_TRACK);
 
   public static final RegistryObject<Item> IRON_LAUNCHER_TRACK =
-      itemTrack("iron_launcher_track", RailcraftBlocks.IRON_LAUNCHER_TRACK);
+      blockItem("iron_launcher_track", RailcraftBlocks.IRON_LAUNCHER_TRACK);
 
   public static final RegistryObject<Item> IRON_ONE_WAY_TRACK =
-      itemTrack("iron_one_way_track", RailcraftBlocks.IRON_ONE_WAY_TRACK);
+      blockItem("iron_one_way_track", RailcraftBlocks.IRON_ONE_WAY_TRACK);
 
   public static final RegistryObject<Item> IRON_LOCOMOTIVE_TRACK =
-      itemTrack("iron_locomotive_track", RailcraftBlocks.IRON_LOCOMOTIVE_TRACK);
+      blockItem("iron_locomotive_track", RailcraftBlocks.IRON_LOCOMOTIVE_TRACK);
 
   public static final RegistryObject<Item> IRON_THROTTLE_TRACK =
-      itemTrack("iron_throttle_track", RailcraftBlocks.IRON_THROTTLE_TRACK);
+      blockItem("iron_throttle_track", RailcraftBlocks.IRON_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> IRON_ROUTING_TRACK =
-      itemTrack("iron_routing_track", RailcraftBlocks.IRON_ROUTING_TRACK);
+      blockItem("iron_routing_track", RailcraftBlocks.IRON_ROUTING_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_TRACK =
-      itemTrack("reinforced_track", RailcraftBlocks.REINFORCED_TRACK);
+      blockItem("reinforced_track", RailcraftBlocks.REINFORCED_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_LOCKING_TRACK =
-      itemTrack("reinforced_locking_track", RailcraftBlocks.REINFORCED_LOCKING_TRACK);
+      blockItem("reinforced_locking_track", RailcraftBlocks.REINFORCED_LOCKING_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_BUFFER_STOP_TRACK =
-      itemTrack("reinforced_buffer_stop_track", RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK);
+      blockItem("reinforced_buffer_stop_track", RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_ACTIVATOR_TRACK =
-      itemTrack("reinforced_activator_track", RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK);
+      blockItem("reinforced_activator_track", RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_BOOSTER_TRACK =
-      itemTrack("reinforced_booster_track", RailcraftBlocks.REINFORCED_BOOSTER_TRACK);
+      blockItem("reinforced_booster_track", RailcraftBlocks.REINFORCED_BOOSTER_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_CONTROL_TRACK =
-      itemTrack("reinforced_control_track", RailcraftBlocks.REINFORCED_CONTROL_TRACK);
+      blockItem("reinforced_control_track", RailcraftBlocks.REINFORCED_CONTROL_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_GATED_TRACK =
-      itemTrack("reinforced_gated_track", RailcraftBlocks.REINFORCED_GATED_TRACK);
+      blockItem("reinforced_gated_track", RailcraftBlocks.REINFORCED_GATED_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_DETECTOR_TRACK =
-      itemTrack("reinforced_detector_track", RailcraftBlocks.REINFORCED_DETECTOR_TRACK);
+      blockItem("reinforced_detector_track", RailcraftBlocks.REINFORCED_DETECTOR_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_COUPLER_TRACK =
-      itemTrack("reinforced_coupler_track", RailcraftBlocks.REINFORCED_COUPLER_TRACK);
+      blockItem("reinforced_coupler_track", RailcraftBlocks.REINFORCED_COUPLER_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_EMBARKING_TRACK =
-      itemTrack("reinforced_embarking_track", RailcraftBlocks.REINFORCED_EMBARKING_TRACK);
+      blockItem("reinforced_embarking_track", RailcraftBlocks.REINFORCED_EMBARKING_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_DISEMBARKING_TRACK =
-      itemTrack("reinforced_disembarking_track", RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK);
+      blockItem("reinforced_disembarking_track", RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_WYE_TRACK =
-      itemTrack("reinforced_wye_track", RailcraftBlocks.REINFORCED_WYE_TRACK);
+      blockItem("reinforced_wye_track", RailcraftBlocks.REINFORCED_WYE_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_TURNOUT_TRACK =
-      itemTrack("reinforced_turnout_track", RailcraftBlocks.REINFORCED_TURNOUT_TRACK);
+      blockItem("reinforced_turnout_track", RailcraftBlocks.REINFORCED_TURNOUT_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_JUNCTION_TRACK =
-      itemTrack("reinforced_junction_track", RailcraftBlocks.REINFORCED_JUNCTION_TRACK);
+      blockItem("reinforced_junction_track", RailcraftBlocks.REINFORCED_JUNCTION_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_LAUNCHER_TRACK =
-      itemTrack("reinforced_launcher_track", RailcraftBlocks.REINFORCED_LAUNCHER_TRACK);
+      blockItem("reinforced_launcher_track", RailcraftBlocks.REINFORCED_LAUNCHER_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_ONE_WAY_TRACK =
-      itemTrack("reinforced_one_way_track", RailcraftBlocks.REINFORCED_ONE_WAY_TRACK);
+      blockItem("reinforced_one_way_track", RailcraftBlocks.REINFORCED_ONE_WAY_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_LOCOMOTIVE_TRACK =
-      itemTrack("reinforced_locomotive_track", RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK);
+      blockItem("reinforced_locomotive_track", RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_THROTTLE_TRACK =
-      itemTrack("reinforced_throttle_track", RailcraftBlocks.REINFORCED_THROTTLE_TRACK);
+      blockItem("reinforced_throttle_track", RailcraftBlocks.REINFORCED_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> REINFORCED_ROUTING_TRACK =
-      itemTrack("reinforced_routing_track", RailcraftBlocks.REINFORCED_ROUTING_TRACK);
+      blockItem("reinforced_routing_track", RailcraftBlocks.REINFORCED_ROUTING_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_TRACK =
-      itemTrack("strap_iron_track", RailcraftBlocks.STRAP_IRON_TRACK);
+      blockItem("strap_iron_track", RailcraftBlocks.STRAP_IRON_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_LOCKING_TRACK =
-      itemTrack("strap_iron_locking_track", RailcraftBlocks.STRAP_IRON_LOCKING_TRACK);
+      blockItem("strap_iron_locking_track", RailcraftBlocks.STRAP_IRON_LOCKING_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_BUFFER_STOP_TRACK =
-      itemTrack("strap_iron_buffer_stop_track", RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK);
+      blockItem("strap_iron_buffer_stop_track", RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_ACTIVATOR_TRACK =
-      itemTrack("strap_iron_activator_track", RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK);
+      blockItem("strap_iron_activator_track", RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_BOOSTER_TRACK =
-      itemTrack("strap_iron_booster_track", RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK);
+      blockItem("strap_iron_booster_track", RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_CONTROL_TRACK =
-      itemTrack("strap_iron_control_track", RailcraftBlocks.STRAP_IRON_CONTROL_TRACK);
+      blockItem("strap_iron_control_track", RailcraftBlocks.STRAP_IRON_CONTROL_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_GATED_TRACK =
-      itemTrack("strap_iron_gated_track", RailcraftBlocks.STRAP_IRON_GATED_TRACK);
+      blockItem("strap_iron_gated_track", RailcraftBlocks.STRAP_IRON_GATED_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_DETECTOR_TRACK =
-      itemTrack("strap_iron_detector_track", RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK);
+      blockItem("strap_iron_detector_track", RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_COUPLER_TRACK =
-      itemTrack("strap_iron_coupler_track", RailcraftBlocks.STRAP_IRON_COUPLER_TRACK);
+      blockItem("strap_iron_coupler_track", RailcraftBlocks.STRAP_IRON_COUPLER_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_EMBARKING_TRACK =
-      itemTrack("strap_iron_embarking_track", RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK);
+      blockItem("strap_iron_embarking_track", RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_DISEMBARKING_TRACK =
-      itemTrack("strap_iron_disembarking_track", RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK);
+      blockItem("strap_iron_disembarking_track", RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_WYE_TRACK =
-      itemTrack("strap_iron_wye_track", RailcraftBlocks.STRAP_IRON_WYE_TRACK);
+      blockItem("strap_iron_wye_track", RailcraftBlocks.STRAP_IRON_WYE_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_TURNOUT_TRACK =
-      itemTrack("strap_iron_turnout_track", RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK);
+      blockItem("strap_iron_turnout_track", RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_JUNCTION_TRACK =
-      itemTrack("strap_iron_junction_track", RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK);
+      blockItem("strap_iron_junction_track", RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_LAUNCHER_TRACK =
-      itemTrack("strap_iron_launcher_track", RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK);
+      blockItem("strap_iron_launcher_track", RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_ONE_WAY_TRACK =
-      itemTrack("strap_iron_one_way_track", RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK);
+      blockItem("strap_iron_one_way_track", RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_LOCOMOTIVE_TRACK =
-      itemTrack("strap_iron_locomotive_track", RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK);
+      blockItem("strap_iron_locomotive_track", RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_THROTTLE_TRACK =
-      itemTrack("strap_iron_throttle_track", RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK);
+      blockItem("strap_iron_throttle_track", RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_ROUTING_TRACK =
-      itemTrack("strap_iron_routing_track", RailcraftBlocks.STRAP_IRON_ROUTING_TRACK);
+      blockItem("strap_iron_routing_track", RailcraftBlocks.STRAP_IRON_ROUTING_TRACK);
 
   public static final RegistryObject<Item> ELEVATOR_TRACK =
-      deferredRegister.register("elevator_track",
-          () -> new BlockItem(RailcraftBlocks.ELEVATOR_TRACK.get(),
-              new Item.Properties()));
+      blockItem("elevator_track", RailcraftBlocks.ELEVATOR_TRACK);
 
   public static final RegistryObject<Item> IRON_CROWBAR =
       deferredRegister.register("iron_crowbar",
@@ -1163,35 +1063,23 @@ public class RailcraftItems {
       deferredRegister.register("goggles",
           () -> new GogglesItem(new Item.Properties()));
 
-  public static final RegistryObject<BlockItem> MANUAL_ROLLING_MACHINE =
-      deferredRegister.register("manual_rolling_machine",
-          () -> new BlockItem(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> MANUAL_ROLLING_MACHINE =
+      blockItem("manual_rolling_machine", RailcraftBlocks.MANUAL_ROLLING_MACHINE);
 
-  public static final RegistryObject<BlockItem> POWERED_ROLLING_MACHINE =
-      deferredRegister.register("powered_rolling_machine",
-          () -> new BlockItem(RailcraftBlocks.POWERED_ROLLING_MACHINE.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> POWERED_ROLLING_MACHINE =
+      blockItem("powered_rolling_machine", RailcraftBlocks.POWERED_ROLLING_MACHINE);
 
-  public static final RegistryObject<BlockItem> CRUSHER =
-      deferredRegister.register("crusher",
-          () -> new BlockItem(RailcraftBlocks.CRUSHER.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> CRUSHER =
+      blockItem("crusher", RailcraftBlocks.CRUSHER);
 
-  public static final RegistryObject<BlockItem> COKE_OVEN_BRICKS =
-      deferredRegister.register("coke_oven_bricks",
-          () -> new BlockItem(RailcraftBlocks.COKE_OVEN_BRICKS.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> COKE_OVEN_BRICKS =
+      blockItem("coke_oven_bricks", RailcraftBlocks.COKE_OVEN_BRICKS);
 
-  public static final RegistryObject<BlockItem> STEAM_OVEN =
-      deferredRegister.register("steam_oven",
-          () -> new BlockItem(RailcraftBlocks.STEAM_OVEN.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> STEAM_OVEN =
+      blockItem("steam_oven", RailcraftBlocks.STEAM_OVEN);
 
-  public static final RegistryObject<BlockItem> CRUSHED_OBSIDIAN =
-      deferredRegister.register("crushed_obsidian",
-          () -> new BlockItem(RailcraftBlocks.CRUSHED_OBSIDIAN.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> CRUSHED_OBSIDIAN =
+      blockItem("crushed_obsidian", RailcraftBlocks.CRUSHED_OBSIDIAN);
 
   // ================================================================================
   // Crafting Materials
@@ -1309,65 +1197,41 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> CHARGE_TERMINAL = registerBasic("charge_terminal");
 
-  public static final RegistryObject<BlockItem> WATER_TANK_SIDING =
-      deferredRegister.register("water_tank_siding",
-          () -> new BlockItem(RailcraftBlocks.WATER_TANK_SIDING.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> WATER_TANK_SIDING =
+      blockItem("water_tank_siding", RailcraftBlocks.WATER_TANK_SIDING);
 
-  public static final RegistryObject<BlockItem> QUARRIED_STONE =
-      deferredRegister.register("quarried_stone",
-          () -> new BlockItem(RailcraftBlocks.QUARRIED_STONE.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> QUARRIED_STONE =
+      blockItem("quarried_stone", RailcraftBlocks.QUARRIED_STONE);
 
-  public static final RegistryObject<BlockItem> QUARRIED_COBBLESTONE =
-      deferredRegister.register("quarried_cobblestone",
-          () -> new BlockItem(RailcraftBlocks.QUARRIED_COBBLESTONE.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> QUARRIED_COBBLESTONE =
+      blockItem("quarried_cobblestone", RailcraftBlocks.QUARRIED_COBBLESTONE);
 
-  public static final RegistryObject<BlockItem> POLISHED_QUARRIED_STONE =
-      deferredRegister.register("polished_quarried_stone",
-          () -> new BlockItem(RailcraftBlocks.POLISHED_QUARRIED_STONE.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> POLISHED_QUARRIED_STONE =
+      blockItem("polished_quarried_stone", RailcraftBlocks.POLISHED_QUARRIED_STONE);
 
-  public static final RegistryObject<BlockItem> CHISELED_QUARRIED_STONE =
-      deferredRegister.register("chiseled_quarried_stone",
-          () -> new BlockItem(RailcraftBlocks.CHISELED_QUARRIED_STONE.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> CHISELED_QUARRIED_STONE =
+      blockItem("chiseled_quarried_stone", RailcraftBlocks.CHISELED_QUARRIED_STONE);
 
-  public static final RegistryObject<BlockItem> ETCHED_QUARRIED_STONE =
-      deferredRegister.register("etched_quarried_stone",
-          () -> new BlockItem(RailcraftBlocks.ETCHED_QUARRIED_STONE.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> ETCHED_QUARRIED_STONE =
+      blockItem("etched_quarried_stone", RailcraftBlocks.ETCHED_QUARRIED_STONE);
 
-  public static final RegistryObject<BlockItem> QUARRIED_BRICKS =
-      deferredRegister.register("quarried_bricks",
-          () -> new BlockItem(RailcraftBlocks.QUARRIED_BRICKS.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> QUARRIED_BRICKS =
+      blockItem("quarried_bricks", RailcraftBlocks.QUARRIED_BRICKS);
 
-  public static final RegistryObject<BlockItem> QUARRIED_BRICK_STAIRS =
-      deferredRegister.register("quarried_brick_stairs",
-          () -> new BlockItem(RailcraftBlocks.QUARRIED_BRICK_STAIRS.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> QUARRIED_BRICK_STAIRS =
+      blockItem("quarried_brick_stairs", RailcraftBlocks.QUARRIED_BRICK_STAIRS);
 
-  public static final RegistryObject<BlockItem> QUARRIED_BRICK_SLAB =
-      deferredRegister.register("quarried_brick_slab",
-          () -> new BlockItem(RailcraftBlocks.QUARRIED_BRICK_SLAB.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> QUARRIED_BRICK_SLAB =
+      blockItem("quarried_brick_slab", RailcraftBlocks.QUARRIED_BRICK_SLAB);
 
-  public static final RegistryObject<BlockItem> QUARRIED_PAVER =
-      deferredRegister.register("quarried_paver",
-          () -> new BlockItem(RailcraftBlocks.QUARRIED_PAVER.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> QUARRIED_PAVER =
+      blockItem("quarried_paver", RailcraftBlocks.QUARRIED_PAVER);
 
-  public static final RegistryObject<BlockItem> QUARRIED_PAVER_STAIRS =
-      deferredRegister.register("quarried_paver_stairs",
-          () -> new BlockItem(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> QUARRIED_PAVER_STAIRS =
+      blockItem("quarried_paver_stairs", RailcraftBlocks.QUARRIED_PAVER_STAIRS);
 
-  public static final RegistryObject<BlockItem> QUARRIED_PAVER_SLAB =
-      deferredRegister.register("quarried_paver_slab",
-          () -> new BlockItem(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(),
-              new Item.Properties()));
+  public static final RegistryObject<Item> QUARRIED_PAVER_SLAB =
+      blockItem("quarried_paver_slab", RailcraftBlocks.QUARRIED_PAVER_SLAB);
 
   // ================================================================================
   // Buckets
@@ -1406,7 +1270,7 @@ public class RailcraftItems {
     return deferredRegister.register(name, () -> new Item(new Item.Properties()));
   }
 
-  private static RegistryObject<Item> itemTrack(String name, Supplier<? extends TrackBlock> block) {
+  private static RegistryObject<Item> blockItem(String name, Supplier<? extends Block> block) {
     return deferredRegister.register(name, () -> new BlockItem(block.get(), new Properties()));
   }
 }
