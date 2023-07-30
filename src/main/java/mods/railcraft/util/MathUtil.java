@@ -1,20 +1,10 @@
 package mods.railcraft.util;
 
 import java.util.Collection;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 
 public final class MathUtil {
-
-  public static final UUID NIL_UUID = new UUID(0, 0);
-  private static final ThreadLocalRandom random = ThreadLocalRandom.current();
-
-  public static boolean isNil(UUID uuid) {
-    return NIL_UUID.equals(uuid);
-  }
 
   public static float getDistanceBetweenAngles(float angle1, float angle2) {
     angle1 = normalizeAngle(angle1);
@@ -48,34 +38,5 @@ public final class MathUtil {
     y /= size;
     z /= size;
     return BlockPos.containing(x, y, z);
-  }
-
-  public static double gaussian() {
-    return random.nextGaussian();
-  }
-
-  public static float nextFloat() {
-    return random.nextFloat();
-  }
-
-  public static float signedFloat() {
-    return signedFloat(random);
-  }
-
-  public static float signedFloat(Random random) {
-    return unit(random) * random.nextFloat();
-  }
-
-  public static int unit() {
-    return unit(random);
-  }
-
-  /**
-   * Returns {@code 1} or {@code -1} by random.
-   *
-   * @param random the seed
-   */
-  public static int unit(Random random) {
-    return random.nextInt(2) * 2 - 1;
   }
 }
