@@ -70,7 +70,7 @@ public class GogglesItem extends ArmorItem {
     if (tooltip) {
       title.withStyle(ChatFormatting.GRAY);
     }
-    return title.append(value.withStyle(ChatFormatting.DARK_PURPLE));
+    return title.append(" ").append(value.withStyle(ChatFormatting.DARK_PURPLE));
   }
 
   public enum Aura {

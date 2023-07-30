@@ -280,7 +280,7 @@ public class Railcraft {
     if (event.getEntity() instanceof AbstractMinecart cart
         && !event.getEntity().level().isClientSide()
         && event.getEntity().isRemoved()) {
-      RollingStock.getOrThrow(cart).removed(event.getEntity().getRemovalReason());
+      RollingStock.getOrThrow(cart).removed(cart.getRemovalReason());
     }
   }
 
