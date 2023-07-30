@@ -19,8 +19,6 @@ import net.minecraftforge.items.IItemHandler;
 
 /**
  * Utility class for simplifying moving items and fluids through a train.
- *
- * Created by CovertJaguar on 5/9/2015.
  */
 public enum TrainTransferServiceImpl implements TrainTransferService {
 

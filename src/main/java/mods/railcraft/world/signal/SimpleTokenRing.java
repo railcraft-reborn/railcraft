@@ -20,8 +20,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**
- * Created by CovertJaguar on 4/23/2015 for Railcraft. <br>
- * <br>
  * <b> This network is only available on the server! </b>
  */
 public class SimpleTokenRing implements TokenRing {

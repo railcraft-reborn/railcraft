@@ -8,8 +8,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 /**
  * Helper functions for Fluid Items
- *
- * Created by CovertJaguar on 4/2/2015.
  */
 public final class FluidItemHelper {
 

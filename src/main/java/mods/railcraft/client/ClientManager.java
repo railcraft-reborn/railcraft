@@ -225,21 +225,21 @@ public class ClientManager {
       return;
     }
     var message = CommonComponents.joinLines(
-        Component.literal("You are using a development version of Railcraft.")
+        Component.literal("You are using a beta version of Railcraft.")
             .withStyle(ChatFormatting.RED),
-        Component.literal("- World saves are not stable and may break between versions.")
-            .withStyle(ChatFormatting.GRAY),
+        /*Component.literal("- World saves are not stable and may break between versions.")
+            .withStyle(ChatFormatting.GRAY),*/
         Component.literal("- Features might be missing or only partially implemented.")
             .withStyle(ChatFormatting.GRAY),
-        Component.literal("You have been warned.")
-            .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC),
+        /*Component.literal("You have been warned.")
+            .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC),*/
         Component.literal("Bug reports are welcome at our issue tracker.")
             .withStyle(style -> style
                 .withColor(ChatFormatting.GREEN)
                 .withUnderlined(true)
                 .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
                     "https://github.com/Sm0keySa1m0n/Railcraft/issues"))),
-        Component.literal("- CovertJaguar, Sm0keySa1m0n, 3divad99")
+        Component.literal("- Sm0keySa1m0n, 3divad99")
             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     event.getPlayer().displayClientMessage(message, false);
   }
