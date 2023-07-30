@@ -149,19 +149,14 @@ public class ElevatorTrackBlock extends Block {
   }
 
   @Override
-  public VoxelShape getShape(BlockState state, BlockGetter world,
-      BlockPos pos, CollisionContext context) {
-    switch (state.getValue(FACING)) {
-      case NORTH:
-        return NORTH_SHAPE;
-      case SOUTH:
-        return SOUTH_SHAPE;
-      case WEST:
-        return WEST_SHAPE;
-      case EAST:
-      default:
-        return EAST_SHAPE;
-    }
+  public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos,
+      CollisionContext context) {
+    return switch (state.getValue(FACING)) {
+      case NORTH -> NORTH_SHAPE;
+      case SOUTH -> SOUTH_SHAPE;
+      case WEST -> WEST_SHAPE;
+      default -> EAST_SHAPE;
+    };
   }
 
   @Override
