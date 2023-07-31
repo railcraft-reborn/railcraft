@@ -8,6 +8,7 @@ import mods.railcraft.season.Season;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
+import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.alchemy.RailcraftPotions;
@@ -52,6 +53,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.subtitleTranslations();
     this.effectTranslations();
     this.potionTranslations();
+    this.villagerTranslations();
     this.damageSourceTranslations();
     this.routingTableTranslations();
     this.chargeMeterTranslations();
@@ -941,6 +943,16 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(prefixSplashPotion + creosote, "Splash Potion of Creosote");
     this.add(prefixLingeringPotion + creosote, "Lingering Potion of Creosote");
     this.add(prefixTippedArrow + creosote, "Arrow of Creosote");
+  }
+
+  private void villagerTranslations() {
+    final String trackman = Translations.makeKey("entity.minecraft.villager",
+        RailcraftVillagerProfession.TRACKMAN.get().name());
+    final String railman = Translations.makeKey("entity.minecraft.villager",
+        RailcraftVillagerProfession.CARTMAN.get().name());
+
+    this.add(trackman, "Trackman");
+    this.add(railman, "Cartman");
   }
 
   private void damageSourceTranslations() {

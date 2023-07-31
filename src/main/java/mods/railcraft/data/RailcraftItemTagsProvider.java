@@ -162,6 +162,25 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.IRON_CROWBAR.get())
         .add(RailcraftItems.DIAMOND_CROWBAR.get());
 
+    this.tag(RailcraftTags.Items.TRACK_KIT)
+        .add(RailcraftItems.ACTIVATOR_TRACK_KIT.get())
+        .add(RailcraftItems.BOOSTER_TRACK_KIT.get())
+        .add(RailcraftItems.COUPLER_TRACK_KIT.get())
+        .add(RailcraftItems.CONTROL_TRACK_KIT.get())
+        .add(RailcraftItems.WHISTLE_TRACK_KIT.get())
+        .add(RailcraftItems.BUFFER_STOP_TRACK_KIT.get())
+        .add(RailcraftItems.DETECTOR_TRACK_KIT.get())
+        .add(RailcraftItems.DISEMBARKING_TRACK_KIT.get())
+        .add(RailcraftItems.EMBARKING_TRACK_KIT.get())
+        .add(RailcraftItems.GATED_TRACK_KIT.get())
+        .add(RailcraftItems.LAUNCHER_TRACK_KIT.get())
+        .add(RailcraftItems.LOCKING_TRACK_KIT.get())
+        .add(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get())
+        .add(RailcraftItems.ONE_WAY_TRACK_KIT.get())
+        .add(RailcraftItems.ROUTING_TRACK_KIT.get())
+        .add(RailcraftItems.THROTTLE_TRACK_KIT.get())
+        .add(RailcraftItems.TRANSITION_TRACK_KIT.get());
+
     this.copy(RailcraftTags.Blocks.IRON_TANK_WALL, RailcraftTags.Items.IRON_TANK_WALL);
     this.copy(RailcraftTags.Blocks.IRON_TANK_GAUGE, RailcraftTags.Items.IRON_TANK_GAUGE);
     this.copy(RailcraftTags.Blocks.IRON_TANK_VALVE, RailcraftTags.Items.IRON_TANK_VALVE);

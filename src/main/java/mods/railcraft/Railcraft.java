@@ -14,6 +14,7 @@ import mods.railcraft.data.RailcraftDamageTypeTagsProvider;
 import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
+import mods.railcraft.data.RailcraftPoiTypeTagsProvider;
 import mods.railcraft.data.RailcraftSoundsProvider;
 import mods.railcraft.data.RailcraftSpriteSourceProvider;
 import mods.railcraft.data.advancements.RailcraftAdvancementProvider;
@@ -37,6 +38,9 @@ import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.damagesource.RailcraftDamageType;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
+import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
+import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
+import mods.railcraft.world.entity.npc.RailcraftVillagerTrades;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.entity.vehicle.RollingStockImpl;
 import mods.railcraft.world.entity.vehicle.TrainTransferServiceImpl;
@@ -84,6 +88,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -142,6 +147,8 @@ public class Railcraft {
     RailcraftRecipeTypes.register(modEventBus);
     RailcraftGameEvents.register(modEventBus);
     RailcraftDataSerializers.register(modEventBus);
+    RailcraftPoiTypes.register(modEventBus);
+    RailcraftVillagerProfession.register(modEventBus);
   }
 
   // ================================================================================
@@ -188,6 +195,8 @@ public class Railcraft {
     generator.addProvider(event.includeServer(),
         new RailcraftAdvancementProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(packOutput));
+    generator.addProvider(event.includeServer(),
+        new RailcraftPoiTypeTagsProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeClient(),
         new RailcraftItemModelProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
@@ -287,7 +296,7 @@ public class Railcraft {
   @SubscribeEvent
   public void modifyDrops(LivingDropsEvent event) {
     var level = event.getEntity().level();
-    if (event.getSource().equals(RailcraftDamageSources.steam(level.registryAccess())))
+    if (event.getSource().equals(RailcraftDamageSources.steam(level.registryAccess()))) {
       for (var entityItem : event.getDrops()) {
         var drop = entityItem.getItem();
         var cooked = level.getRecipeManager()
@@ -300,6 +309,16 @@ public class Railcraft {
           entityItem.setItem(cooked);
         }
       }
+    }
+  }
+
+  @SubscribeEvent
+  public void addCustomTrades(VillagerTradesEvent event) {
+    if (event.getType() == RailcraftVillagerProfession.TRACKMAN.get()) {
+      RailcraftVillagerTrades.addTradeForTrackman(event.getTrades());
+    } else if (event.getType() == RailcraftVillagerProfession.CARTMAN.get()) {
+      RailcraftVillagerTrades.addTradeForCartman(event.getTrades());
+    }
   }
 
   @SubscribeEvent

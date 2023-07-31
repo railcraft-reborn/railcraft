@@ -428,6 +428,8 @@
   "enchantment.railcraft.implosion": "Implosion",
   "enchantment.railcraft.smack": "Smack",
   "enchantment.railcraft.wrecking": "Wrecking",
+  "entity.minecraft.villager.railcraft.cartman": "Cartman",
+  "entity.minecraft.villager.railcraft.trackman": "Trackman",
   "entity.railcraft.creative_locomotive": "Creative Locomotive",
   "entity.railcraft.electric_locomotive": "Electric Locomotive",
   "entity.railcraft.steam_locomotive": "Steam Locomotive",

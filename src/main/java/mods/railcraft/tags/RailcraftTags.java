@@ -108,6 +108,8 @@ public class RailcraftTags {
     public static final TagKey<Item> REINFORCED_TRACK = tag("reinforced_track");
     public static final TagKey<Item> STRAP_IRON_TRACK = tag("strap_iron_track");
 
+    public static final TagKey<Item> TRACK_KIT = tag("track_kit");
+
 
     public static final TagKey<Item> LEAD_ORE = forgeTag("ores/lead");
     public static final TagKey<Item> NICKEL_ORE = forgeTag("ores/nickel");
