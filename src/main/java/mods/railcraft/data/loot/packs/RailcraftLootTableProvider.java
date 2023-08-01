@@ -20,9 +20,9 @@ public class RailcraftLootTableProvider extends LootTableProvider {
 
   @Override
   public List<LootTableProvider.SubProviderEntry> getTables() {
-    return List.of(new LootTableProvider.SubProviderEntry(
-        RailcraftBlockLoot::new, LootContextParamSets.BLOCK
-    ));
+    return List.of(
+        new LootTableProvider.SubProviderEntry(RailcraftBlockLoot::new, LootContextParamSets.BLOCK),
+        new LootTableProvider.SubProviderEntry(RailcraftChestLoot::new, LootContextParamSets.CHEST));
   }
 
   @Override
