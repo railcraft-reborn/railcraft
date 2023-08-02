@@ -70,6 +70,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
@@ -325,6 +326,10 @@ public class Railcraft {
       RailcraftVillagerTrades.addTradeForTrackman(event.getTrades());
     } else if (event.getType() == RailcraftVillagerProfession.CARTMAN.get()) {
       RailcraftVillagerTrades.addTradeForCartman(event.getTrades());
+    } else if (event.getType() == VillagerProfession.ARMORER) {
+      RailcraftVillagerTrades.addTradeForArmorer(event.getTrades());
+    } else if (event.getType() == VillagerProfession.TOOLSMITH) {
+      RailcraftVillagerTrades.addTradeForToolSmith(event.getTrades());
     }
   }
 

@@ -85,6 +85,70 @@ public class RailcraftVillagerTrades {
         .add(new CartTrade(true, 30, 40));
   }
 
+  public static void addTradeForToolSmith(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
+    trades.get(1)
+        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
+    trades.get(1)
+        .add(new GenericTrade(new Offer(Items.EMERALD),
+            new Offer(RailcraftItems.COAL_COKE.get(), 8, 12)));
+    trades.get(1)
+        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.IRON_INGOT, 7, 9)));
+
+    trades.get(2)
+        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_INGOT.get()),
+            new Offer(Items.EMERALD, 1, 2), new Offer(Items.IRON_INGOT)));
+    trades.get(2)
+        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_INGOT.get()),
+            new Offer(Items.EMERALD, 3, 4)));
+    trades.get(2)
+        .add(new GenericTrade(new Offer(RailcraftItems.SLAG.get(), 1, 2),
+            new Offer(Items.EMERALD, 2, 4)));
+
+    trades.get(3)
+        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_GEAR.get()),
+            new Offer(Items.EMERALD, 9, 16)));
+  }
+
+  public static void addTradeForArmorer(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
+    trades.get(1)
+            .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
+    trades.get(1)
+        .add(new GenericTrade(new Offer(RailcraftItems.COAL_COKE.get(), 4, 6),
+            new Offer(Items.EMERALD)));
+
+    trades.get(2)
+        .add(new GenericTrade(new Offer(Items.EMERALD),
+            new Offer(Items.COPPER_INGOT, 7, 9)));
+    trades.get(2)
+        .add(new GenericTrade(new Offer(Items.EMERALD),
+            new Offer(RailcraftItems.TIN_INGOT.get(), 7, 9)));
+    trades.get(2)
+        .add(new GenericTrade(new Offer(Items.EMERALD),
+            new Offer(RailcraftItems.ZINC_INGOT.get(), 7, 9)));
+    trades.get(2)
+        .add(new GenericTrade(new Offer(Items.EMERALD),
+            new Offer(RailcraftItems.NICKEL_INGOT.get(), 7, 9)));
+
+    trades.get(3)
+        .add(new GenericTrade(new Offer(RailcraftItems.BRASS_INGOT.get()),
+            new Offer(Items.EMERALD, 2, 3)));
+    trades.get(3)
+        .add(new GenericTrade(new Offer(RailcraftItems.BRONZE_INGOT.get()),
+            new Offer(Items.EMERALD, 2, 3)));
+    trades.get(3)
+        .add(new GenericTrade(new Offer(RailcraftItems.INVAR_INGOT.get()),
+            new Offer(Items.EMERALD, 2, 3)));
+    trades.get(3)
+        .add(new GenericTrade(new Offer(RailcraftItems.BRONZE_GEAR.get()),
+            new Offer(Items.EMERALD, 6, 12)));
+    trades.get(3)
+        .add(new GenericTrade(new Offer(RailcraftItems.BRASS_GEAR.get()),
+            new Offer(Items.EMERALD, 6, 12)));
+    trades.get(3)
+        .add(new GenericTrade(new Offer(RailcraftItems.INVAR_GEAR.get()),
+            new Offer(Items.EMERALD, 6, 12)));
+  }
+
     private static class Offer {
 
     private final Item item;
