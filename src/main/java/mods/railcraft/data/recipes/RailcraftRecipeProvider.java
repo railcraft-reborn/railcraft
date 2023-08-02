@@ -1150,6 +1150,16 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.SLIME_BALL),
             has(Items.SLIME_BALL))
         .save(consumer);
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.GUNPOWDER, 2)
+        .requires(RailcraftTags.Items.SALTPETER_DUST)
+        .requires(RailcraftTags.Items.SALTPETER_DUST)
+        .requires(RailcraftTags.Items.SULFUR_DUST)
+        .requires(RailcraftTags.Items.CHARCOAL_DUST)
+        .unlockedBy(getHasName(RailcraftItems.SALTPETER_DUST.get()),
+            has(RailcraftTags.Items.SALTPETER_DUST))
+        .unlockedBy(getHasName(RailcraftItems.SULFUR_DUST.get()),
+            has(RailcraftTags.Items.SULFUR_DUST))
+        .save(consumer);
   }
 
   private void buildCartsVariant(Consumer<FinishedRecipe> consumer) {

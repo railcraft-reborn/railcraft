@@ -1,4 +1,5 @@
-// 1.20.1	2023-07-28T21:56:56.557601	Recipes
+// 1.20.1	2023-08-02T12:49:48.61097	Recipes
+4dcec5127078324130ee2a0784057108c8aadc01 data/minecraft/advancements/recipes/misc/gunpowder.json
 4a6e67942b0734508f9373351ab324c6cdd81244 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 33c838f63222211d4d44845f4f963dfe2cec8fc9 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
 cbb6c74576aab2b84f82e392a720143892a4c548 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_raw.json
@@ -30,6 +31,7 @@ feb1649bb30bd868c19e3f62ba9ee16006756cde data/minecraft/advancements/recipes/mis
 39a73e3f2e4ef1d7d7d6bd536a349bc513c6f93f data/minecraft/advancements/recipes/misc/zinc_ingot_from_smelting_deepslate_zinc_ore.json
 1cd29ef1131a2db15d968380e4c4cb301a6606af data/minecraft/advancements/recipes/misc/zinc_ingot_from_smelting_zinc_ore.json
 8449e96ba6b7ed3ccfa330116776d46874ccd819 data/minecraft/advancements/recipes/misc/zinc_ingot_from_smelting_zinc_raw.json
+07e4772e35b2160cd5be5d6426858ef16526ad64 data/minecraft/recipes/gunpowder.json
 3cb597a0750021af53a8030896f25f3d7b2ee458 data/minecraft/recipes/lead_ingot_from_blasting_deepslate_lead_ore.json
 b4946398015eabb55a84bc88b826752b80765d5b data/minecraft/recipes/lead_ingot_from_blasting_lead_ore.json
 b31ab2e13a5d392fa77736d079b71e4005141517 data/minecraft/recipes/lead_ingot_from_blasting_lead_raw.json
