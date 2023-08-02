@@ -96,6 +96,10 @@ public class RailcraftTags {
     public static final TagKey<Item> STEEL_TANK_VALVE = tag("steel_tank_valve");
     public static final TagKey<Item> STEEL_TANK_WALL = tag("steel_tank_wall");
 
+    public static final TagKey<Item> PLATE_CHEST_LOOT = tag("plate_chest_loot");
+    public static final TagKey<Item> GEAR_CHEST_LOOT = tag("gear_chest_loot");
+    public static final TagKey<Item> INGOT_CHEST_LOOT = tag("ingot_chest_loot");
+
     public static final TagKey<Item> QUARRIED = tag("quarried");
 
     public static final TagKey<Item> POST = tag("post");

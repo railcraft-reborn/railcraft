@@ -143,6 +143,46 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(RailcraftTags.Items.SILVER_GEAR)
         .add(RailcraftItems.SILVER_GEAR.get());
 
+
+    this.tag(RailcraftTags.Items.PLATE_CHEST_LOOT)
+        .addTag(RailcraftTags.Items.STEEL_PLATE)
+        .addTag(RailcraftTags.Items.IRON_PLATE)
+        .addTag(RailcraftTags.Items.TIN_PLATE)
+        .addTag(RailcraftTags.Items.GOLD_PLATE)
+        .addTag(RailcraftTags.Items.LEAD_PLATE)
+        .addTag(RailcraftTags.Items.ZINC_PLATE)
+        .addTag(RailcraftTags.Items.BRASS_PLATE)
+        .addTag(RailcraftTags.Items.INVAR_PLATE)
+        .addTag(RailcraftTags.Items.BRONZE_PLATE)
+        .addTag(RailcraftTags.Items.COPPER_PLATE)
+        .addTag(RailcraftTags.Items.NICKEL_PLATE)
+        .addTag(RailcraftTags.Items.SILVER_PLATE);
+
+    this.tag(RailcraftTags.Items.GEAR_CHEST_LOOT)
+        .addTag(RailcraftTags.Items.STEEL_GEAR)
+        .addTag(RailcraftTags.Items.IRON_GEAR)
+        .addTag(RailcraftTags.Items.TIN_GEAR)
+        .addTag(RailcraftTags.Items.GOLD_GEAR)
+        .addTag(RailcraftTags.Items.LEAD_GEAR)
+        .addTag(RailcraftTags.Items.ZINC_GEAR)
+        .addTag(RailcraftTags.Items.BRASS_GEAR)
+        .addTag(RailcraftTags.Items.INVAR_GEAR)
+        .addTag(RailcraftTags.Items.BRONZE_GEAR)
+        .addTag(RailcraftTags.Items.COPPER_GEAR)
+        .addTag(RailcraftTags.Items.NICKEL_GEAR)
+        .addTag(RailcraftTags.Items.SILVER_GEAR);
+
+    this.tag(RailcraftTags.Items.INGOT_CHEST_LOOT)
+        .addTag(RailcraftTags.Items.STEEL_INGOT)
+        .addTag(RailcraftTags.Items.TIN_INGOT)
+        .addTag(RailcraftTags.Items.LEAD_INGOT)
+        .addTag(RailcraftTags.Items.ZINC_INGOT)
+        .addTag(RailcraftTags.Items.BRASS_INGOT)
+        .addTag(RailcraftTags.Items.INVAR_INGOT)
+        .addTag(RailcraftTags.Items.BRONZE_INGOT)
+        .addTag(RailcraftTags.Items.NICKEL_INGOT)
+        .addTag(RailcraftTags.Items.SILVER_INGOT);
+
     this.tag(RailcraftTags.Items.SALTPETER_DUST)
         .add(RailcraftItems.SALTPETER_DUST.get());
     this.tag(RailcraftTags.Items.COAL_DUST)

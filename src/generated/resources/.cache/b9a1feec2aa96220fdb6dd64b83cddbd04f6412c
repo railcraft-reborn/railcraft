@@ -1,4 +1,4 @@
-// 1.20.1	2023-07-31T15:58:20.161806	Railcraft Item Tags
+// 1.20.1	2023-08-01T22:55:16.636321	Railcraft Item Tags
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -89,12 +89,15 @@ c12118bda87efc5274515a86a0a7f3b189982de6 data/minecraft/tags/items/pickaxes.json
 dff55955cdf3e8d77bd29160f8f77394c9fdb4af data/railcraft/tags/items/abandoned_track.json
 3f5ccd47db2e1f5b813e0f1e606034d2ba9b53e6 data/railcraft/tags/items/crowbar.json
 7e2c863dbf089440c8e594cbb31951979d946263 data/railcraft/tags/items/electric_track.json
+5a26ac70b2359959f7cfa554397bc28960731229 data/railcraft/tags/items/gear_chest_loot.json
 6f70aa0939666b437b1f94030c02681a1a80eedf data/railcraft/tags/items/high_speed_electric_track.json
 6dc9632ad2d582c36b7dec9f486517003fb2b44e data/railcraft/tags/items/high_speed_track.json
+4d476ee3adf8e3b9031510910fba9ff4f38eee88 data/railcraft/tags/items/ingot_chest_loot.json
 e428d6ae724c5108f98185295926eb14c6510c44 data/railcraft/tags/items/iron_tank_gauge.json
 ad43ddea7185867f695a872b9110aff36104b44d data/railcraft/tags/items/iron_tank_valve.json
 c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/items/iron_tank_wall.json
 3e7ba83994e2c4c3d632d904c0bad75cc0c487b4 data/railcraft/tags/items/iron_track.json
+fad9d87e8596c76fd9a859aca1d266a9a0e8b923 data/railcraft/tags/items/plate_chest_loot.json
 5c3ee0c8b144c2b48d062bca01cdc96427bb6c26 data/railcraft/tags/items/post.json
 1ecaf64f7b17425064c50cdd01fd826d38f37db5 data/railcraft/tags/items/quarried.json
 68dbef3bb6f1ca4327128552783c1f889cd1d185 data/railcraft/tags/items/reinforced_track.json

@@ -2,6 +2,7 @@ package mods.railcraft.data.loot.packs;
 
 import java.util.function.BiConsumer;
 import mods.railcraft.Railcraft;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.TagEntry;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -53,15 +55,12 @@ public class RailcraftChestLoot implements LootTableSubProvider {
             .setRolls(UniformGenerator.between(1, 2))
             .add(LootItem.lootTableItem(Items.COAL).setWeight(5)
                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
-            // FIXME
-            //.add(TagEntry.expandTag(RailcraftTags.Items.COPPER_PLATE).setWeight(2)
-            //    .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
-            // FIXME
-            //.add(TagEntry.expandTag(RailcraftTags.Items.COPPER_GEAR).setWeight(1)
-            //    .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
-            // FIXME
-            //.add(TagEntry.expandTag(RailcraftTags.Items.INGOT).setWeight(4)
-            //    .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
+            .add(TagEntry.expandTag(RailcraftTags.Items.PLATE_CHEST_LOOT).setWeight(2)
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
+            .add(TagEntry.expandTag(RailcraftTags.Items.GEAR_CHEST_LOOT).setWeight(1)
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+            .add(TagEntry.expandTag(RailcraftTags.Items.INGOT_CHEST_LOOT).setWeight(4)
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
             .add(LootItem.lootTableItem(Items.IRON_INGOT).setWeight(1)
                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
             .add(LootItem.lootTableItem(RailcraftItems.CREOSOTE_BOTTLE.get()).setWeight(2)
