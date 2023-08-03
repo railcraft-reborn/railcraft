@@ -1,5 +1,6 @@
 package mods.railcraft.client;
 
+import java.util.List;
 import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
 import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.EmbarkingTrackScreen;
@@ -9,6 +10,7 @@ import mods.railcraft.client.gui.screen.RoutingTableBookScreen;
 import mods.railcraft.client.gui.screen.SignalCapacitorBoxScreen;
 import mods.railcraft.client.gui.screen.SignalControllerBoxScreen;
 import mods.railcraft.client.gui.screen.SwitchTrackMotorScreen;
+import mods.railcraft.client.gui.screen.inventory.LogBookScreen;
 import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
@@ -60,5 +62,9 @@ public class ScreenFactories {
   public static void openRoutingTableBookScreen(Player player, ItemStack itemStack,
       InteractionHand hand) {
     Minecraft.getInstance().setScreen(new RoutingTableBookScreen(player, itemStack, hand));
+  }
+
+  public static void openLogBookScreen(List<List<String>> pages) {
+    Minecraft.getInstance().setScreen(new LogBookScreen(pages));
   }
 }
