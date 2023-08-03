@@ -1,7 +1,9 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -46,9 +48,12 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
               .list(level);
       if (!players.isEmpty()) {
         var date = LocalDate.now();
-        blockEntity.log.putAll(date, players.stream()
+        var isChanged = blockEntity.log.putAll(date, players.stream()
             .map(Player::getGameProfile)
             .toList());
+        if (isChanged) {
+          blockEntity.setChanged();
+        }
       }
     }
   }
@@ -122,8 +127,8 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
   }
 
   private static List<String> makePage(List<List<String>> pages, LocalDate date) {
-    LinkedList<String> page = new LinkedList<>();
-    page.add(date.toString());
+    var page = new LinkedList<String>();
+    page.add(date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
     page.add(StringUtils.repeat('-', 34));
     pages.add(page);
     return page;
