@@ -1,0 +1,10 @@
+{
+  "parent": "railcraft:block/logbook_template",
+  "textures": {
+    "bottom": "railcraft:block/logbook_bottom",
+    "cover": "railcraft:block/logbook_cover",
+    "paper": "railcraft:block/logbook_paper",
+    "side": "railcraft:block/logbook_side",
+    "top": "railcraft:block/logbook_top"
+  }
+}

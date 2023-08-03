@@ -69,6 +69,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.STEAM_TURBINE, "Steam Turbine Housing");
     this.addBlock(RailcraftBlocks.BLAST_FURNACE_BRICKS, "Blast Furnace Bricks");
     this.addBlock(RailcraftBlocks.FEED_STATION, "Feed Station");
+    this.addBlock(RailcraftBlocks.LOGBOOK, "Logbook");
     this.addBlock(RailcraftBlocks.STEEL_BLOCK, "Block of Steel");
     this.addBlock(RailcraftBlocks.BRASS_BLOCK, "Block of Brass");
     this.addBlock(RailcraftBlocks.BRONZE_BLOCK, "Block of Bronze");
@@ -460,6 +461,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.COAL_COKE_BLOCK, "%s Fuel Units");
     this.add(Translations.Tips.FORCE_TRACK_EMITTER, "Projects energy-based tracks");
     this.add(Translations.Tips.FEED_STATION, "Feeds animals");
+    this.add(Translations.Tips.LOGBOOK, "Records visitors");
     this.add(Translations.Tips.ROLLING_MACHINE, "Crafting bench for various metal items");
     this.add(Translations.Tips.ITEM_LOADER, "Loads items into carts");
     this.add(Translations.Tips.ITEM_UNLOADER, "Unloads items from carts");
@@ -786,6 +788,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.FEED_STATION, """
         Allows you to feed nearby animals automatically. Can be disabled with Redstone. \
         Will stop feeding if there are too many animals nearby to prevent over-population.""");
+    this.add(Translations.Jei.LOGBOOK, """
+        The Logbook records any player that passes within a 16 blocks radius of the block and \
+        the day they visited. It can only be broken by the owner.""");
     this.add(Translations.Jei.BLOCK_SIGNAL, """
         This is the basic signal used for cart detection. It pairs one-to-one with an adjacent \
         Block Signal and will detect any carts between the two and sends the resulting aspect to \

@@ -8,6 +8,7 @@ import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
+import mods.railcraft.world.level.block.LogBookBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamOvenBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
@@ -287,6 +288,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createSteamOven(RailcraftBlocks.STEAM_OVEN.get());
 
     this.createFrameBlock(RailcraftBlocks.FRAME.get());
+    this.createLogBookBlock(RailcraftBlocks.LOGBOOK.get());
 
     this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
     this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
@@ -826,7 +828,36 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
           return ConfiguredModel.builder().modelFile(powered ? modelPowered : model).build();
         });
 
-    simpleBlockItem(block, model);
+    this.simpleBlockItem(block, model);
+  }
+
+  private void createLogBookBlock(LogBookBlock block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    var topTexture = TextureMapping.getBlockTexture(block, "_top");
+    var bottomTexture = TextureMapping.getBlockTexture(block, "_bottom");
+    var coverTexture = TextureMapping.getBlockTexture(block, "_cover");
+    var paperTexture = TextureMapping.getBlockTexture(block, "_paper");
+
+    var logbookTemplate = this.modLoc("logbook_template");
+
+    var model =
+        this.models().withExistingParent(name(block), logbookTemplate)
+            .texture("paper", paperTexture)
+            .texture("cover", coverTexture)
+            .texture("side", sideTexture)
+            .texture("top", topTexture)
+            .texture("bottom", bottomTexture);
+
+
+    this.getVariantBuilder(block)
+        .forAllStates(blockState -> {
+          var facing = blockState.getValue(LogBookBlock.FACING);
+          return ConfiguredModel.builder()
+              .modelFile(model)
+              .rotationY(((int) facing.toYRot() + 180) % 360)
+              .build();
+        });
+    this.simpleBlockItem(block, model);
   }
 
   private void createPost(PostBlock block) {

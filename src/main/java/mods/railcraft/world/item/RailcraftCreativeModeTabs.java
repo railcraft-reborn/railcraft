@@ -192,6 +192,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.GOLDEN_TICKET.get());
             output.accept(RailcraftItems.TICKET.get());
             output.accept(RailcraftItems.ROUTING_TABLE_BOOK.get());
+            output.accept(RailcraftItems.LOGBOOK.get());
             output.accept(RailcraftItems.GOGGLES.get());
             output.accept(RailcraftItems.OVERALLS.get());
 

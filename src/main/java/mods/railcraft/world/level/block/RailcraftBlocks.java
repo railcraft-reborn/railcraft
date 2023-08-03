@@ -292,6 +292,15 @@ public class RailcraftBlocks {
                   .requiresCorrectToolForDrops()
                   .sound(SoundType.WOOD)));
 
+  public static final RegistryObject<LogBookBlock> LOGBOOK =
+      deferredRegister.register("logbook",
+          () -> new LogBookBlock(
+              BlockBehaviour.Properties.of()
+                  .mapColor(MapColor.WOOD)
+                  .strength(3F)
+                  .requiresCorrectToolForDrops()
+                  .sound(SoundType.WOOD)));
+
   public static final RegistryObject<FrameBlock> FRAME =
       deferredRegister.register("frame",
           () -> new FrameBlock(

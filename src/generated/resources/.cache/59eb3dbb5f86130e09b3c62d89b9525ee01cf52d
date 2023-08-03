@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-01T22:55:16.638825	Loot Tables
+// 1.20.1	2023-08-02T15:52:52.676002	Loot Tables
 2368bf4f9231f79e11c75fe244dd7a820a896d65 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 9097789b3b5eebaff6d62020fecf494c96348ac7 data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 fbbe6fc8014502014e25452e15f95dc665234e15 data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -195,6 +195,7 @@ e99c368f4c79a984afe3afabc800980797338490 data/railcraft/loot_tables/blocks/lime_
 db3fd319eeac477b1f90c2405f8db5fafb64209a data/railcraft/loot_tables/blocks/lime_steel_tank_valve.json
 245d1fb2560ce51edb3411f487709e14aacdaf84 data/railcraft/loot_tables/blocks/lime_steel_tank_wall.json
 b15cafd7f1f5f22e3af64c9a07b9e969b97ff1e1 data/railcraft/loot_tables/blocks/lime_strengthened_glass.json
+f8a2e553192b099cb421c9e2e98d33aae52bcbb9 data/railcraft/loot_tables/blocks/logbook.json
 67179a03a4ac8b52ce5c47bf05a89572b1428c42 data/railcraft/loot_tables/blocks/low_pressure_steam_boiler_tank.json
 67709ee4bed515fac161941b66875bca4b7b021b data/railcraft/loot_tables/blocks/magenta_iron_tank_gauge.json
 0d812e2dd163014739c2238d36f65c04573f38b7 data/railcraft/loot_tables/blocks/magenta_iron_tank_valve.json

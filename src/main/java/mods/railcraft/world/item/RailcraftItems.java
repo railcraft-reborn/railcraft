@@ -130,6 +130,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> FEED_STATION =
       blockItem("feed_station", RailcraftBlocks.FEED_STATION);
 
+  public static final RegistryObject<Item> LOGBOOK =
+      blockItem("logbook", RailcraftBlocks.LOGBOOK);
+
   public static final RegistryObject<Item> FRAME_BLOCK =
       blockItem("frame", RailcraftBlocks.FRAME);
 

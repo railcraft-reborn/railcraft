@@ -112,6 +112,12 @@ public class RailcraftBlockEntityTypes {
               .of(FeedStationBlockEntity::new, RailcraftBlocks.FEED_STATION.get())
               .build(null));
 
+  public static final RegistryObject<BlockEntityType<LogBookBlockEntity>> LOGBOOK =
+      deferredRegister.register("logbook",
+          () -> BlockEntityType.Builder
+              .of(LogBookBlockEntity::new, RailcraftBlocks.LOGBOOK.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<FluidLoaderBlockEntity>> FLUID_LOADER =
       deferredRegister.register("fluid_loader",
           () -> BlockEntityType.Builder

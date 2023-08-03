@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "minecraft:writable_book"
+    },
+    "b": {
+      "item": "minecraft:gold_ingot"
+    },
+    "c": {
+      "item": "minecraft:red_wool"
+    },
+    "d": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    " a ",
+    "bcb",
+    "ddd"
+  ],
+  "result": {
+    "item": "railcraft:logbook"
+  },
+  "show_notification": true
+}

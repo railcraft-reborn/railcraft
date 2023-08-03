@@ -1031,6 +1031,16 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.STEEL_PLATE.get()),
             has(RailcraftTags.Items.STEEL_PLATE))
         .save(consumer);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.LOGBOOK.get())
+        .pattern(" a ")
+        .pattern("bcb")
+        .pattern("ddd")
+        .define('a', Items.WRITABLE_BOOK)
+        .define('b', Items.GOLD_INGOT)
+        .define('c', Items.RED_WOOL)
+        .define('d', ItemTags.PLANKS)
+        .unlockedBy(getHasName(Items.WRITABLE_BOOK), has(Items.WRITABLE_BOOK))
+        .save(consumer);
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.MANUAL_ROLLING_MACHINE.get())
         .pattern("aba")
         .pattern("bcb")

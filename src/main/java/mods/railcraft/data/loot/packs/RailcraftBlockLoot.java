@@ -53,6 +53,7 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.DAMAGED_STEEL_ANVIL.get());
     this.dropSelf(RailcraftBlocks.FEED_STATION.get());
+    this.dropSelf(RailcraftBlocks.LOGBOOK.get());
     this.dropSelf(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
     this.dropSelf(RailcraftBlocks.WATER_TANK_SIDING.get());
 

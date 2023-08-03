@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-02T12:49:48.61097	Recipes
+// 1.20.1	2023-08-02T15:52:52.679037	Recipes
 4dcec5127078324130ee2a0784057108c8aadc01 data/minecraft/advancements/recipes/misc/gunpowder.json
 4a6e67942b0734508f9373351ab324c6cdd81244 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 33c838f63222211d4d44845f4f963dfe2cec8fc9 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -343,6 +343,7 @@ c3ce79db6e2d2120c51ebd09b0d974d57e920806 data/railcraft/advancements/recipes/mis
 025c1f64bf2b70599039562f8ce6ce0acb60aa91 data/railcraft/advancements/recipes/misc/lime_strengthened_glass.json
 e9131219baff348d639e2d0b84b1058adf110415 data/railcraft/advancements/recipes/misc/locking_track_kit.json
 7b6689f67de1b1fb5c7e08d8d02f9d99aecc3879 data/railcraft/advancements/recipes/misc/locomotive_track_kit.json
+88c30d4372ce1bc33b095beaad277434b47bbd91 data/railcraft/advancements/recipes/misc/logbook.json
 29b7df0288fddaa4825af10374d9de36e1a19de4 data/railcraft/advancements/recipes/misc/low_pressure_steam_boiler_tank.json
 4b0d001cf4b814161916f54656a223aa86bf524e data/railcraft/advancements/recipes/misc/magenta_iron_tank_gauge.json
 529708d6fbc1203b17df89569a190bf350bc3eb8 data/railcraft/advancements/recipes/misc/magenta_iron_tank_valve.json
@@ -876,6 +877,7 @@ b96a149b297bb4f9c929ffe0ee9ab11029efb9ce data/railcraft/recipes/lime_steel_tank_
 72654da4379107095c7b9f8a04227de885a7a2c1 data/railcraft/recipes/locking_track_kit.json
 5571f7c218834b36e1e79d95771fa994e743c33f data/railcraft/recipes/locomotive_color_variant.json
 8c1b819b84dc918ab359e392f14bee6fbbf0af2c data/railcraft/recipes/locomotive_track_kit.json
+fb28d4db5c8368d10a93ce0b452f40d4e3ad23da data/railcraft/recipes/logbook.json
 88fabfacea2d676ac0b16d1204c1669d241e6e77 data/railcraft/recipes/low_pressure_steam_boiler_tank.json
 d0567d74f2ba5438b7bd293d3cbc301249b22bde data/railcraft/recipes/magenta_iron_tank_gauge.json
 b5f97fd27d060eab5efd3ff04d9c03de1fc6834e data/railcraft/recipes/magenta_iron_tank_valve.json

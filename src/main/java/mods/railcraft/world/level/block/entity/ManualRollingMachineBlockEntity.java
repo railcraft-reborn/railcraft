@@ -106,9 +106,6 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       ManualRollingMachineBlockEntity blockEntity) {
-    if (level.isClientSide)
-      return;
-
     blockEntity.balanceSlots();
 
     if (++blockEntity.clock % 8 == 0) {
