@@ -211,8 +211,9 @@ public class ClientManager {
     if (!Railcraft.BETA && FMLLoader.isProduction()) {
       return;
     }
+    var type = !FMLLoader.isProduction() ? "development" : "beta";
     var message = CommonComponents.joinLines(
-        Component.literal("You are using a beta version of Railcraft.")
+        Component.literal("You are using a " + type + " version of Railcraft.")
             .withStyle(ChatFormatting.RED),
         /*Component.literal("- World saves are not stable and may break between versions.")
             .withStyle(ChatFormatting.GRAY),*/

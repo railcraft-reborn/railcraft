@@ -69,7 +69,7 @@ public class RailcraftChestLoot implements LootTableSubProvider {
         .withPool(LootPool.lootPool()
             .setRolls(UniformGenerator.between(1, 2))
             .add(LootItem.lootTableItem(Items.RAIL).setWeight(1)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(16,32))))
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(16, 32))))
         )
     );
   }

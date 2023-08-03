@@ -265,7 +265,7 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handlePlayerTick(TickEvent.PlayerTickEvent event) {
-    if (event.player instanceof ServerPlayer player && event.player.tickCount % 20 == 0) {
+    if (event.player instanceof ServerPlayer player && player.tickCount % 20 == 0) {
       var linkedCarts = EntitySearcher.findMinecarts()
           .around(player)
           .inflate(32F)
@@ -295,8 +295,7 @@ public class Railcraft {
   @SubscribeEvent
   public void handleEntityLeaveWorld(EntityLeaveLevelEvent event) {
     if (event.getEntity() instanceof AbstractMinecart cart
-        && !event.getEntity().level().isClientSide()
-        && event.getEntity().isRemoved()) {
+        && !cart.level().isClientSide() && cart.isRemoved()) {
       RollingStock.getOrThrow(cart).removed(cart.getRemovalReason());
     }
   }
@@ -304,12 +303,14 @@ public class Railcraft {
   @SubscribeEvent
   public void modifyDrops(LivingDropsEvent event) {
     var level = event.getEntity().level();
-    if (event.getSource().equals(RailcraftDamageSources.steam(level.registryAccess()))) {
+    var registryAccess = level.registryAccess();
+    if (event.getSource().equals(RailcraftDamageSources.steam(registryAccess))) {
+      var recipeManager = level.getRecipeManager();
       for (var entityItem : event.getDrops()) {
         var drop = entityItem.getItem();
-        var cooked = level.getRecipeManager()
+        var cooked = recipeManager
             .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
-            .map(x -> x.getResultItem(level.registryAccess()))
+            .map(x -> x.getResultItem(registryAccess))
             .orElse(ItemStack.EMPTY);
         if (!cooked.isEmpty() && level.getRandom().nextDouble() < 0.5) {
           cooked = cooked.copy();
