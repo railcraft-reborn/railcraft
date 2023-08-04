@@ -391,7 +391,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.CROWBAR_LINK_CREATED, "Successfully Linked Carts");
     this.add(Translations.Tips.CROWBAR_LINK_FAILED, "Link Failed");
     this.add(Translations.Tips.CROWBAR_LINK_STARTED, "Started Linking Carts");
-    this.add(Translations.Tips.CROWBAR_SEASON_DESC, "Current season: %s");
+    this.add(Translations.Tips.CROWBAR_SEASON_DESC, "Current season:");
 
     this.add(Season.NONE.getTranslationKey(), "None");
     this.add(Season.DEFAULT.getTranslationKey(), "Default");

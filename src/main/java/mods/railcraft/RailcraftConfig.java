@@ -69,6 +69,8 @@ public class RailcraftConfig {
 
     public final IntValue cartDispenserDelay;
 
+    public final BooleanValue changeDungeonLoot;
+
     private Server(Builder builder) {
       builder.comment("High Speed Track Configuration");
       builder.push("highSpeedTrack");
@@ -205,6 +207,10 @@ public class RailcraftConfig {
             .defineInRange("fuelPerSteamMultiplier", 1.0F, 0.2F, 6.0F);
       }
       builder.pop();
+
+      this.changeDungeonLoot = builder
+          .comment("change the vanilla dungeon loot")
+          .define("changeDungeonLoot", true);
     }
   }
 

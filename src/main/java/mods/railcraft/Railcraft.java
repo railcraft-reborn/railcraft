@@ -18,7 +18,9 @@ import mods.railcraft.data.RailcraftPoiTypeTagsProvider;
 import mods.railcraft.data.RailcraftSoundsProvider;
 import mods.railcraft.data.RailcraftSpriteSourceProvider;
 import mods.railcraft.data.advancements.RailcraftAdvancementProvider;
-import mods.railcraft.data.loot.packs.RailcraftLootTableProvider;
+import mods.railcraft.data.loot.RailcraftLootModifierProvider;
+import mods.railcraft.data.loot.RailcraftLootTableProvider;
+import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
@@ -152,6 +154,7 @@ public class Railcraft {
     RailcraftDataSerializers.register(modEventBus);
     RailcraftPoiTypes.register(modEventBus);
     RailcraftVillagerProfession.register(modEventBus);
+    RailcraftLootModifiers.register(modEventBus);
   }
 
   // ================================================================================
@@ -200,6 +203,7 @@ public class Railcraft {
     generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(packOutput));
     generator.addProvider(event.includeServer(),
         new RailcraftPoiTypeTagsProvider(packOutput, lookupProvider, fileHelper));
+    generator.addProvider(event.includeServer(), new RailcraftLootModifierProvider(packOutput));
     generator.addProvider(event.includeClient(),
         new RailcraftItemModelProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),

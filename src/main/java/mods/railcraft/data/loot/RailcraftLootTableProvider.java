@@ -1,8 +1,10 @@
-package mods.railcraft.data.loot.packs;
+package mods.railcraft.data.loot;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import mods.railcraft.data.loot.packs.RailcraftBlockLoot;
+import mods.railcraft.data.loot.packs.RailcraftChestLoot;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;

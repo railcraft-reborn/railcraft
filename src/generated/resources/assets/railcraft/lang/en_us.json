@@ -767,7 +767,7 @@
   "tips.railcraft.crowbar.link.created": "Successfully Linked Carts",
   "tips.railcraft.crowbar.link.failed": "Link Failed",
   "tips.railcraft.crowbar.link.started": "Started Linking Carts",
-  "tips.railcraft.crowbar.season.desc": "Current season: %s",
+  "tips.railcraft.crowbar.season.desc": "Current season:",
   "tips.railcraft.crushed_obsidian": "Prevents Mobs Spawns",
   "tips.railcraft.current_mode": "Current Mode:",
   "tips.railcraft.danger": "Danger:",

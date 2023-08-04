@@ -63,6 +63,7 @@ public class SeasonsCrowbarItem extends CrowbarItem {
     if (tooltip) {
       title.withStyle(ChatFormatting.GRAY);
     }
-    return title.append(value.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE));
+    return title.append(" ")
+        .append(value.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE));
   }
 }

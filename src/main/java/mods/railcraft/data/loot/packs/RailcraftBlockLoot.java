@@ -19,7 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftBlockLoot extends BlockLootSubProvider {
 
-  protected RailcraftBlockLoot() {
+  public RailcraftBlockLoot() {
     super(Set.of(), FeatureFlags.REGISTRY.allFlags());
   }
 
