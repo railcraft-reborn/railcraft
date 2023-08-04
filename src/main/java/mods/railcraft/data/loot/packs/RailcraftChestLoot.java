@@ -18,17 +18,17 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 public class RailcraftChestLoot implements LootTableSubProvider {
 
   // If you change the name, remember to regenerate the chest inside the structure
-  // /setblock x y z minecraft:chest[facing=south]{LootTable:"railcraft:chests/component_workshop_chest_loot"}
-  private static final ResourceLocation COMPONENT_WORKSHOP_CHEST_LOOT =
-      new ResourceLocation(Railcraft.ID, "chests/component_workshop_chest_loot");
-  public static final ResourceLocation ABANDONED_MINESHAFT_CHEST_LOOT =
+  // /setblock x y z minecraft:chest[facing=south]{LootTable:"railcraft:chests/component_workshop"}
+  private static final ResourceLocation COMPONENT_WORKSHOP =
+      new ResourceLocation(Railcraft.ID, "chests/component_workshop");
+  public static final ResourceLocation ABANDONED_MINESHAFT =
       new ResourceLocation(Railcraft.ID, "chests/abandoned_mineshaft");
   public static final ResourceLocation SIMPLE_DUNGEON =
       new ResourceLocation(Railcraft.ID, "chests/simple_dungeon");
 
   @Override
   public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-    consumer.accept(COMPONENT_WORKSHOP_CHEST_LOOT, LootTable.lootTable()
+    consumer.accept(COMPONENT_WORKSHOP, LootTable.lootTable()
         .withPool(LootPool.lootPool()
             .name("railcraft_tools")
             .setRolls(ConstantValue.exactly(1))
@@ -81,7 +81,7 @@ public class RailcraftChestLoot implements LootTableSubProvider {
         )
     );
 
-    consumer.accept(ABANDONED_MINESHAFT_CHEST_LOOT, LootTable.lootTable()
+    consumer.accept(ABANDONED_MINESHAFT, LootTable.lootTable()
         .withPool(LootPool.lootPool()
             .name("railcraft_tools")
             .setRolls(ConstantValue.exactly(1))

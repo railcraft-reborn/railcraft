@@ -214,5 +214,5 @@
       }
     }
   ],
-  "random_sequence": "railcraft:chests/component_workshop_chest_loot"
+  "random_sequence": "railcraft:chests/component_workshop"
 }

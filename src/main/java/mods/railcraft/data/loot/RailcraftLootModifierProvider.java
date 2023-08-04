@@ -23,8 +23,7 @@ public class RailcraftLootModifierProvider extends GlobalLootModifierProvider {
 
   @Override
   protected void start() {
-    this.add(BuiltInLootTables.ABANDONED_MINESHAFT,
-        RailcraftChestLoot.ABANDONED_MINESHAFT_CHEST_LOOT);
+    this.add(BuiltInLootTables.ABANDONED_MINESHAFT, RailcraftChestLoot.ABANDONED_MINESHAFT);
     this.add(BuiltInLootTables.SIMPLE_DUNGEON, RailcraftChestLoot.SIMPLE_DUNGEON);
     this.add(BuiltInLootTables.STRONGHOLD_CORRIDOR, RailcraftChestLoot.SIMPLE_DUNGEON);
     this.add(BuiltInLootTables.STRONGHOLD_CROSSING, RailcraftChestLoot.SIMPLE_DUNGEON);
