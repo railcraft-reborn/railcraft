@@ -487,7 +487,8 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.DUAL_DISTANT_SIGNAL.get(),
         RailcraftItems.DUAL_TOKEN_SIGNAL.get(),
         RailcraftItems.BLOCK_SIGNAL.get(),
-        RailcraftItems.DISTANT_SIGNAL.get()
+        RailcraftItems.DISTANT_SIGNAL.get(),
+        RailcraftItems.TOKEN_SIGNAL.get()
     );
 
     addItemsToTab(addAfterIronHoe, entries);

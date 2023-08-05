@@ -1,6 +1,7 @@
 package mods.railcraft.data.models;
 
 import java.util.function.Function;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -24,7 +25,9 @@ import mods.railcraft.world.level.block.manipulator.ManipulatorBlock;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
+import mods.railcraft.world.level.block.signal.DualSignalBlock;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
+import mods.railcraft.world.level.block.signal.SingleSignalBlock;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.BaseTankBlock;
@@ -328,6 +331,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get());
     this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_RECEIVER_BOX.get());
     this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
+
+    this.createSingleSignalBlock(RailcraftBlocks.BLOCK_SIGNAL.get());
+    this.createSingleSignalBlock(RailcraftBlocks.DISTANT_SIGNAL.get());
+    this.createSingleSignalBlock(RailcraftBlocks.TOKEN_SIGNAL.get());
+
+    this.createDualSignalBlock(RailcraftBlocks.DUAL_BLOCK_SIGNAL.get());
+    this.createDualSignalBlock(RailcraftBlocks.DUAL_DISTANT_SIGNAL.get());
+    this.createDualSignalBlock(RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
 
     // Not put in the constructor!
     this.activatorTrackModels = this.createTrackModelSet("activator_track");
@@ -1061,6 +1072,94 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         .part()
         .modelFile(signalBoxConnectorModel).rotationY(270).addModel()
         .condition(SignalBoxBlock.WEST, true).end();
+  }
+
+  private void createSingleSignalBlock(SingleSignalBlock signalBlock) {
+    var signalPostModel = this.models().getExistingFile(modLoc("block/signal_post"));
+    var signalModel = this.models().getExistingFile(modLoc("block/signal"));
+    var signalConnectorModel = this.models().getExistingFile(modLoc("block/signal_connector"));
+
+    this.getMultipartBuilder(signalBlock)
+        .part()
+        .modelFile(signalPostModel).addModel()
+        .condition(SingleSignalBlock.DOWN, true).end()
+        .part()
+        .modelFile(signalModel).addModel()
+        .condition(SingleSignalBlock.FACING, Direction.NORTH).end()
+        .part()
+        .modelFile(signalModel).rotationY(90).addModel()
+        .condition(SingleSignalBlock.FACING, Direction.EAST).end()
+        .part()
+        .modelFile(signalModel).rotationY(180).addModel()
+        .condition(SingleSignalBlock.FACING, Direction.SOUTH).end()
+        .part()
+        .modelFile(signalModel).rotationY(270).addModel()
+        .condition(SingleSignalBlock.FACING, Direction.WEST).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(270).addModel()
+        .condition(SingleSignalBlock.NORTH, true).end()
+        .part()
+        .modelFile(signalConnectorModel).addModel()
+        .condition(SingleSignalBlock.EAST, true).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(90).addModel()
+        .condition(SingleSignalBlock.SOUTH, true).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(180).addModel()
+        .condition(SingleSignalBlock.WEST, true).end();
+  }
+
+  private void createDualSignalBlock(DualSignalBlock signalBlock) {
+    ResourceLocation topLamp;
+    ResourceLocation bottomLamp;
+    if (signalBlock == RailcraftBlocks.DUAL_DISTANT_SIGNAL.get()) {
+      topLamp = modLoc("entity/signal_aspect/red");
+      bottomLamp = modLoc("entity/signal_aspect/green");
+    } else if (signalBlock == RailcraftBlocks.DUAL_TOKEN_SIGNAL.get()) {
+      topLamp = modLoc("entity/signal_aspect/green");
+      bottomLamp = modLoc("entity/signal_aspect/yellow");
+    } else if (signalBlock == RailcraftBlocks.DUAL_BLOCK_SIGNAL.get()) {
+      topLamp = modLoc("entity/signal_aspect/green");
+      bottomLamp = modLoc("entity/signal_aspect/red");
+    } else {
+      throw new NotImplementedException();
+    }
+
+    var model = this.models()
+        .withExistingParent(name(signalBlock, "_inventory"), modLoc("dual_signal_inventory"))
+        .texture("top_lamp", topLamp)
+        .texture("bottom_lamp", bottomLamp);
+
+    this.itemModels().withExistingParent(this.name(signalBlock), model.getLocation());
+
+    var signalModel = this.models().getExistingFile(modLoc("block/dual_signal"));
+    var signalConnectorModel = this.models().getExistingFile(modLoc("block/signal_connector"));
+
+    this.getMultipartBuilder(signalBlock)
+        .part()
+        .modelFile(signalModel).addModel()
+        .condition(DualSignalBlock.FACING, Direction.NORTH).end()
+        .part()
+        .modelFile(signalModel).rotationY(90).addModel()
+        .condition(DualSignalBlock.FACING, Direction.EAST).end()
+        .part()
+        .modelFile(signalModel).rotationY(180).addModel()
+        .condition(DualSignalBlock.FACING, Direction.SOUTH).end()
+        .part()
+        .modelFile(signalModel).rotationY(270).addModel()
+        .condition(DualSignalBlock.FACING, Direction.WEST).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(270).addModel()
+        .condition(DualSignalBlock.NORTH, true).end()
+        .part()
+        .modelFile(signalConnectorModel).addModel()
+        .condition(DualSignalBlock.EAST, true).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(90).addModel()
+        .condition(DualSignalBlock.SOUTH, true).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(180).addModel()
+        .condition(DualSignalBlock.WEST, true).end();
   }
 
   public void fluidBlock(LiquidBlock block) {

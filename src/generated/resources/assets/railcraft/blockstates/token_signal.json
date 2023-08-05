@@ -1,81 +1,81 @@
 {
   "multipart": [
     {
-      "when": {
-        "down": "true"
-      },
       "apply": {
         "model": "railcraft:block/signal_post"
+      },
+      "when": {
+        "down": "true"
       }
     },
     {
-      "when": {
-        "facing": "north"
-      },
       "apply": {
         "model": "railcraft:block/signal"
+      },
+      "when": {
+        "facing": "north"
       }
     },
     {
+      "apply": {
+        "model": "railcraft:block/signal",
+        "y": 90
+      },
       "when": {
         "facing": "east"
-      },
-      "apply": {
-        "model": "railcraft:block/signal",
-        "y": 90
       }
     },
     {
+      "apply": {
+        "model": "railcraft:block/signal",
+        "y": 180
+      },
       "when": {
         "facing": "south"
-      },
-      "apply": {
-        "model": "railcraft:block/signal",
-        "y": 180
       }
     },
     {
-      "when": {
-        "facing": "west"
-      },
       "apply": {
         "model": "railcraft:block/signal",
         "y": 270
+      },
+      "when": {
+        "facing": "west"
       }
     },
     {
-      "when": {
-        "north": "true"
-      },
       "apply": {
         "model": "railcraft:block/signal_connector",
         "y": 270
+      },
+      "when": {
+        "north": "true"
       }
     },
     {
-      "when": {
-        "east": "true"
-      },
       "apply": {
         "model": "railcraft:block/signal_connector"
+      },
+      "when": {
+        "east": "true"
       }
     },
     {
-      "when": {
-        "south": "true"
-      },
       "apply": {
         "model": "railcraft:block/signal_connector",
         "y": 90
+      },
+      "when": {
+        "south": "true"
       }
     },
     {
-      "when": {
-        "west": "true"
-      },
       "apply": {
         "model": "railcraft:block/signal_connector",
         "y": 180
+      },
+      "when": {
+        "west": "true"
       }
     }
   ]
