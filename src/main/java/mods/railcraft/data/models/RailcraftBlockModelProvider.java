@@ -24,6 +24,7 @@ import mods.railcraft.world.level.block.manipulator.ManipulatorBlock;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
+import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.BaseTankBlock;
@@ -319,6 +320,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get());
     this.createDisposableBattery(RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
         RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get());
+
+    this.createSignalBoxBlock(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_RECEIVER_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
 
     // Not put in the constructor!
     this.activatorTrackModels = this.createTrackModelSet("activator_track");
@@ -1021,6 +1030,37 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         .texture("side_b", sideB);
 
     this.simpleBlockWithItem(emptyBattery, model);
+  }
+
+  private void createSignalBoxBlock(SignalBoxBlock signalBlock) {
+    var up = modLoc("entity/signal_box/" + name(signalBlock));
+
+    var model = this.models()
+        .withExistingParent(name(signalBlock), modLoc("signal_box"))
+        .texture("up", up);
+
+    this.itemModels().withExistingParent(this.name(signalBlock), model.getLocation());
+
+    var signalBoxCapModel = this.models().getExistingFile(modLoc("block/signal_box_cap"));
+    var signalBoxConnectorModel = this.models()
+        .getExistingFile(modLoc("block/signal_box_connector"));
+
+    this.getMultipartBuilder(signalBlock)
+        .part()
+        .modelFile(signalBoxCapModel).addModel()
+        .condition(SignalBoxBlock.CAP, true).end()
+        .part()
+        .modelFile(signalBoxConnectorModel).addModel()
+        .condition(SignalBoxBlock.NORTH, true).end()
+        .part()
+        .modelFile(signalBoxConnectorModel).rotationY(90).addModel()
+        .condition(SignalBoxBlock.EAST, true).end()
+        .part()
+        .modelFile(signalBoxConnectorModel).rotationY(180).addModel()
+        .condition(SignalBoxBlock.SOUTH, true).end()
+        .part()
+        .modelFile(signalBoxConnectorModel).rotationY(270).addModel()
+        .condition(SignalBoxBlock.WEST, true).end();
   }
 
   public void fluidBlock(LiquidBlock block) {

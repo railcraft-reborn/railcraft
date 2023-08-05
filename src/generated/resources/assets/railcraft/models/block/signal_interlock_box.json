@@ -1,5 +1,5 @@
 {
-  "parent": "railcraft:block/signal_box_inventory",
+  "parent": "railcraft:block/signal_box",
   "textures": {
     "up": "railcraft:entity/signal_box/signal_interlock_box"
   }
