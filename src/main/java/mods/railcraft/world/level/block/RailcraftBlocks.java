@@ -24,7 +24,6 @@ import mods.railcraft.world.level.block.signal.BlockSignalBlock;
 import mods.railcraft.world.level.block.signal.DistantSignalBlock;
 import mods.railcraft.world.level.block.signal.DualBlockSignalBlock;
 import mods.railcraft.world.level.block.signal.DualDistantSignalBlock;
-import mods.railcraft.world.level.block.signal.DualSignalBlock;
 import mods.railcraft.world.level.block.signal.DualTokenSignalBlock;
 import mods.railcraft.world.level.block.signal.SignalBlockRelayBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
@@ -33,7 +32,6 @@ import mods.railcraft.world.level.block.signal.SignalControllerBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalInterlockBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalReceiverBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalSequencerBoxBlock;
-import mods.railcraft.world.level.block.signal.SingleSignalBlock;
 import mods.railcraft.world.level.block.signal.TokenSignalBlock;
 import mods.railcraft.world.level.block.steamboiler.FluidFueledFireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SolidFueledFireboxBlock;
@@ -641,32 +639,32 @@ public class RailcraftBlocks {
           () -> new SignalControllerBoxBlock(
               BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
 
-  public static final RegistryObject<DualSignalBlock> DUAL_BLOCK_SIGNAL =
+  public static final RegistryObject<DualBlockSignalBlock> DUAL_BLOCK_SIGNAL =
       deferredRegister.register("dual_block_signal",
           () -> new DualBlockSignalBlock(
               BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
 
-  public static final RegistryObject<DualSignalBlock> DUAL_DISTANT_SIGNAL =
+  public static final RegistryObject<DualDistantSignalBlock> DUAL_DISTANT_SIGNAL =
       deferredRegister.register("dual_distant_signal",
           () -> new DualDistantSignalBlock(
               BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
 
-  public static final RegistryObject<DualSignalBlock> DUAL_TOKEN_SIGNAL =
+  public static final RegistryObject<DualTokenSignalBlock> DUAL_TOKEN_SIGNAL =
       deferredRegister.register("dual_token_signal",
           () -> new DualTokenSignalBlock(
               BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
 
-  public static final RegistryObject<SingleSignalBlock> BLOCK_SIGNAL =
+  public static final RegistryObject<BlockSignalBlock> BLOCK_SIGNAL =
       deferredRegister.register("block_signal",
           () -> new BlockSignalBlock(
               BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
 
-  public static final RegistryObject<SingleSignalBlock> DISTANT_SIGNAL =
+  public static final RegistryObject<DistantSignalBlock> DISTANT_SIGNAL =
       deferredRegister.register("distant_signal",
           () -> new DistantSignalBlock(
               BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
 
-  public static final RegistryObject<SingleSignalBlock> TOKEN_SIGNAL =
+  public static final RegistryObject<TokenSignalBlock> TOKEN_SIGNAL =
       deferredRegister.register("token_signal",
           () -> new TokenSignalBlock(
               BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));

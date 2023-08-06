@@ -227,6 +227,13 @@ public class Translations {
     public static final String FLUID_UNLOADER = makeKey("tips", "fluid_unloader");
     public static final String CART_DISPENSER = makeKey("tips", "cart_dispenser");
     public static final String TRAIN_DISPENSER = makeKey("tips", "train_dispenser");
+    public static final String BLOCK_SIGNAL = makeKey("tips", "block_signal");
+    public static final String DISTANT_SIGNAL = makeKey("tips", "distant_signal");
+    public static final String TOKEN_SIGNAL = makeKey("tips", "token_signal");
+    public static final String SIGNAL_BLOCKS = makeKey("tips", "signal_blocks");
+    public static final String CONTROLLERS = makeKey("tips", "controllers");
+    public static final String SIGNAL_SURVEYOR = makeKey("tips", "signal_surveyor");
+    public static final String TOKEN_AREA = makeKey("tips", "token_area");
     public static final String FRAME = makeKey("tips", "frame");
     public static final String SIGNAL_BLOCK_SURVEYOR =
         makeKey("tips", "signal_block_surveyor");

@@ -557,6 +557,13 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.EFFICIENCY, "Efficiency: %s%%");
     this.add(Translations.Tips.TYPE_DISPOSABLE, "Type: Disposable");
     this.add(Translations.Tips.TYPE_RECHARGEABLE, "Type: Rechargeable");
+    this.add(Translations.Tips.BLOCK_SIGNAL, "Detects carts in signal block");
+    this.add(Translations.Tips.SIGNAL_BLOCKS, "%sx Signal block");
+    this.add(Translations.Tips.CONTROLLERS, "%sx Controller block");
+    this.add(Translations.Tips.SIGNAL_SURVEYOR, "Signal Surveyor");
+    this.add(Translations.Tips.DISTANT_SIGNAL, "Displays aspect of linked controller");
+    this.add(Translations.Tips.TOKEN_SIGNAL, "Detects carts entering/leaving Token Area");
+    this.add(Translations.Tips.TOKEN_AREA, "%sx Token Area");
   }
 
   private void screenTranslations() {
