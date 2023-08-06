@@ -1,6 +1,7 @@
 package mods.railcraft;
 
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.world.item.SignalBlockSurveyorItem;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
@@ -22,6 +23,7 @@ public class BlockSignalTest {
     helper.succeedWhen(() -> {
       if (helper.getBlockEntity(BLOCK_SIGNAL_LEFT) instanceof BlockSignalBlockEntity left &&
           helper.getBlockEntity(BLOCK_SIGNAL_RIGHT) instanceof BlockSignalBlockEntity right) {
+        SignalBlockSurveyorItem.tryLinking(left, right);
         if (left.getPrimarySignalAspect().equals(SignalAspect.GREEN) &&
             right.getPrimarySignalAspect().equals(SignalAspect.GREEN)) {
           helper.succeed();
@@ -38,6 +40,7 @@ public class BlockSignalTest {
     helper.succeedWhen(() -> {
       if (helper.getBlockEntity(BLOCK_SIGNAL_LEFT) instanceof BlockSignalBlockEntity left &&
           helper.getBlockEntity(BLOCK_SIGNAL_RIGHT) instanceof BlockSignalBlockEntity right) {
+        SignalBlockSurveyorItem.tryLinking(left, right);
         if (left.getPrimarySignalAspect().equals(SignalAspect.RED) &&
             right.getPrimarySignalAspect().equals(SignalAspect.RED)) {
           helper.succeed();

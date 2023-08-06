@@ -62,7 +62,7 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
       } else if (!Objects.equals(pos, signalPos.getPos())) {
         blockEntity = level.getBlockEntity(signalPos.getPos());
         if (blockEntity instanceof MonitoringSignalEntity<?> otherSignal) {
-          if (this.tryLinking(signal, otherSignal)) {
+          if (tryLinking(signal, otherSignal)) {
             signal.signalNetwork().stopLinking();
             otherSignal.signalNetwork().stopLinking();
             player.displayClientMessage(
@@ -104,7 +104,7 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
     return InteractionResult.PASS;
   }
 
-  private <T, T2> boolean tryLinking(MonitoringSignalEntity<T> signal1,
+  public static <T, T2> boolean tryLinking(MonitoringSignalEntity<T> signal1,
       MonitoringSignalEntity<T2> signal2) {
     return signal1.type().isInstance(signal2)
         && signal2.type().isInstance(signal1)
