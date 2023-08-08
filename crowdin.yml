@@ -1,3 +1,10 @@
-files:
-  - source: src/generated/resources/assets/railcraft/lang/en_us.json
-    translation: src/main/resources/assets/railcraft/lang/%locale_with_underscore%.json
+"project_id": "606731"
+"base_url": "https://api.crowdin.com"
+"preserve_hierarchy": true
+"commit_message": "[ci skip]"
+"files": [
+  {
+    "source": "src/generated/resources/assets/railcraft/lang/en_us.json",
+    "translation": "src/main/resources/assets/railcraft/lang/%locale_with_underscore%.json"
+  }
+]
