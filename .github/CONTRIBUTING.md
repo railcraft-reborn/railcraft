@@ -18,15 +18,15 @@ Please adhere to the following guidlines when submitting pull requests:
 
 ```java
 if(foo){
-    bar();
-    }
+  bar();
+}
 ```
 
 instead of
 
 ```java
 if(foo)
-    bar();
+  bar();
 ```
 
 * Names of fields being used as constants should be all upper-case, with underscores separating
