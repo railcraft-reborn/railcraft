@@ -33,9 +33,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   @Override
   protected void addTranslations() {
-    this.add(Translations.Tab.RAILCRAFT, "Railcraft");
-    this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, "Railcraft Outfitted Tracks");
-    this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, "Railcraft Decorative Blocks");
+    this.add(Translations.Tab.RAILCRAFT, "Railcraft Reborn");
+    this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, "Railcraft Reborn Outfitted Tracks");
+    this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, "Railcraft Reborn Decorative Blocks");
 
     this.blockTranslations();
     this.itemTranslations();

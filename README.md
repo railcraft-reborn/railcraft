@@ -1,4 +1,4 @@
-# Railcraft for Minecraft 1.20
+# Railcraft Reborn for Minecraft 1.20
 
 [![Deploy Nightly](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/nightly.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/releases/tag/nightly)
 [![CI Suite](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/master.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/master.yml)
@@ -11,10 +11,10 @@ Railcraft is a mod written for the hit game [Minecraft](https://minecraft.net/).
 It greatly expands and improves the Minecart system in Minecraft. Adding many new blocks, entities, and features. It has been in development since 2012 and contains over 800 class files and hundreds of thousands of lines of code.
 The mod was created by the user going by the name **CovertJaguar**.
 - **CovertJaguar** is currently in charge of development for Minecraft 1.12 in this [repo](https://github.com/Railcraft/Railcraft).
-- This repo is maintained by **Sm0keySa1m0n** and aims to develop for the most recent versions of Minecraft, a version for Minecraft 1.20.x is currently in development.
-Some contributors who participated in the development for the most recent versions of Minecraft are:
-  - [Edivad99](https://github.com/Edivad99)
-  - [LetterN](https://github.com/LetterN)
+- This repo is maintained by **Sm0keySa1m0n** and [**Edivad99**](https://github.com/Edivad99) and 
+  aims to develop for the most recent versions of Minecraft.
+
+A thank you also goes to [LetterN](https://github.com/LetterN).
 
 ## Official Links
 [comment]: <> (* The Blog, Forums, and main download page: <https://www.railcraft.info>)
