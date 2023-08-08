@@ -8,3 +8,6 @@
     "translation": "src/main/resources/assets/railcraft/lang/%locale_with_underscore%.json"
   }
 ]
+"pull_request_labels": [
+  "translations"
+]
