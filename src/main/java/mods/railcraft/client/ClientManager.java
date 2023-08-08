@@ -226,7 +226,7 @@ public class ClientManager {
                 .withColor(ChatFormatting.GREEN)
                 .withUnderlined(true)
                 .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
-                    "https://github.com/Sm0keySa1m0n/Railcraft/issues"))),
+                    "https://github.com/railcraft-reborn/railcraft/issues"))),
         Component.literal("- Sm0keySa1m0n, 3divad99")
             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     event.getPlayer().displayClientMessage(message, false);

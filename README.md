@@ -1,7 +1,7 @@
 # Railcraft Reborn for Minecraft 1.20
 
-[![Deploy Nightly](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/nightly.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/releases/tag/nightly)
-[![CI Suite](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/master.yml/badge.svg)](https://github.com/Sm0keySa1m0n/Railcraft/actions/workflows/master.yml)
+[![Deploy Nightly](https://github.com/railcraft-reborn/railcraft/actions/workflows/nightly.yml/badge.svg)](https://github.com/railcraft-reborn/railcraft/releases/tag/nightly)
+[![CI Suite](https://github.com/railcraft-reborn/railcraft/actions/workflows/master.yml/badge.svg)](https://github.com/railcraft-reborn/railcraft/actions/workflows/master.yml)
 
 Here you will find the source and issue tracker for the **Railcraft Reborn Project**.
 
@@ -32,7 +32,7 @@ A thank you also goes to [LetterN](https://github.com/LetterN).
 
 ## Issues
 
-Post only confirmed bugs [here](https://github.com/Sm0keySa1m0n/Railcraft/issues).
+Post only confirmed bugs [here](https://github.com/railcraft-reborn/railcraft/issues).
 
 More information about issue Labels can be
 found [here](https://github.com/CovertJaguar/Railcraft/wiki/Issue-Labels).
@@ -40,7 +40,7 @@ found [here](https://github.com/CovertJaguar/Railcraft/wiki/Issue-Labels).
 ## License
 
 Railcraft is licensed under a custom usage license tailored specifically for the project. It can be
-read [here](https://github.com/Sm0keySa1m0n/Railcraft/blob/1.20.x/LICENSE.md).
+read [here](https://github.com/railcraft-reborn/railcraft/blob/1.20.x/LICENSE.md).
 
 **Note: The API is licensed under the MIT license which can be found
 in `src\api\java\mods\railcraft\api\LICENSE.txt`**

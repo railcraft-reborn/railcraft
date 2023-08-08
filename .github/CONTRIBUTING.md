@@ -65,3 +65,8 @@ gradlew build
 ```
 
 More information [here](https://docs.neoforged.net/docs/gettingstarted/).
+
+## Translations
+You can help us with translations by going to this on
+[Crowdin](https://crowdin.com/project/railcraft-reborn).
+

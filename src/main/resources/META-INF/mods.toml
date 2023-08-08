@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
-license = "https://github.com/Sm0keySa1m0n/Railcraft/blob/1.20.x/LICENSE.md"
-issueTrackerURL = "https://github.com/Sm0keySa1m0n/Railcraft/issues"
+license = "https://github.com/railcraft-reborn/railcraft/blob/1.20.x/LICENSE.md"
+issueTrackerURL = "https://github.com/railcraft-reborn/railcraft/issues"
 
 [[mods]]
   modId = "railcraft"
