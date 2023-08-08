@@ -4,6 +4,7 @@ on:
   push:
     paths: [ 'src/generated/resources/assets/railcraft/lang/**' ]
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   crowdin-upload:
