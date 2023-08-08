@@ -10,11 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * Created by CovertJaguar on 6/7/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 @ActivationBlockingItem
 public class PairingToolItem extends Item {
 

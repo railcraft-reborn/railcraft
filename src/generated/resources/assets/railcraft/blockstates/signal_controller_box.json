@@ -1,0 +1,47 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "railcraft:block/signal_box_cap"
+      },
+      "when": {
+        "cap": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/signal_box_connector"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/signal_box_connector",
+        "y": 90
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/signal_box_connector",
+        "y": 180
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/signal_box_connector",
+        "y": 270
+      },
+      "when": {
+        "west": "true"
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:reinforced_throttle_track"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_throttle_track_kit": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:throttle_track_kit"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_throttle_track_kit",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:reinforced_throttle_track"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -9,6 +9,8 @@
     "railcraft:high_speed_turnout_track",
     "railcraft:high_speed_wye_track",
     "railcraft:high_speed_junction_track",
-    "railcraft:high_speed_locomotive_track"
+    "railcraft:high_speed_whistle_track",
+    "railcraft:high_speed_locomotive_track",
+    "railcraft:high_speed_throttle_track"
   ]
 }

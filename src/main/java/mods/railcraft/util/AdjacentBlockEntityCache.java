@@ -11,9 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class AdjacentBlockEntityCache {
 
   private static final int DELAY_MIN = 20;

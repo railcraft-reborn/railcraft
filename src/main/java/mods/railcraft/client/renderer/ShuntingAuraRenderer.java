@@ -12,11 +12,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 
-/**
- * Created by CovertJaguar on 5/16/2017 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public class ShuntingAuraRenderer {
 
   private final Minecraft minecraft = Minecraft.getInstance();

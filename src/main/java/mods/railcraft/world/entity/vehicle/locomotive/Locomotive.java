@@ -564,14 +564,10 @@ public abstract class Locomotive extends RailcraftMinecart implements
       if (isReverse()) {
         force = -force;
       }
-      switch (speed) {
-        case MAX:
-          if (RollingStock.getOrThrow(this).isHighSpeed()) {
-            force *= HS_FORCE_BONUS;
-          }
-          break;
-        default:
-          break;
+      if (speed.equals(Speed.MAX)) {
+        if (RollingStock.getOrThrow(this).isHighSpeed()) {
+          force *= HS_FORCE_BONUS;
+        }
       }
       double yaw = this.getYRot() * Math.PI / 180D;
       this.setDeltaMovement(

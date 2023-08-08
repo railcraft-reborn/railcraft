@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_saltpeter_dust": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/salt"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_sulfur_dust": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/sulfur"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:gunpowder"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_saltpeter_dust",
+      "has_sulfur_dust",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:gunpowder"
+    ]
+  },
+  "sends_telemetry_event": false
+}

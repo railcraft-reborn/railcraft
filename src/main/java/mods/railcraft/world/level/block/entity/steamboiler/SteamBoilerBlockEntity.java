@@ -36,9 +36,6 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 
-/**
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public class SteamBoilerBlockEntity
     extends MultiblockBlockEntity<SteamBoilerBlockEntity, SteamBoilerBlockEntity.Metadata> {
 

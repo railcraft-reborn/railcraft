@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/rail_flat",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "rail": "railcraft:block/throttle_track_4"
+  }
+}

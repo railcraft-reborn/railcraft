@@ -51,4 +51,14 @@ public abstract class ChargeBlock extends Block implements mods.railcraft.api.ch
       this.deregisterNode((ServerLevel) level, pos);
     }
   }
+
+  @Override
+  public boolean hasAnalogOutputSignal(BlockState state) {
+    return true;
+  }
+
+  @Override
+  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+    return Charge.distribution.network((ServerLevel) level).access(pos).getComparatorOutput();
+  }
 }

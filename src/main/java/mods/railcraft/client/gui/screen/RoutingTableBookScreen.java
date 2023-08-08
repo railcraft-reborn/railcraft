@@ -47,8 +47,8 @@ public class RoutingTableBookScreen extends Screen {
 
   public static final ResourceLocation BOOK_LOCATION =
       new ResourceLocation(Railcraft.ID, "textures/gui/item/routing_table_book.png");
-  public static final int TEXT_WIDTH = 220;
-  public static final int TEXT_HEIGHT = 128;
+  private static final int TEXT_WIDTH = 220;
+  private static final int TEXT_HEIGHT = 128;
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 192;
 
@@ -177,12 +177,12 @@ public class RoutingTableBookScreen extends Screen {
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
     forwardButton = this.addRenderableWidget(
-        new RailcraftPageButton(xOffset + 200, yOffset + 150, true, button -> {
+        new RailcraftPageButton(xOffset + 200, yOffset + 150, true, BOOK_LOCATION, button -> {
           this.pageForward();
         })
     );
     backButton = this.addRenderableWidget(
-        new RailcraftPageButton(xOffset + 30, yOffset + 150, false, button -> {
+        new RailcraftPageButton(xOffset + 30, yOffset + 150, false, BOOK_LOCATION, button -> {
           this.pageBack();
         })
     );

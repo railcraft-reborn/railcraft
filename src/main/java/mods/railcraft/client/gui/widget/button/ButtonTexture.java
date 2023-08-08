@@ -1,8 +1,5 @@
 package mods.railcraft.client.gui.widget.button;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public enum ButtonTexture implements TexturePosition {
 
   LARGE_BUTTON(0, 88, 20, 200),

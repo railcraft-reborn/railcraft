@@ -1,0 +1,218 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:iron_crowbar",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:seasons_crowbar"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:iron_spike_maul"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:charge_meter"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:signal_block_surveyor"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:signal_tuner"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:goggles"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:overalls",
+          "weight": 2
+        }
+      ],
+      "name": "railcraft_tools",
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:rail",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:chest_minecart",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:hopper_minecart"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:tnt_minecart"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:furnace_minecart"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:tank_minecart"
+        }
+      ],
+      "name": "railcraft_carts",
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 2.0,
+        "min": 1.0
+      }
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:coal",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:tag",
+          "expand": true,
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "railcraft:plate_chest_loot",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:tag",
+          "expand": true,
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "railcraft:gear_chest_loot"
+        },
+        {
+          "type": "minecraft:tag",
+          "expand": true,
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "railcraft:ingot_chest_loot",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:iron_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 32.0,
+                "min": 16.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "railcraft:creosote_bottle",
+          "weight": 2
+        }
+      ],
+      "name": "railcraft_resources",
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 2.0,
+        "min": 1.0
+      }
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 32.0,
+                "min": 16.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:rail"
+        }
+      ],
+      "name": "railcraft_tracks",
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 2.0,
+        "min": 1.0
+      }
+    }
+  ],
+  "random_sequence": "railcraft:chests/component_workshop"
+}

@@ -13,9 +13,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
     implements WorldlyContainer {
 

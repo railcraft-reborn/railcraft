@@ -14,9 +14,6 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class SeasonsCrowbarItem extends CrowbarItem {
 
   public SeasonsCrowbarItem(Properties properties) {
@@ -66,6 +63,7 @@ public class SeasonsCrowbarItem extends CrowbarItem {
     if (tooltip) {
       title.withStyle(ChatFormatting.GRAY);
     }
-    return title.append(value.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE));
+    return title.append(" ")
+        .append(value.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE));
   }
 }

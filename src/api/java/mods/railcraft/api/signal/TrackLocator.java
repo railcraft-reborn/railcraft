@@ -7,7 +7,6 @@
 
 package mods.railcraft.api.signal;
 
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
@@ -38,10 +37,11 @@ public class TrackLocator {
     if (this.trackPos == null) {
       return locateTrack();
     }
-    if (!this.level.get().isLoaded(this.trackPos)) {
+    var level = this.level.get();
+    if (!level.isLoaded(this.trackPos)) {
       return Status.UNKNOWN;
     }
-    if (!BaseRailBlock.isRail(this.level.get(), this.trackPos)) {
+    if (!BaseRailBlock.isRail(level, this.trackPos)) {
       this.trackPos = null;
       return this.locateTrack();
     }
@@ -49,21 +49,45 @@ public class TrackLocator {
   }
 
   private Status locateTrack() {
-    return BlockPos
-        .betweenClosedStream(this.originPos.offset(-2, 0, -2), this.originPos.offset(2, 0, 2))
-        .map(this::testForTrack)
-        .filter(Predicate.not(Status::invalid))
-        .findFirst()
-        .orElse(Status.INVALID);
+    int x = this.originPos.getX();
+    int y = this.originPos.getY();
+    int z = this.originPos.getZ();
+    var status = this.testForTrack(x, y, z);
+    if (status != Status.INVALID)
+      return status;
+    status = testForTrack(x - 1, y, z);
+    if (status != Status.INVALID)
+      return status;
+    status = testForTrack(x + 1, y, z);
+    if (status != Status.INVALID)
+      return status;
+    status = testForTrack(x, y, z - 1);
+    if (status != Status.INVALID)
+      return status;
+    status = testForTrack(x, y, z + 1);
+    if (status != Status.INVALID)
+      return status;
+    status = testForTrack(x - 2, y, z);
+    if (status != Status.INVALID)
+      return status;
+    status = testForTrack(x + 2, y, z);
+    if (status != Status.INVALID)
+      return status;
+    status = testForTrack(x, y, z - 2);
+    if (status != Status.INVALID)
+      return status;
+    return testForTrack(x, y, z + 2);
   }
 
-  private Status testForTrack(BlockPos blockPos) {
+  private Status testForTrack(int x, int y, int z) {
+    var level = this.level.get();
     for (int i = -2; i < 4; i++) {
-      if (!this.level.get().isLoaded(blockPos)) {
+      var pos = new BlockPos(x, y - i, z);
+      if (!level.isLoaded(pos)) {
         return Status.UNKNOWN;
       }
-      if (BaseRailBlock.isRail(this.level.get(), blockPos)) {
-        this.trackPos = blockPos;
+      if (BaseRailBlock.isRail(level, pos)) {
+        this.trackPos = pos;
         return Status.VALID;
       }
     }

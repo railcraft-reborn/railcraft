@@ -5,11 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraftforge.energy.EnergyStorage;
 
-/**
- * Created by CovertJaguar on 10/29/2018 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStorage {
 
   private final BlockPos pos;

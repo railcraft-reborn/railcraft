@@ -16,11 +16,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 
-/**
- * Created by CovertJaguar on 7/26/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class TokenRingManager extends SavedData {
 
   public static final String DATA_TAG = "railcraft.tokens";

@@ -23,73 +23,77 @@ public class SignalTunerItem extends PairingToolItem {
 
   @Override
   public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
-    var player = context.getPlayer();
     var level = context.getLevel();
+    if (!(level instanceof ServerLevel serverLevel)) {
+      return InteractionResult.SUCCESS;
+    }
+
+    var player = context.getPlayer();
     var pos = context.getClickedPos();
     var blockState = level.getBlockState(pos);
 
-    if (level instanceof ServerLevel serverLevel) {
-      if (this.checkAbandonPairing(itemStack, player, serverLevel,
-          () -> {
-            if (level.getBlockEntity(pos) instanceof SignalControllerEntity provider) {
-              provider.getSignalController().stopLinking();
-            }
-          })) {
-        player.displayClientMessage(Component.translatable(Signal.SIGNAL_TUNER_ABANDONED)
-                .withStyle(ChatFormatting.LIGHT_PURPLE), true);
-        return InteractionResult.SUCCESS;
+    if (this.checkAbandonPairing(itemStack, player, serverLevel, () -> {
+      if (level.getBlockEntity(pos) instanceof SignalControllerEntity provider) {
+        provider.getSignalController().stopLinking();
       }
-
-      var blockEntity = level.getBlockEntity(pos);
-      if (blockEntity != null) {
-        var previousTarget = this.getPeerPos(itemStack);
-        if (blockEntity instanceof SignalReceiverEntity signalReceiver
-            && previousTarget != null) {
-          if (!pos.equals(previousTarget.getPos())) {
-            var previousBlockEntity = level.getBlockEntity(previousTarget.getPos());
-            if (previousBlockEntity instanceof SignalControllerEntity signalController) {
-              if (blockEntity != previousBlockEntity) {
-                signalController.getSignalController().addPeer(signalReceiver);
-                signalController.getSignalController().stopLinking();
-                player.displayClientMessage(Component.translatable(Signal.SIGNAL_TUNER_SUCCESS,
-                        previousBlockEntity.getBlockState().getBlock().getName(),
-                        blockState.getBlock().getName()).withStyle(ChatFormatting.GREEN),
-                    true);
-                this.clearPeerPos(itemStack);
-                return InteractionResult.SUCCESS;
-              }
-            } else if (level.isLoaded(previousTarget.getPos())) {
-              player.displayClientMessage(Component.translatable(Signal.SIGNAL_TUNER_LOST)
-                      .withStyle(ChatFormatting.RED), true);
-              this.clearPeerPos(itemStack);
-            } else {
-              player.displayClientMessage(
-                  Component.translatable(Signal.SIGNAL_TUNER_UNLOADED)
-                      .withStyle(ChatFormatting.RED), true);
-              this.clearPeerPos(itemStack);
-            }
-          }
-        } else if (blockEntity instanceof SignalControllerEntity provider) {
-          var controller = provider.getSignalController();
-          if (previousTarget == null || !pos.equals(previousTarget.getPos())) {
-            player.displayClientMessage(
-                Component.translatable(Signal.SIGNAL_TUNER_BEGIN, blockState.getBlock().getName())
-                    .withStyle(ChatFormatting.LIGHT_PURPLE), true);
-            this.setPeerPos(itemStack, DimensionPos.from(blockEntity));
-            controller.startLinking();
-          } else {
-            player.displayClientMessage(Component.translatable(Signal.SIGNAL_TUNER_ABANDONED,
-                    blockState.getBlock().getName()), true);
-            controller.stopLinking();
-            this.clearPeerPos(itemStack);
-          }
-        } else {
-          return InteractionResult.PASS;
-        }
-      }
+    })) {
+      player.displayClientMessage(Component.translatable(Signal.SIGNAL_TUNER_ABANDONED)
+          .withStyle(ChatFormatting.LIGHT_PURPLE), true);
+      return InteractionResult.SUCCESS;
     }
 
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    var blockEntity = level.getBlockEntity(pos);
+    if (blockEntity == null) {
+      return InteractionResult.CONSUME;
+    }
+
+    var previousTarget = this.getPeerPos(itemStack);
+    if (blockEntity instanceof SignalReceiverEntity signalReceiver
+        && previousTarget != null) {
+      var previousTargetPos = previousTarget.getPos();
+      if (!pos.equals(previousTargetPos)) {
+        var previousBlockEntity = level.getBlockEntity(previousTargetPos);
+        if (previousBlockEntity instanceof SignalControllerEntity signalController) {
+          if (blockEntity != previousBlockEntity) {
+            signalController.getSignalController().addPeer(signalReceiver);
+            signalController.getSignalController().stopLinking();
+            player.displayClientMessage(Component.translatable(Signal.SIGNAL_TUNER_SUCCESS,
+                    previousBlockEntity.getBlockState().getBlock().getName(),
+                    blockState.getBlock().getName()).withStyle(ChatFormatting.GREEN),
+                true);
+            this.clearPeerPos(itemStack);
+            return InteractionResult.SUCCESS;
+          }
+        } else if (level.isLoaded(previousTarget.getPos())) {
+          player.displayClientMessage(Component.translatable(Signal.SIGNAL_TUNER_LOST)
+              .withStyle(ChatFormatting.RED), true);
+          this.clearPeerPos(itemStack);
+        } else {
+          player.displayClientMessage(
+              Component.translatable(Signal.SIGNAL_TUNER_UNLOADED)
+                  .withStyle(ChatFormatting.RED), true);
+          this.clearPeerPos(itemStack);
+        }
+      }
+    } else if (blockEntity instanceof SignalControllerEntity provider) {
+      var controller = provider.getSignalController();
+      if (previousTarget == null || !pos.equals(previousTarget.getPos())) {
+        player.displayClientMessage(
+            Component.translatable(Signal.SIGNAL_TUNER_BEGIN, blockState.getBlock().getName())
+                .withStyle(ChatFormatting.LIGHT_PURPLE), true);
+        this.setPeerPos(itemStack, DimensionPos.from(blockEntity));
+        controller.startLinking();
+      } else {
+        player.displayClientMessage(Component.translatable(Signal.SIGNAL_TUNER_ABANDONED,
+            blockState.getBlock().getName()), true);
+        controller.stopLinking();
+        this.clearPeerPos(itemStack);
+      }
+    } else {
+      return InteractionResult.PASS;
+    }
+
+    return InteractionResult.CONSUME;
   }
 
   @Override

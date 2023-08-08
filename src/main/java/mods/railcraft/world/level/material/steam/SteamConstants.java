@@ -1,8 +1,5 @@
 package mods.railcraft.world.level.material.steam;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public final class SteamConstants {
 
   public static final float COLD_TEMP = 20;

@@ -7,11 +7,9 @@ import net.minecraft.world.phys.Vec3;
 /**
  * A mutable 2D Vector class that supports a broader range of math operations than Minecraft's
  * immutable Vec3D class.
- *
+ * <p>
  * For historical purposes, I borrowed this class from NovaStar, a simple 2D space shooter project I
  * wrote in college.
- *
- * @author CovertJaguar <https://www.railcraft.info>
  */
 public class Vec2d {
 

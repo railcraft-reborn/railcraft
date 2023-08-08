@@ -10,9 +10,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public abstract class StandardMinecartRenderer<T extends AbstractMinecart>
     extends CustomMinecartRenderer<T> {
 

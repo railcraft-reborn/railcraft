@@ -4,10 +4,6 @@ import java.util.Optional;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
 
-/**
- *
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public interface EmblemPackageManager {
 
   AbstractTexture getEmblemTexture(String ident);

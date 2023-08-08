@@ -143,6 +143,46 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(RailcraftTags.Items.SILVER_GEAR)
         .add(RailcraftItems.SILVER_GEAR.get());
 
+
+    this.tag(RailcraftTags.Items.PLATE_CHEST_LOOT)
+        .addTag(RailcraftTags.Items.STEEL_PLATE)
+        .addTag(RailcraftTags.Items.IRON_PLATE)
+        .addTag(RailcraftTags.Items.TIN_PLATE)
+        .addTag(RailcraftTags.Items.GOLD_PLATE)
+        .addTag(RailcraftTags.Items.LEAD_PLATE)
+        .addTag(RailcraftTags.Items.ZINC_PLATE)
+        .addTag(RailcraftTags.Items.BRASS_PLATE)
+        .addTag(RailcraftTags.Items.INVAR_PLATE)
+        .addTag(RailcraftTags.Items.BRONZE_PLATE)
+        .addTag(RailcraftTags.Items.COPPER_PLATE)
+        .addTag(RailcraftTags.Items.NICKEL_PLATE)
+        .addTag(RailcraftTags.Items.SILVER_PLATE);
+
+    this.tag(RailcraftTags.Items.GEAR_CHEST_LOOT)
+        .addTag(RailcraftTags.Items.STEEL_GEAR)
+        .addTag(RailcraftTags.Items.IRON_GEAR)
+        .addTag(RailcraftTags.Items.TIN_GEAR)
+        .addTag(RailcraftTags.Items.GOLD_GEAR)
+        .addTag(RailcraftTags.Items.LEAD_GEAR)
+        .addTag(RailcraftTags.Items.ZINC_GEAR)
+        .addTag(RailcraftTags.Items.BRASS_GEAR)
+        .addTag(RailcraftTags.Items.INVAR_GEAR)
+        .addTag(RailcraftTags.Items.BRONZE_GEAR)
+        .addTag(RailcraftTags.Items.COPPER_GEAR)
+        .addTag(RailcraftTags.Items.NICKEL_GEAR)
+        .addTag(RailcraftTags.Items.SILVER_GEAR);
+
+    this.tag(RailcraftTags.Items.INGOT_CHEST_LOOT)
+        .addTag(RailcraftTags.Items.STEEL_INGOT)
+        .addTag(RailcraftTags.Items.TIN_INGOT)
+        .addTag(RailcraftTags.Items.LEAD_INGOT)
+        .addTag(RailcraftTags.Items.ZINC_INGOT)
+        .addTag(RailcraftTags.Items.BRASS_INGOT)
+        .addTag(RailcraftTags.Items.INVAR_INGOT)
+        .addTag(RailcraftTags.Items.BRONZE_INGOT)
+        .addTag(RailcraftTags.Items.NICKEL_INGOT)
+        .addTag(RailcraftTags.Items.SILVER_INGOT);
+
     this.tag(RailcraftTags.Items.SALTPETER_DUST)
         .add(RailcraftItems.SALTPETER_DUST.get());
     this.tag(RailcraftTags.Items.COAL_DUST)
@@ -161,6 +201,25 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.STEEL_CROWBAR.get())
         .add(RailcraftItems.IRON_CROWBAR.get())
         .add(RailcraftItems.DIAMOND_CROWBAR.get());
+
+    this.tag(RailcraftTags.Items.TRACK_KIT)
+        .add(RailcraftItems.ACTIVATOR_TRACK_KIT.get())
+        .add(RailcraftItems.BOOSTER_TRACK_KIT.get())
+        .add(RailcraftItems.COUPLER_TRACK_KIT.get())
+        .add(RailcraftItems.CONTROL_TRACK_KIT.get())
+        .add(RailcraftItems.WHISTLE_TRACK_KIT.get())
+        .add(RailcraftItems.BUFFER_STOP_TRACK_KIT.get())
+        .add(RailcraftItems.DETECTOR_TRACK_KIT.get())
+        .add(RailcraftItems.DISEMBARKING_TRACK_KIT.get())
+        .add(RailcraftItems.EMBARKING_TRACK_KIT.get())
+        .add(RailcraftItems.GATED_TRACK_KIT.get())
+        .add(RailcraftItems.LAUNCHER_TRACK_KIT.get())
+        .add(RailcraftItems.LOCKING_TRACK_KIT.get())
+        .add(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get())
+        .add(RailcraftItems.ONE_WAY_TRACK_KIT.get())
+        .add(RailcraftItems.ROUTING_TRACK_KIT.get())
+        .add(RailcraftItems.THROTTLE_TRACK_KIT.get())
+        .add(RailcraftItems.TRANSITION_TRACK_KIT.get());
 
     this.copy(RailcraftTags.Blocks.IRON_TANK_WALL, RailcraftTags.Items.IRON_TANK_WALL);
     this.copy(RailcraftTags.Blocks.IRON_TANK_GAUGE, RailcraftTags.Items.IRON_TANK_GAUGE);

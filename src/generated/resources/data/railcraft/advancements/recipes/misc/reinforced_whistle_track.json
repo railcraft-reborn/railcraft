@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:reinforced_whistle_track"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_whistle_track_kit": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:whistle_track_kit"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_whistle_track_kit",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:reinforced_whistle_track"
+    ]
+  },
+  "sends_telemetry_event": false
+}

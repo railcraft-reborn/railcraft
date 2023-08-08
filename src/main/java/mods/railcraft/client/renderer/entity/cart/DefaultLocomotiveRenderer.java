@@ -1,12 +1,3 @@
-/*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2019
- https://railcraft.info
-
- This code is the property of CovertJaguar
- and may only be used with explicit written
- permission unless otherwise specified on the
- license page at https://railcraft.info/wiki/info:license.
- -----------------------------------------------------------------------------*/
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -21,9 +12,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
 
   protected final String modelTag;

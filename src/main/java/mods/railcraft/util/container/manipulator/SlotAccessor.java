@@ -7,8 +7,6 @@ import net.minecraft.world.item.ItemStack;
 /**
  * This interface represents an abstract container slot. It provides a unified interface for
  * interfacing with containers.
- *
- * @author CovertJaguar <https://www.railcraft.info/>
  */
 public interface SlotAccessor {
 

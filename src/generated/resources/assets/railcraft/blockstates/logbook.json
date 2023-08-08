@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "railcraft:block/logbook",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "railcraft:block/logbook"
+    },
+    "facing=south": {
+      "model": "railcraft:block/logbook",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "railcraft:block/logbook",
+      "y": 270
+    }
+  }
+}

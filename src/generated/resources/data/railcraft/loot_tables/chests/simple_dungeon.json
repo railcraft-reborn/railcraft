@@ -1,0 +1,62 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:steel_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:steel_axe"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:steel_pickaxe"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:steel_boots"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:steel_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:steel_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:steel_chestplate"
+        },
+        {
+          "type": "minecraft:tag",
+          "expand": true,
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "railcraft:ingot_chest_loot",
+          "weight": 2
+        }
+      ],
+      "name": "railcraft_general",
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 1.0,
+        "min": 0.0
+      }
+    }
+  ],
+  "random_sequence": "railcraft:chests/simple_dungeon"
+}

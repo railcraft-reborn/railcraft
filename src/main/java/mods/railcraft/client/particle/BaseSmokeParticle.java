@@ -3,9 +3,6 @@ package mods.railcraft.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public abstract class BaseSmokeParticle extends DimmableParticle {
 
   public static final float SMOKE_GRAVITY = -0.1F;

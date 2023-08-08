@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "railcraft:whistle_track_kit"
+    },
+    {
+      "item": "railcraft:reinforced_track"
+    }
+  ],
+  "result": {
+    "item": "railcraft:reinforced_whistle_track"
+  }
+}

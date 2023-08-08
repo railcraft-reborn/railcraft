@@ -6,10 +6,10 @@ issueTrackerURL = "https://github.com/Sm0keySa1m0n/Railcraft/issues"
 [[mods]]
   modId = "railcraft"
   version = "${mod_version}"
-  displayName = "Railcraft"
+  displayName = "Railcraft Reborn"
   logoFile = "pack.png"
   credits = "Created by CovertJaguar and other contributions at Github"
-  authors = "CovertJaguar, Sm0keySa1m0n, 3divad99"
+  authors = "Sm0keySa1m0n, 3divad99"
   description = "Redefine your rails"
 
 [[dependencies.railcraft]]

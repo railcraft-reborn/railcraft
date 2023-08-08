@@ -15,20 +15,16 @@ import net.minecraft.world.phys.AABB;
 
 /**
  * The EntitySearcher is a utility class for searching for entities in the world.
- *
+ * <p>
  * It is based on similar principles to newer Java APIs, such as Streams, such that a search request
  * is very nearly a grammatically correct sentence.
- *
+ * <p>
  * Example:
  * {@code EntitySearcher.findMinecarts().around(pos).outTo(0.5).and(AbstractMinecartEntity::isBeingRidden).in(world)}
  *
  * This results in a flexible and robust design capable of being adapted to any use case. A much
  * superior solution to the old wall of utility functions, most of which were only ever used in one
  * place in the code.
- *
- * Created by CovertJaguar on 8/29/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
  */
 public final class EntitySearcher {
 

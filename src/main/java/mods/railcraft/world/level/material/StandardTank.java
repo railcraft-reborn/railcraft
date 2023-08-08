@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
  * Our fancy type of tank. Use this preferably over forge's default one
  *
  * @see net.minecraftforge.fluids.capability.templates.FluidTank Forge FluidTank
- * @author CovertJaguar (https://www.railcraft.info)
  */
 public class StandardTank extends FluidTank {
 

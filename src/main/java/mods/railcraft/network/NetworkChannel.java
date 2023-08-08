@@ -4,6 +4,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.network.play.EditRoutingTableBookMessage;
 import mods.railcraft.network.play.EditTicketAttributeMessage;
 import mods.railcraft.network.play.LinkedCartsMessage;
+import mods.railcraft.network.play.OpenLogBookScreen;
 import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetEmbarkingTrackAttributesMessage;
@@ -142,6 +143,12 @@ public enum NetworkChannel {
           .encoder(SetRoutingTrackAttributesMessage::encode)
           .decoder(SetRoutingTrackAttributesMessage::decode)
           .consumerMainThread(SetRoutingTrackAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(OpenLogBookScreen.class, 0x10, NetworkDirection.PLAY_TO_CLIENT)
+          .encoder(OpenLogBookScreen::encode)
+          .decoder(OpenLogBookScreen::decode)
+          .consumerMainThread(OpenLogBookScreen::handle)
           .add();
     }
   };

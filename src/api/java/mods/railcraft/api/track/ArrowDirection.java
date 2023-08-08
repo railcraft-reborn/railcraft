@@ -20,17 +20,12 @@ public enum ArrowDirection implements StringRepresentable {
   }
 
   public static ArrowDirection fromHorizontalDirection(Direction direction) {
-    switch (direction) {
-      case NORTH:
-        return NORTH;
-      case SOUTH:
-        return SOUTH;
-      case EAST:
-        return EAST;
-      case WEST:
-        return WEST;
-      default:
-        throw new IllegalStateException("Not a horizontal direction.");
-    }
+    return switch (direction) {
+      case NORTH -> NORTH;
+      case SOUTH -> SOUTH;
+      case EAST -> EAST;
+      case WEST -> WEST;
+      default -> throw new IllegalStateException("Not a horizontal direction.");
+    };
   }
 }

@@ -1,8 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-/**
- * @author CovertJaguar (https://www.railcraft.info)
- */
 public class CartConstants {
 
   public static final double STANDARD_DRAG = 0.99199997901916504D;

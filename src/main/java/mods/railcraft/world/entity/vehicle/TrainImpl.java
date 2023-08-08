@@ -148,10 +148,9 @@ final class TrainImpl implements Train {
     if (this == obj) {
       return true;
     }
-    if (!(obj instanceof TrainImpl)) {
+    if (!(obj instanceof TrainImpl other)) {
       return false;
     }
-    TrainImpl other = (TrainImpl) obj;
     return id.equals(other.id);
   }
 

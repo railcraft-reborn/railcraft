@@ -3,11 +3,6 @@ package mods.railcraft.util;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
-/**
- * Created by CovertJaguar on 7/26/2017 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class TimerBag<T> {
 
   private Object2IntMap<T> timers = new Object2IntOpenHashMap<>();

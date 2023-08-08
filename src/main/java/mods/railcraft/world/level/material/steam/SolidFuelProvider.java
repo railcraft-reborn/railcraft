@@ -8,9 +8,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks;
 
-/**
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class SolidFuelProvider implements FuelProvider {
 
   private final Container inv;

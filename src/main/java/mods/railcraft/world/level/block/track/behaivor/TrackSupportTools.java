@@ -10,11 +10,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 
-/**
- * Created by CovertJaguar on 8/7/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class TrackSupportTools {
 
   public static boolean isSupportedDirectly(BlockGetter level, BlockPos pos) {

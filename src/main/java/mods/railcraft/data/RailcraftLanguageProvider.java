@@ -6,9 +6,12 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.VariantRegistrar;
+import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
+import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.alchemy.RailcraftPotions;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
@@ -30,9 +33,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   @Override
   protected void addTranslations() {
-    this.add(Translations.Tab.RAILCRAFT, "Railcraft");
-    this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, "Railcraft Outfitted Tracks");
-    this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, "Railcraft Decorative Blocks");
+    this.add(Translations.Tab.RAILCRAFT, "Railcraft Reborn");
+    this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, "Railcraft Reborn Outfitted Tracks");
+    this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, "Railcraft Reborn Decorative Blocks");
 
     this.blockTranslations();
     this.itemTranslations();
@@ -48,8 +51,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.signalAspectTranslations();
     this.signalCapacitorTranslations();
     this.subtitleTranslations();
+    this.effectTranslations();
+    this.potionTranslations();
+    this.villagerTranslations();
     this.damageSourceTranslations();
     this.routingTableTranslations();
+    this.chargeMeterTranslations();
   }
 
   private void blockTranslations() {
@@ -62,6 +69,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.STEAM_TURBINE, "Steam Turbine Housing");
     this.addBlock(RailcraftBlocks.BLAST_FURNACE_BRICKS, "Blast Furnace Bricks");
     this.addBlock(RailcraftBlocks.FEED_STATION, "Feed Station");
+    this.addBlock(RailcraftBlocks.LOGBOOK, "Logbook");
     this.addBlock(RailcraftBlocks.STEEL_BLOCK, "Block of Steel");
     this.addBlock(RailcraftBlocks.BRASS_BLOCK, "Block of Brass");
     this.addBlock(RailcraftBlocks.BRONZE_BLOCK, "Block of Bronze");
@@ -135,6 +143,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_STAIRS, "Quarried Paver Stairs");
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_SLAB, "Quarried Paver Slab");
 
+    this.addBlock(RailcraftBlocks.FRAME, "Frame");
     this.addBlock(RailcraftBlocks.NICKEL_IRON_BATTERY, "Nickel-Iron Battery");
     this.addBlock(RailcraftBlocks.NICKEL_ZINC_BATTERY, "Nickel-Zinc Battery");
     this.addBlock(RailcraftBlocks.ZINC_CARBON_BATTERY, "Zinc-Carbon Battery");
@@ -301,7 +310,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.DISEMBARKING_TRACK_KIT, "Disembarking Track Kit");
     this.addItem(RailcraftItems.LAUNCHER_TRACK_KIT, "Launcher Track Kit");
     this.addItem(RailcraftItems.ONE_WAY_TRACK_KIT, "One-Way Track Kit");
+    this.addItem(RailcraftItems.WHISTLE_TRACK_KIT, "Whistle Track Kit");
     this.addItem(RailcraftItems.LOCOMOTIVE_TRACK_KIT, "Locomotive Track Kit");
+    this.addItem(RailcraftItems.THROTTLE_TRACK_KIT, "Throttle Track Kit");
     this.addItem(RailcraftItems.ROUTING_TRACK_KIT, "Routing Track Kit");
     this.addItem(RailcraftItems.CHARGE_SPOOL_LARGE, "Large Charge Wire Spool");
     this.addItem(RailcraftItems.CHARGE_SPOOL_MEDIUM, "Medium Charge Wire Spool");
@@ -309,6 +320,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.CHARGE_COIL, "Charge Coil");
     this.addItem(RailcraftItems.CHARGE_TERMINAL, "Charge Terminal");
     this.addItem(RailcraftItems.CHARGE_MOTOR, "Charge Motor");
+    this.addItem(RailcraftItems.CHARGE_METER, "Charge Meter");
   }
 
   private void entityTranslations() {
@@ -366,7 +378,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.OVERALLS, "Protection against the dangers of track-working");
     this.add(Translations.Tips.CLEAR, "Clear");
     this.add(Translations.Tips.GOOGLES_DESC, "Right-click to change aura.");
-    this.add(Translations.Tips.GOOGLES_AURA, "Current Aura: %s");
+    this.add(Translations.Tips.GOOGLES_AURA, "Current Aura:");
     this.add(Translations.Tips.GOOGLES_AURA_NONE, "None");
     this.add(Translations.Tips.GOOGLES_AURA_SHUNTING, "Shunting");
     this.add(Translations.Tips.GOOGLES_AURA_SIGNALLING, "Signalling");
@@ -379,7 +391,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.CROWBAR_LINK_CREATED, "Successfully Linked Carts");
     this.add(Translations.Tips.CROWBAR_LINK_FAILED, "Link Failed");
     this.add(Translations.Tips.CROWBAR_LINK_STARTED, "Started Linking Carts");
-    this.add(Translations.Tips.CROWBAR_SEASON_DESC, "Current season: %s");
+    this.add(Translations.Tips.CROWBAR_SEASON_DESC, "Current season:");
 
     this.add(Season.NONE.getTranslationKey(), "None");
     this.add(Season.DEFAULT.getTranslationKey(), "Default");
@@ -449,6 +461,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.COAL_COKE_BLOCK, "%s Fuel Units");
     this.add(Translations.Tips.FORCE_TRACK_EMITTER, "Projects energy-based tracks");
     this.add(Translations.Tips.FEED_STATION, "Feeds animals");
+    this.add(Translations.Tips.LOGBOOK, "Records visitors");
     this.add(Translations.Tips.ROLLING_MACHINE, "Crafting bench for various metal items");
     this.add(Translations.Tips.ITEM_LOADER, "Loads items into carts");
     this.add(Translations.Tips.ITEM_UNLOADER, "Unloads items from carts");
@@ -456,6 +469,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.FLUID_UNLOADER, "Unloads fluids from carts");
     this.add(Translations.Tips.CART_DISPENSER, "Dispenses carts onto tracks");
     this.add(Translations.Tips.TRAIN_DISPENSER, "Dispenses linked trains onto tracks");
+    this.add(Translations.Tips.FRAME, "Use to power track");
     this.add(Translations.Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
     this.add(Translations.Tips.LINKS_CONTROLLERS_TO_RECEIVERS, "Links Controllers to Receivers");
     this.add(Translations.Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");
@@ -503,7 +517,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.COUPLER_TRACK, "Couples/Decouples passing carts");
     this.add(Translations.Tips.LAUNCHER_TRACK, "Makes carts fly!");
     this.add(Translations.Tips.ONE_WAY_TRACK, "Carts can only pass in the direction of the arrow");
+    this.add(Translations.Tips.WHISTLE_TRACK, "Passing locomotives will blow their whistle");
     this.add(Translations.Tips.LOCOMOTIVE_TRACK, "Starts/Stops locomotive");
+    this.add(Translations.Tips.THROTTLE_TRACK, "Adjusts the speed of passing locomotive");
     this.add(Translations.Tips.LOCKING_TRACK, "Stops and holds carts");
     this.add(Translations.Tips.TRANSITION_TRACK, "Transitions to/from high speed");
     this.add(Translations.Tips.ROUTING_TRACK, "Sets a passing locomotive's ticket");
@@ -541,6 +557,13 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.EFFICIENCY, "Efficiency: %s%%");
     this.add(Translations.Tips.TYPE_DISPOSABLE, "Type: Disposable");
     this.add(Translations.Tips.TYPE_RECHARGEABLE, "Type: Rechargeable");
+    this.add(Translations.Tips.BLOCK_SIGNAL, "Detects carts in signal block");
+    this.add(Translations.Tips.SIGNAL_BLOCKS, "%sx Signal block");
+    this.add(Translations.Tips.CONTROLLERS, "%sx Controller block");
+    this.add(Translations.Tips.SIGNAL_SURVEYOR, "Signal Surveyor");
+    this.add(Translations.Tips.DISTANT_SIGNAL, "Displays aspect of linked controller");
+    this.add(Translations.Tips.TOKEN_SIGNAL, "Detects carts entering/leaving Token Area");
+    this.add(Translations.Tips.TOKEN_AREA, "%sx Token Area");
   }
 
   private void screenTranslations() {
@@ -627,7 +650,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ABANDONED_JUNCTION_TRACK, "Abandoned Junction Track");
     this.addBlock(RailcraftBlocks.ABANDONED_LAUNCHER_TRACK, "Abandoned Launcher Track");
     this.addBlock(RailcraftBlocks.ABANDONED_ONE_WAY_TRACK, "Abandoned One-Way Track");
+    this.addBlock(RailcraftBlocks.ABANDONED_WHISTLE_TRACK, "Abandoned Whistle Track");
     this.addBlock(RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK, "Abandoned Locomotive Track");
+    this.addBlock(RailcraftBlocks.ABANDONED_THROTTLE_TRACK, "Abandoned Throttle Track");
     this.addBlock(RailcraftBlocks.ABANDONED_ROUTING_TRACK, "Abandoned Routing Track");
 
     this.addBlock(RailcraftBlocks.ELECTRIC_TRACK, "Electric Track");
@@ -646,7 +671,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ELECTRIC_JUNCTION_TRACK, "Electric Junction Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK, "Electric Launcher Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK, "Electric One-Way Track");
+    this.addBlock(RailcraftBlocks.ELECTRIC_WHISTLE_TRACK, "Electric Whistle Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK, "Electric Locomotive Track");
+    this.addBlock(RailcraftBlocks.ELECTRIC_THROTTLE_TRACK, "Electric Throttle Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_ROUTING_TRACK, "Electric Routing Track");
 
     this.addBlock(RailcraftBlocks.HIGH_SPEED_TRACK, "High Speed Track");
@@ -658,7 +685,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.HIGH_SPEED_WYE_TRACK, "High Speed Wye Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK, "High Speed Junction Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK, "High Speed Transition Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_WHISTLE_TRACK, "High Speed Whistle Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK, "High Speed Locomotive Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK, "High Speed Throttle Track");
 
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK,
         "High Speed Electric Track");
@@ -678,8 +707,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         "High Speed Electric Wye Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK,
         "High Speed Electric Junction Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_WHISTLE_TRACK,
+        "High Speed Electric Whistle Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK,
         "High Speed Electric Locomotive Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK,
+        "High Speed Electric Throttle Track");
 
     this.addBlock(RailcraftBlocks.REINFORCED_TRACK, "Reinforced Track");
     this.addBlock(RailcraftBlocks.REINFORCED_LOCKING_TRACK, "Reinforced Locking Track");
@@ -697,9 +730,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.REINFORCED_JUNCTION_TRACK, "Reinforced Junction Track");
     this.addBlock(RailcraftBlocks.REINFORCED_LAUNCHER_TRACK, "Reinforced Launcher Track");
     this.addBlock(RailcraftBlocks.REINFORCED_ONE_WAY_TRACK, "Reinforced One-Way Track");
+    this.addBlock(RailcraftBlocks.REINFORCED_WHISTLE_TRACK, "Reinforced Whistle Track");
     this.addBlock(RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK, "Reinforced Locomotive Track");
+    this.addBlock(RailcraftBlocks.REINFORCED_THROTTLE_TRACK, "Reinforced Throttle Track");
     this.addBlock(RailcraftBlocks.REINFORCED_ROUTING_TRACK, "Reinforced Routing Track");
-
 
     this.addBlock(RailcraftBlocks.STRAP_IRON_TRACK, "Strap Iron Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK, "Strap Iron Locking Track");
@@ -717,7 +751,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK, "Strap Iron Junction Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK, "Strap Iron Launcher Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK, "Strap Iron One-Way Track");
+    this.addBlock(RailcraftBlocks.STRAP_IRON_WHISTLE_TRACK, "Strap Iron Whistle Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK, "Strap Iron Locomotive Track");
+    this.addBlock(RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK, "Strap Iron Throttle Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_ROUTING_TRACK, "Strap Iron Routing Track");
 
     this.addBlock(RailcraftBlocks.IRON_LOCKING_TRACK, "Iron Locking Track");
@@ -735,7 +771,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.IRON_JUNCTION_TRACK, "Iron Junction Track");
     this.addBlock(RailcraftBlocks.IRON_LAUNCHER_TRACK, "Iron Launcher Track");
     this.addBlock(RailcraftBlocks.IRON_ONE_WAY_TRACK, "Iron One-Way Track");
+    this.addBlock(RailcraftBlocks.IRON_WHISTLE_TRACK, "Iron Whistle Track");
     this.addBlock(RailcraftBlocks.IRON_LOCOMOTIVE_TRACK, "Iron Locomotive Track");
+    this.addBlock(RailcraftBlocks.IRON_THROTTLE_TRACK, "Iron Throttle Track");
     this.addBlock(RailcraftBlocks.IRON_ROUTING_TRACK, "Iron Routing Track");
 
     this.addBlock(RailcraftBlocks.ELEVATOR_TRACK, "Elevator Track");
@@ -757,6 +795,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.FEED_STATION, """
         Allows you to feed nearby animals automatically. Can be disabled with Redstone. \
         Will stop feeding if there are too many animals nearby to prevent over-population.""");
+    this.add(Translations.Jei.LOGBOOK, """
+        The Logbook records any player that passes within a 16 blocks radius of the block and \
+        the day they visited. It can only be broken by the owner.""");
     this.add(Translations.Jei.BLOCK_SIGNAL, """
         This is the basic signal used for cart detection. It pairs one-to-one with an adjacent \
         Block Signal and will detect any carts between the two and sends the resulting aspect to \
@@ -897,6 +938,33 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Subtitle.STEAM_BURST, "Machine Steam Burst");
     this.add(Translations.Subtitle.STEAM_HISS, "Machine Steam Hiss");
     this.add(Translations.Subtitle.MACHINE_ZAP, "Machine Zap");
+  }
+
+  private void effectTranslations() {
+    this.add(RailcraftMobEffects.CREOSOTE.get(), "Creosote");
+  }
+
+  private void potionTranslations() {
+    final String prefixPotion = "item.minecraft.potion.effect.";
+    final String prefixSplashPotion = "item.minecraft.splash_potion.effect.";
+    final String prefixLingeringPotion = "item.minecraft.lingering_potion.effect.";
+    final String prefixTippedArrow = "item.minecraft.tipped_arrow.effect.";
+
+    final String creosote = RailcraftPotions.CREOSOTE.getId().getPath();
+    this.add(prefixPotion + creosote, "Potion of Creosote");
+    this.add(prefixSplashPotion + creosote, "Splash Potion of Creosote");
+    this.add(prefixLingeringPotion + creosote, "Lingering Potion of Creosote");
+    this.add(prefixTippedArrow + creosote, "Arrow of Creosote");
+  }
+
+  private void villagerTranslations() {
+    final String trackman = Translations.makeKey("entity.minecraft.villager",
+        RailcraftVillagerProfession.TRACKMAN.get().name());
+    final String railman = Translations.makeKey("entity.minecraft.villager",
+        RailcraftVillagerProfession.CARTMAN.get().name());
+
+    this.add(trackman, "Trackman");
+    this.add(railman, "Cartman");
   }
 
   private void damageSourceTranslations() {
@@ -1095,6 +1163,17 @@ public class RailcraftLanguageProvider extends LanguageProvider {
           4
           FALSE
         """);
+  }
+
+  private void chargeMeterTranslations() {
+    this.add(Translations.ChargeMeter.START, "Recording data over %s seconds...");
+    this.add(Translations.ChargeMeter.NETWORK, """
+        Network -> Size: %s | Charge: %s FE | Draw: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
+        Eff: %s%%""");
+    this.add(Translations.ChargeMeter.NODE, "Node -> Draw: %s FE/t | Loss: %s FE/t");
+    this.add(Translations.ChargeMeter.PRODUCER, """
+        Supply -> Charge: %s FE | Production: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
+        Eff: %s%%""");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {

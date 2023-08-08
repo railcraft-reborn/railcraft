@@ -50,11 +50,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * Created by CovertJaguar on 7/23/2016 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public class ChargeNetworkImpl implements Charge.Network {
 
   private static final Logger logger = LogUtils.getLogger();
@@ -703,8 +698,8 @@ public class ChargeNetworkImpl implements Charge.Network {
           }
           for (var entry : protections.entrySet()) {
             if (remainingDamage > 0.1F) {
-              var result = entry.getValue().zap(livingEntity.getItemBySlot(entry.getKey()),
-                  livingEntity, remainingDamage);
+              var result = entry.getValue()
+                  .zap(livingEntity.getItemBySlot(entry.getKey()), livingEntity, remainingDamage);
               entity.setItemSlot(entry.getKey(), result.stack());
               remainingDamage -= result.damagePrevented();
             } else {

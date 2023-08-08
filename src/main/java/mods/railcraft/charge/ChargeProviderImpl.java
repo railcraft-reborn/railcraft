@@ -5,11 +5,6 @@ import com.google.common.collect.MapMaker;
 import mods.railcraft.api.charge.Charge;
 import net.minecraft.server.level.ServerLevel;
 
-/**
- * Created by CovertJaguar on 7/26/2016 for Railcraft.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public enum ChargeProviderImpl implements Charge.Provider {
 
   DISTRIBUTION(Charge.distribution);

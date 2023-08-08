@@ -20,11 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * Created by CovertJaguar on 4/13/2015 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
     implements SignalControllerEntity, TokenSignalEntity {
 

@@ -33,11 +33,6 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-/**
- * Created by CovertJaguar on 8/29/2016 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock, SpikeMaulTarget {
 
   public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE;
@@ -79,6 +74,15 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     return this.trackType.get().getSpikeMaulVariants();
   }
 
+  @SuppressWarnings("deprecation")
+  @Override
+  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    super.tick(state, level, pos, random);
+    if (this.getTrackType().isElectric()) {
+      this.registerNode(state, level, pos);
+    }
+  }
+
   @Override
   public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
     if (this.getTrackType().isElectric()) {
@@ -106,7 +110,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newBlockState,
       boolean moved) {
     super.onRemove(blockState, level, pos, newBlockState, moved);
-    if (!blockState.is(newBlockState.getBlock())) {
+    if (this.getTrackType().isElectric() && !blockState.is(newBlockState.getBlock())) {
       this.deregisterNode((ServerLevel) level, pos);
     }
   }

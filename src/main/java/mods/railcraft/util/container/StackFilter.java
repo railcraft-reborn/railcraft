@@ -26,8 +26,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * A collection of helper methods for creating {@code Predicate<ItemStack>} objects.
- *
- * @author CovertJaguar (https://www.railcraft.info)
  */
 public enum StackFilter implements Predicate<ItemStack> {
 

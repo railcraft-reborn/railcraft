@@ -12,9 +12,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 
-/**
- * Created by CovertJaguar on 8/1/2016 for Railcraft.
- */
 public final class ChargeSavedData extends SavedData {
 
   private static final int ABSENT_VALUE = -1;

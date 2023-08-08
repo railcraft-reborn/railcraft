@@ -1,6 +1,7 @@
 package mods.railcraft.data.models;
 
 import java.util.function.Function;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -8,6 +9,7 @@ import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
+import mods.railcraft.world.level.block.LogBookBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamOvenBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
@@ -15,6 +17,7 @@ import mods.railcraft.world.level.block.SteamTurbineBlock.Type;
 import mods.railcraft.world.level.block.charge.BatteryBlock;
 import mods.railcraft.world.level.block.charge.DisposableBatteryBlock;
 import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
+import mods.railcraft.world.level.block.charge.FrameBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.FluidManipulatorBlock;
@@ -22,6 +25,9 @@ import mods.railcraft.world.level.block.manipulator.ManipulatorBlock;
 import mods.railcraft.world.level.block.post.Column;
 import mods.railcraft.world.level.block.post.Connection;
 import mods.railcraft.world.level.block.post.PostBlock;
+import mods.railcraft.world.level.block.signal.DualSignalBlock;
+import mods.railcraft.world.level.block.signal.SignalBoxBlock;
+import mods.railcraft.world.level.block.signal.SingleSignalBlock;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.BaseTankBlock;
@@ -52,8 +58,10 @@ import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlo
 import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.RoutingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.ThrottleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
@@ -111,6 +119,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private StraightTrackModelSet activeOneWayTrackModels;
   private StraightTrackModelSet routingTrackModels;
   private StraightTrackModelSet activeRoutingTrackModels;
+  private StraightTrackModelSet whistleTrackModels;
+  private StraightTrackModelSet activeWhistleTrackModels;
   private StraightTrackModelSet transitionTrackModels;
   private StraightTrackModelSet activeTransitionTrackModels;
   private StraightTrackModelSet detectorTrackModels;
@@ -226,7 +236,6 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       this.createPost(RailcraftBlocks.POST.variantFor(dyeColor).get());
     }
 
-
     this.simpleBlock(RailcraftBlocks.STEEL_BLOCK.get());
     this.simpleBlock(RailcraftBlocks.BRASS_BLOCK.get());
     this.simpleBlock(RailcraftBlocks.BRONZE_BLOCK.get());
@@ -282,6 +291,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createCubeTopBottomBlock(RailcraftBlocks.POWERED_ROLLING_MACHINE.get());
     this.createSteamOven(RailcraftBlocks.STEAM_OVEN.get());
 
+    this.createFrameBlock(RailcraftBlocks.FRAME.get());
+    this.createLogBookBlock(RailcraftBlocks.LOGBOOK.get());
+
     this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
     this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
     this.createManipulator(RailcraftBlocks.ITEM_LOADER.get());
@@ -312,6 +324,22 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createDisposableBattery(RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
         RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get());
 
+    this.createSignalBoxBlock(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_RECEIVER_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
+
+    this.createSingleSignalBlock(RailcraftBlocks.BLOCK_SIGNAL.get());
+    this.createSingleSignalBlock(RailcraftBlocks.DISTANT_SIGNAL.get());
+    this.createSingleSignalBlock(RailcraftBlocks.TOKEN_SIGNAL.get());
+
+    this.createDualSignalBlock(RailcraftBlocks.DUAL_BLOCK_SIGNAL.get());
+    this.createDualSignalBlock(RailcraftBlocks.DUAL_DISTANT_SIGNAL.get());
+    this.createDualSignalBlock(RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
+
     // Not put in the constructor!
     this.activatorTrackModels = this.createTrackModelSet("activator_track");
     this.activeActivatorTrackModels = this.createActiveTrackModelSet("activator_track");
@@ -325,6 +353,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.activeOneWayTrackModels = this.createActiveTrackModelSet("one_way_track");
     this.routingTrackModels = this.createTrackModelSet("routing_track");
     this.activeRoutingTrackModels = this.createActiveTrackModelSet("routing_track");
+    this.whistleTrackModels = this.createTrackModelSet("whistle_track");
+    this.activeWhistleTrackModels = this.createActiveTrackModelSet("whistle_track");
     this.transitionTrackModels = this.createTrackModelSet("transition_track");
     this.activeTransitionTrackModels = this.createActiveTrackModelSet("transition_track");
     this.detectorTrackModels = this.createTrackModelSet("detector_track");
@@ -368,7 +398,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get(),
         RailcraftBlocks.ABANDONED_LAUNCHER_TRACK.get(),
         RailcraftBlocks.ABANDONED_ONE_WAY_TRACK.get(),
+        RailcraftBlocks.ABANDONED_WHISTLE_TRACK.get(),
         RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.ABANDONED_THROTTLE_TRACK.get(),
         RailcraftBlocks.ABANDONED_ROUTING_TRACK.get());
 
     this.createOutfittedTracks(Blocks.RAIL,
@@ -387,7 +419,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.IRON_JUNCTION_TRACK.get(),
         RailcraftBlocks.IRON_LAUNCHER_TRACK.get(),
         RailcraftBlocks.IRON_ONE_WAY_TRACK.get(),
+        RailcraftBlocks.IRON_WHISTLE_TRACK.get(),
         RailcraftBlocks.IRON_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.IRON_THROTTLE_TRACK.get(),
         RailcraftBlocks.IRON_ROUTING_TRACK.get());
 
     this.createTracks(RailcraftBlocks.STRAP_IRON_TRACK.get(),
@@ -406,7 +440,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK.get(),
+        RailcraftBlocks.STRAP_IRON_WHISTLE_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_ROUTING_TRACK.get());
 
     this.createTracks(RailcraftBlocks.REINFORCED_TRACK.get(),
@@ -425,7 +461,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get(),
         RailcraftBlocks.REINFORCED_LAUNCHER_TRACK.get(),
         RailcraftBlocks.REINFORCED_ONE_WAY_TRACK.get(),
+        RailcraftBlocks.REINFORCED_WHISTLE_TRACK.get(),
         RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.REINFORCED_THROTTLE_TRACK.get(),
         RailcraftBlocks.REINFORCED_ROUTING_TRACK.get());
 
     this.createTracks(RailcraftBlocks.ELECTRIC_TRACK.get(),
@@ -444,7 +482,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get(),
         RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK.get(),
         RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK.get(),
+        RailcraftBlocks.ELECTRIC_WHISTLE_TRACK.get(),
         RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.ELECTRIC_THROTTLE_TRACK.get(),
         RailcraftBlocks.ELECTRIC_ROUTING_TRACK.get());
 
     this.createHighSpeedTracks(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
@@ -456,7 +496,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_WYE_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_JUNCTION_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get());
+        RailcraftBlocks.HIGH_SPEED_WHISTLE_TRACK.get(),
+        RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK.get());
 
     this.createHighSpeedTracks(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
@@ -467,7 +509,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_WYE_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(),
-        RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get());
+        RailcraftBlocks.HIGH_SPEED_ELECTRIC_WHISTLE_TRACK.get(),
+        RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
+        RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get());
   }
 
   private void createStrengthenedGlass(Block block) {
@@ -476,13 +520,13 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var singleModel = this.models().cubeAll(this.name(block, "_single"), endTexture)
         .renderType(CUTOUT);
     var topModel = this.models().cubeColumn(this.name(block, "_top"),
-        TextureMapping.getBlockTexture(block, "_side_top"), endTexture)
+            TextureMapping.getBlockTexture(block, "_side_top"), endTexture)
         .renderType(CUTOUT);
     var centerModel = this.models().cubeColumn(this.name(block, "_center"),
-        TextureMapping.getBlockTexture(block, "_side_center"), endTexture)
+            TextureMapping.getBlockTexture(block, "_side_center"), endTexture)
         .renderType(CUTOUT);
     var bottomModel = this.models().cubeColumn(this.name(block, "_bottom"),
-        TextureMapping.getBlockTexture(block, "_side_bottom"), endTexture)
+            TextureMapping.getBlockTexture(block, "_side_bottom"), endTexture)
         .renderType(CUTOUT);
 
     this.getVariantBuilder(block)
@@ -501,7 +545,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private void createFluidManipulator(FluidManipulatorBlock<?> block) {
     var texture = TextureMapping.cubeBottomTop(block);
     var model = this.models().cubeBottomTop(this.name(block), texture.get(TextureSlot.SIDE),
-        texture.get(TextureSlot.BOTTOM), texture.get(TextureSlot.TOP))
+            texture.get(TextureSlot.BOTTOM), texture.get(TextureSlot.TOP))
         .renderType(CUTOUT);
 
     this.simpleBlock(block, model);
@@ -779,6 +823,63 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.simpleBlockItem(block, model);
   }
 
+  private void createFrameBlock(FrameBlock block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    var topTexture = TextureMapping.getBlockTexture(block, "_top");
+    var topPoweredTexture = TextureMapping.getBlockTexture(block, "_top_powered");
+
+    var frameTemplate = this.modLoc("frame_template");
+
+    var model =
+        this.models().withExistingParent(name(block), frameTemplate)
+        .texture("side", sideTexture)
+        .texture("top", topTexture)
+        .renderType(CUTOUT);
+
+    var modelPowered =
+        this.models().withExistingParent(name(block, "_powered"), frameTemplate)
+        .texture("side", sideTexture)
+        .texture("top", topPoweredTexture)
+        .renderType(CUTOUT);
+
+    this.getVariantBuilder(block)
+        .forAllStates(blockState -> {
+          var powered = blockState.getValue(FrameBlock.POWERED);
+          return ConfiguredModel.builder().modelFile(powered ? modelPowered : model).build();
+        });
+
+    this.simpleBlockItem(block, model);
+  }
+
+  private void createLogBookBlock(LogBookBlock block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    var topTexture = TextureMapping.getBlockTexture(block, "_top");
+    var bottomTexture = TextureMapping.getBlockTexture(block, "_bottom");
+    var coverTexture = TextureMapping.getBlockTexture(block, "_cover");
+    var paperTexture = TextureMapping.getBlockTexture(block, "_paper");
+
+    var logbookTemplate = this.modLoc("logbook_template");
+
+    var model =
+        this.models().withExistingParent(name(block), logbookTemplate)
+            .texture("paper", paperTexture)
+            .texture("cover", coverTexture)
+            .texture("side", sideTexture)
+            .texture("top", topTexture)
+            .texture("bottom", bottomTexture);
+
+
+    this.getVariantBuilder(block)
+        .forAllStates(blockState -> {
+          var facing = blockState.getValue(LogBookBlock.FACING);
+          return ConfiguredModel.builder()
+              .modelFile(model)
+              .rotationY(((int) facing.toYRot() + 180) % 360)
+              .build();
+        });
+    this.simpleBlockItem(block, model);
+  }
+
   private void createPost(PostBlock block) {
     var texture = TextureMapping.defaultTexture(block).get(TextureSlot.TEXTURE);
     var postFullColumnTemplate = this.modLoc("template_post_full_column");
@@ -940,6 +1041,125 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         .texture("side_b", sideB);
 
     this.simpleBlockWithItem(emptyBattery, model);
+  }
+
+  private void createSignalBoxBlock(SignalBoxBlock signalBlock) {
+    var up = modLoc("entity/signal_box/" + name(signalBlock));
+
+    var model = this.models()
+        .withExistingParent(name(signalBlock), modLoc("signal_box"))
+        .texture("up", up);
+
+    this.itemModels().withExistingParent(this.name(signalBlock), model.getLocation());
+
+    var signalBoxCapModel = this.models().getExistingFile(modLoc("block/signal_box_cap"));
+    var signalBoxConnectorModel = this.models()
+        .getExistingFile(modLoc("block/signal_box_connector"));
+
+    this.getMultipartBuilder(signalBlock)
+        .part()
+        .modelFile(signalBoxCapModel).addModel()
+        .condition(SignalBoxBlock.CAP, true).end()
+        .part()
+        .modelFile(signalBoxConnectorModel).addModel()
+        .condition(SignalBoxBlock.NORTH, true).end()
+        .part()
+        .modelFile(signalBoxConnectorModel).rotationY(90).addModel()
+        .condition(SignalBoxBlock.EAST, true).end()
+        .part()
+        .modelFile(signalBoxConnectorModel).rotationY(180).addModel()
+        .condition(SignalBoxBlock.SOUTH, true).end()
+        .part()
+        .modelFile(signalBoxConnectorModel).rotationY(270).addModel()
+        .condition(SignalBoxBlock.WEST, true).end();
+  }
+
+  private void createSingleSignalBlock(SingleSignalBlock signalBlock) {
+    var signalPostModel = this.models().getExistingFile(modLoc("block/signal_post"));
+    var signalModel = this.models().getExistingFile(modLoc("block/signal"));
+    var signalConnectorModel = this.models().getExistingFile(modLoc("block/signal_connector"));
+
+    this.getMultipartBuilder(signalBlock)
+        .part()
+        .modelFile(signalPostModel).addModel()
+        .condition(SingleSignalBlock.DOWN, true).end()
+        .part()
+        .modelFile(signalModel).addModel()
+        .condition(SingleSignalBlock.FACING, Direction.NORTH).end()
+        .part()
+        .modelFile(signalModel).rotationY(90).addModel()
+        .condition(SingleSignalBlock.FACING, Direction.EAST).end()
+        .part()
+        .modelFile(signalModel).rotationY(180).addModel()
+        .condition(SingleSignalBlock.FACING, Direction.SOUTH).end()
+        .part()
+        .modelFile(signalModel).rotationY(270).addModel()
+        .condition(SingleSignalBlock.FACING, Direction.WEST).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(270).addModel()
+        .condition(SingleSignalBlock.NORTH, true).end()
+        .part()
+        .modelFile(signalConnectorModel).addModel()
+        .condition(SingleSignalBlock.EAST, true).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(90).addModel()
+        .condition(SingleSignalBlock.SOUTH, true).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(180).addModel()
+        .condition(SingleSignalBlock.WEST, true).end();
+  }
+
+  private void createDualSignalBlock(DualSignalBlock signalBlock) {
+    ResourceLocation topLamp;
+    ResourceLocation bottomLamp;
+    if (signalBlock == RailcraftBlocks.DUAL_DISTANT_SIGNAL.get()) {
+      topLamp = modLoc("entity/signal_aspect/red");
+      bottomLamp = modLoc("entity/signal_aspect/green");
+    } else if (signalBlock == RailcraftBlocks.DUAL_TOKEN_SIGNAL.get()) {
+      topLamp = modLoc("entity/signal_aspect/green");
+      bottomLamp = modLoc("entity/signal_aspect/yellow");
+    } else if (signalBlock == RailcraftBlocks.DUAL_BLOCK_SIGNAL.get()) {
+      topLamp = modLoc("entity/signal_aspect/green");
+      bottomLamp = modLoc("entity/signal_aspect/red");
+    } else {
+      throw new NotImplementedException();
+    }
+
+    var model = this.models()
+        .withExistingParent(name(signalBlock, "_inventory"), modLoc("dual_signal_inventory"))
+        .texture("top_lamp", topLamp)
+        .texture("bottom_lamp", bottomLamp);
+
+    this.itemModels().withExistingParent(this.name(signalBlock), model.getLocation());
+
+    var signalModel = this.models().getExistingFile(modLoc("block/dual_signal"));
+    var signalConnectorModel = this.models().getExistingFile(modLoc("block/signal_connector"));
+
+    this.getMultipartBuilder(signalBlock)
+        .part()
+        .modelFile(signalModel).addModel()
+        .condition(DualSignalBlock.FACING, Direction.NORTH).end()
+        .part()
+        .modelFile(signalModel).rotationY(90).addModel()
+        .condition(DualSignalBlock.FACING, Direction.EAST).end()
+        .part()
+        .modelFile(signalModel).rotationY(180).addModel()
+        .condition(DualSignalBlock.FACING, Direction.SOUTH).end()
+        .part()
+        .modelFile(signalModel).rotationY(270).addModel()
+        .condition(DualSignalBlock.FACING, Direction.WEST).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(270).addModel()
+        .condition(DualSignalBlock.NORTH, true).end()
+        .part()
+        .modelFile(signalConnectorModel).addModel()
+        .condition(DualSignalBlock.EAST, true).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(90).addModel()
+        .condition(DualSignalBlock.SOUTH, true).end()
+        .part()
+        .modelFile(signalConnectorModel).rotationY(180).addModel()
+        .condition(DualSignalBlock.WEST, true).end();
   }
 
   public void fluidBlock(LiquidBlock block) {
@@ -1126,7 +1346,6 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             westSwitchedTexture)
         .renderType(CUTOUT);
 
-
     getVariantBuilder(block)
         .forAllStatesExcept(blockState -> {
           var railShape = blockState.getValue(SwitchTrackBlock.SHAPE);
@@ -1289,13 +1508,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       DisembarkingTrackBlock disembarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
       WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
       LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-      LocomotiveTrackBlock locomotiveTrackBlock, RoutingTrackBlock routingTrackBlock) {
+      WhistleTrackBlock whistleTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock,
+      ThrottleTrackBlock throttleTrackBlock, RoutingTrackBlock routingTrackBlock) {
     this.createAbandonedFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
         boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
         couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, turnoutTrackBlock,
         wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
-        locomotiveTrackBlock, routingTrackBlock);
+        whistleTrackBlock, locomotiveTrackBlock, throttleTrackBlock, routingTrackBlock);
   }
 
   private void createTracks(TrackBlock block, LockingTrackBlock lockingTrackBlock,
@@ -1306,13 +1526,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       DisembarkingTrackBlock disembarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
       WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
       LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-      LocomotiveTrackBlock locomotiveTrackBlock, RoutingTrackBlock routingTrackBlock) {
+      WhistleTrackBlock whistleTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock,
+      ThrottleTrackBlock throttleTrackBlock, RoutingTrackBlock routingTrackBlock) {
     this.createFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
         boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
         couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, turnoutTrackBlock,
         wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
-        locomotiveTrackBlock, routingTrackBlock);
+        whistleTrackBlock, locomotiveTrackBlock, throttleTrackBlock, routingTrackBlock);
   }
 
   private void createOutfittedTracks(Block block, LockingTrackBlock lockingTrackBlock,
@@ -1323,7 +1544,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       DisembarkingTrackBlock disembarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
       WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
       LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-      LocomotiveTrackBlock locomotiveTrackBlock, RoutingTrackBlock routingTrackBlock) {
+      WhistleTrackBlock whistleTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock,
+      ThrottleTrackBlock throttleTrackBlock, RoutingTrackBlock routingTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
 
     this.createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
@@ -1338,6 +1560,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.oneWayTrackModels, this.activeOneWayTrackModels);
     this.createActiveOutfittedTrack(routingTrackBlock, true, false, outfittedTrackModels,
         this.routingTrackModels, this.activeRoutingTrackModels);
+    this.createActiveOutfittedTrack(whistleTrackBlock, true, false, outfittedTrackModels,
+        this.whistleTrackModels, this.activeWhistleTrackModels);
 
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels,
         this.detectorTrackModels,
@@ -1366,6 +1590,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.activeDisembarkingTrackRight);
 
     this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
+    this.createThrottleTrack(throttleTrackBlock, outfittedTrackModels.flatModel());
     this.createBufferStopTrack(bufferStopTrackBlock, outfittedTrackModels.flatModel());
     this.createTurnoutTrack(turnoutTrackBlock);
     this.createWyeTrack(wyeTrackBlock);
@@ -1376,7 +1601,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       LockingTrackBlock lockingTrackBlock, ActivatorTrackBlock activatorTrackBlock,
       BoosterTrackBlock boosterTrackBlock, DetectorTrackBlock detectorTrackBlock,
       TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
-      JunctionTrackBlock junctionTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock) {
+      JunctionTrackBlock junctionTrackBlock, WhistleTrackBlock whistleTrackBlock,
+      LocomotiveTrackBlock locomotiveTrackBlock, ThrottleTrackBlock throttleTrackBlock) {
     this.createFlexTrack(block);
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
 
@@ -1386,6 +1612,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.boosterTrackModels, this.activeBoosterTrackModels);
     this.createActiveOutfittedTrack(transitionTrackBlock, true, true, outfittedTrackModels,
         this.transitionTrackModels, this.activeTransitionTrackModels);
+    this.createActiveOutfittedTrack(whistleTrackBlock, true, false, outfittedTrackModels,
+        this.whistleTrackModels, this.activeWhistleTrackModels);
 
     this.createDetectorTrack(detectorTrackBlock, outfittedTrackModels,
         this.detectorTrackModels,
@@ -1402,6 +1630,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.activeLocomotiveTrackRunningModel);
 
     this.createLockingTrack(lockingTrackBlock, outfittedTrackModels.flatModel());
+    this.createThrottleTrack(throttleTrackBlock, outfittedTrackModels.flatModel());
     this.createTurnoutTrack(turnoutTrackBlock);
     this.createWyeTrack(wyeTrackBlock);
     this.createJunctionTrack(junctionTrackBlock);
@@ -1477,6 +1706,78 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         .condition(LockingTrackBlock.POWERED, true)
         .condition(LockingTrackBlock.SHAPE, RailShape.EAST_WEST).end();
   }
+
+  private void createThrottleTrack(ThrottleTrackBlock block, ModelFile trackModel) {
+    var speed1 = this.createPassiveRail("throttle_track_1");
+    var speed2 = this.createPassiveRail("throttle_track_2");
+    var speed3 = this.createPassiveRail("throttle_track_3");
+    var speed4 = this.createPassiveRail("throttle_track_4");
+    var speed1Reverse = this.createPassiveRail("throttle_track_1_reverse");
+    var speed2Reverse = this.createPassiveRail("throttle_track_2_reverse");
+    var speed3Reverse = this.createPassiveRail("throttle_track_3_reverse");
+    var speed4Reverse = this.createPassiveRail("throttle_track_4_reverse");
+
+    var activeSpeed1 = this.createActiveRail("throttle_track_1");
+    var activeSpeed2 = this.createActiveRail("throttle_track_2");
+    var activeSpeed3 = this.createActiveRail("throttle_track_3");
+    var activeSpeed4 = this.createActiveRail("throttle_track_4");
+    var activeSpeed1Reverse = this.createActiveRail("throttle_track_1_reverse");
+    var activeSpeed2Reverse = this.createActiveRail("throttle_track_2_reverse");
+    var activeSpeed3Reverse = this.createActiveRail("throttle_track_3_reverse");
+    var activeSpeed4Reverse = this.createActiveRail("throttle_track_4_reverse");
+
+    var builder = this.getMultipartBuilder(block)
+        .part()
+        .modelFile(trackModel).addModel()
+        .condition(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH).end()
+        .part()
+        .modelFile(trackModel).rotationY(90).addModel()
+        .condition(LockingTrackBlock.SHAPE, RailShape.EAST_WEST).end();
+
+    this.addSpeedMode(Locomotive.Speed.SLOWEST, speed1, activeSpeed1, false, builder);
+    this.addSpeedMode(Locomotive.Speed.SLOWER, speed2, activeSpeed2, false, builder);
+    this.addSpeedMode(Locomotive.Speed.NORMAL, speed3, activeSpeed3, false, builder);
+    this.addSpeedMode(Locomotive.Speed.MAX, speed4, activeSpeed4, false, builder);
+
+    this.addSpeedMode(Locomotive.Speed.SLOWEST, speed1Reverse, activeSpeed1Reverse, true, builder);
+    this.addSpeedMode(Locomotive.Speed.SLOWER, speed2Reverse, activeSpeed2Reverse, true, builder);
+    this.addSpeedMode(Locomotive.Speed.NORMAL, speed3Reverse, activeSpeed3Reverse, true, builder);
+    this.addSpeedMode(Locomotive.Speed.MAX, speed4Reverse, activeSpeed4Reverse, true, builder);
+
+    this.itemModels().basicItem(block.asItem());
+  }
+
+  private void addSpeedMode(Locomotive.Speed speed, BlockModelBuilder model,
+      BlockModelBuilder poweredModel, boolean reverse, MultiPartBlockStateBuilder builder) {
+    builder
+        .part()
+        .modelFile(model).addModel()
+        .condition(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+        .condition(ThrottleTrackBlock.REVERSE, reverse)
+        .condition(ThrottleTrackBlock.POWERED, false)
+        .condition(ThrottleTrackBlock.SHAPE, RailShape.NORTH_SOUTH).end()
+        .part()
+        .modelFile(poweredModel).addModel()
+        .condition(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+        .condition(ThrottleTrackBlock.REVERSE, reverse)
+        .condition(ThrottleTrackBlock.POWERED, true)
+        .condition(ThrottleTrackBlock.SHAPE, RailShape.NORTH_SOUTH).end()
+        .part()
+        .modelFile(model).rotationY(90).addModel()
+        .condition(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+        .condition(ThrottleTrackBlock.REVERSE, reverse)
+        .condition(ThrottleTrackBlock.POWERED, false)
+        .condition(ThrottleTrackBlock.SHAPE, RailShape.EAST_WEST).end()
+        .part()
+        .modelFile(poweredModel).rotationY(90).addModel()
+        .condition(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+        .condition(ThrottleTrackBlock.REVERSE, reverse)
+        .condition(ThrottleTrackBlock.POWERED, true)
+        .condition(ThrottleTrackBlock.SHAPE, RailShape.EAST_WEST).end();
+  }
+
+
+
 
   private void createBufferStopTrack(BufferStopTrackBlock block, ModelFile trackModel) {
     var bufferStop = new ModelFile.UncheckedModelFile(this.modLoc("block/buffer_stop"));
@@ -1819,11 +2120,6 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       ModelFile raisedNorthEastModel,
       ModelFile raisedSouthWestModel) {
 
-    private void apply(MultiPartBlockStateBuilder builder, Property<RailShape> shapeProperty,
-        boolean includeRaised, boolean reversed) {
-      this.apply(builder, shapeProperty, includeRaised, reversed, null);
-    }
-
     private static MultiPartBlockStateBuilder.PartBuilder conditions(
         MultiPartBlockStateBuilder.PartBuilder.ConditionGroup partialBuilder,
         @Nullable Condition conditions) {
@@ -1837,6 +2133,11 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .ifPresent(v -> partialBuilder.conditions.put(key, v)));
       }
       return partialBuilder.end();
+    }
+
+    private void apply(MultiPartBlockStateBuilder builder, Property<RailShape> shapeProperty,
+        boolean includeRaised, boolean reversed) {
+      this.apply(builder, shapeProperty, includeRaised, reversed, null);
     }
 
     private void apply(MultiPartBlockStateBuilder builder, Property<RailShape> shapeProperty,

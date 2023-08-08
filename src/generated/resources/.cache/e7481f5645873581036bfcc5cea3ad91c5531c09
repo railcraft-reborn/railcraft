@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-29T09:24:52.474043	Item Models: railcraft
+// 1.20.1	2023-07-28T21:56:56.556627	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -19,6 +19,7 @@ b11c82dbe18806a4c3634ece13fd12ce97bbb9e3 assets/railcraft/models/item/bronze_pla
 5fe026f023c54d2f56719260eb0e673515710337 assets/railcraft/models/item/carbon_electrode.json
 b78986baf137bb0e6a9dc922d8b54caf71abb12b assets/railcraft/models/item/charcoal_dust.json
 32227b01f19ae25a4cee098cdc48b2747f2e68d0 assets/railcraft/models/item/charge_coil.json
+293bf4189f82fe7a715912c7387048b0cf84d636 assets/railcraft/models/item/charge_meter.json
 feb0008a66073c2c8402bcf8f53d769f402a3442 assets/railcraft/models/item/charge_motor.json
 17a35bb835ad6b86205d327f8142734bcd51d944 assets/railcraft/models/item/charge_spool_large.json
 7ef14f34cd846d824bb04dc39bd709e59d69b541 assets/railcraft/models/item/charge_spool_medium.json
@@ -121,6 +122,7 @@ bf6ab77a592fe47522f767fdb40eea83daa29654 assets/railcraft/models/item/stone_rail
 d09c40ece8346371f32f9de6c7003597c7da616e assets/railcraft/models/item/stone_tie.json
 df2d20137c3ed09bfd996c4860fb566f328dff54 assets/railcraft/models/item/sulfur_dust.json
 74bc16c4a2844490d22922e6525cba7394fda212 assets/railcraft/models/item/tank_minecart.json
+6d762241749515334140f5f39a9f1306fe9ed5c1 assets/railcraft/models/item/throttle_track_kit.json
 a2d0c82dedb26272b4ba1cbaa2660a9880ae031f assets/railcraft/models/item/ticket.json
 9992ce25a341f848952d4b2bf03dfe69aa2769be assets/railcraft/models/item/tin_electrode.json
 afe0c98c6d7c96d82299b5c4027d6602155a1132 assets/railcraft/models/item/tin_gear.json
@@ -136,6 +138,7 @@ b8ee3f30a0947add5c16ac4e9642896b7513f0a1 assets/railcraft/models/item/transition
 96b6d43295f0885600b2862daabd7ce152d679fc assets/railcraft/models/item/turbine_blade.json
 1661dbebd2453a40e97b9ebad718687bd3cdae08 assets/railcraft/models/item/turbine_disk.json
 e8838ab9c684e06d9c5aa4afb22d1fef73808f4f assets/railcraft/models/item/turbine_rotor.json
+f149bdfae1a9848b1a630636285872e23dddab3b assets/railcraft/models/item/whistle_track_kit.json
 3ea3596bd7cb8e4018f134c86a7c89d67b20ed5d assets/railcraft/models/item/whistle_tuner.json
 a23458d7b292eebb148578f4372e3980f19f31ee assets/railcraft/models/item/wooden_rail.json
 54f23932c8d03f68259e3528c58ab2479a0a1a61 assets/railcraft/models/item/wooden_railbed.json

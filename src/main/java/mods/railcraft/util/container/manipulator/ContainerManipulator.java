@@ -26,14 +26,10 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 /**
  * This interface defines the standard inventory operations.
- *
+ * <p>
  * Other classes may expand on these, but these are foundations that everything else is built on.
- *
+ * <p>
  * This interface exists mainly to enforce a consistent naming scheme on these functions.
- *
- * Created by CovertJaguar on 12/9/2018 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
  */
 public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T> {
 

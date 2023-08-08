@@ -152,7 +152,9 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.DISEMBARKING_TRACK_KIT.get());
         this.basicItem(RailcraftItems.LAUNCHER_TRACK_KIT.get());
         this.basicItem(RailcraftItems.ONE_WAY_TRACK_KIT.get());
+        this.basicItem(RailcraftItems.WHISTLE_TRACK_KIT.get());
         this.basicItem(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get());
+        this.basicItem(RailcraftItems.THROTTLE_TRACK_KIT.get());
         this.basicItem(RailcraftItems.ROUTING_TRACK_KIT.get());
         this.basicItem(RailcraftItems.CHARGE_SPOOL_LARGE.get());
         this.basicItem(RailcraftItems.CHARGE_SPOOL_MEDIUM.get());
@@ -160,6 +162,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.CHARGE_COIL.get());
         this.basicItem(RailcraftItems.CHARGE_TERMINAL.get());
         this.basicItem(RailcraftItems.CHARGE_MOTOR.get());
+        this.basicItem(RailcraftItems.CHARGE_METER.get());
 
         this.basicHandheldItem(RailcraftItems.STEEL_SWORD.get());
         this.basicHandheldItem(RailcraftItems.STEEL_SHOVEL.get());

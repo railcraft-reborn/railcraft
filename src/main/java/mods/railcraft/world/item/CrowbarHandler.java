@@ -22,9 +22,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * @author CovertJaguar (https://www.railcraft.info)
- */
 public class CrowbarHandler {
 
   public static final float SMACK_VELOCITY = 0.07f;

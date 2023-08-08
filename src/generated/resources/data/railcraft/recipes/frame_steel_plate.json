@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "tag": "forge:plates/steel"
+    },
+    "b": {
+      "item": "railcraft:rebar"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "b b",
+    "bbb"
+  ],
+  "result": {
+    "count": 10,
+    "item": "railcraft:frame"
+  },
+  "show_notification": true
+}

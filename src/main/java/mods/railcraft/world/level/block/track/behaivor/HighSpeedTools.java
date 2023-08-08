@@ -18,11 +18,6 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * Created by CovertJaguar on 8/2/2016 for Railcraft.
- *
- * @author CovertJaguar (https://www.railcraft.info)
- */
 public final class HighSpeedTools {
 
   public static final float SPEED_EXPLODE = 0.5f;

@@ -219,6 +219,7 @@ public class Translations {
     public static final String COAL_COKE_BLOCK = makeKey("tips", "coal_coke_block");
     public static final String FORCE_TRACK_EMITTER = makeKey("tips", "force_track_emitter");
     public static final String FEED_STATION = makeKey("tips", "feed_station");
+    public static final String LOGBOOK = makeKey("tips", "logbook");
     public static final String ROLLING_MACHINE = makeKey("tips", "rolling_machine");
     public static final String ITEM_LOADER = makeKey("tips", "item_loader");
     public static final String ITEM_UNLOADER = makeKey("tips", "item_unloader");
@@ -226,6 +227,14 @@ public class Translations {
     public static final String FLUID_UNLOADER = makeKey("tips", "fluid_unloader");
     public static final String CART_DISPENSER = makeKey("tips", "cart_dispenser");
     public static final String TRAIN_DISPENSER = makeKey("tips", "train_dispenser");
+    public static final String BLOCK_SIGNAL = makeKey("tips", "block_signal");
+    public static final String DISTANT_SIGNAL = makeKey("tips", "distant_signal");
+    public static final String TOKEN_SIGNAL = makeKey("tips", "token_signal");
+    public static final String SIGNAL_BLOCKS = makeKey("tips", "signal_blocks");
+    public static final String CONTROLLERS = makeKey("tips", "controllers");
+    public static final String SIGNAL_SURVEYOR = makeKey("tips", "signal_surveyor");
+    public static final String TOKEN_AREA = makeKey("tips", "token_area");
+    public static final String FRAME = makeKey("tips", "frame");
     public static final String SIGNAL_BLOCK_SURVEYOR =
         makeKey("tips", "signal_block_surveyor");
     public static final String LINKS_CONTROLLERS_TO_RECEIVERS =
@@ -286,7 +295,9 @@ public class Translations {
     public static final String COUPLER_TRACK = makeKey("tips", "coupler_track");
     public static final String LAUNCHER_TRACK = makeKey("tips", "launcher_track");
     public static final String ONE_WAY_TRACK = makeKey("tips", "one_way_track");
+    public static final String WHISTLE_TRACK = makeKey("tips", "whistle_track");
     public static final String LOCOMOTIVE_TRACK = makeKey("tips", "locomotive_track");
+    public static final String THROTTLE_TRACK = makeKey("tips", "throttle_track");
     public static final String LOCKING_TRACK = makeKey("tips", "locking_track");
     public static final String TRANSITION_TRACK = makeKey("tips", "transition_track");
     public static final String ROUTING_TRACK = makeKey("tips", "routing_track");
@@ -360,6 +371,7 @@ public class Translations {
     public static final String POWERED_ROLLING_MACHINE =
         makeKey("jei", "desc.powered_rolling_machine");
     public static final String FEED_STATION = makeKey("jei", "desc.feed_station");
+    public static final String LOGBOOK = makeKey("jei", "desc.logbook");
     public static final String BLOCK_SIGNAL = makeKey("jei", "desc.block_signal");
     public static final String DISTANT_SIGNAL = makeKey("jei", "desc.distant_signal");
     public static final String TOKEN_SIGNAL = makeKey("jei", "desc.token_signal");
@@ -553,6 +565,13 @@ public class Translations {
         makeKey("error.routing", "unsupported_regex");
     public static final String UNRECOGNIZED_KEYWORD =
         makeKey("error.routing", "unrecognized_keyword");
+  }
+
+  public static class ChargeMeter {
+    public static final String START = makeKey("charge_meter", "start");
+    public static final String NETWORK = makeKey("charge_meter", "network");
+    public static final String NODE = makeKey("charge_meter", "node");
+    public static final String PRODUCER = makeKey("charge_meter", "producer");
   }
 
   public static String makeKey(String type, String name) {

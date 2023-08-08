@@ -112,6 +112,12 @@ public class RailcraftBlockEntityTypes {
               .of(FeedStationBlockEntity::new, RailcraftBlocks.FEED_STATION.get())
               .build(null));
 
+  public static final RegistryObject<BlockEntityType<LogBookBlockEntity>> LOGBOOK =
+      deferredRegister.register("logbook",
+          () -> BlockEntityType.Builder
+              .of(LogBookBlockEntity::new, RailcraftBlocks.LOGBOOK.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<FluidLoaderBlockEntity>> FLUID_LOADER =
       deferredRegister.register("fluid_loader",
           () -> BlockEntityType.Builder
@@ -248,7 +254,8 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.NICKEL_IRON_BATTERY.get(),
                   RailcraftBlocks.NICKEL_ZINC_BATTERY.get(),
                   RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
-                  RailcraftBlocks.ZINC_CARBON_BATTERY.get())
+                  RailcraftBlocks.ZINC_CARBON_BATTERY.get(),
+                  RailcraftBlocks.FRAME.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<TurnoutTrackBlockEntity>> TURNOUT_TRACK =

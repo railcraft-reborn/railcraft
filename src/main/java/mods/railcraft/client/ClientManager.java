@@ -67,6 +67,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
 
 public class ClientManager {
 
@@ -106,44 +107,30 @@ public class ClientManager {
         SolidFueledSteamBoilerScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FLUID_FUELED_STEAM_BOILER.get(),
         FluidFueledSteamBoilerScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.STEAM_TURBINE.get(),
-        SteamTurbineScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TANK.get(),
-        TankScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.STEAM_TURBINE.get(), SteamTurbineScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TANK.get(), TankScreen::new);
     MenuScreens.register(RailcraftMenuTypes.WATER_TANK_SIDING.get(),
         WaterTankSidingScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TRACK_LAYER.get(),
-        TrackLayerScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(),
-        BlastFurnaceScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.FEED_STATION.get(),
-        FeedStationScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TRACK_LAYER.get(), TrackLayerScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.FEED_STATION.get(), FeedStationScreen::new);
     MenuScreens.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
         CreativeLocomotiveScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
         ElectricLocomotiveScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(),
-        SteamLocomotiveScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
     MenuScreens.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
         ManualRollingMachineScreen::new);
     MenuScreens.register(RailcraftMenuTypes.POWERED_ROLLING_MACHINE.get(),
         PoweredRollingMachineScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.COKE_OVEN.get(),
-        CokeOvenScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.CRUSHER.get(),
-        CrusherScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.STEAM_OVEN.get(),
-        SteamOvenScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(),
-        ItemManipulatorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(),
-        FluidManipulatorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.CART_DISPENSER.get(),
-        CartDispenserScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TRAIN_DISPENSER.get(),
-        TrainDispenserScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(),
-        TankMinecartScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.COKE_OVEN.get(), CokeOvenScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.CRUSHER.get(), CrusherScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.STEAM_OVEN.get(), SteamOvenScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(), ItemManipulatorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(), FluidManipulatorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.CART_DISPENSER.get(), CartDispenserScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TRAIN_DISPENSER.get(), TrainDispenserScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(), TankMinecartScreen::new);
     MenuScreens.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(),
         SwitchTrackRouterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
@@ -221,25 +208,26 @@ public class ClientManager {
 
   @SubscribeEvent
   public void handleClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
-    if (!Railcraft.BETA) {
+    if (!Railcraft.BETA && FMLLoader.isProduction()) {
       return;
     }
+    var type = !FMLLoader.isProduction() ? "development" : "beta";
     var message = CommonComponents.joinLines(
-        Component.literal("You are using a development version of Railcraft.")
+        Component.literal("You are using a " + type + " version of Railcraft.")
             .withStyle(ChatFormatting.RED),
-        Component.literal("- World saves are not stable and may break between versions.")
-            .withStyle(ChatFormatting.GRAY),
+        /*Component.literal("- World saves are not stable and may break between versions.")
+            .withStyle(ChatFormatting.GRAY),*/
         Component.literal("- Features might be missing or only partially implemented.")
             .withStyle(ChatFormatting.GRAY),
-        Component.literal("You have been warned.")
-            .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC),
+        /*Component.literal("You have been warned.")
+            .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC),*/
         Component.literal("Bug reports are welcome at our issue tracker.")
             .withStyle(style -> style
                 .withColor(ChatFormatting.GREEN)
                 .withUnderlined(true)
                 .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
                     "https://github.com/Sm0keySa1m0n/Railcraft/issues"))),
-        Component.literal("- CovertJaguar, Sm0keySa1m0n, 3divad99")
+        Component.literal("- Sm0keySa1m0n, 3divad99")
             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     event.getPlayer().displayClientMessage(message, false);
   }

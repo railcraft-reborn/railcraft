@@ -1,9 +1,5 @@
 package mods.railcraft.client.gui.widget.button;
 
-/**
- *
- * @author CovertJaguar <https://www.railcraft.info/>
- */
 public class SimpleTexturePosition implements TexturePosition {
 
   private final int x, y, height, width;

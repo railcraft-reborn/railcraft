@@ -39,8 +39,7 @@ public class RailcraftEntityTypes {
       deferredRegister.register("track_remover",
           () -> create("track_remover",
               EntityType.Builder
-                  .<TrackRemover>of(TrackRemover::new,
-                      MobCategory.MISC)
+                  .<TrackRemover>of(TrackRemover::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));
@@ -49,8 +48,7 @@ public class RailcraftEntityTypes {
       deferredRegister.register("track_layer",
           () -> create("track_layer",
               EntityType.Builder
-                  .<TrackLayer>of(TrackLayer::new,
-                      MobCategory.MISC)
+                  .<TrackLayer>of(TrackLayer::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));
@@ -68,8 +66,7 @@ public class RailcraftEntityTypes {
       deferredRegister.register("creative_locomotive",
           () -> create("creative_locomotive",
               EntityType.Builder
-                  .<CreativeLocomotive>of(CreativeLocomotive::new,
-                      MobCategory.MISC)
+                  .<CreativeLocomotive>of(CreativeLocomotive::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 1F)));
@@ -78,8 +75,7 @@ public class RailcraftEntityTypes {
       deferredRegister.register("electric_locomotive",
           () -> create("electric_locomotive",
               EntityType.Builder
-                  .<ElectricLocomotive>of(ElectricLocomotive::new,
-                      MobCategory.MISC)
+                  .<ElectricLocomotive>of(ElectricLocomotive::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 1F)));
@@ -88,18 +84,18 @@ public class RailcraftEntityTypes {
       deferredRegister.register("steam_locomotive",
           () -> create("steam_locomotive",
               EntityType.Builder
-                  .<SteamLocomotive>of(SteamLocomotive::new,
-                      MobCategory.MISC)
+                  .<SteamLocomotive>of(SteamLocomotive::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 1F)));
 
   public static final RegistryObject<EntityType<FirestoneItemEntity>> FIRESTONE =
       deferredRegister.register("firestone",
-          () -> create("firestone", EntityType.Builder.<FirestoneItemEntity>of(
-              FirestoneItemEntity::new, MobCategory.MISC)
-              .setTrackingRange(64)
-              .setUpdateInterval(20)));
+          () -> create("firestone",
+              EntityType.Builder
+                  .<FirestoneItemEntity>of(FirestoneItemEntity::new, MobCategory.MISC)
+                  .setTrackingRange(64)
+                  .setUpdateInterval(20)));
 
   private static <T extends Entity> EntityType<T> create(String registryName,
       EntityType.Builder<T> builder) {

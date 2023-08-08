@@ -96,6 +96,10 @@ public class RailcraftTags {
     public static final TagKey<Item> STEEL_TANK_VALVE = tag("steel_tank_valve");
     public static final TagKey<Item> STEEL_TANK_WALL = tag("steel_tank_wall");
 
+    public static final TagKey<Item> PLATE_CHEST_LOOT = tag("plate_chest_loot");
+    public static final TagKey<Item> GEAR_CHEST_LOOT = tag("gear_chest_loot");
+    public static final TagKey<Item> INGOT_CHEST_LOOT = tag("ingot_chest_loot");
+
     public static final TagKey<Item> QUARRIED = tag("quarried");
 
     public static final TagKey<Item> POST = tag("post");
@@ -107,6 +111,8 @@ public class RailcraftTags {
     public static final TagKey<Item> IRON_TRACK = tag("iron_track");
     public static final TagKey<Item> REINFORCED_TRACK = tag("reinforced_track");
     public static final TagKey<Item> STRAP_IRON_TRACK = tag("strap_iron_track");
+
+    public static final TagKey<Item> TRACK_KIT = tag("track_kit");
 
 
     public static final TagKey<Item> LEAD_ORE = forgeTag("ores/lead");

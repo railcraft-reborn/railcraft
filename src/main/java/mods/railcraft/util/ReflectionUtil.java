@@ -3,11 +3,6 @@ package mods.railcraft.util;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
-/**
- * Created by CovertJaguar on 12/16/2018 for Railcraft.
- *
- * @author CovertJaguar <https://www.railcraft.info>
- */
 public class ReflectionUtil {
 
   public static boolean isAnnotated(Class<? extends Annotation> annotation, Object obj) {
