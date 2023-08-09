@@ -3,7 +3,7 @@ name: Crowdin Upload
 on:
   push:
     paths: [ 'src/generated/resources/assets/railcraft/lang/**' ]
-    branches: [ main ]
+    branches: [ 1.20.x ]
   workflow_dispatch:
 
 jobs:
