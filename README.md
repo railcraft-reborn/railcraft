@@ -47,14 +47,16 @@ in `src\api\java\mods\railcraft\api\LICENSE.txt`**
 
 ### Key things to keep in mind:
 
-- You may **NOT** create works using the Railcraft code (source or binary) without CovertJaguar's
-  explicit permission except in the cases listed in this license.
-- You may **NOT** create derivative Jars from Railcraft source to distribute to other users.
-- You **MAY** use snippets of Railcraft Code posted on the Official Github in your own projects, but
-  only if your project consists of less than 25% of Railcraft derived code. You must give credit to
-  the Railcraft Project for the code used, including a link to the Github Project. Put this in your
-  class file headers that contain Railcraft code, in your readme, and on the main download page.
-- You may **NOT** use Railcraft Art Assets in other projects **unless** the project is intended to
-  operate alongside Railcraft. Examples are Addons, Resource Packs and InterMod Integration.
-- You **MAY** fork and edit the Github Project for the purpose of contributing to the Official
-  Railcraft Project. You may **NOT** distribute any Jar created from a fork for any reason.
+- You may **NOT** create works using Railcraft Reborn code (source or binary) without 
+  permission from Sm0keySa1m0n and 3divad99 except as listed in this license.
+- You may **NOT** create derivative Jars from Railcraft Reborn source to distribute to other users.
+- You **MAY** use snippets of Railcraft Code posted on the Official GitHub in your own projects, but
+  only if your project consists of less than 25% of Railcraft Reborn derived code.
+  You must give credit to the Railcraft Reborn Project for the code used, including a link to the 
+  GitHub Project. Put this in your class file headers that contain Railcraft code, in your 
+  readme, and on the main download page.
+- You may **NOT** use Railcraft Reborn Art Assets in other projects **unless** the project is 
+  intended to operate alongside Railcraft Reborn.
+  Examples are Addons, Resource Packs and InterMod Integration.
+- You **MAY** fork and edit the GitHub Project for the purpose of contributing to the Official
+  Railcraft Reborn Project. You may **NOT** distribute any Jar created from a fork for any reason.
