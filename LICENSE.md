@@ -27,57 +27,45 @@
 * You may create, publish, and earn revenue from a texture pack made for Railcraft Reborn so long as
   it contains no Railcraft Reborn code. Additionally, you may use, modify, and distribute any png
   files or their contents from Railcraft Reborn in your Railcraft Reborn Texture Pack as long as you
-  provide attribution and a link to the [Railcraft Blog](https://railcraft.info/).
+  provide attribution and a link to the
+  [Railcraft Reborn GitHub](https://github.com/railcraft-reborn/railcraft).
 
-* You may create, publish, and earn revenue from an addon made for Railcraft Reborn using the
-  Railcraft Reborn API (addon being defined as a mini-mod that requires Railcraft Reborn be
-  installed to function), though CovertJaguar reserves the right to implement similar features if
-  desired. However, no addon code will be ever be included in Railcraft Reborn without the addon
-  makers permission.
+* You can create, publish, and earn revenue from an add-on built for Railcraft Reborn using the
+  Railcraft Reborn API (add-on is defined as a mini-mod that requires Railcraft Reborn to be 
+  installed to work), though Sm0keySa1m0n and 3divad99 reserve the right to implement similar 
+  functionality if desired. However, no addon code will ever be included in Railcraft Reborn 
+  without the permission of the addon makers.
 
 * You may create, publish, and earn revenue from videos that display all or part of Railcraft
-  Reborn. You should but are not required to provide a link to
-  the [Railcraft Blog](https://railcraft.info/).
+  Reborn.
 
 * You may create, publish, and earn revenue from maps that require Railcraft Reborn. You may
   distribute Railcraft Reborn with your map if you meet the Public Mod Pack requirements defined
   below. If you require your users to install Railcraft Reborn, provide a link to
-  the [Railcraft Blog](https://railcraft.info/).
+  the [Railcraft Reborn GitHub](https://github.com/railcraft-reborn/railcraft).
 
 ## Distribution
 
-* Except in the case of Public Mod Packs, you may not publicly distribute Railcraft Reborn on
-  another site without CovertJaguar's explicit permission. And if you have permission you must
-  include a link to the [Railcraft Blog](https://railcraft.info/)
-  and [Wiki](https://railcraft.info/wiki) and use the download links provided there unless
-  you receive permission to do otherwise. Proper attribution must be provided regardless and you
-  must post a link to this [License](https://railcraft.info/wiki/info:license).
+* Except in the case of public Mod Packs, Railcraft Reborn may not be publicly distributed on 
+  another site without the express permission of the authors. And if you have permission you 
+  must include a link to the
+  [Railcraft Reborn GitHub](https://github.com/railcraft-reborn/railcraft).
 
 ## Public Mod Packs
 
 * This section pertains **ONLY** to publicly available mod packs. The section does not apply to
   Private Server Packs as defined previously in the Usage Section.
-
-    * You are **REQUIRED** to **PUBLICLY** post a licensing page with entries for all the mods
-      currently in your mod pack (links to licenses, images of PMs, posts by devs, etc...). This is
-      the single most important requirement you must meet. If you cannot or will not do this, you
-      cannot use Railcraft Reborn in your mod pack.
-    * You may not sell the mod pack.
-    * You are not allowed to use the latest series of Railcraft Reborn (versioning system being <
-      major.series.revision.build>, ie 3.3.1.0) until a new series is released or one week has
-      passed since the last revision was released. This is to protect the users from unstable
-      versions.
-    * You must provide a link to the [Railcraft Blog](https://railcraft.info/),
-    * [Railcraft Wiki](https://railcraft.info/wiki) and
-      [Railcraft License](https://railcraft.info/wiki/info:license) on your website.
-    * Nightlies builds are never to be packaged as part of a public mod pack.
+     * You may not sell the mod pack.
+     * You must provide a link to the
+       [Railcraft Reborn GitHub](https://github.com/railcraft-reborn/railcraft)
+     * Nightlies builds are never to be packaged as part of a public mod pack.
 
 ## Source
 
 * You may not create works using the Railcraft Reborn code (source or binary) without
   explicit permission except in the cases listed in this license.
 
-* The source code is hosted on [GitHub](https://github.com/Sm0keySa1m0n/Railcraft)
+* The source code is hosted on [GitHub](https://github.com/railcraft-reborn/railcraft)
 
 * You may **NOT** create derivative Jars from Railcraft Reborn source to distribute to other users.
 
@@ -92,3 +80,10 @@
 
 * You **MAY** fork and edit the GitHub Project for the purpose of contributing to the Official
   Railcraft Reborn Project. You may **NOT** distribute any Jar created from a fork for any reason.
+
+## Licensed by CovertJaguar
+Many of you will remember this mod from versions prior to 1.12.2.  
+For those who suspect that we are infringing on some Railcraft-related licence, we would like 
+to remind you that we have asked CovertJaguar for permission to publish this mod as Railcraft 
+Reborn.
+![CovertJaguar License](license_covertjaguar.jpg)
