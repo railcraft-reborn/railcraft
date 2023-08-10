@@ -227,7 +227,7 @@ public class ClientManager {
                 .withUnderlined(true)
                 .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
                     "https://github.com/railcraft-reborn/railcraft/issues"))),
-        Component.literal("- Sm0keySa1m0n, 3divad99")
+        Component.literal("- Sm0keySa1m0n, Edivad99")
             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     event.getPlayer().displayClientMessage(message, false);
   }

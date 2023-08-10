@@ -9,7 +9,7 @@ issueTrackerURL = "https://github.com/railcraft-reborn/railcraft/issues"
   displayName = "Railcraft Reborn"
   logoFile = "pack.png"
   credits = "Created by CovertJaguar and other contributions at Github"
-  authors = "Sm0keySa1m0n, 3divad99"
+  authors = "Sm0keySa1m0n, Edivad99"
   description = "Redefine your rails"
 
 [[dependencies.railcraft]]

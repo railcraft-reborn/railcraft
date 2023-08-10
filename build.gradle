@@ -171,11 +171,11 @@ tasks.named('jar', Jar).configure {
     manifest {
         attributes([
                 'Specification-Title'       : project.name,
-                'Specification-Vendor'      : 'Sm0keySa1m0n, 3divad99',
+                'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
                 'Specification-Version'     : '1',
                 'Implementation-Title'      : project.name,
                 'Implementation-Version'    : project.version,
-                'Implementation-Vendor'     : 'Sm0keySa1m0n, 3divad99',
+                'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
                 'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
                 'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 'MixinConfigs'              : 'railcraft.mixins.json'

@@ -32,7 +32,7 @@
 
 * You can create, publish, and earn revenue from an add-on built for Railcraft Reborn using the
   Railcraft Reborn API (add-on is defined as a mini-mod that requires Railcraft Reborn to be 
-  installed to work), though Sm0keySa1m0n and 3divad99 reserve the right to implement similar 
+  installed to work), though Sm0keySa1m0n and Edivad99 reserve the right to implement similar 
   functionality if desired. However, no addon code will ever be included in Railcraft Reborn 
   without the permission of the addon makers.
 

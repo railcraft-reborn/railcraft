@@ -48,7 +48,7 @@ in `src\api\java\mods\railcraft\api\LICENSE.txt`**
 ### Key things to keep in mind:
 
 - You may **NOT** create works using Railcraft Reborn code (source or binary) without 
-  permission from Sm0keySa1m0n and 3divad99 except as listed in this license.
+  permission from Sm0keySa1m0n and Edivad99 except as listed in this license.
 - You may **NOT** create derivative Jars from Railcraft Reborn source to distribute to other users.
 - You **MAY** use snippets of Railcraft Code posted on the Official GitHub in your own projects, but
   only if your project consists of less than 25% of Railcraft Reborn derived code.
